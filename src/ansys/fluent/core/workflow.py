@@ -180,7 +180,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize BaseTask.
@@ -937,7 +937,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -1006,7 +1006,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -1034,7 +1034,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -1079,7 +1079,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -1131,7 +1131,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -1166,7 +1166,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundTask.

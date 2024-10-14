@@ -7,7 +7,7 @@ from enum import Enum
 
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.workflow import ClassicWorkflow, Workflow
+from ansys.fluent.core.workflow import Workflow
 
 name_to_identifier_map = {
     "Watertight Geometry": "EnableCleanCAD",
@@ -15,31 +15,6 @@ name_to_identifier_map = {
     "2D Meshing": "EnablePrime2dMeshing",
     "Topology Based Meshing": "EnablePrimeMeshing",
 }
-
-
-class ClassicMeshingWorkflow(ClassicWorkflow):
-    """Provides meshing specialization of the workflow wrapper."""
-
-    def __init__(
-        self,
-        workflow: PyMenuGeneric,
-        meshing: PyMenuGeneric,
-        fluent_version: FluentVersion,
-    ) -> None:
-        """Initialize ClassicMeshingWorkflow.
-
-        Parameters
-        ----------
-        workflow : PyMenuGeneric
-            Underlying workflow object.
-        meshing : PyMenuGeneric
-            Meshing object.
-        fluent_version: FluentVersion
-            Version of Fluent in this session.
-        """
-        super().__init__(
-            workflow=workflow, command_source=meshing, fluent_version=fluent_version
-        )
 
 
 class MeshingWorkflow(Workflow):
@@ -260,7 +235,6 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
 class WorkflowMode(Enum):
     """Provides an enum of supported Fluent meshing workflow modes."""
 
-    CLASSIC_MESHING_MODE = ClassicMeshingWorkflow
     WATERTIGHT_MESHING_MODE = WatertightMeshingWorkflow
     FAULT_TOLERANT_MESHING_MODE = FaultTolerantMeshingWorkflow
     TWO_DIMENSIONAL_MESHING_MODE = TwoDimensionalMeshingWorkflow

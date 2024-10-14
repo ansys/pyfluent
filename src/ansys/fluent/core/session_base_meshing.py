@@ -122,12 +122,8 @@ class BaseMeshing:
     @property
     def workflow(self):
         """Datamodel root of workflow."""
-        if not self._old_workflow:
-            self._old_workflow = WorkflowMode.CLASSIC_MESHING_MODE.value(
-                _make_datamodel_module(self, "workflow"),
-                self.meshing,
-                self.get_fluent_version(),
-            )
+        if self._old_workflow is None:
+            self._old_workflow = _make_datamodel_module(self, "workflow")
         return self._old_workflow
 
     def watertight_workflow(self, initialize: bool = True):
