@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -13,6 +15,7 @@ from ansys.fluent.core.search import (
     _search_semantic,
     _search_whole_word,
     _search_wildcard,
+    search,
 )
 
 
@@ -489,3 +492,35 @@ def test_search_settings_from_root(capsys, static_mixer_settings_session):
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"].phase
     )
     assert '<search_root>["<name>"].shell_conduction["<name>"] (Object)' in results
+
+
+def test_search_whole_word_parent_child(monkeypatch, capsys):
+    api_tree_data = {
+        "api_objects": [
+            "<solver_session>.parent (Object)",
+            "<solver_session>.parent.child (Parameter)",
+        ],
+        "api_tui_objects": [],
+        "all_api_object_name_synsets": {  # why doesn't _search_whole_word() work without synsets?
+            "parent": ["parent"],
+            "child": ["child"],
+        },
+    }
+    search_module = sys.modules["ansys.fluent.core.search"]
+    monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
+    # _search_whole_word() should return a list. Print should happen in the top-level search() function.
+    _search_whole_word("parent", match_whole_word=True)
+    lines = capsys.readouterr().out.splitlines()
+    # Currently, we get both paths
+    with pytest.raises(AssertionError):
+        assert lines == ["<solver_session>.parent (Object)"]
+    # why is there a keyword named match_whole_word in a function named _search_whole_word()?
+    # and why is it default to False?
+    _search_whole_word("child", match_whole_word=True)
+    lines = capsys.readouterr().out.splitlines()
+    assert lines == ["<solver_session>.parent.child (Parameter)"]
+    search("parent", match_whole_word=True)
+    lines = capsys.readouterr().out.splitlines()
+    # Currently, we get both paths
+    with pytest.raises(AssertionError):
+        assert lines == ["<solver_session>.parent (Object)"]

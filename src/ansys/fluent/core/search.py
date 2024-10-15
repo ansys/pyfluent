@@ -684,7 +684,10 @@ def search(
             )
         else:
             _search_whole_word(
-                search_string, match_case=True, api_tree_data=api_tree_data
+                search_string,
+                match_case=True,
+                match_whole_word=True,
+                api_tree_data=api_tree_data,
             )
     else:
         _search_whole_word(
