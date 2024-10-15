@@ -129,6 +129,28 @@ class Attribute(Enum):
     DEPRECATED_VERSION: str = "deprecatedVersion"
 
 
+class _FilterDatamodelNames:
+    def __init__(self, service):
+        self._filter_fn = getattr(service, "is_in_datamodel", None)
+
+    def __call__(self, parent, names):
+        if self._filter_fn is None:
+            return names
+
+        filtered_children = []
+
+        def validate_name(name):
+            obj = getattr(parent, name)
+            # might need to make this more flexible (e.g., enhanced workflow types)
+            is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
+            if is_in_datamodel:
+                return self._filter_fn(parent.rules, convert_path_to_se_path(obj.path))
+            else:
+                return True
+
+        return [name for name in names if validate_name(name)]
+
+
 class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
@@ -1066,11 +1088,16 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        if self.get_attr(Attribute.IS_READ_ONLY.value):
-            dir_list = dir_list - {"setState", "set_state"}
 
-        return sorted(dir_list)
+        all_children = list(self.__dict__) + dir(type(self))
+
+        filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
+
+        dir_set = set(filtered_children)
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_set = dir_set - {"setState", "set_state"}
+
+        return sorted(dir_set)
 
 
 class PyMenu(PyStateContainer):
