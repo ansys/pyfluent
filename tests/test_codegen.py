@@ -1,3 +1,4 @@
+import ast
 import importlib
 from pathlib import Path
 import pickle
@@ -1080,4 +1081,110 @@ def test_codegen_with_settings_static_info(monkeypatch):
     api_tree_expected[f"<meshing_session>"] = {}
     api_tree_expected[f"<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
+    shutil.rmtree(str(codegen_outdir))
+
+
+_settings_static_info_duplicate_parameters = {
+    "children": (
+        _get_group_settings_static_info(
+            "G1",
+            (
+                (
+                    _get_group_settings_static_info(
+                        "G2",
+                        _get_parameter_settings_static_info("P1", "string"),
+                        {},
+                        {},
+                    )
+                )
+                | _get_parameter_settings_static_info("P1", "string")
+            ),
+            {},
+            {},
+        )
+    ),
+    "commands": {},
+    "queries": {},
+    "type": "group",
+}
+
+_settings_static_info_different_parameters_with_same_name = {
+    "children": (
+        _get_group_settings_static_info(
+            "G1",
+            (
+                (
+                    _get_group_settings_static_info(
+                        "G2",
+                        _get_parameter_settings_static_info("P1", "real"),
+                        {},
+                        {},
+                    )
+                )
+                | _get_parameter_settings_static_info("P1", "string")
+            ),
+            {},
+            {},
+        )
+    ),
+    "commands": {},
+    "queries": {},
+    "type": "group",
+}
+
+
+_settings_static_info_combined_case = {
+    "children": (
+        _get_group_settings_static_info(
+            "G1",
+            (
+                (
+                    _get_group_settings_static_info(
+                        "G2",
+                        (
+                            _get_parameter_settings_static_info("P1", "real")
+                            | _get_parameter_settings_static_info("P2", "string")
+                        ),
+                        {},
+                        {},
+                    )
+                )
+                | _get_parameter_settings_static_info("P1", "string")
+                | _get_parameter_settings_static_info("P2", "string")
+            ),
+            {},
+            {},
+        )
+    ),
+    "commands": {},
+    "queries": {},
+    "type": "group",
+}
+
+
+@pytest.mark.parametrize(
+    "settings_static_info,class_names",
+    [
+        (_settings_static_info_duplicate_parameters, ["P1", "G2", "G1", "root"]),
+        (
+            _settings_static_info_different_parameters_with_same_name,
+            ["P1_1", "G2", "P1", "G1", "root"],
+        ),
+        (_settings_static_info_combined_case, ["P1_1", "P2", "G2", "P1", "G1", "root"]),
+    ],
+)
+def test_codegen_with_settings_static_info_edge_cases(
+    monkeypatch, settings_static_info, class_names
+):
+
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    version = "251"
+    static_infos = {}
+    static_infos[StaticInfoType.SETTINGS] = settings_static_info
+    allapigen.generate(version, static_infos)
+    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+        module_def = ast.parse(f.read())
+        class_defs = [x for x in module_def.body if isinstance(x, ast.ClassDef)]
+        assert [x.name for x in class_defs] == class_names
     shutil.rmtree(str(codegen_outdir))

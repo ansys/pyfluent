@@ -270,6 +270,8 @@ def generate(version: str, static_infos: dict) -> None:
     # _populate_data() collects all strings to write to the file in a nested dict.
     # which is then written to the file using _write_data().
     data = _populate_data(cls, api_tree, version)
+    _NAME_BY_HASH.clear()
+    _CLASS_WRITTEN.clear()
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
         header = StringIO()
         header.write("#\n")
