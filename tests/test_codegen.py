@@ -1185,6 +1185,9 @@ def test_codegen_with_settings_static_info_edge_cases(
     allapigen.generate(version, static_infos)
     with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
         module_def = ast.parse(f.read())
-        class_defs = [x for x in module_def.body if isinstance(x, ast.ClassDef)]
-        assert [x.name for x in class_defs] == class_names
+        class_names_from_file = [
+            x.name for x in module_def.body if isinstance(x, ast.ClassDef)
+        ]
+        # The order of classes is important.
+        assert class_names_from_file == class_names
     shutil.rmtree(str(codegen_outdir))
