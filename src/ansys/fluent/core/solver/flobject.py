@@ -2111,7 +2111,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls.__doc__ = doc
 
         if version < "242":
-            cls.return_type = object()
+            cls.return_type = "object"
         else:
             return_type = info.get("return-type") or info.get("return_type")
             if return_type:
@@ -2185,16 +2185,22 @@ def get_root(
 
     obj_info = flproxy.get_static_info()
     try:
-        if CODEGEN_ZIP_SETTINGS:
-            importer = zipimporter(
-                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-            )
-            settings = importer.load_module("settings")
-        else:
+        if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
             settings = utils.load_module(
                 f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
             )
+        else:
+            if CODEGEN_ZIP_SETTINGS:
+                importer = zipimporter(
+                    str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+                )
+                settings = importer.load_module("settings")
+            else:
+                settings = utils.load_module(
+                    f"settings_{version}",
+                    CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+                )
 
         if settings.SHASH != _gethash(obj_info):
             settings_logger.warning(
