@@ -1,6 +1,8 @@
-name: Test Fluent tests with PyFluent changes
+name: Test Fluent journals with PyFluent changes
 
 on:
+  schedule:  # UTC at 0700
+    - cron:  '0 7 * * *'
   workflow_dispatch:
   push:
     branches:
