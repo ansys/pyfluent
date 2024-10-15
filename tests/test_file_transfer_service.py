@@ -127,3 +127,39 @@ def test_file_list_in_datamodel(fault_tolerant_workflow_session):
         RemoveEmptyParts=True,
         Route="Native",
     )
+
+
+@pytest.mark.standalone
+def test_local_file_transfer_in_datamodel(monkeypatch):
+    import ansys.fluent.core as pyfluent
+
+    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
+
+    fmd_file = examples.download_file("exhaust_system.fmd", "pyfluent/exhaust_system")
+
+    assert fmd_file
+
+    meshing = pyfluent.launch_fluent(
+        mode=pyfluent.FluentMode.MESHING,
+        file_transfer_service=LocalFileTransferStrategy(),
+    )
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+
+    meshing.PartManagement.AppendFmdFiles(
+        AssemblyParentNode=0,
+        FilePath=[fmd_file],
+        FileUnit="mm",
+        IgnoreSolidNamesAppend=False,
+        JtLOD="1",
+        Options={
+            "Line": False,
+            "Solid": True,
+            "Surface": True,
+        },
+        PartPerBody=False,
+        PrefixParentName=False,
+        RemoveEmptyParts=True,
+        Route="Native",
+    )
+    meshing.exit()

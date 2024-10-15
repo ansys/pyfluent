@@ -129,6 +129,28 @@ class Attribute(Enum):
     DEPRECATED_VERSION: str = "deprecatedVersion"
 
 
+class _FilterDatamodelNames:
+    def __init__(self, service):
+        self._filter_fn = getattr(service, "is_in_datamodel", None)
+
+    def __call__(self, parent, names):
+        if self._filter_fn is None:
+            return names
+
+        filtered_children = []
+
+        def validate_name(name):
+            obj = getattr(parent, name)
+            # might need to make this more flexible (e.g., enhanced workflow types)
+            is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
+            if is_in_datamodel:
+                return self._filter_fn(parent.rules, convert_path_to_se_path(obj.path))
+            else:
+                return True
+
+        return [name for name in names if validate_name(name)]
+
+
 class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
@@ -572,7 +594,11 @@ class DatamodelService(StreamingService):
             )
 
     def update_dict(
-        self, rules: str, path: str, dict_state: dict[str, _TValue]
+        self,
+        rules: str,
+        path: str,
+        dict_state: dict[str, _TValue],
+        recursive=False,
     ) -> None:
         """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
@@ -1017,8 +1043,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    docstring = None
-
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
@@ -1064,11 +1088,16 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        if self.get_attr(Attribute.IS_READ_ONLY.value):
-            dir_list = dir_list - {"setState", "set_state"}
 
-        return sorted(dir_list)
+        all_children = list(self.__dict__) + dir(type(self))
+
+        filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
+
+        dir_set = set(filtered_children)
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_set = dir_set - {"setState", "set_state"}
+
+        return sorted(dir_set)
 
 
 class PyMenu(PyStateContainer):
@@ -1394,7 +1423,7 @@ class PyDictionary(PyParameter):
         to dict.update semantics (same as update_dict(dict_state))]
     """
 
-    def update_dict(self, dict_state: dict[str, Any]) -> None:
+    def update_dict(self, dict_state: dict[str, Any], recursive=False) -> None:
         """Update the state of the current object if the current object is a Dict in the
         data model, else throws RuntimeError (currently not showing up in Python).
         Update is executed according to dict.update semantics.
@@ -1404,6 +1433,9 @@ class PyDictionary(PyParameter):
         dict_state : dict[str, Any]
             Incoming dict state
 
+        recursive: bool
+            Flag to update the nested dictionary structure.
+
         Raises
         ------
         ReadOnlyObjectError
@@ -1412,7 +1444,7 @@ class PyDictionary(PyParameter):
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
         self.service.update_dict(
-            self.rules, convert_path_to_se_path(self.path), dict_state
+            self.rules, convert_path_to_se_path(self.path), dict_state, recursive
         )
 
     updateDict = update_dict
