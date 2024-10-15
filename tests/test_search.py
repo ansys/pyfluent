@@ -509,14 +509,14 @@ def test_search_whole_word_parent_child(monkeypatch, capsys):
     search_module = sys.modules["ansys.fluent.core.search"]
     monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
     # _search_whole_word() should return a list. Print should happen in the top-level search() function.
-    _search_whole_word("parent", match_whole_word=True)
+    _search_whole_word("parent", match_whole_word=True, api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     # Currently, we get both paths
     with pytest.raises(AssertionError):
         assert lines == ["<solver_session>.parent (Object)"]
     # why is there a keyword named match_whole_word in a function named _search_whole_word()?
     # and why is it default to False?
-    _search_whole_word("child", match_whole_word=True)
+    _search_whole_word("child", match_whole_word=True, api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     assert lines == ["<solver_session>.parent.child (Parameter)"]
     search("parent", match_whole_word=True)
