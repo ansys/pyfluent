@@ -1,6 +1,6 @@
 """Module to generate Fluent datamodel API classes."""
 
-from io import FileIO
+from io import FileIO, StringIO
 import os
 from pathlib import Path
 import shutil
@@ -82,13 +82,16 @@ def _write_meshing_utilities_stub(file_path):
 
 
 def _write_command_query_stub(name: str, info: Any, f: FileIO):
+    signature = StringIO()
     indent = "        "
-    signature = f"(\n{indent}self,\n"
+    signature.write(f"(\n{indent}self,\n")
     if info.get("args"):
         for arg in info.get("args"):
-            signature += f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
-    signature += f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...'
-    f.write(f"\n    def {name}{signature}\n")
+            signature.write(
+                f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
+            )
+    signature.write(f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...')
+    f.write(f"\n    def {name}{signature.getvalue()}\n")
 
 
 def _build_singleton_docstring(name: str):
