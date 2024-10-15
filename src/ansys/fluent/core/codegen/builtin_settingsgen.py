@@ -1,5 +1,7 @@
 """Generate builtin setting classes."""
 
+import os
+
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
 from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin
 from ansys.fluent.core.solver.settings_builtin_data import DATA
@@ -11,16 +13,22 @@ _PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
 def _get_settings_root(version: str):
     from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 
-    if CODEGEN_ZIP_SETTINGS:
-        importer = zipimporter(
-            str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-        )
-        settings = importer.load_module("settings")
-    else:
+    if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
         settings = utils.load_module(
             f"settings_{version}",
-            CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
         )
+    else:
+        if CODEGEN_ZIP_SETTINGS:
+            importer = zipimporter(
+                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+            )
+            settings = importer.load_module("settings")
+        else:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+            )
     return settings.root
 
 

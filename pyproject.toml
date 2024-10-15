@@ -23,6 +23,7 @@ include = [
     { path = "src/ansys/fluent/core/generated/fluent_version_*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/meshing/tui_*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/*.py", format = ["sdist", "wheel"] },
+    { path = "src/ansys/fluent/core/generated/solver/*.pyi", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/datamodel_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
     { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
@@ -109,7 +110,7 @@ addopts = """
 -v
 --durations=0
 --show-capture=all
--n auto
+-n 4
 """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",

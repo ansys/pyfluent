@@ -29,9 +29,7 @@ def test_allapigen_files(new_solver_session):
     importlib.import_module(
         f"ansys.fluent.core.generated.datamodel_{version}.PMFileManagement"
     )
-    importlib.import_module(
-        f"ansys.fluent.core.generated.solver.settings_{version}.root"
-    )
+    importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
 
 
 def test_codegen_with_no_static_info(monkeypatch):
@@ -735,7 +733,8 @@ class Q1(Query):
     )'''  # noqa: W293
 
 
-def test_codegen_with_settings_static_info(monkeypatch):
+def test_codegen_old_with_settings_static_info(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_OLD_SETTINGSGEN", "1")
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     version = "251"
@@ -819,7 +818,8 @@ def test_codegen_with_settings_static_info(monkeypatch):
     shutil.rmtree(str(codegen_outdir))
 
 
-def test_codegen_with_zipped_settings_static_info(monkeypatch):
+def test_codegen_old_with_zipped_settings_static_info(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_OLD_SETTINGSGEN", "1")
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
     monkeypatch.setattr(pyfluent, "CODEGEN_ZIP_SETTINGS", True)
@@ -836,4 +836,248 @@ def test_codegen_with_zipped_settings_static_info(monkeypatch):
     solver_paths = list((codegen_outdir / "solver").iterdir())
     assert len(solver_paths) == 1
     assert set(p.name for p in solver_paths) == {f"settings_{version}.zip"}
+    shutil.rmtree(str(codegen_outdir))
+
+
+_expected_settings_api_output = '''#
+# This is an auto-generated file.  DO NOT EDIT!
+#
+
+from ansys.fluent.core.solver.flobject import *
+
+from ansys.fluent.core.solver.flobject import (
+    _ChildNamedObjectAccessorMixin,
+    _NonCreatableNamedObjectMixin,
+    _InputFile,
+    _OutputFile,
+    _InOutFile,
+)
+
+SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"
+
+class P3(Integer):
+    """
+    P3 help.
+    """
+    version = '251'
+    fluent_name = 'P3'
+    _python_name = 'P3'
+
+class G2(Group):
+    """
+    G2 help.
+    """
+    version = '251'
+    fluent_name = 'G2'
+    _python_name = 'G2'
+    child_names = ['P3']
+    _child_classes = dict(
+        P3=P3,
+    )
+
+class P2(Real):
+    """
+    P2 help.
+    """
+    version = '251'
+    fluent_name = 'P2'
+    _python_name = 'P2'
+
+class A2(Real):
+    """
+    A2 help.
+    """
+    version = '251'
+    fluent_name = 'A2'
+    _python_name = 'A2'
+
+class C2(Command):
+    """
+    C2 help.
+    
+    Parameters
+    ----------
+        A2 : real
+            A2 help.
+    """
+    version = '251'
+    fluent_name = 'C2'
+    _python_name = 'C2'
+    argument_names = ['A2']
+    _child_classes = dict(
+        A2=A2,
+    )
+
+class Q2(Query):
+    """
+    Q2 help.
+    
+    Parameters
+    ----------
+        A2 : real
+            A2 help.
+    """
+    version = '251'
+    fluent_name = 'Q2'
+    _python_name = 'Q2'
+    argument_names = ['A2']
+    _child_classes = dict(
+        A2=A2,
+    )
+
+class G1(Group):
+    """
+    G1 help.
+    """
+    version = '251'
+    fluent_name = 'G1'
+    _python_name = 'G1'
+    child_names = ['G2', 'P2']
+    command_names = ['C2']
+    query_names = ['Q2']
+    _child_classes = dict(
+        G2=G2,
+        P2=P2,
+        C2=C2,
+        Q2=Q2,
+    )
+
+class P1(String):
+    """
+    P1 help.
+    """
+    version = '251'
+    fluent_name = 'P1'
+    _python_name = 'P1'
+
+class P4(String):
+    """
+    P4 help.
+    """
+    version = '251'
+    fluent_name = 'P4'
+    _python_name = 'P4'
+
+class N1_child(Group):
+    """
+    'child_object_type' of N1.
+    """
+    version = '251'
+    fluent_name = 'child-object-type'
+    _python_name = 'N1_child'
+
+class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
+    """
+    N1 help.
+    """
+    version = '251'
+    fluent_name = 'N1'
+    _python_name = 'N1'
+    child_names = ['P4']
+    _child_classes = dict(
+        P4=P4,
+    )
+    child_object_type = N1_child
+
+class A1(String):
+    """
+    A1 help.
+    """
+    version = '251'
+    fluent_name = 'A1'
+    _python_name = 'A1'
+
+class C1(Command):
+    """
+    C1 help.
+    
+    Parameters
+    ----------
+        A1 : str
+            A1 help.
+    """
+    version = '251'
+    fluent_name = 'C1'
+    _python_name = 'C1'
+    argument_names = ['A1']
+    _child_classes = dict(
+        A1=A1,
+    )
+
+class Q1(Query):
+    """
+    Q1 help.
+    
+    Parameters
+    ----------
+        A1 : str
+            A1 help.
+    """
+    version = '251'
+    fluent_name = 'Q1'
+    _python_name = 'Q1'
+    argument_names = ['A1']
+    _child_classes = dict(
+        A1=A1,
+    )
+
+class root(Group):
+    """
+    'root' object.
+    """
+    version = '251'
+    fluent_name = ''
+    _python_name = 'root'
+    child_names = ['G1', 'P1', 'N1']
+    command_names = ['C1']
+    query_names = ['Q1']
+    _child_classes = dict(
+        G1=G1,
+        P1=P1,
+        N1=N1,
+        C1=C1,
+        Q1=Q1,
+    )'''  # noqa: W293
+
+
+def test_codegen_with_settings_static_info(monkeypatch):
+    codegen_outdir = Path(tempfile.mkdtemp())
+    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    version = "251"
+    static_infos = {}
+    static_infos[StaticInfoType.SETTINGS] = _settings_static_info
+    allapigen.generate(version, static_infos)
+    generated_paths = list(codegen_outdir.iterdir())
+    assert len(generated_paths) == 2
+    assert set(p.name for p in generated_paths) == {
+        f"api_tree_{version}.pickle",
+        "solver",
+    }
+    solver_paths = list((codegen_outdir / "solver").iterdir())
+    assert len(solver_paths) == 2
+    assert set(p.name for p in solver_paths) == {
+        f"settings_{version}.py",
+        f"settings_{version}.pyi",
+    }
+    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+        assert f.read().strip() == _expected_settings_api_output
+    api_tree_file = get_api_tree_file_name(version)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
+    settings_tree = {
+        "C1": "Command",
+        "G1": {
+            "C2": "Command",
+            "G2": {"P3": "Parameter"},
+            "P2": "Parameter",
+            "Q2": "Query",
+        },
+        "N1:<name>": {"P4": "Parameter"},
+        "P1": "Parameter",
+        "Q1": "Query",
+    }
+    api_tree_expected = {}
+    api_tree_expected[f"<meshing_session>"] = {}
+    api_tree_expected[f"<solver_session>"] = settings_tree
+    assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
