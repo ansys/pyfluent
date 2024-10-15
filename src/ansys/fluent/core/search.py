@@ -540,7 +540,7 @@ def _download_nltk_data():
         nltk.download(
             package,
             quiet=True,
-            raise_on_error=True,
+            halt_on_error=False,
         )
 
 
