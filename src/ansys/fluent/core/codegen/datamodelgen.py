@@ -21,11 +21,11 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
-    **dict.fromkeys(["Logical List", "ListBool"], "List[bool]"),
+    **dict.fromkeys(["Logical List", "ListBool"], "list[bool]"),
     "String": "str",
-    **dict.fromkeys(["String List", "ListString"], "List[str]"),
+    **dict.fromkeys(["String List", "ListString"], "list[str]"),
     **dict.fromkeys(["Integer", "Int"], "int"),
-    **dict.fromkeys(["Integer List", "ListInt"], "List[int]"),
+    **dict.fromkeys(["Integer List", "ListInt"], "list[int]"),
     "Real": "float",
     **dict.fromkeys(
         [
@@ -36,9 +36,9 @@ _PY_TYPE_BY_DM_TYPE = {
             "Real Triplet List",
             "ListRealTriplet",
         ],
-        "List[float]",
+        "list[float]",
     ),
-    **dict.fromkeys(["Dict", "ModelObject"], "Dict[str, Any]"),
+    **dict.fromkeys(["Dict", "ModelObject"], "dict[str, Any]"),
     "None": "None",
 }
 
@@ -68,15 +68,14 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 
 def _write_meshing_utilities_stub(file_path):
     file_path.unlink(missing_ok=True)
-    file = open(file_path, "w", encoding="utf8")
-    file.write("#\n")
-    file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-    file.write("#\n")
-    file.write("# pylint: disable=line-too-long\n\n")
-    file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
-    file.write("from typing import *\n")
-    file.write("\n\n")
-    file.write(f"class Root(PyMenu):\n")
+    with open(file_path, "w", encoding="utf8") as file:
+        file.write("#\n")
+        file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+        file.write("#\n")
+        file.write("# pylint: disable=line-too-long\n\n")
+        file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
+        file.write("\n\n")
+        file.write(f"class Root(PyMenu):\n")
     return file
 
 
