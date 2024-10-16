@@ -447,9 +447,6 @@ def generate(version, static_infos: dict):
 
 
 if __name__ == "__main__":
-    os.environ["PYFLUENT_FLUENT_ROOT"] = (
-        r"D:\Installations\Ansys\v251_03072021\ANSYS Inc\v251\fluent"
-    )
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
