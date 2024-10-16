@@ -68,14 +68,15 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 
 def _write_meshing_utilities_stub(file_path):
     file_path.unlink(missing_ok=True)
-    with open(file_path, "w", encoding="utf8") as file:
-        file.write("#\n")
-        file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-        file.write("#\n")
-        file.write("# pylint: disable=line-too-long\n\n")
-        file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
-        file.write("\n\n")
-        file.write(f"class Root(PyMenu):\n")
+    file = open(file_path, "w", encoding="utf8")
+    file.write("#\n")
+    file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+    file.write("#\n")
+    file.write("# pylint: disable=line-too-long\n\n")
+    file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
+    file.write("from typing import Any\n")
+    file.write("\n\n")
+    file.write(f"class Root(PyMenu):\n")
     return file
 
 
@@ -445,6 +446,9 @@ def generate(version, static_infos: dict):
 
 
 if __name__ == "__main__":
+    os.environ["PYFLUENT_FLUENT_ROOT"] = (
+        r"D:\Installations\Ansys\v251_03072021\ANSYS Inc\v251\fluent"
+    )
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
