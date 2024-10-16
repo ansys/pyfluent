@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 # Check https://python-poetry.org/docs/pyproject/ for all available sections
 name = "ansys-fluent-core"
-version = "0.27.dev0"
+version = "0.27.dev1"
 description = "PyFluent provides Pythonic access to Ansys Fluent"
 license = "MIT"
 authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
@@ -40,7 +40,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-ansys-api-fluent = "^0.3.27"
+ansys-api-fluent = "^0.3.28"
 ansys-platform-instancemanagement = "~=1.0"
 ansys-tools-filetransfer = ">=0.1,<0.3"
 ansys-units = "^0.3.2"
@@ -75,7 +75,7 @@ matplotlib = "==3.9.0"
 ansys-sphinx-theme = "==1.1.1"
 pypandoc = "==1.13"
 pytest-sphinx = "==0.6.3"
-sphinx-autobuild = "==2024.9.19"
+sphinx-autobuild = "==2024.10.3"
 sphinx-autodoc-typehints = "==2.3.0"
 sphinx-copybutton = "==0.5.2"
 sphinx-gallery = "==0.17.1"
