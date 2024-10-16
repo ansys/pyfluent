@@ -151,8 +151,12 @@ def test_wildcard(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_wildcard_fnmatch(mixing_elbow_case_data_session):
-    solver = mixing_elbow_case_data_session
+def test_wildcard_fnmatch(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case(file_name=case_path)
+
+    solver.solution.initialization.hybrid_initialize()
 
     mesh = solver.results.graphics.mesh
     assert mesh.create("mesh-a").name() == "mesh-a"
@@ -176,8 +180,10 @@ def test_wildcard_fnmatch(mixing_elbow_case_data_session):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_wildcard_path_is_iterable(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
+def test_wildcard_path_is_iterable(new_solver_session):
+    solver = new_solver_session
+    case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
+    solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
 
     velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     assert [x for x in velocity_inlet] == ["inlet2", "inlet1"]
@@ -513,6 +519,7 @@ def test_commands_not_in_settings(new_solver_session):
             getattr(solver.settings, command)
 
 
+@pytest.mark.fluent_version(">=25.1")
 def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     with pytest.warns() as record:

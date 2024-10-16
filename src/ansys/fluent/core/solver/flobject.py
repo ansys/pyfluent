@@ -1607,7 +1607,7 @@ def _get_new_keywords(obj, *args, **kwds):
             newkwds[argName] = arg
     if kwds:
         # Convert deprecated keywords through aliases
-        # We don't get argument-aliases from static-info yet.
+        # We don't get arguments-aliases from static-info yet.
         argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
         argument_aliases = {}
         for k, v in argument_aliases_scm.items():
@@ -2143,8 +2143,8 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        argument_aliases = info.get("argument-aliases") or info.get(
-            "argument_aliases", {}
+        argument_aliases = info.get("arguments-aliases") or info.get(
+            "arguments_aliases", {}
         )
         if child_aliases or command_aliases or query_aliases or argument_aliases:
             cls._child_aliases = {}

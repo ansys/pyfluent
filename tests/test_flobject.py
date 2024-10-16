@@ -271,6 +271,11 @@ class Command(Setting):
     # arguments = None
     # cb = None
 
+    def __init__(self, parent):
+        self.attrs = super().attrs.copy()
+        self.attrs["arguments-aliases"] = lambda self: {}
+        super().__init__(parent)
+
     def __call__(self, **kwds):
         args = []
         for k, v in self.arguments.items():
