@@ -1057,15 +1057,15 @@ class FieldData:
 
     def get_surface_data(
         self,
-        data_types: List[SurfaceDataType] | List[str],
+        data_types: List[SurfaceDataType],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
-    ) -> Dict[int | str, np.array | List[np.array]]:
+    ) -> Dict[SurfaceDataType, Dict[int | str, np.array | List[np.array]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
         ----------
-        data_types : List[SurfaceDataType] | List[str],
+        data_types : List[SurfaceDataType],
             SurfaceDataType Enum members.
         surfaces : List[int | str]
             List of surface IDS or surface names for the surface data.
@@ -1074,7 +1074,7 @@ class FieldData:
 
         Returns
         -------
-        Dict[int | str, np.array | List[np.array]]
+        Dict[SurfaceDataType, Dict[int | str, np.array | List[np.array]]]
              Returns a map of surface IDs (or names) to face
              vertices, connectivity data, and normal or centroid data.
         """
@@ -1083,15 +1083,6 @@ class FieldData:
             allowed_surface_names=self._allowed_surface_names,
             surfaces=surfaces,
         )
-        updated_data = []
-        str_data_types = []
-        for d_type in data_types:
-            new_data = SurfaceDataType(d_type)
-            if isinstance(d_type, str):
-                str_data_types.append(new_data)
-            updated_data.append(new_data)
-
-        data_types = updated_data
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
             [
@@ -1119,9 +1110,8 @@ class FieldData:
 
         ret_surf_data = {}
         for data_type in data_types:
-            key = data_type.value if data_type in str_data_types else data_type
             if data_type == SurfaceDataType.FacesConnectivity:
-                ret_surf_data[key] = {
+                ret_surf_data[data_type] = {
                     surface: (
                         self._get_faces_connectivity_data(
                             surface_data[surface_ids[count]][
@@ -1132,7 +1122,7 @@ class FieldData:
                     for count, surface in enumerate(surfaces)
                 }
             else:
-                ret_surf_data[key] = _get_surfaces_data(data_type)
+                ret_surf_data[data_type] = _get_surfaces_data(data_type)
 
         return ret_surf_data
 

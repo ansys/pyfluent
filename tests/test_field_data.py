@@ -204,22 +204,40 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     )
 
     vertices_and_faces_centroid_data = field_data.get_surface_data(
-        data_types=["vertices", "centroid"], surfaces=["hot-inlet", "cold-inlet"]
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+        surfaces=["hot-inlet", "cold-inlet"],
     )
-    assert list(vertices_and_faces_centroid_data.keys()) == ["vertices", "centroid"]
-    assert vertices_and_faces_centroid_data["vertices"]["hot-inlet"].shape == (79, 3)
-    assert list(vertices_and_faces_centroid_data["vertices"].keys()) == [
+    assert list(vertices_and_faces_centroid_data.keys()) == [
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesCentroid,
+    ]
+    assert vertices_and_faces_centroid_data[SurfaceDataType.Vertices][
+        "hot-inlet"
+    ].shape == (79, 3)
+    assert list(vertices_and_faces_centroid_data[SurfaceDataType.Vertices].keys()) == [
         "hot-inlet",
         "cold-inlet",
     ]
     assert (
         round(
-            float(vertices_and_faces_centroid_data["centroid"]["cold-inlet"][5][1]), 2
+            float(
+                vertices_and_faces_centroid_data[SurfaceDataType.FacesCentroid][
+                    "cold-inlet"
+                ][5][1]
+            ),
+            2,
         )
         == -0.18
     )
     assert (
-        round(float(vertices_and_faces_centroid_data["centroid"]["hot-inlet"][5][1]), 2)
+        round(
+            float(
+                vertices_and_faces_centroid_data[SurfaceDataType.FacesCentroid][
+                    "hot-inlet"
+                ][5][1]
+            ),
+            2,
+        )
         == -0.23
     )
 
