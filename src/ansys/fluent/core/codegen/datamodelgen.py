@@ -67,8 +67,7 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 
 
 def _write_meshing_utilities_stub(file_path):
-    if file_path.exists():
-        file_path.unlink()
+    file_path.unlink(missing_ok=True)
     file = open(file_path, "w", encoding="utf8")
     file.write("#\n")
     file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
