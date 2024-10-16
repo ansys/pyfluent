@@ -376,6 +376,7 @@ class DataModelGenerator:
                     info["queries"][k]["queryinfo"],
                     self._static_info["MeshingUtilities"].stub_file,
                 )
+            self._static_info["MeshingUtilities"].stub_file.close()
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
