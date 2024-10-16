@@ -602,7 +602,7 @@ class DatamodelService(StreamingService):
     ) -> None:
         """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
-            rules=rules, path=path, wait=True
+            rules=rules, path=path, wait=True, recursive=recursive
         )
         _convert_value_to_variant(dict_state, request.dicttomerge)
         response = self._impl.update_dict(request)
