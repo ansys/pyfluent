@@ -52,7 +52,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           files: doc
           vale-config: doc/.vale.ini
-          vale-version: "3.4.1"
 
   code-style:
     name: Code style
