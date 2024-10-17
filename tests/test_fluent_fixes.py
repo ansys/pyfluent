@@ -99,8 +99,8 @@ def test_empty_vector_field_data_2339(new_solver_session):
     solver.file.read_data(file_name=import_data)
 
     assert [
-        a.x
+        a[0]
         for a in solver.fields.field_data.get_vector_field_data(
-            field_name="velocity", surface_ids=[1]
-        )[1].data
+            field_name="velocity", surfaces=[1]
+        )[1]
     ][:5]
