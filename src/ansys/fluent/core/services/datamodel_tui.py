@@ -330,13 +330,13 @@ class TUIMenu:
             for x in PyMenu(
                 self._service, self._version, self._mode, self._path
             ).get_child_names()
-            if x != "exit"
+            if x not in ["exit", "switch_to_meshing_mode"]
         ]
 
     def __getattribute__(self, name) -> Any:
-        if name == "exit" and not self._path:
+        if name in ["exit", "switch_to_meshing_mode"] and not self._path:
             raise AttributeError(
-                f"'{self.__class__.__name__}' object has no attribute 'exit'"
+                f"'{self.__class__.__name__}' object has no attribute '{name}'"
             )
         try:
             attr = super().__getattribute__(name)
