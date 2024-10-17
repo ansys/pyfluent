@@ -121,13 +121,13 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
 .. code-block:: python
 
   >>> path_lines_data = field_data.get_pathlines_field_data(field_name="velocity", surfaces=["cold-inlet"])
-  >>> path_lines_data["cold-inlet"]["vertices"].shape
+  >>> path_lines_data["vertices"]["cold-inlet"].shape
   (76152, 3)
-  >>> len(path_lines_data["cold-inlet"]["lines"])
+  >>> len(path_lines_data["lines"]["cold-inlet"])
   76000
-  >>> path_lines_data["cold-inlet"]["velocity"].shape
+  >>> path_lines_data["velocity"]["cold-inlet"].shape
   (76152, )
-  >>> path_lines_data["cold-inlet"]["lines"][100]
+  >>> path_lines_data["lines"]["cold-inlet"][100]
   array([100, 101])
 
 Dictionary containing a map of surface IDs to the path-line data is returned.
