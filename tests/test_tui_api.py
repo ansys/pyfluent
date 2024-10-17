@@ -61,10 +61,10 @@ def test_exit_not_in_meshing_tui(new_meshing_session):
         meshing.tui.exit()
 
 
-def test_exit_not_in_solver_tui(new_solver_session):
+def test_commands_not_in_solver_tui(new_solver_session):
     solver = new_solver_session
 
-    assert "exit" not in dir(solver.tui)
-
-    with pytest.raises(AttributeError):
-        solver.tui.exit()
+    for command in ["exit", "switch_to_meshing_mode"]:
+        assert command not in dir(solver.tui)
+        with pytest.raises(AttributeError):
+            getattr(solver.tui, command)

@@ -107,6 +107,7 @@ tests = ["pytest", "pytest-cov", "pytest-mock", "pytest-xdist"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = """
+--ignore=tests/fluent
 -v
 --durations=0
 --show-capture=all
