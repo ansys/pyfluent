@@ -45,17 +45,10 @@ jobs:
     name: Documentation Style Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: Running Vale
-        uses: errata-ai/vale-action@reviewdog
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        uses: ansys/actions/doc-style@v8
         with:
-          files: doc
-          reporter: github-pr-check
-          level: error
-          filter_mode: nofilter
-          fail_on_error: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   code-style:
     name: Code style
