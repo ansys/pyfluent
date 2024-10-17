@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Running Vale
-        uses: errata-ai/vale-action@reviewdog
+        uses: ansys/actions/doc-style@v8
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
