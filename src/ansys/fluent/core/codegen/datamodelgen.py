@@ -66,20 +66,6 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 )
 
 
-def _write_meshing_utilities_stub(file_path):
-    file_path.unlink(missing_ok=True)
-    file = open(file_path, "w", encoding="utf8")
-    file.write("#\n")
-    file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-    file.write("#\n")
-    file.write("# pylint: disable=line-too-long\n\n")
-    file.write("from ansys.fluent.core.services.datamodel_se import PyMenu\n")
-    file.write("from typing import Any\n")
-    file.write("\n\n")
-    file.write(f"class Root(PyMenu):\n")
-    return file
-
-
 def _write_command_query_stub(name: str, info: Any, f: FileIO):
     signature = StringIO()
     indent = "        "
@@ -158,8 +144,7 @@ class DataModelStaticInfo:
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
         if rules == "MeshingUtilities":
-            stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
-            self.stub_file = _write_meshing_utilities_stub(stub_file)
+            self.stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -364,19 +349,31 @@ class DataModelGenerator:
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Parameter"
         if "MeshingUtilities" in f.name:
-            for k in commands:
-                _write_command_query_stub(
-                    k,
-                    info["commands"][k]["commandinfo"],
-                    self._static_info["MeshingUtilities"].stub_file,
+            stub_file = self._static_info["MeshingUtilities"].stub_file
+            stub_file.unlink(missing_ok=True)
+            with open(stub_file, "w", encoding="utf8") as file:
+                file.write("#\n")
+                file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+                file.write("#\n")
+                file.write("# pylint: disable=line-too-long\n\n")
+                file.write(
+                    "from ansys.fluent.core.services.datamodel_se import PyMenu\n"
                 )
-            for k in queries:
-                _write_command_query_stub(
-                    k,
-                    info["queries"][k]["queryinfo"],
-                    self._static_info["MeshingUtilities"].stub_file,
-                )
-            self._static_info["MeshingUtilities"].stub_file.close()
+                file.write("from typing import Any\n")
+                file.write("\n\n")
+                file.write(f"class Root(PyMenu):\n")
+                for k in commands:
+                    _write_command_query_stub(
+                        k,
+                        info["commands"][k]["commandinfo"],
+                        file,
+                    )
+                for k in queries:
+                    _write_command_query_stub(
+                        k,
+                        info["queries"][k]["queryinfo"],
+                        file,
+                    )
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
