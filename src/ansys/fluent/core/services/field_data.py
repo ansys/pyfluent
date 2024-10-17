@@ -1060,7 +1060,7 @@ class FieldData:
         data_types: List[SurfaceDataType],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
-    ) -> Dict[SurfaceDataType, Dict[int | str, np.array | List[np.array]]]:
+    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
@@ -1074,7 +1074,7 @@ class FieldData:
 
         Returns
         -------
-        Dict[SurfaceDataType, Dict[int | str, np.array | List[np.array]]]
+        Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]
              Returns a map of surface IDs (or names) to face
              vertices, connectivity data, and normal or centroid data.
         """
@@ -1100,30 +1100,22 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
-        def _get_surfaces_data(surface_data_type):
-            return {
-                surface: surface_data[surface_ids[count]][
-                    surface_data_type.value
-                ].reshape(-1, 3)
-                for count, surface in enumerate(surfaces)
-            }
-
         ret_surf_data = {}
-        for data_type in data_types:
-            if data_type == SurfaceDataType.FacesConnectivity:
-                ret_surf_data[data_type] = {
-                    surface: (
+        for count, surface in enumerate(surfaces):
+            ret_surf_data[surface] = {}
+            for data_type in data_types:
+                if data_type == SurfaceDataType.FacesConnectivity:
+                    ret_surf_data[surface][data_type] = (
                         self._get_faces_connectivity_data(
                             surface_data[surface_ids[count]][
                                 SurfaceDataType.FacesConnectivity.value
                             ]
                         )
                     )
-                    for count, surface in enumerate(surfaces)
-                }
-            else:
-                ret_surf_data[data_type] = _get_surfaces_data(data_type)
-
+                else:
+                    ret_surf_data[surface][data_type] = surface_data[
+                        surface_ids[count]
+                    ][data_type.value].reshape(-1, 3)
         return ret_surf_data
 
     @staticmethod

@@ -51,9 +51,9 @@ the ``get_surface_data`` method and specifying ``Vertices`` for ``data_types``.
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
 
   >>> vertices_data = field_data.get_surface_data(surfaces=["cold-inlet"], data_types=[SurfaceDataType.Vertices])
-  >>> vertices_data[SurfaceDataType.Vertices]["cold-inlet"].shape
+  >>> vertices_data["cold-inlet"][SurfaceDataType.Vertices].shape
   (241, 3)
-  >>> vertices_data[SurfaceDataType.Vertices]["cold-inlet"][5]
+  >>> vertices_data["cold-inlet"][SurfaceDataType.Vertices][5]
   array([-0.2       , -0.10167995,  0.00362008], dtype=float32)
 
 You can call the same method to get the corresponding surface face normals and centroids.
@@ -65,9 +65,9 @@ For ``data_types``, specifying ``FacesNormal`` and ``FacesCentroid`` respectivel
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
   >>> )
 
-  >>> faces_normal_and_centroid_data[SurfaceDataType.FacesNormal]["cold-inlet"].shape
+  >>> faces_normal_and_centroid_data["cold-inlet"][SurfaceDataType.FacesNormal].shape
   (152, 3)
-  >>> faces_normal_and_centroid_data[SurfaceDataType.FacesCentroid]["cold-inlet"][15]
+  >>> faces_normal_and_centroid_data["cold-inlet"][SurfaceDataType.FacesCentroid][15]
   array([-0.2       , -0.11418786,  0.03345207], dtype=float32)
 
 You can request face connectivity data for given ``surfaces`` by calling
@@ -78,7 +78,7 @@ the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_
   >>> faces_connectivity_data = field_data.get_surface_data(
   >>>     data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
   >>> )
-  >>> faces_connectivity_data[SurfaceDataType.FacesConnectivity]["cold-inlet"][5]
+  >>> faces_connectivity_data["cold-inlet"][SurfaceDataType.FacesConnectivity][5]
   array([12, 13, 17, 16])
 
 
