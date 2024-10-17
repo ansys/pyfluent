@@ -1598,24 +1598,35 @@ class Map(SettingsBase[DictStateType]):
 
 def _get_new_keywords(obj, *args, **kwds):
     newkwds = {}
-    argNames = []
-    argumentNames = []
+    unknown_keywords = set()
+    # Convert positional arguments to keyword arguments
     if args:
         argNames = obj.argument_names[:]
-        for i, arg in enumerate(args):
-            ccls = getattr(obj, argNames[0])
-            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(arg)
-            argNames.pop(0)
+        for arg in args:
+            argName = argNames.pop(0)
+            newkwds[argName] = arg
     if kwds:
-        argumentNames = obj.argument_names[:]
-        if argNames:
-            argumentNames = argNames
-    for k, v in kwds.items():
-        if k in argumentNames:
-            ccls = getattr(obj, k)
-            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
-        else:
-            raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        # Convert deprecated keywords through aliases
+        # We don't get arguments-aliases from static-info yet.
+        argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
+        argument_aliases = {}
+        for k, v in argument_aliases_scm.items():
+            argument_aliases[to_python_name(k)] = to_python_name(v.removeprefix("'"))
+        for k, v in kwds.items():
+            alias = argument_aliases.get(k)
+            if alias:
+                newkwds[alias] = v
+            elif k in obj.argument_names:
+                newkwds[k] = v
+            else:
+                unknown_keywords.add(k)
+    for k in unknown_keywords:
+        # Noisily ignore unknown keywords
+        warnings.warn(
+            f"Unknown keyword '{k}' for command '{obj.python_path}'. "
+            "It will be ignored.",
+            PyFluentUserWarning,
+        )
     return newkwds
 
 
@@ -1676,10 +1687,9 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
-        newkwds = _get_new_keywords(self, *args, **kwds)
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
+                self._parent.path, self.obj_name, **kwds
             )
             if prompt:
                 valid_responses = {"y": True, "yes": True, "n": False, "no": False}
@@ -1692,7 +1702,7 @@ class BaseCommand(Action):
                     else:
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
-            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
             if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
                 if (self._parent.path, self.obj_name) in [
                     ("parameters/input-parameters", "list"),
@@ -1703,15 +1713,20 @@ class BaseCommand(Action):
 
     def execute_command(self, *args, **kwds):
         """Execute command."""
+        kwds = _get_new_keywords(self, *args, **kwds)
+        scmKwds = {}
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.before_execute(
+            # Convert path-like values for possible file transfer
+            value = argument.before_execute(
                 command_name=self.python_name, value=value, kwargs=kwds
             )
-        ret = self._execute_command(*args, **kwds)
+            # Convert key-value to Scheme key-value
+            scmKwds[argument.fluent_name] = argument.to_scheme_keys(value)
+        ret = self._execute_command(*args, **scmKwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.after_execute(
+            argument.after_execute(
                 command_name=self.python_name, value=value, kwargs=kwds
             )
         if (
@@ -2128,10 +2143,15 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        if child_aliases or command_aliases or query_aliases:
+        argument_aliases = info.get("arguments-aliases") or info.get(
+            "arguments_aliases", {}
+        )
+        if child_aliases or command_aliases or query_aliases or argument_aliases:
             cls._child_aliases = {}
             # No need to differentiate in the Python implementation
-            for k, v in (child_aliases | command_aliases | query_aliases).items():
+            for k, v in (
+                child_aliases | command_aliases | query_aliases | argument_aliases
+            ).items():
                 cls._child_aliases[to_python_name(k)] = "/".join(
                     x if x == ".." else to_python_name(x) for x in v.split("/")
                 )
