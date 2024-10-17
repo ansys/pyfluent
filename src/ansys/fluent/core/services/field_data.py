@@ -1273,15 +1273,15 @@ class FieldData:
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         pathlines_data = next(iter(fields.values()))
 
-        path_lines_dict = {}
+        path_lines_dict = {"vertices": {}, "lines": {}, field_name: {}}
         for count, surface in enumerate(surfaces):
-            path_lines_dict[surface] = {
-                "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
-                    -1, 3
-                ),
-                "lines": self._get_faces_connectivity_data(
-                    pathlines_data[surface_ids[count]]["lines"]
-                ),
-                field_name: pathlines_data[surface_ids[count]][field_name],
-            }
+            path_lines_dict["vertices"][surface] = pathlines_data[surface_ids[count]][
+                "vertices"
+            ].reshape(-1, 3)
+            path_lines_dict["lines"][surface] = self._get_faces_connectivity_data(
+                pathlines_data[surface_ids[count]]["lines"]
+            )
+            path_lines_dict[field_name][surface] = pathlines_data[surface_ids[count]][
+                field_name
+            ]
         return path_lines_dict

@@ -262,14 +262,18 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert velocity_vector_data["cold-inlet"].shape == (152, 3)
 
     path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surfaces=["cold-inlet"]
+        field_name="velocity", surfaces=["cold-inlet", "hot-inlet"]
     )
 
-    assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
-    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
-    assert path_lines_data["cold-inlet"]["velocity"].shape == (76152,)
+    assert path_lines_data["vertices"]["cold-inlet"].shape == (76152, 3)
+    assert len(path_lines_data["lines"]["cold-inlet"]) == 76000
+    assert path_lines_data["velocity"]["cold-inlet"].shape == (76152,)
 
-    assert all(path_lines_data["cold-inlet"]["lines"][100] == [100, 101])
+    assert path_lines_data["vertices"]["hot-inlet"].shape == (27555, 3)
+    assert len(path_lines_data["lines"]["hot-inlet"]) == 27500
+    assert path_lines_data["velocity"]["hot-inlet"].shape == (27555,)
+
+    assert all(path_lines_data["lines"]["cold-inlet"][100] == [100, 101])
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -330,11 +334,11 @@ def test_field_data_objects_2d(disk_case_session) -> None:
         field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
-    assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
-    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
-    assert path_lines_data["velocity-inlet-2"]["velocity"].shape == (5010,)
+    assert path_lines_data["vertices"]["velocity-inlet-2"].shape == (5010, 3)
+    assert len(path_lines_data["lines"]["velocity-inlet-2"]) == 5000
+    assert path_lines_data["velocity"]["velocity-inlet-2"].shape == (5010,)
 
-    assert all(path_lines_data["velocity-inlet-2"]["lines"][100] == [100, 101])
+    assert all(path_lines_data["lines"]["velocity-inlet-2"][100] == [100, 101])
 
 
 def test_field_data_errors(new_solver_session) -> None:
