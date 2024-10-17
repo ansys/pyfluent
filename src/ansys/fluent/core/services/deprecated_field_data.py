@@ -1,6 +1,7 @@
 """Deprecated wrappers over FieldData gRPC service of Fluent."""
 
 from typing import Callable, Dict, List
+import warnings
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.services.field_data import (
@@ -19,6 +20,9 @@ from ansys.fluent.core.services.field_data import (
     override_help_text,
 )
 from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+
+DEPRECATION_MSG = "'field_data_old' is deprecated. Use 'field_data' instead."
 
 
 class BaseFieldData:
@@ -261,6 +265,7 @@ class DeprecatedFieldData:
 
     def new_transaction(self):
         """Create a new field transaction."""
+        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         return FieldTransaction(
             self._service,
             self._field_info,
@@ -309,6 +314,7 @@ class DeprecatedFieldData:
             IDs are provided as input, a dictionary containing a map of surface IDs to scalar
             field data.
         """
+        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -393,6 +399,7 @@ class DeprecatedFieldData:
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
         """
+        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -511,6 +518,7 @@ class DeprecatedFieldData:
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
         """
+        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -616,6 +624,7 @@ class DeprecatedFieldData:
             Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
         """
+        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
