@@ -216,12 +216,11 @@ def test_api_upgrade(new_solver_session, capsys):
     "<solver_session>.file.read_case" in capsys.readouterr().out
 
 
-@pytest.mark.fluent_version(">=24.2")
+# Custom aliases are not tested with 25.1 or later due to conflicts with the actual aliases
+# defined in the settings API
+@pytest.mark.fluent_version("==24.2")
 def test_deprecated_settings_with_custom_aliases(new_solver_session):
     solver = new_solver_session
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        # https://github.com/ansys/pyfluent/issues/3134
-        return
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file._setattr("_child_aliases", {"rcd": "read_case_data"})

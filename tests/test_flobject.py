@@ -1077,9 +1077,6 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        # https://github.com/ansys/pyfluent/issues/3134
-        return
     _check_vector_units(
         solver.setup.reference_frames[
             "global"
