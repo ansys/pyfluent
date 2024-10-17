@@ -332,11 +332,11 @@ class DataModelGenerator:
                 pass
         for k in parameters:
             k_type = _PY_TYPE_BY_DM_TYPE[info["parameters"][k]["type"]]
-            if k_type in ["str", "List[str]"]:
+            if k_type in ["str", "list[str]"]:
                 f.write(f"{indent}    class {k}(PyTextual):\n")
             elif k_type in ["int", "float"]:
                 f.write(f"{indent}    class {k}(PyNumerical):\n")
-            elif k_type in ["Dict", "Dict[str, Any]"]:
+            elif k_type in ["Dict", "dict[str, Any]"]:
                 f.write(f"{indent}    class {k}(PyDictionary):\n")
             else:
                 f.write(f"{indent}    class {k}(PyParameter):\n")
