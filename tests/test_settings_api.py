@@ -13,6 +13,7 @@ from ansys.fluent.core.solver.flobject import (
     to_python_name,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentUserWarning
 
 
 @pytest.mark.nightly
@@ -359,11 +360,8 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_deprecated_settings_with_settings_api_aliases(new_solver_session):
-    solver = new_solver_session
-    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read_case_data(file_name=case_path)
+def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_session):
+    solver = mixing_elbow_case_data_session
     solver.settings.results.surfaces.iso_clip["clip-1"] = {}
     assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
         "minimum": 0,
@@ -518,3 +516,27 @@ def test_commands_not_in_settings(new_solver_session):
         assert command not in dir(solver.settings)
         with pytest.raises(AttributeError):
             getattr(solver.settings, command)
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_deprecated_command_arguments(mixing_elbow_case_data_session):
+    solver = mixing_elbow_case_data_session
+    with pytest.warns() as record:
+        # all_boundary_zones is an unknown/unsupported keyword
+        solver.settings.results.report.fluxes.mass_flow(
+            all_boundary_zones=False, zones=["cold-inlet", "hot-inlet", "outlet"]
+        )
+    assert len(record) == 1
+    assert record[0].category == PyFluentUserWarning
+    assert "all_boundary_zones" in str(record[0].message)
+
+    solver.settings.results.graphics.mesh.create("m1")
+    solver.settings.results.graphics.mesh.make_a_copy(from_="m1", to="m2")
+    solver.settings.results.graphics.mesh.copy(
+        from_name="m1", new_name="m3"
+    )  # deprecated
+    assert set(solver.settings.results.graphics.mesh.get_object_names()) == {
+        "m1",
+        "m2",
+        "m3",
+    }
