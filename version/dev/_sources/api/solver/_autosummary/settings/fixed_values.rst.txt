@@ -1,0 +1,46 @@
+:orphan:
+
+.. _fixed_values:
+
+fixed_values
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.fixed_values
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =================================================
+
+Attribute                                                                                        Summary
+
+====================================================   =================================================
+:ref:`enable <enable_12>`                                                    Enable/disable fixed terms.
+
+:ref:`cylindrical_fixed_var <cylindrical_fixed_var>`       Local Coordinate System for Fixed Velocities.
+
+:ref:`variables <variables>`                                          List of variables for fixed terms.
+
+====================================================   =================================================
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`fluid_1_child <fluid_1_child>`         'child_object_type' of fluid.
+
+:ref:`phase_child <phase_child>`             'child_object_type' of phase.
+
+:ref:`solid_2_child <solid_2_child>`         'child_object_type' of solid.
+
+:ref:`phase_1_child <phase_1_child>`         'child_object_type' of phase.
+
+:ref:`phase_27_child <phase_27_child>`       'child_object_type' of phase.
+
+:ref:`phase_52_child <phase_52_child>`       'child_object_type' of phase.
+
+======================================   =================================
+

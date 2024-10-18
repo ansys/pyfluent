@@ -1,0 +1,23 @@
+:orphan:
+
+.. _direction_specification:
+
+direction_specification
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.direction_specification
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =======================
+
+Parent                                                                 Summary
+
+====================================================   =======================
+:ref:`momentum_3 <momentum_3>`                             Help not available.
+
+:ref:`recirculation_inlet_1 <recirculation_inlet_1>`       Help not available.
+
+====================================================   =======================
+

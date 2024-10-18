@@ -1,0 +1,23 @@
+:orphan:
+
+.. _tot_voltage:
+
+tot_voltage
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.tot_voltage
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================
+
+Parent                                    Summary
+
+============================   ==================
+:ref:`options_4 <options_4>`       Model options.
+
+:ref:`options_6 <options_6>`       Model options.
+
+============================   ==================
+

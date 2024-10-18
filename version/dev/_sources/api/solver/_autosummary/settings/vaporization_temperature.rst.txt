@@ -1,0 +1,48 @@
+:orphan:
+
+.. _vaporization_temperature:
+
+vaporization_temperature
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.vaporization_temperature
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ====================================================
+
+Attribute                                                                                           Summary
+
+====================================================   ====================================================
+:ref:`option <option_12>`                                  Select method for calculating material property.
+
+:ref:`value <value_11>`                                                Specify the constant property value.
+
+:ref:`user_defined_function <user_defined_function>`                         Specify user defined function.
+
+====================================================   ====================================================
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`fluid_child <fluid_child>`                                                 'child_object_type' of fluid.
+
+:ref:`volumetric_species_child <volumetric_species_child>`          'child_object_type' of volumetric_species.
+
+:ref:`material_2_child <material_2_child>`                                    'child_object_type' of material.
+
+:ref:`droplet_particle_child <droplet_particle_child>`                'child_object_type' of droplet_particle.
+
+:ref:`combusting_particle_child <combusting_particle_child>`       'child_object_type' of combusting_particle.
+
+:ref:`particle_species_child <particle_species_child>`                'child_object_type' of particle_species.
+
+:ref:`material_3_child <material_3_child>`                                    'child_object_type' of material.
+
+============================================================   ===============================================
+

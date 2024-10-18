@@ -1,0 +1,23 @@
+:orphan:
+
+.. _solar_fluxes:
+
+solar_fluxes
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.solar_fluxes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===================================================
+
+Parent                                                                             Summary
+
+====================================   ===================================================
+:ref:`porous_jump_1 <porous_jump_1>`                                   Help not available.
+
+:ref:`radiation_6 <radiation_6>`           Radiation settings for this boundary-condition.
+
+====================================   ===================================================
+

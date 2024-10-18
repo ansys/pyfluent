@@ -1,0 +1,40 @@
+:orphan:
+
+.. _zonal_models:
+
+zonal_models
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.zonal_models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===============================
+
+Attribute                                                          Summary
+
+========================================   ===============================
+:ref:`zonal_models <zonal_models_1>`                         Zonal Models.
+
+:ref:`zonal_flow <zonal_flow>`                 Pressure-Velocity Coupling.
+
+:ref:`zonal_flow_spec <zonal_flow_spec>`                           Scheme.
+
+========================================   ===============================
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`fluid_1_child <fluid_1_child>`         'child_object_type' of fluid.
+
+:ref:`phase_child <phase_child>`             'child_object_type' of phase.
+
+:ref:`phase_27_child <phase_27_child>`       'child_object_type' of phase.
+
+======================================   =================================
+

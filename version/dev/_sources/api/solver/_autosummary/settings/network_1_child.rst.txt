@@ -1,0 +1,38 @@
+:orphan:
+
+.. _network_1_child:
+
+network_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.network_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =============================================
+
+Attribute                                                            Summary
+
+============================   =============================================
+:ref:`name <name>`                                       Name of the object.
+
+:ref:`type <type_5>`                              Set physics boundary type.
+
+:ref:`location <location_2>`                            Input location name.
+
+:ref:`phase <phase_37>`            Select domain name to define settings on.
+
+============================   =============================================
+
+.. rubric:: Included in:
+
+============================   =======================
+
+Parent                                         Summary
+
+============================   =======================
+:ref:`network_1 <network_1>`       Select thread-type.
+
+============================   =======================
+

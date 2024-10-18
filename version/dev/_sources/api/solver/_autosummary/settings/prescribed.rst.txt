@@ -1,0 +1,35 @@
+:orphan:
+
+.. _prescribed:
+
+prescribed
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.prescribed
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =========================================
+
+Parent                                                         Summary
+
+==========================   =========================================
+:ref:`x_9 <x_9>`                            Prescribed X displacement.
+
+:ref:`y_9 <y_9>`                            Prescribed Y displacement.
+
+:ref:`z_9 <z_9>`                            Prescribed Z displacement.
+
+:ref:`angle_3 <angle_3>`                    Prescribed rotation angle.
+
+:ref:`factor_3 <factor_3>`                  Prescribed scaling factor.
+
+:ref:`axis_1_2 <axis_1_2>`       Prescribed scaling factor for axis 1.
+
+:ref:`axis_2_2 <axis_2_2>`       Prescribed scaling factor for axis 2.
+
+:ref:`axis_3_1 <axis_3_1>`       Prescribed scaling factor for axis 3.
+
+==========================   =========================================
+

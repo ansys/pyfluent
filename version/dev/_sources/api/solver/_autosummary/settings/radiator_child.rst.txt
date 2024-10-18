@@ -1,0 +1,38 @@
+:orphan:
+
+.. _radiator_child:
+
+radiator_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.radiator_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================
+
+Attribute                                      Summary
+
+============================   =======================
+:ref:`name <name>`                 Name of the object.
+
+:ref:`phase <phase_20>`                 'phase' child.
+
+:ref:`radiator <radiator_1>`       Help not available.
+
+:ref:`geometry <geometry_5>`       Help not available.
+
+============================   =======================
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`radiator <radiator>`       Settings for boundary-condition object.
+
+==========================   ===========================================
+
