@@ -84,10 +84,29 @@ class Container:
             if cls.__class__.__name__ in (
                 "PyLocalNamedObjectMetaAbstract",
             ) and not inspect.isabstract(cls):
+                cont = PyLocalContainer(self, cls, post_api_helper, cls.PLURAL)
+
+                def _add_create(py_cont):
+                    def _create(**kwargs):
+                        new_object = py_cont.__getitem__(
+                            py_cont._get_unique_chid_name()
+                        )
+                        unexpected_args = list(set(kwargs) - set(new_object()))
+                        if unexpected_args:
+                            raise TypeError(
+                                f"create() got an unexpected keyword argument '{unexpected_args[0]}'."
+                            )
+                        for key, value in kwargs.items():
+                            new_object.__setattr__(key, value)
+                        return new_object
+
+                    return _create
+
+                setattr(cont, "create", _add_create(cont))
                 setattr(
                     obj,
                     cls.PLURAL,
-                    PyLocalContainer(self, cls, post_api_helper, cls.PLURAL),
+                    cont,
                 )
 
 
