@@ -45,6 +45,7 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # the geometry file.
 
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system_settings.png'
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -730,10 +731,15 @@ graphics.picture.save_picture(file_name="contour-velocity.png")
 
 solver.results.scene["scene-1"] = {}
 scene1 = solver.results.scene["scene-1"]
+
+scene1.graphics_objects.add(name="contour-velocity")
+scene1.graphics_objects["contour-velocity"] = {}
+
+scene1.graphics_objects.add(name="mesh-1")
 scene1.graphics_objects["mesh-1"] = {
     "transparency": 90,
 }
-scene1.graphics_objects["contour-velocity"] = {}
+
 scene1.display()
 
 graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
