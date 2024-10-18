@@ -126,9 +126,10 @@ SUPPORT_SOLVER_INTERRUPT = False
 # Whether to start watchdog
 START_WATCHDOG = None
 
-# Whether to read server info from stdout of the Fluent process.
-# When set to False, the server info will be read from file.
-READ_SERVERINFO_FROM_STDOUT = True
+# Whether launch_fluent() should capture stdout from Fluent
+# When set to True, server info will be read from stdout
+# When set to False, server info will be read from file
+LAUNCH_FLUENT_CAPTURE_STDOUT = True  # Keep it False for now
 
 # Whether to skip health check
 CHECK_HEALTH = True

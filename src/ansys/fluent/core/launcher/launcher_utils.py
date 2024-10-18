@@ -22,12 +22,12 @@ def is_windows():
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
-    from ansys.fluent.core import INFER_REMOTING_IP, READ_SERVERINFO_FROM_STDOUT
+    from ansys.fluent.core import INFER_REMOTING_IP, LAUNCH_FLUENT_CAPTURE_STDOUT
 
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     kwargs: Dict[str, Any] = {}
-    if is_slurm:
+    if LAUNCH_FLUENT_CAPTURE_STDOUT or is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
     if is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
@@ -36,7 +36,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
-    if READ_SERVERINFO_FROM_STDOUT:
+    if LAUNCH_FLUENT_CAPTURE_STDOUT:
         # Disabling password authentication as password cannot be written to stdout
         fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 

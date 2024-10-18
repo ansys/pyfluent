@@ -19,7 +19,6 @@ from pathlib import Path
 import subprocess
 from typing import Any, Dict
 
-from ansys.fluent.core import READ_SERVERINFO_FROM_STDOUT
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
@@ -180,6 +179,8 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        from ansys.fluent.core import LAUNCH_FLUENT_CAPTURE_STDOUT
+
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
         if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
@@ -217,7 +218,7 @@ class StandaloneLauncher:
             self.argvals["topy"], self.argvals["journal_file_names"]
         )
 
-        if is_windows() and not READ_SERVERINFO_FROM_STDOUT:
+        if is_windows() and not LAUNCH_FLUENT_CAPTURE_STDOUT:
             # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
             self._launch_cmd = 'start "" ' + self._launch_string
         else:
@@ -228,6 +229,8 @@ class StandaloneLauncher:
                 self._launch_cmd = self._launch_string
 
     def __call__(self):
+        from ansys.fluent.core import LAUNCH_FLUENT_CAPTURE_STDOUT
+
         if self.argvals["dry_run"]:
             print(f"Fluent launch string: {self._launch_string}")
             return
@@ -237,7 +240,7 @@ class StandaloneLauncher:
             proc = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
-                if READ_SERVERINFO_FROM_STDOUT:
+                if LAUNCH_FLUENT_CAPTURE_STDOUT:
                     ip, port = _get_connection_info(proc)
                 else:
                     _await_fluent_launch(
@@ -254,7 +257,7 @@ class StandaloneLauncher:
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
                     proc = subprocess.Popen(launch_cmd, **self._kwargs)
-                    if READ_SERVERINFO_FROM_STDOUT:
+                    if LAUNCH_FLUENT_CAPTURE_STDOUT:
                         ip, port = _get_connection_info(proc)
                     else:
                         _await_fluent_launch(
@@ -265,11 +268,11 @@ class StandaloneLauncher:
                 else:
                     raise ex
 
-            if READ_SERVERINFO_FROM_STDOUT:
+            if LAUNCH_FLUENT_CAPTURE_STDOUT:
                 fluent_connection = FluentConnection(
                     ip=ip,
                     port=port,
-                    password=password,
+                    password=None,
                     file_transfer_service=self.file_transfer_service,
                     remote_instance=False,
                 )
