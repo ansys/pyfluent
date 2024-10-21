@@ -207,6 +207,11 @@ class SurfaceDefn(GraphicsDefn):
 
     PLURAL = "Surfaces"
 
+    @property
+    def name(self) -> str:
+        """Return name of the created surface."""
+        return self._name
+
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges for surface."""
 
