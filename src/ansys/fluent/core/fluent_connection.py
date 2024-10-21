@@ -19,6 +19,7 @@ import grpc
 import psutil
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.error_handler import _check_license
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -382,7 +383,10 @@ class FluentConnection:
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
         if pyfluent.CHECK_HEALTH:
-            self.health_check.check_health()
+            try:
+                self.health_check.check_health()
+            except RuntimeError:
+                _check_license()
 
         self._slurm_job_id = slurm_job_id
 
