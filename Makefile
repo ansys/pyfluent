@@ -58,6 +58,11 @@ unittest-dev-251:
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
 	@poetry run python -m pytest --fluent-version=25.1 $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.1 $(PYTESTRERUN)
 
+unittest-dev-252:
+	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@poetry run python -m pytest --fluent-version=25.2 $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.2 $(PYTESTRERUN)
+
 unittest-all-222:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
@@ -122,6 +127,21 @@ unittest-all-251-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
 	@poetry run python -m pytest --nightly --fluent-version=25.1 -m "not codegen_required" $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=25.1 -m "not codegen_required" $(PYTESTRERUN)
+
+unittest-all-252:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@poetry run python -m pytest --nightly --fluent-version=25.2 $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=25.2 $(PYTESTRERUN)
+
+unittest-solvermode-252:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@poetry run python -m pytest --fluent-version=25.2 --solvermode $(PYTESTEXTRA) || poetry run python -m pytest --fluent-version=25.2 --solvermode $(PYTESTRERUN)
+
+unittest-all-252-no-codegen:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@poetry run python -m pytest --nightly --fluent-version=25.2 -m "not codegen_required" $(PYTESTEXTRA) || poetry run python -m pytest --nightly --fluent-version=25.2 -m "not codegen_required" $(PYTESTRERUN)
 
 api-codegen:
 	@echo "Running API codegen"
