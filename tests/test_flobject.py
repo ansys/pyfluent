@@ -271,6 +271,11 @@ class Command(Setting):
     # arguments = None
     # cb = None
 
+    def __init__(self, parent):
+        self.attrs = super().attrs.copy()
+        self.attrs["arguments-aliases"] = lambda self: {}
+        super().__init__(parent)
+
     def __call__(self, **kwds):
         args = []
         for k, v in self.arguments.items():
@@ -1077,9 +1082,6 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        # https://github.com/ansys/pyfluent/issues/3134
-        return
     _check_vector_units(
         solver.setup.reference_frames[
             "global"

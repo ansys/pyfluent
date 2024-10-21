@@ -1,6 +1,6 @@
 """Module to generate Fluent datamodel API classes."""
 
-from io import FileIO
+from io import FileIO, StringIO
 import os
 from pathlib import Path
 import shutil
@@ -21,11 +21,11 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 _PY_TYPE_BY_DM_TYPE = {
     **dict.fromkeys(["Logical", "Bool"], "bool"),
-    **dict.fromkeys(["Logical List", "ListBool"], "List[bool]"),
+    **dict.fromkeys(["Logical List", "ListBool"], "list[bool]"),
     "String": "str",
-    **dict.fromkeys(["String List", "ListString"], "List[str]"),
+    **dict.fromkeys(["String List", "ListString"], "list[str]"),
     **dict.fromkeys(["Integer", "Int"], "int"),
-    **dict.fromkeys(["Integer List", "ListInt"], "List[int]"),
+    **dict.fromkeys(["Integer List", "ListInt"], "list[int]"),
     "Real": "float",
     **dict.fromkeys(
         [
@@ -36,9 +36,9 @@ _PY_TYPE_BY_DM_TYPE = {
             "Real Triplet List",
             "ListRealTriplet",
         ],
-        "List[float]",
+        "list[float]",
     ),
-    **dict.fromkeys(["Dict", "ModelObject"], "Dict[str, Any]"),
+    **dict.fromkeys(["Dict", "ModelObject"], "dict[str, Any]"),
     "None": "None",
 }
 
@@ -64,6 +64,19 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
         "datamodel",
     )
 )
+
+
+def _write_command_query_stub(name: str, info: Any, f: FileIO):
+    signature = StringIO()
+    indent = "        "
+    signature.write(f"(\n{indent}self,\n")
+    if info.get("args"):
+        for arg in info.get("args"):
+            signature.write(
+                f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
+            )
+    signature.write(f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...')
+    f.write(f"\n    def {name}{signature.getvalue()}\n")
 
 
 def _build_singleton_docstring(name: str):
@@ -130,6 +143,8 @@ class DataModelStaticInfo:
         datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        if rules == "MeshingUtilities":
+            self.stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -316,12 +331,12 @@ class DataModelGenerator:
                 # print("\t\texcluded", k)
                 pass
         for k in parameters:
-            k_type = _PY_TYPE_BY_DM_TYPE[info["parameters"][k]["type"]]
-            if k_type in ["str", "List[str]"]:
+            k_type = info["parameters"][k]["type"]
+            if k_type in {"String", "String List", "ListString"}:
                 f.write(f"{indent}    class {k}(PyTextual):\n")
-            elif k_type in ["int", "float"]:
+            elif k_type in {"Integer", "Int", "Real"}:
                 f.write(f"{indent}    class {k}(PyNumerical):\n")
-            elif k_type in ["Dict", "Dict[str, Any]"]:
+            elif k_type in {"Dict", "ModelObject"}:
                 f.write(f"{indent}    class {k}(PyDictionary):\n")
             else:
                 f.write(f"{indent}    class {k}(PyParameter):\n")
@@ -333,6 +348,32 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Parameter"
+        if "MeshingUtilities" in f.name:
+            stub_file = self._static_info["MeshingUtilities"].stub_file
+            stub_file.unlink(missing_ok=True)
+            with open(stub_file, "w", encoding="utf8") as file:
+                file.write("#\n")
+                file.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+                file.write("#\n")
+                file.write("# pylint: disable=line-too-long\n\n")
+                file.write(
+                    "from ansys.fluent.core.services.datamodel_se import PyMenu\n"
+                )
+                file.write("from typing import Any\n")
+                file.write("\n\n")
+                file.write(f"class Root(PyMenu):\n")
+                for k in commands:
+                    _write_command_query_stub(
+                        k,
+                        info["commands"][k]["commandinfo"],
+                        file,
+                    )
+                for k in queries:
+                    _write_command_query_stub(
+                        k,
+                        info["queries"][k]["queryinfo"],
+                        file,
+                    )
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')

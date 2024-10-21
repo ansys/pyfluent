@@ -199,11 +199,12 @@ class Base:
             self._setattr("_name", name)
         self._setattr("_child_alias_objs", {})
 
-    def _root(self, obj):
-        if obj._parent is None:
-            return obj
+    @property
+    def _root(self):
+        if self._parent is None:
+            return self
         else:
-            return self._root(obj._parent)
+            return self._parent._root
 
     def set_flproxy(self, flproxy):
         """Set flproxy object."""
@@ -1595,26 +1596,37 @@ class Map(SettingsBase[DictStateType]):
     """A ``Map`` object representing key-value settings."""
 
 
-def _get_new_keywords(obj, args, kwds):
+def _get_new_keywords(obj, *args, **kwds):
     newkwds = {}
-    argNames = []
-    argumentNames = []
+    unknown_keywords = set()
+    # Convert positional arguments to keyword arguments
     if args:
         argNames = obj.argument_names[:]
-        for i, arg in enumerate(args):
-            ccls = getattr(obj, argNames[0])
-            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(arg)
-            argNames.pop(0)
+        for arg in args:
+            argName = argNames.pop(0)
+            newkwds[argName] = arg
     if kwds:
-        argumentNames = obj.argument_names[:]
-        if argNames:
-            argumentNames = argNames
-    for k, v in kwds.items():
-        if k in argumentNames:
-            ccls = getattr(obj, k)
-            newkwds[ccls.fluent_name] = ccls.to_scheme_keys(v)
-        else:
-            raise RuntimeError("Argument '" + str(k) + "' is invalid")
+        # Convert deprecated keywords through aliases
+        # We don't get arguments-aliases from static-info yet.
+        argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
+        argument_aliases = {}
+        for k, v in argument_aliases_scm.items():
+            argument_aliases[to_python_name(k)] = to_python_name(v.removeprefix("'"))
+        for k, v in kwds.items():
+            alias = argument_aliases.get(k)
+            if alias:
+                newkwds[alias] = v
+            elif k in obj.argument_names:
+                newkwds[k] = v
+            else:
+                unknown_keywords.add(k)
+    for k in unknown_keywords:
+        # Noisily ignore unknown keywords
+        warnings.warn(
+            f"Unknown keyword '{k}' for command '{obj.python_path}'. "
+            "It will be ignored.",
+            PyFluentUserWarning,
+        )
     return newkwds
 
 
@@ -1673,17 +1685,48 @@ class Action(Base):
 class BaseCommand(Action):
     """Executes command."""
 
+    def _execute_command(self, *args, **kwds):
+        """Execute a command with the specified positional and keyword arguments."""
+        if self.flproxy.is_interactive_mode():
+            prompt = self.flproxy.get_command_confirmation_prompt(
+                self._parent.path, self.obj_name, **kwds
+            )
+            if prompt:
+                valid_responses = {"y": True, "yes": True, "n": False, "no": False}
+                while True:
+                    response = input(prompt + ": y[es]/n[o] ").strip().lower()
+                    if response in valid_responses:
+                        if not valid_responses[response]:
+                            return
+                        break
+                    else:
+                        print("Please enter 'y[es]' or 'n[o]'.")
+        with self._while_executing_command():
+            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
+            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
+                if (self._parent.path, self.obj_name) in [
+                    ("parameters/input-parameters", "list"),
+                    ("parameters/output-parameters", "list"),
+                ]:
+                    ret = _fix_parameter_list_return(ret)
+            return ret
+
     def execute_command(self, *args, **kwds):
         """Execute command."""
+        kwds = _get_new_keywords(self, *args, **kwds)
+        scmKwds = {}
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.before_execute(
+            # Convert path-like values for possible file transfer
+            value = argument.before_execute(
                 command_name=self.python_name, value=value, kwargs=kwds
             )
-        ret = self._execute_command(*args, **kwds)
+            # Convert key-value to Scheme key-value
+            scmKwds[argument.fluent_name] = argument.to_scheme_keys(value)
+        ret = self._execute_command(*args, **scmKwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
-            kwds[arg] = argument.after_execute(
+            argument.after_execute(
                 command_name=self.python_name, value=value, kwargs=kwds
             )
         if (
@@ -1700,7 +1743,11 @@ class BaseCommand(Action):
             return ret
 
     def __call__(self, *args, **kwds):
-        return self.execute_command(*args, **kwds)
+        try:
+            return self.execute_command(*args, **kwds)
+        except KeyboardInterrupt:
+            self._root._on_interrupt(self)
+            raise KeyboardInterrupt
 
 
 # TODO: Remove this after paremater list() method is fixed from Fluent side
@@ -1727,69 +1774,24 @@ _fix_parameter_list_return.scheme_eval = None
 class Command(BaseCommand):
     """Command object."""
 
-    def _execute_command(self, **kwds):
-        """Execute a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, [], kwds)
-        if self.flproxy.is_interactive_mode():
-            prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
-            )
-            if prompt:
-                while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
-                        break
-                    else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
-        with self._while_executing_command():
-            ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
-            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
-                if (self._parent.path, self.obj_name) in [
-                    ("parameters/input-parameters", "list"),
-                    ("parameters/output-parameters", "list"),
-                ]:
-                    ret = _fix_parameter_list_return(ret)
-            return ret
-
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
-            self._root(self)._on_interrupt(self)
+            self._root._on_interrupt(self)
             raise KeyboardInterrupt
 
 
 class CommandWithPositionalArgs(BaseCommand):
-    """Command Object."""
-
-    def _execute_command(self, *args, **kwds):
-        """Execute a command with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, args, kwds)
-        if self.flproxy.is_interactive_mode():
-            prompt = self.flproxy.get_command_confirmation_prompt(
-                self._parent.path, self.obj_name, **newkwds
-            )
-            if prompt:
-                while True:
-                    response = input(prompt + ": y[es]/n[o] ")
-                    if response in ["y", "Y", "n", "N", "yes", "no"]:
-                        break
-                    else:
-                        print("Enter y[es]/n[o]")
-                if response in ["n", "N", "no"]:
-                    return
-        with self._while_executing_command():
-            return self.flproxy.execute_cmd(self._parent.path, self.obj_name, **newkwds)
+    """Command Object supporting positional arguments."""
 
     def __call__(self, *args, **kwds):
-        """Call a command with the specified keyword arguments."""
+        """Call a command with the specified positional and keyword arguments."""
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
-            self._root(self)._on_interrupt(self)
+            self._root._on_interrupt(self)
             raise KeyboardInterrupt
 
 
@@ -1798,7 +1800,7 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, [], kwds)
+        newkwds = _get_new_keywords(self, **kwds)
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
 
 
@@ -2102,6 +2104,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         commands = info.get("commands")
         if commands:
             commands.pop("exit", None)
+            commands.pop("switch-to-meshing-mode", None)
         if commands and not user_creatable:
             commands.pop("create", None)
         if commands:
@@ -2124,7 +2127,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls.__doc__ = doc
 
         if version < "242":
-            cls.return_type = object()
+            cls.return_type = "object"
         else:
             return_type = info.get("return-type") or info.get("return_type")
             if return_type:
@@ -2140,10 +2143,15 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        if child_aliases or command_aliases or query_aliases:
+        argument_aliases = info.get("arguments-aliases") or info.get(
+            "arguments_aliases", {}
+        )
+        if child_aliases or command_aliases or query_aliases or argument_aliases:
             cls._child_aliases = {}
             # No need to differentiate in the Python implementation
-            for k, v in (child_aliases | command_aliases | query_aliases).items():
+            for k, v in (
+                child_aliases | command_aliases | query_aliases | argument_aliases
+            ).items():
                 cls._child_aliases[to_python_name(k)] = "/".join(
                     x if x == ".." else to_python_name(x) for x in v.split("/")
                 )
@@ -2198,16 +2206,22 @@ def get_root(
 
     obj_info = flproxy.get_static_info()
     try:
-        if CODEGEN_ZIP_SETTINGS:
-            importer = zipimporter(
-                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-            )
-            settings = importer.load_module("settings")
-        else:
+        if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
             settings = utils.load_module(
                 f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
             )
+        else:
+            if CODEGEN_ZIP_SETTINGS:
+                importer = zipimporter(
+                    str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+                )
+                settings = importer.load_module("settings")
+            else:
+                settings = utils.load_module(
+                    f"settings_{version}",
+                    CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+                )
 
         if settings.SHASH != _gethash(obj_info):
             settings_logger.warning(

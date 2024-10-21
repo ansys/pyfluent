@@ -251,8 +251,6 @@ class Reduction:
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
 
-    docstring = None
-
     def _validate_str_location(self, loc: str):
         if all(
             loc not in names()

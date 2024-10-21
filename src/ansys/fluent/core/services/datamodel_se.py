@@ -129,6 +129,28 @@ class Attribute(Enum):
     DEPRECATED_VERSION: str = "deprecatedVersion"
 
 
+class _FilterDatamodelNames:
+    def __init__(self, service):
+        self._filter_fn = getattr(service, "is_in_datamodel", None)
+
+    def __call__(self, parent, names):
+        if self._filter_fn is None:
+            return names
+
+        filtered_children = []
+
+        def validate_name(name):
+            obj = getattr(parent, name)
+            # might need to make this more flexible (e.g., enhanced workflow types)
+            is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
+            if is_in_datamodel:
+                return self._filter_fn(parent.rules, convert_path_to_se_path(obj.path))
+            else:
+                return True
+
+        return [name for name in names if validate_name(name)]
+
+
 class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
@@ -572,11 +594,15 @@ class DatamodelService(StreamingService):
             )
 
     def update_dict(
-        self, rules: str, path: str, dict_state: dict[str, _TValue]
+        self,
+        rules: str,
+        path: str,
+        dict_state: dict[str, _TValue],
+        recursive=False,
     ) -> None:
         """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
-            rules=rules, path=path, wait=True
+            rules=rules, path=path, wait=True, recursive=recursive
         )
         _convert_value_to_variant(dict_state, request.dicttomerge)
         response = self._impl.update_dict(request)
@@ -1017,8 +1043,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    docstring = None
-
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
@@ -1064,11 +1088,16 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        if self.get_attr(Attribute.IS_READ_ONLY.value):
-            dir_list = dir_list - {"setState", "set_state"}
 
-        return sorted(dir_list)
+        all_children = list(self.__dict__) + dir(type(self))
+
+        filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
+
+        dir_set = set(filtered_children)
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_set = dir_set - {"setState", "set_state"}
+
+        return sorted(dir_set)
 
 
 class PyMenu(PyStateContainer):
@@ -1394,7 +1423,7 @@ class PyDictionary(PyParameter):
         to dict.update semantics (same as update_dict(dict_state))]
     """
 
-    def update_dict(self, dict_state: dict[str, Any]) -> None:
+    def update_dict(self, dict_state: dict[str, Any], recursive=False) -> None:
         """Update the state of the current object if the current object is a Dict in the
         data model, else throws RuntimeError (currently not showing up in Python).
         Update is executed according to dict.update semantics.
@@ -1404,6 +1433,9 @@ class PyDictionary(PyParameter):
         dict_state : dict[str, Any]
             Incoming dict state
 
+        recursive: bool
+            Flag to update the nested dictionary structure.
+
         Raises
         ------
         ReadOnlyObjectError
@@ -1412,7 +1444,7 @@ class PyDictionary(PyParameter):
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
         self.service.update_dict(
-            self.rules, convert_path_to_se_path(self.path), dict_state
+            self.rules, convert_path_to_se_path(self.path), dict_state, recursive
         )
 
     updateDict = update_dict
@@ -1626,6 +1658,8 @@ class PyNamedObjectContainer:
 
         return dict(sorted(returned_state.items()))
 
+    getState = __call__ = get_state
+
 
 class PyQuery:
     """Query class using the StateEngine-based DatamodelService as the backend. Use this
@@ -1736,7 +1770,9 @@ class PyCommand:
     def before_execute(self, value):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+            return self._do_before_execute(value)
+        else:
+            return value
 
     def after_execute(self, value):
         """Executes after command execution."""
@@ -1753,8 +1789,7 @@ class PyCommand:
         """
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
-                self.before_execute(value)
-                kwds[f"{arg}"] = os.path.basename(value)
+                kwds[arg] = self.before_execute(value)
         command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
@@ -1822,15 +1857,22 @@ class PyCommand:
 class _InputFile:
     def _do_before_execute(self, value):
         try:
-            self.service.file_transfer_service.upload(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            base_names = []
+            for file_name in file_names:
+                self.service.file_transfer_service.upload(file_name=file_name)
+                base_names.append(os.path.basename(file_name))
+            return base_names if isinstance(value, list) else base_names[0]
         except AttributeError:
-            pass
+            return value
 
 
 class _OutputFile:
     def _do_after_execute(self, value):
         try:
-            self.service.file_transfer_service.download(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            for file_name in file_names:
+                self.service.file_transfer_service.download(file_name=file_name)
         except AttributeError:
             pass
 

@@ -1,23 +1,31 @@
 import pytest
 
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 
 @pytest.mark.fluent_version("latest")
-def test_creatable(static_mixer_settings_session) -> None:
-    setup = static_mixer_settings_session.setup
+def test_creatable(mixing_elbow_case_data_session) -> None:
+    solver = mixing_elbow_case_data_session
+    fluent_version = solver.get_fluent_version()
     has_not = (
-        setup.boundary_conditions.velocity_inlet,
-        setup.cell_zone_conditions.fluid,
+        solver.setup.boundary_conditions.velocity_inlet,
+        solver.setup.cell_zone_conditions.fluid,
     )
-    results = static_mixer_settings_session.results
     has = (
-        results.graphics.contour,
-        results.graphics.vector,
+        solver.results.graphics.contour,
+        solver.results.graphics.vector,
     )
 
     for obj in has_not:
-        assert not hasattr(obj, "create")
-        assert "create" not in dir(obj)
+        # creatability condition is dynamic since 25.1
+        if fluent_version >= FluentVersion.v251:
+            assert not getattr(obj, "create").is_active()
+        else:
+            assert not hasattr(obj, "create")
+            assert "create" not in dir(obj)
 
     for obj in has:
         assert hasattr(obj, "create")
         assert "create" in dir(obj)
+        if fluent_version >= FluentVersion.v251:
+            assert getattr(obj, "create").is_active()

@@ -105,10 +105,10 @@ def test_parametric_workflow():
     dp_names = set([*study1.design_points.keys()])
     if solver_session.get_fluent_version() < FluentVersion.v251:
         study1.design_points.create_1()
+        dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
+        dp1 = study1.design_points[dp1_name]
     else:
-        study1.design_points.create()
-    dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
-    dp1 = study1.design_points[dp1_name]
+        dp1 = study1.design_points.create()
     dp1.input_parameters["inlet1_temp"] = 500
     dp1.input_parameters["inlet1_vel"] = 1
     dp1.input_parameters["inlet2_vel"] = 1
@@ -145,7 +145,7 @@ def test_parametric_workflow():
     solver_session.parametric_studies.export_design_table(filepath=write_design_table)
     assert design_point_table.exists()
 
-    study1.design_points.delete_design_points(design_points=[dp1_name])
+    study1.design_points.delete_design_points(design_points=[dp1.obj_name])
     assert len(study1.design_points) == 2
     study_names = set([*solver_session.parametric_studies.keys()])
     solver_session.parametric_studies.duplicate()

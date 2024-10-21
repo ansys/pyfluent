@@ -597,18 +597,26 @@ def test_updating_state_in_new_meshing_workflow(new_meshing_session):
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
     watertight = new_meshing_session.watertight()
-    watertight.import_geometry.file_name.set_state(import_file_name)
     assert watertight.import_geometry.length_unit() == "mm"
-    watertight.import_geometry.length_unit = "in"
-    assert watertight.import_geometry.length_unit.get_state() == "in"
     assert watertight.import_geometry.cad_import_options.feature_angle() == 40.0
-    watertight.import_geometry.cad_import_options.feature_angle.set_state(25.0)
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
     assert (
         watertight.import_geometry.cad_import_options.one_zone_per.allowed_values()
         == ["body", "face", "object"]
     )
     assert watertight.import_geometry.cad_import_options.one_zone_per() == "body"
+    watertight.import_geometry.arguments = {
+        "file_name": import_file_name,
+        "length_unit": "in",
+        "cad_import_options": {"feature_angle": 35, "one_zone_per": "object"},
+    }
+    assert watertight.import_geometry.cad_import_options.feature_angle() == 35.0
+    assert (
+        watertight.import_geometry.cad_import_options.one_zone_per.get_state()
+        == "object"
+    )
+    assert watertight.import_geometry.length_unit.get_state() == "in"
+    watertight.import_geometry.cad_import_options.feature_angle = 25.0
+    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
     watertight.import_geometry.cad_import_options.one_zone_per = "face"
     assert watertight.import_geometry.cad_import_options.one_zone_per() == "face"
     watertight.import_geometry()
@@ -1612,7 +1620,7 @@ def test_mark_as_updated(new_meshing_session):
     )
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 @pytest.mark.codegen_required
 def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing = new_meshing_session
@@ -1620,6 +1628,7 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
 
     import_geom = watertight.import_geometry
     assert import_geom.length_unit.default_value() == "mm"
+    assert "allowed_values" in dir(import_geom.length_unit)
     assert import_geom.arguments.length_unit.allowed_values() == [
         "m",
         "cm",
@@ -1751,3 +1760,42 @@ def test_return_state_changes(new_meshing_session):
     wt.describe_geometry()
 
     assert wt.add_multizone_controls
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_recursive_update_dict(new_meshing_session):
+    meshing = new_meshing_session
+    fault_tolerant = meshing.fault_tolerant()
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
+
+    import_cad = fault_tolerant.import_cad_and_part_management
+    import_cad.feature_angle = 35
+    import_cad.fmd_file_name = import_file_name
+    import_cad()
+
+    descr_geom = fault_tolerant.describe_geometry_and_flow
+    descr_geom.arguments()
+    descr_geom.flow_type = "Internal flow through the object"
+    descr_geom.add_enclosure = "Yes"
+    descr_geom.close_caps = "Yes"
+    descr_geom.local_refinement_regions = "Yes"
+    descr_geom.describe_geometry_and_flow_options.moving_objects = "Yes"
+    descr_geom.describe_geometry_and_flow_options.advanced_options = True
+    descr_geom.describe_geometry_and_flow_options.porous_regions = "Yes"
+    descr_geom.describe_geometry_and_flow_options.enable_overset = "Yes"
+    descr_geom.describe_geometry_and_flow_options.extract_edge_features = "Yes"
+    descr_geom.describe_geometry_and_flow_options.zero_thickness = "Yes"
+    descr_geom.arguments()
+    assert meshing.workflow.TaskObject["Describe Geometry and Flow"].Arguments()[
+        "DescribeGeometryAndFlowOptions"
+    ] == {
+        "AdvancedOptions": True,
+        "EnableOverset": "Yes",
+        "ExtractEdgeFeatures": "Yes",
+        "MovingObjects": "Yes",
+        "PorousRegions": "Yes",
+        "ZeroThickness": "Yes",
+    }

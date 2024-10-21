@@ -66,6 +66,7 @@ def test_session_starts_no_transcript_if_disabled(
 def test_server_exits_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent()
+        session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
         _cortex_host = session.connection_properties.cortex_host
         _inside_container = session.connection_properties.inside_container
@@ -88,6 +89,7 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
+        session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
         _cortex_host = session.connection_properties.cortex_host
         _inside_container = session.connection_properties.inside_container
