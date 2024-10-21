@@ -207,7 +207,8 @@ class SurfaceDefn(GraphicsDefn):
 
     PLURAL = "Surfaces"
 
-    def get_surface_name(self) -> str:
+    @property
+    def name(self) -> str:
         """Return name of the created surface."""
         return self._name
 
