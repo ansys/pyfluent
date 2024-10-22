@@ -251,10 +251,10 @@ def configure_container_dict(
 
     if "environment" not in container_dict:
         if not license_server:
-            license_server = None  # os.getenv("ANSYSLMD_LICENSE_FILE")
+            license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
 
-        # if not license_server:
-        #     raise LicenseServerNotSpecified()
+        if not license_server:
+            raise LicenseServerNotSpecified()
         container_dict.update(
             environment={
                 "ANSYSLMD_LICENSE_FILE": license_server,
