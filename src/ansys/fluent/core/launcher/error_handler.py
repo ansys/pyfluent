@@ -94,7 +94,12 @@ def _process_kwargs(kwargs):
 
 
 def _check_license():
-    folder = pyfluent.CWD if pyfluent.CWD else os.getcwd()
+    if pyfluent.CWD:
+        folder = pyfluent.CWD
+    elif pyfluent.CONTAINER_MOUNT_SOURCE:
+        folder = pyfluent.CONTAINER_MOUNT_SOURCE
+    else:
+        folder = os.getcwd()
     file_pattern = os.path.join(folder, "*.trn")
     files = glob.glob(file_pattern)
     if files:
