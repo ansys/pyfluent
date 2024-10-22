@@ -1220,7 +1220,6 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
             "list_properties",
             "make_a_copy",
             "display",
-            "copy",
             "add_to_graphics",
             "clear_history",
         }
