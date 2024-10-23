@@ -388,7 +388,7 @@ jobs:
           python -c "from ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Cache 25.1 API Code
-        if: !contains(github.event.pull_request.title, '[use latest image]')
+        if: ! contains(github.event.pull_request.title, '[use latest image]')
         uses: actions/cache@v4
         id: cache-251-api-code
         with:
@@ -402,13 +402,13 @@ jobs:
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Pull 25.1 Fluent docker image
-        if: !contains(github.event.pull_request.title, '[use latest image]') && steps.cache-251-api-code.outputs.cache-hit != 'true'
+        if: ! contains(github.event.pull_request.title, '[use latest image]') && steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run 25.1 API codegen
-        if: !contains(github.event.pull_request.title, '[use latest image]') && steps.cache-251-api-code.outputs.cache-hit != 'true'
+        if: ! contains(github.event.pull_request.title, '[use latest image]') && steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
