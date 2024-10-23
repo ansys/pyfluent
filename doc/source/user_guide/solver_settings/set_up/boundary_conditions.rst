@@ -33,5 +33,5 @@ Cell zone conditions
 
 .. code:: python
 
-    >>> elbow_fluid = pyfluent.CellZoneCondition(settings_source=solver, name="elbow-fluid")
+    >>> elbow_fluid = pyfluent.FluidCellZone(settings_source=solver, name="elbow-fluid")
     >>> elbow_fluid.laminar.set_state(True)
