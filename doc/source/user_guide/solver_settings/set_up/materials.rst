@@ -34,7 +34,8 @@ Copy material from database
      'sutherland',
      'kinetic-theory']
     >>> air_copy.viscosity.value.set_state(1.81e-05)
-    >>> solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"].material.set_state("air-2")
+    >>> elbow_fluid = pyfluent.CellZoneCondition(settings_source=solver, name="elbow-fluid")
+    >>> elbow_fluid.material.set_state("air-2")
 
 
 Create new material

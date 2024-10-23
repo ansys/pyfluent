@@ -13,7 +13,7 @@ Boundary conditions
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver = pyfluent.launch_fluent()
     >>> solver.settings.file.read_case(file_name=file_name)
-    >>> cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    >>> cold_inlet = pyfluent.BoundaryCondition(settings_source=solver, name="cold-inlet")
     >>> cold_inlet.momentum.velocity.set_state(0.4)
     >>> inlet_turbulence = cold_inlet.turbulence
     >>> turbulence_specification = inlet_turbulence.turbulence_specification
@@ -33,4 +33,5 @@ Cell zone conditions
 
 .. code:: python
 
-    >>> solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"].laminar.set_state(True)
+    >>> elbow_fluid = pyfluent.CellZoneCondition(settings_source=solver, name="elbow-fluid")
+    >>> elbow_fluid.laminar.set_state(True)
