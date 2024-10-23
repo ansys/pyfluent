@@ -13,7 +13,7 @@ Boundary conditions
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver = pyfluent.launch_fluent()
     >>> solver.settings.file.read_case(file_name=file_name)
-    >>> cold_inlet = pyfluent.BoundaryCondition(settings_source=solver, name="cold-inlet")
+    >>> cold_inlet = pyfluent.VelocityInlet(settings_source=solver, name="cold-inlet")
     >>> cold_inlet.momentum.velocity.set_state(0.4)
     >>> inlet_turbulence = cold_inlet.turbulence
     >>> turbulence_specification = inlet_turbulence.turbulence_specification
