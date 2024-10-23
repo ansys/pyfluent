@@ -2,27 +2,52 @@
 
 Solver settings objects
 =======================
+
+.. vale Google.Spacing = NO
+
 Solver settings objects provide a natural way to access and modify Fluent solver
-settings and issue commands to be executed in the Fluent solver.
-
-Accessing solver settings
--------------------------
+settings and issue commands to be executed in the Fluent solver. 
 An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
-function returns an object (named :ref:`solver <ref_root>` in
-the following code snippets) whose interface directly exposes the
-:ref:`ref_root` of the solver settings hierarchy.
+function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
 
-.. code:: python
+.. vale Google.Spacing = YES
+
+
+New format for accessing solver settings objects
+------------------------------------------------
+
+To simplify the usage of Fluent solver settings and improve readability, 
+you can now instantiate settings objects directly using a more intuitive syntax. 
+This new approach allows for straightforward access to various settings without 
+navigating through the hierarchical structure of the solver settings.
+
+Example usage
+-------------
+
+.. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> inlet1 = pyfluent.VelocityInlet(settings_source=solver, name="inlet-1")
+
+
+This format provides a more natural way to create and interact with settings objects, 
+making your code easier to read and maintain. By abstracting the underlying hierarchy, 
+users can focus on the specific settings they need without dealing with potential changes 
+in the Fluent API structure.
+
+Accessing solver settings
+-------------------------
+
+Following the introduction of the new format, the traditional method remains available for those 
+who prefer the existing hierarchy.
+
+.. code-block:: python
+
   >>> file = solver.settings.file
   >>> setup = solver.settings.setup
   >>> solution = solver.settings.solution
   >>> results = solver.settings.results
-
-Note that the last three are top-level nodes in the outline tree view in Fluent's graphical 
-user interface (GUI) --- much of this settings hierarchy has been designed in close alignment with this GUI hierarchy.
 
 
 Types of settings objects
