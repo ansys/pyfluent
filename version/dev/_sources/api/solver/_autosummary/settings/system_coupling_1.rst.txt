@@ -1,0 +1,29 @@
+:orphan:
+
+.. _system_coupling_1:
+
+system_coupling
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.system_coupling_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =======================
+
+Parent                                             Summary
+
+================================   =======================
+:ref:`momentum <momentum>`             Help not available.
+
+:ref:`momentum_3 <momentum_3>`         Help not available.
+
+:ref:`momentum_6 <momentum_6>`         Help not available.
+
+:ref:`momentum_9 <momentum_9>`         Help not available.
+
+:ref:`momentum_10 <momentum_10>`       Help not available.
+
+================================   =======================
+

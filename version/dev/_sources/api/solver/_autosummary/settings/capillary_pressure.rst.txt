@@ -1,0 +1,21 @@
+:orphan:
+
+.. _capillary_pressure:
+
+capillary_pressure
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.capillary_pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================
+
+Parent                                    Summary
+
+============================   ==================
+:ref:`options_4 <options_4>`       Model options.
+
+============================   ==================
+

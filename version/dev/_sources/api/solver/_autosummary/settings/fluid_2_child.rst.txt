@@ -1,0 +1,51 @@
+:orphan:
+
+.. _fluid_2_child:
+
+fluid_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.fluid_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ============================
+
+Attribute                                             Summary
+
+==============================   ============================
+:ref:`name <name>`                        Name of the object.
+
+:ref:`type <type_4>`                 Set physics volume type.
+
+:ref:`phase <phase_27>`                        'phase' child.
+
+:ref:`boundaries <boundaries>`            'boundaries' child.
+
+:ref:`location <location_2>`             Input location name.
+
+==============================   ============================
+
+.. rubric:: Methods
+
+====================   ===============================
+
+Method                                         Summary
+
+====================   ===============================
+:ref:`split <split>`       Input volume name to split.
+
+====================   ===============================
+
+.. rubric:: Included in:
+
+========================   =======================
+
+Parent                                     Summary
+
+========================   =======================
+:ref:`fluid_2 <fluid_2>`       Select thread-type.
+
+========================   =======================
+

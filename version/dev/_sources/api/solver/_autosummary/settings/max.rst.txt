@@ -1,0 +1,23 @@
+:orphan:
+
+.. _max:
+
+max
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.max
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`x_5 <x_5>`       X-axis properties.
+
+:ref:`y_5 <y_5>`       Y-axis properties.
+
+================   ======================
+

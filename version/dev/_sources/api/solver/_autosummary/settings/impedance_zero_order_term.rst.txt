@@ -1,0 +1,35 @@
+:orphan:
+
+.. _impedance_zero_order_term:
+
+impedance_zero_order_term
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.impedance_zero_order_term
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =======================
+
+Parent                                             Summary
+
+================================   =======================
+:ref:`momentum <momentum>`             Help not available.
+
+:ref:`momentum_1 <momentum_1>`         Help not available.
+
+:ref:`momentum_2 <momentum_2>`         Help not available.
+
+:ref:`momentum_3 <momentum_3>`         Help not available.
+
+:ref:`momentum_6 <momentum_6>`         Help not available.
+
+:ref:`momentum_8 <momentum_8>`         Help not available.
+
+:ref:`momentum_9 <momentum_9>`         Help not available.
+
+:ref:`momentum_10 <momentum_10>`       Help not available.
+
+================================   =======================
+

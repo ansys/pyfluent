@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surfaces_9:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.surfaces_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===============================
+
+Parent                                                                         Summary
+
+====================================================   ===============================
+:ref:`create_group_surfaces <create_group_surfaces>`       Create a group of surfaces.
+
+====================================================   ===============================
+

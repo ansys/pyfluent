@@ -1,0 +1,34 @@
+:orphan:
+
+.. _expression_2_child:
+
+expression_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.expression_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   =======================
+
+Attribute                                Summary
+
+======================   =======================
+:ref:`name <name>`           Name of the object.
+
+:ref:`value <value_2>`            'value' child.
+
+======================   =======================
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`expression_2 <expression_2>`       'expression' child.
+
+==================================   =======================
+

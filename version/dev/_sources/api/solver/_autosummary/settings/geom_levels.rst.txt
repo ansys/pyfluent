@@ -1,0 +1,23 @@
+:orphan:
+
+.. _geom_levels:
+
+geom_levels
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.geom_levels
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================================
+
+Parent                                                          Summary
+
+==============================   ======================================
+:ref:`geometry_4 <geometry_4>`       Set settings of selected variable.
+
+:ref:`geometry_5 <geometry_5>`                      Help not available.
+
+==============================   ======================================
+

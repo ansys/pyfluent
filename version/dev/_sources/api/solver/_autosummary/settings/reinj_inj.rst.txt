@@ -1,0 +1,33 @@
+:orphan:
+
+.. _reinj_inj:
+
+reinj_inj
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.reinj_inj
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   =========================================
+
+Parent                                                                                               Summary
+
+================================================================   =========================================
+:ref:`dpm <dpm>`                                                                         Help not available.
+
+:ref:`pressure_jump_specification <pressure_jump_specification>`       Pressure jump specification settings.
+
+:ref:`dpm_1 <dpm_1>`                                                                     Help not available.
+
+:ref:`dpm_2 <dpm_2>`                                                                     Help not available.
+
+:ref:`porous_jump_1 <porous_jump_1>`                                                     Help not available.
+
+:ref:`radiator_1 <radiator_1>`                                                           Help not available.
+
+:ref:`dpm_3 <dpm_3>`                                                                     Help not available.
+
+================================================================   =========================================
+

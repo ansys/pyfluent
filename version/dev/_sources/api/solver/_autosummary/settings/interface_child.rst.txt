@@ -1,0 +1,38 @@
+:orphan:
+
+.. _interface_child:
+
+interface_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.interface_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =======================
+
+Attribute                                        Summary
+
+==============================   =======================
+:ref:`name <name>`                   Name of the object.
+
+:ref:`phase <phase_7>`                    'phase' child.
+
+:ref:`interface <interface_1>`       Help not available.
+
+:ref:`geometry <geometry_5>`         Help not available.
+
+==============================   =======================
+
+.. rubric:: Included in:
+
+============================   ===========================================
+
+Parent                                                             Summary
+
+============================   ===========================================
+:ref:`interface <interface>`       Settings for boundary-condition object.
+
+============================   ===========================================
+

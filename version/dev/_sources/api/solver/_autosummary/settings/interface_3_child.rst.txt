@@ -1,0 +1,38 @@
+:orphan:
+
+.. _interface_3_child:
+
+interface_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_242.interface_3_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =============================================
+
+Attribute                                                            Summary
+
+============================   =============================================
+:ref:`name <name>`                                       Name of the object.
+
+:ref:`type <type_5>`                              Set physics boundary type.
+
+:ref:`location <location_2>`                            Input location name.
+
+:ref:`phase <phase_33>`            Select domain name to define settings on.
+
+============================   =============================================
+
+.. rubric:: Included in:
+
+================================   =======================
+
+Parent                                             Summary
+
+================================   =======================
+:ref:`interface_3 <interface_3>`       Select thread-type.
+
+================================   =======================
+
