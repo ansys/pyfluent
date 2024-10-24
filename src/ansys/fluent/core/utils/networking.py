@@ -120,4 +120,4 @@ def get_url_content(url: str) -> str:
         content of the URL
     """
     with urllib.request.urlopen(url) as response:
-        return response.read().decode("utf-8")
+        return response.read()
