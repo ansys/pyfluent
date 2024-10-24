@@ -24,8 +24,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session.file.read(
         file_name=case_path, file_type="case", lightweight_setup=True
     )
-    # NOTE: Not sure why initialization is necessary here
-    # solver_session.solution.initialization.hybrid_initialize()
 
     viscous_model = solver_session.setup.models.viscous
 
