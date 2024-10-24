@@ -372,19 +372,17 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
 def _progress_bar(file_name: str, upload: bool):
     progress_bar_size = 40
-    for file in range(2):
-        progress = file / 1
-        filled_length = int(progress_bar_size * progress)
-        progrss_bar = "█" * filled_length + "-" * (progress_bar_size - filled_length)
-        if upload:
-            sys.stdout.write(
-                f"\r|{progrss_bar}| {progress:.1%} {os.path.basename(file_name)} uploaded."
-            )
-        else:
-            sys.stdout.write(
-                f"\r|{progrss_bar}| {progress:.1%} {os.path.basename(file_name)} downloaded."
-            )
-        sys.stdout.flush()
+    filled_length = int(progress_bar_size)
+    progrss_bar = "█" * filled_length + "-" * (progress_bar_size - filled_length)
+    if upload:
+        sys.stdout.write(
+            f"\r|{progrss_bar}| {1:.1%} {os.path.basename(file_name)} uploaded."
+        )
+    else:
+        sys.stdout.write(
+            f"\r|{progrss_bar}| {1:.1%} {os.path.basename(file_name)} downloaded."
+        )
+    sys.stdout.flush()
 
     print()
 
