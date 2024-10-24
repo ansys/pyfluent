@@ -5,6 +5,7 @@ import os
 import pathlib
 import random
 import shutil
+import sys
 from typing import Any, Callable, List, Protocol  # noqa: F401
 import warnings
 
@@ -369,6 +370,23 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                     )
 
 
+def _progress_bar(file_name: str, upload: bool):
+    progress_bar_size = 40
+    for file in range(2):
+        progress = file / 1
+        filled_length = int(progress_bar_size * progress)
+        progrss_bar = "█" * filled_length + "-" * (progress_bar_size - filled_length)
+        if upload:
+            sys.stdout.write(f"\r|{progrss_bar}| {progress:.1%} {file_name} uploaded.")
+        else:
+            sys.stdout.write(
+                f"\r|{progrss_bar}| {progress:.1%} {file_name} downloaded."
+            )
+        sys.stdout.flush()
+
+    print()
+
+
 class PimFileTransferService:
     """Provides a file transfer service based on `PyPIM <https://pypim.docs.pyansys.com/version/stable/>`_ and the ``simple_upload_server()`` method.
 
@@ -482,23 +500,20 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            from alive_progress import alive_bar
-
-            with alive_bar(len(files), title="Uploading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        if not self.file_service.file_exist(os.path.basename(file)):
-                            self.upload_file(
-                                file_name=file, remote_file_name=remote_file_name
-                            )
-                            bar()
-                        else:
-                            warnings.warn(
-                                f"\n{file} with the same name exists at the remote location.\n",
-                                PyFluentUserWarning,
-                            )
-                    elif not self.file_service.file_exist(os.path.basename(file)):
-                        raise FileNotFoundError(f"{file} does not exist.")
+            for file in files:
+                if os.path.isfile(file):
+                    if not self.file_service.file_exist(os.path.basename(file)):
+                        self.upload_file(
+                            file_name=file, remote_file_name=remote_file_name
+                        )
+                        _progress_bar(file_name=file, upload=True)
+                    else:
+                        warnings.warn(
+                            f"\n{file} with the same name exists at the remote location.\n",
+                            PyFluentUserWarning,
+                        )
+                elif not self.file_service.file_exist(os.path.basename(file)):
+                    raise FileNotFoundError(f"{file} does not exist.")
 
     def download_file(self, file_name: str, local_directory: str | None = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -537,21 +552,18 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            from alive_progress import alive_bar
-
-            with alive_bar(len(files), title="Downloading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        warnings.warn(
-                            f"\nFile already exists. File path:\n{file}\n",
-                            PyFluentUserWarning,
-                        )
-                    else:
-                        self.download_file(
-                            file_name=os.path.basename(file),
-                            local_directory=local_directory,
-                        )
-                        bar()
+            for file in files:
+                if os.path.isfile(file):
+                    warnings.warn(
+                        f"\nFile already exists. File path:\n{file}\n",
+                        PyFluentUserWarning,
+                    )
+                else:
+                    self.download_file(
+                        file_name=os.path.basename(file),
+                        local_directory=local_directory,
+                    )
+                    _progress_bar(file_name=file, upload=False)
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance
