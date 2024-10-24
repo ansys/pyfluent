@@ -101,7 +101,7 @@ def check_url_exists(url: str) -> bool:
     """
     try:
         with urllib.request.urlopen(url) as response:
-            return response.getcode() == 200
+            return response.status == 200
     except Exception:
         return False
 
