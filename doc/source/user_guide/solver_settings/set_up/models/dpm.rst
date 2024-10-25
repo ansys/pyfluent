@@ -6,7 +6,8 @@ Setting up and querying the model
 
 .. code:: python
 
-    >>> dpm = solver.settings.setup.models.discrete_phase
+    >>> import ansys.fluent.core as pyfluent
+    >>> dpm = pyfluent.DiscretePhase(settings_source=solver)
     >>> dpm_models = dpm.physical_models
     >>> dpm_models.virtual_mass_force.enabled.get_state()
     >>> dpm_models.virtual_mass_force.virtual_mass_factor.is_active()
