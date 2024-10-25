@@ -13,7 +13,7 @@ from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
 # Host path which is mounted to the file-transfer-service container
-MOUNT_SOURCE = get_user_data_dir()
+MOUNT_SOURCE = str(get_user_data_dir())
 
 
 class PyPIMConfigurationError(ConnectionError):
