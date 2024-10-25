@@ -255,6 +255,15 @@ def test_parameters_list_function(static_mixer_settings_session):
     create_output_param("report-definition", "outlet-temp-avg")
     create_output_param("report-definition", "outlet-vel-avg")
 
+    # Create a unitless output parameter
+    unitless_quantity = solver.settings.solution.report_definitions.surface.create(
+        "temp-outlet-uniformity"
+    )
+    unitless_quantity.report_type = "surface-masswtui"
+    unitless_quantity.field = "temperature"
+    unitless_quantity.surface_names = ["outlet"]
+    unitless_quantity.output_parameter = True
+
     input_parameters_list = solver.parameters.input_parameters.list()
     output_parameters_list = solver.parameters.output_parameters.list()
     assert input_parameters_list == {
@@ -266,4 +275,5 @@ def test_parameters_list_function(static_mixer_settings_session):
     assert output_parameters_list == {
         "outlet-temp-avg-op": [0.0, "K"],
         "outlet-vel-avg-op": [0.0, "m/s"],
+        "temp-outlet-uniformity-op": [0.0, ""],
     }

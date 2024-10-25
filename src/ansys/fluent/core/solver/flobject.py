@@ -1756,7 +1756,7 @@ def _fix_parameter_list_return(val):
         new_val = {}
         for name, v in val.items():
             value, units = v
-            if len(units) > 0:
+            if len(units) > 0 and isinstance(units[0], str):
                 unit_labels = _fix_parameter_list_return.scheme_eval(
                     f"(units/inquire-available-label-strings-for-quantity '{units[0]})"
                 )
@@ -2204,42 +2204,28 @@ def get_root(
     """
     from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 
-    obj_info = flproxy.get_static_info()
-    try:
-        if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
+    if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
+        settings = utils.load_module(
+            f"settings_{version}",
+            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+        )
+    else:
+        if CODEGEN_ZIP_SETTINGS:
+            importer = zipimporter(
+                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
+            )
+            settings = importer.load_module("settings")
+        else:
             settings = utils.load_module(
                 f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
             )
-        else:
-            if CODEGEN_ZIP_SETTINGS:
-                importer = zipimporter(
-                    str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-                )
-                settings = importer.load_module("settings")
-            else:
-                settings = utils.load_module(
-                    f"settings_{version}",
-                    CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
-                )
-
-        if settings.SHASH != _gethash(obj_info):
-            settings_logger.warning(
-                "Mismatch between generated file and server object "
-                "info. Dynamically created settings classes will "
-                "be used."
-            )
-            raise RuntimeError("Mismatch in hash values")
-        cls = settings.root
-    except Exception:
-        cls, _ = get_cls("", obj_info, version=version)
-    root = cls()
+    root = settings.root()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
-    root._setattr("_static_info", obj_info)
     root._setattr("_file_transfer_service", file_transfer_service)
     return root
 
