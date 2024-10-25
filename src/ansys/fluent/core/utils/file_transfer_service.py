@@ -15,7 +15,7 @@ from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
-logger = pyfluent.logging.get_logger("pyfluent.launcher")
+logger = pyfluent.logging.get_logger("pyfluent.file_transfer_service")
 
 logger = logging.getLogger("pyfluent.file_transfer_service")
 
