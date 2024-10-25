@@ -5,15 +5,17 @@ import os
 import pathlib
 import random
 import shutil
-import sys
 from typing import Any, Callable, List, Protocol  # noqa: F401
 import warnings
 
 import platformdirs
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
+
+logger = pyfluent.logging.get_logger("pyfluent.launcher")
 
 logger = logging.getLogger("pyfluent.file_transfer_service")
 
@@ -370,23 +372,6 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                     )
 
 
-def _progress_bar(file_name: str, upload: bool):
-    progress_bar_size = 40
-    filled_length = int(progress_bar_size)
-    progrss_bar = "█" * filled_length + "-" * (progress_bar_size - filled_length)
-    if upload:
-        sys.stdout.write(
-            f"\r|{progrss_bar}| {1:.1%} {os.path.basename(file_name)} uploaded."
-        )
-    else:
-        sys.stdout.write(
-            f"\r|{progrss_bar}| {1:.1%} {os.path.basename(file_name)} downloaded."
-        )
-    sys.stdout.flush()
-
-    print()
-
-
 class PimFileTransferService:
     """Provides a file transfer service based on `PyPIM <https://pypim.docs.pyansys.com/version/stable/>`_ and the ``simple_upload_server()`` method.
 
@@ -506,7 +491,7 @@ class PimFileTransferService:
                         self.upload_file(
                             file_name=file, remote_file_name=remote_file_name
                         )
-                        _progress_bar(file_name=file, upload=True)
+                        logger.info(f"\n\n{os.path.basename(file_name)} uploaded.")
                     else:
                         warnings.warn(
                             f"\n{file} with the same name exists at the remote location.\n",
@@ -563,7 +548,7 @@ class PimFileTransferService:
                         file_name=os.path.basename(file),
                         local_directory=local_directory,
                     )
-                    _progress_bar(file_name=file, upload=False)
+                    logger.info(f"\n\n{os.path.basename(file_name)} uploaded.\n\n")
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance
