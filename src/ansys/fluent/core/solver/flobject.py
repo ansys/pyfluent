@@ -1756,7 +1756,7 @@ def _fix_parameter_list_return(val):
         new_val = {}
         for name, v in val.items():
             value, units = v
-            if len(units) > 0:
+            if len(units) > 0 and isinstance(units[0], str):
                 unit_labels = _fix_parameter_list_return.scheme_eval(
                     f"(units/inquire-available-label-strings-for-quantity '{units[0]})"
                 )
