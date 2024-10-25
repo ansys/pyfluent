@@ -544,7 +544,7 @@ class PimFileTransferService:
                         file_name=os.path.basename(file),
                         local_directory=local_directory,
                     )
-                    logger.info(f"\n\n{os.path.basename(file_name)} uploaded.\n\n")
+                    logger.info(f"\n\n{os.path.basename(file_name)} downloaded.\n\n")
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance
