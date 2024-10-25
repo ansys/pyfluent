@@ -1,6 +1,5 @@
 """Provides a module for file transfer service."""
 
-import logging
 import os
 import pathlib
 import random
@@ -10,11 +9,12 @@ import warnings
 
 import platformdirs
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
-logger = logging.get_logger("pyfluent.file_transfer_service")
+logger = pyfluent.logging.get_logger("pyfluent.file_transfer_service")
 
 # Host path which is mounted to the file-transfer-service container
 MOUNT_SOURCE = platformdirs.user_data_dir(
