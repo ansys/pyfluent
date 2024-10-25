@@ -82,12 +82,13 @@ def _build_journal_argument(
 ) -> str:
     """Build Fluent commandline journal argument."""
 
-    from beartype import BeartypeConf, beartype
-
-    @beartype(conf=BeartypeConf(violation_type=TypeError))
     def _impl(
         topy: None | bool | str, journal_file_names: None | str | list[str]
     ) -> str:
+        if journal_file_names and not isinstance(journal_file_names, (str, list)):
+            raise TypeError(
+                "Use 'journal_file_names' to specify and convert journal files."
+            )
         if topy and not journal_file_names:
             raise InvalidArgument(
                 "Use 'journal_file_names' to specify and convert journal files."

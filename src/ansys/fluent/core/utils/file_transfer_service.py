@@ -7,16 +7,13 @@ import shutil
 from typing import Any, Callable, List, Protocol  # noqa: F401
 import warnings
 
-import platformdirs
-
+from ansys.fluent.core.utils import get_user_data_dir
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
 # Host path which is mounted to the file-transfer-service container
-MOUNT_SOURCE = platformdirs.user_data_dir(
-    appname="ansys_fluent_core", appauthor="Ansys"
-)
+MOUNT_SOURCE = str(get_user_data_dir())
 
 
 class PyPIMConfigurationError(ConnectionError):

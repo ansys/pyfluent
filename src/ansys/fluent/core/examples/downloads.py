@@ -7,9 +7,8 @@ import re
 import shutil
 import zipfile
 
-import requests
-
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -86,7 +85,7 @@ def _retrieve_file(
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
-    content = requests.get(url).content
+    content = get_url_content(url)
     with open(local_path, "wb") as f:
         f.write(content)
 
@@ -166,8 +165,7 @@ def download_file(
                 return_without_path = True
 
     url = _get_file_url(file_name, directory)
-    head = requests.head(f"{url}")
-    if not head.ok:
+    if not check_url_exists(url):
         raise RemoteFileNotFoundError(url)
     return _retrieve_file(url, file_name, save_path, return_without_path)
 
