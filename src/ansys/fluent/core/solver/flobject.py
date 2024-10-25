@@ -1750,7 +1750,7 @@ class BaseCommand(Action):
             raise KeyboardInterrupt
 
 
-# TODO: Remove this after paremater list() method is fixed from Fluent side
+# TODO: Remove this after parameter list() method is fixed from Fluent side
 def _fix_parameter_list_return(val):
     if isinstance(val, dict):
         new_val = {}
