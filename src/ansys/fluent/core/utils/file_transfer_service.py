@@ -9,12 +9,9 @@ import warnings
 
 import platformdirs
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
-
-logger = pyfluent.logging.get_logger("pyfluent.file_transfer_service")
 
 # Host path which is mounted to the file-transfer-service container
 MOUNT_SOURCE = platformdirs.user_data_dir(
@@ -487,7 +484,7 @@ class PimFileTransferService:
                         self.upload_file(
                             file_name=file, remote_file_name=remote_file_name
                         )
-                        logger.info(f"\n\n{os.path.basename(file_name)} uploaded.")
+                        print(f"\n{os.path.basename(file_name)} uploaded.\n")
                     else:
                         warnings.warn(
                             f"\n{file} with the same name exists at the remote location.\n",
@@ -544,7 +541,7 @@ class PimFileTransferService:
                         file_name=os.path.basename(file),
                         local_directory=local_directory,
                     )
-                    logger.info(f"\n\n{os.path.basename(file_name)} downloaded.\n\n")
+                    print(f"\n{os.path.basename(file_name)} downloaded.\n")
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance
