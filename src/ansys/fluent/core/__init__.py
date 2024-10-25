@@ -76,7 +76,7 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-EXAMPLES_PATH = get_examples_download_dir()
+EXAMPLES_PATH = str(get_examples_download_dir())
 
 # Host path which is mounted to the container
 CONTAINER_MOUNT_SOURCE = None
