@@ -95,7 +95,6 @@ pytest-mock = "==3.14.0"
 pytest-xdist = "==3.6.1"
 
 [tool.poetry.extras]
-examples = ["openpyxl", "plotly", "python-pptx", "seaborn", "tensorflow"]
 reader = ["h5py"]
 tests = ["pytest", "pytest-cov", "pytest-mock", "pytest-xdist"]
 
