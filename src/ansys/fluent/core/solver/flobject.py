@@ -2207,42 +2207,34 @@ def get_root(
     """
     from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 
-    obj_info = flproxy.get_static_info()
-    try:
-        if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
+    if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
+        try:
             settings = utils.load_module(
                 f"settings_{version}",
                 CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
             )
-        else:
-            if CODEGEN_ZIP_SETTINGS:
-                importer = zipimporter(
-                    str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-                )
-                settings = importer.load_module("settings")
-            else:
-                settings = utils.load_module(
-                    f"settings_{version}",
-                    CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
-                )
-
-        if settings.SHASH != _gethash(obj_info):
-            settings_logger.warning(
-                "Mismatch between generated file and server object "
-                "info. Dynamically created settings classes will "
-                "be used."
+            root_cls = settings.root
+        except FileNotFoundError:
+            obj_info = flproxy.get_static_info()
+            root_cls, _ = get_cls("", obj_info, version=version)
+    else:
+        if CODEGEN_ZIP_SETTINGS:
+            importer = zipimporter(
+                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
             )
-            raise RuntimeError("Mismatch in hash values")
-        cls = settings.root
-    except Exception:
-        cls, _ = get_cls("", obj_info, version=version)
-    root = cls()
+            settings = importer.load_module("settings")
+        else:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
+            )
+        root_cls = settings.root
+    root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
     _Alias.scheme_eval = scheme_eval
     _fix_parameter_list_return.scheme_eval = scheme_eval
-    root._setattr("_static_info", obj_info)
     root._setattr("_file_transfer_service", file_transfer_service)
     return root
 
