@@ -2208,10 +2208,15 @@ def get_root(
     from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 
     if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
-        settings = utils.load_module(
-            f"settings_{version}",
-            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
-        )
+        try:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+            )
+            root_cls = settings.root
+        except FileNotFoundError:
+            obj_info = flproxy.get_static_info()
+            root_cls, _ = get_cls("", obj_info, version=version)
     else:
         if CODEGEN_ZIP_SETTINGS:
             importer = zipimporter(
@@ -2223,7 +2228,8 @@ def get_root(
                 f"settings_{version}",
                 CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
             )
-    root = settings.root()
+        root_cls = settings.root
+    root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)
     root._set_file_transfer_service(file_transfer_service)
