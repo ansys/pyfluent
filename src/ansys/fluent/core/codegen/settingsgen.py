@@ -10,7 +10,12 @@ from typing import IO
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
-from ansys.fluent.core.solver.flobject import ListObject, NamedObject, get_cls
+from ansys.fluent.core.solver.flobject import (
+    ListObject,
+    NamedObject,
+    get_cls,
+    to_python_name,
+)
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -197,6 +202,8 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         s.write("    _child_classes = dict(\n")
         for k, v in data["child_classes"].items():
             name = v["name"]
+            # Retrieving the original python name before get_cls() modifies it.
+            child_python_name = to_python_name(v["fluent_name"])
             hash_ = _gethash(v)
             # We are within a tree-traversal, so the global _NAME_BY_HASH dict
             # must be updated immediately at the point of lookup. Same lookup
@@ -216,10 +223,10 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             # the _CLASS_WRITTEN set.
             if k in command_names + query_names:
                 _write_function_stub(k, v, s_stub)
-                classes_to_write[unique_name] = (name, v, hash_, False)
+                classes_to_write[unique_name] = (child_python_name, v, hash_, False)
             else:
                 s_stub.write(f"    {k}: {unique_name}\n")
-                classes_to_write[unique_name] = (name, v, hash_, True)
+                classes_to_write[unique_name] = (child_python_name, v, hash_, True)
         s.write("    )\n")
     if child_object_name:
         child_object_type = data["child_object_type"]
