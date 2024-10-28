@@ -1486,11 +1486,40 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
+    def _get_child_object_names(self) -> list[str]:
+        parent_path = self.path[0:-1]
+        child_type_suffix = self.path[-1][0] + ":"
+        response = self.service.get_specs(
+            self.rules, convert_path_to_se_path(parent_path)
+        )
+        child_object_names = []
+        for struct_type in ("singleton", "namedobject"):
+            struct_field = response.get(struct_type)
+            if struct_field:
+                for member in struct_field["members"]:
+                    if member.startswith(child_type_suffix):
+                        child_object_names.append(member[len(child_type_suffix) :])
+        return child_object_names
+
+    def _get_child_object_display_names(self) -> list[str]:
+        child_object_display_names = []
+        for name in self._get_child_object_names():
+            name_path = self.path[0:-1]
+            name_path.append((self.path[-1][0], name))
+            name_path.append(("_name_", ""))
+            child_object_display_names.append(
+                PyMenu(self.service, self.rules, name_path).get_state()
+            )
+        return child_object_display_names
+
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        return self.service.get_object_names(
-            self.rules, convert_path_to_se_path(self.path)
-        )
+        if self.service.version <= FluentVersion.v241:
+            return self._get_child_object_display_names()
+        else:
+            return self.service.get_object_names(
+                self.rules, convert_path_to_se_path(self.path)
+            )
 
     getChildObjectDisplayNames = get_object_names
 
