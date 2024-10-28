@@ -1486,32 +1486,6 @@ class PyNamedObjectContainer:
         else:
             self.path = path
 
-    def _get_child_object_names(self) -> list[str]:
-        parent_path = self.path[0:-1]
-        child_type_suffix = self.path[-1][0] + ":"
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(parent_path)
-        )
-        child_object_names = []
-        for struct_type in ("singleton", "namedobject"):
-            struct_field = response.get(struct_type)
-            if struct_field:
-                for member in struct_field["members"]:
-                    if member.startswith(child_type_suffix):
-                        child_object_names.append(member[len(child_type_suffix) :])
-        return child_object_names
-
-    def _get_child_object_display_names(self) -> list[str]:
-        child_object_display_names = []
-        for name in self._get_child_object_names():
-            name_path = self.path[0:-1]
-            name_path.append((self.path[-1][0], name))
-            name_path.append(("_name_", ""))
-            child_object_display_names.append(
-                PyMenu(self.service, self.rules, name_path).get_state()
-            )
-        return child_object_display_names
-
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
         return self.service.get_object_names(
@@ -1528,7 +1502,7 @@ class PyNamedObjectContainer:
         int
             Count of child objects.
         """
-        return len(self._get_child_object_display_names())
+        return len(self.get_object_names())
 
     def __iter__(self) -> Iterator[PyMenu]:
         """Return the next child object.
@@ -1538,7 +1512,7 @@ class PyNamedObjectContainer:
         Iterator[PyMenu]
             Iterator of child objects.
         """
-        for name in self._get_child_object_display_names():
+        for name in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
             yield getattr(self.__class__, f"_{self.__class__.__name__}")(
@@ -1546,7 +1520,7 @@ class PyNamedObjectContainer:
             )
 
     def _get_item(self, key: str) -> PyMenu:
-        if key in self._get_child_object_display_names():
+        if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             return getattr(self.__class__, f"_{self.__class__.__name__}")(
@@ -1558,7 +1532,7 @@ class PyNamedObjectContainer:
             )
 
     def _del_item(self, key: str) -> None:
-        if key in self._get_child_object_display_names():
+        if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             se_path = convert_path_to_se_path(child_path)
@@ -2231,13 +2205,13 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
     available."""
 
     def __iter__(self) -> Iterator[PyMenuGeneric]:
-        for name in self._get_child_object_display_names():
+        for name in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
             yield PyMenuGeneric(self.service, self.rules, child_path)
 
     def _get_item(self, key: str) -> PyMenuGeneric:
-        if key in self._get_child_object_display_names():
+        if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             return PyMenuGeneric(self.service, self.rules, child_path)
