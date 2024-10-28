@@ -4,7 +4,7 @@ from concurrent import futures
 import logging
 import socket
 from typing import Any
-import urllib
+import urllib.request
 
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
