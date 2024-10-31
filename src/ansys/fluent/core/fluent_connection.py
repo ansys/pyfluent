@@ -302,21 +302,9 @@ def _pid_exists(pid):
         else:
             return True
     elif platform.system() == "Windows":
-        # try:
-        #     command = f'tasklist /FI "PID eq {pid}"'
-        #     result = subprocess.run(command, shell=True, text=True, capture_output=True)
-        #     if result.returncode == 0:
-        #         output = result.stdout.strip()
-        #         lines = output.splitlines()
-        #         if len(lines) == 3 and str(pid) in lines[2]:
-        #             return True
-        #         else:
-        #             return False
-        # except Exception as e:
-        #     return False
-        PROCESS_QUERY_INFORMATION = 0x1000
+        process_query_information = 0x1000
         process_handle = ctypes.windll.kernel32.OpenProcess(
-            PROCESS_QUERY_INFORMATION, 0, pid
+            process_query_information, 0, pid
         )
         if process_handle == 0:
             return False
