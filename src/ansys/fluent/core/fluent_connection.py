@@ -302,9 +302,9 @@ def _pid_exists(pid):
         else:
             return True
     elif platform.system() == "Windows":
-        process_query_information = 0x1000
+        process_query_limited_information = 0x1000
         process_handle = ctypes.windll.kernel32.OpenProcess(
-            process_query_information, 0, pid
+            process_query_limited_information, 0, pid
         )
         if process_handle == 0:
             return False

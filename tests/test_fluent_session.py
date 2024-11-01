@@ -66,32 +66,15 @@ def test_session_starts_no_transcript_if_disabled(
     assert not print_transcript.called
 
 
-def f():
-    session = pyfluent.launch_fluent()
-    session.settings
-    _fluent_host_pid = session.connection_properties.fluent_host_pid
-    _cortex_host = session.connection_properties.cortex_host
-    _inside_container = session.connection_properties.inside_container
-    return _fluent_host_pid, _cortex_host, _inside_container
+def test_server_exits_when_session_goes_out_of_scope() -> None:
+    def f():
+        session = pyfluent.launch_fluent()
+        session.settings
+        _fluent_host_pid = session.connection_properties.fluent_host_pid
+        _cortex_host = session.connection_properties.cortex_host
+        _inside_container = session.connection_properties.inside_container
+        return _fluent_host_pid, _cortex_host, _inside_container
 
-
-def test_server_exits_when_session_goes_out_of_scope_on_linux() -> None:
-    fluent_host_pid, cortex_host, inside_container = f()
-
-    timeout_loop(
-        lambda: (inside_container and not get_container(cortex_host))
-        or (not inside_container and not _pid_exists(fluent_host_pid)),
-        60,
-    )
-
-    if inside_container:
-        assert not get_container(cortex_host)
-    else:
-        assert not _pid_exists(fluent_host_pid)
-
-
-@pytest.mark.standalone
-def test_server_exits_when_session_goes_out_of_scope_on_windows() -> None:
     fluent_host_pid, cortex_host, inside_container = f()
 
     timeout_loop(
