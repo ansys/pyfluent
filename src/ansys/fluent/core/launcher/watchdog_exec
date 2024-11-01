@@ -12,11 +12,14 @@ if __name__ == "__main__":
         import sys
         import time
 
-        import psutil
         from watchdog import IDLE_PERIOD, WATCHDOG_INIT_FILE
 
         import ansys.fluent.core as pyfluent
-        from ansys.fluent.core.fluent_connection import FluentConnection, get_container
+        from ansys.fluent.core.fluent_connection import (
+            FluentConnection,
+            _pid_exists,
+            get_container,
+        )
         from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
         watchdog_id = sys.argv[5]
@@ -103,7 +106,7 @@ if __name__ == "__main__":
 
         def check_pid_down(pid, name):
             """Check whether pid is down or not."""
-            if not psutil.pid_exists(pid):
+            if not _pid_exists(pid):
                 logger.debug(name + " down")
                 down.append(name)
 
