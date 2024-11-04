@@ -92,7 +92,7 @@ jobs:
     runs-on: [self-hosted, pyfluent]
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
-      PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Documents/ansys_fluent_core_examples"
+      PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
       - uses: actions/checkout@v4
