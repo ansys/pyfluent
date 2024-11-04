@@ -1,7 +1,6 @@
 import pytest
 
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-from tests.conftest import static_mixer_case_session
 
 
 def _test_locn_extraction(solver1, solver2):
@@ -79,7 +78,8 @@ def _test_min(solver1, solver2):
     solver2_named_expr["test_expr_2"] = {}
     test_expr2 = solver2_named_expr["test_expr_2"]
     test_expr2.definition = "minimum(test_expr_2, ['outlet'])"
-    expected_result = test_expr2.get_value()
+    # (MK) Is the expression definition valid?
+    # expected_result = test_expr2.get_value()
     result = solver1.fields.reduction.minimum(
         expression=test_expr1.definition(),
         locations=[
@@ -365,7 +365,9 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
-static_mixer_case_session2 = static_mixer_case_session
+@pytest.fixture
+def static_mixer_case_session2(static_mixer_case_session):
+    return static_mixer_case_session
 
 
 @pytest.mark.nightly
