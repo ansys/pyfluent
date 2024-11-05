@@ -631,7 +631,7 @@ class TaskContainer(PyCallableStateObject):
         Iterator[BaseTask]
             Iterator of child objects.
         """
-        for name in self._get_child_object_display_names():
+        for name in self.get_object_names():
             yield self[name]
 
     def __getitem__(self, name):

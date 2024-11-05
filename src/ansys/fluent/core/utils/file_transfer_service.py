@@ -1,6 +1,5 @@
 """Provides a module for file transfer service."""
 
-import logging
 import os
 import pathlib
 import random
@@ -8,19 +7,13 @@ import shutil
 from typing import Any, Callable, List, Protocol  # noqa: F401
 import warnings
 
-import platformdirs
-
+from ansys.fluent.core.utils import get_user_data_dir
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
-logger = logging.getLogger("pyfluent.file_transfer_service")
-
-
 # Host path which is mounted to the file-transfer-service container
-MOUNT_SOURCE = platformdirs.user_data_dir(
-    appname="ansys_fluent_core", appauthor="Ansys"
-)
+MOUNT_SOURCE = str(get_user_data_dir())
 
 
 class PyPIMConfigurationError(ConnectionError):
@@ -482,23 +475,20 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            from alive_progress import alive_bar
-
-            with alive_bar(len(files), title="Uploading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        if not self.file_service.file_exist(os.path.basename(file)):
-                            self.upload_file(
-                                file_name=file, remote_file_name=remote_file_name
-                            )
-                            bar()
-                        else:
-                            warnings.warn(
-                                f"\n{file} with the same name exists at the remote location.\n",
-                                PyFluentUserWarning,
-                            )
-                    elif not self.file_service.file_exist(os.path.basename(file)):
-                        raise FileNotFoundError(f"{file} does not exist.")
+            for file in files:
+                if os.path.isfile(file):
+                    if not self.file_service.file_exist(os.path.basename(file)):
+                        self.upload_file(
+                            file_name=file, remote_file_name=remote_file_name
+                        )
+                        print(f"\n{os.path.basename(file_name)} uploaded.\n")
+                    else:
+                        warnings.warn(
+                            f"\n{file} with the same name exists at the remote location.\n",
+                            PyFluentUserWarning,
+                        )
+                elif not self.file_service.file_exist(os.path.basename(file)):
+                    raise FileNotFoundError(f"{file} does not exist.")
 
     def download_file(self, file_name: str, local_directory: str | None = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -537,21 +527,18 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            from alive_progress import alive_bar
-
-            with alive_bar(len(files), title="Downloading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        warnings.warn(
-                            f"\nFile already exists. File path:\n{file}\n",
-                            PyFluentUserWarning,
-                        )
-                    else:
-                        self.download_file(
-                            file_name=os.path.basename(file),
-                            local_directory=local_directory,
-                        )
-                        bar()
+            for file in files:
+                if os.path.isfile(file):
+                    warnings.warn(
+                        f"\nFile already exists. File path:\n{file}\n",
+                        PyFluentUserWarning,
+                    )
+                else:
+                    self.download_file(
+                        file_name=os.path.basename(file),
+                        local_directory=local_directory,
+                    )
+                    print(f"\n{os.path.basename(file_name)} downloaded.\n")
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance

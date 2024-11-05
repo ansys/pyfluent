@@ -6,7 +6,7 @@
 
 ## Individual Contributors
 
-* [Adam Boutin]([https:](https://github.com/ansaboutin))
+* [Adam Boutin](https://github.com/ansaboutin)
 * [Alexander Carvalho](https://github.com/acarvalh-work)
 * [Aseem Jain](https://github.com/ajain-work)
 * [Dan Williams](https://github.com/dnwillia-work)

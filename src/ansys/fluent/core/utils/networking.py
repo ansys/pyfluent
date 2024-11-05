@@ -4,6 +4,7 @@ from concurrent import futures
 import logging
 import socket
 from typing import Any
+import urllib.request
 
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
@@ -83,3 +84,40 @@ def find_remoting_ip() -> str:
                         return ip
                 except Exception:
                     network_logger.debug(f"Cannot use {ip} as remoting ip")
+
+
+def check_url_exists(url: str) -> bool:
+    """Check if a URL exists.
+
+    Parameters
+    ----------
+    url : str
+        URL to check
+
+    Returns
+    -------
+    bool
+        True if the URL exists, False otherwise
+    """
+    try:
+        with urllib.request.urlopen(url) as response:
+            return response.status == 200
+    except Exception:
+        return False
+
+
+def get_url_content(url: str) -> str:
+    """Get the content of a URL.
+
+    Parameters
+    ----------
+    url : str
+        URL to get content from
+
+    Returns
+    -------
+    str
+        content of the URL
+    """
+    with urllib.request.urlopen(url) as response:
+        return response.read()

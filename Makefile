@@ -147,6 +147,7 @@ build-all-docs:
 	@python doc/settings_rstgen.py
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@xvfb-run poetry run -- make -C doc html
+	@python doc/modify_html.py
 
 compare-flobject:
 	@python .ci/compare_flobject.py

@@ -271,6 +271,11 @@ class Command(Setting):
     # arguments = None
     # cb = None
 
+    def __init__(self, parent):
+        self.attrs = super().attrs.copy()
+        self.attrs["arguments-aliases"] = lambda self: {}
+        super().__init__(parent)
+
     def __call__(self, **kwds):
         args = []
         for k, v in self.arguments.items():
@@ -515,7 +520,8 @@ def test_command():
 
 
 def test_attrs():
-    r = flobject.get_root(Proxy(), version="251")
+    r = flobject.get_root(Proxy())
+    r._setattr("version", "251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True

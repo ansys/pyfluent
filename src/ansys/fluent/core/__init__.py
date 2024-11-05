@@ -4,8 +4,6 @@ import os
 from pathlib import Path
 import pydoc
 
-import platformdirs
-
 # isort: off
 # Logging has to be imported before importing other PyFluent modules
 from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
@@ -38,7 +36,7 @@ from ansys.fluent.core.streaming_services.events_streaming import (  # noqa: F40
     MeshingEvent,
     SolverEvent,
 )
-from ansys.fluent.core.utils import fldoc
+from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 from ansys.fluent.core.warnings import (  # noqa: F401
@@ -78,9 +76,7 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-EXAMPLES_PATH = os.path.join(
-    platformdirs.user_documents_dir(), "ansys_fluent_core_examples"
-)
+EXAMPLES_PATH = str(get_examples_download_dir())
 
 # Host path which is mounted to the container
 CONTAINER_MOUNT_SOURCE = None
@@ -128,3 +124,6 @@ START_WATCHDOG = None
 
 # Whether to skip health check
 CHECK_HEALTH = True
+
+# Whether to clear environment variables related to Fluent parallel mode
+CLEAR_FLUENT_PARA_ENVS = False
