@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
 import logging
 import os
 from pathlib import Path
+import platform
 import socket
 import subprocess
 import threading
@@ -16,7 +18,6 @@ import warnings
 import weakref
 
 import grpc
-import psutil
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import service_creator
@@ -290,6 +291,26 @@ class _ConnectionInterface:
     def exit_server(self):
         """Exits the server."""
         self.scheme_eval.exec(("(exit-server)",))
+
+
+def _pid_exists(pid):
+    if platform.system() == "Linux":
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            return False
+        else:
+            return True
+    elif platform.system() == "Windows":
+        process_query_limited_information = 0x1000
+        process_handle = ctypes.windll.kernel32.OpenProcess(
+            process_query_limited_information, 0, pid
+        )
+        if process_handle == 0:
+            return False
+        else:
+            ctypes.windll.kernel32.CloseHandle(process_handle)
+            return True
 
 
 class FluentConnection:
@@ -601,8 +622,8 @@ class FluentConnection:
             )
         else:
             _response = timeout_loop(
-                lambda connection: psutil.pid_exists(connection.fluent_host_pid)
-                or psutil.pid_exists(connection.cortex_pid),
+                lambda connection: _pid_exists(connection.fluent_host_pid)
+                or _pid_exists(connection.cortex_pid),
                 wait,
                 args=(self.connection_properties,),
                 idle_period=0.5,
