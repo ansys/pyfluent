@@ -310,6 +310,7 @@ def test_create_standalone_launcher():
             if is_windows()
             else FluentLinuxGraphicsDriver.AUTO
         ),
+        env={},
     )
 
     standalone_meshing_launcher = create_launcher(
