@@ -419,6 +419,7 @@ def test_field_info_validators(new_solver_session) -> None:
         solver.fields.field_info.validate_surfaces(["out"])
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
 @pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
