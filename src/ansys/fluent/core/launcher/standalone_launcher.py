@@ -68,7 +68,7 @@ class StandaloneLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str | None = "",
-        env: Dict[str, Any] | Path | None = None,
+        env: Dict[str, Any] = {},
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,

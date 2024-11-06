@@ -7,7 +7,6 @@ with gRPC.
 import inspect
 import logging
 import os
-from pathlib import Path
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
@@ -102,7 +101,7 @@ def launch_fluent(
     journal_file_names: None | str | list[str] = None,
     start_timeout: int = None,
     additional_arguments: str | None = "",
-    env: Dict[str, Any] | Path | None = None,
+    env: Dict[str, Any] = {},
     start_container: bool | None = None,
     container_dict: dict | None = None,
     dry_run: bool = False,
@@ -261,8 +260,6 @@ def launch_fluent(
     The allocated machines and core counts are queried from the scheduler environment and
     passed to Fluent.
     """
-    if env is None:
-        env = {}
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
