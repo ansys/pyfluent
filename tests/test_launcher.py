@@ -68,7 +68,7 @@ def test_unsuccessful_fluent_connection():
     with pytest.raises(LaunchFluentError) as ex:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
     # TimeoutError -> LaunchFluentError
-    isinstance(ex.value.__context__, TimeoutError)
+    assert isinstance(ex.value.__context__, TimeoutError)
 
 
 @pytest.mark.fluent_version("<24.1")
