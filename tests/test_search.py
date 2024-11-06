@@ -459,7 +459,7 @@ def test_search_from_root(watertight_workflow_session):
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==23.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_search_settings_from_root(capsys, static_mixer_settings_session):
     solver = static_mixer_settings_session
     results = _search("conduction", search_root=solver)
@@ -470,21 +470,24 @@ def test_search_settings_from_root(capsys, static_mixer_settings_session):
     )
     results = _search("conduction", search_root=solver.setup.boundary_conditions)
     assert (
-        '<search_root>.wall["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        '<search_root>.wall["<name>"].phase["<name>"].thermal.conduction_layers[<index>] (Object)'
         in results
     )
     results = _search("conduction", search_root=solver.setup.boundary_conditions.wall)
     assert (
-        '<search_root>["<name>"].phase["<name>"].shell_conduction["<name>"] (Object)'
+        '<search_root>["<name>"].phase["<name>"].thermal.conduction_layers[<index>] (Object)'
         in results
     )
     results = _search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"]
     )
     assert (
-        '<search_root>.phase["<name>"].shell_conduction["<name>"] (Object)' in results
+        '<search_root>.phase["<name>"].thermal.conduction_layers[<index>] (Object)'
+        in results
     )
     results = _search(
         "conduction", search_root=solver.setup.boundary_conditions.wall["wall"].phase
     )
-    assert '<search_root>["<name>"].shell_conduction["<name>"] (Object)' in results
+    assert (
+        '<search_root>["<name>"].thermal.conduction_layers[<index>] (Object)' in results
+    )
