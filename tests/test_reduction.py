@@ -403,7 +403,6 @@ def test_reduction_does_not_modify_case(static_mixer_case_session):
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2998")
 @pytest.mark.fluent_version(">=24.2")
 def test_fix_for_invalid_location_inputs(static_mixer_case_session):
     solver = static_mixer_case_session

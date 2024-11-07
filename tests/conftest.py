@@ -13,8 +13,6 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-_fluent_release_version = FluentVersion.current_release().value
-
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -48,6 +46,7 @@ def pytest_runtest_setup(item):
         pytest.skip()
 
     version_specs = []
+    fluent_release_version = FluentVersion.current_release().value
     for mark in item.iter_markers(name="fluent_version"):
         spec = mark.args[0]
         # if a test is marked as fluent_version("latest")
@@ -55,9 +54,9 @@ def pytest_runtest_setup(item):
         # run with release Fluent versions in PRs
         if spec == "latest":
             spec = (
-                f">={_fluent_release_version}"
+                f">={fluent_release_version}"
                 if is_nightly or is_solvermode_option
-                else f"=={_fluent_release_version}"
+                else f"=={fluent_release_version}"
             )
         version_specs.append(SpecifierSet(spec))
     if version_specs:

@@ -7,7 +7,6 @@ with gRPC.
 import inspect
 import logging
 import os
-from pathlib import Path
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
@@ -102,7 +101,7 @@ def launch_fluent(
     journal_file_names: None | str | list[str] = None,
     start_timeout: int = None,
     additional_arguments: str | None = "",
-    env: Dict[str, Any] | Path | None = None,
+    env: Dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict | None = None,
     dry_run: bool = False,

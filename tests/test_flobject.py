@@ -910,7 +910,6 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
-@pytest.mark.skip("Disabling till Fluent image update")
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
@@ -1208,7 +1207,6 @@ def test_no_hash_mismatch(new_solver_session, caplog):
     assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
-@pytest.mark.skip("Disabling till Fluent image update")
 @pytest.mark.fluent_version(">=24.2")
 def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
