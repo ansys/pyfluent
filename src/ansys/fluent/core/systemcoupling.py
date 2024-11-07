@@ -55,7 +55,9 @@ class SystemCoupling:
             )
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             # enable feature to be able to make System Coupling settings APIs calls
-            self._solver.scheme_eval.scheme_eval("(enable-feature 'sc/participant-info)")
+            self._solver.scheme_eval.scheme_eval(
+                "(enable-feature 'sc/participant-info)"
+            )
 
     @property
     def participant_type(self) -> str:
@@ -67,11 +69,21 @@ class SystemCoupling:
 
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             variables = list()
-            region_names = self._solver.settings.setup.models.system_coupling.get_all_regions()
+            region_names = (
+                self._solver.settings.setup.models.system_coupling.get_all_regions()
+            )
             variable_names = set()
             for region_name in region_names:
-                in_var_names = self._get_list(self._solver.settings.setup.models.system_coupling.get_input_vars(region_name=region_name))
-                out_var_names = self._get_list(self._solver.settings.setup.models.system_coupling.get_output_vars(region_name=region_name))
+                in_var_names = self._get_list(
+                    self._solver.settings.setup.models.system_coupling.get_input_vars(
+                        region_name=region_name
+                    )
+                )
+                out_var_names = self._get_list(
+                    self._solver.settings.setup.models.system_coupling.get_output_vars(
+                        region_name=region_name
+                    )
+                )
                 variable_names.update(in_var_names)
                 variable_names.update(out_var_names)
             variable_names = sorted(list(variable_names))
@@ -80,9 +92,15 @@ class SystemCoupling:
                     Variable(
                         name=variable_name,
                         display_name=self._get_display_name(variable_name),
-                        tensor_type=self._solver.settings.setup.models.system_coupling.get_tensor_type(variable_name=variable_name),
-                        is_extensive=self._solver.settings.setup.models.system_coupling.is_extensive_var(variable_name=variable_name),
-                        location=self._solver.settings.setup.models.system_coupling.get_data_location(variable_name=variable_name),
+                        tensor_type=self._solver.settings.setup.models.system_coupling.get_tensor_type(
+                            variable_name=variable_name
+                        ),
+                        is_extensive=self._solver.settings.setup.models.system_coupling.is_extensive_var(
+                            variable_name=variable_name
+                        ),
+                        location=self._solver.settings.setup.models.system_coupling.get_data_location(
+                            variable_name=variable_name
+                        ),
                         quantity_type=self._get_quantity_type(variable_name),
                     )
                 )
@@ -95,16 +113,28 @@ class SystemCoupling:
         """Get regions."""
 
         if self._solver.get_fluent_version() >= FluentVersion.v251:
-            region_names = self._solver.settings.setup.models.system_coupling.get_all_regions()
+            region_names = (
+                self._solver.settings.setup.models.system_coupling.get_all_regions()
+            )
             regions = list()
             for region_name in region_names:
                 regions.append(
                     Region(
                         name=region_name,
                         display_name=self._get_display_name(region_name),
-                        topology=self._solver.settings.setup.models.system_coupling.get_topology(region_name=region_name),
-                        input_variables=self._get_list(self._solver.settings.setup.models.system_coupling.get_input_vars(region_name=region_name)),
-                        output_variables=self._get_list(self._solver.settings.setup.models.system_coupling.get_output_vars(region_name=region_name)),
+                        topology=self._solver.settings.setup.models.system_coupling.get_topology(
+                            region_name=region_name
+                        ),
+                        input_variables=self._get_list(
+                            self._solver.settings.setup.models.system_coupling.get_input_vars(
+                                region_name=region_name
+                            )
+                        ),
+                        output_variables=self._get_list(
+                            self._solver.settings.setup.models.system_coupling.get_output_vars(
+                                region_name=region_name
+                            )
+                        ),
                     )
                 )
             return regions
@@ -115,7 +145,9 @@ class SystemCoupling:
     def get_analysis_type(self) -> str:
         """Get analysis type."""
         if self._solver.get_fluent_version() >= FluentVersion.v251:
-            return self._solver.settings.setup.models.system_coupling.get_analysis_type()
+            return (
+                self._solver.settings.setup.models.system_coupling.get_analysis_type()
+            )
         else:
             # maintains back-compatibility for 24.1 and 24.2
             return self.__get_syc_setup()["analysis-type"]
