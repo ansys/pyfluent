@@ -203,8 +203,8 @@ def _extent_expression(
             else:
                 raise RuntimeError(val)
     if denominator == 0.0:
-        raise BadReductionRequest("Zero extent computed for average")
-    return numerator / denominator
+        raise BadReductionRequest("Cannot compute average over empty or zero-extent locations")
+    if denominator == 0.0:
 
 
 def _extent_moment_vector(f_string, expr, locations, ctxt):

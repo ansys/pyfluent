@@ -440,4 +440,3 @@ class Reduction:
         request.locations.extend(self._get_location_string(locations, ctxt))
         request.weight = weight
         response = self.service.sum_if(request)
-        return _convert_variant_to_value(response.value)
