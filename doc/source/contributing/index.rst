@@ -3,6 +3,13 @@
 ========================
 Contributing to PyFluent
 ========================
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   environment_variables
+
 General guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
