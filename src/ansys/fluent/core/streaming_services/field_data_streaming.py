@@ -19,6 +19,7 @@ class FieldDataStreaming(StreamingService):
     """
 
     def __init__(self, session_id: str, service):
+        """Initialize FieldDataStreaming."""
         super().__init__(
             stream_begin_method="BeginFieldsStreaming",
             target=FieldDataStreaming._process_streaming,

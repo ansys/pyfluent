@@ -57,24 +57,19 @@ class SolutionVariableInfo:
 
     Examples
     --------
-
-    .. code-block:: python
-
-        >>> solution_variable_info = solver_session.fields.solution_variable_info
-        >>>
-        >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
-        >>> wall_fluid_info.solution_variables
-        >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
-        >>> solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
-        >>> solution_variable_info_centroid
-        >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
-        >>>
-        >>> zones_info = solution_variable_info.get_zones_info()
-        >>> zones_info.zones
-        >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
-        >>> zone_info = zones_info['wall']
-        >>> zone_info
-        >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
+    >>> solution_variable_info = solver_session.fields.solution_variable_info
+    >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+    >>> print(wall_fluid_info.solution_variables)
+    >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
+    >>> solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
+    >>> print(solution_variable_info_centroid)
+    >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
+    >>> zones_info = solution_variable_info.get_zones_info()
+    >>> print(zones_info.zones)
+    >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
+    >>> zone_info = zones_info['wall']
+    >>> print(zone_info)
+    >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
     """
 
     class SolutionVariables:
@@ -467,32 +462,25 @@ class SolutionVariableData:
 
     Examples
     --------
-    .. code-block:: python
-        >>>
-        >>> solution_variable_data = solver_session.fields.solution_variable_data
-        >>>
-        >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
-        >>>
-        >>> sv_t_wall_fluid.domain
-        >>> 'mixture'
-        >>>
-        >>> sv_t_wall_fluid.zones
-        >>> ['fluid', 'wall']
-        >>>
-        >>> fluid_temp = sv_t_wall_fluid['fluid']
-        >>> fluid_temp.size
-        >>> 13852
-        >>> fluid_temp.dtype
-        >>> float64
-        >>> fluid_temp
-        >>> array([600., 600., 600., ..., 600., 600., 600.])
-        >>>
-        >>> wall_temp_array = solution_variable_data.create_empty_array("SV_T", "wall")
-        >>> fluid_temp_array =solution_variable_data.create_empty_array("SV_T", "fluid")
-        >>> wall_temp_array[:]= 500
-        >>> fluid_temp_array[:]= 600
-        >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-        >>> solution_variable_data.set_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
+    >>> solution_variable_data = solver_session.fields.solution_variable_data
+    >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
+    >>> print(sv_t_wall_fluid.domain)
+    >>> 'mixture'
+    >>> print(sv_t_wall_fluid.zones)
+    >>> ['fluid', 'wall']
+    >>> fluid_temp = sv_t_wall_fluid['fluid']
+    >>> print(fluid_temp.size)
+    >>> 13852
+    >>> print(fluid_temp.dtype)
+    >>> float64
+    >>> print(fluid_temp)
+    >>> array([600., 600., 600., ..., 600., 600., 600.])
+    >>> wall_temp_array = solution_variable_data.create_empty_array("SV_T", "wall")
+    >>> fluid_temp_array =solution_variable_data.create_empty_array("SV_T", "fluid")
+    >>> wall_temp_array[:]= 500
+    >>> fluid_temp_array[:]= 600
+    >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
+    >>> solution_variable_data.set_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
     """
 
     class Data:
