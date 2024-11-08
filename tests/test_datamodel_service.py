@@ -252,11 +252,6 @@ def test_add_on_command_executed(new_meshing_session):
     assert data == []
 
 
-@pytest.fixture
-def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
-
-
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required

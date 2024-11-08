@@ -6,7 +6,6 @@ import pytest
 from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.workflow import camel_to_snake_case
 from tests.conftest import new_meshing_session
-from tests.test_datamodel_service import disable_datamodel_cache  # noqa: F401
 
 
 @pytest.mark.nightly
@@ -1214,7 +1213,7 @@ def test_switch_between_workflows(new_meshing_session):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_new_meshing_workflow_without_dm_caching(
-    disable_datamodel_cache, new_meshing_session  # noqa: F811
+    disable_datamodel_cache, new_meshing_session
 ):
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
@@ -1262,7 +1261,7 @@ def test_new_meshing_workflow_without_dm_caching(
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_new_meshing_workflow_switching_without_dm_caching(
-    disable_datamodel_cache, new_meshing_session  # noqa: F811
+    disable_datamodel_cache, new_meshing_session
 ):
     watertight = new_meshing_session.watertight()
 
@@ -1494,7 +1493,7 @@ def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2)
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions_without_dm_caching(
-    disable_datamodel_cache, new_meshing_session, new_meshing_session2  # noqa: F811
+    disable_datamodel_cache, new_meshing_session, new_meshing_session2
 ):
     meshing_1 = new_meshing_session
     meshing_2 = new_meshing_session2

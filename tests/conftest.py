@@ -300,3 +300,8 @@ def periodic_rot_settings_session(new_solver_session):
         lightweight_setup=True,
     )
     return solver
+
+
+@pytest.fixture
+def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)

@@ -4,7 +4,7 @@ import os
 import pathlib
 import random
 import shutil
-from typing import Any, Callable, List, Protocol  # noqa: F401
+from typing import Any, Protocol
 import warnings
 
 from ansys.fluent.core.utils import get_user_data_dir
