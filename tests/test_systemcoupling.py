@@ -1,5 +1,6 @@
 import pytest
 
+
 def _test_systemcoupling_mixing_elbow_settings_common(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     # check participant type, analysis type, regions, and variables
@@ -19,7 +20,7 @@ def test_systemcoupling_mixing_elbow_settings(mixing_elbow_case_data_session):
     _test_systemcoupling_mixing_elbow_settings_common(mixing_elbow_case_data_session)
 
 
-@pytest.mark.fluent_version("<25.1")
+@pytest.mark.fluent_version(">=24.1,<25.1")
 def test_systemcoupling_mixing_elbow_settings_legacy(mixing_elbow_case_data_session):
     """Test legacy implementation of getting System Coupling related settings."""
     _test_systemcoupling_mixing_elbow_settings_common(mixing_elbow_case_data_session)
