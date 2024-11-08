@@ -172,6 +172,7 @@ class BadReductionRequest(Exception):
     """Raised on an attempt to make a bad reduction request."""
 
     def __init__(self, err):
+        """Initialize BadReductionRequest."""
         super().__init__(f"Could not complete reduction function request: {err}")
 
 

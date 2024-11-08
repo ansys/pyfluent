@@ -47,6 +47,7 @@ class SystemCoupling:
     """
 
     def __init__(self, solver):
+        """Initialize SystemCoupling."""
         self._solver = solver
         # version check - this requires Fluent 2024 R1 or newer.
         if self._solver.get_fluent_version() < FluentVersion.v241:

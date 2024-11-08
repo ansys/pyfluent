@@ -59,6 +59,7 @@ class DisallowedFilePurpose(ValueError):
         name: Any | None = None,
         allowed_values: Any | None = None,
     ):
+        """Initialize DisallowedFilePurpose."""
         super().__init__(
             allowed_name_error_message(
                 context=context, trial_name=name, allowed_values=allowed_values
@@ -70,6 +71,7 @@ class InvalidNamedObject(RuntimeError):
     """Raised when the object is not a named object."""
 
     def __init__(self, class_name):
+        """Initialize InvalidNamedObject."""
         super().__init__(f"{class_name} is not a named object class.")
 
 
@@ -77,6 +79,7 @@ class SubscribeEventError(RuntimeError):
     """Raised when server fails to subscribe from event."""
 
     def __init__(self, request):
+        """Initialize SubscribeEventError."""
         super().__init__(f"Failed to subscribe event: {request}!")
 
 
@@ -84,6 +87,7 @@ class UnsubscribeEventError(RuntimeError):
     """Raised when server fails to unsubscribe from event."""
 
     def __init__(self, request):
+        """Initialize UnsubscribeEventError."""
         super().__init__(f"Failed to unsubscribe event: {request}!")
 
 
@@ -91,6 +95,7 @@ class ReadOnlyObjectError(RuntimeError):
     """Raised on an attempt to mutate a read-only object."""
 
     def __init__(self, obj_name):
+        """Initialize ReadOnlyObjectError."""
         super().__init__(f"{obj_name} is readonly!")
 
 
@@ -400,6 +405,7 @@ class SubscriptionList:
     """Stores subscription objects by tag."""
 
     def __init__(self):
+        """Initialize SubscriptionList."""
         self._subscriptions = {}
         self._lock = RLock()
 

@@ -147,6 +147,7 @@ class SlurmFuture:
     """
 
     def __init__(self, future: Future, job_id: int):
+        """Initialize SlurmFuture."""
         self._future = future
         self._job_id = job_id
 

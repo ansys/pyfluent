@@ -104,6 +104,7 @@ class DumpDataReader:
     """Reads dump data."""
 
     def __init__(self, file_name: str):
+        """Initialize DumpDataReader."""
         with open(
             str(Path(file_name).resolve()),
             "rb",

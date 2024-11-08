@@ -222,6 +222,10 @@ class PyMenu:
 
         Parameters
         ----------
+        *args
+            Positional arguments of the command or qyery.
+        **kwargs
+            Keyword arguments of the command or query.
 
         Returns
         -------
@@ -303,6 +307,7 @@ class TUIMethod:
     """
 
     def __init__(self, service, version, mode, path):
+        """Initialize TUIMethod."""
         self._service = service
         self._version = version
         self._mode = mode

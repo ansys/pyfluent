@@ -223,6 +223,7 @@ class InvalidQuantityType(TypeError):
         self,
         quantity,
     ) -> None:
+        """Initialize InvalidQuantityType."""
         super().__init__(
             f"The specified quantity, '{quantity}' is not a string ({type(quantity)})."
         )
@@ -235,6 +236,7 @@ class UnitsNotDefinedForQuantity(ValueError):
         self,
         quantity: str,
     ) -> None:
+        """Initialize UnitsNotDefinedForQuantity."""
         super().__init__(
             f"The units for the specified quantity, '{quantity}' are not defined in PyFluent."
         )
@@ -248,6 +250,7 @@ class UnhandledQuantity(RuntimeError):
         path: str,
         quantity: Quantity,
     ) -> None:
+        """Initialize UnhandledQuantity."""
         super().__init__(
             f"Could not handle the quantity, '{quantity}' for the path, {path}."
         )
