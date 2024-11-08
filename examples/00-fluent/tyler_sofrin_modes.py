@@ -111,7 +111,7 @@ import_filename = examples.download_file(
     "axial_comp_fullWheel_DFT_23R2.cas.h5",
     "pyfluent/examples/Tyler-Sofrin-Modes-Compressor",
     save_path=save_path,
-)  # noqa: E501
+)
 
 examples.download_file(
     "axial_comp_fullWheel_DFT_23R2.dat.h5",

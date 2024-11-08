@@ -100,7 +100,7 @@ meshing.workflow.TaskObject["Describe Geometry"].Arguments.setState(
         r"CappingRequired": r"No",
         r"InvokeShareTopology": r"No",
         r"NonConformal": r"Yes",
-        r"SetupType": r"The geometry consists of both fluid and solid regions and/or voids",  # noqa: E501
+        r"SetupType": r"The geometry consists of both fluid and solid regions and/or voids",
     }
 )
 
@@ -331,7 +331,7 @@ meshing.workflow.TaskObject["Describe Geometry"].InsertNextTask(
 meshing.workflow.TaskObject["Run Custom Journal"].Rename(NewName=r"set-periodicity")
 meshing.workflow.TaskObject["set-periodicity"].Arguments = dict(
     {
-        r"JournalString": r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3  # noqa: E501
+        r"JournalString": r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-5* , 0 0 -2.3
 /bo rps translational semi-auto periodic-6-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-7-high , 0 0 -2.3
@@ -371,7 +371,7 @@ meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.setState(
             r"wall-fluid-tet-4-solid-tet-4",
             r"wall-fluid-tet-3-solid-tet-3",
             r"wall-fluid-tet-2-solid-tet-2",
-            r"wall-fluid-tet-2-solid-tet-2-wall-fluid-tet-3-solid-tet-3-fluid-tet-2-solid-tet-2",  # noqa: E501
+            r"wall-fluid-tet-2-solid-tet-2-wall-fluid-tet-3-solid-tet-3-fluid-tet-2-solid-tet-2",
             r"wall-fluid-tet-1-solid-tet-1",
             r"wall-fluid-sweep-fin-solid-sweep-fin.1",
             r"wall-fluid-sweep-fin-solid-sweep-fin",

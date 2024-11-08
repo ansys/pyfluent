@@ -5,9 +5,9 @@ Example
 >>> from ansys.fluent.core.services.scheme_eval import Symbol as S
 >>> session.scheme_eval.eval([S('+'), 2, 3])
 5
->>> session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])  # noqa: E501
+>>> session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
 0.7
->>> session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))  # noqa: E501
+>>> session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 >>> # Returns TUI output string
 >>> session.scheme_eval.string_eval("(+ 2 3)")
 '5'

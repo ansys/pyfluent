@@ -110,7 +110,7 @@ def test_2_jou():
         + "_"
         + Path(file_name_2).stem.split(".")[0]
         + ".py"
-    )  # noqa: E501
+    )
     gen_file_name = os.path.join(os.getcwd(), gen_file_name)
 
     with open(gen_file_name) as file:
@@ -162,7 +162,7 @@ def test_2_scm():
         + "_"
         + Path(file_name_2).stem.split(".")[0]
         + ".py"
-    )  # noqa: E501
+    )
     gen_file_name = os.path.join(os.getcwd(), gen_file_name)
 
     with open(gen_file_name) as file:
