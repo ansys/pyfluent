@@ -19,7 +19,7 @@ class ComparisonError(RuntimeError):
 
     def __init__(self):
         super().__init__(
-            f"Comparison operations are only supported between two members of 'FluentVersion'."
+            "Comparison operations are only supported between two members of 'FluentVersion'."
         )
 
 

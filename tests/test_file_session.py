@@ -320,10 +320,10 @@ def test_error_handling_single_phase():
 
     transaction_1 = field_data.new_transaction()
 
-    with pytest.raises(NotImplementedError) as msg:
+    with pytest.raises(NotImplementedError):
         transaction_1.add_pathlines_fields_request("SV_T", surfaces=[3, 5])
 
-    with pytest.raises(NotImplementedError) as msg:
+    with pytest.raises(NotImplementedError):
         field_data.get_pathlines_field_data("SV_T", surfaces=[3, 5])
 
 
@@ -345,13 +345,11 @@ def test_error_handling_multi_phase():
     field_data = file_session.fields.field_data
 
     transaction_1 = field_data.new_transaction()
-    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
+    with pytest.raises(InvalidMultiPhaseFieldName):
         transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", surfaces=[29, 30])
 
-    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
-        d_size = field_data.get_vector_field_data("velocity", surfaces=[34])[34].size
+    with pytest.raises(InvalidMultiPhaseFieldName):
+        field_data.get_vector_field_data("velocity", surfaces=[34])[34].size
 
-    with pytest.raises(InvalidFieldName) as msg:
-        d_size = field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[
-            34
-        ].size
+    with pytest.raises(InvalidFieldName):
+        field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[34].size

@@ -13,7 +13,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, List, Tuple, TypeVar
 import warnings
 import weakref
 
@@ -94,7 +94,10 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-def get_container(container_id_or_name: str) -> bool | Container | None:
+ContainerT = TypeVar("ContainerT")
+
+
+def get_container(container_id_or_name: str) -> bool | ContainerT | None:
     """Get the Docker container object.
 
     Returns
@@ -200,7 +203,7 @@ class FluentConnectionProperties:
     cortex_pid: int | None = None
     cortex_host: str | None = None
     fluent_host_pid: int | None = None
-    inside_container: bool | Container | None = None
+    inside_container: bool | ContainerT | None = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""

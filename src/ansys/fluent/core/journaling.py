@@ -14,4 +14,4 @@ class Journal:
 
     def stop(self):
         """Stop writing the Fluent Python journal."""
-        self.scheme_eval.exec([f"(api-stop-python-journal)"])
+        self.scheme_eval.exec(["(api-stop-python-journal)"])

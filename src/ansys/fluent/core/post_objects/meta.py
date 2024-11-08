@@ -98,7 +98,7 @@ class Command:
                                     )
 
                         elif attr == "range":
-                            if type(arg_value) != int and type(arg_value) != float:
+                            if not isinstance(arg_value, (int, float)):
                                 raise RuntimeError(
                                     f"{arg} value {arg_value} is not number."
                                 )
@@ -788,15 +788,6 @@ class PyLocalContainer(MutableMapping):
                     cls(self, api_helper, name),
                 )
 
-    @classmethod
-    def get_root(self, obj=None):
-        """Returns the top-most parent object."""
-        obj = self if obj is None else obj
-        parent = obj
-        if getattr(obj, "_parent", None):
-            parent = self.get_root(obj._parent)
-        return parent
-
     def update(self, value):
         """Updates this object with the provided dictionary."""
         for name, val in value.items():
@@ -841,35 +832,6 @@ class PyLocalContainer(MutableMapping):
     def session_handle(self):
         """Returns the session-handle object."""
         return self.get_session_handle()
-
-    def get_root(self, obj=None):
-        """Get root object."""
-        obj = self if obj is None else obj
-        parent = obj
-        if getattr(obj, "_parent", None):
-            parent = self.get_root(obj._parent)
-        return parent
-
-    def get_session(self, obj=None):
-        """Get session object."""
-        root = self.get_root(obj)
-        return root.session
-
-    def get_path(self):
-        """Get parent path."""
-        if getattr(self, "_parent", None):
-            return self._parent.get_path() + "/" + self._name
-        return self._name
-
-    @property
-    def path(self):
-        """Get path."""
-        return self.get_path()
-
-    @property
-    def session(self):
-        """Get session object."""
-        return self.get_session()
 
     def __iter__(self):
         return iter(self.__collection)

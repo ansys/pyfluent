@@ -144,8 +144,8 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         file_transfer_service = RemoteFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,

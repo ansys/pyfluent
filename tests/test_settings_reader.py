@@ -57,7 +57,7 @@ def test_settings_reader_static_mixer_h5():
 
 def test_meshing_unavailable():
     reader = SettingsReader(settings_file_name=static_mixer_settings_file())
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         reader.get_mesh()
 
 

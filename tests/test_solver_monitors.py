@@ -74,7 +74,7 @@ def test_solver_monitors(new_solver_session):
     # n.b. there is no checking of the callback signature at registration. Instead
     # we would get a TypeError at callback time if the signature is wrong. The correct
     # signature is undocumented.
-    register_id = solver.monitors.register_callback(monitor_callback)
+    solver.monitors.register_callback(monitor_callback)
 
     # trigger callback by running the solver
     assert not monitor_callback.called

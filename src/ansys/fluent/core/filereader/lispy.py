@@ -1,5 +1,7 @@
 """Provides a module for Scheme Interpreter in Python."""
 
+# flake8: noqa: E266
+
 ################ Scheme Interpreter in Python
 
 ## (c) Peter Norvig, 2010; See http://norvig.com/lispy2.html

@@ -813,8 +813,8 @@ def test_codegen_old_with_settings_static_info(monkeypatch):
         "Q1": "Query",
     }
     api_tree_expected = {}
-    api_tree_expected[f"<meshing_session>"] = {}
-    api_tree_expected[f"<solver_session>"] = settings_tree
+    api_tree_expected["<meshing_session>"] = {}
+    api_tree_expected["<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
 
@@ -1078,8 +1078,8 @@ def test_codegen_with_settings_static_info(monkeypatch):
         "Q1": "Query",
     }
     api_tree_expected = {}
-    api_tree_expected[f"<meshing_session>"] = {}
-    api_tree_expected[f"<solver_session>"] = settings_tree
+    api_tree_expected["<meshing_session>"] = {}
+    api_tree_expected["<solver_session>"] = settings_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))
 

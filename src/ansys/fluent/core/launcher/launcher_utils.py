@@ -40,7 +40,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
         del fluent_env["PARA_MESH_NPROCS"]
 
     if not is_slurm:
-        if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
+        if INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
             remoting_ip = find_remoting_ip()
             if remoting_ip:
                 fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip

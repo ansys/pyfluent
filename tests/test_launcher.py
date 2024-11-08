@@ -35,7 +35,7 @@ import ansys.platform.instancemanagement as pypim
 
 
 def test_gpu_version_error():
-    with pytest.raises(GPUSolverSupportError) as msg:
+    with pytest.raises(GPUSolverSupportError):
         pyfluent.launch_fluent(
             mode="meshing",
             dimension=2,
@@ -483,6 +483,6 @@ def test_container_warning_for_mount_source(caplog):
         "mount_source": os.getcwd(),
         "mount_target": "/mnt/pyfluent/tests",
     }
-    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    _ = pyfluent.launch_fluent(container_dict=container_dict)
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text

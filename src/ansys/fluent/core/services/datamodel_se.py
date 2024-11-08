@@ -137,8 +137,6 @@ class _FilterDatamodelNames:
         if self._filter_fn is None:
             return names
 
-        filtered_children = []
-
         def validate_name(name):
             obj = getattr(parent, name)
             # might need to make this more flexible (e.g., enhanced workflow types)

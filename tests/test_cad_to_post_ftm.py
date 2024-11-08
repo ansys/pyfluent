@@ -32,10 +32,6 @@ def test_exhaust_system(
     meshing_session = fault_tolerant_workflow_session
     workflow = meshing_session.workflow
 
-    assign_task_args = partial(
-        assign_task_arguments, workflow=workflow, check_state=True
-    )
-
     execute_task_with_pre_and_postconditions = partial(
         execute_task_with_pre_and_postcondition_checks, workflow=workflow
     )

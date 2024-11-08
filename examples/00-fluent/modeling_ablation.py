@@ -77,7 +77,7 @@ import_filename = examples.download_file(
 # Fluent Solution Setup
 # ==================================================================================
 
-from ansys.fluent.visualization import set_config
+from ansys.fluent.visualization import set_config  # noqa: E402
 
 set_config(blocking=True, set_view_on_display="isometric")
 

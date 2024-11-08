@@ -5,9 +5,9 @@ import logging
 from pathlib import Path
 import sys
 
-logger = logging.getLogger("pyfluent.general")
-
 from ansys.fluent.core.search import _search  # noqa: F401
+
+logger = logging.getLogger("pyfluent.general")
 
 
 def load_module(module_name, file_path):

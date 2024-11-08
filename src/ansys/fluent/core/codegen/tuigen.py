@@ -62,7 +62,7 @@ def _get_tui_docdir(mode: str):
             "source",
             "api",
             mode,
-            f"tui",
+            "tui",
         )
     )
 
