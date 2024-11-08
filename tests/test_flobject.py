@@ -860,7 +860,7 @@ def test_settings_wild_card_access(new_solver_session) -> None:
     )
 
 
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=25.1")
 def test_settings_matching_names(new_solver_session) -> None:
     solver = new_solver_session
 
