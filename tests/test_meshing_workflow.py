@@ -1,7 +1,7 @@
 from functools import partial
 
 import pytest
-from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
+from util.meshing_workflow import (
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
 )

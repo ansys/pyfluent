@@ -15,10 +15,7 @@ This test queries the following using PyTest:
 from functools import partial
 
 import pytest
-from util.meshing_workflow import (  # noqa: F401
-    assign_task_arguments,
-    execute_task_with_pre_and_postcondition_checks,
-)
+from util.meshing_workflow import execute_task_with_pre_and_postcondition_checks
 from util.solver import check_report_definition_result
 
 from ansys.fluent.core.utils.fluent_version import FluentVersion
