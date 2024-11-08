@@ -177,87 +177,87 @@ class DatamodelServiceImpl:
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        """initDatamodel RPC of DataModel service."""
+        """RPC initDatamodel of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """getAttributeValue RPC of DataModel service."""
+        """RPC getAttributeValue of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """getState RPC of DataModel service."""
+        """RPC getState of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
     def rename(
         self, request: DataModelProtoModule.RenameRequest
     ) -> DataModelProtoModule.RenameResponse:
-        """getState RPC of DataModel service."""
+        """RPC rename of DataModel service."""
         return self._stub.rename(request, metadata=self._metadata)
 
     def get_object_names(
         self, request: DataModelProtoModule.GetObjectNamesRequest
     ) -> DataModelProtoModule.GetObjectNamesResponse:
-        """getState RPC of DataModel service."""
+        """RPC getObjectNames of DataModel service."""
         return self._stub.getObjectNames(request, metadata=self._metadata)
 
     def delete_child_objects(
         self, request: DataModelProtoModule.DeleteChildObjectsRequest
     ) -> DataModelProtoModule.DeleteChildObjectsResponse:
-        """getState RPC of DataModel service."""
+        """RPC deleteChildObjects of DataModel service."""
         return self._stub.deleteChildObjects(request, metadata=self._metadata)
 
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """setState RPC of DataModel service."""
+        """RPC setState of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
     def fix_state(
         self, request: DataModelProtoModule.FixStateRequest
     ) -> DataModelProtoModule.FixStateResponse:
-        """setState RPC of DataModel service."""
+        """RPC fixState of DataModel service."""
         return self._stub.fixState(request, metadata=self._metadata)
 
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
-        """updateDict RPC of DataModel service."""
+        """RPC updateDict of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
-        """deleteObject RPC of DataModel service."""
+        """RPC deleteObject of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """executeCommand RPC of DataModel service."""
+        """RPC executeCommand of DataModel service."""
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """ExecuteQuery rpc of DataModel service."""
+        """RPC executeQuery of DataModel service."""
         logger.debug(f"Query: {request.query}")
         return self._stub.executeQuery(request, metadata=self._metadata)
 
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
-        """createCommandArguments RPC of DataModel service."""
+        """RPC createCommandArguments of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments RPC of DataModel service.
+        """RPC deleteCommandArguments of DataModel service.
 
         Raises
         ------
@@ -276,25 +276,25 @@ class DatamodelServiceImpl:
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
-        """getSpecs RPC of DataModel service."""
+        """RPC getSpecs of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """getStaticInfo RPC of DataModel service."""
+        """RPC getStaticInfo of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
-        """subscribeEvents RPC of DataModel service."""
+        """RPC subscribeEvents of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
-        """unsubscribeEvents RPC of DataModel service."""
+        """RPC unsubscribeEvents of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
 

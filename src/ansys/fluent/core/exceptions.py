@@ -14,6 +14,7 @@ class DisallowedValuesError(ValueError):
         name: Any | None = None,
         allowed_values: Any | None = None,
     ):
+        """Initialize DisallowedValuesError."""
         super().__init__(
             allowed_name_error_message(
                 context=context, trial_name=name, allowed_values=allowed_values

@@ -17,6 +17,7 @@ class InvalidMultiPhaseFieldName(ValueError):
     """Raised when multi-phase field name is inappropriate."""
 
     def __init__(self):
+        """Initialize InvalidMultiPhaseFieldName."""
         super().__init__("Multi-phase field name should start with 'phase-'.")
 
 
@@ -24,6 +25,7 @@ class InvalidFieldName(ValueError):
     """Raised when a field name is inappropriate."""
 
     def __init__(self):
+        """Initialize InvalidFieldName."""
         super().__init__("The only allowed field is 'velocity'.")
 
 
@@ -344,6 +346,7 @@ class FileFieldData:
     """File field data."""
 
     def __init__(self, file_session, field_info):
+        """Initialize FileFieldData."""
         self._file_session = file_session
         self._field_info = field_info
 
@@ -607,6 +610,7 @@ class FileFieldInfo:
     """File field info."""
 
     def __init__(self, file_session):
+        """Initialize FileFieldInfo."""
         self._file_session = file_session
 
     def get_scalar_field_range(

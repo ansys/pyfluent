@@ -136,6 +136,7 @@ class DataModelCache:
     use_display_name = False
 
     def __init__(self):
+        """Initialize datamodel cache."""
         self.rules_str_to_cache = defaultdict(dict)
         self.rules_str_to_config = {}
         self._locks = {}
@@ -367,7 +368,7 @@ class DataModelCache:
 
         Returns
         -------
-        state : Any
+        Any
             cached state
         """
         name_key_in_config = self.get_config(rules, "name_key")

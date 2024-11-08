@@ -13,7 +13,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, List, Tuple, TypeVar
 import warnings
 import weakref
 
@@ -40,6 +40,7 @@ class PortNotProvided(ValueError):
     """Raised when port is not provided."""
 
     def __init__(self):
+        """Initialize PortNotProvided."""
         super().__init__(
             "Provide the 'port' to connect to an existing Fluent instance."
         )
@@ -49,6 +50,7 @@ class UnsupportedRemoteFluentInstance(ValueError):
     """Raised when 'wait_process_finished' does not support remote Fluent session."""
 
     def __init__(self):
+        """Initialize UnsupportedRemoteFluentInstance."""
         super().__init__("Remote Fluent instance is unsupported.")
 
 
@@ -56,6 +58,7 @@ class WaitTypeError(TypeError):
     """Raised when invalid ``wait`` type is provided."""
 
     def __init__(self):
+        """Initialize WaitTypeError."""
         super().__init__("Invalid 'wait' type.")
 
 
@@ -83,6 +86,7 @@ class MonitorThread(threading.Thread):
     """
 
     def __init__(self):
+        """Initialize MonitorThread."""
         super().__init__(daemon=True)
         self.cbs: List[Callable] = []
 
@@ -94,7 +98,7 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-def get_container(container_id_or_name: str) -> bool | Container | None:
+def get_container(container_id_or_name: str) -> bool | ContainerT | None:
     """Get the Docker container object.
 
     Returns
@@ -175,6 +179,9 @@ class ErrorState:
         self._details = ""
 
 
+ContainerT = TypeVar("ContainerT")
+
+
 @dataclass(frozen=True)
 class FluentConnectionProperties:
     """Stores Fluent connection properties, including connection IP, port and password;
@@ -200,7 +207,7 @@ class FluentConnectionProperties:
     cortex_pid: int | None = None
     cortex_host: str | None = None
     fluent_host_pid: int | None = None
-    inside_container: bool | Container | None = None
+    inside_container: bool | ContainerT | None = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
