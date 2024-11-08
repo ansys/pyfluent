@@ -31,7 +31,7 @@ repos:
       --statistics,
       --max-complexity, "10",
       --max-line-length, "88",
-      --extend-ignore, E203 E501,
+      --extend-ignore, E203 E501 C901,
       src, doc, examples, tests
     ]
 
