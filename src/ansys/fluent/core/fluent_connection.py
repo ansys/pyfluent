@@ -98,6 +98,9 @@ class MonitorThread(threading.Thread):
             cb()
 
 
+ContainerT = TypeVar("ContainerT")
+
+
 def get_container(container_id_or_name: str) -> bool | ContainerT | None:
     """Get the Docker container object.
 
@@ -177,9 +180,6 @@ class ErrorState:
         properties."""
         self._name = ""
         self._details = ""
-
-
-ContainerT = TypeVar("ContainerT")
 
 
 @dataclass(frozen=True)
