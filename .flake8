@@ -1,0 +1,7 @@
+[flake8]
+exclude = src/ansys/fluent/core/generated
+count = True
+statistics = True
+max-complexity = 10
+max-line-length = 88
+extend-ignore = E203, E501, C901
