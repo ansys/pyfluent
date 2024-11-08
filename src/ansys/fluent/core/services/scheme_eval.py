@@ -355,7 +355,6 @@ class SchemeEval:
         bool
             True if symbol is defined, False otherwise
         """
-        S = Symbol  # noqa N806
         return not self.scheme_eval(
             f"(lexical-unreferenceable? user-initial-environment '{symbol})"
         )
