@@ -158,7 +158,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 rst.write(f".. _ref_{file}:\n\n")
                 if folder:
                     if "root" in file:
-                        rst.write(f"solver.settings\n")
+                        rst.write("solver.settings\n")
                         rst.write(f'{"="*(len("solver.settings"))}\n\n')
                         rst.write(
                             "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
@@ -176,7 +176,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                     rst.write(f"ansys.fluent.core.{file}\n")
                     rst.write(f'{"="*(len(f"ansys.fluent.core.{file}"))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
-                if not "root" in file:
+                if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
 
 
@@ -195,7 +195,7 @@ def _generate_api_index_rst_files():
                 index.write(f'{"="*(len(f"ansys.fluent.core.{folder}"))}\n\n')
                 index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
                 _write_common_rst_members(rst_file=index)
-                index.write(f".. toctree::\n")
+                index.write(".. toctree::\n")
                 index.write("    :maxdepth: 2\n")
                 index.write("    :hidden:\n\n")
                 for file in files:

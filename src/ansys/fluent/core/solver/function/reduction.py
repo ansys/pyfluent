@@ -197,7 +197,7 @@ def _extent_expression(
             numerator += val * extent
             denominator += extent
         except TypeError:
-            if type(val) == list:
+            if isinstance(val, list):
                 numerator += np.multiply(val, extent)
                 denominator += extent
             else:

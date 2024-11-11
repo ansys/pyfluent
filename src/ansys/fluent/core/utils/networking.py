@@ -69,7 +69,7 @@ def find_remoting_ip() -> str:
         ip = addrinfo[-1][0]
         port = get_free_port()
         address = f"{ip}:{port}"
-        with _GrpcServer(address) as server:
+        with _GrpcServer(address):
             with grpc.insecure_channel(address) as channel:
                 stub = health_pb2_grpc.HealthStub(channel)
                 try:

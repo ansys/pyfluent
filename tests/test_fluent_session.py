@@ -134,7 +134,7 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
 ) -> None:
     session1 = pyfluent.launch_fluent()
 
-    with pytest.raises(IpPortNotProvided) as msg:
+    with pytest.raises(IpPortNotProvided):
         session2 = pyfluent.connect_to_fluent(
             ip=session1.connection_properties.ip,
             password=session1.connection_properties.password,
@@ -265,6 +265,6 @@ def test_fluent_exit_wait():
     session3.exit(wait=True)
     assert session3._fluent_connection.wait_process_finished(wait=0)
 
-    with pytest.raises(WaitTypeError) as msg:
+    with pytest.raises(WaitTypeError):
         session4 = pyfluent.launch_fluent()
         session4.exit(wait="wait")

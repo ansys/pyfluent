@@ -224,19 +224,6 @@ class BaseTask:
             attr="requiredInputs", other_attr="outputs"
         )
 
-    def get_direct_upstream_tasks(self) -> list:
-        """Get the list of tasks upstream of this one and directly connected by a data
-        dependency.
-
-        Returns
-        -------
-        list
-            Upstream task list.
-        """
-        return self._tasks_with_matching_attributes(
-            attr="requiredInputs", other_attr="outputs"
-        )
-
     def get_direct_downstream_tasks(self) -> list:
         """Get the list of tasks downstream of this one and directly connected by a data
         dependency.
@@ -988,7 +975,7 @@ class CommandTask(BaseTask):
 
     def _cmd_sub_items_read_only(self, cmd, cmd_state):
         for key, value in cmd_state.items():
-            if type(value) == dict:
+            if isinstance(value, dict):
                 setattr(
                     cmd, key, self._cmd_sub_items_read_only(getattr(cmd, key), value)
                 )

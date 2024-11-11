@@ -147,7 +147,7 @@ def _write_function_stub(name, data, s_stub):
     for arg_name in data["argument_names"]:
         arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
         s_stub.write(f", {arg_name}: {arg_type}")
-    s_stub.write(f"):\n")
+    s_stub.write("):\n")
     # TODO: add return type
     doc = data["doc"]
     doc = doc.strip().replace("\n", "\n        ")
@@ -178,25 +178,25 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")
-    s_stub.write(f"    version: str\n")
-    s_stub.write(f"    fluent_name: str\n")
-    s_stub.write(f"    _python_name: str\n")
+    s_stub.write("    version: str\n")
+    s_stub.write("    fluent_name: str\n")
+    s_stub.write("    _python_name: str\n")
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
-        s_stub.write(f"    child_names: list[str]\n")
+        s_stub.write("    child_names: list[str]\n")
     command_names = data["command_names"]
     if command_names:
         s.write(f"    command_names = {command_names}\n")
-        s_stub.write(f"    command_names: list[str]\n")
+        s_stub.write("    command_names: list[str]\n")
     query_names = data["query_names"]
     if query_names:
         s.write(f"    query_names = {query_names}\n")
-        s_stub.write(f"    query_names: list[str]\n")
+        s_stub.write("    query_names: list[str]\n")
     argument_names = data["argument_names"]
     if argument_names:
         s.write(f"    argument_names = {argument_names}\n")
-        s_stub.write(f"    argument_names: list[str]\n")
+        s_stub.write("    argument_names: list[str]\n")
     classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
     if data["child_classes"]:
         s.write("    _child_classes = dict(\n")
@@ -248,7 +248,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     return_type = data["return_type"]
     if return_type:
         s.write(f"    return_type = {return_type!r}\n")
-        s_stub.write(f"    return_type: str\n")
+        s_stub.write("    return_type: str\n")
     s.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
         if name not in _CLASS_WRITTEN:

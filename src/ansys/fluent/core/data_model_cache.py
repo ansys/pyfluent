@@ -31,8 +31,8 @@ class NameKey(Enum):
     DISPLAY = "_name_"
 
     def __invert__(self):
-        l = list(NameKey)
-        return l[~l.index(self)]
+        lst = list(NameKey)
+        return lst[~lst.index(self)]
 
 
 class _CacheImpl:
@@ -372,7 +372,7 @@ class DataModelCache:
             cached state
         """
         name_key_in_config = self.get_config(rules, "name_key")
-        if name_key == None:
+        if name_key is None:
             name_key = name_key_in_config
         cache = self.rules_str_to_cache[rules]
         with self._with_lock(rules):

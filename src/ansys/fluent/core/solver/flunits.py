@@ -103,6 +103,8 @@ Unhandled:
 
 from __future__ import annotations
 
+from typing import TypeVar
+
 _fl_unit_table = {
     "acceleration": "m s^-2",
     "angle": "radian",
@@ -242,13 +244,16 @@ class UnitsNotDefinedForQuantity(ValueError):
         )
 
 
+QuantityT = TypeVar("QuantityT")
+
+
 class UnhandledQuantity(RuntimeError):
     """Raised on an attempt to get an unhandled Quantity."""
 
     def __init__(
         self,
         path: str,
-        quantity: Quantity,
+        quantity: QuantityT,
     ) -> None:
         """Initialize UnhandledQuantity."""
         super().__init__(

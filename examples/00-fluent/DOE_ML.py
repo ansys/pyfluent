@@ -25,6 +25,8 @@ Design of Experiments and Machine Learning model building
 # Import required libraries/modules
 # =================================
 
+# flake8: noqa: E402
+
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -216,10 +218,10 @@ y_test = np.ravel(y_test.T)
 # * Prediction on Unseen/Test Data (scikit-learn)
 # * Parity Plot (Matplotlib and Seaborn)
 
-from pprint import pprint  # noqa: F401
+# from pprint import pprint
 
-from sklearn.ensemble import RandomForestRegressor  # noqa: F401
-from sklearn.linear_model import LinearRegression  # noqa: F401
+# from sklearn.ensemble import RandomForestRegressor
+# from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import RepeatedKFold, cross_val_score
 from xgboost import XGBRegressor

@@ -82,16 +82,16 @@ def test_disk_2d_models(disk_settings_session):
     ]
     k_omega_options = models.viscous.k_omega_options
     k_omega_options.kw_low_re_correction = True
-    assert k_omega_options.kw_low_re_correction() == True
+    assert k_omega_options.kw_low_re_correction() is True
 
     turb_options = models.viscous.options
     turb_options.production_kato_launder_enabled = True
-    assert turb_options.production_kato_launder_enabled() == True
+    assert turb_options.production_kato_launder_enabled() is True
     turb_options.production_limiter.clip_factor = 9
     assert turb_options.production_limiter.clip_factor() == 9
     turb_expert = models.viscous.turbulence_expert
     turb_expert.turb_non_newtonian = True
-    assert turb_expert.turb_non_newtonian() == True
+    assert turb_expert.turb_non_newtonian() is True
 
     models.viscous.model = "laminar"
     assert models.viscous.model() == "laminar"

@@ -144,8 +144,8 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         file_transfer_service = RemoteFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -300,3 +300,8 @@ def periodic_rot_settings_session(new_solver_session):
         lightweight_setup=True,
     )
     return solver
+
+
+@pytest.fixture
+def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)

@@ -91,7 +91,7 @@ class SystemCoupling:
                 file_name=scp_file_name
             )
 
-            if self._solver._fluent_connection._remote_instance != None:
+            if self._solver._fluent_connection._remote_instance is not None:
                 # download the file locally in case Fluent is remote
                 # assume file transfer service is configured - download the file
                 self._solver.download(scp_file_name)

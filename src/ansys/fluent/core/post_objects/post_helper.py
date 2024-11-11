@@ -127,7 +127,7 @@ class PostAPIHelper:
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
         """Returns vector field."""
-        scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"  # noqa: E501
+        scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"
         return self._scheme_str_to_py_list(scheme_eval_str)
 
     def get_field_unit(self, field):
@@ -135,7 +135,7 @@ class PostAPIHelper:
         quantity = self._field_unit_quantity(field)
         if quantity == "*null*":
             return ""
-        scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"  # noqa: E501
+        scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
         return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
 
     def _field_unit_quantity(self, field):
