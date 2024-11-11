@@ -111,11 +111,9 @@ all PyFluent packages in a Python *virtual environment*:
    be automatically set on Windows.
 
 #. In a command window, use this code to set up and activate a local Python
-   virtual environment::
+   virtual environment:
 
-  .. code:: bash
-
-
+   .. code:: bash
 
       # Set up a local virtual environment
       python -m venv venv
@@ -130,11 +128,10 @@ all PyFluent packages in a Python *virtual environment*:
       . venv/bin/activate
 
 
-
 #. In the same command window, use ``pip``, the package installer for Python, to
-   install the PyFluent packages::
+   install the PyFluent packages:
 
-  .. code:: bash
+   .. code:: bash
 
       python -m pip install ansys-fluent-core   # Use Fluent’s core capabilities (mesh, solve, postprocess)
       python -m pip install ansys-fluent-parametric   # Use Fluent’s parametric capabilities (optional)
