@@ -234,15 +234,15 @@ class Mesh:
     Methods
     -------
 
-    get_surface_ids:
+    get_surface_ids()
         Get a list of surface ids.
-    get_surface_names:
+    get_surface_names()
         Get a list of surface names.
-    get_surface_locs:
+    get_surface_locs(surface_id)
         Get the min and max location index of surface.
-    get_connectivity:
+    get_connectivity(surface_id)
         Get the surface connectivity.
-    get_vertices:
+    get_vertices(surface_id)
         Get list of vertices of the surface.
     """
 
@@ -326,35 +326,35 @@ class RPVarProcessor:
 
     Methods
     -------
-    input_parameters:
+    input_parameters()
         Get a list of input parameter objects
-    output_parameters:
+    output_parameters()
         Get a list of output parameter objects
-    num_dimensions:
+    num_dimensions()
         Get the dimensionality of the case (2 or 3)
-    precision:
+    precision()
         Get the precision (1 or 2 for 1D of 2D)
-    iter_count:
+    iter_count()
         Get the number of iterations
-    rp_vars:
+    rp_vars()
         Get dictionary of all RP vars
-    rp_var:
+    rp_var(name)
         Get specific RP var by name, either by providing
         the Scheme name:
             `reader.rp_var("rad/enable-netm?")`
         or a pythonic version:
             `reader.rp_var.rad.enable_netm__q()`
-    has_rp_var:
+    has_rp_var(name)
         Whether case has particular RP var
-    config_vars:
+    config_vars()
         Get dictionary of all RP vars
-    config_var:
+    config_var(name)
         Get specific config var by name, either by providing
         the Scheme name:
             `reader.config_var("rp-3d?")`
         or a pythonic version:
             `reader.config_var.rp_3d__q()`
-    has_config_var:
+    has_config_var(name)
         Whether case has particular config var
     """
 
@@ -567,7 +567,7 @@ class CaseFile(RPVarProcessor):
 
     Methods
     -------
-    get_mesh:
+    get_mesh()
         Get the mesh data.
     """
 

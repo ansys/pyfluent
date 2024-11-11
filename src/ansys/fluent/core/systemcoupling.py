@@ -38,15 +38,15 @@ class SystemCoupling:
 
     Methods
     -------
-    get_variables:
+    get_variables()
         Get variables
-    get_regions:
+    get_regions()
         Get regions
-    get_analysis_type:
+    get_analysis_type()
         Get analysis type
-    connect:
+    connect()
         Connect parallelly
-    solve:
+    solve()
         Initialize and solve
     """
 

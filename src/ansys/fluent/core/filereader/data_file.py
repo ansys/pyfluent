@@ -36,17 +36,17 @@ class DataFile:
 
     Methods
     -------
-    case_file:
+    case_file()
         Get the name of case file.
-    get_face_variables:
-        Get the variables list available at face.
-    get_phases:
+    get_phases()
         Get the list of phases.
-    get_cell_variables:
+    get_face_variables(phase_name)
+        Get the variables list available at face.
+    get_cell_variables(phase_name)
         Get the variables list available at cell.
-    get_face_scalar_field_data:
+    get_face_scalar_field_data(phase_name, field_name, surface_id)
         Get the scalar field data for face.
-    get_face_vector_field_data:
+    get_face_vector_field_data(phase_name, surface_id)
         Get the vector field data for face.
     """
 
