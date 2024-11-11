@@ -7,6 +7,7 @@ class IncompleteISOSurfaceDefinition(RuntimeError):
     """Raised when iso-surface definition is incomplete."""
 
     def __init__(self):
+        """Initialize IncompleteISOSurfaceDefinition."""
         super().__init__("Iso surface definition is incomplete.")
 
 
@@ -14,6 +15,7 @@ class SurfaceCreationError(RuntimeError):
     """Raised when surface creation is unsuccessful."""
 
     def __init__(self):
+        """Initialize SurfaceCreationError."""
         super().__init__("Surface creation is unsuccessful.")
 
 

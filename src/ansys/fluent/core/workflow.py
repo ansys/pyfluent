@@ -24,6 +24,7 @@ class CommandInstanceCreationError(RuntimeError):
     """Raised when an attempt to create an instance of a task command fails."""
 
     def __init__(self, task_name):
+        """Initialize CommandInstanceCreationError."""
         super().__init__(f"Could not create command instance for task {task_name}.")
 
 

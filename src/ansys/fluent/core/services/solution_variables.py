@@ -55,26 +55,21 @@ class SolutionVariableService:
 class SolutionVariableInfo:
     """Provide access to Fluent SVARs and Zones information.
 
-    Example
-    -------
-
-    .. code-block:: python
-
-        >>> solution_variable_info = solver_session.fields.solution_variable_info
-        >>>
-        >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
-        >>> wall_fluid_info.solution_variables
-        >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
-        >>> solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
-        >>> solution_variable_info_centroid
-        >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
-        >>>
-        >>> zones_info = solution_variable_info.get_zones_info()
-        >>> zones_info.zones
-        >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
-        >>> zone_info = zones_info['wall']
-        >>> zone_info
-        >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
+    Examples
+    --------
+    >>> solution_variable_info = solver_session.fields.solution_variable_info
+    >>> wall_fluid_info = solution_variable_info.get_variables_info(zone_names=['wall' , "fluid"], domain_name="mixture")
+    >>> print(wall_fluid_info.solution_variables)
+    >>> ['SV_CENTROID', 'SV_D', 'SV_H', 'SV_K', 'SV_P', 'SV_T', 'SV_U', 'SV_V', 'SV_W']
+    >>> solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
+    >>> print(solution_variable_info_centroid)
+    >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
+    >>> zones_info = solution_variable_info.get_zones_info()
+    >>> print(zones_info.zones)
+    >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
+    >>> zone_info = zones_info['wall']
+    >>> print(zone_info)
+    >>> name:wall count: 3630 zone_id:3 zone_type:wall thread_type:Face
     """
 
     class SolutionVariables:
@@ -84,6 +79,7 @@ class SolutionVariableInfo:
             """Class containing information for single solution variable."""
 
             def __init__(self, solution_variable_info):
+                """Initialize SolutionVariable."""
                 self.name = solution_variable_info.name
                 self.dimension = solution_variable_info.dimension
                 self.field_type = _FieldDataConstants.proto_field_type_to_np_data_type[
@@ -94,6 +90,7 @@ class SolutionVariableInfo:
                 return f"name:{self.name} dimension:{self.dimension} field_type:{self.field_type}"
 
         def __init__(self, solution_variables_info):
+            """Initialize SolutionVariables."""
             self._solution_variables_info = {}
             for solution_variable_info in solution_variables_info:
                 self._solution_variables_info[solution_variable_info.name] = (
@@ -140,6 +137,7 @@ class SolutionVariableInfo:
                 """Class containing information for partitions."""
 
                 def __init__(self, partition_info):
+                    """Initialize PartitionsInfo."""
                     self.count = partition_info.count
                     self.start_index = (
                         partition_info.startIndex if self.count > 0 else 0
@@ -147,6 +145,7 @@ class SolutionVariableInfo:
                     self.end_index = partition_info.endIndex if self.count > 0 else 0
 
             def __init__(self, zone_info):
+                """Initialize ZoneInfo."""
                 self.name = zone_info.name
                 self.zone_id = zone_info.zoneId
                 self.zone_type = zone_info.zoneType
@@ -170,6 +169,7 @@ class SolutionVariableInfo:
                 return f"name:{self.name} count: {self.count} zone_id:{self.zone_id} zone_type:{self.zone_type} threadType:{'Cell' if self.thread_type == SvarProtoModule.ThreadType.CELL_THREAD else 'Face'}{partition_str}"
 
         def __init__(self, zones_info, domains_info):
+            """Initialize ZonesInfo."""
             self._zones_info = {}
             self._domains_info = {}
             for zone_info in zones_info:
@@ -198,6 +198,7 @@ class SolutionVariableInfo:
         self,
         service: SolutionVariableService,
     ):
+        """Initialize SolutionVariableInfo."""
         self._service = service
 
     def get_variables_info(
@@ -266,6 +267,7 @@ class SvarError(ValueError):
     """Exception class for errors in solution variable name."""
 
     def __init__(self, solution_variable_name: str, allowed_values: List[str]):
+        """Initialize SvarError."""
         self.solution_variable_name = solution_variable_name
         super().__init__(
             allowed_name_error_message(
@@ -280,6 +282,7 @@ class ZoneError(ValueError):
     """Exception class for errors in Zone name."""
 
     def __init__(self, zone_name: str, allowed_values: List[str]):
+        """Initialize ZoneError."""
         self.zone_name = zone_name
         super().__init__(
             allowed_name_error_message(
@@ -457,40 +460,34 @@ def extract_svars(solution_variables_data):
 class SolutionVariableData:
     """Provides access to Fluent SVAR data on zones.
 
-    Example
-    -------
-    .. code-block:: python
-        >>>
-        >>> solution_variable_data = solver_session.fields.solution_variable_data
-        >>>
-        >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
-        >>>
-        >>> sv_t_wall_fluid.domain
-        >>> 'mixture'
-        >>>
-        >>> sv_t_wall_fluid.zones
-        >>> ['fluid', 'wall']
-        >>>
-        >>> fluid_temp = sv_t_wall_fluid['fluid']
-        >>> fluid_temp.size
-        >>> 13852
-        >>> fluid_temp.dtype
-        >>> float64
-        >>> fluid_temp
-        >>> array([600., 600., 600., ..., 600., 600., 600.])
-        >>>
-        >>> wall_temp_array = solution_variable_data.create_empty_array("SV_T", "wall")
-        >>> fluid_temp_array =solution_variable_data.create_empty_array("SV_T", "fluid")
-        >>> wall_temp_array[:]= 500
-        >>> fluid_temp_array[:]= 600
-        >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-        >>> solution_variable_data.set_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
+    Examples
+    --------
+    >>> solution_variable_data = solver_session.fields.solution_variable_data
+    >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
+    >>> print(sv_t_wall_fluid.domain)
+    >>> 'mixture'
+    >>> print(sv_t_wall_fluid.zones)
+    >>> ['fluid', 'wall']
+    >>> fluid_temp = sv_t_wall_fluid['fluid']
+    >>> print(fluid_temp.size)
+    >>> 13852
+    >>> print(fluid_temp.dtype)
+    >>> float64
+    >>> print(fluid_temp)
+    >>> array([600., 600., 600., ..., 600., 600., 600.])
+    >>> wall_temp_array = solution_variable_data.create_empty_array("SV_T", "wall")
+    >>> fluid_temp_array =solution_variable_data.create_empty_array("SV_T", "fluid")
+    >>> wall_temp_array[:]= 500
+    >>> fluid_temp_array[:]= 600
+    >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
+    >>> solution_variable_data.set_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
     """
 
     class Data:
         """Solution variable data."""
 
         def __init__(self, domain_name, zone_id_name_map, solution_variable_data):
+            """Initialize Data."""
             self._domain_name = domain_name
             self._data = {
                 zone_id_name_map[zone_id]: zone_data
@@ -520,6 +517,7 @@ class SolutionVariableData:
         service: SolutionVariableService,
         solution_variable_info: SolutionVariableInfo,
     ):
+        """Initialize SolutionVariableData."""
         self._service = service
         self._solution_variable_info = solution_variable_info
 

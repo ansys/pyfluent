@@ -44,6 +44,7 @@ class service_creator:
     """A gRPC service creator."""
 
     def __init__(self, service_name: str):
+        """Initialize service_creator."""
         self._service_cls = _service_cls_by_name[service_name]
 
     def create(self, *args, **kwargs):

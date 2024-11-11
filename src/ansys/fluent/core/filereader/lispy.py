@@ -48,6 +48,7 @@ class Procedure:
     """A user-defined Scheme procedure."""
 
     def __init__(self, params, exp, env):
+        """Initialize Procedure."""
         self.params, self.exp, self.env = params, exp, env
 
     def __call__(self, *args):
@@ -91,6 +92,7 @@ class InputPort:
     tokenizer = r"""\s*(,@|[('`,)]|"(?:[\\].|[^\\"])*"|;.*|[^\s('"`,;)]*)(.*)"""
 
     def __init__(self, file):
+        """Initialize InputPort."""
         self.file = file
         self.line = ""
 
@@ -252,6 +254,7 @@ class Env(dict):
     """An environment: a dict of {'var':val} pairs, with an outer Env."""
 
     def __init__(self, params=(), args=(), outer=None):
+        """Initialize Env."""
         # Bind paarm list to corresponding args, or single param to list of args
         self.outer = outer
         if isa(params, Symbol):
@@ -497,7 +500,7 @@ _append, _cons, _let = map(Sym, "append cons let".split())
 
 
 def expand_quasiquote(x):
-    """Expand `x => 'x; `,x => x; `(,@x y) => (append x y)"""
+    """Expand `x => 'x; `,x => x; `(,@x y) => (append x y)."""
     if not is_pair(x):
         return [_quote, x]
     require(x, x[0] is not _unquotesplicing, "can't splice here")

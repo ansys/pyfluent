@@ -13,6 +13,7 @@ class ApiUpgradeAdvisor:
     """API upgrade advisor."""
 
     def __init__(self, scheme_eval: SchemeEval, version: str, mode: str) -> None:
+        """Initialize ApiUpgradeAdvisor."""
         self._scheme_eval = scheme_eval.scheme_eval
         self._version = version
         self._mode = mode

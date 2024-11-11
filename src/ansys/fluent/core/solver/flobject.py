@@ -76,6 +76,7 @@ class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
     def __init__(self, python_path):
+        """Initialize InactiveObjectError."""
         super().__init__(f"'{python_path}' is currently inactive.")
 
 
@@ -2196,14 +2197,14 @@ def get_root(
     version : str
         Fluent version.
 
+    Returns
+    -------
+    root object
+
     Raises
     ------
     RuntimeError
         If hash values are inconsistent.
-
-    Returns
-    -------
-    root object
     """
     from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 
