@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.fluent_version(">=25.1")
 def test_systemcoupling_mixing_elbow_settings_apis(mixing_elbow_case_data_session):
     """Test System Coupling related settings APIs"""
@@ -10,8 +11,12 @@ def test_systemcoupling_mixing_elbow_settings_apis(mixing_elbow_case_data_sessio
     region_names = solver.settings.setup.models.system_coupling.get_all_regions()
     assert elbow_fluid in region_names
     # elbow fluid must be a volume
-    assert solver.settings.setup.models.system_coupling.get_topology(
-        region_name = elbow_fluid) == "Volume"
+    assert (
+        solver.settings.setup.models.system_coupling.get_topology(
+            region_name=elbow_fluid
+        )
+        == "Volume"
+    )
 
 
 def _test_systemcoupling_mixing_elbow_settings_common(mixing_elbow_case_data_session):

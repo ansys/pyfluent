@@ -195,7 +195,7 @@ class SystemCoupling:
     def _get_list(value: list | None) -> list:
         if isinstance(value, list):
             return value
-        elif value == None:
+        elif value is None:
             return list()
         raise TypeError(f"_get_list unexpected type of {value}")
 
