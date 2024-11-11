@@ -165,3 +165,8 @@ The following rules are implied in the preceding examples:
     ``"Pa"`` in the preceding example) must be wrapped in single quotation marks
     so that the original quotation marks are preserved.
   - The contents of string arguments are preserved.
+
+Limitations
+-----------
+1. The command ``file.set_batch_options`` is not supported because batch options are automatically
+   configured to ensure the execution environment in Fluent is correctly set for remote operations.
