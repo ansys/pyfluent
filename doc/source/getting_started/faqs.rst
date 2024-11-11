@@ -92,7 +92,7 @@ You can use PyFluent to do tasks such as these:
 
 How do you install PyFluent?
 ----------------------------
-While :ref:`installation` provides basic information for quickly installing and
+While :ref:`ref_installation` provides basic information for quickly installing and
 launching the ``ansys-fluent-core`` package, these steps explain how to install
 all PyFluent packages in a Python *virtual environment*:
 
