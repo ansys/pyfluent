@@ -16,7 +16,7 @@ in PyFluent. The PyFluent TUI commands are Python versions of the commands
 that are used in the Fluent console.
 
 The Python TUI is superseded by purpose-built PyFluent interfaces that are more powerful
-and user-friendly. See :ref:`settings objects <ref_settings>` for solution mode, and 
+and user-friendly. See :ref:`settings objects <ref_settings>` for solution mode, and
 :ref:`guided workflows <ref_meshing_guide>` for meshing mode.
 
 The PyFluent TUI commands do not support TUI features such as aliases or
@@ -68,7 +68,7 @@ To see the documentation for the viscous model menu options, you can run:
    ...
 
 Each TUI method argument is the Python analogue that would be passed in direct
-interaction in the Fluent console. In the recent Fluent versions, in both meshing 
+interaction in the Fluent console. In the recent Fluent versions, in both meshing
 and solution mode, you can use Python journaling, which is a beta feature,
 to construct the TUI commands for PyFluent. The following section describes how to
 construct the TUI commands for PyFluent in different Fluent versions.
@@ -143,7 +143,7 @@ You'll need to manually convert these TUI commands using the transformation rule
 in the next section.
 
 In Fluent 2022 R2, the Python journaling feature is not available. Therefore, you must
-manually convert all TUI commands using the transformation rules described in the next 
+manually convert all TUI commands using the transformation rules described in the next
 section.
 
 TUI command transformation rules
@@ -168,5 +168,5 @@ The following rules are implied in the preceding examples:
 
 Limitations
 -----------
-1. The command ``file.set_batch_options`` is not supported because batch options are automatically
+#. The command ``file.set_batch_options`` is not supported because batch options are automatically
    configured to ensure the execution environment in Fluent is correctly set for remote operations.
