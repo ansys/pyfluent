@@ -4,7 +4,6 @@ import os
 from pathlib import Path
 import pickle
 
-from ansys.fluent.core import codegen
 from ansys.fluent.core.codegen import (  # noqa: F401
     builtin_settingsgen,
     datamodelgen,
@@ -12,7 +11,6 @@ from ansys.fluent.core.codegen import (  # noqa: F401
     tuigen,
 )
 from ansys.fluent.core.search import get_api_tree_file_name
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def _update_first_level(d, u):
@@ -33,12 +31,7 @@ def generate(version: str, static_infos: dict):
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)
-    # Built-in settings are always generated for the latest version
-    # TODO: Change the hardcoded version after 25.2 Fluent image is available
-    if (
-        codegen.CODEGEN_GENERATE_BUILTIN_SETTINGS
-        and FluentVersion(version) == FluentVersion.v251
-    ):
+    if os.getenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS") != "1":
         builtin_settingsgen.generate(version)
 
 
