@@ -1,3 +1,6 @@
+from pathlib import Path
+import tempfile
+
 import pytest
 
 try:
@@ -19,6 +22,8 @@ try:
         CumulativePlots,
         CustomFieldFunctions,
         CustomVectors,
+        DesignPoint,
+        DesignPoints,
         DiscretePhase,
         DiscretePhaseHistogram,
         DynamicMesh,
@@ -56,6 +61,8 @@ try:
         NamedExpressions,
         Optics,
         OutputParameters,
+        ParametricStudies,
+        ParametricStudy,
         ParticleTracks,
         PartitionSurfaces,
         Pathlines,
@@ -112,6 +119,7 @@ try:
     )
 except ImportError:
     pass  # for no-codegen testing workflow
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -630,6 +638,26 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     else:
         with pytest.raises(RuntimeError):
             CustomVectors(settings_source=solver)
+    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    project_file = Path(tmp_save_path) / "mixing_elbow_param.flprj"
+    solver.settings.parametric_studies.initialize(project_filename=str(project_file))
+    assert ParametricStudies(settings_source=solver) == solver.parametric_studies
+    assert (
+        ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")
+        == solver.parametric_studies["mixing_elbow-Solve"]
+    )
+    assert (
+        DesignPoints(settings_source=solver, parametric_studies="mixing_elbow-Solve")
+        == solver.parametric_studies["mixing_elbow-Solve"].design_points
+    )
+    assert (
+        DesignPoint(
+            settings_source=solver,
+            parametric_studies="mixing_elbow-Solve",
+            name="Base DP",
+        )
+        == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
+    )
 
 
 @pytest.mark.codegen_required

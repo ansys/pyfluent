@@ -946,4 +946,8 @@ DATA = {
             FluentVersion.v231: "results.report.simulation_reports",
         },
     ),
+    "ParametricStudies": ("Singleton", "parametric_studies"),
+    "ParametricStudy": ("NamedObject", "parametric_studies"),
+    "DesignPoints": ("Singleton", "parametric_studies.design_points"),
+    "DesignPoint": ("NamedObject", "parametric_studies.design_points"),
 }

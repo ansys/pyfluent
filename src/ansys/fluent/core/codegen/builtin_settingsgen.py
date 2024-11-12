@@ -4,7 +4,7 @@ import os
 from zipimport import zipimporter
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
-from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin
+from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 
 _PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
@@ -33,12 +33,22 @@ def _get_settings_root(version: str):
     return settings.root
 
 
-def _get_named_object_type(root, path):
-    for comp in path.split("."):
-        root = root._child_classes[comp]
-    return (
-        "Creatable" if issubclass(root, CreatableNamedObjectMixin) else "NonCreatable"
-    )
+def _get_named_objects_in_path(root, path, kind):
+    named_objects = []
+    cls = root
+    comps = path.split(".")
+    for i, comp in enumerate(comps):
+        cls = cls._child_classes[comp]
+        if i < len(comps) - 1 and issubclass(cls, NamedObject):
+            named_objects.append(comp)
+            cls = cls.child_object_type
+    final_type = ""
+    if kind == "NamedObject":
+        if issubclass(cls, CreatableNamedObjectMixin):
+            final_type = "Creatable"
+        else:
+            final_type = "NonCreatable"
+    return named_objects, final_type
 
 
 def generate(version: str):
@@ -49,7 +59,8 @@ def generate(version: str):
     with open(_PY_FILE, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
-            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting\n\n\n"
+            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, Solver\n"
+            "from ansys.fluent.core.solver.flobject import SettingsBase\n\n\n"
         )
         f.write("__all__ = [\n")
         for name, _ in DATA.items():
@@ -57,11 +68,29 @@ def generate(version: str):
         f.write("]\n\n")
         for name, v in DATA.items():
             kind, path = v
+            path = path[FluentVersion(version)] if isinstance(path, dict) else path
+            named_objects, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
-                path = path[FluentVersion(version)] if isinstance(path, dict) else path
-                kind = f"{_get_named_object_type(root, path)}NamedObject"
+                kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
             f.write(f'    """{name} setting."""\n\n')
+            f.write(f"    def __init__(self")
+            for named_object in named_objects:
+                f.write(f", {named_object}: str")
+            f.write(", settings_source: SettingsBase | Solver | None = None")
+            if kind == "NonCreatableNamedObject":
+                f.write(", name: str = None")
+            elif kind == "CreatableNamedObject":
+                f.write(", name: str = None, new_instance_name: str = None")
+            f.write("):\n")
+            f.write(f"        super().__init__(settings_source=settings_source")
+            if kind == "NonCreatableNamedObject":
+                f.write(", name=name")
+            elif kind == "CreatableNamedObject":
+                f.write(", name=name, new_instance_name=new_instance_name")
+            for named_object in named_objects:
+                f.write(f", {named_object}={named_object}")
+            f.write(")\n\n")
 
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
