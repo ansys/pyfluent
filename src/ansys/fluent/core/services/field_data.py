@@ -777,7 +777,9 @@ class ChunkParser:
     The object which can register and unregister callbacks.
     It provides callbacks, which are triggered with following arguments:
         zone_id : int
+
         field_name : str
+
         field : numpy array
     """
 

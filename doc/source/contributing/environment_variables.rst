@@ -59,4 +59,4 @@ Following is a list of environment variables that can be set to control various 
     * - REMOTING_SERVER_ADDRESS
       - Specifies the IP address of the Fluent server while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - SERVER_INFO_DIR
-      - Specifies the directory where the server-info file will be created while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+      - Specifies the directory where the server-info file is created while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
