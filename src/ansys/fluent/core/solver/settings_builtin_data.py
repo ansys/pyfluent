@@ -314,7 +314,13 @@ DATA = {
             FluentVersion.v232: "setup.mesh_interfaces",
         },
     ),
-    "DynamicMesh": ("Singleton", {FluentVersion.v252: "setup.dynamic_mesh"}),
+    "DynamicMesh": (
+        "Singleton",
+        {
+            FluentVersion.v252: "setup.dynamic_mesh",
+            FluentVersion.v251: "setup.dynamic_mesh",
+        },
+    ),
     "ReferenceValues": ("Singleton", "setup.reference_values"),
     "ReferenceFrames": (
         "Singleton",
