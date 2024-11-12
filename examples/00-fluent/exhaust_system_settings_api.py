@@ -56,13 +56,14 @@ import_file_name = examples.download_file(
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in meshing mode with double precision running on
-# two processors.
+# two processors and print Fluent version.
 
 meshing = pyfluent.launch_fluent(
     precision="double",
     processor_count=2,
     mode="meshing",
 )
+print(meshing.get_fluent_version())
 
 ###############################################################################
 # Initialize workflow
@@ -600,13 +601,6 @@ boundary_conditions.copy(
 # Set the boundary conditions at the outlet (``outlet-1``).
 
 boundary_conditions.pressure_outlet["outlet-1"].turbulence.turbulent_intensity = 0.05
-
-###############################################################################
-# Turn on residual plots
-# ~~~~~~~~~~~~~~~~~~~~~~
-# Activate plotting of the solution residuals.
-
-solver.solution.monitor.residual.options.plot = True
 
 ###############################################################################
 # Initialize flow field

@@ -82,7 +82,7 @@ from ansys.fluent.visualization import set_config  # noqa: E402
 set_config(blocking=True, set_view_on_display="isometric")
 
 ####################################################################################
-# Launch Fluent session with solver mode
+# Launch Fluent session with solver mode and print Fluent version
 # ==================================================================================
 
 solver = pyfluent.launch_fluent(
@@ -91,6 +91,7 @@ solver = pyfluent.launch_fluent(
     precision="double",
     processor_count=4,
 )
+print(solver.get_fluent_version())
 
 ####################################################################################
 # Import mesh

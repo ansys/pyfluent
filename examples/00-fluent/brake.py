@@ -47,11 +47,11 @@ import_filename = examples.download_file(
 # ==================================================================================
 
 ####################################################################################
-# Launch Fluent session with solver mode
-# --------------------------------------
+# Launch Fluent session with solver mode and print Fluent version
+# ---------------------------------------------------------------
 
 session = pyfluent.launch_fluent(precision="double", processor_count=2, version="3d")
-session.health_check.status()
+print(session.get_fluent_version())
 
 ####################################################################################
 # Import mesh

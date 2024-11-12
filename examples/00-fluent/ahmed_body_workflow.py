@@ -53,10 +53,10 @@ save_path = Path(pyfluent.EXAMPLES_PATH)
 set_config(blocking=True, set_view_on_display="isometric")
 
 #######################################################################################
-# Launch Fluent session with meshing mode
+# Launch Fluent session with meshing mode and print Fluent version
 # =====================================================================================
 session = pyfluent.launch_fluent(mode="meshing", cleanup_on_exit=True)
-session.health_check.status()
+print(session.get_fluent_version())
 
 #######################################################################################
 # Meshing Workflow

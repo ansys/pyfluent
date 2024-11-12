@@ -57,13 +57,14 @@ headlamp_spaceclaim_file, headlamp_pmdb_file = [
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in meshing mode with single precision running on
-# four processors.
+# four processors and print Fluent version.
 
 meshing = pyfluent.launch_fluent(
     precision="single",
     processor_count=4,
     mode="meshing",
 )
+print(meshing.get_fluent_version())
 
 ###############################################################################
 # Initialize workflow

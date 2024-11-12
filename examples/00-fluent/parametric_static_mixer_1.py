@@ -21,11 +21,12 @@ from ansys.fluent.core import examples
 ############################################################################
 # Launch Fluent
 # ~~~~~~~~~~~~~
-# Launch Fluent in 3D and double precision.
+# Launch Fluent in 3D and double precision and print Fluent version.
 
 solver_session = pyfluent.launch_fluent(
     precision="double", processor_count=2, mode="solver"
 )
+print(solver_session.get_fluent_version())
 
 ############################################################################
 # Download and read files
