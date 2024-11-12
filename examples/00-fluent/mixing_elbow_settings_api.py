@@ -37,13 +37,14 @@ import_file_name = examples.download_file(
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in solver mode with double precision running on
-# two processors.
+# two processors and print Fluent version.
 
 solver = pyfluent.launch_fluent(
     precision="double",
     processor_count=2,
     mode="solver",
 )
+print(solver.get_fluent_version())
 
 ###############################################################################
 # Import mesh and perform mesh check
@@ -121,13 +122,6 @@ hot_inlet.thermal.temperature.value = 313.15
 solver.setup.boundary_conditions.pressure_outlet[
     "outlet"
 ].turbulence.turbulent_viscosity_ratio = 4
-
-###############################################################################
-# Disable plotting of residuals during calculation
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Disable plotting of residuals during the calculation.
-
-solver.solution.monitor.residual.options.plot = False
 
 ###############################################################################
 # Initialize flow field
