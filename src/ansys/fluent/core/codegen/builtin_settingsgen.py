@@ -74,7 +74,7 @@ def generate(version: str):
                 kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
             f.write(f'    """{name} setting."""\n\n')
-            f.write(f"    def __init__(self")
+            f.write("    def __init__(self")
             for named_object in named_objects:
                 f.write(f", {named_object}: str")
             f.write(", settings_source: SettingsBase | Solver | None = None")
@@ -83,7 +83,7 @@ def generate(version: str):
             elif kind == "CreatableNamedObject":
                 f.write(", name: str = None, new_instance_name: str = None")
             f.write("):\n")
-            f.write(f"        super().__init__(settings_source=settings_source")
+            f.write("        super().__init__(settings_source=settings_source")
             if kind == "NonCreatableNamedObject":
                 f.write(", name=name")
             elif kind == "CreatableNamedObject":
