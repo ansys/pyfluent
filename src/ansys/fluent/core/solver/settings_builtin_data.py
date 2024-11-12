@@ -315,7 +315,6 @@ DATA = {
         },
     ),
     "DynamicMesh": ("Singleton", {FluentVersion.v252: "setup.dynamic_mesh"}),
-    "DynamicMesh": ("Singleton", {FluentVersion.v251: "setup.dynamic_mesh"}),
     "ReferenceValues": ("Singleton", "setup.reference_values"),
     "ReferenceFrames": (
         "Singleton",
