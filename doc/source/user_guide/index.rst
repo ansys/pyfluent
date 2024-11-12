@@ -65,7 +65,7 @@ PyFluent sessions
 
 Guided meshing workflows
 ~~~~~~~~~~~~~~~~~~~~~~~~
-Leverage intuitive, :ref:`guided workflows <ref_meshing_workflow>` to create high-quality meshes.
+Leverage intuitive, :ref:`guided workflows <ref_meshing_guide>` to create high-quality meshes.
 
 Solution mode and settings objects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

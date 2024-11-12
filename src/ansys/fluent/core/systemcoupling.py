@@ -38,12 +38,16 @@ class SystemCoupling:
 
     Methods
     -------
-    __getattr__
-    get_variables
-    get_regions
-    get_analysis_type
-    connect
-    solve
+    get_variables()
+        Get variables
+    get_regions()
+        Get regions
+    get_analysis_type()
+        Get analysis type
+    connect()
+        Connect parallelly
+    solve()
+        Initialize and solve
     """
 
     def __init__(self, solver):

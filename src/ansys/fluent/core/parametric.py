@@ -257,13 +257,13 @@ class LocalParametricStudy:
 
     Methods
     -------
-    add_design_point(design_point_name: str) -> LocalDesignPoint
+    add_design_point(design_point_name)
         Add a design point.
     design_point(idx_or_name)
         Get a design point, either by name (str) or an index
         indicating the position in the table (by order of insertion).
-    run_in_fluent
-    Run the study in Fluent
+    run_in_fluent()
+        Run the study in Fluent
 
     Raises
     ------

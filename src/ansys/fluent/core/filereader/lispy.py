@@ -502,7 +502,7 @@ _append, _cons, _let = map(Sym, "append cons let".split())
 
 
 def expand_quasiquote(x):
-    """Expand `x => 'x; `,x => x; `(,@x y) => (append x y)."""
+    """Expand ```x`` => ``'x``; ```,x`` => ``x``; ```(,@x y)`` => ``(append x y)``."""
     if not is_pair(x):
         return [_quote, x]
     require(x, x[0] is not _unquotesplicing, "can't splice here")

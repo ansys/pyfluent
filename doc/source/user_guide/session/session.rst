@@ -18,9 +18,6 @@ You can obtain a PyFluent session object by calling either of the functions, :fu
   >>> solver = pyfluent.launch_fluent(case_data_file_name=case_file_name)
 
 
-Note: You can find out more about using :ref:`ref_session_guide`, and :ref:`ref_launch_guide`.
-
-
 Solution mode sessions
 ----------------------
 
