@@ -15,7 +15,7 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
-  PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Documents/ansys_fluent_core_examples"
+  PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
 jobs:
   build_dev_docs:

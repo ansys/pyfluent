@@ -99,7 +99,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     )
     server.start()
 
-    with pytest.raises(UnsupportedRemoteFluentInstance) as msg:
+    with pytest.raises(UnsupportedRemoteFluentInstance):
         fluent_connection = FluentConnection(
             ip=ip,
             port=port,

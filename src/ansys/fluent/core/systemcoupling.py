@@ -47,6 +47,7 @@ class SystemCoupling:
     """
 
     def __init__(self, solver):
+        """Initialize SystemCoupling."""
         self._solver = solver
         # version check - this requires Fluent 2024 R1 or newer.
         if self._solver.get_fluent_version() < FluentVersion.v241:
@@ -90,7 +91,7 @@ class SystemCoupling:
                 file_name=scp_file_name
             )
 
-            if self._solver._fluent_connection._remote_instance != None:
+            if self._solver._fluent_connection._remote_instance is not None:
                 # download the file locally in case Fluent is remote
                 # assume file transfer service is configured - download the file
                 self._solver.download(scp_file_name)

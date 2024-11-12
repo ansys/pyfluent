@@ -3,12 +3,15 @@ import subprocess
 import threading
 import time
 
-import psutil
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.fluent_connection import WaitTypeError, get_container
+from ansys.fluent.core.fluent_connection import (
+    WaitTypeError,
+    _pid_exists,
+    get_container,
+)
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -76,14 +79,14 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
 
     timeout_loop(
         lambda: (inside_container and not get_container(cortex_host))
-        or (not inside_container and not psutil.pid_exists(fluent_host_pid)),
+        or (not inside_container and not _pid_exists(fluent_host_pid)),
         60,
     )
 
     if inside_container:
         assert not get_container(cortex_host)
     else:
-        assert not psutil.pid_exists(fluent_host_pid)
+        assert not _pid_exists(fluent_host_pid)
 
 
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
@@ -104,7 +107,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     else:
         from pathlib import Path
 
-        assert psutil.pid_exists(fluent_host_pid)
+        assert _pid_exists(fluent_host_pid)
         if os.name == "nt":
             cleanup_file_ext = "bat"
             cmd_list = []
@@ -131,7 +134,7 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
 ) -> None:
     session1 = pyfluent.launch_fluent()
 
-    with pytest.raises(IpPortNotProvided) as msg:
+    with pytest.raises(IpPortNotProvided):
         session2 = pyfluent.connect_to_fluent(
             ip=session1.connection_properties.ip,
             password=session1.connection_properties.password,
@@ -243,7 +246,7 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     solver.exit()
     assert timeout_loop(
         lambda: (inside_container and not get_container(cortex))
-        or (not inside_container and not psutil.pid_exists(cortex)),
+        or (not inside_container and not _pid_exists(cortex)),
         timeout=60,
         idle_period=1,
     )
@@ -262,6 +265,6 @@ def test_fluent_exit_wait():
     session3.exit(wait=True)
     assert session3._fluent_connection.wait_process_finished(wait=0)
 
-    with pytest.raises(WaitTypeError) as msg:
+    with pytest.raises(WaitTypeError):
         session4 = pyfluent.launch_fluent()
         session4.exit(wait="wait")

@@ -115,7 +115,7 @@ def _generate_launch_string(
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
     """Get the path for the Fluent executable file.
-    The search for the path is performed in this order:
+    The search for the path is performed in the following order.
 
     1. ``product_version`` parameter passed with the ``launch_fluent`` method.
     2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.

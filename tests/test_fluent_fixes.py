@@ -31,7 +31,7 @@ def test_allowed_values_on_report_definitions_1364(new_solver_session):
 
     assert report_def.zone_names.allowed_values() == ["fluid"]
 
-    assert report_def.expr_list.allowed_values() == None
+    assert report_def.expr_list.allowed_values() is None
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -42,7 +42,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
         file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
     )
 
-    import_data = examples.download_file(
+    examples.download_file(
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
 

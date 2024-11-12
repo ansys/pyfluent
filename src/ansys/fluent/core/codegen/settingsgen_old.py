@@ -490,7 +490,7 @@ def _populate_init(parent_dir, hash):
         f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
         f.write("#\n")
         f.write("\n")
-        f.write(f'"""A package providing Fluent\'s Settings Objects in Python."""')
+        f.write('"""A package providing Fluent\'s Settings Objects in Python."""')
         f.write("\n")
         f.write("from ansys.fluent.core.solver.flobject import *\n\n")
         f.write(f'SHASH = "{hash}"\n')

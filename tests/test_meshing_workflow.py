@@ -1,7 +1,7 @@
 from functools import partial
 
 import pytest
-from util.meshing_workflow import (  # noqa: F401; model_object_throws_on_invalid_arg,
+from util.meshing_workflow import (
     assign_task_arguments,
     execute_task_with_pre_and_postcondition_checks,
 )
@@ -195,10 +195,10 @@ def test_read_only_behaviour_of_command_arguments(new_meshing_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = w.TaskObject["Import Geometry"]
 
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         import_geom.arguments.MeshUnit.set_state("in")
 
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         import_geom.arguments.CadImportOptions.OneZonePer.set_state(None)
 
     assert "set_state" in dir(m())
@@ -212,7 +212,7 @@ def test_dummy_journal_data_model_methods(new_meshing_session):
     w.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = w.TaskObject["Import Geometry"]
 
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         import_geom.delete_child()
 
 
@@ -229,7 +229,7 @@ def test_iterate_meshing_workflow_task_container(new_meshing_session):
 def test_nonexistent_attrs(new_meshing_session):
     meshing = new_meshing_session
     assert not hasattr(meshing.workflow, "xyz")
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         meshing.workflow.xyz
 
 
@@ -239,7 +239,7 @@ def test_old_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     assert meshing.workflow.TaskObject["Import Geometry"]
-    with pytest.raises(AttributeError) as msg:
+    with pytest.raises(AttributeError):
         meshing.workflow.import_geometry
 
 

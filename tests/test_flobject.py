@@ -230,13 +230,12 @@ class ListObject(Setting):
     def size(self):
         return len(self._objs)
 
-    def resize(self, l):
-        if l > len(self._objs):
-            # pylint: disable=unused-variable
-            for i in range(len(self._objs), l):
+    def resize(self, new_size):
+        if new_size > len(self._objs):
+            for _ in range(len(self._objs), new_size):
                 self._objs.append(self.child_object_type(self))
-        elif l < len(self._objs):
-            self._objs = self._objs[:l]
+        elif new_size < len(self._objs):
+            self._objs = self._objs[:new_size]
 
     def get_child(self, c):
         return self._objs[int(c)]
@@ -526,7 +525,7 @@ def test_attrs():
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True
     assert not r.g_1.s_4.get_attr("active?")
-    with pytest.raises(InactiveObjectError) as einfo:
+    with pytest.raises(InactiveObjectError):
         r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
 
 
@@ -922,7 +921,6 @@ def test_accessor_methods_on_settings_objects(new_solver_session):
         "Real",
         "Integer",
         "RealList",
-        "IntegerList",
         "ListObject",
     ]
     type_list = expected_type_list.copy()
@@ -995,7 +993,7 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     with pytest.raises(AttributeError) as e:
-        string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
+        solver.file.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
@@ -1035,7 +1033,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     hydraulic_diameter = turbulence.hydraulic_diameter
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
-    assert hydraulic_diameter.as_quantity() == None
+    assert hydraulic_diameter.as_quantity() is None
     assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
     turbulent_intensity = turbulence.turbulent_intensity
@@ -1221,7 +1219,6 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
             "list_properties",
             "make_a_copy",
             "display",
-            "copy",
             "add_to_graphics",
             "clear_history",
         }

@@ -1,6 +1,7 @@
 """Generate builtin setting classes."""
 
 import os
+from zipimport import zipimporter
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
 from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin

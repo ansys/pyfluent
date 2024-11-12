@@ -32,7 +32,6 @@ full guidelines on their use.
     session_base_meshing
     session_meshing
     session_pure_meshing
-    session_shared
     session_solver_icing
     session_solver_lite
     session_solver

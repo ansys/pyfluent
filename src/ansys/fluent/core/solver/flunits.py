@@ -103,6 +103,8 @@ Unhandled:
 
 from __future__ import annotations
 
+from typing import TypeVar
+
 _fl_unit_table = {
     "acceleration": "m s^-2",
     "angle": "radian",
@@ -223,6 +225,7 @@ class InvalidQuantityType(TypeError):
         self,
         quantity,
     ) -> None:
+        """Initialize InvalidQuantityType."""
         super().__init__(
             f"The specified quantity, '{quantity}' is not a string ({type(quantity)})."
         )
@@ -235,9 +238,13 @@ class UnitsNotDefinedForQuantity(ValueError):
         self,
         quantity: str,
     ) -> None:
+        """Initialize UnitsNotDefinedForQuantity."""
         super().__init__(
             f"The units for the specified quantity, '{quantity}' are not defined in PyFluent."
         )
+
+
+QuantityT = TypeVar("QuantityT")
 
 
 class UnhandledQuantity(RuntimeError):
@@ -246,8 +253,9 @@ class UnhandledQuantity(RuntimeError):
     def __init__(
         self,
         path: str,
-        quantity: Quantity,
+        quantity: QuantityT,
     ) -> None:
+        """Initialize UnhandledQuantity."""
         super().__init__(
             f"Could not handle the quantity, '{quantity}' for the path, {path}."
         )

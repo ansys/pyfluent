@@ -9,6 +9,7 @@ class InvalidPassword(ValueError):
     """Raised when password is invalid."""
 
     def __init__(self):
+        """Initialize InvalidPassword."""
         super().__init__("Provide correct 'password'.")
 
 
@@ -16,6 +17,7 @@ class GPUSolverSupportError(ValueError):
     """Raised when an unsupported Fluent version is specified."""
 
     def __init__(self):
+        """Initialize GPUSolverSupportError."""
         super().__init__("Fluent GPU Solver is only supported for 3D.")
 
 
@@ -23,6 +25,7 @@ class IpPortNotProvided(ValueError):
     """Raised when IP address and port are not specified."""
 
     def __init__(self):
+        """Initialize IpPortNotProvided."""
         super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
 
 

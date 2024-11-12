@@ -347,19 +347,19 @@ def test_field_data_errors(new_solver_session) -> None:
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
-    with pytest.raises(DisallowedValuesError) as fne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="y-face-area", surfaces=[0]
         )
 
-    with pytest.raises(DisallowedValuesError) as fne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="partition-neighbors", surfaces=[0]
         )
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    with pytest.raises(FieldUnavailable) as fnu:
+    with pytest.raises(FieldUnavailable):
         solver.fields.field_data.get_scalar_field_data(
             field_name="density", surfaces=[0]
         )
@@ -378,14 +378,14 @@ def test_field_data_errors(new_solver_session) -> None:
     solver.solution.initialization.hybrid_initialize()
 
     # Get field data object
-    field_data = solver.fields.field_data
+    assert solver.fields.field_data
 
-    with pytest.raises(DisallowedValuesError) as sne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="density", surfaces=["bob"]
         )
 
-    with pytest.raises(DisallowedValuesError) as fne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="xdensity", surfaces=[0]
         )
@@ -403,19 +403,19 @@ def test_field_info_validators(new_solver_session) -> None:
     vector_field_1 = solver.fields.field_info.validate_vector_fields("velocity")
     assert vector_field_1 is None
 
-    with pytest.raises(DisallowedValuesError) as vector_field_error:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_info.validate_vector_fields("relative-vel")
 
     scalar_field_1 = solver.fields.field_info.validate_scalar_fields("z-velocity")
     assert scalar_field_1 is None
 
-    with pytest.raises(DisallowedValuesError) as scalar_field_error:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_info.validate_scalar_fields("z-vel")
 
     surface = solver.fields.field_info.validate_surfaces(["cold-inlet"])
     assert surface is None
 
-    with pytest.raises(DisallowedValuesError) as surface_error:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_info.validate_surfaces(["out"])
 
 

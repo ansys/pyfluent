@@ -62,7 +62,7 @@ def _populate_parents_list(cls):
             child_cls_name = child_cls.__name__
             if not parents_dict.get(child_cls_name):
                 parents_dict[child_cls_name] = []
-            if not cls in parents_dict[child_cls_name]:
+            if cls not in parents_dict[child_cls_name]:
                 parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "command_names"):
@@ -71,7 +71,7 @@ def _populate_parents_list(cls):
             child_cls_name = child_cls.__name__
             if not parents_dict.get(child_cls_name):
                 parents_dict[child_cls_name] = []
-            if not cls in parents_dict[child_cls_name]:
+            if cls not in parents_dict[child_cls_name]:
                 parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "argument_names"):
@@ -80,7 +80,7 @@ def _populate_parents_list(cls):
             child_cls_name = child_cls.__name__
             if not parents_dict.get(child_cls_name):
                 parents_dict[child_cls_name] = []
-            if not cls in parents_dict[child_cls_name]:
+            if cls not in parents_dict[child_cls_name]:
                 parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "child_object_type"):
@@ -88,7 +88,7 @@ def _populate_parents_list(cls):
         child_cls_name = child_cls.__name__
         if not parents_dict.get(child_cls_name):
             parents_dict[child_cls_name] = []
-        if not cls in parents_dict[child_cls_name]:
+        if cls not in parents_dict[child_cls_name]:
             parents_dict[child_cls_name].append(cls)
 
     if hasattr(cls, "child_names"):
@@ -131,7 +131,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f"{istr1}:show-inheritance:\n\n")
 
         if has_children:
-            r.write(f".. rubric:: Attributes\n\n")
+            r.write(".. rubric:: Attributes\n\n")
             data_dict = {}
             data_dict["Attribute"] = "Summary"
             for child in cls.child_names:
@@ -141,7 +141,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             _generate_table_for_rst(r, data_dict)
 
         if has_commands:
-            r.write(f".. rubric:: Methods\n\n")
+            r.write(".. rubric:: Methods\n\n")
             data_dict = {}
             data_dict["Method"] = "Summary"
             for child in cls.command_names:
@@ -151,7 +151,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             _generate_table_for_rst(r, data_dict)
 
         if has_arguments:
-            r.write(f".. rubric:: Arguments\n\n")
+            r.write(".. rubric:: Arguments\n\n")
             data_dict = {}
             data_dict["Argument"] = "Summary"
             for child in cls.argument_names:
@@ -165,11 +165,11 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             ref_string = f":ref:`{child_cls.__name__} <{child_cls.__name__}>`"
             data_dict = {}
             data_dict[ref_string] = child_cls.__doc__.strip("\n").split("\n")[0]
-            r.write(f".. rubric:: Named object type\n\n")
+            r.write(".. rubric:: Named object type\n\n")
             r.write(f"{ref_string}\n\n\n")
 
         if parents_dict.get(cls_name):
-            r.write(f".. rubric:: Included in:\n\n")
+            r.write(".. rubric:: Included in:\n\n")
             data_dict = {}
             data_dict["Parent"] = "Summary"
             for parent in parents_dict.get(cls_name):
@@ -180,7 +180,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
                 data_dict[ref_string] = parent.__doc__.strip("\n").split("\n")[0]
             _generate_table_for_rst(r, data_dict)
 
-    if not rstpath in rst_list:
+    if rstpath not in rst_list:
         rst_list.append(rstpath)
         if has_children:
             for child in cls.child_names:

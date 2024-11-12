@@ -1,7 +1,8 @@
+from typing import Any
+
 import pytest
 
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-from tests.conftest import static_mixer_case_session
 
 
 def _test_locn_extraction(solver1, solver2):
@@ -59,7 +60,7 @@ def _test_area_average(solver):
         "AreaAve(AbsolutePressure, ['inlet1'])"
     )
     expr_val = solver_named_expressions["test_expr_1"].get_value()
-    assert type(expr_val) == float and expr_val != 0.0
+    assert isinstance(expr_val, float) and expr_val != 0.0
     val = solver.fields.reduction.area_average(
         expression="AbsolutePressure",
         locations=solver.setup.boundary_conditions.velocity_inlet,
@@ -79,8 +80,9 @@ def _test_min(solver1, solver2):
     solver2_named_expr["test_expr_2"] = {}
     test_expr2 = solver2_named_expr["test_expr_2"]
     test_expr2.definition = "minimum(test_expr_2, ['outlet'])"
-    expected_result = test_expr2.get_value()
-    result = solver1.fields.reduction.minimum(
+    # (MK) Is the expression definition valid?
+    # expected_result = test_expr2.get_value()
+    solver1.fields.reduction.minimum(
         expression=test_expr1.definition(),
         locations=[
             solver1.setup.boundary_conditions["outlet"],
@@ -260,7 +262,7 @@ def _test_area_integrated_average(solver1, solver2):
 
 def _test_error_handling(solver):
     if int(solver._version) < 241:
-        with pytest.raises(RuntimeError) as msg:
+        with pytest.raises(RuntimeError):
             solver.fields.reduction.area_average(
                 expression="AbsoluteVelocity",  # This is a wrong expression intentionally passed
                 locations=solver.setup.boundary_conditions.velocity_inlet,
@@ -333,7 +335,7 @@ def _test_sum(solver):
         "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
-    assert type(expr_val) == float and expr_val != 0.0
+    assert isinstance(expr_val, float) and expr_val != 0.0
 
     val = solver.fields.reduction.sum(
         expression="AbsolutePressure",
@@ -352,7 +354,7 @@ def _test_sum_if(solver):
         "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
     )
     expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
-    assert type(expr_val) == float and expr_val != 0.0
+    assert isinstance(expr_val, float) and expr_val != 0.0
 
     val = solver.fields.reduction.sum_if(
         expression="AbsolutePressure",
@@ -365,12 +367,16 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
-static_mixer_case_session2 = static_mixer_case_session
+@pytest.fixture
+def static_mixer_case_session2(static_mixer_case_session: Any):
+    return static_mixer_case_session
 
 
 @pytest.mark.nightly
 @pytest.mark.fluent_version(">=23.1")
-def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> None:
+def test_reductions(
+    static_mixer_case_session: Any, static_mixer_case_session2: Any
+) -> None:
     solver1 = static_mixer_case_session
     solver2 = static_mixer_case_session2
     _test_context(solver1)
@@ -389,7 +395,7 @@ def test_reductions(static_mixer_case_session, static_mixer_case_session2) -> No
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_reduction_does_not_modify_case(static_mixer_case_session):
+def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     # After reading the static-mixer case in Fluent, case-modifed? flag is somehow True
     solver.scheme_eval.scheme_eval("(%save-case-id)")
@@ -401,9 +407,8 @@ def test_reduction_does_not_modify_case(static_mixer_case_session):
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2998")
 @pytest.mark.fluent_version(">=24.2")
-def test_fix_for_invalid_location_inputs(static_mixer_case_session):
+def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
 

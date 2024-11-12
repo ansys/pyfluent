@@ -71,6 +71,7 @@ class LocalDesignPoint:
     """
 
     def __init__(self, design_point_name: str, base_design_point=None):
+        """Initialize LocalDesignPoint."""
         self.name = design_point_name
         if base_design_point:
             self.__inputs = base_design_point.input_parameters.copy()
@@ -119,6 +120,7 @@ class LocalDesignPointTable(list):
     """
 
     def __init__(self, base_design_point: LocalDesignPoint):
+        """Initialize LocalDesignPointTable."""
         super().__init__()
         self.append(base_design_point)
 
@@ -270,6 +272,7 @@ class LocalParametricStudy:
     """
 
     def __init__(self, case_filepath: str, base_design_point_name: str = "Base DP"):
+        """Initialize LocalParametricStudy."""
         from ansys.fluent.core.filereader.casereader import CaseReader
 
         self.case_filepath = case_filepath

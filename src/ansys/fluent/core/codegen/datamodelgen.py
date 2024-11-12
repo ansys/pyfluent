@@ -259,7 +259,7 @@ class DataModelGenerator:
                         print(
                             "Information: Icing settings not generated ( R23.1+ is required )\n"
                         )
-                except:
+                except Exception:
                     print(
                         "Information: Problem accessing flserver datamodel for icing settings\n"
                     )
@@ -361,7 +361,7 @@ class DataModelGenerator:
                 )
                 file.write("from typing import Any\n")
                 file.write("\n\n")
-                file.write(f"class Root(PyMenu):\n")
+                file.write("class Root(PyMenu):\n")
                 for k in commands:
                     _write_command_query_stub(
                         k,
@@ -402,7 +402,7 @@ class DataModelGenerator:
         """Write API classes to files."""
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
         for name, info in self._static_info.items():
-            if info.static_info == None:
+            if info.static_info is None:
                 continue
             with open(info.file_name, "w", encoding="utf8") as f:
                 f.write("#\n")

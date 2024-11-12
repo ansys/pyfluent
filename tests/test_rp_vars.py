@@ -55,7 +55,7 @@ def test_rp_vars_allowed_values(new_solver_session) -> None:
 
     assert rp_vars("number-of-iterations") == 0
 
-    with pytest.raises(RuntimeError) as msg:
+    with pytest.raises(RuntimeError):
         rp_vars("number-of-iterat")
 
     assert "number-of-iterations" in rp_vars.allowed_values()

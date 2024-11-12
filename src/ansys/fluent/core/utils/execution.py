@@ -33,8 +33,8 @@ def asynchronous(f: Callable) -> Callable:
     >>> asynchronous_solve(solver_session_1, 100).result()
     >>> asynchronous(solver_session_2.tui.solve.iterate)(100).result()
 
-    .. _Future: https://docs.python.org/3/library/asyncio-future.html#future-object  # noqa: E501
-    .. _result(): https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result  # noqa: E501
+    .. _Future: https://docs.python.org/3/library/asyncio-future.html#future-object
+    .. _result(): https://docs.python.org/3/library/asyncio-future.html#asyncio.Future.result
     """
 
     @functools.wraps(f)

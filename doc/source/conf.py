@@ -1,6 +1,8 @@
 """Sphinx documentation configuration file."""
 
+from dataclasses import is_dataclass
 from datetime import datetime
+import inspect
 import os
 import platform
 import subprocess
@@ -161,7 +163,6 @@ sphinx_gallery_conf = {
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
     "doc_module": "ansys-fluent-core",
-    "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
     "reset_modules": (_stop_fluent_container),
@@ -270,3 +271,27 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
+
+
+def _get_cls(func):
+    """Get the class containing the function."""
+    module = inspect.getmodule(func)
+    cls = module
+    for name in func.__qualname__.split(".")[0:-1]:
+        cls = getattr(cls, name)
+    return cls
+
+
+def skip(app, what, name, obj, would_skip, options):
+    """Skip some specific members from documentation."""
+    if name == "__init__":
+        cls = _get_cls(obj)
+        if is_dataclass(cls):
+            # skip __init__ for dataclasses
+            return True
+    return would_skip
+
+
+def setup(app):
+    """Setup function for Sphinx builder."""
+    app.connect("autodoc-skip-member", skip)

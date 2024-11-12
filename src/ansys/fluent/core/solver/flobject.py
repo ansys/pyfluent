@@ -48,10 +48,13 @@ import warnings
 import weakref
 from zipimport import zipimporter
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
+from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
+from .settings_external import expand_api_file_argument, use_search
 
 
 def _ansys_units():
@@ -64,11 +67,6 @@ def _ansys_units():
         pass
 
 
-import ansys.fluent.core as pyfluent
-
-from .error_message import allowed_name_error_message, allowed_values_error
-from .settings_external import expand_api_file_argument, use_search
-
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
@@ -76,6 +74,7 @@ class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
     def __init__(self, python_path):
+        """Initialize InactiveObjectError."""
         super().__init__(f"'{python_path}' is currently inactive.")
 
 
@@ -467,6 +466,9 @@ class Numerical(Property):
         return None if isinstance(val, bool) else val
 
 
+QuantityT = TypeVar("QuantityT")
+
+
 class RealNumerical(Numerical):
     """A ``RealNumerical`` object representing a real value setting, including single
     real values and containers of real values, such as lists.
@@ -483,7 +485,7 @@ class RealNumerical(Numerical):
         Get the units string.
     """
 
-    def as_quantity(self) -> ansys.units.Quantity | None:
+    def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
         if not _ansys_units():
@@ -1888,12 +1890,12 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
 
     def __len__(self):
         """Number of child named objects."""
-        l = 0
+        count = 0
         for cname in self.child_names:
             cobj = getattr(self, cname)
             if isinstance(cobj, NamedObject):
-                l += len(cobj)
-        return l
+                count += len(cobj)
+        return count
 
 
 class CreatableNamedObjectMixin(collections.abc.MutableMapping, Generic[ChildTypeT]):
@@ -2196,14 +2198,14 @@ def get_root(
     version : str
         Fluent version.
 
+    Returns
+    -------
+    root object
+
     Raises
     ------
     RuntimeError
         If hash values are inconsistent.
-
-    Returns
-    -------
-    root object
     """
     from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
 

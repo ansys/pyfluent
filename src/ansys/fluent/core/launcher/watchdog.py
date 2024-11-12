@@ -157,7 +157,7 @@ def launch(
 
     subprocess.Popen(cmd_send, **kwargs)
 
-    logger.info(f"Waiting for Watchdog to initialize, then proceeding...")
+    logger.info("Waiting for Watchdog to initialize, then proceeding...")
     file_exists = timeout_loop(
         lambda: init_file.is_file() or watchdog_err.is_file(), 30.0
     )

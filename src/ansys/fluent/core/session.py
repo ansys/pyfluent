@@ -12,10 +12,6 @@ from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
-from ansys.fluent.core.session_shared import (  # noqa: F401
-    _CODEGEN_MSG_DATAMODEL,
-    _CODEGEN_MSG_TUI,
-)
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )

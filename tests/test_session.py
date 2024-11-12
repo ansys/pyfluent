@@ -97,7 +97,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
 
 def test_download_file():
     with pytest.raises(examples.RemoteFileNotFoundError):
-        import_case = examples.download_file(
+        examples.download_file(
             "mixing_elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
         )
 
@@ -113,7 +113,7 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
     )
     server.start()
 
-    with pytest.raises(PortNotProvided) as msg:
+    with pytest.raises(PortNotProvided):
         fluent_connection = FluentConnection(
             ip=ip, password="12345", cleanup_on_exit=False
         )
@@ -327,16 +327,16 @@ def test_start_transcript_file_write(new_meshing_session):
     file_name = Path(file_name)
 
     file_name.touch()
-    prev_stat = file_name.stat()
-    prev_mtime = prev_stat.st_mtime
-    prev_size = prev_stat.st_size
+    # prev_stat = file_name.stat()
+    # prev_mtime = prev_stat.st_mtime
+    # prev_size = prev_stat.st_size
 
     session = new_meshing_session
     session.transcript.start(file_name)
     session = session.switch_to_solver()
     session.transcript.stop()
 
-    new_stat = file_name.stat()
+    # new_stat = file_name.stat()
     # this assertion is invalid.
     # assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
 
@@ -360,8 +360,8 @@ def test_read_case_using_lightweight_mode():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         file_transfer_service = RemoteFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
             lightweight_mode=True,
@@ -380,7 +380,7 @@ def test_read_case_using_lightweight_mode():
         idle_period=1,
     )
     timeout_loop(
-        solver.setup.models.energy.enabled() == False,
+        not solver.setup.models.energy.enabled(),
         timeout=60,
         idle_period=1,
     )
@@ -425,7 +425,7 @@ def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
 
     monkeypatch.setattr(session, "_parse_server_info_file", mock_parse_server_info_file)
     with pytest.raises(LaunchFluentError) as ex:
-        solver = pyfluent.launch_fluent()
+        _ = pyfluent.launch_fluent()
     # grpc.RpcError -> RuntimeError -> LaunchFluentError
     assert ex.value.__context__.__context__.code() == grpc.StatusCode.UNAVAILABLE
 
@@ -562,7 +562,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     }
     graphics.contour["contour-velocity"].display()
 
-    mesh_file_2d = examples.download_file(
+    examples.download_file(
         "sample_2d_mesh.msh.h5",
         "pyfluent/surface_mesh",
         return_without_path=False,

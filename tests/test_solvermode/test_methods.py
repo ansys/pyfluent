@@ -57,7 +57,7 @@ def test_methods(mixing_elbow_settings_session):
         "first_to_second_order_blending": 1.0,
     }
     solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme = True
-    assert solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme() == True
+    assert solver.solution.methods.expert.numerics_pbns.presto_pressure_scheme() is True
     solver.solution.methods.gradient_scheme = "green-gauss-node-based"
     assert solver.solution.methods.gradient_scheme() == "green-gauss-node-based"
     solver.solution.methods.warped_face_gradient_correction(

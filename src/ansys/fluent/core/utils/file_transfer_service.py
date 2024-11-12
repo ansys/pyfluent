@@ -4,7 +4,7 @@ import os
 import pathlib
 import random
 import shutil
-from typing import Any, Callable, List, Protocol  # noqa: F401
+from typing import Any, Protocol
 import warnings
 
 from ansys.fluent.core.utils import get_user_data_dir
@@ -20,6 +20,7 @@ class PyPIMConfigurationError(ConnectionError):
     """Raised when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
 
     def __init__(self):
+        """Initialize PyPIMConfigurationError."""
         super().__init__("PyPIM is not configured.")
 
 
@@ -387,6 +388,13 @@ class PimFileTransferService:
     """
 
     def __init__(self, pim_instance: Any | None = None):
+        """Initialize PimFileTransferService.
+
+        Parameters
+        ----------
+        pim_instance: Any, optional
+            PIM instance.
+        """
         self.pim_instance = pim_instance
         self.upload_server = None
         self.file_service = None

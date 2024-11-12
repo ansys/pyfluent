@@ -2,21 +2,22 @@
 
 from __future__ import annotations
 
+import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
 import itertools
 import logging
 import os
 from pathlib import Path
+import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, List, Tuple, TypeVar
 import warnings
 import weakref
 
 import grpc
-import psutil
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import service_creator
@@ -39,6 +40,7 @@ class PortNotProvided(ValueError):
     """Raised when port is not provided."""
 
     def __init__(self):
+        """Initialize PortNotProvided."""
         super().__init__(
             "Provide the 'port' to connect to an existing Fluent instance."
         )
@@ -48,6 +50,7 @@ class UnsupportedRemoteFluentInstance(ValueError):
     """Raised when 'wait_process_finished' does not support remote Fluent session."""
 
     def __init__(self):
+        """Initialize UnsupportedRemoteFluentInstance."""
         super().__init__("Remote Fluent instance is unsupported.")
 
 
@@ -55,6 +58,7 @@ class WaitTypeError(TypeError):
     """Raised when invalid ``wait`` type is provided."""
 
     def __init__(self):
+        """Initialize WaitTypeError."""
         super().__init__("Invalid 'wait' type.")
 
 
@@ -82,6 +86,7 @@ class MonitorThread(threading.Thread):
     """
 
     def __init__(self):
+        """Initialize MonitorThread."""
         super().__init__(daemon=True)
         self.cbs: List[Callable] = []
 
@@ -93,7 +98,10 @@ class MonitorThread(threading.Thread):
             cb()
 
 
-def get_container(container_id_or_name: str) -> bool | Container | None:
+ContainerT = TypeVar("ContainerT")
+
+
+def get_container(container_id_or_name: str) -> bool | ContainerT | None:
     """Get the Docker container object.
 
     Returns
@@ -199,7 +207,7 @@ class FluentConnectionProperties:
     cortex_pid: int | None = None
     cortex_host: str | None = None
     fluent_host_pid: int | None = None
-    inside_container: bool | Container | None = None
+    inside_container: bool | ContainerT | None = None
 
     def list_names(self) -> list:
         """Returns list with all property names."""
@@ -290,6 +298,26 @@ class _ConnectionInterface:
     def exit_server(self):
         """Exits the server."""
         self.scheme_eval.exec(("(exit-server)",))
+
+
+def _pid_exists(pid):
+    if platform.system() == "Linux":
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            return False
+        else:
+            return True
+    elif platform.system() == "Windows":
+        process_query_limited_information = 0x1000
+        process_handle = ctypes.windll.kernel32.OpenProcess(
+            process_query_limited_information, 0, pid
+        )
+        if process_handle == 0:
+            return False
+        else:
+            ctypes.windll.kernel32.CloseHandle(process_handle)
+            return True
 
 
 class FluentConnection:
@@ -601,8 +629,8 @@ class FluentConnection:
             )
         else:
             _response = timeout_loop(
-                lambda connection: psutil.pid_exists(connection.fluent_host_pid)
-                or psutil.pid_exists(connection.cortex_pid),
+                lambda connection: _pid_exists(connection.fluent_host_pid)
+                or _pid_exists(connection.cortex_pid),
                 wait,
                 args=(self.connection_properties,),
                 idle_period=0.5,

@@ -104,6 +104,7 @@ class DumpDataReader:
     """Reads dump data."""
 
     def __init__(self, file_name: str):
+        """Initialize DumpDataReader."""
         with open(
             str(Path(file_name).resolve()),
             "rb",
@@ -114,7 +115,7 @@ class DumpDataReader:
         """Get session data."""
         return self._session_data
 
-    def get_surface_data(self, surface_ids, data_types) -> list[np.array | None]:
+    def get_surface_data(self, surface_ids, data_types) -> list[np.ndarray | None]:
         """Get surface data."""
         tag_id = (("type", "surface-data"),)
 
@@ -130,7 +131,7 @@ class DumpDataReader:
 
     def get_scalar_field_data(
         self, surface_ids, data_location, provide_boundary_values, field_names
-    ) -> list[np.array | None]:
+    ) -> list[np.ndarray | None]:
         """Get scalar field data."""
         tag_id = (
             ("type", "scalar-field"),
@@ -146,7 +147,9 @@ class DumpDataReader:
 
         return scalar_field_data
 
-    def get_vector_field_data(self, surface_ids, field_names) -> list[np.array | None]:
+    def get_vector_field_data(
+        self, surface_ids, field_names
+    ) -> list[np.ndarray | None]:
         """Get vector field data."""
         tag_id = (("type", "vector-field"),)
 
@@ -163,7 +166,7 @@ class DumpDataReader:
 
     def get_pathlines_data(
         self, surface_ids, field_names, key
-    ) -> list[np.array | None]:
+    ) -> list[np.ndarray | None]:
         """Get pathlines data."""
         pathlines_data = []
         for surface_id in surface_ids:

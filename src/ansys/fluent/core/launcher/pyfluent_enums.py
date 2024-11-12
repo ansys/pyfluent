@@ -42,7 +42,7 @@ class FluentEnum(Enum):
 
         def is_int():
             for m in cls:
-                return True if type(m.value) == int else False
+                return True if isinstance(m.value, int) else False
 
         msg = ", " if is_int() else "', '"
         msg = (

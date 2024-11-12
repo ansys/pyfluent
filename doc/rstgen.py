@@ -279,7 +279,7 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
         f.write(f".. _ref_{mode}_datamodel:\n\n")
         f.write(f"{datamodel_mode}\n")
         f.write(f"{'=' * len(datamodel_mode)}\n\n")
-        f.write(f".. automodule:: ansys.fluent.core.datamodel\n")
+        f.write(".. automodule:: ansys.fluent.core.datamodel\n")
         f.write("   :autosummary:\n\n")
         f.write("   :autosummary-members:\n\n")
         f.write(".. toctree::\n")

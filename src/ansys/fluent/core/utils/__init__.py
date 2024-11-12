@@ -5,9 +5,9 @@ import logging
 from pathlib import Path
 import sys
 
-logger = logging.getLogger("pyfluent.general")
-
 from ansys.fluent.core.search import _search  # noqa: F401
+
+logger = logging.getLogger("pyfluent.general")
 
 
 def load_module(module_name, file_path):
@@ -23,8 +23,7 @@ def load_module(module_name, file_path):
 def get_examples_download_dir():
     """Return the path to the examples download directory."""
     parent_path = Path.home() / "Downloads"
-    if not parent_path.exists():
-        parent_path = Path.home()
+    parent_path.mkdir(exist_ok=True)
     return parent_path / "ansys_fluent_core_examples"
 
 
