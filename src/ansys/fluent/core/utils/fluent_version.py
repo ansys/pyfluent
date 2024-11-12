@@ -53,6 +53,7 @@ class FluentVersion(Enum):
     FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
+    v252 = "25.2.0"
     v251 = "25.1.0"
     v242 = "24.2.0"
     v241 = "24.1.0"
@@ -119,6 +120,11 @@ class FluentVersion(Enum):
     def number(self):
         """Get the Fluent version as a plain integer."""
         return int(self.value.replace(".", "")[:-1])
+
+    @property
+    def docker_image_tag(self):
+        """Get the Fluent version as a Docker image tag."""
+        return f"v{self.value}"
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):

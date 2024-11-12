@@ -33,8 +33,11 @@ def generate(version: str, static_infos: dict):
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)
-    if codegen.CODEGEN_GENERATE_BUILTIN_SETTINGS and FluentVersion(version) == next(
-        iter(FluentVersion)
+    # Built-in settings are always generated for the latest version
+    # TODO: Change the hardcoded version after 25.2 Fluent image is available
+    if (
+        codegen.CODEGEN_GENERATE_BUILTIN_SETTINGS
+        and FluentVersion(version) == FluentVersion.v251
     ):
         builtin_settingsgen.generate(version)
 

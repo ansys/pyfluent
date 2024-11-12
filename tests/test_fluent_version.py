@@ -19,7 +19,7 @@ def test_version_found():
 
 def test_version_not_found():
     with pytest.raises(AnsysVersionNotFound):
-        FluentVersion("25.2.0")
+        FluentVersion("25.3.0")
 
     with pytest.raises(AnsysVersionNotFound):
         FluentVersion(22)
