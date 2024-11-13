@@ -58,6 +58,11 @@ class SystemCoupling:
             raise RuntimeError(
                 f"Using {str(self._solver.get_fluent_version())}. PySystemCoupling integration requires {str(FluentVersion.v241)} or later."
             )
+        if self._solver.get_fluent_version() >= FluentVersion.v251:
+            # enable feature to be able to make System Coupling settings APIs calls
+            self._solver.scheme_eval.scheme_eval(
+                "(enable-feature 'sc/participant-info)"
+            )
 
     @property
     def participant_type(self) -> str:
@@ -66,32 +71,153 @@ class SystemCoupling:
 
     def get_variables(self) -> List[Variable]:
         """Get variables."""
-        return self.__get_syc_setup()["variables"]
+
+        if self._solver.get_fluent_version() >= FluentVersion.v251:
+            variables = list()
+            region_names = (
+                self._solver.settings.setup.models.system_coupling.get_all_regions()
+            )
+            variable_names = set()
+            for region_name in region_names:
+                in_var_names = self._get_list(
+                    self._solver.settings.setup.models.system_coupling.get_input_vars(
+                        region_name=region_name
+                    )
+                )
+                out_var_names = self._get_list(
+                    self._solver.settings.setup.models.system_coupling.get_output_vars(
+                        region_name=region_name
+                    )
+                )
+                variable_names.update(in_var_names)
+                variable_names.update(out_var_names)
+            variable_names = sorted(list(variable_names))
+            for variable_name in variable_names:
+                variables.append(
+                    Variable(
+                        name=variable_name,
+                        display_name=self._get_display_name(variable_name),
+                        tensor_type=self._solver.settings.setup.models.system_coupling.get_tensor_type(
+                            variable_name=variable_name
+                        ),
+                        is_extensive=self._solver.settings.setup.models.system_coupling.is_extensive_var(
+                            variable_name=variable_name
+                        ),
+                        location=self._solver.settings.setup.models.system_coupling.get_data_location(
+                            variable_name=variable_name
+                        ),
+                        quantity_type=self._get_quantity_type(variable_name),
+                    )
+                )
+            return variables
+        else:
+            # maintains back-compatibility for 24.1 and 24.2
+            return self.__get_syc_setup()["variables"]
 
     def get_regions(self) -> List[Region]:
         """Get regions."""
-        return self.__get_syc_setup()["regions"]
+
+        if self._solver.get_fluent_version() >= FluentVersion.v251:
+            region_names = (
+                self._solver.settings.setup.models.system_coupling.get_all_regions()
+            )
+            regions = list()
+            for region_name in region_names:
+                regions.append(
+                    Region(
+                        name=region_name,
+                        display_name=self._get_display_name(region_name),
+                        topology=self._solver.settings.setup.models.system_coupling.get_topology(
+                            region_name=region_name
+                        ),
+                        input_variables=self._get_list(
+                            self._solver.settings.setup.models.system_coupling.get_input_vars(
+                                region_name=region_name
+                            )
+                        ),
+                        output_variables=self._get_list(
+                            self._solver.settings.setup.models.system_coupling.get_output_vars(
+                                region_name=region_name
+                            )
+                        ),
+                    )
+                )
+            return regions
+        else:
+            # maintains back-compatibility for 24.1 and 24.2
+            return self.__get_syc_setup()["regions"]
 
     def get_analysis_type(self) -> str:
         """Get analysis type."""
-        return self.__get_syc_setup()["analysis-type"]
+        if self._solver.get_fluent_version() >= FluentVersion.v251:
+            return (
+                self._solver.settings.setup.models.system_coupling.get_analysis_type()
+            )
+        else:
+            # maintains back-compatibility for 24.1 and 24.2
+            return self.__get_syc_setup()["analysis-type"]
 
     def connect(self, host: str, port: int, name: str) -> None:
-        """Connect parallelly."""
-        self._solver.setup.models.system_coupling.connect_parallel(
+        """Connect to System Coupling."""
+        self._solver.settings.setup.models.system_coupling.connect_parallel(
             schost=host, scport=port, scname=name
         )
 
     def solve(self) -> None:
         """Initialize and solve."""
-        self._solver.setup.models.system_coupling.init_and_solve()
+        self._solver.settings.setup.models.system_coupling.init_and_solve()
+
+    @staticmethod
+    def _get_quantity_type(variable_name: str) -> str:
+        """
+        For some variables, System Coupling should know the quantity type.
+        """
+        if variable_name in {"force", "lorentz-force"}:
+            return "Force"
+        elif variable_name in {"heatflow", "heatrate"}:
+            return "Heat Rate"
+        elif variable_name == "displacement":
+            return "Incremental Displacement"
+        elif variable_name == "temperature":
+            return "Temperature"
+        elif variable_name == "heat-transfer-coefficient":
+            return "Heat Transfer Coefficient"
+        elif variable_name == "near-wall-temperature":
+            return "Convection Reference Temperature"
+        elif variable_name == "electrical-conductivity":
+            return "Electrical Conductivity"
+        else:
+            return "Unspecified"
+
+    @staticmethod
+    def _get_display_name(internal_name: str) -> str:
+        """
+        Display names should not contain dashes.
+        """
+        return internal_name.replace("-", " ")
+
+    @staticmethod
+    def _get_list(value: list | None) -> list:
+        if isinstance(value, list):
+            return value
+        elif value is None:
+            return list()
+        raise TypeError(f"_get_list unexpected type of {value}")
 
     def __get_syc_setup(self) -> dict:
+        """
+        This function is for backward-compatibility reasons for 24.1 and 24.2 versions.
+        It tells Fluent to write the SCP file and then parses it to get the setup
+        information. The SCP file is then deleted.
+        With newer versions, settings APIs can be used directly, without having
+        to write the SCP file at all.
+        """
+
         def get_scp_string() -> str:
             """Get the SCP file contents in the form of an XML string."""
 
             scp_file_name = "fluent.scp"
-            self._solver.setup.models.system_coupling.write_scp_file(
+            self._solver.settings.setup.models.system_coupling.write_scp_file(
                 file_name=scp_file_name
             )
 
