@@ -28,8 +28,8 @@ def _test_systemcoupling_mixing_elbow_settings_common(mixing_elbow_case_data_ses
     variables = solver.system_coupling.get_variables()
     # [wall-inlet, wall-elbow, elbow-fluid, hot-inlet, cold-inlet, outlet]
     assert len(regions) >= 6
-    # [force, dsip, temp, htc, hflow, nwt, hrate, cond, lorentz-force]
-    assert len(variables) >= 9
+    # [force, temp, htc, hflow, nwt, hrate, e-cond, lorentz-force]
+    assert len(variables) >= 8
 
 
 @pytest.mark.fluent_version(">=25.1")
