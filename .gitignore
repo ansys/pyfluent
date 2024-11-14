@@ -127,6 +127,7 @@ ENV*/
 
 # mkdocs documentation
 /site
+/.quarto/
 
 # mypy
 .mypy_cache/

@@ -1,0 +1,1150 @@
+---
+title: PyFluent cheat sheet
+format: cheat_sheet-pdf
+version: 0.1.0
+footer: PyFluent
+footerlinks:
+  - urls: 'https://fluent.docs.pyansys.com/version/stable/'
+    text: Documentation
+  - urls: 'https://fluent.docs.pyansys.com/version/stable/getting_started/index.html'
+    text: Getting started
+  - urls: 'https://fluent.docs.pyansys.com/version/stable/examples/index.html'
+    text: Examples
+  - urls: 'https://fluent.docs.pyansys.com/version/stable/api/index.html'
+    text: API reference
+  - urls: 'https://fluent.docs.pyansys.com/version/stable/getting_started/faqs.html'
+    text: FAQ
+  - urls: 'https://github.com/ansys/pyfluent/discussions'
+    text: Discussions
+  - urls: 'https://github.com/ansys/pyfluent/issues'
+    text: 'Issues'
+execute:
+  eval: false
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.4
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+meshing = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.MESHING)
+meshing.exit()
+```
+
+### Launch and exit a solver session
+
+```{python}
+#| eval: false
+solver = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER)
+solver.exit()
+```
+
+### Dimension, Precision, Processor count, Product version
+
+```{python}
+#| eval: false
+solver = pyfluent.launch_fluent(
+    dimension=pyfluent.Dimension.THREE,
+    precision=pyfluent.Precision.DOUBLE,
+    processor_count=2,
+    product_version=pyfluent.FluentVersion.v242
+    )
+```
+
+### Connect to an existing instance of Fluent
+
+```{python}
+#| eval: false
+fluent = pyfluent.connect_to_fluent(
+    ip="127.0.0.1", 
+    port=50000, 
+    password="abcdefg")
+```
+
+### Watertight geometry meshing workflow
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
+meshing = pyfluent.launch_fluent(
+    mode="meshing", precision=pyfluent.Precision.DOUBLE, processor_count=2
+)
+wt = meshing.watertight()
+wt.import_geometry.file_name.set_state(
+    import_file_name)
+wt.import_geometry.length_unit.set_state('in')
+wt.import_geometry()
+```
+
+### Add local sizing
+
+```{python}
+#| eval: false
+wt.add_local_sizing.add_child_to_task()
+wt.add_local_sizing()
+```
+
+### Generate surface mesh
+
+```{python}
+#| eval: false
+csm = wt.create_surface_mesh
+csmc = csm.cfd_surface_mesh_controls
+csmc.max_size.set_state(0.3)
+wt.create_surface_mesh()
+```
+
+### Describe geometry
+
+```{python}
+#| eval: false
+wt.describe_geometry.update_child_tasks(
+    setup_type_changed=False)
+wt.describe_geometry.setup_type.set_state("The geometry consists of only fluid regions with no voids")
+wt.describe_geometry.update_child_tasks(
+    setup_type_changed=True)
+wt.describe_geometry()
+```
+
+### Update boundaries
+
+```{python}
+#| eval: false
+ub = wt.update_boundaries
+ub.boundary_label_list.set_state(["wall-inlet"])
+ub.boundary_label_type_list.set_state(["wall"])
+ub.old_boundary_label_list.set_state(
+    ["wall-inlet"])
+ub.old_boundary_label_type_list.set_state(
+    ["velocity-inlet"])
+ub()
+```
+
+### Update regions
+
+```{python}
+#| eval: false
+wt.update_regions()
+```
+
+### Add boundary layers
+
+```{python}
+#| eval: false
+wt.add_boundary_layer.add_child_to_task()
+wt.add_boundary_layer.insert_compound_child_task()
+wt.task("smooth-transition_1"
+    ).bl_control_name.set_state(
+    "smooth-transition_1")
+wt.add_boundary_layer.arguments = {}
+wt.task("smooth-transition_1")()
+```
+
+### Generate volume mesh
+
+```{python}
+#| eval: false
+wt.create_volume_mesh.volume_fill.set_state(
+    "poly-hexcore")
+vfc = wt.create_volume_mesh.volume_fill_controls
+vfc.hex_max_cell_length.set_state(0.3)
+wt.create_volume_mesh()
+```
+
+### Switch to solution mode
+
+```{python}
+#| eval: false
+solver = meshing.switch_to_solver()
+```
+
+### Boundary conditions
+
+```{python}
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+solver = pyfluent.launch_fluent()
+solver.settings.file.read_case(
+    file_name=file_name)
+bc = solver.settings.setup.boundary_conditions
+cold_inlet = bc.velocity_inlet["cold-inlet"]
+cold_inlet.momentum.velocity.set_state(0.4)
+inlet_turbulence = cold_inlet.turbulence
+turbulence_specification = inlet_turbulence.turbulence_specification
+turbulence_specification.allowed_values()
+turbulence_specification.set_state("Intensity and Hydraulic Diameter")
+turbulent_intensity = inlet_turbulence.turbulent_intensity
+turbulent_intensity.min(), turbulent_intensity.max()
+turbulent_intensity.set_state(0.5)
+inlet_turbulence.hydraulic_diameter.set_state("4 [in]")
+cold_inlet.thermal.temperature.set_state(293.15)
+```
+
+### Cell zone conditions
+
+```{python}
+#| eval: false
+cz = solver.settings.setup.cell_zone_conditions
+cz.fluid["elbow-fluid"].laminar.set_state(True)
+```
+
+### Copy material from database
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+solver = pyfluent.launch_fluent()
+solver.settings.file.read_case(file_name=file_name)
+materials = solver.settings.setup.materials
+fluids = materials.fluid
+fluids.make_a_copy(from_="air",to="air-2")
+air_copy = fluids["air-2"]
+air_copy.viscosity.value.set_state(1.81e-05)
+cz = solver.settings.setup.cell_zone_conditions
+cz.fluid["elbow-fluid"].material.set_state("air-2")
+```
+
+### Access the object state using pprint
+
+```{python}
+#| eval: false
+from pprint import pprint
+pprint(air_copy.get_state(), width=1)
+pprint(air_copy.viscosity.option.allowed_values(), width=1)
+```
+
+### Create new material
+
+```{python}
+#| eval: false
+mysolid = materials.solid.create("mysolid")
+mysolid.chemical_formula.set_state("SiO2")
+mysolid.density.value.set_state(2650)
+mysolid.specific_heat.value.set_state(1887)
+mysolid.thermal_conductivity.value.set_state(7.6)
+```
+
+### Energy model
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+solver = pyfluent.launch_fluent()
+solver.settings.file.read_case(file_name=file_name)
+energy = solver.settings.setup.models.energy
+energy.enabled.get_state()
+from pprint import pprint
+pprint(energy.get_state(), width=1)
+energy.enabled.set_state(False)
+pprint(energy.get_state(), width=1)
+energy.enabled.set_state(True)
+pprint(energy.get_state(), width=1)
+energy.viscous_dissipation.set_state(True)
+pprint(energy.get_state(), width=1)
+```
+
+### Viscous model
+
+```{python}
+#| eval: false
+vs = solver.settings.setup.models.viscous
+from pprint import pprint
+pprint(vs.get_state(), width=1)
+pprint(vs.model.allowed_values(), width=1)
+vs.options.corner_flow_correction.is_active()
+vs.model.set_state('k-epsilon')
+vs.options.corner_flow_correction.is_active()
+vs.k_epsilon_model.get_state()
+vs.k_omega_model.is_active()
+vs.k_epsilon_model.allowed_values()
+vs_ops = vs.options
+vs_ops.production_kato_launder_enabled.is_active()
+vs_ops.production_kato_launder_enabled.get_state()
+vs.k_epsilon_model.set_state("realizable")
+vs_ops.production_kato_launder_enabled.is_active()
+```
+
+### Discrete phase model
+
+```{python}
+#| eval: false
+dpm = solver.settings.setup.models.discrete_phase
+dpm_models = dpm.physical_models
+dpm_vmf = dpm_models.virtual_mass_force
+dpm_vmf.enabled.get_state()
+dpm_vmf.virtual_mass_factor.is_active()
+dpm_vmf.enabled.set_state(True)
+dpm_vmf.virtual_mass_factor.get_state()
+```
+
+### Radiation model
+
+```{python}
+#| eval: false
+rn = solver.settings.setup.models.radiation
+from pprint import pprint
+pprint(rn.get_state(), width=1)
+pprint(rn.model.allowed_values(), width=1)
+rn.model.set_state("monte-carlo")
+pprint(rn.get_state(), width=1)
+rn.monte_carlo.number_of_histories.set_state(1e7)
+rn.multiband.create("solar").set_state({
+   "start": 0,
+   "end": 2.8,
+})
+rn.multiband.create("thermal-ir").set_state({
+   "start": 2.8,
+   "end": 100,
+})
+radiation_freq = rn.solve_frequency
+pprint(radiation_freq.get_state(), width=1)
+pprint(rn.get_state(), width=1)
+```
+
+### Species model
+
+```{python}
+#| eval: false
+solver.settings.file.read_case(file_name=file_name)
+species = solver.settings.setup.models.species
+species.get_state()
+from pprint import pprint
+pprint(species.model.option.allowed_values(), width=1)
+species.model.option.set_state("species-transport")
+pprint(species.get_state(), width=1)
+species.model.material.get_state()
+species.model.material.allowed_values()
+```
+
+### Battery model
+
+```{python}
+#| eval: false
+battery = solver.settings.setup.models.battery
+battery.enabled.set_state(True)
+battery.solution_method.allowed_values()
+```
+
+### Steady or transient solution model
+
+```{python}
+#| eval: false
+solver_time = solver.settings.setup.general.solver.time
+solver_time.get_state()
+solver_time.allowed_values()
+solver_time.set_state("unsteady-1st-order")
+```
+
+### Pressure-based or density-based solver
+
+```{python}
+#| eval: false
+solver_type = solver.settings.setup.general.solver.type
+solver_type.get_state()
+solver_type.allowed_values()
+solver_type.set_state("density-based-explicit")
+solver_type.get_state()
+```
+
+### Velocity coupling scheme and gradient options
+
+```{python}
+#| eval: false
+methods = solver.settings.solution.methods
+flow_scheme = methods.p_v_coupling.flow_scheme
+flow_scheme.allowed_values()
+flow_scheme.set_state("Coupled")
+gradient_scheme = methods.gradient_scheme
+gradient_scheme.allowed_values()
+gradient_scheme.set_state("green-gauss-node-based")
+```
+
+### Solution controls
+
+```{python}
+#| eval: false
+pvc = solver.settings.solution.controls.p_v_controls
+emur = pvc.explicit_momentum_under_relaxation
+emur.min()
+emur.max()
+emur.set_state(0.4)
+flow_courant_number = pvc.flow_courant_number
+flow_courant_number.min()
+flow_courant_number.max()
+flow_courant_number.set_state(0.3)
+```
+
+### Create a report definition
+
+```{python}
+#| eval: false
+rep_defs = solver.settings.solution.report_definitions
+surface = rep_defs.surface
+defn_name = "outlet-temp-avg"
+surface[defn_name] = {}
+out_temp = surface[defn_name]
+out_temp.report_type.set_state("surface-massavg")
+out_temp.field.set_state("temperature")
+```
+
+### Initialize and solve
+
+```{python}
+#| eval: false
+solution = solver.settings.solution
+solution.initialization.hybrid_initialize()
+solution.run_calculation.iterate(iter_count=100)
+```
+
+### CaseFile reader
+
+```{python}
+#| eval: false
+from ansys.fluent.core import examples
+from ansys.fluent.core.filereader.case_file import CaseFile
+case_file_name = examples.download_file(
+    "Static_Mixer_Parameters.cas.h5", 
+    "pyfluent/static_mixer")
+reader = CaseFile(case_file_name=case_file_name)
+reader.precision()
+reader.num_dimensions()
+{p.name: p.value for p in reader.input_parameters()}
+{p.name: p.units for p in reader.output_parameters()}
+```
+
+### Additionl features
+
+```{python}
+#| eval: false
+reader = CaseFile(
+    project_file_name="Dir1/Dir2/project.flprj")
+reader.rp_vars()
+reader.config_vars()
+```
+
+### Extract mesh data
+
+```{python}
+#| eval: false
+from ansys.fluent.core import examples
+from ansys.fluent.core.filereader.case_file import CaseFile
+case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+reader = CaseFile(case_file_name=case_file_name)
+reader.get_mesh().get_surface_ids()
+reader.get_mesh().get_surface_names()
+reader.get_mesh().get_surface_locs(3)
+reader.get_mesh().get_connectivity(3)
+reader.get_mesh().get_vertices(3)
+```
+
+### DataFile reader
+
+```{python}
+#| eval: false
+from ansys.fluent.core import examples
+from ansys.fluent.core.filereader.data_file import DataFile
+from ansys.fluent.core.filereader.case_file import CaseFile
+data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+reader = DataFile(
+    data_file_name=data_file_name, 
+    case_file_handle=CaseFile(case_file_name))
+reader.case_file
+reader.variables()
+reader.get_phases()
+reader.get_face_variables("phase-1")
+```
+
+### Single-phase FileSession
+
+```{python}
+#| eval: false
+from ansys.fluent.core import examples
+from ansys.fluent.core.file_session import FileSession
+case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+fs = FileSession()
+fs.read_case(case_file_name)
+fs.read_data(data_file_name)
+fs.fields.field_info.get_scalar_field_range("SV_T")
+fs.fields.field_info.get_surfaces_info()
+fs.fields.field_info.get_scalar_fields_info()
+```
+
+### Multiphase FileSession
+
+```{python}
+#| eval: false
+from ansys.fluent.core import examples
+from ansys.fluent.core.file_session import FileSession
+case_file_name = examples.download_file(
+    "mixing_elbow_mul_ph.cas.h5", 
+    "pyfluent/file_session")
+data_file_name = examples.download_file(
+    "mixing_elbow_mul_ph.dat.h5", 
+    "pyfluent/file_session")
+fs = FileSession()
+fs.read_case(case_file_name)
+fs.read_data(data_file_name)
+fs.fields.field_info.get_scalar_field_range(
+    "phase-2:SV_P")
+fs.fields.field_info.get_scalar_fields_info()
+```
+
+### Post-processing using [ansys-fluent-visualization](https://visualization.fluent.docs.pyansys.com/version/stable/)
+
+```{python}
+#| eval: false
+from ansys.fluent.visualization import set_config
+set_config(blocking=True, set_view_on_display="isometric")
+import ansys.fluent.core as pyfluent
+from ansys.fluent.visualization.matplotlib import Plots
+from ansys.fluent.visualization.pyvista import Graphics
+from ansys.fluent.core.file_session import FileSession
+fileSession=FileSession()
+fileSession.read_case("elbow1.cas.h5")
+fileSession.read_data("elbow1.dat.h5")
+graphics = Graphics(session=fileSession)
+```
+
+### Display mesh at wall
+
+```{python}
+#| eval: false
+mesh1 = graphics.Meshes["mesh-1"]
+mesh1.show_edges = True
+mesh1.surfaces_list = [ "wall"]
+mesh1.display("w1")
+```
+
+### Display temperature contour at symmetry
+
+```{python}
+#| eval: false
+contour1 = graphics.Contours["mesh-1"]
+contour1.node_values = False
+contour1.field = "SV_T"
+contour1.surfaces_list = ['symmetry']
+contour1.display('w2')
+```
+
+### Display velocity vector data at symmetry and wall
+
+```{python}
+#| eval: false
+velocity_vector = graphics.Vectors["velocity-vector"]
+velocity_vector.field = "SV_T"
+velocity_vector.surfaces_list = ['symmetry', 'wall']
+velocity_vector.display("w3")
+```
+
+![Temperature contour](../_static/temp_contour.png)
+
+### Accessing field data objects
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+solver = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER)
+solver.settings.file.read(file_type="case", file_name=import_file_name)
+init = solver.settings.solution.initialization
+init.hybrid_initialize()
+field_data = solver.fields.field_data
+```
+
+### Get surface data
+
+```{python}
+#| eval: false
+from ansys.fluent.core.services.field_data import SurfaceDataType
+vertices_data = field_data.get_surface_data(
+    surface_name="cold-inlet", 
+    data_type=SurfaceDataType.Vertices)
+vertices_data.size
+vertices_data.surface_id
+vertices_data[5].x
+vertices_data[5].y
+vertices_data[5].z
+faces_normal_data = field_data.get_surface_data(
+    data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
+)
+faces_centroid_data = field_data.get_surface_data(
+    data_type=SurfaceDataType.FacesCentroid, surface_name="cold-inlet"
+)
+faces_connectivity_data = field_data.get_surface_data(
+    data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
+)
+faces_connectivity_data[5].node_count
+faces_connectivity_data[5].node_indices
+```
+
+### Get scalar field data
+
+```{python}
+#| eval: false
+abs_press_data = field_data.get_scalar_field_data(
+    field_name="absolute-pressure", 
+    surface_name="cold-inlet")
+abs_press_data.size
+abs_press_data[120].scalar_data
+```
+
+### Get vector field data
+
+```{python}
+#| eval: false
+velocity_vector_data = field_data.get_vector_field_data(
+    field_name="velocity", 
+    surface_name="cold-inlet")
+velocity_vector_data.size
+velocity_vector_data.scale
+```
+
+### Get pathlines field data
+
+```{python}
+#| eval: false
+path_lines_data = field_data.get_pathlines_field_data(
+    field_name="velocity", 
+    surface_name="cold-inlet")
+path_lines_data["vertices"].size
+path_lines_data["lines"].size
+path_lines_data["velocity"].size
+path_lines_data["lines"][100].node_count
+path_lines_data["lines"][100].node_indices
+```
+
+### Accessing field info objects
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+solver = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER)
+solver.settings.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
+init = solver.settings.solution.initialization
+init.hybrid_initialize()
+field_info = solver.fields.field_info
+```
+
+### Get fields info and range
+
+```{python}
+#| eval: false
+field_info.get_fields_info()
+field_info.get_range("velocity")
+field_info.get_range("cell-weight")
+```
+
+### Get vector fields and surfaces info
+
+```{python}
+#| eval: false
+field_info.get_vector_fields_info()
+field_info.get_surfaces_info()
+```
+
+### Accessing reduction functions
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core.examples import download_file
+solver = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER)
+case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+solver.settings.file.read(file_type="case", file_name=case_path)
+init = solver.settings.solution.initialization
+init.hybrid_initialize()
+bc = solver.settings.setup.boundary_conditions
+solver.fields.reduction.area_average(
+  expression="AbsolutePressure",
+  locations=
+  bc.velocity_inlet
+)
+```
+
+### Usage of reduction context
+
+```{python}
+#| eval: false
+init = solver.settings.solution.initialization
+init.hybrid_initialize()
+bc = solver.settings.setup.boundary_conditions
+solver.fields.reduction.area(
+  locations=[bc.velocity_inlet["inlet1"]]
+)
+solver.fields.reduction.area(
+    locations=["inlet1"], 
+    ctxt=solver)
+```
+
+### Current reduction capabilities
+
+```{python}
+#| eval: false
+reduction.area(locations)
+reduction.area_average(expression, locations)
+reduction.area_integral(expression, locations)
+reduction.volume(locations)
+reduction.volume_average(expression, locations)
+reduction.volume_integral(expression, locations)
+reduction.centroid(locations)
+reduction.force(locations)
+reduction.pressure_force(locations)
+reduction.viscous_force(locations)
+reduction.moment(expression, locations)
+reduction.count(locations)
+reduction.count_if(condition, locations)
+reduction.minimum(expression, locations)
+reduction.maximum(expression, locations)
+reduction.mass_average(expression, locations)
+reduction.mass_integral(expression, locations)
+reduction.mass_flow_average_absolute(expression, locations)
+reduction.mass_flow_average(expression, locations)
+reduction.mass_flow_integral(expression, locations)
+reduction.sum(expression, locations, weight)
+reduction.sum_if(expression, condition, locations, weight)
+```
+
+### Reduction example use cases
+
+```{python}
+#| eval: false
+bc = solver.settings.setup.boundary_conditions
+
+area_inlet_1 = solver.fields.reduction.area(
+  locations=[bc.velocity_inlet["inlet1"]])
+area_inlet = solver.fields.reduction.area(
+  locations=[bc.velocity_inlet])
+solver.fields.reduction.area_integral(
+  expression="AbsolutePressure",
+  locations=[bc.velocity_inlet["inlet1"]])
+solver.fields.reduction.centroid(
+  locations=[bc.velocity_inlet["inlet2"]])
+solver.fields.reduction.moment(
+  expression="Force(['wall'])",
+  locations=[bc.velocity_inlet["inlet2"]])
+solver.fields.reduction.moment(
+  expression="['inlet1']",
+  locations=[bc.velocity_inlet["inlet2"]])
+solver.fields.reduction.sum(
+  expression="AbsolutePressure",
+  locations=[bc.velocity_inlet],
+  weight="Area")
+solver.fields.reduction.sum_if(
+  expression="AbsolutePressure",
+  condition="AbsolutePressure > 0[Pa]",
+  locations=[bc.velocity_inlet],
+  weight="Area")
+```
+
+### Accessing solution variable objects
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+solver = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER)
+solver.settings.file.read(file_type="case", file_name=import_filename)
+solution_variable_info = solver.fields.solution_variable_info
+solution_variable_data = solver.fields.solution_variable_data
+```
+
+### Get zone information
+
+```{python}
+#| eval: false
+zones_info = solution_variable_info.get_zones_info()
+zones_info.domains
+zones_info.zones
+zone_info = zones_info['wall']
+zone_info
+zone_info.name
+zone_info.count
+zone_info.zone_id
+zone_info.zone_type
+```
+
+### Get solution variable information
+
+```{python}
+#| eval: false
+wall_fluid_info = solution_variable_info.get_variables_info(
+    zone_names=['wall' , "fluid"], 
+    domain_name="mixture")
+wall_fluid_info.solution_variables
+solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
+solution_variable_info_centroid
+solution_variable_info_centroid.name
+solution_variable_info_centroid.dimension
+solution_variable_info_centroid.field_type
+```
+
+### Get solution variable data
+
+```{python}
+#| eval: false
+sv_t_wall_fluid= solution_variable_data.get_data(
+    solution_variable_name="SV_T", 
+    zone_names=["fluid", "wall"], 
+    domain_name="mixture")
+sv_t_wall_fluid.domain
+sv_t_wall_fluid.zones
+fluid_temp = sv_t_wall_fluid['fluid']
+fluid_temp.size
+fluid_temp.dtype
+fluid_temp
+```
+
+### Set solution variable data
+
+```{python}
+#| eval: false
+wall_temp_array = solution_variable_data.create_empty_array(
+    "SV_T", "wall", "mixture")
+fluid_temp_array = solution_variable_data.create_empty_array(
+    "SV_T", "fluid", "mixture")
+wall_temp_array[:] = 500
+fluid_temp_array[:] = 600
+zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
+solution_variable_data.set_data(
+    solution_variable_name="SV_T", 
+    zone_names_to_solution_variable_data=
+    zone_names_to_solution_variable_data, 
+    domain_name="mixture")
+```
+
+### Multiple requests in a single transaction
+
+```{python}
+#| eval: false
+transaction = solver.fields.field_data.new_transaction()
+
+transaction.add_surfaces_request(
+    surface_ids=[1], provide_vertices=True, provide_faces=False, provide_faces_centroid=True
+)
+transaction.add_surfaces_request(
+    surface_ids=[2], provide_vertices=True, provide_faces=True
+)
+transaction.add_scalar_fields_request(
+    surface_ids=[1,2], field_name="temperature", node_value=True, boundary_value=True
+)
+transaction.add_vector_fields_request(
+    surface_ids=[1,2], 
+    field_name="velocity")
+transaction.add_pathlines_fields_request(
+    surface_ids=[1,2], 
+    field_name="temperature")
+
+payload_data = transaction.get_fields()
+```
+
+### Field data allowed values
+
+```{python}
+#| eval: false
+sfd = field_data.get_scalar_field_data
+sfd.field_name.allowed_values()
+sfd.surface_name.allowed_values()
+
+transaction = field_data.new_transaction()
+asfr = transaction.add_scalar_fields_request
+asfr.field_name.allowed_values()
+
+sd = field_data.get_surface_data
+sd.surface_ids.allowed_values()
+```
+
+### Monitor convergence of a solution
+
+```{python}
+#| eval: false
+# get started with case and data loaded
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+import pandas as pd
+from tabulate import tabulate
+solver = pyfluent.launch_fluent(start_transcript=False)
+import_case = examples.download_file(
+    file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
+)
+import_data = examples.download_file(
+    file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
+)
+solver.file.read_case_data(file_name=import_case)
+# check the active report plot monitors using the settings relevant object
+solver.settings.solution.monitor.report_plots()
+# initialize so that monitors object is usable
+solver.solution.initialization.hybrid_initialize()
+# check which monitors are available
+sorted(solver.monitors.get_monitor_set_names())
+# create and register a callback function that will
+def display_monitor_table(
+    monitor_set_name="mass-bal-rplot"):
+    def display_table():
+        data = solver.monitors.get_monitor_set_data(
+            monitor_set_name=monitor_set_name)
+        # extract iteration numbers
+        iterations = data[0]
+        # filter out additional callbacks
+        if len(iterations) > display_table.iter_count:
+            display_table.iter_count = len(iterations)
+            # extract results
+            results = data[1]
+            # create a DataFrame
+            df = pd.DataFrame(results, index=iterations)
+            df.index.name = 'Iteration'
+            df.reset_index(inplace=True)
+            # The streamed data contains duplicates, so eliminate them
+            df = df.drop_duplicates(subset=
+            'Iteration')
+            print(tabulate(df, headers='keys', tablefmt='psql'))
+        display_table.iter_count = 0
+    return display_table
+
+register_id = solver.monitors.register_callback(
+    display_monitor_table())
+# run the solver and see the full tabulated monitor data on each iteration
+solver.solution.run_calculation.iterate(
+    iter_count=10)
+```
+
+### Observing events
+
+```{python}
+#| eval: false
+from ansys.fluent.core import MeshingEvent, SolverEvent
+def on_case_loaded(session, event_info):
+    print("Case loaded. Index = ", event_info.index)
+callback = meshing.events.register_callback(
+    MeshingEvent.CASE_LOADED, on_case_loaded)
+def on_iteration_ended(session, event_info):
+    print("Iteration ended. Index = ", event_info.index)
+callback_id = solver.events.register_callback(
+    SolverEvent.ITERATION_ENDED, on_iteration_ended)
+```
+
+### Transfer a case or mesh file between PyFluent sessions
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.utils.data_transfer import transfer_case
+mesh_file_name = download_file(
+    "mixing_elbow.msh.h5",
+    "pyfluent/mixing_elbow"
+)
+pure_meshing_session = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.PURE_MESHING
+)
+pure_meshing_session.tui.file.read_mesh(
+    import_file_name
+)
+solver_session = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER
+)
+transfer_case(
+    source_instance=meshing,
+    solvers=[solver],
+    file_type="mesh",
+    file_name_stem='',
+    num_files_to_try=1,
+    clean_up_temp_file=True,
+    overwrite_previous=True
+)
+```
+
+### [PyAnsys Units](https://units.docs.pyansys.com/version/stable/) to work in arbitrary physical examples
+
+```{python}
+#| eval: false
+from ansys.units import Quantity
+bc = solver.settings.setup.boundary_conditions
+vi = bc.velocity_inlet
+hyd_dia = vi["hot-inlet"].turbulence.hydraulic_diameter
+hyd_dia.set_state(.02)
+hyd_dia.get_state()
+hyd_dia.state_with_units()
+hyd_dia.set_state(Quantity(15, "mm"))
+hyd_dia.state_with_units()
+diam = hyd_dia.as_quantity()
+diam
+diam = diam * 2
+diam
+hyd_dia.set_state(diam)
+hyd_dia.as_quantity()
+```
+
+### Local file transfer service
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+
+mesh_file_name = examples.download_file(
+    "mixing_elbow.msh.h5", 
+    "pyfluent/mixing_elbow")
+meshing_session = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.MESHING, 
+    file_transfer_service=
+    LocalFileTransferStrategy())
+meshing_session.upload(
+    file_name=mesh_file_name, 
+    remote_file_name="elbow.msh.h5")
+meshing_session.meshing.File.ReadMesh(
+    FileName="elbow.msh.h5")
+meshing_session.meshing.File.WriteMesh(
+    FileName="write_elbow.msh.h5")
+meshing_session.download(
+    file_name="write_elbow.msh.h5", 
+    local_directory="<local_directory_path>")
+```
+
+### Remote file transfer service
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core import examples
+from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+case_file_name = examples.download_file(
+    "mixing_elbow.cas.h5", 
+    "pyfluent/mixing_elbow")
+solver_session = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER, 
+    file_transfer_service=
+    RemoteFileTransferStrategy())
+solver_session.upload(
+    file_name=case_file_name, 
+    remote_file_name="elbow.cas.h5")
+solver_session.file.read_case(
+    file_name="elbow.cas.h5")
+solver_session.file.write_case(
+    file_name="write_elbow.cas.h5")
+solver_session.download(
+    file_name="write_elbow.cas.h5", 
+    local_directory="<local_directory_path>")
+```
+
+### Record Fluent interactions as Python scripts (journals)
+
+```{python}
+#| eval: false
+solver.journal.start(
+    file_name="pyfluent_journal.py")
+solver.journal.stop()
+```
+
+### PyFluent logging functionality
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+config_dict = pyfluent.logging.get_default_config()
+config_dict['handlers']['pyfluent_file'][
+    'filename'] = 'test.log'
+pyfluent.logging.enable(custom_config=config_dict)
+pyfluent.logging.list_loggers()
+logger = pyfluent.logging.get_logger(
+    'pyfluent.networking')
+logger.setLevel('ERROR')
+pyfluent.logging.set_global_level('DEBUG')
+```
+
+### API search
+
+```{python}
+#| eval: false
+# Semantic search
+import ansys.fluent.core as pyfluent
+pyfluent.search("font")
+
+# Whole word search
+pyfluent.search("ApplicationFontSize", 
+    match_whole_word=True)
+
+# Wildcard pattern search
+pyfluent.search("local*", wildcard=True)
+```
+
+### Containerization of Fluent
+
+```{bash}
+# Within the PyFluent source navigate to the `docker` directory.
+cd pyfluent/docker
+
+# Copy needed files
+python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
+
+# Build the Docker image
+sudo docker build -t ansys_inc <path to 'docker/fluent_<version>' directory>
+```
+
+### Run Docker container using the command line
+
+```{bash}
+# Solver mode
+sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu
+# Meshing mode
+sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu -meshing
+```
+
+### Run Docker container using PyFluent
+
+```{python}
+#| eval: false
+import os
+import ansys.fluent.core as pyfluent
+os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
+
+custom_config = {
+    'fluent_image': 'ansys_inc:latest', 
+    'mount_source': f"{os.getcwd()}", 
+    'auto_remove': False}
+
+solver = pyfluent.launch_fluent(
+    container_dict=custom_config)
+```
+
+### Scheme code evaluation
+
+```{python}
+#| eval: false
+import ansys.fluent.core as pyfluent
+S = pyfluent.services.scheme_eval.Symbol
+session.scheme_eval.eval([S('+'), 2, 3])
+session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
+session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
+# Returns TUI output string
+session.scheme_eval.string_eval("(+ 2 3)")
+session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")
+session.scheme_eval.scheme_eval("(+ 2 3)")
+session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
+```

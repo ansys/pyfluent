@@ -95,7 +95,12 @@ jobs:
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: ansys/actions/doc-build@v8
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          add-pdf-html-docs-as-assets: true
+          check-links: false
+          needs-quarto: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
