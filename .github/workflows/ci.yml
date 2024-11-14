@@ -91,7 +91,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:

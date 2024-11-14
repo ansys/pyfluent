@@ -724,10 +724,9 @@ graphics.picture.save_picture(file_name="contour-velocity.png")
 
 solver.results.scene["scene-1"] = {}
 scene1 = solver.results.scene["scene-1"]
-scene1.graphics_objects["mesh-1"] = {
-    "transparency": 90,
-}
-scene1.graphics_objects["contour-velocity"] = {}
+scene1.graphics_objects.add(name="mesh-1")
+scene1.graphics_objects["mesh-1"].transparency = 90
+scene1.graphics_objects.add(name="contour-velocity")
 scene1.display()
 
 graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
