@@ -122,11 +122,13 @@ solver.settings.mesh.check()
 mesh = Mesh(solver, new_instance_name="mesh")
 mesh.surfaces_list = mesh.surfaces_list.allowed_values()
 mesh.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.use_window_resolution = False
-solver.settings.results.graphics.picture.x_resolution = 3840
-solver.settings.results.graphics.picture.y_resolution = 2880
-solver.settings.results.graphics.picture.save_picture(file_name="mesh.png")
+graphics = solver.settings.results.graphics
+graphics.views.auto_scale()
+if graphics.picture.use_window_resolution.is_active():
+    graphics.picture.use_window_resolution = False
+graphics.picture.x_resolution = 3840
+graphics.picture.y_resolution = 2880
+graphics.picture.save_picture(file_name="mesh.png")
 
 # %%
 # .. figure:: /_static/magnus/mesh.png
@@ -451,8 +453,8 @@ contour1.field = "temperature"
 contour1.surfaces_list = contour1.surfaces_list.allowed_values()
 contour1.coloring.option = "banded"
 contour1.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.save_picture(file_name="contour-temp.png")
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="contour-temp.png")
 
 # %%
 # .. figure:: /_static/magnus/contour-temp.png
@@ -477,8 +479,8 @@ vector1.vector_opt.fixed_length = True
 
 vector1.vector_opt.scale_head = 0.1
 vector1.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.save_picture(file_name="vector-vel.png")
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="vector-vel.png")
 
 # %%
 # .. figure:: /_static/magnus/vector-vel.png
@@ -497,10 +499,8 @@ contour2 = Contour(solver, new_instance_name="contour-ch4-mass-fraction")
 contour2.field = "ch4"
 contour2.surfaces_list = contour2.surfaces_list.allowed_values()
 contour2.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.save_picture(
-    file_name="contour-ch4-mass-fraction.png"
-)
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="contour-ch4-mass-fraction.png")
 
 # %%
 # .. figure:: /_static/magnus/contour-ch4-mass-fraction.png
@@ -517,10 +517,8 @@ contour3 = Contour(solver, new_instance_name="contour-o2-mass-fraction")
 contour3.field = "o2"
 contour3.surfaces_list = contour3.surfaces_list.allowed_values()
 contour3.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.save_picture(
-    file_name="contour-o2-mass-fraction.png"
-)
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="contour-o2-mass-fraction.png")
 
 # %%
 # .. figure:: /_static/magnus/contour-o2-mass-fraction.png
@@ -536,10 +534,8 @@ contour4 = Contour(solver, new_instance_name="contour-co2-mass-fraction")
 contour4.field = "co2"
 contour4.surfaces_list = contour4.surfaces_list.allowed_values()
 contour4.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.save_picture(
-    file_name="contour-co2-mass-fraction.png"
-)
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="contour-co2-mass-fraction.png")
 
 # %%
 # .. figure:: /_static/magnus/contour-co2-mass-fraction.png
@@ -555,11 +551,8 @@ contour5 = Contour(solver, new_instance_name="contour-h2o-mass-fraction")
 contour5.field = "h2o"
 contour5.surfaces_list = contour5.surfaces_list.allowed_values()
 contour5.display()
-solver.settings.results.graphics.views.auto_scale()
-solver.settings.results.graphics.picture.save_picture(
-    file_name="contour-h2o-mass-fraction.png"
-)
-
+graphics.views.auto_scale()
+graphics.picture.save_picture(file_name="contour-h2o-mass-fraction.png")
 
 # %%
 # .. figure:: /_static/magnus/contour-h2o-mass-fraction.png
