@@ -33,6 +33,8 @@ jupyter:
     name: python3
 ---
 
+### Launch and exit a meshing session
+
 ```{python}
 #| eval: false
 import ansys.fluent.core as pyfluent
