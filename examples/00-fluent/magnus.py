@@ -183,7 +183,7 @@ species.reactions.enable_volumetric_reactions = True
 #
 # .. note::
 #
-#    The available material list contains the set of chemical mixtures that exist in the Fluent database.
+#    The available material list contains the set of chemical mixtures that exist in the Ansys Fluent database.
 #    We can select one of the predefined mixtures to access a complete description of the reacting system.
 #    The chemical species in the system and their physical and thermodynamic properties are defined by our selection of the mixture material.
 #    We can alter the mixture material selection or modify the mixture material properties using the material settings (see `Materials`_).
@@ -206,7 +206,7 @@ species.print_state()
 # Materials
 # ^^^^^^^^^
 # In this step, we will examine the default settings for the mixture material.
-# This tutorial uses mixture properties copied from the Fluent database.
+# This tutorial uses mixture properties copied from the Ansys Fluent database.
 # In general, we can modify these or create our own mixture properties for our specific problem as necessary.
 
 # %%
@@ -597,3 +597,11 @@ solver.settings.file.write_case(file_name="gascomb1.cas.h5")
 # ^^^^^^^^^^^^
 
 solver.exit()
+
+# %%
+# Summary
+# -------
+#
+# In this tutorial we used PyFluent to model the transport, mixing, and reaction of chemical species.
+# The reaction system was defined by using a mixture-material entry in the Ansys Fluent database.
+# The procedures used here for simulation of hydrocarbon combustion can be applied to other reacting flow systems.
