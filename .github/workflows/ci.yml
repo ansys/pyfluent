@@ -95,12 +95,7 @@ jobs:
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
-      - uses: ansys/actions/doc-build@v8
-        with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
-          add-pdf-html-docs-as-assets: true
-          check-links: false
-          needs-quarto: true
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -119,6 +114,16 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Install quarto to build cheatsheet
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh release download --repo github.com/quarto-dev/quarto-cli --pattern *linux-amd64.deb
+          apt install ./quarto*linux-amd64.deb -y
+          quarto install tool tinytex --log-level warning
+    
+      - name: Test quarto installation
+        run: quarto --version
 
       - name: Install pyfluent
         run: make install
