@@ -1,6 +1,6 @@
 .. _ref_rpvars_guide:
 
-RPvars
+rpvars
 ======
 
 Examples
