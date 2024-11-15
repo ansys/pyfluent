@@ -1,4 +1,4 @@
-""".. _magnus:
+""".. _species_transport:
 
 Modeling Species Transport and Gaseous Combustion
 =================================================
@@ -31,7 +31,7 @@ Modeling Species Transport and Gaseous Combustion
 # The high-speed methane jet initially expands with little interference from the outer wall, and entrains and mixes with the low-speed air.
 # The Reynolds number based on the methane jet diameter is approximately :math:`5.7 × 10^3`.
 #
-# .. figure:: /_static/magnus/setup.png
+# .. figure:: /_static/species_transport/setup.png
 #     :width: 500pt
 #     :align: center
 #
@@ -57,7 +57,7 @@ Modeling Species Transport and Gaseous Combustion
 # Launch Fluent 2D in solution mode and print Fluent version.
 
 # sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
-# sphinx_gallery_thumbnail_path = '_static/magnus/setup.png'
+# sphinx_gallery_thumbnail_path = '_static/species_transport/setup.png'
 
 import ansys.fluent.core as pyfluent
 
@@ -131,7 +131,7 @@ graphics.picture.y_resolution = 2880
 graphics.picture.save_picture(file_name="mesh.png")
 
 # %%
-# .. figure:: /_static/magnus/mesh.png
+# .. figure:: /_static/species_transport/mesh.png
 #     :width: 500pt
 #     :align: center
 #
@@ -457,7 +457,7 @@ graphics.views.auto_scale()
 # graphics.picture.save_picture(file_name="contour-temp.png")
 
 # %%
-# .. figure:: /_static/magnus/contour-temp.png
+# .. figure:: /_static/species_transport/contour-temp.png
 #     :width: 500pt
 #     :align: center
 #
@@ -483,7 +483,7 @@ graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="vector-vel.png")
 
 # %%
-# .. figure:: /_static/magnus/vector-vel.png
+# .. figure:: /_static/species_transport/vector-vel.png
 #     :width: 500pt
 #     :align: center
 #
@@ -503,7 +503,7 @@ graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-ch4-mass-fraction.png")
 
 # %%
-# .. figure:: /_static/magnus/contour-ch4-mass-fraction.png
+# .. figure:: /_static/species_transport/contour-ch4-mass-fraction.png
 #     :width: 500pt
 #     :align: center
 #
@@ -521,7 +521,7 @@ graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-o2-mass-fraction.png")
 
 # %%
-# .. figure:: /_static/magnus/contour-o2-mass-fraction.png
+# .. figure:: /_static/species_transport/contour-o2-mass-fraction.png
 #     :width: 500pt
 #     :align: center
 #
@@ -538,7 +538,7 @@ graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-co2-mass-fraction.png")
 
 # %%
-# .. figure:: /_static/magnus/contour-co2-mass-fraction.png
+# .. figure:: /_static/species_transport/contour-co2-mass-fraction.png
 #     :width: 500pt
 #     :align: center
 #
@@ -555,7 +555,7 @@ graphics.views.auto_scale()
 graphics.picture.save_picture(file_name="contour-h2o-mass-fraction.png")
 
 # %%
-# .. figure:: /_static/magnus/contour-h2o-mass-fraction.png
+# .. figure:: /_static/species_transport/contour-h2o-mass-fraction.png
 #     :width: 500pt
 #     :align: center
 #
