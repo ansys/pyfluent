@@ -261,6 +261,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v22.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 22.2 Fluent version info
         run: |
@@ -291,6 +292,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.1 Fluent version info
         run: |
@@ -321,6 +323,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.2 Fluent version info
         run: |
@@ -351,6 +354,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.1 Fluent version info
         run: |
@@ -381,6 +385,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.2 Fluent version info
         run: |

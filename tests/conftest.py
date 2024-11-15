@@ -8,7 +8,6 @@ from packaging.version import Version
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import codegen
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -71,9 +70,9 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+    monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
-    codegen.CODEGEN_GENERATE_BUILTIN_SETTINGS = False
 
 
 class Helpers:
