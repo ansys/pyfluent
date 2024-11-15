@@ -91,7 +91,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
@@ -277,6 +277,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v22.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 22.2 Fluent version info
         run: |
@@ -307,6 +308,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.1 Fluent version info
         run: |
@@ -337,6 +339,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.2 Fluent version info
         run: |
@@ -367,6 +370,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.1 Fluent version info
         run: |
@@ -397,6 +401,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.2 Fluent version info
         run: |

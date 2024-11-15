@@ -21,6 +21,8 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the Docker image name while starting a Fluent container in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - FLUENT_IMAGE_TAG
       - Specifies the Docker image tag while starting a Fluent container in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS
+      - Skips the generation of built-in settings during codegen.
     * - PYFLUENT_CONTAINER_MOUNT_SOURCE
       - Specifies the host path which is mounted inside the container while starting a Fluent container in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - PYFLUENT_CONTAINER_MOUNT_TARGET
