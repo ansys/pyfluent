@@ -454,7 +454,7 @@ contour1.surfaces_list = contour1.surfaces_list.allowed_values()
 contour1.coloring.option = "banded"
 contour1.display()
 graphics.views.auto_scale()
-graphics.picture.save_picture(file_name="contour-temp.png")
+# graphics.picture.save_picture(file_name="contour-temp.png")
 
 # %%
 # .. figure:: /_static/magnus/contour-temp.png
