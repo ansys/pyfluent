@@ -15,7 +15,7 @@ Examples
    'number-of-iterations'
    >>> solver.rp_vars("number-of-iterations")
    100
-   >>> # Getting dictionary with all rpvars available:
+   >>> # Get dictionary of all available rpvars:
    >>> solver.rp_vars()
    {'sg-swirl?': False, 'rp-seg?': True, 'rf-energy?': False, 'rp-inviscid?': False, ...
    'number-of-iterations': 100, ...}
