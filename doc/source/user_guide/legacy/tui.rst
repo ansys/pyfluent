@@ -170,3 +170,14 @@ Limitations
 -----------
 #. The command ``file.set_batch_options`` is not supported because batch options are automatically
    configured to ensure the execution environment in Fluent is correctly set for remote operations.
+
+#. The commands under the TUI menus ``display.views`` and ``display.set.windows`` are not available
+   in PyFluent meshing session. Those commands can be executed using the ``execute_tui`` method.
+   For example:
+
+   .. code-block:: python
+
+      <meshing_session>.execute_tui("/display/views/camera/position 2 3 4")
+      <meshing_session>.execute_tui("/display/set/windows/open-window 2")
+
+   The argument to the ``execute_tui`` method is the exact TUI command string in Fluent.
