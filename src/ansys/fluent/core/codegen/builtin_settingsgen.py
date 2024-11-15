@@ -56,6 +56,7 @@ def generate(version: str):
     print("Generating builtin settings...")
     CODEGEN_OUTDIR.mkdir(exist_ok=True)
     root = _get_settings_root(version)
+    version = FluentVersion(version)
     with open(_PY_FILE, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
@@ -68,7 +69,10 @@ def generate(version: str):
         f.write("]\n\n")
         for name, v in DATA.items():
             kind, path = v
-            path = path[FluentVersion(version)] if isinstance(path, dict) else path
+            if isinstance(path, dict):
+                if version not in path:
+                    continue
+                path = path[version]
             named_objects, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
