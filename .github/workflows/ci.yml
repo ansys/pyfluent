@@ -571,6 +571,13 @@ jobs:
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Pull 25.2 Fluent docker image
         if: steps.cache-252-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
