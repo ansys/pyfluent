@@ -317,13 +317,13 @@ jobs:
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: v23.2.0
-          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Run 23.2 API codegen
         if: steps.cache-232-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.2 Fluent version info
         run: |
