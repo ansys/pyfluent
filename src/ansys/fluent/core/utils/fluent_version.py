@@ -5,7 +5,7 @@ from functools import total_ordering
 import os
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._version import current_dev_version, fluent_release_version
+from ansys.fluent.core._version import fluent_dev_version, fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):
@@ -120,7 +120,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(current_dev_version)
+        return cls(fluent_dev_version)
 
     @property
     def awp_var(self):
