@@ -16,6 +16,8 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
   MAIN_PYTHON_VERSION: '3.10'
+  FLUENT_IMAGE_TAG: v25.2.0
+  FLUENT_VERSION: 252
 
 jobs:
   test:
@@ -58,20 +60,20 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 25.1 Fluent docker image
+      - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      - name: Run 25.1 API codegen
+      - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      - name: Print 25.1 Fluent version info
+      - name: Print Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_251.py
-          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_${{ env.FLUENT_VERSION }}.py
+          python -c "from ansys.fluent.core.generated.solver.settings_${{ env.FLUENT_VERSION }} import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
