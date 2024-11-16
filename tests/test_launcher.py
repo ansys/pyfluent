@@ -486,3 +486,11 @@ def test_container_warning_for_mount_source(caplog):
     _ = pyfluent.launch_fluent(container_dict=container_dict)
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
+
+
+def test_fluent_automatic_transcript(tmp_path, monkeypatch):
+    with pyfluent.launch_fluent(cwd=tmp_path):
+        assert not list(tmp_path.glob("*.trn"))
+    monkeypatch.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
+    with pyfluent.launch_fluent(cwd=tmp_path):
+        assert list(tmp_path.glob("*.trn"))
