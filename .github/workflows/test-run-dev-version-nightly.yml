@@ -81,7 +81,7 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-{{ env.FLUENT_VERSION }}
+          make unittest-all-${{ env.FLUENT_VERSION }}
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
