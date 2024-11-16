@@ -107,4 +107,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Delete 25.1 Fluent docker image
-        run: docker rmi -f ghcr.io/ansys/pyfluent:{{ env.FLUENT_IMAGE_TAG }}
+        run: docker rmi -f ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }}
