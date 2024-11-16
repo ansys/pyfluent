@@ -212,7 +212,7 @@ def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
-    "<solver_session>.file.read_case" in capsys.readouterr().out
+    assert "<solver_session>.settings.file.read_case" in capsys.readouterr().out
 
 
 # Custom aliases are not tested with 25.1 or later due to conflicts with the actual aliases

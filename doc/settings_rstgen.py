@@ -36,7 +36,9 @@ def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 
-def _generate_table_for_rst(r, data_dict={}):
+def _generate_table_for_rst(r, data_dict=None):
+    if data_dict is None:
+        data_dict = {}
     # Get dimensions for columns
     key_max = len(max(data_dict.keys(), key=len))
     val_max = len(max(data_dict.values(), key=len))

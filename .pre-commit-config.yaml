@@ -25,13 +25,14 @@ repos:
   rev: 7.1.1
   hooks:
   - id: flake8
+    additional_dependencies: [flake8-bugbear==24.10.31]
     args: [
       --exclude, src/ansys/fluent/core/generated,
       --count,
       --statistics,
       --max-complexity, "10",
       --max-line-length, "88",
-      --extend-ignore, E203 E501 C901,
+      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028,
       src, doc, examples, tests
     ]
 
