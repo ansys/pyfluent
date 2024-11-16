@@ -313,6 +313,11 @@ def configure_container_dict(
 
     container_dict["fluent_image"] = fluent_image
 
+    if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
+        if "environment" not in container_dict:
+            container_dict["environment"] = {}
+        container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
+
     fluent_commands = ["-gu", f"-sifile={container_server_info_file}"] + args
 
     container_dict_default = {}
