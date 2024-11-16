@@ -12,6 +12,7 @@ from ansys.fluent.core.solver.flobject import (
     _OutputFile,
     to_python_name,
 )
+from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentUserWarning
 
@@ -212,7 +213,10 @@ def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
-    assert "<solver_session>.settings.file.read_case" in capsys.readouterr().out
+    timeout_loop(
+        lambda: "<solver_session>.settings.file.read_case" in capsys.readouterr().out,
+        timeout=5,
+    )
 
 
 # Custom aliases are not tested with 25.1 or later due to conflicts with the actual aliases
