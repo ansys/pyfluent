@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import platform
+from tempfile import TemporaryDirectory
 
 import pytest
 
@@ -486,3 +487,15 @@ def test_container_warning_for_mount_source(caplog):
     _ = pyfluent.launch_fluent(container_dict=container_dict)
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
+
+
+# runs only in container till cwd is supported for container launch
+def test_fluent_automatic_transcript(monkeypatch):
+    with monkeypatch.context() as m:
+        m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
+        with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
+            with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
+                assert list(Path(tmp_dir).glob("*.trn"))
+    with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
+        with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
+            assert not list(Path(tmp_dir).glob("*.trn"))
