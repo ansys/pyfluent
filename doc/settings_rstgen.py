@@ -220,7 +220,7 @@ if __name__ == "__main__":
         os.makedirs(rst_dir)
 
     image_tag = os.getenv(
-        "FLUENT_IMAGE_TAG", FluentVersion.current_release().docker_image_tag
+        "FLUENT_IMAGE_TAG", FluentVersion.current_dev().docker_image_tag
     )
     version = get_version_for_file_name(image_tag.lstrip("v"))
     settings = importlib.import_module(

@@ -11,6 +11,7 @@ from time import sleep
 import yaml
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import FluentVersion
 import docker
 
 
@@ -38,7 +39,8 @@ def run_fluent_test(journal_file: Path, launcher_args: str = "") -> None:
     """
     logging.debug(f"journal_file: {journal_file}")
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
-    dst_pyfluent_dir = "/ansys_inc/v251/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
+    verion_for_file_name = FluentVersion.current_dev().number
+    dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
     src_test_dir = str(journal_file.parent)
     dst_test_dir = "/testing"
     logging.debug(f"src_pyfluent_dir: {src_pyfluent_dir}")
@@ -47,7 +49,8 @@ def run_fluent_test(journal_file: Path, launcher_args: str = "") -> None:
     logging.debug(f"dst_test_dir: {dst_test_dir}")
 
     docker_client = docker.from_env()
-    image_name = "ghcr.io/ansys/pyfluent:v25.1.0"
+    version_for_image_tag = FluentVersion.current_dev().docker_image_tag
+    image_name = f"ghcr.io/ansys/pyfluent:{version_for_image_tag}"
     container = docker_client.containers.run(
         image=image_name,
         volumes=[
