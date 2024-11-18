@@ -198,7 +198,7 @@ class Graphics(Container):
         if meshes is not None:
             outline_mesh_id = "mesh-outline"
             outline_mesh = meshes[outline_mesh_id]
-            outline_mesh.surfaces_list = [
+            outline_mesh.surfaces = [
                 k
                 for k, v in outline_mesh._api_helper.field_info()
                 .get_surfaces_info()
