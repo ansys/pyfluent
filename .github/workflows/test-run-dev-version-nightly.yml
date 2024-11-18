@@ -81,7 +81,7 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-{{ env.FLUENT_VERSION }}
+          make unittest-all-${{ env.FLUENT_VERSION }}
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
@@ -107,4 +107,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Delete 25.1 Fluent docker image
-        run: docker rmi -f ghcr.io/ansys/pyfluent:{{ env.FLUENT_IMAGE_TAG }}
+        run: docker rmi -f ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }}
