@@ -245,7 +245,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5]
     )
     assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
-    faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
+    assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]

@@ -424,7 +424,7 @@ def test_fluent_enums():
     with pytest.raises(ValueError):
         UIMode("")
     with pytest.raises(TypeError):
-        UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
+        assert UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
 
 
 def test_exposure_and_graphics_driver_arguments():

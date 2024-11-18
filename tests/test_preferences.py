@@ -18,7 +18,7 @@ def test_solver_preferences(new_solver_session):
     preferred_drawing.FacetLimit = 6000000
     assert preferred_drawing.FacetLimit() == 6000000
     preferred_drawing.FaceZoneLimit = 15000
-    preferred_drawing.FaceZoneLimit() == 15000
+    assert preferred_drawing.FaceZoneLimit() == 15000
 
     ansys_logo = solver.preferences.Appearance.AnsysLogo
     ansys_logo.Color = "white"
@@ -53,7 +53,7 @@ def test_meshing_preferences(new_meshing_session):
     assert preferred_drawing.FacetLimit() == 6000000
 
     preferred_drawing.FaceZoneLimit = 15000
-    preferred_drawing.FaceZoneLimit() == 15000
+    assert preferred_drawing.FaceZoneLimit() == 15000
 
     ansys_logo = meshing.preferences.Appearance.AnsysLogo
     ansys_logo.Color = "white"

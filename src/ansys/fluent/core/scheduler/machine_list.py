@@ -80,8 +80,10 @@ class Machine(object):
 class MachineList(object):
     """Provides an interface to list of machines allocated by a queue system."""
 
-    def __init__(self, machinesIn=[]):
+    def __init__(self, machinesIn=None):
         """Constructs and initializes an empty machine file object."""
+        if machinesIn is None:
+            machinesIn = []
         self._machines = []
         for machine in machinesIn:
             self._machines.append(machine)

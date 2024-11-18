@@ -582,7 +582,7 @@ class DeprecatedFieldData:
         tolerance: float | None = 0.001,
         coarsen: int | None = 1,
         velocity_domain: str | None = "all-phases",
-        zones: list = [],
+        zones: list | None = None,
     ) -> Dict:
         """Get the pathlines field data on a surface.
 
@@ -624,6 +624,8 @@ class DeprecatedFieldData:
             Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
         """
+        if zones is None:
+            zones = []
         warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
