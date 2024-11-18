@@ -526,7 +526,7 @@ def test_attrs():
     r.g_1.b_3 = True
     assert not r.g_1.s_4.get_attr("active?")
     with pytest.raises(InactiveObjectError):
-        r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
+        r.g_1.s_4.get_attr("allowed-values")
 
 
 # The following test is commented out as codegen module is not packaged in the

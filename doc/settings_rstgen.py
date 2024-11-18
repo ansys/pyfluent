@@ -23,7 +23,10 @@ python <path to settings_rstgen.py>
 import importlib
 import os
 
-from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
+from ansys.fluent.core.utils.fluent_version import (
+    FluentVersion,
+    get_version_for_file_name,
+)
 
 parents_dict = {}
 rst_list = []
@@ -33,7 +36,9 @@ def _get_indent_str(indent):
     return f"{' '*indent*4}"
 
 
-def _generate_table_for_rst(r, data_dict={}):
+def _generate_table_for_rst(r, data_dict=None):
+    if data_dict is None:
+        data_dict = {}
     # Get dimensions for columns
     key_max = len(max(data_dict.keys(), key=len))
     val_max = len(max(data_dict.values(), key=len))
@@ -216,7 +221,9 @@ if __name__ == "__main__":
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
-    image_tag = os.getenv("FLUENT_IMAGE_TAG", "v24.2.0")
+    image_tag = os.getenv(
+        "FLUENT_IMAGE_TAG", FluentVersion.current_dev().docker_image_tag
+    )
     version = get_version_for_file_name(image_tag.lstrip("v"))
     settings = importlib.import_module(
         f"ansys.fluent.core.generated.solver.settings_{version}"

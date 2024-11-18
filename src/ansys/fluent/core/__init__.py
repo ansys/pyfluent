@@ -113,8 +113,11 @@ CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 # Whether to zip settings API files during codegen
 CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
 
-# Whether to show mesh after case read
-SHOW_MESH_AFTER_CASE_READ = False
+# Whether to show mesh in Fluent after case read
+FLUENT_SHOW_MESH_AFTER_CASE_READ = False
+
+# Whether to write the automatic transcript in Fluent
+FLUENT_AUTOMATIC_TRANSCRIPT = False
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False

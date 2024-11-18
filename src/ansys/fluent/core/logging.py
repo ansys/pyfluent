@@ -1,7 +1,4 @@
-"""Module controlling PyFluent's logging functionality.
-
-For a basic user guide, see the :ref:`logging user guide <ref_logging_user_guide>`.
-"""
+"""Module controlling PyFluent's logging functionality."""
 
 import logging.config
 import os
@@ -228,7 +225,6 @@ def configure_env_var() -> None:
     ``PYFLUENT_LOGGING`` set to ``0`` or ``OFF`` is the same as if no environment variable was set.
     If logging debug output to file by default is desired, without having to use :func:`enable()` every time,
     set environment variable ``PYFLUENT_LOGGING`` to ``DEBUG``.
-    See also the :ref:`user guide environment variable subsection <ref_logging_env_var>`.
     """
     env_logging_level = os.getenv("PYFLUENT_LOGGING")
     if env_logging_level:

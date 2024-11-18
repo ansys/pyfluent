@@ -18,6 +18,3 @@ class StaticInfoType(Enum):
     DATAMODEL_SOLVER_WORKFLOW = auto()
     DATAMODEL_MESHING_UTILITIES = auto()
     SETTINGS = auto()
-
-
-CODEGEN_GENERATE_BUILTIN_SETTINGS = True

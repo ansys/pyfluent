@@ -286,7 +286,7 @@ def test_lispy_for_multiline_string():
 
 
 def test_lispy_for_quotes():
-    lispy.parse(
+    assert lispy.parse(
         '(define x "\n(format \\"\n-------------------------\nRunning Original Settings\n------------------------\n\\")")'
     ) == [
         "define",

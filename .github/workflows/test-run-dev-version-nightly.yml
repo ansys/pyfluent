@@ -19,6 +19,9 @@ jobs:
     name: Unit Testing
     runs-on: [self-hosted, pyfluent]
     timeout-minutes: 120
+    env:
+      FLUENT_IMAGE_TAG: v25.2.0
+      FLUENT_VERSION: 252
 
     steps:
       - uses: actions/checkout@v4
@@ -55,32 +58,32 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 25.1 Fluent docker image
+      - name: Pull Fluent docker image
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      - name: Run 25.1 API codegen
+      - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      - name: Print 25.1 Fluent version info
+      - name: Print Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_251.py
-          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_${{ env.FLUENT_VERSION }}.py
+          python -c "from ansys.fluent.core.generated.solver.settings_${{ env.FLUENT_VERSION }} import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
           rm -rf dist
           make install > /dev/null
 
-      - name: 25.1 Unit Testing
+      - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-251
+          make unittest-all-${{ env.FLUENT_VERSION }}
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
       - name: Cleanup previous docker containers
         if: always()
@@ -91,7 +94,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
         if: github.ref == 'refs/heads/main'
         run: |
-          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:v25.1.0 | sed 's/.*@//')
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
   clean-up:
@@ -104,4 +107,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Delete 25.1 Fluent docker image
-        run: docker rmi -f ghcr.io/ansys/pyfluent:v25.1.0
+        run: docker rmi -f ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }}

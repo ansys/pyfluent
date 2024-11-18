@@ -1805,8 +1805,13 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
-        newkwds = _get_new_keywords(self, **kwds)
-        return self.flproxy.execute_query(self._parent.path, self.obj_name, **newkwds)
+        kwds = _get_new_keywords(self, **kwds)
+        scmKwds = {}
+        for arg, value in kwds.items():
+            argument = getattr(self, arg)
+            # Convert key-value to Scheme key-value
+            scmKwds[argument.fluent_name] = argument.to_scheme_keys(value)
+        return self.flproxy.execute_query(self._parent.path, self.obj_name, **scmKwds)
 
 
 _baseTypes = {

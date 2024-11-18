@@ -21,7 +21,7 @@ def is_windows():
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
-    from ansys.fluent.core import CLEAR_FLUENT_PARA_ENVS, INFER_REMOTING_IP
+    import ansys.fluent.core as pyfluent
 
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
@@ -35,15 +35,18 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
-    if CLEAR_FLUENT_PARA_ENVS:
+    if pyfluent.CLEAR_FLUENT_PARA_ENVS:
         del fluent_env["PARA_NPROCS"]
         del fluent_env["PARA_MESH_NPROCS"]
 
     if not is_slurm:
-        if INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
+        if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
             remoting_ip = find_remoting_ip()
             if remoting_ip:
                 fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+
+    if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
+        fluent_env["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
     kwargs.update(env=fluent_env)
     return kwargs

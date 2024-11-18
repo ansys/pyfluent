@@ -91,7 +91,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v24.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
@@ -114,6 +114,22 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+    
+      - name: Check Quarto Version
+        shell: bash
+        run: |
+          quarto --version
+
+      - name: "Install Poppler for PDF to PNG conversion"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
 
       - name: Install pyfluent
         run: make install
@@ -261,6 +277,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v22.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 22.2 Fluent version info
         run: |
@@ -291,6 +308,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.1 Fluent version info
         run: |
@@ -321,6 +339,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v23.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 23.2 Fluent version info
         run: |
@@ -351,6 +370,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.1 Fluent version info
         run: |
@@ -381,6 +401,7 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: v24.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.2 Fluent version info
         run: |
@@ -397,24 +418,56 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v25.1.0
 
       - name: Run 25.1 API codegen
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v25.1.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 25.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_251.py
+          python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      # Replace v25.2.0 with ${{ vars.FLUENT_STABLE_IMAGE_DEV }} after the first successful nightly test run
+      - name: Cache 25.2 API Code
+        uses: actions/cache@v4
+        id: cache-252-api-code
+        with:
+          path:
+            src/ansys/fluent/core/generated
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0
+
+      - name: Pull 25.2 Fluent docker image
+        if: steps.cache-251-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: v25.2.0
+
+      - name: Run 25.2 API codegen
+        if: steps.cache-252-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: v25.2.0
+
+      - name: Print 25.2 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_252.py
           python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
@@ -457,9 +510,13 @@ jobs:
             version: 242
           - image-tag: v25.1.0
             version: 251
+          - image-tag: v25.2.0
+            version: 252
     timeout-minutes: 120
     env:
-        FLUENT_IMAGE_TAG: ${{ matrix.version == 251 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+        # Enable this after the first successful nightly test run
+        # FLUENT_IMAGE_TAG: ${{ matrix.version == 252 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+        FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
     steps:
 

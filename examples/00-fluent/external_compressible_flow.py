@@ -57,13 +57,14 @@ wing_spaceclaim_file, wing_intermediary_file = [
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in meshing mode with double precision running on
-# four processors.
+# four processors and print Fluent version.
 
 meshing = pyfluent.launch_fluent(
     precision="double",
     processor_count=4,
     mode="meshing",
 )
+print(meshing.get_fluent_version())
 
 ###############################################################################
 # Initialize workflow

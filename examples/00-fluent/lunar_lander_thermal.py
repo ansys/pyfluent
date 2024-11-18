@@ -235,8 +235,8 @@ def get_surf_mean_temp(
 # ------------
 # We are now ready to launch Fluent and load the mesh.
 #
-# Launch Fluent
-# ~~~~~~~~~~~~~
+# Launch Fluent and print Fluent version
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 solver = pyfluent.launch_fluent(
     precision="double",
@@ -245,6 +245,7 @@ solver = pyfluent.launch_fluent(
     cwd=pyfluent.EXAMPLES_PATH,
     product_version="24.2.0",
 )
+print(solver.get_fluent_version())
 
 ###############################################################################
 # Load the mesh

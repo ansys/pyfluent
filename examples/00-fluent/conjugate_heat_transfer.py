@@ -56,9 +56,9 @@ geom_filename = examples.download_file(
 # Fluent Solution Setup
 # =====================
 
-#########################################
-# Launch Fluent session with meshing mode
-# =======================================
+##################################################################
+# Launch Fluent session with meshing mode and print Fluent version
+# ================================================================
 
 meshing = pyfluent.launch_fluent(
     product_version="24.2.0",
@@ -67,7 +67,7 @@ meshing = pyfluent.launch_fluent(
     precision="double",
     processor_count=4,
 )
-meshing.health_check.check_health()
+print(meshing.get_fluent_version())
 
 #############################################################################
 # Start Watertight Geometry Meshing Workflow

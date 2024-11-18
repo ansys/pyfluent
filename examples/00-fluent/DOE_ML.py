@@ -60,16 +60,16 @@ import_filename = examples.download_file(
 # Fluent Solution Setup
 # =====================
 
-########################################
-# Launch Fluent session with solver mode
-# ======================================
+#################################################################
+# Launch Fluent session with solver mode and print Fluent version
+# ===============================================================
 
 solver = pyfluent.launch_fluent(
     precision="double",
     processor_count=2,
     version="3d",
 )
-solver.health_check.status()
+print(solver.get_fluent_version())
 
 
 #############################################################################

@@ -99,7 +99,7 @@ example, the installer automatically sets the ``AWP_ROOT232`` environment variab
 to ``C:\Program Files\ANSYS Inc\v232``.
 
 On Linux, the required environment variable is not set automatically, and can be set for the
-current user in the current shell session, using Fluent 2023 R1 in the default installation
+current user in the current shell session, using Fluent 2023 R2 in the default installation
 directory as an example, before running PyFluent, with:
 
 .. code:: console
