@@ -21,6 +21,8 @@ def is_windows():
 
 
 def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+    import ansys.fluent.core as pyfluent
+
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
     kwargs: Dict[str, Any] = {}
@@ -33,14 +35,18 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    if pyfluent.CLEAR_FLUENT_PARA_ENVS:
+        del fluent_env["PARA_NPROCS"]
+        del fluent_env["PARA_MESH_NPROCS"]
 
     if not is_slurm:
-        from ansys.fluent.core import INFER_REMOTING_IP
-
-        if INFER_REMOTING_IP and not "REMOTING_SERVER_ADDRESS" in fluent_env:
+        if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
             remoting_ip = find_remoting_ip()
             if remoting_ip:
                 fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+
+    if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
+        fluent_env["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
     kwargs.update(env=fluent_env)
     return kwargs
@@ -82,12 +88,13 @@ def _build_journal_argument(
 ) -> str:
     """Build Fluent commandline journal argument."""
 
-    from beartype import BeartypeConf, beartype
-
-    @beartype(conf=BeartypeConf(violation_type=TypeError))
     def _impl(
         topy: None | bool | str, journal_file_names: None | str | list[str]
     ) -> str:
+        if journal_file_names and not isinstance(journal_file_names, (str, list)):
+            raise TypeError(
+                "Use 'journal_file_names' to specify and convert journal files."
+            )
         if topy and not journal_file_names:
             raise InvalidArgument(
                 "Use 'journal_file_names' to specify and convert journal files."

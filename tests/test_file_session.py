@@ -42,20 +42,26 @@ def test_field_info_data_multi_phase():
     sv_density = file_session.fields.field_data.get_scalar_field_data(
         field_name="phase-2:SV_DENSITY", surfaces=[33]
     )
-    assert sv_density[33].size == 268
-    assert sv_density[33][130].scalar_data == 1.225
+    assert sv_density[33].shape == (268,)
+    assert sv_density[33][130] == 1.225
     assert (
         round(
             file_session.fields.field_data.get_scalar_field_data(
                 field_name="phase-2:SV_WALL_YPLUS", surfaces=[33]
-            )[33][130].scalar_data,
+            )[33][130],
             5,
         )
         == 0.00103
     )
     vector_data = file_session.fields.field_data.get_vector_field_data
-    assert vector_data(field_name="phase-2:velocity", surfaces=[33])[33].size == 268
-    assert vector_data(field_name="phase-1:velocity", surfaces=[34])[34].size == 2168
+    assert vector_data(field_name="phase-2:velocity", surfaces=[33])[33].shape == (
+        268,
+        3,
+    )
+    assert vector_data(field_name="phase-1:velocity", surfaces=[34])[34].shape == (
+        2168,
+        3,
+    )
 
 
 def test_field_info_data_single_phase():
@@ -88,32 +94,31 @@ def test_field_info_data_single_phase():
     sv_t_wall = file_session.fields.field_data.get_scalar_field_data(
         "SV_T", surfaces=["wall"]
     )
-    assert sv_t_wall.size == 3630
-    assert round(sv_t_wall[1800].scalar_data, 4) == 313.15
+    assert sv_t_wall["wall"].shape == (3630,)
+    assert round(sv_t_wall["wall"][1800], 4) == 313.15
 
     surface_data = file_session.fields.field_data.get_surface_data
     surface_data_wall = surface_data(
-        data_types=[SurfaceDataType.Vertices], surfaces=["wall"]
+        data_types=[SurfaceDataType.Vertices], surfaces=[3]
     )
-    assert surface_data_wall.size == 3810
-    assert round(surface_data_wall[1500].x, 5) == 0.12406
-    assert round(surface_data_wall[1500].y, 5) == 0.09525
-    assert round(surface_data_wall[1500].z, 5) == 0.04216
+    assert surface_data_wall[3].shape == (3810, 3)
+    assert round(surface_data_wall[3][1500][0], 5) == 0.12406
+    assert round(surface_data_wall[3][1500][1], 5) == 0.09525
+    assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry = surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
     )
-    assert surface_data_symmetry.size == 2018
-    assert surface_data_symmetry[1000].node_count == 4
-    assert list(surface_data_symmetry[1000].node_indices) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry["symmetry"]) == 2018
+    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
 
     vector_data = file_session.fields.field_data.get_vector_field_data
-    assert vector_data("velocity", surfaces=["wall"]).size == 3630
+    assert vector_data("velocity", surfaces=["wall"])["wall"].shape == (3630, 3)
 
-    vector_data_symmetry = vector_data("velocity", surfaces=["symmetry"])
-    assert vector_data_symmetry.size == 2018
-    assert round(vector_data_symmetry[1009].x, 5) == 0.0023
-    assert round(vector_data_symmetry[1009].y, 5) == 1.22311
+    vector_data_symmetry = vector_data("velocity", surfaces=["symmetry"])["symmetry"]
+    assert vector_data_symmetry.shape == (2018, 3)
+    assert round(vector_data_symmetry[1009][0], 5) == 0.0023
+    assert round(vector_data_symmetry[1009][1], 5) == 1.22311
 
 
 def test_data_reader_single_phase():
@@ -315,10 +320,10 @@ def test_error_handling_single_phase():
 
     transaction_1 = field_data.new_transaction()
 
-    with pytest.raises(NotImplementedError) as msg:
+    with pytest.raises(NotImplementedError):
         transaction_1.add_pathlines_fields_request("SV_T", surfaces=[3, 5])
 
-    with pytest.raises(NotImplementedError) as msg:
+    with pytest.raises(NotImplementedError):
         field_data.get_pathlines_field_data("SV_T", surfaces=[3, 5])
 
 
@@ -340,13 +345,11 @@ def test_error_handling_multi_phase():
     field_data = file_session.fields.field_data
 
     transaction_1 = field_data.new_transaction()
-    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
+    with pytest.raises(InvalidMultiPhaseFieldName):
         transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", surfaces=[29, 30])
 
-    with pytest.raises(InvalidMultiPhaseFieldName) as msg:
-        d_size = field_data.get_vector_field_data("velocity", surfaces=[34])[34].size
+    with pytest.raises(InvalidMultiPhaseFieldName):
+        field_data.get_vector_field_data("velocity", surfaces=[34])[34].size
 
-    with pytest.raises(InvalidFieldName) as msg:
-        d_size = field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[
-            34
-        ].size
+    with pytest.raises(InvalidFieldName):
+        field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[34].size

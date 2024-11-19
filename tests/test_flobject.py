@@ -11,6 +11,7 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
+    _combine_set_states,
     _gethash,
     find_children,
 )
@@ -229,13 +230,12 @@ class ListObject(Setting):
     def size(self):
         return len(self._objs)
 
-    def resize(self, l):
-        if l > len(self._objs):
-            # pylint: disable=unused-variable
-            for i in range(len(self._objs), l):
+    def resize(self, new_size):
+        if new_size > len(self._objs):
+            for _ in range(len(self._objs), new_size):
                 self._objs.append(self.child_object_type(self))
-        elif l < len(self._objs):
-            self._objs = self._objs[:l]
+        elif new_size < len(self._objs):
+            self._objs = self._objs[:new_size]
 
     def get_child(self, c):
         return self._objs[int(c)]
@@ -269,6 +269,11 @@ class Command(Setting):
     # To be overridden by child classes
     # arguments = None
     # cb = None
+
+    def __init__(self, parent):
+        self.attrs = super().attrs.copy()
+        self.attrs["arguments-aliases"] = lambda self: {}
+        super().__init__(parent)
 
     def __call__(self, **kwds):
         args = []
@@ -515,12 +520,13 @@ def test_command():
 
 def test_attrs():
     r = flobject.get_root(Proxy())
+    r._setattr("version", "251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True
     assert not r.g_1.s_4.get_attr("active?")
-    with pytest.raises(InactiveObjectError) as einfo:
-        r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
+    with pytest.raises(InactiveObjectError):
+        r.g_1.s_4.get_attr("allowed-values")
 
 
 # The following test is commented out as codegen module is not packaged in the
@@ -915,7 +921,6 @@ def test_accessor_methods_on_settings_objects(new_solver_session):
         "Real",
         "Integer",
         "RealList",
-        "IntegerList",
         "ListObject",
     ]
     type_list = expected_type_list.copy()
@@ -988,7 +993,7 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     with pytest.raises(AttributeError) as e:
-        string_without_allowed_values = solver.file.auto_save.root_name.allowed_values()
+        solver.file.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
@@ -1028,7 +1033,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     hydraulic_diameter = turbulence.hydraulic_diameter
     hydraulic_diameter.set_state("1 [in]")
     assert hydraulic_diameter() == "1 [in]"
-    assert hydraulic_diameter.as_quantity() == None
+    assert hydraulic_diameter.as_quantity() is None
     assert hydraulic_diameter.state_with_units() == ("1 [in]", "m")
     assert hydraulic_diameter.units() == "m"
     turbulent_intensity = turbulence.turbulent_intensity
@@ -1076,9 +1081,6 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"
     )
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        # https://github.com/ansys/pyfluent/issues/3134
-        return
     _check_vector_units(
         solver.setup.reference_frames[
             "global"
@@ -1217,7 +1219,6 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
             "list_properties",
             "make_a_copy",
             "display",
-            "copy",
             "add_to_graphics",
             "clear_history",
         }
@@ -1238,3 +1239,39 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
     # The following is the default behavior when no arguments are associated with the command.
     assert solver.results.graphics.contour.list.argument_names == []
+
+
+def test_combine_set_states():
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+        ]
+    ) == ("A/B/C", 1)
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+            ("A/B/C", 2),
+        ]
+    ) == ("A/B/C", 2)
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+            ("A/B/C", {"X": 2}),
+        ]
+    ) == ("A/B/C", {"X": 2})
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", 1),
+            ("A/B/D", 2),
+        ]
+    ) == ("A/B", {"C": 1, "D": 2})
+
+    assert _combine_set_states(
+        [
+            ("A/B/C", {"X": 1}),
+            ("A/B/D/E", 2),
+        ]
+    ) == ("A/B", {"C": {"X": 1}, "D": {"E": 2}})

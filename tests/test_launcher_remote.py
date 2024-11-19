@@ -30,7 +30,7 @@ from tests.util import rename_downloaded_file
 
 
 def test_launch_remote_instance(monkeypatch, new_solver_session):
-    pyfluent.CHECK_HEALTH = False
+    monkeypatch.setattr(pyfluent, "CHECK_HEALTH", False)
     fluent = new_solver_session
     # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(
@@ -99,7 +99,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     )
     server.start()
 
-    with pytest.raises(UnsupportedRemoteFluentInstance) as msg:
+    with pytest.raises(UnsupportedRemoteFluentInstance):
         fluent_connection = FluentConnection(
             ip=ip,
             port=port,

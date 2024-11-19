@@ -1,47 +1,104 @@
-"""Provide a module to generate the Fluent settings tree.
-
-Running this module generates a python module with the definition of the Fluent
-settings classes. The out is placed at:
-
-- src/ansys/fluent/core/solver/settings.py
-
-Running this module requires Fluent to be installed.
-
-Process
--------
-    - Launch fluent and get static info. Parse the class with flobject.get_cls()
-    - Generate a dictionary of unique classes with their hash as a key and a tuple of cls, children hash, commands hash, arguments hash, child object type hash as value.
-    - - This eliminates reduandancy and only unique classes are written.
-    - Generate .py files for the classes in hash dictionary. Resolve named conflicts with integer suffix.
-    - - Populate files dictionary with hash as key and file name as value.
-    - - child_object_type handled specially to avoid a lot of files with same name and to provide more insight of the child.
-    - Populate the classes.
-    - - For writing the import statements, get the hash of the child/command/argument/named object stored in the hash dict tuple value.
-    - - Use that hash to locate the corresponding children file name in the hash dict.
-
-Usage
------
-python <path to settingsgen.py>
-"""
+"""Module to generate the classes corresponding to the Fluent settings API."""
 
 import hashlib
-import io
-import os
-from pathlib import Path
+from io import StringIO
+import keyword
 import pickle
-import pprint
-import shutil
+import time
+from typing import IO
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
-from ansys.fluent.core.solver import flobject
+from ansys.fluent.core.solver.flobject import (
+    ListObject,
+    NamedObject,
+    get_cls,
+    to_python_name,
+)
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
-hash_dict = {}
-files_dict = {}
-root_class_path = ""
+
+def _construct_bases(original_bases, child_object_name):
+    bases = []
+    for base in original_bases:
+        if base in (
+            "NamedObject",
+            "ListObject",
+            "CreatableNamedObjectMixinOld",
+            "CreatableNamedObjectMixin",
+            "_NonCreatableNamedObjectMixin",
+        ):
+            bases.append(f"{base}[{child_object_name}]")
+        else:
+            bases.append(base)
+    return bases
+
+
+def _construct_bases_stub(original_bases, child_object_name):
+    bases = []
+    for base in original_bases:
+        # Removing these bases from stub file
+        # as intellisense doesn't work otherwise
+        if base in (
+            "_ChildNamedObjectAccessorMixin",
+            "CreatableNamedObjectMixinOld",
+            "CreatableNamedObjectMixin",
+            "_NonCreatableNamedObjectMixin",
+        ):
+            continue
+        elif base in (
+            "NamedObject",
+            "ListObject",
+        ):
+            bases.append(f"{base}[{child_object_name}]")
+        else:
+            bases.append(base)
+    return bases
+
+
+def _populate_data(cls, api_tree: dict, version: str) -> dict:
+    data = {}
+    data["version"] = version
+    data["name"] = cls.__name__
+    data["bases"] = [base.__name__ for base in cls.__bases__]
+    data["doc"] = fix_settings_doc(cls.__doc__)
+    data["fluent_name"] = getattr(cls, "fluent_name")
+    data["child_names"] = getattr(cls, "child_names", [])
+    command_names = getattr(cls, "command_names", [])
+    data["command_names"] = command_names
+    query_names = getattr(cls, "query_names", [])
+    data["query_names"] = query_names
+    data["argument_names"] = getattr(cls, "argument_names", [])
+    data["child_aliases"] = getattr(cls, "_child_aliases", {})
+    data["return_type"] = getattr(cls, "return_type", None)
+    child_classes = data.setdefault("child_classes", {})
+    for k, v in cls._child_classes.items():
+        if k in command_names:
+            api_tree[k] = "Command"
+            child_classes[k] = _populate_data(v, {}, version)
+        elif k in query_names:
+            api_tree[k] = "Query"
+            child_classes[k] = _populate_data(v, {}, version)
+        else:
+            if issubclass(v, NamedObject):
+                api_key = f"{k}:<name>"
+            elif issubclass(v, ListObject):
+                api_key = f"{k}:<index>"
+            else:
+                api_key = k
+            child_api_tree = api_tree.setdefault(api_key, {})
+            child_classes[k] = _populate_data(v, child_api_tree, version)
+            if not child_api_tree:
+                api_tree[api_key] = "Parameter"
+    child_object_type = getattr(cls, "child_object_type", None)
+    if child_object_type:
+        data["child_object_type"] = _populate_data(child_object_type, api_tree, version)
+        data["child_object_type"]["doc"] = f"'child_object_type' of {cls.__name__}."
+    else:
+        data["child_object_type"] = None
+    return data
 
 
 def _gethash(obj_info):
@@ -50,484 +107,213 @@ def _gethash(obj_info):
     return dhash.hexdigest()
 
 
-def _get_indent_str(indent):
-    return f"{' '*indent*4}"
+# Store the top level class names and their data hash.
+# This is used to avoid name collisions and data duplication.
+_NAME_BY_HASH = {}
+
+# Keeps tracks of which classes have been written to the file.
+# See the implementation note in _write_data() for more details.
+_CLASS_WRITTEN = set()
 
 
-def _populate_hash_dict(name, info, cls, api_tree):
-    children = info.get("children")
-    if children:
-        children_hash = []
-        for cname, cinfo in children.items():
-            for child in getattr(cls, "child_names", None):
-                child_cls = cls._child_classes[child]
-                if cname == child_cls.fluent_name:
-                    api_tree[child] = {}
-                    children_hash.append(
-                        _populate_hash_dict(cname, cinfo, child_cls, api_tree[child])
-                    )
-                    okey = f"{child}:<name>"
-                    if okey in api_tree[child]:
-                        api_tree[child].update(api_tree[child][okey])
-                        del api_tree[child][okey]
-                        api_tree[okey] = api_tree.pop(child)
-                    else:
-                        api_tree[child] = api_tree[child] or "Parameter"
-                    break
-    else:
-        children_hash = None
-
-    commands = info.get("commands")
-    if commands:
-        commands_hash = []
-        for cname, cinfo in commands.items():
-            for command in getattr(cls, "command_names", None):
-                command_cls = cls._child_classes[command]
-                if cname == command_cls.fluent_name:
-                    api_tree[command] = "Command"
-                    commands_hash.append(
-                        _populate_hash_dict(cname, cinfo, command_cls, {})
-                    )
-                    break
-    else:
-        commands_hash = None
-
-    queries = info.get("queries")
-    if queries:
-        queries_hash = []
-        for qname, qinfo in queries.items():
-            for query in getattr(cls, "query_names", None):
-                query_cls = cls._child_classes[query]
-                if qname == query_cls.fluent_name:
-                    api_tree[query] = "Query"
-                    queries_hash.append(
-                        _populate_hash_dict(qname, qinfo, query_cls, {})
-                    )
-                    break
-    else:
-        queries_hash = None
-
-    arguments = info.get("arguments")
-    if arguments:
-        arguments_hash = []
-        for aname, ainfo in arguments.items():
-            for argument in getattr(cls, "argument_names", None):
-                argument_cls = cls._child_classes[argument]
-                if aname == argument_cls.fluent_name:
-                    arguments_hash.append(
-                        _populate_hash_dict(aname, ainfo, argument_cls, {})
-                    )
-                    break
-    else:
-        arguments_hash = None
-
-    object_type = info.get("object-type")
-    if object_type:
-        key = f"{cls.__name__}:<name>"
-        api_tree[key] = {}
-        object_hash = _populate_hash_dict(
-            "child-object-type",
-            object_type,
-            getattr(cls, "child_object_type", None),
-            api_tree[key],
-        )
-    else:
-        object_hash = None
-
-    cls_tuple = (
-        name,
-        cls.__name__,
-        cls.__bases__,
-        info["type"],
-        info.get("help"),
-        children_hash,
-        commands_hash,
-        queries_hash,
-        arguments_hash,
-        object_hash,
-    )
-    hash = _gethash(cls_tuple)
-    if not hash_dict.get(hash):
-        hash_dict[hash] = (
-            cls,
-            children_hash,
-            commands_hash,
-            queries_hash,
-            arguments_hash,
-            object_hash,
-        )
-    return hash
-
-
-class _CommandInfo:
-    def __init__(self, doc, args_info):
-        self.doc = doc
-        self.args_info = args_info
+def _get_unique_name(name):
+    names = _NAME_BY_HASH.values()
+    if name not in names and name not in keyword.kwlist:
+        return name
+    i = 1
+    while f"{name}_{i}" in names:
+        i += 1
+    name = f"{name}_{i}"
+    return name
 
 
 _arg_type_strings = {
-    flobject.Boolean: "bool",
-    flobject.Integer: "int",
-    flobject.Real: "float | str",
-    flobject.String: "str",
-    flobject.Filename: "str",
-    flobject.BooleanList: "List[bool]",
-    flobject.IntegerList: "List[int]",
-    flobject.RealVector: "Tuple[float | str, float | str, float | str",
-    flobject.RealList: "List[float | str]",
-    flobject.StringList: "List[str]",
-    flobject.FilenameList: "List[str]",
+    "Boolean": "bool",
+    "Integer": "int",
+    "Real": "float | str",
+    "String": "str",
+    "Filename": "str",
+    "BooleanList": "list[bool]",
+    "IntegerList": "list[int]",
+    "RealVector": "tuple[float | str, float | str, float | str",
+    "RealList": "list[float | str]",
+    "StringList": "list[str]",
+    "FilenameList": "list[str]",
 }
 
 
-def _get_commands_info(commands_hash):
-    commands_info = {}
-    for command_hash in commands_hash:
-        command_hash_info = hash_dict.get(command_hash)
-        command_cls = command_hash_info[0]
-        command_name = command_cls.__name__
-        command_info = _CommandInfo(command_cls.__doc__, [])
-        if command_hash_info[4]:
-            for arg_hash in command_hash_info[4]:
-                arg_hash_info = hash_dict.get(arg_hash)
-                arg_cls = arg_hash_info[0]
-                arg_name = arg_cls.__name__
-                arg_type = _arg_type_strings[arg_cls.__bases__[0]]
-                command_info.args_info.append(f"{arg_name}: {arg_type}")
-        commands_info[command_name] = command_info
-    return commands_info
+def _write_function_stub(name, data, s_stub):
+    s_stub.write(f"    def {name}(self")
+    for arg_name in data["argument_names"]:
+        arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
+        s_stub.write(f", {arg_name}: {arg_type}")
+    s_stub.write("):\n")
+    # TODO: add return type
+    doc = data["doc"]
+    doc = doc.strip().replace("\n", "\n        ")
+    s_stub.write('        """\n')
+    s_stub.write(f"        {doc}\n")
+    s_stub.write('        """\n')
 
 
-def _write_doc_string(doc, indent, writer):
-    doc = ("\n" + indent).join(doc.split("\n"))
-    writer.write(f'{indent}"""\n')
-    writer.write(f"{indent}{doc}")
-    writer.write(f'\n{indent}"""\n\n')
-
-
-def _populate_classes(parent_dir):
-    istr = _get_indent_str(0)
-    istr1 = _get_indent_str(1)
-    istr2 = _get_indent_str(2)
-    files = []
-    # generate files
-    for key, (
-        cls,
-        children_hash,
-        commands_hash,
-        queries_hash,
-        arguments_hash,
-        object_hash,
-    ) in hash_dict.items():
-        cls_name = file_name = cls.__name__
-        if cls_name == "child_object_type":
-            # Get the first parent for this class.
-            for (
-                cls1,
-                children_hash1,
-                commands_hash1,
-                queries_hash1,
-                arguments_hash1,
-                object_hash1,
-            ) in hash_dict.values():
-                if key == object_hash1:
-                    cls.__name__ = file_name = cls1.__name__ + "_child"
-                    break
-        i = 0
-        while file_name in files:
-            if i > 0:
-                file_name = file_name[: file_name.rfind("_")]
-            i += 1
-            file_name += "_" + str(i)
-        files.append(file_name)
-        files_dict[key] = file_name
-
-        # Store root class path for __init__.py
-        if cls_name == "root":
-            global root_class_path
-            root_class_path = file_name
-
-        file_name += ".py"
-        file_name = os.path.normpath(os.path.join(parent_dir, file_name))
-        with open(file_name, "w") as f:
-            f.write(f"name: {cls_name}")
-
-    # populate files
-    for key, (
-        cls,
-        children_hash,
-        commands_hash,
-        queries_hash,
-        arguments_hash,
-        object_hash,
-    ) in hash_dict.items():
-        file_name = files_dict.get(key)
-        cls_name = cls.__name__
-        file_name = os.path.normpath(os.path.join(parent_dir, file_name + ".py"))
-        stub_f = None
-        if not pyfluent.CODEGEN_ZIP_SETTINGS:
-            stub_file_name = file_name + "i"
-            stub_f = open(stub_file_name, "w")
-        with open(file_name, "w") as f:
-            # disclaimer to py file
-            f.write("#\n")
-            f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-            f.write("#\n")
-            f.write("\n")
-            if stub_f:
-                stub_f.write("#\n")
-                stub_f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-                stub_f.write("#\n")
-                stub_f.write("\n\n")
-
-            # write imports to py file
-            import_str = (
-                "from ansys.fluent.core.solver.flobject import *\n\n"
-                "from ansys.fluent.core.solver.flobject import (\n"
-                f"{istr1}_ChildNamedObjectAccessorMixin,\n"
-                f"{istr1}CreatableNamedObjectMixin,\n"
-                f"{istr1}_NonCreatableNamedObjectMixin,\n"
-                f"{istr1}AllowedValuesMixin,\n"
-                f"{istr1}_InputFile,\n"
-                f"{istr1}_OutputFile,\n"
-                f"{istr1}_InOutFile,\n"
-                ")\n\n"
+def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO | None):
+    # We are traversing the class tree from root to leaves. But the class definitions must
+    # be written to the file from leaves to root. We gather the parent definition within
+    # in a string buffer which is written after writing the child class definitions.
+    s = StringIO()
+    s_stub = StringIO()
+    child_object_name = f"{cls_name}_child" if data["child_object_type"] else None
+    bases = _construct_bases(data["bases"], child_object_name)
+    bases = ", ".join(bases)
+    bases_stub = _construct_bases_stub(data["bases"], child_object_name)
+    bases_stub = ", ".join(bases_stub)
+    s.write(f"class {cls_name}({bases}):\n")
+    s_stub.write(f"class {cls_name}({bases_stub}):\n")
+    doc = data["doc"]
+    doc = doc.strip().replace("\n", "\n    ")
+    s.write('    """\n')
+    s.write(f"    {doc}\n")
+    s.write('    """\n')
+    s.write(f"    version = {data['version']!r}\n")
+    s.write(f"    fluent_name = {data['fluent_name']!r}\n")
+    # _python_name preserves the original non-suffixed name of the class.
+    s.write(f"    _python_name = {python_name!r}\n")
+    s_stub.write("    version: str\n")
+    s_stub.write("    fluent_name: str\n")
+    s_stub.write("    _python_name: str\n")
+    child_names = data["child_names"]
+    if child_names:
+        s.write(f"    child_names = {child_names}\n")
+        s_stub.write("    child_names: list[str]\n")
+    command_names = data["command_names"]
+    if command_names:
+        s.write(f"    command_names = {command_names}\n")
+        s_stub.write("    command_names: list[str]\n")
+    query_names = data["query_names"]
+    if query_names:
+        s.write(f"    query_names = {query_names}\n")
+        s_stub.write("    query_names: list[str]\n")
+    argument_names = data["argument_names"]
+    if argument_names:
+        s.write(f"    argument_names = {argument_names}\n")
+        s_stub.write("    argument_names: list[str]\n")
+    classes_to_write = {}  # values are (class_name, data, hash, should_write_stub)
+    if data["child_classes"]:
+        s.write("    _child_classes = dict(\n")
+        for k, v in data["child_classes"].items():
+            name = v["name"]
+            # Retrieving the original python name before get_cls() modifies it.
+            child_python_name = to_python_name(v["fluent_name"])
+            hash_ = _gethash(v)
+            # We are within a tree-traversal, so the global _NAME_BY_HASH dict
+            # must be updated immediately at the point of lookup. Same lookup
+            # can happen at a child-level which will be evaluated incorrectly
+            # without the previous lookup result.
+            unique_name = _NAME_BY_HASH.get(hash_)
+            if not unique_name:
+                unique_name = _get_unique_name(name)
+                _NAME_BY_HASH[hash_] = unique_name
+            s.write(f"        {k}={unique_name},\n")
+            # We include the child-class to write irrespective of the above
+            # _NAME_BY_HASH lookup result and later use the global _CLASS_WRITTEN
+            # set to avoid duplicate writes. This is necessary because class
+            # definition must be written to the file before writing its usage.
+            # If we didn't have this constraint, we could include the child-class
+            # to write only if it is not found in the _NAME_BY_HASH dict and avoid
+            # the _CLASS_WRITTEN set.
+            if k in command_names + query_names:
+                _write_function_stub(k, v, s_stub)
+                classes_to_write[unique_name] = (child_python_name, v, hash_, False)
+            else:
+                s_stub.write(f"    {k}: {unique_name}\n")
+                classes_to_write[unique_name] = (child_python_name, v, hash_, True)
+        s.write("    )\n")
+    if child_object_name:
+        child_object_type = data["child_object_type"]
+        s.write(f"    child_object_type = {child_object_name}\n")
+        classes_to_write[child_object_name] = (
+            f"{python_name}_child",
+            child_object_type,
+            _gethash(child_object_type),
+            True,
+        )
+        s_stub.write(f"    child_object_type: {child_object_name}\n")
+    child_aliases = data["child_aliases"]
+    if child_aliases:
+        s.write("    _child_aliases = dict(\n")
+        for k, v in child_aliases.items():
+            s.write(f"        {k}={v!r},\n")
+        s.write("    )\n")
+        s_stub.write("    _child_aliases: dict\n")
+    return_type = data["return_type"]
+    if return_type:
+        s.write(f"    return_type = {return_type!r}\n")
+        s_stub.write("    return_type: str\n")
+    s.write("\n")
+    for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
+        if name not in _CLASS_WRITTEN:
+            _write_data(
+                name, python_name, data, f, f_stub if should_write_stub else None
             )
-            f.write(import_str)
-            if stub_f:
-                stub_f.write(import_str)
-                stub_f.write("from typing import Union, List, Tuple\n\n")
-
-            if children_hash:
-                for child in children_hash:
-                    pchild_name = hash_dict.get(child)[0].__name__
-                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    f.write(import_str)
-                    if stub_f:
-                        stub_f.write(import_str)
-
-            if commands_hash:
-                for child in commands_hash:
-                    pchild_name = hash_dict.get(child)[0].__name__
-                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    f.write(import_str)
-                    if stub_f:
-                        stub_f.write(import_str)
-
-            if queries_hash:
-                for child in queries_hash:
-                    pchild_name = hash_dict.get(child)[0].__name__
-                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    f.write(import_str)
-                    if stub_f:
-                        stub_f.write(import_str)
-
-            if arguments_hash:
-                for child in arguments_hash:
-                    pchild_name = hash_dict.get(child)[0].__name__
-                    import_str = f"from .{files_dict.get(child)} import {pchild_name} as {pchild_name}_cls\n"
-                    f.write(import_str)
-                    if stub_f:
-                        stub_f.write(import_str)
-
-            if object_hash:
-                pchild_name = hash_dict.get(object_hash)[0].__name__
-                import_str = (
-                    f"from .{files_dict.get(object_hash)} import {pchild_name}\n\n"
-                )
-                f.write(import_str)
-                if stub_f:
-                    stub_f.write(import_str)
-
-            # class name
-            class_def_str = (
-                f"\n{istr}class {cls_name}"
-                f'({", ".join(f"{c.__name__}[{hash_dict.get(object_hash)[0].__name__}]" if object_hash else c.__name__ for c in cls.__bases__)}):\n'
-            )
-            f.write(class_def_str)
-            if stub_f:
-                stub_f.write(class_def_str)
-
-            doc = fix_settings_doc(cls.__doc__)
-            # Custom doc for child object type
-            if cls.fluent_name == "child-object-type":
-                parent_name = Path(file_name).stem[
-                    0 : Path(file_name).stem.find("_child")
-                ]
-                doc = f"'child_object_type' of {parent_name}."
-
-            _write_doc_string(doc, istr1, f)
-            f.write(f'{istr1}fluent_name = "{cls.fluent_name}"\n\n')
-            if stub_f:
-                stub_f.write(f"{istr1}fluent_name = ...\n")
-
-            child_class_strings = []
-
-            # write children objects
-            child_names = getattr(cls, "child_names", None)
-            if child_names:
-                f.write(f"{istr1}child_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(child_names, stream=strout, compact=True, width=70)
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                f.write(f"{istr2}{mn}\n\n")
-                if stub_f:
-                    stub_f.write(f"{istr1}child_names = ...\n")
-
-                for child in child_names:
-                    child_cls = cls._child_classes[child]
-                    child_class_strings.append(f"{child}={child_cls.__name__}_cls")
-                    if stub_f:
-                        stub_f.write(
-                            f"{istr1}{child}: {child_cls.__name__}_cls = ...\n"
-                        )
-
-            # write command objects
-            command_names = getattr(cls, "command_names", None)
-            if command_names:
-                f.write(f"{istr1}command_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(command_names, stream=strout, compact=True, width=70)
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                f.write(f"{istr2}{mn}\n\n")
-                if stub_f:
-                    stub_f.write(f"{istr1}command_names = ...\n\n")
-
-                commands_info = _get_commands_info(commands_hash)
-                for command in command_names:
-                    command_cls = cls._child_classes[command]
-                    child_class_strings.append(f"{command}={command_cls.__name__}_cls")
-                    # function annotation for commands
-                    command_info = commands_info[command]
-                    if stub_f:
-                        stub_f.write(f"{istr1}def {command}(self, ")
-                        stub_f.write(", ".join(command_info.args_info))
-                        stub_f.write("):\n")
-                        _write_doc_string(command_info.doc, istr2, stub_f)
-
-            # write query objects
-            query_names = getattr(cls, "query_names", None)
-            if query_names:
-                f.write(f"{istr1}query_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(query_names, stream=strout, compact=True, width=70)
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                f.write(f"{istr2}{mn}\n\n")
-                if stub_f:
-                    stub_f.write(f"{istr1}query_names = ...\n\n")
-
-                queries_info = _get_commands_info(queries_hash)
-                for query in query_names:
-                    query_cls = cls._child_classes[query]
-                    child_class_strings.append(f"{query}={query_cls.__name__}_cls")
-                    # function annotation for queries
-                    query_info = queries_info[query]
-                    if stub_f:
-                        stub_f.write(f"{istr1}def {query}(self, ")
-                        stub_f.write(", ".join(query_info.args_info))
-                        stub_f.write("):\n")
-                        _write_doc_string(query_info.doc, istr2, stub_f)
-
-            # write arguments
-            arguments = getattr(cls, "argument_names", None)
-            if arguments:
-                f.write(f"{istr1}argument_names = \\\n")
-                strout = io.StringIO()
-                pprint.pprint(arguments, stream=strout, compact=True, width=70)
-                mn = ("\n" + istr2).join(strout.getvalue().strip().split("\n"))
-                f.write(f"{istr2}{mn}\n\n")
-                if stub_f:
-                    stub_f.write(f"{istr1}argument_names = ...\n")
-
-                for argument in arguments:
-                    argument_cls = cls._child_classes[argument]
-                    child_class_strings.append(
-                        f"{argument}={argument_cls.__name__}_cls"
-                    )
-                    if stub_f:
-                        stub_f.write(
-                            f"{istr1}{argument}: {argument_cls.__name__}_cls = ...\n"
-                        )
-
-            if child_class_strings:
-                f.write(f"{istr1}_child_classes = dict(\n")
-                f.writelines(
-                    [f"{istr2}{cls_str},\n" for cls_str in child_class_strings]
-                )
-                f.write(f"{istr1})\n\n")
-
-            child_aliases = getattr(cls, "_child_aliases", None)
-            if child_aliases:
-                f.write(f"{istr1}_child_aliases = dict(\n")
-                f.writelines([f'{istr2}{k}="{v}",\n' for k, v in child_aliases.items()])
-                f.write(f"{istr1})\n\n")
-
-            # write object type
-            child_object_type = getattr(cls, "child_object_type", None)
-            if child_object_type:
-                f.write(f"{istr1}child_object_type: {pchild_name} = {pchild_name}\n")
-                f.write(f'{istr1}"""\n')
-                f.write(f"{istr1}child_object_type of {cls_name}.")
-                f.write(f'\n{istr1}"""\n')
-                if stub_f:
-                    stub_f.write(f"{istr1}child_object_type: {pchild_name} = ...\n")
-
-            return_type = getattr(cls, "return_type", None)
-            if return_type:
-                f.write(f'{istr1}return_type = "{return_type}"\n')
-                if stub_f:
-                    stub_f.write(f"{istr1}return_type = ...\n")
-            if stub_f:
-                stub_f.close()
+            _CLASS_WRITTEN.add(name)
+    f.write(s.getvalue())
+    if f_stub:
+        f_stub.write(s_stub.getvalue())
 
 
-def _populate_init(parent_dir, hash):
-    file_name = os.path.normpath(os.path.join(parent_dir, "__init__.py"))
-    with open(file_name, "w") as f:
-        f.write("#\n")
-        f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
-        f.write("#\n")
-        f.write("\n")
-        f.write(f'"""A package providing Fluent\'s Settings Objects in Python."""')
-        f.write("\n")
-        f.write("from ansys.fluent.core.solver.flobject import *\n\n")
-        f.write(f'SHASH = "{hash}"\n')
-        f.write(f"from .{root_class_path} import root")
-
-
-def generate(version, static_infos: dict):
-    """Generate settings API classes."""
-    parent_dir = (pyfluent.CODEGEN_OUTDIR / "solver" / f"settings_{version}").resolve()
+def generate(version: str, static_infos: dict) -> None:
+    """Generate the classes corresponding to the Fluent settings API."""
+    start_time = time.time()
     api_tree = {}
     sinfo = static_infos.get(StaticInfoType.SETTINGS)
-
-    # Clear previously generated data
-    if os.path.exists(parent_dir):
-        shutil.rmtree(parent_dir)
-
-    if sinfo:
-        hash = _gethash(sinfo)
-        os.makedirs(parent_dir)
-
-        if pyfluent.CODEGEN_ZIP_SETTINGS:
-            parent_dir = parent_dir / "settings"
-            os.makedirs(parent_dir)
-
-        cls, _ = flobject.get_cls("", sinfo, version=version)
-
-        _populate_hash_dict("", sinfo, cls, api_tree)
-        _populate_classes(parent_dir)
-        _populate_init(parent_dir, hash)
-
-        if pyfluent.CODEGEN_ZIP_SETTINGS:
-            shutil.make_archive(parent_dir.parent, "zip", parent_dir.parent)
-            shutil.rmtree(parent_dir.parent)
-
+    shash = _gethash(sinfo)
+    if not sinfo:
+        return {"<solver_session>": api_tree}
+    output_dir = (pyfluent.CODEGEN_OUTDIR / "solver").resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / f"settings_{version}.py"
+    output_stub_file = output_dir / f"settings_{version}.pyi"
+    cls, _ = get_cls("", sinfo, version=version)
+    # _populate_data() collects all strings to write to the file in a nested dict.
+    # which is then written to the file using _write_data().
+    data = _populate_data(cls, api_tree, version)
+    _NAME_BY_HASH.clear()
+    _CLASS_WRITTEN.clear()
+    with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
+        header = StringIO()
+        header.write("#\n")
+        header.write("# This is an auto-generated file.  DO NOT EDIT!\n")
+        header.write("#\n")
+        header.write("\n")
+        header.write("from ansys.fluent.core.solver.flobject import *\n\n")
+        header.write("from ansys.fluent.core.solver.flobject import (\n")
+        header.write("    _ChildNamedObjectAccessorMixin,\n")
+        header.write("    _NonCreatableNamedObjectMixin,\n")
+        header.write("    _InputFile,\n")
+        header.write("    _OutputFile,\n")
+        header.write("    _InOutFile,\n")
+        header.write(")\n\n")
+        f.write(header.getvalue())
+        f_stub.write(header.getvalue())
+        f.write(f'SHASH = "{shash}"\n\n')
+        name = data["name"]
+        _NAME_BY_HASH[_gethash(data)] = name
+        _write_data(name, name, data, f, f_stub)
+    file_size = output_file.stat().st_size / 1024 / 1024
+    file_size_stub = output_stub_file.stat().st_size / 1024 / 1024
+    print(
+        f"Generated {output_file.name} and {output_stub_file.name} in {time.time() - start_time:.2f} seconds."
+    )
+    print(f"{output_file.name} size: {file_size:.2f} MB")
+    print(f"{output_stub_file.name} size: {file_size_stub:.2f} MB")
     return {"<solver_session>": api_tree}
 
 
 if __name__ == "__main__":
     solver = launch_fluent()
     version = get_version_for_file_name(session=solver)
-    static_infos = {StaticInfoType.SETTINGS: solver._settings_service.get_static_info()}
+    static_info = solver._settings_service.get_static_info()
+    # version = "251"
+    # static_info = pickle.load(open("static_info.pkl", "rb"))
+    static_infos = {StaticInfoType.SETTINGS: static_info}
     generate(version, static_infos)

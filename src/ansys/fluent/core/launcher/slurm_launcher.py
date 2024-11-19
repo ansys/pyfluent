@@ -147,6 +147,7 @@ class SlurmFuture:
     """
 
     def __init__(self, future: Future, job_id: int):
+        """Initialize SlurmFuture."""
         self._future = future
         self._job_id = job_id
 
@@ -272,7 +273,7 @@ class SlurmLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
         additional_arguments: str | None = "",
-        env: Dict[str, Any] | Path | None = None,
+        env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         case_file_name: str | None = None,

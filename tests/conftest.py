@@ -12,8 +12,6 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
-_fluent_release_version = FluentVersion.current_release().value
-
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -47,6 +45,7 @@ def pytest_runtest_setup(item):
         pytest.skip()
 
     version_specs = []
+    fluent_release_version = FluentVersion.current_release().value
     for mark in item.iter_markers(name="fluent_version"):
         spec = mark.args[0]
         # if a test is marked as fluent_version("latest")
@@ -54,9 +53,9 @@ def pytest_runtest_setup(item):
         # run with release Fluent versions in PRs
         if spec == "latest":
             spec = (
-                f">={_fluent_release_version}"
+                f">={fluent_release_version}"
                 if is_nightly or is_solvermode_option
-                else f"=={_fluent_release_version}"
+                else f"=={fluent_release_version}"
             )
         version_specs.append(SpecifierSet(spec))
     if version_specs:
@@ -71,6 +70,7 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
+    monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
 
@@ -143,8 +143,8 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         file_transfer_service = RemoteFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -299,3 +299,8 @@ def periodic_rot_settings_session(new_solver_session):
         lightweight_setup=True,
     )
     return solver
+
+
+@pytest.fixture
+def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)

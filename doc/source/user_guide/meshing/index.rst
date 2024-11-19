@@ -1,4 +1,4 @@
-.. _ref_meshing_workflow:
+.. _ref_meshing_guide:
 
 ================
 Meshing workflow

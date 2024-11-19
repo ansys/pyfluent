@@ -188,7 +188,6 @@ class MonitorsManager(StreamingService):
             try:
                 data_received = {}
                 response = next(responses)
-                x_axis_type = response.xaxisdata.xaxistype
                 x_axis_index = response.xaxisdata.xaxisindex
                 data_received["xvalues"] = x_axis_index
                 for y_axis_value in response.yaxisvalues:

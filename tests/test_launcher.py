@@ -1,16 +1,18 @@
 import os
 from pathlib import Path
 import platform
+from tempfile import TemporaryDirectory
 
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import PyFluentDeprecationWarning  # noqa: F401
+from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
+    LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
@@ -34,7 +36,7 @@ import ansys.platform.instancemanagement as pypim
 
 
 def test_gpu_version_error():
-    with pytest.raises(GPUSolverSupportError) as msg:
+    with pytest.raises(GPUSolverSupportError):
         pyfluent.launch_fluent(
             mode="meshing",
             dimension=2,
@@ -64,8 +66,10 @@ def test_mode():
 @pytest.mark.standalone
 def test_unsuccessful_fluent_connection():
     # start-timeout is intentionally provided to be 2s for the connection to fail
-    with pytest.raises(TimeoutError) as msg:
+    with pytest.raises(LaunchFluentError) as ex:
         pyfluent.launch_fluent(mode="solver", start_timeout=2)
+    # TimeoutError -> LaunchFluentError
+    assert isinstance(ex.value.__context__, TimeoutError)
 
 
 @pytest.mark.fluent_version("<24.1")
@@ -307,6 +311,7 @@ def test_create_standalone_launcher():
             if is_windows()
             else FluentLinuxGraphicsDriver.AUTO
         ),
+        env={},
     )
 
     standalone_meshing_launcher = create_launcher(
@@ -419,7 +424,7 @@ def test_fluent_enums():
     with pytest.raises(ValueError):
         UIMode("")
     with pytest.raises(TypeError):
-        UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
+        assert UIMode.NO_GUI < FluentWindowsGraphicsDriver.AUTO
 
 
 def test_exposure_and_graphics_driver_arguments():
@@ -479,6 +484,18 @@ def test_container_warning_for_mount_source(caplog):
         "mount_source": os.getcwd(),
         "mount_target": "/mnt/pyfluent/tests",
     }
-    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    _ = pyfluent.launch_fluent(container_dict=container_dict)
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
+
+
+# runs only in container till cwd is supported for container launch
+def test_fluent_automatic_transcript(monkeypatch):
+    with monkeypatch.context() as m:
+        m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
+        with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
+            with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
+                assert list(Path(tmp_dir).glob("*.trn"))
+    with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
+        with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
+            assert not list(Path(tmp_dir).glob("*.trn"))

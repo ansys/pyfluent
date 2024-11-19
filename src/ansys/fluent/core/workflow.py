@@ -11,6 +11,7 @@ import warnings
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
+    PyMenu,
     PyMenuGeneric,
     PySingletonCommandArgumentsSubItem,
 )
@@ -23,6 +24,7 @@ class CommandInstanceCreationError(RuntimeError):
     """Raised when an attempt to create an instance of a task command fails."""
 
     def __init__(self, task_name):
+        """Initialize CommandInstanceCreationError."""
         super().__init__(f"Could not create command instance for task {task_name}.")
 
 
@@ -149,11 +151,13 @@ def _convert_task_list_to_display_names(workflow_root, task_list):
         return [workflow_state[f"TaskObject:{x}"]["_name_"] for x in task_list]
     else:
         _display_names = []
-        _org_path = workflow_root.path
         for _task_name in task_list:
-            workflow_root.path = [("TaskObject", _task_name), ("_name_", "")]
-            _display_names.append(workflow_root())
-        workflow_root.path = _org_path
+            name_obj = PyMenu(
+                service=workflow_root.service,
+                rules=workflow_root.rules,
+                path=[("TaskObject", _task_name), ("_name_", "")],
+            )
+            _display_names.append(name_obj())
         return _display_names
 
 
@@ -177,7 +181,7 @@ class BaseTask:
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize BaseTask.
@@ -205,19 +209,6 @@ class BaseTask:
                 _task_objects={},
                 _fluent_version=command_source._fluent_version,
             )
-        )
-
-    def get_direct_upstream_tasks(self) -> list:
-        """Get the list of tasks upstream of this one and directly connected by a data
-        dependency.
-
-        Returns
-        -------
-        list
-            Upstream task list.
-        """
-        return self._tasks_with_matching_attributes(
-            attr="requiredInputs", other_attr="outputs"
         )
 
     def get_direct_upstream_tasks(self) -> list:
@@ -440,7 +431,7 @@ class BaseTask:
         logger.debug(f"BaseTask.__setattr__({attr}, {value})")
         if attr in self.__dict__:
             self.__dict__[attr] = value
-        elif attr in self.arguments():
+        elif attr in self.arguments() or attr == "arguments":
             getattr(self, attr).set_state(value)
         else:
             setattr(self._task, attr, value)
@@ -530,9 +521,8 @@ class BaseTask:
             raise ValueError(
                 f"'{task_name}' cannot be inserted next to '{self.python_name()}'."
             )
-        return self._task.InsertNextTask(
-            CommandName=self._python_task_names_map[task_name]
-        )
+        self._task.InsertNextTask(CommandName=self._python_task_names_map[task_name])
+        _call_refresh_task_accessors(self._command_source)
 
     @property
     def insertable_tasks(self):
@@ -570,7 +560,9 @@ class BaseTask:
     def __call__(self, **kwds) -> Any:
         if kwds:
             self._task.Arguments.set_state(**kwds)
-        return self._task.Execute()
+        result = self._task.Execute()
+        _call_refresh_task_accessors(self._command_source)
+        return result
 
     def _tasks_with_matching_attributes(self, attr: str, other_attr: str) -> list:
         this_command = self._command()
@@ -627,7 +619,7 @@ class TaskContainer(PyCallableStateObject):
         Iterator[BaseTask]
             Iterator of child objects.
         """
-        for name in self._get_child_object_display_names():
+        for name in self.get_object_names():
             yield self[name]
 
     def __getitem__(self, name):
@@ -759,9 +751,31 @@ class ArgumentsWrapper(PyCallableStateObject):
         # TODO: Figure out proper way to implement "add_child".
         if "add_child" in args:
             self._snake_to_camel_map["add_child"] = "AddChild"
+
+        cmd_args = self._task._command_arguments
         for key, val in args.items():
-            camel_args[self._snake_to_camel_map[key] if key.islower() else key] = val
-        getattr(self._task.Arguments, fn)(camel_args)
+            camel_arg = self._snake_to_camel_map[key] if key.islower() else key
+            # TODO: Implement enhanced meshing workflow to hide away internal info.
+            if isinstance(
+                getattr(cmd_args, camel_arg), PySingletonCommandArgumentsSubItem
+            ):
+                updated_dict = {}
+                for attr, attr_val in val.items():
+                    camel_attr = snake_to_camel_case(
+                        str(attr),
+                        getattr(
+                            self, camel_to_snake_case(key)
+                        )._get_camel_case_arg_keys()
+                        or [],
+                    )
+                    updated_dict[camel_attr] = attr_val
+                camel_args[camel_arg] = updated_dict
+            else:
+                camel_args[camel_arg] = val
+        if fn == "update_dict":
+            self._task.Arguments.update_dict(camel_args, recursive=True)
+        else:
+            getattr(self._task.Arguments, fn)(camel_args)
         try:
             self._refresh_command_after_changing_args(old_state)
         except Exception as ex:
@@ -891,17 +905,15 @@ class ArgumentWrapper(PyCallableStateObject):
         if attr in self.__dict__:
             self.__dict__[attr] = value
         else:
-            camel_attr = snake_to_camel_case(
-                str(attr), self._get_camel_case_arg_keys() or []
-            )
-            attr = camel_attr or attr
             self.set_state({attr: value})
 
     def __dir__(self):
-        arg_list = []
-        for arg in self():
-            arg_list.append(camel_to_snake_case(arg))
-        return sorted(set(list(self.__dict__.keys()) + dir(type(self)) + arg_list))
+        arg_state = self.get_state()
+        arg_list = list(arg_state) if isinstance(arg_state, dict) else []
+        dir_arg = [item for item in dir(self._arg) if item.islower()]
+        return sorted(
+            set(list(self.__dict__.keys()) + dir(type(self)) + arg_list + dir_arg)
+        )
 
 
 class CommandTask(BaseTask):
@@ -913,7 +925,7 @@ class CommandTask(BaseTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CommandTask.
@@ -963,7 +975,7 @@ class CommandTask(BaseTask):
 
     def _cmd_sub_items_read_only(self, cmd, cmd_state):
         for key, value in cmd_state.items():
-            if type(value) == dict:
+            if isinstance(value, dict):
                 setattr(
                     cmd, key, self._cmd_sub_items_read_only(getattr(cmd, key), value)
                 )
@@ -982,7 +994,7 @@ class SimpleTask(CommandTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize SimpleTask.
@@ -1010,7 +1022,7 @@ class CompoundChild(SimpleTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundChild.
@@ -1055,7 +1067,7 @@ class CompositeTask(BaseTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CompositeTask.
@@ -1107,7 +1119,7 @@ class ConditionalTask(CommandTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize ConditionalTask.
@@ -1142,7 +1154,7 @@ class CompoundTask(CommandTask):
 
     def __init__(
         self,
-        command_source: ClassicWorkflow | Workflow,
+        command_source: Workflow,
         task: str,
     ) -> None:
         """Initialize CompoundTask.
@@ -1249,8 +1261,11 @@ def _makeTask(command_source, name: str) -> BaseTask:
         "Conditional": ConditionalTask,
     }
     task_type = task.TaskType()
-    if task_type is None and command_source._compound_child:
-        kind = CompoundChild
+    if task_type is None:
+        if command_source._compound_child:
+            kind = CompoundChild
+        else:
+            kind = SimpleTask
     else:
         kind = kinds[task_type]
     if not kind:

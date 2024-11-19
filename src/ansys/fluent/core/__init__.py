@@ -4,8 +4,6 @@ import os
 from pathlib import Path
 import pydoc
 
-import platformdirs
-
 # isort: off
 # Logging has to be imported before importing other PyFluent modules
 from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
@@ -38,7 +36,7 @@ from ansys.fluent.core.streaming_services.events_streaming import (  # noqa: F40
     MeshingEvent,
     SolverEvent,
 )
-from ansys.fluent.core.utils import fldoc
+from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 from ansys.fluent.core.warnings import (  # noqa: F401
@@ -46,6 +44,11 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentUserWarning,
     warning,
 )
+
+try:
+    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
+except (ImportError, AttributeError, SyntaxError):
+    pass
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
@@ -73,9 +76,7 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-EXAMPLES_PATH = os.path.join(
-    platformdirs.user_documents_dir(), "ansys_fluent_core_examples"
-)
+EXAMPLES_PATH = str(get_examples_download_dir())
 
 # Host path which is mounted to the container
 CONTAINER_MOUNT_SOURCE = None
@@ -97,8 +98,11 @@ DATAMODEL_USE_STATE_CACHE = True
 # Whether to use datamodel attribute caching
 DATAMODEL_USE_ATTR_CACHE = True
 
-# Whether stream and cache commands state
+# Whether to stream and cache commands state
 DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
+
+# Whether to return the state changes on mutating datamodel rpcs
+DATAMODEL_RETURN_STATE_CHANGES = True
 
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
@@ -109,8 +113,11 @@ CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
 # Whether to zip settings API files during codegen
 CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
 
-# Whether to show mesh after case read
-SHOW_MESH_AFTER_CASE_READ = False
+# Whether to show mesh in Fluent after case read
+FLUENT_SHOW_MESH_AFTER_CASE_READ = False
+
+# Whether to write the automatic transcript in Fluent
+FLUENT_AUTOMATIC_TRANSCRIPT = False
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False
@@ -120,3 +127,6 @@ START_WATCHDOG = None
 
 # Whether to skip health check
 CHECK_HEALTH = True
+
+# Whether to clear environment variables related to Fluent parallel mode
+CLEAR_FLUENT_PARA_ENVS = False

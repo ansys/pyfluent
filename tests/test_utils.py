@@ -54,7 +54,7 @@ def test_timeout_loop():
     ret = timeout_loop(waiter, timeout=0.2, expected="truthy", idle_period=0.1)
     assert ret is False
 
-    with pytest.raises(InvalidArgument) as msg:
+    with pytest.raises(InvalidArgument):
         timeout_loop(waiter, timeout=0.2, expected=True, idle_period=0.1)
 
 

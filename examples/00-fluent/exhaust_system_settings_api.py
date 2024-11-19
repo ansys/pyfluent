@@ -56,13 +56,14 @@ import_file_name = examples.download_file(
 # Launch Fluent
 # ~~~~~~~~~~~~~
 # Launch Fluent as a service in meshing mode with double precision running on
-# two processors.
+# two processors and print Fluent version.
 
 meshing = pyfluent.launch_fluent(
     precision="double",
     processor_count=2,
     mode="meshing",
 )
+print(meshing.get_fluent_version())
 
 ###############################################################################
 # Initialize workflow
@@ -602,13 +603,6 @@ boundary_conditions.copy(
 boundary_conditions.pressure_outlet["outlet-1"].turbulence.turbulent_intensity = 0.05
 
 ###############################################################################
-# Turn on residual plots
-# ~~~~~~~~~~~~~~~~~~~~~~
-# Activate plotting of the solution residuals.
-
-solver.solution.monitor.residual.options.plot = True
-
-###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
@@ -730,10 +724,9 @@ graphics.picture.save_picture(file_name="contour-velocity.png")
 
 solver.results.scene["scene-1"] = {}
 scene1 = solver.results.scene["scene-1"]
-scene1.graphics_objects["mesh-1"] = {
-    "transparency": 90,
-}
-scene1.graphics_objects["contour-velocity"] = {}
+scene1.graphics_objects.add(name="mesh-1")
+scene1.graphics_objects["mesh-1"].transparency = 90
+scene1.graphics_objects.add(name="contour-velocity")
 scene1.display()
 
 graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])

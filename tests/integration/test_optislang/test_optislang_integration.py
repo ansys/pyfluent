@@ -84,7 +84,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     else:
         print("Solution is converged")
 
-    assert convergence == True, "Solution failed to converge"
+    assert convergence, "Solution failed to converge"
 
     # Step 5: Read the data again from the case and data file
     solver_session.settings.file.read_case_data(file_name=case_path)
@@ -148,8 +148,8 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     h5_path = str(Path(temporary_resource_path) / "default_mesh.msh.h5")
     meshing.tui.file.write_mesh(gz_path)
     meshing.tui.file.write_mesh(h5_path)
-    assert (Path(temporary_resource_path) / "default_mesh.msh.gz").exists() == True
-    assert (Path(temporary_resource_path) / "default_mesh.msh.h5").exists() == True
+    assert (Path(temporary_resource_path) / "default_mesh.msh.gz").exists()
+    assert (Path(temporary_resource_path) / "default_mesh.msh.h5").exists()
 
     # Step 3: use created mesh file - .msh.gz/.msh.h5
     meshing.tui.file.read_mesh(gz_path, "ok")
@@ -163,8 +163,8 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     write_case = solver.settings.file.write_case
     write_case(file_name=gz_path)
     write_case(file_name=h5_path)
-    assert (Path(temporary_resource_path) / "default_case.cas.gz").exists() == True
-    assert (Path(temporary_resource_path) / "default_case.cas.h5").exists() == True
+    assert (Path(temporary_resource_path) / "default_case.cas.gz").exists()
+    assert (Path(temporary_resource_path) / "default_case.cas.h5").exists()
     solver.exit()
     shutil.rmtree(temporary_resource_path, ignore_errors=True)
 
@@ -254,9 +254,9 @@ def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_ses
     assert base_outputs == {"outlet_temp-op": pytest_approx(322.336008)}
     if session2.get_fluent_version() < FluentVersion.v251:
         pstudy.design_points.create_1()
+        dp = pstudy.design_points["DP1"]
     else:
-        pstudy.design_points.create()
-    dp = pstudy.design_points["DP1"]
+        dp = pstudy.design_points.create()
     dp.input_parameters["inlet2_temp"] = 600.0
     pstudy.design_points.update_selected(design_points=["DP1"])
     fluent_output_table = dp.output_parameters()

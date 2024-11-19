@@ -25,6 +25,7 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
 _TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
@@ -58,6 +59,7 @@ class DisallowedFilePurpose(ValueError):
         name: Any | None = None,
         allowed_values: Any | None = None,
     ):
+        """Initialize DisallowedFilePurpose."""
         super().__init__(
             allowed_name_error_message(
                 context=context, trial_name=name, allowed_values=allowed_values
@@ -69,6 +71,7 @@ class InvalidNamedObject(RuntimeError):
     """Raised when the object is not a named object."""
 
     def __init__(self, class_name):
+        """Initialize InvalidNamedObject."""
         super().__init__(f"{class_name} is not a named object class.")
 
 
@@ -76,6 +79,7 @@ class SubscribeEventError(RuntimeError):
     """Raised when server fails to subscribe from event."""
 
     def __init__(self, request):
+        """Initialize SubscribeEventError."""
         super().__init__(f"Failed to subscribe event: {request}!")
 
 
@@ -83,6 +87,7 @@ class UnsubscribeEventError(RuntimeError):
     """Raised when server fails to unsubscribe from event."""
 
     def __init__(self, request):
+        """Initialize UnsubscribeEventError."""
         super().__init__(f"Failed to unsubscribe event: {request}!")
 
 
@@ -90,6 +95,7 @@ class ReadOnlyObjectError(RuntimeError):
     """Raised on an attempt to mutate a read-only object."""
 
     def __init__(self, obj_name):
+        """Initialize ReadOnlyObjectError."""
         super().__init__(f"{obj_name} is readonly!")
 
 
@@ -128,6 +134,26 @@ class Attribute(Enum):
     DEPRECATED_VERSION: str = "deprecatedVersion"
 
 
+class _FilterDatamodelNames:
+    def __init__(self, service):
+        self._filter_fn = getattr(service, "is_in_datamodel", None)
+
+    def __call__(self, parent, names):
+        if self._filter_fn is None:
+            return names
+
+        def validate_name(name):
+            obj = getattr(parent, name)
+            # might need to make this more flexible (e.g., enhanced workflow types)
+            is_in_datamodel = isinstance(obj, (PyCommand, PyStateContainer))
+            if is_in_datamodel:
+                return self._filter_fn(parent.rules, convert_path_to_se_path(obj.path))
+            else:
+                return True
+
+        return [name for name in names if validate_name(name)]
+
+
 class DatamodelServiceImpl:
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
@@ -154,87 +180,87 @@ class DatamodelServiceImpl:
     def initialize_datamodel(
         self, request: DataModelProtoModule.InitDatamodelRequest
     ) -> DataModelProtoModule.InitDatamodelResponse:
-        """initDatamodel RPC of DataModel service."""
+        """RPC initDatamodel of DataModel service."""
         return self._stub.initDatamodel(request, metadata=self._metadata)
 
     def get_attribute_value(
         self, request: DataModelProtoModule.GetAttributeValueRequest
     ) -> DataModelProtoModule.GetAttributeValueResponse:
-        """getAttributeValue RPC of DataModel service."""
+        """RPC getAttributeValue of DataModel service."""
         return self._stub.getAttributeValue(request, metadata=self._metadata)
 
     def get_state(
         self, request: DataModelProtoModule.GetStateRequest
     ) -> DataModelProtoModule.GetStateResponse:
-        """getState RPC of DataModel service."""
+        """RPC getState of DataModel service."""
         return self._stub.getState(request, metadata=self._metadata)
 
     def rename(
         self, request: DataModelProtoModule.RenameRequest
     ) -> DataModelProtoModule.RenameResponse:
-        """getState RPC of DataModel service."""
+        """RPC rename of DataModel service."""
         return self._stub.rename(request, metadata=self._metadata)
 
     def get_object_names(
         self, request: DataModelProtoModule.GetObjectNamesRequest
     ) -> DataModelProtoModule.GetObjectNamesResponse:
-        """getState RPC of DataModel service."""
+        """RPC getObjectNames of DataModel service."""
         return self._stub.getObjectNames(request, metadata=self._metadata)
 
     def delete_child_objects(
         self, request: DataModelProtoModule.DeleteChildObjectsRequest
     ) -> DataModelProtoModule.DeleteChildObjectsResponse:
-        """getState RPC of DataModel service."""
+        """RPC deleteChildObjects of DataModel service."""
         return self._stub.deleteChildObjects(request, metadata=self._metadata)
 
     def set_state(
         self, request: DataModelProtoModule.SetStateRequest
     ) -> DataModelProtoModule.SetStateResponse:
-        """setState RPC of DataModel service."""
+        """RPC setState of DataModel service."""
         return self._stub.setState(request, metadata=self._metadata)
 
     def fix_state(
         self, request: DataModelProtoModule.FixStateRequest
     ) -> DataModelProtoModule.FixStateResponse:
-        """setState RPC of DataModel service."""
+        """RPC fixState of DataModel service."""
         return self._stub.fixState(request, metadata=self._metadata)
 
     def update_dict(
         self, request: DataModelProtoModule.UpdateDictRequest
     ) -> DataModelProtoModule.UpdateDictResponse:
-        """updateDict RPC of DataModel service."""
+        """RPC updateDict of DataModel service."""
         return self._stub.updateDict(request, metadata=self._metadata)
 
     def delete_object(
         self, request: DataModelProtoModule.DeleteObjectRequest
     ) -> DataModelProtoModule.DeleteObjectResponse:
-        """deleteObject RPC of DataModel service."""
+        """RPC deleteObject of DataModel service."""
         return self._stub.deleteObject(request, metadata=self._metadata)
 
     def execute_command(
         self, request: DataModelProtoModule.ExecuteCommandRequest
     ) -> DataModelProtoModule.ExecuteCommandResponse:
-        """executeCommand RPC of DataModel service."""
+        """RPC executeCommand of DataModel service."""
         logger.debug(f"Command: {request.command}")
         return self._stub.executeCommand(request, metadata=self._metadata)
 
     def execute_query(
         self, request: DataModelProtoModule.ExecuteQueryRequest
     ) -> DataModelProtoModule.ExecuteQueryResponse:
-        """ExecuteQuery rpc of DataModel service."""
+        """RPC executeQuery of DataModel service."""
         logger.debug(f"Query: {request.query}")
         return self._stub.executeQuery(request, metadata=self._metadata)
 
     def create_command_arguments(
         self, request: DataModelProtoModule.CreateCommandArgumentsRequest
     ) -> DataModelProtoModule.CreateCommandArgumentsResponse:
-        """createCommandArguments RPC of DataModel service."""
+        """RPC createCommandArguments of DataModel service."""
         return self._stub.createCommandArguments(request, metadata=self._metadata)
 
     def delete_command_arguments(
         self, request: DataModelProtoModule.DeleteCommandArgumentsRequest
     ) -> DataModelProtoModule.DeleteCommandArgumentsResponse:
-        """deleteCommandArguments RPC of DataModel service.
+        """RPC deleteCommandArguments of DataModel service.
 
         Raises
         ------
@@ -253,25 +279,25 @@ class DatamodelServiceImpl:
     def get_specs(
         self, request: DataModelProtoModule.GetSpecsRequest
     ) -> DataModelProtoModule.GetSpecsResponse:
-        """getSpecs RPC of DataModel service."""
+        """RPC getSpecs of DataModel service."""
         return self._stub.getSpecs(request, metadata=self._metadata)
 
     def get_static_info(
         self, request: DataModelProtoModule.GetStaticInfoRequest
     ) -> DataModelProtoModule.GetStaticInfoResponse:
-        """getStaticInfo RPC of DataModel service."""
+        """RPC getStaticInfo of DataModel service."""
         return self._stub.getStaticInfo(request, metadata=self._metadata)
 
     def subscribe_events(
         self, request: DataModelProtoModule.SubscribeEventsRequest
     ) -> DataModelProtoModule.SubscribeEventsResponse:
-        """subscribeEvents RPC of DataModel service."""
+        """RPC subscribeEvents of DataModel service."""
         return self._stub.subscribeEvents(request, metadata=self._metadata)
 
     def unsubscribe_events(
         self, request: DataModelProtoModule.UnsubscribeEventsRequest
     ) -> DataModelProtoModule.UnsubscribeEventsResponse:
-        """unsubscribeEvents RPC of DataModel service."""
+        """RPC unsubscribeEvents of DataModel service."""
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
 
@@ -377,6 +403,7 @@ class SubscriptionList:
     """Stores subscription objects by tag."""
 
     def __init__(self):
+        """Initialize SubscriptionList."""
         self._subscriptions = {}
         self._lock = RLock()
 
@@ -452,6 +479,7 @@ class DatamodelService(StreamingService):
         self,
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
+        version: FluentVersion,
         fluent_error_state,
         file_transfer_service: Any | None = None,
     ) -> None:
@@ -465,6 +493,7 @@ class DatamodelService(StreamingService):
         self.subscriptions = SubscriptionList()
         self.file_transfer_service = file_transfer_service
         self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
+        self.version = version
 
     def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
         """Get attribute value."""
@@ -495,7 +524,14 @@ class DatamodelService(StreamingService):
         request.path = path
         request.new_name = new_name
         request.wait = True
-        self._impl.rename(request)
+        response = self._impl.rename(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def delete_child_objects(
         self, rules: str, path: str, obj_type: str, child_names: list[str]
@@ -507,7 +543,14 @@ class DatamodelService(StreamingService):
         for name in child_names:
             request.child_names.names.append(name)
         request.wait = True
-        self._impl.delete_child_objects(request)
+        response = self._impl.delete_child_objects(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def delete_all_child_objects(self, rules: str, path: str, obj_type: str) -> None:
         """Delete all child objects."""
@@ -516,7 +559,14 @@ class DatamodelService(StreamingService):
         request.path = path + "/" + obj_type
         request.delete_all = True
         request.wait = True
-        self._impl.delete_child_objects(request)
+        response = self._impl.delete_child_objects(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def set_state(self, rules: str, path: str, state: _TValue) -> None:
         """Set state."""
@@ -524,31 +574,63 @@ class DatamodelService(StreamingService):
             rules=rules, path=path, wait=True
         )
         _convert_value_to_variant(state, request.state)
-        self._impl.set_state(request)
+        response = self._impl.set_state(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def fix_state(self, rules, path) -> None:
         """Fix state."""
         request = DataModelProtoModule.FixStateRequest()
         request.rules = rules
         request.path = convert_path_to_se_path(path)
-        self._impl.fix_state(request)
+        response = self._impl.fix_state(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def update_dict(
-        self, rules: str, path: str, dict_state: dict[str, _TValue]
+        self,
+        rules: str,
+        path: str,
+        dict_state: dict[str, _TValue],
+        recursive=False,
     ) -> None:
         """Update the dict."""
         request = DataModelProtoModule.UpdateDictRequest(
-            rules=rules, path=path, wait=True
+            rules=rules, path=path, wait=True, recursive=recursive
         )
         _convert_value_to_variant(dict_state, request.dicttomerge)
-        self._impl.update_dict(request)
+        response = self._impl.update_dict(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def delete_object(self, rules: str, path: str) -> None:
         """Delete an object."""
         request = DataModelProtoModule.DeleteObjectRequest(
             rules=rules, path=path, wait=True
         )
-        self._impl.delete_object(request)
+        response = self._impl.delete_object(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
 
     def execute_command(
         self, rules: str, path: str, command: str, args: dict[str, _TValue]
@@ -559,6 +641,13 @@ class DatamodelService(StreamingService):
         )
         _convert_value_to_variant(args, request.args)
         response = self._impl.execute_command(request)
+        if self.cache is not None:
+            self.cache.update_cache(
+                rules,
+                response.state,
+                response.deletedpaths,
+                version=self.version,
+            )
         return _convert_variant_to_value(response.result)
 
     def execute_query(
@@ -958,8 +1047,6 @@ class PyStateContainer(PyCallableStateObject):
         else:
             return self.get_state()
 
-    docstring = None
-
     def add_on_attribute_changed(
         self, attribute: str, cb: Callable
     ) -> EventSubscription:
@@ -1005,11 +1092,16 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        if self.get_attr(Attribute.IS_READ_ONLY.value):
-            dir_list = dir_list - {"setState", "set_state"}
 
-        return sorted(dir_list)
+        all_children = list(self.__dict__) + dir(type(self))
+
+        filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
+
+        dir_set = set(filtered_children)
+        if self.get_attr(Attribute.IS_READ_ONLY.value):
+            dir_set = dir_set - {"setState", "set_state"}
+
+        return sorted(dir_set)
 
 
 class PyMenu(PyStateContainer):
@@ -1335,7 +1427,7 @@ class PyDictionary(PyParameter):
         to dict.update semantics (same as update_dict(dict_state))]
     """
 
-    def update_dict(self, dict_state: dict[str, Any]) -> None:
+    def update_dict(self, dict_state: dict[str, Any], recursive=False) -> None:
         """Update the state of the current object if the current object is a Dict in the
         data model, else throws RuntimeError (currently not showing up in Python).
         Update is executed according to dict.update semantics.
@@ -1345,6 +1437,9 @@ class PyDictionary(PyParameter):
         dict_state : dict[str, Any]
             Incoming dict state
 
+        recursive: bool
+            Flag to update the nested dictionary structure.
+
         Raises
         ------
         ReadOnlyObjectError
@@ -1353,7 +1448,7 @@ class PyDictionary(PyParameter):
         if self.get_attr(Attribute.IS_READ_ONLY.value):
             raise ReadOnlyObjectError(type(self).__name__)
         self.service.update_dict(
-            self.rules, convert_path_to_se_path(self.path), dict_state
+            self.rules, convert_path_to_se_path(self.path), dict_state, recursive
         )
 
     updateDict = update_dict
@@ -1423,9 +1518,12 @@ class PyNamedObjectContainer:
 
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        return self.service.get_object_names(
-            self.rules, convert_path_to_se_path(self.path)
-        )
+        if self.service.version <= FluentVersion.v241:
+            return self._get_child_object_display_names()
+        else:
+            return self.service.get_object_names(
+                self.rules, convert_path_to_se_path(self.path)
+            )
 
     getChildObjectDisplayNames = get_object_names
 
@@ -1437,7 +1535,7 @@ class PyNamedObjectContainer:
         int
             Count of child objects.
         """
-        return len(self._get_child_object_display_names())
+        return len(self.get_object_names())
 
     def __iter__(self) -> Iterator[PyMenu]:
         """Return the next child object.
@@ -1447,7 +1545,7 @@ class PyNamedObjectContainer:
         Iterator[PyMenu]
             Iterator of child objects.
         """
-        for name in self._get_child_object_display_names():
+        for name in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
             yield getattr(self.__class__, f"_{self.__class__.__name__}")(
@@ -1455,7 +1553,7 @@ class PyNamedObjectContainer:
             )
 
     def _get_item(self, key: str) -> PyMenu:
-        if key in self._get_child_object_display_names():
+        if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             return getattr(self.__class__, f"_{self.__class__.__name__}")(
@@ -1467,7 +1565,7 @@ class PyNamedObjectContainer:
             )
 
     def _del_item(self, key: str) -> None:
-        if key in self._get_child_object_display_names():
+        if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             se_path = convert_path_to_se_path(child_path)
@@ -1566,6 +1664,8 @@ class PyNamedObjectContainer:
                 returned_state[type_and_name[1]] = value
 
         return dict(sorted(returned_state.items()))
+
+    getState = __call__ = get_state
 
 
 class PyQuery:
@@ -1677,7 +1777,9 @@ class PyCommand:
     def before_execute(self, value):
         """Executes before command execution."""
         if hasattr(self, "_do_before_execute"):
-            self._do_before_execute(value)
+            return self._do_before_execute(value)
+        else:
+            return value
 
     def after_execute(self, value):
         """Executes after command execution."""
@@ -1694,8 +1796,7 @@ class PyCommand:
         """
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
-                self.before_execute(value)
-                kwds[f"{arg}"] = os.path.basename(value)
+                kwds[arg] = self.before_execute(value)
         command = self.service.execute_command(
             self.rules, convert_path_to_se_path(self.path), self.command, kwds
         )
@@ -1763,15 +1864,22 @@ class PyCommand:
 class _InputFile:
     def _do_before_execute(self, value):
         try:
-            self.service.file_transfer_service.upload(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            base_names = []
+            for file_name in file_names:
+                self.service.file_transfer_service.upload(file_name=file_name)
+                base_names.append(os.path.basename(file_name))
+            return base_names if isinstance(value, list) else base_names[0]
         except AttributeError:
-            pass
+            return value
 
 
 class _OutputFile:
     def _do_after_execute(self, value):
         try:
-            self.service.file_transfer_service.download(file_name=value)
+            file_names = value if isinstance(value, list) else [value]
+            for file_name in file_names:
+                self.service.file_transfer_service.download(file_name=file_name)
         except AttributeError:
             pass
 
@@ -2130,13 +2238,13 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
     available."""
 
     def __iter__(self) -> Iterator[PyMenuGeneric]:
-        for name in self._get_child_object_display_names():
+        for name in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], name))
             yield PyMenuGeneric(self.service, self.rules, child_path)
 
     def _get_item(self, key: str) -> PyMenuGeneric:
-        if key in self._get_child_object_display_names():
+        if key in self.get_object_names():
             child_path = self.path[:-1]
             child_path.append((self.path[-1][0], key))
             return PyMenuGeneric(self.service, self.rules, child_path)

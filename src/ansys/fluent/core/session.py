@@ -12,10 +12,6 @@ from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
-from ansys.fluent.core.session_shared import (  # noqa: F401
-    _CODEGEN_MSG_DATAMODEL,
-    _CODEGEN_MSG_TUI,
-)
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
@@ -147,6 +143,7 @@ class BaseSession:
         self._datamodel_service_se = service_creator("datamodel").create(
             fluent_connection._channel,
             fluent_connection._metadata,
+            self.get_fluent_version(),
             self._error_state,
             self._file_transfer_service,
         )
@@ -189,6 +186,12 @@ class BaseSession:
                 )
                 self.field_data_streaming = FieldDataStreaming(
                     _session._fluent_connection._id, _session._field_data_service
+                )
+                self.field_data_old = service_creator("field_data_old").create(
+                    _session._field_data_service,
+                    self.field_info,
+                    _IsDataValid(_session.scheme_eval),
+                    _session.scheme_eval,
                 )
 
         self.fields = Fields(self)

@@ -7,6 +7,7 @@ from ansys.fluent.core.services.datamodel_se import (
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
+from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.events import EventsService
 from ansys.fluent.core.services.field_data import FieldData, FieldInfo
 from ansys.fluent.core.services.health_check import HealthCheckService
@@ -28,6 +29,7 @@ _service_cls_by_name = {
     "scheme_eval": SchemeEval,
     "events": EventsService,
     "field_data": FieldData,
+    "field_data_old": DeprecatedFieldData,
     "field_info": FieldInfo,
     "monitors": MonitorsService,
     "reduction": Reduction,
@@ -42,6 +44,7 @@ class service_creator:
     """A gRPC service creator."""
 
     def __init__(self, service_name: str):
+        """Initialize service_creator."""
         self._service_cls = _service_cls_by_name[service_name]
 
     def create(self, *args, **kwargs):

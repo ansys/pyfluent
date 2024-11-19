@@ -12,7 +12,7 @@ Copy material from database
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver = pyfluent.launch_fluent()
     >>> solver.settings.file.read_case(file_name=file_name)
-    >>> materials = solver.settings.setup.materials
+    >>> materials = pyfluent.Materials(settings_source=solver)
     >>> fluids = materials.fluid
     >>> fluids.make_a_copy(from_="air",to="air-2")
     >>> air_copy = fluids["air-2"]
@@ -34,7 +34,8 @@ Copy material from database
      'sutherland',
      'kinetic-theory']
     >>> air_copy.viscosity.value.set_state(1.81e-05)
-    >>> solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"].material.set_state("air-2")
+    >>> elbow_fluid = pyfluent.FluidCellZone(settings_source=solver, name="elbow-fluid")
+    >>> elbow_fluid.material.set_state("air-2")
 
 
 Create new material

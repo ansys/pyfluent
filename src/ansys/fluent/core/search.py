@@ -129,19 +129,13 @@ def _get_version_path_prefix_from_obj(obj: Any):
         prefix = '<search_root>["<name>"]'
     elif isinstance(obj, flobject.Group):
         module = obj.__class__.__module__
-        try:
-            version = module.split(".")[-2].rsplit("_", 1)[-1]
-        except IndexError:
-            version = None
+        version = module.rsplit("_", 1)[-1]
         prefix = "<search_root>"
         path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
     elif isinstance(obj, flobject.NamedObject):
         module = obj.__class__.__module__
-        try:
-            version = module.split(".")[-2].rsplit("_", 1)[-1]
-        except IndexError:
-            version = None
+        version = module.rsplit("_", 1)[-1]
         prefix = '<search_root>["<name>"]'
         path = ["<solver_session>"]
         # Cannot deduce the whole path without api_tree
@@ -249,6 +243,9 @@ def _search(
                 if k.endswith(":<name>"):
                     k = _remove_suffix(k, ":<name>")
                     next_path = f'{path}.{k}["<name>"]'
+                elif k.endswith(":<index>"):
+                    k = _remove_suffix(k, ":<index>")
+                    next_path = f"{path}.{k}[<index>]"
                 else:
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
@@ -543,7 +540,7 @@ def _download_nltk_data():
         nltk.download(
             package,
             quiet=True,
-            raise_on_error=True,
+            halt_on_error=False,
         )
 
 

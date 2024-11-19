@@ -222,6 +222,10 @@ class PyMenu:
 
         Parameters
         ----------
+        *args
+            Positional arguments of the command or qyery.
+        **kwargs
+            Keyword arguments of the command or query.
 
         Returns
         -------
@@ -303,6 +307,7 @@ class TUIMethod:
     """
 
     def __init__(self, service, version, mode, path):
+        """Initialize TUIMethod."""
         self._service = service
         self._version = version
         self._mode = mode
@@ -330,9 +335,14 @@ class TUIMenu:
             for x in PyMenu(
                 self._service, self._version, self._mode, self._path
             ).get_child_names()
+            if x not in ["exit", "switch_to_meshing_mode"]
         ]
 
     def __getattribute__(self, name) -> Any:
+        if name in ["exit", "switch_to_meshing_mode"] and not self._path:
+            raise AttributeError(
+                f"'{self.__class__.__name__}' object has no attribute '{name}'"
+            )
         try:
             attr = super().__getattribute__(name)
             if isinstance(attr, TUIMethod):

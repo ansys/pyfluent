@@ -8,6 +8,7 @@ from threading import RLock
 from typing import Any, Dict, List
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 StateType = (
     bool
@@ -30,8 +31,8 @@ class NameKey(Enum):
     DISPLAY = "_name_"
 
     def __invert__(self):
-        l = list(NameKey)
-        return l[~l.index(self)]
+        lst = list(NameKey)
+        return lst[~lst.index(self)]
 
 
 class _CacheImpl:
@@ -101,12 +102,41 @@ class _CacheImpl:
                 d[k] = v1
 
 
+def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
+    """Check if a parameter is a dict type."""
+    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core.services.datamodel_se import (
+        PyDictionary,
+        PyNamedObjectContainer,
+        PyParameter,
+    )
+    from ansys.fluent.core.utils import load_module
+
+    try:
+        module = load_module(
+            rules, CODEGEN_OUTDIR / f"datamodel_{version.number}" / f"{rules}.py"
+        )
+    except FileNotFoundError:  # no codegen or during codegen
+        return False
+    cls = module.Root
+    comps = rules_path.split("/")
+    for i, comp in enumerate(comps):
+        if hasattr(cls, comp):
+            cls = getattr(cls, comp)
+            if issubclass(cls, PyParameter) and i < len(comps) - 1:
+                return False
+            if issubclass(cls, PyNamedObjectContainer):
+                cls = getattr(cls, f"_{comp}")
+    return issubclass(cls, PyDictionary)
+
+
 class DataModelCache:
     """Class to manage datamodel cache."""
 
     use_display_name = False
 
     def __init__(self):
+        """Initialize datamodel cache."""
         self.rules_str_to_cache = defaultdict(dict)
         self.rules_str_to_config = {}
         self._locks = {}
@@ -177,6 +207,8 @@ class DataModelCache:
         key: str,
         state: Variant,
         updaterFn,
+        rules_str: str,
+        version,
     ):
         if state.HasField("bool_state"):
             updaterFn(source, key, state.bool_state)
@@ -198,7 +230,13 @@ class DataModelCache:
             updaterFn(source, key, [])
             for item in state.variant_vector_state.item:
                 self._update_cache_from_variant_state(
-                    rules, source, key, item, lambda d, k, v: d[k].append(v)
+                    rules,
+                    source,
+                    key,
+                    item,
+                    lambda d, k, v: d[k].append(v),
+                    rules_str + "/" + key.split(":", maxsplit=1)[0],
+                    version,
                 )
         elif state.HasField("variant_map_state"):
             internal_names_as_keys = (
@@ -226,15 +264,28 @@ class DataModelCache:
             else:
                 if key not in source:
                     source[key] = {}
-            source = source[key]
-            for k, v in state.variant_map_state.item.items():
-                self._update_cache_from_variant_state(
-                    rules, source, k, v, dict.__setitem__
-                )
+            if version and _is_dict_parameter_type(version, rules, rules_str):
+                source[key] = {}
+            if state.variant_map_state.item:
+                source = source[key]
+                for k, v in state.variant_map_state.item.items():
+                    self._update_cache_from_variant_state(
+                        rules,
+                        source,
+                        k,
+                        v,
+                        dict.__setitem__,
+                        rules_str + "/" + k.split(":", maxsplit=1)[0],
+                        version,
+                    )
+            else:
+                source[key] = {}
         else:
             updaterFn(source, key, None)
 
-    def update_cache(self, rules: str, state: Variant, deleted_paths: List[str]):
+    def update_cache(
+        self, rules: str, state: Variant, deleted_paths: List[str], version=None
+    ):
         """Update datamodel cache from streamed state.
 
         Parameters
@@ -245,6 +296,8 @@ class DataModelCache:
             streamed state
         deleted_paths : List[str]
             list of deleted paths
+        version : FluentVersion, optional
+            Fluent version
         """
         cache = self.rules_str_to_cache[rules]
         with self._with_lock(rules):
@@ -280,7 +333,13 @@ class DataModelCache:
                             break
             for k, v in state.variant_map_state.item.items():
                 self._update_cache_from_variant_state(
-                    rules, cache, k, v, dict.__setitem__
+                    rules,
+                    cache,
+                    k,
+                    v,
+                    dict.__setitem__,
+                    k.split(":", maxsplit=1)[0],
+                    version,
                 )
 
     @staticmethod
@@ -309,11 +368,11 @@ class DataModelCache:
 
         Returns
         -------
-        state : Any
+        Any
             cached state
         """
         name_key_in_config = self.get_config(rules, "name_key")
-        if name_key == None:
+        if name_key is None:
             name_key = name_key_in_config
         cache = self.rules_str_to_cache[rules]
         with self._with_lock(rules):

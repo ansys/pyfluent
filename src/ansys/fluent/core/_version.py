@@ -6,10 +6,13 @@ version_info = 0, 1, 'dev0'
 """
 
 # major, minor, patch
-version_info = 0, 27, "dev0"
+version_info = 0, 27, "dev1"
 
 # Nice string for the version
 __version__ = ".".join(map(str, version_info))
 
 # Current Fluent version
-fluent_release_version = "24.1.0"
+fluent_release_version = "24.2.0"
+
+# Dev Fluent version
+fluent_dev_version = "25.2.0"

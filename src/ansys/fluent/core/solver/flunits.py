@@ -7,61 +7,62 @@ Example
 The following code is employed to translate the source data
 into Python data structures:
 
-from ansys.fluent.core.filereader import lispy
-from ansys.units import Quantity, Unit
-from ansys.units.quantity import get_si_value
-import re
-from pprint import pprint
-
-fl_unit_re_subs = {
-    'deg': 'radian',
-    'rad': 'radian',
-    'Ohm': 'ohm'
-}
-
-fl_unit_subs = {'%': ''}
-
-def replace_units(match):
-    return fl_unit_re_subs[match.group(0)]
-
-def substitute_fl_units_with_py_units(fl_units_dict):
-    subs = {}
-    for k, v in fl_units_dict.items():
-        new_val = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in fl_unit_re_subs), replace_units, v)
-        if new_val != v:
-            subs[k] = new_val
-        else:
-            new_val = fl_unit_subs.get(v, None)
-            if new_val is not None:
-                subs[k] = new_val
-    print("Substitutions:")
-    for k, v in subs.items():
-        print(f"'{fl_units_dict[k]}' -> '{v}' for '{k}'")
-    fl_units_dict.update(subs)
-    return fl_units_dict
-
-def remove_unhandled_units(fl_units_dict):
-    not_si = {}
-    unhandled = {}
-    for k, v in fl_units_dict.items():
-        try:
-            Unit(v)
-            q = Quantity(1.0, v)
-            if get_si_value(q) != 1.0:
-                not_si[k] = v
-        except Exception:
-            unhandled[k] = v
-    print("Not SI:")
-    pprint(not_si)
-    print("Unhandled:")
-    pprint(unhandled)
-    [fl_units_dict.pop(key) for key in list(not_si) + list(unhandled)]
-    return fl_units_dict
-
-def make_python_fl_unit_table(scheme_unit_table):
-    as_list = lispy.parse(scheme_unit_table)[1][1]
-    as_dict = { x[0]:x[1][3].split('"')[1] for x in as_list }
-    return remove_unhandled_units(substitute_fl_units_with_py_units(as_dict))
+>>> from ansys.fluent.core.filereader import lispy
+>>> from ansys.units import Quantity, Unit
+>>> from ansys.units.quantity import get_si_value
+>>> import re
+>>> from pprint import pprint
+>>>
+>>> fl_unit_re_subs = {
+...     'deg': 'radian',
+...     'rad': 'radian',
+...     'Ohm': 'ohm'
+... }
+>>>
+>>> fl_unit_subs = {'%': ''}
+>>>
+>>> def replace_units(match):
+...     return fl_unit_re_subs[match.group(0)]
+...
+>>> def substitute_fl_units_with_py_units(fl_units_dict):
+...     subs = {}
+...     for k, v in fl_units_dict.items():
+...         new_val = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in fl_unit_re_subs), replace_units, v)
+...         if new_val != v:
+...             subs[k] = new_val
+...         else:
+...             new_val = fl_unit_subs.get(v, None)
+...             if new_val is not None:
+...                 subs[k] = new_val
+...     print("Substitutions:")
+...     for k, v in subs.items():
+...         print(f"'{fl_units_dict[k]}' -> '{v}' for '{k}'")
+...     fl_units_dict.update(subs)
+...     return fl_units_dict
+...
+>>> def remove_unhandled_units(fl_units_dict):
+...     not_si = {}
+...     unhandled = {}
+...     for k, v in fl_units_dict.items():
+...         try:
+...             Unit(v)
+...             q = Quantity(1.0, v)
+...             if get_si_value(q) != 1.0:
+...                 not_si[k] = v
+...         except Exception:
+...             unhandled[k] = v
+...     print("Not SI:")
+...     pprint(not_si)
+...     print("Unhandled:")
+...     pprint(unhandled)
+...     [fl_units_dict.pop(key) for key in list(not_si) + list(unhandled)]
+...     return fl_units_dict
+...
+>>> def make_python_fl_unit_table(scheme_unit_table):
+...     as_list = lispy.parse(scheme_unit_table)[1][1]
+...     as_dict = { x[0]:x[1][3].split('"')[1] for x in as_list }
+...     return remove_unhandled_units(substitute_fl_units_with_py_units(as_dict))
+...
 
 Output from most recent run to generate the table below:
 
@@ -102,6 +103,8 @@ Unhandled:
 """
 
 from __future__ import annotations
+
+from typing import TypeVar
 
 _fl_unit_table = {
     "acceleration": "m s^-2",
@@ -223,6 +226,7 @@ class InvalidQuantityType(TypeError):
         self,
         quantity,
     ) -> None:
+        """Initialize InvalidQuantityType."""
         super().__init__(
             f"The specified quantity, '{quantity}' is not a string ({type(quantity)})."
         )
@@ -235,9 +239,13 @@ class UnitsNotDefinedForQuantity(ValueError):
         self,
         quantity: str,
     ) -> None:
+        """Initialize UnitsNotDefinedForQuantity."""
         super().__init__(
             f"The units for the specified quantity, '{quantity}' are not defined in PyFluent."
         )
+
+
+QuantityT = TypeVar("QuantityT")
 
 
 class UnhandledQuantity(RuntimeError):
@@ -246,8 +254,9 @@ class UnhandledQuantity(RuntimeError):
     def __init__(
         self,
         path: str,
-        quantity: Quantity,
+        quantity: QuantityT,
     ) -> None:
+        """Initialize UnhandledQuantity."""
         super().__init__(
             f"Could not handle the quantity, '{quantity}' for the path, {path}."
         )

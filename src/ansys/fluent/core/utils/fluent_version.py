@@ -5,7 +5,7 @@ from functools import total_ordering
 import os
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._version import fluent_release_version
+from ansys.fluent.core._version import fluent_dev_version, fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):
@@ -18,8 +18,9 @@ class ComparisonError(RuntimeError):
     """Raised when a comparison can't be completed."""
 
     def __init__(self):
+        """Initialize ComparisonError."""
         super().__init__(
-            f"Comparison operations are only supported between two members of 'FluentVersion'."
+            "Comparison operations are only supported between two members of 'FluentVersion'."
         )
 
 
@@ -52,6 +53,7 @@ class FluentVersion(Enum):
     FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
+    v252 = "25.2.0"
     v251 = "25.1.0"
     v242 = "24.2.0"
     v241 = "24.1.0"
@@ -109,6 +111,17 @@ class FluentVersion(Enum):
         """
         return cls(fluent_release_version)
 
+    @classmethod
+    def current_dev(cls):
+        """Return the version member of the current development version.
+
+        Returns
+        -------
+        FluentVersion
+            FluentVersion member corresponding to the latest development version.
+        """
+        return cls(fluent_dev_version)
+
     @property
     def awp_var(self):
         """Get the Fluent version in AWP environment variable format."""
@@ -118,6 +131,11 @@ class FluentVersion(Enum):
     def number(self):
         """Get the Fluent version as a plain integer."""
         return int(self.value.replace(".", "")[:-1])
+
+    @property
+    def docker_image_tag(self):
+        """Get the Fluent version as a Docker image tag."""
+        return f"v{self.value}"
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):

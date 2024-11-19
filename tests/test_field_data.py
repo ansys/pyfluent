@@ -191,48 +191,89 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
 
-    assert abs_press_data.size == 241
-    assert abs_press_data[120].scalar_data == 101325.0
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["cold-inlet"][120] == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
     )
-    assert round(float(vertices_data[5].x), 2) == -0.2
-
-    faces_centroid_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesCentroid], surfaces=["cold-inlet"]
+    assert vertices_data["cold-inlet"][SurfaceDataType.Vertices].shape == (241, 3)
+    assert (
+        round(float(vertices_data["cold-inlet"][SurfaceDataType.Vertices][5][0]), 2)
+        == -0.2
     )
-    assert round(float(faces_centroid_data[5].y), 2) == -0.18
+
+    vertices_and_faces_centroid_data = field_data.get_surface_data(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+        surfaces=["hot-inlet", "cold-inlet"],
+    )
+    assert list(vertices_and_faces_centroid_data["cold-inlet"].keys()) == [
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesCentroid,
+    ]
+    assert vertices_and_faces_centroid_data["hot-inlet"][
+        SurfaceDataType.Vertices
+    ].shape == (79, 3)
+    assert list(vertices_and_faces_centroid_data.keys()) == [
+        "hot-inlet",
+        "cold-inlet",
+    ]
+    assert (
+        round(
+            float(
+                vertices_and_faces_centroid_data["cold-inlet"][
+                    SurfaceDataType.FacesCentroid
+                ][5][1]
+            ),
+            2,
+        )
+        == -0.18
+    )
+    assert (
+        round(
+            float(
+                vertices_and_faces_centroid_data["hot-inlet"][
+                    SurfaceDataType.FacesCentroid
+                ][5][1]
+            ),
+            2,
+        )
+        == -0.23
+    )
+
+    faces_normal_data = field_data.get_surface_data(
+        data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5]
+    )
+    assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
+    assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
-    assert faces_connectivity_data[5].node_count == 4
-    assert (faces_connectivity_data[5].node_indices == [12, 13, 17, 16]).all()
-
-    faces_normal_data = field_data.get_surface_data(
-        data_types=[SurfaceDataType.FacesNormal], surfaces=["cold-inlet"]
-    )
-    assert faces_normal_data.size == 152
-    assert faces_normal_data.surface_id == 3
+    assert (
+        faces_connectivity_data["cold-inlet"][SurfaceDataType.FacesConnectivity][5]
+        == [12, 13, 17, 16]
+    ).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["cold-inlet"]
     )
 
-    assert velocity_vector_data.size == 152
-    assert velocity_vector_data.scale == 1.0
+    assert velocity_vector_data["cold-inlet"].shape == (152, 3)
 
     path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surfaces=["cold-inlet"]
+        field_name="velocity", surfaces=["cold-inlet", "hot-inlet"]
     )
 
-    assert path_lines_data["vertices"].size == 76152
-    assert path_lines_data["lines"].size == 76000
-    assert path_lines_data["velocity"].size == 76152
+    assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
+    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
+    assert path_lines_data["cold-inlet"]["velocity"].shape == (76152,)
 
-    assert path_lines_data["lines"][100].node_count == 2
-    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
+    assert path_lines_data["hot-inlet"]["vertices"].shape == (27555, 3)
+    assert len(path_lines_data["hot-inlet"]["lines"]) == 27500
+    assert path_lines_data["hot-inlet"]["velocity"].shape == (27555,)
+
+    assert all(path_lines_data["cold-inlet"]["lines"][100] == [100, 101])
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -255,42 +296,49 @@ def test_field_data_objects_2d(disk_case_session) -> None:
         field_name="absolute-pressure", surfaces=["velocity-inlet-2"]
     )
 
-    assert abs_press_data.size == 11
-    assert abs_press_data[5].scalar_data == 101325.0
+    assert abs_press_data["velocity-inlet-2"].shape == (11,)
+    assert abs_press_data["velocity-inlet-2"][5] == 101325.0
 
     vertices_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.Vertices], surfaces=["interior-4"]
     )
-    assert round(float(vertices_data[5].x), 2) == 0.0
+    assert round(vertices_data["interior-4"][SurfaceDataType.Vertices][5][0], 2) == 0.0
 
     faces_centroid_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesCentroid], surfaces=["velocity-inlet-2"]
     )
-    assert round(float(faces_centroid_data[5].y), 2) == 0.02
+    assert (
+        round(
+            float(
+                faces_centroid_data["velocity-inlet-2"][SurfaceDataType.FacesCentroid][
+                    5
+                ][1]
+            ),
+            2,
+        )
+        == 0.02
+    )
 
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
-    )[5]
-    assert faces_connectivity_data.node_count == 2
-    assert (faces_connectivity_data.node_indices == [5, 6]).all()
+    )["velocity-inlet-2"][SurfaceDataType.FacesConnectivity][5]
+    assert (faces_connectivity_data == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
-    assert velocity_vector_data.size == 10
-    assert velocity_vector_data.scale == 1.0
+    assert velocity_vector_data["velocity-inlet-2"].shape == (10, 3)
 
     path_lines_data = field_data.get_pathlines_field_data(
         field_name="velocity", surfaces=["velocity-inlet-2"]
     )
 
-    assert path_lines_data["vertices"].size == 5010
-    assert path_lines_data["lines"].size == 5000
-    assert path_lines_data["velocity"].size == 5010
+    assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
+    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
+    assert path_lines_data["velocity-inlet-2"]["velocity"].shape == (5010,)
 
-    assert path_lines_data["lines"][100].node_count == 2
-    assert all(path_lines_data["lines"][100].node_indices == [100, 101])
+    assert all(path_lines_data["velocity-inlet-2"]["lines"][100] == [100, 101])
 
 
 def test_field_data_errors(new_solver_session) -> None:
@@ -299,19 +347,19 @@ def test_field_data_errors(new_solver_session) -> None:
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
 
-    with pytest.raises(DisallowedValuesError) as fne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="y-face-area", surfaces=[0]
         )
 
-    with pytest.raises(DisallowedValuesError) as fne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="partition-neighbors", surfaces=[0]
         )
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    with pytest.raises(FieldUnavailable) as fnu:
+    with pytest.raises(FieldUnavailable):
         solver.fields.field_data.get_scalar_field_data(
             field_name="density", surfaces=[0]
         )
@@ -330,14 +378,14 @@ def test_field_data_errors(new_solver_session) -> None:
     solver.solution.initialization.hybrid_initialize()
 
     # Get field data object
-    field_data = solver.fields.field_data
+    assert solver.fields.field_data
 
-    with pytest.raises(DisallowedValuesError) as sne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="density", surfaces=["bob"]
         )
 
-    with pytest.raises(DisallowedValuesError) as fne:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_data.get_scalar_field_data(
             field_name="xdensity", surfaces=[0]
         )
@@ -355,19 +403,19 @@ def test_field_info_validators(new_solver_session) -> None:
     vector_field_1 = solver.fields.field_info.validate_vector_fields("velocity")
     assert vector_field_1 is None
 
-    with pytest.raises(DisallowedValuesError) as vector_field_error:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_info.validate_vector_fields("relative-vel")
 
     scalar_field_1 = solver.fields.field_info.validate_scalar_fields("z-velocity")
     assert scalar_field_1 is None
 
-    with pytest.raises(DisallowedValuesError) as scalar_field_error:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_info.validate_scalar_fields("z-vel")
 
     surface = solver.fields.field_info.validate_surfaces(["cold-inlet"])
     assert surface is None
 
-    with pytest.raises(DisallowedValuesError) as surface_error:
+    with pytest.raises(DisallowedValuesError):
         solver.fields.field_info.validate_surfaces(["out"])
 
 

@@ -1,32 +1,26 @@
 """Provides a module for file transfer service."""
 
-import logging
 import os
 import pathlib
 import random
 import shutil
-from typing import Any, Callable, List, Protocol  # noqa: F401
+from typing import Any, Protocol
 import warnings
 
-import platformdirs
-
+from ansys.fluent.core.utils import get_user_data_dir
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
 
-logger = logging.getLogger("pyfluent.file_transfer_service")
-
-
 # Host path which is mounted to the file-transfer-service container
-MOUNT_SOURCE = platformdirs.user_data_dir(
-    appname="ansys_fluent_core", appauthor="Ansys"
-)
+MOUNT_SOURCE = str(get_user_data_dir())
 
 
 class PyPIMConfigurationError(ConnectionError):
     """Raised when `PyPIM<https://pypim.docs.pyansys.com/version/stable/>` is not configured."""
 
     def __init__(self):
+        """Initialize PyPIMConfigurationError."""
         super().__init__("PyPIM is not configured.")
 
 
@@ -114,7 +108,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         remote_file_name : str, optional
             Remote file name. The default is ``None``.
@@ -134,17 +128,18 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
         >>> meshing_session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
         """
-        local_file_name = pathlib.Path(file_name)
-        if local_file_name.exists() and local_file_name.is_file():
-            if remote_file_name:
-                shutil.copyfile(
-                    file_name,
-                    str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
-                )
-            else:
-                shutil.copyfile(
-                    file_name, str(self.fluent_cwd / f"{os.path.basename(file_name)}")
-                )
+        files = _get_files(file_name)
+        for file in files:
+            if file.is_file():
+                if remote_file_name:
+                    shutil.copyfile(
+                        file,
+                        str(self.fluent_cwd / f"{os.path.basename(remote_file_name)}"),
+                    )
+                else:
+                    shutil.copyfile(
+                        file, str(self.fluent_cwd / f"{os.path.basename(file)}")
+                    )
 
     def download(
         self, file_name: list[str] | str, local_directory: str | None = None
@@ -153,7 +148,7 @@ class LocalFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         local_directory : str, optional
             Local directory. The default is ``None``.
@@ -168,22 +163,21 @@ class LocalFileTransferStrategy(FileTransferStrategy):
         >>> meshing_session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
         >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
         """
-        remote_file_name = str(self.fluent_cwd / f"{os.path.basename(file_name)}")
-        local_file_name = None
-        if local_directory:
-            if pathlib.Path(local_directory).is_dir():
-                local_file_name = pathlib.Path(local_directory) / os.path.basename(
-                    file_name
-                )
-            elif not pathlib.Path(local_directory).is_dir():
-                local_file_name = pathlib.Path(local_directory)
-        else:
-            local_file_name = pathlib.Path(self.pyfluent_cwd) / os.path.basename(
-                file_name
-            )
-        if local_file_name.exists() and local_file_name.samefile(remote_file_name):
-            return
-        shutil.copyfile(remote_file_name, str(local_file_name))
+        files = _get_files(file_name)
+        for file in files:
+            remote_file_name = str(self.fluent_cwd / file.name)
+            local_file_name = None
+            if local_directory:
+                local_dir_path = pathlib.Path(local_directory)
+                if local_dir_path.is_dir():
+                    local_file_name = local_dir_path / file.name
+                else:
+                    local_file_name = local_dir_path
+            else:
+                local_file_name = self.pyfluent_cwd / file.name
+            if local_file_name.exists() and local_file_name.samefile(remote_file_name):
+                return
+            shutil.copyfile(remote_file_name, str(local_file_name))
 
 
 def _get_files(
@@ -289,7 +283,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         remote_file_name : str, optional
             Remote file name. The default is ``None``.
@@ -335,7 +329,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         local_directory : str, optional
             Local directory. The default is ``None``.
@@ -394,6 +388,13 @@ class PimFileTransferService:
     """
 
     def __init__(self, pim_instance: Any | None = None):
+        """Initialize PimFileTransferService.
+
+        Parameters
+        ----------
+        pim_instance: Any, optional
+            PIM instance.
+        """
         self.pim_instance = pim_instance
         self.upload_server = None
         self.file_service = None
@@ -470,7 +471,7 @@ class PimFileTransferService:
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         remote_file_name : str, optional
             Remote file name. The default is ``None``.
@@ -482,23 +483,20 @@ class PimFileTransferService:
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            from alive_progress import alive_bar
-
-            with alive_bar(len(files), title="Uploading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        if not self.file_service.file_exist(os.path.basename(file)):
-                            self.upload_file(
-                                file_name=file, remote_file_name=remote_file_name
-                            )
-                            bar()
-                        else:
-                            warnings.warn(
-                                f"\n{file} with the same name exists at the remote location.\n",
-                                PyFluentUserWarning,
-                            )
-                    elif not self.file_service.file_exist(os.path.basename(file)):
-                        raise FileNotFoundError(f"{file} does not exist.")
+            for file in files:
+                if os.path.isfile(file):
+                    if not self.file_service.file_exist(os.path.basename(file)):
+                        self.upload_file(
+                            file_name=file, remote_file_name=remote_file_name
+                        )
+                        print(f"\n{os.path.basename(file_name)} uploaded.\n")
+                    else:
+                        warnings.warn(
+                            f"\n{file} with the same name exists at the remote location.\n",
+                            PyFluentUserWarning,
+                        )
+                elif not self.file_service.file_exist(os.path.basename(file)):
+                    raise FileNotFoundError(f"{file} does not exist.")
 
     def download_file(self, file_name: str, local_directory: str | None = None):
         """Download a file from the server supported by `PyPIM<https://pypim.docs.pyansys.com/version/stable/>`.
@@ -530,28 +528,25 @@ class PimFileTransferService:
 
         Parameters
         ----------
-        file_name : str
+        file_name : list[str] | str
             File name.
         local_directory : str, optional
             Local directory. The default is the current working directory.
         """
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
-            from alive_progress import alive_bar
-
-            with alive_bar(len(files), title="Downloading...") as bar:
-                for file in files:
-                    if os.path.isfile(file):
-                        warnings.warn(
-                            f"\nFile already exists. File path:\n{file}\n",
-                            PyFluentUserWarning,
-                        )
-                    else:
-                        self.download_file(
-                            file_name=os.path.basename(file),
-                            local_directory=local_directory,
-                        )
-                        bar()
+            for file in files:
+                if os.path.isfile(file):
+                    warnings.warn(
+                        f"\nFile already exists. File path:\n{file}\n",
+                        PyFluentUserWarning,
+                    )
+                else:
+                    self.download_file(
+                        file_name=os.path.basename(file),
+                        local_directory=local_directory,
+                    )
+                    print(f"\n{os.path.basename(file_name)} downloaded.\n")
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance

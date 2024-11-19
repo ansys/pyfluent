@@ -67,7 +67,7 @@ To reach the project support team, email `pyansys.core@ansys.com <pyansys.core@a
 Installation
 ------------
 The ``ansys-fluent-core`` package supports Python 3.9 through Python
-3.12 on Windows and Linux.
+3.13 on Windows and Linux.
 
 Install the latest release from `PyPI
 <https://pypi.org/project/ansys-fluent-core/>`_ with:
@@ -99,7 +99,7 @@ example, the installer automatically sets the ``AWP_ROOT232`` environment variab
 to ``C:\Program Files\ANSYS Inc\v232``.
 
 On Linux, the required environment variable is not set automatically, and can be set for the
-current user in the current shell session, using Fluent 2023 R1 in the default installation
+current user in the current shell session, using Fluent 2023 R2 in the default installation
 directory as an example, before running PyFluent, with:
 
 .. code:: console

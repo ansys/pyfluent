@@ -45,7 +45,7 @@ def test_data_model_cache():
         ({"r1": {}}, "r1", {"A": [3.0, 6.0]}, [], {"r1": {"A": [3.0, 6.0]}}),
         ({"r1": {}}, "r1", {"A": ["ab", "cd"]}, [], {"r1": {"A": ["ab", "cd"]}}),
         ({"r1": {"A": {}}}, "r1", {"A": {"B": 5}}, [], {"r1": {"A": {"B": 5}}}),
-        ({"r1": {"A": 5}}, "r1", {"A": {}}, [], {"r1": {"A": 5}}),
+        ({"r1": {"A": 5}}, "r1", {"A": {}}, [], {"r1": {"A": {}}}),
         ({"r1": {"A": 5}}, "r1", {"A": None}, [], {"r1": {"A": None}}),
         (
             {"r1": {"A": {}}},
@@ -429,6 +429,6 @@ def test_cache_per_session():
     ):
         assert m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()
-        w1 = m1.watertight()
+        _ = m1.watertight()
         assert not m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()

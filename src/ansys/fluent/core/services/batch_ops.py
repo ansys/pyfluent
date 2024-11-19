@@ -69,7 +69,9 @@ class BatchOps:
     """
 
     _proto_files: list[ModuleType] | None = None
-    _instance = lambda: None
+
+    def _instance():
+        return None
 
     @classmethod
     def instance(cls) -> _TBatchOps | None:

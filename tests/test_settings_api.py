@@ -12,7 +12,9 @@ from ansys.fluent.core.solver.flobject import (
     _OutputFile,
     to_python_name,
 )
+from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.warnings import PyFluentUserWarning
 
 
 @pytest.mark.nightly
@@ -23,8 +25,6 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session.file.read(
         file_name=case_path, file_type="case", lightweight_setup=True
     )
-    # NOTE: Not sure why initialization is necessary here
-    # solver_session.solution.initialization.hybrid_initialize()
 
     viscous_model = solver_session.setup.models.viscous
 
@@ -213,15 +213,17 @@ def test_api_upgrade(new_solver_session, capsys):
     solver = new_solver_session
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
-    "<solver_session>.file.read_case" in capsys.readouterr().out
+    timeout_loop(
+        lambda: "<solver_session>.settings.file.read_case" in capsys.readouterr().out,
+        timeout=5,
+    )
 
 
-@pytest.mark.fluent_version(">=24.2")
-def test_deprecated_settings(new_solver_session):
+# Custom aliases are not tested with 25.1 or later due to conflicts with the actual aliases
+# defined in the settings API
+@pytest.mark.fluent_version("==24.2")
+def test_deprecated_settings_with_custom_aliases(new_solver_session):
     solver = new_solver_session
-    if solver.get_fluent_version() >= FluentVersion.v251:
-        # https://github.com/ansys/pyfluent/issues/3134
-        return
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file._setattr("_child_aliases", {"rcd": "read_case_data"})
@@ -359,6 +361,24 @@ def test_deprecated_settings(new_solver_session):
     }
 
 
+@pytest.mark.fluent_version(">=25.1")
+def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_session):
+    solver = mixing_elbow_case_data_session
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {}
+    assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
+        "minimum": 0,
+        "maximum": 0,
+    }
+    solver.settings.results.surfaces.iso_clip["clip-1"] = {
+        "min": -0.0001,
+        "max": 0.0001,
+    }
+    assert solver.settings.results.surfaces.iso_clip["clip-1"].range() == {
+        "minimum": -0.0001,
+        "maximum": 0.0001,
+    }
+
+
 @pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
@@ -440,6 +460,24 @@ def test_generated_code_special_cases(new_solver_session):
 @pytest.mark.fluent_version(">=25.1")
 def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
+
+    # Following set_state should not throw InactiveObjectError
+    solver.settings.setup.materials.fluid["air"] = {
+        "density": {"option": "ideal-gas"},
+        "specific_heat": {"value": 1006.43, "option": "constant"},
+        "thermal_conductivity": {"value": 0.0242, "option": "constant"},
+        "molecular_weight": {"value": 28.966, "option": "constant"},
+    }
+    assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
+    assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
+    assert (
+        solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
+        == 0.0242
+    )
+    assert (
+        solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
+    )
+
     solver.settings.solution.initialization.hybrid_initialize()
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
@@ -473,10 +511,34 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
 
 
 @pytest.mark.fluent_version(">=25.1")
-def test_exit_not_in_settings(new_solver_session):
+def test_commands_not_in_settings(new_solver_session):
     solver = new_solver_session
 
-    assert "exit" not in dir(solver.settings)
+    for command in ["exit", "switch_to_meshing_mode"]:
+        assert command not in dir(solver.settings)
+        with pytest.raises(AttributeError):
+            getattr(solver.settings, command)
 
-    with pytest.raises(AttributeError):
-        solver.settings.exit()
+
+@pytest.mark.fluent_version(">=25.1")
+def test_deprecated_command_arguments(mixing_elbow_case_data_session):
+    solver = mixing_elbow_case_data_session
+    with pytest.warns() as record:
+        # all_boundary_zones is an unknown/unsupported keyword
+        solver.settings.results.report.fluxes.mass_flow(
+            all_boundary_zones=False, zones=["cold-inlet", "hot-inlet", "outlet"]
+        )
+    assert len(record) == 1
+    assert record[0].category == PyFluentUserWarning
+    assert "all_boundary_zones" in str(record[0].message)
+
+    solver.settings.results.graphics.mesh.create("m1")
+    solver.settings.results.graphics.mesh.make_a_copy(from_="m1", to="m2")
+    solver.settings.results.graphics.mesh.copy(
+        from_name="m1", new_name="m3"
+    )  # deprecated
+    assert set(solver.settings.results.graphics.mesh.get_object_names()) == {
+        "m1",
+        "m2",
+        "m3",
+    }

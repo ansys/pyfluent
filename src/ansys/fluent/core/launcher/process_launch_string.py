@@ -108,14 +108,14 @@ def _generate_launch_string(
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
-    if not pyfluent.SHOW_MESH_AFTER_CASE_READ:
+    if not pyfluent.FLUENT_SHOW_MESH_AFTER_CASE_READ:
         launch_string += " -nm"
     return launch_string
 
 
 def get_fluent_exe_path(**launch_argvals) -> Path:
-    """Get the path for the Fluent executable file.
-    The search for the path is performed in this order:
+    """Get the path for the Fluent executable file. The search for the path is performed
+    in the following order.
 
     1. ``product_version`` parameter passed with the ``launch_fluent`` method.
     2. The latest Ansys version from ``AWP_ROOTnnn``` environment variables.

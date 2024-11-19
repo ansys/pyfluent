@@ -3,6 +3,13 @@
 ========================
 Contributing to PyFluent
 ========================
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   environment_variables
+
 General guidance on contributing to a PyAnsys library appears in the
 `Contributing <https://dev.docs.pyansys.com/how-to/contributing.html>`_ topic
 in the *PyAnsys Developer's Guide*. Ensure that you are thoroughly familiar with
@@ -17,16 +24,29 @@ Clone the repository
 Follow the steps in the Development Installation section of :ref:`ref_installation` 
 to set PyFluent up in development mode.
 
+Run unit tests
+--------------
+
+To run the PyFluent unit tests, execute the following command in the root
+(``pyfluent``) directory of the repository:
+
+.. code:: console
+
+    poetry install --with test
+    poetry run pytest ----fluent-version=24.2
+
+You can change the Fluent version by replacing ``24.2`` with the version you want to test.
+
 Build documentation
 -------------------
 To build the PyFluent documentation locally, run the following commands in the root
 (``pyfluent``) directory of the repository:
 
-.. code:: 
+.. code:: console
 
     poetry install --with docs
     cd doc
-    make html
+    poetry run make html
 
 After the build completes, the HTML documentation is located in the
 ``_build/html`` directory. You can load the ``index.html`` file in

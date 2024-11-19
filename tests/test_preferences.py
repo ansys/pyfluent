@@ -18,7 +18,7 @@ def test_solver_preferences(new_solver_session):
     preferred_drawing.FacetLimit = 6000000
     assert preferred_drawing.FacetLimit() == 6000000
     preferred_drawing.FaceZoneLimit = 15000
-    preferred_drawing.FaceZoneLimit() == 15000
+    assert preferred_drawing.FaceZoneLimit() == 15000
 
     ansys_logo = solver.preferences.Appearance.AnsysLogo
     ansys_logo.Color = "white"
@@ -53,7 +53,7 @@ def test_meshing_preferences(new_meshing_session):
     assert preferred_drawing.FacetLimit() == 6000000
 
     preferred_drawing.FaceZoneLimit = 15000
-    preferred_drawing.FaceZoneLimit() == 15000
+    assert preferred_drawing.FaceZoneLimit() == 15000
 
     ansys_logo = meshing.preferences.Appearance.AnsysLogo
     ansys_logo.Color = "white"
@@ -77,13 +77,13 @@ def test_read_only_preferences(new_solver_session):
     solver = new_solver_session
     m = solver.preferences.MeshingWorkflow
     m.SaveCheckpointFiles = True
-    assert m.SaveCheckpointFiles() == True
+    assert m.SaveCheckpointFiles() is True
     assert m.CheckpointingOption() == "Write mesh files"
-    assert m.CheckpointingOption.is_read_only() == True
+    assert m.CheckpointingOption.is_read_only() is True
     with pytest.raises(RuntimeError):
         m.CheckpointingOption = "Write into memory"
     m.SaveCheckpointFiles = False
-    assert m.SaveCheckpointFiles() == False
-    assert m.CheckpointingOption.is_read_only() == False
+    assert m.SaveCheckpointFiles() is False
+    assert m.CheckpointingOption.is_read_only() is False
     m.CheckpointingOption = "Write into memory"
     assert m.CheckpointingOption() == "Write into memory"

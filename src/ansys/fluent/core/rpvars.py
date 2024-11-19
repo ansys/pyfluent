@@ -17,6 +17,7 @@ class RPVars:
     _allowed_values = None
 
     def __init__(self, eval_fn):
+        """Initialize RPVars."""
         self._eval_fn = eval_fn
 
     def __call__(self, var: str | None = None, val: Any | None = None) -> Any:
@@ -48,7 +49,7 @@ class RPVars:
         >>> solver.rp_vars("number-of-iterations")
         100
 
-        Getting dictionary with all rpvars available:
+        >>> # Get dictionary of all available rpvars:
 
         >>> solver.rp_vars()
         {'sg-swirl?': False, 'rp-seg?': True, 'rf-energy?': False, 'rp-inviscid?': False, ...

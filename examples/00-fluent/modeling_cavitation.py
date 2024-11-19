@@ -49,7 +49,7 @@ cav_file = examples.download_file("cav.msh.gz", "pyfluent/cavitation")
 
 ###############################################################################
 # Launch a Fluent session in the 2d solution mode with double precision running
-# on four processors.
+# on four processors and print Fluent version.
 
 solver = pyfluent.launch_fluent(
     precision="double",
@@ -57,6 +57,7 @@ solver = pyfluent.launch_fluent(
     mode="solver",
     version="2d",
 )
+print(solver.get_fluent_version())
 
 ###############################################################################
 # Read the mesh that was downloaded.
@@ -238,8 +239,6 @@ solver.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo
 # To plot the residuals, enable plotting and set the convergence criteria to
 # 1e-05 for x-velocity, y-velocity, k, omega, and vf-vapor. Enable the specified
 # initial pressure then initialize the solution with hybrid initialization.
-
-solver.solution.monitor.residual.options.plot = True
 
 resid_eqns = solver.solution.monitor.residual.equations
 

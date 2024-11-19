@@ -105,10 +105,10 @@ def test_parametric_workflow():
     dp_names = set([*study1.design_points.keys()])
     if solver_session.get_fluent_version() < FluentVersion.v251:
         study1.design_points.create_1()
+        dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
+        dp1 = study1.design_points[dp1_name]
     else:
-        study1.design_points.create()
-    dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
-    dp1 = study1.design_points[dp1_name]
+        dp1 = study1.design_points.create()
     dp1.input_parameters["inlet1_temp"] = 500
     dp1.input_parameters["inlet1_vel"] = 1
     dp1.input_parameters["inlet2_vel"] = 1
@@ -145,7 +145,7 @@ def test_parametric_workflow():
     solver_session.parametric_studies.export_design_table(filepath=write_design_table)
     assert design_point_table.exists()
 
-    study1.design_points.delete_design_points(design_points=[dp1_name])
+    study1.design_points.delete_design_points(design_points=[dp1.obj_name])
     assert len(study1.design_points) == 2
     study_names = set([*solver_session.parametric_studies.keys()])
     solver_session.parametric_studies.duplicate()
@@ -255,6 +255,15 @@ def test_parameters_list_function(static_mixer_settings_session):
     create_output_param("report-definition", "outlet-temp-avg")
     create_output_param("report-definition", "outlet-vel-avg")
 
+    # Create a unitless output parameter
+    unitless_quantity = solver.settings.solution.report_definitions.surface.create(
+        "temp-outlet-uniformity"
+    )
+    unitless_quantity.report_type = "surface-masswtui"
+    unitless_quantity.field = "temperature"
+    unitless_quantity.surface_names = ["outlet"]
+    unitless_quantity.output_parameter = True
+
     input_parameters_list = solver.parameters.input_parameters.list()
     output_parameters_list = solver.parameters.output_parameters.list()
     assert input_parameters_list == {
@@ -266,4 +275,5 @@ def test_parameters_list_function(static_mixer_settings_session):
     assert output_parameters_list == {
         "outlet-temp-avg-op": [0.0, "K"],
         "outlet-vel-avg-op": [0.0, "m/s"],
+        "temp-outlet-uniformity-op": [0.0, ""],
     }

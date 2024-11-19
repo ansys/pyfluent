@@ -124,7 +124,7 @@ def test_add_on_deleted(new_meshing_session):
     meshing = new_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     data = []
-    subscription = meshing.workflow.TaskObject["Import Geometry"].add_on_deleted(
+    _ = meshing.workflow.TaskObject["Import Geometry"].add_on_deleted(
         lambda obj: data.append(convert_path_to_se_path(obj.path))
     )
     assert data == []
@@ -141,12 +141,12 @@ def test_add_on_changed(new_meshing_session):
     assert isinstance(task_list(), list)
     assert len(task_list()) == 0
     data = []
-    subscription = task_list.add_on_changed(lambda obj: data.append(len(obj())))
+    subscription = task_list.add_on_changed(lambda obj: data.append(True))
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[-1] > 0
+    assert len(task_list()) > 0
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -166,7 +166,7 @@ def test_add_on_affected(new_meshing_session):
     wt = meshing.watertight()
     sleep(5)
     assert len(data) > 0
-    assert data[0] == True
+    assert data[0]
 
     calls = []
     subscription2 = meshing.workflow.add_on_affected(lambda obj: calls.append(True))
@@ -220,7 +220,7 @@ def test_add_on_affected_at_type_path(new_meshing_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     sleep(5)
     assert len(data) > 0
-    assert data[0] == True
+    assert data[0]
     data.clear()
     subscription.unsubscribe()
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -244,17 +244,12 @@ def test_add_on_command_executed(new_meshing_session):
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert len(data) > 0
-    assert data[0] == True
+    assert data[0]
     data.clear()
     subscription.unsubscribe()
     meshing.meshing.ImportGeometry(FileName=import_file_name)
     sleep(5)
     assert data == []
-
-
-@pytest.fixture
-def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
 
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
@@ -498,6 +493,10 @@ def test_named_object_specific_methods(new_meshing_session):
 
     assert not meshing.workflow.TaskObject.get_object_names()
 
+    # test availability of different ways to get container state:
+    TaskObject = meshing.workflow.TaskObject
+    assert TaskObject.get_state() == TaskObject.getState() == TaskObject()
+
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
@@ -508,7 +507,7 @@ def test_command_creation_inside_singleton(new_meshing_session):
 
 
 @pytest.mark.codegen_required
-def test_read_ony_set_state(new_meshing_session):
+def test_read_only_set_state(new_meshing_session):
     meshing = new_meshing_session
     meshing.preferences.MeshingWorkflow.SaveCheckpointFiles = True
     assert meshing.preferences.MeshingWorkflow.CheckpointingOption.is_read_only()
@@ -587,7 +586,7 @@ def test_on_child_created_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_child_created("B", lambda _: data.append(1))
+    _ = root.A["A1"].add_on_child_created("B", lambda _: data.append(1))
     root.A["A1"].add_on_child_created("B", lambda _: data.append(2))
     gc.collect()
     assert "/test/created/A:A1/B" in solver._se_service.subscriptions
@@ -605,7 +604,7 @@ def test_on_deleted_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_deleted(lambda _: data.append(1))
+    _ = root.A["A1"].add_on_deleted(lambda _: data.append(1))
     root.A["A1"].add_on_deleted(lambda _: data.append(2))
     gc.collect()
     assert "/test/deleted/A:A1" in solver._se_service.subscriptions
@@ -626,7 +625,7 @@ def test_on_changed_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].X.add_on_changed(lambda _: data.append(1))
+    _ = root.A["A1"].X.add_on_changed(lambda _: data.append(1))
     root.A["A1"].X.add_on_changed(lambda _: data.append(2))
     gc.collect()
     assert "/test/modified/A:A1/X" in solver._se_service.subscriptions
@@ -644,7 +643,7 @@ def test_on_affected_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_affected(lambda _: data.append(1))
+    _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
     root.A["A1"].add_on_affected(lambda _: data.append(2))
     gc.collect()
     assert "/test/affected/A:A1" in solver._se_service.subscriptions
@@ -662,7 +661,7 @@ def test_on_affected_at_type_path_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_affected_at_type_path("B", lambda _: data.append(1))
+    _ = root.A["A1"].add_on_affected_at_type_path("B", lambda _: data.append(1))
     root.A["A1"].add_on_affected_at_type_path("B", lambda _: data.append(2))
     gc.collect()
     assert "/test/affected/A:A1/B" in solver._se_service.subscriptions
@@ -680,7 +679,7 @@ def test_on_command_executed_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_command_executed("C", lambda *args: data.append(1))
+    _ = root.A["A1"].add_on_command_executed("C", lambda *args: data.append(1))
     root.A["A1"].add_on_command_executed("C", lambda *args: data.append(2))
     gc.collect()
     assert "/test/command_executed/A:A1/C" in solver._se_service.subscriptions
@@ -698,7 +697,7 @@ def test_on_attribute_changed_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_attribute_changed("isABC", lambda _: data.append(1))
+    _ = root.A["A1"].add_on_attribute_changed("isABC", lambda _: data.append(1))
     root.A["A1"].add_on_attribute_changed("isABC", lambda _: data.append(2))
     gc.collect()
     assert "/test/attribute_changed/A:A1/isABC" in solver._se_service.subscriptions
@@ -718,7 +717,7 @@ def test_on_command_attribute_changed_lifetime(new_solver_session):
     root = _create_datamodel_root(solver, test_rules)
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_command_attribute_changed(
+    _ = root.A["A1"].add_on_command_attribute_changed(
         "C", "isABC", lambda _: data.append(1)
     )
     root.A["A1"].add_on_command_attribute_changed(
@@ -753,7 +752,7 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     pyfluent.logging.enable()
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_affected(lambda _: data.append(1))
+    _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
     root.A["A1"].add_on_affected(lambda _: data.append(2))
     gc.collect()
     assert "/test/affected/A:A1" in solver._se_service.subscriptions
@@ -772,7 +771,7 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     pyfluent.logging.enable()
     root.A["A1"] = {}
     data = []
-    h = root.A["A1"].add_on_affected(lambda _: data.append(1))
+    _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
     root.A["A1"].add_on_affected(lambda _: data.append(2))
     gc.collect()
     assert "/test/affected/A:A1" in solver._se_service.subscriptions

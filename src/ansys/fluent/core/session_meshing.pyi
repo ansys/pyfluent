@@ -1,3 +1,6 @@
+from ansys.fluent.core.generated.datamodel_242.MeshingUtilities import (
+    Root as meshing_utilities_root,
+)
 from ansys.fluent.core.generated.datamodel_242.PMFileManagement import (
     Root as pmfilemanagement_root,
 )
@@ -16,6 +19,8 @@ class Meshing:
     def tui(self) -> main_menu: ...
     @property
     def meshing(self) -> meshing_root: ...
+    @property
+    def meshing_utilities(self) -> meshing_utilities_root: ...
     @property
     def workflow(self) -> workflow_root: ...
     @property

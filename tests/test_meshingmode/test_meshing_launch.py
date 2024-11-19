@@ -83,7 +83,7 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 def test_launch_meshing_and_switch(new_meshing_session):
     meshing = new_meshing_session
     assert not meshing.switched
-    solver = meshing.switch_to_solver()
+    _ = meshing.switch_to_solver()
     assert meshing.switched
     assert not meshing.tui
     assert not meshing.meshing

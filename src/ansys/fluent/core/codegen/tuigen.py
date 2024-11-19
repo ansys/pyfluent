@@ -62,7 +62,7 @@ def _get_tui_docdir(mode: str):
             "source",
             "api",
             mode,
-            f"tui",
+            "tui",
         )
     )
 
@@ -132,7 +132,7 @@ def _populate_xml_helpstrings():
         else:
             v = "".join(node.find("p").itertext())
             _XML_HELPSTRINGS[k] = v
-    _XML_HELP_FILE.unlink()
+    _XML_HELP_FILE.unlink(missing_ok=True)
 
 
 def _is_valid_tui_menu_name(name):
@@ -303,6 +303,11 @@ def generate(version, static_infos: dict):
     api_tree = {}
     gt_222 = FluentVersion(version) > FluentVersion.v222
     if gt_222:
+        if (
+            StaticInfoType.TUI_MESHING not in static_infos
+            and StaticInfoType.TUI_SOLVER not in static_infos
+        ):
+            return api_tree
         _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
     if not gt_222 or StaticInfoType.TUI_MESHING in static_infos:

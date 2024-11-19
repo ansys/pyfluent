@@ -1,6 +1,8 @@
 """Sphinx documentation configuration file."""
 
+from dataclasses import is_dataclass
 from datetime import datetime
+import inspect
 import os
 import platform
 import subprocess
@@ -150,9 +152,9 @@ sphinx_gallery_conf = {
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
     # Pattern to search for example files
-    "filename_pattern": r"exhaust_system_settings_api\.py|external_compressible_flow\.py|mixing_elbow_settings_api\.py|modeling_cavitation\.py",
+    "filename_pattern": r"exhaust_system_settings_api\.py|external_compressible_flow\.py|mixing_elbow_settings_api\.py|modeling_cavitation\.py|species_transport\.py",
     # Disabled example scripts
-    "ignore_pattern": r"ahmed_body_workflow\.py|brake\.py|DOE_ML\.py|radiation_headlamp\.py|parametric_static_mixer_1\.py",
+    "ignore_pattern": r"ahmed_body_workflow\.py|brake\.py|DOE_ML\.py|radiation_headlamp\.py|parametric_static_mixer_1\.py|conjugate_heat_transfer\.py|tyler_sofrin_modes\.py|lunar_lander_thermal\.py|modeling_ablation\.py",
     # Remove the "Download all examples" button from the top level gallery
     "download_all_examples": False,
     # Sort gallery example by file name instead of number of lines (default)
@@ -161,7 +163,6 @@ sphinx_gallery_conf = {
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
     "doc_module": "ansys-fluent-core",
-    "ignore_pattern": "flycheck*",
     "thumbnail_size": (350, 350),
     "reset_modules_order": "after",
     "reset_modules": (_stop_fluent_container),
@@ -196,6 +197,12 @@ html_theme_options = {
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
     "collapse_navigation": True,
+    "cheatsheet": {
+        "file": "cheatsheet/cheat_sheet.qmd",
+        "pages": ["index", "getting_started/index", "user_guide/index"],
+        "title": "PyFluent cheat sheet",
+        "version": __version__,
+    },
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
@@ -270,3 +277,27 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
+
+
+def _get_cls(func):
+    """Get the class containing the function."""
+    module = inspect.getmodule(func)
+    cls = module
+    for name in func.__qualname__.split(".")[0:-1]:
+        cls = getattr(cls, name)
+    return cls
+
+
+def skip(app, what, name, obj, would_skip, options):
+    """Skip some specific members from documentation."""
+    if name == "__init__":
+        cls = _get_cls(obj)
+        if is_dataclass(cls):
+            # skip __init__ for dataclasses
+            return True
+    return would_skip
+
+
+def setup(app):
+    """Setup function for Sphinx builder."""
+    app.connect("autodoc-skip-member", skip)

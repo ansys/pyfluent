@@ -7,7 +7,6 @@ Usage:
 import sys
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.services import settings
 
 indent_factor = 2
 
@@ -37,9 +36,9 @@ if "__main__" == __name__:
         print("Usage: write_settings_yaml.py [outfile]")
     else:
         session = pyfluent.launch_fluent(mode="solver")
-        settings = session.settings_service.get_static_info()
+        static_info = session.settings_service.get_static_info()
         if len(sys.argv) == 2:
             with open(sys.argv[1], "w") as f:
-                write_yaml(f, settings)
+                write_yaml(f, static_info)
         elif len(sys.argv) == 1:
-            write_yaml(sys.stdout, settings)
+            write_yaml(sys.stdout, static_info)

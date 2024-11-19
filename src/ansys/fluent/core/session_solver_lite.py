@@ -22,7 +22,8 @@ class SolverLite(Solver):
     ):
         """SolverLite session.
 
-        Args:
+        Parameters
+        ----------
             fluent_connection (:ref:`ref_fluent_connection`): Encapsulates a Fluent connection.
             scheme_eval: SchemeEval
                 Instance of ``SchemeEval`` to execute Fluent's scheme code on.
