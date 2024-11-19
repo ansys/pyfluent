@@ -1140,11 +1140,10 @@ class Group(SettingsBase[DictStateType]):
                 codegen_outdir=pyfluent.CODEGEN_OUTDIR,
                 version=super().__getattribute__("version"),
             ):
-                search_results = pyfluent.utils._search(
+                search_results = pyfluent.utils.search(
                     word=name,
-                    search_root=self,
-                    match_case=False,
-                    match_whole_word=False,
+                    match_case=True,
+                    match_whole_word=True,
                 )
                 if search_results:
                     for search_result in search_results:

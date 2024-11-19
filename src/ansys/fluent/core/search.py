@@ -249,22 +249,20 @@ def _search(
                 else:
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
-                api_object_names.append(k)
+                api_object_names.add(k)
                 if "tui" in next_path:
-                    api_tui_objects.append(f"{next_path} ({type_})")
+                    api_tui_objects.add(f"{next_path} ({type_})")
                 else:
-                    api_objects.append(f"{next_path} ({type_})")
-                if _match(k, word, match_whole_word, match_case):
-                    results.append(f"{next_path} ({type_})")
+                    api_objects.add(f"{next_path} ({type_})")
             if isinstance(v, Mapping):
                 inner(v, next_path, root_path)
 
     inner(api_tree, "", root_path)
 
     api_tree_data = dict()
-    api_tree_data["api_objects"] = sorted(api_objects)
-    api_tree_data["api_tui_objects"] = sorted(api_tui_objects)
-    api_tree_data["all_api_object_names"] = sorted(api_object_names)
+    api_tree_data["api_objects"] = sorted(list(api_objects))
+    api_tree_data["api_tui_objects"] = sorted(list(api_tui_objects))
+    api_tree_data["all_api_object_names"] = sorted(list(api_object_names))
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
         from nltk.corpus import wordnet as wn
@@ -305,6 +303,7 @@ def _search(
         _write_api_tree_file(
             api_tree_data=api_tree_data, api_object_names=list(api_object_names)
         )
+        api_tree_file.unlink()
     return results
 
 
@@ -373,7 +372,7 @@ def _search_wildcard(search_string: str, api_tree_data: dict):
     """
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     queries = _get_wildcard_matches_for_word_from_names(
-        search_string, names=list(api_tree_data["all_api_object_names"])
+        search_string, names=api_tree_data["all_api_object_names"]
     )
     if queries:
         _print_search_results(queries, api_tree_data=api_tree_data)
@@ -396,7 +395,7 @@ def _get_exact_match_for_word_from_names(
     -------
         List of exact match.
     """
-    return [name for name in names if word == name]
+    return list({name for name in names if word == name})
 
 
 def _get_capitalize_match_for_word_from_names(
@@ -496,14 +495,14 @@ def _search_whole_word(
         queries.extend(
             _get_exact_match_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_names"]),
+                names=api_tree_data["all_api_object_names"],
             )
         )
     elif match_case:
         queries.extend(
             _get_match_case_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_names"]),
+                names=api_tree_data["all_api_object_names"],
             )
         )
     elif match_whole_word:
@@ -511,20 +510,20 @@ def _search_whole_word(
             queries.extend(
                 _get_exact_match_for_word_from_names(
                     word,
-                    names=list(api_tree_data["all_api_object_names"]),
+                    names=api_tree_data["all_api_object_names"],
                 )
             )
     elif not match_case and not match_whole_word:
         queries.extend(
             _get_capitalize_match_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_names"]),
+                names=api_tree_data["all_api_object_names"],
             )
         )
         queries.extend(
             _get_match_case_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_names"]),
+                names=api_tree_data["all_api_object_names"],
             )
         )
     if queries:
@@ -598,7 +597,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     else:
         queries = _get_close_matches_for_word_from_names(
             search_string,
-            names=list(api_tree_data["all_api_object_names"]),
+            names=api_tree_data["all_api_object_names"],
         )
         if queries:
             _print_search_results(queries, api_tree_data=api_tree_data)
