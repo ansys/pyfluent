@@ -264,6 +264,7 @@ def _search(
     api_tree_data = dict()
     api_tree_data["api_objects"] = sorted(api_objects)
     api_tree_data["api_tui_objects"] = sorted(api_tui_objects)
+    api_tree_data["all_api_object_names"] = sorted(api_object_names)
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
         from nltk.corpus import wordnet as wn
@@ -365,7 +366,7 @@ def _search_wildcard(search_string: str, api_tree_data: dict):
     """
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     queries = _get_wildcard_matches_for_word_from_names(
-        search_string, names=list(api_tree_data["all_api_object_name_synsets"].keys())
+        search_string, names=list(api_tree_data["all_api_object_names"])
     )
     if queries:
         _print_search_results(queries, api_tree_data=api_tree_data)
@@ -488,14 +489,14 @@ def _search_whole_word(
         queries.extend(
             _get_exact_match_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+                names=list(api_tree_data["all_api_object_names"]),
             )
         )
     elif match_case:
         queries.extend(
             _get_match_case_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+                names=list(api_tree_data["all_api_object_names"]),
             )
         )
     elif match_whole_word:
@@ -503,20 +504,20 @@ def _search_whole_word(
             queries.extend(
                 _get_exact_match_for_word_from_names(
                     word,
-                    names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+                    names=list(api_tree_data["all_api_object_names"]),
                 )
             )
     elif not match_case and not match_whole_word:
         queries.extend(
             _get_capitalize_match_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+                names=list(api_tree_data["all_api_object_names"]),
             )
         )
         queries.extend(
             _get_match_case_for_word_from_names(
                 search_string,
-                names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+                names=list(api_tree_data["all_api_object_names"]),
             )
         )
     if queries:
@@ -590,7 +591,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     else:
         queries = _get_close_matches_for_word_from_names(
             search_string,
-            names=list(api_tree_data["all_api_object_name_synsets"].keys()),
+            names=list(api_tree_data["all_api_object_names"]),
         )
         if queries:
             _print_search_results(queries, api_tree_data=api_tree_data)

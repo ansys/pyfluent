@@ -33,7 +33,7 @@ def test_nltk_data_download():
 @pytest.mark.codegen_required
 def test_get_exact_match_for_word_from_names():
     api_tree_data = _get_api_tree_data()
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+    api_object_names = list(api_tree_data["all_api_object_names"])
     exact_match = _get_exact_match_for_word_from_names(
         "VideoResoutionY",
         names=api_object_names,
@@ -46,7 +46,7 @@ def test_get_exact_match_for_word_from_names():
 @pytest.mark.codegen_required
 def test_get_capitalize_match_for_word_from_names():
     api_tree_data = _get_api_tree_data()
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+    api_object_names = list(api_tree_data["all_api_object_names"])
     capitalize_match_cases = _get_capitalize_match_for_word_from_names(
         "font",
         names=api_object_names,
@@ -73,7 +73,7 @@ def test_get_capitalize_match_for_word_from_names():
 @pytest.mark.codegen_required
 def test_get_match_case_for_word_from_names():
     api_tree_data = _get_api_tree_data()
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+    api_object_names = list(api_tree_data["all_api_object_names"])
     match_cases = _get_match_case_for_word_from_names(
         "font",
         names=api_object_names,
@@ -106,7 +106,7 @@ def test_get_match_case_for_word_from_names():
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+    api_object_names = list(api_tree_data["all_api_object_names"])
     wildcard_matches = _get_wildcard_matches_for_word_from_names(
         "iter*",
         names=api_object_names,
@@ -134,7 +134,7 @@ def test_get_wildcard_matches_for_word_from_names():
 @pytest.mark.codegen_required
 def test_get_close_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
-    api_object_names = list(api_tree_data["all_api_object_name_synsets"].keys())
+    api_object_names = list(api_tree_data["all_api_object_names"])
     close_matches = _get_close_matches_for_word_from_names(
         "font",
         names=api_object_names,
