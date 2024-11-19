@@ -291,8 +291,8 @@ def _search(
                 for synset_name in synset_names:
                     if synset_name not in api_object_names:
                         unrelated_synsets.add(synset_name)
-                all_api_object_name_synsets[name] = synset_names.difference(
-                    unrelated_synsets
+                all_api_object_name_synsets[name] = list(
+                    synset_names.difference(unrelated_synsets)
                 )
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
 
