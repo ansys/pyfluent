@@ -286,8 +286,7 @@ def _search(
             for api_object_name_synset in api_object_name_synsets:
                 synset_names.add(api_object_name_synset.name().split(".")[0])
             if synset_names:
-                if name in synset_names:
-                    synset_names.remove(name)
+                synset_names.discard(name)
                 all_api_object_name_synsets[name] = synset_names
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
 
