@@ -603,11 +603,6 @@ def search(
             "``wildcard=True`` matches wildcard pattern.",
             UserWarning,
         )
-    elif language and match_whole_word:
-        warnings.warn(
-            "``match_whole_word=True`` matches the whole word (case insensitive).",
-            UserWarning,
-        )
     elif match_whole_word:
         warnings.warn(
             "``match_whole_word=True`` matches the whole word (case insensitive).",
