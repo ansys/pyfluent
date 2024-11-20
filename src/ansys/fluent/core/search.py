@@ -617,14 +617,6 @@ def search(
 
     api_tree_data = _get_api_tree_data()
 
-    try:
-        return _search_semantic(search_string, language, api_tree_data=api_tree_data)
-    except ModuleNotFoundError:
-        pass
-    except LookupError:
-        _download_nltk_data()
-        return _search_semantic(search_string, language, api_tree_data=api_tree_data)
-
     if wildcard:
         return _search_wildcard(
             search_string,
@@ -643,6 +635,14 @@ def search(
                 api_tree_data=api_tree_data,
             )
     else:
-        return _search_whole_word(
-            search_string, match_whole_word=True, api_tree_data=api_tree_data
-        )
+        try:
+            return _search_semantic(
+                search_string, language, api_tree_data=api_tree_data
+            )
+        except ModuleNotFoundError:
+            pass
+        except LookupError:
+            _download_nltk_data()
+            return _search_semantic(
+                search_string, language, api_tree_data=api_tree_data
+            )
