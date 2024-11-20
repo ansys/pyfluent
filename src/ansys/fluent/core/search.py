@@ -228,11 +228,11 @@ def _generate_api_data(
                 if sys.version_info[0] < 3
                 else wn.synsets(name, lang="eng")
             )
-            synset_names = []
+            synset_names = set()
             for api_object_name_synset in api_object_name_synsets:
-                synset_names.append(api_object_name_synset.name().split(".")[0])
+                synset_names.add(api_object_name_synset.name().split(".")[0])
             if synset_names:
-                all_api_object_name_synsets[name] = synset_names
+                all_api_object_name_synsets[name] = sorted(list(synset_names))
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
 
         api_tree_file_path = _get_api_tree_data_file_path()
