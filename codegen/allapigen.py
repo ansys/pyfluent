@@ -4,7 +4,7 @@ from time import time
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen, print_fluent_version
-from ansys.fluent.core.search import _search
+from ansys.fluent.core.search import _generate_api_data
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
@@ -66,4 +66,4 @@ if __name__ == "__main__":
     allapigen.generate(version, static_infos)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
-    _search("", version=version, write_api_tree_data=True)
+    _generate_api_data(version=version)
