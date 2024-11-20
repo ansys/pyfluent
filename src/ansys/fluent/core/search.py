@@ -537,8 +537,11 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
                 ):
                     similar_keys.add(api_object_synset_name + "*")
     if similar_keys:
+        results = []
         for key in similar_keys:
-            return _search_wildcard(key, api_tree_data)
+            if _search_wildcard(key, api_tree_data):
+                results.extend(_search_wildcard(key, api_tree_data))
+        return results
     else:
         queries = _get_close_matches_for_word_from_names(
             search_string,
