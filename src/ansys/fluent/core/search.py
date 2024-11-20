@@ -272,7 +272,7 @@ def _print_search_results(queries: list, api_tree_data: dict):
     for api_tree_data in api_tree_datas:
         for query in queries:
             for api_object in api_tree_data:
-                if query in api_object:
+                if api_object.split()[0].endswith(query):
                     results.append(api_object)
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
@@ -412,7 +412,7 @@ def _get_close_matches_for_word_from_names(
 def _search_whole_word(
     search_string: str,
     match_case: bool = False,
-    match_whole_word: bool = False,
+    match_whole_word: bool = True,
     api_tree_data: dict = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.
@@ -436,7 +436,20 @@ def _search_whole_word(
     """
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     queries = []
-    if match_case and match_whole_word:
+    if not match_case and not match_whole_word:
+        queries.extend(
+            _get_capitalize_match_for_word_from_names(
+                search_string,
+                names=api_tree_data["all_api_object_names"],
+            )
+        )
+        queries.extend(
+            _get_match_case_for_word_from_names(
+                search_string,
+                names=api_tree_data["all_api_object_names"],
+            )
+        )
+    elif match_case and match_whole_word:
         queries.extend(
             _get_exact_match_for_word_from_names(
                 search_string,
@@ -458,19 +471,6 @@ def _search_whole_word(
                     names=api_tree_data["all_api_object_names"],
                 )
             )
-    elif not match_case and not match_whole_word:
-        queries.extend(
-            _get_capitalize_match_for_word_from_names(
-                search_string,
-                names=api_tree_data["all_api_object_names"],
-            )
-        )
-        queries.extend(
-            _get_match_case_for_word_from_names(
-                search_string,
-                names=api_tree_data["all_api_object_names"],
-            )
-        )
     if queries:
         return _print_search_results(queries, api_tree_data=api_tree_data)
 

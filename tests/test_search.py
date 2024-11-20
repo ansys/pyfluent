@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -227,10 +229,7 @@ def test_whole_word_search(capsys):
     lines = capsys.readouterr().out.splitlines()
     assert "font" not in lines
     assert "<meshing_session>.preferences.Appearance.Charts.Font (Object)" in lines
-    assert (
-        "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
-        in lines
-    )
+    assert "<solver_session>.preferences.Appearance.Charts.Font (Object)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -241,14 +240,8 @@ def test_match_case_search(capsys):
     for line in lines:
         assert "Font" not in line
         assert "font" in line
-    assert (
-        '<solver_session>.results.graphics.pathline["<name>"].color_map.font_name (Parameter)'
-        in lines
-    )
-    assert (
-        '<solver_session>.results.graphics.vector["<name>"].color_map.font_automatic (Parameter)'
-        in lines
-    )
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert "<meshing_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -264,10 +257,7 @@ def test_match_whole_word_and_case_search(capsys):
         "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
         not in lines
     )
-    assert (
-        '<solver_session>.results.graphics.lic["<name>"].color_map.font_name (Parameter)'
-        in lines
-    )
+    assert "<meshing_session>.tui.display.set_grid.label_font (Command)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -308,3 +298,31 @@ def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+
+
+def test_search_whole_word_parent_child(monkeypatch):
+    monkeypatch.setattr(pyfluent, "PRINT_SEARCH_RESULTS", False)
+    api_tree_data = {
+        "api_objects": [
+            "<solver_session>.parent (Object)",
+            "<solver_session>.parent.child (Parameter)",
+        ],
+        "api_tui_objects": [],
+        "all_api_object_name_synsets": {
+            "parent": ["parent"],
+            "child": ["child"],
+        },
+        "all_api_object_names": ["parent", "child"],
+    }
+
+    search_module = sys.modules["ansys.fluent.core.search"]
+    monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
+
+    results = _search_whole_word("parent", api_tree_data=api_tree_data)
+    assert results == ["<solver_session>.parent (Object)"]
+
+    results = _search_whole_word("child", api_tree_data=api_tree_data)
+    assert results == ["<solver_session>.parent.child (Parameter)"]
+
+    results = pyfluent.search("parent", match_whole_word=True)
+    assert results == ["<solver_session>.parent (Object)"]
