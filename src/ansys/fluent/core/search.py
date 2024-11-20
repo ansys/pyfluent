@@ -27,7 +27,7 @@ from ansys.fluent.core.workflow import (
 )
 
 
-def _get_api_tree_data_file():
+def _get_api_tree_data_file_path():
     """Get API tree data file."""
     from ansys.fluent.core import CODEGEN_OUTDIR
 
@@ -228,23 +228,15 @@ def _generate_api_data(
                 if sys.version_info[0] < 3
                 else wn.synsets(name, lang="eng")
             )
-            synset_names = set()
+            synset_names = []
             for api_object_name_synset in api_object_name_synsets:
-                synset_names.add(api_object_name_synset.name().split(".")[0])
-            if synset_names:
-                unrelated_synsets = set()
-                synset_names.discard(name)
-                for synset_name in synset_names:
-                    if synset_name not in api_object_names:
-                        unrelated_synsets.add(synset_name)
-                all_api_object_name_synsets[name] = list(
-                    synset_names.difference(unrelated_synsets)
-                )
+                synset_names.append(api_object_name_synset.name().split(".")[0])
+            all_api_object_name_synsets[name] = synset_names
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
 
-        api_tree_file = _get_api_tree_data_file()
-        api_tree_file.touch()
-        with open(api_tree_file, "w") as json_file:
+        api_tree_file_path = _get_api_tree_data_file_path()
+        api_tree_file_path.touch()
+        with open(api_tree_file_path, "w") as json_file:
             json.dump(api_tree_data, json_file)
 
     _write_api_tree_file(
@@ -256,9 +248,9 @@ def _generate_api_data(
 @functools.cache
 def _get_api_tree_data():
     """Get API tree data."""
-    api_tree_data_file = _get_api_tree_data_file()
-    if api_tree_data_file.exists():
-        json_file = open(api_tree_data_file, "r")
+    api_tree_data_file_path = _get_api_tree_data_file_path()
+    if api_tree_data_file_path.exists():
+        json_file = open(api_tree_data_file_path, "r")
         api_tree_data = json.load(json_file)
         return api_tree_data
 
