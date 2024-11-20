@@ -54,7 +54,7 @@ from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserW
 
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
-from .settings_external import expand_api_file_argument, use_search
+from .settings_external import expand_api_file_argument
 
 
 def _ansys_units():
@@ -1135,26 +1135,18 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
-            modified_search_results = []
-            if use_search(
-                codegen_outdir=pyfluent.CODEGEN_OUTDIR,
-                version=super().__getattribute__("version"),
-            ):
-                search_results = pyfluent.utils.search(
-                    word=name,
-                    match_case=True,
-                    match_whole_word=True,
-                )
-                if search_results:
-                    for search_result in search_results:
-                        search_result = search_result.replace(
-                            "<search_root>", self.__class__.__name__
-                        )
-                        modified_search_results.append(search_result)
+            pyfluent.PRINT_SEARCH_RESULTS = False
+            search_results = pyfluent.utils.search(
+                search_string=name,
+                match_case=False,
+                match_whole_word=False,
+            )
+            pyfluent.PRINT_SEARCH_RESULTS = True
+            results = search_results if search_results else []
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                search_results=modified_search_results,
+                search_results=results,
             )
             ex.args = (error_msg,)
             raise

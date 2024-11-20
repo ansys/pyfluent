@@ -12,6 +12,7 @@ import sys
 from typing import Any
 import warnings
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.error_message import closest_allowed_names
 from ansys.fluent.core.utils.fluent_version import (
@@ -142,60 +143,26 @@ def _get_version_path_prefix_from_obj(obj: Any):
     return version, path, prefix
 
 
-def _search(
-    word: str,
-    match_whole_word: bool = False,
-    match_case: bool = False,
+def _generate_api_data(
     version: str | None = None,
-    search_root: Any | None = None,
-    write_api_tree_data: bool | None = False,
 ):
-    """Search for a word through the Fluent's object hierarchy.
+    """Generate API tree data.
 
     Parameters
     ----------
-    word : str
-        Word to search for.
-    match_whole_word : bool, optional
-        Whether to match whole word, by default False
-    match_case : bool, optional
-        Whether to match case, by default False
     version : str, optional
         Fluent version to search in. The default is ``None``. If ``None``,
         it searches in the latest version for which codegen was run.
-    search_root : Any, optional
-        The root object within which the search is performed.
-        It can be a session object or any API object within a session.
-        The default is ``None``. If ``None``, it searches everything.
     write_api_tree_data: bool, optional
         Whether to write the API tree data.
-
-    Examples
-    --------
-    >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.search("geometry")
-    <meshing_session>.tui.file.import_.cad_geometry (Command)
-    <meshing_session>.tui.display.update_scene.select_geometry (Command)
-    <meshing_session>.meshing.ImportGeometry (Command)
-    <meshing_session>.meshing.LoadCADGeometry (Command)
-    <solver_session>.tui.solve.initialize.compute_defaults.geometry (Command)
-    <solver_session>.tui.report.reference_values.compute.geometry (Command)
-    <solver_session>.tui.define.geometry (Command)
-    <solver_session>.tui.mesh.geometry (Object)
-    <solver_session>.setup.boundary_conditions.geometry["<name>"] (Object)
-    <solver_session>.setup.geometry (Object)
-    <solver_session>.solution.report_definitions.surface["<name>"].geometry (Parameter)
-    <solver_session>.solution.report_definitions.volume["<name>"].geometry (Parameter)
-    <solver_session>.results.graphics.mesh["<name>"].geometry (Parameter)
-    <solver_session>.results.graphics.contour["<name>"].geometry (Parameter)
     """
-    api_objects = []
-    api_tui_objects = []
-    api_object_names = []
-    results = []
+    api_objects = set()
+    api_tui_objects = set()
+    api_object_names = set()
+    search_root = None
     if version:
         version = get_version_for_file_name(version)
-    root_version, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
+    _, root_path, prefix = _get_version_path_prefix_from_obj(search_root)
     if search_root and not prefix:
         return
     if not version:
@@ -206,25 +173,6 @@ def _search(
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
-
-    if isinstance(search_root, (flobject.Group, flobject.NamedObject)):
-        path = root_path + [
-            flobject.to_python_name(x) for x in search_root.path.split("/")
-        ]
-        root_path = []
-        tree = api_tree
-        while path:
-            p = path.pop(0)
-            if p in tree:
-                tree = tree[p]
-                root_path.append(p)
-            elif f"{p}:<name>" in tree:
-                tree = tree[f"{p}:<name>"]
-                root_path.append(f"{p}:<name>")
-                if path:
-                    path.pop(0)
-            else:
-                return
 
     def inner(tree, path, root_path):
         if root_path:
@@ -299,12 +247,10 @@ def _search(
         with open(api_tree_file, "w") as json_file:
             json.dump(api_tree_data, json_file)
 
-    if write_api_tree_data:
-        _write_api_tree_file(
-            api_tree_data=api_tree_data, api_object_names=list(api_object_names)
-        )
-        api_tree_file.unlink()
-    return results
+    _write_api_tree_file(
+        api_tree_data=api_tree_data, api_object_names=list(api_object_names)
+    )
+    api_tree_file.unlink()
 
 
 @functools.cache
@@ -327,13 +273,19 @@ def _print_search_results(queries: list, api_tree_data: dict):
     api_tree_data: dict
         All API object data.
     """
+    results = []
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
     for api_tree_data in api_tree_datas:
         for query in queries:
             for api_object in api_tree_data:
                 if query in api_object:
-                    print(api_object)
+                    results.append(api_object)
+    if pyfluent.PRINT_SEARCH_RESULTS:
+        for result in results:
+            print(result)
+    else:
+        return results
 
 
 def _get_wildcard_matches_for_word_from_names(word: str, names: list):
@@ -375,7 +327,7 @@ def _search_wildcard(search_string: str, api_tree_data: dict):
         search_string, names=api_tree_data["all_api_object_names"]
     )
     if queries:
-        _print_search_results(queries, api_tree_data=api_tree_data)
+        return _print_search_results(queries, api_tree_data=api_tree_data)
 
 
 def _get_exact_match_for_word_from_names(
@@ -527,7 +479,7 @@ def _search_whole_word(
             )
         )
     if queries:
-        _print_search_results(queries, api_tree_data=api_tree_data)
+        return _print_search_results(queries, api_tree_data=api_tree_data)
 
 
 def _download_nltk_data():
@@ -593,14 +545,14 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
                     similar_keys.add(api_object_synset_name + "*")
     if similar_keys:
         for key in similar_keys:
-            _search_wildcard(key, api_tree_data)
+            return _search_wildcard(key, api_tree_data)
     else:
         queries = _get_close_matches_for_word_from_names(
             search_string,
             names=api_tree_data["all_api_object_names"],
         )
         if queries:
-            _print_search_results(queries, api_tree_data=api_tree_data)
+            return _print_search_results(queries, api_tree_data=api_tree_data)
 
 
 def search(
@@ -673,28 +625,31 @@ def search(
     api_tree_data = _get_api_tree_data()
 
     try:
-        _search_semantic(search_string, language, api_tree_data=api_tree_data)
+        return _search_semantic(search_string, language, api_tree_data=api_tree_data)
     except ModuleNotFoundError:
         pass
     except LookupError:
         _download_nltk_data()
-        _search_semantic(search_string, language, api_tree_data=api_tree_data)
+        return _search_semantic(search_string, language, api_tree_data=api_tree_data)
 
     if wildcard:
-        _search_wildcard(
+        return _search_wildcard(
             search_string,
             api_tree_data=api_tree_data,
         )
     elif match_whole_word:
         if not match_case:
-            _search_whole_word(
+            return _search_whole_word(
                 search_string, match_whole_word=True, api_tree_data=api_tree_data
             )
         else:
-            _search_whole_word(
-                search_string, match_case=True, api_tree_data=api_tree_data
+            return _search_whole_word(
+                search_string,
+                match_case=True,
+                match_whole_word=True,
+                api_tree_data=api_tree_data,
             )
     else:
-        _search_whole_word(
+        return _search_whole_word(
             search_string, match_whole_word=True, api_tree_data=api_tree_data
         )
