@@ -124,7 +124,7 @@ def _generate_api_data(
             api_object_name_synsets = wn.synsets(name, lang="eng")
             synset_names = set()
             for api_object_name_synset in api_object_name_synsets:
-                synset_names.add(api_object_name_synset.name().split(".")[0])
+                synset_names.add(api_object_name_synset.name())
             if synset_names:
                 all_api_object_name_synsets[name] = sorted(list(synset_names))
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
@@ -171,7 +171,7 @@ def _print_search_results(queries: list, api_tree_data: dict):
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
             print(result)
-    else:
+    elif results:
         return results
 
 
@@ -414,18 +414,16 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
 
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    search_string_synsets = wn.synsets(search_string, lang=language)
+    search_string_synsets = set(wn.synsets(search_string, lang=language))
     for api_object_name, api_object_synset_names in list(
         api_tree_data["all_api_object_name_synsets"].items()
     ):
-        for search_string_synset in search_string_synsets:
-            for api_object_synset_name in api_object_synset_names:
-                search_string_synset_name = search_string_synset.name().split(".")[0]
-                if (
-                    search_string in api_object_synset_name
-                    or search_string_synset_name in api_object_synset_name
-                ):
-                    similar_keys.add(api_object_synset_name + "*")
+        api_object_synsets = {
+            wn.synset(api_object_synset_name)
+            for api_object_synset_name in api_object_synset_names
+        }
+        if search_string_synsets & api_object_synsets:
+            similar_keys.add(api_object_name + "*")
     if similar_keys:
         results = []
         for key in similar_keys:
