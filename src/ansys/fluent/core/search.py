@@ -520,11 +520,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
 
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    search_string_synsets = (
-        wn.synsets(search_string.decode("utf-8"), lang=language)
-        if sys.version_info[0] < 3
-        else wn.synsets(search_string, lang=language)
-    )
+    search_string_synsets = wn.synsets(search_string, lang=language)
     for api_object_name, api_object_synset_names in list(
         api_tree_data["all_api_object_name_synsets"].items()
     ):
@@ -542,7 +538,8 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
             result = _search_wildcard(key, api_tree_data)
             if result:
                 results.extend(result)
-        return results
+        if results:
+            return results
     else:
         queries = _get_close_matches_for_word_from_names(
             search_string,

@@ -300,29 +300,52 @@ def test_japanese_semantic_search(capsys):
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
-def test_search_whole_word_parent_child(monkeypatch):
+def test_match_case_and_match_whole_word(monkeypatch):
     monkeypatch.setattr(pyfluent, "PRINT_SEARCH_RESULTS", False)
     api_tree_data = {
         "api_objects": [
             "<solver_session>.parent (Object)",
             "<solver_session>.parent.child (Parameter)",
+            "<solver_session>.first_last (Object)",
+            "<solver_session>.none (Object)",
         ],
         "api_tui_objects": [],
         "all_api_object_name_synsets": {
             "parent": ["parent"],
             "child": ["child"],
+            "first_last": ["first_last"],
+            "none": ["none"],
         },
-        "all_api_object_names": ["parent", "child"],
+        "all_api_object_names": ["parent", "child", "first_last", "none"],
     }
 
     search_module = sys.modules["ansys.fluent.core.search"]
     monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
 
-    results = _search_whole_word("parent", api_tree_data=api_tree_data)
-    assert results == ["<solver_session>.parent (Object)"]
+    # match_case
 
-    results = _search_whole_word("child", api_tree_data=api_tree_data)
-    assert results == ["<solver_session>.parent.child (Parameter)"]
+    assert _search_whole_word("parent", api_tree_data=api_tree_data) == [
+        "<solver_session>.parent (Object)"
+    ]
+    assert _search_whole_word("child", api_tree_data=api_tree_data) == [
+        "<solver_session>.parent.child (Parameter)"
+    ]
+    assert pyfluent.search("first") == ["<solver_session>.first_last (Object)"]
+    assert pyfluent.search("last") == ["<solver_session>.first_last (Object)"]
 
-    results = pyfluent.search("parent", match_whole_word=True)
-    assert results == ["<solver_session>.parent (Object)"]
+    # match_case and match_whole_word -> exact match
+
+    assert pyfluent.search("parent", match_whole_word=True) == [
+        "<solver_session>.parent (Object)"
+    ]
+    assert pyfluent.search("first_last", match_whole_word=True) == [
+        "<solver_session>.first_last (Object)"
+    ]
+
+    with pytest.raises(AssertionError):
+        assert pyfluent.search("first", match_whole_word=True) == [
+            "<solver_session>.first_last (Object)"
+        ]
+        assert pyfluent.search("last", match_whole_word=True) == [
+            "<solver_session>.first_last (Object)"
+        ]
