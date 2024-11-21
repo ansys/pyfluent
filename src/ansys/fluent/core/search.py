@@ -234,7 +234,7 @@ def _get_exact_match_for_word_from_names(
     -------
         List of exact match.
     """
-    return list({name for name in names if word == name})
+    return list({name for name in names if word == name or word in name})
 
 
 def _get_capitalize_match_for_word_from_names(
