@@ -8,7 +8,6 @@ import os
 from pathlib import Path
 import pickle
 import re
-import sys
 from typing import Any
 import warnings
 
@@ -223,11 +222,7 @@ def _generate_api_data(
 
         all_api_object_name_synsets = dict()
         for name in api_object_names:
-            api_object_name_synsets = (
-                wn.synsets(name.decode("utf-8"), lang="eng")
-                if sys.version_info[0] < 3
-                else wn.synsets(name, lang="eng")
-            )
+            api_object_name_synsets = wn.synsets(name, lang="eng")
             synset_names = set()
             for api_object_name_synset in api_object_name_synsets:
                 synset_names.add(api_object_name_synset.name().split(".")[0])
