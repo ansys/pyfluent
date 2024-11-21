@@ -168,6 +168,7 @@ def _print_search_results(queries: list, api_tree_data: dict):
             for api_object in api_tree_data:
                 if api_object.split()[0].endswith(query):
                     results.append(api_object)
+    results.sort(key=len)
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
             print(result)
