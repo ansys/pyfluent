@@ -128,5 +128,8 @@ START_WATCHDOG = None
 # Whether to skip health check
 CHECK_HEALTH = True
 
+# Whether to print search results
+PRINT_SEARCH_RESULTS = True
+
 # Whether to clear environment variables related to Fluent parallel mode
 CLEAR_FLUENT_PARA_ENVS = False

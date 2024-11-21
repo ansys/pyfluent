@@ -80,14 +80,51 @@ class Container:
         return state
 
     def _init_module(self, obj, mod, post_api_helper):
+        """
+        Dynamically initializes and attaches containers for classes in a module.
+
+        Args:
+            obj: The parent object to which containers are attached.
+            mod: The module containing class definitions to process.
+            post_api_helper: Helper object for post-processing API interactions.
+
+        This method identifies classes in the module that match certain criteria,
+        creates a container for managing instances of these classes, and attaches
+        the container to the parent object (`obj`). A `create()` method is also
+        dynamically added to each container for creating and initializing new objects.
+        """
+        # Iterate through all attributes in the module's dictionary
         for name, cls in mod.__dict__.items():
             if cls.__class__.__name__ in (
                 "PyLocalNamedObjectMetaAbstract",
             ) and not inspect.isabstract(cls):
+                cont = PyLocalContainer(self, cls, post_api_helper, cls.PLURAL)
+
+                # Define a method to add a "create" function to the container
+                def _add_create(py_cont):
+                    def _create(**kwargs):
+                        new_object = py_cont.__getitem__(
+                            py_cont._get_unique_chid_name()
+                        )
+                        # Validate that all kwargs are valid attributes for the object
+                        unexpected_args = set(kwargs) - set(new_object())
+                        if unexpected_args:
+                            raise TypeError(
+                                f"create() got an unexpected keyword argument '{next(iter(unexpected_args))}'."
+                            )
+                        for key, value in kwargs.items():
+                            setattr(new_object, key, value)
+                        return new_object
+
+                    return _create
+
+                # Attach the create method to the container
+                setattr(cont, "create", _add_create(cont))
+                # Attach the container to the parent object
                 setattr(
                     obj,
                     cls.PLURAL,
-                    PyLocalContainer(self, cls, post_api_helper, cls.PLURAL),
+                    cont,
                 )
 
 
@@ -179,7 +216,7 @@ class Graphics(Container):
         if meshes is not None:
             outline_mesh_id = "mesh-outline"
             outline_mesh = meshes[outline_mesh_id]
-            outline_mesh.surfaces_list = [
+            outline_mesh.surfaces = [
                 k
                 for k, v in outline_mesh._api_helper.field_info()
                 .get_surfaces_info()
