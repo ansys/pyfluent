@@ -2,17 +2,22 @@
 
 Reduction
 =========
- 
-You can use reduction functions on Fluent data from one or across multiple remote Fluent sessions. PyFluent provides both **functional** and **object-oriented** approaches to applying reduction functions. While both are supported, the **functional approach** is emphasized for its flexibility, particularly when working with multiple solver sessions.
+
+You can use reduction functions on Fluent data from one or across multiple remote Fluent sessions.
+PyFluent provides both **functional** and **object-oriented** approaches to applying reduction functions.
+While both are supported, the **functional approach** is emphasized for its flexibility,
+particularly when working with multiple solver sessions.
 
 Introduction to Reduction Functions
 -----------------------------------
 
-Reduction functions compute aggregate values over specified data locations, such as areas or volumes. These functions include operations like computing averages, integrals, and sums.
+Reduction functions perform operations like computing averages, integrals, and sums over specified data locations,
+such as areas or volumes.
 
 ### Why the Functional Approach?
 
 The **functional approach** is preferred for its:
+
 1. **Conciseness**: Avoids deeply nested paths in code.
 2. **Flexibility**: Supports reductions over multiple solver sessions or complex data sources.
 
@@ -21,21 +26,18 @@ For example:
 .. code-block:: python
 
   >>> from ansys.fluent.core.solver.function import reduction
->>> # Compute the minimum of absolute pressure across multiple solvers
->>> reduction.minimum(
-  ...     expr="AbsolutePressure",
-  ...     locations=[
-  ...         solver1.setup.boundary_conditions.velocity_inlet,
-  ...         solver2.setup.boundary_conditions.velocity_inlet,
-  ...     ]
-  ... )
-  10123.5
+  >>> from ansys.fluent.core import VelocityInlets
+  >>> # Compute the minimum of absolute pressure across multiple solvers
+  >>> reduction.minimum(
+    ...     expression="AbsolutePressure",
+    ...     locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]]
+    ... )
 
 ### Comparison with Object-Oriented Usage
 
-The **object-oriented approach** leverages solver instance attributes like `solver.fields.reduction` to perform reductions. While this approach is intuitive for single-solver scenarios, it may be less suited to multi-solver or functional-style workflows.
-
----
+The **object-oriented approach** leverages solver instance attributes
+like `solver.fields.reduction` to perform reductions. While this approach
+is intuitive for single-solver scenarios, it may be less suited to multi-solver or functional-style workflows.
 
 Functional Usage
 ----------------
@@ -44,32 +46,29 @@ Reduction functions can be accessed directly via the `reduction` module. Here's 
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.solver.function import reduction
->>> from ansys.fluent.core.examples import download_file
->>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
->>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
->>> solver.settings.file.read(file_type="case", file_name=case_path)
->>> reduction.area_average(
-  ...     expr="AbsolutePressure",
-  ...     locations=solver.setup.boundary_conditions.velocity_inlet
-  ... )
-  101325.0
+    >>> from ansys.fluent.core.solver.function import reduction
+    >>> from ansys.fluent.core.examples import download_file
+    >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    >>> solver.settings.file.read(file_type="case", file_name=case_path)
+    >>> solver.settings.solution.initialization.hybrid_initialize()
+    >>> reduction.area_average(
+      ...     expression="AbsolutePressure",
+      ...     locations=solver.setup.boundary_conditions.velocity_inlet
+      ... )
+      101325.0
 
 This method also supports boundary abstractions for concise location definitions:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import PressureOutlets
->>> reduction.minimum(
-  ...     expr="AbsolutePressure",
-  ...     locations=[
-  ...         PressureOutlets(settings_source=solver1),
-  ...         PressureOutlets(settings_source=solver2),
-  ...     ]
-  ... )
-  12345.6
+    >>> from ansys.fluent.core import VelocityInlets
+    >>> reduction.area_average(
+      ...     expression="AbsolutePressure",
+      ...     locations=[VelocityInlets(settings_source=solver)]
+      ... )
+      101325.0
 
----
 
 Object-Oriented Usage
 ---------------------
@@ -88,13 +87,12 @@ For convenience, context-aware reductions are also supported:
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.area(
-  ...     locations=["inlet1"],
-  ...     ctxt=solver,
-  ... )
+  >>> solver.fields.reduction.area(locations=["inlet1"])
   7.565427133371293e-07
 
----
+  >>> reduction.area(locations=["inlet1"], ctxt=solver)
+  7.565427133371293e-07
+
 
 Reduction Functions: Capabilities
 ----------------------------------
@@ -116,8 +114,6 @@ The following reduction functions are available in PyFluent:
 
 Each function supports both the functional and object-oriented formats. See the following examples for typical use cases.
 
----
-
 Examples
 --------
 
@@ -128,7 +124,7 @@ Functional:
 .. code-block:: python
 
   >>> reduction.area_average(
-  ...     expr="AbsolutePressure",
+  ...     expression="AbsolutePressure",
   ...     locations=solver.setup.boundary_conditions.velocity_inlet,
   ... )
   101325.0
@@ -150,7 +146,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> reduction.minimum(
-  ...     expr="AbsolutePressure",
+  ...     expression="AbsolutePressure",
   ...     locations=[
   ...         solver1.setup.boundary_conditions.pressure_outlet,
   ...         solver2.setup.boundary_conditions.pressure_outlet,
@@ -166,7 +162,7 @@ Object-Oriented:
 
   >>> from ansys.fluent.core import VelocityInlets
 >>> reduction.sum(
-  ...     expr="AbsolutePressure",
+  ...     expression="AbsolutePressure",
   ...     locations=[
   ...         VelocityInlets(settings_source=solver1),
   ...         VelocityInlets(settings_source=solver2),
@@ -178,7 +174,3 @@ Object-Oriented:
 ---
 
 **Note**: Boundary abstractions such as `PressureOutlets` and `VelocityInlets` simplify workflows by removing the need to specify complex paths.
-
----
-
-This revised version ensures comprehensive coverage of all examples while prioritizing the **functional format** for clarity and flexibility. Let me know if there are any other tweaks you'd like!
