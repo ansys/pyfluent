@@ -492,16 +492,6 @@ def search(
             "``wildcard=True`` matches wildcard pattern.",
             UserWarning,
         )
-    elif match_whole_word:
-        warnings.warn(
-            "``match_whole_word=True`` matches the whole word (case insensitive).",
-            UserWarning,
-        )
-    elif match_case:
-        warnings.warn(
-            "``match_case=True`` matches the whole word (case sensitive).",
-            UserWarning,
-        )
 
     api_tree_data = _get_api_tree_data()
 
