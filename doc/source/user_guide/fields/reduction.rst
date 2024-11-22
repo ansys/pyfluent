@@ -24,14 +24,14 @@ with two separate examples case files as follows:
     >>> from ansys.fluent.core.examples import download_file
 
     >>> solver1 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
-    >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    >>> solver1.settings.file.read(file_type="case", file_name=case_path)
-    >>> solver1.settings.solution.initialization.hybrid_initialize()
+    >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
+    >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
+    >>> solver1.settings.file.read_case_data(file_name=case_path)
 
     >>> solver2 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
-    >>> case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver2.settings.file.read(file_type="case", file_name=case_path)
-    >>> solver2.settings.solution.initialization.hybrid_initialize()
+    >>> case_path = download_file("elbow1.cas.h5", "pyfluent/file_session")
+    >>> data_path = download_file("elbow1.dat.h5", "pyfluent/file_session")
+    >>> solver2.settings.file.read_case_data(file_name=case_path)
 
     >>> solver = solver1
 
@@ -55,7 +55,7 @@ Here's how to set up a simple example:
     ...     expression="AbsolutePressure",
     ...     locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]],
     ... )
-    101325.0
+    101343.2241809384
 
 
 Object-Oriented Usage
@@ -72,17 +72,17 @@ To use reduction functions within a specific solver instance, initialize the sol
   ...     expression="AbsolutePressure",
   ...     locations=solver.settings.setup.boundary_conditions.velocity_inlet,
   ... )
-  101325.0
+  101957.2452989816
 
 For convenience, context-aware reductions are also supported:
 
 .. code-block:: python
 
   >>> solver.fields.reduction.area(locations=["inlet1"])
-  7.565427133371293e-07
+  0.002555675491754098
 
   >>> reduction.area(locations=["inlet1"], ctxt=solver)
-  7.565427133371293e-07
+  0.002555675491754098
 
 
 Reduction Functions: Capabilities
@@ -229,7 +229,7 @@ Functional:
   ...     expression="AbsolutePressure",
   ...     locations=solver.setup.boundary_conditions.velocity_inlet,
   ... )
-  101325.0
+  101957.2452989816
 
 Object-Oriented:
 
@@ -239,7 +239,7 @@ Object-Oriented:
   ...     expression="AbsolutePressure",
   ...     locations=solver.settings.setup.boundary_conditions.velocity_inlet,
   ... )
-  101325.0
+  101957.2452989816
 
 **Example: Minimum Across Multiple Solvers**
 
@@ -264,7 +264,7 @@ Object-Oriented:
   ...         VelocityInlets(settings_source=solver) for solver in [solver1, solver2]
   ...     ],
   ... )
-  101325.0
+  101343.2241809384
 
 **Example: Geometric centroid of the velocity inlet 2**
 
@@ -274,7 +274,7 @@ Object-Oriented:
   >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   >>> cent.array
-  array([-0.00100001, -0.003     ,  0.00150005])
+  array([-2.85751176e-02, -7.92555538e-20, -4.41951790e-02])
 
 **Example: Geometric centroid of the velocity inlets over multiple solvers**
 
@@ -284,30 +284,30 @@ Object-Oriented:
   >>>   locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]]
   >>> )
   >>> cent.array
-  array([-0.18069488, -0.15429347,  0.02170396])
+  array([-0.35755706, -0.15706201, -0.02360788])
 
 
 **Example: Sum with area as weight**
 
 .. code-block:: python
 
-  >>> sum(
+  >>> reduction.sum(
   >>>   expression="AbsolutePressure",
   >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
-  20670300.0
+  80349034.56621933
 
 **Example: Conditional sum**
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.sum_if(
+  >>> reduction.sum_if(
   >>>   expression="AbsolutePressure",
   >>>   condition="AbsolutePressure > 0[Pa]",
   >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
-  20670300.0
+  80349034.56621933
 
 .. note:: Boundary abstractions such as `PressureOutlets` and `VelocityInlets` simplify workflows by removing the need to specify complex paths.
