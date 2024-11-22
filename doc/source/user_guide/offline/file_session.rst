@@ -86,17 +86,17 @@ Single-phase
       'vertices': array([ 0.        , -0.1016    ,  0.        , ...,  0.06435075,
              -0.08779959,  0.        ])}}
    >>> from ansys.fluent.core.services.field_data import SurfaceDataType
-   >>> file_session.fields.field_data.get_surface_data(SurfaceDataType.Vertices, [3, 4])[3].size
-   3810
-   >>> file_session.fields.field_data.get_surface_data(SurfaceDataType.Vertices, [3, 4])[3][1500].x
+   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [3, 4])[3].shape
+   (3810, 3)
+   >>> file_session.fields.field_data.get_surface_data(data_types=[SurfaceDataType.Vertices], surfaces=[3, 4])[3][1500][0]
    0.12405861914157867
-   >>> file_session.fields.field_data.get_scalar_field_data("SV_T", surface_name="wall").size
-   3630
-   >>> file_session.fields.field_data.get_scalar_field_data("SV_T", surface_name="wall")[1500].scalar_data
+   >>> file_session.fields.field_data.get_scalar_field_data("SV_T", surfaces=["wall"])["wall"].shape
+   (3630,)
+   >>> file_session.fields.field_data.get_scalar_field_data("SV_T", surfaces=["wall"])["wall"][1500]
    293.18071329432047
-   >>> file_session.fields.field_data.get_vector_field_data("velocity", surface_name="symmetry").size
-   2018
-   >>> file_session.fields.field_data.get_vector_field_data("velocity", surface_name="symmetry")[1000].x
+   >>> file_session.fields.field_data.get_vector_field_data("velocity", surfaces=["symmetry"])["symmetry"].shape
+   (2018, 3)
+   >>> file_session.fields.field_data.get_vector_field_data("velocity", surfaces=["symmetry"])["symmetry"][1000][0]
    0.001690600193527586
 
 
@@ -147,17 +147,17 @@ Multiphase
       'vector-field'),): {30: {'phase-1:velocity': array([0., ..... 0.]),
       'vector-scale': array([0.1])}}}
    >>> from ansys.fluent.core.services.field_data import SurfaceDataType
-   >>> file_session.fields.field_data.get_surface_data(SurfaceDataType.Vertices, [30])[30].size
-   79
-   >>> ffile_session.fields.field_data.get_surface_data(SurfaceDataType.Vertices, [30])[30][50].x
+   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [30])[30].shape
+   (79, 3)
+   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [30])[30][50][0]
    0.14896461503555408
-   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surface_name="wall-elbow").size
-   2168
-   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surface_name="wall-elbow")[1100].scalar_data
+   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surfaces=["wall-elbow"])["wall-elbow"].shape
+   (2168,)
+   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surfaces=["wall-elbow"])["wall-elbow"][1100]
    1.4444035696104466e-11
-   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surface_name="wall-elbow").size
-   2168
-   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surface_name="wall-elbow")[1000].x
+   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surfaces=["wall-elbow"])["wall-elbow"].shape
+   (2168, 3)
+   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surfaces=["wall-elbow"])["wall-elbow"][1000][0]
    0.0
 
 

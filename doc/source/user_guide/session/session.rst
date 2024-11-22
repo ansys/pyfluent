@@ -119,7 +119,7 @@ that of the ``settings`` objects:
    'aspect-ratio']
   >>> add_scalar_fields.surface_names.allowed_values()
   ['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet']
-  >>> add_scalar_fields(field_name='absolute-pressure', surface_names=['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet'])
+  >>> add_scalar_fields(field_name='absolute-pressure', surfaces=['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet'])
   >>> pressure_fields = transaction.get_fields()
   >>> solver.fields.reduction.sum_if(
   >>>     expression="AbsolutePressure",
