@@ -1,6 +1,7 @@
 name: Test Fluent journals with PyFluent changes
 
 on:
+  pull_request:
   schedule:  # UTC at 0700
     - cron:  '0 7 * * *'
   workflow_dispatch:
@@ -82,4 +83,4 @@ jobs:
 
       - name: Run Fluent tests
         run: |
-          python .ci/fluent_test_runner.py tests/fluent
+          python .ci/fluent_test_runner.py tests

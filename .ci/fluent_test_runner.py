@@ -41,7 +41,7 @@ def run_fluent_test(journal_file: Path, launcher_args: str = "") -> None:
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
     verion_for_file_name = FluentVersion.current_dev().number
     dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
-    src_test_dir = str(journal_file.parent)
+    src_test_dir = str(journal_file.parent.parent)
     dst_test_dir = "/testing"
     logging.debug(f"src_pyfluent_dir: {src_pyfluent_dir}")
     logging.debug(f"dst_pyfluent_dir: {dst_pyfluent_dir}")
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     with TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
         copytree(test_dir, tmpdir, dirs_exist_ok=True)
         exception_occurred = False
-        for test_file in Path(tmpdir).rglob("*.py"):
+        for test_file in Path(tmpdir / "fluent").rglob("*.py"):
             config_file = test_file.with_suffix(".yaml")
             launcher_args = ""
             if config_file.exists():
