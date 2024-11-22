@@ -21,11 +21,16 @@ class FluentRuntimeError(RuntimeError):
     pass
 
 
-def run_fluent_test(journal_file: Path, launcher_args: str = "") -> None:
+def run_fluent_test(
+    src_test_dir: Path, journal_file: Path, launcher_args: str = ""
+) -> None:
     """Run Fluent test.
 
     Parameters
     ----------
+    src_test_dir : Path
+        Path to the Fluent test directory in the host.
+
     journal_file : Path
         Absolute path to the journal file.
 
@@ -41,12 +46,14 @@ def run_fluent_test(journal_file: Path, launcher_args: str = "") -> None:
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
     verion_for_file_name = FluentVersion.current_dev().number
     dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
-    src_test_dir = str(journal_file.parent.parent)
+    src_test_dir = str(journal_file.parent.parent.parent)
     dst_test_dir = "/testing"
+    working_dir = str(Path(dst_test_dir) / "fluent" / journal_file.parent.name)
     logging.debug(f"src_pyfluent_dir: {src_pyfluent_dir}")
     logging.debug(f"dst_pyfluent_dir: {dst_pyfluent_dir}")
     logging.debug(f"src_test_dir: {src_test_dir}")
     logging.debug(f"dst_test_dir: {dst_test_dir}")
+    logging.debug(f"working_dir: {working_dir}")
 
     docker_client = docker.from_env()
     version_for_image_tag = FluentVersion.current_dev().docker_image_tag
@@ -57,7 +64,7 @@ def run_fluent_test(journal_file: Path, launcher_args: str = "") -> None:
             f"{src_pyfluent_dir}:{dst_pyfluent_dir}",
             f"{src_test_dir}:{dst_test_dir}",
         ],
-        working_dir=dst_test_dir,
+        working_dir=working_dir,
         environment={"ANSYSLMD_LICENSE_FILE": os.environ["ANSYSLMD_LICENSE_FILE"]},
         command=f"3ddp {launcher_args} -gu -py -i {journal_file.name}",
         detach=True,
@@ -86,7 +93,6 @@ MAX_TEST_PATH_LENGTH = 40
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
     parser = argparse.ArgumentParser(description="Run Fluent test.")
     parser.add_argument(
         "test_dir",
@@ -94,19 +100,20 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     test_dir = Path.cwd() / args.test_dir
-    with TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
-        copytree(test_dir, tmpdir, dirs_exist_ok=True)
+    with TemporaryDirectory(ignore_cleanup_errors=True) as src_test_dir:
+        copytree(test_dir, src_test_dir, dirs_exist_ok=True)
         exception_occurred = False
-        for test_file in (Path(tmpdir) / "fluent").rglob("*.py"):
+        src_test_dir = Path(src_test_dir)
+        for test_file in (src_test_dir / "fluent").rglob("*.py"):
             config_file = test_file.with_suffix(".yaml")
             launcher_args = ""
             if config_file.exists():
                 configs = yaml.safe_load(config_file.read_text())
                 launcher_args = configs.get("launcher_args", "")
-            test_file_relpath = str(test_file.relative_to(tmpdir))
+            test_file_relpath = str(test_file.relative_to(src_test_dir))
             print(f"Running {test_file_relpath}", end="", flush=True)
             try:
-                run_fluent_test(test_file, launcher_args)
+                run_fluent_test(src_test_dir, test_file, launcher_args)
                 print(
                     f"{(MAX_TEST_PATH_LENGTH + 10 - len(test_file_relpath)) * '·'}PASSED"
                 )
