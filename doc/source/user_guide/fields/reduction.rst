@@ -14,7 +14,7 @@ Introduction to Reduction Functions
 Reduction functions perform operations like computing averages, integrals, and sums over specified data locations,
 such as areas or volumes.
 
-For demonstrating the following examples, let us initialize two separate solver sessions
+To demonstrate the following examples, first initialize two separate solver sessions
 with two separate examples case files as follows:
 
 .. code-block:: python
