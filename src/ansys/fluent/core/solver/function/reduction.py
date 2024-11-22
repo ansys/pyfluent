@@ -6,7 +6,7 @@ expr parameter is not relevant to all reductions functions.
 
 Parameters
 ----------
-expr : Any
+expression : Any
     Expression that can be either a string or an
     instance of a specific settings API named_expressions
     object. The expression can be a field variable or a
@@ -217,7 +217,7 @@ def _extent_moment_vector(f_string, expr, locations, ctxt):
             total += array(extent)
         except TypeError:
             raise RuntimeError(extent)
-    return _Vector(total)
+    return tuple(total)
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
@@ -251,27 +251,7 @@ def _extent_vectors(extent_name, locations, ctxt):
             total += array(extent)
         except TypeError:
             raise RuntimeError(extent)
-    return _Vector(total)
-
-
-class _Vector:
-    def __init__(self, np_arr):
-        self.array = np_arr
-
-    @property
-    def x(self):
-        """Get X vector."""
-        return self.array[0]
-
-    @property
-    def y(self):
-        """Get Y vector."""
-        return self.array[1]
-
-    @property
-    def z(self):
-        """Get Z vector."""
-        return self.array[2]
+    return tuple(total)
 
 
 def _limit(limit, expr, locations, ctxt):
@@ -401,7 +381,7 @@ def centroid(locations, ctxt=None):
     ctxt : Any, optional
     Returns
     -------
-    float
+    tuple
     """
     return _extent_vectors("Centroid", locations, ctxt)
 
@@ -416,7 +396,7 @@ def force(locations, ctxt=None):
     ctxt : Any, optional
     Returns
     -------
-    float
+    tuple
     """
     return _extent_vectors("Force", locations, ctxt)
 
@@ -431,7 +411,7 @@ def pressure_force(locations, ctxt=None):
     ctxt : Any, optional
     Returns
     -------
-    float
+    tuple
     """
     return _extent_vectors("PressureForce", locations, ctxt)
 
@@ -446,7 +426,7 @@ def viscous_force(locations, ctxt=None):
     ctxt : Any, optional
     Returns
     -------
-    float
+    tuple
     """
     return _extent_vectors("ViscousForce", locations, ctxt)
 
@@ -462,7 +442,7 @@ def moment(expression, locations, ctxt=None):
     ctxt : Any, optional
     Returns
     -------
-    float
+    tuple
     """
     return _extent_moment_vector("Moment", expression, locations, ctxt)
 
