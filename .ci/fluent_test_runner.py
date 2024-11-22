@@ -86,6 +86,7 @@ MAX_TEST_PATH_LENGTH = 40
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
     parser = argparse.ArgumentParser(description="Run Fluent test.")
     parser.add_argument(
         "test_dir",
