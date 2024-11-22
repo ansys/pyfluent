@@ -96,7 +96,7 @@ if __name__ == "__main__":
     with TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
         copytree(test_dir, tmpdir, dirs_exist_ok=True)
         exception_occurred = False
-        for test_file in Path(tmpdir / "fluent").rglob("*.py"):
+        for test_file in (Path(tmpdir) / "fluent").rglob("*.py"):
             config_file = test_file.with_suffix(".yaml")
             launcher_args = ""
             if config_file.exists():
