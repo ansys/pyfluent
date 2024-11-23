@@ -481,7 +481,10 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver.settings.solution.initialization.hybrid_initialize()
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
-        == {"gaussian_factor": "../gaussian_factor", "option": "../kernel_type"}
+        == {
+            "gaussian_factor": ("../gaussian_factor", "gaussian-factor"),
+            "option": ("../kernel_type", "option"),
+        }
     )
     solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = (
         True
