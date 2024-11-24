@@ -226,13 +226,13 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.file._setattr("_child_aliases", {"rcd": "read_case_data"})
+    solver.file._setattr("_child_aliases", {"rcd": ("read_case_data", "rcd")})
     with pytest.warns(DeprecatedSettingWarning):
         solver.file.rcd(file_name=case_path)
 
     solver.setup.boundary_conditions.velocity_inlet.child_object_type._child_aliases[
         "mom"
-    ] = "momentum"
+    ] = ("momentum", "mom")
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].mom.velocity = 20
     assert (
@@ -261,12 +261,9 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
         )
         > 0
     )
-    assert (
-        solver.setup.boundary_conditions.wall[
-            "wall-inlet"
-        ].thermal.temperature._child_aliases["constant"]
-        == "value"
-    )
+    assert solver.setup.boundary_conditions.wall[
+        "wall-inlet"
+    ].thermal.temperature._child_aliases["constant"] == ("value", "constant")
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.wall[
             "wall-inlet"
@@ -298,7 +295,7 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
         == 410
     )
 
-    solver.setup.boundary_conditions._setattr("_child_aliases", {"w": "wall"})
+    solver.setup.boundary_conditions._setattr("_child_aliases", {"w": ("wall", "w")})
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.w["wall-inlet"].thermal.temperature.value = 420
 
@@ -307,7 +304,7 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
         == 420
     )
 
-    solver.setup._setattr("_child_aliases", {"bc": "boundary_conditions"})
+    solver.setup._setattr("_child_aliases", {"bc": ("boundary_conditions", "bc")})
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.bc.wall["wall-inlet"].thermal.temperature.value = 430
 
@@ -326,7 +323,7 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
         == 400
     )
 
-    solver.results._setattr("_child_aliases", {"gr": "graphics"})
+    solver.results._setattr("_child_aliases", {"gr": ("graphics", "gr")})
     with pytest.warns(DeprecatedSettingWarning):
         solver.results.gr.contour.create("c1")
 
@@ -342,7 +339,10 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
 
     solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
-    ].momentum.velocity._child_aliases["hd"] = "../../turbulence/hydraulic_diameter"
+    ].momentum.velocity._child_aliases["hd"] = (
+        "../../turbulence/hydraulic_diameter",
+        "hd",
+    )
     with pytest.warns(DeprecatedSettingWarning):
         solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
@@ -481,7 +481,10 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver.settings.solution.initialization.hybrid_initialize()
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
-        == {"gaussian_factor": "../gaussian_factor", "option": "../kernel_type"}
+        == {
+            "gaussian_factor": ("../gaussian_factor", "gaussian-factor"),
+            "option": ("../kernel_type", "option"),
+        }
     )
     solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = (
         True

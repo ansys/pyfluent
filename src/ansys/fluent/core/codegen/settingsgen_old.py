@@ -461,7 +461,7 @@ def _populate_classes(parent_dir):
             child_aliases = getattr(cls, "_child_aliases", None)
             if child_aliases:
                 f.write(f"{istr1}_child_aliases = dict(\n")
-                f.writelines([f'{istr2}{k}="{v}",\n' for k, v in child_aliases.items()])
+                f.writelines([f"{istr2}{k}={v!r},\n" for k, v in child_aliases.items()])
                 f.write(f"{istr1})\n\n")
 
             # write object type

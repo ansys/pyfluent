@@ -730,7 +730,7 @@ class SettingsBase(Base, Generic[StateT]):
             outer_set_states = []
             for k, v in value.items():
                 if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
-                    alias = cls._child_aliases[k]
+                    alias, _ = cls._child_aliases[k]
                     comps = alias.split("/")
                     if comps[0] == "..":
                         outer_obj = self
@@ -1122,6 +1122,7 @@ class Group(SettingsBase[DictStateType]):
                 raise InactiveObjectError(self.python_path)
         alias = super().__getattribute__("_child_aliases").get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1457,6 +1458,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1574,6 +1576,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1664,6 +1667,7 @@ class Action(Base):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -2153,8 +2157,13 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             for k, v in (
                 child_aliases | command_aliases | query_aliases | argument_aliases
             ).items():
-                cls._child_aliases[to_python_name(k)] = "/".join(
-                    x if x == ".." else to_python_name(x) for x in v.split("/")
+                # Storing the original name as we don't have any other way
+                # to recover it at runtime.
+                cls._child_aliases[to_python_name(k)] = (
+                    "/".join(
+                        x if x == ".." else to_python_name(x) for x in v.split("/")
+                    ),
+                    k,
                 )
 
     except Exception:
