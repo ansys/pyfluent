@@ -178,9 +178,6 @@ def _print_search_results(queries: list, api_tree_data: dict):
     settings_results.sort()
     tui_results.sort()
 
-    # settings_results.sort(key=lambda item: (len(item), item))
-    # tui_results.sort(key=lambda item: (len(item), item))
-
     results.extend(settings_results)
     results.extend(tui_results)
 
