@@ -3,107 +3,109 @@
 Reduction
 =========
 
-You can use reduction functions on Fluent data from one
-or across multiple remote Fluent sessions.
+You can use reduction functions on Fluent data from one or across multiple remote Fluent sessions.
+PyFluent provides both **functional** and **object-oriented** approaches to applying reduction functions.
+While both are supported, the **functional approach** is emphasized for its flexibility,
+particularly when working with multiple solver sessions.
 
-Accessing reduction functions
------------------------------
+Introduction to Reduction Functions
+-----------------------------------
 
-In order to access reduction function, import it and launch the Fluent solver.
-Then, make boundary conditions data, etc. available (for example, by reading case files):
+Reduction functions perform operations like computing averages, integrals, and sums over specified data locations,
+such as areas or volumes.
 
-.. code-block:: python
-
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
-  >>> case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-  >>> solver.settings.file.read(file_type="case", file_name=case_path)
-
-
-Simple usage
-------------
-
-You can use the reduction functions from PyFluent simply by initializing the solution
-and accessing the select functions with the required parameters.
-
-For example, in the below case, do hybrid initialization of the solution and perform
-an area-average of absolute pressure over the velocity inlet.
+To demonstrate the following examples, first initialize two separate solver sessions
+with two separate examples case files as follows:
 
 .. code-block:: python
 
-  >>> solver.settings.solution.initialization.hybrid_initialize()
-  >>> solver.fields.reduction.area_average(
-  >>>   expression="AbsolutePressure",
-  >>>   locations=solver.settings.setup.boundary_conditions.velocity_inlet,
-  >>> )
-  101325.0000000001
+    >>> import ansys.fluent.core as pyfluent
+    >>> from ansys.fluent.core.solver.function import reduction
+    >>> from ansys.fluent.core.examples import download_file
 
-Similarly one can use the other functions available currently with PyFluent.
+    >>> solver1 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
+    >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
+    >>> solver1.settings.file.read_case_data(file_name=case_path)
 
-.. note::
-   The fluxes are evaluated on boundaries and face zones. So, for 'volume', 'mass_flow',
-   'mass_average' and 'mass_integrated_average' the chosen location cannot be a
-   user-defined surface.
+    >>> solver2 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> case_path = download_file("elbow1.cas.h5", "pyfluent/file_session")
+    >>> data_path = download_file("elbow1.dat.h5", "pyfluent/file_session")
+    >>> solver2.settings.file.read_case_data(file_name=case_path)
 
-Usage of context
+    >>> solver = solver1
+
+
+Functional Usage
 ----------------
 
-You can also use the context argument available with all the reduction functions
-to mention the context instead of listing down the entire path of the locations,
-and the path to the location is identified automatically.
+The **functional approach** is preferred for its:
 
-For example, to calculate area of a location one has to do:
+1. **Conciseness**: Avoids deeply nested paths in code.
+2. **Flexibility**: Supports reductions over multiple solver sessions or complex data sources.
 
-.. code-block:: python
-
-  >>> solver.settings.solution.initialization.hybrid_initialize()
-  >>> solver.fields.reduction.area(
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]]
-  >>> )
-  7.565427133371293e-07
-
-Instead, one can use the context argument:
+Reduction functions can be accessed directly via the `reduction` module.
+Here's how to set up a simple example:
 
 .. code-block:: python
 
-  >>> solver.settings.solution.initialization.hybrid_initialize()
-  >>> solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
-  7.565427133371293e-07
+  >>> from ansys.fluent.core import VelocityInlets
+  >>> # Compute the minimum of absolute pressure across multiple solvers
+  >>> reduction.minimum(
+    ...     expression="AbsolutePressure",
+    ...     locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]],
+    ... )
+    101343.2241809384
 
 
-Current capabilities
---------------------
-At present, PyFluent allows the usage of the following reduction functions:
+Object-Oriented Usage
+---------------------
+The **object-oriented approach** leverages solver instance attributes
+like `solver.fields.reduction` to perform reductions. While this approach
+is intuitive for single-solver scenarios, it may be less suited to multi-solver or functional-style workflows.
 
-Area
-~~~~
-Compute the total area of the specified locations.
+To use reduction functions within a specific solver instance, initialize the solver and access the functions via `solver.fields.reduction`:
 
+.. code-block:: python
+
+  >>> solver.fields.reduction.area_average(
+  ...     expression="AbsolutePressure",
+  ...     locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+  ... )
+  101957.2452989816
+
+For convenience, context-aware reductions are also supported:
+
+.. code-block:: python
+
+  >>> solver.fields.reduction.area(locations=["inlet1"])
+  0.002555675491754098
+
+  >>> reduction.area(locations=["inlet1"], ctxt=solver)
+  0.002555675491754098
+
+
+Reduction Functions: Capabilities
+----------------------------------
+
+The following reduction functions are available in PyFluent:
+
+- **Area**: Compute the total area.
 .. code-block:: python
 
   >>> reduction.area(locations)
 
-Area average
-~~~~~~~~~~~~
-Compute the area averaged value of the specified expression over the specified locations.
-
+- **Area Average**: Compute the area-averaged value of an expression.
 .. code-block:: python
 
   >>> reduction.area_average(expression, locations)
 
-Area integral
-~~~~~~~~~~~~~
-Compute the area integrated averaged of the specified expression over the specified locations.
-
+- **Area Integral**: Compute the integrated area of an expression.
 .. code-block:: python
 
   >>> reduction.area_integral(expression, locations)
 
-Volume
-~~~~~~
-Compute the total volume of the specified locations.
-
+- **Volume**: Compute the total volume.
 .. code-block:: python
 
   >>> reduction.volume(locations)
@@ -111,99 +113,62 @@ Compute the total volume of the specified locations.
 .. note::
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
-Volume average
-~~~~~~~~~~~~~~
-Compute the volume averaged value of the specified expression over the specified locations.
-
+- **Volume Average**: Compute the volume-averaged value of an expression.
 .. code-block:: python
 
   >>> reduction.volume_average(expression, locations)
 
-Volume integral
-~~~~~~~~~~~~~~~
-Compute the volume integrated averaged of the specified expression over the specified locations.
-
+- **Volume Integral**: Compute the integrated volume of an expression.
 .. code-block:: python
 
   >>> reduction.volume_integral(expression, locations)
 
-Centroid
-~~~~~~~~
-Compute the geometric centroid of the specified locations as a vector.
-
+- **Centroid**: Compute the geometric centroid.
 .. code-block:: python
 
   >>> reduction.centroid(locations)
 
-Force
-~~~~~
-Compute the force acting on the locations specified (should be walls) as a vector.
-
+- **Force**: Compute the total force vector on specified walls.
 .. code-block:: python
 
   >>> reduction.force(locations)
 
-Pressure force
-~~~~~~~~~~~~~~
-Compute the pressure force acting on the locations specified (should be walls) as a vector.
-
+- **Pressure Force**: Compute the pressure force vector on specified walls.
 .. code-block:: python
 
   >>> reduction.pressure_force(locations)
 
-Viscous force
-~~~~~~~~~~~~~
-Compute the viscous force acting on the locations specified (should be walls) as a vector.
-
+- **Viscous Force**: Compute the viscous force vector on specified walls.
 .. code-block:: python
 
   >>> reduction.viscous_force(locations)
 
-Moment
-~~~~~~
-Compute the moment vector about the specified point (which can be single-valued expression)
-for the specified locations.
-
+- **Moment**: Compute the moment vector about the specified point (which can be single-valued expression).
 .. code-block:: python
 
   >>> reduction.moment(expression, locations)
 
-Count
-~~~~~
-Compute the total number of cells included in the specified locations.
-
+- **Count**: Compute the total number of cells in specified locations.
 .. code-block:: python
 
   >>> reduction.count(locations)
 
-Count if
-~~~~~~~~
-Compute the total number of cells included in the specified locations if a condition is satisfied.
-
+- **Count if**: Compute the conditional count.
 .. code-block:: python
 
   >>> reduction.count_if(condition, locations)
 
-Minimum
-~~~~~~~
-Compute the minimum of the specified expression over the specified locations.
-
+- **Minimum**: Compute the minimum value of an expression.
 .. code-block:: python
 
   >>> reduction.minimum(expression, locations)
 
-Maximum
-~~~~~~~
-Compute the maximum of the specified expression over the specified locations.
-
+- **Maximum**: Compute the maximum value of an expression.
 .. code-block:: python
 
   >>> reduction.maximum(expression, locations)
 
-Mass average
-~~~~~~~~~~~~
-Compute the mass-weighted average value of the specified expression over the specified locations.
-
+- **Mass average**: Compute the mass-weighted average of an expression.
 .. code-block:: python
 
   >>> reduction.mass_average(expression, locations)
@@ -211,10 +176,7 @@ Compute the mass-weighted average value of the specified expression over the spe
 .. note::
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
-Mass integral
-~~~~~~~~~~~~~
-Compute the total mass-weighted value of the specified expression over the specified locations.
-
+- **Mass integral**: Compute the integrated mass-weighted value of an expression.
 .. code-block:: python
 
   >>> reduction.mass_integral(expression, locations)
@@ -222,138 +184,130 @@ Compute the total mass-weighted value of the specified expression over the speci
 .. note::
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
-Mass flow average absolute
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-Compute the mass-flow-weighted absolute average value of the specified expression over the specified locations.
-
+- **Mass flow average absolute**: Compute the mass-flow-weighted absolute average of an expression.
 .. code-block:: python
 
   >>> reduction.mass_flow_average_absolute(expression, locations)
 
-
-Mass flow average
-~~~~~~~~~~~~~~~~~
-Compute the mass-flow-weighted average value of the specified expression over the specified locations.
-
+- **Mass flow average**: Compute the mass-flow-weighted average of an expression.
 .. code-block:: python
 
   >>> reduction.mass_flow_average(expression, locations)
 
-Mass flow integral
-~~~~~~~~~~~~~~~~~~
-Compute the total mass-flow-weighted value of the specified expression over the specified locations.
-
+- **Mass flow integral**: Compute the integrated mass-flow-weighted value of an expression.
 .. code-block:: python
 
   >>> reduction.mass_flow_integral(expression, locations)
 
-Sum
-~~~
-Compute the sum of the specified expression over the specified locations.
-
+- **Sum**: Compute the sum of an expression over locations.
 .. code-block:: python
 
   >>> reduction.sum(expression, locations, weight)
 
-Sum if
-~~~~~~
-Compute the sum of the specified expression over the specified locations if a condition is satisfied.
-
+- **Sum If**: Compute the conditional sum of an expression.
 .. code-block:: python
 
   >>> reduction.sum_if(expression, condition, locations, weight)
 
-Example use cases
------------------
-You can either calculate the area of one inlet or the combine area of all
-the velocity inlets with the below examples:
+.. note::
+   The fluxes are evaluated on boundaries and face zones. So, for 'volume', 'mass_flow',
+   'mass_average' and 'mass_integrated_average' the chosen location cannot be a
+   user-defined surface.
+
+Each function supports both the functional and object-oriented formats. See the following examples for typical use cases.
+
+Examples
+--------
+
+**Example: Area Average**
+
+Functional:
 
 .. code-block:: python
 
-  >>> area_inlet_1 = solver.fields.reduction.area(
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
-  >>> )
-  7.565427133371293e-07
+  >>> reduction.area_average(
+  ...     expression="AbsolutePressure",
+  ...     locations=solver.setup.boundary_conditions.velocity_inlet,
+  ... )
+  101957.2452989816
 
-  >>> area_inlet = solver.fields.reduction.area(
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
-  >>> )
-  1.513085401926681e-06
-
-You can calculate the area average of "Absolute Pressure" over the entire set of velocity
-inlets as shown:
+Object-Oriented:
 
 .. code-block:: python
 
   >>> solver.fields.reduction.area_average(
-  >>>   expression="AbsolutePressure",
-  >>>   locations=solver.settings.setup.boundary_conditions.velocity_inlet,
-  >>> )
-  101325.0000000001
+  ...     expression="AbsolutePressure",
+  ...     locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+  ... )
+  101957.2452989816
 
-You can calculate the area integrated average of "Absolute Pressure" over the velocity inlet 1
-as shown:
-
-.. code-block:: python
-
-  >>> solver.fields.reduction.area_integral(
-  >>>   expression="AbsolutePressure",
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
-  >>> )
-  0.07665669042888468
-
-You can calculate the geometric centroid of the velocity inlet 2 as shown:
+**Example: Minimum Across Multiple Solvers**
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.centroid(
+  >>> reduction.minimum(
+  ...     expression="AbsolutePressure",
+  ...     locations=[
+  ...         solver1.setup.boundary_conditions.pressure_outlet,
+  ...         solver2.setup.boundary_conditions.pressure_outlet,
+  ...     ],
+  ... )
+  101325.0
+
+**Example: Using Boundary Abstractions**
+
+.. code-block:: python
+
+  >>> reduction.minimum(
+  ...     expression="AbsolutePressure",
+  ...     locations=[
+  ...         VelocityInlets(settings_source=solver) for solver in [solver1, solver2]
+  ...     ],
+  ... )
+  101343.2241809384
+
+**Example: Geometric centroid of the velocity inlet 2**
+
+.. code-block:: python
+
+  >>> cent = reduction.centroid(
   >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
-  x: -0.001000006193379666
-  y: -0.002999999999999999
-  z: 0.001500047988232209
+  >>> cent.array
+  array([-2.85751176e-02, -7.92555538e-20, -4.41951790e-02])
 
-You can calculate the moment vector about a single-valued expression
-for the specified locations as shown:
+**Example: Geometric centroid of the velocity inlets over multiple solvers**
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.moment(
-  >>>   expression="Force(['wall'])",
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>> cent = reduction.centroid(
+  >>>   locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]]
   >>> )
-  [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
+  >>> cent.array
+  array([-0.35755706, -0.15706201, -0.02360788])
 
-You can calculate the moment vector about the specified point for the
-specified locations as shown:
 
-.. code-block:: python
-
-  >>> solver.fields.reduction.moment(
-  >>>   expression="['inlet1']",
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
-  >>> )
-  [ 1.15005117e-24,  1.15218653e-24, -6.60723735e-20]
-
-One can calculate sum of Absolute Pressure over all nodes of velocity inlet with area as weight.
+**Example: Sum with area as weight**
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.sum(
+  >>> reduction.sum(
   >>>   expression="AbsolutePressure",
   >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
-  20670300.0
+  80349034.56621933
 
-You can also calculate the sum with a condition:
+**Example: Conditional sum**
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.sum_if(
+  >>> reduction.sum_if(
   >>>   expression="AbsolutePressure",
   >>>   condition="AbsolutePressure > 0[Pa]",
   >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
-  20670300.0
+  80349034.56621933
+
+.. note:: Boundary abstractions such as `PressureOutlets` and `VelocityInlets` simplify workflows by removing the need to specify complex paths.

@@ -82,10 +82,6 @@ the ``get_surface_data`` method and specifying ``FacesConnectivity`` for ``data_
   array([12, 13, 17, 16])
 
 
-If a single surface is provided as input, the response contains face vertices, connectivity data, and normal or centroid data.
-If multiple surfaces are provided as input, the response is a dictionary containing a map of surface IDs to face
-vertices, connectivity data, and normal or centroid data.
-
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
 You can call the ``get_scalar_field_data`` method to get scalar field data, such as absolute pressure:
@@ -98,9 +94,6 @@ You can call the ``get_scalar_field_data`` method to get scalar field data, such
   >>> abs_press_data["cold-inlet"][120]
   101325.0
 
-If a single surface is provided as input, scalar field data is returned.
-If multiple surfaces are provided as input, a dictionary containing a map of surface IDs to scalar field data is returned.
-
 Get vector field data
 ~~~~~~~~~~~~~~~~~~~~~
 You can call the ``get_vector_field_data`` method to get vector field data.
@@ -110,9 +103,6 @@ You can call the ``get_vector_field_data`` method to get vector field data.
   >>> velocity_vector_data = field_data.get_vector_field_data(field_name="velocity", surfaces=["cold-inlet"])
   >>> velocity_vector_data["cold-inlet"].shape
   (152, 3)
-
-If a single surface is provided as input, vector field data is returned.
-If multiple surfaces are provided as input, a dictionary containing a map of surface IDs to vector field data is returned.
 
 Get pathlines field data
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -132,11 +122,6 @@ You can call the ``get_pathlines_field_data`` method to get pathlines field data
 
 Dictionary containing a map of surface IDs to the path-line data is returned.
 For example, pathlines connectivity, vertices, and field.
-
-
-.. note::
-   In Fluent, a surface name can be associated with multiple surface IDs.
-   Thus, a response contains a surface ID as a key of the returned dictionary.
 
 
 Making multiple requests in a single transaction
