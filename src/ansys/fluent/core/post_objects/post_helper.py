@@ -2,6 +2,8 @@
 
 import re
 
+from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
     """Raised when iso-surface definition is incomplete."""
@@ -127,8 +129,16 @@ class PostAPIHelper:
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
         """Returns vector field."""
-        scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"
-        return self._scheme_str_to_py_list(scheme_eval_str)
+        request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
+        response = self._service.get_vector_fields_info(request)
+        return {
+            vector_field_info.displayName: {
+                "x-component": vector_field_info.xComponent,
+                "y-component": vector_field_info.yComponent,
+                "z-component": vector_field_info.zComponent,
+            }
+            for vector_field_info in response.vectorFieldInfo
+        }
 
     def get_field_unit(self, field):
         """Returns the unit of the field."""
