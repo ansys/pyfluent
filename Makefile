@@ -23,8 +23,8 @@ docker-pull:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
-PYTESTRERUN = --last-failed --last-failed-no-failures none
+PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n 4
+PYTESTRERUN = --last-failed --last-failed-no-failures none -n 4
 
 unittest: unittest-dev-242
 

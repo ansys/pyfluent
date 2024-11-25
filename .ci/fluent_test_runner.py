@@ -46,6 +46,10 @@ def run_fluent_test(
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
     verion_for_file_name = FluentVersion.current_dev().number
     dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
+    src_gen_dir = (
+        Path(pyfluent.__file__).parent / "ansys" / "fluent" / "core" / "generated"
+    )
+    dst_gen_dir = f"/ansys_inc/v{verion_for_file_name}/fluent/fluent{FluentVersion.current_dev()}/cortex/pylib/flapi/generated"
     dst_test_dir = "/testing"
     working_dir = Path(dst_test_dir)
     parent = journal_file.parent
@@ -71,6 +75,7 @@ def run_fluent_test(
         image=image_name,
         volumes=[
             f"{src_pyfluent_dir}:{dst_pyfluent_dir}",
+            f"{src_gen_dir}:{dst_gen_dir}",  # Try removing this after pyfluent is updated in commonfiles
             f"{src_test_dir}:{dst_test_dir}",
         ],
         working_dir=working_dir,
@@ -98,7 +103,7 @@ def run_fluent_test(
     container.remove()
 
 
-MAX_TEST_PATH_LENGTH = 40
+MAX_TEST_PATH_LENGTH = 100
 
 
 if __name__ == "__main__":
