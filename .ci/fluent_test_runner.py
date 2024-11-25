@@ -46,9 +46,18 @@ def run_fluent_test(
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
     verion_for_file_name = FluentVersion.current_dev().number
     dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
-    src_test_dir = str(journal_file.parent.parent.parent)
     dst_test_dir = "/testing"
-    working_dir = str(Path(dst_test_dir) / "fluent" / journal_file.parent.name)
+    working_dir = Path(dst_test_dir)
+    parent = journal_file.parent
+    parents = []
+    while parent != src_test_dir:
+        parents.append(parent.name)
+        parent = parent.parent
+    parents.reverse()
+    for parent in parents:
+        working_dir /= parent
+    working_dir = str(working_dir)
+    src_test_dir = str(src_test_dir)
     logging.debug(f"src_pyfluent_dir: {src_pyfluent_dir}")
     logging.debug(f"dst_pyfluent_dir: {dst_pyfluent_dir}")
     logging.debug(f"src_test_dir: {src_test_dir}")

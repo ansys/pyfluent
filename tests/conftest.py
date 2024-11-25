@@ -1,7 +1,10 @@
 from contextlib import nullcontext
 import functools
+import inspect
 import operator
 import os
+from pathlib import Path
+import shutil
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -25,6 +28,12 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--solvermode", action="store_true", default=False, help="run solvermode tests"
+    )
+    parser.addoption(
+        "--convert-to-fluent-journals",
+        action="store_true",
+        default=False,
+        help="convert tests to Fluent journals",
     )
 
 
@@ -63,6 +72,38 @@ def pytest_runtest_setup(item):
         version = item.config.getoption("--fluent-version")
         if version and Version(version) not in combined_spec:
             pytest.skip()
+
+
+def pytest_collection_finish(session):
+    if session.config.getoption("--convert-to-fluent-journals"):
+        fluent_test_root = Path(__file__).parent / "fluent"
+        shutil.rmtree(fluent_test_root, ignore_errors=True)
+        for item in session.items:
+            if item.module.__name__ == "test_settings_api":
+                skip = False
+                for mark in item.iter_markers(name="fluent_version"):
+                    spec = mark.args[0]
+                    # TODO: Support older versions
+                    if not (
+                        spec == "latest"
+                        or Version(FluentVersion.current_dev().value)
+                        in SpecifierSet(spec)
+                    ):
+                        skip = True
+                if skip:
+                    continue
+                fluent_test_dir = fluent_test_root / item.module.__name__ / item.name
+                fluent_test_dir.mkdir(parents=True, exist_ok=True)
+                fluent_test_file = fluent_test_dir / "test.py"
+                parameters = inspect.signature(item.function).parameters
+                with open(fluent_test_file, "w") as f:
+                    f.write(f"from ....{item.module.__name__} import {item.name}\n")
+                    for param in parameters:
+                        f.write(f"from ....fluent_fixtures import {param}\n")
+                    f.write("\n")
+                    f.write(f"{item.name}(")
+                    f.write(", ".join([f"{p}(globals())" for p in parameters]))
+                    f.write(")\n")
 
 
 @pytest.fixture(autouse=True)
