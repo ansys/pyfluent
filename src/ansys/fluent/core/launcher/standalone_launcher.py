@@ -177,6 +177,8 @@ class StandaloneLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        import ansys.fluent.core as pyfluent
+
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
         self.file_transfer_service = file_transfer_service
         if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
@@ -214,7 +216,9 @@ class StandaloneLauncher:
             self.argvals["topy"], self.argvals["journal_file_names"]
         )
 
-        if is_windows():
+        if is_windows() and not (
+            pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR
+        ):
             # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
             self._launch_cmd = 'start "" ' + self._launch_string
         else:
@@ -231,7 +235,7 @@ class StandaloneLauncher:
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
 
-            subprocess.Popen(self._launch_cmd, **self._kwargs)
+            process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
                 _await_fluent_launch(
@@ -247,7 +251,7 @@ class StandaloneLauncher:
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
-                    subprocess.Popen(launch_cmd, **self._kwargs)
+                    process = subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
                         self.argvals["start_timeout"],
@@ -264,6 +268,7 @@ class StandaloneLauncher:
                 launcher_args=self.argvals,
                 inside_container=False,
             )
+            session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals["start_watchdog"],
                 self.argvals["cleanup_on_exit"],
