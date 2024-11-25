@@ -1055,7 +1055,7 @@ class Group(SettingsBase[DictStateType]):
                     ret[mname] = ccls.to_python_keys(mvalue)
             return ret
         else:
-            return value
+            return {}
 
     _child_classes = {}
     child_names = []
@@ -1325,7 +1325,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 ret[k] = cls.child_object_type.to_python_keys(v)
             return ret
         else:
-            return value
+            return {}
 
     _child_classes = {}
     command_names = []
@@ -1531,7 +1531,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         if isinstance(value, collections.abc.Sequence):
             return [cls.child_object_type.to_python_keys(v) for v in value]
         else:
-            return value
+            return []
 
     _child_classes = {}
     command_names = []
