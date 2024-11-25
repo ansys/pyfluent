@@ -366,7 +366,7 @@ bezel_enc_bc = solver.settings.setup.boundary_conditions.wall["bezel-enclosure"]
 bezel_enc_bc.thermal.material = "plastic"
 bezel_enc_bc.radiation.radiation_bc = "Opaque"
 bezel_enc_bc.radiation.internal_emissivity = 1
-bezel_enc_bc.radiation.diffuse_fraction_band = {"s-": 1}
+bezel_enc_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {"s-": 1}
 
 # Get list of wall zones
 bc_state = solver.settings.setup.boundary_conditions.get_state()
@@ -389,7 +389,7 @@ solver.settings.setup.boundary_conditions.copy(
 enc_lens_bc = solver.settings.setup.boundary_conditions.wall["enclosure-lens"]
 enc_lens_bc.thermal.material = "glass"
 enc_lens_bc.radiation.radiation_bc = "Semi Transparent"
-enc_lens_bc.radiation.diffuse_fraction_band = {"s-": 0}
+enc_lens_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {"s-": 0}
 
 # Copy enclosure-lens BC to other lens boundary
 solver.settings.setup.boundary_conditions.copy(
@@ -407,7 +407,9 @@ enc_rim_bezel_bc = solver.settings.setup.boundary_conditions.wall["enclosure-rim
 enc_rim_bezel_bc.thermal.material = "plastic"
 enc_rim_bezel_bc.radiation.radiation_bc = "Opaque"
 enc_rim_bezel_bc.radiation.internal_emissivity = 0.16
-enc_rim_bezel_bc.radiation.diffuse_fraction_band = {"s-": 0.1}
+enc_rim_bezel_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {
+    "s-": 0.1
+}
 
 # Copy enclosure-rim-bezel BC to other rim bezel boundaries
 solver.settings.setup.boundary_conditions.copy(
@@ -440,8 +442,12 @@ rad_input_bc = solver.settings.setup.boundary_conditions.wall["rad-input"]
 rad_input_bc.thermal.thermal_condition = "Temperature"
 rad_input_bc.thermal.temperature.value = 298.15
 rad_input_bc.radiation.boundary_source = True
-rad_input_bc.radiation.direct_irradiation = {"s-": 1200}
-rad_input_bc.radiation.reference_direction = [-0.848, 0, -0.53]
+rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation = {"s-": 1200}
+rad_input_bc.radiation.direct_irradiation_settings.reference_direction = [
+    -0.848,
+    0,
+    -0.53,
+]
 
 ###########################################################################################################
 # Set convergence criteria

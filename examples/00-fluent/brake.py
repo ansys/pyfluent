@@ -211,7 +211,6 @@ session.settings.results.graphics.contour["contour-1"] = {
     "filled": True,
 }
 
-session.settings.results.graphics.contour["temperature"] = {}
 session.settings.results.graphics.contour["temperature"] = {
     "field": "temperature",
     "surfaces_list": "wall*",
@@ -233,19 +232,21 @@ session.settings.results.graphics.contour["temperature"] = {
         "bground_color": "#CCD3E2",
         "title_elements": "Variable and Object Name",
     },
-    "range_option": {
-        "option": "auto-range-off",
-        "auto_range_off": {"maximum": 400.0, "minimum": 300, "clip_to_range": False},
-    },
 }
+
+session.settings.results.graphics.contour["temperature"].range_option.option = (
+    "auto-range-off"
+)
+session.settings.results.graphics.contour["temperature"].range_option.set_state(
+    {
+        "auto_range_off": {"maximum": 400.0, "minimum": 300, "clip_to_range": False},
+    }
+)
 
 session.settings.results.graphics.views.restore_view(view_name="top")
 session.settings.results.graphics.views.camera.zoom(factor=2)
 session.settings.results.graphics.views.save_view(view_name="animation-view")
 
-session.settings.solution.calculation_activity.solution_animations[
-    "animate-temperature"
-] = {}
 session.settings.solution.calculation_activity.solution_animations[
     "animate-temperature"
 ] = {
