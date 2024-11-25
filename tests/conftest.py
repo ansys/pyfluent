@@ -30,10 +30,10 @@ def pytest_addoption(parser):
         "--solvermode", action="store_true", default=False, help="run solvermode tests"
     )
     parser.addoption(
-        "--convert-to-fluent-journals",
+        "--write-fluent-journals",
         action="store_true",
         default=False,
-        help="convert tests to Fluent journals",
+        help="Write Fluent journals for unittests",
     )
 
 
@@ -74,8 +74,24 @@ def pytest_runtest_setup(item):
             pytest.skip()
 
 
+# Fluent launcher arguments for fixtures which are not "3ddp"
+# TODO: Use a decorator
+launcher_args_by_fixture = {
+    "new_meshing_session": "3ddp -meshing",
+    "new_pure_meshing_session": "3ddp -meshing",
+    "watertight_workflow_session": "3ddp -meshing",
+    "fault_tolerant_workflow_session": "3ddp -meshing",
+    "mixing_elbow_watertight_pure_meshing_session": "3ddp -meshing",
+    "new_solver_session_sp": "3d",
+    "new_solver_session_2d": "2ddp",
+    "disk_settings_session": "2ddp",
+    "disk_case_session": "2ddp",
+    "periodic_rot_settings_session": "3ddp",
+}
+
+
 def pytest_collection_finish(session):
-    if session.config.getoption("--convert-to-fluent-journals"):
+    if session.config.getoption("--write-fluent-journals"):
         fluent_test_root = Path(__file__).parent / "fluent"
         shutil.rmtree(fluent_test_root, ignore_errors=True)
         for item in session.items:
@@ -94,8 +110,16 @@ def pytest_collection_finish(session):
                     continue
                 fluent_test_dir = fluent_test_root / item.module.__name__ / item.name
                 fluent_test_dir.mkdir(parents=True, exist_ok=True)
+                fluent_test_config = fluent_test_dir / "test.yaml"
                 fluent_test_file = fluent_test_dir / "test.py"
+                launcher_args = "3ddp"
                 parameters = inspect.signature(item.function).parameters
+                for param in parameters:
+                    if param in launcher_args_by_fixture:
+                        launcher_args = launcher_args_by_fixture[param]
+                        break
+                with open(fluent_test_config, "w") as f:
+                    f.write(f"launcher_args: {launcher_args}\n")
                 with open(fluent_test_file, "w") as f:
                     f.write(f"from ....{item.module.__name__} import {item.name}\n")
                     for param in parameters:

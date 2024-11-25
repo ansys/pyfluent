@@ -80,7 +80,7 @@ def run_fluent_test(
         ],
         working_dir=working_dir,
         environment={"ANSYSLMD_LICENSE_FILE": os.environ["ANSYSLMD_LICENSE_FILE"]},
-        command=f"3ddp {launcher_args} -gu -py -i {journal_file.name}",
+        command=f"{launcher_args} -gu -py -i {journal_file.name}",
         detach=True,
         stdout=True,
         stderr=True,

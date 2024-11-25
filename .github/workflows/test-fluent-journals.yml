@@ -83,4 +83,5 @@ jobs:
 
       - name: Run Fluent tests
         run: |
+          python -m pytest --write-fluent-journals
           python .ci/fluent_test_runner.py tests
