@@ -10,9 +10,8 @@ You can use field data objects to access Fluent surface, scalar, vector, and pat
 Accessing field data objects
 ----------------------------
 
-In order to access field data, launch the Fluent solver, and make field data
-available (for example, either by reading a case file and then initializing as in the following code, or
-by reading case and data files).
+To work with field data, ensure the Fluent solver is launched and the relevant data is made available.
+You can do this either by loading both case and data files or by reading a case file and initializing.
 
 .. code-block:: python
 
