@@ -377,6 +377,44 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
         "minimum": -0.0001,
         "maximum": 0.0001,
     }
+    solver.settings.results.graphics.contour["temperature"] = {}
+    solver.settings.results.graphics.contour["temperature"] = {
+        "field": "temperature",
+        "surfaces_list": "wall*",
+        "color_map": {
+            "visible": True,
+            "size": 100,
+            "color": "field-velocity",
+            "log_scale": False,
+            "format": "%0.1f",
+            "user_skip": 9,
+            "show_all": True,
+            "position": 1,
+            "font_name": "Helvetica",
+            "font_automatic": True,
+            "font_size": 0.032,
+            "length": 0.54,
+            "width": 6,
+            "bground_transparent": True,
+            "bground_color": "#CCD3E2",
+            "title_elements": "Variable and Object Name",
+        },
+        "range_option": {
+            "option": "auto-range-off",
+            "auto_range_off": {
+                "maximum": 400.0,
+                "minimum": 300,
+                "clip_to_range": False,
+            },
+        },
+    }
+    assert solver.settings.results.graphics.contour["temperature"].range_options() == {
+        "global_range": True,
+        "auto_range": False,
+        "clip_to_range": False,
+        "minimum": 300,
+        "maximum": 400.0,
+    }
 
 
 @pytest.mark.fluent_version(">=23.1")
