@@ -5,6 +5,7 @@ import operator
 import os
 from pathlib import Path
 import shutil
+import sys
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -92,7 +93,11 @@ launcher_args_by_fixture = {
 
 def pytest_collection_finish(session):
     if session.config.getoption("--write-fluent-journals"):
-        fluent_test_root = Path(__file__).parent / "fluent"
+        import_path = Path(pyfluent.__file__).parent
+        sys.path.append(str(import_path))
+        import fluent_fixtures
+
+        fluent_test_root = import_path / "fluent"
         shutil.rmtree(fluent_test_root, ignore_errors=True)
         for item in session.items:
             if item.module.__name__ == "test_settings_api":
@@ -114,6 +119,16 @@ def pytest_collection_finish(session):
                 fluent_test_file = fluent_test_dir / "test.py"
                 launcher_args = "3ddp"
                 parameters = inspect.signature(item.function).parameters
+                skip = False
+                for param in parameters:
+                    if param not in dir(fluent_fixtures):
+                        print(
+                            f"Skipping {item.nodeid} because of missing fixture {param}"
+                        )
+                        skip = True
+                        break
+                if skip:
+                    continue
                 for param in parameters:
                     if param in launcher_args_by_fixture:
                         launcher_args = launcher_args_by_fixture[param]
