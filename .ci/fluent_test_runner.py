@@ -103,7 +103,7 @@ def run_fluent_test(
             sleep(1)
         logging.debug(container.logs(stderr=True).decode())
         container.remove()
-    except docker.errors.NotFound:
+    except docker.errors.DockerException:
         pass
 
 
