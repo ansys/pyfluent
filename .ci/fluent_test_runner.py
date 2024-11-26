@@ -84,6 +84,7 @@ def run_fluent_test(
         detach=True,
         stdout=True,
         stderr=True,
+        auto_remove=True,
     )
     while True:
         container.reload()
