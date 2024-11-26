@@ -86,22 +86,25 @@ def run_fluent_test(
         stderr=True,
         auto_remove=True,
     )
-    while True:
-        container.reload()
-        if container.status == "exited":
-            break
-        stderr = container.logs(stdout=False, stderr=True)
-        if stderr:
-            stderr = stderr.decode()
-            for line in stderr.split("\n"):
-                if line.strip().startswith("Error:"):
-                    if "Expected exception" in line:  # for check_assert.py
-                        container.stop()
-                    else:
-                        raise FluentRuntimeError(line)
-        sleep(1)
-    logging.debug(container.logs(stderr=True).decode())
-    container.remove()
+    try:
+        while True:
+            container.reload()
+            if container.status == "exited":
+                break
+            stderr = container.logs(stdout=False, stderr=True)
+            if stderr:
+                stderr = stderr.decode()
+                for line in stderr.split("\n"):
+                    if line.strip().startswith("Error:"):
+                        if "Expected exception" in line:  # for check_assert.py
+                            container.stop()
+                        else:
+                            raise FluentRuntimeError(line)
+            sleep(1)
+        logging.debug(container.logs(stderr=True).decode())
+        container.remove()
+    except docker.errors.NotFound:
+        pass
 
 
 MAX_TEST_PATH_LENGTH = 100
