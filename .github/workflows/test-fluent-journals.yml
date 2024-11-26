@@ -1,7 +1,6 @@
 name: Test Fluent journals with PyFluent changes
 
 on:
-  pull_request:
   schedule:  # UTC at 0700
     - cron:  '0 7 * * *'
   workflow_dispatch:

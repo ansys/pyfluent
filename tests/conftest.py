@@ -83,8 +83,14 @@ launcher_args_by_fixture = {
     "watertight_workflow_session": "3ddp -meshing",
     "fault_tolerant_workflow_session": "3ddp -meshing",
     "mixing_elbow_watertight_pure_meshing_session": "3ddp -meshing",
+    "new_solver_session": "3ddp",
     "new_solver_session_sp": "3d",
     "new_solver_session_2d": "2ddp",
+    "static_mixer_settings_session": "3ddp",
+    "static_mixer_case_session": "3ddp",
+    "mixing_elbow_settings_session": "3ddp",
+    "mixing_elbow_case_data_session": "3ddp",
+    "mixing_elbow_param_case_data_session": "3ddp",
     "disk_settings_session": "2ddp",
     "disk_case_session": "2ddp",
     "periodic_rot_settings_session": "3ddp",
@@ -93,56 +99,58 @@ launcher_args_by_fixture = {
 
 def pytest_collection_finish(session):
     if session.config.getoption("--write-fluent-journals"):
-        import_path = Path(pyfluent.__file__).parent
+        import_path = Path(__file__).parent
         sys.path.append(str(import_path))
         import fluent_fixtures
 
         fluent_test_root = import_path / "fluent"
         shutil.rmtree(fluent_test_root, ignore_errors=True)
         for item in session.items:
-            if item.module.__name__ == "test_settings_api":
-                skip = False
-                for mark in item.iter_markers(name="fluent_version"):
-                    spec = mark.args[0]
-                    # TODO: Support older versions
-                    if not (
-                        spec == "latest"
-                        or Version(FluentVersion.current_dev().value)
-                        in SpecifierSet(spec)
-                    ):
-                        skip = True
-                if skip:
-                    continue
-                fluent_test_dir = fluent_test_root / item.module.__name__ / item.name
-                fluent_test_dir.mkdir(parents=True, exist_ok=True)
-                fluent_test_config = fluent_test_dir / "test.yaml"
-                fluent_test_file = fluent_test_dir / "test.py"
-                launcher_args = "3ddp"
-                parameters = inspect.signature(item.function).parameters
-                skip = False
+            skip = False
+            for mark in item.iter_markers(name="skip"):
+                skip = True
+            for mark in item.iter_markers(name="fluent_version"):
+                spec = mark.args[0]
+                # TODO: Support older versions
+                if not (
+                    spec == "latest"
+                    or Version(FluentVersion.current_dev().value) in SpecifierSet(spec)
+                ):
+                    skip = True
+            if skip:
+                continue
+            fluent_test_dir = fluent_test_root / item.module.__name__ / item.name
+            fluent_test_dir.mkdir(parents=True, exist_ok=True)
+            fluent_test_config = fluent_test_dir / "test.yaml"
+            fluent_test_file = fluent_test_dir / "test.py"
+            launcher_args = ""
+            parameters = inspect.signature(item.function).parameters
+            parameters = {p for p in parameters}
+            if not (parameters & set(launcher_args_by_fixture.keys())):
+                # Skipping as unittest doesn't use fluent fixture
+                continue
+            for param in parameters:
+                if param not in dir(fluent_fixtures):
+                    print(f"Skipping {item.nodeid} because of missing fixture {param}")
+                    skip = True
+                    break
+            if skip:
+                continue
+            for param in parameters:
+                if param in launcher_args_by_fixture:
+                    launcher_args = launcher_args_by_fixture[param]
+                    break
+            with open(fluent_test_config, "w") as f:
+                f.write(f"launcher_args: {launcher_args}\n")
+            print(f"Writing {fluent_test_file}")
+            with open(fluent_test_file, "w") as f:
+                f.write(f"from ....{item.module.__name__} import {item.name}\n")
                 for param in parameters:
-                    if param not in dir(fluent_fixtures):
-                        print(
-                            f"Skipping {item.nodeid} because of missing fixture {param}"
-                        )
-                        skip = True
-                        break
-                if skip:
-                    continue
-                for param in parameters:
-                    if param in launcher_args_by_fixture:
-                        launcher_args = launcher_args_by_fixture[param]
-                        break
-                with open(fluent_test_config, "w") as f:
-                    f.write(f"launcher_args: {launcher_args}\n")
-                with open(fluent_test_file, "w") as f:
-                    f.write(f"from ....{item.module.__name__} import {item.name}\n")
-                    for param in parameters:
-                        f.write(f"from ....fluent_fixtures import {param}\n")
-                    f.write("\n")
-                    f.write(f"{item.name}(")
-                    f.write(", ".join([f"{p}(globals())" for p in parameters]))
-                    f.write(")\n")
+                    f.write(f"from ....fluent_fixtures import {param}\n")
+                f.write("\n")
+                f.write(f"{item.name}(")
+                f.write(", ".join([f"{p}(globals())" for p in parameters]))
+                f.write(")\n")
 
 
 @pytest.fixture(autouse=True)
