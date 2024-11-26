@@ -181,5 +181,7 @@ cleanup-previous-docker-containers:
 	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
 
 write-and-run-fluent-tests:
-	@python -m pytest --write-fluent-journals
+	@pip install -r requirements/requirements_build.txt
+	@poetry install --with test -E reader
+	@poetry run python -m pytest --write-fluent-journals
 	@python .ci/fluent_test_runner.py tests
