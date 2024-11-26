@@ -25,7 +25,6 @@ from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStra
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
-from tests.conftest import new_solver_session
 
 
 class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
@@ -391,7 +390,9 @@ def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
 
 
-new_solver_session2 = new_solver_session
+@pytest.fixture
+def new_solver_session2(new_solver_session):
+    return new_solver_session
 
 
 def test_build_from_fluent_connection(new_solver_session, new_solver_session2):

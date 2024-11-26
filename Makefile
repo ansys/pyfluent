@@ -179,3 +179,7 @@ cleanup-previous-docker-containers:
 		docker stop $(docker ps -a -q); \
 	fi
 	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
+
+write-and-run-fluent-tests:
+	@python -m pytest --write-fluent-journals
+	@python .ci/fluent_test_runner.py tests
