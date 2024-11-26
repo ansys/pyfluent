@@ -360,10 +360,6 @@ class Root(Group):
     }
 
 
-class _SchemeEval:
-    version = "25.1.0"
-
-
 class Proxy:
     """Proxy class."""
 
@@ -371,7 +367,6 @@ class Proxy:
 
     def __init__(self):
         self.r = self.root(None)
-        self._scheme_eval = _SchemeEval()
 
     def get_obj(self, path):
         if not path:

@@ -172,31 +172,36 @@ def to_python_name(fluent_name: str) -> str:
     return name
 
 
-def _get_python_path_comps(python_path: str):
+def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
-    python_path = python_path.removeprefix("<session>")
-    python_path = python_path.removeprefix(".settings")
-    python_path = python_path.removeprefix(".")
-    comps = python_path.split(".")
-    comps = [comp.split("[")[0] for comp in comps]
-    return comps
+    comps = []
+    while obj:
+        python_name = obj._python_name
+        obj = obj._parent
+        if isinstance(obj, (NamedObject, ListObject)):
+            comps.append(obj._python_name)
+            obj = obj._parent
+        else:
+            comps.append(python_name)
+    comps.reverse()
+    return comps[1:]
 
 
-def _get_alias_class(root_cls, path: list[str], alias_path: list[str]):
+def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str]):
     """Get the class for the given alias path."""
     parent_count = 0
-    while alias_path[0] == "..":
+    while other_path[0] == "..":
         parent_count += 1
-        alias_path.pop(0)
+        other_path.pop(0)
     for _ in range(parent_count):
-        path.pop()
-    path = path + alias_path
+        some_path.pop()
+    full_path = some_path + other_path
     cls = root_cls
-    for comp in path:
+    for comp in full_path:
         cls = cls._child_classes[comp]
         if issubclass(cls, (NamedObject, ListObject)):
             cls = cls.child_object_type
-    return cls, path
+    return cls, full_path
 
 
 class Base:
@@ -467,6 +472,20 @@ class Base:
     def __eq__(self, other):
         return self.flproxy == other.flproxy and self.path == other.path
 
+    def _get_path_comps(self, path):
+        """Get path components."""
+        if self._parent is None:
+            if FluentVersion(self.version).number < 251:
+                return "<session>"
+            else:
+                return "<session>.settings"
+        ppath = self._parent.python_path
+        if not ppath:
+            return self.python_name
+        if self.python_name[0] == "[":
+            return ppath + self.python_name
+        return ppath + "." + self.python_name
+
 
 StateT = TypeVar("StateT")
 
@@ -724,7 +743,7 @@ class SettingsBase(Base, Generic[StateT]):
                     self.to_scheme_keys(
                         kwargs or state,
                         self._root.__class__,
-                        _get_python_path_comps(self.python_path),
+                        _get_python_path_comps(self),
                     ),
                 )
 
@@ -968,7 +987,7 @@ class Group(SettingsBase[DictStateType]):
                     ret[ccls.fluent_name] = ccls.to_scheme_keys(v, root_cls, path + [k])
                 elif k in cls._child_aliases:
                     alias, scm_alias_name = cls._child_aliases[k]
-                    alias_cls, alias_path = _get_alias_class(
+                    alias_cls, alias_path = _get_class_from_paths(
                         root_cls, path.copy(), alias.split("/")
                     )
                     ret[scm_alias_name] = alias_cls.to_scheme_keys(
@@ -1658,7 +1677,7 @@ class BaseCommand(Action):
             scmKwds[argument.fluent_name] = argument.to_scheme_keys(
                 value,
                 argument._root.__class__,
-                _get_python_path_comps(argument.python_path),
+                _get_python_path_comps(argument),
             )
         ret = self._execute_command(*args, **scmKwds)
         for arg, value in kwds.items():
@@ -1748,7 +1767,7 @@ class Query(Action):
             scmKwds[argument.fluent_name] = argument.to_scheme_keys(
                 value,
                 argument._root.__class__,
-                _get_python_path_comps(argument.python_path),
+                _get_python_path_comps(argument),
             )
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **scmKwds)
 
