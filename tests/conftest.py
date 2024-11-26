@@ -135,11 +135,8 @@ def pytest_collection_finish(session):
                 f.write(", ".join([f"{p}(globals())" for p in parameters]))
                 f.write(")\n")
             print(f"Written {fluent_test_file}")
-
-
-def pytest_runtestloop(session):
-    if session.config.getoption("--write-fluent-journals"):
-        pytest.exit(0)
+        session.items = []
+        session.testscollected = 0
 
 
 @pytest.fixture(autouse=True)
