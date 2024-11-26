@@ -142,7 +142,6 @@ def pytest_collection_finish(session):
                     break
             with open(fluent_test_config, "w") as f:
                 f.write(f"launcher_args: {launcher_args}\n")
-            print(f"Writing {fluent_test_file}")
             with open(fluent_test_file, "w") as f:
                 f.write(f"from ....{item.module.__name__} import {item.name}\n")
                 for param in parameters:
@@ -151,6 +150,7 @@ def pytest_collection_finish(session):
                 f.write(f"{item.name}(")
                 f.write(", ".join([f"{p}(globals())" for p in parameters]))
                 f.write(")\n")
+            print(f"Written {fluent_test_file}")
 
 
 @pytest.fixture(autouse=True)
