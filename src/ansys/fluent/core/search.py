@@ -163,11 +163,24 @@ def _print_search_results(queries: list, api_tree_data: dict):
     results = []
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
-    for api_tree_data in api_tree_datas:
+
+    def _get_results(api_tree_data):
+        results = []
         for query in queries:
             for api_object in api_tree_data:
                 if api_object.split()[0].endswith(query):
                     results.append(api_object)
+        return results
+
+    settings_results = _get_results(api_tree_datas[0])
+    tui_results = _get_results(api_tree_datas[1])
+
+    settings_results.sort()
+    tui_results.sort()
+
+    results.extend(settings_results)
+    results.extend(tui_results)
+
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
             print(result)

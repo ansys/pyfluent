@@ -28,6 +28,10 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     kwargs: Dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
+    else:
+        kwargs.update(
+            stdout=pyfluent.LAUNCH_FLUENT_STDOUT, stderr=pyfluent.LAUNCH_FLUENT_STDERR
+        )
     if is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
