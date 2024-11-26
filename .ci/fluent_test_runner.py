@@ -49,7 +49,7 @@ def run_fluent_test(
     src_gen_dir = (
         Path(pyfluent.__file__).parent / "ansys" / "fluent" / "core" / "generated"
     )
-    dst_gen_dir = f"/ansys_inc/v{verion_for_file_name}/fluent/fluent{FluentVersion.current_dev()}/cortex/pylib/flapi/generated"
+    dst_gen_dir = f"/ansys_inc/v{verion_for_file_name}/fluent/fluent{FluentVersion.current_dev()!r}/cortex/pylib/flapi/generated"
     dst_test_dir = "/testing"
     working_dir = Path(dst_test_dir)
     parent = journal_file.parent
