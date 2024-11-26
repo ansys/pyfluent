@@ -125,8 +125,8 @@ def pytest_collection_finish(session):
             fluent_test_file = fluent_test_dir / "test.py"
             launcher_args = ""
             parameters = inspect.signature(item.function).parameters
-            parameters = {p for p in parameters}
-            if not (parameters & set(launcher_args_by_fixture.keys())):
+            parameter_set = {p for p in parameters}
+            if not (parameter_set & set(launcher_args_by_fixture.keys())):
                 # Skipping as unittest doesn't use fluent fixture
                 continue
             for param in parameters:
@@ -144,13 +144,16 @@ def pytest_collection_finish(session):
                 f.write(f"launcher_args: {launcher_args}\n")
             with open(fluent_test_file, "w") as f:
                 f.write(f"from ....{item.module.__name__} import {item.name}\n")
+                f.write("from ....fluent_fixtures import (\n")
                 for param in parameters:
-                    f.write(f"from ....fluent_fixtures import {param}\n")
+                    f.write(f"    {param},\n")
+                f.write(")\n")
                 f.write("\n")
                 f.write(f"{item.name}(")
                 f.write(", ".join([f"{p}(globals())" for p in parameters]))
                 f.write(")\n")
             print(f"Written {fluent_test_file}")
+    session.exitstatus = 5
 
 
 @pytest.fixture(autouse=True)
