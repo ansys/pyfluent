@@ -139,7 +139,7 @@ def pytest_collection_finish(session):
 
 def pytest_runtestloop(session):
     if session.config.getoption("--write-fluent-journals"):
-        pytest.exit()
+        pytest.exit(0)
 
 
 @pytest.fixture(autouse=True)

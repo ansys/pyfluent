@@ -178,6 +178,18 @@ def display_names_as_keys_in_cache(globals):
     DataModelCache.use_display_name = True
 
 
-def static_mixer_case_session2(globals):
+def new_meshing_session2(globals):
+    session = pyfluent.launch_fluent(mode=pyfluent.LaunchMode.MESHING)
+    return session
+
+
+def new_solver_session2(globals):
     session = pyfluent.launch_fluent()
+    return session
+
+
+def static_mixer_case_session2(globals):
+    session = new_solver_session2(globals)
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    session.file.read(file_type="case", file_name=case_name)
     return session
