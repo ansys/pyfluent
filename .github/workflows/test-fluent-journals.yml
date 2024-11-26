@@ -82,4 +82,4 @@ jobs:
 
       - name: Run Fluent tests
         run: |
-          python .ci/fluent_test_runner.py tests/fluent
+          make write-and-run-fluent-tests
