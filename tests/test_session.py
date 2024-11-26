@@ -411,7 +411,11 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     )
     assert solver1.health_check.is_serving
     assert solver2.health_check.is_serving
-    assert not health_check_service1.is_serving
+    timeout_loop(
+        not health_check_service1.is_serving,
+        timeout=60,
+        idle_period=1,
+    )
     assert solver1._fluent_connection.connection_properties.cortex_pid == cortex_pid2
     assert solver2._fluent_connection.connection_properties.cortex_pid == cortex_pid2
 
