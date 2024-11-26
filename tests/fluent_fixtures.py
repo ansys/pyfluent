@@ -1,8 +1,21 @@
+from typing import Callable
+
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.examples import download_file
+
+
+def fluent_launcher_args(args: str):
+    def fluent_launcher_args_inner(f: Callable):
+        def wrapper(*args, **kwargs):
+            return f(*args, **kwargs)
+
+        wrapper.fluent_launcher_args = args
+        return wrapper
+
+    return fluent_launcher_args_inner
 
 
 def mixing_elbow_geometry_filename(globals):
@@ -17,27 +30,32 @@ def exhaust_system_geometry_filename(globals):
     )
 
 
+@fluent_launcher_args("3ddp -meshing")
 def new_meshing_session(globals):
     meshing = globals["meshing"]
     return meshing
 
 
+@fluent_launcher_args("3ddp -meshing")
 def new_pure_meshing_session(globals):
     return new_meshing_session(globals)
 
 
+@fluent_launcher_args("3ddp -meshing")
 def watertight_workflow_session(globals):
     meshing = new_meshing_session(globals)
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     return meshing
 
 
+@fluent_launcher_args("3ddp -meshing")
 def fault_tolerant_workflow_session(globals):
     meshing = new_meshing_session(globals)
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
     return meshing
 
 
+@fluent_launcher_args("3ddp -meshing")
 def mixing_elbow_watertight_pure_meshing_session(globals):
     meshing = new_pure_meshing_session(globals)
     geometry_filename = mixing_elbow_geometry_filename(globals)
@@ -48,19 +66,23 @@ def mixing_elbow_watertight_pure_meshing_session(globals):
     return meshing
 
 
+@fluent_launcher_args("3ddp")
 def new_solver_session(globals):
     solver = globals["solver"]
     return solver
 
 
+@fluent_launcher_args("3d")
 def new_solver_session_sp(globals):
     return new_solver_session(globals)
 
 
+@fluent_launcher_args("2ddp")
 def new_solver_session_2d(globals):
     return new_solver_session(globals)
 
 
+@fluent_launcher_args("3ddp")
 def static_mixer_settings_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -72,6 +94,7 @@ def static_mixer_settings_session(globals):
     return solver
 
 
+@fluent_launcher_args("3ddp")
 def static_mixer_case_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
@@ -79,6 +102,7 @@ def static_mixer_case_session(globals):
     return solver
 
 
+@fluent_launcher_args("3ddp")
 def mixing_elbow_settings_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -90,6 +114,7 @@ def mixing_elbow_settings_session(globals):
     return solver
 
 
+@fluent_launcher_args("3ddp")
 def mixing_elbow_case_data_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -98,6 +123,7 @@ def mixing_elbow_case_data_session(globals):
     return solver
 
 
+@fluent_launcher_args("3ddp")
 def mixing_elbow_param_case_data_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("elbow_param.cas.h5", "pyfluent/mixing_elbow")
@@ -106,6 +132,7 @@ def mixing_elbow_param_case_data_session(globals):
     return solver
 
 
+@fluent_launcher_args("2ddp")
 def disk_settings_session(globals):
     solver = new_solver_session_2d(globals)
     case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
@@ -117,6 +144,7 @@ def disk_settings_session(globals):
     return solver
 
 
+@fluent_launcher_args("2ddp")
 def disk_case_session(globals):
     solver = new_solver_session_2d(globals)
     case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
@@ -124,6 +152,7 @@ def disk_case_session(globals):
     return solver
 
 
+@fluent_launcher_args("3ddp")
 def periodic_rot_settings_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file(

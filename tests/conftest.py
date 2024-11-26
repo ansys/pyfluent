@@ -75,34 +75,16 @@ def pytest_runtest_setup(item):
             pytest.skip()
 
 
-# Fluent launcher arguments for fixtures which are not "3ddp"
-# TODO: Use a decorator
-launcher_args_by_fixture = {
-    "new_meshing_session": "3ddp -meshing",
-    "new_pure_meshing_session": "3ddp -meshing",
-    "watertight_workflow_session": "3ddp -meshing",
-    "fault_tolerant_workflow_session": "3ddp -meshing",
-    "mixing_elbow_watertight_pure_meshing_session": "3ddp -meshing",
-    "new_solver_session": "3ddp",
-    "new_solver_session_sp": "3d",
-    "new_solver_session_2d": "2ddp",
-    "static_mixer_settings_session": "3ddp",
-    "static_mixer_case_session": "3ddp",
-    "mixing_elbow_settings_session": "3ddp",
-    "mixing_elbow_case_data_session": "3ddp",
-    "mixing_elbow_param_case_data_session": "3ddp",
-    "disk_settings_session": "2ddp",
-    "disk_case_session": "2ddp",
-    "periodic_rot_settings_session": "3ddp",
-}
-
-
 def pytest_collection_finish(session):
     if session.config.getoption("--write-fluent-journals"):
         import_path = Path(__file__).parent
         sys.path.append(str(import_path))
         import fluent_fixtures
 
+        launcher_args_by_fixture = {}
+        for k, v in fluent_fixtures.__dict__.items():
+            if hasattr(v, "fluent_launcher_args"):
+                launcher_args_by_fixture[k] = v.fluent_launcher_args
         fluent_test_root = import_path / "fluent"
         shutil.rmtree(fluent_test_root, ignore_errors=True)
         for item in session.items:
