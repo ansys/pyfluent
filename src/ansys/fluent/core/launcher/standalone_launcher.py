@@ -216,11 +216,12 @@ class StandaloneLauncher:
             self.argvals["topy"], self.argvals["journal_file_names"]
         )
 
-        if is_windows() and not (
-            pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR
-        ):
-            # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
-            self._launch_cmd = 'start "" ' + self._launch_string
+        if is_windows():
+            if pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR:
+                self._launch_cmd = self._launch_string
+            else:
+                # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
+                self._launch_cmd = 'start "" ' + self._launch_string
         else:
             if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal

@@ -127,8 +127,7 @@ class PostAPIHelper:
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
         """Returns vector field."""
-        scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"
-        return self._scheme_str_to_py_list(scheme_eval_str)
+        return self.field_info.get_vector_fields_info()
 
     def get_field_unit(self, field):
         """Returns the unit of the field."""
