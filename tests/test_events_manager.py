@@ -1,7 +1,10 @@
+from pathlib import Path
+
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import MeshingEvent, SolverEvent, examples
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
@@ -18,6 +21,9 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
+        assert Path(event_info.case_file_name).name == Path(case_file_name).name
+        with pytest.warns(PyFluentDeprecationWarning):
+            assert Path(event_info.casefilepath).name == Path(case_file_name).name
 
     on_case_loaded.loaded = False
 
@@ -62,6 +68,10 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
 def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
 
+    case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
 
@@ -70,10 +80,6 @@ def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
     meshing = new_meshing_session
 
     meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
-
-    case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
 
     assert not on_case_loaded.loaded
 

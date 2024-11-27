@@ -1,6 +1,6 @@
 """Module for events management."""
 
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from enum import Enum
 from functools import partial
 import inspect
@@ -110,9 +110,19 @@ class EventInfoBase:
         cls.derived_classes[event] = cls
 
     def __post_init__(self):
-        for field in fields(self):
+        for f in fields(self):
             # Cast to the correct type
-            setattr(self, field.name, field.type(getattr(self, field.name)))
+            setattr(self, f.name, f.type(getattr(self, f.name)))
+
+    def __getattr__(self, name):
+        for f in fields(self):
+            if f.metadata.get("deprecated_name") == name:
+                warnings.warn(
+                    f"'{name}' is deprecated. Use '{f.name}' instead.",
+                    PyFluentDeprecationWarning,
+                )
+                return getattr(self, f.name)
+        return self.__getattribute__(name)
 
 
 @dataclass
@@ -182,11 +192,11 @@ class AboutToLoadCaseEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_CA
     """Information about the event triggered just before a case file is loaded.
     Attributes
     ----------
-    case_file : str
-        Case file path.
+    case_file_name : str
+        Case filename.
     """
 
-    case_file: str
+    case_file_name: str = field(metadata=dict(deprecated_name="casefilepath"))
 
 
 @dataclass
@@ -194,11 +204,11 @@ class CaseLoadedEventInfo(EventInfoBase, event=SolverEvent.CASE_LOADED):
     """Information about the event triggered after a case file is loaded.
     Attributes
     ----------
-    case_file : str
-        Case file path.
+    case_file_name : str
+        Case filename.
     """
 
-    case_file: str
+    case_file_name: str = field(metadata=dict(deprecated_name="casefilepath"))
 
 
 @dataclass
@@ -206,11 +216,11 @@ class AboutToLoadDataEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_DA
     """Information about the event triggered just before a data file is loaded.
     Attributes
     ----------
-    data_file : str
-        Data file path.
+    data_file_name : str
+        Data filename.
     """
 
-    data_file: str
+    data_file_name: str = field(metadata=dict(deprecated_name="datafilepath"))
 
 
 @dataclass
@@ -218,11 +228,11 @@ class DataLoadedEventInfo(EventInfoBase, event=SolverEvent.DATA_LOADED):
     """Information about the event triggered after a data file is loaded.
     Attributes
     ----------
-    data_file : str
-        Data file path.
+    data_file_name : str
+        Data filename.
     """
 
-    data_file: str
+    data_file_name: str = field(metadata=dict(deprecated_name="datafilepath"))
 
 
 class AboutToInitializeSolutionEventInfo(
@@ -248,7 +258,7 @@ class ReportDefinitionUpdatedEventInfo(
         Report name.
     """
 
-    report_name: str
+    report_name: str = field(metadata=dict(deprecated_name="reportdefinitionname"))
 
 
 @dataclass
@@ -262,7 +272,7 @@ class ReportPlotSetUpdatedEventInfo(
         Plot set name.
     """
 
-    plot_set_name: str
+    plot_set_name: str = field(metadata=dict(deprecated_name="plotsetname"))
 
 
 class ResidualPlotUpdatedEventInfo(
@@ -296,11 +306,13 @@ class ProgressUpdatedEventInfo(EventInfoBase, event=SolverEvent.PROGRESS_UPDATED
     Attributes
     ----------
     message : str
+        Progress message.
     percentage : int
+        Progress percentage.
     """
 
     message: str
-    percentage: int
+    percentage: int = field(metadata=dict(deprecated_name="percentComplete"))
 
 
 @dataclass
@@ -311,8 +323,11 @@ class SolverTimeEstimateUpdatedEventInfo(
     Attributes
     ----------
     hours : float
+        Hours of solver time estimate.
     minutes : float
+        Minutes of solver time estimate.
     seconds : float
+        Seconds of solver time estimate.
     """
 
     hours: float
@@ -326,11 +341,13 @@ class FatalErrorEventInfo(EventInfoBase, event=SolverEvent.FATAL_ERROR):
     Attributes
     ----------
     message : str
+        Error message.
     error_code : int
+        Error code.
     """
 
     message: str
-    error_code: int
+    error_code: int = field(metadata=dict(deprecated_name="errorCode"))
 
 
 TEvent = TypeVar("TEvent")
