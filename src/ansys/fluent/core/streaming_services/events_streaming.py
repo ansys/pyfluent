@@ -1,5 +1,6 @@
 """Module for events management."""
 
+from dataclasses import dataclass
 from enum import Enum
 from functools import partial
 import inspect
@@ -68,6 +69,208 @@ class MeshingEvent(Enum):
     @classmethod
     def _missing_(cls, value: str):
         return _missing_for_events(cls, value)
+
+
+@dataclass
+class TimestepStartedEventInfo:
+    """Information about the event triggered when a timestep is started.
+    Attributes
+    ----------
+    index : int
+        Timestep index.
+    size : float
+        Timestep size.
+    """
+
+    index: int
+    size: float
+
+
+@dataclass
+class TimestepEndedEventInfo:
+    """Information about the event triggered when a timestep is ended.
+    Attributes
+    ----------
+    index : int
+        Timestep index.
+    size : float
+        Timestep size.
+    """
+
+    index: int
+    size: float
+
+
+@dataclass
+class IterationEndedEventInfo:
+    """Information about the event triggered when an iteration is ended.
+    Attributes
+    ----------
+    index : int
+        Iteration index.
+    """
+
+    index: int
+
+
+class CalculationsStartedEventInfo:
+    """Information about the event triggered when calculations are started."""
+
+
+class CalculationsEndedEventInfo:
+    """Information about the event triggered when calculations are ended."""
+
+
+class CalculationsPausedEventInfo:
+    """Information about the event triggered when calculations are paused."""
+
+
+class CalculationsResumedEventInfo:
+    """Information about the event triggered when calculations are resumed."""
+
+
+@dataclass
+class AboutToLoadCaseEventInfo:
+    """Information about the event triggered just before a case file is loaded.
+    Attributes
+    ----------
+    case_file : str
+        Case file path.
+    """
+
+    case_file: str
+
+
+@dataclass
+class CaseLoadedEventInfo:
+    """Information about the event triggered after a case file is loaded.
+    Attributes
+    ----------
+    case_file : str
+        Case file path.
+    """
+
+    case_file: str
+
+
+@dataclass
+class AboutToLoadDataEventInfo:
+    """Information about the event triggered just before a data file is loaded.
+    Attributes
+    ----------
+    data_file : str
+        Data file path.
+    """
+
+    data_file: str
+
+
+@dataclass
+class DataLoadedEventInfo:
+    """Information about the event triggered after a data file is loaded.
+    Attributes
+    ----------
+    data_file : str
+        Data file path.
+    """
+
+    data_file: str
+
+
+class AboutToInitializeSolutionEventInfo:
+    """Information about the event triggered just before solution is initialized."""
+
+
+class SolutionInitializedEventInfo:
+    """Information about the event triggered after solution is initialized."""
+
+
+@dataclass
+class ReportDefinitionUpdatedEventInfo:
+    """Information about the event triggered when a report definition is updated.
+    Attributes
+    ----------
+    report_name : str
+        Report name.
+    """
+
+    report_name: str
+
+
+@dataclass
+class ReportPlotSetUpdatedEventInfo:
+    """Information about the event triggered when a report plot set is updated.
+    Attributes
+    ----------
+    plot_set_name : str
+        Plot set name.
+    """
+
+    plot_set_name: str
+
+
+class ResidualPlotUpdatedEventInfo:
+    """Information about the event triggered when residual plots are updated."""
+
+
+class SettingsClearedEventInfo:
+    """Information about the event triggered when settings are cleared."""
+
+
+@dataclass
+class SolutionPausedEventInfo:
+    """Information about the event triggered when solution is paused.
+    Attributes
+    ----------
+    level : str
+        Level of the pause event.
+    index : int
+        Index of the pause event.
+    """
+
+    level: str
+    index: int
+
+
+@dataclass
+class ProgressUpdatedEventInfo:
+    """Information about the event triggered when progress is updated.
+    Attributes
+    ----------
+    message : str
+    percentage : int
+    """
+
+    message: str
+    percentage: int
+
+
+@dataclass
+class SolverTimeEstimateUpdatedEventInfo:
+    """Information about the event triggered when solver time estimate is updated.
+    Attributes
+    ----------
+    hours : float
+    minutes : float
+    seconds : float
+    """
+
+    hours: float
+    minutes: float
+    seconds: float
+
+
+@dataclass
+class FatalErrorEventInfo:
+    """Information about the event triggered when a fatal error occurs.
+    Attributes
+    ----------
+    message : str
+    error_code : int
+    """
+
+    message: str
+    error_code: int
 
 
 TEvent = TypeVar("TEvent")
