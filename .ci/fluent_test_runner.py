@@ -1,6 +1,7 @@
 """Script to run Fluent test in Docker container."""
 
 import argparse
+import concurrent.futures
 import logging
 import os
 from pathlib import Path
@@ -21,10 +22,10 @@ class FluentRuntimeError(RuntimeError):
     pass
 
 
-def run_fluent_test(
-    src_test_dir: Path, journal_file: Path, launcher_args: str = ""
+def _run_single_test(
+    src_test_dir: Path, journal_file: Path, launcher_args: str
 ) -> None:
-    """Run Fluent test.
+    """Run a single Fluent test.
 
     Parameters
     ----------
@@ -103,11 +104,27 @@ def run_fluent_test(
             sleep(1)
         logging.debug(container.logs(stderr=True).decode())
         container.remove()
-    except docker.errors.NotFound:
+    except docker.errors.DockerException:
         pass
 
 
 MAX_TEST_PATH_LENGTH = 100
+
+
+def _run_single_test_with_status_print(
+    src_test_dir: Path, journal_file: Path, launcher_args: str, test_file_relpath: str
+) -> bool:
+    try:
+        _run_single_test(src_test_dir, journal_file, launcher_args)
+        print(
+            f"{test_file_relpath}{(MAX_TEST_PATH_LENGTH + 10 - len(test_file_relpath)) * '·'}PASSED"
+        )
+    except FluentRuntimeError as e:
+        print(
+            f"{test_file_relpath}{(MAX_TEST_PATH_LENGTH + 10 - len(test_file_relpath)) * '·'}FAILED"
+        )
+        print(e)
+        return True
 
 
 if __name__ == "__main__":
@@ -120,7 +137,8 @@ if __name__ == "__main__":
     test_dir = Path.cwd() / args.test_dir
     with TemporaryDirectory(ignore_cleanup_errors=True) as src_test_dir:
         copytree(test_dir, src_test_dir, dirs_exist_ok=True)
-        exception_occurred = False
+        statuses = []
+        arguments = []
         src_test_dir = Path(src_test_dir)
         for test_file in (src_test_dir / "fluent").rglob("*.py"):
             config_file = test_file.with_suffix(".yaml")
@@ -129,17 +147,22 @@ if __name__ == "__main__":
                 configs = yaml.safe_load(config_file.read_text())
                 launcher_args = configs.get("launcher_args", "")
             test_file_relpath = str(test_file.relative_to(src_test_dir))
-            print(f"Running {test_file_relpath}", end="", flush=True)
-            try:
-                run_fluent_test(src_test_dir, test_file, launcher_args)
-                print(
-                    f"{(MAX_TEST_PATH_LENGTH + 10 - len(test_file_relpath)) * '·'}PASSED"
-                )
-            except FluentRuntimeError as e:
-                print(
-                    f"{(MAX_TEST_PATH_LENGTH + 10 - len(test_file_relpath)) * '·'}FAILED"
-                )
-                print(e)
-                exception_occurred = True
-        if exception_occurred:
+            arguments.append(
+                (src_test_dir, test_file, launcher_args, test_file_relpath)
+            )
+        max_workers = int(os.getenv("MAX_WORKERS_FLUENT_TESTS", 4))
+        if max_workers > 1:
+            with concurrent.futures.ThreadPoolExecutor(
+                max_workers=max_workers
+            ) as executor:
+                futures = [
+                    executor.submit(_run_single_test_with_status_print, *args)
+                    for args in arguments
+                ]
+                for future in concurrent.futures.as_completed(futures):
+                    statuses.append(future.result())
+        else:
+            for args in arguments:
+                statuses.append(_run_single_test_with_status_print(*args))
+        if any(statuses):
             exit(1)

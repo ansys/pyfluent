@@ -108,7 +108,6 @@ addopts = """
 -v
 --durations=0
 --show-capture=all
--n 4
 """
 markers = [
     "settings_only: Read and modify the case settings only, without loading the mesh, initializing, or solving the case",
