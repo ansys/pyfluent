@@ -83,6 +83,8 @@ jobs:
       - name: Run Fluent tests
         run: |
           make write-and-run-fluent-tests
+        env:
+          MAX_WORKERS_FLUENT_TESTS: 1
 
       - name: Cleanup previous docker containers
         if: always()

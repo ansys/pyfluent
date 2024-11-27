@@ -150,12 +150,19 @@ if __name__ == "__main__":
             arguments.append(
                 (src_test_dir, test_file, launcher_args, test_file_relpath)
             )
-        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-            futures = [
-                executor.submit(_run_single_test_with_status_print, *args)
-                for args in arguments
-            ]
-            for future in concurrent.futures.as_completed(futures):
-                statuses.append(future.result())
+        max_workers = int(os.getenv("MAX_WORKERS_FLUENT_TESTS", 4))
+        if max_workers > 1:
+            with concurrent.futures.ThreadPoolExecutor(
+                max_workers=max_workers
+            ) as executor:
+                futures = [
+                    executor.submit(_run_single_test_with_status_print, *args)
+                    for args in arguments
+                ]
+                for future in concurrent.futures.as_completed(futures):
+                    statuses.append(future.result())
+        else:
+            for args in arguments:
+                statuses.append(_run_single_test_with_status_print(*args))
         if any(statuses):
             exit(1)
