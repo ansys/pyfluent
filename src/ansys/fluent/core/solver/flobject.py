@@ -472,20 +472,6 @@ class Base:
     def __eq__(self, other):
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def _get_path_comps(self, path):
-        """Get path components."""
-        if self._parent is None:
-            if FluentVersion(self.version).number < 251:
-                return "<session>"
-            else:
-                return "<session>.settings"
-        ppath = self._parent.python_path
-        if not ppath:
-            return self.python_name
-        if self.python_name[0] == "[":
-            return ppath + self.python_name
-        return ppath + "." + self.python_name
-
 
 StateT = TypeVar("StateT")
 
