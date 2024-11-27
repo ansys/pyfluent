@@ -17,8 +17,9 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict
+from typing import Any
 
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
@@ -27,6 +28,7 @@ from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
     _confirm_watchdog_start,
+    _get_connection_info,
     _get_subprocess_kwargs_for_fluent,
     is_windows,
 )
@@ -68,7 +70,7 @@ class StandaloneLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str | None = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, str] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
@@ -217,7 +219,11 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR:
+            if (
+                pyfluent.LAUNCH_FLUENT_STDOUT
+                or pyfluent.LAUNCH_FLUENT_STDERR
+                or pyfluent.READ_SERVER_INFO_FROM_STDOUT
+            ):
                 self._launch_cmd = self._launch_string
             else:
                 # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
@@ -230,6 +236,8 @@ class StandaloneLauncher:
                 self._launch_cmd = self._launch_string
 
     def __call__(self):
+        import ansys.fluent.core as pyfluent
+
         if self.argvals["dry_run"]:
             print(f"Fluent launch string: {self._launch_string}")
             return
@@ -239,11 +247,14 @@ class StandaloneLauncher:
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
-                _await_fluent_launch(
-                    self._server_info_file_name,
-                    self.argvals["start_timeout"],
-                    self._sifile_last_mtime,
-                )
+                if pyfluent.READ_SERVER_INFO_FROM_STDOUT:
+                    ip, port = _get_connection_info(process)
+                else:
+                    _await_fluent_launch(
+                        self._server_info_file_name,
+                        self.argvals["start_timeout"],
+                        self._sifile_last_mtime,
+                    )
             except TimeoutError as ex:
                 if is_windows():
                     logger.warning(f"Exception caught - {type(ex).__name__}: {ex}")
@@ -253,22 +264,42 @@ class StandaloneLauncher:
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
                     process = subprocess.Popen(launch_cmd, **self._kwargs)
-                    _await_fluent_launch(
-                        self._server_info_file_name,
-                        self.argvals["start_timeout"],
-                        self._sifile_last_mtime,
-                    )
+                    if pyfluent.READ_SERVER_INFO_FROM_STDOUT:
+                        ip, port = _get_connection_info(process)
+                    else:
+                        _await_fluent_launch(
+                            self._server_info_file_name,
+                            self.argvals["start_timeout"],
+                            self._sifile_last_mtime,
+                        )
                 else:
                     raise ex
 
-            session = self.new_session._create_from_server_info_file(
-                server_info_file_name=self._server_info_file_name,
-                file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
-                start_transcript=self.argvals["start_transcript"],
-                launcher_args=self.argvals,
-                inside_container=False,
-            )
+            if pyfluent.READ_SERVER_INFO_FROM_STDOUT:
+                fluent_connection = FluentConnection(
+                    ip=ip,
+                    port=port,
+                    password=None,
+                    cleanup_on_exit=self.argvals["cleanup_on_exit"],
+                    file_transfer_service=self.file_transfer_service,
+                    inside_container=False,
+                )
+                session = self.new_session(
+                    fluent_connection=fluent_connection,
+                    scheme_eval=fluent_connection._connection_interface.scheme_eval,
+                    file_transfer_service=self.file_transfer_service,
+                    start_transcript=self.argvals["start_transcript"],
+                    launcher_args=self.argvals,
+                )
+            else:
+                session = self.new_session._create_from_server_info_file(
+                    server_info_file_name=self._server_info_file_name,
+                    file_transfer_service=self.file_transfer_service,
+                    cleanup_on_exit=self.argvals["cleanup_on_exit"],
+                    start_transcript=self.argvals["start_transcript"],
+                    launcher_args=self.argvals,
+                    inside_container=False,
+                )
             session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals["start_watchdog"],

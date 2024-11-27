@@ -110,6 +110,8 @@ def _generate_launch_string(
     launch_string += f" -sifile={server_info_file_name}"
     if not pyfluent.FLUENT_SHOW_MESH_AFTER_CASE_READ:
         launch_string += " -nm"
+    if pyfluent.READ_SERVER_INFO_FROM_STDOUT:
+        launch_string += f" -command={launcher_utils._CONNECTION_INFO_COMMAND}"
     return launch_string
 
 

@@ -136,3 +136,5 @@ LAUNCH_FLUENT_STDOUT = None
 # Set stderr of the launched Fluent process
 # Valid values are same as subprocess.Popen's stderr argument
 LAUNCH_FLUENT_STDERR = None
+
+READ_SERVER_INFO_FROM_STDOUT = False
