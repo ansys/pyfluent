@@ -1718,7 +1718,6 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     )
 
 
-<<<<<<< HEAD
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
@@ -1800,6 +1799,7 @@ def test_recursive_update_dict(new_meshing_session):
         "ZeroThickness": "Yes",
     }
 
+
 @pytest.mark.skip("Pending fix.")
 @pytest.mark.fluent_version(">=25.2")
 def test_meshing_workflow_api_updates_for_server_events(
@@ -1822,4 +1822,3 @@ def test_meshing_workflow_api_updates_for_server_events(
 
     assert attr_err_count == 0
     assert add_multizone_controls
-
