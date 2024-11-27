@@ -82,7 +82,7 @@ class StandaloneLauncher:
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
-        enable_data_model_api_upgrades: Optional[bool] = None,
+        enable_data_model_api_upgrades: bool | None = None,
     ):
         """Launch Fluent session in standalone mode.
 

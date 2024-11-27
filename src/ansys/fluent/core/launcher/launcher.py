@@ -107,7 +107,6 @@ def launch_fluent(
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
-<<<<<<< HEAD
     ui_mode: UIMode | str | None = None,
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
@@ -124,7 +123,7 @@ def launch_fluent(
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
     file_transfer_service: Any | None = None,
-    enable_data_model_api_upgrades: Optional[bool] = None,
+    enable_data_model_api_upgrades: bool | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
