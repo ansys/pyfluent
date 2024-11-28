@@ -452,3 +452,33 @@ def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
 
     with pytest.raises(ValueError):
         assert solver.fields.reduction.area(locations=["inlet-1"])
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
+    solver = static_mixer_case_session
+    solver.solution.initialization.hybrid_initialize()
+
+    assert solver.fields.reduction.area(locations=["inlet1"])
+
+    with pytest.raises(RuntimeError):
+        assert reduction.area(locations=[], ctxt=solver)
+
+    with pytest.raises(RuntimeError):
+        assert reduction.area_average(
+            expression="AbsolutePressure", locations=[], ctxt=solver
+        )
+
+    with pytest.raises(RuntimeError):
+        assert reduction.centroid(locations=[], ctxt=solver)
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.area(locations=[])
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.area_average(
+            expression="AbsolutePressure", locations=[]
+        )
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.centroid(locations=[])
