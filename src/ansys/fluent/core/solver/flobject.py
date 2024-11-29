@@ -1672,7 +1672,7 @@ class BaseCommand(Action):
                 command_name=self.python_name, value=value, kwargs=kwds
             )
         if (
-            self.obj_name == "create"
+            self.obj_name in ["create", "make-a-copy"]
             and isinstance(self._parent, NamedObject)
             and ret in self._parent
         ):
