@@ -128,6 +128,7 @@ class EventInfoBase:
 @dataclass
 class TimestepStartedEventInfo(EventInfoBase, event=SolverEvent.TIMESTEP_STARTED):
     """Information about the event triggered when a timestep is started.
+
     Attributes
     ----------
     index : int
@@ -143,6 +144,7 @@ class TimestepStartedEventInfo(EventInfoBase, event=SolverEvent.TIMESTEP_STARTED
 @dataclass
 class TimestepEndedEventInfo(EventInfoBase, event=SolverEvent.TIMESTEP_ENDED):
     """Information about the event triggered when a timestep is ended.
+
     Attributes
     ----------
     index : int
@@ -158,6 +160,7 @@ class TimestepEndedEventInfo(EventInfoBase, event=SolverEvent.TIMESTEP_ENDED):
 @dataclass
 class IterationEndedEventInfo(EventInfoBase, event=SolverEvent.ITERATION_ENDED):
     """Information about the event triggered when an iteration is ended.
+
     Attributes
     ----------
     index : int
@@ -190,6 +193,7 @@ class CalculationsResumedEventInfo(
 @dataclass
 class AboutToLoadCaseEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_CASE):
     """Information about the event triggered just before a case file is loaded.
+
     Attributes
     ----------
     case_file_name : str
@@ -202,6 +206,7 @@ class AboutToLoadCaseEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_CA
 @dataclass
 class CaseLoadedEventInfo(EventInfoBase, event=SolverEvent.CASE_LOADED):
     """Information about the event triggered after a case file is loaded.
+
     Attributes
     ----------
     case_file_name : str
@@ -214,6 +219,7 @@ class CaseLoadedEventInfo(EventInfoBase, event=SolverEvent.CASE_LOADED):
 @dataclass
 class AboutToLoadDataEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_DATA):
     """Information about the event triggered just before a data file is loaded.
+
     Attributes
     ----------
     data_file_name : str
@@ -226,6 +232,7 @@ class AboutToLoadDataEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_DA
 @dataclass
 class DataLoadedEventInfo(EventInfoBase, event=SolverEvent.DATA_LOADED):
     """Information about the event triggered after a data file is loaded.
+
     Attributes
     ----------
     data_file_name : str
@@ -252,6 +259,7 @@ class ReportDefinitionUpdatedEventInfo(
     EventInfoBase, event=SolverEvent.REPORT_DEFINITION_UPDATED
 ):
     """Information about the event triggered when a report definition is updated.
+
     Attributes
     ----------
     report_name : str
@@ -266,6 +274,7 @@ class ReportPlotSetUpdatedEventInfo(
     EventInfoBase, event=SolverEvent.REPORT_PLOT_SET_UPDATED
 ):
     """Information about the event triggered when a report plot set is updated.
+
     Attributes
     ----------
     plot_set_name : str
@@ -288,6 +297,7 @@ class SettingsClearedEventInfo(EventInfoBase, event=SolverEvent.SETTINGS_CLEARED
 @dataclass
 class SolutionPausedEventInfo(EventInfoBase, event=SolverEvent.SOLUTION_PAUSED):
     """Information about the event triggered when solution is paused.
+
     Attributes
     ----------
     level : str
@@ -303,6 +313,7 @@ class SolutionPausedEventInfo(EventInfoBase, event=SolverEvent.SOLUTION_PAUSED):
 @dataclass
 class ProgressUpdatedEventInfo(EventInfoBase, event=SolverEvent.PROGRESS_UPDATED):
     """Information about the event triggered when progress is updated.
+
     Attributes
     ----------
     message : str
@@ -320,6 +331,7 @@ class SolverTimeEstimateUpdatedEventInfo(
     EventInfoBase, event=SolverEvent.SOLVER_TIME_ESTIMATE_UPDATED
 ):
     """Information about the event triggered when solver time estimate is updated.
+
     Attributes
     ----------
     hours : float
@@ -338,6 +350,7 @@ class SolverTimeEstimateUpdatedEventInfo(
 @dataclass
 class FatalErrorEventInfo(EventInfoBase, event=SolverEvent.FATAL_ERROR):
     """Information about the event triggered when a fatal error occurs.
+
     Attributes
     ----------
     message : str

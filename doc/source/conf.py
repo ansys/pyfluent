@@ -197,12 +197,12 @@ html_theme_options = {
     "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "navigation_depth": -1,
     "collapse_navigation": True,
-    "cheatsheet": {
-        "file": "cheatsheet/cheat_sheet.qmd",
-        "pages": ["index", "getting_started/index", "user_guide/index"],
-        "title": "PyFluent cheat sheet",
-        "version": __version__,
-    },
+    # "cheatsheet": {
+    #     "file": "cheatsheet/cheat_sheet.qmd",
+    #     "pages": ["index", "getting_started/index", "user_guide/index"],
+    #     "title": "PyFluent cheat sheet",
+    #     "version": __version__,
+    # },
 }
 
 # -- Options for HTMLHelp output ---------------------------------------------
