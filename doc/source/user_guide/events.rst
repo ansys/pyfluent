@@ -25,11 +25,11 @@ The following code triggers a callback at the end of every iteration.
   >>>
   >>> callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
 
-The general signature of the callback function is cb(\*args, session, event_info), where session is the session instance
-and event_info instance holds information about the event. The event_info classes for each event are documented in the
+The general signature of the callback function is ``cb(<optional arguments>, session, event_info)``, where ``session`` is the session instance
+and ``event_info`` instance holds information about the event. The event information classes for each event are documented in the
 API reference of the :obj:`~ansys.fluent.core.streaming_services.events_streaming` module. See the callback function
-on_case_loaded_with_args() in the below examples for an example of how to pass additional arguments to the callback
-function via the args parameter.
+``on_case_loaded_with_args()`` in the below examples for an example of how to pass optional arguments to the callback
+function.
 
 
 Examples

@@ -16,6 +16,7 @@ from ansys.fluent.core.streaming_services.streaming import StreamingService
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 __all__ = [
+    "EventsManager",
     "Event",
     "SolverEvent",
     "MeshingEvent",
