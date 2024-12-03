@@ -116,15 +116,18 @@ jobs:
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
-    
+        run: |
+          pip install quarto-cli==1.5.57
+
       - name: Check Quarto Version
         shell: bash
         run: |
           quarto --version
 
+      - name: Install tinytex
+        run: |
+          quarto install tinytex
+    
       - name: "Install Poppler for PDF to PNG conversion"
         shell: bash
         run: |
