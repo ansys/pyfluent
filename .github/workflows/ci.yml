@@ -118,6 +118,7 @@ jobs:
       - name: Install Quarto
         run: |
           pip install quarto-cli==1.5.57
+          pip install pdf2image >=1.17.0
 
       - name: Check Quarto Version
         shell: bash
