@@ -25,10 +25,10 @@ The following code triggers a callback at the end of every iteration.
   >>>
   >>> callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
 
-The general signature of the callback function is ``cb(<optional arguments>, session, event_info)``, where ``session`` is the session instance
+The general signature of the callback function is ``cb(session, event_info, <additional arguments>)``, where ``session`` is the session instance
 and ``event_info`` instance holds information about the event. The event information classes for each event are documented in the
 API reference of the :obj:`~ansys.fluent.core.streaming_services.events_streaming` module. See the callback function
-``on_case_loaded_with_args()`` in the below examples for an example of how to pass optional arguments to the callback
+``on_case_loaded_with_args()`` in the below examples for an example of how to pass additional arguments to the callback
 function.
 
 
@@ -74,7 +74,7 @@ Examples
   >>> def on_case_loaded(session, event_info: CaseLoadedEventInfo):
   >>>     print("Case loaded. Index = ", event_info.index)
   >>>
-  >>> def on_case_loaded_with_args(x, y, session, event_info: CaseLoadedEventInfo):
+  >>> def on_case_loaded_with_args(session, event_info: CaseLoadedEventInfo, x, y):
   >>>     print(f"Case loaded with {x}, {y}. Index = ", event_info.index)
   >>>
   >>> callback = meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)

@@ -442,23 +442,26 @@ class EventsManager(Generic[TEvent]):
 
     @staticmethod
     def _make_callback_to_call(callback: Callable, args, kwargs):
-        old_style = "session_id" in inspect.signature(callback).parameters
-        if old_style:
+        params = inspect.signature(callback).parameters
+        if "session_id" in params:
             warnings.warn(
                 "Update event callback function signatures"
                 " substituting 'session' for 'session_id'.",
                 PyFluentDeprecationWarning,
             )
-        fn = partial(callback, *args, **kwargs)
-        return (
-            (
-                lambda session, event_info: fn(
-                    session_id=session.id, event_info=event_info
-                )
+            return lambda session, event_info: callback(
+                *args, session_id=session.id, event_info=event_info, **kwargs
             )
-            if old_style
-            else fn
-        )
+        else:
+            positional_args = [
+                p
+                for p in params
+                if p not in kwargs and p not in ("session", "event_info")
+            ]
+            kwargs.update(dict(zip(positional_args, args)))
+            return lambda session, event_info: callback(
+                session=session, event_info=event_info, **kwargs
+            )
 
     def register_callback(
         self,
