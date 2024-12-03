@@ -117,7 +117,9 @@ jobs:
 
       - name: Install Quarto
         run: |
-          pip install quarto-cli==1.5.57
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.39/quarto-1.6.39-linux-amd64.deb
+          sudo dpkg -i quarto-1.6.39-linux-amd64.deb
+          sudo apt install build-essential libssl-dev libxml2-dev libcurl4-openssl-dev libfontconfig1-dev zlib1g-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
       - name: Check Quarto Version
         shell: bash
