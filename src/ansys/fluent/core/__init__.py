@@ -103,11 +103,10 @@ DATAMODEL_RETURN_STATE_CHANGES = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
-# Directory where API files are writes out during codegen
-CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
-
-# Whether to zip settings API files during codegen
-CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
+# Directory where API files are written out during codegen
+CODEGEN_OUTDIR = os.getenv(
+    "PYFLUENT_CODEGEN_OUTDIR", (Path(__file__) / ".." / "generated").resolve()
+)
 
 # Whether to show mesh in Fluent after case read
 FLUENT_SHOW_MESH_AFTER_CASE_READ = False
