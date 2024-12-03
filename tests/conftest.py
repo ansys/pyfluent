@@ -127,6 +127,7 @@ def pytest_collection_finish(session):
             with open(fluent_test_config, "w") as f:
                 f.write(f"launcher_args: {launcher_args}\n")
             with open(fluent_test_file, "w") as f:
+                f.write('cx.get("trace-on")()\n')
                 f.write("import sys\n")
                 f.write('sys.path.append("/testing")\n')
                 f.write(
