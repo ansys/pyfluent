@@ -9,6 +9,7 @@ import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import SchemeEval, service_creator
+from ansys.fluent.core.services.app_utilities import AppUtilitiesService
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
@@ -130,6 +131,12 @@ class Solver(BaseSession):
         self.fields.solution_variable_info = SolutionVariableInfo(
             self._solution_variable_service
         )
+        self._app_utilities_service = self._fluent_connection.create_grpc_service(
+            AppUtilitiesService, self._error_state
+        )
+        self.app_utilities = service_creator("app_utilities").create(
+            self._app_utilities_service, self
+        )
         self._reduction_service = self._fluent_connection.create_grpc_service(
             ReductionService, self._error_state
         )
@@ -185,6 +192,11 @@ class Solver(BaseSession):
             PyFluentDeprecationWarning,
         )
         return self.fields.reduction
+
+    @property
+    def app_utilities(self):
+        """``AppUtilities`` handle."""
+        return self.app_utilities
 
     @property
     def _version(self):
