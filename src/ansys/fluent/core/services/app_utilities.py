@@ -1,7 +1,6 @@
 """Wrappers over AppUtilities gRPC service of Fluent."""
 
 from typing import Any, List, Tuple
-import weakref
 
 import grpc
 
@@ -124,13 +123,12 @@ class AppUtilitiesService:
 class AppUtilities:
     """AppUtilities."""
 
-    def __init__(self, service: AppUtilitiesService, ctxt=None):
+    def __init__(self, service: AppUtilitiesService):
         """__init__ method of AppUtilities class."""
         self.service = service
-        self.ctxt = weakref.proxy(ctxt)
 
-    def get_product_version(self, locations, ctxt=None) -> Any:
+    def get_product_version(self) -> Any:
         """Get product version."""
         request = AppUtilitiesProtoModule.GetProductVersionRequest()
         response = self.service.get_product_version(request)
-        return f"{response.major}.{response.minor}.{response.path}"
+        return f"{response.major}.{response.minor}.{response.patch}"

@@ -134,8 +134,8 @@ class Solver(BaseSession):
         self._app_utilities_service = self._fluent_connection.create_grpc_service(
             AppUtilitiesService, self._error_state
         )
-        self.app_utilities = service_creator("app_utilities").create(
-            self._app_utilities_service, self
+        self._app_utilities = service_creator("app_utilities").create(
+            self._app_utilities_service
         )
         self._reduction_service = self._fluent_connection.create_grpc_service(
             ReductionService, self._error_state
@@ -196,7 +196,7 @@ class Solver(BaseSession):
     @property
     def app_utilities(self):
         """``AppUtilities`` handle."""
-        return self.app_utilities
+        return self._app_utilities
 
     @property
     def _version(self):
