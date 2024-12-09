@@ -1,5 +1,6 @@
 """Provides a module to create gRPC services."""
 
+from ansys.fluent.core.services.app_utilities import AppUtilities
 from ansys.fluent.core.services.batch_ops import BatchOpsService
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService as DatamodelService_SE,
@@ -22,6 +23,7 @@ from ansys.fluent.core.services.solution_variables import (
 from ansys.fluent.core.services.transcript import TranscriptService
 
 _service_cls_by_name = {
+    "app_utilities": AppUtilities,
     "health_check": HealthCheckService,
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,

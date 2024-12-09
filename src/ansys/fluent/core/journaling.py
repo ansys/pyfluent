@@ -4,14 +4,14 @@
 class Journal:
     """Control the writing of Fluent Python journals."""
 
-    def __init__(self, scheme_eval):
+    def __init__(self, app_utilities):
         """__init__ method of Journal class."""
-        self.scheme_eval = scheme_eval
+        self.app_utilities = app_utilities
 
     def start(self, file_name: str):
         """Start writing a Fluent Python journal at the specified file_name."""
-        self.scheme_eval.exec([f'(api-start-python-journal "{file_name}")'])
+        self.app_utilities.start_python_journal(journal_name=file_name)
 
     def stop(self):
         """Stop writing the Fluent Python journal."""
-        self.scheme_eval.exec(["(api-stop-python-journal)"])
+        self.app_utilities.stop_python_journal()
