@@ -266,12 +266,11 @@ class _ConnectionInterface:
         try:
             logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
+            cortex_info = self.app_utilities.get_controller_process_info()
             fluent_host_pid = self.app_utilities.get_solver_process_info()["process_id"]
-            cortex_host = self.app_utilities.get_controller_process_info()["hostname"]
-            cortex_pid = self.app_utilities.get_controller_process_info()["process_id"]
-            cortex_pwd = self.app_utilities.get_controller_process_info()[
-                "working_directory"
-            ]
+            cortex_host = cortex_info["hostname"]
+            cortex_pid = cortex_info["process_id"]
+            cortex_pwd = cortex_info["working_directory"]
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
