@@ -136,10 +136,10 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
 class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
-    def __init__(self, channel, metadata, scheme_eval, fluent_error_state) -> None:
+    def __init__(self, channel, metadata, app_utilities, fluent_error_state) -> None:
         """__init__ method of SettingsService class."""
         self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
-        self._scheme_eval = scheme_eval
+        self._app_utilities = app_utilities
 
     @_trace
     def _set_state_from_value(self, state: SettingsModule.Value, value: Any):
@@ -369,7 +369,7 @@ class SettingsService:
         """Checks whether a name has a wildcard pattern."""
         return self._scheme_eval.is_defined(
             "has-fnmatch-wild-card?"
-        ) and self._scheme_eval.scheme_eval(f'(has-fnmatch-wild-card? "{name}")')
+        ) and self._app_utilities.is_wildcard(name)
 
     @_trace
     def is_interactive_mode(self) -> bool:

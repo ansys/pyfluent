@@ -220,14 +220,14 @@ class AppUtilities:
         response = self.service.register_pause_on_solution_events(request)
         return response.registration_id
 
-    def resume_on_solution_event(self, registration_id: int) -> Any:
+    def resume_on_solution_event(self, registration_id: str) -> Any:
         """Resume on solution event."""
         request = AppUtilitiesProtoModule.ResumeOnSolutionEventRequest()
         request.registration_id = registration_id
         response = self.service.resume_on_solution_event(request)
         return response
 
-    def unregister_pause_on_solution_events(self, registration_id: int) -> Any:
+    def unregister_pause_on_solution_events(self, registration_id: str) -> Any:
         """Unregister pause on solution events."""
         request = AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsRequest()
         request.registration_id = registration_id
