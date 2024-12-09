@@ -10,6 +10,7 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services.app_utilities import AppUtilitiesService
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -133,6 +134,13 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
+        self._app_utilities_service = self._fluent_connection.create_grpc_service(
+            AppUtilitiesService, self._error_state
+        )
+        self._app_utilities = service_creator("app_utilities").create(
+            self._app_utilities_service
+        )
+
         self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
@@ -211,6 +219,11 @@ class BaseSession:
         )
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
+
+    @property
+    def app_utilities(self):
+        """``AppUtilities`` handle."""
+        return self._app_utilities
 
     @property
     def field_info(self):
