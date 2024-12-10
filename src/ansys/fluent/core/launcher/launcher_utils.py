@@ -45,6 +45,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
 
     if argvals.get("enable_data_model_api_upgrades") is True:
         fluent_env["REMOTING_NEW_DM_API"] = "1"
+        fluent_env["REMOTING_MAPPED_NEW_DM_API"] = "1"
 
     if not is_slurm:
         if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
