@@ -266,3 +266,49 @@ Some sample use cases are demonstrated below:
 
   >>> field_data.get_surface_data.surface_ids.allowed_values()
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+
+Field data streaming
+--------------------
+
+Field data streaming service in PyFluent allow you to dynamically observe the
+changes to the field data by tracking its values. You can integrate PyFluent's
+field data streaming callback mechanism with visualization
+tools from the Python ecosystem, making it easy to visualize the data of interest.
+
+The following example updates a mesh data in meshing mode using this mechanism:
+
+.. code-block:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+
+  >>> import_file_name = examples.download_file(
+  >>>     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+  >>> )
+  >>> meshing = pyfluent.launch_fluent(mode="meshing")
+
+  >>> mesh_data = {}
+
+  >>> def plot_mesh(index, field_name, data):
+  >>>     if data is not None:
+  >>>         if index in mesh_data:
+  >>>             mesh_data[index].update({field_name: data})
+  >>>         else:
+  >>>             mesh_data[index] = {field_name: data}
+
+  >>> meshing.fields.field_data_streaming.register_callback(plot_mesh)
+  >>> meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
+
+  >>> meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+  >>> meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>>    "FileName": r"C:\ANSYSDev\PyFluent_Dev_01\example-data\pyfluent\mixing_elbow\mixing_elbow.pmdb",
+  >>>    "LengthUnit": "in",
+  >>> }
+
+  >>> meshing.workflow.TaskObject["Import Geometry"].Execute()
+
+.. note::
+   In meshing mode 'field_data_streaming' only provides a valid interface as of now.
+   Others methods return empty array.

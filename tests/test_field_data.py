@@ -432,3 +432,35 @@ def test_field_data_does_not_modify_case(new_solver_session):
         field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+
+
+@pytest.mark.fluent_version(">=24.1")
+def test_field_data_streaming_in_meshing_mode(new_meshing_session):
+    meshing = new_meshing_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+    )
+
+    mesh_data = {}
+
+    def plot_mesh(index, field_name, data):
+        if data is not None:
+            if index in mesh_data:
+                mesh_data[index].update({field_name: data})
+            else:
+                mesh_data[index] = {field_name: data}
+
+    meshing.fields.field_data_streaming.register_callback(plot_mesh)
+    meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
+
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+        "FileName": import_file_name,
+        "LengthUnit": "in",
+    }
+    meshing.workflow.TaskObject["Import Geometry"].Execute()
+
+    assert len(mesh_data[5]["vertices"]) == 66
+    assert len(mesh_data[5]["faces"]) == 80
+
+    assert list(mesh_data[12].keys()) == ["vertices", "faces"]
