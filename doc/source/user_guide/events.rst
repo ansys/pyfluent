@@ -18,13 +18,19 @@ The following code triggers a callback at the end of every iteration.
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import SolverEvent
+  >>> from ansys.fluent.core import SolverEvent, IterationEndedEventInfo
   >>>
-  >>> def on_iteration_ended(session, event_info):
+  >>> def on_iteration_ended(session, event_info: IterationEndedEventInfo):
   >>>     print("Iteration ended. Index = ", event_info.index)
   >>>
   >>> callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
-  >>> 
+
+The general signature of the callback function is ``cb(session, event_info, <additional arguments>)``, where ``session`` is the session instance
+and ``event_info`` instance holds information about the event. The event information classes for each event are documented in the
+API reference of the :obj:`~ansys.fluent.core.streaming_services.events_streaming` module. See the callback function
+``on_case_loaded_with_args()`` in the below examples for an example of how to pass additional arguments to the callback
+function.
+
 
 Examples
 --------
@@ -32,6 +38,7 @@ Examples
 .. code-block:: python
 
   >>> from ansys.fluent.core import MeshingEvent, SolverEvent
+  >>> from ansys.fluent.core import CaseLoadedEventInfo, DataLoadedEventInfo, SolutionInitializedEventInfo, IterationEndedEventInfo
   >>> from ansys.fluent.core.utils.event_loop import execute_in_event_loop_threadsafe
   >>> from ansys.fluent.visualization.matplotlib import matplot_windows_manager
   >>> from ansys.fluent.visualization.pyvista import pyvista_windows_manager
@@ -48,7 +55,7 @@ Examples
   >>> contour2.surfaces_list = ["symmetry"]
   >>> 
   >>> @execute_in_event_loop_threadsafe
-  >>> def auto_refersh_call_back_iteration(session, event_info):
+  >>> def auto_refersh_call_back_iteration(session, event_info: IterationEndedEventInfo):
   >>>   if event_info.index % 5 == 0:
   >>>       pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
   >>>       matplot_windows_manager.refresh_windows("", ["residual"])
@@ -56,7 +63,7 @@ Examples
   >>> callback_itr_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
   >>>
   >>> @execute_in_event_loop_threadsafe
-  >>> def initialize_call_back(session, event_info):
+  >>> def initialize_call_back(session, event_info: SolutionInitializedEventInfo | DataLoadedEventInfo):
   >>>     pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
   >>>     matplot_windows_manager.refresh_windows("", ["residual"])
   >>>
@@ -64,10 +71,10 @@ Examples
   >>>
   >>> callback_data_read_id = solver.events.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
   >>>
-  >>> def on_case_loaded(session, event_info):
+  >>> def on_case_loaded(session, event_info: CaseLoadedEventInfo):
   >>>     print("Case loaded. Index = ", event_info.index)
   >>>
-  >>> def on_case_loaded_with_args(x, y, session, event_info):
+  >>> def on_case_loaded_with_args(session, event_info: CaseLoadedEventInfo, x, y):
   >>>     print(f"Case loaded with {x}, {y}. Index = ", event_info.index)
   >>>
   >>> callback = meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)

@@ -21,6 +21,8 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the Docker image name while starting a Fluent container in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - FLUENT_IMAGE_TAG
       - Specifies the Docker image tag while starting a Fluent container in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_CODEGEN_OUTDIR
+      - Specifies the directory where API files are written out during codegen.
     * - PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS
       - Skips the generation of built-in settings during codegen.
     * - PYFLUENT_CONTAINER_MOUNT_SOURCE
@@ -29,6 +31,10 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the path inside the container where the host path is mounted while starting a Fluent container in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - PYFLUENT_FLUENT_DEBUG
       - Starts Fluent in debug mode while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_DOC_SKIP_CHEATSHEET:
+      - Skips the generation of cheatsheet.
+    * - PYFLUENT_DOC_SKIP_EXAMPLES
+      - Skips the generation of examples documentation.
     * - PYFLUENT_FLUENT_IP
       - Specifies the IP address of the Fluent server in :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`.
     * - PYFLUENT_FLUENT_PORT
@@ -47,8 +53,6 @@ Following is a list of environment variables that can be set to control various 
       - Shows the Fluent GUI while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - PYFLUENT_SKIP_API_UPGRADE_ADVICE
       - Disables printing of TUI to settings API upgrade advice.
-    * - PYFLUENT_SKIP_EXAMPLES_DOC
-      - Skips the generation of examples documentation.
     * - PYFLUENT_TIMEOUT_FORCE_EXIT
       - Enables force exit while exiting a Fluent session and specifies the timeout in seconds.
     * - PYFLUENT_WATCHDOG_DEBUG
