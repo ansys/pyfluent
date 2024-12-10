@@ -114,7 +114,6 @@ class BaseSession:
         self.scheme_eval = scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
-        self.journal = Journal(self.app_utilities)
 
         self._transcript_service = service_creator("transcript").create(
             fluent_connection._channel, fluent_connection._metadata
@@ -129,6 +128,8 @@ class BaseSession:
         self._app_utilities = service_creator("app_utilities").create(
             self._app_utilities_service
         )
+
+        self.journal = Journal(self._app_utilities)
 
         self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
@@ -197,7 +198,7 @@ class BaseSession:
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.app_utilities,
+            self._app_utilities,
             self._error_state,
         )
 
@@ -209,11 +210,6 @@ class BaseSession:
         )
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
-
-    @property
-    def app_utilities(self):
-        """``AppUtilities`` handle."""
-        return self._app_utilities
 
     @property
     def field_info(self):

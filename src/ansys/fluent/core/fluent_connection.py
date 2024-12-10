@@ -250,14 +250,14 @@ class _ConnectionInterface:
         self._app_utilities_service = create_grpc_service(
             AppUtilitiesService, error_state
         )
-        self.app_utilities = service_creator("app_utilities").create(
+        self._app_utilities = service_creator("app_utilities").create(
             self._app_utilities_service
         )
 
     @property
     def product_build_info(self) -> str:
         """Get Fluent build information."""
-        self.app_utilities.get_build_info()
+        self._app_utilities.get_build_info()
 
     def get_cortex_connection_properties(self):
         """Get connection properties of Fluent."""
@@ -266,8 +266,10 @@ class _ConnectionInterface:
         try:
             logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
-            cortex_info = self.app_utilities.get_controller_process_info()
-            fluent_host_pid = self.app_utilities.get_solver_process_info()["process_id"]
+            cortex_info = self._app_utilities.get_controller_process_info()
+            fluent_host_pid = self._app_utilities.get_solver_process_info()[
+                "process_id"
+            ]
             cortex_host = cortex_info["hostname"]
             cortex_pid = cortex_info["process_id"]
             cortex_pwd = cortex_info["working_directory"]
@@ -286,11 +288,11 @@ class _ConnectionInterface:
 
     def get_mode(self):
         """Get the mode of a running fluent session."""
-        return self.app_utilities.get_app_mode()
+        return self._app_utilities.get_app_mode()
 
     def exit_server(self):
         """Exits the server."""
-        self.app_utilities.exit()
+        self._app_utilities.exit()
 
 
 def _pid_exists(pid):

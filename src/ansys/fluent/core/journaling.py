@@ -6,12 +6,12 @@ class Journal:
 
     def __init__(self, app_utilities):
         """__init__ method of Journal class."""
-        self.app_utilities = app_utilities
+        self._app_utilities = app_utilities
 
     def start(self, file_name: str):
         """Start writing a Fluent Python journal at the specified file_name."""
-        self.app_utilities.start_python_journal(journal_name=file_name)
+        self._app_utilities.start_python_journal(journal_name=file_name)
 
     def stop(self):
         """Stop writing the Fluent Python journal."""
-        self.app_utilities.stop_python_journal()
+        self._app_utilities.stop_python_journal()

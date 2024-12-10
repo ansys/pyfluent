@@ -20,4 +20,4 @@ def generate(version: str, app_utilities):
 if __name__ == "__main__":
     solver = launch_fluent()
     version = get_version_for_file_name(session=solver)
-    generate(version, solver.app_utilities)
+    generate(version, solver._app_utilities)

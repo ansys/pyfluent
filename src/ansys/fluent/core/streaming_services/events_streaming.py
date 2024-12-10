@@ -538,7 +538,7 @@ class EventsManager(Generic[TEvent]):
                     del callbacks_map[callback_id]
             sync_event_id = self._sync_event_ids.pop(callback_id, None)
             if sync_event_id:
-                self._session.app_utilities.unregister_pause_on_solution_events(
+                self._session._app_utilities.unregister_pause_on_solution_events(
                     sync_event_id
                 )
 
@@ -557,7 +557,7 @@ class EventsManager(Generic[TEvent]):
         callback: Callable,
     ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
         unique_id: str = self._session.app_utilitites.register_pause_on_solution_events(
-            solution_event=SolverEvent.TIMESTEP_ENDED
+            solution_event=event_type
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
@@ -578,7 +578,7 @@ class EventsManager(Generic[TEvent]):
                         exc_info=True,
                     )
                 finally:
-                    session.app_utilities.resume_on_solution_event(
+                    session._app_utilities.resume_on_solution_event(
                         registration_id=unique_id
                     )
 
