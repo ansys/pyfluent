@@ -95,14 +95,14 @@ def _run_single_test(
             stderr = container.logs(stdout=False, stderr=True)
             if stderr:
                 stderr = stderr.decode()
-                for line in stderr.split("\n"):
+                for line in stderr.splitlines():
                     if line.strip().startswith("Error:"):
                         if "Expected exception" in line:  # for check_assert.py
                             container.stop()
                         else:
                             raise FluentRuntimeError(line)
             sleep(1)
-        logging.debug(container.logs(stderr=True).decode())
+        print(container.logs(stderr=True).decode())
         container.remove()
     except docker.errors.DockerException:
         pass
