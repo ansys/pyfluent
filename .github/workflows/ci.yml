@@ -123,11 +123,9 @@ jobs:
         run: |
           quarto --version
 
-      - name: Install tinytex
-        shell: bash
+      - name: Verify tinytex is installed
         run: |
-          apt install -y perl
-          wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+          quarto install tinytex --no-prompt --update-path
 
       - name: "Install Poppler for PDF to PNG conversion"
         shell: bash
