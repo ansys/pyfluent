@@ -135,7 +135,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
-            self.scheme_eval,
+            self._app_utilities,
         )
 
         self._datamodel_service_se = service_creator("datamodel").create(
