@@ -171,16 +171,17 @@ class AppUtilities:
         """
         request = AppUtilitiesProtoModule.GetAppModeRequest()
         response = self.service.get_app_mode(request)
-        if response.app_mode == AppUtilitiesProtoModule.APP_MODE_UNKNOWN:
-            raise ValueError("Unknown app mode.")
-        elif response.app_mode == AppUtilitiesProtoModule.APP_MODE_MESHING:
-            return pyfluent.FluentMode.MESHING
-        elif response.app_mode == AppUtilitiesProtoModule.APP_MODE_SOLVER:
-            return pyfluent.FluentMode.SOLVER
-        elif response.app_mode == AppUtilitiesProtoModule.APP_MODE_SOLVER_ICING:
-            return pyfluent.FluentMode.SOLVER_ICING
-        elif response.app_mode == AppUtilitiesProtoModule.APP_MODE_SOLVER_AERO:
-            return pyfluent.FluentMode.SOLVER_AERO
+        match response.app_mode:
+            case AppUtilitiesProtoModule.APP_MODE_UNKNOWN:
+                raise ValueError("Unknown app mode.")
+            case AppUtilitiesProtoModule.APP_MODE_MESHING:
+                return pyfluent.FluentMode.MESHING
+            case AppUtilitiesProtoModule.APP_MODE_SOLVER:
+                return pyfluent.FluentMode.SOLVER
+            case AppUtilitiesProtoModule.APP_MODE_SOLVER_ICING:
+                return pyfluent.FluentMode.SOLVER_ICING
+            case AppUtilitiesProtoModule.APP_MODE_SOLVER_AERO:
+                return pyfluent.FluentMode.SOLVER_AERO
 
     def start_python_journal(self, journal_name: str | None = None) -> Any:
         """Start python journal."""
