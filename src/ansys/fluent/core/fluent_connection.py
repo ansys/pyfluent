@@ -267,9 +267,8 @@ class _ConnectionInterface:
             logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
             cortex_info = self._app_utilities.get_controller_process_info()
-            fluent_host_pid = self._app_utilities.get_solver_process_info()[
-                "process_id"
-            ]
+            solver_info = self._app_utilities.get_solver_process_info()
+            fluent_host_pid = solver_info["process_id"]
             cortex_host = cortex_info["hostname"]
             cortex_pid = cortex_info["process_id"]
             cortex_pwd = cortex_info["working_directory"]
