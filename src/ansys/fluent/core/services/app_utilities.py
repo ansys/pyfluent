@@ -2,6 +2,7 @@
 
 from typing import Any, List, Tuple
 
+from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
@@ -129,37 +130,32 @@ class AppUtilities:
         """__init__ method of AppUtilities class."""
         self.service = service
 
-    def get_product_version(self) -> Any:
+    def get_product_version(self, with_patch: bool = True) -> Any:
         """Get product version."""
         request = AppUtilitiesProtoModule.GetProductVersionRequest()
         response = self.service.get_product_version(request)
-        return f"{response.major}.{response.minor}.{response.patch}"
+        if with_patch:
+            return f"{response.major}.{response.minor}.{response.patch}"
+        else:
+            return f"{response.major}{response.minor}"
 
     def get_build_info(self) -> Any:
         """Get build info."""
         request = AppUtilitiesProtoModule.GetBuildInfoRequest()
         response = self.service.get_build_info(request)
-        return f"Build Time: {response.build_time} Build ID: {response.build_id} Revision: {response.vcs_revision} Branch: {response.vcs_branch}"
+        return MessageToDict(response)
 
     def get_controller_process_info(self) -> Any:
         """Get controller process info."""
         request = AppUtilitiesProtoModule.GetControllerProcessInfoRequest()
         response = self.service.get_controller_process_info(request)
-        return {
-            "hostname": response.hostname,
-            "process_id": response.process_id,
-            "working_directory": response.working_directory,
-        }
+        return MessageToDict(response)
 
     def get_solver_process_info(self) -> Any:
         """Get solver process info."""
         request = AppUtilitiesProtoModule.GetSolverProcessInfoRequest()
         response = self.service.get_solver_process_info(request)
-        return {
-            "hostname": response.hostname,
-            "process_id": response.process_id,
-            "working_directory": response.working_directory,
-        }
+        return MessageToDict(response)
 
     def get_app_mode(self) -> Any:
         """Get app mode.
