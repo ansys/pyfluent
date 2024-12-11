@@ -115,6 +115,26 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
 
+      - name: Install Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Check Quarto Version
+        shell: bash
+        run: |
+          quarto --version
+
+      - name: Install tinytex
+        shell: bash
+        run: |
+          apt install -y perl
+          wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+
+      - name: "Install Poppler for PDF to PNG conversion"
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+
       - name: Install pyfluent
         run: make install
 
