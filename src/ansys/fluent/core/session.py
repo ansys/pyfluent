@@ -175,12 +175,12 @@ class BaseSession:
                 """Initialize Fields."""
                 self.field_info = service_creator("field_info").create(
                     _session._field_data_service,
-                    self.app_utilitites.is_solution_data_available(),
+                    _session._app_utilities.is_solution_data_available(),
                 )
                 self.field_data = service_creator("field_data").create(
                     _session._field_data_service,
                     self.field_info,
-                    self.app_utilitites.is_solution_data_available(),
+                    _session._app_utilities.is_solution_data_available(),
                     _session.scheme_eval,
                 )
                 self.field_data_streaming = FieldDataStreaming(
@@ -189,7 +189,7 @@ class BaseSession:
                 self.field_data_old = service_creator("field_data_old").create(
                     _session._field_data_service,
                     self.field_info,
-                    self.app_utilitites.is_solution_data_available(),
+                    _session._app_utilities.is_solution_data_available(),
                     _session.scheme_eval,
                 )
 

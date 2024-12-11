@@ -16,11 +16,6 @@ def print_fluent_version(app_utilities):
         f.write(f'FLUENT_BRANCH = "{build_info["vcs_branch"]}"\n')
 
 
-def generate(app_utilities):
-    """Write Fluent version information."""
-    print_fluent_version(app_utilities)
-
-
 if __name__ == "__main__":
     solver = launch_fluent()
-    generate(solver._app_utilities)
+    print_fluent_version(solver._app_utilities)
