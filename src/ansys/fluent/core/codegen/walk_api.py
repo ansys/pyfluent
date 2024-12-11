@@ -1,14 +1,29 @@
-"""Module containing tool for walking API."""
+"""Module containing tool for walking (generated) API class hierarchy.
+
+Example
+-------
+
+.. code-block:: python
+
+    >>> from ansys.fluent.core.codegen import walk_api
+    >>> from ansys.fluent.core.generated.solver import settings_252
+    >>> walk_api.walk_api(settings_252.root,lambda p: print(p), current_path=[])
+
+"""
+
+from typing import List
 
 
-def walk_api(api_root_cls, on_each_path, current_path=""):
+def walk_api(api_root_cls, on_each_path, current_path: str | List[str] = ""):
     """
     Recursively traverse the API hierarchy, calling `on_each_path` for each item.
 
     Parameters:
     - api_root_cls: The root class of the API hierarchy.
     - on_each_path: A callback function to call for each path.
-    - current_path: The current dot-separated path in the hierarchy (default: empty string).
+    - current_path: The current path in the hierarchy (default: empty string).
+      Paths can be either dot-separated strings or string lists. The type is
+      determined by the client.
     """
     # Skip the root path
     if current_path:
@@ -23,6 +38,11 @@ def walk_api(api_root_cls, on_each_path, current_path=""):
         if child_name in child_classes:
             child_cls = child_classes[child_name]
             # Construct the new path
-            new_path = f"{current_path}.{child_name}" if current_path else child_name
+            if isinstance(current_path, list):
+                new_path = current_path + [child_name]
+            else:
+                new_path = (
+                    f"{current_path}.{child_name}" if current_path else child_name
+                )
             # Recursively walk the child
             walk_api(child_cls, on_each_path, new_path)
