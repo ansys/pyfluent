@@ -173,8 +173,8 @@ def _generate_api_source_rst_files(folder: str, files: list):
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
                 else:
-                    rst.write(f"ansys.fluent.core.{file}\n")
-                    rst.write(f'{"="*(len(f"ansys.fluent.core.{file}"))}\n\n')
+                    rst.write(f"{file}\n")
+                    rst.write(f'{"="*(len(f"{file}"))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
@@ -191,8 +191,8 @@ def _generate_api_index_rst_files():
             file = _get_file_path(folder, "index")
             with open(file, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
-                index.write(f"ansys.fluent.core.{folder}\n")
-                index.write(f'{"="*(len(f"ansys.fluent.core.{folder}"))}\n\n')
+                index.write(f"{folder}\n")
+                index.write(f'{"="*(len(f"{folder}"))}\n\n')
                 index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
                 _write_common_rst_members(rst_file=index)
                 index.write(".. toctree::\n")
