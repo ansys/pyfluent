@@ -50,13 +50,13 @@ rules_str_caps = (
 
 
 def get_static_info_value(static_info, type_path):
-    for p in type_path.split("/"):
+    for p in type_path.removeprefix("/").split("/"):
         static_info = static_info[p]
     return static_info
 
 
 def test_datamodel_api_bool_for_str_has_correct_type(
-    datamodel_api_version, new_solver_session
+    datamodel_api_version_new, new_solver_session
 ):
     solver = new_solver_session
     create_datamodel_root_in_server(solver, rules_str)

@@ -117,7 +117,7 @@ class test_root(PyMenu):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_env_var_setting(datamodel_api_version, request, new_solver_session):
+def test_env_var_setting(datamodel_api_version_all, request, new_solver_session):
     solver = new_solver_session
     test_name = request.node.name
     for var in ["REMOTING_NEW_DM_API", "REMOTING_MAPPED_NEW_DM_API"]:
@@ -130,7 +130,7 @@ def test_env_var_setting(datamodel_api_version, request, new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_child_created(datamodel_api_version, new_solver_session):
+def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -154,7 +154,7 @@ def test_datamodel_api_on_child_created(datamodel_api_version, new_solver_sessio
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_changed(datamodel_api_version, new_solver_session):
+def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -204,7 +204,7 @@ def test_datamodel_api_on_changed(datamodel_api_version, new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_affected(datamodel_api_version, new_solver_session):
+def test_datamodel_api_on_affected(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -233,7 +233,7 @@ def test_datamodel_api_on_affected(datamodel_api_version, new_solver_session):
 
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_affected_at_type_path(
-    datamodel_api_version, new_solver_session
+    datamodel_api_version_all, new_solver_session
 ):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
@@ -262,7 +262,9 @@ def test_datamodel_api_on_affected_at_type_path(
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_deleted(datamodel_api_version, request, new_solver_session):
+def test_datamodel_api_on_deleted(
+    datamodel_api_version_all, request, new_solver_session
+):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -296,7 +298,9 @@ def test_datamodel_api_on_deleted(datamodel_api_version, request, new_solver_ses
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_attribute_changed(datamodel_api_version, new_solver_session):
+def test_datamodel_api_on_attribute_changed(
+    datamodel_api_version_all, new_solver_session
+):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -329,7 +333,7 @@ def test_datamodel_api_on_attribute_changed(datamodel_api_version, new_solver_se
 
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_command_attribute_changed(
-    datamodel_api_version, new_solver_session
+    datamodel_api_version_all, new_solver_session
 ):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
@@ -366,7 +370,9 @@ def test_datamodel_api_on_command_attribute_changed(
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_command_executed(datamodel_api_version, new_solver_session):
+def test_datamodel_api_on_command_executed(
+    datamodel_api_version_all, new_solver_session
+):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -401,7 +407,7 @@ def test_datamodel_api_on_command_executed(datamodel_api_version, new_solver_ses
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_get_state(datamodel_api_version, new_solver_session):
+def test_datamodel_api_get_state(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -409,7 +415,7 @@ def test_datamodel_api_get_state(datamodel_api_version, new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_set_state(datamodel_api_version, new_solver_session):
+def test_datamodel_api_set_state(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -418,7 +424,7 @@ def test_datamodel_api_set_state(datamodel_api_version, new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_update_dict(datamodel_api_version, new_solver_session):
+def test_datamodel_api_update_dict(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -427,7 +433,9 @@ def test_datamodel_api_update_dict(datamodel_api_version, new_solver_session):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_on_bad_input(datamodel_api_version, request, new_solver_session):
+def test_datamodel_api_on_bad_input(
+    datamodel_api_version_all, request, new_solver_session
+):
     solver = new_solver_session
     root = create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
@@ -476,7 +484,7 @@ def test_datamodel_api_on_bad_input(datamodel_api_version, request, new_solver_s
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_datamodel_api_static_info(datamodel_api_version, new_solver_session):
+def test_datamodel_api_static_info(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     create_datamodel_root_in_server(solver, rule_str, test_root)
     service = solver._se_service
