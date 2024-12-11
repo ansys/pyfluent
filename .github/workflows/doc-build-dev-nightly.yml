@@ -36,13 +36,15 @@ jobs:
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
 
       - name: Check Quarto Version
         shell: bash
         run: |
           quarto --version
+
+      - name: Verify tinytex is installed
+        run: |
+          quarto install tinytex --no-prompt --update-path
 
       - name: "Install Poppler for PDF to PNG conversion"
         shell: bash
