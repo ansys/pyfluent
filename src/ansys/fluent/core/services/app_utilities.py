@@ -149,13 +149,21 @@ class AppUtilities:
         """Get controller process info."""
         request = AppUtilitiesProtoModule.GetControllerProcessInfoRequest()
         response = self.service.get_controller_process_info(request)
-        return MessageToDict(response, preserving_proto_field_name=True)
+        return {
+            "hostname": response.hostname,
+            "process_id": response.process_id,
+            "working_directory": response.working_directory,
+        }
 
     def get_solver_process_info(self) -> Any:
         """Get solver process info."""
         request = AppUtilitiesProtoModule.GetSolverProcessInfoRequest()
         response = self.service.get_solver_process_info(request)
-        return MessageToDict(response, preserving_proto_field_name=True)
+        return {
+            "hostname": response.hostname,
+            "process_id": response.process_id,
+            "working_directory": response.working_directory,
+        }
 
     def get_app_mode(self) -> Any:
         """Get app mode.
