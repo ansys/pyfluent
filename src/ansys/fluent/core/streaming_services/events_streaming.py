@@ -556,7 +556,7 @@ class EventsManager(Generic[TEvent]):
         callback_id: str,
         callback: Callable,
     ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
-        unique_id: str = self._session.app_utilitites.register_pause_on_solution_events(
+        unique_id: str = self._session._app_utilities.register_pause_on_solution_events(
             solution_event=event_type
         )
 
