@@ -165,3 +165,33 @@ def test_state_of_command_args_with_mapping(
     assert service.get_state(app_name, f"/C:{c_name}") == {"X": False}
     service.set_state(app_name, f"/C:{c_name}", {"X": True})
     assert service.get_state(app_name, f"/C:{c_name}") == {"X": True}
+
+
+def register_external_function_in_remote_app(session, app_name, func_name):
+    session.scheme_eval.scheme_eval(
+        f'(state/register-external-fn "{app_name}" "{func_name}" (lambda (obj . args) (car args)) (cons "Variant" (list "ModelObject" "Variant")))'
+    )
+
+
+def test_execute_command_with_args_mapping(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    register_external_function_in_remote_app(solver, app_name, "CFunc")
+    result = service.execute_command(app_name, "/", "C", {"X": True})
+    assert result == "yes"
+
+
+def test_execute_command_with_args_and_path_mapping(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    register_external_function_in_remote_app(solver, app_name, "CFunc")
+    result = service.execute_command(app_name, "/", "dd", {"X": True})
+    assert result == "yes"
