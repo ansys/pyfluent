@@ -34,22 +34,6 @@ jobs:
           sudo apt update
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
-      - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
-
-      - name: Check Quarto Version
-        shell: bash
-        run: |
-          quarto --version
-
-      - name: "Install Poppler for PDF to PNG conversion"
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y poppler-utils
-
       - name: Install pyfluent
         run: make install
 
