@@ -4,7 +4,7 @@ import tempfile
 import pytest
 
 try:
-    from ansys.fluent.core import (
+    from ansys.fluent.core.solver import (
         Ablation,
         Battery,
         BoundaryCondition,
