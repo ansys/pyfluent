@@ -463,3 +463,126 @@ def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
     assert state is False
     assert called_obj == 2
     assert state_obj == {"X": False, "Y": 2, "Z": None}
+
+
+def test_mapped_on_attribute_changed(datamodel_api_version_new, new_solver_session):
+    rules_str = (
+        "RULES:\n"
+        "  STRING: X\n"
+        "    allowedValues = yes, no\n"
+        "    default = $../Y\n"
+        "    logicalMapping = True, False\n"
+        "  END\n"
+        "  STRING: Y\n"
+        "  END\n"
+        "  SINGLETON: ROOT\n"
+        "    members = A\n"
+        "    commands = C\n"
+        "    SINGLETON: A\n"
+        "      members = X, Y\n"
+        "    END\n"
+        "    COMMAND: C\n"
+        "      arguments = X, Y\n"
+        "    END\n"
+        "  END\n"
+        "END\n"
+    )
+
+    class root_cls(PyMenu):
+        def __init__(self, service, rules, path):
+            self.A = self.__class__.A(service, rules, path + [("A", "")])
+            self.C = self.__class__.C(service, rules, path + [("C", "")])
+            super().__init__(service, rules, path)
+
+        class A(PyMenu):
+            def __init__(self, service, rules, path):
+                self.X = self.__class__.X(service, rules, path + [("X", "")])
+                self.Y = self.__class__.Y(service, rules, path + [("Y", "")])
+                super().__init__(service, rules, path)
+
+            class X(PyTextual):
+                pass
+
+            class Y(PyTextual):
+                pass
+
+        class C(PyCommand):
+            pass
+
+    solver = new_solver_session
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rules_str, app_name, root_cls)
+    service = solver._se_service
+    called = 0
+    value = None
+
+    def cb(val):
+        nonlocal called
+        nonlocal value
+        value = val
+        called += 1
+
+    subscription = service.add_on_attribute_changed(
+        app_name, "/A/X", "default", root.A.X, cb
+    )
+    assert called == 0
+    assert value is None
+
+    service.set_state(app_name, "/A/Y", "no")
+    timeout_loop(lambda: called == 1, timeout=5)
+    assert called == 1
+    assert value is False
+
+    service.set_state(app_name, "/A/Y", "yes")
+    timeout_loop(lambda: called == 2, timeout=5)
+    assert called == 2
+    assert value is True
+
+    subscription.unsubscribe()
+    service.set_state(app_name, "/A/Y", "no")
+    time.sleep(5)
+    assert called == 2
+    assert value is True
+
+
+def test_datamodel_api_on_command_executed_mapped_args(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rules_str, app_name, rules_cls)
+    service = solver._se_service
+    register_external_function_in_remote_app(solver, app_name, "CFunc")
+    executed = False
+    command = None
+    arguments = None
+
+    def cb(obj, cmd, args):
+        nonlocal executed
+        nonlocal command
+        nonlocal arguments
+        command = cmd
+        arguments = args
+        executed = True
+
+    subscription = service.add_on_command_executed(app_name, "/", "C", root, cb)
+    assert not executed
+    assert command is None
+    assert arguments is None
+
+    service.execute_command(app_name, "/", "C", {"X": True})
+    timeout_loop(lambda: executed, timeout=5)
+    assert executed
+    assert command == "C"
+    assert arguments == {"X": True}
+
+    executed = False
+    command = None
+    arguments = None
+
+    subscription.unsubscribe()
+    service.execute_command(app_name, "/", "C", {"X": False})
+    time.sleep(5)
+    assert not executed
+    assert command is None
+    assert arguments is None
