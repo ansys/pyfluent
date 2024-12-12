@@ -586,3 +586,160 @@ def test_datamodel_api_on_command_executed_mapped_args(
     assert not executed
     assert command is None
     assert arguments is None
+
+
+api_name_rules_str = (
+    "RULES:\n"
+    "  STRING: __X\n"
+    "    allowedValues = yes, no\n"
+    "    logicalMapping = True, False\n"
+    "    attr1 = 42.0\n"
+    "    APIName = xxx\n"
+    "  END\n"
+    "  STRING: __Y\n"
+    '    allowedValues = \\"1\\", \\"2\\", \\"3\\"\n'
+    '    default = \\"2\\"\n'
+    "    isNumerical = True\n"
+    "    APIName = yyy\n"
+    "  END\n"
+    "  INTEGER: Z\n"
+    "  END\n"
+    "  SINGLETON: ROOT\n"
+    "    members = __A, B, __E\n"
+    "    commands = __C, D\n"
+    "    SINGLETON: __A\n"
+    "      members = __X\n"
+    "      APIName = aaa\n"
+    "    END\n"
+    "    OBJECT: B\n"
+    "      members = __Y, Z\n"
+    "    END\n"
+    "    OBJECT: __E\n"
+    "      members = __Y\n"
+    "      APIName = eee\n"
+    "    END\n"
+    "    COMMAND: __C\n"
+    "      arguments = __X\n"
+    "      functionName = CFunc\n"
+    "      APIName = ccc\n"
+    "    END\n"
+    "    COMMAND: D\n"
+    "      arguments = __X\n"
+    "      functionName = CFunc\n"
+    "    END\n"
+    "  END\n"
+    "END\n"
+)
+
+
+def test_datamodel_api_with_mapped_names(datamodel_api_version_new, new_solver_session):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
+    service = solver._se_service
+    static_info = service.get_static_info(app_name)
+    assert (
+        get_static_info_value(static_info, "/singletons/aaa/parameters/xxx/type")
+        == "Logical"
+    )
+    assert (
+        get_static_info_value(static_info, "/namedobjects/B/parameters/yyy/type")
+        == "Integer"
+    )
+    assert (
+        get_static_info_value(static_info, "/namedobjects/B/parameters/Z/type")
+        == "Integer"
+    )
+
+    command_args = [
+        {
+            "helpstring": "",
+            "name": "xxx",
+            "type": "Logical",
+        }
+    ]
+    command_args = [sorted(x.items()) for x in command_args]
+    ccc_args = get_static_info_value(  # noqa: F841
+        static_info, "/commands/ccc/commandinfo/args"
+    )
+    # TODO: helpstring is not being set
+    # assert command_args == [sorted(x.items()) for x in ccc_args]
+    d_args = get_static_info_value(  # noqa: F841
+        static_info, "/commands/D/commandinfo/args"
+    )
+    # TODO: helpstring is not being returned
+    # assert command_args == [sorted(x.items()) for x in d_args]
+
+
+# TODO: what are the equivalent of following tests in Python?
+# testMapperMapDataModelPathToAPIPath
+# testMapperMapAPIPathToDataModelPath
+# testMapperMapDMValueToAPI
+
+
+def test_datamodel_api_root_get_and_set_state_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
+    service = solver._se_service
+    assert service.get_state(app_name, "/") == {"aaa": {"xxx": None}}
+    service.set_state(app_name, "/__A/__X", "yes")
+    assert service.get_state(app_name, "/") == {"aaa": {"xxx": True}}
+    service.set_state(app_name, "/", {"aaa": {"xxx": False}})
+    assert service.get_state(app_name, "/") == {"aaa": {"xxx": False}}
+
+
+def test_datamodel_api_root_get_attrs_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
+    service = solver._se_service
+    assert service.get_attribute_value(app_name, "/aaa/xxx", "attr1") == 42.0
+    service.set_state(app_name, "/", {"B:b": {}})
+    assert service.get_attribute_value(app_name, "/B:b/yyy", "default") == 2
+
+
+def test_datamodel_api_cmd_args_op_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
+    service = solver._se_service
+    c_name = service.create_command_arguments(app_name, "/", "ccc")
+    x_path_str = f"/__C:{c_name}/xxx"  # noqa: F841
+    # TODO: issue
+    # service.set_state(app_name, x_path_str, True)
+    service.set_state(app_name, f"/__C:{c_name}", {"xxx": True})
+    assert service.get_state(app_name, f"/__C:{c_name}") == {"xxx": True}
+    assert service.get_attribute_value(app_name, f"/__C:{c_name}", "xxx/attr1") == 42.0
+
+
+def test_datamodel_api_rename_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
+    service = solver._se_service
+    service.set_state(app_name, "/", {"B:b": {}})
+    service.rename(app_name, "/B:b", "c")
+    service.set_state(app_name, "/", {"eee:e": {}})
+    assert service.get_state(app_name, "/B:c/yyy") == 2
+    service.rename(app_name, "/eee:e", "x")
+    assert service.get_state(app_name, "/eee:x/yyy") == 2
+
+
+def test_datamodel_api_delete_object_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
+    service = solver._se_service
+    service.set_state(app_name, "/", {"B:b": {}})
+    service.delete_object(app_name, "/B:b")
