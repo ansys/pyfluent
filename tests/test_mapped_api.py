@@ -135,9 +135,9 @@ def test_datamodel_api_get_attrs_bool_for_str(
 ):
     solver = new_solver_session
     app_name = "test"
-    create_datamodel_root_in_server(solver, rules_str_caps, app_name)
+    create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
-    # assert service.get_attribute_value(app_name, "/A/Z", "allowedValues") is None  # TODO: issue in accessing the object
+    assert service.get_attribute_value(app_name, "/A/Z", "allowedValues") is None
     assert service.get_attribute_value(app_name, "/A/X", "allowedValues") is None
 
 
