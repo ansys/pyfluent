@@ -1,5 +1,7 @@
 """Provides a module for post objects."""
 
+from ansys.fluent.core.solver.flunits import get_si_unit_for_fluent_quantity
+
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
     """Raised when iso-surface definition is incomplete."""
@@ -132,4 +134,4 @@ class PostAPIHelper:
         fields_info = self.field_info.get_fields_info()
         for field_info in fields_info:
             if field_info["solverName"] == field:
-                return field_info["units"]
+                return get_si_unit_for_fluent_quantity(field_info["units_quantity"])
