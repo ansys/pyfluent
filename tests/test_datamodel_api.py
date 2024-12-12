@@ -132,7 +132,8 @@ def test_env_var_setting(datamodel_api_version_all, request, new_solver_session)
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = 0
     created = []
@@ -143,10 +144,10 @@ def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_se
         called += 1
         created.append(convert_path_to_se_path(obj.path))
 
-    subscription = service.add_on_child_created("test", "/", "B", root, cb)
+    subscription = service.add_on_child_created(app_name, "/", "B", root, cb)
     assert called == 0
     assert created == []
-    service.set_state("test", "/", {"B:b": {"_name_": "b"}})
+    service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
     timeout_loop(lambda: called == 1, timeout=5)
     assert called == 1
     assert created == ["/B:b"]
@@ -156,7 +157,8 @@ def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_se
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = 0
     state = None
@@ -175,19 +177,19 @@ def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session)
         state_obj = obj()
         called_obj += 1
 
-    subscription = service.add_on_changed("test", "/A/X", root.A.X, cb)
-    subscription_obj = service.add_on_changed("test", "/A", root.A, cb_obj)
+    subscription = service.add_on_changed(app_name, "/A/X", root.A.X, cb)
+    subscription_obj = service.add_on_changed(app_name, "/A", root.A, cb_obj)
     assert called == 0
     assert state is None
     assert called_obj == 0
     assert state_obj is None
-    service.set_state("test", "/A/X", "lmn")
+    service.set_state(app_name, "/A/X", "lmn")
     timeout_loop(lambda: called == 1, timeout=5)
     assert called == 1
     assert state == "lmn"
     assert called_obj == 1
     assert state_obj == {"X": "lmn"}
-    service.set_state("test", "/A/X", "abc")
+    service.set_state(app_name, "/A/X", "abc")
     timeout_loop(lambda: called == 2, timeout=5)
     assert called == 2
     assert state == "abc"
@@ -195,7 +197,7 @@ def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session)
     assert state_obj == {"X": "abc"}
     subscription.unsubscribe()
     subscription_obj.unsubscribe()
-    service.set_state("test", "/A/X", "xyz")
+    service.set_state(app_name, "/A/X", "xyz")
     time.sleep(5)
     assert called == 2
     assert state == "abc"
@@ -206,7 +208,8 @@ def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session)
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_affected(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = 0
 
@@ -214,19 +217,19 @@ def test_datamodel_api_on_affected(datamodel_api_version_all, new_solver_session
         nonlocal called
         called += 1
 
-    subscription = service.add_on_affected("test", "/D", root.D, cb)
+    subscription = service.add_on_affected(app_name, "/D", root.D, cb)
     assert called == 0
-    service.set_state("test", "/D/X", "lmn")
+    service.set_state(app_name, "/D/X", "lmn")
     timeout_loop(lambda: called == 1, timeout=5)
     assert called == 1
-    service.set_state("test", "/D/E/X", "lmn")
+    service.set_state(app_name, "/D/E/X", "lmn")
     timeout_loop(lambda: called == 2, timeout=5)
     assert called == 2
-    service.set_state("test", "/A/X", "lmn")
+    service.set_state(app_name, "/A/X", "lmn")
     time.sleep(5)
     assert called == 2
     subscription.unsubscribe()
-    service.set_state("test", "/D/E/X", "pqr")
+    service.set_state(app_name, "/D/E/X", "pqr")
     time.sleep(5)
     assert called == 2
 
@@ -236,7 +239,8 @@ def test_datamodel_api_on_affected_at_type_path(
     datamodel_api_version_all, new_solver_session
 ):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = 0
 
@@ -244,19 +248,21 @@ def test_datamodel_api_on_affected_at_type_path(
         nonlocal called
         called += 1
 
-    subscription = service.add_on_affected_at_type_path("test", "/D", "E", root.D.E, cb)
+    subscription = service.add_on_affected_at_type_path(
+        app_name, "/D", "E", root.D.E, cb
+    )
     assert called == 0
-    service.set_state("test", "/D/X", "lmn")
+    service.set_state(app_name, "/D/X", "lmn")
     time.sleep(5)
     assert called == 0
-    service.set_state("test", "/D/E/X", "lmn")
+    service.set_state(app_name, "/D/E/X", "lmn")
     timeout_loop(lambda: called == 1, timeout=5)
     assert called == 1
-    service.set_state("test", "/D/F/X", "lmn")
+    service.set_state(app_name, "/D/F/X", "lmn")
     time.sleep(5)
     assert called == 1
     subscription.unsubscribe()
-    service.set_state("test", "/D/E/X", "pqr")
+    service.set_state(app_name, "/D/E/X", "pqr")
     time.sleep(5)
     assert called == 1
 
@@ -266,7 +272,8 @@ def test_datamodel_api_on_deleted(
     datamodel_api_version_all, request, new_solver_session
 ):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = False
     called_obj = False
@@ -279,12 +286,12 @@ def test_datamodel_api_on_deleted(
         nonlocal called_obj
         called_obj = True
 
-    service.set_state("test", "/", {"B:b": {"_name_": "b"}})
-    subscription = service.add_on_deleted("test", "/B:b/X", root.B["b"].X, cb)
-    subscription_obj = service.add_on_deleted("test", "/B:b", root.B["b"], cb_obj)
+    service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
+    subscription = service.add_on_deleted(app_name, "/B:b/X", root.B["b"].X, cb)
+    subscription_obj = service.add_on_deleted(app_name, "/B:b", root.B["b"], cb_obj)
     assert not called
     assert not called_obj
-    service.delete_object("test", "/B:b")
+    service.delete_object(app_name, "/B:b")
     timeout_loop(lambda: called_obj, timeout=5)
     test_name = request.node.name
     # Note comment in StateEngine test testDataModelAPIOnDeleted
@@ -302,7 +309,8 @@ def test_datamodel_api_on_attribute_changed(
     datamodel_api_version_all, new_solver_session
 ):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = 0
     value = None
@@ -313,19 +321,19 @@ def test_datamodel_api_on_attribute_changed(
         value = val
         called += 1
 
-    subscription = service.add_on_attribute_changed("test", "/A", "x", root.A, cb)
+    subscription = service.add_on_attribute_changed(app_name, "/A", "x", root.A, cb)
     assert called == 0
     assert value is None
-    service.set_state("test", "/A/X", "cde")
+    service.set_state(app_name, "/A/X", "cde")
     timeout_loop(lambda: called == 1, timeout=5)
     assert called == 1
     assert value == "cde"
-    service.set_state("test", "/A/X", "xyz")
+    service.set_state(app_name, "/A/X", "xyz")
     timeout_loop(lambda: called == 2, timeout=5)
     assert called == 2
     assert value == "xyz"
     subscription.unsubscribe()
-    service.set_state("test", "/A/X", "abc")
+    service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
     assert value == "xyz"
@@ -336,7 +344,8 @@ def test_datamodel_api_on_command_attribute_changed(
     datamodel_api_version_all, new_solver_session
 ):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     called = 0
     value = None
@@ -348,21 +357,21 @@ def test_datamodel_api_on_command_attribute_changed(
         called += 1
 
     subscription = service.add_on_command_attribute_changed(
-        "test", "/", "C", "x", root.C, cb
+        app_name, "/", "C", "x", root.C, cb
     )
     assert called == 0
     assert value is None
-    service.set_state("test", "/A/X", "cde")
+    service.set_state(app_name, "/A/X", "cde")
     timeout_loop(lambda: called == 1, timeout=5)
     assert called == 1
     assert value == "cde"
-    service.set_state("test", "/A/X", "xyz")
+    service.set_state(app_name, "/A/X", "xyz")
     timeout_loop(lambda: called == 2, timeout=5)
     assert called == 2
     # TODO: value is still "cde" in both old and new API
     # assert value == "xyz"
     subscription.unsubscribe()
-    service.set_state("test", "/A/X", "abc")
+    service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
     # Commented out because of the issue above
@@ -374,7 +383,8 @@ def test_datamodel_api_on_command_executed(
     datamodel_api_version_all, new_solver_session
 ):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     executed = 0
     command = None
@@ -389,17 +399,17 @@ def test_datamodel_api_on_command_executed(
         executed += 1
 
     # TODO: In C++ API, we don't need to pass the command name
-    subscription = service.add_on_command_executed("test", "/", "C", root, cb)
+    subscription = service.add_on_command_executed(app_name, "/", "C", root, cb)
     assert executed == 0
     assert command is None
     assert arguments is None
-    service.execute_command("test", "/", "C", dict(X="abc"))
+    service.execute_command(app_name, "/", "C", dict(X="abc"))
     timeout_loop(lambda: executed == 1, timeout=5)
     assert executed == 1
     assert command == "C"
     assert arguments == {"X": "abc"}
     subscription.unsubscribe()
-    service.execute_command("test", "/", "C", dict(X="uvw"))
+    service.execute_command(app_name, "/", "C", dict(X="uvw"))
     time.sleep(5)
     assert executed == 1
     assert command == "C"
@@ -409,27 +419,30 @@ def test_datamodel_api_on_command_executed(
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_get_state(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
-    assert service.get_state("test", "/A/X") == "ijk"
+    assert service.get_state(app_name, "/A/X") == "ijk"
 
 
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_set_state(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
-    service.set_state("test", "/A/X", "new_val")
-    assert service.get_state("test", "/A/X") == "new_val"
+    service.set_state(app_name, "/A/X", "new_val")
+    assert service.get_state(app_name, "/A/X") == "new_val"
 
 
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_update_dict(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
-    service.update_dict("test", "/G/H", {"X": "abc"})
-    assert service.get_state("test", "/G/H") == {"X": "abc"}
+    service.update_dict(app_name, "/G/H", {"X": "abc"})
+    assert service.get_state(app_name, "/G/H") == {"X": "abc"}
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -437,55 +450,59 @@ def test_datamodel_api_on_bad_input(
     datamodel_api_version_all, request, new_solver_session
 ):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
     test_name = request.node.name
     new_api = test_name.endswith("[new]")
     with pytest.raises(SubscribeEventError):
-        service.add_on_child_created("test", "", "", root, lambda _: None)
+        service.add_on_child_created(app_name, "", "", root, lambda _: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_child_created("test", "/BB", "B", root, lambda _: None)
+        service.add_on_child_created(app_name, "/BB", "B", root, lambda _: None)
     with pytest.raises(SubscribeEventError):
-        service.add_on_child_created("test", "/", "A", root, lambda _: None)
+        service.add_on_child_created(app_name, "/", "A", root, lambda _: None)
     with pytest.raises(SubscribeEventError):
-        service.add_on_child_created("test", "/", "BB", root, lambda _: None)
+        service.add_on_child_created(app_name, "/", "BB", root, lambda _: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_changed("test", "/BB", root, lambda _: None)
+        service.add_on_changed(app_name, "/BB", root, lambda _: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_deleted("test", "/BB", root, lambda: None)
+        service.add_on_deleted(app_name, "/BB", root, lambda: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_affected("test", "/BB", root, lambda _: None)
+        service.add_on_affected(app_name, "/BB", root, lambda _: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_affected_at_type_path("test", "/BB", "B", root, lambda: None)
+        service.add_on_affected_at_type_path(app_name, "/BB", "B", root, lambda: None)
     # TODO: not raised in the old API - issue
     if new_api:
         with pytest.raises(SubscribeEventError):
-            service.add_on_affected_at_type_path("test", "/", "BB", root, lambda: None)
+            service.add_on_affected_at_type_path(
+                app_name, "/", "BB", root, lambda: None
+            )
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
         service.add_on_attribute_changed(
-            "test", "/BB", "isActive", root, lambda _: None
+            app_name, "/BB", "isActive", root, lambda _: None
         )
     with pytest.raises(SubscribeEventError):
-        service.add_on_attribute_changed("test", "/A", "", root, lambda _: None)
+        service.add_on_attribute_changed(app_name, "/A", "", root, lambda _: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
         service.add_on_command_attribute_changed(
-            "test", "/BB", "C", "isActive", root, lambda _: None
+            app_name, "/BB", "C", "isActive", root, lambda _: None
         )
     with pytest.raises(SubscribeEventError):
         service.add_on_command_attribute_changed(
-            "test", "/A", "CC", "", root, lambda _: None
+            app_name, "/A", "CC", "", root, lambda _: None
         )
     with pytest.raises(SubscribeEventError):
         service.add_on_command_attribute_changed(
-            "test", "/", "CC", "isActive", root, lambda _: None
+            app_name, "/", "CC", "isActive", root, lambda _: None
         )
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_command_executed("test", "/BB", "C", root, lambda _: None)
+        service.add_on_command_executed(app_name, "/BB", "C", root, lambda _: None)
 
 
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_static_info(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
-    create_datamodel_root_in_server(solver, rule_str, test_root)
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
     service = solver._se_service
-    assert service.get_static_info("test")
+    assert service.get_static_info(app_name)

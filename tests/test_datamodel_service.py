@@ -571,7 +571,8 @@ class test_root(PyMenu):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_child_created_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_child_created("B", lambda _: data.append(1))
@@ -589,7 +590,8 @@ def test_on_child_created_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_deleted_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_deleted(lambda _: data.append(1))
@@ -610,7 +612,8 @@ def test_on_deleted_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_changed_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].X.add_on_changed(lambda _: data.append(1))
@@ -628,7 +631,8 @@ def test_on_changed_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -646,7 +650,8 @@ def test_on_affected_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_affected_at_type_path_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected_at_type_path("B", lambda _: data.append(1))
@@ -664,7 +669,8 @@ def test_on_affected_at_type_path_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_command_executed_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_command_executed("C", lambda *args: data.append(1))
@@ -682,7 +688,8 @@ def test_on_command_executed_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_attribute_changed_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_attribute_changed("isABC", lambda _: data.append(1))
@@ -702,7 +709,8 @@ def test_on_attribute_changed_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_command_attribute_changed_lifetime(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_command_attribute_changed(
@@ -736,7 +744,8 @@ def test_on_command_attribute_changed_lifetime(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     pyfluent.logging.enable()
     root.A["A1"] = {}
     data = []
@@ -755,7 +764,8 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     solver = new_solver_session
-    root = create_datamodel_root_in_server(solver, test_rules, test_root)
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, test_rules, app_name, test_root)
     pyfluent.logging.enable()
     root.A["A1"] = {}
     data = []

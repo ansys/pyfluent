@@ -55,11 +55,24 @@ def get_static_info_value(static_info, type_path):
     return static_info
 
 
+def get_state_from_remote_app(session, app_name, type_path):
+    return session.scheme_eval.scheme_eval(
+        f'(state/object/get-state (state/object/find-child (state/find-root "{app_name}") "{type_path}"))'
+    )
+
+
+def get_error_state_message_from_remote_app(session, app_name, type_path):
+    return session.scheme_eval.scheme_eval(
+        f'(state/object/get-error-state-message (state/object/find-child (state/find-root "{app_name}") "{type_path}"))'
+    )
+
+
 def test_datamodel_api_bool_for_str_has_correct_type(
     datamodel_api_version_new, new_solver_session
 ):
     solver = new_solver_session
-    create_datamodel_root_in_server(solver, rules_str)
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
     static_info = service.get_static_info("test")
     assert (
@@ -69,3 +82,37 @@ def test_datamodel_api_bool_for_str_has_correct_type(
     cmd_args = get_static_info_value(static_info, "/commands/C/commandinfo/args")
     arg0 = cmd_args[0]
     assert arg0["type"] == "Logical"
+
+
+def test_datamodel_api_set_bool_for_str(datamodel_api_version_new, new_solver_session):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    service.set_state(app_name, "/A/X", "yes")
+    assert service.get_state(app_name, "/A/X") is True
+    assert get_state_from_remote_app(solver, app_name, "/A/X") == "yes"
+
+
+def test_datamodel_api_set_bool_nested_for_str(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    service.set_state(app_name, "/A", {"X": True})
+    assert service.get_state(app_name, "/A/X") is True
+    assert get_error_state_message_from_remote_app(solver, app_name, "/A/X") is None
+
+
+def test_datamodel_api_get_set_bool_for_str_with_flexible_strs_no_errors(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str_caps, app_name)
+    service = solver._se_service
+    service.set_state(app_name, "/A/X", True)
+    assert service.get_state(app_name, "/A/X") is True
+    assert get_error_state_message_from_remote_app(solver, app_name, "/A/X") is None
