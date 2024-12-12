@@ -52,6 +52,7 @@ rule_str = (
 )
 
 
+# TODO: Generate the class hierarchy via codegen
 class test_root(PyMenu):
     def __init__(self, service, rules, path):
         self.A = self.__class__.A(service, rules, path + [("A", "")])

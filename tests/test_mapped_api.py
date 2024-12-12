@@ -1,5 +1,15 @@
+import time
+
 import pytest
 from util import create_datamodel_root_in_server
+
+from ansys.fluent.core.services.datamodel_se import (
+    PyCommand,
+    PyMenu,
+    PyNumerical,
+    PyTextual,
+)
+from ansys.fluent.core.utils.execution import timeout_loop
 
 rules_str = (
     "RULES:\n"
@@ -32,6 +42,38 @@ rules_str = (
     "  END\n"
     "END\n"
 )
+
+
+# TODO: Generate the class hierarchy via codegen
+class rules_cls(PyMenu):
+    def __init__(self, service, rules, path):
+        self.A = self.__class__.A(service, rules, path + [("A", "")])
+        self.C = self.__class__.C(service, rules, path + [("C", "")])
+        self.D = self.__class__.D(service, rules, path + [("D", "")])
+        super().__init__(service, rules, path)
+
+    class A(PyMenu):
+        def __init__(self, service, rules, path):
+            self.X = self.__class__.X(service, rules, path + [("X", "")])
+            self.Y = self.__class__.Y(service, rules, path + [("Y", "")])
+            self.Z = self.__class__.Z(service, rules, path + [("Z", "")])
+            super().__init__(service, rules, path)
+
+        class X(PyTextual):
+            pass
+
+        class Y(PyTextual):
+            pass
+
+        class Z(PyNumerical):
+            pass
+
+    class C(PyCommand):
+        pass
+
+    class D(PyCommand):
+        pass
+
 
 rules_str_caps = (
     "RULES:\n"
@@ -324,8 +366,6 @@ def test_get_mapped_dynamic_enum_attr(datamodel_api_version_new, new_solver_sess
     assert service.get_attribute_value(app_name, "/A/X", "default") == "yellow"
 
 
-# TODO: Cannot query at command argument attribute level
-@pytest.mark.skip
 def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
     rules_str = (
         "RULES:\n"
@@ -355,15 +395,71 @@ def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
     create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
     c_name = service.create_command_arguments(app_name, "/", "C")
-    service.get_state(app_name, f"/C:{c_name}/X")
+    # TODO: Attribute query at command argument level is not working
     assert (
-        service.get_attribute_value(app_name, f"/C:{c_name}/X", "allowedValues") is None
+        service.get_attribute_value(app_name, f"/C:{c_name}", "X/allowedValues") is None
     )
     assert (
-        service.get_attribute_value(app_name, f"/C:{c_name}/Y", "allowedValues") is None
+        service.get_attribute_value(app_name, f"/C:{c_name}", "Y/allowedValues") is None
     )
-    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "min") == 1
-    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "max") == 3
-    assert service.get_attribute_value(app_name, f"/C:{c_name}/X", "default") is False
-    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "default") == 2
-    assert service.get_attribute_value(app_name, f"/C:{c_name}/Z", "default") == 42
+    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Y/min") == 1
+    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Y/max") == 3
+    assert service.get_attribute_value(app_name, f"/C:{c_name}", "X/default") is False
+    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Y/default") == 2
+    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Z/default") == 42
+
+
+def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
+    solver = new_solver_session
+    app_name = "test"
+    root = create_datamodel_root_in_server(solver, rules_str, app_name, rules_cls)
+    service = solver._se_service
+
+    called = 0
+    state = None
+    called_obj = 0
+    state_obj = None
+
+    def on_changed(value):
+        nonlocal called
+        nonlocal state
+        state = value()
+        called += 1
+
+    def on_changed_obj(value):
+        nonlocal called_obj
+        nonlocal state_obj
+        state_obj = value()
+        called_obj += 1
+
+    subscription = service.add_on_changed(app_name, "/A/X", root.A.X, on_changed)
+    subscription_obj = service.add_on_changed(app_name, "/A", root.A, on_changed_obj)
+
+    assert called == 0
+    assert state is None
+    assert called_obj == 0
+    assert state_obj is None
+
+    service.set_state(app_name, "/A/X", True)
+    timeout_loop(lambda: called == 1, timeout=5)
+    assert called == 1
+    assert state is True
+    assert called_obj == 1
+    assert state_obj == {"X": True, "Y": 2, "Z": None}
+
+    service.set_state(app_name, "/A/X", False)
+    timeout_loop(lambda: called == 2, timeout=5)
+    assert called == 2
+    assert state is False
+    assert called_obj == 2
+    assert state_obj == {"X": False, "Y": 2, "Z": None}
+
+    subscription.unsubscribe()
+    subscription_obj.unsubscribe()
+
+    service.set_state(app_name, "/A/X", True)
+    time.sleep(5)
+    assert called == 2
+    assert state is False
+    assert called_obj == 2
+    assert state_obj == {"X": False, "Y": 2, "Z": None}
