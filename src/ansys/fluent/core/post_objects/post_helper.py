@@ -1,6 +1,6 @@
 """Provides a module for post objects."""
 
-import re
+from ansys.fluent.core.solver.flunits import get_si_unit_for_fluent_quantity
 
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
@@ -131,20 +131,7 @@ class PostAPIHelper:
 
     def get_field_unit(self, field):
         """Returns the unit of the field."""
-        quantity = self._field_unit_quantity(field)
-        if quantity == "*null*":
-            return ""
-        scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
-        return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
-
-    def _field_unit_quantity(self, field):
-        scheme_eval_str = f"(cdr (assq 'units (%fill-render-info '{field})))"
-        return self._scheme_str_to_py_list(scheme_eval_str)[0]
-
-    def _scheme_str_to_py_list(self, scheme_eval_str):
-        session = self.obj.get_root().session
-        if hasattr(session, "scheme_eval"):
-            str_val = session.scheme_eval.string_eval(scheme_eval_str)
-            return list(filter(None, re.split(r'[\s()"\']', str_val)))
-        else:
-            return ["*null*"]
+        fields_info = self.field_info.get_fields_info()
+        for field_info in fields_info:
+            if field_info["solverName"] == field:
+                return get_si_unit_for_fluent_quantity(field_info["units_quantity"])
