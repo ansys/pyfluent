@@ -99,7 +99,7 @@ jobs:
         run: make cleanup-previous-docker-containers
 
       - name: Upload 24.2 Coverage Results to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           root_dir: ${{ github.workspace }}
           name: cov_xml.xml
