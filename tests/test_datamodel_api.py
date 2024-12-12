@@ -1,14 +1,9 @@
 import time
 
 import pytest
-from util import create_datamodel_root_in_server, create_root_cls_using_datamodelgen
+from util import create_datamodel_root_in_server, create_root_using_datamodelgen
 
 from ansys.fluent.core.services.datamodel_se import (
-    PyCommand,
-    PyDictionary,
-    PyMenu,
-    PyNamedObjectContainer,
-    PyTextual,
     SubscribeEventError,
     convert_path_to_se_path,
 )
@@ -52,71 +47,6 @@ rule_str = (
 )
 
 
-# TODO: Generate the class hierarchy via codegen
-class test_root(PyMenu):
-    def __init__(self, service, rules, path):
-        self.A = self.__class__.A(service, rules, path + [("A", "")])
-        self.B = self.__class__.B(service, rules, path + [("B", "")])
-        self.C = self.__class__.C(service, rules, path + [("C", "")])
-        self.D = self.__class__.D(service, rules, path + [("D", "")])
-        self.G = self.__class__.G(service, rules, path + [("G", "")])
-        super().__init__(service, rules, path)
-
-    class A(PyMenu):
-        def __init__(self, service, rules, path):
-            self.X = self.__class__.X(service, rules, path + [("X", "")])
-            super().__init__(service, rules, path)
-
-        class X(PyTextual):
-            pass
-
-    class B(PyNamedObjectContainer):
-        class _B(PyMenu):
-            def __init__(self, service, rules, path):
-                self.X = self.__class__.X(service, rules, path + [("X", "")])
-                super().__init__(service, rules, path)
-
-            class X(PyTextual):
-                pass
-
-    class C(PyCommand):
-        pass
-
-    class D(PyMenu):
-        def __init__(self, service, rules, path):
-            self.E = self.__class__.E(service, rules, path + [("E", "")])
-            self.F = self.__class__.F(service, rules, path + [("F", "")])
-            self.X = self.__class__.X(service, rules, path + [("X", "")])
-            super().__init__(service, rules, path)
-
-        class E(PyMenu):
-            def __init__(self, service, rules, path):
-                self.X = self.__class__.X(service, rules, path + [("X", "")])
-                super().__init__(service, rules, path)
-
-            class X(PyTextual):
-                pass
-
-        class F(PyMenu):
-            def __init__(self, service, rules, path):
-                self.X = self.__class__.X(service, rules, path + [("X", "")])
-                super().__init__(service, rules, path)
-
-            class X(PyTextual):
-                pass
-
-        class X(PyTextual):
-            pass
-
-    class G(PyMenu):
-        def __init__(self, service, rules, path):
-            self.H = self.__class__.H(service, rules, path + [("H", "")])
-            super().__init__(service, rules, path)
-
-        class H(PyDictionary):
-            pass
-
-
 @pytest.mark.fluent_version(">=25.2")
 def test_env_var_setting(datamodel_api_version_all, request, new_solver_session):
     solver = new_solver_session
@@ -136,8 +66,7 @@ def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_se
     app_name = "test"
     create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
-    static_info = service.get_static_info(app_name)
-    root = create_root_cls_using_datamodelgen(static_info)(service, app_name, [])
+    root = create_root_using_datamodelgen(service, app_name)
 
     called = 0
     created = []
@@ -162,8 +91,9 @@ def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_se
 def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = 0
     state = None
     called_obj = 0
@@ -213,8 +143,9 @@ def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session)
 def test_datamodel_api_on_affected(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = 0
 
     def cb(obj):
@@ -244,8 +175,9 @@ def test_datamodel_api_on_affected_at_type_path(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = 0
 
     def cb(obj):
@@ -277,8 +209,9 @@ def test_datamodel_api_on_deleted(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = False
     called_obj = False
 
@@ -314,8 +247,9 @@ def test_datamodel_api_on_attribute_changed(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = 0
     value = None
 
@@ -349,8 +283,9 @@ def test_datamodel_api_on_command_attribute_changed(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = 0
     value = None
 
@@ -388,8 +323,9 @@ def test_datamodel_api_on_command_executed(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     executed = 0
     command = None
     arguments = None
@@ -424,7 +360,7 @@ def test_datamodel_api_on_command_executed(
 def test_datamodel_api_get_state(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
     assert service.get_state(app_name, "/A/X") == "ijk"
 
@@ -433,7 +369,7 @@ def test_datamodel_api_get_state(datamodel_api_version_all, new_solver_session):
 def test_datamodel_api_set_state(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
     service.set_state(app_name, "/A/X", "new_val")
     assert service.get_state(app_name, "/A/X") == "new_val"
@@ -443,7 +379,7 @@ def test_datamodel_api_set_state(datamodel_api_version_all, new_solver_session):
 def test_datamodel_api_update_dict(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
     service.update_dict(app_name, "/G/H", {"X": "abc"})
     assert service.get_state(app_name, "/G/H") == {"X": "abc"}
@@ -455,8 +391,9 @@ def test_datamodel_api_on_bad_input(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     test_name = request.node.name
     new_api = test_name.endswith("[new]")
     with pytest.raises(SubscribeEventError):
@@ -507,6 +444,6 @@ def test_datamodel_api_on_bad_input(
 def test_datamodel_api_static_info(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
     assert service.get_static_info(app_name)

@@ -1,16 +1,9 @@
 import time
 
 import pytest
-from util import create_datamodel_root_in_server
+from util import create_datamodel_root_in_server, create_root_using_datamodelgen
 
-from ansys.fluent.core.services.datamodel_se import (
-    PyCommand,
-    PyMenu,
-    PyNamedObjectContainer,
-    PyNumerical,
-    PyTextual,
-    convert_path_to_se_path,
-)
+from ansys.fluent.core.services.datamodel_se import convert_path_to_se_path
 from ansys.fluent.core.utils.execution import timeout_loop
 
 rules_str = (
@@ -44,37 +37,6 @@ rules_str = (
     "  END\n"
     "END\n"
 )
-
-
-# TODO: Generate the class hierarchy via codegen
-class rules_cls(PyMenu):
-    def __init__(self, service, rules, path):
-        self.A = self.__class__.A(service, rules, path + [("A", "")])
-        self.C = self.__class__.C(service, rules, path + [("C", "")])
-        self.D = self.__class__.D(service, rules, path + [("D", "")])
-        super().__init__(service, rules, path)
-
-    class A(PyMenu):
-        def __init__(self, service, rules, path):
-            self.X = self.__class__.X(service, rules, path + [("X", "")])
-            self.Y = self.__class__.Y(service, rules, path + [("Y", "")])
-            self.Z = self.__class__.Z(service, rules, path + [("Z", "")])
-            super().__init__(service, rules, path)
-
-        class X(PyTextual):
-            pass
-
-        class Y(PyTextual):
-            pass
-
-        class Z(PyNumerical):
-            pass
-
-    class C(PyCommand):
-        pass
-
-    class D(PyCommand):
-        pass
 
 
 rules_str_caps = (
@@ -430,8 +392,9 @@ def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
 def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rules_str, app_name, rules_cls)
+    create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
 
     called = 0
     state = None
@@ -507,31 +470,11 @@ def test_mapped_on_attribute_changed(datamodel_api_version_new, new_solver_sessi
         "END\n"
     )
 
-    class root_cls(PyMenu):
-        def __init__(self, service, rules, path):
-            self.A = self.__class__.A(service, rules, path + [("A", "")])
-            self.C = self.__class__.C(service, rules, path + [("C", "")])
-            super().__init__(service, rules, path)
-
-        class A(PyMenu):
-            def __init__(self, service, rules, path):
-                self.X = self.__class__.X(service, rules, path + [("X", "")])
-                self.Y = self.__class__.Y(service, rules, path + [("Y", "")])
-                super().__init__(service, rules, path)
-
-            class X(PyTextual):
-                pass
-
-            class Y(PyTextual):
-                pass
-
-        class C(PyCommand):
-            pass
-
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rules_str, app_name, root_cls)
+    create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called = 0
     value = None
 
@@ -570,8 +513,9 @@ def test_datamodel_api_on_command_executed_mapped_args(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rules_str, app_name, rules_cls)
+    create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     register_external_function_in_remote_app(solver, app_name, "CFunc")
     executed = False
     command = None
@@ -650,51 +594,6 @@ api_name_rules_str = (
     "  END\n"
     "END\n"
 )
-
-
-class api_name_rules_cls(PyMenu):
-    def __init__(self, service, rules, path):
-        self.__A = self.__class__.__A(service, rules, path + [("__A", "")])
-        self.B = self.__class__.B(service, rules, path + [("B", "")])
-        self.__E = self.__class__.__E(service, rules, path + [("__E", "")])
-        self.__C = self.__class__.__C(service, rules, path + [("__C", "")])
-        self.D = self.__class__.D(service, rules, path + [("D", "")])
-        super().__init__(service, rules, path)
-
-    class __A(PyMenu):
-        def __init__(self, service, rules, path):
-            self.__X = self.__class__.__X(service, rules, path + [("__X", "")])
-            super().__init__(service, rules, path)
-
-        class __X(PyTextual):
-            pass
-
-    class B(PyMenu):
-        def __init__(self, service, rules, path):
-            self.__Y = self.__class__.__Y(service, rules, path + [("__Y", "")])
-            self.Z = self.__class__.Z(service, rules, path + [("Z", "")])
-            super().__init__(service, rules, path)
-
-        class __Y(PyTextual):
-            pass
-
-        class Z(PyNumerical):
-            pass
-
-    class __E(PyNamedObjectContainer):
-        class ___E(PyMenu):
-            def __init__(self, service, rules, path):
-                self.__Y = self.__class__.__Y(service, rules, path + [("__Y", "")])
-                super().__init__(service, rules, path)
-
-            class __Y(PyTextual):
-                pass
-
-    class __C(PyCommand):
-        pass
-
-    class D(PyCommand):
-        pass
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -823,10 +722,9 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(
-        solver, api_name_rules_str, app_name, api_name_rules_cls
-    )
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     called_paths = []
     delete_count = 0
     changes = []
@@ -865,10 +763,9 @@ def test_datamodel_api_on_changed_with_mapped_names(
 ):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(
-        solver, api_name_rules_str, app_name, api_name_rules_cls
-    )
+    create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
+    root = create_root_using_datamodelgen(service, app_name)
     changes = []
 
     def changed_cb(value):
