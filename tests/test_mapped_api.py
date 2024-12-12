@@ -1,3 +1,4 @@
+import pytest
 from util import create_datamodel_root_in_server
 
 rules_str = (
@@ -116,3 +117,51 @@ def test_datamodel_api_get_set_bool_for_str_with_flexible_strs_no_errors(
     service.set_state(app_name, "/A/X", True)
     assert service.get_state(app_name, "/A/X") is True
     assert get_error_state_message_from_remote_app(solver, app_name, "/A/X") is None
+
+
+def test_datamodel_api_get_attrs_bool_for_str(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str_caps, app_name)
+    service = solver._se_service
+    # assert service.get_attribute_value(app_name, "/A/Z", "allowedValues") is None  # TODO: issue in accessing the object
+    assert service.get_attribute_value(app_name, "/A/X", "allowedValues") is None
+
+
+def test_datamodel_api_get_and_set_int_for_str(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    service.set_state(app_name, "/A/Y", 1)
+    assert service.get_state(app_name, "/A/Y") == 1
+    assert get_error_state_message_from_remote_app(solver, app_name, "/A/Y") is None
+
+
+# TODO: what are the equivalent of following tests in Python?
+# testPopulateMappingAttrTablePaths
+# testMapAPIStateToDM
+# testMapDMStateToAPI
+# testMapNestedAPIStateToDM
+# testUpdateStateDictWithMapping
+
+
+def test_state_of_command_args_with_mapping(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    c_name = service.create_command_arguments(app_name, "/", "C")
+    with pytest.raises(RuntimeError):
+        service.set_state(app_name, f"/C:{c_name}/X", False)
+    assert service.get_state(app_name, f"/C:{c_name}") == {"X": None}
+    service.set_state(app_name, f"/C:{c_name}", {"X": False})
+    assert service.get_state(app_name, f"/C:{c_name}") == {"X": False}
+    service.set_state(app_name, f"/C:{c_name}", {"X": True})
+    assert service.get_state(app_name, f"/C:{c_name}") == {"X": True}
