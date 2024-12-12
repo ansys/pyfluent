@@ -195,3 +195,175 @@ def test_execute_command_with_args_and_path_mapping(
     register_external_function_in_remote_app(solver, app_name, "CFunc")
     result = service.execute_command(app_name, "/", "dd", {"X": True})
     assert result == "yes"
+
+
+def test_execute_query_with_args_mapping(datamodel_api_version_new, new_solver_session):
+    rules_str = (
+        "RULES:\n"
+        "  STRING: X\n"
+        "    allowedValues = yes, no\n"
+        "    logicalMapping = True, False\n"
+        "  END\n"
+        "  SINGLETON: ROOT\n"
+        "    queries = Q\n"
+        "    QUERY: Q\n"
+        "      arguments = X\n"
+        "      functionName = QFunc\n"
+        "    END\n"
+        "  END\n"
+        "END\n"
+    )
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    register_external_function_in_remote_app(solver, app_name, "QFunc")
+    result = service.execute_query(app_name, "/", "Q", {"X": True})
+    assert result == "yes"
+
+
+def test_get_mapped_attr(datamodel_api_version_new, new_solver_session):
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    assert service.get_attribute_value(app_name, "/A/X", "allowedValues") is None
+    assert service.get_attribute_value(app_name, "/A/Y", "allowedValues") is None
+    assert service.get_attribute_value(app_name, "/A/Y", "min") == 1
+    assert service.get_attribute_value(app_name, "/A/Y", "max") == 3
+    assert service.get_attribute_value(app_name, "/A/Y", "default") == 2
+
+
+def test_get_mapped_attr_defaults(datamodel_api_version_new, new_solver_session):
+    rules_str = (
+        "RULES:\n"
+        "  STRING: X\n"
+        "    allowedValues = yes, no\n"
+        "    default = no\n"
+        "    logicalMapping = True, False\n"
+        "  END\n"
+        "  STRING: Y\n"
+        '    allowedValues = \\"1\\", \\"2\\", \\"3\\"\n'
+        '    default = \\"2\\"\n'
+        "    isNumerical = True\n"
+        "  END\n"
+        "  INTEGER: Z\n"
+        "    default = 42\n"
+        "  END\n"
+        "  SINGLETON: ROOT\n"
+        "    members = A\n"
+        "    SINGLETON: A\n"
+        "      members = X, Y, Z\n"
+        "    END\n"
+        "  END\n"
+        "END\n"
+    )
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    assert service.get_attribute_value(app_name, "/A/X", "default") is False
+    assert service.get_attribute_value(app_name, "/A/Y", "default") == 2
+    assert service.get_attribute_value(app_name, "/A/Z", "default") == 42
+
+
+def test_get_mapped_enum_attr(datamodel_api_version_new, new_solver_session):
+    rules_str = (
+        "RULES:\n"
+        "  STRING: X\n"
+        "    allowedValues = ijk, lmn\n"
+        "    default = lmn\n"
+        "    enum = green, yellow\n"
+        "  END\n"
+        "  SINGLETON: ROOT\n"
+        "    members = A\n"
+        "    SINGLETON: A\n"
+        "      members = X\n"
+        "    END\n"
+        "  END\n"
+        "END\n"
+    )
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    assert service.get_attribute_value(app_name, "/A/X", "allowedValues") == [
+        "green",
+        "yellow",
+    ]
+    assert service.get_attribute_value(app_name, "/A/X", "default") == "yellow"
+
+
+def test_get_mapped_dynamic_enum_attr(datamodel_api_version_new, new_solver_session):
+    rules_str = (
+        "RULES:\n"
+        "  LOGICAL: B\n"
+        "    default = True\n"
+        "  END\n"
+        "  STRING: X\n"
+        '    allowedValues = IF($../B, (\\"ijk\\", \\"lmn\\"), (\\"ijk\\", \\"lmn\\", \\"opq\\"))\n'
+        "    default = lmn\n"
+        '    enum = IF($../B, (\\"green\\", \\"yellow\\"), (\\"green\\", \\"yellow\\", \\"blue\\"))\n'
+        "  END\n"
+        "  SINGLETON: ROOT\n"
+        "    members = A\n"
+        "    SINGLETON: A\n"
+        "      members = B, X\n"
+        "    END\n"
+        "  END\n"
+        "END\n"
+    )
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    assert service.get_attribute_value(app_name, "/A/X", "allowedValues") == [
+        "green",
+        "yellow",
+    ]
+    assert service.get_attribute_value(app_name, "/A/X", "default") == "yellow"
+
+
+# TODO: Cannot query at command argument attribute level
+@pytest.mark.skip
+def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
+    rules_str = (
+        "RULES:\n"
+        "  STRING: X\n"
+        "    allowedValues = yes, no\n"
+        "    default = no\n"
+        "    logicalMapping = True, False\n"
+        "  END\n"
+        "  STRING: Y\n"
+        '    allowedValues = \\"1\\", \\"2\\", \\"3\\"\n'
+        '    default = \\"2\\"\n'
+        "    isNumerical = True\n"
+        "  END\n"
+        "  INTEGER: Z\n"
+        "    default = 42\n"
+        "  END\n"
+        "  SINGLETON: ROOT\n"
+        "    commands = C\n"
+        "    COMMAND: C\n"
+        "      arguments = X, Y, Z\n"
+        "    END\n"
+        "  END\n"
+        "END\n"
+    )
+    solver = new_solver_session
+    app_name = "test"
+    create_datamodel_root_in_server(solver, rules_str, app_name)
+    service = solver._se_service
+    c_name = service.create_command_arguments(app_name, "/", "C")
+    service.get_state(app_name, f"/C:{c_name}/X")
+    assert (
+        service.get_attribute_value(app_name, f"/C:{c_name}/X", "allowedValues") is None
+    )
+    assert (
+        service.get_attribute_value(app_name, f"/C:{c_name}/Y", "allowedValues") is None
+    )
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "min") == 1
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "max") == 3
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/X", "default") is False
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "default") == 2
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Z", "default") == 42
