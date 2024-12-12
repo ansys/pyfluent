@@ -122,7 +122,7 @@ def test_add_on_deleted(new_meshing_session):
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     data = []
     _ = meshing.workflow.TaskObject["Import Geometry"].add_on_deleted(
-        lambda obj: data.append(convert_path_to_se_path(obj.path))
+        lambda: data.append(True)
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
@@ -568,8 +568,8 @@ def test_on_deleted_lifetime(new_solver_session):
     root = create_root_using_datamodelgen(solver._se_service, app_name)
     root.A["A1"] = {}
     data = []
-    _ = root.A["A1"].add_on_deleted(lambda _: data.append(1))
-    root.A["A1"].add_on_deleted(lambda _: data.append(2))
+    _ = root.A["A1"].add_on_deleted(lambda: data.append(1))
+    root.A["A1"].add_on_deleted(lambda: data.append(2))
     gc.collect()
     assert "/test/deleted/A:A1" in solver._se_service.subscriptions
     assert "/test/deleted/A:A1-1" in solver._se_service.subscriptions
