@@ -1,7 +1,7 @@
 import time
 
 import pytest
-from util import create_datamodel_root_in_server
+from util import create_datamodel_root_in_server, create_root_cls_using_datamodelgen
 
 from ansys.fluent.core.services.datamodel_se import (
     PyCommand,
@@ -134,8 +134,11 @@ def test_env_var_setting(datamodel_api_version_all, request, new_solver_session)
 def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_session):
     solver = new_solver_session
     app_name = "test"
-    root = create_datamodel_root_in_server(solver, rule_str, app_name, test_root)
+    create_datamodel_root_in_server(solver, rule_str, app_name)
     service = solver._se_service
+    static_info = service.get_static_info(app_name)
+    root = create_root_cls_using_datamodelgen(static_info)(service, app_name, [])
+
     called = 0
     created = []
 

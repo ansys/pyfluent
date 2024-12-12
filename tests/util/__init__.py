@@ -1,4 +1,12 @@
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import uuid
+
+from pytest import MonkeyPatch
+
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core.codegen import StaticInfoType, datamodelgen
+from ansys.fluent.core.utils import load_module
 
 
 def create_datamodel_root_in_server(
@@ -15,3 +23,17 @@ def create_datamodel_root_in_server(
     assert session.scheme_eval.scheme_eval(f'(state/find-root "{app_name}")') > 0
     if root_cls:
         return root_cls(session._se_service, app_name, [])
+
+
+def create_root_cls_using_datamodelgen(static_info):
+    version = "252"
+    with TemporaryDirectory() as temp_dir:
+        with MonkeyPatch.context() as m:
+            m.setattr(pyfluent, "CODEGEN_OUTDIR", Path(temp_dir))
+            # TODO: Refactor datamdodelgen so we don't need to hardcode StaticInfoType
+            datamodelgen.generate(
+                version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}
+            )
+            gen_file = Path(temp_dir) / f"datamodel_{version}" / "workflow.py"
+            module = load_module("datamodel", gen_file)
+            return module.Root
