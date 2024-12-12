@@ -125,11 +125,11 @@ class DatamodelService:
         channel: grpc.Channel,
         metadata: list[tuple[str, str]],
         fluent_error_state,
-        scheme_eval,
+        app_utilities,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
-        self._scheme_eval = scheme_eval
+        self._app_utilities = app_utilities
 
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
@@ -233,7 +233,7 @@ class PyMenu:
             Query result (any Python datatype)
         """
         with ApiUpgradeAdvisor(
-            self._service._scheme_eval,
+            self._service._app_utilities,
             self._version,
             self._mode,
         ):

@@ -10,6 +10,7 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services.app_utilities import AppUtilitiesService
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -39,17 +40,6 @@ def _parse_server_info_file(file_name: str):
     port = int(ip_and_port[1])
     password = lines[1].strip()
     return ip, port, password
-
-
-class _IsDataValid:
-    def __init__(self, scheme_eval):
-        self._scheme_eval = scheme_eval
-
-    def __bool__(self):
-        return self()
-
-    def __call__(self):
-        return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
 class BaseSession:
@@ -124,7 +114,6 @@ class BaseSession:
         self.scheme_eval = scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
-        self.journal = Journal(self.scheme_eval)
 
         self._transcript_service = service_creator("transcript").create(
             fluent_connection._channel, fluent_connection._metadata
@@ -133,11 +122,20 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
+        self._app_utilities_service = self._fluent_connection.create_grpc_service(
+            AppUtilitiesService, self._error_state
+        )
+        self._app_utilities = service_creator("app_utilities").create(
+            self._app_utilities_service
+        )
+
+        self.journal = Journal(self._app_utilities)
+
         self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
-            self.scheme_eval,
+            self._app_utilities,
         )
 
         self._datamodel_service_se = service_creator("datamodel").create(
@@ -176,12 +174,13 @@ class BaseSession:
             def __init__(self, _session):
                 """Initialize Fields."""
                 self.field_info = service_creator("field_info").create(
-                    _session._field_data_service, _IsDataValid(_session.scheme_eval)
+                    _session._field_data_service,
+                    _session._app_utilities.is_solution_data_available(),
                 )
                 self.field_data = service_creator("field_data").create(
                     _session._field_data_service,
                     self.field_info,
-                    _IsDataValid(_session.scheme_eval),
+                    _session._app_utilities.is_solution_data_available(),
                     _session.scheme_eval,
                 )
                 self.field_data_streaming = FieldDataStreaming(
@@ -190,7 +189,7 @@ class BaseSession:
                 self.field_data_old = service_creator("field_data_old").create(
                     _session._field_data_service,
                     self.field_info,
-                    _IsDataValid(_session.scheme_eval),
+                    _session._app_utilities.is_solution_data_available(),
                     _session.scheme_eval,
                 )
 
@@ -199,7 +198,7 @@ class BaseSession:
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.scheme_eval,
+            self._app_utilities,
             self._error_state,
         )
 
