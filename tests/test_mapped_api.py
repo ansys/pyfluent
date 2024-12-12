@@ -6,8 +6,10 @@ from util import create_datamodel_root_in_server
 from ansys.fluent.core.services.datamodel_se import (
     PyCommand,
     PyMenu,
+    PyNamedObjectContainer,
     PyNumerical,
     PyTextual,
+    convert_path_to_se_path,
 )
 from ansys.fluent.core.utils.execution import timeout_loop
 
@@ -632,6 +634,51 @@ api_name_rules_str = (
 )
 
 
+class api_name_rules_cls(PyMenu):
+    def __init__(self, service, rules, path):
+        self.__A = self.__class__.__A(service, rules, path + [("__A", "")])
+        self.B = self.__class__.B(service, rules, path + [("B", "")])
+        self.__E = self.__class__.__E(service, rules, path + [("__E", "")])
+        self.__C = self.__class__.__C(service, rules, path + [("__C", "")])
+        self.D = self.__class__.D(service, rules, path + [("D", "")])
+        super().__init__(service, rules, path)
+
+    class __A(PyMenu):
+        def __init__(self, service, rules, path):
+            self.__X = self.__class__.__X(service, rules, path + [("__X", "")])
+            super().__init__(service, rules, path)
+
+        class __X(PyTextual):
+            pass
+
+    class B(PyMenu):
+        def __init__(self, service, rules, path):
+            self.__Y = self.__class__.__Y(service, rules, path + [("__Y", "")])
+            self.Z = self.__class__.Z(service, rules, path + [("Z", "")])
+            super().__init__(service, rules, path)
+
+        class __Y(PyTextual):
+            pass
+
+        class Z(PyNumerical):
+            pass
+
+    class __E(PyNamedObjectContainer):
+        class ___E(PyMenu):
+            def __init__(self, service, rules, path):
+                self.__Y = self.__class__.__Y(service, rules, path + [("__Y", "")])
+                super().__init__(service, rules, path)
+
+            class __Y(PyTextual):
+                pass
+
+    class __C(PyCommand):
+        pass
+
+    class D(PyCommand):
+        pass
+
+
 def test_datamodel_api_with_mapped_names(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
     app_name = "test"
@@ -743,3 +790,73 @@ def test_datamodel_api_delete_object_with_mapped_names(
     service = solver._se_service
     service.set_state(app_name, "/", {"B:b": {}})
     service.delete_object(app_name, "/B:b")
+
+
+@pytest.mark.skip
+def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    root = create_datamodel_root_in_server(
+        solver, api_name_rules_str, app_name, api_name_rules_cls
+    )
+    service = solver._se_service
+    called_paths = []
+    delete_count = 0
+    changes = []
+
+    def create_cb(obj):
+        called_paths.append(convert_path_to_se_path(obj.path))
+
+    def delete_cb():
+        nonlocal delete_count
+        delete_count += 1
+
+    def changed_cb(value):
+        changes.append(value())
+
+    service.add_on_child_created(app_name, "/", "eee", root, create_cb)
+    # TODO: fails at event streaming callback of on_child_created
+    # as the name "eee" is not available in the PyFluent side.
+    service.set_state(app_name, "/", {"eee:b": {}})
+    service.set_state(app_name, "/", {"eee:c": {}})
+    service.set_state(app_name, "/", {"B:d": {}})
+    service.add_on_deleted(app_name, "/eee:b", root, delete_cb)
+    service.add_on_deleted(app_name, "/eee:c", root, delete_cb)
+    # TODO: Affected by name mangling of dunder members
+    service.add_on_changed(app_name, "/eee:b/yyy", root.__E["b"].__Y, changed_cb)
+    service.delete_object(app_name, "/eee:c")
+    service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
+    assert called_paths == ["/eee:b", "/eee:c"]
+    assert delete_count == 1
+    assert changes == [42]
+
+
+@pytest.mark.skip
+def test_datamodel_api_on_changed_with_mapped_names(
+    datamodel_api_version_new, new_solver_session
+):
+    solver = new_solver_session
+    app_name = "test"
+    root = create_datamodel_root_in_server(
+        solver, api_name_rules_str, app_name, api_name_rules_cls
+    )
+    service = solver._se_service
+    changes = []
+
+    def changed_cb(value):
+        changes.append(value())
+
+    service.set_state(app_name, "/", {"eee:b": {}})
+    # TODO: Can't get this working due to name mangling of dunder members
+    service.add_on_changed(app_name, "/eee:b/yyy", root.__E["b"].__Y, changed_cb)
+    service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
+    assert changes == [42]
+
+
+# TODO: what are the equivalent of following tests in Python?
+# testDataModelAPIWithNullCustomNameMapper
+# testDataModelAPIWithAppendingCustomNameMapper
+# testDataModelAPIWithSnakeyCustomNameMapper
+# testDataModelAPIWithSnakeyCustomNameMapperAndMoreCamels
