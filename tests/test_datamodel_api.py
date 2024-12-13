@@ -229,9 +229,9 @@ def test_datamodel_api_on_deleted(
     assert not called
     assert not called_obj
     service.delete_object(app_name, "/B:b")
-    timeout_loop(lambda: called_obj, timeout=5)
+    time.sleep(5)
     test_name = request.node.name
-    # Note comment in StateEngine test testDataModelAPIOnDeleted
+    # TODO: Note comment in StateEngine test testDataModelAPIOnDeleted
     if test_name.endswith("[old]"):
         assert called
     elif test_name.endswith("[new]"):
