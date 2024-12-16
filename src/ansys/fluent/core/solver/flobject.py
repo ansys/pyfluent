@@ -46,7 +46,6 @@ from typing import (
 )
 import warnings
 import weakref
-from zipimport import zipimporter
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -2163,30 +2162,17 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
+    from ansys.fluent.core import CODEGEN_OUTDIR, utils
 
-    if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
-        try:
-            settings = utils.load_module(
-                f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
-            )
-            root_cls = settings.root
-        except FileNotFoundError:
-            obj_info = flproxy.get_static_info()
-            root_cls, _ = get_cls("", obj_info, version=version)
-    else:
-        if CODEGEN_ZIP_SETTINGS:
-            importer = zipimporter(
-                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-            )
-            settings = importer.load_module("settings")
-        else:
-            settings = utils.load_module(
-                f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
-            )
+    try:
+        settings = utils.load_module(
+            f"settings_{version}",
+            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+        )
         root_cls = settings.root
+    except FileNotFoundError:
+        obj_info = flproxy.get_static_info()
+        root_cls, _ = get_cls("", obj_info, version=version)
     root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)
