@@ -128,8 +128,9 @@ class StandaloneLauncher:
             exited, or the ``exit()`` method is called on the session instance,
             or if the session instance becomes unreferenced. The default is ``True``.
         dry_run : bool, optional
-            Defaults to False. If True, will not launch Fluent, and will instead print configuration information
-            that would be used as if Fluent was being launched.
+            Defaults to False. If True, will not launch Fluent, and will print configuration information
+            that would be used as if Fluent was being launched. If True, the ``call()`` method will return
+            a tuple containing the launch string and the server info file name.
         start_transcript : bool, optional
             Whether to start streaming the Fluent transcript in the client. The
             default is ``True``. You can stop and start the streaming of the
@@ -200,10 +201,13 @@ class StandaloneLauncher:
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
             self.argvals["fluent_debug"] = True
 
-        self._server_info_file_name = _get_server_info_file_name()
+        server_info_file_name_for_server, server_info_file_name_for_client = (
+            _get_server_info_file_name()
+        )
+        self._server_info_file_name = server_info_file_name_for_client
         self._launch_string = _generate_launch_string(
             self.argvals,
-            self._server_info_file_name,
+            server_info_file_name_for_server,
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
@@ -232,7 +236,7 @@ class StandaloneLauncher:
     def __call__(self):
         if self.argvals["dry_run"]:
             print(f"Fluent launch string: {self._launch_string}")
-            return
+            return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
 

@@ -416,11 +416,14 @@ class SlurmLauncher:
                     )
 
     def _prepare(self):
-        self._server_info_file_name = _get_server_info_file_name(use_tmpdir=False)
+        server_info_file_name_for_server, server_info_file_name_for_client = (
+            _get_server_info_file_name(use_tmpdir=False)
+        )
+        self._server_info_file_name = server_info_file_name_for_client
         self._argvals.update(self._argvals["scheduler_options"])
         launch_cmd = _generate_launch_string(
             self._argvals,
-            self._server_info_file_name,
+            server_info_file_name_for_server,
         )
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
