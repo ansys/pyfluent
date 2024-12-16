@@ -1577,7 +1577,7 @@ class PyNamedObjectContainer:
             # On-deleted subscription objects are unsubscribed after the datamodel
             # object is deleted.
             self[key].add_on_deleted(
-                lambda _: self.service.subscriptions.unsubscribe_while_deleting(
+                lambda: self.service.subscriptions.unsubscribe_while_deleting(
                     self.rules, se_path, "after"
                 )
             )
