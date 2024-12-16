@@ -222,12 +222,12 @@ class AppUtilities:
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> Any:
         """Register pause on solution events."""
         request = AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsRequest()
-        if solution_event == SolverEvent.TIMESTEP_ENDED:
-            request.solution_event = 2
-        elif solution_event == SolverEvent.ITERATION_ENDED:
-            request.solution_event = 1
+        if solution_event == AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP:
+            request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP
+        elif solution_event == AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION:
+            request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION
         else:
-            request.solution_event = 0
+            request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNKNOWN
         response = self.service.register_pause_on_solution_events(request)
         return response.registration_id
 

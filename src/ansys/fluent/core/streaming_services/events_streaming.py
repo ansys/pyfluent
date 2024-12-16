@@ -10,6 +10,7 @@ import warnings
 
 from google.protobuf.json_format import MessageToDict
 
+from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.streaming_services.streaming import StreamingService
@@ -539,7 +540,7 @@ class EventsManager(Generic[TEvent]):
             sync_event_id = self._sync_event_ids.pop(callback_id, None)
             if sync_event_id:
                 self._session._app_utilities.unregister_pause_on_solution_events(
-                    sync_event_id
+                    f"pause-on-solution-events-{sync_event_id}"
                 )
 
     def start(self, *args, **kwargs) -> None:
@@ -556,8 +557,14 @@ class EventsManager(Generic[TEvent]):
         callback_id: str,
         callback: Callable,
     ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
+        event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNKNOWN
+        match event_type:
+            case SolverEvent.ITERATION_ENDED:
+                event = AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION
+            case SolverEvent.TIMESTEP_ENDED:
+                event = AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP
         unique_id: str = self._session._app_utilities.register_pause_on_solution_events(
-            solution_event=event_type
+            solution_event=event
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
@@ -579,7 +586,7 @@ class EventsManager(Generic[TEvent]):
                     )
                 finally:
                     session._app_utilities.resume_on_solution_event(
-                        registration_id=unique_id
+                        registration_id=f"pause-on-solution-events-{unique_id}"
                     )
 
         self._sync_event_ids[callback_id] = unique_id
