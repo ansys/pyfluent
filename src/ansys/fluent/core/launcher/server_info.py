@@ -10,7 +10,7 @@ from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.session import _parse_server_info_file
 
 
-def _get_server_info_file_name(use_tmpdir=True) -> tuple[str, str]:
+def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
     """Get a tuple containing server and client-side file names with the server connection information.
     When server and client are in a different machine, the environment variable SERVER_INFO_DIR
     can be set to a shared directory between the two machines and the server-info file will be

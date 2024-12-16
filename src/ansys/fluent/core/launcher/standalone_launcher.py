@@ -43,7 +43,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
 )
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
-    _get_server_info_file_name,
+    _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -202,7 +202,7 @@ class StandaloneLauncher:
             self.argvals["fluent_debug"] = True
 
         server_info_file_name_for_server, server_info_file_name_for_client = (
-            _get_server_info_file_name()
+            _get_server_info_file_names()
         )
         self._server_info_file_name = server_info_file_name_for_client
         self._launch_string = _generate_launch_string(

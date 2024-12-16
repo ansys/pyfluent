@@ -64,7 +64,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
-from ansys.fluent.core.launcher.server_info import _get_server_info_file_name
+from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -417,7 +417,7 @@ class SlurmLauncher:
 
     def _prepare(self):
         server_info_file_name_for_server, server_info_file_name_for_client = (
-            _get_server_info_file_name(use_tmpdir=False)
+            _get_server_info_file_names(use_tmpdir=False)
         )
         self._server_info_file_name = server_info_file_name_for_client
         self._argvals.update(self._argvals["scheduler_options"])
