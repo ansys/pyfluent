@@ -563,7 +563,7 @@ class EventsManager(Generic[TEvent]):
                 event = AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION
             case SolverEvent.TIMESTEP_ENDED:
                 event = AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP
-        unique_id: str = self._session._app_utilities.register_pause_on_solution_events(
+        unique_id: int = self._session._app_utilities.register_pause_on_solution_events(
             solution_event=event
         )
 
