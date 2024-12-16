@@ -318,6 +318,17 @@ def configure_container_dict(
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
+    if (
+        os.getenv("REMOTING_NEW_DM_API") == "1"
+        or os.getenv("REMOTING_MAPPED_NEW_DM_API") == "1"
+    ):
+        if "environment" not in container_dict:
+            container_dict["environment"] = {}
+        if os.getenv("REMOTING_NEW_DM_API") == "1":
+            container_dict["environment"]["REMOTING_NEW_DM_API"] = "1"
+        if os.getenv("REMOTING_MAPPED_NEW_DM_API") == "1":
+            container_dict["environment"]["REMOTING_MAPPED_NEW_DM_API"] = "1"
+
     fluent_commands = ["-gu", f"-sifile={container_server_info_file}"] + args
 
     container_dict_default = {}
