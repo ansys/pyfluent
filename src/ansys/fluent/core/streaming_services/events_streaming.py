@@ -540,7 +540,7 @@ class EventsManager(Generic[TEvent]):
             sync_event_id = self._sync_event_ids.pop(callback_id, None)
             if sync_event_id:
                 self._session._app_utilities.unregister_pause_on_solution_events(
-                    f"pause-on-solution-events-{sync_event_id}"
+                    registration_id=sync_event_id
                 )
 
     def start(self, *args, **kwargs) -> None:
@@ -586,7 +586,7 @@ class EventsManager(Generic[TEvent]):
                     )
                 finally:
                     session._app_utilities.resume_on_solution_event(
-                        registration_id=f"pause-on-solution-events-{unique_id}"
+                        registration_id=unique_id
                     )
 
         self._sync_event_ids[callback_id] = unique_id
