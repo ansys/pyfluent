@@ -276,6 +276,10 @@ in field data by tracking its values in real time. You can integrate PyFluent's
 field data streaming callback mechanism with visualization
 tools from the Python ecosystem, making it easy to visualize the data of interest.
 
+.. note::
+   In **Meshing mode**, only 'field_data_streaming' provides a valid interface as of now.
+   Other methods currently return an empty array when used in Meshing mode.
+
 The following example demonstrates how to update mesh data in **Meshing mode**
 using the field data streaming mechanism:
 
@@ -319,7 +323,3 @@ using the field data streaming mechanism:
   >>> }
 
   >>> meshing.workflow.TaskObject["Import Geometry"].Execute()
-
-.. note::
-   In **Meshing mode**, only 'field_data_streaming' provides a valid interface as of now.
-   Other methods currently return an empty array when used in Meshing mode.
