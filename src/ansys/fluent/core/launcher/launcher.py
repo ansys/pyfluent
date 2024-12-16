@@ -169,7 +169,7 @@ def launch_fluent(
     dry_run : bool, optional
         Defaults to False. If True, will not launch Fluent, and will instead print configuration information
         that would be used as if Fluent was being launched. If dry running a standalone start
-        ``launch_fluent()`` will return a tuple containing the launch string and the server info file name.
+        ``launch_fluent()`` will return a tuple containing Fluent launch string and the server info file name.
         If dry running a container start, ``launch_fluent()`` will return the configured ``container_dict``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is

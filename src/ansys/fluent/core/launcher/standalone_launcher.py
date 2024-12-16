@@ -130,7 +130,7 @@ class StandaloneLauncher:
         dry_run : bool, optional
             Defaults to False. If True, will not launch Fluent, and will print configuration information
             that would be used as if Fluent was being launched. If True, the ``call()`` method will return
-            a tuple containing the launch string and the server info file name.
+            a tuple containing Fluent launch string and the server info file name.
         start_transcript : bool, optional
             Whether to start streaming the Fluent transcript in the client. The
             default is ``True``. You can stop and start the streaming of the
