@@ -30,11 +30,15 @@ def walk_api(api_root_cls, on_each_path, current_path: str | List[str] = ""):
         on_each_path(current_path)
 
     # Get child names and their respective classes
-    child_names = getattr(api_root_cls, "child_names", [])
+    all_names = [
+        name
+        for attr in ("child_names", "argument_names", "command_names", "query_names")
+        for name in getattr(api_root_cls, attr, [])
+    ]
     child_classes = getattr(api_root_cls, "_child_classes", {})
 
     # Traverse each child
-    for child_name in child_names:
+    for child_name in all_names:
         if child_name in child_classes:
             child_cls = child_classes[child_name]
             # Construct the new path
@@ -46,3 +50,8 @@ def walk_api(api_root_cls, on_each_path, current_path: str | List[str] = ""):
                 )
             # Recursively walk the child
             walk_api(child_cls, on_each_path, new_path)
+
+    # Delegate directly to any child_object_type (relevant for named objects)
+    child_object_type = getattr(api_root_cls, "child_object_type", None)
+    if child_object_type:
+        walk_api(child_cls, on_each_path, current_path)
