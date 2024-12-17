@@ -505,12 +505,12 @@ def test_standalone_launcher_dry_run(monkeypatch):
     monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
     fluent_path = r"\x\y\z\fluent.exe"
     fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
-        fluent_path=fluent_path, dry_run=True
+        fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
     )
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f"{fluent_path} 3ddp -hidden -sifile={server_info_file_name} -nm"
+        == f"{fluent_path} 3ddp -gu -sifile={server_info_file_name} -nm"
     )
 
 
@@ -520,10 +520,10 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         monkeypatch.setenv("SERVER_INFO_DIR", tmp_dir)
         fluent_path = r"\x\y\z\fluent.exe"
         fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
-            fluent_path=fluent_path, dry_run=True
+            fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
         )
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f"{fluent_path} 3ddp -hidden -sifile={Path(server_info_file_name).name} -nm"
+            == f"{fluent_path} 3ddp -gu -sifile={Path(server_info_file_name).name} -nm"
         )
