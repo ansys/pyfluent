@@ -245,21 +245,21 @@ These examples accesses the list of zone surfaces:
 .. code-block::
 
   >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"] = {}
-  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].zone_names.allowed_values()
+  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].boundaries.allowed_values()
   ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']
 
 
 .. code-block::
 
   >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"] = {}
-  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].zone_names.get_attr("allowed-values")
+  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].boundaries.get_attr("allowed-values")
   ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']
 
 
 .. code-block::
 
   >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"] = {}
-  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].zone_names.get_attrs(["allowed-values"])
+  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].boundaries.get_attrs(["allowed-values"])
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
 
