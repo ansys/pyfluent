@@ -1,6 +1,6 @@
 """Data for for builtin setting classes."""
 
-from ansys.fluent.core import FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 # {<class name>: (<kind>, <path>)}
 DATA = {
