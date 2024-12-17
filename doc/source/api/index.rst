@@ -10,6 +10,7 @@ full guidelines on their use.
 .. toctree::
     :maxdepth: 2
     :hidden:
+    :caption: ansys.fluent.core
 
     filereader/index
     launcher/index
