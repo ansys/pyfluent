@@ -134,4 +134,4 @@ class PostAPIHelper:
         fields_info = self.field_info.get_fields_info()
         for field_info in fields_info:
             if field_info["solverName"] == field:
-                return get_si_unit_for_fluent_quantity(field_info["units_quantity"])
+                return get_si_unit_for_fluent_quantity(field_info["quantity_name"])
