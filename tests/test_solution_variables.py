@@ -212,3 +212,30 @@ def test_solution_variable_does_not_modify_case(new_solver_session):
         domain_name="mixture",
     )
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_solution_variable_udm_data(mixing_elbow_case_session_t4):
+    solver = mixing_elbow_case_session_t4
+    solver.tui.define.user_defined.user_defined_memory("2")
+    solver.settings.solution.initialization.hybrid_initialize()
+    solver.settings.solution.run_calculation.iterate(iter_count=1)
+    udm_data = solver.fields.solution_variable_data.get_data(
+        solution_variable_name="SV_UDM_I",
+        domain_name="mixture",
+        zone_names=["wall-elbow"],
+    )["wall-elbow"]
+    np.testing.assert_array_equal(udm_data, np.zeros(4336))
+    udm_data[:2168] = 5
+    udm_data[2168:] = 10
+    solver.fields.solution_variable_data.set_data(
+        solution_variable_name="SV_UDM_I",
+        domain_name="mixture",
+        zone_names_to_solution_variable_data={"wall-elbow": udm_data},
+    )
+    new_array = solver.fields.solution_variable_data.get_data(
+        solution_variable_name="SV_UDM_I",
+        domain_name="mixture",
+        zone_names=["wall-elbow"],
+    )["wall-elbow"]
+    np.testing.assert_array_equal(new_array, udm_data)
