@@ -501,7 +501,8 @@ def test_fluent_automatic_transcript(monkeypatch):
             assert not list(Path(tmp_dir).glob("*.trn"))
 
 
-def test_standalone_launcher_dry_run():
+def test_standalone_launcher_dry_run(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
     fluent_path = r"\x\y\z\fluent.exe"
     fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         fluent_path=fluent_path, dry_run=True
@@ -514,6 +515,7 @@ def test_standalone_launcher_dry_run():
 
 
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
     with tempfile.TemporaryDirectory() as tmp_dir:
         monkeypatch.setenv("SERVER_INFO_DIR", tmp_dir)
         fluent_path = r"\x\y\z\fluent.exe"
