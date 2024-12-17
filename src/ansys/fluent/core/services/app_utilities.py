@@ -170,13 +170,7 @@ class AppUtilitiesOld:
         }
 
     def get_app_mode(self) -> Enum:
-        """Get app mode.
-
-        Raises
-        ------
-        ValueError
-            If app mode is unknown.
-        """
+        """Get app mode."""
         from ansys.fluent.core import FluentMode
 
         if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
