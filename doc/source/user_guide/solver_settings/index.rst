@@ -258,7 +258,7 @@ These examples accesses the list of zone surfaces:
 
 .. code-block::
 
-  >>> root.solution.report_definitions.flux["mass_flow_rate"] = {}
+  >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"] = {}
   >>> solver.settings.solution.report_definitions.flux["mass_flow_rate"].zone_names.get_attrs(["allowed-values"])
   {'allowed-values': ['symmetry-xyplane', 'hot-inlet', 'cold-inlet', 'outlet', 'wall-inlet', 'wall-elbow', 'interior--elbow-fluid']}
 
