@@ -554,13 +554,13 @@ def test_datamodel_api_on_command_executed_mapped_args(
 
 api_name_rules_str = (
     "RULES:\n"
-    "  STRING: __X\n"
+    "  STRING: X\n"
     "    allowedValues = yes, no\n"
     "    logicalMapping = True, False\n"
     "    attr1 = 42.0\n"
     "    APIName = xxx\n"
     "  END\n"
-    "  STRING: __Y\n"
+    "  STRING: Y\n"
     '    allowedValues = \\"1\\", \\"2\\", \\"3\\"\n'
     '    default = \\"2\\"\n'
     "    isNumerical = True\n"
@@ -569,26 +569,26 @@ api_name_rules_str = (
     "  INTEGER: Z\n"
     "  END\n"
     "  SINGLETON: ROOT\n"
-    "    members = __A, B, __E\n"
-    "    commands = __C, D\n"
-    "    SINGLETON: __A\n"
-    "      members = __X\n"
+    "    members = A, B, E\n"
+    "    commands = C, D\n"
+    "    SINGLETON: A\n"
+    "      members = X\n"
     "      APIName = aaa\n"
     "    END\n"
     "    OBJECT: B\n"
-    "      members = __Y, Z\n"
+    "      members = Y, Z\n"
     "    END\n"
-    "    OBJECT: __E\n"
-    "      members = __Y\n"
+    "    OBJECT: E\n"
+    "      members = Y\n"
     "      APIName = eee\n"
     "    END\n"
-    "    COMMAND: __C\n"
-    "      arguments = __X\n"
+    "    COMMAND: C\n"
+    "      arguments = X\n"
     "      functionName = CFunc\n"
     "      APIName = ccc\n"
     "    END\n"
     "    COMMAND: D\n"
-    "      arguments = __X\n"
+    "      arguments = X\n"
     "      functionName = CFunc\n"
     "    END\n"
     "  END\n"
@@ -651,7 +651,7 @@ def test_datamodel_api_root_get_and_set_state_with_mapped_names(
     create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": None}}
-    service.set_state(app_name, "/__A/__X", "yes")
+    service.set_state(app_name, "/A/X", "yes")
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": True}}
     service.set_state(app_name, "/", {"aaa": {"xxx": False}})
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": False}}
@@ -679,12 +679,12 @@ def test_datamodel_api_cmd_args_op_with_mapped_names(
     create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
     c_name = service.create_command_arguments(app_name, "/", "ccc")
-    x_path_str = f"/__C:{c_name}/xxx"  # noqa: F841
+    x_path_str = f"/C:{c_name}/xxx"  # noqa: F841
     # TODO: issue
     # service.set_state(app_name, x_path_str, True)
-    service.set_state(app_name, f"/__C:{c_name}", {"xxx": True})
-    assert service.get_state(app_name, f"/__C:{c_name}") == {"xxx": True}
-    assert service.get_attribute_value(app_name, f"/__C:{c_name}", "xxx/attr1") == 42.0
+    service.set_state(app_name, f"/C:{c_name}", {"xxx": True})
+    assert service.get_state(app_name, f"/C:{c_name}") == {"xxx": True}
+    assert service.get_attribute_value(app_name, f"/C:{c_name}", "xxx/attr1") == 42.0
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -748,7 +748,7 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     service.add_on_deleted(app_name, "/eee:b", root, delete_cb)
     service.add_on_deleted(app_name, "/eee:c", root, delete_cb)
     # TODO: Affected by name mangling of dunder members
-    service.add_on_changed(app_name, "/eee:b/yyy", root.__E["b"].__Y, changed_cb)
+    service.add_on_changed(app_name, "/eee:b/yyy", root.E["b"].Y, changed_cb)
     service.delete_object(app_name, "/eee:c")
     service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
     assert called_paths == ["/eee:b", "/eee:c"]
@@ -756,7 +756,6 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     assert changes == [42]
 
 
-@pytest.mark.skip
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_changed_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -772,9 +771,9 @@ def test_datamodel_api_on_changed_with_mapped_names(
         changes.append(value())
 
     service.set_state(app_name, "/", {"eee:b": {}})
-    # TODO: Can't get this working due to name mangling of dunder members
-    service.add_on_changed(app_name, "/eee:b/yyy", root.__E["b"].__Y, changed_cb)
+    service.add_on_changed(app_name, "/eee:b/yyy", root.eee["b"].yyy, changed_cb)
     service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
+    timeout_loop(lambda: len(changes) == 1, timeout=5)
     assert changes == [42]
 
 
