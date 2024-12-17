@@ -3,8 +3,8 @@
 from time import time
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType, allapigen, print_fluent_version
-from ansys.fluent.core.codegen.print_fluent_version import print_fluent_app_version
+from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen.print_fluent_version import print_fluent_version
 from ansys.fluent.core.search import _generate_api_data
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -15,7 +15,6 @@ if __name__ == "__main__":
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
     ge_242 = FluentVersion(version) >= FluentVersion.v242
-    ge_252 = FluentVersion(version) < FluentVersion.v252
 
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
@@ -62,10 +61,7 @@ if __name__ == "__main__":
     t1 = time()
     print(f"Time to fetch static info: {t1 - t0:.2f} seconds")
     CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
-    if ge_252:
-        print_fluent_version.generate(version, solver.scheme_eval.scheme_eval)
-    else:
-        print_fluent_app_version(solver._app_utilities)
+    print_fluent_version(solver._app_utilities)
     solver.exit()
 
     allapigen.generate(version, static_infos)

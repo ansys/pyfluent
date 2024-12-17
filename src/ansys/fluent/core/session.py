@@ -10,7 +10,10 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.app_utilities import AppUtilitiesService
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesOld,
+    AppUtilitiesService,
+)
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -133,14 +136,17 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        self._app_utilities_service = self._fluent_connection.create_grpc_service(
-            AppUtilitiesService, self._error_state
-        )
-        self._app_utilities = service_creator("app_utilities").create(
-            self._app_utilities_service
-        )
+        if FluentVersion(self.scheme_eval.version) < FluentVersion.v252:
+            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+        else:
+            self._app_utilities_service = self._fluent_connection.create_grpc_service(
+                AppUtilitiesService, self._error_state
+            )
+            self._app_utilities = service_creator("app_utilities").create(
+                self._app_utilities_service
+            )
 
-        self.journal = Journal(self.scheme_eval, self._app_utilities)
+        self.journal = Journal(self._app_utilities)
 
         self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
@@ -185,12 +191,9 @@ class BaseSession:
 
             def __init__(self, _session):
                 """Initialize Fields."""
-                if FluentVersion(_session.scheme_eval.version) < FluentVersion.v252:
-                    self.is_data_valid = _IsDataValid(_session.scheme_eval)
-                else:
-                    self.is_data_valid = (
-                        _session._app_utilities.is_solution_data_available()
-                    )
+                self.is_data_valid = (
+                    _session._app_utilities.is_solution_data_available()
+                )
                 self.field_info = service_creator("field_info").create(
                     _session._field_data_service,
                     self.is_data_valid,
@@ -216,8 +219,8 @@ class BaseSession:
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
-            self.scheme_eval,
             self._app_utilities,
+            self.scheme_eval,
             self._error_state,
         )
 

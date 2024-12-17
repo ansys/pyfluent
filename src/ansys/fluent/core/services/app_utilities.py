@@ -8,7 +8,6 @@ import grpc
 
 from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
 from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -124,6 +123,156 @@ class AppUtilitiesService:
         return self._stub.Exit(request, metadata=self._metadata)
 
 
+class AppUtilitiesOld:
+    """AppUtilitiesOld."""
+
+    def __init__(self, scheme_eval):
+        """__init__ method of AppUtilitiesOld class."""
+        self.scheme_eval = scheme_eval
+
+    def get_product_version(self) -> str:
+        """Get product version."""
+        return self.scheme_eval.version
+
+    def get_build_info(self) -> dict:
+        """Get build info."""
+        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
+        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
+        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
+        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
+
+    def get_controller_process_info(self) -> dict:
+        """Get controller process info."""
+        cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
+        cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
+        cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+        return {
+            "hostname": cortex_host,
+            "process_id": cortex_pid,
+            "working_directory": cortex_pwd,
+        }
+
+    def get_solver_process_info(self) -> dict:
+        """Get solver process info."""
+        fluent_host = self.scheme_eval.scheme_eval("(cx-client-host)")
+        fluent_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
+        fluent_pwd = self.scheme_eval.scheme_eval("(cx-send '(cx-client-pwd))")
+        return {
+            "hostname": fluent_host,
+            "process_id": fluent_pid,
+            "working_directory": fluent_pwd,
+        }
+
+    def get_app_mode(self) -> Enum:
+        """Get app mode.
+
+        Raises
+        ------
+        ValueError
+            If app mode is unknown.
+        """
+        from ansys.fluent.core import FluentMode
+
+        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
+            mode_str = self.scheme_eval.scheme_eval('(getenv "PRJAPP_APP")')
+            if mode_str == "flaero_server":
+                return FluentMode.SOLVER_AERO
+            elif mode_str == "flicing":
+                return FluentMode.SOLVER_ICING
+            else:
+                return FluentMode.SOLVER
+        else:
+            return FluentMode.MESHING
+
+    def start_python_journal(self, journal_name: str | None = None) -> int:
+        """Start python journal."""
+        if journal_name:
+            self.scheme_eval.exec([f'(api-start-python-journal "{journal_name}")'])
+        else:
+            self.scheme_eval.scheme_eval(
+                "(define pyfluent-journal-str-port (open-output-string))"
+            )
+            self.scheme_eval.scheme_eval(
+                "(api-echo-python-port pyfluent-journal-str-port)"
+            )
+            return 1
+
+    def stop_python_journal(self, journal_id: int | None = None) -> str:
+        """Stop python journal."""
+        if journal_id:
+            self.scheme_eval.scheme_eval(
+                "(api-unecho-python-port pyfluent-journal-str-port)"
+            )
+            journal_str = self.scheme_eval.scheme_eval(
+                "(close-output-port pyfluent-journal-str-port)"
+            )
+            return journal_str
+        else:
+            self.scheme_eval.exec(["(api-stop-python-journal)"])
+
+    def is_beta_enabled(self) -> bool:
+        """Is beta enabled."""
+        return self.scheme_eval.scheme_eval("(is-beta-feature-available?)")
+
+    def is_wildcard(self, input: str | None = None) -> bool:
+        """Is wildcard."""
+        return self.scheme_eval.scheme_eval(f'(has-fnmatch-wild-card? "{input}")')
+
+    def is_solution_data_available(self) -> bool:
+        """Is solution data available."""
+        return self.scheme_eval.scheme_eval("(data-valid?)")
+
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
+        """Register pause on solution events."""
+        unique_id: int = self._session.scheme_eval.scheme_eval(
+            f"""
+            (let
+                ((ids
+                    (let loop ((i 1))
+                        (define next-id (string->symbol (format #f "pyfluent-~d" i)))
+                        (if (check-monitor-existence next-id)
+                            (loop (1+ i))
+                            (list i next-id)
+                            )
+                        )
+                    ))
+                (register-solution-monitor
+                    (cadr ids)
+                    (lambda (niter time)
+                        (if (integer? niter)
+                            (begin
+                                (events/transmit 'auto-pause (cons (car ids) niter))
+                                (grpcserver/auto-pause (is-server-running?) (cadr ids))
+                                )
+                            )
+                        ()
+                        )
+                    {'#t' if solution_event == SolverEvent.TIMESTEP_ENDED else '#f'}
+                    )
+                (car ids)
+                )
+        """
+        )
+        return unique_id
+
+    def resume_on_solution_event(self, registration_id: int) -> None:
+        """Resume on solution event."""
+        self.scheme_eval.scheme_eval(
+            f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{registration_id})"
+        )
+
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
+        """Unregister pause on solution events."""
+        self.scheme_eval.scheme_eval(
+            f"(cancel-solution-monitor 'pyfluent-{registration_id})"
+        )
+
+    def exit(self) -> None:
+        """Exit."""
+        self.scheme_eval.exec(("(exit-server)",))
+
+
 class AppUtilities:
     """AppUtilities."""
 
@@ -171,6 +320,8 @@ class AppUtilities:
         ValueError
             If app mode is unknown.
         """
+        import ansys.fluent.core as pyfluent
+
         request = AppUtilitiesProtoModule.GetAppModeRequest()
         response = self.service.get_app_mode(request)
         match response.app_mode:
@@ -192,9 +343,10 @@ class AppUtilities:
         response = self.service.start_python_journal(request)
         return response.journal_id
 
-    def stop_python_journal(self) -> str:
+    def stop_python_journal(self, journal_id: int | None = None) -> str:
         """Stop python journal."""
         request = AppUtilitiesProtoModule.StopPythonJournalRequest()
+        request.journal_id = journal_id
         response = self.service.stop_python_journal(request)
         return response.journal_str
 
@@ -220,22 +372,26 @@ class AppUtilities:
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
         request = AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsRequest()
-        if solution_event == AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP:
-            request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP
-        elif solution_event == AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION:
-            request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION
-        else:
-            request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNKNOWN
+        request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNKNOWN
+        match solution_event:
+            case SolverEvent.ITERATION_ENDED:
+                request.solution_event = (
+                    AppUtilitiesProtoModule.SOLUTION_EVENT_ITERATION
+                )
+            case SolverEvent.TIMESTEP_ENDED:
+                request.solution_event = (
+                    AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP
+                )
         response = self.service.register_pause_on_solution_events(request)
         return response.registration_id
 
-    def resume_on_solution_event(self, registration_id: str) -> None:
+    def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
         request = AppUtilitiesProtoModule.ResumeOnSolutionEventRequest()
         request.registration_id = registration_id
         self.service.resume_on_solution_event(request)
 
-    def unregister_pause_on_solution_events(self, registration_id: str) -> None:
+    def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
         request = AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsRequest()
         request.registration_id = registration_id

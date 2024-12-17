@@ -21,7 +21,10 @@ import grpc
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.app_utilities import AppUtilitiesService
+from ansys.fluent.core.services.app_utilities import (
+    AppUtilitiesOld,
+    AppUtilitiesService,
+)
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
@@ -247,28 +250,24 @@ class _ConnectionInterface:
         self.scheme_eval = service_creator("scheme_eval").create(
             self._scheme_eval_service
         )
-        self._app_utilities_service = create_grpc_service(
-            AppUtilitiesService, error_state
-        )
-        self._app_utilities = service_creator("app_utilities").create(
-            self._app_utilities_service
-        )
-
-    @property
-    def product_build_info(self) -> str:
-        """Get Fluent build information."""
         if (
             pyfluent.FluentVersion(self.scheme_eval.version)
             < pyfluent.FluentVersion.v252
         ):
-            build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
-            build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
-            rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
-            branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
-            return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
+            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
         else:
-            build_info = self._app_utilities.get_build_info()
-            return f'Build Time: {build_info["build_time"]}  Build Id: {build_info["build_id"]}  Revision: {build_info["vcs_revision"]}  Branch: {build_info["vcs_branch"]}'
+            self._app_utilities_service = create_grpc_service(
+                AppUtilitiesService, error_state
+            )
+            self._app_utilities = service_creator("app_utilities").create(
+                self._app_utilities_service
+            )
+
+    @property
+    def product_build_info(self) -> str:
+        """Get Fluent build information."""
+        build_info = self._app_utilities.get_build_info()
+        return f'Build Time: {build_info["build_time"]}  Build Id: {build_info["build_id"]}  Revision: {build_info["vcs_revision"]}  Branch: {build_info["vcs_branch"]}'
 
     def get_cortex_connection_properties(self):
         """Get connection properties of Fluent."""
@@ -277,23 +276,13 @@ class _ConnectionInterface:
         try:
             logger.info(self.product_build_info)
             logger.debug("Obtaining Cortex connection properties...")
-            if (
-                pyfluent.FluentVersion(self.scheme_eval.version)
-                < pyfluent.FluentVersion.v252
-            ):
-                fluent_host_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
-                cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
-                cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
-                cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
-                logger.debug("Cortex connection properties successfully obtained.")
-            else:
-                cortex_info = self._app_utilities.get_controller_process_info()
-                solver_info = self._app_utilities.get_solver_process_info()
-                fluent_host_pid = solver_info["process_id"]
-                cortex_host = cortex_info["hostname"]
-                cortex_pid = cortex_info["process_id"]
-                cortex_pwd = cortex_info["working_directory"]
-                logger.debug("Cortex connection properties successfully obtained.")
+            cortex_info = self._app_utilities.get_controller_process_info()
+            solver_info = self._app_utilities.get_solver_process_info()
+            fluent_host_pid = solver_info["process_id"]
+            cortex_host = cortex_info["hostname"]
+            cortex_pid = cortex_info["process_id"]
+            cortex_pwd = cortex_info["working_directory"]
+            logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
                 "Fluent Cortex properties unobtainable. 'force exit()' and other "
@@ -308,34 +297,11 @@ class _ConnectionInterface:
 
     def get_mode(self):
         """Get the mode of a running fluent session."""
-        if (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            < pyfluent.FluentVersion.v252
-        ):
-            from ansys.fluent.core import FluentMode
-
-            if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
-                mode_str = self.scheme_eval.scheme_eval('(getenv "PRJAPP_APP")')
-                if mode_str == "flaero_server":
-                    return FluentMode.SOLVER_AERO
-                elif mode_str == "flicing":
-                    return FluentMode.SOLVER_ICING
-                else:
-                    return FluentMode.SOLVER
-            else:
-                return FluentMode.MESHING
-        else:
-            return self._app_utilities.get_app_mode()
+        return self._app_utilities.get_app_mode()
 
     def exit_server(self):
         """Exits the server."""
-        if (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            < pyfluent.FluentVersion.v252
-        ):
-            self.scheme_eval.exec(("(exit-server)",))
-        else:
-            self._app_utilities.exit()
+        self._app_utilities.exit()
 
 
 def _pid_exists(pid):
