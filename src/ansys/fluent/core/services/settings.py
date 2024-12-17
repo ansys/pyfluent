@@ -14,6 +14,7 @@ from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class _SettingsServiceImpl:
@@ -136,10 +137,13 @@ def _get_request_instance_for_path(request_class, path: str) -> Any:
 class SettingsService:
     """Service for accessing and modifying Fluent settings."""
 
-    def __init__(self, channel, metadata, app_utilities, fluent_error_state) -> None:
+    def __init__(
+        self, channel, metadata, app_utilities, scheme_eval, fluent_error_state
+    ) -> None:
         """__init__ method of SettingsService class."""
         self._service_impl = _SettingsServiceImpl(channel, metadata, fluent_error_state)
         self._app_utilities = app_utilities
+        self._scheme_eval = scheme_eval
 
     @_trace
     def _set_state_from_value(self, state: SettingsModule.Value, value: Any):
@@ -367,9 +371,13 @@ class SettingsService:
     @_trace
     def has_wildcard(self, name: str) -> bool:
         """Checks whether a name has a wildcard pattern."""
-        return self._scheme_eval.is_defined(
-            "has-fnmatch-wild-card?"
-        ) and self._app_utilities.is_wildcard(name)
+        if FluentVersion(self.scheme_eval.version) < FluentVersion.v252:
+            has_wildcard = self._scheme_eval.scheme_eval(
+                f'(has-fnmatch-wild-card? "{name}")'
+            )
+        else:
+            has_wildcard = self._app_utilities.is_wildcard(name)
+        return self._scheme_eval.is_defined("has-fnmatch-wild-card?") and has_wildcard
 
     @_trace
     def is_interactive_mode(self) -> bool:

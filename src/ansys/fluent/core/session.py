@@ -42,6 +42,17 @@ def _parse_server_info_file(file_name: str):
     return ip, port, password
 
 
+class _IsDataValid:
+    def __init__(self, scheme_eval):
+        self._scheme_eval = scheme_eval
+
+    def __bool__(self):
+        return self()
+
+    def __call__(self):
+        return self._scheme_eval.scheme_eval("(data-valid?)")
+
+
 class BaseSession:
     """Encapsulates a Fluent session.
 
@@ -129,13 +140,14 @@ class BaseSession:
             self._app_utilities_service
         )
 
-        self.journal = Journal(self._app_utilities)
+        self.journal = Journal(self.scheme_eval, self._app_utilities)
 
         self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
             self._app_utilities,
+            self.scheme_eval,
         )
 
         self._datamodel_service_se = service_creator("datamodel").create(
@@ -173,14 +185,20 @@ class BaseSession:
 
             def __init__(self, _session):
                 """Initialize Fields."""
+                if FluentVersion(_session.scheme_eval.version) < FluentVersion.v252:
+                    self.is_data_valid = _IsDataValid(_session.scheme_eval)
+                else:
+                    self.is_data_valid = (
+                        _session._app_utilities.is_solution_data_available()
+                    )
                 self.field_info = service_creator("field_info").create(
                     _session._field_data_service,
-                    _session._app_utilities.is_solution_data_available(),
+                    self.is_data_valid,
                 )
                 self.field_data = service_creator("field_data").create(
                     _session._field_data_service,
                     self.field_info,
-                    _session._app_utilities.is_solution_data_available(),
+                    self.is_data_valid,
                     _session.scheme_eval,
                 )
                 self.field_data_streaming = FieldDataStreaming(
@@ -189,7 +207,7 @@ class BaseSession:
                 self.field_data_old = service_creator("field_data_old").create(
                     _session._field_data_service,
                     self.field_info,
-                    _session._app_utilities.is_solution_data_available(),
+                    self.is_data_valid,
                     _session.scheme_eval,
                 )
 
@@ -198,6 +216,7 @@ class BaseSession:
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
+            self.scheme_eval,
             self._app_utilities,
             self._error_state,
         )

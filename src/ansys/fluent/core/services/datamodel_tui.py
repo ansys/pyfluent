@@ -126,10 +126,12 @@ class DatamodelService:
         metadata: list[tuple[str, str]],
         fluent_error_state,
         app_utilities,
+        scheme_eval,
     ) -> None:
         """__init__ method of DatamodelService class."""
         self._impl = DatamodelServiceImpl(channel, metadata, fluent_error_state)
         self._app_utilities = app_utilities
+        self._scheme_eval = scheme_eval
 
     def get_attribute_value(
         self, path: str, attribute: str, include_unavailable: bool
@@ -234,6 +236,7 @@ class PyMenu:
         """
         with ApiUpgradeAdvisor(
             self._service._app_utilities,
+            self._service._scheme_eval,
             self._version,
             self._mode,
         ):
