@@ -554,13 +554,13 @@ def test_datamodel_api_on_command_executed_mapped_args(
 
 api_name_rules_str = (
     "RULES:\n"
-    "  STRING: _X\n"
+    "  STRING: X__\n"
     "    allowedValues = yes, no\n"
     "    logicalMapping = True, False\n"
     "    attr1 = 42.0\n"
     "    APIName = xxx\n"
     "  END\n"
-    "  STRING: _Y\n"
+    "  STRING: Y__\n"
     '    allowedValues = \\"1\\", \\"2\\", \\"3\\"\n'
     '    default = \\"2\\"\n'
     "    isNumerical = True\n"
@@ -569,26 +569,26 @@ api_name_rules_str = (
     "  INTEGER: Z\n"
     "  END\n"
     "  SINGLETON: ROOT\n"
-    "    members = _A, B, _E\n"
-    "    commands = _C, D\n"
-    "    SINGLETON: _A\n"
-    "      members = _X\n"
+    "    members = A__, B, E__\n"
+    "    commands = C__, D\n"
+    "    SINGLETON: A__\n"
+    "      members = X__\n"
     "      APIName = aaa\n"
     "    END\n"
     "    OBJECT: B\n"
-    "      members = _Y, Z\n"
+    "      members = Y__, Z\n"
     "    END\n"
-    "    OBJECT: _E\n"
-    "      members = _Y\n"
+    "    OBJECT: E__\n"
+    "      members = Y__\n"
     "      APIName = eee\n"
     "    END\n"
-    "    COMMAND: _C\n"
-    "      arguments = _X\n"
+    "    COMMAND: C__\n"
+    "      arguments = X__\n"
     "      functionName = CFunc\n"
     "      APIName = ccc\n"
     "    END\n"
     "    COMMAND: D\n"
-    "      arguments = _X\n"
+    "      arguments = X__\n"
     "      functionName = CFunc\n"
     "    END\n"
     "  END\n"
@@ -651,7 +651,7 @@ def test_datamodel_api_root_get_and_set_state_with_mapped_names(
     create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": None}}
-    service.set_state(app_name, "/_A/_X", "yes")
+    service.set_state(app_name, "/A__/X__", "yes")
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": True}}
     service.set_state(app_name, "/", {"aaa": {"xxx": False}})
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": False}}
@@ -679,12 +679,12 @@ def test_datamodel_api_cmd_args_op_with_mapped_names(
     create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
     c_name = service.create_command_arguments(app_name, "/", "ccc")
-    x_path_str = f"/_C:{c_name}/xxx"  # noqa: F841
+    x_path_str = f"/C__:{c_name}/xxx"  # noqa: F841
     # TODO: issue
     # service.set_state(app_name, x_path_str, True)
-    service.set_state(app_name, f"/_C:{c_name}", {"xxx": True})
-    assert service.get_state(app_name, f"/_C:{c_name}") == {"xxx": True}
-    assert service.get_attribute_value(app_name, f"/_C:{c_name}", "xxx/attr1") == 42.0
+    service.set_state(app_name, f"/C__:{c_name}", {"xxx": True})
+    assert service.get_state(app_name, f"/C__:{c_name}") == {"xxx": True}
+    assert service.get_attribute_value(app_name, f"/C__:{c_name}", "xxx/attr1") == 42.0
 
 
 @pytest.mark.fluent_version(">=25.2")
