@@ -739,8 +739,6 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
         changes.append(value())
 
     service.add_on_child_created(app_name, "/", "eee", root, create_cb)
-    # TODO: fails at event streaming callback of on_child_created
-    # as the name "eee" is not available in the PyFluent side.
     service.set_state(app_name, "/", {"eee:b": {}})
     service.set_state(app_name, "/", {"eee:c": {}})
     service.set_state(app_name, "/", {"B:d": {}})
@@ -749,6 +747,7 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     service.add_on_changed(app_name, "/eee:b/yyy", root.eee["b"].yyy, changed_cb)
     service.delete_object(app_name, "/eee:c")
     service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
+    timeout_loop(lambda: len(changes) == 1, timeout=5)
     assert called_paths == ["/eee:b", "/eee:c"]
     assert delete_count == 1
     assert changes == [42]
