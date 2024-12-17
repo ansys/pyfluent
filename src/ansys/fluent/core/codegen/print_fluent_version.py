@@ -22,7 +22,7 @@ def generate(version: str, scheme_eval):
 
 def print_fluent_app_version(app_utilities):
     """Write Fluent version information to file."""
-    version = app_utilities.get_product_version(with_patch=False)
+    version = FluentVersion(app_utilities.get_product_version()).number
     build_info = app_utilities.get_build_info()
     version_file = (CODEGEN_OUTDIR / f"fluent_version_{version}.py").resolve()
     with open(version_file, "w", encoding="utf8") as f:

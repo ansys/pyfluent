@@ -1,6 +1,7 @@
 """Wrappers over AppUtilities gRPC service of Fluent."""
 
-from typing import Any, List, Tuple
+from enum import Enum
+from typing import List, Tuple
 
 from google.protobuf.json_format import MessageToDict
 import grpc
@@ -130,22 +131,19 @@ class AppUtilities:
         """__init__ method of AppUtilities class."""
         self.service = service
 
-    def get_product_version(self, with_patch: bool = True) -> Any:
+    def get_product_version(self) -> str:
         """Get product version."""
         request = AppUtilitiesProtoModule.GetProductVersionRequest()
         response = self.service.get_product_version(request)
-        if with_patch:
-            return f"{response.major}.{response.minor}.{response.patch}"
-        else:
-            return f"{response.major}{response.minor}"
+        return f"{response.major}.{response.minor}.{response.patch}"
 
-    def get_build_info(self) -> Any:
+    def get_build_info(self) -> dict:
         """Get build info."""
         request = AppUtilitiesProtoModule.GetBuildInfoRequest()
         response = self.service.get_build_info(request)
         return MessageToDict(response, preserving_proto_field_name=True)
 
-    def get_controller_process_info(self) -> Any:
+    def get_controller_process_info(self) -> dict:
         """Get controller process info."""
         request = AppUtilitiesProtoModule.GetControllerProcessInfoRequest()
         response = self.service.get_controller_process_info(request)
@@ -155,7 +153,7 @@ class AppUtilities:
             "working_directory": response.working_directory,
         }
 
-    def get_solver_process_info(self) -> Any:
+    def get_solver_process_info(self) -> dict:
         """Get solver process info."""
         request = AppUtilitiesProtoModule.GetSolverProcessInfoRequest()
         response = self.service.get_solver_process_info(request)
@@ -165,7 +163,7 @@ class AppUtilities:
             "working_directory": response.working_directory,
         }
 
-    def get_app_mode(self) -> Any:
+    def get_app_mode(self) -> Enum:
         """Get app mode.
 
         Raises
@@ -187,39 +185,39 @@ class AppUtilities:
             case AppUtilitiesProtoModule.APP_MODE_SOLVER_AERO:
                 return pyfluent.FluentMode.SOLVER_AERO
 
-    def start_python_journal(self, journal_name: str | None = None) -> Any:
+    def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
         request = AppUtilitiesProtoModule.StartPythonJournalRequest()
         request.journal_name = journal_name
         response = self.service.start_python_journal(request)
-        return response
+        return response.journal_id
 
-    def stop_python_journal(self) -> Any:
+    def stop_python_journal(self) -> str:
         """Stop python journal."""
         request = AppUtilitiesProtoModule.StopPythonJournalRequest()
         response = self.service.stop_python_journal(request)
-        return response
+        return response.journal_str
 
-    def is_beta_enabled(self) -> Any:
+    def is_beta_enabled(self) -> bool:
         """Is beta enabled."""
         request = AppUtilitiesProtoModule.IsBetaEnabledRequest()
         response = self.service.is_beta_enabled(request)
         return response.is_beta_enabled
 
-    def is_wildcard(self, input: str | None = None) -> Any:
+    def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
         request = AppUtilitiesProtoModule.IsWildcardRequest()
         request.input = input
         response = self.service.is_wildcard(request)
         return response.is_wildcard
 
-    def is_solution_data_available(self) -> Any:
+    def is_solution_data_available(self) -> bool:
         """Is solution data available."""
         request = AppUtilitiesProtoModule.IsSolutionDataAvailableRequest()
         response = self.service.is_solution_data_available(request)
         return response.is_solution_data_available
 
-    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> Any:
+    def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
         request = AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsRequest()
         if solution_event == AppUtilitiesProtoModule.SOLUTION_EVENT_TIME_STEP:
@@ -231,22 +229,19 @@ class AppUtilities:
         response = self.service.register_pause_on_solution_events(request)
         return response.registration_id
 
-    def resume_on_solution_event(self, registration_id: str) -> Any:
+    def resume_on_solution_event(self, registration_id: str) -> None:
         """Resume on solution event."""
         request = AppUtilitiesProtoModule.ResumeOnSolutionEventRequest()
         request.registration_id = registration_id
-        response = self.service.resume_on_solution_event(request)
-        return response
+        self.service.resume_on_solution_event(request)
 
-    def unregister_pause_on_solution_events(self, registration_id: str) -> Any:
+    def unregister_pause_on_solution_events(self, registration_id: str) -> None:
         """Unregister pause on solution events."""
         request = AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsRequest()
         request.registration_id = registration_id
-        response = self.service.unregister_pause_on_solution_events(request)
-        return response
+        self.service.unregister_pause_on_solution_events(request)
 
-    def exit(self) -> Any:
+    def exit(self) -> None:
         """Exit."""
         request = AppUtilitiesProtoModule.ExitRequest()
-        response = self.service.exit(request)
-        return response
+        self.service.exit(request)
