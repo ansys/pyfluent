@@ -16,6 +16,8 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+sys.path.append(Path(__file__).parent / "util")
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -383,3 +385,16 @@ def periodic_rot_settings_session(new_solver_session):
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
+
+
+@pytest.fixture(params=["old", "new"])
+def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
+    if request.param == "new":
+        monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+        monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")
+
+
+@pytest.fixture
+def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+    monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")
