@@ -618,22 +618,15 @@ def test_datamodel_api_with_mapped_names(datamodel_api_version_new, new_solver_s
 
     command_args = [
         {
-            "helpstring": "",
             "name": "xxx",
             "type": "Logical",
         }
     ]
     command_args = [sorted(x.items()) for x in command_args]
-    ccc_args = get_static_info_value(  # noqa: F841
-        static_info, "/commands/ccc/commandinfo/args"
-    )
-    # TODO: helpstring is not being set
-    # assert command_args == [sorted(x.items()) for x in ccc_args]
-    d_args = get_static_info_value(  # noqa: F841
-        static_info, "/commands/D/commandinfo/args"
-    )
-    # TODO: helpstring is not being returned
-    # assert command_args == [sorted(x.items()) for x in d_args]
+    ccc_args = get_static_info_value(static_info, "/commands/ccc/commandinfo/args")
+    assert command_args == [sorted(x.items()) for x in ccc_args]
+    d_args = get_static_info_value(static_info, "/commands/D/commandinfo/args")
+    assert command_args == [sorted(x.items()) for x in d_args]
 
 
 # TODO: what are the equivalent of following tests in Python?
