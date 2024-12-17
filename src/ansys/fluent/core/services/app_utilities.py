@@ -132,7 +132,9 @@ class AppUtilitiesOld:
 
     def get_product_version(self) -> str:
         """Get product version."""
-        return self.scheme_eval.version
+        import ansys.fluent.core as pyfluent
+
+        return pyfluent.FluentVersion(self.scheme_eval.version)
 
     def get_build_info(self) -> dict:
         """Get build info."""
@@ -281,9 +283,13 @@ class AppUtilities:
 
     def get_product_version(self) -> str:
         """Get product version."""
+        import ansys.fluent.core as pyfluent
+
         request = AppUtilitiesProtoModule.GetProductVersionRequest()
         response = self.service.get_product_version(request)
-        return f"{response.major}.{response.minor}.{response.patch}"
+        return pyfluent.FluentVersion(
+            f"{response.major}.{response.minor}.{response.patch}"
+        )
 
     def get_build_info(self) -> dict:
         """Get build info."""
