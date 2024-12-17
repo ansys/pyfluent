@@ -138,9 +138,14 @@ class AppUtilitiesOld:
         """Get build info."""
         build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
         build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
-        rev = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
-        branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
-        return f"Build Time: {build_time}  Build Id: {build_id}  Revision: {rev}  Branch: {branch}"
+        vcs_revision = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
+        vcs_branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        return {
+            "build_time": build_time,
+            "build_id": build_id,
+            "vcs_revision": vcs_revision,
+            "vcs_branch": vcs_branch,
+        }
 
     def get_controller_process_info(self) -> dict:
         """Get controller process info."""
