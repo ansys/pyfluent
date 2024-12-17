@@ -529,7 +529,7 @@ def test_datamodel_api_on_command_executed_mapped_args(
         arguments = args
         executed = True
 
-    subscription = service.add_on_command_executed(app_name, "/", "C", root, cb)
+    subscription = service.add_on_command_executed(app_name, "/", root, cb)
     assert not executed
     assert command is None
     assert arguments is None
