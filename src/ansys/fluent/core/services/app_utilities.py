@@ -230,7 +230,7 @@ class AppUtilitiesOld:
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        unique_id: int = self._session.scheme_eval.scheme_eval(
+        unique_id: int = self.scheme_eval.scheme_eval(
             f"""
             (let
                 ((ids
