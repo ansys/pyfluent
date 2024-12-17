@@ -7,7 +7,7 @@ Example
 
     >>> from ansys.fluent.core.codegen import walk_api
     >>> from ansys.fluent.core.generated.solver import settings_252
-    >>> walk_api.walk_api(settings_252.root,lambda p: print(p), current_path=[])
+    >>> walk_api.walk_api(settings_252.root, lambda p: print(p), current_path=[])
 
 """
 
