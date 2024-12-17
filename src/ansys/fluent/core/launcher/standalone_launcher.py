@@ -189,9 +189,7 @@ class StandaloneLauncher:
             self.argvals["start_timeout"] = 60
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
-        fluent_version = _get_standalone_launch_fluent_version(
-            self.argvals["product_version"]
-        )
+        fluent_version = _get_standalone_launch_fluent_version(self.argvals)
         if fluent_version:
             _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
