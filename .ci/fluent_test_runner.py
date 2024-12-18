@@ -100,7 +100,7 @@ def _run_single_test(
                         if "Expected exception" in line:  # for check_assert.py
                             container.stop()
                         else:
-                            raise FluentRuntimeError(line)
+                            raise FluentRuntimeError(stderr)
             sleep(1)
         print(container.logs(stderr=True).decode())
         container.remove()
