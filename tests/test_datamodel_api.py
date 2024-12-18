@@ -339,7 +339,7 @@ def test_datamodel_api_on_command_executed(
         executed += 1
 
     # TODO: In C++ API, we don't need to pass the command name
-    subscription = service.add_on_command_executed(app_name, "/", "C", root, cb)
+    subscription = service.add_on_command_executed(app_name, "/", root, cb)
     assert executed == 0
     assert command is None
     assert arguments is None
@@ -437,7 +437,7 @@ def test_datamodel_api_on_bad_input(
             app_name, "/", "CC", "isActive", root, lambda _: None
         )
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
-        service.add_on_command_executed(app_name, "/BB", "C", root, lambda _: None)
+        service.add_on_command_executed(app_name, "/BB", root, lambda _: None)
 
 
 @pytest.mark.fluent_version(">=25.2")

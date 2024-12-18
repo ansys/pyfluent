@@ -231,7 +231,7 @@ def test_add_on_command_executed(new_meshing_session):
     meshing = new_meshing_session
     data = []
     subscription = meshing.meshing.add_on_command_executed(
-        "ImportGeometry", lambda obj, command, args: data.append(True)
+        lambda obj, command, args: data.append(True)
     )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -651,8 +651,8 @@ def test_on_command_executed_lifetime(new_solver_session):
     root = create_root_using_datamodelgen(solver._se_service, app_name)
     root.A["A1"] = {}
     data = []
-    _ = root.A["A1"].add_on_command_executed("C", lambda *args: data.append(1))
-    root.A["A1"].add_on_command_executed("C", lambda *args: data.append(2))
+    _ = root.A["A1"].add_on_command_executed(lambda *args: data.append(1))
+    root.A["A1"].add_on_command_executed(lambda *args: data.append(2))
     gc.collect()
     assert "/test/command_executed/A:A1/C" in solver._se_service.subscriptions
     assert "/test/command_executed/A:A1/C-1" in solver._se_service.subscriptions
