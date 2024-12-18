@@ -2,6 +2,9 @@
 
 import re
 
+from ansys.fluent.core.solver.flunits import get_si_unit_for_fluent_quantity
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
     """Raised when iso-surface definition is incomplete."""
@@ -131,11 +134,18 @@ class PostAPIHelper:
 
     def get_field_unit(self, field):
         """Returns the unit of the field."""
-        quantity = self._field_unit_quantity(field)
-        if quantity == "*null*":
-            return ""
-        scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
-        return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
+        session = self.obj.get_root().session
+        if FluentVersion(session.scheme_eval.version) < FluentVersion.v252:
+            quantity = self._field_unit_quantity(field)
+            if quantity == "*null*":
+                return ""
+            scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
+            return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
+        else:
+            fields_info = self.field_info.get_fields_info()
+            for field_info in fields_info:
+                if field_info["solverName"] == field:
+                    return get_si_unit_for_fluent_quantity(field_info["quantity_name"])
 
     def _field_unit_quantity(self, field):
         scheme_eval_str = f"(cdr (assq 'units (%fill-render-info '{field})))"
