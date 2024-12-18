@@ -61,7 +61,7 @@ optional = true
 Sphinx = "==7.4.7"
 jupyter_sphinx = "==0.5.3"
 numpydoc = "==1.8.0"
-matplotlib = "==3.9.0"
+matplotlib = "==3.9.3"
 ansys-sphinx-theme = "==1.2.0"
 pypandoc = "==1.13"
 pytest-sphinx = "==0.6.3"
