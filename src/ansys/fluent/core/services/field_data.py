@@ -118,13 +118,8 @@ class FieldInfo:
         self._service = service
         self._is_data_valid = is_data_valid
 
-    def get_fields_info(self, field: str) -> List[dict]:
+    def get_fields_info(self) -> List[dict]:
         """Get fields info.
-
-        Parameters
-        ----------
-        field: str
-            Field name
 
         Returns
         -------
