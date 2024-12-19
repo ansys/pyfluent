@@ -3,7 +3,6 @@
 from enum import Enum
 from typing import List, Tuple
 
-from google.protobuf.json_format import MessageToDict
 import grpc
 
 from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
@@ -289,7 +288,12 @@ class AppUtilities:
         """Get build info."""
         request = AppUtilitiesProtoModule.GetBuildInfoRequest()
         response = self.service.get_build_info(request)
-        return MessageToDict(response, preserving_proto_field_name=True)
+        return {
+            "build_time": response.build_time,
+            "build_id": response.build_id,
+            "vcs_revision": response.vcs_revision,
+            "vcs_branch": response.vcs_branch,
+        }
 
     def get_controller_process_info(self) -> dict:
         """Get controller process info."""
