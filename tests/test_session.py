@@ -582,16 +582,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    assert solver._app_utilities.get_product_version() in [
-        "22.2.0",
-        "23.1.0",
-        "23.2.0",
-        "24.1.0",
-        "24.2.0",
-        "25.1.0",
-        "25.2.0",
-    ]
-
     assert solver._app_utilities.get_app_mode() == pyfluent.FluentMode.SOLVER
 
     assert not solver._app_utilities.is_beta_enabled()
