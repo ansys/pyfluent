@@ -131,3 +131,12 @@ LAUNCH_FLUENT_STDOUT = None
 # Set stderr of the launched Fluent process
 # Valid values are same as subprocess.Popen's stderr argument
 LAUNCH_FLUENT_STDERR = None
+
+# Set the IP address of the Fluent server while launching Fluent
+LAUNCH_FLUENT_IP = None
+
+# Set the port of the Fluent server while launching Fluent
+LAUNCH_FLUENT_PORT = None
+
+# Skip password check during rpc execution when Fluent is launched from PyFluent
+LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = False
