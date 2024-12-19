@@ -306,7 +306,7 @@ def test_journal_creation(file_format, new_meshing_session):
     if session.connection_properties.inside_container:
         session.journal.start(file_name.name)
     else:
-        session.journal.start(file_name)
+        session.journal.start(str(file_name))
     session = session.switch_to_solver()
     session.journal.stop()
     new_stat = file_name.stat()

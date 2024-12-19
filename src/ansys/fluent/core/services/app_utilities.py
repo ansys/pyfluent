@@ -194,9 +194,9 @@ class AppUtilitiesOld:
             self.scheme_eval.scheme_eval(
                 "(api-echo-python-port pyfluent-journal-str-port)"
             )
-            return 1
+            return "1"
 
-    def stop_python_journal(self, journal_id: int | None = None) -> str:
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
         """Stop python journal."""
         if journal_id:
             self.scheme_eval.scheme_eval(
@@ -346,10 +346,11 @@ class AppUtilities:
         response = self.service.start_python_journal(request)
         return response.journal_id
 
-    def stop_python_journal(self, journal_id: int | None = None) -> str:
+    def stop_python_journal(self, journal_id: str | None = None) -> str:
         """Stop python journal."""
         request = AppUtilitiesProtoModule.StopPythonJournalRequest()
-        request.journal_id = journal_id
+        if journal_id:
+            request.journal_id = journal_id
         response = self.service.stop_python_journal(request)
         return response.journal_str
 
