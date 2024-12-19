@@ -22,3 +22,12 @@ def test_fluent_fatal_error(error_code, raises, new_solver_session):
             # as these are mostly instant, exception should usually be raised on the second gRPC call
             scheme_eval("(pp 'fatal_error_testing)")
             time.sleep(0.1)
+
+
+def test_custom_python_error_via_grpc(datamodel_api_version_new, new_solver_session):
+    solver = new_solver_session
+    # This may need to be updated if the error type changes in the server
+    with pytest.raises(RuntimeError, match="prefereces not found!"):
+        solver._se_service.get_state("prefereces", "General")
+    with pytest.raises(ValueError, match="Datamodel rules for prefereces not found!"):
+        solver._se_service.get_specs("prefereces", "General")
