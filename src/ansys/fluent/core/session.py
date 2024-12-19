@@ -10,10 +10,7 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.app_utilities import (
-    AppUtilitiesOld,
-    AppUtilitiesService,
-)
+from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -139,11 +136,8 @@ class BaseSession:
         if FluentVersion(self.scheme_eval.version) < FluentVersion.v252:
             self._app_utilities = AppUtilitiesOld(self.scheme_eval)
         else:
-            self._app_utilities_service = self._fluent_connection.create_grpc_service(
-                AppUtilitiesService, self._error_state
-            )
-            self._app_utilities = service_creator("app_utilities").create(
-                self._app_utilities_service
+            self._app_utilities = (
+                self._fluent_connection._connection_interface._app_utilities
             )
 
         self.journal = Journal(self._app_utilities)
