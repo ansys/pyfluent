@@ -51,6 +51,10 @@ class FieldDataService(StreamingService):
             stub=FieldGrpcModule.FieldDataStub(intercept_channel), metadata=metadata
         )
 
+    def get_fields_info(self, request):
+        """GetFieldsInfo RPC of FieldData service."""
+        return self._stub.GetFieldsInfo(request, metadata=self._metadata)
+
     def get_scalar_field_range(self, request):
         """GetRange RPC of FieldData service."""
         return self._stub.GetRange(request, metadata=self._metadata)
@@ -88,6 +92,9 @@ class FieldInfo:
 
     Methods
     -------
+    get_fields_info(field: str) -> List[dict]
+        Get fields info.
+
     get_scalar_field_range(field: str, node_value: bool, surface_ids: List[int])
     -> List[float]
         Get the range (minimum and maximum values) of the field.
@@ -110,6 +117,17 @@ class FieldInfo:
         """__init__ method of FieldInfo class."""
         self._service = service
         self._is_data_valid = is_data_valid
+
+    def get_fields_info(self) -> List[dict]:
+        """Get fields info.
+
+        Returns
+        -------
+        List[dict]
+        """
+        request = FieldDataProtoModule.GetFieldsInfo()
+        response = self._service.get_fields_info(request)
+        return response["fieldInfo"]
 
     def get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
