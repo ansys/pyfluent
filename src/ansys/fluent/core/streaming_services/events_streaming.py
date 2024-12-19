@@ -538,8 +538,8 @@ class EventsManager(Generic[TEvent]):
                     del callbacks_map[callback_id]
             sync_event_id = self._sync_event_ids.pop(callback_id, None)
             if sync_event_id:
-                self._session.scheme_eval.scheme_eval(
-                    f"(cancel-solution-monitor 'pyfluent-{sync_event_id})"
+                self._session._app_utilities.unregister_pause_on_solution_events(
+                    registration_id=sync_event_id
                 )
 
     def start(self, *args, **kwargs) -> None:
@@ -556,34 +556,8 @@ class EventsManager(Generic[TEvent]):
         callback_id: str,
         callback: Callable,
     ) -> tuple[Literal[SolverEvent.SOLUTION_PAUSED], Callable]:
-        unique_id: int = self._session.scheme_eval.scheme_eval(
-            f"""
-            (let
-                ((ids
-                    (let loop ((i 1))
-                        (define next-id (string->symbol (format #f "pyfluent-~d" i)))
-                        (if (check-monitor-existence next-id)
-                            (loop (1+ i))
-                            (list i next-id)
-                            )
-                        )
-                    ))
-                (register-solution-monitor
-                    (cadr ids)
-                    (lambda (niter time)
-                        (if (integer? niter)
-                            (begin
-                                (events/transmit 'auto-pause (cons (car ids) niter))
-                                (grpcserver/auto-pause (is-server-running?) (cadr ids))
-                                )
-                            )
-                        ()
-                        )
-                    {'#t' if event_type == SolverEvent.TIMESTEP_ENDED else '#f'}
-                    )
-                (car ids)
-                )
-        """
+        unique_id: int = self._session._app_utilities.register_pause_on_solution_events(
+            solution_event=event_type
         )
 
         def on_pause(session, event_info: SolutionPausedEventInfo):
@@ -604,8 +578,8 @@ class EventsManager(Generic[TEvent]):
                         exc_info=True,
                     )
                 finally:
-                    session.scheme_eval.scheme_eval(
-                        f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{unique_id})"
+                    session._app_utilities.resume_on_solution_event(
+                        registration_id=unique_id
                     )
 
         self._sync_event_ids[callback_id] = unique_id
