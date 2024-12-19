@@ -15,7 +15,7 @@ from typing import List
 
 
 def walk_api(
-    api_cls, on_each_path, current_path: str | List[str] = "", is_method: bool = False
+    api_cls, on_each_path, current_path: str | List[str] = "", api_item_type: str = ""
 ):
     """
     Recursively traverse the API hierarchy, calling `on_each_path` for each item.
@@ -29,11 +29,11 @@ def walk_api(
     """
     # Skip the root path
     if current_path:
-        on_each_path(current_path, is_method)
+        on_each_path(current_path, api_item_type)
 
     child_classes = getattr(api_cls, "_child_classes", {})
 
-    def _traverse(child_name, is_method):
+    def _traverse(child_name, api_item_type):
         if child_name in child_classes:
             child_cls = child_classes[child_name]
             # Construct the new path
@@ -44,21 +44,21 @@ def walk_api(
                     f"{current_path}.{child_name}" if current_path else child_name
                 )
             # Recursively walk the child
-            walk_api(child_cls, on_each_path, new_path, is_method)
+            walk_api(child_cls, on_each_path, new_path, api_item_type)
 
             # Delegate directly to any child_object_type (relevant for named objects)
             child_object_type = getattr(api_cls, "child_object_type", None)
             if child_object_type:
-                walk_api(child_cls, on_each_path, current_path, is_method)
+                walk_api(child_cls, on_each_path, current_path, api_item_type)
 
     # Get child names and their respective classes
-    if is_method:
+    if api_item_type == "method":
         arg_names = [
             name for attr in ("argument_names",) for name in getattr(api_cls, attr, [])
         ]
 
         for arg_name in arg_names:
-            _traverse(arg_name, is_method=False)
+            _traverse(arg_name, api_item_type="argument")
 
     else:
 
@@ -67,7 +67,7 @@ def walk_api(
         ]
 
         for child_name in child_names:
-            _traverse(child_name, is_method=False)
+            _traverse(child_name, api_item_type="")
 
         method_names = [
             name
@@ -76,4 +76,4 @@ def walk_api(
         ]
 
         for method_name in method_names:
-            _traverse(method_name, is_method=True)
+            _traverse(method_name, api_item_type="method")
