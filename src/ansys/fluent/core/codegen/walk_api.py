@@ -7,10 +7,12 @@ Example
 
     >>> from ansys.fluent.core.codegen import walk_api
     >>> from ansys.fluent.core.generated.solver import settings_252
-    >>> walk_api.walk_api(settings_252.root, lambda p, is_method: print(p), current_path=[])
+    >>> walk_api.walk_api(settings_252.root, lambda p: print(p), current_path=[])
+    >>> walk_api.walk_api(settings_252.root, lambda p, api_item_type: print(p, api_item_type), current_path=[])
 
 """
 
+from inspect import signature
 from typing import List
 
 
@@ -29,7 +31,10 @@ def walk_api(
     """
     # Skip the root path
     if current_path:
-        on_each_path(current_path, api_item_type)
+        if len(signature(on_each_path).parameters) == 2:
+            on_each_path(current_path, api_item_type)
+        else:
+            on_each_path(current_path)
 
     child_classes = getattr(api_cls, "_child_classes", {})
 
