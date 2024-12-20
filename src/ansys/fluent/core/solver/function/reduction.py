@@ -123,6 +123,9 @@ def _validate_locn_list(locn_list, ctxt):
 
 
 def _locns(locns, ctxt):
+    if locns == []:
+        # Raising 'RuntimeError' instead of 'ValueError' to address a limitation in the server-side implementation.
+        raise RuntimeError("No locations specified.")
     locn_names_and_objs = _locn_names_and_objs(locns)
     locn_list = []
     for name, obj in locn_names_and_objs:
