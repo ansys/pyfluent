@@ -36,7 +36,6 @@ jupyter:
 ### Launch and exit a meshing session
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 meshing = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.MESHING)
@@ -46,7 +45,6 @@ meshing.exit()
 ### Launch and exit a solver session
 
 ```{python}
-#| eval: false
 solver = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER)
 solver.exit()
@@ -55,7 +53,6 @@ solver.exit()
 ### Dimension, Precision, Processor count, Product version
 
 ```{python}
-#| eval: false
 solver = pyfluent.launch_fluent(
     dimension=pyfluent.Dimension.THREE,
     precision=pyfluent.Precision.DOUBLE,
@@ -67,7 +64,6 @@ solver = pyfluent.launch_fluent(
 ### Connect to an existing instance of Fluent
 
 ```{python}
-#| eval: false
 fluent = pyfluent.connect_to_fluent(
     ip="127.0.0.1", 
     port=50000, 
@@ -77,7 +73,6 @@ fluent = pyfluent.connect_to_fluent(
 ### Watertight geometry meshing workflow
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
@@ -94,7 +89,6 @@ wt.import_geometry()
 ### Add local sizing
 
 ```{python}
-#| eval: false
 wt.add_local_sizing.add_child_to_task()
 wt.add_local_sizing()
 ```
@@ -102,7 +96,6 @@ wt.add_local_sizing()
 ### Generate surface mesh
 
 ```{python}
-#| eval: false
 csm = wt.create_surface_mesh
 csmc = csm.cfd_surface_mesh_controls
 csmc.max_size.set_state(0.3)
@@ -112,7 +105,6 @@ wt.create_surface_mesh()
 ### Describe geometry
 
 ```{python}
-#| eval: false
 wt.describe_geometry.update_child_tasks(
     setup_type_changed=False)
 wt.describe_geometry.setup_type.set_state("The geometry consists of only fluid regions with no voids")
@@ -124,7 +116,6 @@ wt.describe_geometry()
 ### Update boundaries
 
 ```{python}
-#| eval: false
 ub = wt.update_boundaries
 ub.boundary_label_list.set_state(["wall-inlet"])
 ub.boundary_label_type_list.set_state(["wall"])
@@ -138,14 +129,12 @@ ub()
 ### Update regions
 
 ```{python}
-#| eval: false
 wt.update_regions()
 ```
 
 ### Add boundary layers
 
 ```{python}
-#| eval: false
 wt.add_boundary_layer.add_child_to_task()
 wt.add_boundary_layer.insert_compound_child_task()
 wt.task("smooth-transition_1"
@@ -158,7 +147,6 @@ wt.task("smooth-transition_1")()
 ### Generate volume mesh
 
 ```{python}
-#| eval: false
 wt.create_volume_mesh.volume_fill.set_state(
     "poly-hexcore")
 vfc = wt.create_volume_mesh.volume_fill_controls
@@ -169,7 +157,6 @@ wt.create_volume_mesh()
 ### Switch to solution mode
 
 ```{python}
-#| eval: false
 solver = meshing.switch_to_solver()
 ```
 
@@ -182,8 +169,7 @@ file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow
 solver = pyfluent.launch_fluent()
 solver.settings.file.read_case(
     file_name=file_name)
-bc = solver.settings.setup.boundary_conditions
-cold_inlet = bc.velocity_inlet["cold-inlet"]
+cold_inlet = pyfluent.VelocityInlet(solver, name="cold-inlet")
 cold_inlet.momentum.velocity.set_state(0.4)
 inlet_turbulence = cold_inlet.turbulence
 turbulence_specification = inlet_turbulence.turbulence_specification
@@ -199,21 +185,19 @@ cold_inlet.thermal.temperature.set_state(293.15)
 ### Cell zone conditions
 
 ```{python}
-#| eval: false
-cz = solver.settings.setup.cell_zone_conditions
-cz.fluid["elbow-fluid"].laminar.set_state(True)
+elbow_fluid = pyfluent.FluidCellZone(solver, name="elbow-fluid")
+elbow_fluid.laminar.set_state(True)
 ```
 
 ### Copy material from database
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 solver = pyfluent.launch_fluent()
 solver.settings.file.read_case(file_name=file_name)
-materials = solver.settings.setup.materials
+materials = pyfluent.Materials(solver)
 fluids = materials.fluid
 fluids.make_a_copy(from_="air",to="air-2")
 air_copy = fluids["air-2"]
@@ -225,7 +209,6 @@ cz.fluid["elbow-fluid"].material.set_state("air-2")
 ### Access the object state using pprint
 
 ```{python}
-#| eval: false
 from pprint import pprint
 pprint(air_copy.get_state(), width=1)
 pprint(air_copy.viscosity.option.allowed_values(), width=1)
@@ -234,7 +217,6 @@ pprint(air_copy.viscosity.option.allowed_values(), width=1)
 ### Create new material
 
 ```{python}
-#| eval: false
 mysolid = materials.solid.create("mysolid")
 mysolid.chemical_formula.set_state("SiO2")
 mysolid.density.value.set_state(2650)
@@ -245,13 +227,12 @@ mysolid.thermal_conductivity.value.set_state(7.6)
 ### Energy model
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 solver = pyfluent.launch_fluent()
 solver.settings.file.read_case(file_name=file_name)
-energy = solver.settings.setup.models.energy
+energy = pyfluent.Energy(solver)
 energy.enabled.get_state()
 from pprint import pprint
 pprint(energy.get_state(), width=1)
@@ -266,8 +247,7 @@ pprint(energy.get_state(), width=1)
 ### Viscous model
 
 ```{python}
-#| eval: false
-vs = solver.settings.setup.models.viscous
+vs = pyfluent.Viscous(solver)
 from pprint import pprint
 pprint(vs.get_state(), width=1)
 pprint(vs.model.allowed_values(), width=1)
@@ -287,8 +267,7 @@ vs_ops.production_kato_launder_enabled.is_active()
 ### Discrete phase model
 
 ```{python}
-#| eval: false
-dpm = solver.settings.setup.models.discrete_phase
+dpm = pyfluent.DiscretePhase(solver)
 dpm_models = dpm.physical_models
 dpm_vmf = dpm_models.virtual_mass_force
 dpm_vmf.enabled.get_state()
@@ -300,8 +279,7 @@ dpm_vmf.virtual_mass_factor.get_state()
 ### Radiation model
 
 ```{python}
-#| eval: false
-rn = solver.settings.setup.models.radiation
+rn = pyfluent.Radiation(solver)
 from pprint import pprint
 pprint(rn.get_state(), width=1)
 pprint(rn.model.allowed_values(), width=1)
@@ -324,9 +302,8 @@ pprint(rn.get_state(), width=1)
 ### Species model
 
 ```{python}
-#| eval: false
 solver.settings.file.read_case(file_name=file_name)
-species = solver.settings.setup.models.species
+species = pyfluent.Species(solver)
 species.get_state()
 from pprint import pprint
 pprint(species.model.option.allowed_values(), width=1)
@@ -339,8 +316,7 @@ species.model.material.allowed_values()
 ### Battery model
 
 ```{python}
-#| eval: false
-battery = solver.settings.setup.models.battery
+battery = pyfluent.Battery(solver)
 battery.enabled.set_state(True)
 battery.solution_method.allowed_values()
 ```
@@ -348,8 +324,8 @@ battery.solution_method.allowed_values()
 ### Steady or transient solution model
 
 ```{python}
-#| eval: false
-solver_time = solver.settings.setup.general.solver.time
+setup = pyfluent.Setup(solver)
+solver_time = setup.general.solver.time
 solver_time.get_state()
 solver_time.allowed_values()
 solver_time.set_state("unsteady-1st-order")
@@ -358,8 +334,8 @@ solver_time.set_state("unsteady-1st-order")
 ### Pressure-based or density-based solver
 
 ```{python}
-#| eval: false
-solver_type = solver.settings.setup.general.solver.type
+setup = pyfluent.Setup(solver)
+solver_type = setup.general.solver.type
 solver_type.get_state()
 solver_type.allowed_values()
 solver_type.set_state("density-based-explicit")
@@ -369,8 +345,7 @@ solver_type.get_state()
 ### Velocity coupling scheme and gradient options
 
 ```{python}
-#| eval: false
-methods = solver.settings.solution.methods
+methods = pyfluent.Methods(solver)
 flow_scheme = methods.p_v_coupling.flow_scheme
 flow_scheme.allowed_values()
 flow_scheme.set_state("Coupled")
@@ -382,8 +357,8 @@ gradient_scheme.set_state("green-gauss-node-based")
 ### Solution controls
 
 ```{python}
-#| eval: false
-pvc = solver.settings.solution.controls.p_v_controls
+controls = pyfluent.Controls(solver)
+pvc = controls.p_v_controls
 emur = pvc.explicit_momentum_under_relaxation
 emur.min()
 emur.max()
@@ -397,8 +372,7 @@ flow_courant_number.set_state(0.3)
 ### Create a report definition
 
 ```{python}
-#| eval: false
-rep_defs = solver.settings.solution.report_definitions
+rep_defs = pyfluent.ReportDefinitions(solver)
 surface = rep_defs.surface
 defn_name = "outlet-temp-avg"
 surface[defn_name] = {}
@@ -410,7 +384,6 @@ out_temp.field.set_state("temperature")
 ### Initialize and solve
 
 ```{python}
-#| eval: false
 solution = solver.settings.solution
 solution.initialization.hybrid_initialize()
 solution.run_calculation.iterate(iter_count=100)
@@ -419,7 +392,6 @@ solution.run_calculation.iterate(iter_count=100)
 ### CaseFile reader
 
 ```{python}
-#| eval: false
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.case_file import CaseFile
 case_file_name = examples.download_file(
@@ -435,7 +407,6 @@ reader.num_dimensions()
 ### Additionl features
 
 ```{python}
-#| eval: false
 reader = CaseFile(
     project_file_name="Dir1/Dir2/project.flprj")
 reader.rp_vars()
@@ -445,7 +416,6 @@ reader.config_vars()
 ### Extract mesh data
 
 ```{python}
-#| eval: false
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.case_file import CaseFile
 case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
@@ -460,7 +430,6 @@ reader.get_mesh().get_vertices(3)
 ### DataFile reader
 
 ```{python}
-#| eval: false
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.filereader.case_file import CaseFile
@@ -477,7 +446,6 @@ reader.get_face_variables("phase-1")
 ### Single-phase FileSession
 
 ```{python}
-#| eval: false
 from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
@@ -493,7 +461,6 @@ fs.fields.field_info.get_scalar_fields_info()
 ### Multiphase FileSession
 
 ```{python}
-#| eval: false
 from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 case_file_name = examples.download_file(
@@ -513,7 +480,6 @@ fs.fields.field_info.get_scalar_fields_info()
 ### Post-processing using [ansys-fluent-visualization](https://visualization.fluent.docs.pyansys.com/version/stable/)
 
 ```{python}
-#| eval: false
 from ansys.fluent.visualization import set_config
 set_config(blocking=True, set_view_on_display="isometric")
 import ansys.fluent.core as pyfluent
@@ -529,7 +495,6 @@ graphics = Graphics(session=fileSession)
 ### Display mesh at wall
 
 ```{python}
-#| eval: false
 mesh1 = graphics.Meshes["mesh-1"]
 mesh1.show_edges = True
 mesh1.surfaces_list = [ "wall"]
@@ -539,7 +504,6 @@ mesh1.display("w1")
 ### Display temperature contour at symmetry
 
 ```{python}
-#| eval: false
 contour1 = graphics.Contours["mesh-1"]
 contour1.node_values = False
 contour1.field = "SV_T"
@@ -550,7 +514,6 @@ contour1.display('w2')
 ### Display velocity vector data at symmetry and wall
 
 ```{python}
-#| eval: false
 velocity_vector = graphics.Vectors["velocity-vector"]
 velocity_vector.field = "SV_T"
 velocity_vector.surfaces_list = ['symmetry', 'wall']
@@ -562,84 +525,88 @@ velocity_vector.display("w3")
 ### Accessing field data objects
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+case_path = examples.download_file(
+    file_name="exhaust_system.cas.h5", 
+    directory="pyfluent/exhaust_system"
+)
+data_path = examples.download_file(
+    file_name="exhaust_system.dat.h5", 
+    directory="pyfluent/exhaust_system"
+)
 solver = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER)
-solver.settings.file.read(file_type="case", file_name=import_file_name)
-init = solver.settings.solution.initialization
-init.hybrid_initialize()
+solver.settings.file.read_case_data(
+    file_name=case_path
+)
 field_data = solver.fields.field_data
 ```
 
 ### Get surface data
 
 ```{python}
-#| eval: false
 from ansys.fluent.core.services.field_data import SurfaceDataType
-vertices_data = field_data.get_surface_data(
-    surface_name="cold-inlet", 
-    data_type=SurfaceDataType.Vertices)
-vertices_data.size
-vertices_data.surface_id
-vertices_data[5].x
-vertices_data[5].y
-vertices_data[5].z
-faces_normal_data = field_data.get_surface_data(
-    data_type=SurfaceDataType.FacesNormal, surface_name="cold-inlet"
+data = field_data.get_surface_data(
+    surfaces=["inlet"], 
+    data_types=[SurfaceDataType.Vertices]
 )
-faces_centroid_data = field_data.get_surface_data(
-    data_type=SurfaceDataType.FacesCentroid, surface_name="cold-inlet"
+data["inlet"][SurfaceDataType.Vertices].shape
+data["inlet"][SurfaceDataType.Vertices][5]
+faces_normal_and_centroid_data = field_data.get_surface_data(
+    data_types=[SurfaceDataType.FacesNormal, 
+    SurfaceDataType.FacesCentroid],
+    surfaces=["inlet"]
 )
+inlet = faces_normal_and_centroid_data["inlet"]
+inlet[SurfaceDataType.FacesNormal].shape
+inlet[SurfaceDataType.FacesCentroid][15]
 faces_connectivity_data = field_data.get_surface_data(
-    data_type=SurfaceDataType.FacesConnectivity, surface_name="cold-inlet"
+    data_types=[SurfaceDataType.FacesConnectivity], 
+    surfaces=["inlet"]
 )
-faces_connectivity_data[5].node_count
-faces_connectivity_data[5].node_indices
+inlet = faces_connectivity_data["inlet"]
+inlet[SurfaceDataType.FacesConnectivity][5]
 ```
 
 ### Get scalar field data
 
 ```{python}
-#| eval: false
 abs_press_data = field_data.get_scalar_field_data(
     field_name="absolute-pressure", 
-    surface_name="cold-inlet")
-abs_press_data.size
-abs_press_data[120].scalar_data
+    surfaces=["inlet"]
+)
+abs_press_data["inlet"].shape
+abs_press_data["inlet"][120]
 ```
 
 ### Get vector field data
 
 ```{python}
-#| eval: false
 velocity_vector_data = field_data.get_vector_field_data(
     field_name="velocity", 
-    surface_name="cold-inlet")
-velocity_vector_data.size
-velocity_vector_data.scale
+    surfaces=["inlet", "inlet1"]
+)
+velocity_vector_data["inlet"].shape
+velocity_vector_data["inlet1"].shape
 ```
 
 ### Get pathlines field data
 
 ```{python}
-#| eval: false
 path_lines_data = field_data.get_pathlines_field_data(
     field_name="velocity", 
-    surface_name="cold-inlet")
-path_lines_data["vertices"].size
-path_lines_data["lines"].size
-path_lines_data["velocity"].size
-path_lines_data["lines"][100].node_count
-path_lines_data["lines"][100].node_indices
+    surfaces=["inlet"]
+)
+path_lines_data["inlet"]["vertices"].shape
+len(path_lines_data["inlet"]["lines"])
+path_lines_data["inlet"]["velocity"].shape
+path_lines_data["inlet"]["lines"][100]
 ```
 
 ### Accessing field info objects
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 solver = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER)
@@ -652,7 +619,6 @@ field_info = solver.fields.field_info
 ### Get fields info and range
 
 ```{python}
-#| eval: false
 field_info.get_fields_info()
 field_info.get_range("velocity")
 field_info.get_range("cell-weight")
@@ -661,7 +627,6 @@ field_info.get_range("cell-weight")
 ### Get vector fields and surfaces info
 
 ```{python}
-#| eval: false
 field_info.get_vector_fields_info()
 field_info.get_surfaces_info()
 ```
@@ -669,32 +634,50 @@ field_info.get_surfaces_info()
 ### Accessing reduction functions
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.solver.function import reduction
 from ansys.fluent.core.examples import download_file
-solver = pyfluent.launch_fluent(
-    mode=pyfluent.FluentMode.SOLVER)
-case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-solver.settings.file.read(file_type="case", file_name=case_path)
-init = solver.settings.solution.initialization
-init.hybrid_initialize()
-bc = solver.settings.setup.boundary_conditions
-solver.fields.reduction.area_average(
-  expression="AbsolutePressure",
-  locations=
-  bc.velocity_inlet
+
+solver1 = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER
 )
+case_path = download_file(
+    file_name="exhaust_system.cas.h5", 
+    directory="pyfluent/exhaust_system")
+data_path = download_file(
+    file_name="exhaust_system.dat.h5", 
+    directory="pyfluent/exhaust_system")
+solver1.settings.file.read_case_data(
+    file_name=case_path
+)
+
+solver2 = pyfluent.launch_fluent(
+    mode=pyfluent.FluentMode.SOLVER
+)
+case_path = download_file(
+    "elbow1.cas.h5", 
+    "pyfluent/file_session"
+)
+data_path = download_file(
+    "elbow1.dat.h5", 
+    "pyfluent/file_session"
+)
+solver2.settings.file.read_case_data(
+    file_name=case_path
+)
+
+solver = solver1
 ```
 
 ### Usage of reduction context
 
 ```{python}
-#| eval: false
+import ansys.fluent.core as pyfluent
 init = solver.settings.solution.initialization
 init.hybrid_initialize()
-bc = solver.settings.setup.boundary_conditions
+inlet = pyfluent.VelocityInlets(solver)
 solver.fields.reduction.area(
-  locations=[bc.velocity_inlet["inlet1"]]
+  locations=[inlet["inlet1"]]
 )
 solver.fields.reduction.area(
     locations=["inlet1"], 
@@ -704,7 +687,6 @@ solver.fields.reduction.area(
 ### Current reduction capabilities
 
 ```{python}
-#| eval: false
 reduction.area(locations)
 reduction.area_average(expression, locations)
 reduction.area_integral(expression, locations)
@@ -732,39 +714,35 @@ reduction.sum_if(expression, condition, locations, weight)
 ### Reduction example use cases
 
 ```{python}
-#| eval: false
-bc = solver.settings.setup.boundary_conditions
+import ansys.fluent.core as pyfluent
+inlet = pyfluent.VelocityInlets(solver)
 
 area_inlet_1 = solver.fields.reduction.area(
-  locations=[bc.velocity_inlet["inlet1"]])
+  locations=[inlet["inlet1"]])
 area_inlet = solver.fields.reduction.area(
-  locations=[bc.velocity_inlet])
-solver.fields.reduction.area_integral(
-  expression="AbsolutePressure",
-  locations=[bc.velocity_inlet["inlet1"]])
+  locations=[inlet])
 solver.fields.reduction.centroid(
-  locations=[bc.velocity_inlet["inlet2"]])
-solver.fields.reduction.moment(
-  expression="Force(['wall'])",
-  locations=[bc.velocity_inlet["inlet2"]])
-solver.fields.reduction.moment(
-  expression="['inlet1']",
-  locations=[bc.velocity_inlet["inlet2"]])
+  locations=[inlet["inlet2"]])
+po_1 = pyfluent.PressureOutlets(solver1)
+po_2 = pyfluent.PressureOutlets(solver2)
+solver.fields.reduction.minimum(
+    expression="AbsolutePressure",
+    locations=[po_1, po_2],
+)
 solver.fields.reduction.sum(
   expression="AbsolutePressure",
-  locations=[bc.velocity_inlet],
+  locations=[inlet],
   weight="Area")
 solver.fields.reduction.sum_if(
   expression="AbsolutePressure",
   condition="AbsolutePressure > 0[Pa]",
-  locations=[bc.velocity_inlet],
+  locations=[inlet],
   weight="Area")
 ```
 
 ### Accessing solution variable objects
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
@@ -778,7 +756,6 @@ solution_variable_data = solver.fields.solution_variable_data
 ### Get zone information
 
 ```{python}
-#| eval: false
 zones_info = solution_variable_info.get_zones_info()
 zones_info.domains
 zones_info.zones
@@ -793,7 +770,6 @@ zone_info.zone_type
 ### Get solution variable information
 
 ```{python}
-#| eval: false
 wall_fluid_info = solution_variable_info.get_variables_info(
     zone_names=['wall' , "fluid"], 
     domain_name="mixture")
@@ -808,7 +784,6 @@ solution_variable_info_centroid.field_type
 ### Get solution variable data
 
 ```{python}
-#| eval: false
 sv_t_wall_fluid= solution_variable_data.get_data(
     solution_variable_name="SV_T", 
     zone_names=["fluid", "wall"], 
@@ -824,7 +799,6 @@ fluid_temp
 ### Set solution variable data
 
 ```{python}
-#| eval: false
 wall_temp_array = solution_variable_data.create_empty_array(
     "SV_T", "wall", "mixture")
 fluid_temp_array = solution_variable_data.create_empty_array(
@@ -842,24 +816,22 @@ solution_variable_data.set_data(
 ### Multiple requests in a single transaction
 
 ```{python}
-#| eval: false
 transaction = solver.fields.field_data.new_transaction()
 
 transaction.add_surfaces_request(
-    surface_ids=[1], provide_vertices=True, provide_faces=False, provide_faces_centroid=True
-)
-transaction.add_surfaces_request(
-    surface_ids=[2], provide_vertices=True, provide_faces=True
+    surfaces=[1], 
+    data_types=[SurfaceDataType.Vertices, 
+    SurfaceDataType.FacesCentroid]
 )
 transaction.add_scalar_fields_request(
-    surface_ids=[1,2], field_name="temperature", node_value=True, boundary_value=True
+    surfaces=[1, 2], 
+    field_name="pressure", 
+    node_value=True, 
+    boundary_value=True
 )
 transaction.add_vector_fields_request(
-    surface_ids=[1,2], 
-    field_name="velocity")
-transaction.add_pathlines_fields_request(
-    surface_ids=[1,2], 
-    field_name="temperature")
+    surfaces=[1, 2], field_name="velocity"
+)
 
 payload_data = transaction.get_fields()
 ```
@@ -883,7 +855,6 @@ sd.surface_ids.allowed_values()
 ### Monitor convergence of a solution
 
 ```{python}
-#| eval: false
 # get started with case and data loaded
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -937,7 +908,6 @@ solver.solution.run_calculation.iterate(
 ### Observing events
 
 ```{python}
-#| eval: false
 from ansys.fluent.core import MeshingEvent, SolverEvent
 def on_case_loaded(session, event_info):
     print("Case loaded. Index = ", event_info.index)
@@ -952,7 +922,6 @@ callback_id = solver.events.register_callback(
 ### Transfer a case or mesh file between PyFluent sessions
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.utils.data_transfer import transfer_case
@@ -970,12 +939,9 @@ solver_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER
 )
 transfer_case(
-    source_instance=meshing,
-    solvers=[solver],
-    file_type="mesh",
-    file_name_stem='',
-    num_files_to_try=1,
-    clean_up_temp_file=True,
+    source_instance=meshing, solvers=[solver],
+    file_type="mesh", file_name_stem='',
+    num_files_to_try=1, clean_up_temp_file=True,
     overwrite_previous=True
 )
 ```
@@ -983,7 +949,6 @@ transfer_case(
 ### [PyAnsys Units](https://units.docs.pyansys.com/version/stable/) to work in arbitrary physical examples
 
 ```{python}
-#| eval: false
 from ansys.units import Quantity
 bc = solver.settings.setup.boundary_conditions
 vi = bc.velocity_inlet
@@ -1004,7 +969,6 @@ hyd_dia.as_quantity()
 ### Local file transfer service
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
@@ -1031,7 +995,6 @@ meshing_session.download(
 ### Remote file transfer service
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
@@ -1058,7 +1021,6 @@ solver_session.download(
 ### Record Fluent interactions as Python scripts (journals)
 
 ```{python}
-#| eval: false
 solver.journal.start(
     file_name="pyfluent_journal.py")
 solver.journal.stop()
@@ -1067,7 +1029,6 @@ solver.journal.stop()
 ### PyFluent logging functionality
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 config_dict = pyfluent.logging.get_default_config()
 config_dict['handlers']['pyfluent_file'][
@@ -1083,7 +1044,6 @@ pyfluent.logging.set_global_level('DEBUG')
 ### API search
 
 ```{python}
-#| eval: false
 # Semantic search
 import ansys.fluent.core as pyfluent
 pyfluent.search("font")
@@ -1121,7 +1081,6 @@ sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or s
 ### Run Docker container using PyFluent
 
 ```{python}
-#| eval: false
 import os
 import ansys.fluent.core as pyfluent
 os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
@@ -1138,7 +1097,6 @@ solver = pyfluent.launch_fluent(
 ### Scheme code evaluation
 
 ```{python}
-#| eval: false
 import ansys.fluent.core as pyfluent
 S = pyfluent.services.scheme_eval.Symbol
 session.scheme_eval.eval([S('+'), 2, 3])
