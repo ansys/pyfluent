@@ -495,6 +495,7 @@ def test_generated_code_special_cases(new_solver_session):
     assert _OutputFile in write_file_bases
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3591")
 @pytest.mark.fluent_version(">=25.1")
 def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session

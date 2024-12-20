@@ -16,6 +16,8 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+sys.path.append(Path(__file__).parent / "util")
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -282,6 +284,13 @@ def new_solver_session():
 
 
 @pytest.fixture
+def new_solver_session_t4():
+    solver = create_session(processor_count=4)
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
 def new_solver_session_sp():
     solver = create_session(precision="single")
     yield solver
@@ -324,6 +333,14 @@ def mixing_elbow_settings_session(new_solver_session):
         file_name=case_name,
         lightweight_setup=True,
     )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session_t4(new_solver_session_t4):
+    solver = new_solver_session_t4
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
 
@@ -383,3 +400,16 @@ def periodic_rot_settings_session(new_solver_session):
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
+
+
+@pytest.fixture(params=["old", "new"])
+def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
+    if request.param == "new":
+        monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+        monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")
+
+
+@pytest.fixture
+def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+    monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")
