@@ -5,7 +5,6 @@ import pytest
 
 from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.workflow import camel_to_snake_case
-from tests.conftest import new_meshing_session
 
 
 @pytest.mark.nightly
@@ -1468,7 +1467,9 @@ def test_created_workflow(new_meshing_session):
     )
 
 
-new_meshing_session2 = new_meshing_session
+@pytest.fixture
+def new_meshing_session2(new_meshing_session):
+    return new_meshing_session
 
 
 @pytest.mark.codegen_required

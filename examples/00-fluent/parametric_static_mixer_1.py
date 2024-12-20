@@ -218,7 +218,7 @@ solver_session.settings.parametric_studies[
 
 solver_session.settings.parametric_studies[
     "Static_Mixer_main-Solve"
-].design_points.create_1(write_data=False, capture_simulation_report_data=True)
+].design_points.create(write_data=False, capture_simulation_report_data=True)
 
 solver_session.settings.parametric_studies["Static_Mixer_main-Solve"].design_points[
     "DP1"
@@ -319,7 +319,9 @@ solver_session = pyfluent.launch_fluent(
     precision="double", processor_count=2, mode="solver"
 )
 
-project_filepath_read = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study.flprj")
+project_filepath_read = str(
+    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save.flprj"
+)
 
 solver_session.settings.file.parametric_project.open(
     project_filename=project_filepath_read, load_case=True

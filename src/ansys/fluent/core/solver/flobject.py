@@ -46,7 +46,6 @@ from typing import (
 )
 import warnings
 import weakref
-from zipimport import zipimporter
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -54,7 +53,7 @@ from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserW
 
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
-from .settings_external import expand_api_file_argument, use_search
+from .settings_external import expand_api_file_argument
 
 
 def _ansys_units():
@@ -170,6 +169,38 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+def _get_python_path_comps(obj):
+    """Get python path components for traversing class hierarchy."""
+    comps = []
+    while obj:
+        python_name = obj._python_name
+        obj = obj._parent
+        if isinstance(obj, (NamedObject, ListObject)):
+            comps.append(obj._python_name)
+            obj = obj._parent
+        else:
+            comps.append(python_name)
+    comps.reverse()
+    return comps[1:]
+
+
+def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str]):
+    """Get the class for the given alias path."""
+    parent_count = 0
+    while other_path[0] == "..":
+        parent_count += 1
+        other_path.pop(0)
+    for _ in range(parent_count):
+        some_path.pop()
+    full_path = some_path + other_path
+    cls = root_cls
+    for comp in full_path:
+        cls = cls._child_classes[comp]
+        if issubclass(cls, (NamedObject, ListObject)):
+            cls = cls.child_object_type
+    return cls, full_path
 
 
 class Base:
@@ -438,6 +469,8 @@ class Base:
         return nullcontext()
 
     def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
         return self.flproxy == other.flproxy and self.path == other.path
 
 
@@ -646,43 +679,6 @@ def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None)
     return cls(name, parent)
 
 
-def _combine_set_states(states: List[Tuple[str, StateT]]) -> Tuple[str, StateT]:
-    """Combines multiple set-states into a single set-state at a common parent path.
-
-    Parameters
-    ----------
-    states : list[tuple[str, StateT]]
-        List of (<path>, <state>) tuples.
-
-    Returns
-    -------
-    tuple[str, StateT]
-        Common parent path, combined state.
-    """
-    paths, _ = zip(*states)
-    common_path = []
-    paths = [path.split("/") for path in paths]
-    for comps in zip(*paths):
-        if len(set(comps)) == 1:
-            common_path.append(comps[0])
-        else:
-            break
-    combined_state = {}
-    for path, state in states:
-        comps = path.split("/")
-        comps = comps[len(common_path) :]
-        if comps:
-            if not isinstance(combined_state, dict):
-                combined_state = {}
-            obj = combined_state
-            for comp in comps[:-1]:
-                obj = obj.setdefault(comp, {})
-            obj[comps[-1]] = state
-        else:
-            combined_state = state
-    return "/".join(common_path), combined_state
-
-
 class SettingsBase(Base, Generic[StateT]):
     """Base class for settings objects.
 
@@ -696,7 +692,7 @@ class SettingsBase(Base, Generic[StateT]):
     """
 
     @classmethod
-    def to_scheme_keys(cls, value: StateT) -> StateT:
+    def to_scheme_keys(cls, value: StateT, root_cls, path: list[str]) -> StateT:
         """Convert value to have keys with scheme names.
 
         This is overridden in the ``Group``, ``NamedObject``, and
@@ -721,63 +717,6 @@ class SettingsBase(Base, Generic[StateT]):
         """Get the state of the object."""
         return self.to_python_keys(self.flproxy.get_var(self.path))
 
-    # Following is not a classmethod, as parent (required to support ".." in alias-path)
-    # is available only at the instance level.
-    def _unalias(self, cls, value):
-        """Unalias the given value."""
-        if isinstance(value, collections.abc.Mapping):
-            ret = {}
-            outer_set_states = []
-            for k, v in value.items():
-                if hasattr(cls, "_child_aliases") and k in cls._child_aliases:
-                    alias = cls._child_aliases[k]
-                    comps = alias.split("/")
-                    if comps[0] == "..":
-                        outer_obj = self
-                        while comps[0] == "..":
-                            outer_obj = outer_obj.parent
-                            comps = comps[1:]
-                        for comp in comps:
-                            try:
-                                outer_obj = getattr(outer_obj, comp)
-                            except InactiveObjectError:
-                                outer_obj = super(
-                                    SettingsBase, outer_obj
-                                ).__getattribute__(comp)
-                        outer_set_states.append((outer_obj, v))
-                    else:
-                        ret_alias = ret
-                        aliased_cls = cls
-                        obj = self
-                        for i, comp in enumerate(comps):
-                            aliased_cls = aliased_cls._child_classes[comp]
-                            try:
-                                obj = getattr(obj, comp)
-                            except InactiveObjectError:
-                                obj = super(SettingsBase, obj).__getattribute__(comp)
-                            if i == len(comps) - 1:
-                                ret_alias[comp], o_set_states = obj._unalias(
-                                    aliased_cls, v
-                                )
-                                outer_set_states.extend(o_set_states)
-                            else:
-                                ret_alias = ret_alias.setdefault(comp, {})
-                else:
-                    if issubclass(cls, Group):
-                        ccls = cls._child_classes[k]
-                        try:
-                            cobj = getattr(self, k)
-                        except InactiveObjectError:
-                            cobj = super(SettingsBase, self).__getattribute__(k)
-                        ret[k], o_set_states = cobj._unalias(ccls, v)
-                        outer_set_states.extend(o_set_states)
-                    else:
-                        ret[k], o_set_states = self._unalias(cls, v)
-                        outer_set_states.extend(o_set_states)
-            return ret, outer_set_states
-        else:
-            return value, []
-
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
@@ -786,17 +725,14 @@ class SettingsBase(Base, Generic[StateT]):
             ):
                 self.value.set_state(state, **kwargs)
             else:
-                state, outer_set_states = self._unalias(self.__class__, kwargs or state)
-                if outer_set_states:
-                    set_states = []
-                    if state:
-                        set_states.append((self.path, self.to_scheme_keys(state)))
-                    for obj, state in outer_set_states:
-                        set_states.append((obj.path, obj.to_scheme_keys(state)))
-                    path, state = _combine_set_states(set_states)
-                    self.flproxy.set_var(path, state)
-                else:
-                    self.flproxy.set_var(self.path, self.to_scheme_keys(state))
+                self.flproxy.set_var(
+                    self.path,
+                    self.to_scheme_keys(
+                        kwargs or state,
+                        self._root.__class__,
+                        _get_python_path_comps(self),
+                    ),
+                )
 
     @staticmethod
     def _print_state_helper(state, out, indent=0, indent_factor=2):
@@ -1022,7 +958,7 @@ class Group(SettingsBase[DictStateType]):
             return self.get_state()
 
     @classmethod
-    def to_scheme_keys(cls, value):
+    def to_scheme_keys(cls, value, root_cls, path: list[str]):
         """Convert value to have keys with scheme names.
 
         Raises
@@ -1035,7 +971,15 @@ class Group(SettingsBase[DictStateType]):
             for k, v in value.items():
                 if k in cls.child_names:
                     ccls = cls._child_classes[k]
-                    ret[ccls.fluent_name] = ccls.to_scheme_keys(v)
+                    ret[ccls.fluent_name] = ccls.to_scheme_keys(v, root_cls, path + [k])
+                elif k in cls._child_aliases:
+                    alias, scm_alias_name = cls._child_aliases[k]
+                    alias_cls, alias_path = _get_class_from_paths(
+                        root_cls, path.copy(), alias.split("/")
+                    )
+                    ret[scm_alias_name] = alias_cls.to_scheme_keys(
+                        v, root_cls, alias_path
+                    )
                 else:
                     raise RuntimeError("Key '" + str(k) + "' is invalid")
             return ret
@@ -1055,7 +999,7 @@ class Group(SettingsBase[DictStateType]):
                     ret[mname] = ccls.to_python_keys(mvalue)
             return ret
         else:
-            return value
+            return {}
 
     _child_classes = {}
     child_names = []
@@ -1122,6 +1066,7 @@ class Group(SettingsBase[DictStateType]):
                 raise InactiveObjectError(self.python_path)
         alias = super().__getattribute__("_child_aliases").get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1135,27 +1080,18 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
-            modified_search_results = []
-            if use_search(
-                codegen_outdir=pyfluent.CODEGEN_OUTDIR,
-                version=super().__getattribute__("version"),
-            ):
-                search_results = pyfluent.utils._search(
-                    word=name,
-                    search_root=self,
-                    match_case=False,
-                    match_whole_word=False,
-                )
-                if search_results:
-                    for search_result in search_results:
-                        search_result = search_result.replace(
-                            "<search_root>", self.__class__.__name__
-                        )
-                        modified_search_results.append(search_result)
+            pyfluent.PRINT_SEARCH_RESULTS = False
+            search_results = pyfluent.utils.search(
+                search_string=name,
+                match_case=False,
+                match_whole_word=False,
+            )
+            pyfluent.PRINT_SEARCH_RESULTS = True
+            results = search_results if search_results else []
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                search_results=modified_search_results,
+                search_results=results,
             )
             ex.args = (error_msg,)
             raise
@@ -1251,17 +1187,13 @@ class WildcardPath(Group):
     # get_state example: a.b["*"].c.d.get_state() == {"<bN>" {"c": {"d": <d_value>}}}
     # set_state example: a.b["*"].set_state({"c": {"d": <d_value>}})
 
-    def to_scheme_keys(self, value):
+    def to_scheme_keys(self, value, root_cls, path):
         """Convert value to have keys with scheme names."""
-        return self._settings_cls.to_scheme_keys(value)
+        return self._settings_cls.to_scheme_keys(value, root_cls, path)
 
     def to_python_keys(self, value):
         """Convert value to have keys with Python names."""
         return self._state_cls.to_python_keys(value)
-
-    def _unalias(self, cls, value):
-        # Not yet implemented
-        return value, []
 
 
 class NamedObjectWildcardPath(WildcardPath):
@@ -1314,12 +1246,12 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
 
     @classmethod
-    def to_scheme_keys(cls, value):
+    def to_scheme_keys(cls, value, root_cls, path: list[str]):
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Mapping):
             ret = {}
             for k, v in value.items():
-                ret[k] = cls.child_object_type.to_scheme_keys(v)
+                ret[k] = cls.child_object_type.to_scheme_keys(v, root_cls, path)
             return ret
         else:
             return value
@@ -1333,7 +1265,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 ret[k] = cls.child_object_type.to_python_keys(v)
             return ret
         else:
-            return value
+            return {}
 
     _child_classes = {}
     command_names = []
@@ -1466,6 +1398,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1525,10 +1458,12 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
             self._setattr(query, _create_child(cls, None, self))
 
     @classmethod
-    def to_scheme_keys(cls, value):
+    def to_scheme_keys(cls, value, root_cls, path: list[str]):
         """Convert value to have keys with scheme names."""
         if isinstance(value, collections.abc.Sequence):
-            return [cls.child_object_type.to_scheme_keys(v) for v in value]
+            return [
+                cls.child_object_type.to_scheme_keys(v, root_cls, path) for v in value
+            ]
         else:
             return value
 
@@ -1538,7 +1473,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
         if isinstance(value, collections.abc.Sequence):
             return [cls.child_object_type.to_python_keys(v) for v in value]
         else:
-            return value
+            return []
 
     _child_classes = {}
     command_names = []
@@ -1583,6 +1518,7 @@ class ListObject(SettingsBase[ListStateType], Generic[ChildTypeT]):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1673,6 +1609,7 @@ class Action(Base):
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:
+            alias = alias[0]
             alias_obj = self._child_alias_objs.get(name)
             if alias_obj is None:
                 obj = self.find_object(alias)
@@ -1724,7 +1661,11 @@ class BaseCommand(Action):
                 command_name=self.python_name, value=value, kwargs=kwds
             )
             # Convert key-value to Scheme key-value
-            scmKwds[argument.fluent_name] = argument.to_scheme_keys(value)
+            scmKwds[argument.fluent_name] = argument.to_scheme_keys(
+                value,
+                argument._root.__class__,
+                _get_python_path_comps(argument),
+            )
         ret = self._execute_command(*args, **scmKwds)
         for arg, value in kwds.items():
             argument = getattr(self, arg)
@@ -1810,7 +1751,11 @@ class Query(Action):
         for arg, value in kwds.items():
             argument = getattr(self, arg)
             # Convert key-value to Scheme key-value
-            scmKwds[argument.fluent_name] = argument.to_scheme_keys(value)
+            scmKwds[argument.fluent_name] = argument.to_scheme_keys(
+                value,
+                argument._root.__class__,
+                _get_python_path_comps(argument),
+            )
         return self.flproxy.execute_query(self._parent.path, self.obj_name, **scmKwds)
 
 
@@ -2162,8 +2107,13 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             for k, v in (
                 child_aliases | command_aliases | query_aliases | argument_aliases
             ).items():
-                cls._child_aliases[to_python_name(k)] = "/".join(
-                    x if x == ".." else to_python_name(x) for x in v.split("/")
+                # Storing the original name as we don't have any other way
+                # to recover it at runtime.
+                cls._child_aliases[to_python_name(k)] = (
+                    "/".join(
+                        x if x == ".." else to_python_name(x) for x in v.split("/")
+                    ),
+                    k,
                 )
 
     except Exception:
@@ -2212,30 +2162,17 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import CODEGEN_OUTDIR, CODEGEN_ZIP_SETTINGS, utils
+    from ansys.fluent.core import CODEGEN_OUTDIR, utils
 
-    if os.getenv("PYFLUENT_USE_OLD_SETTINGSGEN") != "1":
-        try:
-            settings = utils.load_module(
-                f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
-            )
-            root_cls = settings.root
-        except FileNotFoundError:
-            obj_info = flproxy.get_static_info()
-            root_cls, _ = get_cls("", obj_info, version=version)
-    else:
-        if CODEGEN_ZIP_SETTINGS:
-            importer = zipimporter(
-                str(CODEGEN_OUTDIR / "solver" / f"settings_{version}.zip")
-            )
-            settings = importer.load_module("settings")
-        else:
-            settings = utils.load_module(
-                f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}" / "__init__.py",
-            )
+    try:
+        settings = utils.load_module(
+            f"settings_{version}",
+            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+        )
         root_cls = settings.root
+    except FileNotFoundError:
+        obj_info = flproxy.get_static_info()
+        root_cls, _ = get_cls("", obj_info, version=version)
     root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)

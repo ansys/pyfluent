@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import platform
+import tempfile
 from tempfile import TemporaryDirectory
 
 import pytest
@@ -412,9 +413,8 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
         assert _build_journal_argument(topy, journal_file_names) == result
 
 
-@pytest.mark.filterwarnings("error::FutureWarning")
 def test_show_gui_raises_warning():
-    with pytest.raises(PyFluentDeprecationWarning):
+    with pytest.warns(PyFluentDeprecationWarning):
         pyfluent.launch_fluent(show_gui=True)
 
 
@@ -499,3 +499,31 @@ def test_fluent_automatic_transcript(monkeypatch):
     with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
         with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
             assert not list(Path(tmp_dir).glob("*.trn"))
+
+
+def test_standalone_launcher_dry_run(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
+    fluent_path = r"\x\y\z\fluent.exe"
+    fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
+        fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+    )
+    assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
+    assert (
+        fluent_launch_string
+        == f"{fluent_path} 3ddp -gu -sifile={server_info_file_name} -nm"
+    )
+
+
+def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        monkeypatch.setenv("SERVER_INFO_DIR", tmp_dir)
+        fluent_path = r"\x\y\z\fluent.exe"
+        fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
+            fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
+        )
+        assert str(Path(server_info_file_name).parent) == tmp_dir
+        assert (
+            fluent_launch_string
+            == f"{fluent_path} 3ddp -gu -sifile={Path(server_info_file_name).name} -nm"
+        )

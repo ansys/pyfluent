@@ -28,6 +28,10 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     kwargs: Dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
+    else:
+        kwargs.update(
+            stdout=pyfluent.LAUNCH_FLUENT_STDOUT, stderr=pyfluent.LAUNCH_FLUENT_STDERR
+        )
     if is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
     else:
@@ -38,6 +42,15 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     if pyfluent.CLEAR_FLUENT_PARA_ENVS:
         del fluent_env["PARA_NPROCS"]
         del fluent_env["PARA_MESH_NPROCS"]
+
+    if pyfluent.LAUNCH_FLUENT_IP:
+        fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.LAUNCH_FLUENT_IP
+
+    if pyfluent.LAUNCH_FLUENT_PORT:
+        fluent_env["REMOTING_PORTS"] = f"{pyfluent.LAUNCH_FLUENT_PORT}/portspan=2"
+
+    if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
+        fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
     if not is_slurm:
         if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:

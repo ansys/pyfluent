@@ -47,7 +47,7 @@ A simple example
   >>> setup.cell_zone_conditions.set_zone_type(zone_list="elbow-fluid", new_type="fluid")
   >>> solution.initialization.hybrid_initialize()
   >>> solution.run_calculation.iterate(iter_count=100)
-  >>> velocity_data = solver.fields.field_data.get_vector_field_data(field_name="velocity", surface_name="cold-inlet")
+  >>> velocity_data = solver.fields.field_data.get_vector_field_data(field_name="velocity", surfaces=["cold-inlet"])
 
 
 Key features

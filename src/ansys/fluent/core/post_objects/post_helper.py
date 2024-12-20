@@ -2,6 +2,9 @@
 
 import re
 
+from ansys.fluent.core.solver.flunits import get_si_unit_for_fluent_quantity
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+
 
 class IncompleteISOSurfaceDefinition(RuntimeError):
     """Raised when iso-surface definition is incomplete."""
@@ -94,11 +97,9 @@ class PostAPIHelper:
         def delete_surface_on_server(self):
             """Deletes the surface on server."""
             if self.obj.definition.type() == "iso-surface":
-                self._get_api_handle().iso_surface.delete(self._surface_name_on_server)
+                del self._get_api_handle().iso_surface[self._surface_name_on_server]
             elif self.obj.definition.type() == "plane-surface":
-                self._get_api_handle().plane_surface.delete(
-                    self._surface_name_on_server
-                )
+                del self._get_api_handle().plane_surface[self._surface_name_on_server]
 
     def __init__(self, obj):
         """__init__ method of PostAPIHelper class."""
@@ -127,16 +128,22 @@ class PostAPIHelper:
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
         """Returns vector field."""
-        scheme_eval_str = "(map car (apply append (map client-inquire-cell-vector-functions (inquire-domain-for-cell-functions))))"
-        return self._scheme_str_to_py_list(scheme_eval_str)
+        return self.field_info.get_vector_fields_info()
 
     def get_field_unit(self, field):
         """Returns the unit of the field."""
-        quantity = self._field_unit_quantity(field)
-        if quantity == "*null*":
-            return ""
-        scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
-        return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
+        session = self.obj.get_root().session
+        if FluentVersion(session.scheme_eval.version) < FluentVersion.v252:
+            quantity = self._field_unit_quantity(field)
+            if quantity == "*null*":
+                return ""
+            scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
+            return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
+        else:
+            fields_info = self.field_info.get_fields_info()
+            for field_info in fields_info:
+                if field_info["solverName"] == field:
+                    return get_si_unit_for_fluent_quantity(field_info["quantity_name"])
 
     def _field_unit_quantity(self, field):
         scheme_eval_str = f"(cdr (assq 'units (%fill-render-info '{field})))"

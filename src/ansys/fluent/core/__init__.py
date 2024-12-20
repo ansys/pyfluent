@@ -31,11 +31,7 @@ from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
 from ansys.fluent.core.search import search  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
-from ansys.fluent.core.streaming_services.events_streaming import (  # noqa: F401
-    Event,
-    MeshingEvent,
-    SolverEvent,
-)
+from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
 from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
@@ -44,11 +40,6 @@ from ansys.fluent.core.warnings import (  # noqa: F401
     PyFluentUserWarning,
     warning,
 )
-
-try:
-    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
-except (ImportError, AttributeError, SyntaxError):
-    pass
 
 _VERSION_INFO = None
 """Global variable indicating the version of the PyFluent package - Empty by default"""
@@ -107,11 +98,10 @@ DATAMODEL_RETURN_STATE_CHANGES = True
 # Whether to use remote gRPC file transfer service
 USE_FILE_TRANSFER_SERVICE = False
 
-# Directory where API files are writes out during codegen
-CODEGEN_OUTDIR = (Path(__file__) / ".." / "generated").resolve()
-
-# Whether to zip settings API files during codegen
-CODEGEN_ZIP_SETTINGS = os.getenv("PYFLUENT_CODEGEN_ZIP_SETTINGS", False)
+# Directory where API files are written out during codegen
+CODEGEN_OUTDIR = os.getenv(
+    "PYFLUENT_CODEGEN_OUTDIR", (Path(__file__) / ".." / "generated").resolve()
+)
 
 # Whether to show mesh in Fluent after case read
 FLUENT_SHOW_MESH_AFTER_CASE_READ = False
@@ -128,5 +118,25 @@ START_WATCHDOG = None
 # Whether to skip health check
 CHECK_HEALTH = True
 
+# Whether to print search results
+PRINT_SEARCH_RESULTS = True
+
 # Whether to clear environment variables related to Fluent parallel mode
 CLEAR_FLUENT_PARA_ENVS = False
+
+# Set stdout of the launched Fluent process
+# Valid values are same as subprocess.Popen's stdout argument
+LAUNCH_FLUENT_STDOUT = None
+
+# Set stderr of the launched Fluent process
+# Valid values are same as subprocess.Popen's stderr argument
+LAUNCH_FLUENT_STDERR = None
+
+# Set the IP address of the Fluent server while launching Fluent
+LAUNCH_FLUENT_IP = None
+
+# Set the port of the Fluent server while launching Fluent
+LAUNCH_FLUENT_PORT = None
+
+# Skip password check during rpc execution when Fluent is launched from PyFluent
+LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = False

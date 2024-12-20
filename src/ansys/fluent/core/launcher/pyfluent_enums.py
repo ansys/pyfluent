@@ -276,9 +276,7 @@ def _get_running_session_mode(
     return session_mode.get_fluent_value()
 
 
-def _get_standalone_launch_fluent_version(
-    product_version: FluentVersion | str | float | int | None,
-) -> FluentVersion | None:
+def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     """Determine the Fluent version during the execution of the ``launch_fluent()``
     method in standalone mode.
 
@@ -295,8 +293,13 @@ def _get_standalone_launch_fluent_version(
 
     # Look for Fluent version in the following order:
     # 1. product_version parameter passed with launch_fluent
+    product_version = argvals.get("product_version")
     if product_version:
         return FluentVersion(product_version)
+
+    # If fluent_path is provided, we cannot determine the Fluent version, so returning None.
+    if argvals.get("fluent_path"):
+        return None
 
     # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
     # determine the Fluent version, so returning None.

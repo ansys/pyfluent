@@ -1,7 +1,10 @@
+from pathlib import Path
+
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import MeshingEvent, SolverEvent, examples
+from ansys.fluent.core import FluentVersion, MeshingEvent, SolverEvent, examples
+from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
@@ -18,10 +21,19 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
+        if session.get_fluent_version() >= FluentVersion.v232:
+            assert Path(event_info.case_file_name).name == Path(case_file_name).name
+            with pytest.warns(PyFluentDeprecationWarning):
+                assert Path(event_info.casefilepath).name == Path(case_file_name).name
 
     on_case_loaded.loaded = False
 
-    def on_case_loaded_with_args(x, y, session, event_info):
+    def on_case_loaded_with_args_optional_first(x, y, session, event_info):
+        on_case_loaded_with_args_optional_first.state = dict(x=x, y=y)
+
+    on_case_loaded_with_args_optional_first.state = None
+
+    def on_case_loaded_with_args(session, event_info, x, y):
         on_case_loaded_with_args.state = dict(x=x, y=y)
 
     on_case_loaded_with_args.state = None
@@ -37,6 +49,10 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
 
     solver.events.register_callback(
+        SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42
+    )
+
+    solver.events.register_callback(
         SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42
     )
 
@@ -47,6 +63,7 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     assert not on_case_loaded_old.loaded
     assert not on_case_loaded.loaded
     assert not on_case_loaded_old_with_args.state
+    assert not on_case_loaded_with_args_optional_first.state
     assert not on_case_loaded_with_args.state
 
     try:
@@ -57,10 +74,15 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
     assert on_case_loaded_old_with_args.state == dict(x=12, y=42)
+    assert on_case_loaded_with_args_optional_first.state == dict(x=12, y=42)
     assert on_case_loaded_with_args.state == dict(x=12, y=42)
 
 
 def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
+
+    case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
@@ -70,10 +92,6 @@ def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
     meshing = new_meshing_session
 
     meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
-
-    case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
-    )
 
     assert not on_case_loaded.loaded
 

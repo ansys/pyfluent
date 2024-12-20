@@ -2,7 +2,9 @@ from typing import Any
 
 import pytest
 
+from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
+from ansys.fluent.core.solver.function import reduction
 
 
 def _test_locn_extraction(solver1, solver2):
@@ -70,29 +72,22 @@ def _test_area_average(solver):
 
 
 def _test_min(solver1, solver2):
-    solver1.solution.initialization.hybrid_initialize()
-    solver2.solution.initialization.hybrid_initialize()
-    solver1_named_expr = solver1.setup.named_expressions
-    solver1_named_expr["test_expr_1"] = {}
-    test_expr1 = solver1_named_expr["test_expr_1"]
-    test_expr1.definition = "sqrt(VelocityMagnitude)"
-    solver2_named_expr = solver2.setup.named_expressions
-    solver2_named_expr["test_expr_2"] = {}
-    test_expr2 = solver2_named_expr["test_expr_2"]
-    test_expr2.definition = "minimum(test_expr_2, ['outlet'])"
-    # (MK) Is the expression definition valid?
-    # expected_result = test_expr2.get_value()
-    solver1.fields.reduction.minimum(
-        expression=test_expr1.definition(),
+    s1_min = solver1.fields.reduction.minimum(
+        expression="AbsolutePressure",
+        locations=[solver1.setup.boundary_conditions.velocity_inlet],
+    )
+    s2_min = solver2.fields.reduction.minimum(
+        expression="AbsolutePressure",
+        locations=[solver2.setup.boundary_conditions.velocity_inlet],
+    )
+    result = reduction.minimum(
+        expression="AbsolutePressure",
         locations=[
-            solver1.setup.boundary_conditions["outlet"],
-            solver2.setup.boundary_conditions["outlet"],
+            solver1.setup.boundary_conditions.velocity_inlet,
+            solver2.setup.boundary_conditions.velocity_inlet,
         ],
     )
-
-    # assert result == expected_result
-    solver1.setup.named_expressions.pop(key="test_expr_1")
-    solver1.setup.named_expressions.pop(key="test_expr_2")
+    assert result == min(s1_min, s2_min)
 
 
 def _test_count(solver):
@@ -367,6 +362,25 @@ def _test_sum_if(solver):
     solver.setup.named_expressions.pop(key="test_expr_1")
 
 
+def _test_centroid_2_sources(solver1, solver2):
+    s1_cent = solver1.fields.reduction.centroid(
+        locations=[solver1.setup.boundary_conditions.velocity_inlet]
+    )
+    s2_cent = solver2.fields.reduction.centroid(
+        locations=[solver2.setup.boundary_conditions.velocity_inlet]
+    )
+
+    result = reduction.centroid(
+        locations=[
+            solver1.setup.boundary_conditions.velocity_inlet,
+            solver2.setup.boundary_conditions.velocity_inlet,
+        ]
+    )
+    assert [round(x, 5) for x in result] == [
+        (round(x, 5) + round(y, 5)) / 2 for x, y in zip(*[s1_cent, s2_cent])
+    ]
+
+
 @pytest.fixture
 def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
@@ -382,7 +396,6 @@ def test_reductions(
     _test_context(solver1)
     _test_locn_extraction(solver1, solver2)
     _test_area_average(solver1)
-    _test_min(solver1, solver2)
     _test_count(solver1)
     _test_count_if(solver1)
     _test_centroid(solver1)
@@ -392,6 +405,19 @@ def test_reductions(
     _test_moment(solver1)
     _test_sum(solver1)
     _test_sum_if(solver1)
+    # The case and data are changed after this point to check the functional reduction with multiple solvers
+    case_path = download_file(
+        file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
+    )
+    download_file(
+        file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
+    )
+    solver1.file.read_case_data(file_name=case_path)
+    case_path1 = download_file("elbow1.cas.h5", "pyfluent/file_session")
+    download_file("elbow1.dat.h5", "pyfluent/file_session")
+    solver2.file.read_case_data(file_name=case_path1)
+    _test_min(solver1, solver2)
+    _test_centroid_2_sources(solver1, solver2)
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -426,3 +452,33 @@ def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
 
     with pytest.raises(ValueError):
         assert solver.fields.reduction.area(locations=["inlet-1"])
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
+    solver = static_mixer_case_session
+    solver.solution.initialization.hybrid_initialize()
+
+    assert solver.fields.reduction.area(locations=["inlet1"])
+
+    with pytest.raises(RuntimeError):
+        assert reduction.area(locations=[], ctxt=solver)
+
+    with pytest.raises(RuntimeError):
+        assert reduction.area_average(
+            expression="AbsolutePressure", locations=[], ctxt=solver
+        )
+
+    with pytest.raises(RuntimeError):
+        assert reduction.centroid(locations=[], ctxt=solver)
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.area(locations=[])
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.area_average(
+            expression="AbsolutePressure", locations=[]
+        )
+
+    with pytest.raises(RuntimeError):
+        assert solver.fields.reduction.centroid(locations=[])

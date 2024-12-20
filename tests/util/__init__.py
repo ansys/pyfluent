@@ -1,38 +1,36 @@
 from pathlib import Path
+from tempfile import TemporaryDirectory
+import uuid
 
-from ansys.fluent.core import EXAMPLES_PATH
+from pytest import MonkeyPatch
+
+import ansys.fluent.core as pyfluent
+from ansys.fluent.core.codegen import StaticInfoType, datamodelgen
+from ansys.fluent.core.utils import load_module
 
 
-def rename_downloaded_file(file_path: str, suffix: str) -> str:
-    """Rename downloaded file by appending a suffix to the file name.
+def create_datamodel_root_in_server(session, rules_str, app_name) -> None:
+    rules_file_name = f"{uuid.uuid4()}.fdl"
+    session.scheme_eval.scheme_eval(
+        f'(with-output-to-file "{rules_file_name}" (lambda () (format "~a" "{rules_str}")))',
+    )
+    session.scheme_eval.scheme_eval(
+        f'(state/register-new-state-engine "{app_name}" "{rules_file_name}")'
+    )
+    session.scheme_eval.scheme_eval(f'(remove-file "{rules_file_name}")')
+    assert session.scheme_eval.scheme_eval(f'(state/find-root "{app_name}")') > 0
 
-    Parameters
-    ----------
-    file_path : str
-        Downloaded file path. Can be absolute or relative.
-    suffix : str
-        Suffix to append to the file name.
 
-    Returns:
-    --------
-    str
-        New file path with the suffix appended to the file name.
-    """
-    ext = "".join(Path(file_path).suffixes)
-    orig_path = Path(file_path)
-    file_path = file_path.removesuffix(ext)
-    file_path = Path(file_path)
-    if file_path.is_absolute():
-        new_stem = f"{file_path.stem}{suffix}"
-        new_path = file_path.with_stem(new_stem)
-        new_path = new_path.with_suffix(ext)
-        orig_path.rename(new_path)
-        return str(new_path)
-    else:
-        orig_abs_path = Path(EXAMPLES_PATH) / orig_path
-        abs_path = Path(EXAMPLES_PATH) / file_path
-        new_stem = f"{file_path.stem}{suffix}"
-        new_path = abs_path.with_stem(new_stem)
-        new_path = new_path.with_suffix(ext)
-        orig_abs_path.rename(new_path)
-        return str(file_path.with_stem(new_stem).with_suffix(ext))
+def create_root_using_datamodelgen(service, app_name):
+    version = "252"
+    static_info = service.get_static_info(app_name)
+    with TemporaryDirectory() as temp_dir:
+        with MonkeyPatch.context() as m:
+            m.setattr(pyfluent, "CODEGEN_OUTDIR", Path(temp_dir))
+            # TODO: Refactor datamdodelgen so we don't need to hardcode StaticInfoType
+            datamodelgen.generate(
+                version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}
+            )
+            gen_file = Path(temp_dir) / f"datamodel_{version}" / "workflow.py"
+            module = load_module("datamodel", gen_file)
+            return module.Root(service, app_name, [])

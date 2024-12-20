@@ -1,7 +1,11 @@
 from contextlib import nullcontext
 import functools
+import inspect
 import operator
 import os
+from pathlib import Path
+import shutil
+import sys
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version
@@ -11,6 +15,8 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+sys.path.append(Path(__file__).parent / "util")
 
 
 def pytest_addoption(parser):
@@ -25,6 +31,12 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--solvermode", action="store_true", default=False, help="run solvermode tests"
+    )
+    parser.addoption(
+        "--write-fluent-journals",
+        action="store_true",
+        default=False,
+        help="Write Fluent journals for unittests",
     )
 
 
@@ -63,6 +75,75 @@ def pytest_runtest_setup(item):
         version = item.config.getoption("--fluent-version")
         if version and Version(version) not in combined_spec:
             pytest.skip()
+
+
+def pytest_collection_finish(session):
+    if session.config.getoption("--write-fluent-journals"):
+        import_path = Path(__file__).parent
+        sys.path.append(str(import_path))
+        import fluent_fixtures
+
+        launcher_args_by_fixture = {}
+        for k, v in fluent_fixtures.__dict__.items():
+            if hasattr(v, "fluent_launcher_args"):
+                launcher_args_by_fixture[k] = v.fluent_launcher_args
+        fluent_test_root = import_path / "fluent"
+        shutil.rmtree(fluent_test_root, ignore_errors=True)
+        for item in session.items:
+            skip = False
+            for mark in item.iter_markers(name="skip"):
+                skip = True
+            for mark in item.iter_markers(name="fluent_version"):
+                spec = mark.args[0]
+                # TODO: Support older versions
+                if not (
+                    spec == "latest"
+                    or Version(FluentVersion.current_dev().value) in SpecifierSet(spec)
+                ):
+                    skip = True
+            if skip:
+                continue
+            fluent_test_dir = fluent_test_root / item.module.__name__ / item.name
+            fluent_test_config = fluent_test_dir / "test.yaml"
+            fluent_test_file = fluent_test_dir / "test.py"
+            launcher_args = ""
+            parameters = inspect.signature(item.function).parameters
+            parameter_set = {p for p in parameters}
+            if not (parameter_set & set(launcher_args_by_fixture.keys())):
+                # Skipping as unittest doesn't use fluent fixture
+                continue
+            for param in parameters:
+                if param not in dir(fluent_fixtures):
+                    print(f"Skipping {item.nodeid} because of missing fixture {param}")
+                    skip = True
+                    break
+            if skip:
+                continue
+            for param in parameters:
+                if param in launcher_args_by_fixture:
+                    launcher_args = launcher_args_by_fixture[param]
+                    break
+            fluent_test_dir.mkdir(parents=True, exist_ok=True)
+            with open(fluent_test_config, "w") as f:
+                f.write(f"launcher_args: {launcher_args}\n")
+            with open(fluent_test_file, "w") as f:
+                f.write("import sys\n")
+                f.write('sys.path.append("/testing")\n')
+                f.write(
+                    f"from {item.module.__name__} import {item.name}  # noqa: E402\n"
+                )
+                f.write("from fluent_fixtures import (  # noqa: E402\n")
+                for param in parameters:
+                    f.write(f"    {param},\n")
+                f.write(")\n")
+                f.write("\n")
+                f.write(f"{item.name}(")
+                f.write(", ".join([f"{p}(globals())" for p in parameters]))
+                f.write(")\n")
+                f.write("exit()\n")
+            print(f"Written {fluent_test_file}")
+        session.items = []
+        session.testscollected = 0
 
 
 @pytest.fixture(autouse=True)
@@ -203,6 +284,13 @@ def new_solver_session():
 
 
 @pytest.fixture
+def new_solver_session_t4():
+    solver = create_session(processor_count=4)
+    yield solver
+    solver.exit()
+
+
+@pytest.fixture
 def new_solver_session_sp():
     solver = create_session(precision="single")
     yield solver
@@ -245,6 +333,14 @@ def mixing_elbow_settings_session(new_solver_session):
         file_name=case_name,
         lightweight_setup=True,
     )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session_t4(new_solver_session_t4):
+    solver = new_solver_session_t4
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
 
@@ -304,3 +400,16 @@ def periodic_rot_settings_session(new_solver_session):
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
+
+
+@pytest.fixture(params=["old", "new"])
+def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
+    if request.param == "new":
+        monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+        monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")
+
+
+@pytest.fixture
+def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+    monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")

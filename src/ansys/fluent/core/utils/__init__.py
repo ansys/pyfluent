@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 import sys
 
-from ansys.fluent.core.search import _search  # noqa: F401
+from ansys.fluent.core.search import search  # noqa: F401
 
 logger = logging.getLogger("pyfluent.general")
 

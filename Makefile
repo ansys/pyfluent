@@ -23,8 +23,8 @@ docker-pull:
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
-PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html
-PYTESTRERUN = --last-failed --last-failed-no-failures none
+PYTESTEXTRA = --cache-clear --cov=ansys.fluent --cov-report=xml:cov_xml.xml --cov-report=html -n 4
+PYTESTRERUN = --last-failed --last-failed-no-failures none -n 4
 
 unittest: unittest-dev-242
 
@@ -179,3 +179,9 @@ cleanup-previous-docker-containers:
 		docker stop $(docker ps -a -q); \
 	fi
 	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
+
+write-and-run-fluent-tests:
+	@pip install -r requirements/requirements_build.txt
+	@poetry install --with test -E reader
+	@poetry run python -m pytest --write-fluent-journals
+	@poetry run python .ci/fluent_test_runner.py tests

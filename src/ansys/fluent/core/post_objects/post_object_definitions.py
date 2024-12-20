@@ -19,7 +19,7 @@ class BasePostObjectDefn:
 
     def _pre_display(self):
         local_surfaces_provider = self.get_root()._local_surfaces_provider()
-        for surf_name in self.surfaces_list():
+        for surf_name in self.surfaces():
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
                 surf_api = surf_obj._api_helper.surface_api
@@ -27,7 +27,7 @@ class BasePostObjectDefn:
 
     def _post_display(self):
         local_surfaces_provider = self.get_root()._local_surfaces_provider()
-        for surf_name in self.surfaces_list():
+        for surf_name in self.surfaces():
             if surf_name in list(local_surfaces_provider):
                 surf_obj = local_surfaces_provider[surf_name]
                 surf_api = surf_obj._api_helper.surface_api
@@ -128,7 +128,7 @@ class XYPlotDefn(PlotDefn):
             """X axis function allowed values."""
             return ["direction-vector"]
 
-    class surfaces_list(metaclass=PyLocalPropertyMeta):
+    class surfaces(metaclass=PyLocalPropertyMeta):
         """List of surfaces for plotting."""
 
         value: List[str] = []
@@ -146,7 +146,7 @@ class MeshDefn(GraphicsDefn):
 
     PLURAL = "Meshes"
 
-    class surfaces_list(metaclass=PyLocalPropertyMeta):
+    class surfaces(metaclass=PyLocalPropertyMeta):
         """List of surfaces for mesh graphics."""
 
         value: List[str] = []
@@ -189,7 +189,7 @@ class PathlinesDefn(GraphicsDefn):
             """Field allowed values."""
             return list(self._api_helper.field_info().get_scalar_fields_info())
 
-    class surfaces_list(metaclass=PyLocalPropertyMeta):
+    class surfaces(metaclass=PyLocalPropertyMeta):
         """List of surfaces for pathlines."""
 
         value: List[str] = []
@@ -206,6 +206,11 @@ class SurfaceDefn(GraphicsDefn):
     """Surface graphics definition."""
 
     PLURAL = "Surfaces"
+
+    @property
+    def name(self) -> str:
+        """Return name of the surface."""
+        return self._name
 
     class show_edges(metaclass=PyLocalPropertyMeta):
         """Show edges for surface."""
@@ -376,7 +381,7 @@ class ContourDefn(GraphicsDefn):
             """Field allowed values."""
             return list(self._api_helper.field_info().get_scalar_fields_info())
 
-    class surfaces_list(metaclass=PyLocalPropertyMeta):
+    class surfaces(metaclass=PyLocalPropertyMeta):
         """Contour surfaces."""
 
         value: List[str] = []
@@ -557,7 +562,7 @@ class VectorDefn(GraphicsDefn):
             """Field allowed values."""
             return list(self._api_helper.field_info().get_scalar_fields_info())
 
-    class surfaces_list(metaclass=PyLocalPropertyMeta):
+    class surfaces(metaclass=PyLocalPropertyMeta):
         """List of surfaces for vector graphics."""
 
         value: List[str] = []

@@ -263,6 +263,8 @@ class Reduction:
             raise ValueError(f"Invalid location input: '{loc}'")
 
     def _get_location_string(self, locations, ctxt) -> List[str]:
+        if locations == []:
+            return []
         for loc in locations:
             if isinstance(loc, str):
                 self._validate_str_location(loc)
