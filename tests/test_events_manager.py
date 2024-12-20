@@ -28,7 +28,12 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     on_case_loaded.loaded = False
 
-    def on_case_loaded_with_args(x, y, session, event_info):
+    def on_case_loaded_with_args_optional_first(x, y, session, event_info):
+        on_case_loaded_with_args_optional_first.state = dict(x=x, y=y)
+
+    on_case_loaded_with_args_optional_first.state = None
+
+    def on_case_loaded_with_args(session, event_info, x, y):
         on_case_loaded_with_args.state = dict(x=x, y=y)
 
     on_case_loaded_with_args.state = None
@@ -44,6 +49,10 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
 
     solver.events.register_callback(
+        SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42
+    )
+
+    solver.events.register_callback(
         SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42
     )
 
@@ -54,6 +63,7 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     assert not on_case_loaded_old.loaded
     assert not on_case_loaded.loaded
     assert not on_case_loaded_old_with_args.state
+    assert not on_case_loaded_with_args_optional_first.state
     assert not on_case_loaded_with_args.state
 
     try:
@@ -64,6 +74,7 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
     assert on_case_loaded_old_with_args.state == dict(x=12, y=42)
+    assert on_case_loaded_with_args_optional_first.state == dict(x=12, y=42)
     assert on_case_loaded_with_args.state == dict(x=12, y=42)
 
 

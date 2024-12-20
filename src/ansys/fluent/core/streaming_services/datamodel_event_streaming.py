@@ -66,12 +66,12 @@ class DatamodelEvents(StreamingService):
                         elif response.HasField("commandAttributeChangedEventResponse"):
                             value = response.commandAttributeChangedEventResponse.value
                             cb[1](_convert_variant_to_value(value))
-                        elif (
-                            response.HasField("modifiedEventResponse")
-                            or response.HasField("deletedEventResponse")
-                            or response.HasField("affectedEventResponse")
-                        ):
+                        elif response.HasField(
+                            "modifiedEventResponse"
+                        ) or response.HasField("affectedEventResponse"):
                             cb[1](cb[0])
+                        elif response.HasField("deletedEventResponse"):
+                            cb[1]()
                         elif response.HasField("commandExecutedEventResponse"):
                             command = response.commandExecutedEventResponse.command
                             args = _convert_variant_to_value(
