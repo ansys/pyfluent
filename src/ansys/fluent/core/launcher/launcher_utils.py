@@ -43,6 +43,15 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
         del fluent_env["PARA_NPROCS"]
         del fluent_env["PARA_MESH_NPROCS"]
 
+    if pyfluent.LAUNCH_FLUENT_IP:
+        fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.LAUNCH_FLUENT_IP
+
+    if pyfluent.LAUNCH_FLUENT_PORT:
+        fluent_env["REMOTING_PORTS"] = f"{pyfluent.LAUNCH_FLUENT_PORT}/portspan=2"
+
+    if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
+        fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
+
     if not is_slurm:
         if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
             remoting_ip = find_remoting_ip()

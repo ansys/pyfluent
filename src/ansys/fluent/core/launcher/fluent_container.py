@@ -240,14 +240,15 @@ def configure_container_dict(
         f"Starting Fluent container mounted to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
     )
 
-    if "ports" not in container_dict:
-        if not port:
-            port = get_free_port()
-        container_dict.update(ports={str(port): port})  # container port : host port
-    else:
+    if not port and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
-        if not port:
-            port = next(iter(container_dict["ports"].values()))
+        port = next(iter(container_dict["ports"].values()))
+    if not port and pyfluent.LAUNCH_FLUENT_PORT:
+        port = pyfluent.LAUNCH_FLUENT_PORT
+    if not port:
+        port = get_free_port()
+
+    container_dict.update(ports={str(port): port})  # container port : host port
 
     if "environment" not in container_dict:
         if not license_server:
@@ -328,6 +329,18 @@ def configure_container_dict(
             container_dict["environment"]["REMOTING_NEW_DM_API"] = "1"
         if os.getenv("REMOTING_MAPPED_NEW_DM_API") == "1":
             container_dict["environment"]["REMOTING_MAPPED_NEW_DM_API"] = "1"
+
+    if pyfluent.LAUNCH_FLUENT_IP or os.getenv("REMOTING_SERVER_ADDRESS"):
+        if "environment" not in container_dict:
+            container_dict["environment"] = {}
+        container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
+            pyfluent.LAUNCH_FLUENT_IP or os.getenv("REMOTING_SERVER_ADDRESS")
+        )
+
+    if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
+        if "environment" not in container_dict:
+            container_dict["environment"] = {}
+        container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
     fluent_commands = ["-gu", f"-sifile={container_server_info_file}"] + args
 
