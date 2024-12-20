@@ -97,11 +97,9 @@ class PostAPIHelper:
         def delete_surface_on_server(self):
             """Deletes the surface on server."""
             if self.obj.definition.type() == "iso-surface":
-                self._get_api_handle().iso_surface.delete(self._surface_name_on_server)
+                del self._get_api_handle().iso_surface[self._surface_name_on_server]
             elif self.obj.definition.type() == "plane-surface":
-                self._get_api_handle().plane_surface.delete(
-                    self._surface_name_on_server
-                )
+                del self._get_api_handle().plane_surface[self._surface_name_on_server]
 
     def __init__(self, obj):
         """__init__ method of PostAPIHelper class."""
