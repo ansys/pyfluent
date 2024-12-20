@@ -6,7 +6,6 @@ from pytest import WarningsRecorder
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
-    SettingsBase,
     UnstableSettingWarning,
     _Alias,
     _InputFile,
@@ -592,7 +591,7 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     solver = mixing_elbow_settings_session
 
     var1 = solver.settings.setup.materials.fluid.create("air-created")
-    assert isinstance(var1, SettingsBase)
+    assert var1 == solver.settings.setup.materials.fluid["air-created"]
     assert var1.obj_name == "air-created"
 
     var2 = solver.settings.setup.materials.fluid.rename(
@@ -603,5 +602,5 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     var3 = solver.settings.setup.materials.fluid.make_a_copy(
         from_="air-renamed", to="air-copied"
     )
-    assert isinstance(var3, SettingsBase)
+    assert var3 == solver.settings.setup.materials.fluid["air-copied"]
     assert var3.obj_name == "air-copied"
