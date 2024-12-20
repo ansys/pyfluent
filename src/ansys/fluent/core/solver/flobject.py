@@ -469,6 +469,8 @@ class Base:
         return nullcontext()
 
     def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
         return self.flproxy == other.flproxy and self.path == other.path
 
 

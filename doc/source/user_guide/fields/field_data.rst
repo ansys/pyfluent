@@ -266,3 +266,62 @@ Some sample use cases are demonstrated below:
 
   >>> field_data.get_surface_data.surface_ids.allowed_values()
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+
+Field data streaming
+--------------------
+
+PyFluent's field data streaming service allows you to dynamically observe changes
+in field data by tracking its values in real time. You can integrate PyFluent's
+field data streaming callback mechanism with visualization
+tools from the Python ecosystem, making it easy to visualize the data of interest.
+
+.. note::
+   In **Meshing mode**, only 'field_data_streaming' provides a valid interface as of now.
+   Other methods currently return an empty array when used in Meshing mode.
+
+   The 'field_data_streaming' is available only for the **Meshing mode**.
+
+The following example demonstrates how to update mesh data in **Meshing mode**
+using the field data streaming mechanism:
+
+.. code-block:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+
+  >>> # Download example geometry file
+  >>> import_file_name = examples.download_file(
+  >>>     "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
+  >>> )
+
+  >>> # Launch Fluent in Meshing mode
+  >>> meshing = pyfluent.launch_fluent(mode="meshing")
+
+  >>> # Dictionary to store mesh data
+  >>> mesh_data = {}
+
+  >>> # Define a callback function to process streamed field data
+  >>> def plot_mesh(index, field_name, data):
+  >>>     if data is not None:
+  >>>         if index in mesh_data:
+  >>>             mesh_data[index].update({field_name: data})
+  >>>         else:
+  >>>             mesh_data[index] = {field_name: data}
+
+  >>> # Register the callback function
+  >>> meshing.fields.field_data_streaming.register_callback(plot_mesh)
+
+  >>> # Start field data streaming with byte stream and chunk size
+  >>> meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
+
+  >>> # Initialize the Meshing workflow
+  >>> meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+
+  >>> # Import the geometry into the workflow
+  >>> meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>>    "FileName": import_file_name,
+  >>>    "LengthUnit": "in",
+  >>> }
+
+  >>> meshing.workflow.TaskObject["Import Geometry"].Execute()
