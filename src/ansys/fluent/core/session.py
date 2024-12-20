@@ -10,6 +10,7 @@ import weakref
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.services.field_data import FieldDataService
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -124,7 +125,6 @@ class BaseSession:
         self.scheme_eval = scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
         self._preferences = None
-        self.journal = Journal(self.scheme_eval)
 
         self._transcript_service = service_creator("transcript").create(
             fluent_connection._channel, fluent_connection._metadata
@@ -133,10 +133,20 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
+        if FluentVersion(self.scheme_eval.version) < FluentVersion.v252:
+            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+        else:
+            self._app_utilities = (
+                self._fluent_connection._connection_interface._app_utilities
+            )
+
+        self.journal = Journal(self._app_utilities)
+
         self._datamodel_service_tui = service_creator("tui").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
+            self._app_utilities,
             self.scheme_eval,
         )
 
@@ -175,13 +185,17 @@ class BaseSession:
 
             def __init__(self, _session):
                 """Initialize Fields."""
+                self._is_solution_data_valid = (
+                    _session._app_utilities.is_solution_data_available
+                )
                 self.field_info = service_creator("field_info").create(
-                    _session._field_data_service, _IsDataValid(_session.scheme_eval)
+                    _session._field_data_service,
+                    self._is_solution_data_valid,
                 )
                 self.field_data = service_creator("field_data").create(
                     _session._field_data_service,
                     self.field_info,
-                    _IsDataValid(_session.scheme_eval),
+                    self._is_solution_data_valid,
                     _session.scheme_eval,
                 )
                 self.field_data_streaming = FieldDataStreaming(
@@ -190,7 +204,7 @@ class BaseSession:
                 self.field_data_old = service_creator("field_data_old").create(
                     _session._field_data_service,
                     self.field_info,
-                    _IsDataValid(_session.scheme_eval),
+                    self._is_solution_data_valid,
                     _session.scheme_eval,
                 )
 
@@ -199,6 +213,7 @@ class BaseSession:
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
+            self._app_utilities,
             self.scheme_eval,
             self._error_state,
         )
