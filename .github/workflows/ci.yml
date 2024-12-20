@@ -117,13 +117,15 @@ jobs:
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
-    
+
       - name: Check Quarto Version
         shell: bash
         run: |
           quarto --version
+
+      - name: Verify tinytex is installed
+        run: |
+          quarto install tinytex --no-prompt --update-path
 
       - name: "Install Poppler for PDF to PNG conversion"
         shell: bash
@@ -197,6 +199,7 @@ jobs:
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          PYFLUENT_DOC_SKIP_CHEATSHEET: 1
 
       - name: Zip HTML Documentation before upload
         run: |

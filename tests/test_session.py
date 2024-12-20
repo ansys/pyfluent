@@ -306,7 +306,7 @@ def test_journal_creation(file_format, new_meshing_session):
     if session.connection_properties.inside_container:
         session.journal.start(file_name.name)
     else:
-        session.journal.start(file_name)
+        session.journal.start(str(file_name))
     session = session.switch_to_solver()
     session.journal.stop()
     new_stat = file_name.stat()
@@ -577,3 +577,18 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
     # with pytest.raises(RuntimeError):
     #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_app_utilities_new_and_old(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+
+    assert solver._app_utilities.get_app_mode() == pyfluent.FluentMode.SOLVER
+
+    assert not solver._app_utilities.is_beta_enabled()
+
+    assert not solver._app_utilities.is_wildcard("no")
+
+    assert solver._app_utilities.is_wildcard("yes*")
+
+    assert not solver._app_utilities.is_solution_data_available()

@@ -70,7 +70,8 @@ print(solver.get_fluent_version())
 
 from pathlib import Path  # noqa: E402
 
-from ansys.fluent.core import (  # noqa: E402
+from ansys.fluent.core.examples import download_file  # noqa: E402
+from ansys.fluent.core.solver import (  # noqa: E402
     Contour,
     Energy,
     Mesh,
@@ -82,7 +83,6 @@ from ansys.fluent.core import (  # noqa: E402
     Viscous,
     WallBoundary,
 )
-from ansys.fluent.core.examples import download_file  # noqa: E402
 
 # %%
 # Mesh
