@@ -128,7 +128,7 @@ class PostAPIHelper:
     # Following functions will be deprecated in future.
     def get_vector_fields(self):
         """Returns vector field."""
-        return self.field_info.get_vector_fields_info()
+        return self.field_info().get_vector_fields_info()
 
     def get_field_unit(self, field):
         """Returns the unit of the field."""
@@ -140,10 +140,8 @@ class PostAPIHelper:
             scheme_eval_str = f"(units/get-pretty-wb-units-from-dimension (units/inquire-dimension '{quantity}))"
             return " ".join(self._scheme_str_to_py_list(scheme_eval_str))
         else:
-            fields_info = self.field_info.get_fields_info()
-            for field_info in fields_info:
-                if field_info["solverName"] == field:
-                    return get_si_unit_for_fluent_quantity(field_info["quantity_name"])
+            fields_info = self.field_info().get_scalar_fields_info()
+            return get_si_unit_for_fluent_quantity(fields_info[field]["quantity_name"])
 
     def _field_unit_quantity(self, field):
         scheme_eval_str = f"(cdr (assq 'units (%fill-render-info '{field})))"
