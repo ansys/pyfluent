@@ -398,9 +398,8 @@ class EventsManager(Generic[TEvent]):
         self, response: EventsProtoModule.BeginStreamingResponse, event: TEvent
     ):
         event_info_msg = getattr(response, event.value.lower())
-        event_info_dict = MessageToDict(
-            event_info_msg, including_default_value_fields=True
-        )
+        # Note: MessageToDict's parameter names are different in different protobuf versions
+        event_info_dict = MessageToDict(event_info_msg, True)
         solver_event = SolverEvent(event.value)
         event_info_cls = EventInfoBase.derived_classes.get(solver_event)
         # Key names can be different, but their order is the same
