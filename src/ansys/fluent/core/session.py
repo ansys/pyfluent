@@ -53,6 +53,17 @@ class _IsDataValid:
         return self._scheme_eval.scheme_eval("(data-valid?)")
 
 
+class _AppUtilitiesFactory:
+    """AppUtilities factory."""
+
+    @staticmethod
+    def _create_app_utilities(scheme_eval, fluent_connection):
+        if FluentVersion(scheme_eval.version) < FluentVersion.v252:
+            return AppUtilitiesOld(scheme_eval)
+        else:
+            return fluent_connection._connection_interface._app_utilities
+
+
 class BaseSession:
     """Encapsulates a Fluent session.
 
@@ -133,12 +144,9 @@ class BaseSession:
         if self._start_transcript:
             self.transcript.start()
 
-        if FluentVersion(self.scheme_eval.version) < FluentVersion.v252:
-            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
-        else:
-            self._app_utilities = (
-                self._fluent_connection._connection_interface._app_utilities
-            )
+        self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
+            self.scheme_eval, self._fluent_connection
+        )
 
         self.journal = Journal(self._app_utilities)
 
