@@ -584,3 +584,23 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
         "m2",
         "m3",
     }
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+
+    var1 = solver.settings.setup.materials.fluid.create("air-created")
+    assert var1 == solver.settings.setup.materials.fluid["air-created"]
+    assert var1.obj_name == "air-created"
+
+    var2 = solver.settings.setup.materials.fluid.rename(
+        old="air-created", new="air-renamed"
+    )
+    assert var2 is None
+
+    var3 = solver.settings.setup.materials.fluid.make_a_copy(
+        from_="air-renamed", to="air-copied"
+    )
+    assert var3 == solver.settings.setup.materials.fluid["air-copied"]
+    assert var3.obj_name == "air-copied"

@@ -171,6 +171,7 @@ class FieldInfo:
                 "display_name": field_info.displayName,
                 "section": field_info.section,
                 "domain": field_info.domain,
+                "quantity_name": field_info.quantity_name,
             }
             for field_info in response.fieldInfo
         }
