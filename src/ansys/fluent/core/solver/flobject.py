@@ -1165,7 +1165,7 @@ class WildcardPath(Group):
         except KeyError as ex:
             raise AttributeError(
                 allowed_name_error_message(
-                    context=self._state_cls.__name__,
+                    context=self._state_cls._python_name,
                     trial_name=name,
                     allowed_values=self.get_active_child_names(),
                 )
@@ -1366,7 +1366,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             raise KeyError(
                 allowed_name_error_message(
-                    context=self.__class__.__name__,
+                    context=self.__class__._python_name,
                     trial_name=name,
                     allowed_values=self.get_object_names(),
                 )
@@ -1910,7 +1910,7 @@ class _NonCreatableNamedObjectMixin(
             else:
                 raise KeyError(
                     allowed_name_error_message(
-                        context=self.__class__.__name__,
+                        context=self.__class__._python_name,
                         trial_name=name,
                         allowed_values=self.get_object_names(),
                     )
