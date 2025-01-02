@@ -814,6 +814,7 @@ def test_find_children_from_fluent_solver_session(static_mixer_settings_session)
         }
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3609")
 @pytest.mark.fluent_version(">=24.1")
 def test_settings_wild_card_access(new_solver_session) -> None:
     solver = new_solver_session
