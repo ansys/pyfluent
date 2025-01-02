@@ -29,19 +29,19 @@ Sample requests
 
 Here are the methods for requesting field information:
 
-- ``get_fields_info`` for getting fields information.
+- ``get_scalar_fields_info`` for getting fields information.
 - ``get_range`` for getting the range of the field.
 - ``get_vector_fields_info`` for getting vector fields information.
 - ``get_surfaces_info`` for getting the surfaces information.
 
-Get fields info
-~~~~~~~~~~~~~~~
+Get scalar fields info
+~~~~~~~~~~~~~~~~~~~~~~
 You can request the fields information (field name, domain, and section) by
-calling the ``get_fields_info`` method.
+calling the ``get_scalar_fields_info`` method.
 
 .. code-block:: python
 
-  >>> field_info.get_fields_info()
+  >>> field_info.get_scalar_fields_info()
   {'pressure': {'display_name': 'Static Pressure', 'section': 'Pressure...', 'domain': 'mixture'},
    'pressure-coefficient': {'display_name': 'Pressure Coefficient', 'section': 'Pressure...', 'domain': 'mixture'},
    'dynamic-pressure': {'display_name': 'Dynamic Pressure', 'section': 'Pressure...', 'domain': 'mixture'},
@@ -52,7 +52,7 @@ Get range
 ~~~~~~~~~
 You can request the range (minimum and maximum values) for a given ``field`` by
 calling the ``get_range`` method. It takes a ``field`` argument which can be obtained
-from the keys of the dictionary returned by ``get_fields_info`` method.
+from the keys of the dictionary returned by ``get_scalar_fields_info`` method.
 
 .. code-block:: python
 
