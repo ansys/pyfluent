@@ -172,7 +172,8 @@ class DatamodelService:
         request = DataModelProtoModule.GetStaticInfoRequest()
         request.path = path
         response = self._impl.get_static_info(request)
-        return MessageToDict(response.info, including_default_value_fields=True)
+        # Note: MessageToDict's parameter names are different in different protobuf versions
+        return MessageToDict(response.info, True)
 
 
 class PyMenu:
