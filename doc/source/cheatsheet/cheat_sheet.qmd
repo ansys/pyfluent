@@ -619,7 +619,7 @@ field_info = solver.fields.field_info
 ### Get fields info and range
 
 ```{python}
-field_info.get_fields_info()
+field_info.get_scalar_fields_info()
 field_info.get_range("velocity")
 field_info.get_range("cell-weight")
 ```

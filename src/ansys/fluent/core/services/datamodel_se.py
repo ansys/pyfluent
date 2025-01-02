@@ -807,7 +807,7 @@ class DatamodelService(StreamingService):
         self.event_streaming.register_callback(subscription.tag, obj, cb)
         return subscription
 
-    def add_on_command_executed(
+    def add_on_command_executed_old(
         self, rules: str, path: str, command: str, obj, cb: Callable
     ) -> EventSubscription:
         """Add on command executed."""
@@ -818,6 +818,24 @@ class DatamodelService(StreamingService):
                     "commandExecutedEventRequest": {
                         "path": path,
                         "command": command,
+                    },
+                }
+            ]
+        }
+        subscription = EventSubscription(self, path, request_dict)
+        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        return subscription
+
+    def add_on_command_executed(
+        self, rules: str, path: str, obj, cb: Callable
+    ) -> EventSubscription:
+        """Add on command executed."""
+        request_dict = {
+            "eventrequest": [
+                {
+                    "rules": rules,
+                    "commandExecutedEventRequest": {
+                        "path": path,
                     },
                 }
             ]
@@ -1326,13 +1344,32 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), child_type, self, cb
         )
 
-    def add_on_command_executed(self, command: str, cb: Callable) -> EventSubscription:
+    def add_on_command_executed_old(
+        self, command: str, cb: Callable
+    ) -> EventSubscription:
         """Register a callback for when a command is executed.
 
         Parameters
         ----------
         command : str
-            command name
+            Command name
+        cb : Callable
+            Callback function
+
+        Returns
+        -------
+        EventSubscription
+            EventSubscription instance which can be used to unregister the callback
+        """
+        return self.service.add_on_command_executed_old(
+            self.rules, convert_path_to_se_path(self.path), command, self, cb
+        )
+
+    def add_on_command_executed(self, cb: Callable) -> EventSubscription:
+        """Register a callback for when a command is executed.
+
+        Parameters
+        ----------
         cb : Callable
             Callback function
 
@@ -1342,7 +1379,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
         return self.service.add_on_command_executed(
-            self.rules, convert_path_to_se_path(self.path), command, self, cb
+            self.rules, convert_path_to_se_path(self.path), self, cb
         )
 
 
