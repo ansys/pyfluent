@@ -18,6 +18,7 @@ from ansys.fluent.core.services.datamodel_se import (
 )
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.parametrize(
@@ -55,8 +56,13 @@ def test_event_subscription(new_meshing_session):
         "/workflow/affected/TaskObject",
         "/workflow/attribute_changed/TaskObject:TaskObject1/TaskList/isActive",
         "/workflow/command_attribute_changed/InitializeWorkflow/arguments",
-        "/workflow/command_executed/InitializeWorkflow",
     ]
+    version = session.get_fluent_version()
+    if version < FluentVersion.v252:
+        tags.append("/workflow/command_executed/InitializeWorkflow")
+    else:
+        # TODO: path should be appended to the tag
+        tags.append("/workflow/command_executed")
     request = datamodel_se_pb2.SubscribeEventsRequest()
     e1 = request.eventrequest.add(rules="workflow")
     e1.createdEventRequest.parentpath = ""
@@ -230,9 +236,15 @@ def test_add_on_affected_at_type_path(new_meshing_session):
 def test_add_on_command_executed(new_meshing_session):
     meshing = new_meshing_session
     data = []
-    subscription = meshing.meshing.add_on_command_executed(
-        "ImportGeometry", lambda obj, command, args: data.append(True)
-    )
+    version = meshing.get_fluent_version()
+    if version < FluentVersion.v252:
+        subscription = meshing.meshing.add_on_command_executed_old(
+            "ImportGeometry", lambda obj, command, args: data.append(True)
+        )
+    else:
+        subscription = meshing.meshing.add_on_command_executed(
+            lambda obj, command, args: data.append(True)
+        )
     assert data == []
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_file_name = examples.download_file(
@@ -651,16 +663,24 @@ def test_on_command_executed_lifetime(new_solver_session):
     root = create_root_using_datamodelgen(solver._se_service, app_name)
     root.A["A1"] = {}
     data = []
-    _ = root.A["A1"].add_on_command_executed("C", lambda *args: data.append(1))
-    root.A["A1"].add_on_command_executed("C", lambda *args: data.append(2))
+    version = solver.get_fluent_version()
+    if version < FluentVersion.v252:
+        _ = root.A["A1"].add_on_command_executed_old("C", lambda *args: data.append(1))
+        root.A["A1"].add_on_command_executed_old("C", lambda *args: data.append(2))
+        tags = ["/test/command_executed/A:A1/C", "/test/command_executed/A:A1/C-1"]
+    else:
+        _ = root.A["A1"].add_on_command_executed(lambda *args: data.append(1))
+        root.A["A1"].add_on_command_executed(lambda *args: data.append(2))
+        # TODO: path should be appended to the tag
+        tags = ["/test/command_executed", "/test/command_executed-1"]
     gc.collect()
-    assert "/test/command_executed/A:A1/C" in solver._se_service.subscriptions
-    assert "/test/command_executed/A:A1/C-1" in solver._se_service.subscriptions
+    for tag in tags:
+        assert tag in solver._se_service.subscriptions
     root.A["A1"].C()
     assert timeout_loop(lambda: data == [1, 2], 5)
     del root.A["A1"]
-    assert "/test/command_executed/A:A1/C" not in solver._se_service.subscriptions
-    assert "/test/command_executed/A:A1/C-1" not in solver._se_service.subscriptions
+    for tag in tags:
+        assert tag not in solver._se_service.subscriptions
 
 
 @pytest.mark.fluent_version(">=24.2")
