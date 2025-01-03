@@ -175,6 +175,8 @@ class DatamodelServiceImpl:
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
+        if os.getenv("REMOTING_MAPPED_NEW_DM_API") == "1":
+            self._metadata.append(("mapped", "1"))
 
     # TODO: Remove it from the proto interface
     def initialize_datamodel(
