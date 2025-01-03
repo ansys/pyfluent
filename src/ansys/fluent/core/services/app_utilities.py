@@ -342,7 +342,8 @@ class AppUtilities:
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
         request = AppUtilitiesProtoModule.StartPythonJournalRequest()
-        request.journal_name = journal_name
+        if journal_name:
+            request.journal_name = journal_name
         response = self.service.start_python_journal(request)
         return response.journal_id
 
