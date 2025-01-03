@@ -243,7 +243,6 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
-@pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_meshing_session):
