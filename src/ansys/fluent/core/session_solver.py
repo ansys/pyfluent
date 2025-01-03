@@ -117,7 +117,6 @@ class Solver(BaseSession):
     ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
-        self._settings_service = self._settings_service
         self._tui = None
         self._workflow = None
         self._system_coupling = None
