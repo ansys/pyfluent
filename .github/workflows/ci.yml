@@ -191,11 +191,7 @@ jobs:
       - name: Build Source Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          if [ -f poetry.lock ] ; then
-            rm poetry.lock
-          fi
-          poetry install --with docs
-          poetry install --all-extras
+          flit install --extras all
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

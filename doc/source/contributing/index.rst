@@ -32,8 +32,8 @@ To run the PyFluent unit tests, execute the following command in the root
 
 .. code:: console
 
-    poetry install --with test
-    poetry run pytest ----fluent-version=24.2
+    flit install --extras tests
+    python -m pytest ----fluent-version=24.2
 
 You can change the Fluent version by replacing ``24.2`` with the version you want to test.
 
@@ -44,9 +44,9 @@ To build the PyFluent documentation locally, run the following commands in the r
 
 .. code:: console
 
-    poetry install --with docs
+    flit install --extras docs
     cd doc
-    poetry run make html
+    make html
 
 After the build completes, the HTML documentation is located in the
 ``_build/html`` directory. You can load the ``index.html`` file in
