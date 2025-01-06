@@ -2,6 +2,7 @@
 
 from enum import Enum
 from functools import reduce
+import io
 from typing import Callable, Dict, List, Tuple
 
 import grpc
@@ -81,6 +82,36 @@ class FieldDataService(StreamingService):
                 "Unexpectedly encountered empty chunk during field extraction."
             )
         return chunk_iterator
+
+    def get_solver_mesh_nodes(
+        self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
+    ):
+        """GetSolverMeshNodesDouble RPC of FieldData service."""
+        chuncked_responses = self._stub.GetSolverMeshNodesDouble(
+            request, metadata=self._metadata
+        )
+        buffer = io.BytesIO()
+        for chuncked_response in chuncked_responses:
+            buffer.write(chuncked_response.chunk)
+        serialized_response = buffer.getvalue()
+        response = FieldDataProtoModule.GetSolverMeshNodesDoubleResponse()
+        response.ParseFromString(serialized_response)
+        return response
+
+    def get_solver_mesh_elements(
+        self, request: FieldDataProtoModule.GetSolverMeshElementsRequest
+    ):
+        """GetSolverMeshElements RPC of FieldData service."""
+        chuncked_responses = self._stub.GetSolverMeshElements(
+            request, metadata=self._metadata
+        )
+        buffer = io.BytesIO()
+        for chuncked_response in chuncked_responses:
+            buffer.write(chuncked_response.chunk)
+        serialized_response = buffer.getvalue()
+        response = FieldDataProtoModule.GetSolverMeshElementsResponse()
+        response.ParseFromString(serialized_response)
+        return response
 
 
 class FieldInfo:
@@ -1285,3 +1316,31 @@ class FieldData:
                 field_name: pathlines_data[surface_ids[count]][field_name],
             }
         return path_lines_dict
+
+    def get_mesh_nodes(self, zone_id: int):
+        """Get mesh nodes for a zone.
+
+        Parameters
+        ----------
+        zone_id : int
+            Zone ID.
+        """
+        request = FieldDataProtoModule.GetSolverMeshNodesRequest(
+            domain_id=1, thread_id=zone_id
+        )
+        response = self._service.get_solver_mesh_nodes(request)
+        return response.nodes
+
+    def get_mesh_elements(self, zone_id: int):
+        """Get mesh elements for a zone.
+
+        Parameters
+        ----------
+        zone_id : int
+            Zone ID.
+        """
+        request = FieldDataProtoModule.GetSolverMeshElementsRequest(
+            domain_id=1, thread_id=zone_id
+        )
+        response = self._service.get_solver_mesh_elements(request)
+        return response.elements
