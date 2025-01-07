@@ -1892,7 +1892,8 @@ class PyCommand:
                 id,
                 static_info.get("args"),
             )
-        except RuntimeError:
+        # Possible error thrown from the grpc layer
+        except (RuntimeError, ValueError):
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
