@@ -191,7 +191,7 @@ jobs:
       - name: Build Source Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          flit install --extras all
+          pip install ansys-fluent-core[docs,reader,tests]
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

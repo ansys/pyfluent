@@ -32,7 +32,7 @@ To run the PyFluent unit tests, execute the following command in the root
 
 .. code:: console
 
-    flit install --extras tests
+    pip install ansys-fluent-core[tests]
     python -m pytest ----fluent-version=24.2
 
 You can change the Fluent version by replacing ``24.2`` with the version you want to test.
@@ -44,7 +44,7 @@ To build the PyFluent documentation locally, run the following commands in the r
 
 .. code:: console
 
-    flit install --extras docs
+    pip install ansys-fluent-core[docs]
     cd doc
     make html
 

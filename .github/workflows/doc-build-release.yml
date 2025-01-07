@@ -59,7 +59,7 @@ jobs:
       - name: Build All Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          flit install --extras docs
+          pip install ansys-fluent-core[docs]
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

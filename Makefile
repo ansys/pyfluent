@@ -9,7 +9,7 @@ install:
 
 install-test:
 	@pip install -r requirements/requirements_build.txt
-	@flit install --extras reader,tests
+	@pip install ansys-fluent-core[reader,tests]
 	@python -m pip install -q --force-reinstall dist/*.whl > /dev/null
 
 version-info:
@@ -181,6 +181,6 @@ cleanup-previous-docker-containers:
 
 write-and-run-fluent-tests:
 	@pip install -r requirements/requirements_build.txt
-	@flit install --extras reader
+	@pip install ansys-fluent-core[reader]
 	@python -m pytest --write-fluent-journals
 	@python .ci/fluent_test_runner.py tests
