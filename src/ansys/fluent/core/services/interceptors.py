@@ -6,7 +6,7 @@ import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
-from google.protobuf.message import Message
+from google.protobuf.message import DecodeError, Message
 from google.rpc import error_details_pb2
 import grpc
 from grpc_status import rpc_status
@@ -115,21 +115,23 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
         if response.exception() is not None and response.code() != grpc.StatusCode.OK:
             ex = response.exception()
             new_ex_cls = RuntimeError
-            status = rpc_status.from_call(ex)
-            if status:
-                for detail in status.details:
-                    if detail.Is(error_details_pb2.ErrorInfo.DESCRIPTOR):
-                        info = error_details_pb2.ErrorInfo()
-                        detail.Unpack(info)
-                        if info.domain == "Python":
-                            reason = info.reason
-                            ex_cls_name = _upper_snake_case_to_camel_case(reason)
-                            if hasattr(builtins, ex_cls_name):
-                                cls = getattr(builtins, ex_cls_name)
-                                if issubclass(cls, Exception):
-                                    print(f"Found exception class: {cls}")
-                                    new_ex_cls = cls
-                                    break
+            try:
+                status = rpc_status.from_call(ex)
+                if status:
+                    for detail in status.details:
+                        if detail.Is(error_details_pb2.ErrorInfo.DESCRIPTOR):
+                            info = error_details_pb2.ErrorInfo()
+                            detail.Unpack(info)
+                            if info.domain == "Python":
+                                reason = info.reason
+                                ex_cls_name = _upper_snake_case_to_camel_case(reason)
+                                if hasattr(builtins, ex_cls_name):
+                                    cls = getattr(builtins, ex_cls_name)
+                                    if issubclass(cls, Exception):
+                                        new_ex_cls = cls
+                                        break
+            except DecodeError:
+                pass
             new_ex = new_ex_cls(
                 ex.details() if isinstance(ex, grpc.RpcError) else str(ex)
             )
