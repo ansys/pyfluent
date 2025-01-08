@@ -3,10 +3,7 @@ import time
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
 
-from ansys.fluent.core.services.datamodel_se import (
-    SubscribeEventError,
-    convert_path_to_se_path,
-)
+from ansys.fluent.core.services.datamodel_se import SubscribeEventError
 from ansys.fluent.core.utils.execution import timeout_loop
 
 rule_str = (
@@ -70,11 +67,11 @@ def test_datamodel_api_on_child_created(datamodel_api_version_all, new_solver_se
     called = 0
     created = []
 
-    def cb(obj):
+    def cb(path: str):
         nonlocal called
         nonlocal created
         called += 1
-        created.append(convert_path_to_se_path(obj.path))
+        created.append(path)
 
     subscription = service.add_on_child_created(app_name, "/", "B", root, cb)
     assert called == 0

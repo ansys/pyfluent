@@ -3,7 +3,6 @@ import time
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
 
-from ansys.fluent.core.services.datamodel_se import convert_path_to_se_path
 from ansys.fluent.core.utils.execution import timeout_loop
 
 rules_str = (
@@ -721,8 +720,8 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     delete_count = 0
     changes = []
 
-    def create_cb(obj):
-        called_paths.append(convert_path_to_se_path(obj.path))
+    def create_cb(path: str):
+        called_paths.append(path)
 
     def delete_cb():
         nonlocal delete_count

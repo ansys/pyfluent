@@ -6,7 +6,7 @@ import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence
+from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -28,6 +28,7 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
+PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
 _TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
@@ -724,7 +725,7 @@ class DatamodelService(StreamingService):
         self.subscriptions.unsubscribe_all()
 
     def add_on_child_created(
-        self, rules: str, path: str, child_type: str, obj, cb: Callable
+        self, rules: str, path: str, child_type: str, obj, cb: Callable[[str], None]
     ) -> EventSubscription:
         """Add on child created."""
         request_dict = {
@@ -739,7 +740,14 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+
+        def cb_grpc(child_type: str, child_name: str):
+            ppath = convert_se_path_to_path(path)
+            ppath.append((child_type, child_name))
+            child_path = convert_path_to_se_path(ppath)
+            cb(child_path)
+
+        self.event_streaming.register_callback(subscription.tag, obj, cb_grpc)
         return subscription
 
     def add_on_deleted(
@@ -905,6 +913,30 @@ def convert_path_to_se_path(path: Path) -> str:
         if comp[1]:
             se_path += ":" + comp[1]
     return se_path
+
+
+def convert_se_path_to_path(se_path: str) -> Path:
+    """Convert a StateEngine path to a path structure.
+
+    Parameters
+    ----------
+    se_path : str
+        StateEngine path.
+
+    Returns
+    -------
+    Path
+        path structure
+    """
+    path = []
+    for comp in se_path.split("/"):
+        if comp:
+            if ":" in comp:
+                name, value = comp.split(":")
+            else:
+                name, value = comp, ""
+            path.append((name, value))
+    return path
 
 
 class PyCallableStateObject:
@@ -1255,14 +1287,16 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), command
         )
 
-    def add_on_child_created(self, child_type: str, cb: Callable) -> EventSubscription:
+    def add_on_child_created(
+        self, child_type: str, cb: Callable[[PyMenuT], None]
+    ) -> EventSubscription:
         """Register a callback for when a child object is created.
 
         Parameters
         ----------
         child_type : str
             Type of the child object
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1270,8 +1304,15 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(child_path: str):
+            child_path = convert_se_path_to_path(child_path)
+            child_type, child_name = child_path[-1]
+            child = getattr(self, child_type)[child_name]
+            cb(child)
+
         return self.service.add_on_child_created(
-            self.rules, convert_path_to_se_path(self.path), child_type, self, cb
+            self.rules, convert_path_to_se_path(self.path), child_type, self, cb_service
         )
 
     def add_on_deleted(self, cb: Callable) -> EventSubscription:
