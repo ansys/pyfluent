@@ -1,10 +1,15 @@
 import numpy as np
 import pytest
+from test_utils import pytest_approx
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.services.field_data import FieldUnavailable, SurfaceDataType
+from ansys.fluent.core.services.field_data import (
+    CellElementType,
+    FieldUnavailable,
+    SurfaceDataType,
+)
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -464,3 +469,19 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     assert len(mesh_data[5]["faces"]) == 80
 
     assert list(mesh_data[12].keys()) == ["vertices", "faces"]
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_mesh_data(static_mixer_case_session):
+    solver = static_mixer_case_session
+    mesh = solver.fields.field_data.get_mesh(zone_id=97)
+    assert len(mesh.nodes) == 82247
+    assert len(mesh.elements) == 22771
+    assert mesh.elements[0].element_type == CellElementType.POLYHEDRON
+    assert len(mesh.elements[0].node_indices) == 19
+    assert min(mesh.nodes, key=lambda x: x.x).x == pytest_approx(-1.999075e-03)
+    assert max(mesh.nodes, key=lambda x: x.x).x == pytest_approx(1.999125e-03)
+    assert min(mesh.nodes, key=lambda x: x.y).y == pytest_approx(-3.000000e-03)
+    assert max(mesh.nodes, key=lambda x: x.y).y == pytest_approx(3.000000e-03)
+    assert min(mesh.nodes, key=lambda x: x.z).z == pytest_approx(-2.000000e-03)
+    assert max(mesh.nodes, key=lambda x: x.z).z == pytest_approx(2.500000e-03)
