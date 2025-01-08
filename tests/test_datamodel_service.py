@@ -655,6 +655,7 @@ def test_on_affected_at_type_path_lifetime(new_solver_session):
     assert "/test/affected/A:A1/B-1" not in solver._se_service.subscriptions
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3625")
 @pytest.mark.fluent_version(">=24.2")
 def test_on_command_executed_lifetime(new_solver_session):
     solver = new_solver_session
