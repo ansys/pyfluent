@@ -1,18 +1,25 @@
 """Interceptor classes to use with gRPC services."""
 
+import builtins
 import logging
 import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
-from google.protobuf.message import Message
+from google.protobuf.message import DecodeError, Message
+from google.rpc import error_details_pb2
 import grpc
+from grpc_status import rpc_status
 
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 log_bytes_limit: int = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
 truncate_len: int = log_bytes_limit // 5
+
+
+def _upper_snake_case_to_camel_case(name: str) -> str:
+    return "".join([word.capitalize() for word in name.split("_") if word])
 
 
 def _truncate_grpc_str(message: Message) -> str:
@@ -107,7 +114,25 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
         response = continuation(client_call_details, request)
         if response.exception() is not None and response.code() != grpc.StatusCode.OK:
             ex = response.exception()
-            new_ex = RuntimeError(
+            new_ex_cls = RuntimeError
+            try:
+                status = rpc_status.from_call(ex)
+                if status:
+                    for detail in status.details:
+                        if detail.Is(error_details_pb2.ErrorInfo.DESCRIPTOR):
+                            info = error_details_pb2.ErrorInfo()
+                            detail.Unpack(info)
+                            if info.domain == "Python":
+                                reason = info.reason
+                                ex_cls_name = _upper_snake_case_to_camel_case(reason)
+                                if hasattr(builtins, ex_cls_name):
+                                    cls = getattr(builtins, ex_cls_name)
+                                    if issubclass(cls, Exception):
+                                        new_ex_cls = cls
+                                        break
+            except DecodeError:
+                pass
+            new_ex = new_ex_cls(
                 ex.details() if isinstance(ex, grpc.RpcError) else str(ex)
             )
             new_ex.__context__ = ex
