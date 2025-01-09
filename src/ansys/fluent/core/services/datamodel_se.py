@@ -29,7 +29,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
-_TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
+ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 member_specs_oneof_fields = [
@@ -304,7 +304,7 @@ class DatamodelServiceImpl:
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
 
-def _convert_value_to_variant(val: _TValue, var: Variant) -> None:
+def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type."""
     if isinstance(val, bool):
         var.bool_state = val
@@ -325,7 +325,7 @@ def _convert_value_to_variant(val: _TValue, var: Variant) -> None:
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
 
-def _convert_variant_to_value(var: Variant) -> _TValue:
+def _convert_variant_to_value(var: Variant) -> ValueT:
     """Convert Fluent's variant type to a Python data type."""
     if var.HasField("bool_state"):
         return var.bool_state
@@ -498,7 +498,7 @@ class DatamodelService(StreamingService):
         self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
         self.version = version
 
-    def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
+    def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
         request = DataModelProtoModule.GetAttributeValueRequest(
             rules=rules, path=path, attribute=attribute
@@ -506,7 +506,7 @@ class DatamodelService(StreamingService):
         response = self._impl.get_attribute_value(request)
         return _convert_variant_to_value(response.result)
 
-    def get_state(self, rules: str, path: str) -> _TValue:
+    def get_state(self, rules: str, path: str) -> ValueT:
         """Get state."""
         request = DataModelProtoModule.GetStateRequest(rules=rules, path=path)
         response = self._impl.get_state(request)
@@ -571,7 +571,7 @@ class DatamodelService(StreamingService):
                 version=self.version,
             )
 
-    def set_state(self, rules: str, path: str, state: _TValue) -> None:
+    def set_state(self, rules: str, path: str, state: ValueT) -> None:
         """Set state."""
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
@@ -604,7 +604,7 @@ class DatamodelService(StreamingService):
         self,
         rules: str,
         path: str,
-        dict_state: dict[str, _TValue],
+        dict_state: dict[str, ValueT],
         recursive=False,
     ) -> None:
         """Update the dict."""
@@ -636,8 +636,8 @@ class DatamodelService(StreamingService):
             )
 
     def execute_command(
-        self, rules: str, path: str, command: str, args: dict[str, _TValue]
-    ) -> _TValue:
+        self, rules: str, path: str, command: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the command."""
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
@@ -654,8 +654,8 @@ class DatamodelService(StreamingService):
         return _convert_variant_to_value(response.result)
 
     def execute_query(
-        self, rules: str, path: str, query: str, args: dict[str, _TValue]
-    ) -> _TValue:
+        self, rules: str, path: str, query: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the query."""
         request = DataModelProtoModule.ExecuteQueryRequest(
             rules=rules, path=path, query=query
@@ -767,7 +767,7 @@ class DatamodelService(StreamingService):
         return subscription
 
     def add_on_changed(
-        self, rules: str, path: str, obj, cb: Callable[[Any], None]
+        self, rules: str, path: str, obj, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on changed."""
         request_dict = {
@@ -818,7 +818,12 @@ class DatamodelService(StreamingService):
         return subscription
 
     def add_on_command_executed_old(
-        self, rules: str, path: str, command: str, obj, cb: Callable[[str, Any], None]
+        self,
+        rules: str,
+        path: str,
+        command: str,
+        obj,
+        cb: Callable[[str, ValueT], None],
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
@@ -837,7 +842,7 @@ class DatamodelService(StreamingService):
         return subscription
 
     def add_on_command_executed(
-        self, rules: str, path: str, obj, cb: Callable[[str, Any], None]
+        self, rules: str, path: str, obj, cb: Callable[[str, ValueT], None]
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
@@ -855,7 +860,7 @@ class DatamodelService(StreamingService):
         return subscription
 
     def add_on_attribute_changed(
-        self, rules: str, path: str, attribute: str, obj, cb: Callable[[Any], None]
+        self, rules: str, path: str, attribute: str, obj, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on attribute changed."""
         request_dict = {
@@ -880,7 +885,7 @@ class DatamodelService(StreamingService):
         command: str,
         attribute: str,
         obj,
-        cb: Callable[[Any], None],
+        cb: Callable[[ValueT], None],
     ) -> EventSubscription:
         """Add on command attribute changed."""
         request_dict = {
@@ -1352,7 +1357,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(value: Any):
+        def cb_service(value: ValueT):
             cb(self)
 
         return self.service.add_on_changed(
@@ -1406,7 +1411,7 @@ class PyMenu(PyStateContainer):
         )
 
     def add_on_command_executed_old(
-        self, command: str, cb: Callable[[PyMenuT, str, Any], None]
+        self, command: str, cb: Callable[[PyMenuT, str, ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when a command is executed.
 
@@ -1414,7 +1419,7 @@ class PyMenu(PyStateContainer):
         ----------
         command : str
             Command name
-        cb : Callable[[PyMenuT, str, Any], None]
+        cb : Callable[[PyMenuT, str, ValueT], None]
             Callback function
 
         Returns
@@ -1423,7 +1428,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(command: str, args: Any):
+        def cb_service(command: str, args: ValueT):
             cb(self, command, args)
 
         return self.service.add_on_command_executed_old(
@@ -1431,13 +1436,13 @@ class PyMenu(PyStateContainer):
         )
 
     def add_on_command_executed(
-        self, cb: Callable[[PyMenuT, str, Any], None]
+        self, cb: Callable[[PyMenuT, str, ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when a command is executed.
 
         Parameters
         ----------
-        cb : Callable[[PyMenuT, str, Any], None]
+        cb : Callable[[PyMenuT, str, ValueT], None]
             Callback function
 
         Returns
@@ -1446,7 +1451,7 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
 
-        def cb_service(command: str, args: Any):
+        def cb_service(command: str, args: ValueT):
             cb(self, command, args)
 
         return self.service.add_on_command_executed(
