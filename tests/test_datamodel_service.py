@@ -655,7 +655,6 @@ def test_on_affected_at_type_path_lifetime(new_solver_session):
     assert "/test/affected/A:A1/B-1" not in solver._se_service.subscriptions
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3625")
 @pytest.mark.fluent_version(">=24.2")
 def test_on_command_executed_lifetime(new_solver_session):
     solver = new_solver_session
@@ -672,8 +671,7 @@ def test_on_command_executed_lifetime(new_solver_session):
     else:
         _ = root.A["A1"].add_on_command_executed(lambda *args: data.append(1))
         root.A["A1"].add_on_command_executed(lambda *args: data.append(2))
-        # TODO: path should be appended to the tag
-        tags = ["/test/command_executed", "/test/command_executed-1"]
+        tags = ["/test/command_executed/A:A1", "/test/command_executed/A:A1-1"]
     gc.collect()
     for tag in tags:
         assert tag in solver._se_service.subscriptions
