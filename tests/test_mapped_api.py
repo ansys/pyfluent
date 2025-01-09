@@ -520,7 +520,7 @@ def test_datamodel_api_on_command_executed_mapped_args(
     command = None
     arguments = None
 
-    def cb(obj, cmd, args):
+    def cb(cmd, args):
         nonlocal executed
         nonlocal command
         nonlocal arguments
@@ -728,7 +728,7 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
         delete_count += 1
 
     def changed_cb(value):
-        changes.append(value())
+        changes.append(value)
 
     service.add_on_child_created(app_name, "/", "eee", root, create_cb)
     service.set_state(app_name, "/", {"eee:b": {}})
@@ -757,7 +757,7 @@ def test_datamodel_api_on_changed_with_mapped_names(
     changes = []
 
     def changed_cb(value):
-        changes.append(value())
+        changes.append(value)
 
     service.set_state(app_name, "/", {"eee:b": {}})
     service.add_on_changed(app_name, "/eee:b/yyy", root.eee["b"].yyy, changed_cb)

@@ -95,16 +95,16 @@ def test_datamodel_api_on_changed(datamodel_api_version_all, new_solver_session)
     called_obj = 0
     state_obj = None
 
-    def cb(obj):
+    def cb(value):
         nonlocal called
         nonlocal state
-        state = obj()
+        state = value
         called += 1
 
-    def cb_obj(obj):
+    def cb_obj(value):
         nonlocal called_obj
         nonlocal state_obj
-        state_obj = obj()
+        state_obj = value
         called_obj += 1
 
     subscription = service.add_on_changed(app_name, "/A/X", root.A.X, cb)
@@ -144,7 +144,7 @@ def test_datamodel_api_on_affected(datamodel_api_version_all, new_solver_session
     root = create_root_using_datamodelgen(service, app_name)
     called = 0
 
-    def cb(obj):
+    def cb():
         nonlocal called
         called += 1
 
@@ -176,7 +176,7 @@ def test_datamodel_api_on_affected_at_type_path(
     root = create_root_using_datamodelgen(service, app_name)
     called = 0
 
-    def cb(obj):
+    def cb():
         nonlocal called
         called += 1
 
@@ -326,7 +326,7 @@ def test_datamodel_api_on_command_executed(
     command = None
     arguments = None
 
-    def cb(obj, cmd, args):
+    def cb(cmd, args):
         nonlocal executed
         nonlocal command
         nonlocal arguments
