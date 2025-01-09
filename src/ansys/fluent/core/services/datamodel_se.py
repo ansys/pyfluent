@@ -1469,12 +1469,12 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def add_on_changed(self, cb: Callable) -> EventSubscription:
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> EventSubscription:
         """Register a callback for when the object is modified.
 
         Parameters
         ----------
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1482,8 +1482,12 @@ class PyParameter(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(value: ValueT):
+            cb(self)
+
         return self.service.add_on_changed(
-            self.rules, convert_path_to_se_path(self.path), self, cb
+            self.rules, convert_path_to_se_path(self.path), self, cb_service
         )
 
 
