@@ -1027,9 +1027,10 @@ class Mesh:
     Attributes:
     -----------
     nodes : list[Node]
-        List of nodes in the mesh.
+        List of nodes in the mesh. Sorted by Fluent's node ID.
     elements : list[Element]
-        List of elements in the mesh.
+        List of elements in the mesh. Unsorted as we want to correlate with the
+        solution data retrieved via svar service.
     """
 
     nodes: list[Node]
@@ -1433,5 +1434,4 @@ class FieldData:
             )
             for element in elements
         ]
-        elements = sorted(elements, key=lambda x: x._id)
         return Mesh(nodes=nodes, elements=elements)
