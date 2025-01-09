@@ -1111,7 +1111,7 @@ class PyStateContainer(PyCallableStateObject):
             return self.get_state()
 
     def add_on_attribute_changed(
-        self, attribute: str, cb: Callable[[Any], None]
+        self, attribute: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when an attribute is changed.
 
@@ -1119,7 +1119,7 @@ class PyStateContainer(PyCallableStateObject):
         ----------
         attribute : str
             attribute name
-        cb : Callable[[Any], None]
+        cb : Callable[[ValueT], None]
             Callback function
 
         Returns
@@ -1132,7 +1132,7 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def add_on_command_attribute_changed(
-        self, command: str, attribute: str, cb: Callable[[Any], None]
+        self, command: str, attribute: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when an attribute is changed.
 
@@ -1142,7 +1142,7 @@ class PyStateContainer(PyCallableStateObject):
             command name
         attribute : str
             attribute name
-        cb : Callable[[Any], None]
+        cb : Callable[[ValueT], None]
             Callback function
 
         Returns
