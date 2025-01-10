@@ -402,13 +402,13 @@ def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
     def on_changed(value):
         nonlocal called
         nonlocal state
-        state = value()
+        state = value
         called += 1
 
     def on_changed_obj(value):
         nonlocal called_obj
         nonlocal state_obj
-        state_obj = value()
+        state_obj = value
         called_obj += 1
 
     subscription = service.add_on_changed(app_name, "/A/X", on_changed)
