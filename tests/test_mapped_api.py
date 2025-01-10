@@ -1,7 +1,7 @@
 import time
 
 import pytest
-from util import create_datamodel_root_in_server, create_root_using_datamodelgen
+from util import create_datamodel_root_in_server
 
 from ansys.fluent.core.utils.execution import timeout_loop
 
@@ -393,7 +393,6 @@ def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
-    root = create_root_using_datamodelgen(service, app_name)
 
     called = 0
     state = None
@@ -412,8 +411,8 @@ def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
         state_obj = value()
         called_obj += 1
 
-    subscription = service.add_on_changed(app_name, "/A/X", root.A.X, on_changed)
-    subscription_obj = service.add_on_changed(app_name, "/A", root.A, on_changed_obj)
+    subscription = service.add_on_changed(app_name, "/A/X", on_changed)
+    subscription_obj = service.add_on_changed(app_name, "/A", on_changed_obj)
 
     assert called == 0
     assert state is None
@@ -473,7 +472,6 @@ def test_mapped_on_attribute_changed(datamodel_api_version_new, new_solver_sessi
     app_name = "test"
     create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
-    root = create_root_using_datamodelgen(service, app_name)
     called = 0
     value = None
 
@@ -483,9 +481,7 @@ def test_mapped_on_attribute_changed(datamodel_api_version_new, new_solver_sessi
         value = val
         called += 1
 
-    subscription = service.add_on_attribute_changed(
-        app_name, "/A/X", "default", root.A.X, cb
-    )
+    subscription = service.add_on_attribute_changed(app_name, "/A/X", "default", cb)
     assert called == 0
     assert value is None
 
@@ -514,7 +510,6 @@ def test_datamodel_api_on_command_executed_mapped_args(
     app_name = "test"
     create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
-    root = create_root_using_datamodelgen(service, app_name)
     register_external_function_in_remote_app(solver, app_name, "CFunc")
     executed = False
     command = None
@@ -528,7 +523,7 @@ def test_datamodel_api_on_command_executed_mapped_args(
         arguments = args
         executed = True
 
-    subscription = service.add_on_command_executed(app_name, "/", root, cb)
+    subscription = service.add_on_command_executed(app_name, "/", cb)
     assert not executed
     assert command is None
     assert arguments is None
@@ -715,7 +710,6 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     app_name = "test"
     create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
-    root = create_root_using_datamodelgen(service, app_name)
     called_paths = []
     delete_count = 0
     changes = []
@@ -730,13 +724,13 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     def changed_cb(value):
         changes.append(value)
 
-    service.add_on_child_created(app_name, "/", "eee", root, create_cb)
+    service.add_on_child_created(app_name, "/", "eee", create_cb)
     service.set_state(app_name, "/", {"eee:b": {}})
     service.set_state(app_name, "/", {"eee:c": {}})
     service.set_state(app_name, "/", {"B:d": {}})
-    service.add_on_deleted(app_name, "/eee:b", root, delete_cb)
-    service.add_on_deleted(app_name, "/eee:c", root, delete_cb)
-    service.add_on_changed(app_name, "/eee:b/yyy", root.eee["b"].yyy, changed_cb)
+    service.add_on_deleted(app_name, "/eee:b", delete_cb)
+    service.add_on_deleted(app_name, "/eee:c", delete_cb)
+    service.add_on_changed(app_name, "/eee:b/yyy", changed_cb)
     service.delete_object(app_name, "/eee:c")
     service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
     timeout_loop(lambda: len(changes) == 1, timeout=5)
@@ -753,14 +747,13 @@ def test_datamodel_api_on_changed_with_mapped_names(
     app_name = "test"
     create_datamodel_root_in_server(solver, api_name_rules_str, app_name)
     service = solver._se_service
-    root = create_root_using_datamodelgen(service, app_name)
     changes = []
 
     def changed_cb(value):
         changes.append(value)
 
     service.set_state(app_name, "/", {"eee:b": {}})
-    service.add_on_changed(app_name, "/eee:b/yyy", root.eee["b"].yyy, changed_cb)
+    service.add_on_changed(app_name, "/eee:b/yyy", changed_cb)
     service.set_state(app_name, "/", {"eee:b": {"yyy": 42}})
     timeout_loop(lambda: len(changes) == 1, timeout=5)
     assert changes == [42]
