@@ -7,9 +7,7 @@ from typing import Any
 
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.message import DecodeError, Message
-from google.rpc import error_details_pb2
 import grpc
-from grpc_status import rpc_status
 
 from ansys.fluent.core.services.batch_ops import BatchOps
 
@@ -116,6 +114,9 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
             ex = response.exception()
             new_ex_cls = RuntimeError
             try:
+                from google.rpc import error_details_pb2
+                from grpc_status import rpc_status
+
                 status = rpc_status.from_call(ex)
                 if status:
                     for detail in status.details:
