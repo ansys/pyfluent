@@ -239,16 +239,23 @@ def configure_container_dict(
     logger.warning(
         f"Starting Fluent container mounted to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
     )
-
-    if not port and "ports" in container_dict:
+    port_mapping = {port: port} if port else {}
+    if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
-        port = next(iter(container_dict["ports"].values()))
-    if not port and pyfluent.LAUNCH_FLUENT_PORT:
+        port_mapping = container_dict["ports"]
+    if not port_mapping and pyfluent.LAUNCH_FLUENT_PORT:
         port = pyfluent.LAUNCH_FLUENT_PORT
-    if not port:
+        port_mapping = {port: port}
+    if not port_mapping:
         port = get_free_port()
+        port_mapping = {port: port}
 
-    container_dict.update(ports={str(port): port})  # container port : host port
+    container_dict.update(
+        ports={str(x): y for x, y in port_mapping.items()}
+    )  # container port : host port
+    container_grpc_port = next(
+        iter(port_mapping.values())
+    )  # the first port in the mapping is chosen as the gRPC port
 
     if "environment" not in container_dict:
         if not license_server:
@@ -259,7 +266,7 @@ def configure_container_dict(
         container_dict.update(
             environment={
                 "ANSYSLMD_LICENSE_FILE": license_server,
-                "REMOTING_PORTS": f"{port}/portspan=2",
+                "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
             }
         )
 
@@ -354,7 +361,7 @@ def configure_container_dict(
     return (
         container_dict,
         timeout,
-        port,
+        container_grpc_port,
         host_server_info_file,
         remove_server_info_file,
     )
@@ -362,7 +369,7 @@ def configure_container_dict(
 
 def start_fluent_container(
     args: List[str], container_dict: dict | None = None
-) -> (int, str):
+) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
     Parameters
@@ -433,7 +440,9 @@ def start_fluent_container(
 
         logger.debug("Starting Fluent docker container...")
 
-        docker_client.containers.run(config_dict.pop("fluent_image"), **config_dict)
+        container = docker_client.containers.run(
+            config_dict.pop("fluent_image"), **config_dict
+        )
 
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
@@ -446,7 +455,7 @@ def start_fluent_container(
         else:
             _, _, password = _parse_server_info_file(str(host_server_info_file))
 
-            return port, password
+            return port, password, container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
