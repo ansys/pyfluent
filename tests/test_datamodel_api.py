@@ -267,7 +267,7 @@ def test_datamodel_api_on_attribute_changed(
 
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_command_attribute_changed(
-    datamodel_api_version_all, new_solver_session
+    datamodel_api_version_all, request, new_solver_session
 ):
     solver = new_solver_session
     app_name = "test"
@@ -292,14 +292,16 @@ def test_datamodel_api_on_command_attribute_changed(
     service.set_state(app_name, "/A/X", "xyz")
     timeout_loop(lambda: called == 2, timeout=5)
     assert called == 2
-    # TODO: value is still "cde" in both old and new API
-    # assert value == "xyz"
+    test_name = request.node.name
+    # TODO: the value is not modiefied in the old API - issue
+    if test_name.endswith("[new]"):
+        assert value == "xyz"
     subscription.unsubscribe()
     service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
-    # Commented out because of the issue above
-    # assert value == "xyz"
+    if test_name.endswith("[new]"):
+        assert value == "xyz"
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -322,7 +324,6 @@ def test_datamodel_api_on_command_executed(
         arguments = args
         executed += 1
 
-    # TODO: In C++ API, we don't need to pass the command name
     subscription = service.add_on_command_executed(app_name, "/", cb)
     assert executed == 0
     assert command is None
