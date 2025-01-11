@@ -28,10 +28,10 @@ class DatamodelEvents(StreamingService):
         service.event_streaming = self
         self._lock = threading.RLock()
 
-    def register_callback(self, tag: str, obj, cb: Callable):
+    def register_callback(self, tag: str, cb: Callable):
         """Register a callback."""
         with self._lock:
-            self._cbs[tag] = obj, cb
+            self._cbs[tag] = cb
 
     def unregister_callback(self, tag: str):
         """Unregister a callback."""
@@ -58,25 +58,25 @@ class DatamodelEvents(StreamingService):
                         if response.HasField("createdEventResponse"):
                             childtype = response.createdEventResponse.childtype
                             childname = response.createdEventResponse.childname
-                            child = getattr(cb[0], childtype)[childname]
-                            cb[1](child)
+                            cb(childtype, childname)
                         elif response.HasField("attributeChangedEventResponse"):
                             value = response.attributeChangedEventResponse.value
-                            cb[1](_convert_variant_to_value(value))
+                            cb(_convert_variant_to_value(value))
                         elif response.HasField("commandAttributeChangedEventResponse"):
                             value = response.commandAttributeChangedEventResponse.value
-                            cb[1](_convert_variant_to_value(value))
-                        elif response.HasField(
-                            "modifiedEventResponse"
-                        ) or response.HasField("affectedEventResponse"):
-                            cb[1](cb[0])
+                            cb(_convert_variant_to_value(value))
+                        elif response.HasField("modifiedEventResponse"):
+                            value = response.modifiedEventResponse.value
+                            cb(_convert_variant_to_value(value))
+                        elif response.HasField("affectedEventResponse"):
+                            cb()
                         elif response.HasField("deletedEventResponse"):
-                            cb[1]()
+                            cb()
                         elif response.HasField("commandExecutedEventResponse"):
                             command = response.commandExecutedEventResponse.command
                             args = _convert_variant_to_value(
                                 response.commandExecutedEventResponse.args
                             )
-                            cb[1](cb[0], command, args)
+                            cb(command, args)
             except StopIteration:
                 break

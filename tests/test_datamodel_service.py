@@ -672,7 +672,7 @@ def test_on_command_executed_lifetime(new_solver_session):
         _ = root.A["A1"].add_on_command_executed(lambda *args: data.append(1))
         root.A["A1"].add_on_command_executed(lambda *args: data.append(2))
         # TODO: path should be appended to the tag
-        tags = ["/test/command_executed", "/test/command_executed-1"]
+        tags = ["/test/command_executed/A:A1", "/test/command_executed/A:A1-1"]
     gc.collect()
     for tag in tags:
         assert tag in solver._se_service.subscriptions
