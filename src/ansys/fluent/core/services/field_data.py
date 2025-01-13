@@ -954,6 +954,32 @@ class ChunkParser:
         return fields_data
 
 
+class ZoneType(Enum):
+    """Zone types for mesh."""
+
+    CELL = 1
+    FACE = 2
+
+
+@dataclass
+class ZoneInfo:
+    """Zone information for mesh.
+
+    Attributes:
+    -----------
+    _id : int
+        Zone ID.
+    name : str
+        Name of the zone.
+    zone_type : ZoneType
+        Type of the zone for mesh.
+    """
+
+    _id: int
+    name: str
+    zone_type: ZoneType
+
+
 @dataclass
 class Node:
     """Node class for mesh.
@@ -1062,12 +1088,14 @@ class FieldData:
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
         scheme_eval=None,
+        get_zones_info: Callable[[], list[ZoneInfo]] | None = None,
     ):
         """__init__ method of FieldData class."""
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
         self.scheme_eval = scheme_eval
+        self.get_zones_info = get_zones_info
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 

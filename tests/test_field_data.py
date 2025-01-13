@@ -9,6 +9,7 @@ from ansys.fluent.core.services.field_data import (
     CellElementType,
     FieldUnavailable,
     SurfaceDataType,
+    ZoneType,
 )
 
 HOT_INLET_TEMPERATURE = 313.15
@@ -474,6 +475,11 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
 @pytest.mark.fluent_version(">=25.2")
 def test_mesh_data(static_mixer_case_session):
     solver = static_mixer_case_session
+    zones_info = solver.fields.field_data.get_zones_info()
+    cell_zone_names = [z.name for z in zones_info if z.zone_type == ZoneType.CELL]
+    face_zone_names = [z.name for z in zones_info if z.zone_type == ZoneType.FACE]
+    assert cell_zone_names == ["fluid"]
+    assert face_zone_names == ["inlet1", "inlet2", "outlet", "wall", "interior--fluid"]
     mesh = solver.fields.field_data.get_mesh(zone_id=97)
     assert len(mesh.nodes) == 82247
     assert len(mesh.elements) == 22771

@@ -3,7 +3,7 @@
 from enum import Enum
 import json
 import logging
-from typing import Any, Dict
+from typing import Any, Callable, Dict
 import warnings
 import weakref
 
@@ -11,7 +11,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services.field_data import FieldDataService
+from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
@@ -93,6 +93,7 @@ class BaseSession:
         start_transcript: bool = True,
         launcher_args: Dict[str, Any] | None = None,
         event_type: Enum | None = None,
+        get_zones_info: Callable[[], list[ZoneInfo]] | None = None,
     ):
         """BaseSession.
 
@@ -120,6 +121,7 @@ class BaseSession:
             scheme_eval,
             file_transfer_service,
             event_type,
+            get_zones_info,
         )
 
     def _build_from_fluent_connection(
@@ -128,6 +130,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         event_type=None,
+        get_zones_info: Callable[[], list[ZoneInfo]] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
@@ -205,6 +208,7 @@ class BaseSession:
                     self.field_info,
                     self._is_solution_data_valid,
                     _session.scheme_eval,
+                    get_zones_info,
                 )
                 self.field_data_streaming = FieldDataStreaming(
                     _session._fluent_connection._id, _session._field_data_service

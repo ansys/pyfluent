@@ -7,8 +7,10 @@ import threading
 from typing import Any, Dict
 import warnings
 
+from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services import SchemeEval, service_creator
+from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.reduction import ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
@@ -106,6 +108,7 @@ class Solver(BaseSession):
             start_transcript=start_transcript,
             launcher_args=launcher_args,
             event_type=SolverEvent,
+            get_zones_info=lambda: self._get_zones_info(),
         )
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
 
@@ -175,6 +178,23 @@ class Solver(BaseSession):
             PyFluentDeprecationWarning,
         )
         return self.fields.solution_variable_info
+
+    def _get_zones_info(self) -> list[ZoneInfo]:
+        zones_info = []
+        for (
+            zone_info
+        ) in self.fields.solution_variable_info.get_zones_info()._zones_info.values():
+            zone_type = (
+                ZoneType.CELL
+                if zone_info.thread_type == SvarProtoModule.ThreadType.CELL_THREAD
+                else ZoneType.FACE
+            )
+            zones_info.append(
+                ZoneInfo(
+                    _id=zone_info.zone_id, name=zone_info.name, zone_type=zone_type
+                )
+            )
+        return zones_info
 
     @property
     def reduction(self):
