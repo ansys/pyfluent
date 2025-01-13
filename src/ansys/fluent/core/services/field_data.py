@@ -1,6 +1,6 @@
 """Wrappers over FieldData gRPC service of Fluent."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
 import io
@@ -1004,6 +1004,19 @@ class CellElementType(Enum):
 
 
 @dataclass
+class Facet:
+    """Facet class within a mesh element.
+
+    Attributes:
+    -----------
+    node_indices : list[int]
+        0-based node indices of the facet.
+    """
+
+    node_indices: list[int]
+
+
+@dataclass
 class Element:
     """Element class for mesh.
 
@@ -1012,12 +1025,15 @@ class Element:
     element_type : CellElementType
         Element type of the element.
     node_indices : list[int]
-        0-based node indices of the element.
+        0-based node indices of the element. Populated for standard elements.
+    facets : list[Facet]
+        List of facets of the element. Populated for polyhedral elements.
     """
 
     _id: int
     element_type: CellElementType
-    node_indices: list[int]
+    node_indices: list[int] = field(default_factory=list)
+    facets: list[Facet] = field(default_factory=list)
 
 
 @dataclass
@@ -1425,13 +1441,25 @@ class FieldData:
             domain_id=1, thread_id=zone_id
         )
         response = self._service.get_solver_mesh_elements(request)
-        elements = response.elements
-        elements = [
-            Element(
-                _id=element.id,
-                element_type=CellElementType(element.element_type),
-                node_indices=[(id - 1) for id in element.node_ids],
-            )
-            for element in elements
-        ]
+        elements_pb = response.elements
+        elements = []
+        for element_pb in elements_pb:
+            element_type = CellElementType(element_pb.element_type)
+            if element_type == CellElementType.POLYHEDRON:
+                facets = []
+                for facet_pb in element_pb.facets:
+                    facet = Facet(node_indices=[(id - 1) for id in facet_pb.node])
+                    facets.append(facet)
+                element = Element(
+                    _id=element_pb.id,
+                    element_type=element_type,
+                    facets=facets,
+                )
+            else:
+                element = Element(
+                    _id=element_pb.id,
+                    element_type=element_type,
+                    node_indices=[(id - 1) for id in element_pb.node_ids],
+                )
+            elements.append(element)
         return Mesh(nodes=nodes, elements=elements)

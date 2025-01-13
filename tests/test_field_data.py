@@ -478,7 +478,9 @@ def test_mesh_data(static_mixer_case_session):
     assert len(mesh.nodes) == 82247
     assert len(mesh.elements) == 22771
     assert mesh.elements[0].element_type == CellElementType.POLYHEDRON
-    assert len(mesh.elements[0].node_indices) > 0
+    assert len(mesh.elements[0].node_indices) == 0
+    assert len(mesh.elements[0].facets) == 9
+    assert len(mesh.elements[0].facets[0].node_indices) == 4
     assert min(mesh.nodes, key=lambda x: x.x).x == pytest_approx(-1.999075e-03)
     assert max(mesh.nodes, key=lambda x: x.x).x == pytest_approx(1.999125e-03)
     assert min(mesh.nodes, key=lambda x: x.y).y == pytest_approx(-3.000000e-03)
