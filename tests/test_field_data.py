@@ -486,7 +486,7 @@ def test_mesh_data_2d_standard(disk_case_session):
         "axis-5",
         "wall-6",
     ]
-    mesh = solver.fields.field_data.get_mesh(zone="fluid")
+    mesh = solver.fields.field_data.get_mesh(zone="fluid-7")
     assert len(mesh.nodes) == 6351
     assert len(mesh.elements) == 6192
     assert mesh.elements[0].element_type == CellElementType.QUADRILATERAL
