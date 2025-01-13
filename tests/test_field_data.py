@@ -473,14 +473,41 @@ def test_field_data_streaming_in_meshing_mode(new_meshing_session):
 
 
 @pytest.mark.fluent_version(">=25.2")
-def test_mesh_data(static_mixer_case_session):
+def test_mesh_data_2d_standard(disk_case_session):
+    solver = disk_case_session
+    zones_info = solver.fields.field_data.get_zones_info()
+    cell_zone_names = [z.name for z in zones_info if z.zone_type == ZoneType.CELL]
+    face_zone_names = [z.name for z in zones_info if z.zone_type == ZoneType.FACE]
+    assert cell_zone_names == ["fluid-7"]
+    assert face_zone_names == [
+        "velocity-inlet-2",
+        "pressure-outlet-3",
+        "interior-4",
+        "axis-5",
+        "wall-6",
+    ]
+    mesh = solver.fields.field_data.get_mesh(zone="fluid")
+    assert len(mesh.nodes) == 6351
+    assert len(mesh.elements) == 6192
+    assert mesh.elements[0].element_type == CellElementType.QUADRILATERAL
+    assert len(mesh.elements[0].node_indices) == 4
+    assert min(mesh.nodes, key=lambda x: x.x).x == pytest_approx(0.0)
+    assert max(mesh.nodes, key=lambda x: x.x).x == pytest_approx(0.06202)
+    assert min(mesh.nodes, key=lambda x: x.y).y == pytest_approx(0.0)
+    assert max(mesh.nodes, key=lambda x: x.y).y == pytest_approx(0.443)
+    assert min(mesh.nodes, key=lambda x: x.z).z == pytest_approx(0.0)
+    assert max(mesh.nodes, key=lambda x: x.z).z == pytest_approx(0.0)
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_mesh_data_3d_poly(static_mixer_case_session):
     solver = static_mixer_case_session
     zones_info = solver.fields.field_data.get_zones_info()
     cell_zone_names = [z.name for z in zones_info if z.zone_type == ZoneType.CELL]
     face_zone_names = [z.name for z in zones_info if z.zone_type == ZoneType.FACE]
     assert cell_zone_names == ["fluid"]
     assert face_zone_names == ["inlet1", "inlet2", "outlet", "wall", "interior--fluid"]
-    mesh = solver.fields.field_data.get_mesh(zone_id=97)
+    mesh = solver.fields.field_data.get_mesh(zone="fluid")
     assert len(mesh.nodes) == 82247
     assert len(mesh.elements) == 22771
     assert mesh.elements[0].element_type == CellElementType.POLYHEDRON

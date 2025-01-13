@@ -954,6 +954,10 @@ class ChunkParser:
         return fields_data
 
 
+# Root domain id in Fluent.
+ROOT_DOMAIN_ID = 1
+
+
 class ZoneType(Enum):
     """Zone types for mesh."""
 
@@ -1445,28 +1449,41 @@ class FieldData:
             }
         return path_lines_dict
 
-    def get_mesh(self, zone_id: int) -> Mesh:
+    def get_mesh(self, zone: str | int) -> Mesh:
         """Get mesh for a zone.
 
         Parameters
         ----------
-        zone_id : int
-            Zone ID.
+        zone : str | int
+            Zone name or id. Currently, only cell zones are supported.
 
         Returns
         -------
         Mesh
             Mesh object containing nodes and elements.
+
+        Raises
+        ------
+        NotImplementedError
+            If a face zone is provided.
         """
+        zone_info = None
+        for zone_info in self.get_zones_info():
+            if zone_info.name == zone or zone_info._id == zone:
+                break
+        if zone_info.zone_type == ZoneType.FACE:
+            raise NotImplementedError("Face zone mesh is not supported.")
+
+        # Mesh data is retrieved from the root domain in Fluent
         request = FieldDataProtoModule.GetSolverMeshNodesRequest(
-            domain_id=1, thread_id=zone_id
+            domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
         response = self._service.get_solver_mesh_nodes(request)
         nodes = response.nodes
         nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
         nodes = sorted(nodes, key=lambda x: x._id)
         request = FieldDataProtoModule.GetSolverMeshElementsRequest(
-            domain_id=1, thread_id=zone_id
+            domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
         response = self._service.get_solver_mesh_elements(request)
         elements_pb = response.elements
