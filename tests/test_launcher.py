@@ -527,3 +527,10 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
             fluent_launch_string
             == f"{fluent_path} 3ddp -gu -sifile={Path(server_info_file_name).name} -nm"
         )
+
+
+def test_container_ports():
+    container_dict = {"ports": {"5000": 5000, "5001": 5001}}
+    with pyfluent.launch_fluent(container_dict=container_dict) as session:
+        session._container.reload()
+        assert len(session._container.ports) == 2

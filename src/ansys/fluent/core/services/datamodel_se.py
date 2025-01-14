@@ -6,7 +6,7 @@ import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence
+from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -28,7 +28,8 @@ from ansys.fluent.core.solver.error_message import allowed_name_error_message
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
-_TValue = None | bool | int | float | str | Sequence["_TValue"] | dict[str, "_TValue"]
+PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
+ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 member_specs_oneof_fields = [
@@ -175,6 +176,8 @@ class DatamodelServiceImpl:
         self._stub = DataModelGrpcModule.DataModelStub(intercept_channel)
         self._metadata = metadata
         self.file_transfer_service = file_transfer_service
+        if os.getenv("REMOTING_MAPPED_NEW_DM_API") == "1":
+            self._metadata.append(("mapped", "1"))
 
     # TODO: Remove it from the proto interface
     def initialize_datamodel(
@@ -301,7 +304,7 @@ class DatamodelServiceImpl:
         return self._stub.unsubscribeEvents(request, metadata=self._metadata)
 
 
-def _convert_value_to_variant(val: _TValue, var: Variant) -> None:
+def _convert_value_to_variant(val: ValueT, var: Variant) -> None:
     """Convert a Python data type to Fluent's variant type."""
     if isinstance(val, bool):
         var.bool_state = val
@@ -322,7 +325,7 @@ def _convert_value_to_variant(val: _TValue, var: Variant) -> None:
             _convert_value_to_variant(v, var.variant_map_state.item[k])
 
 
-def _convert_variant_to_value(var: Variant) -> _TValue:
+def _convert_variant_to_value(var: Variant) -> ValueT:
     """Convert Fluent's variant type to a Python data type."""
     if var.HasField("bool_state"):
         return var.bool_state
@@ -495,7 +498,7 @@ class DatamodelService(StreamingService):
         self.cache = DataModelCache() if pyfluent.DATAMODEL_USE_STATE_CACHE else None
         self.version = version
 
-    def get_attribute_value(self, rules: str, path: str, attribute: str) -> _TValue:
+    def get_attribute_value(self, rules: str, path: str, attribute: str) -> ValueT:
         """Get attribute value."""
         request = DataModelProtoModule.GetAttributeValueRequest(
             rules=rules, path=path, attribute=attribute
@@ -503,7 +506,7 @@ class DatamodelService(StreamingService):
         response = self._impl.get_attribute_value(request)
         return _convert_variant_to_value(response.result)
 
-    def get_state(self, rules: str, path: str) -> _TValue:
+    def get_state(self, rules: str, path: str) -> ValueT:
         """Get state."""
         request = DataModelProtoModule.GetStateRequest(rules=rules, path=path)
         response = self._impl.get_state(request)
@@ -568,7 +571,7 @@ class DatamodelService(StreamingService):
                 version=self.version,
             )
 
-    def set_state(self, rules: str, path: str, state: _TValue) -> None:
+    def set_state(self, rules: str, path: str, state: ValueT) -> None:
         """Set state."""
         request = DataModelProtoModule.SetStateRequest(
             rules=rules, path=path, wait=True
@@ -601,7 +604,7 @@ class DatamodelService(StreamingService):
         self,
         rules: str,
         path: str,
-        dict_state: dict[str, _TValue],
+        dict_state: dict[str, ValueT],
         recursive=False,
     ) -> None:
         """Update the dict."""
@@ -633,8 +636,8 @@ class DatamodelService(StreamingService):
             )
 
     def execute_command(
-        self, rules: str, path: str, command: str, args: dict[str, _TValue]
-    ) -> _TValue:
+        self, rules: str, path: str, command: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the command."""
         request = DataModelProtoModule.ExecuteCommandRequest(
             rules=rules, path=path, command=command, wait=True
@@ -651,8 +654,8 @@ class DatamodelService(StreamingService):
         return _convert_variant_to_value(response.result)
 
     def execute_query(
-        self, rules: str, path: str, query: str, args: dict[str, _TValue]
-    ) -> _TValue:
+        self, rules: str, path: str, query: str, args: dict[str, ValueT]
+    ) -> ValueT:
         """Execute the query."""
         request = DataModelProtoModule.ExecuteQueryRequest(
             rules=rules, path=path, query=query
@@ -722,7 +725,7 @@ class DatamodelService(StreamingService):
         self.subscriptions.unsubscribe_all()
 
     def add_on_child_created(
-        self, rules: str, path: str, child_type: str, obj, cb: Callable
+        self, rules: str, path: str, child_type: str, cb: Callable[[str], None]
     ) -> EventSubscription:
         """Add on child created."""
         request_dict = {
@@ -737,11 +740,18 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+
+        def cb_grpc(child_type: str, child_name: str):
+            ppath = convert_se_path_to_path(path)
+            ppath.append((child_type, child_name))
+            child_path = convert_path_to_se_path(ppath)
+            cb(child_path)
+
+        self.event_streaming.register_callback(subscription.tag, cb_grpc)
         return subscription
 
     def add_on_deleted(
-        self, rules: str, path: str, obj, cb: Callable
+        self, rules: str, path: str, cb: Callable[[], None]
     ) -> EventSubscription:
         """Add on deleted."""
         request_dict = {
@@ -753,11 +763,11 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_changed(
-        self, rules: str, path: str, obj, cb: Callable
+        self, rules: str, path: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on changed."""
         request_dict = {
@@ -769,11 +779,11 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_affected(
-        self, rules: str, path: str, obj, cb: Callable
+        self, rules: str, path: str, cb: Callable[[], None]
     ) -> EventSubscription:
         """Add on affected."""
         request_dict = {
@@ -785,11 +795,11 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_affected_at_type_path(
-        self, rules: str, path: str, child_type: str, obj, cb: Callable
+        self, rules: str, path: str, child_type: str, cb: Callable[[], None]
     ) -> EventSubscription:
         """Add on affected at type path."""
         request_dict = {
@@ -804,11 +814,16 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_command_executed_old(
-        self, rules: str, path: str, command: str, obj, cb: Callable
+        self,
+        rules: str,
+        path: str,
+        command: str,
+        obj,
+        cb: Callable[[str, ValueT], None],
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
@@ -823,11 +838,11 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_command_executed(
-        self, rules: str, path: str, obj, cb: Callable
+        self, rules: str, path: str, cb: Callable[[str, ValueT], None]
     ) -> EventSubscription:
         """Add on command executed."""
         request_dict = {
@@ -841,11 +856,11 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_attribute_changed(
-        self, rules: str, path: str, attribute: str, obj, cb: Callable
+        self, rules: str, path: str, attribute: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Add on attribute changed."""
         request_dict = {
@@ -860,11 +875,16 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
     def add_on_command_attribute_changed(
-        self, rules: str, path: str, command: str, attribute: str, obj, cb: Callable
+        self,
+        rules: str,
+        path: str,
+        command: str,
+        attribute: str,
+        cb: Callable[[ValueT], None],
     ) -> EventSubscription:
         """Add on command attribute changed."""
         request_dict = {
@@ -880,7 +900,7 @@ class DatamodelService(StreamingService):
             ]
         }
         subscription = EventSubscription(self, path, request_dict)
-        self.event_streaming.register_callback(subscription.tag, obj, cb)
+        self.event_streaming.register_callback(subscription.tag, cb)
         return subscription
 
 
@@ -903,6 +923,30 @@ def convert_path_to_se_path(path: Path) -> str:
         if comp[1]:
             se_path += ":" + comp[1]
     return se_path
+
+
+def convert_se_path_to_path(se_path: str) -> Path:
+    """Convert a StateEngine path to a path structure.
+
+    Parameters
+    ----------
+    se_path : str
+        StateEngine path.
+
+    Returns
+    -------
+    Path
+        path structure
+    """
+    path = []
+    for comp in se_path.split("/"):
+        if comp:
+            if ":" in comp:
+                name, value = comp.split(":")
+            else:
+                name, value = comp, ""
+            path.append((name, value))
+    return path
 
 
 class PyCallableStateObject:
@@ -1066,7 +1110,7 @@ class PyStateContainer(PyCallableStateObject):
             return self.get_state()
 
     def add_on_attribute_changed(
-        self, attribute: str, cb: Callable
+        self, attribute: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when an attribute is changed.
 
@@ -1074,7 +1118,7 @@ class PyStateContainer(PyCallableStateObject):
         ----------
         attribute : str
             attribute name
-        cb : Callable
+        cb : Callable[[ValueT], None]
             Callback function
 
         Returns
@@ -1083,11 +1127,11 @@ class PyStateContainer(PyCallableStateObject):
             EventSubscription instance which can be used to unregister the callback
         """
         return self.service.add_on_attribute_changed(
-            self.rules, convert_path_to_se_path(self.path), attribute, self, cb
+            self.rules, convert_path_to_se_path(self.path), attribute, cb
         )
 
     def add_on_command_attribute_changed(
-        self, command: str, attribute: str, cb: Callable
+        self, command: str, attribute: str, cb: Callable[[ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when an attribute is changed.
 
@@ -1097,7 +1141,7 @@ class PyStateContainer(PyCallableStateObject):
             command name
         attribute : str
             attribute name
-        cb : Callable
+        cb : Callable[[ValueT], None]
             Callback function
 
         Returns
@@ -1106,7 +1150,7 @@ class PyStateContainer(PyCallableStateObject):
             EventSubscription instance which can be used to unregister the callback
         """
         return self.service.add_on_command_attribute_changed(
-            self.rules, convert_path_to_se_path(self.path), command, attribute, self, cb
+            self.rules, convert_path_to_se_path(self.path), command, attribute, cb
         )
 
     def __dir__(self):
@@ -1253,14 +1297,16 @@ class PyMenu(PyStateContainer):
             self.rules, convert_path_to_se_path(self.path), command
         )
 
-    def add_on_child_created(self, child_type: str, cb: Callable) -> EventSubscription:
+    def add_on_child_created(
+        self, child_type: str, cb: Callable[[PyMenuT], None]
+    ) -> EventSubscription:
         """Register a callback for when a child object is created.
 
         Parameters
         ----------
         child_type : str
             Type of the child object
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1268,16 +1314,23 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(child_path: str):
+            child_path = convert_se_path_to_path(child_path)
+            child_type, child_name = child_path[-1]
+            child = getattr(self, child_type)[child_name]
+            cb(child)
+
         return self.service.add_on_child_created(
-            self.rules, convert_path_to_se_path(self.path), child_type, self, cb
+            self.rules, convert_path_to_se_path(self.path), child_type, cb_service
         )
 
-    def add_on_deleted(self, cb: Callable) -> EventSubscription:
+    def add_on_deleted(self, cb: Callable[[], None]) -> EventSubscription:
         """Register a callback for when the object is deleted.
 
         Parameters
         ----------
-        cb : Callable
+        cb : Callable[[], None]
             Callback function
 
         Returns
@@ -1286,15 +1339,15 @@ class PyMenu(PyStateContainer):
             EventSubscription instance which can be used to unregister the callback
         """
         return self.service.add_on_deleted(
-            self.rules, convert_path_to_se_path(self.path), self, cb
+            self.rules, convert_path_to_se_path(self.path), cb
         )
 
-    def add_on_changed(self, cb: Callable) -> EventSubscription:
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> EventSubscription:
         """Register a callback for when the object is modified.
 
         Parameters
         ----------
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1302,16 +1355,20 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(value: ValueT):
+            cb(self)
+
         return self.service.add_on_changed(
-            self.rules, convert_path_to_se_path(self.path), self, cb
+            self.rules, convert_path_to_se_path(self.path), cb_service
         )
 
-    def add_on_affected(self, cb: Callable) -> EventSubscription:
+    def add_on_affected(self, cb: Callable[[PyMenuT], None]) -> EventSubscription:
         """Register a callback for when the object is affected.
 
         Parameters
         ----------
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1319,12 +1376,16 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service():
+            cb(self)
+
         return self.service.add_on_affected(
-            self.rules, convert_path_to_se_path(self.path), self, cb
+            self.rules, convert_path_to_se_path(self.path), cb_service
         )
 
     def add_on_affected_at_type_path(
-        self, child_type: str, cb: Callable
+        self, child_type: str, cb: Callable[[PyMenuT], None]
     ) -> EventSubscription:
         """Register a callback for when the object is affected at child type.
 
@@ -1332,7 +1393,7 @@ class PyMenu(PyStateContainer):
         ----------
         child_type : str
             child type
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1340,12 +1401,16 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service():
+            cb(self)
+
         return self.service.add_on_affected_at_type_path(
-            self.rules, convert_path_to_se_path(self.path), child_type, self, cb
+            self.rules, convert_path_to_se_path(self.path), child_type, cb_service
         )
 
     def add_on_command_executed_old(
-        self, command: str, cb: Callable
+        self, command: str, cb: Callable[[PyMenuT, str, ValueT], None]
     ) -> EventSubscription:
         """Register a callback for when a command is executed.
 
@@ -1353,7 +1418,7 @@ class PyMenu(PyStateContainer):
         ----------
         command : str
             Command name
-        cb : Callable
+        cb : Callable[[PyMenuT, str, ValueT], None]
             Callback function
 
         Returns
@@ -1361,16 +1426,22 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(command: str, args: ValueT):
+            cb(self, command, args)
+
         return self.service.add_on_command_executed_old(
-            self.rules, convert_path_to_se_path(self.path), command, self, cb
+            self.rules, convert_path_to_se_path(self.path), command, self, cb_service
         )
 
-    def add_on_command_executed(self, cb: Callable) -> EventSubscription:
+    def add_on_command_executed(
+        self, cb: Callable[[PyMenuT, str, ValueT], None]
+    ) -> EventSubscription:
         """Register a callback for when a command is executed.
 
         Parameters
         ----------
-        cb : Callable
+        cb : Callable[[PyMenuT, str, ValueT], None]
             Callback function
 
         Returns
@@ -1378,8 +1449,12 @@ class PyMenu(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(command: str, args: ValueT):
+            cb(self, command, args)
+
         return self.service.add_on_command_executed(
-            self.rules, convert_path_to_se_path(self.path), self, cb
+            self.rules, convert_path_to_se_path(self.path), cb_service
         )
 
 
@@ -1393,12 +1468,12 @@ class PyParameter(PyStateContainer):
         """Get default value of the parameter."""
         return self.get_attr(Attribute.DEFAULT.value)
 
-    def add_on_changed(self, cb: Callable) -> EventSubscription:
+    def add_on_changed(self, cb: Callable[[PyMenuT], None]) -> EventSubscription:
         """Register a callback for when the object is modified.
 
         Parameters
         ----------
-        cb : Callable
+        cb : Callable[[PyMenuT], None]
             Callback function
 
         Returns
@@ -1406,8 +1481,12 @@ class PyParameter(PyStateContainer):
         EventSubscription
             EventSubscription instance which can be used to unregister the callback
         """
+
+        def cb_service(value: ValueT):
+            cb(self)
+
         return self.service.add_on_changed(
-            self.rules, convert_path_to_se_path(self.path), self, cb
+            self.rules, convert_path_to_se_path(self.path), cb_service
         )
 
 
@@ -1892,7 +1971,8 @@ class PyCommand:
                 id,
                 static_info.get("args"),
             )
-        except RuntimeError:
+        # Possible error thrown from the grpc layer
+        except (RuntimeError, ValueError):
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )

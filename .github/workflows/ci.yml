@@ -37,7 +37,6 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
 
 jobs:
 
@@ -191,11 +190,7 @@ jobs:
       - name: Build Source Documentation
         run: |
           pip install -r requirements/requirements_build.txt
-          if [ -f poetry.lock ] ; then
-            rm poetry.lock
-          fi
-          poetry install --with docs
-          poetry install --all-extras
+          pip install ansys-fluent-core[docs,reader,tests]
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}

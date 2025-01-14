@@ -860,8 +860,7 @@ def test_settings_wild_card_access(new_solver_session) -> None:
     )
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2792")
-@pytest.mark.fluent_version("latest")
+@pytest.mark.fluent_version(">=25.1")
 def test_settings_matching_names(new_solver_session) -> None:
     solver = new_solver_session
 
@@ -873,10 +872,11 @@ def test_settings_matching_names(new_solver_session) -> None:
     with pytest.raises(AttributeError) as msg:
         solver.setup.mod
 
-    assert (
-        msg.value.args[0] == "'setup' object has no attribute 'mod'.\n"
-        "The most similar names are: models."
+    assert msg.value.args[0].startswith(
+        "'setup' object has no attribute 'mod'.\n\n" "The most similar API names are:\n"
     )
+
+    assert len(msg.value.args[0].split("\n")) > 5
 
     with pytest.raises(ValueError) as msg:
         solver.setup.models.viscous.model = "k_epsilon"
@@ -885,10 +885,6 @@ def test_settings_matching_names(new_solver_session) -> None:
         msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
         "The most similar names are: k-epsilon."
     )
-
-    energy_parent = solver.setup._get_parent_of_active_child_names("energy")
-
-    assert energy_parent == "\n energy is a child of models \n"
 
 
 @pytest.mark.codegen_required

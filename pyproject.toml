@@ -1,16 +1,17 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
 
-[tool.poetry]
-# Check https://python-poetry.org/docs/pyproject/ for all available sections
+[project]
+# Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-fluent-core"
 version = "0.29.dev0"
-description = "PyFluent provides Pythonic access to Ansys Fluent"
-license = "MIT"
-authors = ["ANSYS, Inc. <ansys.support@ansys.com>"]
-maintainers = ["PyAnsys developers <pyansys.maintainers@ansys.com>"]
+description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
+requires-python = ">=3.10,<3.14"
+license = {file = "LICENSE"}
+authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
+maintainers = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 repository = "https://github.com/ansys/pyfluent"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -18,85 +19,75 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+    "ansys-api-fluent>=0.3.32",
+    "ansys-platform-instancemanagement~=1.0",
+    "ansys-tools-filetransfer>=0.1,<0.3",
+    "ansys-units>=0.3.3,<0.5",
+    "docker>=7.1.0",
+    "grpcio>=1.30.0",
+    "grpcio-health-checking>=1.30.0",
+    "grpcio-status>=1.30.0",
+    "lxml>=4.9.2",
+    "nltk>=3.9.1",
+    "numpy>=1.14.0,<3.0.0",
+    "pandas>=1.1.0,<2.3",
+    "pyyaml>=6.0",
+]
 
+[tool.flit.sdist]
 include = [
-    { path = "src/ansys/fluent/core/generated/fluent_version_*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/meshing/tui_*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/solver/*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/solver/*.pyi", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/datamodel_*/*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/solver/settings_*/*.py", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/solver/settings_*/*.pyi", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/solver/settings_*.zip", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/*.pickle", format = ["sdist", "wheel"] },
-    { path = "src/ansys/fluent/core/generated/api_tree/*.json", format = ["sdist", "wheel"] },
+    "src/ansys/fluent/core/generated/fluent_version_*.py",
+    "src/ansys/fluent/core/generated/meshing/tui_*.py",
+    "src/ansys/fluent/core/generated/solver/*.py",
+    "src/ansys/fluent/core/generated/solver/*.pyi",
+    "src/ansys/fluent/core/generated/datamodel_*/*.py",
+    "src/ansys/fluent/core/generated/solver/settings_*/*.py",
+    "src/ansys/fluent/core/generated/solver/settings_*/*.pyi",
+    "src/ansys/fluent/core/generated/solver/settings_*.zip",
+    "src/ansys/fluent/core/generated/*.pickle",
+    "src/ansys/fluent/core/generated/api_tree/*.json",
 ]
 
-packages = [
-    { include = "ansys", from = "src" },
-    { include = "tests", to = "ansys/fluent" },
-    { include = "README.rst", to = "ansys/fluent/core/docs" },
+[project.optional-dependencies]
+reader = ["h5py==3.12.1"]
+tests = [
+    "pytest==8.3.4",
+    "pytest-cov==6.0.0",
+    "pytest-mock==3.14.0",
+    "pytest-xdist==3.6.1",
+]
+docs = [
+    "Sphinx==7.4.7",
+    "jupyter_sphinx==0.5.3",
+    "numpydoc==1.8.0",
+    "matplotlib==3.10.0",
+    "ansys-sphinx-theme==1.2.4",
+    "pypandoc==1.14",
+    "pytest-sphinx==0.6.3",
+    "sphinx-autobuild==2024.10.3",
+    "sphinx-autodoc-typehints==2.3.0",
+    "sphinx-copybutton==0.5.2",
+    "sphinx-gallery==0.18.0",
+    "sphinx-notfound-page==1.0.4",
+    "sphinxcontrib-websupport==2.0.0",
+    "sphinxemoji==0.3.1",
+    "sphinx-toggleprompt==0.5.2",
+    "autodocsumm==0.2.14",
+    "beautifulsoup4==4.12.3",
+    "openpyxl>=3.1.5",
+    "plotly>=5.22.0",
+    "python-pptx>=0.6.23",
+    "quarto-cli==1.6.39",
+    "pdf2image==1.17.0",
+    "seaborn>=0.13.2",
+    "tensorflow>=2.17.0",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-ansys-api-fluent = "^0.3.30"
-ansys-platform-instancemanagement = "~=1.0"
-ansys-tools-filetransfer = ">=0.1,<0.3"
-ansys-units = ">=0.3.3,<0.5"
-docker = ">=7.1.0"
-grpcio = "^1.30.0"
-grpcio-health-checking = "^1.30.0"
-lxml = ">=4.9.2"
-nltk = ">=3.9.1"
-numpy= ">=1.14.0,<3.0.0"
-pandas = ">=1.1.0,<2.3"
-pyyaml = ">=6.0"
-h5py = { version = "==3.12.1", optional = true }
+[tool.flit.module]
+name = "ansys.fluent.core"
 
-[tool.poetry.group.docs]
-optional = true
-
-[tool.poetry.group.docs.dependencies]
-Sphinx = "==7.4.7"
-jupyter_sphinx = "==0.5.3"
-numpydoc = "==1.8.0"
-matplotlib = "==3.10.0"
-ansys-sphinx-theme = "==1.2.4"
-pypandoc = "==1.14"
-pytest-sphinx = "==0.6.3"
-sphinx-autobuild = "==2024.10.3"
-sphinx-autodoc-typehints = "==2.3.0"
-sphinx-copybutton = "==0.5.2"
-sphinx-gallery = "==0.18.0"
-sphinx-notfound-page = "==1.0.4"
-sphinxcontrib-websupport = "==2.0.0"
-sphinxemoji = "==0.3.1"
-sphinx-toggleprompt = "==0.5.2"
-autodocsumm = "==0.2.14"
-beautifulsoup4 = "==4.12.3"
-openpyxl = { version = ">=3.1.5", optional = true }
-plotly = { version = ">=5.22.0", optional = true }
-python-pptx = { version = ">=0.6.23", optional = true }
-quarto-cli = "==1.6.39"
-pdf2image = "==1.17.0"
-seaborn = { version = ">=0.13.2", optional = true }
-tensorflow = { version = ">=2.17.0", optional = true }
-
-[tool.poetry.group.test]
-optional = true
-
-[tool.poetry.group.test.dependencies]
-pytest = "==8.3.4"
-pytest-cov = "==6.0.0"
-pytest-mock = "==3.14.0"
-pytest-xdist = "==3.6.1"
-
-[tool.poetry.extras]
-reader = ["h5py"]
-tests = ["pytest", "pytest-cov", "pytest-mock", "pytest-xdist"]
-
-[tool.poetry.urls]
+[project.urls]
 "Documentation" = "https://fluent.docs.pyansys.com/"
 "Source" = "https://github.com/ansys/pyfluent"
 "Tracker" = "https://github.com/ansys/pyfluent/issues"

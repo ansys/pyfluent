@@ -1,7 +1,9 @@
 """Wrappers over FieldData gRPC service of Fluent."""
 
+from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
+import io
 from typing import Callable, Dict, List, Tuple
 
 import grpc
@@ -81,6 +83,36 @@ class FieldDataService(StreamingService):
                 "Unexpectedly encountered empty chunk during field extraction."
             )
         return chunk_iterator
+
+    def get_solver_mesh_nodes(
+        self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
+    ):
+        """GetSolverMeshNodesDouble RPC of FieldData service."""
+        chuncked_responses = self._stub.GetSolverMeshNodesDouble(
+            request, metadata=self._metadata
+        )
+        buffer = io.BytesIO()
+        for chuncked_response in chuncked_responses:
+            buffer.write(chuncked_response.chunk)
+        serialized_response = buffer.getvalue()
+        response = FieldDataProtoModule.GetSolverMeshNodesDoubleResponse()
+        response.ParseFromString(serialized_response)
+        return response
+
+    def get_solver_mesh_elements(
+        self, request: FieldDataProtoModule.GetSolverMeshElementsRequest
+    ):
+        """GetSolverMeshElements RPC of FieldData service."""
+        chuncked_responses = self._stub.GetSolverMeshElements(
+            request, metadata=self._metadata
+        )
+        buffer = io.BytesIO()
+        for chuncked_response in chuncked_responses:
+            buffer.write(chuncked_response.chunk)
+        serialized_response = buffer.getvalue()
+        response = FieldDataProtoModule.GetSolverMeshElementsResponse()
+        response.ParseFromString(serialized_response)
+        return response
 
 
 class FieldInfo:
@@ -922,6 +954,105 @@ class ChunkParser:
         return fields_data
 
 
+@dataclass
+class Node:
+    """Node class for mesh.
+
+    Attributes:
+    -----------
+    x : float
+        x-coordinate of the node.
+    y : float
+        y-coordinate of the node.
+    z : float
+        z-coordinate of the node.
+    """
+
+    _id: int
+    x: float
+    y: float
+    z: float
+
+
+class CellElementType(Enum):
+    """Element types for a cell element."""
+
+    # 3 nodes, 3 faces
+    TRIANGLE = 1
+    # 4 nodes, 4 faces
+    TETRAHEDRON = 2
+    # 4 nodes, 4 faces
+    QUADRILATERAL = 3
+    # 8 nodes, 6 faces
+    HEXAHEDRON = 4
+    # 5 nodes, 5 faces
+    PYRAMID = 5
+    # 6 nodes, 5 faces
+    WEDGE = 6
+    # Arbitrary number of nodes and faces
+    POLYHEDRON = 7
+    # 2 nodes, 1 face (only in 2D)
+    GHOST = 8
+    # 10 nodes, 4 faces
+    QUADRATIC_TETRAHEDRON = 9
+    # 20 nodes, 6 faces
+    QUADRATIC_HEXAHEDRON = 10
+    # 13 nodes, 5 faces
+    QUADRATIC_PYRAMID = 11
+    # 15 nodes, 5 faces
+    QUADRATIC_WEDGE = 12
+
+
+@dataclass
+class Facet:
+    """Facet class within a mesh element.
+
+    Attributes:
+    -----------
+    node_indices : list[int]
+        0-based node indices of the facet.
+    """
+
+    node_indices: list[int]
+
+
+@dataclass
+class Element:
+    """Element class for mesh.
+
+    Attributes:
+    -----------
+    element_type : CellElementType
+        Element type of the element.
+    node_indices : list[int]
+        0-based node indices of the element. Populated for standard elements.
+    facets : list[Facet]
+        List of facets of the element. Populated for polyhedral elements.
+    """
+
+    _id: int
+    element_type: CellElementType
+    node_indices: list[int] = field(default_factory=list)
+    facets: list[Facet] = field(default_factory=list)
+
+
+@dataclass
+class Mesh:
+    """Mesh class for Fluent field data.
+
+    Attributes:
+    -----------
+    nodes : list[Node]
+        List of nodes in the mesh. Sorted by Fluent's node ID.
+    elements : list[Element]
+        List of elements in the mesh. Unsorted as we want to correlate with the
+        solution data retrieved via svar service.
+    """
+
+    nodes: list[Node]
+    elements: list[Element]
+
+
 class FieldData:
     """Provides access to Fluent field data on surfaces."""
 
@@ -1285,3 +1416,50 @@ class FieldData:
                 field_name: pathlines_data[surface_ids[count]][field_name],
             }
         return path_lines_dict
+
+    def get_mesh(self, zone_id: int) -> Mesh:
+        """Get mesh for a zone.
+
+        Parameters
+        ----------
+        zone_id : int
+            Zone ID.
+
+        Returns
+        -------
+        Mesh
+            Mesh object containing nodes and elements.
+        """
+        request = FieldDataProtoModule.GetSolverMeshNodesRequest(
+            domain_id=1, thread_id=zone_id
+        )
+        response = self._service.get_solver_mesh_nodes(request)
+        nodes = response.nodes
+        nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
+        nodes = sorted(nodes, key=lambda x: x._id)
+        request = FieldDataProtoModule.GetSolverMeshElementsRequest(
+            domain_id=1, thread_id=zone_id
+        )
+        response = self._service.get_solver_mesh_elements(request)
+        elements_pb = response.elements
+        elements = []
+        for element_pb in elements_pb:
+            element_type = CellElementType(element_pb.element_type)
+            if element_type == CellElementType.POLYHEDRON:
+                facets = []
+                for facet_pb in element_pb.facets:
+                    facet = Facet(node_indices=[(id - 1) for id in facet_pb.node])
+                    facets.append(facet)
+                element = Element(
+                    _id=element_pb.id,
+                    element_type=element_type,
+                    facets=facets,
+                )
+            else:
+                element = Element(
+                    _id=element_pb.id,
+                    element_type=element_type,
+                    node_indices=[(id - 1) for id in element_pb.node_ids],
+                )
+            elements.append(element)
+        return Mesh(nodes=nodes, elements=elements)
