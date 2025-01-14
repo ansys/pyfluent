@@ -184,7 +184,7 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(
+        port, password, container = start_fluent_container(
             self._args, self.argvals["container_dict"]
         )
 
@@ -203,6 +203,7 @@ class DockerLauncher:
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
         )
+        session._container = container
 
         if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
             self.argvals["start_watchdog"] = True

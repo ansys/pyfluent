@@ -105,7 +105,7 @@ jobs:
             echo "Running custom unittest"
             sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
             make install-test
-            poetry python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
+            python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
