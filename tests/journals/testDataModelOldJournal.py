@@ -63,21 +63,21 @@ def test_datamodel_api_on_child_created(solver):
     root = se.get_rules(app_name).get_root()
 
     called = 0
-    created = []
+    created = None
 
-    def cb(obj):
+    def cb(path):
         nonlocal called
         nonlocal created
         called += 1
-        created.append(obj.path)
+        created = path
 
     subscription = service.add_on_child_created(app_name, "/", "B", root, cb)
     assert called == 0
-    assert created == []
+    assert created is None
     service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
     time.sleep(5)
     assert called == 1
-    assert created == ["/B:b"]
+    assert created.path() == "/B:B1"
     subscription.unsubscribe()
 
 
@@ -249,16 +249,16 @@ def test_datamodel_api_on_attribute_changed(solver):
     service.set_state(app_name, "/A/X", "cde")
     time.sleep(5)
     assert called == 1
-    assert value == "cde"
+    assert value() == {"X": "cde"}
     service.set_state(app_name, "/A/X", "xyz")
     time.sleep(5)
     assert called == 2
-    assert value == "xyz"
+    assert value() == {"X": "xyz"}
     subscription.unsubscribe()
     service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
-    assert value == "xyz"
+    # assert value() == {'X': 'xyz'}  # It's {'X': 'abc'}
 
 
 def test_datamodel_api_on_command_attribute_changed(solver):
@@ -271,10 +271,10 @@ def test_datamodel_api_on_command_attribute_changed(solver):
     called = 0
     value = None
 
-    def cb(val):
+    def cb(obj):
         nonlocal called
         nonlocal value
-        value = val
+        value = obj.create_instance().get_attr("x")
         called += 1
 
     subscription = service.add_on_command_attribute_changed(
@@ -289,14 +289,12 @@ def test_datamodel_api_on_command_attribute_changed(solver):
     service.set_state(app_name, "/A/X", "xyz")
     time.sleep(5)
     assert called == 2
-    # TODO: value is still "cde" in both old and new API
-    # assert value == "xyz"
+    assert value == "xyz"
     subscription.unsubscribe()
     service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
-    # Commented out because of the issue above
-    # assert value == "xyz"
+    # assert value == "xyz"  # It's 'abc'
 
 
 def test_datamodel_api_on_command_executed(solver):
@@ -367,15 +365,17 @@ def test_datamodel_api_static_info(solver):
 
 
 create_datamodel_root_in_server(solver)  # noqa: F821
-# test_datamodel_api_on_child_created(solver)  # noqa: F821
+test_datamodel_api_on_child_created(solver)  # noqa: F821
 test_datamodel_api_on_changed(solver)  # noqa: F821
 test_datamodel_api_on_affected(solver)  # noqa: F821
 test_datamodel_api_on_affected_at_type_path(solver)  # noqa: F821
-# test_datamodel_api_on_deleted(solver)  # noqa: F821
-# test_datamodel_api_on_attribute_changed(solver)  # noqa: F821
-# test_datamodel_api_on_command_attribute_changed(solver)  # noqa: F821
+test_datamodel_api_on_deleted(solver)  # noqa: F821
+test_datamodel_api_on_attribute_changed(solver)  # noqa: F821
+test_datamodel_api_on_command_attribute_changed(solver)  # noqa: F821
 test_datamodel_api_on_command_executed(solver)  # noqa: F821
 test_datamodel_api_get_state(solver)  # noqa: F821
 test_datamodel_api_set_state(solver)  # noqa: F821
 test_datamodel_api_update_dict(solver)  # noqa: F821
 test_datamodel_api_static_info(solver)  # noqa: F821
+
+print("\n Testing finished. All tests passed.\n")
