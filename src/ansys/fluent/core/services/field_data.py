@@ -1464,6 +1464,8 @@ class FieldData:
 
         Raises
         ------
+        ValueError
+            If the zone is not found.
         NotImplementedError
             If a face zone is provided.
         """
@@ -1471,6 +1473,8 @@ class FieldData:
         for zone_info in self.get_zones_info():
             if zone_info.name == zone or zone_info._id == zone:
                 break
+        if zone_info is None:
+            raise ValueError(f"Zone {zone} not found.")
         if zone_info.zone_type == ZoneType.FACE:
             raise NotImplementedError("Face zone mesh is not supported.")
 
