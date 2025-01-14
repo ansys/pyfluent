@@ -5,6 +5,7 @@ from enum import Enum
 from functools import reduce
 import io
 from typing import Callable, Dict, List, Tuple
+import weakref
 
 import grpc
 import numpy as np
@@ -1092,14 +1093,14 @@ class FieldData:
         field_info: FieldInfo,
         is_data_valid: Callable[[], bool],
         scheme_eval=None,
-        get_zones_info: Callable[[], list[ZoneInfo]] | None = None,
+        get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
         """__init__ method of FieldData class."""
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
         self.scheme_eval = scheme_eval
-        self.get_zones_info = get_zones_info
+        self.get_zones_info = lambda: get_zones_info()()
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
 

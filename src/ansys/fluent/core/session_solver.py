@@ -6,6 +6,7 @@ import logging
 import threading
 from typing import Any, Dict
 import warnings
+import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
@@ -108,7 +109,7 @@ class Solver(BaseSession):
             start_transcript=start_transcript,
             launcher_args=launcher_args,
             event_type=SolverEvent,
-            get_zones_info=lambda: self._get_zones_info(),
+            get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
 

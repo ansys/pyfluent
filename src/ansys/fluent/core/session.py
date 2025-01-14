@@ -85,6 +85,7 @@ class BaseSession:
         Close the Fluent connection and exit Fluent.
     """
 
+    # We are passing around an WeakMethod to avoid circular references
     def __init__(
         self,
         fluent_connection: FluentConnection,
@@ -93,7 +94,7 @@ class BaseSession:
         start_transcript: bool = True,
         launcher_args: Dict[str, Any] | None = None,
         event_type: Enum | None = None,
-        get_zones_info: Callable[[], list[ZoneInfo]] | None = None,
+        get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
         """BaseSession.
 
@@ -130,7 +131,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         event_type=None,
-        get_zones_info: Callable[[], list[ZoneInfo]] | None = None,
+        get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
