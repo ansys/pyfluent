@@ -33,9 +33,9 @@ To run the PyFluent unit tests, execute the following command in the root
 .. code:: console
 
     pip install ansys-fluent-core[tests]
-    python -m pytest -n 4 --fluent-version=24.2
+    python -m pytest -n 4 --fluent-version=25.1
 
-You can change the Fluent version by replacing ``24.2`` with the version you want to test.
+You can change the Fluent version by replacing ``25.1`` with the version you want to test.
 
 Build documentation
 -------------------
