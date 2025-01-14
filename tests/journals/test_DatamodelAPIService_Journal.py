@@ -1,7 +1,4 @@
-"Test DataModelOld through journal."
-
-
-import PyStateEngine as se
+"Test DataModelAPIService through journal."
 
 
 def create_datamodel_root_in_server(solver) -> None:
@@ -60,24 +57,22 @@ def test_datamodel_api_on_child_created(solver):
     create_datamodel_root_in_server(solver)
     app_name = "test"
     service = solver._se_service
-    root = se.get_rules(app_name).get_root()
-
     called = 0
-    created = None
+    created = []
 
     def cb(path):
         nonlocal called
         nonlocal created
         called += 1
-        created = path
+        created.append(path)
 
-    subscription = service.add_on_child_created(app_name, "/", "B", root, cb)
+    subscription = service.add_on_child_created(app_name, "/", "B", cb)
     assert called == 0
-    assert created is None
+    assert created == []
     service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
-    time.sleep(5)
+    time.sleep(6)
     assert called == 1
-    assert created.path() == "/B:B1"
+    assert created == ["/B:b"]
     subscription.unsubscribe()
 
 
@@ -87,144 +82,49 @@ def test_datamodel_api_on_changed(solver):
     create_datamodel_root_in_server(solver)
     app_name = "test"
     service = solver._se_service
-    root = se.get_rules(app_name).get_root()
     called = 0
-    state = None
+    changed = None
     called_obj = 0
-    state_obj = None
+    changed_obj = None
 
-    def cb(obj):
+    def cb(path):
         nonlocal called
-        nonlocal state
-        state = obj()
+        nonlocal changed
+        changed = path
         called += 1
 
-    def cb_obj(obj):
+    def cb_obj(path):
         nonlocal called_obj
-        nonlocal state_obj
-        state_obj = obj()
+        nonlocal changed_obj
+        changed_obj = path
         called_obj += 1
 
-    subscription = service.add_on_changed(app_name, "/A/X", root.A.X, cb)
-    subscription_obj = service.add_on_changed(app_name, "/A", root.A, cb_obj)
+    subscription = service.add_on_changed(app_name, "/A/X", cb)
+    subscription_obj = service.add_on_changed(app_name, "/A", cb_obj)
     assert called == 0
-    assert state is None
+    assert changed is None
     assert called_obj == 0
-    assert state_obj is None
+    assert changed_obj is None
     service.set_state(app_name, "/A/X", "lmn")
     time.sleep(5)
     assert called == 1
-    assert state == "lmn"
+    assert changed == "lmn"
     assert called_obj == 1
-    assert state_obj == {"X": "lmn"}
+    assert changed_obj == {"X": "lmn"}
     service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
-    assert state == "abc"
+    assert changed == "abc"
     assert called_obj == 2
-    assert state_obj == {"X": "abc"}
+    assert changed_obj == {"X": "abc"}
     subscription.unsubscribe()
     subscription_obj.unsubscribe()
     service.set_state(app_name, "/A/X", "xyz")
     time.sleep(5)
     assert called == 2
-    assert state == "abc"
+    assert changed == "abc"
     assert called_obj == 2
-    assert state_obj == {"X": "abc"}
-
-
-def test_datamodel_api_on_affected(solver):
-    import time
-
-    create_datamodel_root_in_server(solver)
-    app_name = "test"
-    service = solver._se_service
-    root = se.get_rules(app_name).get_root()
-    called = 0
-
-    def cb(obj):
-        nonlocal called
-        called += 1
-
-    subscription = service.add_on_affected(app_name, "/D", root.D, cb)
-    assert called == 0
-    service.set_state(app_name, "/D/X", "lmn")
-    time.sleep(5)
-    assert called == 1
-    service.set_state(app_name, "/D/E/X", "lmn")
-    time.sleep(5)
-    assert called == 2
-    service.set_state(app_name, "/A/X", "lmn")
-    time.sleep(5)
-    assert called == 2
-    subscription.unsubscribe()
-    service.set_state(app_name, "/D/E/X", "pqr")
-    time.sleep(5)
-    assert called == 2
-
-
-def test_datamodel_api_on_affected_at_type_path(solver):
-    import time
-
-    create_datamodel_root_in_server(solver)
-    app_name = "test"
-    service = solver._se_service
-    root = se.get_rules(app_name).get_root()
-    called = 0
-
-    def cb(obj):
-        nonlocal called
-        called += 1
-
-    subscription = service.add_on_affected_at_type_path(
-        app_name, "/D", "E", root.D.E, cb
-    )
-    assert called == 0
-    service.set_state(app_name, "/D/X", "lmn")
-    time.sleep(5)
-    assert called == 0
-    service.set_state(app_name, "/D/E/X", "lmn")
-    time.sleep(5)
-    assert called == 1
-    service.set_state(app_name, "/D/F/X", "lmn")
-    time.sleep(5)
-    assert called == 1
-    subscription.unsubscribe()
-    service.set_state(app_name, "/D/E/X", "pqr")
-    time.sleep(5)
-    assert called == 1
-
-
-def test_datamodel_api_on_deleted(solver):
-    import time
-
-    create_datamodel_root_in_server(solver)
-    app_name = "test"
-    service = solver._se_service
-    root = se.get_rules(app_name).get_root()
-    called = False
-    called_obj = False
-
-    def cb():
-        nonlocal called
-        called = True
-
-    def cb_obj():
-        nonlocal called_obj
-        called_obj = True
-
-    service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
-    subscription = service.add_on_deleted(app_name, "/B:b/X", root.B["b"].X, cb)
-    subscription_obj = service.add_on_deleted(app_name, "/B:b", root.B["b"], cb_obj)
-    assert not called
-    assert not called_obj
-    service.delete_object(app_name, "/B:b")
-    time.sleep(5)
-    # TODO: Note comment in StateEngine test testDataModelAPIOnDeleted
-    assert called
-    assert called_obj
-    subscription.unsubscribe()
-    subscription_obj.unsubscribe()
+    assert changed_obj == {"X": "abc"}
 
 
 def test_datamodel_api_on_attribute_changed(solver):
@@ -233,53 +133,16 @@ def test_datamodel_api_on_attribute_changed(solver):
     create_datamodel_root_in_server(solver)
     app_name = "test"
     service = solver._se_service
-    root = se.get_rules(app_name).get_root()
     called = 0
     value = None
 
-    def cb(val):
+    def cb(attribute):
         nonlocal called
         nonlocal value
-        value = val
+        value = attribute
         called += 1
 
-    subscription = service.add_on_attribute_changed(app_name, "/A", "x", root.A, cb)
-    assert called == 0
-    assert value is None
-    service.set_state(app_name, "/A/X", "cde")
-    time.sleep(5)
-    assert called == 1
-    assert value() == {"X": "cde"}
-    service.set_state(app_name, "/A/X", "xyz")
-    time.sleep(5)
-    assert called == 2
-    assert value() == {"X": "xyz"}
-    subscription.unsubscribe()
-    service.set_state(app_name, "/A/X", "abc")
-    time.sleep(5)
-    assert called == 2
-    # assert value() == {'X': 'xyz'}  # It's {'X': 'abc'}
-
-
-def test_datamodel_api_on_command_attribute_changed(solver):
-    import time
-
-    create_datamodel_root_in_server(solver)
-    app_name = "test"
-    service = solver._se_service
-    root = se.get_rules(app_name).get_root()
-    called = 0
-    value = None
-
-    def cb(obj):
-        nonlocal called
-        nonlocal value
-        value = obj.create_instance().get_attr("x")
-        called += 1
-
-    subscription = service.add_on_command_attribute_changed(
-        app_name, "/", "C", "x", root.C, cb
-    )
+    subscription = service.add_on_attribute_changed(app_name, "/A", "x", cb)
     assert called == 0
     assert value is None
     service.set_state(app_name, "/A/X", "cde")
@@ -294,7 +157,40 @@ def test_datamodel_api_on_command_attribute_changed(solver):
     service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
-    # assert value == "xyz"  # It's 'abc'
+    assert value == "xyz"
+
+
+def test_datamodel_api_on_command_attribute_changed(solver):
+    import time
+
+    create_datamodel_root_in_server(solver)
+    app_name = "test"
+    service = solver._se_service
+    called = 0
+    value = None
+
+    def cb(val):
+        nonlocal called
+        nonlocal value
+        value = val
+        called += 1
+
+    subscription = service.add_on_command_attribute_changed(app_name, "/", "C", "x", cb)
+    assert called == 0
+    assert value is None
+    service.set_state(app_name, "/A/X", "cde")
+    time.sleep(5)
+    assert called == 1
+    assert value == "cde"
+    service.set_state(app_name, "/A/X", "xyz")
+    time.sleep(5)
+    assert called == 2
+    assert value == "xyz"
+    subscription.unsubscribe()
+    service.set_state(app_name, "/A/X", "abc")
+    time.sleep(5)
+    assert called == 2
+    assert value == "xyz"
 
 
 def test_datamodel_api_on_command_executed(solver):
@@ -303,12 +199,11 @@ def test_datamodel_api_on_command_executed(solver):
     create_datamodel_root_in_server(solver)
     app_name = "test"
     service = solver._se_service
-    root = se.get_rules(app_name).get_root()
     executed = 0
     command = None
     arguments = None
 
-    def cb(obj, cmd, args):
+    def cb(cmd, args):
         nonlocal executed
         nonlocal command
         nonlocal arguments
@@ -316,8 +211,7 @@ def test_datamodel_api_on_command_executed(solver):
         arguments = args
         executed += 1
 
-    # TODO: In C++ API, we don't need to pass the command name
-    subscription = service.add_on_command_executed(app_name, "/", root, cb)
+    subscription = service.add_on_command_executed(app_name, "/", cb)
     assert executed == 0
     assert command is None
     assert arguments is None
@@ -364,12 +258,112 @@ def test_datamodel_api_static_info(solver):
     assert service.get_static_info(app_name)
 
 
+def test_datamodel_api_on_affected(solver):
+    import time
+
+    create_datamodel_root_in_server(solver)
+    app_name = "test"
+    service = solver._se_service
+    called = 0
+
+    def cb():
+        nonlocal called
+        called += 1
+
+    subscription = service.add_on_affected(app_name, "/D", cb)
+    assert called == 0
+    service.set_state(app_name, "/D/X", "lmn")
+    time.sleep(5)
+    assert called == 1
+    service.set_state(app_name, "/D/E/X", "lmn")
+    time.sleep(5)
+    assert called == 2
+    service.set_state(app_name, "/A/X", "lmn")
+    time.sleep(5)
+    assert called == 2
+    subscription.unsubscribe()
+    service.set_state(app_name, "/D/E/X", "pqr")
+    time.sleep(5)
+    assert called == 2
+
+
+def test_datamodel_api_on_affected_at_type_path(solver):
+    import time
+
+    create_datamodel_root_in_server(solver)
+    app_name = "test"
+    service = solver._se_service
+    called = 0
+
+    def cb():
+        nonlocal called
+        called += 1
+
+    subscription = service.add_on_affected_at_type_path(app_name, "/D", "E", cb)
+    assert called == 0
+    service.set_state(app_name, "/D/X", "lmn")
+    time.sleep(5)
+    assert called == 0
+    service.set_state(app_name, "/D/E/X", "lmn")
+    time.sleep(5)
+    assert called == 1
+    service.set_state(app_name, "/D/F/X", "lmn")
+    time.sleep(5)
+    assert called == 1
+    subscription.unsubscribe()
+    service.set_state(app_name, "/D/E/X", "pqr")
+    time.sleep(5)
+    assert called == 1
+
+
+def test_datamodel_api_on_deleted(solver):
+    import time
+
+    create_datamodel_root_in_server(solver)
+    app_name = "test"
+    service = solver._se_service
+    called = False
+    called_obj = False
+
+    def cb():
+        nonlocal called
+        called = True
+
+    def cb_obj():
+        nonlocal called_obj
+        called_obj = True
+
+    service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
+    subscription = service.add_on_deleted(app_name, "/B:b/X", cb)
+    subscription_obj = service.add_on_deleted(app_name, "/B:b", cb_obj)
+    assert not called
+    assert not called_obj
+    service.delete_object(app_name, "/B:b")
+    time.sleep(5)
+    assert not called
+    assert called_obj
+    subscription.unsubscribe()
+    subscription_obj.unsubscribe()
+
+
+def test_datamodel_api_rename_and_get_object_names(solver):
+    create_datamodel_root_in_server(solver)
+    app_name = "test"
+    service = solver._se_service
+
+    def cb(path):
+        pass
+
+    subscription = service.add_on_child_created(app_name, "/", "B", cb)
+    service.set_state(app_name, "/", {"B:b": {"_name_": "b"}})
+    service.rename(app_name, "/B:b", "b_new")
+    assert service.get_object_names(app_name, "/B:b_new") == ["b_new"]
+    subscription.unsubscribe()
+
+
 create_datamodel_root_in_server(solver)  # noqa: F821
 test_datamodel_api_on_child_created(solver)  # noqa: F821
 test_datamodel_api_on_changed(solver)  # noqa: F821
-test_datamodel_api_on_affected(solver)  # noqa: F821
-test_datamodel_api_on_affected_at_type_path(solver)  # noqa: F821
-test_datamodel_api_on_deleted(solver)  # noqa: F821
 test_datamodel_api_on_attribute_changed(solver)  # noqa: F821
 test_datamodel_api_on_command_attribute_changed(solver)  # noqa: F821
 test_datamodel_api_on_command_executed(solver)  # noqa: F821
@@ -377,5 +371,9 @@ test_datamodel_api_get_state(solver)  # noqa: F821
 test_datamodel_api_set_state(solver)  # noqa: F821
 test_datamodel_api_update_dict(solver)  # noqa: F821
 test_datamodel_api_static_info(solver)  # noqa: F821
+test_datamodel_api_on_affected(solver)  # noqa: F821
+test_datamodel_api_on_affected_at_type_path(solver)  # noqa: F821
+test_datamodel_api_on_deleted(solver)  # noqa: F821
+test_datamodel_api_rename_and_get_object_names(solver)  # noqa: F821
 
 print("\n Testing finished. All tests passed.\n")
