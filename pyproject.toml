@@ -96,6 +96,7 @@ name = "ansys.fluent.core"
 testpaths = ["tests"]
 addopts = """
 --ignore=tests/fluent
+--ignore=tests/journals
 -v
 --durations=0
 --show-capture=all
