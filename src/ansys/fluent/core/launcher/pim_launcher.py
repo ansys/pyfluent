@@ -76,8 +76,8 @@ class PIMLauncher:
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : FluentVersion or str or float or int, optional
-            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
-           ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
+            Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
+           ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``.
             The default is ``None``, in which case the newest installed version is used.
         dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,

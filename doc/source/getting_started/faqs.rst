@@ -200,10 +200,10 @@ increasing order of precedence:
 
 #. ``AWP_ROOT<ver>`` environment variable, which is configured on Windows system
    when Fluent is installed, where ``<ver>`` is the Fluent release number such
-   as ``242`` for release 2024 R2.  PyFluent automatically uses this environment
+   as ``251`` for release 2025 R1.  PyFluent automatically uses this environment
    variable to locate the latest Fluent installation. On Linux systems configure
    ``AWP_ROOT<ver>`` to point to the absolute path of an Ansys installation such
-   as ``/apps/ansys_inc/v242``.
+   as ``/apps/ansys_inc/v251``.
 
 
 How do you disable PyFluent warnings shown in the console?

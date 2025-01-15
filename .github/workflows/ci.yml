@@ -563,8 +563,8 @@ jobs:
         if: always()
         run: make cleanup-previous-docker-containers
 
-      - name: Upload 24.2 Coverage Artifacts
-        if: matrix.image-tag == 'v24.2.0'
+      - name: Upload 25.1 Coverage Artifacts
+        if: matrix.image-tag == 'v25.1.0'
         uses: actions/upload-artifact@v4
         with:
           name: coverage_report

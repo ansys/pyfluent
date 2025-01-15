@@ -243,7 +243,7 @@ solver = pyfluent.launch_fluent(
     processor_count=12,
     mode="solver",
     cwd=pyfluent.EXAMPLES_PATH,
-    product_version="24.2.0",
+    product_version="25.1.0",
 )
 print(solver.get_fluent_version())
 
