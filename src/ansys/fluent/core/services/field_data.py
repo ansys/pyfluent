@@ -1487,6 +1487,7 @@ class FieldData:
         nodes = response.nodes
         nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
         nodes = sorted(nodes, key=lambda x: x._id)
+        node_index_by_id = {node._id: index for index, node in enumerate(nodes)}
         request = FieldDataProtoModule.GetSolverMeshElementsRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
@@ -1498,7 +1499,9 @@ class FieldData:
             if element_type == CellElementType.POLYHEDRON:
                 facets = []
                 for facet_pb in element_pb.facets:
-                    facet = Facet(node_indices=[(id - 1) for id in facet_pb.node])
+                    facet = Facet(
+                        node_indices=[node_index_by_id[id] for id in facet_pb.node]
+                    )
                     facets.append(facet)
                 element = Element(
                     _id=element_pb.id,
@@ -1509,7 +1512,7 @@ class FieldData:
                 element = Element(
                     _id=element_pb.id,
                     element_type=element_type,
-                    node_indices=[(id - 1) for id in element_pb.node_ids],
+                    node_indices=[node_index_by_id[id] for id in element_pb.node_ids],
                 )
             elements.append(element)
         return Mesh(nodes=nodes, elements=elements)
