@@ -57,7 +57,7 @@ solver = pyfluent.launch_fluent(
     dimension=pyfluent.Dimension.THREE,
     precision=pyfluent.Precision.DOUBLE,
     processor_count=2,
-    product_version=pyfluent.FluentVersion.v242
+    product_version=pyfluent.FluentVersion.v251
     )
 ```
 
