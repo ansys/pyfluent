@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
 import io
+import logging
 from typing import Callable, Dict, List, Tuple
 import weakref
 
@@ -21,6 +22,8 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
+
+logger = logging.getLogger("pyfluent.field_data")
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -1480,19 +1483,26 @@ class FieldData:
             raise NotImplementedError("Face zone mesh is not supported.")
 
         # Mesh data is retrieved from the root domain in Fluent
-        request = FieldDataProtoModule.GetSolverMeshNodesRequest(
+        logger.info(f"Getting nodes data for zone {zone_info._id}")
+        nodes_request = FieldDataProtoModule.GetSolverMeshNodesRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
-        response = self._service.get_solver_mesh_nodes(request)
-        nodes = response.nodes
+        nodes_response = self._service.get_solver_mesh_nodes(nodes_request)
+        logger.info("Nodes data received")
+        logger.info(f"Getting elements for zone {zone_info._id}")
+        elements_request = FieldDataProtoModule.GetSolverMeshElementsRequest(
+            domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
+        )
+        elements_response = self._service.get_solver_mesh_elements(elements_request)
+        logger.info("Elements data received")
+        logger.info("Constructing nodes structure in PyFluent")
+        nodes = nodes_response.nodes
         nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
         nodes = sorted(nodes, key=lambda x: x._id)
         node_index_by_id = {node._id: index for index, node in enumerate(nodes)}
-        request = FieldDataProtoModule.GetSolverMeshElementsRequest(
-            domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
-        )
-        response = self._service.get_solver_mesh_elements(request)
-        elements_pb = response.elements
+        logger.info("Nodes structure constructed")
+        logger.info("Constructing elements structure in PyFluent")
+        elements_pb = elements_response.elements
         elements = []
         for element_pb in elements_pb:
             element_type = CellElementType(element_pb.element_type)
@@ -1515,4 +1525,6 @@ class FieldData:
                     node_indices=[node_index_by_id[id] for id in element_pb.node_ids],
                 )
             elements.append(element)
+        logger.info("Elements structure constructed")
+        logger.info("Returning mesh")
         return Mesh(nodes=nodes, elements=elements)
