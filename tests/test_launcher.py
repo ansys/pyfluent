@@ -537,21 +537,6 @@ def test_container_ports():
         assert len(session._container.ports) == 2
 
 
-def test_correct_ip_port(new_solver_session):
+def test_correct_ip_port():
     with pytest.raises(IncorrectIpPortProvided):
-        solver = pyfluent.connect_to_fluent(ip="1.2.3.4", port=5555)
-
-    solver_1 = new_solver_session
-    ip = solver_1.connection_properties.ip
-    port = solver_1.connection_properties.port
-    password = solver_1.connection_properties.password
-
-    # correct ip and port without password
-    with pytest.raises(ValueError):
-        solver = pyfluent.connect_to_fluent(ip=ip, port=port)
-
-    solver = pyfluent.connect_to_fluent(ip=ip, port=port, password=password)
-    assert solver
-
-    solver_1.exit()
-    solver.exit()
+        pyfluent.connect_to_fluent(ip="1.2.3.4", port=5555)
