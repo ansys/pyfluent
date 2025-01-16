@@ -29,6 +29,14 @@ class IpPortNotProvided(ValueError):
         super().__init__("Provide either 'ip' and 'port' or 'server_info_file_name'.")
 
 
+class IncorrectIpPortProvided(ValueError):
+    """Raised when IP address and port are incorrect."""
+
+    def __init__(self):
+        """Initialize IncorrectIpPortProvided."""
+        super().__init__("Provide correct 'ip' and 'port'.")
+
+
 class UnexpectedKeywordArgument(TypeError):
     """Raised when a valid keyword argument is not specified."""
 
