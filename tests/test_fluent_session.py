@@ -12,7 +12,7 @@ from ansys.fluent.core.fluent_connection import (
     _pid_exists,
     get_container,
 )
-from ansys.fluent.core.launcher.error_handler import IncorrectIpPortProvided
+from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from docker.models.containers import Container
@@ -134,7 +134,7 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
 ) -> None:
     session1 = pyfluent.launch_fluent()
 
-    with pytest.raises(IncorrectIpPortProvided):
+    with pytest.raises(IpPortNotProvided):
         session2 = pyfluent.connect_to_fluent(
             ip=session1.connection_properties.ip,
             password=session1.connection_properties.password,
