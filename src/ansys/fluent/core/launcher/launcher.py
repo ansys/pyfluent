@@ -12,7 +12,6 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
@@ -79,21 +78,6 @@ def _version_to_dimension(old_arg_val):
         return Dimension.THREE
     else:
         return None
-
-
-def _check_ip_port(ip: str, port: int):
-    """Check if a port is open on a given IP address."""
-    import socket
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(2)
-    try:
-        default_port = port if port else 0000
-        result = sock.connect_ex((ip, default_port))
-        if result != 0:
-            raise exceptions.IncorrectIpPortProvided()
-    finally:
-        sock.close()
 
 
 #   pylint: disable=unused-argument
@@ -361,7 +345,6 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
-    _check_ip_port(ip=ip, port=port)
     ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
     fluent_connection = FluentConnection(
         ip=ip,

@@ -6,7 +6,10 @@ import tempfile
 
 from ansys.fluent.core.fluent_connection import PortNotProvided
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
+from ansys.fluent.core.launcher.error_handler import (
+    IncorrectIpPortProvided,
+    IpPortNotProvided,
+)
 from ansys.fluent.core.session import _parse_server_info_file
 
 
@@ -45,6 +48,21 @@ def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
         return file_name, file_name
 
 
+def _check_ip_port(ip: str, port: int):
+    """Check if a port is open on a given IP address."""
+    import socket
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(2)
+    try:
+        default_port = port if port else 0000
+        result = sock.connect_ex((ip, default_port))
+        if result != 0:
+            raise IncorrectIpPortProvided()
+    finally:
+        sock.close()
+
+
 def _get_server_info(
     server_info_file_name: str,
     ip: str | None = None,
@@ -67,5 +85,7 @@ def _get_server_info(
 
     if not port:
         raise PortNotProvided()
+
+    _check_ip_port(ip=ip, port=port)
 
     return ip, port, password
