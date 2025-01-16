@@ -536,6 +536,7 @@ def test_container_ports():
         assert len(session._container.ports) == 2
 
 
+@pytest.mark.fluent_version(">=24.1")
 def test_container_hang():
     case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")
     solver = pyfluent.launch_fluent(cwd="/mnt/pyfluent")
