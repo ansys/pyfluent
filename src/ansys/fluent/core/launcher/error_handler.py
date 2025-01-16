@@ -34,7 +34,7 @@ class IncorrectIpPortProvided(ValueError):
 
     def __init__(self):
         """Initialize IncorrectIpPortProvided."""
-        super().__init__("Provide correct 'ip' and 'port'.")
+        super().__init__("Provide correct 'ip' and 'port' or 'server_info_file_name'.")
 
 
 class UnexpectedKeywordArgument(TypeError):
