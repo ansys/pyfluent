@@ -80,8 +80,8 @@ class DockerLauncher:
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
             ``FluentLinuxGraphicsDriver`` enum in Linux.
         product_version : FluentVersion or str or float or int, optional
-            Version of Ansys Fluent to launch. To use Fluent version 2024 R2, pass
-            any of ``FluentVersion.v242``, ``"24.2.0"``, ``"24.2"``, ``24.2``, or ``242``.
+            Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
+            any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``.
             The default is ``None``, in which case the newest installed version is used.
         dimension : Dimension or int, optional
             Geometric dimensionality of the Fluent simulation. The default is ``None``,
@@ -184,7 +184,7 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password = start_fluent_container(
+        port, password, container = start_fluent_container(
             self._args, self.argvals["container_dict"]
         )
 
@@ -203,6 +203,7 @@ class DockerLauncher:
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
         )
+        session._container = container
 
         if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
             self.argvals["start_watchdog"] = True

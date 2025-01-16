@@ -123,7 +123,7 @@ examples.download_file(
 # Launch Fluent session and print Fluent version
 # =====================================================================================
 session = pyfluent.launch_fluent(
-    ui_mode="gui", processor_count=4, product_version="24.2.0"
+    ui_mode="gui", processor_count=4, product_version="25.1.0"
 )
 print(session.get_fluent_version())
 
