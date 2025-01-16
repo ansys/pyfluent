@@ -539,7 +539,9 @@ def test_container_ports():
 @pytest.mark.fluent_version(">=24.1")
 def test_container_hang():
     case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")
-    solver = pyfluent.launch_fluent(cwd="/mnt/pyfluent", ui_mode="no_gui_or_graphics")
+    solver = pyfluent.launch_fluent(
+        cwd="/mnt/pyfluent", start_container=True, ui_mode="no_gui_or_graphics"
+    )
     solver.file.read(file_type="case", file_name=case_name)
     solver.mesh.check()
     solver.solution.initialization.standard_initialize()
