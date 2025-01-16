@@ -534,3 +534,14 @@ def test_container_ports():
     with pyfluent.launch_fluent(container_dict=container_dict) as session:
         session._container.reload()
         assert len(session._container.ports) == 2
+
+
+def test_container_hang():
+    case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")
+    solver = pyfluent.launch_fluent(cwd="/mnt/pyfluent")
+    solver.file.read(file_type="case", file_name=case_name)
+    solver.mesh.check()
+    solver.solution.initialization.standard_initialize()
+    solver.solution.initialization.fmg.fmg_initialize()
+    solver.tui.solve.iterate(200)
+    solver.exit()
