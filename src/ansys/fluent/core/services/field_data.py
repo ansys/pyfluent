@@ -1077,10 +1077,9 @@ class Mesh:
     Attributes:
     -----------
     nodes : list[Node]
-        List of nodes in the mesh. Sorted by Fluent's node ID.
+        List of nodes in the mesh.
     elements : list[Element]
-        List of elements in the mesh. Unsorted as we want to correlate with the
-        solution data retrieved via svar service.
+        List of elements in the mesh.
     """
 
     nodes: list[Node]
@@ -1498,7 +1497,6 @@ class FieldData:
         logger.info("Constructing nodes structure in PyFluent")
         nodes = nodes_response.nodes
         nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
-        nodes = sorted(nodes, key=lambda x: x._id)
         node_index_by_id = {node._id: index for index, node in enumerate(nodes)}
         logger.info("Nodes structure constructed")
         logger.info("Constructing elements structure in PyFluent")
