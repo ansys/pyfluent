@@ -81,14 +81,15 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
-def _check_ip_port(ip, port):
+def _check_ip_port(ip: str, port: int):
     """Check if a port is open on a given IP address."""
     import socket
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(2)
     try:
-        result = sock.connect_ex((ip, port))
+        default_port = port if port else 0000
+        result = sock.connect_ex((ip, default_port))
         if result != 0:
             raise exceptions.IncorrectIpPortProvided()
     finally:
