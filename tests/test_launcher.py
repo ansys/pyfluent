@@ -546,6 +546,7 @@ def test_correct_ip_port(new_solver_session):
     port = solver_1.connection_properties.port
     password = solver_1.connection_properties.password
 
+    # correct ip and port without password
     with pytest.raises(ValueError):
         solver = pyfluent.connect_to_fluent(ip=ip, port=port)
 
