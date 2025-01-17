@@ -43,3 +43,6 @@ loggers:
   pyfluent.post_objects:
     level: DEBUG
     handlers: [pyfluent_file]
+  pyfluent.field_data:
+    level: DEBUG
+    handlers: [pyfluent_file]
