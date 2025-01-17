@@ -97,8 +97,8 @@ class FieldDataService(StreamingService):
         )
         nodes = []
         for response in responses:
-            nodes.extend(response.nodes)
-        return nodes
+            nodes.append(response.nodes)
+        return [x for sublist in nodes for x in sublist]
 
     def get_solver_mesh_elements(
         self, request: FieldDataProtoModule.GetSolverMeshElementsRequest
@@ -107,8 +107,8 @@ class FieldDataService(StreamingService):
         responses = self._stub.GetSolverMeshElements(request, metadata=self._metadata)
         elements = []
         for response in responses:
-            elements.extend(response.elements)
-        return elements
+            elements.append(response.elements)
+        return [x for sublist in elements for x in sublist]
 
 
 class FieldInfo:
