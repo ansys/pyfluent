@@ -61,6 +61,8 @@ def get_default_config() -> dict:
                                     'maxBytes': 10485760}},
      'loggers': {'pyfluent.datamodel': {'handlers': ['pyfluent_file'],
                                         'level': 'DEBUG'},
+                 'pyfluent.field_data': {'handlers': ['pyfluent_file'],
+                                         'level': 'DEBUG'},
                  'pyfluent.general': {'handlers': ['pyfluent_file'],
                                       'level': 'DEBUG'},
                  'pyfluent.launcher': {'handlers': ['pyfluent_file'],
