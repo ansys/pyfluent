@@ -92,29 +92,23 @@ class FieldDataService(StreamingService):
         self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
     ):
         """GetSolverMeshNodesDouble RPC of FieldData service."""
-        chunked_responses = self._stub.GetSolverMeshNodesDouble(
+        responses = self._stub.GetSolverMeshNodesDouble(
             request, metadata=self._metadata
         )
-        all_response = []
-        for chunked_response in chunked_responses:
-            response = FieldDataProtoModule.GetSolverMeshNodesDoubleResponse()
-            response.ParseFromString(chunked_response.chunk)
-            all_response.extend(response.nodes)
-        return all_response
+        nodes = []
+        for response in responses:
+            nodes.extend(response.nodes)
+        return nodes
 
     def get_solver_mesh_elements(
         self, request: FieldDataProtoModule.GetSolverMeshElementsRequest
     ):
         """GetSolverMeshElements RPC of FieldData service."""
-        chunked_responses = self._stub.GetSolverMeshElements(
-            request, metadata=self._metadata
-        )
-        all_response = []
-        for chunked_response in chunked_responses:
-            response = FieldDataProtoModule.GetSolverMeshElementsResponse()
-            response.ParseFromString(chunked_response.chunk)
-            all_response.extend(response.elements)
-        return all_response
+        responses = self._stub.GetSolverMeshElements(request, metadata=self._metadata)
+        elements = []
+        for response in responses:
+            elements.extend(response.elements)
+        return elements
 
 
 class FieldInfo:
