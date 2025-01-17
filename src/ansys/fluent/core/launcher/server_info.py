@@ -58,7 +58,7 @@ def _check_ip_port(ip: str, port: int):
         default_port = port if port else 0000
         result = sock.connect_ex((ip, default_port))
         if result != 0:
-            raise IncorrectIpPortProvided()
+            raise InvalidIpPort()
     finally:
         sock.close()
 
