@@ -30,7 +30,7 @@ class IpPortNotProvided(ValueError):
 
 
 class InvalidIpPort(ValueError):
-    """Raised when IP address and port are incorrect."""
+    """Raised when IP address and port are invalid."""
 
     def __init__(self):
         """Initialize InvalidIpPort."""

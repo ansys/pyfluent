@@ -13,7 +13,7 @@ from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
-    IncorrectIpPortProvided,
+    InvalidIpPort,
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
@@ -538,5 +538,5 @@ def test_container_ports():
 
 
 def test_correct_ip_port():
-    with pytest.raises(IncorrectIpPortProvided):
+    with pytest.raises(InvalidIpPort):
         pyfluent.connect_to_fluent(ip="1.2.3.4", port=5555)
