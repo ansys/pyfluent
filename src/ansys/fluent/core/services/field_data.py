@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
 import logging
+import time
 from typing import Callable, Dict, List, Tuple
 import weakref
 
@@ -1480,22 +1481,28 @@ class FieldData:
 
         # Mesh data is retrieved from the root domain in Fluent
         logger.info(f"Getting nodes data for zone {zone_info._id}")
+        start_time = time.time()
         nodes_request = FieldDataProtoModule.GetSolverMeshNodesRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
         nodes = self._service.get_solver_mesh_nodes(nodes_request)
-        logger.info("Nodes data received")
+        logger.info(f"Nodes data received in {time.time() - start_time} seconds")
         logger.info(f"Getting elements for zone {zone_info._id}")
+        start_time = time.time()
         elements_request = FieldDataProtoModule.GetSolverMeshElementsRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
         elements_pb = self._service.get_solver_mesh_elements(elements_request)
-        logger.info("Elements data received")
+        logger.info(f"Elements data received in {time.time() - start_time} seconds")
         logger.info("Constructing nodes structure in PyFluent")
+        start_time = time.time()
         nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
         node_index_by_id = {node._id: index for index, node in enumerate(nodes)}
-        logger.info("Nodes structure constructed")
+        logger.info(
+            f"Nodes structure constructed in {time.time() - start_time} seconds"
+        )
         logger.info("Constructing elements structure in PyFluent")
+        start_time = time.time()
         elements = []
         for element_pb in elements_pb:
             element_type = CellElementType(element_pb.element_type)
@@ -1518,6 +1525,8 @@ class FieldData:
                     node_indices=[node_index_by_id[id] for id in element_pb.node_ids],
                 )
             elements.append(element)
-        logger.info("Elements structure constructed")
+        logger.info(
+            f"Elements structure constructed in {time.time() - start_time} seconds"
+        )
         logger.info("Returning mesh")
         return Mesh(nodes=nodes, elements=elements)
