@@ -3,7 +3,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
-import io
 import logging
 from typing import Callable, Dict, List, Tuple
 import weakref
@@ -92,31 +91,29 @@ class FieldDataService(StreamingService):
         self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
     ):
         """GetSolverMeshNodesDouble RPC of FieldData service."""
-        chuncked_responses = self._stub.GetSolverMeshNodesDouble(
+        chunked_responses = self._stub.GetSolverMeshNodesDouble(
             request, metadata=self._metadata
         )
-        buffer = io.BytesIO()
-        for chuncked_response in chuncked_responses:
-            buffer.write(chuncked_response.chunk)
-        serialized_response = buffer.getvalue()
-        response = FieldDataProtoModule.GetSolverMeshNodesDoubleResponse()
-        response.ParseFromString(serialized_response)
-        return response
+        all_response = []
+        for chunked_response in chunked_responses:
+            response = FieldDataProtoModule.GetSolverMeshNodesDoubleResponse()
+            response.ParseFromString(chunked_response.chunk)
+            all_response.extend(response.nodes)
+        return all_response
 
     def get_solver_mesh_elements(
         self, request: FieldDataProtoModule.GetSolverMeshElementsRequest
     ):
         """GetSolverMeshElements RPC of FieldData service."""
-        chuncked_responses = self._stub.GetSolverMeshElements(
+        chunked_responses = self._stub.GetSolverMeshElements(
             request, metadata=self._metadata
         )
-        buffer = io.BytesIO()
-        for chuncked_response in chuncked_responses:
-            buffer.write(chuncked_response.chunk)
-        serialized_response = buffer.getvalue()
-        response = FieldDataProtoModule.GetSolverMeshElementsResponse()
-        response.ParseFromString(serialized_response)
-        return response
+        all_response = []
+        for chunked_response in chunked_responses:
+            response = FieldDataProtoModule.GetSolverMeshElementsResponse()
+            response.ParseFromString(chunked_response.chunk)
+            all_response.extend(response.elements)
+        return all_response
 
 
 class FieldInfo:
@@ -1486,21 +1483,19 @@ class FieldData:
         nodes_request = FieldDataProtoModule.GetSolverMeshNodesRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
-        nodes_response = self._service.get_solver_mesh_nodes(nodes_request)
+        nodes = self._service.get_solver_mesh_nodes(nodes_request)
         logger.info("Nodes data received")
         logger.info(f"Getting elements for zone {zone_info._id}")
         elements_request = FieldDataProtoModule.GetSolverMeshElementsRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
-        elements_response = self._service.get_solver_mesh_elements(elements_request)
+        elements_pb = self._service.get_solver_mesh_elements(elements_request)
         logger.info("Elements data received")
         logger.info("Constructing nodes structure in PyFluent")
-        nodes = nodes_response.nodes
         nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
         node_index_by_id = {node._id: index for index, node in enumerate(nodes)}
         logger.info("Nodes structure constructed")
         logger.info("Constructing elements structure in PyFluent")
-        elements_pb = elements_response.elements
         elements = []
         for element_pb in elements_pb:
             element_type = CellElementType(element_pb.element_type)
