@@ -9,7 +9,7 @@ Steady or transient solution model
 
 .. code:: python
 
-  >>> setup = pyfluent.Setup(settings_source=solver)
+  >>> setup = pyfluent.solver.Setup(settings_source=solver)
   >>> solver_time = setup.general.solver.time
   >>> solver_time.get_state()
   'steady'
@@ -23,7 +23,7 @@ Pressure-based or density-based solver
 
 .. code:: python
 
-  >>> setup = pyfluent.Setup(settings_source=solver)
+  >>> setup = pyfluent.solver.Setup(settings_source=solver)
   >>> solver_type = setup.general.solver.type
   >>> solver_type.get_state()
   'pressure-based'
@@ -39,7 +39,7 @@ Velocity coupling scheme and gradient options
     
 .. code:: python
 
-  >>> methods = pyfluent.Methods(settings_source=solver)
+  >>> methods = pyfluent.solver.Methods(settings_source=solver)
   >>> flow_scheme = methods.p_v_coupling.flow_scheme
   >>> flow_scheme.allowed_values()
   ['SIMPLE', 'SIMPLEC', 'PISO', 'Coupled']
@@ -55,7 +55,7 @@ Solution controls
 
 .. code:: python
 
-  >>> controls = pyfluent.Controls(settings_source=solver)
+  >>> controls = pyfluent.solver.Controls(settings_source=solver)
   >>> p_v_controls = controls.p_v_controls
   >>> explicit_momentum_under_relaxation = p_v_controls.explicit_momentum_under_relaxation
   >>> explicit_momentum_under_relaxation.min()
@@ -75,7 +75,7 @@ Create a report definition
 
 .. code:: python
 
-  >>> rep_defs = pyfluent.ReportDefinitions(settings_source=solver)
+  >>> rep_defs = pyfluent.solver.ReportDefinitions(settings_source=solver)
   >>> surface_report_definitions = rep_defs.surface
   >>> defn_name = "outlet-temp-avg"
   >>> surface_report_definitions[defn_name] = {}
