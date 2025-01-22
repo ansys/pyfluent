@@ -538,7 +538,6 @@ def test_container_ports():
         assert len(session._container.ports) == 2
 
 
-
 def test_correct_ip_port():
     with pytest.raises(InvalidIpPort):
         pyfluent.connect_to_fluent(ip="1.2.3.4", port=5555)
