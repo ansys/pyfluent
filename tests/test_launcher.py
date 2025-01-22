@@ -416,7 +416,8 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
-        pyfluent.launch_fluent(show_gui=True)
+        solver = pyfluent.launch_fluent(show_gui=True)
+        solver.exit()
 
 
 def test_fluent_enums():
@@ -540,3 +541,13 @@ def test_container_ports():
 def test_correct_ip_port():
     with pytest.raises(InvalidIpPort):
         pyfluent.connect_to_fluent(ip="1.2.3.4", port=5555)
+
+
+def test_container_launcher_args():
+    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+    commands = container_dict["command"]
+    graphics_args = ["-gu", "-hidden", "-g", "-gr"]
+    graphics_arg_count = 0
+    for arg in graphics_args:
+        graphics_arg_count += commands.count(arg)
+    assert graphics_arg_count == 1, "Too many graphics arguments"
