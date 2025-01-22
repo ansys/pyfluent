@@ -140,3 +140,6 @@ LAUNCH_FLUENT_PORT = None
 
 # Skip password check during rpc execution when Fluent is launched from PyFluent
 LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = False
+
+# Set Fluent precision mode
+FLUENT_PRECISION_MODE = None

@@ -8,7 +8,7 @@ Setting up and querying the model
 
     >>> import ansys.fluent.core as pyfluent
     >>> solver.settings.file.read_case(file_name=file_name)
-    >>> species = pyfluent.Species(settings_source=solver)
+    >>> species = pyfluent.solver.Species(settings_source=solver)
     >>> species.get_state()
     {'model': {'option': 'off', 'number_vol_spec': False}}
     >>> from pprint import pprint

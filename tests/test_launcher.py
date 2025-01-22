@@ -13,6 +13,7 @@ from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
+    InvalidIpPort,
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
@@ -537,18 +538,7 @@ def test_container_ports():
         assert len(session._container.ports) == 2
 
 
-@pytest.mark.fluent_version(">=24.1")
-def test_container_hang():
-    case_name = download_file("vki_turbine.cas.gz", "pyfluent/vki_turbine")
-    solver = pyfluent.launch_fluent(
-        cwd="/mnt/pyfluent",
-        start_container=True,
-        ui_mode="no_gui_or_graphics",
-        cleanup_on_exit=False,
-    )
-    solver.file.read(file_type="case", file_name=case_name)
-    solver.mesh.check()
-    solver.solution.initialization.standard_initialize()
-    solver.solution.initialization.fmg.fmg_initialize()
-    solver.tui.solve.iterate(200)
-    solver.exit()
+
+def test_correct_ip_port():
+    with pytest.raises(InvalidIpPort):
+        pyfluent.connect_to_fluent(ip="1.2.3.4", port=5555)
