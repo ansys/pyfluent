@@ -14,6 +14,7 @@ def deprecate_argument(
     new_arg,
     converter=lambda x: x,
     warning_cls=PyFluentDeprecationWarning,
+    **kwds,
 ):
     """Warns that the argument provided is deprecated and automatically replaces the
     deprecated argument with the appropriate new argument."""
@@ -34,7 +35,7 @@ def deprecate_argument(
                 old_value = kwargs[old_arg]
                 new_value = kwargs.get(new_arg)
                 if new_value is None:
-                    new_value = converter(kwargs[old_arg])
+                    new_value = converter(kwargs[old_arg], **kwds)
                     kwargs[new_arg] = new_value
                     logger.warning(
                         f"Using '{new_arg} = {new_value}' for '{func.__name__}()'"
