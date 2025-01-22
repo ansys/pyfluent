@@ -264,6 +264,8 @@ def launch_fluent(
     if env is None:
         env = {}
 
+    pyfluent.FLUENT_PRECISION_MODE = precision
+
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
             LaunchMode.CONTAINER: DockerLauncher,

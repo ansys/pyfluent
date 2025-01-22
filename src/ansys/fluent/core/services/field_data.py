@@ -92,9 +92,18 @@ class FieldDataService(StreamingService):
         self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
     ):
         """GetSolverMeshNodesDouble RPC of FieldData service."""
-        responses = self._stub.GetSolverMeshNodesDouble(
-            request, metadata=self._metadata
-        )
+        import ansys.fluent.core as pyfluent
+        from ansys.fluent.core.launcher.pyfluent_enums import Precision
+
+        if pyfluent.FLUENT_PRECISION_MODE == Precision.SINGLE:
+            responses = self._stub.GetSolverMeshNodesFloat(
+                request, metadata=self._metadata
+            )
+        else:
+            responses = self._stub.GetSolverMeshNodesDouble(
+                request, metadata=self._metadata
+            )
+
         nested_nodes = []
         for response in responses:
             nested_nodes.append(response.nodes)
