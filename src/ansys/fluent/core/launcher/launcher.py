@@ -12,7 +12,10 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
+from ansys.fluent.core.launcher.launcher_utils import (
+    _confirm_watchdog_start,
+    is_windows,
+)
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.pyfluent_enums import (
     Dimension,
@@ -71,6 +74,27 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
+def _show_gui_to_ui_mode(old_arg_val, **kwds):
+    start_container = kwds.get("start_container")
+    container_dict = kwds.get("container_dict")
+    if old_arg_val is True:
+        if start_container is True:
+            return UIMode.NO_GUI
+        elif container_dict:
+            return UIMode.NO_GUI
+        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+            return UIMode.NO_GUI
+        else:
+            return UIMode.GUI
+    elif not old_arg_val:
+        if is_windows():
+            return UIMode.HIDDEN_GUI
+        elif not is_windows():
+            return UIMode.NO_GUI
+        else:
+            return None
+
+
 def _version_to_dimension(old_arg_val):
     if old_arg_val == "2d":
         return Dimension.TWO
@@ -84,7 +108,7 @@ def _version_to_dimension(old_arg_val):
 @deprecate_argument(
     old_arg="show_gui",
     new_arg="ui_mode",
-    converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
+    converter=_show_gui_to_ui_mode,
     warning_cls=PyFluentDeprecationWarning,
 )
 @deprecate_argument(

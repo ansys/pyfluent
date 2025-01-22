@@ -415,7 +415,8 @@ def test_build_journal_argument(topy, journal_file_names, result, raises):
 
 def test_show_gui_raises_warning():
     with pytest.warns(PyFluentDeprecationWarning):
-        pyfluent.launch_fluent(show_gui=True)
+        solver = pyfluent.launch_fluent(show_gui=True)
+        solver.exit()
 
 
 def test_fluent_enums():
