@@ -107,7 +107,7 @@ jobs:
             echo "Running custom unittest"
             sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
             make install-test
-            python -m pytest -v --no-cov --capture=no -k test_show_gui_raises_warning
+            python -m pytest -v --no-cov --capture=no -k test_container_launcher_args
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
