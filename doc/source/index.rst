@@ -10,6 +10,7 @@ PyFluent documentation |version|
    api/index
    examples/index
    contributing/index
+   changelog
 
 
 Welcome to PyFluent documentation

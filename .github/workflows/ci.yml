@@ -40,6 +40,18 @@ env:
 
 jobs:
 
+  update-changelog:
+    name: "Update CHANGELOG (on release)"
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: ansys/actions/doc-deploy-changelog@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   docs-style:
     name: Documentation Style Check
     runs-on: ubuntu-latest
@@ -573,7 +585,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: test
+    needs: [test, update-changelog]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
