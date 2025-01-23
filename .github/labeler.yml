@@ -8,7 +8,7 @@ examples:
 
 maintenance:
 - changed-files:
-  - any-glob-to-any-file: ['.github/**/*', 'codecov.yml', '.flake8', '.coveragerc', 'ignore_words.txt', 'pyproject.toml', '.devcontainer/**/requirements.txt', 'doc/make.bat', 'doc/Makefile', minimum_requirements.txt]
+  - any-glob-to-any-file: ['.github/**/*', 'codecov.yml', '.flake8', '.coveragerc', 'pyproject.toml', 'doc/make.bat', 'doc/Makefile']
 
 dependencies:
 - changed-files:
@@ -16,4 +16,4 @@ dependencies:
 
 CI/CD:
 - changed-files:
-  - any-glob-to-any-file: ['docker/**/*', '.github/**/*', '.ci/**/*', '.devcontainer/**/*']
+  - any-glob-to-any-file: ['docker/**/*', '.github/**/*', '.ci/**/*']
