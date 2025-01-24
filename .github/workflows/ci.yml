@@ -48,7 +48,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v6
+      - uses: ansys/actions/doc-deploy-changelog@v8
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
