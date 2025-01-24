@@ -50,6 +50,8 @@ jobs:
     steps:
       - uses: ansys/actions/doc-deploy-changelog@v8
         with:
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
   docs-style:
