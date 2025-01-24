@@ -132,3 +132,5 @@ jobs:
         bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
         bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
         token: ${{ secrets.GITHUB_TOKEN }}
+        use-conventional-commits: true
+        use-default-towncrier-config: true
