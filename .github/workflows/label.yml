@@ -1,0 +1,136 @@
+name: "Pull Request Labeler"
+on:
+  pull_request:
+    # opened, reopened, and synchronize are default for pull_request
+    # edited - when PR title or body is changed
+    # labeled - when labels are added to PR
+    types: [opened, reopened, synchronize, edited, labeled]
+  push:
+    branches: [ main ]
+    paths:
+      - '../labels.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+
+  label-syncer:
+    # Sync the labels name, colours with the file ``labels.yml``
+    name: Syncer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: micnncim/action-label-syncer@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  labeler:
+    name: Set labels
+    needs: [label-syncer]
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+
+    # Label based on modified files
+    - name: Label based on changed files
+      uses: actions/labeler@v5
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        sync-labels: true
+
+    # Label based on branch name
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: |
+        startsWith(github.event.pull_request.title, 'fix') || 
+        startsWith(github.event.pull_request.title, 'bug') ||
+        startsWith(github.event.pull_request.title, 'patch')
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN}}
+        labels: bug
+
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: |
+        startsWith(github.event.pull_request.title, 'feat')
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN}}
+        labels: new feature
+
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: |
+        startsWith(github.event.pull_request.title, 'style') ||
+        startsWith(github.event.pull_request.title, 'refactor') ||
+        startsWith(github.event.pull_request.title, 'perf') ||
+        startsWith(github.event.pull_request.title, 'test') ||
+        startsWith(github.event.pull_request.title, 'chore')
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN}}
+        labels: enhancement
+
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: |
+        startsWith(github.event.pull_request.title, 'build') ||
+        startsWith(github.event.pull_request.title, 'revert') ||
+        startsWith(github.event.pull_request.title, 'maint')
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN}}
+        labels: maintenance
+      
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: |
+        startsWith(github.event.pull_request.title, 'doc') || 
+        startsWith(github.event.pull_request.title, 'docs')
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN}}
+        labels: documentation
+
+    - uses: actions-ecosystem/action-add-labels@v1
+      if: |
+        startsWith(github.event.pull_request.title, 'docker') ||
+        startsWith(github.event.pull_request.title, 'no-ci') ||
+        startsWith(github.event.pull_request.title, 'ci')
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN}}
+        labels: CI/CD
+
+  commenter:
+    runs-on: ubuntu-latest
+    needs: [labeler]
+    permissions:
+      pull-requests: write
+    steps:
+    - name: Suggest to add labels
+      uses: peter-evans/create-or-update-comment@v4
+      # Execute only when no labels have been applied to the pull request
+      if: toJSON(github.event.pull_request.labels.*.name) == '{}' # Empty labels
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          Please add one of the following labels to add this contribution to the Release Notes :point_down:
+          - [bug](https://github.com/ansys/pyfluent/pulls?q=label%3Abug+)
+          - [new feature](https://github.com/ansys/pyfluent/pulls?q=label%3A"new%20feature"+)
+          - [enhancement](https://github.com/ansys/pyfluent/pulls?q=label%3Aenhancement+)
+          - [documentation](https://github.com/ansys/pyfluent/pulls?q=label%3Adocumentation+)
+          - [examples](https://github.com/ansys/pyfluent/pulls?q=label%3Aexamples+)
+          - [maintenance](https://github.com/ansys/pyfluent/pulls?q=label%3Amaintenance+)
+          - [CI/CD](https://github.com/ansys/pyfluent/pulls?q=label%3Aci%2Fcd+)
+
+  changelog-fragment:
+    name: "Create changelog fragment"
+    needs: [labeler]
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ansys/actions/doc-changelog@v8
+      with:
+        bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+        bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        use-conventional-commits: true
+        use-default-towncrier-config: true
