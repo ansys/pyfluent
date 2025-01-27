@@ -63,6 +63,7 @@ jobs:
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          BUILD_ALL_DOCS: 1
 
       - name: Zip HTML Documentation before upload
         run: |

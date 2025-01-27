@@ -46,6 +46,8 @@ To build the PyFluent documentation locally, run the following commands in the r
 
     pip install ansys-fluent-core[docs]
     cd doc
+    set BUILD_ALL_DOCS=1
+    set FLUENT_IMAGE_TAG=v0.25.1
     make html
 
 After the build completes, the HTML documentation is located in the
