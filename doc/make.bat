@@ -32,13 +32,13 @@ if errorlevel 9009 (
 
 REM Check if BUILD_ALL_DOCS is set, and if so, skip Python script execution
 if defined BUILD_ALL_DOCS (
-    echo BUILD_ALL_DOCS is set. Skipping Python script execution.
-) else (
-    REM Build documentation with Sphinx by generating RST files
+	REM Build documentation with Sphinx by generating RST files
     python api_rstgen.py
-    python doc/datamodel_rstgen.py
-    python doc/tui_rstgen.py
-    python doc/settings_rstgen.py
+    python datamodel_rstgen.py
+    python tui_rstgen.py
+    python settings_rstgen.py
+) else (
+    echo BUILD_ALL_DOCS is not set. Skipping RST file generation.
 )
 
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS%

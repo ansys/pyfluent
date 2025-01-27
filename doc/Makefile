@@ -17,12 +17,12 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: 
 	@if [ -z "$$BUILD_ALL_DOCS" ]; then \
-		python api_rstgen.py; \
-		python doc/datamodel_rstgen.py; \
-		python doc/tui_rstgen.py; \
-		python doc/settings_rstgen.py; \
+		echo "BUILD_ALL_DOCS is not set. Skipping RST file generation."; \
 	else \
-		echo "BUILD_ALL_DOCS is set. Skipping Python script execution."; \
+		python api_rstgen.py; \
+		python datamodel_rstgen.py; \
+		python tui_rstgen.py; \
+		python settings_rstgen.py; \
 	fi
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 
