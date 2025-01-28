@@ -7,13 +7,10 @@ import shutil
 from typing import Any, Protocol
 import warnings
 
-from ansys.fluent.core.utils import get_user_data_dir
+from ansys.fluent.core.constants import MOUNT_SOURCE
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentUserWarning
 import ansys.platform.instancemanagement as pypim
-
-# Host path which is mounted to the file-transfer-service container
-MOUNT_SOURCE = str(get_user_data_dir())
 
 
 class PyPIMConfigurationError(ConnectionError):

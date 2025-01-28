@@ -5,16 +5,10 @@ from __future__ import annotations
 
 from enum import Enum
 
+from ansys.fluent.core.constants import name_to_identifier_map
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow import Workflow
-
-name_to_identifier_map = {
-    "Watertight Geometry": "EnableCleanCAD",
-    "Fault-tolerant Meshing": "EnableComplexMeshing",
-    "2D Meshing": "EnablePrime2dMeshing",
-    "Topology Based Meshing": "EnablePrimeMeshing",
-}
 
 
 class MeshingWorkflow(Workflow):

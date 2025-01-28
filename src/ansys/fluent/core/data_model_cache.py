@@ -8,20 +8,8 @@ from threading import RLock
 from typing import Any, Dict, List, Optional
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.constants import StateType
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-StateType = (
-    bool
-    | int
-    | float
-    | str
-    | List[bool]
-    | List[int]
-    | List[float]
-    | List[str]
-    | List["StateType"]
-    | Dict[str, "StateType"]
-)
 
 
 class NameKey(Enum):

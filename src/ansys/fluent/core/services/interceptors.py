@@ -9,11 +9,10 @@ from google.protobuf.json_format import MessageToDict
 from google.protobuf.message import DecodeError, Message
 import grpc
 
+from ansys.fluent.core.constants import log_bytes_limit, truncate_len
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
-log_bytes_limit: int = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
-truncate_len: int = log_bytes_limit // 5
 
 
 def _upper_snake_case_to_camel_case(name: str) -> str:

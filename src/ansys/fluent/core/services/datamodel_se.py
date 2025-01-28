@@ -15,6 +15,7 @@ from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.constants import ValueT
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.interceptors import (
@@ -29,7 +30,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 Path = list[tuple[str, str]]
 PyMenuT = TypeVar("PyMenuT", bound="PyMenu")
-ValueT = None | bool | int | float | str | Sequence["ValueT"] | dict[str, "ValueT"]
+
 logger: logging.Logger = logging.getLogger("pyfluent.datamodel")
 
 member_specs_oneof_fields = [

@@ -4,13 +4,9 @@ import os
 import socket
 import sys
 
+from ansys.fluent.core.constants import _machineSep, _machinesOpt, _ncoresOpt, _procSep
 from ansys.fluent.core.scheduler.load_machines import load_machines  # noqa: F401
 from ansys.fluent.core.scheduler.machine_list import MachineList
-
-_ncoresOpt = "-t%n%"
-_machinesOpt = " -cnf=%machineList%"
-_procSep = ":"
-_machineSep = ","
 
 
 def build_parallel_options(machine_list: MachineList) -> str:

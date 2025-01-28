@@ -5,12 +5,13 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Type, TypeVar
+from typing import Callable, Generic, Literal, Type
 import warnings
 
 from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
+from ansys.fluent.core.constants import TEvent
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
@@ -362,9 +363,6 @@ class FatalErrorEventInfo(EventInfoBase, event=SolverEvent.FATAL_ERROR):
 
     message: str
     error_code: int = field(metadata=dict(deprecated_name="errorCode"))
-
-
-TEvent = TypeVar("TEvent")
 
 
 class EventsManager(Generic[TEvent]):

@@ -4,6 +4,7 @@ from typing import Callable, Dict, List
 import warnings
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.fluent.core.constants import DEPRECATION_MSG
 from ansys.fluent.core.services.field_data import (
     ChunkParser,
     FieldDataService,
@@ -21,8 +22,6 @@ from ansys.fluent.core.services.field_data import (
 )
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning
-
-DEPRECATION_MSG = "'field_data_old' is deprecated. Use 'field_data' instead."
 
 
 class BaseFieldData:

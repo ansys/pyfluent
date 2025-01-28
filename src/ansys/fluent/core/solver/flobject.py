@@ -32,13 +32,10 @@ import sys
 import types
 from typing import (
     Any,
-    Dict,
     ForwardRef,
     Generic,
     List,
-    NewType,
     Tuple,
-    TypeVar,
     Union,
     _eval_type,
     get_args,
@@ -48,6 +45,20 @@ import warnings
 import weakref
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.constants import (
+    BoolListType,
+    ChildTypeT,
+    DictStateType,
+    IntListType,
+    ListStateType,
+    QuantityT,
+    RealListType,
+    RealType,
+    RealVectorType,
+    StateT,
+    StringListType,
+    _bases_by_class,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
@@ -87,28 +98,6 @@ class _InlineConstants:
     user_creatable = "user-creatable?"
     allowed_values = "allowed-values"
     file_purpose = "file-purpose"
-
-
-# Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
-RealListType = List[RealType]
-RealVectorType = Tuple[RealType, RealType, RealType]
-IntListType = List[int]
-StringListType = List[str]
-BoolListType = List[bool]
-PrimitiveStateType = Union[
-    str,
-    RealType,
-    int,
-    bool,
-    RealListType,
-    IntListType,
-    StringListType,
-    BoolListType,
-]
-DictStateType = Dict[str, "StateType"]
-ListStateType = List["StateType"]
-StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
 def check_type(val, tp):
@@ -474,9 +463,6 @@ class Base:
         return self.flproxy == other.flproxy and self.path == other.path
 
 
-StateT = TypeVar("StateT")
-
-
 class Property(Base):
     """Exposes attribute accessor on settings object."""
 
@@ -497,9 +483,6 @@ class Numerical(Property):
         """Get the maximum value of the object."""
         val = self.get_attr(_InlineConstants.max, (float, int))
         return None if isinstance(val, bool) else val
-
-
-QuantityT = TypeVar("QuantityT")
 
 
 class RealNumerical(Numerical):
@@ -1210,9 +1193,6 @@ class NamedObjectWildcardPath(WildcardPath):
 
     def __setitem__(self, name, value):
         self[name].set_state(value)
-
-
-ChildTypeT = TypeVar("ChildTypeT")
 
 
 class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
@@ -1931,9 +1911,6 @@ class AllowedValuesMixin:
             return self.get_attr(_InlineConstants.allowed_values, (list, str))
         except Exception:
             return []
-
-
-_bases_by_class = {}
 
 
 # pylint: disable=missing-raises-doc

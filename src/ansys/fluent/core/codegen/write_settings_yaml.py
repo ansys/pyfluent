@@ -7,8 +7,7 @@ Usage:
 import sys
 
 import ansys.fluent.core as pyfluent
-
-indent_factor = 2
+from ansys.fluent.core.constants import indent_factor
 
 
 def write_yaml(out, obj, indent=0):

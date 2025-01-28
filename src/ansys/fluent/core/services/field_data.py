@@ -13,6 +13,7 @@ import numpy as np
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
+from ansys.fluent.core.constants import ROOT_DOMAIN_ID, validate_inputs
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -32,11 +33,6 @@ def override_help_text(func, func_to_be_wrapped):
         func.__doc__ = "\n" + func_to_be_wrapped.__doc__
     func.__name__ = func_to_be_wrapped.__qualname__
     return func
-
-
-# this can be switched to False in scenarios where the field_data request inputs are
-# fed by results of field_info queries, which might be true in GUI code.
-validate_inputs = True
 
 
 class FieldDataService(StreamingService):
@@ -957,10 +953,6 @@ class ChunkParser:
                 else:
                     payload_data[surface_id] = {payload_info.fieldName: field}
         return fields_data
-
-
-# Root domain id in Fluent.
-ROOT_DOMAIN_ID = 1
 
 
 class ZoneType(Enum):

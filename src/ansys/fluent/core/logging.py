@@ -3,7 +3,7 @@
 import logging.config
 import os
 
-_logging_file_enabled = False
+from ansys.fluent.core.constants import _logging_file_enabled
 
 
 def root_config():

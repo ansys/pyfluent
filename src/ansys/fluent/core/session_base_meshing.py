@@ -3,6 +3,7 @@
 import logging
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.constants import _CODEGEN_MSG_DATAMODEL
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
@@ -11,11 +12,7 @@ from ansys.fluent.core.meshing.meshing_workflow import (
     name_to_identifier_map,
 )
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.session_shared import (
-    _CODEGEN_MSG_DATAMODEL,
-    _make_datamodel_module,
-    _make_tui_module,
-)
+from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,

@@ -1,9 +1,8 @@
 """Provides a module for the event loop."""
 
-import asyncio
 from functools import partial
 
-loop = asyncio.get_event_loop()
+from ansys.fluent.core.constants import loop
 
 
 def execute_in_event_loop_threadsafe(f):

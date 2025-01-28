@@ -10,6 +10,7 @@ from typing import IO
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.constants import _CLASS_WRITTEN, _NAME_BY_HASH
 from ansys.fluent.core.solver.flobject import (
     ListObject,
     NamedObject,
@@ -105,15 +106,6 @@ def _gethash(obj_info):
     dhash = hashlib.sha256()
     dhash.update(pickle.dumps(obj_info))
     return dhash.hexdigest()
-
-
-# Store the top level class names and their data hash.
-# This is used to avoid name collisions and data duplication.
-_NAME_BY_HASH = {}
-
-# Keeps tracks of which classes have been written to the file.
-# See the implementation note in _write_data() for more details.
-_CLASS_WRITTEN = set()
 
 
 def _get_unique_name(name):

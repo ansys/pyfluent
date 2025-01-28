@@ -10,6 +10,7 @@ import grpc
 from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.fluent.core.constants import Path
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -17,8 +18,6 @@ from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
 )
-
-Path = list[str]
 
 logger: logging.Logger = logging.getLogger("pyfluent.tui")
 

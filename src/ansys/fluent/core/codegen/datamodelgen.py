@@ -12,35 +12,13 @@ from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
+from ansys.fluent.core.constants import _PY_TYPE_BY_DM_TYPE
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
 
 _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
-
-_PY_TYPE_BY_DM_TYPE = {
-    **dict.fromkeys(["Logical", "Bool"], "bool"),
-    **dict.fromkeys(["Logical List", "ListBool"], "list[bool]"),
-    "String": "str",
-    **dict.fromkeys(["String List", "ListString"], "list[str]"),
-    **dict.fromkeys(["Integer", "Int"], "int"),
-    **dict.fromkeys(["Integer List", "ListInt"], "list[int]"),
-    "Real": "float",
-    **dict.fromkeys(
-        [
-            "Real List",
-            "ListReal",
-            "Real Triplet",
-            "RealTriplet",
-            "Real Triplet List",
-            "ListRealTriplet",
-        ],
-        "list[float]",
-    ),
-    **dict.fromkeys(["Dict", "ModelObject"], "dict[str, Any]"),
-    "None": "None",
-}
 
 # TODO: Move doc specific variables to docgen
 

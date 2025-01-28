@@ -15,8 +15,6 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 
-Path = List[Tuple[str, str]]
-
 
 class ReductionService:
     """Reduction Service."""

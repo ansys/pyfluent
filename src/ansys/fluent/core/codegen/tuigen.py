@@ -27,7 +27,7 @@ import xml.etree.ElementTree as ET
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
-from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
+from ansys.fluent.core.constants import _INDENT_STEP, _XML_HELPSTRINGS, XML_HELP_PATCH
 from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
@@ -48,9 +48,6 @@ def _get_tui_filepath(mode: str, version: str):
     return (pyfluent.CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
 
 
-_INDENT_STEP = 4
-
-
 # TODO: Move doc-specific variables to docgen
 
 
@@ -68,7 +65,6 @@ def _get_tui_docdir(mode: str):
 
 
 _XML_HELP_FILE = (Path(__file__) / ".." / "data" / "fluent_gui_help.xml").resolve()
-_XML_HELPSTRINGS = {}
 
 
 def _copy_tui_help_xml_file(version: str):

@@ -13,13 +13,14 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import Any, Callable, List, Tuple
 import warnings
 import weakref
 
 import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.constants import ContainerT
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -100,9 +101,6 @@ class MonitorThread(threading.Thread):
         main_thread.join()
         for cb in self.cbs:
             cb()
-
-
-ContainerT = TypeVar("ContainerT")
 
 
 def get_container(container_id_or_name: str) -> bool | ContainerT | None:

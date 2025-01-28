@@ -14,7 +14,6 @@ Examples
 """
 
 import logging
-import os
 from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -35,8 +34,6 @@ from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
-_THIS_DIR = os.path.dirname(__file__)
-_OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 

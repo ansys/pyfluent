@@ -8,6 +8,7 @@ import grpc
 
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
+from ansys.fluent.core.constants import _indent, trace  # noqa: F401
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -101,10 +102,6 @@ class _SettingsServiceImpl:
     ) -> SettingsModule.GetAttrsResponse:
         """Get attributes."""
         return self.__stub.GetAttrs(request, metadata=self.__metadata)
-
-
-trace: bool = False
-_indent: int = 0
 
 
 def _trace(fn):

@@ -10,6 +10,7 @@ import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.constants import StateType
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.reduction import ReductionService
@@ -26,7 +27,6 @@ from ansys.fluent.core.solver.flobject import (
     NamedObject,
     SettingsBase,
     StateT,
-    StateType,
 )
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
