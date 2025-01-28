@@ -208,7 +208,6 @@ jobs:
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-          PYFLUENT_DOC_SKIP_CHEATSHEET: 1
 
       - name: Zip HTML Documentation before upload
         run: |
