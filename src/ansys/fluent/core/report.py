@@ -52,5 +52,4 @@ dependencies = {
 
 if __name__ == "__main__":
     rep = pyansys_report.Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
-    # print(rep)
-    print(str(rep).count("pandas"))
+    print(rep)
