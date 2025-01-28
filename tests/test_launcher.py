@@ -551,3 +551,12 @@ def test_container_launcher_args():
     for arg in graphics_args:
         graphics_arg_count += commands.count(arg)
     assert graphics_arg_count == 1, "Too many graphics arguments"
+
+
+def test_report():
+    from ansys.fluent.core.report import ANSYS_ENV_VARS, dependencies
+    from ansys.tools.report import Report
+
+    rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
+    assert "PyAnsys Software and Environment Report" in str(rep)
+    assert str(rep).count("pandas") == 1
