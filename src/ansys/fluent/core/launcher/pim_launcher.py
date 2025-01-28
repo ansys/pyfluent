@@ -229,7 +229,7 @@ def launch_remote_fluent(
         product_name=(
             "fluent-meshing"
             if FluentMode.is_meshing(mode)
-            else "fluent-2ddp" if dimensionality == "2d" else "fluent-3ddp"
+            else "fluent-2ddp" if dimensionality == Dimension.TWO else "fluent-3ddp"
         ),
         product_version=product_version,
     )
