@@ -64,22 +64,30 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 # flake8: noqa: E402
 
 from itertools import chain
+from pathlib import Path
 
 import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
+###########################################################################
+# Specifying save path
+# ====================
+# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
+# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
+# * Path("~/pyfluent-examples-tests") in Linux.
+save_path = Path(pyfluent.EXAMPLES_PATH)
+
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
-    examples.download_file(
-        f, "pyfluent/lunar_lander_thermal", save_path=pyfluent.EXAMPLES_PATH
-    )
+    examples.download_file(f, "pyfluent/lunar_lander_thermal", save_path=save_path)
     for f in [
         "lander_geom.scdoc",
         "lander_mesh.msh",
         "apollo17_temp_data.csv",
     ]
 ]
+
 
 ###############################################################################
 # Define variables
@@ -613,8 +621,9 @@ for criterion in ["continuity", "x-velocity", "y-velocity", "z-velocity"]:
 # Write the case file. Enable overwrite.
 
 solver.file.batch_options.confirm_overwrite = True
+save_case_as = Path(save_path) / "lunar_lander_thermal.cas.h5"
 solver.file.write(
-    file_name="lunar_lander_thermal.cas.h5",
+    file_name=save_case_as,
     file_type="case",
 )
 

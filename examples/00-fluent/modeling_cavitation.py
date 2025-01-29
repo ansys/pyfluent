@@ -42,8 +42,18 @@ and L are the inlet diameter, orifice diameter, and orifice length respectively.
 
 # sphinx_gallery_thumbnail_path = '_static/cavitation_model_thumb.png'
 
+from pathlib import Path
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+
+###########################################################################
+# Specifying save path
+# ====================
+# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
+# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
+# * Path("~/pyfluent-examples-tests") in Linux.
+save_path = Path(pyfluent.EXAMPLES_PATH)
 
 cav_file = examples.download_file("cav.msh.gz", "pyfluent/cavitation")
 
@@ -261,11 +271,13 @@ initialization.hybrid_initialize()
 # Save the case file 'cav.cas.h5'. Then, start the calculation by requesting
 # 500 iterations. Save the final case file and the data.
 
-solver.file.write_case(file_name="cav.cas.h5")
+save_case_as = Path(save_path) / "cav.cas.h5"
+solver.file.write_case(file_name=save_case_as)
 
 solver.solution.run_calculation.iterate(iter_count=500)
 
-solver.file.write_case_data(file_name="cav.cas.h5")
+save_case_data_as = Path(save_path) / "cav1.cas.h5"
+solver.file.write_case_data(file_name=save_case_data_as)
 
 ###############################################################################
 # Post Processing
@@ -353,8 +365,9 @@ graphics.picture.save_picture(file_name="contour_vf_vapor.png")
 #   :width: 500pt
 #   :align: center
 
-# Save case to 'cav.cas.h5' and exit
+# Save case to 'cav_final.cas.h5' and exit
 
-solver.settings.file.write_case(file_name="cav.cas.h5")
+save_final_case_as = Path(save_path) / "cav_final.cas.h5"
+solver.settings.file.write_case(file_name=save_final_case_as)
 
 solver.exit()

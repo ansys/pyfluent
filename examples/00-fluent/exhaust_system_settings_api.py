@@ -44,6 +44,8 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
+from pathlib import Path
+
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system_settings.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -51,6 +53,14 @@ from ansys.fluent.core import examples
 import_file_name = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
 )
+
+###########################################################################
+# Specifying save path
+# ====================
+# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
+# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
+# * Path("~/pyfluent-examples-tests") in Linux.
+save_path = Path(pyfluent.EXAMPLES_PATH)
 
 ###############################################################################
 # Launch Fluent
@@ -625,9 +635,10 @@ solver.solution.run_calculation.iterate(iter_count=100)
 # Write the case and data files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+save_case_as = Path(save_path) / "exhaust_system.cas.h5"
 solver.file.write(
     file_type="case-data",
-    file_name="exhaust_system.cas.h5",
+    file_name=save_case_as,
 )
 
 ###############################################################################
