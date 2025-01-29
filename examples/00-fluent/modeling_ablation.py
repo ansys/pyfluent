@@ -52,25 +52,17 @@ Modeling Ablation
 ####################################################################################
 # Import required libraries/modules
 # ==================================================================================
-from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.visualization.pyvista import Graphics
 
-###############################################################################
-# Specifying save path
-# ++++++++++++++++++++++
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 ####################################################################################
 # Download example file
 # ==================================================================================
 import_filename = examples.download_file(
-    "ablation.msh.h5", "pyfluent/examples/Ablation-tutorial", save_path=save_path
+    "ablation.msh.h5",
+    "pyfluent/examples/Ablation-tutorial",
 )
 
 ####################################################################################
@@ -320,8 +312,7 @@ solver.solution.initialization.initialization_type = "standard"
 solver.solution.initialization.standard_initialize()
 solver.solution.run_calculation.transient_controls.time_step_size = 1e-06
 
-save_case_data_as = Path(save_path) / "ablation.cas.h5"
-solver.file.write(file_type="case", file_name=save_case_data_as)
+solver.file.write(file_type="case", file_name="ablation.cas.h5")
 
 ############################################
 # Run the calculation
@@ -336,8 +327,7 @@ solver.solution.run_calculation.dual_time_iterate(
 # Save simulation data
 # ====================
 # Write case and data files
-save_case_data_as = Path(save_path) / "ablation_Solved.cas.h5"
-solver.file.write(file_type="case-data", file_name=str(save_case_data_as))
+solver.file.write(file_type="case-data", file_name="ablation_Solved.cas.h5")
 
 ####################################################################################
 # Post Processing

@@ -38,18 +38,9 @@ from ansys.fluent.visualization.matplotlib import Plots
 from ansys.fluent.visualization.pyvista import Graphics, pyvista_windows_manager
 from ansys.fluent.visualization.pyvista.pyvista_windows_manager import PyVistaWindow
 
-###########################################################################
-# Specifying save path
-# ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 geom_filename = examples.download_file(
     "cht_fin_htc_new.scdoc",
     "pyfluent/examples/CHT",
-    save_path=save_path,
 )
 
 #######################
@@ -669,8 +660,7 @@ solver.solution.initialization.initialization_type = "hybrid"
 solver.solution.initialization.hybrid_initialize()
 
 solver.setup.boundary_conditions.slit_interior_between_diff_solids()
-save_case_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.cas.h5")
-solver.file.write(file_type="case", file_name=save_case_as)
+solver.file.write(file_type="case", file_name="hx-fin-2mm.cas.h5")
 
 #############################################################################
 # Set Aggressive Length Scale Method; Run Calculation & Save Data
@@ -685,8 +675,7 @@ solver.solution.run_calculation.pseudo_time_settings.time_step_method.length_sca
 
 solver.solution.run_calculation.iterate(iter_count=250)
 
-save_case_data_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.dat.h5")
-solver.file.write(file_type="case-data", file_name=save_case_data_as)
+solver.file.write(file_type="case-data", file_name="hx-fin-2mm.dat.h5")
 
 #############################################################################
 # Post-Processing Mass Balance Report
