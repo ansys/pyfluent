@@ -20,7 +20,6 @@ This example demonstrates:
 # ==================================================================================
 
 import csv
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 
@@ -28,18 +27,9 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 import ansys.fluent.visualization.pyvista as pv
 
-###############################################################################
-# Specifying save path
-# ====================
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 import_filename = examples.download_file(
     "brake.msh",
     "pyfluent/examples/Brake-Thermal-PyVista-Matplotlib",
-    save_path=save_path,
 )
 
 ####################################################################################
@@ -170,11 +160,10 @@ session.settings.solution.monitor.report_plots["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"]
 }
 
-report_file_path = Path(save_path) / "max-temperature.out"
 session.settings.solution.monitor.report_files.create(name="max-temperature")
 session.settings.solution.monitor.report_files["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"],
-    "file_name": str(report_file_path),
+    "file_name": "max-temperature.out",
 }
 session.settings.solution.monitor.report_files["max-temperature"].report_defs = [
     "max-pad-temperature",
@@ -272,8 +261,7 @@ session.settings.solution.run_calculation.dual_time_iterate(
 # Save simulation data
 # --------------------
 # Write case and data files
-save_case_data_as = Path(save_path) / "brake-final.cas.h5"
-session.settings.file.write(file_type="case-data", file_name=str(save_case_data_as))
+session.settings.file.write(file_type="case-data", file_name="brake-final.cas.h5")
 
 ###############################################
 # Post processing with PyVista (3D visualization)
@@ -341,7 +329,7 @@ X = []
 Y = []
 Z = []
 i = -1
-with open(report_file_path, "r") as datafile:
+with open("max-temperature.out", "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1

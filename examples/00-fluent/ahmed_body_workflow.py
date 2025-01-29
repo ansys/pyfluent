@@ -32,20 +32,10 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
-from pathlib import Path
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.visualization import set_config
 import ansys.fluent.visualization.pyvista as pv
-
-#######################################################################################
-# Specifying save path
-# =====================================================================================
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
 
 #######################################################################################
 # Configure specific settings for this example
@@ -70,7 +60,6 @@ workflow = session.workflow
 geometry_filename = examples.download_file(
     "ahmed_body_20_0degree_boi_half.scdoc",
     "pyfluent/examples/Ahmed-Body-Simulation",
-    save_path=save_path,
 )
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
@@ -346,9 +335,8 @@ contour2.display("window-2")
 #######################################################################################
 # Save the case file
 # =====================================================================================
+session.settings.file.write(file_type="case-data", file_name="ahmed_body_final.cas.h5")
 
-save_case_data_as = Path(save_path) / "ahmed_body_final.cas.h5"
-session.settings.file.write(file_type="case-data", file_name=str(save_case_data_as))
 #######################################################################################
 # Close the session
 # =====================================================================================

@@ -72,7 +72,8 @@ from ansys.fluent.core import examples
 
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     examples.download_file(
-        f, "pyfluent/lunar_lander_thermal", save_path=pyfluent.EXAMPLES_PATH
+        f,
+        "pyfluent/lunar_lander_thermal",
     )
     for f in [
         "lander_geom.scdoc",
