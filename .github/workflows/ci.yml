@@ -205,6 +205,7 @@ jobs:
         run: |
           pip install -r requirements/requirements_build.txt
           pip install ansys-fluent-core[docs,reader,tests]
+          python -c "from pathlib import Path; import ansys.fluent.core as pyfluent; Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)"
           make build-doc-source
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
