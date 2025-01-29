@@ -43,21 +43,13 @@ material degradation.
 # Perform required imports, which includes downloading and importing the
 # geometry files.
 
-from pathlib import Path
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-###########################################################################
-# Specifying save path
-# ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 headlamp_spaceclaim_file, headlamp_pmdb_file = [
-    examples.download_file(f, "pyfluent/radiation_headlamp", save_path=save_path)
+    examples.download_file(
+        f, "pyfluent/radiation_headlamp", save_path=pyfluent.EXAMPLES_PATH
+    )
     for f in ["headlamp.scdoc", "headlamp.pmdb"]
 ]
 
@@ -245,8 +237,7 @@ meshing.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~
 # Save the mesh file (``headlamp.msh.h5``).
 
-save_mesh_as = Path(save_path) / "headlamp.msh.h5"
-meshing.meshing.File.WriteMesh(FileName=save_mesh_as)
+meshing.meshing.File.WriteMesh(FileName="headlamp.msh.h5")
 
 ###############################################################################
 # Solve and postprocess
@@ -499,8 +490,7 @@ max_temp_rplot.print = True
 # ~~~~~~~~~~~~~~
 # Save the case file (``headlamp.cas.h5``).
 
-save_case_as = Path(save_path) / "headlamp.cas.h5"
-solver.settings.file.write(file_name=save_case_as, file_type="case")
+solver.settings.file.write(file_name="headlamp.cas.h5", file_type="case")
 
 ###############################################################################
 # Initialize flow field
@@ -524,7 +514,7 @@ solver.settings.solution.run_calculation.iterate(iter_count=19)
 # the final case file and the data.
 
 solver.settings.file.batch_options.confirm_overwrite = True
-solver.settings.file.write(file_name=save_case_as, file_type="case-data")
+solver.settings.file.write(file_name="headlamp.cas.h5", file_type="case-data")
 
 ###############################################################################
 # Close Fluent

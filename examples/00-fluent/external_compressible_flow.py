@@ -44,8 +44,6 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 # Perform required imports, which includes downloading and importing
 # the geometry files.
 
-from pathlib import Path
-
 # sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -54,14 +52,6 @@ wing_spaceclaim_file, wing_intermediary_file = [
     examples.download_file(CAD_file, "pyfluent/external_compressible")
     for CAD_file in ["wing.scdoc", "wing.pmdb"]
 ]
-
-###########################################################################
-# Specifying save path
-# ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
 
 ###############################################################################
 # Launch Fluent
@@ -222,8 +212,7 @@ meshing.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~
 # Save the mesh file (``wing.msh.h5``).
 
-save_mesh_as = Path(save_path) / "wing.msh.h5"
-meshing.meshing.File.WriteMesh(FileName=save_mesh_as)
+meshing.meshing.File.WriteMesh(FileName="wing.msh.h5")
 
 ###############################################################################
 # Solve and postprocess
@@ -340,8 +329,7 @@ solver.solution.initialization.hybrid_initialize()
 # ~~~~~~~~~~~~~~
 # Save the case file ``external_compressible1.cas.h5``.
 
-save_case_as = Path(save_path) / "external_compressible.cas.h5"
-solver.file.write(file_name=save_case_as, file_type="case")
+solver.file.write(file_name="external_compressible.cas.h5", file_type="case")
 
 ###############################################################################
 # Solve for 25 iterations
@@ -355,8 +343,7 @@ solver.solution.run_calculation.iterate(iter_count=25)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-save_final_case_as = Path(save_path) / "external_compressible1.cas.h5"
-solver.file.write(file_name=save_final_case_as, file_type="case")
+solver.file.write(file_name="external_compressible1.cas.h5", file_type="case")
 
 ###############################################################################
 # Close Fluent

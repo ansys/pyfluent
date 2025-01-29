@@ -11,14 +11,6 @@ from pathlib import Path
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-###########################################################################
-# Specifying save path
-# ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 # sphinx_gallery_thumbnail_path = '_static/DP_table.png'
 ############################################################################
 # Perform required imports
@@ -181,7 +173,7 @@ solver_session.settings.solution.monitor.residual.options.criterion_type = "abso
 # ~~~~~~~~~~
 # Write the case with all settings in place.
 
-case_path = Path(save_path) / "Static_Mixer_Parameters.cas.h5"
+case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
 solver_session.settings.file.write_case(file_name=case_path)
 
 ###########################################################################

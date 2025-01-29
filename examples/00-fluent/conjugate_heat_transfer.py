@@ -427,7 +427,7 @@ meshing.workflow.TaskObject["Improve Volume Mesh"].Execute()
 # Save Mesh File
 # ==============
 
-save_mesh_as = Path(save_path) / "hx-fin-2mm.msh.h5"
+save_mesh_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.msh.h5")
 meshing.tui.file.write_mesh(save_mesh_as)
 
 #############################################################################
@@ -669,7 +669,7 @@ solver.solution.initialization.initialization_type = "hybrid"
 solver.solution.initialization.hybrid_initialize()
 
 solver.setup.boundary_conditions.slit_interior_between_diff_solids()
-save_case_as = Path(save_path) / "hx-fin-2mm.cas.h5"
+save_case_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.cas.h5")
 solver.file.write(file_type="case", file_name=save_case_as)
 
 #############################################################################
@@ -685,7 +685,7 @@ solver.solution.run_calculation.pseudo_time_settings.time_step_method.length_sca
 
 solver.solution.run_calculation.iterate(iter_count=250)
 
-save_case_data_as = Path(save_path) / "hx-fin-2mm.dat.h5"
+save_case_data_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.dat.h5")
 solver.file.write(file_type="case-data", file_name=save_case_data_as)
 
 #############################################################################

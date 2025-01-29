@@ -85,15 +85,6 @@ from ansys.fluent.core.solver import (  # noqa: E402
 )
 
 # %%
-# Specifying save path
-# ^^^^^^^^^^^^^^^^^^^^
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
-
-# %%
 # Mesh
 # ^^^^
 #
@@ -417,8 +408,7 @@ solver.settings.solution.initialization.hybrid_initialize()
 # %%
 # Save the case file (gascomb1.cas.h5).
 
-save_cas_as = Path(save_path) / "gascomb1.cas.h5"
-solver.settings.file.write_case(file_name=save_cas_as)
+solver.settings.file.write_case(file_name="gascomb1.cas.h5")
 
 # %%
 # Run the calculation for 200 iterations.
@@ -443,7 +433,7 @@ solver.settings.solution.run_calculation.iterate(iter_count=200)
 # %%
 # Save the case and data files (gascomb1.cas.h5 and gascomb1.dat.h5).
 
-solver.settings.file.write_case_data(file_name=save_cas_as)
+solver.settings.file.write_case_data(file_name="gascomb1.cas.h5")
 
 # %%
 # Postprocessing
@@ -600,7 +590,7 @@ solver.settings.results.report.surface_integrals.get_area_weighted_avg(
 # %%
 # Save the case file (gascomb1.cas.h5).
 
-solver.settings.file.write_case(file_name=save_cas_as)
+solver.settings.file.write_case(file_name="gascomb1.cas.h5")
 
 # %%
 # Close Fluent
