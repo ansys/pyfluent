@@ -274,3 +274,22 @@ The ``scheduler_options`` parameter doesn't support the automatic scheduler allo
 the ``-t`` and ``-cnf`` arguments must be passed to the
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 using the ``additional_arguments`` parameter for distributed parallel processing.
+
+Launching a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ session
+---------------------------------------------------------------------------
+When PyFluent is used within a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ configured environment, 
+the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function automatically launches 
+Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode and in that same environment it 
+can be launched explicitly using :func:`create_launcher() <ansys.fluent.core.launcher.launcher.create_launcher>` as follows:
+
+.. code:: python
+
+  >>> from ansys.fluent.core.launcher.launcher import create_launcher
+  >>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+
+  >>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
+  >>> pim_meshing_session = pim_meshing_launcher()
+
+  >>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
+  >>> pim_solver_session = pim_solver_launcher()
+
