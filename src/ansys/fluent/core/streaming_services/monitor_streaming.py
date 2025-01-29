@@ -139,7 +139,7 @@ class MonitorsManager(StreamingService):
 
         Parameters
         ----------
-        session : str
+        session : object
             Session object.
         event_info : object
             Event info object.
