@@ -28,7 +28,8 @@ development with the following commands:
    cd pyfluent
    pip install pip -U
    pip install -e .
-   python codegen/allapigen.py
+   python codegen/allapigen.py     # Generates the API files or
+   python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
 
 Step-by-Step Explanation
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +70,8 @@ Generate Required API Classes
 
 .. code:: console
 
-   python codegen/allapigen.py
+   python codegen/allapigen.py     # Generates the API files or
+   python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
 
 The full PyFluent package includes some required API classes that are auto-generated rather
 than maintained under version control. This command runs the auto-generation script included
