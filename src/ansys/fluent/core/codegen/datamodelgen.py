@@ -1,5 +1,6 @@
 """Module to generate Fluent datamodel API classes."""
 
+import argparse
 from io import FileIO, StringIO
 import os
 from pathlib import Path
@@ -153,10 +154,11 @@ class DataModelStaticInfo:
 class DataModelGenerator:
     """Provides the datamodel API class generator."""
 
-    def __init__(self, version, static_infos: dict):
+    def __init__(self, version, static_infos: dict, verbose: bool):
         self.version = version
         self._server_static_infos = static_infos
         self._static_info: Dict[str, DataModelStaticInfo] = {}
+        self._verbose = verbose
         if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
             self._static_info["workflow"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_WORKFLOW,
@@ -402,6 +404,8 @@ class DataModelGenerator:
         """Write API classes to files."""
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
         for name, info in self._static_info.items():
+            if self._verbose:
+                print(f"{str(info.file_name)}")
             if info.static_info is None:
                 continue
             with open(info.file_name, "w", encoding="utf8") as f:
@@ -438,9 +442,9 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version, static_infos: dict):
+def generate(version, static_infos: dict, verbose: bool):
     """Generate datamodel API classes."""
-    return DataModelGenerator(version, static_infos).write_static_info()
+    return DataModelGenerator(version, static_infos, verbose).write_static_info()
 
 
 if __name__ == "__main__":
@@ -476,4 +480,14 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
         )
-    generate(version, static_infos)
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    generate(version, static_infos, args.verbose)

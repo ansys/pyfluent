@@ -1,5 +1,6 @@
 """Module to generate Fluent API classes."""
 
+import argparse
 import os
 from pathlib import Path
 import pickle
@@ -18,12 +19,12 @@ def _update_first_level(d, u):
         d[k].update(u.get(k, {}))
 
 
-def generate(version: str, static_infos: dict):
+def generate(version: str, static_infos: dict, verbose: bool):
     """Generate Fluent API classes."""
     api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
-    _update_first_level(api_tree, tuigen.generate(version, static_infos))
-    _update_first_level(api_tree, datamodelgen.generate(version, static_infos))
-    _update_first_level(api_tree, settingsgen.generate(version, static_infos))
+    _update_first_level(api_tree, tuigen.generate(version, static_infos, verbose))
+    _update_first_level(api_tree, datamodelgen.generate(version, static_infos, verbose))
+    _update_first_level(api_tree, settingsgen.generate(version, static_infos, verbose))
     api_tree_file = get_api_tree_file_name(version)
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
@@ -33,4 +34,14 @@ def generate(version: str, static_infos: dict):
 
 
 if __name__ == "__main__":
-    generate()
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    generate(verbose=args.verbose)
