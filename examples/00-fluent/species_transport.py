@@ -90,7 +90,9 @@ from ansys.fluent.core.solver import (  # noqa: E402
 #
 # Download the mesh file and read it into the Fluent session.
 
-mesh_file = Path(download_file("gascomb.msh", "pyfluent/tutorials/species_transport"))
+mesh_file = Path(
+    download_file("gascomb.msh.gz", "pyfluent/tutorials/species_transport")
+)
 solver.settings.file.read_mesh(file_name=mesh_file)
 
 # %%
