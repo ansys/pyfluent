@@ -616,8 +616,10 @@ class CaseFile(RPVarProcessor):
                     settings = _file["settings"]
                     rpvars = settings["Rampant Variables"][0]
                     rp_vars_str = rpvars.decode()
-            elif Path(case_file_name).match("*.cas") or Path(case_file_name).match(
-                "*.msh"
+            elif (
+                Path(case_file_name).match("*.cas")
+                or Path(case_file_name).match("*.msh.h5")
+                or Path(case_file_name).match("*.msh.gz")
             ):
                 with open(case_file_name, "rb") as _file:
                     rp_vars_str = _file.read()

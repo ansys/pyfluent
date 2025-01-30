@@ -37,7 +37,7 @@ import ansys.fluent.visualization.pyvista as pv
 save_path = Path(pyfluent.EXAMPLES_PATH)
 
 import_filename = examples.download_file(
-    "brake.msh",
+    "brake.msh.h5",
     "pyfluent/examples/Brake-Thermal-PyVista-Matplotlib",
     save_path=save_path,
 )
