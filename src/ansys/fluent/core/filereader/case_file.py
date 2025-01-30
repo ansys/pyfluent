@@ -618,6 +618,7 @@ class CaseFile(RPVarProcessor):
                     rp_vars_str = rpvars.decode()
             elif (
                 Path(case_file_name).match("*.cas")
+                or Path(case_file_name).match("*.msh")
                 or Path(case_file_name).match("*.msh.h5")
                 or Path(case_file_name).match("*.msh.gz")
             ):
