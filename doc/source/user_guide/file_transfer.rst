@@ -57,3 +57,4 @@ Examples
    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
    >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
+
