@@ -77,7 +77,7 @@ lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     )
     for f in [
         "lander_geom.scdoc",
-        "lander_mesh.msh",
+        "lander_mesh.msh.h5",
         "apollo17_temp_data.csv",
     ]
 ]
