@@ -154,7 +154,7 @@ class DataModelStaticInfo:
 class DataModelGenerator:
     """Provides the datamodel API class generator."""
 
-    def __init__(self, version, static_infos: dict, verbose: bool):
+    def __init__(self, version, static_infos: dict, verbose: bool = False):
         self.version = version
         self._server_static_infos = static_infos
         self._static_info: Dict[str, DataModelStaticInfo] = {}
@@ -442,7 +442,7 @@ class DataModelGenerator:
             shutil.rmtree(Path(_SOLVER_DM_DOC_DIR))
 
 
-def generate(version, static_infos: dict, verbose: bool):
+def generate(version, static_infos: dict, verbose: bool = False):
     """Generate datamodel API classes."""
     return DataModelGenerator(version, static_infos, verbose).write_static_info()
 

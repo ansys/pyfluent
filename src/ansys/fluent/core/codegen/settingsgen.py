@@ -262,7 +262,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         f_stub.write(s_stub.getvalue())
 
 
-def generate(version: str, static_infos: dict, verbose: bool) -> None:
+def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     """Generate the classes corresponding to the Fluent settings API."""
     start_time = time.time()
     api_tree = {}

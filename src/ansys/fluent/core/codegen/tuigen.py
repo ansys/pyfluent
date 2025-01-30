@@ -177,7 +177,9 @@ class _RenameModuleUnpickler(pickle.Unpickler):
 class TUIGenerator:
     """Generates explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, static_infos: dict, verbose: bool):
+    def __init__(
+        self, mode: str, version: str, static_infos: dict, verbose: bool = False
+    ):
         self._mode = mode
         self._version = version
         self._tui_file = _get_tui_filepath(mode, version)
@@ -302,7 +304,7 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version, static_infos: dict, verbose: bool):
+def generate(version, static_infos: dict, verbose: bool = False):
     """Generate TUI API classes."""
     api_tree = {}
     gt_222 = FluentVersion(version) > FluentVersion.v222

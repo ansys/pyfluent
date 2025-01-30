@@ -19,7 +19,7 @@ def _update_first_level(d, u):
         d[k].update(u.get(k, {}))
 
 
-def generate(version: str, static_infos: dict, verbose: bool):
+def generate(version: str, static_infos: dict, verbose: bool = False):
     """Generate Fluent API classes."""
     api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
     _update_first_level(api_tree, tuigen.generate(version, static_infos, verbose))
