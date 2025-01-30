@@ -48,7 +48,8 @@ from ansys.fluent.core import examples
 
 headlamp_spaceclaim_file, headlamp_pmdb_file = [
     examples.download_file(
-        f, "pyfluent/radiation_headlamp", save_path=pyfluent.EXAMPLES_PATH
+        f,
+        "pyfluent/radiation_headlamp",
     )
     for f in ["headlamp.scdoc", "headlamp.pmdb"]
 ]
