@@ -302,7 +302,7 @@ class AppUtilitiesOld:
 
     def change_client_cortex_dir(self, path: str) -> None:
         """Change client cortex dir."""
-        self.scheme_eval.exec(f"(syncdir {path})")
+        self.scheme_eval.scheme_eval(f"(syncdir {path})")
 
 
 class AppUtilities:
