@@ -595,7 +595,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=23.2,<25.2")
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
@@ -608,3 +608,15 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     assert solver._app_utilities.is_wildcard("yes*")
 
     assert not solver._app_utilities.is_solution_data_available()
+
+    tmp_dir = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+
+    solver.chdir(tmp_dir)
+
+    assert Path(
+        solver._app_utilities.get_controller_process_info()["working_directory"]
+    ) == Path(tmp_dir)
+
+    assert Path(
+        solver._app_utilities.get_solver_process_info()["working_directory"]
+    ) == Path(tmp_dir)
