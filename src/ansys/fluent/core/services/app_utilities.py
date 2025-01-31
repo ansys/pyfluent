@@ -143,6 +143,14 @@ class AppUtilitiesService:
         """Exit RPC of AppUtilities service."""
         return self._stub.Exit(request, metadata=self._metadata)
 
+    def change_client_cortex_dir(
+        self, request: AppUtilitiesProtoModule.ChangeClientCortexWorkingDirectoryRequest
+    ) -> AppUtilitiesProtoModule.ChangeClientCortexWorkingDirectoryResponse:
+        """ChangeClientCortexWorkingDirectory RPC of AppUtilities service."""
+        return self._stub.ChangeClientCortexWorkingDirectory(
+            request, metadata=self._metadata
+        )
+
 
 class AppUtilitiesOld:
     """AppUtilitiesOld."""
@@ -292,6 +300,10 @@ class AppUtilitiesOld:
         """Exit."""
         self.scheme_eval.exec(("(exit-server)",))
 
+    def change_client_cortex_dir(self, path: str) -> None:
+        """Change client cortex dir."""
+        self.scheme_eval.exec(f"(syncdir '{path}')")
+
 
 class AppUtilities:
     """AppUtilities."""
@@ -428,3 +440,9 @@ class AppUtilities:
         """Exit."""
         request = AppUtilitiesProtoModule.ExitRequest()
         self.service.exit(request)
+
+    def change_client_cortex_dir(self, path: str) -> None:
+        """Change client cortex dir."""
+        request = AppUtilitiesProtoModule.ChangeClientCortexWorkingDirectoryRequest()
+        request.path = path
+        self.service.change_client_cortex_dir(request)
