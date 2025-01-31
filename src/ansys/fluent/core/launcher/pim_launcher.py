@@ -208,9 +208,8 @@ def launch_remote_fluent(
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
-    When calling this method, you must ensure that you are in an
-    environment where PyPIM is configured. You can use the :func:
-    `pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
+    Ensure that you are in an environment where PyPIM is configured.
+    Use the :func:`pypim.is_configured <ansys.platform.instancemanagement.is_configured>`
     method to verify that PyPIM is configured.
 
     Parameters
@@ -218,58 +217,48 @@ def launch_remote_fluent(
     session_cls: type(Meshing) | type(PureMeshing) | type(Solver) | type(SolverIcing)
         Session type.
     start_transcript: bool
-        Whether to start streaming the Fluent transcript in the client. The
-        default is ``True``. You can stop and start the streaming of the
-        Fluent transcript subsequently via method calls on the session object.
+        Whether to start streaming the Fluent transcript in the client.
     product_version : str, optional
-        Version of Ansys Fluent to launch. Use ``"242"`` for 2024 R2.
-        The default is ``None``, in which case the newest installed version is used.
+        Version of Ansys Fluent to launch. Default is ``None`` for the newest version.
     cleanup_on_exit : bool, optional
-        Whether to clean up and exit Fluent when Python exits or when garbage
-        is collected for the Fluent Python instance. The default is ``True``.
+        Whether to clean up and exit Fluent when Python exits. Default is ``True``.
     mode : FluentMode, optional
-        Whether to launch Fluent remotely in meshing mode. The default is
-        ``FluentMode.SOLVER``.
+        Launch Fluent in meshing mode. Default is ``FluentMode.SOLVER``.
     dimensionality : str, optional
-        Geometric dimensionality of the Fluent simulation. The default is ``None``,
-        in which case ``"3d"`` is used. Options are ``"3d"`` and ``"2d"``.
+        Geometric dimensionality of the Fluent simulation. Default is ``None`` (3D).
     file_transfer_service : optional
-        File transfer service for uploading or downloading files to or from the server.
+        Service for uploading/downloading files to/from the server.
     launcher_args : Any
         Launcher arguments.
 
     Returns
     -------
-    :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-    :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-    :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
+    Meshing | PureMeshing | Solver | SolverIcing
         Session object.
     """
+
     pim = pypim.connect()
-    instance = pim.create_instance(
-        product_name=(
-            "fluent-meshing"
-            if FluentMode.is_meshing(mode)
-            else "fluent-2ddp" if dimensionality == Dimension.TWO else "fluent-3ddp"
-        ),
+
+    instance = create_fluent_instance(
+        pim=pim,
+        mode=mode,
+        dimensionality=dimensionality,
         product_version=product_version,
     )
+
     instance.wait_for_ready()
-    # nb pymapdl sets max msg len here:
+
     channel = instance.build_grpc_channel()
 
-    fluent_connection = FluentConnection(
+    fluent_connection = create_fluent_connection(
         channel=channel,
         cleanup_on_exit=cleanup_on_exit,
-        remote_instance=instance,
-        slurm_job_id=launcher_args and launcher_args.get("slurm_job_id"),
+        instance=instance,
+        launcher_args=launcher_args,
     )
 
-    file_transfer_service = (
-        file_transfer_service
-        if file_transfer_service
-        else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
+    file_transfer_service = get_file_transfer_service(
+        file_transfer_service, fluent_connection
     )
 
     return session_cls(
@@ -277,4 +266,45 @@ def launch_remote_fluent(
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_transfer_service,
         start_transcript=start_transcript,
+    )
+
+
+def create_fluent_instance(
+    pim, mode: FluentMode, dimensionality: str | None, product_version: str | None
+):
+    """Create a Fluent instance based on mode and dimensionality."""
+
+    product_name = (
+        "fluent-meshing"
+        if FluentMode.is_meshing(mode)
+        else "fluent-2ddp" if dimensionality == Dimension.TWO else "fluent-3ddp"
+    )
+
+    return pim.create_instance(
+        product_name=product_name, product_version=product_version
+    )
+
+
+def create_fluent_connection(
+    channel, cleanup_on_exit: bool, instance, launcher_args: Dict[str, Any] | None
+):
+    """Create a Fluent connection."""
+
+    return FluentConnection(
+        channel=channel,
+        cleanup_on_exit=cleanup_on_exit,
+        remote_instance=instance,
+        slurm_job_id=launcher_args.get("slurm_job_id") if launcher_args else None,
+    )
+
+
+def get_file_transfer_service(
+    file_transfer_service: Any | None, fluent_connection
+) -> Any:
+    """Get the file transfer service."""
+
+    return (
+        file_transfer_service
+        if file_transfer_service
+        else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
     )

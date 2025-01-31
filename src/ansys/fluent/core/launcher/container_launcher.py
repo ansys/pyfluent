@@ -89,76 +89,63 @@ class DockerLauncher:
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
     ):
-        """Launch Fluent session in container mode.
+        """
+        Launch a Fluent session in container mode.
 
         Parameters
         ----------
         mode : FluentMode
-            Launch mode of Fluent to point to a specific session type.
+            Specifies the launch mode of Fluent to target a specific session type.
         ui_mode : UIMode
-            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Graphics driver of Fluent. Options are the values of the
-            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
-            ``FluentLinuxGraphicsDriver`` enum in Linux.
-        product_version : FluentVersion or str or float or int, optional
-            Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
-            any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``.
-            The default is ``None``, in which case the newest installed version is used.
+            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
+            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
+        product_version :  FluentVersion or str or float or int, optional
+            Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
+            any of ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
+            which uses the newest installed version.
         dimension : Dimension or int, optional
-            Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``Dimension.THREE`` is used. Options are either the values of the
-            ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
+            Specifies the geometric dimensionality of the Fluent simulation. Defaults to ``None``,
+            which corresponds to ``Dimension.THREE``. Acceptable values include ``Dimension.TWO``,
+            ``Dimension.THREE``, or integers ``2`` and ``3``.
         precision : Precision or str, optional
-            Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
-            is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
-            or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
+            Defines the floating point precision. Defaults to ``None``, which corresponds to
+            ``Precision.DOUBLE``. Acceptable values include ``Precision.SINGLE``,
+            ``Precision.DOUBLE``, or strings ``"single"`` and ``"double"``.
         processor_count : int, optional
-            Number of processors. The default is ``None``, in which case ``1``
-            processor is used.  In job scheduler environments the total number of
-            allocated cores is clamped to value of ``processor_count``.
+            Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
+            In job scheduler environments, this value limits the total number of allocated cores.
         start_timeout : int, optional
-            Maximum allowable time in seconds for connecting to the Fluent
-            server. The default is ``60``.
+            Maximum allowable time in seconds for connecting to the Fluent server. Defaults to 60 seconds.
         additional_arguments : str, optional
-            Additional arguments to send to Fluent as a string in the same
-            format they are normally passed to Fluent on the command line.
+            Additional command-line arguments for Fluent, formatted as they would be on the command line.
         container_dict : dict, optional
-            Dictionary for Fluent Docker container configuration. The configuration settings specified in this
-            dictionary are used to launch Fluent inside a Docker container.
-            See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
+            Configuration dictionary for launching Fluent inside a Docker container. See also
+            :mod:`~ansys.fluent.core.launcher.fluent_container`.
         dry_run : bool, optional
-            Defaults to False. If True, will not launch Fluent, and will instead print configuration information
-            that would be used as if Fluent was being launched. If dry running a container start,
-            ``launch_fluent()`` will return the configured ``container_dict``.
-        cleanup_on_exit : bool, optional
-            Whether to shut down the connected Fluent session when PyFluent is
-            exited, or the ``exit()`` method is called on the session instance,
-            or if the session instance becomes unreferenced. The default is ``True``.
-        start_transcript : bool, optional
-            Whether to start streaming the Fluent transcript in the client. The
-            default is ``True``. You can stop and start the streaming of the
-            Fluent transcript subsequently via the method calls, ``transcript.start()``
-            and ``transcript.stop()`` on the session object.
+            If True, does not launch Fluent but prints configuration information instead. If dry running a
+            container start, this method will return the configured ``container_dict``. Defaults to False.
+        cleanup_on_exit : bool
+            Determines whether to shut down the connected Fluent session upon exit or when calling
+            the session's `exit()` method. Defaults to True.
+        start_transcript : bool
+            Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
+            streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
         py : bool, optional
-            If True, Fluent will run in Python mode. Default is None.
+            If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
-            If True, Fluent will start with GPU Solver.
+            If True, starts Fluent with GPU Solver enabled.
         start_watchdog : bool, optional
-            When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
-            which means an independent watchdog process is run to ensure
-            that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
-            when the current Python process ends.
-        file_transfer_service : optional
-            File transfer service. Uploads/downloads files to/from the server.
+            If True and `cleanup_on_exit` is True, an independent watchdog process is run to ensure that any local
+            GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
+        file_transfer_service : Any, optional
+            Service for uploading/downloading files to/from the server.
 
         Returns
         -------
-        :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
-        :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
-        :class:`~ansys.fluent.core.session_solver.Solver`, \
-        :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
-            Session object or configuration dictionary if ``dry_run = True``.
+        Meshing | PureMeshing | Solver | SolverIcing | dict
+            Session object or configuration dictionary if ``dry_run`` is True.
 
         Raises
         ------
@@ -167,44 +154,68 @@ class DockerLauncher:
 
         Notes
         -----
-        Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
-        The allocated machines and core counts are queried from the scheduler environment and
-        passed to Fluent.
+        In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
+        and core counts are queried from these environments before being passed to Fluent.
         """
+
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
-        if self.argvals["start_timeout"] is None:
-            self.argvals["start_timeout"] = 60
+
+        # Set default values
+        self.argvals["start_timeout"] = self.argvals.get("start_timeout", 60)
         self.file_transfer_service = file_transfer_service
+        self.argvals["container_dict"] = self.argvals.get("container_dict", {})
+
+        # Configure specific settings
+        self._configure_fluent_settings()
+
+        # Build launch arguments
+        self._args = _build_fluent_launch_args_string(**self.argvals).split()
+
+        if FluentMode.is_meshing(self.argvals["mode"]):
+            self._args.append("-meshing")
+
+    def _configure_fluent_settings(self):
+        """Configure Fluent-specific settings based on initialization parameters."""
+
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
-        if self.argvals["container_dict"] is None:
-            self.argvals["container_dict"] = {}
+
         if self.argvals["product_version"]:
             self.argvals["container_dict"][
                 "image_tag"
             ] = f"v{FluentVersion(self.argvals['product_version']).value}"
 
-        self._args = _build_fluent_launch_args_string(**self.argvals).split()
-        if FluentMode.is_meshing(self.argvals["mode"]):
-            self._args.append(" -meshing")
-
     def __call__(self):
-        if self.argvals["dry_run"]:
-            config_dict, *_ = configure_container_dict(
-                self._args, **self.argvals["container_dict"]
-            )
-            from pprint import pprint
+        """Launch the Fluent container or return configuration if in dry run mode."""
 
-            print("\nDocker container run configuration:\n")
-            print("config_dict = ")
-            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-                pprint(config_dict)
-            else:
-                config_dict_h = config_dict.copy()
-                config_dict_h.pop("environment")
-                pprint(config_dict_h)
-                del config_dict_h
-            return config_dict
+        if self.argvals["dry_run"]:
+            return self._dry_run_configuration()
+
+        return self._start_fluent_container()
+
+    def _dry_run_configuration(self):
+        """Return Docker container run configuration without starting the container."""
+
+        config_dict, *_ = configure_container_dict(
+            self._args, **self.argvals["container_dict"]
+        )
+
+        from pprint import pprint
+
+        print("\nDocker container run configuration:\n")
+
+        if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+            pprint(config_dict)
+        else:
+            # Hide sensitive information
+            config_dict_h = config_dict.copy()
+            config_dict_h.pop("environment", None)
+            pprint(config_dict_h)
+
+        return config_dict
+
+    def _start_fluent_container(self):
+        """Start the Fluent container and establish a connection."""
 
         port, password, container = start_fluent_container(
             self._args, self.argvals["container_dict"]
@@ -215,7 +226,7 @@ class DockerLauncher:
             password=password,
             file_transfer_service=self.file_transfer_service,
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
-            slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
+            slurm_job_id=self.argvals.get("slurm_job_id"),
             inside_container=True,
         )
 
@@ -225,10 +236,16 @@ class DockerLauncher:
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
         )
+
         session._container = container
 
-        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
+        # Start watchdog if necessary
+        if (
+            self.argvals.get("start_watchdog") is None
+            and self.argvals["cleanup_on_exit"]
+        ):
             self.argvals["start_watchdog"] = True
+
         if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
