@@ -160,15 +160,12 @@ class DockerLauncher:
 
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
 
-        # Set default values
         self.argvals["start_timeout"] = self.argvals.get("start_timeout", 60)
         self.file_transfer_service = file_transfer_service
         self.argvals["container_dict"] = self.argvals.get("container_dict", {})
 
-        # Configure specific settings
         self._configure_fluent_settings()
 
-        # Build launch arguments
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
 
         if FluentMode.is_meshing(self.argvals["mode"]):
@@ -207,7 +204,6 @@ class DockerLauncher:
         if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
             pprint(config_dict)
         else:
-            # Hide sensitive information
             config_dict_h = config_dict.copy()
             config_dict_h.pop("environment", None)
             pprint(config_dict_h)
@@ -239,7 +235,6 @@ class DockerLauncher:
 
         session._container = container
 
-        # Start watchdog if necessary
         if (
             self.argvals.get("start_watchdog") is None
             and self.argvals["cleanup_on_exit"]
