@@ -77,7 +77,7 @@ class PIMLauncher:
         precision: Precision | str | None = None,
         processor_count: int | None = None,
         start_timeout: int = 60,
-        additional_arguments: str | None = "",
+        additional_arguments: str = "",
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         py: bool | None = None,

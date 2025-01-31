@@ -89,7 +89,7 @@ class StandaloneLauncher:
         processor_count: int | None = None,
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
-        additional_arguments: str | None = "",
+        additional_arguments: str = "",
         env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,

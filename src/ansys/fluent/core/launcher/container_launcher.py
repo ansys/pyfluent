@@ -79,7 +79,7 @@ class DockerLauncher:
         precision: Precision | str | None = None,
         processor_count: int | None = None,
         start_timeout: int = 60,
-        additional_arguments: str | None = "",
+        additional_arguments: str = "",
         container_dict: dict | None = None,
         dry_run: bool = False,
         cleanup_on_exit: bool = True,

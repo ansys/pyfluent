@@ -146,7 +146,7 @@ def launch_fluent(
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
     start_timeout: int = None,
-    additional_arguments: str | None = "",
+    additional_arguments: str = "",
     env: Dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict | None = None,
