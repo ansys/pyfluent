@@ -427,6 +427,16 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 
+    def chdir(self, path: str) -> None:
+        """Change Fluent working directory.
+
+        Parameters
+        ----------
+        path : str
+            Path of the directory to change.
+        """
+        self._app_utilities.set_working_directory(path)
+
     def __enter__(self):
         return self
 
