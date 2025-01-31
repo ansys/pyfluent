@@ -22,6 +22,7 @@
 
 """Module to generate the classes corresponding to the Fluent settings API."""
 
+import argparse
 import hashlib
 from io import StringIO
 import keyword
@@ -283,7 +284,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         f_stub.write(s_stub.getvalue())
 
 
-def generate(version: str, static_infos: dict) -> None:
+def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     """Generate the classes corresponding to the Fluent settings API."""
     start_time = time.time()
     api_tree = {}
@@ -301,6 +302,9 @@ def generate(version: str, static_infos: dict) -> None:
     data = _populate_data(cls, api_tree, version)
     _NAME_BY_HASH.clear()
     _CLASS_WRITTEN.clear()
+    if verbose:
+        print(f"{str(output_file)}")
+        print(f"{str(output_stub_file)}")
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
         header = StringIO()
         header.write("#\n")
@@ -324,7 +328,7 @@ def generate(version: str, static_infos: dict) -> None:
     file_size = output_file.stat().st_size / 1024 / 1024
     file_size_stub = output_stub_file.stat().st_size / 1024 / 1024
     print(
-        f"Generated {output_file.name} and {output_stub_file.name} in {time.time() - start_time:.2f} seconds."
+        f"\nGenerated {output_file.name} and {output_stub_file.name} in {time.time() - start_time:.2f} seconds."
     )
     print(f"{output_file.name} size: {file_size:.2f} MB")
     print(f"{output_stub_file.name} size: {file_size_stub:.2f} MB")
@@ -338,4 +342,14 @@ if __name__ == "__main__":
     # version = "251"
     # static_info = pickle.load(open("static_info.pkl", "rb"))
     static_infos = {StaticInfoType.SETTINGS: static_info}
-    generate(version, static_infos)
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    generate(version, static_infos, args.verbose)

@@ -1,5 +1,6 @@
 """Helper module to generate Fluent API classes."""
 
+import argparse
 from time import time
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
@@ -59,12 +60,21 @@ if __name__ == "__main__":
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
     t1 = time()
-    print(f"Time to fetch static info: {t1 - t0:.2f} seconds")
+    print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
     CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
     print_fluent_version(solver._app_utilities)
     solver.exit()
-
-    allapigen.generate(version, static_infos)
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    allapigen.generate(version, static_infos, args.verbose)
     t2 = time()
     print(f"Time to generate APIs: {t2 - t1:.2f} seconds")
     _generate_api_data(version=version)

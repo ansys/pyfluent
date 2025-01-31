@@ -34,6 +34,7 @@ Usage
 `python codegen/tuigen.py`
 """
 
+import argparse
 import logging
 import os
 from pathlib import Path
@@ -198,7 +199,9 @@ class _RenameModuleUnpickler(pickle.Unpickler):
 class TUIGenerator:
     """Generates explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, static_infos: dict):
+    def __init__(
+        self, mode: str, version: str, static_infos: dict, verbose: bool = False
+    ):
         self._mode = mode
         self._version = version
         self._tui_file = _get_tui_filepath(mode, version)
@@ -211,6 +214,7 @@ class TUIGenerator:
             shutil.rmtree(Path(self._tui_doc_dir))
         self._main_menu = _TUIMenu([], "")
         self._static_infos = static_infos
+        self._verbose = verbose
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
         for child_menu_name, child_menu_info in sorted(info["menus"].items()):
@@ -282,6 +286,8 @@ class TUIGenerator:
         """Generate TUI API classes."""
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
+        if self._verbose:
+            print(f"{str(self._tui_file)}")
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             if FluentVersion(self._version) == FluentVersion.v222:
                 with open(
@@ -320,7 +326,7 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version, static_infos: dict):
+def generate(version, static_infos: dict, verbose: bool = False):
     """Generate TUI API classes."""
     api_tree = {}
     gt_222 = FluentVersion(version) > FluentVersion.v222
@@ -334,11 +340,11 @@ def generate(version, static_infos: dict):
     _populate_xml_helpstrings()
     if not gt_222 or StaticInfoType.TUI_MESHING in static_infos:
         api_tree["<meshing_session>"] = TUIGenerator(
-            "meshing", version, static_infos
+            "meshing", version, static_infos, verbose
         ).generate()
     if not gt_222 or StaticInfoType.TUI_SOLVER in static_infos:
         api_tree["<solver_session>"] = TUIGenerator(
-            "solver", version, static_infos
+            "solver", version, static_infos, verbose
         ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
@@ -362,4 +368,14 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.TUI_MESHING] = (
             meshing._datamodel_service_tui.get_static_info("")
         )
-    generate(version, static_infos)
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    generate(version, static_infos, args.verbose)

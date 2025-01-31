@@ -87,7 +87,8 @@ the latest release with:
    cd pyfluent
    pip install pip -U
    pip install -e .
-   python codegen/allapigen.py  # Generates the API files
+   python codegen/allapigen.py     # Generates the API files or
+   python codegen/allapigen.py -v  # Pass -v or --verbose to display the paths of the generated API files
 
 Dependencies
 ------------
