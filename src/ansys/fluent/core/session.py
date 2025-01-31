@@ -435,7 +435,7 @@ class BaseSession:
         path : str
             Path of the directory to change.
         """
-        self._app_utilities.change_client_cortex_dir(path)
+        self._app_utilities.set_cortex_working_directory(path)
 
     def __enter__(self):
         return self
