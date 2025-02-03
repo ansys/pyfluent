@@ -196,6 +196,7 @@ class DockerLauncher:
         port, password, container = start_fluent_container(
             self._args, self.argvals["container_dict"]
         )
+
         fluent_connection = FluentConnection(
             port=port,
             password=password,
@@ -218,4 +219,5 @@ class DockerLauncher:
         if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
+
         return session
