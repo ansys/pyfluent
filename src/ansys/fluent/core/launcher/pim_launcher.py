@@ -46,7 +46,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
-    UIMode,
     _get_argvals_and_session,
 )
 from ansys.fluent.core.session_meshing import Meshing
@@ -68,7 +67,6 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -80,7 +78,6 @@ class PIMLauncher:
         additional_arguments: str = "",
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        py: bool | None = None,
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
@@ -92,8 +89,6 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent for targeting a specific session type.
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -122,8 +117,6 @@ class PIMLauncher:
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
-        py : bool, optional
-            If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
             If True, starts Fluent with GPU Solver enabled.
         start_watchdog : bool, optional
