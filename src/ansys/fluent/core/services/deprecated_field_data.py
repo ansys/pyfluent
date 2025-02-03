@@ -593,7 +593,7 @@ class DeprecatedFieldData:
         self,
         field_name: str,
         surfaces: List[int | str],
-        additional_field_name: str | None = "",
+        additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
         steps: int | None = 500,

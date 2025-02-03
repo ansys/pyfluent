@@ -4,9 +4,9 @@ File transfer
 =============
 
 The file transfer service enables you to upload files to the server and download files from it. You have the option to specify 
-a different name for the file being uploaded; if you do not, the default name will be that of the file being uploaded. 
+a different name for the file being uploaded; if you do not, the default name is that of the file being uploaded. 
 Similarly, when downloading a file from the server, you can indicate a specific download directory; if not specified, 
-the file will be saved in the current working directory. You can define your own file transfer service and utilize it with 
+the file is saved in the current working directory. You can define your own file transfer service and utilize it with 
 launch_fluent(file_transfer_service=<name_of_the_file_transfer_service>).
 
 The following file transfer services are available:
