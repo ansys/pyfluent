@@ -89,7 +89,7 @@ class StandaloneLauncher:
         processor_count: int | None = None,
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
-        additional_arguments: str | None = "",
+        additional_arguments: str = "",
         env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
@@ -105,89 +105,73 @@ class StandaloneLauncher:
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
     ):
-        """Launch Fluent session in standalone mode.
+        """
+        Launch a Fluent session in standalone mode.
 
         Parameters
         ----------
         mode : FluentMode
-            Launch mode of Fluent to point to a specific session type.
+            Specifies the launch mode of Fluent to target a specific session type.
         ui_mode : UIMode
-            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
-            Graphics driver of Fluent. Options are the values of the
-            ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
-            ``FluentLinuxGraphicsDriver`` enum in Linux.
+            Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
+            (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
         product_version : FluentVersion or str or float or int, optional
-            Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
-           ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``.
-            The default is ``None``, in which case the newest installed version is used.
+            Indicates the version of Ansys Fluent to launch. For example, to use version 2025 R1, pass
+            ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``, or ``251``. Defaults to ``None``,
+            which uses the newest installed version.
         dimension : Dimension or int, optional
-            Geometric dimensionality of the Fluent simulation. The default is ``None``,
-            in which case ``Dimension.THREE`` is used. Options are either the values of the
-            ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
+            Specifies the geometric dimensionality of the Fluent simulation. Defaults to ``None``,
+            which corresponds to ``Dimension.THREE``. Acceptable values are from the ``Dimension`` enum
+            (``Dimension.TWO`` or ``Dimension.THREE``) or integers ``2`` and ``3``.
         precision : Precision or str, optional
-            Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
-            is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
-            or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
+            Defines the floating point precision. Defaults to ``None``, which corresponds to
+            ``Precision.DOUBLE``. Acceptable values are from the ``Precision`` enum (``Precision.SINGLE``
+            or ``Precision.DOUBLE``) or strings ``"single"`` and ``"double"``.
         processor_count : int, optional
-            Number of processors. The default is ``None``, in which case ``1``
-            processor is used.  In job scheduler environments the total number of
-            allocated cores is clamped to value of ``processor_count``.
+            Specifies the number of processors to use. Defaults to ``None``, which uses 1 processor.
+            In job scheduler environments, this value limits the total number of allocated cores.
         journal_file_names : str or list of str, optional
-            The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
-            journal(s). The default is ``None``.
+            Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``.
         start_timeout : int, optional
-            Maximum allowable time in seconds for connecting to the Fluent
-            server. The default is ``60``.
+            Maximum time in seconds allowed for connecting to the Fluent server. Defaults to 60 seconds.
         additional_arguments : str, optional
-            Additional arguments to send to Fluent as a string in the same
-            format they are normally passed to Fluent on the command line.
+            Additional command-line arguments for Fluent, formatted as they would be on the command line.
         env : dict[str, str], optional
-            Mapping to modify environment variables in Fluent. The default
-            is ``None``.
+            A mapping for modifying environment variables in Fluent. Defaults to ``None``.
         cleanup_on_exit : bool, optional
-            Whether to shut down the connected Fluent session when PyFluent is
-            exited, or the ``exit()`` method is called on the session instance,
-            or if the session instance becomes unreferenced. The default is ``True``.
+            Determines whether to shut down the connected Fluent session when exiting PyFluent or calling
+            the session's `exit()` method. Defaults to True.
         dry_run : bool, optional
-            Defaults to False. If True, will not launch Fluent, and will print configuration information
-            that would be used as if Fluent was being launched. If True, the ``call()`` method will return
-            a tuple containing Fluent launch string and the server info file name.
+            If True, does not launch Fluent but prints configuration information instead. The `call()` method
+            returns a tuple containing the launch string and server info file name. Defaults to False.
         start_transcript : bool, optional
-            Whether to start streaming the Fluent transcript in the client. The
-            default is ``True``. You can stop and start the streaming of the
-            Fluent transcript subsequently via the method calls, ``transcript.start()``
-            and ``transcript.stop()`` on the session object.
+            Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
+            streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
         case_file_name : str, optional
-            Name of the case file to read into the
-            Fluent session. The default is ``None``.
+            Name of the case file to read into the Fluent session. Defaults to None.
         case_data_file_name : str, optional
-            Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
+            Name of the case data file. If both case and data files are provided, they are read into the session.
         lightweight_mode : bool, optional
-            Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
-            current Fluent solver session. The mesh is read into a background Fluent solver session which will
-            replace the current Fluent solver session once the mesh read is complete and the lightweight settings
-            made by the user in the current Fluent solver session have been applied in the background Fluent
-            solver session. This is all orchestrated by PyFluent and requires no special usage.
-            This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
+            If True, runs in lightweight mode where mesh settings are read into a background solver session,
+            replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
         py : bool, optional
-            If True, Fluent will run in Python mode. Default is None.
+            If True, runs Fluent in Python mode. Defaults to None.
         gpu : bool, optional
-            If True, Fluent will start with GPU Solver.
-        cwd : str, Optional
+            If True, starts Fluent with GPU Solver enabled.
+        cwd : str, optional
             Working directory for the Fluent client.
-        fluent_path: str, Optional
-            User provided Fluent installation path.
-        topy : bool or str, optional
-            A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
-            Can optionally take the file name of the new python journal file.
+        fluent_path: str, optional
+            User-specified path for Fluent installation.
+        topy :  bool or str, optional
+            A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
+            a filename for the new Python journal.
         start_watchdog : bool, optional
-            When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
-            which means an independent watchdog process is run to ensure
-            that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
-            when the current Python process ends.
-        file_transfer_service : optional
-            File transfer service. Uploads/downloads files to/from the server.
+            When `cleanup_on_exit` is True, defaults to True; an independent watchdog process ensures that any local
+            GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
+        file_transfer_service : Any
+            Service for uploading/downloading files to/from the server.
 
         Raises
         ------
@@ -196,9 +180,8 @@ class StandaloneLauncher:
 
         Notes
         -----
-        Job scheduler environments such as SLURM, LSF, PBS, etc. allocates resources / compute nodes.
-        The allocated machines and core counts are queried from the scheduler environment and
-        passed to Fluent.
+        In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
+        and core counts are queried from these environments before being passed to Fluent.
         """
         import ansys.fluent.core as pyfluent
 
