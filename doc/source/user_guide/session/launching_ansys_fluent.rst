@@ -297,14 +297,14 @@ can be launched explicitly using :func:`create_launcher() <ansys.fluent.core.lau
 Connecting to a Fluent container running inside WSL from a Windows host
 -----------------------------------------------------------------------
 
-1. Launch Fluent container inside WSL 
+1. Launch Fluent container inside WSL
 
 .. code:: console
 
     docker run -it -p 63084:63084 -v /mnt/d/testing:/testing -e "ANSYSLMD_LICENSE_FILE=<license file or server>" -e "REMOTING_PORTS=63084/portspan=2" ghcr.io/ansys/pyfluent:v25.1.0 3ddp -gu -sifile=/testing/server.txt
     /ansys_inc/v251/fluent/fluent25.1.0/bin/fluent -r25.1.0 3ddp -gu -sifile=/testing/server.txt
 
-2. Connect from PyFluent running in windows host
+2. Connect from PyFluent running on a Windows host
 
 .. code:: python
 
