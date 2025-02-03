@@ -159,70 +159,49 @@ class DockerLauncher:
         """
 
         self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
-
-        self.argvals["start_timeout"] = self.argvals.get("start_timeout", 60)
+        if self.argvals["start_timeout"] is None:
+            self.argvals["start_timeout"] = 60
         self.file_transfer_service = file_transfer_service
-        self.argvals["container_dict"] = self.argvals.get("container_dict", {})
-
-        self._configure_fluent_settings()
-
-        self._args = _build_fluent_launch_args_string(**self.argvals).split()
-
-        if FluentMode.is_meshing(self.argvals["mode"]):
-            self._args.append("-meshing")
-
-    def _configure_fluent_settings(self):
-        """Configure Fluent-specific settings based on initialization parameters."""
-
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
-
+        if self.argvals["container_dict"] is None:
+            self.argvals["container_dict"] = {}
         if self.argvals["product_version"]:
             self.argvals["container_dict"][
                 "image_tag"
             ] = f"v{FluentVersion(self.argvals['product_version']).value}"
 
+        self._args = _build_fluent_launch_args_string(**self.argvals).split()
+        if FluentMode.is_meshing(self.argvals["mode"]):
+            self._args.append(" -meshing")
+
     def __call__(self):
-        """Launch the Fluent container or return configuration if in dry run mode."""
-
         if self.argvals["dry_run"]:
-            return self._dry_run_configuration()
+            config_dict, *_ = configure_container_dict(
+                self._args, **self.argvals["container_dict"]
+            )
+            from pprint import pprint
 
-        return self._start_fluent_container()
-
-    def _dry_run_configuration(self):
-        """Return Docker container run configuration without starting the container."""
-
-        config_dict, *_ = configure_container_dict(
-            self._args, **self.argvals["container_dict"]
-        )
-
-        from pprint import pprint
-
-        print("\nDocker container run configuration:\n")
-
-        if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-            pprint(config_dict)
-        else:
-            config_dict_h = config_dict.copy()
-            config_dict_h.pop("environment", None)
-            pprint(config_dict_h)
-
-        return config_dict
-
-    def _start_fluent_container(self):
-        """Start the Fluent container and establish a connection."""
+            print("\nDocker container run configuration:\n")
+            print("config_dict = ")
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                pprint(config_dict)
+            else:
+                config_dict_h = config_dict.copy()
+                config_dict_h.pop("environment")
+                pprint(config_dict_h)
+                del config_dict_h
+            return config_dict
 
         port, password, container = start_fluent_container(
             self._args, self.argvals["container_dict"]
         )
-
         fluent_connection = FluentConnection(
             port=port,
             password=password,
             file_transfer_service=self.file_transfer_service,
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
-            slurm_job_id=self.argvals.get("slurm_job_id"),
+            slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
         )
 
@@ -232,17 +211,11 @@ class DockerLauncher:
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
         )
-
         session._container = container
 
-        if (
-            self.argvals.get("start_watchdog") is None
-            and self.argvals["cleanup_on_exit"]
-        ):
+        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
             self.argvals["start_watchdog"] = True
-
         if self.argvals["start_watchdog"]:
             logger.debug("Launching Watchdog for Fluent container...")
             watchdog.launch(os.getpid(), port, password)
-
         return session
