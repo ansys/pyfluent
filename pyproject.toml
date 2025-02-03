@@ -59,7 +59,7 @@ tests = [
     "pytest-xdist==3.6.1",
 ]
 docs = [
-    "Sphinx==7.4.7",
+    "Sphinx==8.1.3",
     "jupyter_sphinx==0.5.3",
     "numpydoc==1.8.0",
     "matplotlib==3.10.0",
