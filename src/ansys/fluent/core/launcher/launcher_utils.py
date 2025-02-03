@@ -74,6 +74,9 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
         fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
+    if argvals.get("enable_data_model_api_upgrades") is True:
+        fluent_env["REMOTING_NEW_DM_API"] = "1"
+
     if not is_slurm:
         if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
             remoting_ip = find_remoting_ip()
@@ -84,6 +87,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
         fluent_env["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
     kwargs.update(env=fluent_env)
+
     return kwargs
 
 
