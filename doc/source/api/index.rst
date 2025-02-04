@@ -3,9 +3,27 @@
 API reference
 =============
 
-This is PyFluent's class and function reference.
-Please refer to the :ref:`ref_user_guide` for
+This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for
 full guidelines on their use.
+
+All the public APIs for PyFluent are listed in the left hand margin. Some key APIs are mentioned below:
+ 
+Meshing mode
+---------------
+ 
+The following interfaces are specific to meshing mode.
+
+* :ref:`meshing <ref_meshing_datamodel_meshing>`
+* :ref:`PartManagement <ref_meshing_datamodel_PartManagement>`
+* :ref:`PMFileManagement <ref_meshing_datamodel_PMFileManagement>`
+* :ref:`workflow <ref_meshing_datamodel_workflow>`
+* :ref:`meshing utilities <ref_meshing_datamodel_MeshingUtilities>`
+
+Solution mode
+-------------
+ 
+The solver :ref:`settings API <ref_root>` is the main interface for controlling and running the solver.
+
 
 .. toctree::
     :maxdepth: 2
