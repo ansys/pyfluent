@@ -183,7 +183,7 @@ class ErrorState:
         """Get details."""
         return self._details
 
-    def __init__(self, name: str | None = "", details: str | None = ""):
+    def __init__(self, name: str = "", details: str | None = ""):
         """Initializes the error state object.
 
         Parameters
