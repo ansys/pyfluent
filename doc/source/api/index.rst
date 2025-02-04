@@ -6,7 +6,7 @@ API reference
 This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for
 full guidelines on their use.
 
-All the public APIs for PyFluent are listed in the lefthand margin. Some key APIs are mentioned below:
+All the public APIs for PyFluent are listed in the left hand margin. Some key APIs are mentioned below:
  
 Meshing mode
 ---------------
