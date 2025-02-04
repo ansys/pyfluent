@@ -3,50 +3,30 @@
 API reference
 =============
 
-This is PyFluent's class and function reference.
-Please refer to the :ref:`ref_user_guide` for
+This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for
 full guidelines on their use.
 
-:ref:`Launcher <ref_launcher>`
-------------------------------
+All the public APIs for PyFluent are listed in the lefthand margin. Some key APIs are mentioned below:
+ 
+Meshing mode
+---------------
+ 
+The following interfaces are specific to meshing mode.
+ 
+Meshing workflow interfaces
+***************************
 
-Meshing datamodels
-------------------
+* :ref:`meshing <ref_meshing_datamodel_meshing>`
+* :ref:`PartManagement <ref_meshing_datamodel_PartManagement>`
+* :ref:`PMFileManagement <ref_meshing_datamodel_PMFileManagement>`
+* :ref:`workflow <ref_meshing_datamodel_workflow>`
 
-* :ref:`meshing_session.meshing <ref_meshing_datamodel_meshing>`
+* :ref:`meshing utilities <ref_meshing_datamodel_MeshingUtilities>`
 
-* :ref:`meshing_session.meshing_utilities <ref_meshing_datamodel_MeshingUtilities>`
-
-* :ref:`meshing_session.PartManagement <ref_meshing_datamodel_PartManagement>`
-
-* :ref:`meshing_session.PMFileManagement <ref_meshing_datamodel_PMFileManagement>`
-
-* :ref:`meshing_session.preferences <ref_meshing_datamodel_preferences>`
-
-* :ref:`meshing_session.workflow <ref_meshing_datamodel_workflow>`
-
-Settings API
-------------
-
-* :ref:`solver.settings <ref_root>`
-
-Solver datamodels
------------------
-
-* :ref:`solver.flicing <ref_solver_datamodel_flicing>`
-
-* :ref:`solver.preferences <ref_solver_datamodel_preferences>`
-
-* :ref:`solver.solverworkflow <ref_solver_datamodel_solverworkflow>`
-
-* :ref:`solver.workflow <ref_solver_datamodel_workflow>`
-
-TUI
----
-
-* :ref:`meshing.tui <ref_meshing_tui>`
-
-* :ref:`solver.tui <ref_solver_tui>`
+Solution mode
+-------------
+ 
+The solver :ref:`settings API <ref_root>` is the main interface for controlling and running the solver.
 
 
 .. toctree::
