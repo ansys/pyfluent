@@ -81,12 +81,39 @@ def _construct_bases_stub(original_bases, child_object_name):
     return bases
 
 
+def strip_parameters(docstring: str) -> str:
+    """
+    Strips everything from the 'Parameters' section onwards in the given docstring.
+
+    Parameters
+    ----------
+    docstring: str
+        The original docstring to process.
+
+    Returns
+    -------
+        The modified docstring with the 'Parameters' section removed.
+    """
+    lines = docstring.strip().splitlines()
+    filtered_lines = []
+
+    for line in lines:
+        if line.strip().startswith("Parameters"):
+            break
+        filtered_lines.append(line)
+
+    return "\n".join(filtered_lines).strip()
+
+
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data = {}
     data["version"] = version
     data["name"] = cls.__name__
     data["bases"] = [base.__name__ for base in cls.__bases__]
-    data["doc"] = fix_settings_doc(cls.__doc__)
+    if "command" in cls.__doc__:
+        data["doc"] = strip_parameters(cls.__doc__)
+    else:
+        data["doc"] = fix_settings_doc(cls.__doc__)
     data["fluent_name"] = getattr(cls, "fluent_name")
     data["child_names"] = getattr(cls, "child_names", [])
     command_names = getattr(cls, "command_names", [])
