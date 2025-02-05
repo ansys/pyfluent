@@ -395,18 +395,17 @@ def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
     create_datamodel_root_in_server(solver, rules_str, app_name)
     service = solver._se_service
     c_name = service.create_command_arguments(app_name, "/", "C")
-    # TODO: Attribute query at command argument level is not working
     assert (
-        service.get_attribute_value(app_name, f"/C:{c_name}", "X/allowedValues") is None
+        service.get_attribute_value(app_name, f"/C:{c_name}/X", "allowedValues") is None
     )
     assert (
-        service.get_attribute_value(app_name, f"/C:{c_name}", "Y/allowedValues") is None
+        service.get_attribute_value(app_name, f"/C:{c_name}/Y", "allowedValues") is None
     )
-    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Y/min") == 1
-    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Y/max") == 3
-    assert service.get_attribute_value(app_name, f"/C:{c_name}", "X/default") is False
-    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Y/default") == 2
-    assert service.get_attribute_value(app_name, f"/C:{c_name}", "Z/default") == 42
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "min") == 1
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "max") == 3
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/X", "default") is False
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Y", "default") == 2
+    assert service.get_attribute_value(app_name, f"/C:{c_name}/Z", "default") == 42
 
 
 @pytest.mark.fluent_version(">=25.2")
