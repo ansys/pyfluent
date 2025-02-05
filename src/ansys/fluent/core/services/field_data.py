@@ -996,8 +996,8 @@ class ZoneType(Enum):
 class ZoneInfo:
     """Zone information for mesh.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     _id : int
         Zone ID.
     name : str
@@ -1015,8 +1015,8 @@ class ZoneInfo:
 class Node:
     """Node class for mesh.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     x : float
         x-coordinate of the node.
     y : float
@@ -1064,8 +1064,8 @@ class CellElementType(Enum):
 class Facet:
     """Facet class within a mesh element.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     node_indices : list[int]
         0-based node indices of the facet.
     """
@@ -1077,8 +1077,8 @@ class Facet:
 class Element:
     """Element class for mesh.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     element_type : CellElementType
         Element type of the element.
     node_indices : list[int]
@@ -1097,8 +1097,8 @@ class Element:
 class Mesh:
     """Mesh class for Fluent field data.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     nodes : list[Node]
         List of nodes in the mesh.
     elements : list[Element]
