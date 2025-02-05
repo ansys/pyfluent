@@ -83,8 +83,6 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "flunits",
-        "settings_external",
         "datamodel/index",
         "settings_root",
         "tui/index",
@@ -113,7 +111,6 @@ hierarchy = {
         "setup_for_fluent",
     ],
     "other": [
-        "data_model_cache",
         "exceptions",
         "file_session",
         "fluent_connection",
