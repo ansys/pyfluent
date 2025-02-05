@@ -200,11 +200,13 @@ The following reduction functions are available in PyFluent:
   >>> reduction.mass_flow_integral(expression, locations)
 
 - **Sum**: Compute the sum of an expression over locations.
+
 .. code-block:: python
 
   >>> reduction.sum(expression, locations, weight)
 
 - **Sum If**: Compute the conditional sum of an expression.
+
 .. code-block:: python
 
   >>> reduction.sum_if(expression, condition, locations, weight)
