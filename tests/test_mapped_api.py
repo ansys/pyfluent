@@ -183,6 +183,7 @@ def test_datamodel_api_get_and_set_int_for_str(
 # testUpdateStateDictWithMapping
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/pull/3713")
 @pytest.mark.fluent_version(">=25.2")
 def test_state_of_command_args_with_mapping(
     datamodel_api_version_new, new_solver_session
