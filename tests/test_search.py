@@ -30,7 +30,6 @@ from ansys.fluent.core.search import (
     _get_capitalize_match_for_word_from_names,
     _get_close_matches_for_word_from_names,
     _get_exact_match_for_word_from_names,
-    _get_match_case_for_word_from_names,
     _get_wildcard_matches_for_word_from_names,
     _search_semantic,
     _search_whole_word,
@@ -87,39 +86,6 @@ def test_get_capitalize_match_for_word_from_names():
             "TextFontFixedUnits",
             "TextFontAutomaticUnits",
             "Font",
-        ]
-    )
-
-
-@pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
-def test_get_match_case_for_word_from_names():
-    api_tree_data = _get_api_tree_data()
-    api_object_names = api_tree_data["all_api_object_names"]
-    match_cases = _get_match_case_for_word_from_names(
-        "font",
-        names=api_object_names,
-    )
-    for match_case in match_cases:
-        assert "Font" not in match_case
-        assert "font" in match_case
-    assert set(match_cases) == set(
-        [
-            "text_font_fixed_units",
-            "text_font_automatic_horizontal_size",
-            "font_name",
-            "font_size",
-            "text_font_fixed_size",
-            "label_font",
-            "text_font_fixed_vertical_size",
-            "text_font_automatic_vertical_size",
-            "text_font_automatic_units",
-            "font",
-            "text_font_automatic_size",
-            "text_font_fixed_horizontal_size",
-            "application_font_size",
-            "font_automatic",
-            "text_font_name",
         ]
     )
 
