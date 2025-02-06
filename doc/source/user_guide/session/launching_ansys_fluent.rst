@@ -310,3 +310,23 @@ Connecting to a Fluent container running inside WSL from a Windows host
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written in D:\testing\server.txt>)
+
+
+Connecting to a Fluent container running inside Linux from a Windows host
+-------------------------------------------------------------------------
+
+1. Launch Fluent container inside Linux
+
+.. code:: console
+
+    ansys_inc/v251/fluent/bin/fluent 3ddp -gu -sifile=server.txt
+    cat server.txt
+    10.18.19.151:44383
+    hbsosnni
+
+2. Connect from PyFluent running on a Windows host
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.connect_to_fluent(ip="10.18.19.151", port=44383, password="hbsosnni")
