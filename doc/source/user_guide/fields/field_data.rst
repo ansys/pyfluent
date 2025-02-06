@@ -222,8 +222,8 @@ Vector field request
 ~~~~~~~~~~~~~~~~~~~~
 The response to a vector field request contains two fields:
 
-- ``vector field``, with the same name as the vector field name that is passed
- in the request
+- ``vector field``, with the same name as the vector field name that is passed in the request.
+
 - ``vector-scale``, a float value indicating the vector scale.
 
 Pathlines field request

@@ -552,7 +552,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 
     # # Post-process without case
     # with pytest.raises(RuntimeError):
-    #     # Does not exist.
+    #     # Does not exist. #1197711
     #     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
     #     graphics.mesh["mesh-1"].display()
 
@@ -583,7 +583,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     }
     graphics.contour["contour-velocity"].display()
 
-    examples.download_file(
+    mesh_file_2d = examples.download_file(
         "sample_2d_mesh.msh.h5",
         "pyfluent/surface_mesh",
         return_without_path=False,
@@ -593,6 +593,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
     # with pytest.raises(RuntimeError):
     #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)
+    del mesh_file_2d  # Remove this line after the above code snippet is operational
 
 
 @pytest.mark.fluent_version(">=23.2")

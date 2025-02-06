@@ -22,7 +22,7 @@ This new approach allows for straightforward access to various settings without
 navigating through the hierarchical structure of the solver settings.
 
 Example usage
--------------
+~~~~~~~~~~~~~
 
 .. code-block:: python
 
