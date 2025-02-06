@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-fluent-core"
-version = "0.29.dev3"
+version = "0.29.0"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
 requires-python = ">=3.10,<3.14"
@@ -59,7 +59,7 @@ tests = [
     "pytest-xdist==3.6.1",
 ]
 docs = [
-    "Sphinx==8.1.3",
+    "Sphinx==7.4.7",
     "jupyter_sphinx==0.5.3",
     "numpydoc==1.8.0",
     "matplotlib==3.10.0",
@@ -67,7 +67,7 @@ docs = [
     "pypandoc==1.15",
     "pytest-sphinx==0.6.3",
     "sphinx-autobuild==2024.10.3",
-    "sphinx-autodoc-typehints==3.0.1",
+    "sphinx-autodoc-typehints==2.3.0",
     "sphinx-copybutton==0.5.2",
     "sphinx-gallery==0.18.0",
     "sphinx-notfound-page==1.1.0",
@@ -75,11 +75,11 @@ docs = [
     "sphinxemoji==0.3.1",
     "sphinx-toggleprompt==0.5.2",
     "autodocsumm==0.2.14",
-    "beautifulsoup4==4.13.0",
+    "beautifulsoup4==4.13.1",
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.6.40",
+    "quarto-cli==1.6.39",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
     "tensorflow>=2.17.0",
