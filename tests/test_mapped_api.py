@@ -95,6 +95,7 @@ def get_error_state_message_from_remote_app(session, app_name, type_path):
     )
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_bool_for_str_has_correct_type(
     datamodel_api_version_new, new_solver_session
@@ -113,6 +114,7 @@ def test_datamodel_api_bool_for_str_has_correct_type(
     assert arg0["type"] == "Logical"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_set_bool_for_str(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
@@ -124,6 +126,7 @@ def test_datamodel_api_set_bool_for_str(datamodel_api_version_new, new_solver_se
     assert get_state_from_remote_app(solver, app_name, "/A/X") == "yes"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_set_bool_nested_for_str(
     datamodel_api_version_new, new_solver_session
@@ -137,6 +140,7 @@ def test_datamodel_api_set_bool_nested_for_str(
     assert get_error_state_message_from_remote_app(solver, app_name, "/A/X") is None
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_get_set_bool_for_str_with_flexible_strs_no_errors(
     datamodel_api_version_new, new_solver_session
@@ -150,6 +154,7 @@ def test_datamodel_api_get_set_bool_for_str_with_flexible_strs_no_errors(
     assert get_error_state_message_from_remote_app(solver, app_name, "/A/X") is None
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_get_attrs_bool_for_str(
     datamodel_api_version_new, new_solver_session
@@ -162,6 +167,7 @@ def test_datamodel_api_get_attrs_bool_for_str(
     assert service.get_attribute_value(app_name, "/A/X", "allowedValues") is None
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_get_and_set_int_for_str(
     datamodel_api_version_new, new_solver_session
@@ -183,6 +189,7 @@ def test_datamodel_api_get_and_set_int_for_str(
 # testUpdateStateDictWithMapping
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_state_of_command_args_with_mapping(
     datamodel_api_version_new, new_solver_session
@@ -207,6 +214,7 @@ def register_external_function_in_remote_app(session, app_name, func_name):
     )
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_execute_command_with_args_mapping(
     datamodel_api_version_new, new_solver_session
@@ -220,6 +228,7 @@ def test_execute_command_with_args_mapping(
     assert result == "yes"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_execute_command_with_args_and_path_mapping(
     datamodel_api_version_new, new_solver_session
@@ -233,6 +242,7 @@ def test_execute_command_with_args_and_path_mapping(
     assert result == "yes"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_execute_query_with_args_mapping(datamodel_api_version_new, new_solver_session):
     rules_str = (
@@ -259,6 +269,7 @@ def test_execute_query_with_args_mapping(datamodel_api_version_new, new_solver_s
     assert result == "yes"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_get_mapped_attr(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
@@ -272,6 +283,7 @@ def test_get_mapped_attr(datamodel_api_version_new, new_solver_session):
     assert service.get_attribute_value(app_name, "/A/Y", "default") == 2
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_get_mapped_attr_defaults(datamodel_api_version_new, new_solver_session):
     rules_str = (
@@ -306,6 +318,7 @@ def test_get_mapped_attr_defaults(datamodel_api_version_new, new_solver_session)
     assert service.get_attribute_value(app_name, "/A/Z", "default") == 42
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_get_mapped_enum_attr(datamodel_api_version_new, new_solver_session):
     rules_str = (
@@ -334,6 +347,7 @@ def test_get_mapped_enum_attr(datamodel_api_version_new, new_solver_session):
     assert service.get_attribute_value(app_name, "/A/X", "default") == "yellow"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_get_mapped_dynamic_enum_attr(datamodel_api_version_new, new_solver_session):
     rules_str = (
@@ -365,6 +379,7 @@ def test_get_mapped_dynamic_enum_attr(datamodel_api_version_new, new_solver_sess
     assert service.get_attribute_value(app_name, "/A/X", "default") == "yellow"
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
     rules_str = (
@@ -408,6 +423,7 @@ def test_get_mapped_command_attr(datamodel_api_version_new, new_solver_session):
     assert service.get_attribute_value(app_name, f"/C:{c_name}/Z", "default") == 42
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
@@ -465,6 +481,7 @@ def test_on_changed_is_mapped(datamodel_api_version_new, new_solver_session):
     assert state_obj == {"X": False, "Y": 2, "Z": None}
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_mapped_on_attribute_changed(datamodel_api_version_new, new_solver_session):
     rules_str = (
@@ -523,6 +540,7 @@ def test_mapped_on_attribute_changed(datamodel_api_version_new, new_solver_sessi
     assert value is True
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_command_executed_mapped_args(
     datamodel_api_version_new, new_solver_session
@@ -611,6 +629,7 @@ api_name_rules_str = (
 )
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_with_mapped_names(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
@@ -650,6 +669,7 @@ def test_datamodel_api_with_mapped_names(datamodel_api_version_new, new_solver_s
 # testMapperMapDMValueToAPI
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_root_get_and_set_state_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -665,6 +685,7 @@ def test_datamodel_api_root_get_and_set_state_with_mapped_names(
     assert service.get_state(app_name, "/") == {"aaa": {"xxx": False}}
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_root_get_attrs_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -678,6 +699,7 @@ def test_datamodel_api_root_get_attrs_with_mapped_names(
     assert service.get_attribute_value(app_name, "/B:b/yyy", "default") == 2
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_cmd_args_op_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -695,6 +717,7 @@ def test_datamodel_api_cmd_args_op_with_mapped_names(
     assert service.get_attribute_value(app_name, f"/C__:{c_name}", "xxx/attr1") == 42.0
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_rename_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -711,6 +734,7 @@ def test_datamodel_api_rename_with_mapped_names(
     assert service.get_state(app_name, "/eee:x/yyy") == 2
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_delete_object_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -723,6 +747,7 @@ def test_datamodel_api_delete_object_with_mapped_names(
     service.delete_object(app_name, "/B:b")
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     datamodel_api_version_new, new_solver_session
@@ -760,6 +785,7 @@ def test_datamodel_api_on_created_on_changed_on_deleted_with_mapped_names(
     assert changes == [42]
 
 
+@pytest.mark.skip("Currently only tested in backend.")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_changed_with_mapped_names(
     datamodel_api_version_new, new_solver_session
