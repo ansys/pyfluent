@@ -596,7 +596,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     del mesh_file_2d  # Remove this line after the above code snippet is operational
 
 
-@pytest.mark.fluent_version(">=23.2,<25.2")
+@pytest.mark.fluent_version(">=23.2")
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
