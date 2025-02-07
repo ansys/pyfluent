@@ -9,6 +9,42 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.30.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev0>`_ - 2025-02-07
+=====================================================================================
+
+Added
+^^^^^
+
+- remove application of mapped metadata `#3713 <https://github.com/ansys/pyfluent/pull/3713>`_
+
+
+Fixed
+^^^^^
+
+- Update dependencies [skip tests] `#3710 <https://github.com/ansys/pyfluent/pull/3710>`_
+- Update token and contributing doc [skip tests] `#3718 <https://github.com/ansys/pyfluent/pull/3718>`_
+
+
+Miscellaneous
+^^^^^^^^^^^^^
+
+- some minor test improvements `#3711 <https://github.com/ansys/pyfluent/pull/3711>`_
+
+
+Documentation
+^^^^^^^^^^^^^
+
+- Update built-in settings doc and fix doc warnings [skip-tests] `#3708 <https://github.com/ansys/pyfluent/pull/3708>`_
+- Fix warnings in field data and reduction docs [skip tests] `#3712 <https://github.com/ansys/pyfluent/pull/3712>`_
+- Update docs to connect Fluent launched on Linux [skip tests] `#3721 <https://github.com/ansys/pyfluent/pull/3721>`_
+
+
+Maintenance
+^^^^^^^^^^^
+
+- Get hanging test names by parsing the GitHub logs [skip tests] `#3714 <https://github.com/ansys/pyfluent/pull/3714>`_
+- update CHANGELOG for v0.29.0 `#3719 <https://github.com/ansys/pyfluent/pull/3719>`_
+
 `0.29.0 <https://github.com/ansys/pyfluent/releases/tag/v0.29.0>`_ - 2025-02-06
 ===============================================================================
 
