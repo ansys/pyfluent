@@ -92,6 +92,6 @@ Or, you can directly execute `pre-commit <https://pre-commit.com/>`_ with:
 
 In order to have a nice :ref:`ref_release_notes` section, it is important to follow
 the branch and commit names conventions as described in the *PyAnsys Developer's Guide*
-`branch<https://dev.docs.pyansys.com/how-to/contributing.html#branch-naming-conventions>`_ and 
-`commit<https://dev.docs.pyansys.com/how-to/contributing.html#commit-naming-conventions>`_ naming
+`branch <https://dev.docs.pyansys.com/how-to/contributing.html#branch-naming-conventions>`_ and 
+`commit <https://dev.docs.pyansys.com/how-to/contributing.html#commit-naming-conventions>`_ naming
 sections.
