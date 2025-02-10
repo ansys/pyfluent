@@ -13,7 +13,7 @@ Accessing field info objects
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent()
   >>> solver.settings.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
   >>> solver.settings.solution.initialization.hybrid_initialize()
 

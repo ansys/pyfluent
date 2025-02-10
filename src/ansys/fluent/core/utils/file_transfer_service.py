@@ -222,7 +222,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
     >>> from ansys.fluent.core import examples
     >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
     >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+    >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
     >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
     >>> solver_session.file.read_case(file_name="elbow.cas.h5")
     >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
@@ -321,7 +321,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         >>> from ansys.fluent.core import examples
         >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-        >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+        >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
         >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
         >>> solver_session.file.read_case(file_name="elbow.cas.h5")
         """
@@ -362,7 +362,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         >>> from ansys.fluent.core import examples
         >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-        >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+        >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
         >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
         >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
         """

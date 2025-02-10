@@ -9,9 +9,7 @@ Fluent's gRPC server so that commands can be sent to it from the Python interpre
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(
-  >>>     mode=pyfluent.FluentMode.SOLVER
-  >>> )
+  >>> solver = pyfluent.launch_fluent()
 
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
@@ -48,9 +46,7 @@ These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
-  >>>     mode=pyfluent.FluentMode.SOLVER
-  >>> )
+  >>> solver = pyfluent.launch_fluent()
   
 
 .. code:: python
@@ -204,7 +200,6 @@ Fluent uses:
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     processor_count=16,
-  >>>     mode=pyfluent.FluentMode.SOLVER
   >>> )
 
 

@@ -23,12 +23,12 @@ with two separate examples case files as follows:
     >>> from ansys.fluent.core.solver.function import reduction
     >>> from ansys.fluent.core.examples import download_file
 
-    >>> solver1 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> solver1 = pyfluent.launch_fluent()
     >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
     >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
     >>> solver1.settings.file.read_case_data(file_name=case_path)
 
-    >>> solver2 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> solver2 = pyfluent.launch_fluent()
     >>> case_path = download_file("elbow1.cas.h5", "pyfluent/file_session")
     >>> data_path = download_file("elbow1.dat.h5", "pyfluent/file_session")
     >>> solver2.settings.file.read_case_data(file_name=case_path)
