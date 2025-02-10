@@ -17,7 +17,7 @@ You can do this either by loading both case and data files or by reading a case 
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent()
   >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
   >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
   >>> solver.settings.file.read_case_data(file_name=case_path)
@@ -296,7 +296,7 @@ using the field data streaming mechanism:
   >>> )
 
   >>> # Launch Fluent in Meshing mode
-  >>> meshing = pyfluent.launch_fluent(mode="meshing")
+  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
   >>> # Dictionary to store mesh data
   >>> mesh_data = {}

@@ -30,9 +30,7 @@ meshing session and transfer it to a solver session.
   >>>     import_file_name
   >>> )
 
-  >>> solver_session = pyfluent.launch_fluent(
-  >>>     mode=pyfluent.FluentMode.SOLVER
-  >>> )
+  >>> solver_session = pyfluent.launch_fluent()
 
   >>> transfer_case(
   >>>     source_instance=meshing,

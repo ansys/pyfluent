@@ -45,14 +45,14 @@ Examples
    >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
 
    >>> # Remote file transfer service
-   >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER, file_transfer_service=RemoteFileTransferStrategy())
+   >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
    >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
    >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
 
    >>> # PIM file transfer service
-   >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+   >>> solver_session = pyfluent.launch_fluent()
    >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
