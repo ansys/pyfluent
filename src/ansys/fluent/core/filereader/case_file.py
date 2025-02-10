@@ -290,7 +290,7 @@ class Mesh:
 
     def __init__(self, file_handle):
         """Initialize the object."""
-        _check_h5_extension(file_handle.name)
+        _check_h5_extension(file_handle.filename)
         self._file_handle = file_handle
 
     def get_mesh_type(self) -> MeshType:
