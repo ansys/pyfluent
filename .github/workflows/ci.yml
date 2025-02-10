@@ -93,10 +93,23 @@ jobs:
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
+  check-vulnerabilities:
+    name: "Check library vulnerabilities"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@v8
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          python-package-name: ${{ env.PACKAGE_NAME }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+          upload-reports: True
+          hide-log: false
+
   docs_build:
     name: Build Documentation
     needs: [docs-style]
-    runs-on: [self-hosted, pyfluent]
+    runs-on: public-ubuntu-latest-16-cores
     env:
       DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
