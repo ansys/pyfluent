@@ -9,7 +9,7 @@ Examples
 .. code-block:: python
 
    >>> import ansys.fluent.core as pyfluent
-   >>> solver = pyfluent.launch_fluent(mode="solver")
+   >>> solver = pyfluent.launch_fluent()
    >>> iter_count = 100
    >>> solver.rp_vars("number-of-iterations", iter_count)
    'number-of-iterations'

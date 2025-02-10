@@ -246,10 +246,30 @@ class MeshType(Enum):
     UNKNOWN = "unknown"
 
 
+def _check_h5_extension(file_path):
+    """
+    Checks if a given file path ends with the '.h5' extension.
+
+    Parameters
+    ----------
+    file_path: str
+        The path to the file.
+
+    Raises
+    ------
+    ValueError
+        If the file path does not end with '.h5'.
+    """
+    if not Path(file_path).match("*.h5"):
+        raise ValueError("Supports `.h5` extension file format only.")
+
+
 class Mesh:
     """Class to provide data from and information about Fluent mesh files.
 
     This class is applicable only to HDF5, Fluent's default format for mesh files.
+    Fluent writes HDF5 files with an extension,`.h5` and thus files without that extension
+    are not supported.
     HDF5 (Hierarchical Data Format version 5) is commonly used for storing large amounts
     of scientific data, including Fluent mesh data.
 
@@ -270,6 +290,7 @@ class Mesh:
 
     def __init__(self, file_handle):
         """Initialize the object."""
+        _check_h5_extension(file_handle.filename)
         self._file_handle = file_handle
 
     def get_mesh_type(self) -> MeshType:
@@ -633,11 +654,13 @@ class CaseFile(RPVarProcessor):
                 "*.msh.h5"
             ):
                 _file = h5py.File(case_file_name)
-                if Path(case_file_name).match("*.cas.h5"):
-                    self._is_case_file = True
-                    settings = _file["settings"]
-                    rpvars = settings["Rampant Variables"][0]
-                    rp_vars_str = rpvars.decode()
+                if Path(case_file_name).match("*.h5"):
+                    if Path(case_file_name).match("*.cas.h5"):
+                        self._is_case_file = True
+                        settings = _file["settings"]
+                        rpvars = settings["Rampant Variables"][0]
+                        rp_vars_str = rpvars.decode()
+                    self._mesh = Mesh(_file)
             elif Path(case_file_name).match("*.cas") or Path(case_file_name).match(
                 "*.msh"
             ):
@@ -674,7 +697,6 @@ class CaseFile(RPVarProcessor):
 
         if self._is_case_file:
             super().__init__(rp_vars_str=rp_vars_str)
-        self._mesh = Mesh(_file)
 
     def get_mesh(self):
         """Get the mesh data."""
