@@ -654,11 +654,13 @@ class CaseFile(RPVarProcessor):
                 "*.msh.h5"
             ):
                 _file = h5py.File(case_file_name)
-                if Path(case_file_name).match("*.cas.h5"):
-                    self._is_case_file = True
-                    settings = _file["settings"]
-                    rpvars = settings["Rampant Variables"][0]
-                    rp_vars_str = rpvars.decode()
+                if Path(case_file_name).match("*.h5"):
+                    if Path(case_file_name).match("*.cas.h5"):
+                        self._is_case_file = True
+                        settings = _file["settings"]
+                        rpvars = settings["Rampant Variables"][0]
+                        rp_vars_str = rpvars.decode()
+                    self._mesh = Mesh(_file)
             elif Path(case_file_name).match("*.cas") or Path(case_file_name).match(
                 "*.msh"
             ):
@@ -695,7 +697,6 @@ class CaseFile(RPVarProcessor):
 
         if self._is_case_file:
             super().__init__(rp_vars_str=rp_vars_str)
-        self._mesh = Mesh(_file)
 
     def get_mesh(self):
         """Get the mesh data."""
