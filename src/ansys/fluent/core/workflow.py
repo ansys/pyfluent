@@ -30,6 +30,10 @@ import threading
 from typing import Any, Iterable, Iterator, Tuple
 import warnings
 
+from ansys.fluent.core.pyfluent_warnings import (
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.services.datamodel_se import (
     PyCallableStateObject,
     PyCommand,
@@ -39,7 +43,6 @@ from ansys.fluent.core.services.datamodel_se import (
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 
 class CommandInstanceCreationError(RuntimeError):

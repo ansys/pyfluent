@@ -31,6 +31,10 @@ import weakref
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.pyfluent_warnings import (
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
@@ -42,7 +46,6 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 from .rpvars import RPVars
 

@@ -12,7 +12,7 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  MAIN_PYTHON_VERSION: '3.10'
+  MAIN_PYTHON_VERSION: '3.12'
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
   PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
@@ -66,19 +66,16 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: matrix.image-tag != 'v25.1.0'
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Pull Fluent docker image dev
-        if: matrix.image-tag == 'v25.2.0'
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-
+          
       - name: Run API codegen
-        run: make api-codegen
+        run: |
+          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
+          pip install ansys-fluent-visualization==0.18.dev0
+          make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
