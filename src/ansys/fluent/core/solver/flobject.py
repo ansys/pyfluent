@@ -1837,6 +1837,8 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
                 return cobj[name]
             except KeyError:
                 return None
+            except Exception:
+                return None
         raise KeyError(name)
 
     def __setitem__(self, name, value):
