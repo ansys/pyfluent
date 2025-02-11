@@ -1835,8 +1835,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
             cobj = getattr(self, cname)
             try:
                 return cobj[name]
-            except ImportError as e:
-                warnings.warn(f"Unable to import ansys.units: {e}", ImportWarning)
+            except KeyError:
                 return None
         raise KeyError(name)
 
@@ -1851,8 +1850,10 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
             try:
                 del cobj[name]
                 return
+            except KeyError:
+                return None
             except Exception:
-                pass
+                return None
         raise KeyError(name)
 
     def __iter__(self):
