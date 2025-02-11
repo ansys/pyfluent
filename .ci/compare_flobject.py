@@ -1,7 +1,7 @@
 """Provides a module to compare flobject.py."""
 
 import platform
-import subprocess
+import subprocess  # nosec B404
 import uuid
 
 

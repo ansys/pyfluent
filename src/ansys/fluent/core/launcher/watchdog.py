@@ -28,9 +28,9 @@ See :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` `start_watchdog
 
 import os
 from pathlib import Path
-import random
+import secrets
 import string
-import subprocess
+import subprocess  # nosec B404
 import sys
 import time
 
@@ -71,7 +71,7 @@ def launch(
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
-        random.choices(
+        secrets.choice(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
         )
     )
@@ -137,7 +137,7 @@ def launch(
     kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL, "close_fds": True}
 
     if os.name == "nt":
-        kwargs.update(shell=True)
+        kwargs.update(shell=True)  # nosec B604
         # https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags
         # https://docs.python.org/3/library/subprocess.html#windows-constants
         flags = 0

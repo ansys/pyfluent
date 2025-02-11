@@ -66,7 +66,7 @@ import logging
 import os
 from pathlib import Path
 import shutil
-import subprocess
+import subprocess  # nosec B404
 import time
 from typing import Any, Callable, Dict
 

@@ -5,7 +5,7 @@ from datetime import datetime
 import inspect
 import os
 import platform
-import subprocess
+import subprocess  # nosec B404
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey

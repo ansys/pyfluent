@@ -33,7 +33,7 @@ import os
 from pathlib import Path
 import platform
 import socket
-import subprocess
+import subprocess  # nosec B404
 import threading
 from typing import Any, Callable, List, Tuple, TypeVar
 import warnings

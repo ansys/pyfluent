@@ -30,7 +30,7 @@ LSB_MCPU_HOSTS, PBS_NODEFILE and SLURM_JOB_NODELIST variables, respectively.
 import csv
 import os
 from pathlib import Path
-import subprocess
+import subprocess  # nosec B404
 from typing import Dict, List
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList

@@ -27,7 +27,7 @@ import os
 from pathlib import Path
 import platform
 import socket
-import subprocess
+import subprocess  # nosec B404
 import time
 from typing import Any, Dict
 

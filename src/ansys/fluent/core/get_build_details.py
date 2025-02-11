@@ -23,7 +23,7 @@
 """Get the git build info."""
 
 from collections import OrderedDict
-import subprocess
+import subprocess  # nosec B404
 
 from ansys.fluent.core._version import __version__
 

@@ -35,17 +35,19 @@ Usage
 """
 
 import argparse
+import json
 import logging
 import os
 from pathlib import Path
-import pickle
 import platform
 import shutil
 import string
-import subprocess
+import subprocess  # nosec B404
 from typing import Any, Dict
 import uuid
-import xml.etree.ElementTree as ET
+
+import defusedxml
+import defusedxml.ElementTree as ET
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
@@ -61,6 +63,8 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+
+defusedxml.defuse_stdlib()
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -189,13 +193,12 @@ class _TUIMenu:
         return convert_path_to_grpc_path(self.path + [command])
 
 
-class _RenameModuleUnpickler(pickle.Unpickler):
-    def find_class(self, module, name):
-        renamed_module = module
-        if module == "tuigen":
-            renamed_module = "ansys.fluent.core.codegen.tuigen"
-
-        return super(_RenameModuleUnpickler, self).find_class(renamed_module, name)
+class _RenameModuleDecoder(json.JSONDecoder):
+    def decode(self, s, _w=json.decoder.WHITESPACE.match):
+        obj = super().decode(s, _w)
+        if isinstance(obj, dict) and "module" in obj and obj["module"] == "tuigen":
+            obj["module"] = "ansys.fluent.core.codegen.tuigen"
+        return obj
 
 
 class TUIGenerator:
@@ -297,12 +300,11 @@ class TUIGenerator:
                         Path(__file__)
                         / ".."
                         / "data"
-                        / f"static_info_{self._version}_{self._mode}.pickle"
+                        / f"static_info_{self._version}_{self._mode}.json"
                     ).resolve(),
-                    "rb",
+                    "r",
                 ) as f:
-                    self._main_menu = _RenameModuleUnpickler(f).load()
-            else:
+                    self._main_menu = json.load(f, cls=_RenameModuleDecoder)
                 info = self._static_infos[
                     (
                         StaticInfoType.TUI_MESHING

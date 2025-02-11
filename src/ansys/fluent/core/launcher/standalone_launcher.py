@@ -38,7 +38,7 @@ Examples
 import logging
 import os
 from pathlib import Path
-import subprocess
+import subprocess  # nosec B404
 from typing import Any, Dict
 
 from ansys.fluent.core.launcher.error_handler import (
