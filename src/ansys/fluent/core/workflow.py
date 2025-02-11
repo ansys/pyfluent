@@ -817,8 +817,8 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._just_set_state(recovery_state)
             try:
                 self._task._refreshed_command()()
-            except Exception:
-                pass
+            except Exception as e:
+                logger.error(f"Error encountered while getting task by ID: {e}")
             raise ex
 
     def _just_set_state(self, args):
@@ -1440,8 +1440,8 @@ class Workflow:
                         return mappings[task_id]
                     try:
                         return self._task_by_id_impl(task_id, workflow_state)
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        logger.error(f"Error encountered while getting task by ID: {e}")
 
                 return _task_by_id
 
