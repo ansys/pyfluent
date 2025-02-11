@@ -42,6 +42,7 @@ import weakref
 import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -50,7 +51,6 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")

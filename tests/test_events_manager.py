@@ -26,7 +26,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentVersion, MeshingEvent, SolverEvent, examples
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:

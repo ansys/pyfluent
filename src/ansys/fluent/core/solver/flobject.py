@@ -70,8 +70,11 @@ import warnings
 import weakref
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.pyfluent_warnings import (
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
 
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
