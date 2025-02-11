@@ -50,9 +50,7 @@ jobs:
         run: make version-info
 
       - name: Install pyfluent
-        run: |
-          sudo rm -rf /opt/hostedtoolcache/Python/3.12.8/x64/lib/python3.12/site-packages/ansys/fluent/core/
-          make install
+        run: make install
 
       - name: Retrieve PyFluent version
         run: |
