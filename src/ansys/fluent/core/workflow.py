@@ -159,10 +159,10 @@ def _call_refresh_task_accessors(obj):
     """This layer handles exception for PyConsole."""
     try:
         _refresh_task_accessors(obj)
-    except Exception:
-        # Is there a more specific Exception derived class
-        # for which we know it is correct to pass?
-        pass
+    except KeyError as e:
+        logger.error(f"KeyError encountered: {e}")
+    except Exception as e:
+        logger.error(f"Unexpected error encountered: {e}")
 
 
 def _convert_task_list_to_display_names(workflow_root, task_list):
@@ -295,8 +295,10 @@ class BaseTask:
                         return mappings[task_id]
                     try:
                         return self._command_source._task_by_id(task_id)
-                    except Exception:
-                        pass
+                    except KeyError as e:
+                        logger.error(f"KeyError encountered: {e}")
+                    except Exception as e:
+                        logger.error(f"Unexpected error encountered: {e}")
 
                 return _task_by_id
 
