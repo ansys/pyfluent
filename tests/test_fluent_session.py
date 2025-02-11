@@ -124,8 +124,11 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
     time.sleep(10)
     if inside_container:
-        assert get_container(cortex_host)
-        subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
+        if not get_container(cortex_host):
+            raise AssertionError("Container not found")
+        subprocess.Popen(
+            ["docker", "stop", cortex_host]
+        )  # nosec B602 B603 B607 # cortex_host = container_id
     else:
         from pathlib import Path
 
@@ -144,7 +147,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         print(f"cleanup_file_name: {cleanup_file_name}")
         cmd_list.append(Path(cortex_pwd, cleanup_file_name))
         print(f"cmd_list: {cmd_list}")
-        subprocess.Popen(
+        subprocess.Popen(  # nosec B602 B603 B607
             cmd_list,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,

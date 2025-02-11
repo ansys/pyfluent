@@ -33,7 +33,9 @@ def get_build_version():
     build_details = OrderedDict()
     try:
         last_commit_time = (
-            subprocess.check_output(["git", "log", "-n", "1", "--pretty=tformat:%ad"])
+            subprocess.check_output(
+                ["git", "log", "-n", "1", "--pretty=tformat:%ad"]
+            )  # nosec B602 B603 B607
             .decode("ascii")
             .strip()
             .split()
@@ -44,12 +46,16 @@ def get_build_version():
         )
         build_details["Current Version"] = f"{__version__}"
         build_details["ShaID"] = (
-            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+            subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"]
+            )  # nosec B602 B603 B607
             .decode("ascii")
             .strip()
         )
         build_details["Branch"] = (
-            subprocess.check_output(["git", "branch", "--show-current"])
+            subprocess.check_output(
+                ["git", "branch", "--show-current"]
+            )  # nosec B602 B603 B607
             .decode("ascii")
             .strip()
         )

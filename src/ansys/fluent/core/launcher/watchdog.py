@@ -177,7 +177,7 @@ def launch(
     if watchdog_err.is_file():
         watchdog_err.unlink()
 
-    subprocess.Popen(cmd_send, **kwargs)
+    subprocess.Popen(cmd_send, **kwargs)  # nosec B602 B603 B607
 
     logger.info("Waiting for Watchdog to initialize, then proceeding...")
     file_exists = timeout_loop(

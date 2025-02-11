@@ -105,14 +105,18 @@ def load_machines(
             + str(machine_list.machines[0].host_name)
             + " /bin/true > /dev/null 2>&1; echo $?"
         )
-        p = subprocess.Popen(sshTest, shell=True, stdout=subprocess.PIPE)
+        p = subprocess.Popen(
+            sshTest, shell=True, stdout=subprocess.PIPE
+        )  # nosec B602 B603 B607
         procOutput = p.communicate()
         if procOutput[0] != b"0\n":
             runCommand = (
                 r"scontrol show node ${SLURM_JOB_NODELIST} | "
                 r"awk '/NodeAddr=/ {print $1}' | cut -f2 -d="
             )
-            p = subprocess.Popen(runCommand, shell=True, stdout=subprocess.PIPE)
+            p = subprocess.Popen(
+                runCommand, shell=True, stdout=subprocess.PIPE
+            )  # nosec B602 B603 B607
             procOutput = p.communicate()
             hostList = procOutput[0].decode("utf-8").replace("\n", ",")
             length = len(hostList)

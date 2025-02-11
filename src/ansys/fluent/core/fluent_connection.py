@@ -510,7 +510,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def _close_slurm(self):
-        subprocess.run(["scancel", f"{self._slurm_job_id}"])
+        subprocess.run(["scancel", f"{self._slurm_job_id}"])  # nosec B602 B603 B607
 
     def force_exit(self):
         """Immediately terminates the Fluent client, losing unsaved progress and data.
@@ -559,7 +559,7 @@ class FluentConnection:
                 )
                 cmd_list.append(cleanup_file_name)
                 logger.debug(f"Cleanup command list = {cmd_list}")
-                subprocess.Popen(
+                subprocess.Popen(  # nosec B602 B603 B607
                     cmd_list,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,

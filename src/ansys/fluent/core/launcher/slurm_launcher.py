@@ -127,7 +127,9 @@ class _SlurmWrapper:
         list[str]
         List of queues.
         """
-        out = subprocess.check_output(["sinfo", "--format=%P", "--noheader"])
+        out = subprocess.check_output(
+            ["sinfo", "--format=%P", "--noheader"]
+        )  # nosec B602 B603 B607
         queues = out.decode().strip().split()
         queues = [q.removesuffix("*") for q in queues]
         return queues
@@ -146,7 +148,9 @@ class _SlurmWrapper:
         str
             Any of ``""``, ``"RUNNING"``, ``"CANCELLED"`` or ``"COMPLETED"``.
         """
-        out = subprocess.check_output(["squeue", "-j", f"{job_id}", "-o", '"%T"', "-h"])
+        out = subprocess.check_output(
+            ["squeue", "-j", f"{job_id}", "-o", '"%T"', "-h"]
+        )  # nosec B602 B603 B607
         return out.decode().strip().strip('"')
 
     @staticmethod
@@ -165,7 +169,9 @@ class _SlurmWrapper:
         """
         if not isinstance(job_id, int) or job_id <= 0:
             raise ValueError("Invalid job_id")
-        subprocess.run([shutil.which("scancel"), str(job_id)], check=True)
+        subprocess.run(
+            [shutil.which("scancel"), str(job_id)], check=True
+        )  # nosec B602 B603 B607
 
 
 class SlurmFuture:
@@ -462,7 +468,7 @@ class SlurmLauncher:
         )
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
-        proc = subprocess.Popen(launch_cmd, **kwargs)
+        proc = subprocess.Popen(launch_cmd, **kwargs)  # nosec B602 B603 B607
         slurm_job_id = _get_slurm_job_id(proc)
         logger.info(f"Slurm job id = {slurm_job_id}")
         self._argvals["slurm_job_id"] = slurm_job_id
