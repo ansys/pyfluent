@@ -50,7 +50,7 @@ def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
     from ansys.fluent.core import CODEGEN_OUTDIR
 
-    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
+    return (CODEGEN_OUTDIR / f"api_tree_{version}.json").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
