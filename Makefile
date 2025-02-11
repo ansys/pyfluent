@@ -6,6 +6,7 @@ install:
 	@pip install -r requirements/requirements_build.txt
 	@flit build
 	@pip install -q --force-reinstall dist/*.whl
+	@pip install pyansys-tools-report>=0.8.1
 	@python src/ansys/fluent/core/report.py
 
 install-test:
