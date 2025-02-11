@@ -41,12 +41,12 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 
 class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):

@@ -1,0 +1,114 @@
+name: Execute Examples Weekly
+
+on:
+  schedule:  # UTC at 0400 on Saturday
+    - cron:  '0 4 * * SAT'
+  workflow_dispatch:
+
+env:
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYFLUENT_LAUNCH_CONTAINER: 1
+  PYFLUENT_LOGGING: 'DEBUG'
+  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_HIDE_LOG_SECRETS: 1
+  MAIN_PYTHON_VERSION: '3.12'
+  PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
+  PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
+
+jobs:
+
+  execute_examples:
+    name: Build
+    runs-on: [public-ubuntu-latest-8-cores]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image-tag: v25.1.0
+            version: 251
+          - image-tag: v25.2.0
+            version: 252
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ matrix.python-version }}
+
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Run API codegen
+        run: |
+          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
+          pip install ansys-fluent-visualization==0.18.dev0
+          make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Print Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Execute Examples
+        run: |
+            echo "Executing examples"
+            sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
+            python examples/00-fluent/ahmed_body_workflow.py
+            python examples/00-fluent/brake.py
+            python examples/00-fluent/conjugate_heat_transfer.py
+            python examples/00-fluent/DOE_ML.py
+            python examples/00-fluent/exhaust_system_settings_api.py
+            python examples/00-fluent/external_compressible_flow.py
+            python examples/00-fluent/lunar_lander_thermal.py
+            python examples/00-fluent/mixing_elbow_settings_api.py
+            python examples/00-fluent/modeling_ablation.py
+            python examples/00-fluent/modeling_cavitation.py
+            python examples/00-fluent/parametric_static_mixer_1.py
+            python examples/00-fluent/radiation_headlamp.py
+            python examples/00-fluent/species_transport.py
+            python examples/00-fluent/tyler_sofrin_modes.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Cleanup previous docker containers
+        if: always()
+        run: make cleanup-previous-docker-containers
