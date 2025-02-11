@@ -72,7 +72,7 @@ jobs:
 
       - name: Run API codegen
         run: |
-          sudo mkdir /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
           make api-codegen
         env:
