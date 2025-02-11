@@ -436,9 +436,7 @@ class PimFileTransferService:
             try:
                 from simple_upload_server.client import Client
 
-                token = os.getenv("UPLOAD_SERVER_TOKEN")
-                if not token:
-                    raise ValueError("UPLOAD_SERVER_TOKEN environment variable not set")
+                token = os.getenv("UPLOAD_SERVER_TOKEN", "token")
                 self.file_service = Client(
                     token=token,
                     url=self.upload_server.uri,
