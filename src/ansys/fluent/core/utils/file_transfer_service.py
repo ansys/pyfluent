@@ -24,7 +24,6 @@
 
 import os
 import pathlib
-import random
 import shutil
 from typing import Any, Protocol
 import warnings
@@ -264,7 +263,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
         self.mount_source = mount_source if mount_source else MOUNT_SOURCE
         try:
-            self.host_port = port if port else random.randint(5000, 6000)
+            import secrets
+
+            self.host_port = port if port else secrets.randbelow(1000) + 5000
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
@@ -273,7 +274,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 volumes=[f"{self.mount_source}:{self.mount_target}"],
             )
         except docker.errors.DockerException:
-            self.host_port = port if port else random.randint(6000, 7000)
+            import secrets
+
+            self.host_port = port if port else secrets.randbelow(1000) + 6000
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
@@ -433,8 +436,11 @@ class PimFileTransferService:
             try:
                 from simple_upload_server.client import Client
 
+                token = os.getenv("UPLOAD_SERVER_TOKEN")
+                if not token:
+                    raise ValueError("UPLOAD_SERVER_TOKEN environment variable not set")
                 self.file_service = Client(
-                    token="token",
+                    token=token,
                     url=self.upload_server.uri,
                     headers=self.upload_server.headers,
                 )

@@ -157,8 +157,15 @@ class _SlurmWrapper:
         ----------
         job_id : int
             Job id.
+
+        Raises
+        ------
+        ValueError
+            If ``job_id`` is invalid.
         """
-        subprocess.run(["scancel", f"{job_id}"])
+        if not isinstance(job_id, int) or job_id <= 0:
+            raise ValueError("Invalid job_id")
+        subprocess.run([shutil.which("scancel"), str(job_id)], check=True)
 
 
 class SlurmFuture:

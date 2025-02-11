@@ -163,9 +163,9 @@ def _call_refresh_task_accessors(obj):
     try:
         _refresh_task_accessors(obj)
     except KeyError as e:
-        logger.error(f"KeyError encountered: {e}")
+        logger.debug(f"KeyError encountered: {e}")
     except Exception as e:
-        logger.error(f"Unexpected error encountered: {e}")
+        logger.debug(f"Unexpected error encountered: {e}")
 
 
 def _convert_task_list_to_display_names(workflow_root, task_list):
@@ -299,9 +299,9 @@ class BaseTask:
                     try:
                         return self._command_source._task_by_id(task_id)
                     except KeyError as e:
-                        logger.error(f"KeyError encountered: {e}")
+                        logger.debug(f"KeyError encountered: {e}")
                     except Exception as e:
-                        logger.error(f"Unexpected error encountered: {e}")
+                        logger.debug(f"Unexpected error encountered: {e}")
 
                 return _task_by_id
 
@@ -818,7 +818,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             try:
                 self._task._refreshed_command()()
             except Exception as e:
-                logger.error(f"Error encountered while getting task by ID: {e}")
+                logger.debug(f"Error encountered while getting task by ID: {e}")
             raise ex
 
     def _just_set_state(self, args):
@@ -1441,7 +1441,7 @@ class Workflow:
                     try:
                         return self._task_by_id_impl(task_id, workflow_state)
                     except Exception as e:
-                        logger.error(f"Error encountered while getting task by ID: {e}")
+                        logger.debug(f"Error encountered while getting task by ID: {e}")
 
                 return _task_by_id
 
