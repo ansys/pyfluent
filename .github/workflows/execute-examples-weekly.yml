@@ -74,7 +74,7 @@ jobs:
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
-          pip install ansys-fluent-visualization
+          pip install ansys-fluent-visualization==0.18.dev0
           make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
