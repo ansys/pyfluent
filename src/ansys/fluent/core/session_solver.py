@@ -32,6 +32,7 @@ import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.reduction import ReductionService
@@ -59,7 +60,6 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 tui_logger = logging.getLogger("pyfluent.tui")

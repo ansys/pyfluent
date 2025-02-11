@@ -24,7 +24,7 @@
 
 import warnings
 
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 from .case_file import CaseFile as CaseReader  # noqa: F401
 

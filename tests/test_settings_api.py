@@ -26,6 +26,7 @@ import pytest
 from pytest import WarningsRecorder
 
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
     UnstableSettingWarning,
@@ -36,7 +37,6 @@ from ansys.fluent.core.solver.flobject import (
 )
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentUserWarning
 
 
 @pytest.mark.nightly

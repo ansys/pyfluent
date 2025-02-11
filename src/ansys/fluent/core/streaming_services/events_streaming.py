@@ -34,8 +34,8 @@ from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.streaming_services.streaming import StreamingService
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 __all__ = [
     "EventsManager",
