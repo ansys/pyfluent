@@ -66,6 +66,8 @@ jobs:
           python examples/00-fluent/mixing_elbow_settings_api.py
           python examples/00-fluent/modeling_cavitation.py
           python examples/00-fluent/species_transport.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build All Documentation
         run: |
