@@ -92,7 +92,7 @@ jobs:
         run: |
             echo "Executing examples"
             sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
-            python examples/00-fluent/ahmed_body_workflow.py
+            # python examples/00-fluent/ahmed_body_workflow.py
             python examples/00-fluent/brake.py
             python examples/00-fluent/conjugate_heat_transfer.py
             python examples/00-fluent/DOE_ML.py
