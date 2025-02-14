@@ -510,7 +510,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def _close_slurm(self):
-        subprocess.run(["scancel", f"{self._slurm_job_id}"])  # nosec B602 B603 B607
+        subprocess.run(["scancel", f"{self._slurm_job_id}"])  # nosec B603 B607
 
     def force_exit(self):
         """Immediately terminates the Fluent client, losing unsaved progress and data.

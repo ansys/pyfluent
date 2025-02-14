@@ -137,8 +137,8 @@ def _stop_fluent_container(gallery_conf, fname):
         for container_name in container_names:
             print(f"Container still running for script {fname}")
             subprocess.run(
-                f"docker stop {container_name}", shell=is_linux
-            )  # nosec B602 B603 B607
+                [f"docker stop {container_name}"], shell=is_linux
+            )  # nosec B602
     except Exception:
         pass
 

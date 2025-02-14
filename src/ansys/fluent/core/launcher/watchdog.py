@@ -71,9 +71,9 @@ def launch(
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
-        random.choices(  # nosec B311
+        random.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
-        )
+        )  # nosec B311
     )
 
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()

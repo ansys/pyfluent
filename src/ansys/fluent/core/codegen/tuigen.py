@@ -105,17 +105,21 @@ def _copy_tui_help_xml_file(version: str):
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
         subprocess.run(
-            f"docker container create --name {container_name} {image_name}",  # nosec B602 B603 B607
+            [
+                f"docker container create --name {container_name} {image_name}"
+            ],  # nosec B602
             shell=is_linux,
         )
         xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         subprocess.run(
-            f"docker cp {container_name}:{xml_source} {str(_XML_HELP_FILE)}",  # nosec B602 B603 B607
+            [
+                f"docker cp {container_name}:{xml_source} {str(_XML_HELP_FILE)}"
+            ],  # nosec B602
             shell=is_linux,
         )
         subprocess.run(
-            f"docker container rm {container_name}", shell=is_linux
-        )  # nosec B602 B603 B607
+            [f"docker container rm {container_name}"], shell=is_linux
+        )  # nosec B602
 
     else:
         try:

@@ -162,7 +162,7 @@ class _SlurmWrapper:
         job_id : int
             Job id.
         """
-        subprocess.run(["scancel", f"{job_id}"])  # nosec B602 B603 B607
+        subprocess.run(["scancel", f"{job_id}"])  # nosec B603 B607
 
 
 class SlurmFuture:
