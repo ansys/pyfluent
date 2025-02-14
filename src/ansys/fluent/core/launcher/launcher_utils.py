@@ -66,6 +66,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     if pyfluent.CLEAR_FLUENT_PARA_ENVS:
         del fluent_env["PARA_NPROCS"]
         del fluent_env["PARA_MESH_NPROCS"]
+    fluent_env["REMOTING_NEW_DM_API"] = "1"
 
     if pyfluent.LAUNCH_FLUENT_IP:
         fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.LAUNCH_FLUENT_IP
