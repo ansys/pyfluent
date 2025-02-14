@@ -26,10 +26,13 @@ from dataclasses import dataclass
 import os
 from typing import List
 
+import defusedxml
 import defusedxml.ElementTree as XmlET
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+defusedxml.defuse_stdlib()
 
 
 @dataclass

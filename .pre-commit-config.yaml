@@ -92,11 +92,12 @@ repos:
       args:
       - --start_year=2021
 
-# - repo: local
-#   hooks:
-#     - id: check-vulnernabilities
-#       name: Check Vulnernabilities
-#       entry: python check_vulnernabilities.py --run-local
-#       language: python
-#       types: [python]
-#       dev-mode: true
+- repo: local
+  hooks:
+    - id: check-vulnernabilities
+      name: Check Vulnernabilities
+      entry: python check_vulnernabilities.py
+      args: ["--run-local"]
+      language: python
+      types: [python]
+      pass_filenames: false
