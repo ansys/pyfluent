@@ -16,6 +16,7 @@ from typing import Any, Dict
 
 try:
     import click
+    import github
 except ModuleNotFoundError:
     subprocess.run(
         [
@@ -26,7 +27,7 @@ except ModuleNotFoundError:
             "click>=7.0,<9",
             "PyGithub>=1.59,<2",
         ]
-    )  # noqa: B602 B603 B607
+    )
 
 
 TOKEN = os.environ.get("DEPENDENCY_CHECK_TOKEN", None)
@@ -71,6 +72,12 @@ def check_vulnerabilities():
         If the required environment variables are not defined.
     """
     new_advisory_detected = False
+    # Check that the needed environment variables are provided
+    if not TOKEN:
+        raise RuntimeError(
+            "Required environment variable 'DEPENDENCY_CHECK_TOKEN' is not defined."
+        )
+
     if not REPOSITORY:
         raise RuntimeError(
             "Required environment variable 'DEPENDENCY_CHECK_REPOSITORY' is not defined."
@@ -99,8 +106,17 @@ def check_vulnerabilities():
             "Verify workflow logs.",
         )
 
+    # Connect to the repository
+    g = github.Github(auth=github.Auth.Token(TOKEN))
+
+    # Get the repository
+    repo = g.get_repo(REPOSITORY)
+
     # Get the available security advisories
     existing_advisories = {}
+    pl_advisories = repo.get_repository_advisories()
+    for advisory in pl_advisories:
+        existing_advisories[advisory.summary] = advisory
 
     ###############################################################################
     # THIRD PARTY SECURITY ADVISORIES
@@ -113,11 +129,20 @@ def check_vulnerabilities():
         # Retrieve the needed values
         v_id = vulnerability.get("vulnerability_id")
         v_package = vulnerability.get("package_name")
+        v_cve = vulnerability.get("CVE")
         v_url = vulnerability.get("more_info_url")
         v_desc = vulnerability.get("advisory")
+        v_affected_versions = vulnerability.get("vulnerable_spec")
+        v_fixed_versions = vulnerability.get("fixed_versions")
 
         # Advisory info
         summary = f"Safety vulnerability {v_id} for package '{v_package}'"
+        vuln_adv = {
+            "package": {"name": f"{v_package}", "ecosystem": "pip"},
+            "vulnerable_version_range": f"{v_affected_versions}",
+            "patched_versions": f"{v_fixed_versions}",
+            "vulnerable_functions": [],
+        }
         desc = f"""
 {v_desc}
 
@@ -132,6 +157,34 @@ Visit {v_url} to find out more information.
             # New safety advisory detected
             safety_results_reported += 1
             new_advisory_detected = True
+
+            # Create the advisory but do not publish it
+            advisory = repo.create_repository_advisory(
+                summary=summary,
+                description=desc,
+                severity_or_cvss_vector_string="medium",
+                cve_id=v_cve,
+                vulnerabilities=[vuln_adv],
+            )
+
+            # Create an issue
+            if CREATE_ISSUES:
+                issue_body = f"""
+A new security advisory was open in this repository. See {advisory.html_url}.
+
+---
+**NOTE**
+
+Please update the security advisory status after evaluating. Publish the advisory
+once it has been verified (since it has been created in draft mode).
+
+---
+
+#### Description
+
+{desc}
+"""
+                repo.create_issue(title=summary, body=issue_body, labels=["security"])
         else:
             # New safety advisory detected
             safety_results_reported += 1
@@ -165,6 +218,7 @@ Visit {v_url} to find out more information.
         v_hash = dict_hash(vulnerability)
         v_test_id = vulnerability.get("test_id")
         v_test_name = vulnerability.get("test_name")
+        v_severity_level = vulnerability.get("issue_severity", "medium").lower()
         v_filename = vulnerability.get("filename")
         v_code = vulnerability.get("code")
         v_package = PACKAGE
@@ -174,6 +228,12 @@ Visit {v_url} to find out more information.
 
         # Advisory info
         summary = f"Bandit [{v_test_id}:{v_test_name}] on {v_filename} - Hash: {v_hash}"
+        vuln_adv = {
+            "package": {"name": f"{v_package}", "ecosystem": "pip"},
+            "vulnerable_functions": [],
+            "vulnerable_version_range": None,
+            "patched_versions": None,
+        }
         desc = f"""
 {v_desc}
 
@@ -200,6 +260,33 @@ Visit {v_url} to find out more information.
             # New bandit advisory detected
             bandit_results_reported += 1
             new_advisory_detected = True
+
+            # Create the advisory but do not publish it
+            advisory = repo.create_repository_advisory(
+                summary=summary,
+                description=desc,
+                severity_or_cvss_vector_string=v_severity_level,
+                vulnerabilities=[vuln_adv],
+                cwe_ids=[f"CWE-{v_cwe['id']}"],
+            )
+
+            # Create an issue
+            if CREATE_ISSUES:
+                issue_body = f"""
+A new security advisory was open in this repository. See {advisory.html_url}.
+
+---
+**NOTE**
+
+Please update the security advisory status after evaluating. Publish the advisory
+once it has been verified (since it has been created in draft mode).
+
+---
+
+#### Description
+{desc}
+"""
+                repo.create_issue(title=summary, body=issue_body, labels=["security"])
         else:
             # New bandit advisory detected
             bandit_results_reported += 1
@@ -288,7 +375,7 @@ def generate_advisory_files():
 @click.option(
     "--run-local",
     is_flag=True,
-    default=True,
+    default=False,
     help="Simulate the behavior of the synchronization without performing it.",
 )
 def main(run_local: bool):
