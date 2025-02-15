@@ -33,7 +33,7 @@ import os
 from pathlib import Path
 import platform
 import socket
-import subprocess
+import subprocess  # nosec B404
 import threading
 from typing import Any, Callable, List, Tuple, TypeVar
 import warnings
@@ -510,7 +510,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     def _close_slurm(self):
-        subprocess.run(["scancel", f"{self._slurm_job_id}"])
+        subprocess.run(["scancel", f"{self._slurm_job_id}"])  # nosec B603 B607
 
     def force_exit(self):
         """Immediately terminates the Fluent client, losing unsaved progress and data.
@@ -559,7 +559,7 @@ class FluentConnection:
                 )
                 cmd_list.append(cleanup_file_name)
                 logger.debug(f"Cleanup command list = {cmd_list}")
-                subprocess.Popen(
+                subprocess.Popen(  # nosec B602 B603 B607
                     cmd_list,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
@@ -782,8 +782,8 @@ class FluentConnection:
             if cleanup_on_exit:
                 try:
                     connection_interface.exit_server()
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.debug(f"Failed to exit server: {e}")
             channel.close()
             channel = None
 

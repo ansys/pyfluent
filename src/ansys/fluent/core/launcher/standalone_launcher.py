@@ -38,7 +38,7 @@ Examples
 import logging
 import os
 from pathlib import Path
-import subprocess
+import subprocess  # nosec B404
 from typing import Any, Dict
 
 from ansys.fluent.core.launcher.error_handler import (
@@ -243,7 +243,9 @@ class StandaloneLauncher:
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
 
-            process = subprocess.Popen(self._launch_cmd, **self._kwargs)
+            process = subprocess.Popen(
+                self._launch_cmd, **self._kwargs
+            )  # nosec B602 B603 B607
 
             try:
                 _await_fluent_launch(
@@ -259,7 +261,9 @@ class StandaloneLauncher:
                     logger.warning(
                         f"Retrying Fluent launch with less robust command: {launch_cmd}"
                     )
-                    process = subprocess.Popen(launch_cmd, **self._kwargs)
+                    process = subprocess.Popen(
+                        launch_cmd, **self._kwargs
+                    )  # nosec B602 B603 B607
                     _await_fluent_launch(
                         self._server_info_file_name,
                         self.argvals["start_timeout"],

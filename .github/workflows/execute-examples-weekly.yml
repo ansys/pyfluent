@@ -69,7 +69,7 @@ jobs:
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
+          
       - name: Run API codegen
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples

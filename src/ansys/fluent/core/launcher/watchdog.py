@@ -30,7 +30,7 @@ import os
 from pathlib import Path
 import random
 import string
-import subprocess
+import subprocess  # nosec B404
 import sys
 import time
 
@@ -73,7 +73,7 @@ def launch(
     watchdog_id = "".join(
         random.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
-        )
+        )  # nosec B311
     )
 
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
@@ -137,7 +137,7 @@ def launch(
     kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL, "close_fds": True}
 
     if os.name == "nt":
-        kwargs.update(shell=True)
+        kwargs.update(shell=True)  # nosec B604
         # https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags
         # https://docs.python.org/3/library/subprocess.html#windows-constants
         flags = 0
@@ -177,7 +177,7 @@ def launch(
     if watchdog_err.is_file():
         watchdog_err.unlink()
 
-    subprocess.Popen(cmd_send, **kwargs)
+    subprocess.Popen(cmd_send, **kwargs)  # nosec B602 B603 B607
 
     logger.info("Waiting for Watchdog to initialize, then proceeding...")
     file_exists = timeout_loop(

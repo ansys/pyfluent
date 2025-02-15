@@ -23,7 +23,7 @@
 """Get the git build info."""
 
 from collections import OrderedDict
-import subprocess
+import subprocess  # nosec B404
 
 from ansys.fluent.core._version import __version__
 
@@ -33,7 +33,9 @@ def get_build_version():
     build_details = OrderedDict()
     try:
         last_commit_time = (
-            subprocess.check_output(["git", "log", "-n", "1", "--pretty=tformat:%ad"])
+            subprocess.check_output(
+                ["git", "log", "-n", "1", "--pretty=tformat:%ad"]
+            )  # nosec B602 B603 B607
             .decode("ascii")
             .strip()
             .split()
@@ -44,17 +46,25 @@ def get_build_version():
         )
         build_details["Current Version"] = f"{__version__}"
         build_details["ShaID"] = (
-            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+            subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"]
+            )  # nosec B602 B603 B607
             .decode("ascii")
             .strip()
         )
         build_details["Branch"] = (
-            subprocess.check_output(["git", "branch", "--show-current"])
+            subprocess.check_output(
+                ["git", "branch", "--show-current"]
+            )  # nosec B602 B603 B607
             .decode("ascii")
             .strip()
         )
-    except Exception:
-        pass
+    except subprocess.CalledProcessError as e:
+        build_details["Error"] = f"Subprocess error: {e}"
+    except IndexError as e:
+        build_details["Error"] = f"Index error: {e}"
+    except Exception as e:
+        build_details["Error"] = f"Unexpected error: {e}"
     return build_details
 
 

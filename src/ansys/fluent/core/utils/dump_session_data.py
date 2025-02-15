@@ -22,8 +22,8 @@
 
 """Module providing dump session data functionality."""
 
+import json
 from pathlib import Path
-import pickle
 
 import numpy as np
 
@@ -118,8 +118,8 @@ def dump_session_data(
     )
     session_data["fields"] = transaction.get_fields()
 
-    with open(file_name, "wb") as pickle_obj:
-        pickle.dump(session_data, pickle_obj)
+    with open(file_name, "w") as json_file:
+        json.dump(session_data, json_file)
 
 
 class DumpDataReader:
@@ -129,9 +129,9 @@ class DumpDataReader:
         """Initialize DumpDataReader."""
         with open(
             str(Path(file_name).resolve()),
-            "rb",
-        ) as pickle_obj:
-            self._session_data = pickle.load(pickle_obj)
+            "r",
+        ) as json_file:
+            self._session_data = json.load(json_file)
 
     def get_session_data(self):
         """Get session data."""
