@@ -10,17 +10,11 @@ associated security vulnerability advisories.
 import hashlib
 import json
 import os
-import subprocess  # nosec B404
 import sys
 from typing import Any, Dict
 
-try:
-    import click
-    import github
-except ModuleNotFoundError:
-    subprocess.run(
-        [sys.executable, "requirements/requirements_vulnernabilities.py"]
-    )  # nosec B603
+import click
+import github
 
 TOKEN = os.environ.get("DEPENDENCY_CHECK_TOKEN", None)
 PACKAGE = os.environ.get("DEPENDENCY_CHECK_PACKAGE_NAME", None)

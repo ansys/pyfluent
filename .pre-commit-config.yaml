@@ -94,6 +94,13 @@ repos:
 
 - repo: local
   hooks:
+    - id: check-vulnernabilities-dependencies
+      name: Check Vulnernabilities Dependencies
+      entry: python requirements/requirements_vulnernabilities.py
+      language: python
+      types: [python]
+      pass_filenames: false
+    
     - id: check-vulnernabilities
       name: Check Vulnernabilities
       entry: python check_vulnernabilities.py
