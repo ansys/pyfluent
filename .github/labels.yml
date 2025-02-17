@@ -67,7 +67,7 @@
 # ===========
 
 - name: bug
-  description: "Issue, problem or error in PyMAPDL"
+  description: "Issue, problem or error in PyFluent"
   color: E67E22
 
 - name: new feature
@@ -79,7 +79,7 @@
   color: 85C1E9
 
 - name: examples
-  description: "Publishing PyMAPDL examples"
+  description: "Publishing PyFluent examples"
   color: A569BD
 
 - name: documentation
@@ -107,7 +107,7 @@
   color: E67E22
 
 - name: good first issue
-  description: "Best way to start working on PyMAPDL development"
+  description: "Best way to start working on PyFluent development"
   color: 27AE60
 
 - name: help wanted!
@@ -127,26 +127,42 @@
 # ====================
 # (Only maintainers should use them)
 
-- name: DO NOT MERGE
-  description: "Not ready to be merged yet"
+- name: Settings API
+  description: "Related to the settings API"
   color: C0392B
 
-- name: CI/CD
-  description: "Related with CICD, Github Actions, etc"
+- name: Fluent
+  description: "Related to Fluent"
+  color: E67E22
+
+- name: Datamodel API
+  description: "Related to the datamodel API"
+  color: F4D03F
+
+- name: Fluent
+  description: "Requires changes in Fluent"
   color: F9E79F
 
-- name: dependencies
-  description: ""
-  color: F9E79F
+- name: refactoring
+  description: "Related to refactoring"
+  color: 27AE60
 
-- name: MAPDL
-  description: "Requires changes in MAPDL"
-  color: 000000
-
-- name: reminder
-  description: "Related to the reminder bot"
+- name: testing
+  description: "Related to testing"
   color: ffffff
 
-- name: build failed
-  description: "Schedule build fails"
-  color: E67E22
+- name: ci_failed
+  description: "Related to CI failures"
+  color: 2E86C1
+
+- name: flobject
+  description: "Related to Flobject"
+  color: 85C1E9
+
+- name: design
+  description: "Related to design"
+  color: A569BD
+
+- name: epic
+  description: "Related to an epic issue"
+  color: 76D7C4
