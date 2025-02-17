@@ -108,3 +108,4 @@ repos:
       language: python
       types: [python]
       pass_filenames: false
+      always_run: true

@@ -21,3 +21,4 @@ except ModuleNotFoundError:
             "safety>=2.3,<4",
         ]
     )
+print("All required packages are installed.")
