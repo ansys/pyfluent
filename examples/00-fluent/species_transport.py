@@ -92,6 +92,7 @@ print(solver.get_fluent_version())
 
 from pathlib import Path  # noqa: E402
 
+from ansys.fluent.core import FluentVersion  # noqa: E402
 from ansys.fluent.core.examples import download_file  # noqa: E402
 from ansys.fluent.core.solver import (  # noqa: E402
     Contour,
@@ -244,7 +245,12 @@ print(f"Density option: {mixture_material.density.option()}")
 print(f"Cp (specific heat) option: {mixture_material.specific_heat.option()}")
 print(f"Thermal conductivity value: {mixture_material.thermal_conductivity.value()}")
 print(f"Viscosity value: {mixture_material.viscosity.value()}")
-print(f"Mass diffusivity value: {mixture_material.mass_diffusivity.value()}")
+if solver.get_fluent_version() < FluentVersion.v252:
+    print(f"Mass diffusivity value: {mixture_material.mass_diffusivity.value()}")
+else:
+    print(
+        f"Mass diffusivity value: {mixture_material.mass_diffusivity.constant_mass_diffusivity()}"
+    )
 
 # %%
 # Boundary Conditions
@@ -264,8 +270,8 @@ solver.settings.setup.boundary_conditions.set_zone_type(
 #
 # *This name is more descriptive for the zone than velocity-inlet-8.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="velocity-inlet-8", newname="air-inlet"
+solver.settings.setup.boundary_conditions.velocity_inlet["velocity-inlet-8"].rename(
+    "air-inlet"
 )
 
 # %%
@@ -301,8 +307,8 @@ air_inlet.print_state()
 #
 # *This name is more descriptive for the zone than velocity-inlet-6.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="velocity-inlet-6", newname="fuel-inlet"
+solver.settings.setup.boundary_conditions.velocity_inlet["velocity-inlet-6"].rename(
+    "fuel-inlet"
 )
 
 # %%
@@ -367,9 +373,7 @@ pressure_outlet.print_state()
 #
 # *This name is more descriptive for the zone than wall-7.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="wall-7", newname="outer-wall"
-)
+solver.settings.setup.boundary_conditions.wall["wall-7"].rename("outer-wall")
 
 # %%
 # Set the following boundary conditions for the outer-wall:
@@ -392,9 +396,7 @@ outer_wall.thermal.print_state()
 #
 # *This name is more descriptive for the zone than wall-2.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="wall-2", newname="nozzle"
-)
+solver.settings.setup.boundary_conditions.wall["wall-2"].rename("nozzle")
 
 # %%
 # Set the following boundary conditions for the nozzle for adiabatic wall conditions:

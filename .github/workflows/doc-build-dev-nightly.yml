@@ -7,7 +7,7 @@ on:
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-  DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v25.2.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -66,6 +66,8 @@ jobs:
           python examples/00-fluent/mixing_elbow_settings_api.py
           python examples/00-fluent/modeling_cavitation.py
           python examples/00-fluent/species_transport.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Build All Documentation
         run: |
