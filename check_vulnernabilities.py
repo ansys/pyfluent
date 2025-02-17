@@ -14,12 +14,17 @@ import subprocess  # nosec B404
 import sys
 from typing import Any, Dict
 
-import click
-import github
+try:
+    import click
+    import github
+except ModuleNotFoundError:
+    subprocess.run(
+        [sys.executable, "requirements/requirements_vulnernabilities.py"]
+    )  # nosec B603
 
 TOKEN = os.environ.get("DEPENDENCY_CHECK_TOKEN", None)
-PACKAGE = os.environ.get("DEPENDENCY_CHECK_PACKAGE_NAME", "ansys-fluent-core")
-REPOSITORY = os.environ.get("DEPENDENCY_CHECK_REPOSITORY", "ansys/pyfluent")
+PACKAGE = os.environ.get("DEPENDENCY_CHECK_PACKAGE_NAME", None)
+REPOSITORY = os.environ.get("DEPENDENCY_CHECK_REPOSITORY", None)
 DRY_RUN = True if os.environ.get("DEPENDENCY_CHECK_DRY_RUN", None) else False
 ERROR_IF_NEW_ADVISORY = (
     True if os.environ.get("DEPENDENCY_CHECK_ERROR_EXIT", None) else False
@@ -371,5 +376,4 @@ def main(run_local: bool):
 
 
 if __name__ == "__main__":
-    subprocess.run([sys.executable, "requirements/requirements_vulnernabilities.py"])
     main()
