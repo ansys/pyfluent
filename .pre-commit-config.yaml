@@ -101,20 +101,6 @@ repos:
       types: [python]
       pass_filenames: false
 
-    - id: set-env-vars
-      name: Set Environment Variables
-      entry: bash
-      language: system
-      always_run: true
-      pass_filenames: false
-      stages: [pre-commit]
-      script: |
-        #!/usr/bin/env bash
-
-        echo "DEPENDENCY_CHECK_TOKEN=${{ secrets.GITHUB_TOKEN }}"
-        echo "DEPENDENCY_CHECK_REPOSITORY=ansys/pyfluent"
-        echo "DEPENDENCY_CHECK_PACKAGE_NAME=ansys-fluent-core"
-
     - id: check-vulnernabilities
       name: Check Vulnernabilities
       entry: python check_vulnernabilities.py
@@ -123,3 +109,7 @@ repos:
       types: [python]
       pass_filenames: false
       always_run: true
+      env:
+        DEPENDENCY_CHECK_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEPENDENCY_CHECK_REPOSITORY: 'ansys/pyfluent'
+        DEPENDENCY_CHECK_PACKAGE_NAME: 'ansys-fluent-core'
