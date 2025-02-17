@@ -45,9 +45,7 @@ import string
 import subprocess  # nosec B404
 from typing import Any, Dict
 import uuid
-
-import defusedxml
-import defusedxml.ElementTree as ET
+import xml.etree.ElementTree as ET  # nosec B405
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
@@ -63,8 +61,6 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
-
-defusedxml.defuse_stdlib()
 
 logger = logging.getLogger("pyfluent.tui")
 
@@ -147,7 +143,7 @@ def _populate_xml_helpstrings():
     if not Path(_XML_HELP_FILE).exists():
         return
 
-    tree = ET.parse(_XML_HELP_FILE)
+    tree = ET.parse(_XML_HELP_FILE)  # nosec B314
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")

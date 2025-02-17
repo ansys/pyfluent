@@ -24,6 +24,7 @@
 
 import os
 import pathlib
+import secrets
 import shutil
 from typing import Any, Protocol
 import warnings
@@ -263,8 +264,6 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
         self.mount_source = mount_source if mount_source else MOUNT_SOURCE
         try:
-            import secrets
-
             self.host_port = port if port else secrets.randbelow(1000) + 5000
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
@@ -274,8 +273,6 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 volumes=[f"{self.mount_source}:{self.mount_target}"],
             )
         except docker.errors.DockerException:
-            import secrets
-
             self.host_port = port if port else secrets.randbelow(1000) + 6000
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(

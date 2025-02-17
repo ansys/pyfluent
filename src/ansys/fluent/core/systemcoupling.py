@@ -25,14 +25,10 @@
 from dataclasses import dataclass
 import os
 from typing import List
-
-import defusedxml
-import defusedxml.ElementTree as XmlET
+import xml.etree.ElementTree as XmlET  # nosec B405
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-defusedxml.defuse_stdlib()
 
 
 @dataclass
@@ -335,7 +331,7 @@ class SystemCoupling:
 
         setup_info = dict()
 
-        xml_root = XmlET.ElementTree(XmlET.fromstring(get_scp_string()))
+        xml_root = XmlET.ElementTree(XmlET.fromstring(get_scp_string()))  # nosec B314
         cosim_control = xml_root.find("./CosimulationControl")
 
         setup_info["analysis-type"] = cosim_control.find("AnalysisType").text

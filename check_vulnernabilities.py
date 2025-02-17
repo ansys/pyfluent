@@ -14,21 +14,8 @@ import subprocess  # nosec B404
 import sys
 from typing import Any, Dict
 
-try:
-    import click
-    import github
-except ModuleNotFoundError:
-    subprocess.run(
-        [
-            sys.executable,
-            "-m",
-            "pip",
-            "install",
-            "click>=7.0,<9",
-            "PyGithub>=1.59,<2",
-        ]
-    )
-
+import click
+import github
 
 TOKEN = os.environ.get("DEPENDENCY_CHECK_TOKEN", None)
 PACKAGE = os.environ.get("DEPENDENCY_CHECK_PACKAGE_NAME", "ansys-fluent-core")
@@ -325,20 +312,8 @@ def generate_advisory_files():
     -----
     This function should ONLY be used for local purposes.
     """
-    try:
-        import bandit.cli.main as bandit
-        import safety.cli as safety
-    except ImportError:
-        subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "pip",
-                "install",
-                "bandit>=1.7,<2",
-                "safety>=2.3,<4",
-            ]
-        )  # noqa: B602 B603 B607
+    import bandit.cli.main as bandit
+    import safety.cli as safety
 
     # Delete previous advisory files
     if os.path.exists("info_safety.json"):
@@ -396,4 +371,5 @@ def main(run_local: bool):
 
 
 if __name__ == "__main__":
+    subprocess.run([sys.executable, "requirements/requirements_vulnernabilities.py"])
     main()
