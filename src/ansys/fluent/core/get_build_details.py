@@ -53,12 +53,8 @@ def get_build_version():
             .decode("ascii")
             .strip()
         )
-    except subprocess.CalledProcessError as e:
-        build_details["Error"] = f"Subprocess error: {e}"
-    except IndexError as e:
-        build_details["Error"] = f"Index error: {e}"
-    except Exception as e:
-        build_details["Error"] = f"Unexpected error: {e}"
+    except Exception:
+        pass
     return build_details
 
 

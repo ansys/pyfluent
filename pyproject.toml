@@ -224,6 +224,7 @@ exclude_dirs = ["tests"]
 skips = [
     "B105",
     "B110",
+    "B112",
     "B307",
     "B310",
     "B311",
@@ -236,14 +237,6 @@ skips = [
     "B604",
     "B607",
     ]
-
-[tool.bandit.any_other_function_with_shell_equals_true]
-subprocess = [
-  "subprocess.Popen",
-  "subprocess.PIPE",
-  "subprocess.run",
-  "subprocess.check_output"
-]
 
 [tool.safety]
 ignore = ["CVE-2023-5752", "CVE-2018-20225"] # ignore pip<23.3

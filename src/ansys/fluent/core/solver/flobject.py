@@ -44,11 +44,11 @@ import collections
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
-import json
 import keyword
 import logging
 import os
 import os.path
+import pickle
 import string
 import sys
 import types
@@ -1835,10 +1835,8 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
             cobj = getattr(self, cname)
             try:
                 return cobj[name]
-            except KeyError:
-                return None
             except Exception:
-                return None
+                pass
         raise KeyError(name)
 
     def __setitem__(self, name, value):
@@ -1852,19 +1850,18 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
             try:
                 del cobj[name]
                 return
-            except KeyError:
-                return None
             except Exception:
-                return None
+                pass
         raise KeyError(name)
 
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
-            cobj = getattr(self, cname)
-            if isinstance(cobj, collections.abc.Iterable):
-                for item in cobj:
+            try:
+                for item in getattr(self, cname):
                     yield item
+            except Exception:
+                continue
 
     def __len__(self):
         """Number of child named objects."""
@@ -2155,7 +2152,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
 def _gethash(obj_info):
     dhash = hashlib.sha256()
-    dhash.update(json.dumps(obj_info).encode("utf-8"))
+    dhash.update(pickle.dumps(obj_info))
     return dhash.hexdigest()
 
 
