@@ -123,7 +123,7 @@ def check_url_exists(url: str) -> bool:
         True if the URL exists, False otherwise
     """
     try:
-        with urllib.request.urlopen(url) as response:  # nosec B310
+        with urllib.request.urlopen(url) as response:
             return response.status == 200
     except Exception:
         return False
@@ -142,5 +142,5 @@ def get_url_content(url: str) -> str:
     str
         content of the URL
     """
-    with urllib.request.urlopen(url) as response:  # nosec B310
+    with urllib.request.urlopen(url) as response:
         return response.read()

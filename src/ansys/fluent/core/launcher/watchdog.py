@@ -73,7 +73,7 @@ def launch(
     watchdog_id = "".join(
         random.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
-        )  # nosec B311
+        )
     )
 
     env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
@@ -137,7 +137,7 @@ def launch(
     kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL, "close_fds": True}
 
     if os.name == "nt":
-        kwargs.update(shell=True)  # nosec B604
+        kwargs.update(shell=True)
         # https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags
         # https://docs.python.org/3/library/subprocess.html#windows-constants
         flags = 0

@@ -44,9 +44,9 @@ import os
 from os.path import dirname
 from pathlib import Path
 from typing import Dict, List
-import xml.etree.ElementTree as ET  # nosec B405
+import xml.etree.ElementTree as ET
 
-from lxml import etree  # nosec B410
+from lxml import etree
 import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -733,7 +733,7 @@ def _get_processed_string(input_string: bytes) -> str:
 
 def _get_case_file_name_from_flprj(flprj_file):
     parser = etree.XMLParser(recover=True)
-    tree = ET.parse(flprj_file, parser)  # nosec B314
+    tree = ET.parse(flprj_file, parser)
     root = tree.getroot()
     folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
     # If the project file name begins with a digit then the node to find will be prepended

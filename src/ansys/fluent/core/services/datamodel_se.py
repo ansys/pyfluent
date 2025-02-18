@@ -1085,7 +1085,7 @@ class PyStateContainer(PyCallableStateObject):
                 pass
             except AttributeError:
                 pass
-            except Exception:  # nosec 110
+            except Exception:
                 pass
         return cached_val
 

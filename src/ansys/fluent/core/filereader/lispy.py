@@ -76,7 +76,7 @@ class Procedure:
         self.params, self.exp, self.env = params, exp, env
 
     def __call__(self, *args):
-        return eval(self.exp, Env(self.params, args, self.env))  # nosec B307
+        return eval(self.exp, Env(self.params, args, self.env))
 
 
 ################ parse, read, and user interaction
@@ -136,7 +136,7 @@ class InputPort:
             if self.line == "":
                 return eof_object
             token, self.line = re.match(InputPort.tokenizer, self.line).groups()
-            if token != "" and not token.startswith(";"):  # nosec B105
+            if token != "" and not token.startswith(";"):
                 # Replace back "<newline>" to newline character after tokenizing
                 token = token.replace("<newline>", "\n")
                 return token
@@ -161,13 +161,13 @@ def read(in_port):
             cons = None
             while True:
                 token = in_port.next_token()
-                if token == ")":  # nosec B105
+                if token == ")":
                     return (
                         (tuple(list_) if to_tuple else list_)
                         if list_
                         else (tuple(cons) if cons else ([]))
                     )
-                if token == ".":  # nosec B105
+                if token == ".":
                     if list_:
                         cons = [list_.pop()]
                         if len(list_):
@@ -207,9 +207,9 @@ quotes = {"'": _quote, "`": _quasiquote, ",": _unquote, ",@": _unquotesplicing}
 def atom(token):
     """Numbers become numbers; #t and #f are booleans; "..." string; otherwise
     Symbol."""
-    if token == "#t":  # nosec B105
+    if token == "#t":
         return True
-    elif token == "#f":  # nosec B105
+    elif token == "#f":
         return False
     elif token[0] == '"':
         return token
@@ -264,7 +264,7 @@ def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):
             x = parse(in_port)
             if x is eof_object:
                 return
-            val = eval(x)  # nosec B307
+            val = eval(x)
             if val is not None and out:
                 print(to_string(val), file=out)
         except Exception as e:
@@ -374,7 +374,7 @@ def add_globals(self):
             "pair?": is_pair,
             "port?": lambda x: isa(x, file),
             "apply": lambda proc, l: proc(*l),
-            "eval": lambda x: eval(expand(x)),  # nosec B307
+            "eval": lambda x: eval(expand(x)),
             "load": lambda fn: load(fn),
             "call/cc": callcc,
             "open-input-file": open,
@@ -412,15 +412,15 @@ def eval(x, env=global_env):
             return exp
         elif x[0] is _if:  # (if test conseq alt)
             (_, test, conseq, alt) = x
-            x = conseq if eval(test, env) else alt  # nosec B307
+            x = conseq if eval(test, env) else alt
         elif x[0] is _set:  # (set! var exp)
             (_, var, exp) = x
-            env.find(var)[var] = eval(exp, env)  # nosec B307
+            env.find(var)[var] = eval(exp, env)
             return None
         elif x[0] is _define:  # (define var exp)
             if len(x) == 3:
                 (_, var, exp) = x
-                env[var] = eval(exp, env)  # nosec B307
+                env[var] = eval(exp, env)
             else:
                 env[x[1]] = None
             return None
@@ -429,10 +429,10 @@ def eval(x, env=global_env):
             return Procedure(vars, exp, env)
         elif x[0] is _begin:  # (begin exp+)
             for exp in x[1:-1]:
-                eval(exp, env)  # nosec B307
+                eval(exp, env)
             x = x[-1]
         else:  # (proc exp*)
-            exps = [eval(exp, env) for exp in x]  # nosec B307
+            exps = [eval(exp, env) for exp in x]
             proc = exps.pop(0)
             if isa(proc, Procedure):
                 x = proc.exp
@@ -477,7 +477,7 @@ def expand(x, toplevel=False):
             exp = expand(x[2]) if len(x) == 3 else None
             if _def is _definemacro:
                 require(x, toplevel, "define-macro only allowed at top level")
-                proc = eval(exp)  # nosec B307
+                proc = eval(exp)
                 require(x, callable(proc), "macro must be a procedure")
                 macro_table[v] = proc  # (define-macro v proc)
                 return None  #  => None; add v:proc to macro_table
@@ -558,7 +558,7 @@ def let(*args):
 
 macro_table = {_let: let}  ## More macros can go here
 
-eval(  # nosec B307
+eval(
     parse(
         """(begin
 
