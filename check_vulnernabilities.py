@@ -333,7 +333,18 @@ def generate_advisory_files():
     # Bandit check
     try:
         sys.argv.pop()
-        sys.argv.extend(["-r", "./src", "-o", "info_bandit.json", "-f", "json"])
+        sys.argv.extend(
+            [
+                "-r",
+                "./src",
+                "-o",
+                "info_bandit.json",
+                "-f",
+                "json",
+                "-c",
+                "pyproject.toml",
+            ]
+        )
         bandit.main()
     except:  # noqa: E722 B001
         pass
