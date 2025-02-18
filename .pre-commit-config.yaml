@@ -103,7 +103,7 @@ repos:
 
     - id: check-vulnernabilities
       name: Check Vulnerabilities
-      entry: bash -c 'if [ -z "$Check_Vulnerabilities_Locally" ]; then echo "Using pre-commit stage"; exit 0; else echo "Using manual stage"; exit 1; fi && python check_vulnernabilities.py --run-local'
+      entry: bash -c 'if [ -z "$Check_Vulnerabilities_Locally" ]; then echo "Using pre-commit stage"; python check_vulnernabilities.py --run-local; else echo "Using manual stage"; exit 0; fi'
       language: python
       types: [python]
       pass_filenames: false
