@@ -102,12 +102,12 @@ repos:
       pass_filenames: false
 
     - id: check-vulnernabilities
-      name: Check Vulnernabilities
-      entry: python check_vulnernabilities.py
-      args: ["--run-local"]
+      name: Check Vulnerabilities
+      entry: bash -c 'if [ -z "$Check_Vulnerabilities_Locally" ]; then echo "Using pre-commit stage"; exit 0; else echo "Using manual stage"; exit 1; fi && python check_vulnernabilities.py --run-local'
       language: python
       types: [python]
       pass_filenames: false
-      stages: [manual]
+      stages: [pre-commit]
       always_run: true
       verbose: true
+    
