@@ -218,3 +218,15 @@ showcontent = true
 directory = "test"
 name = "Test"
 showcontent = true
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B602", "B607"]
+
+[tool.bandit.any_other_function_with_shell_equals_true]
+subprocess = [
+  "subprocess.Popen",
+  "subprocess.PIPE",
+  "subprocess.run",
+  "subprocess.check_output"
+]
