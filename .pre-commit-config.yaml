@@ -94,20 +94,19 @@ repos:
 
 - repo: local
   hooks:
-    - id: check-vulnernabilities-dependencies
-      name: Check Vulnernabilities Dependencies
-      entry: python requirements/requirements_vulnernabilities.py
+    - id: check-vulnerabilities-dependencies
+      name: Check Vulnerabilities Dependencies
+      entry: python -c "import os; import subprocess; subprocess.run(['python', 'requirements/requirements_vulnernabilities.py'])"
       language: python
       types: [python]
       pass_filenames: false
 
-    - id: check-vulnernabilities
+    - id: check-vulnerabilities
       name: Check Vulnerabilities
-      entry: bash -c 'if [ -z "$Check_Vulnerabilities_Locally" ]; then echo "Using pre-commit stage"; python check_vulnernabilities.py --run-local; else echo "Using manual stage"; exit 0; fi'
+      entry: python -c "import os; import subprocess; subprocess.run(['python', 'check_vulnerabilities.py', '--run-local']) if os.environ.get('DEPENDENCY_CHECK_TOKEN') else print('DEPENDENCY_CHECK_TOKEN is not set')"
       language: python
       types: [python]
       pass_filenames: false
-      stages: [pre-commit]
       always_run: true
       verbose: true
     

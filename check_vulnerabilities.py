@@ -12,12 +12,9 @@ import json
 import os
 import sys
 from typing import Any, Dict
-import warnings
 
 import click
 import github
-
-warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 TOKEN = os.environ.get("DEPENDENCY_CHECK_TOKEN", None)
 PACKAGE = os.environ.get("DEPENDENCY_CHECK_PACKAGE_NAME", None)

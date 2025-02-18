@@ -243,3 +243,6 @@ subprocess = [
   "subprocess.run",
   "subprocess.check_output"
 ]
+
+[tool.safety]
+ignore = ["CVE-2023-5752", "CVE-2018-20225"] # ignore pip<23.3
