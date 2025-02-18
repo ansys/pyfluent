@@ -5,7 +5,7 @@ from datetime import datetime
 import inspect
 import os
 import platform
-import subprocess  # nosec B404
+import subprocess
 
 from ansys_sphinx_theme import ansys_favicon, get_version_match, pyansys_logo_black
 from sphinx_gallery.sorting import FileNameSortKey
@@ -128,7 +128,7 @@ def _stop_fluent_container(gallery_conf, fname):
         container_names = (
             subprocess.check_output(
                 "docker container ls --format {{.Names}}",
-                shell=is_linux,  # nosec B602 B603 B607
+                shell=is_linux,
             )
             .decode("utf-8")
             .strip()
@@ -136,9 +136,7 @@ def _stop_fluent_container(gallery_conf, fname):
         )
         for container_name in container_names:
             print(f"Container still running for script {fname}")
-            subprocess.run(
-                [f"docker stop {container_name}"], shell=is_linux
-            )  # nosec B602
+            subprocess.run([f"docker stop {container_name}"], shell=is_linux)
     except Exception:
         pass
 

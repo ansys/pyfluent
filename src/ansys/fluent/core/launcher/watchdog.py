@@ -30,7 +30,7 @@ import os
 from pathlib import Path
 import random
 import string
-import subprocess  # nosec B404
+import subprocess
 import sys
 import time
 
@@ -177,7 +177,7 @@ def launch(
     if watchdog_err.is_file():
         watchdog_err.unlink()
 
-    subprocess.Popen(cmd_send, **kwargs)  # nosec B602 B603 B607
+    subprocess.Popen(cmd_send, **kwargs)
 
     logger.info("Waiting for Watchdog to initialize, then proceeding...")
     file_exists = timeout_loop(

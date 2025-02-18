@@ -1,6 +1,6 @@
 """This module installs the required packages for the vulnerabilities check."""
 
-import subprocess  # nosec B404
+import subprocess
 import sys
 
 try:

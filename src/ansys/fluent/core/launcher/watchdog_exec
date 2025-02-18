@@ -159,7 +159,7 @@ if __name__ == "__main__":
                 logger.info(
                     "Fluent container still alive somehow, directly terminating it..."
                 )
-                subprocess.run(["docker", "kill", cortex_host])  # nosec B603 B607
+                subprocess.run(["docker", "kill", cortex_host])
             else:
                 logger.info("Fluent container successfully shut down.")
         else:
