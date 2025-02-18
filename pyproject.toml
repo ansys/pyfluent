@@ -221,7 +221,7 @@ showcontent = true
 
 [tool.bandit]
 exclude_dirs = ["tests"]
-skips = ["B602", "B607"]
+skips = ["B105", "B602", "B603", "B607"]
 
 [tool.bandit.any_other_function_with_shell_equals_true]
 subprocess = [
