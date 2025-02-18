@@ -108,8 +108,5 @@ repos:
       language: python
       types: [python]
       pass_filenames: false
+      stages: [pre-commit]
       always_run: true
-      env:
-        DEPENDENCY_CHECK_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        DEPENDENCY_CHECK_REPOSITORY: 'ansys/pyfluent'
-        DEPENDENCY_CHECK_PACKAGE_NAME: 'ansys-fluent-core'
