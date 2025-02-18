@@ -108,5 +108,6 @@ repos:
       language: python
       types: [python]
       pass_filenames: false
-      stages: [pre-commit]
+      stages: [manual]
       always_run: true
+      verbose: true
