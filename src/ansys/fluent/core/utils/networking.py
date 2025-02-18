@@ -26,7 +26,6 @@ from concurrent import futures
 import logging
 import socket
 from typing import Any
-import urllib.parse
 import urllib.request
 
 import grpc

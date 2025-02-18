@@ -35,10 +35,10 @@ Usage
 """
 
 import argparse
-import json
 import logging
 import os
 from pathlib import Path
+import pickle
 import platform
 import shutil
 import string
@@ -187,12 +187,13 @@ class _TUIMenu:
         return convert_path_to_grpc_path(self.path + [command])
 
 
-class _RenameModuleDecoder(json.JSONDecoder):
-    def decode(self, s, _w=json.decoder.WHITESPACE.match):
-        obj = super().decode(s, _w)
-        if isinstance(obj, dict) and "module" in obj and obj["module"] == "tuigen":
-            obj["module"] = "ansys.fluent.core.codegen.tuigen"
-        return obj
+class _RenameModuleUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        renamed_module = module
+        if module == "tuigen":
+            renamed_module = "ansys.fluent.core.codegen.tuigen"
+
+        return super(_RenameModuleUnpickler, self).find_class(renamed_module, name)
 
 
 class TUIGenerator:
@@ -294,11 +295,12 @@ class TUIGenerator:
                         Path(__file__)
                         / ".."
                         / "data"
-                        / f"static_info_{self._version}_{self._mode}.json"
+                        / f"static_info_{self._version}_{self._mode}.pickle"
                     ).resolve(),
-                    "r",
+                    "rb",
                 ) as f:
-                    self._main_menu = json.load(f, cls=_RenameModuleDecoder)
+                    self._main_menu = _RenameModuleUnpickler(f).load()
+            else:
                 info = self._static_infos[
                     (
                         StaticInfoType.TUI_MESHING
