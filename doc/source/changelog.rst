@@ -9,6 +9,46 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.30.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev1>`_ - 2025-02-19
+=====================================================================================
+
+Added
+^^^^^
+
+- Use new data-model api. `#3728 <https://github.com/ansys/pyfluent/pull/3728>`_
+
+
+Fixed
+^^^^^
+
+- Enable app_utilities test for 25R2 `#3702 <https://github.com/ansys/pyfluent/pull/3702>`_
+- Safely delete para env vars `#3745 <https://github.com/ansys/pyfluent/pull/3745>`_
+
+
+Miscellaneous
+^^^^^^^^^^^^^
+
+- Update docstring and check file extension in Mesh class `#3727 <https://github.com/ansys/pyfluent/pull/3727>`_
+- Rename warnings.py to fix examples workflow `#3734 <https://github.com/ansys/pyfluent/pull/3734>`_
+- Revert the new dm api as default. `#3742 <https://github.com/ansys/pyfluent/pull/3742>`_
+- __collection -> _collection for MutableMappings. `#3749 <https://github.com/ansys/pyfluent/pull/3749>`_
+
+
+Documentation
+^^^^^^^^^^^^^
+
+- Update launch_fluent snippets [skip tests] `#3726 <https://github.com/ansys/pyfluent/pull/3726>`_
+- Build nightly dev docs with Fluent 25.2 `#3736 <https://github.com/ansys/pyfluent/pull/3736>`_
+
+
+Maintenance
+^^^^^^^^^^^
+
+- update CHANGELOG for v0.30.dev0 `#3724 <https://github.com/ansys/pyfluent/pull/3724>`_
+- Add workflow for examples [skip tests] `#3730 <https://github.com/ansys/pyfluent/pull/3730>`_
+- Fix examples workflow [skip tests] `#3732 <https://github.com/ansys/pyfluent/pull/3732>`_
+- Fix labels [skip tests] `#3741 <https://github.com/ansys/pyfluent/pull/3741>`_
+
 `0.30.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev0>`_ - 2025-02-07
 =====================================================================================
 
