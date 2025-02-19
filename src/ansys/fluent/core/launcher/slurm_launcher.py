@@ -62,6 +62,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 """
 
 from concurrent.futures import Future, ThreadPoolExecutor
+import inspect
 import logging
 import os
 from pathlib import Path
@@ -415,7 +416,11 @@ class SlurmLauncher:
         """
         if not _SlurmWrapper.is_available():
             raise RuntimeError("Slurm is not available.")
-        self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
+        argvals = {
+            arg: locals().get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
             ui_mode = UIMode.GUI
