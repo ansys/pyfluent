@@ -1,5 +1,7 @@
 """Helper module to generate Fluent API classes."""
+import os
 
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 import argparse
 from time import time
 
@@ -20,6 +22,9 @@ if __name__ == "__main__":
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "workflow"
+        ),
+        StaticInfoType.DATAMODEL_WORKFLOW_API: meshing._datamodel_service_se.get_static_info(
+            "workflow_api"
         ),
         StaticInfoType.DATAMODEL_MESHING: meshing._datamodel_service_se.get_static_info(
             "meshing"

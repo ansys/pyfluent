@@ -16,6 +16,7 @@ def generate_meshing_datamodels():
         "PMFileManagement",
         "preferences",
         "workflow",
+        "workflow_api",
     ]
     for meshing_datamodel in meshing_datamodels:
         try:
@@ -36,7 +37,7 @@ def generate_solver_datamodels():
     """Generate solver datamodel RST files."""
     solver_datamodel_roots = []
     available_datamodels = []
-    solver_datamodels = ["flicing", "preferences", "solverworkflow", "workflow"]
+    solver_datamodels = ["flicing", "preferences", "solverworkflow", "workflow", "workflow_api"]
     for solver_datamodel in solver_datamodels:
         try:
             datamodel = importlib.import_module(
