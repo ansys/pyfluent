@@ -765,7 +765,7 @@ class PyLocalContainer(MutableMapping):
         self._parent = parent
         self._name = name
         self.__object_class = object_class
-        self.__collection: dict = {}
+        self._collection: dict = {}
         self.__api_helper = api_helper
         self.type = "named-object"
         self._command_names = []
@@ -856,15 +856,15 @@ class PyLocalContainer(MutableMapping):
         return self.get_session_handle()
 
     def __iter__(self):
-        return iter(self.__collection)
+        return iter(self._collection)
 
     def __len__(self):
-        return len(self.__collection)
+        return len(self._collection)
 
     def __getitem__(self, name):
-        o = self.__collection.get(name, None)
+        o = self._collection.get(name, None)
         if not o:
-            o = self.__collection[name] = self.__object_class(
+            o = self._collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
             on_create = getattr(self._PyLocalContainer__object_class, "on_create", None)
@@ -877,7 +877,7 @@ class PyLocalContainer(MutableMapping):
         o.update(value)
 
     def __delitem__(self, name):
-        del self.__collection[name]
+        del self._collection[name]
         on_delete = getattr(self._PyLocalContainer__object_class, "on_delete", None)
         if on_delete:
             on_delete(self, name)
