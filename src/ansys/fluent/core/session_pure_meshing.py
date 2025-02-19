@@ -49,6 +49,7 @@ class PureMeshing(BaseSession):
 
     _rules = [
         "workflow",
+        "workflow_api",
         "meshing",
         "MeshingUtilities",
         "PartManagement",
@@ -144,6 +145,11 @@ class PureMeshing(BaseSession):
     def workflow(self):
         """Datamodel root of workflow."""
         return self._base_meshing.workflow
+
+    @property
+    def workflow_api(self):
+        """Datamodel root of workflow."""
+        return self._base_meshing.workflow_api
 
     def watertight(self):
         """Get a new watertight workflow."""

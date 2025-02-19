@@ -191,6 +191,16 @@ class DataModelGenerator:
                 ),
                 self.version,
             )
+        if StaticInfoType.DATAMODEL_WORKFLOW_API in static_infos:
+            self._static_info["workflow_api"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_WORKFLOW_API,
+                "workflow_api",
+                (
+                    "meshing",
+                    "solver",
+                ),
+                self.version,
+            )
         if StaticInfoType.DATAMODEL_MESHING in static_infos:
             self._static_info["meshing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING, "meshing", ("meshing",), self.version
@@ -476,6 +486,9 @@ if __name__ == "__main__":
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "workflow"
+        ),
+        StaticInfoType.DATAMODEL_WORKFLOW_API: meshing._datamodel_service_se.get_static_info(
+            "workflow_api"
         ),
         StaticInfoType.DATAMODEL_MESHING: meshing._datamodel_service_se.get_static_info(
             "meshing"
