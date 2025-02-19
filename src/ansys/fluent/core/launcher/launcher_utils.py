@@ -62,8 +62,8 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
     if pyfluent.CLEAR_FLUENT_PARA_ENVS:
-        del fluent_env["PARA_NPROCS"]
-        del fluent_env["PARA_MESH_NPROCS"]
+        fluent_env.pop("PARA_NPROCS", None)
+        fluent_env.pop("PARA_MESH_NPROCS", None)
 
     if pyfluent.LAUNCH_FLUENT_IP:
         fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.LAUNCH_FLUENT_IP
