@@ -153,8 +153,9 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
+        locals_ = locals().copy()
         argvals = {
-            arg: locals().get(arg)
+            arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
         self.argvals, self.new_session = _get_argvals_and_session(argvals)

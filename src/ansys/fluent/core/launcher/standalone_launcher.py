@@ -186,8 +186,9 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
+        locals_ = locals().copy()
         argvals = {
-            arg: locals().get(arg)
+            arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
         self.argvals, self.new_session = _get_argvals_and_session(argvals)

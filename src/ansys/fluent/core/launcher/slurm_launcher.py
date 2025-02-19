@@ -416,8 +416,9 @@ class SlurmLauncher:
         """
         if not _SlurmWrapper.is_available():
             raise RuntimeError("Slurm is not available.")
+        locals_ = locals().copy()
         argvals = {
-            arg: locals().get(arg)
+            arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
