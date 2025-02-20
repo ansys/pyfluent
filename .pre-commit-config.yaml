@@ -103,7 +103,17 @@ repos:
 
     - id: check-vulnerabilities
       name: Check Vulnerabilities
-      entry: python -c "import os; import subprocess; subprocess.run(['python', 'check_vulnerabilities.py', '--run-local']) if os.environ.get('DEPENDENCY_CHECK_TOKEN') else print('DEPENDENCY_CHECK_TOKEN is not set')"
+      entry: python -c 
+        "import os; 
+         import subprocess;
+         result = []; 
+         result.append(subprocess.run(['python', 'check_vulnerabilities.py', '--run-local'])) 
+         if os.environ.get('DEPENDENCY_CHECK_TOKEN') 
+         else print('DEPENDENCY_CHECK_TOKEN is not set');
+         exit(0)
+         if result[0].returncode == 0
+         else exit(1)
+         "
       language: python
       types: [python]
       pass_filenames: false
