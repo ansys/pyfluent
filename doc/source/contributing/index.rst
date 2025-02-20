@@ -42,9 +42,29 @@ Build documentation
 To build the PyFluent documentation locally, run the following commands in the root
 (``pyfluent``) directory of the repository:
 
+Windows
+~~~~~~~
+
+Download `poppler zip file <https://github.com/oschwartz10612/poppler-windows/releases/tag/v24.08.0-0>`_ and add the bin directory to your PATH.
+
 .. code:: console
 
     pip install ansys-fluent-core[docs]
+    quarto install tinytex --no-prompt --update-path
+    cd doc
+    set BUILD_ALL_DOCS=1
+    set FLUENT_IMAGE_TAG=v0.25.1
+    make html
+
+Linux
+~~~~~
+
+.. code:: console
+
+    pip install ansys-fluent-core[docs]
+    sudo apt-get update
+    sudo apt-get install -y poppler-utils
+    quarto install tinytex --no-prompt --update-path
     cd doc
     set BUILD_ALL_DOCS=1
     set FLUENT_IMAGE_TAG=v0.25.1
