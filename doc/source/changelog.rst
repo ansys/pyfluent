@@ -9,6 +9,20 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.30.dev2 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev2>`_ - 2025-02-20
+=====================================================================================
+
+Miscellaneous
+^^^^^^^^^^^^^
+
+- Update PyLocalContainer to update _collection. `#3757 <https://github.com/ansys/pyfluent/pull/3757>`_
+
+
+Maintenance
+^^^^^^^^^^^
+
+- update CHANGELOG for v0.30.dev1 `#3753 <https://github.com/ansys/pyfluent/pull/3753>`_
+
 `0.30.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev1>`_ - 2025-02-19
 =====================================================================================
 
