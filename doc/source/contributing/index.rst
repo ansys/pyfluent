@@ -50,7 +50,7 @@ Windows
     ii. Unzip `Release-24.08.0-0.zip`.
     iii. Add `<path to..>/Release-24.08.0-0/poppler-24.08.0/Library/bin` to PATH.
 
-2. Execute the following commands
+2. Execute the following commands:
 
 .. code:: console
 
