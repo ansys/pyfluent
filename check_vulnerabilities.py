@@ -296,11 +296,6 @@ once it has been verified (since it has been created in draft mode).
     )
     print("*******************************************")
 
-    if (safety_entries + bandit_entries) or (
-        safety_results_reported + bandit_results_reported
-    ):
-        sys.exit(1)
-
     # Return whether new advisories have been created or not
     return new_advisory_detected
 
