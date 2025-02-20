@@ -45,7 +45,12 @@ To build the PyFluent documentation locally, run the following commands in the r
 Windows
 ~~~~~~~
 
-Download `poppler zip file <https://github.com/oschwartz10612/poppler-windows/releases/tag/v24.08.0-0>`_ and add the bin directory to your PATH.
+1. Install poppler
+    i. Download `Release-24.08.0-0.zip <https://github.com/oschwartz10612/poppler-windows/releases/download/v24.08.0-0/Release-24.08.0-0.zip>`_.
+    ii. Unzip `Release-24.08.0-0.zip`.
+    iii. Add `<path to..>/Release-24.08.0-0/poppler-24.08.0/Library/bin` to PATH.
+
+2. Execute the following commands
 
 .. code:: console
 
