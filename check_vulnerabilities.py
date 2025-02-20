@@ -115,69 +115,72 @@ def check_vulnerabilities():
         # Retrieve the needed values
         v_id = vulnerability.get("vulnerability_id")
         v_package = vulnerability.get("package_name")
-        v_cve = vulnerability.get("CVE")
-        v_url = vulnerability.get("more_info_url")
-        v_desc = vulnerability.get("advisory")
-        v_affected_versions = vulnerability.get("vulnerable_spec")
-        v_fixed_versions = vulnerability.get("fixed_versions")
+        if v_package != "pip":
+            v_cve = vulnerability.get("CVE")
+            v_url = vulnerability.get("more_info_url")
+            v_desc = vulnerability.get("advisory")
+            v_affected_versions = vulnerability.get("vulnerable_spec")
+            v_fixed_versions = vulnerability.get("fixed_versions")
 
-        # Advisory info
-        summary = f"Safety vulnerability {v_id} for package '{v_package}'"
-        vuln_adv = {
-            "package": {"name": f"{v_package}", "ecosystem": "pip"},
-            "vulnerable_version_range": f"{v_affected_versions}",
-            "patched_versions": f"{v_fixed_versions}",
-            "vulnerable_functions": [],
-        }
-        desc = f"""
-{v_desc}
+            # Advisory info
+            summary = f"Safety vulnerability {v_id} for package '{v_package}'"
+            vuln_adv = {
+                "package": {"name": f"{v_package}", "ecosystem": "pip"},
+                "vulnerable_version_range": f"{v_affected_versions}",
+                "patched_versions": f"{v_fixed_versions}",
+                "vulnerable_functions": [],
+            }
+            desc = f"""
+    {v_desc}
 
-#### More information
+    #### More information
 
-Visit {v_url} to find out more information.
-"""
-        # Check if the advisory already exists
-        if existing_advisories.get(summary):
-            continue
-        elif not DRY_RUN:
-            # New safety advisory detected
-            safety_results_reported += 1
-            new_advisory_detected = True
+    Visit {v_url} to find out more information.
+    """
+            # Check if the advisory already exists
+            if existing_advisories.get(summary):
+                continue
+            elif not DRY_RUN:
+                # New safety advisory detected
+                safety_results_reported += 1
+                new_advisory_detected = True
 
-            # Create the advisory but do not publish it
-            advisory = repo.create_repository_advisory(
-                summary=summary,
-                description=desc,
-                severity_or_cvss_vector_string="medium",
-                cve_id=v_cve,
-                vulnerabilities=[vuln_adv],
-            )
+                # Create the advisory but do not publish it
+                advisory = repo.create_repository_advisory(
+                    summary=summary,
+                    description=desc,
+                    severity_or_cvss_vector_string="medium",
+                    cve_id=v_cve,
+                    vulnerabilities=[vuln_adv],
+                )
 
-            # Create an issue
-            if CREATE_ISSUES:
-                issue_body = f"""
-A new security advisory was open in this repository. See {advisory.html_url}.
+                # Create an issue
+                if CREATE_ISSUES:
+                    issue_body = f"""
+    A new security advisory was open in this repository. See {advisory.html_url}.
 
----
-**NOTE**
+    ---
+    **NOTE**
 
-Please update the security advisory status after evaluating. Publish the advisory
-once it has been verified (since it has been created in draft mode).
+    Please update the security advisory status after evaluating. Publish the advisory
+    once it has been verified (since it has been created in draft mode).
 
----
+    ---
 
-#### Description
+    #### Description
 
-{desc}
-"""
-                repo.create_issue(title=summary, body=issue_body, labels=["security"])
-        else:
-            # New safety advisory detected
-            safety_results_reported += 1
-            new_advisory_detected = True
-            print("===========================================\n")
-            print(f"{summary}")
-            print(f"{desc}")
+    {desc}
+    """
+                    repo.create_issue(
+                        title=summary, body=issue_body, labels=["security"]
+                    )
+            else:
+                # New safety advisory detected
+                safety_results_reported += 1
+                new_advisory_detected = True
+                print("===========================================\n")
+                print(f"{summary}")
+                print(f"{desc}")
 
     ###############################################################################
     # LIBRARY SECURITY ADVISORIES
@@ -282,7 +285,15 @@ once it has been verified (since it has been created in draft mode).
             print(f"{desc}")
 
     # Print out information
-    safety_entries = len(safety_results["vulnerabilities"])
+    safety_entries = 0
+    for vulnerability in safety_results["vulnerabilities"]:
+        if (
+            vulnerability.get("package_name") == "pip"
+            and len(safety_results["vulnerabilities"]) == 1
+        ):
+            safety_entries = 0
+        else:
+            safety_entries = len(safety_results["vulnerabilities"])
     bandit_entries = len(bandit_results["results"])
     print("\n*******************************************")
     print(f"Total 'safety' advisories detected: {safety_entries}")
@@ -297,7 +308,10 @@ once it has been verified (since it has been created in draft mode).
     print("*******************************************")
 
     # Return whether new advisories have been created or not
-    return new_advisory_detected
+    if new_advisory_detected:
+        exit(1)
+    else:
+        return new_advisory_detected
 
 
 def generate_advisory_files():
