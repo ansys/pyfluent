@@ -37,18 +37,7 @@ dependencies = [
 dynamic = ["version"]
 
 [tool.flit.sdist]
-include = [
-    "src/ansys/fluent/core/generated/fluent_version_*.py",
-    "src/ansys/fluent/core/generated/meshing/tui_*.py",
-    "src/ansys/fluent/core/generated/solver/*.py",
-    "src/ansys/fluent/core/generated/solver/*.pyi",
-    "src/ansys/fluent/core/generated/datamodel_*/*.py",
-    "src/ansys/fluent/core/generated/solver/settings_*/*.py",
-    "src/ansys/fluent/core/generated/solver/settings_*/*.pyi",
-    "src/ansys/fluent/core/generated/solver/settings_*.zip",
-    "src/ansys/fluent/core/generated/*.pickle",
-    "src/ansys/fluent/core/generated/api_tree/*.json",
-]
+include = ["src/ansys/fluent/core/generated/"]
 
 [project.optional-dependencies]
 reader = ["h5py==3.12.1"]
