@@ -40,7 +40,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
-    "filereader": ["case_file", "data_file", "lispy"],
+    "file-reader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
         "error_handler",
@@ -55,7 +55,7 @@ hierarchy = {
         "watchdog",
     ],
     "meshing": ["meshing_workflow", "datamodel/index", "tui/index"],
-    "post_objects": [
+    "post-objects": [
         "check_in_notebook",
         "post_helper",
         "post_objects_container",
@@ -87,7 +87,7 @@ hierarchy = {
         "settings_root",
         "tui/index",
     ],
-    "streaming_services": [
+    "streaming-services": [
         "datamodel_event_streaming",
         "datamodel_streaming",
         "events_streaming",
@@ -126,7 +126,7 @@ hierarchy = {
         "session_solver_lite",
         "session_solver",
         "session",
-        "systemcoupling",
+        "system_coupling",
         "warnings",
         "workflow",
     ],
