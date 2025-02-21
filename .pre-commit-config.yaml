@@ -100,7 +100,7 @@ repos:
       language: python
       types: [python]
       pass_filenames: false
-      verbose: true
+      always_run: true
 
     - id: check-vulnerabilities
       name: Check Vulnerabilities
