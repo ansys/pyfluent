@@ -144,6 +144,18 @@ def _build_command_query_docstring(name: str, info: Any, indent: str, is_command
     return doc
 
 
+meshing_rule_file_names = {
+    "workflow": "workflow",
+    "meshing": "meshing",
+    "PartManagement": "part_management",
+    "PMFileManagement": "pm_file_management",
+    "preferences": "preferences",
+    "MeshingUtilities": "meshing_utilities",
+    "flicing": "flicing",
+    "solverworkflow": "solver_workflow",
+}
+
+
 class DataModelStaticInfo:
     """Stores datamodel static information."""
 
@@ -165,9 +177,11 @@ class DataModelStaticInfo:
             rules_save_name = rules
         datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
-        self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        self.file_name = (
+            datamodel_dir / f"{meshing_rule_file_names[rules_save_name]}.py"
+        ).resolve()
         if rules == "MeshingUtilities":
-            self.stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
+            self.stub_file = (datamodel_dir / "meshing_utilities.pyi").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -372,7 +386,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
             api_tree[k] = "Parameter"
-        if "MeshingUtilities" in f.name:
+        if "meshing_utilities" in f.name:
             stub_file = self._static_info["MeshingUtilities"].stub_file
             stub_file.unlink(missing_ok=True)
             with open(stub_file, "w", encoding="utf8") as file:

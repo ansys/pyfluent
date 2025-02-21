@@ -118,13 +118,13 @@ class BaseMeshing:
                 from ansys.fluent.core import CODEGEN_OUTDIR
 
                 meshing_utilities_module = pyfluent.utils.load_module(
-                    f"MeshingUtilities_{self._version}",
+                    f"meshing_utilities_{self._version}",
                     CODEGEN_OUTDIR
                     / f"datamodel_{self._version}"
-                    / "MeshingUtilities.py",
+                    / "meshing_utilities.py",
                 )
                 meshing_utilities_root = meshing_utilities_module.Root(
-                    self._se_service, "MeshingUtilities", []
+                    self._se_service, "meshing_utilities", []
                 )
         except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)

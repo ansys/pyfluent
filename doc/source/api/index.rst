@@ -14,10 +14,10 @@ Meshing mode
 The following interfaces are specific to meshing mode.
 
 * :ref:`meshing <ref_meshing_datamodel_meshing>`
-* :ref:`PartManagement <ref_meshing_datamodel_PartManagement>`
-* :ref:`PMFileManagement <ref_meshing_datamodel_PMFileManagement>`
+* :ref:`PartManagement <ref_meshing_datamodel_part_management>`
+* :ref:`PMFileManagement <ref_meshing_datamodel_pm_file_management>`
 * :ref:`workflow <ref_meshing_datamodel_workflow>`
-* :ref:`meshing utilities <ref_meshing_datamodel_MeshingUtilities>`
+* :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>`
 
 Solution mode
 -------------
