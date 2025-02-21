@@ -211,12 +211,11 @@ if __name__ == "__main__":
     import importlib
 
     from ansys.fluent.core.codegen import walk_api
-    import ansys.fluent.core.generated.solver as solver
 
     # Sample Usage
     #
     # Whole Fluent settings API check with default settings
-    # >>> python run_fluent_settings_api_docstring_check.py
+    # >>> python src\ansys\fluent\core\solver\_docstrings.py --api-version=252
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--cls", dest="api_cls", type=str, default="root")
@@ -231,7 +230,9 @@ if __name__ == "__main__":
     output_type = args.output_type
     api_version = args.api_version
 
-    mod = importlib.import_module(name=f"settings_{api_version}", package=solver)
+    mod = importlib.import_module(
+        name=f"ansys.fluent.core.generated.solver.settings_{api_version}"
+    )
     cls = getattr(mod, api_cls)
 
     if output_type == "show":
