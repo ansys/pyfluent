@@ -27,7 +27,6 @@
 # - many known API misspellings also have corresponding
 #   misspellingling for docstring.
 
-
 import re
 
 _choose_words = ("Choose", "Indicate", "Select", "Specify")
