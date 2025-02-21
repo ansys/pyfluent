@@ -666,9 +666,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
         f"api_tree_{version}.pickle",
         "solver",
     }
-    solver_paths = list((codegen_outdir / "solver").iterdir())
-    assert len(solver_paths) == 2
-    assert set(p.name for p in solver_paths) == {
+    assert {p.name for p in (codegen_outdir / "solver").glob("*.py*")} == {
         f"settings_{version}.py",
         f"settings_{version}.pyi",
     }

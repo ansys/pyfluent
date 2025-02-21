@@ -26,6 +26,7 @@
 # - selected missing last e.
 # - many known API misspellings also have corresponding
 #   misspellingling for docstring.
+# - CGSN
 
 import re
 
