@@ -326,8 +326,8 @@ def _check_written_docstrings(version, output_file, verbose):
         )
     elif verbose:
         print(
-+            "The solver settings generated classes contain no reported docstring issues."
-+        )
+            "The solver settings generated classes contain no reported docstring issues."
+        )
 
 
 def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
