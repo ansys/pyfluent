@@ -47,10 +47,10 @@ def test_allapigen_files(new_solver_session):
         f"ansys.fluent.core.generated.datamodel_{version}.preferences"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.part_management"
+        f"ansys.fluent.core.generated.datamodel_{version}.PartManagement"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.pm_file_management"
+        f"ansys.fluent.core.generated.datamodel_{version}.PMFileManagement"
     )
     importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
 
@@ -175,12 +175,12 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
 _static_info_type_by_rules = {
     "workflow": StaticInfoType.DATAMODEL_WORKFLOW,
     "meshing": StaticInfoType.DATAMODEL_MESHING,
-    "part_management": StaticInfoType.DATAMODEL_PART_MANAGEMENT,
-    "pm_file_management": StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
+    "PartManagement": StaticInfoType.DATAMODEL_PART_MANAGEMENT,
+    "PMFileManagement": StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
     "flicing": StaticInfoType.DATAMODEL_FLICING,
     "preferences": StaticInfoType.DATAMODEL_PREFERENCES,
-    "solver_workflow": StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
-    "meshing_utilities": StaticInfoType.DATAMODEL_MESHING_UTILITIES,
+    "solverworkflow": StaticInfoType.DATAMODEL_SOLVER_WORKFLOW,
+    "MeshingUtilities": StaticInfoType.DATAMODEL_MESHING_UTILITIES,
 }
 
 
@@ -315,11 +315,11 @@ class Root(PyMenu):
     [
         "workflow",
         "meshing",
-        "part_management",
-        "pm_file_management",
+        "PartManagement",
+        "PMFileManagement",
         "preferences",
-        "solver_workflow",
-        "meshing_utilities",
+        "solverworkflow",
+        "MeshingUtilities",
     ],
 )
 def test_codegen_with_datamodel_static_info(monkeypatch, rules):
@@ -372,13 +372,13 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     if rules in [
         "workflow",
         "meshing",
-        "part_management",
-        "pm_file_management",
+        "PartManagement",
+        "PMFileManagement",
         "preferences",
-        "meshing_utilities",
+        "MeshingUtilities",
     ]:
         api_tree_expected["<meshing_session>"] = datamodel_tree
-    if rules in ["workflow", "flicing", "preferences", "solver_workflow"]:
+    if rules in ["workflow", "flicing", "preferences", "solverworkflow"]:
         api_tree_expected["<solver_session>"] = datamodel_tree
     assert api_tree == api_tree_expected
     shutil.rmtree(str(codegen_outdir))

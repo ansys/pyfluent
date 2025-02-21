@@ -40,7 +40,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
-    "file-reader": ["case_file", "data_file", "lispy"],
+    "file_reader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
         "error_handler",
@@ -54,8 +54,8 @@ hierarchy = {
         "standalone_launcher",
         "watchdog",
     ],
-    "meshing": ["meshing_workflow", "datamodel/index", "tui/index"],
-    "post-objects": [
+    "meshing": ["meshing_workflow", "datamodel/datamodel_contents", "tui/tui_contents"],
+    "post_objects": [
         "check_in_notebook",
         "post_helper",
         "post_objects_container",
@@ -83,11 +83,11 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "datamodel/index",
+        "datamodel/datamodel_contents",
         "settings_root",
-        "tui/index",
+        "tui/tui_contents",
     ],
-    "streaming-services": [
+    "streaming_services": [
         "datamodel_event_streaming",
         "datamodel_streaming",
         "events_streaming",
@@ -144,7 +144,7 @@ def _write_common_rst_members(rst_file):
 
 def _generate_api_source_rst_files(folder: str, files: list):
     for file in files:
-        if "index" in file:
+        if "contents" in file:
             pass
         else:
             if folder:
@@ -185,8 +185,8 @@ def _generate_api_index_rst_files():
             _generate_api_source_rst_files(None, files)
         else:
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
-            file = _get_file_path(folder, "index")
-            with open(file, "w", encoding="utf8") as index:
+            folder_index = _get_file_path(folder, f"{folder}_contents")
+            with open(folder_index, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
                 index.write(f"{folder}\n")
                 index.write(f'{"="*(len(f"{folder}"))}\n\n')

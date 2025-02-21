@@ -30,15 +30,15 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     :hidden:
     :caption: ansys.fluent.core
 
-    filereader/index
-    launcher/index
-    meshing/index
-    post_objects/index
-    scheduler/index
-    services/index
-    solver/index
-    streaming_services/index
-    utils/index
+    file_reader/file_reader_contents
+    launcher/launcher_contents
+    meshing/meshing_contents
+    post_objects/post_objects_contents
+    scheduler/scheduler_contents
+    services/services_contents
+    solver/solver_contents
+    streaming_services/streaming_services_contents
+    utils/utils_contents
     data_model_cache
     exceptions
     file_session
@@ -55,6 +55,6 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     session_solver_lite
     session_solver
     session
-    systemcoupling
+    system_coupling
     warnings
     workflow
