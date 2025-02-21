@@ -35,6 +35,7 @@ Examples
 >>> pim_solver_session = pim_solver_launcher()
 """
 
+import inspect
 import logging
 import os
 from typing import Any, Dict
@@ -152,7 +153,12 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
-        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60

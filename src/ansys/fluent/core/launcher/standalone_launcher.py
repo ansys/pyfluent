@@ -35,6 +35,7 @@ Examples
 >>> standalone_solver_session = standalone_solver_launcher()
 """
 
+import inspect
 import logging
 import os
 from pathlib import Path
@@ -185,7 +186,12 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
-        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
             ui_mode = UIMode.GUI
