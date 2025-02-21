@@ -24,6 +24,7 @@
 
 from concurrent import futures
 import logging
+import os
 import socket
 from typing import Any
 import urllib.request
@@ -143,3 +144,105 @@ def get_url_content(url: str) -> str:
     """
     with urllib.request.urlopen(url) as response:
         return response.read()
+
+
+def test_grpc_connection():
+    """Utility function to test viability of grpc connection in the current machine."""
+
+    def test_inner(ip: str, port: int | None = None) -> bool:
+        from ansys.fluent.core import INFER_REMOTING_IP_TIMEOUT_PER_IP
+
+        if not port:
+            port = get_free_port()
+        address = f"{ip}:{port}"
+        try:
+            with _GrpcServer(address):
+                with grpc.insecure_channel(address) as channel:
+                    stub = health_pb2_grpc.HealthStub(channel)
+                    return (
+                        stub.Check(
+                            health_pb2.HealthCheckRequest(),
+                            timeout=INFER_REMOTING_IP_TIMEOUT_PER_IP,
+                        ).status
+                        == health_pb2.HealthCheckResponse.ServingStatus.SERVING
+                    )
+        except Exception:
+            return False
+
+    def test_inner_using_all_available_ips(port: int | None = None) -> list[str]:
+        successful_ips = []
+        for addrinfo in socket.getaddrinfo(
+            "localhost",
+            0,
+            family=socket.AF_INET,
+            type=socket.SOCK_STREAM,
+            flags=socket.AI_PASSIVE,
+        ):
+            ip = addrinfo[-1][0]
+            if test_inner(ip, port):
+                successful_ips.append(ip)
+        return successful_ips
+
+    def parse_ports_env_var() -> list[int]:
+        env_val = os.getenv("REMOTING_PORTS")
+        start_port, span = env_val.split("/portspan=")
+        return list(range(int(start_port), int(start_port) + int(span)))
+
+    specified_ip = os.getenv("REMOTING_SERVER_ADDRESS")
+    specified_ports = os.getenv("REMOTING_PORTS")
+    if specified_ip:
+        print(
+            f'REMOTING_SERVER_ADDRESS is set to "{specified_ip}", will test using that ip.'
+        )
+        if specified_ports:
+            print(
+                f'REMOTING_PORTS is set to "{specified_ports}", will test using those ports.'
+            )
+            for port in parse_ports_env_var():
+                if test_inner(specified_ip, port):
+                    print(
+                        f"Grpc connection can be established using ip={specified_ip} and port={port}."
+                    )
+                    break
+            else:
+                print(
+                    f"Grpc connection cannot be established using ip={specified_ip} and specified ports, will test again after unsetting REMOTING_SERVER_ADDRESS."
+                )
+                del os.environ["REMOTING_SERVER_ADDRESS"]
+                test_grpc_connection()
+        else:
+            print("REMOTING_PORTS is not set, will test using random port.")
+            if test_inner(specified_ip):
+                print(f"Grpc connection can be established using ip={specified_ip}.")
+            else:
+                print(
+                    f"Grpc connection cannot be established using ip={specified_ip}, will test again after unsetting REMOTING_SERVER_ADDRESS."
+                )
+                del os.environ["REMOTING_SERVER_ADDRESS"]
+                test_grpc_connection()
+    else:
+        print("REMOTING_SERVER_ADDRESS is not set, will test using all available ips.")
+        if specified_ports:
+            print(
+                f'REMOTING_PORTS is set to "{specified_ports}", will test using those ports.'
+            )
+            for port in parse_ports_env_var():
+                successful_ips = test_inner_using_all_available_ips(port)
+                if successful_ips:
+                    for ip in successful_ips:
+                        print(
+                            f"Grpc connection can be established using ip={ip} and port={port}."
+                        )
+                    print("Set REMOTING_SERVER_ADDRESS to one of the successful ips.")
+                    break
+            else:
+                print("Grpc connection cannot be established using any ip and port.")
+        else:
+            print("REMOTING_PORTS is not set, will test using random port.")
+            successful_ips = test_inner_using_all_available_ips()
+            if successful_ips:
+                for ip in successful_ips:
+                    print(f"Grpc connection can be established using ip={ip}.")
+                print("Set REMOTING_SERVER_ADDRESS to one of the successful ips.")
+            else:
+                print("Grpc connection cannot be established using any ip.")
