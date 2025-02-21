@@ -322,10 +322,10 @@ def _check_written_docstrings(version, output_file, verbose):
     dubious = analysis.dubious
     if dubious:
         print(
-            f"After running settings, some docstrings appear to be dubious: {dubious}."
+            f"Some docstrings appear to be dubious in the solver settings generated classes: {dubious}."
         )
     elif verbose:
-        print("After running settings, no docstrings appear to be dubious.")
+        print("The solver settings generated classes contain no reported docstring issues.")
 
 
 def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
