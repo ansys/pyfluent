@@ -31,6 +31,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen.datamodelgen import meshing_rule_file_names
 from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -47,10 +48,10 @@ def test_allapigen_files(new_solver_session):
         f"ansys.fluent.core.generated.datamodel_{version}.preferences"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.PartManagement"
+        f"ansys.fluent.core.generated.datamodel_{version}.part_management"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.PMFileManagement"
+        f"ansys.fluent.core.generated.datamodel_{version}.pm_file_management"
     )
     importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
 
@@ -354,8 +355,15 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     }
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
     assert len(datamodel_paths) == 1 or 2
-    assert set(p.name for p in datamodel_paths) == {f"{rules}.py"} or {f"{rules}.pyi"}
-    with open(codegen_outdir / f"datamodel_{version}" / f"{rules}.py", "r") as f:
+    assert set(p.name for p in datamodel_paths) == {
+        f"{meshing_rule_file_names[rules]}.py"
+    } or {f"{meshing_rule_file_names[rules]}.pyi"}
+    with open(
+        codegen_outdir
+        / f"datamodel_{version}"
+        / f"{meshing_rule_file_names[rules]}.py",
+        "r",
+    ) as f:
         assert f.read().strip() == _expected_datamodel_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:

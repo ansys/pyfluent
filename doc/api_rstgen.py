@@ -144,7 +144,7 @@ def _write_common_rst_members(rst_file):
 
 def _generate_api_source_rst_files(folder: str, files: list):
     for file in files:
-        if "contents" in file:
+        if file.endswith("_contents"):
             pass
         else:
             if folder:
