@@ -108,9 +108,7 @@ repos:
         "import os; 
          import subprocess;
          result = []; 
-         result.append(subprocess.run(['python', 'check_vulnerabilities.py', '--run-local'])) 
-         if os.environ.get('DEPENDENCY_CHECK_TOKEN') 
-         else print('DEPENDENCY_CHECK_TOKEN is not set');
+         result.append(subprocess.run(['python', 'check_vulnerabilities.py', '--run-local'])); 
          exit(1)
          if result and result[0].returncode == 1
          else exit(0)
