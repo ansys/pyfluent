@@ -86,8 +86,8 @@ def test_connection(ip: str | None = None, port: int | None = None):
                 )
             else:
                 print(
-                    f"gRPC connection cannot be established using ip={ip} and port={port}."
-                    "Try with a different ip and/or port. You can run the script again without"
+                    f"gRPC connection cannot be established using ip={ip} and port={port}. "
+                    "Try with a different ip and/or port. You can run the script again without "
                     "providing any ip to print all viable ips where gRPC connection can be established."
                 )
         else:
@@ -96,8 +96,8 @@ def test_connection(ip: str | None = None, port: int | None = None):
                 print(f"gRPC connection can be established using ip={ip}.")
             else:
                 print(
-                    f"gRPC connection cannot be established using ip={ip}."
-                    "Try with a different ip. You can run the script again without"
+                    f"gRPC connection cannot be established using ip={ip}. "
+                    "Try with a different ip. You can run the script again without "
                     "providing any ip to print all viable ips where gRPC connection can be established."
                 )
     else:
@@ -111,8 +111,8 @@ def test_connection(ip: str | None = None, port: int | None = None):
                     )
             else:
                 print(
-                    f"gRPC connection cannot be established using any ip and port={port}."
-                    "Try with a different port. You can run the script again without"
+                    f"gRPC connection cannot be established using any ip and port={port}. "
+                    "Try with a different port. You can run the script again without "
                     "providing any port to test using random port."
                 )
         else:
