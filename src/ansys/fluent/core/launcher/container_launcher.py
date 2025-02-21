@@ -35,6 +35,7 @@ Examples
 >>> container_solver_session = container_solver_launcher()
 """
 
+import inspect
 import logging
 import os
 from typing import Any
@@ -157,7 +158,12 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self.argvals, self.new_session = _get_argvals_and_session(argvals)
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60
         self.file_transfer_service = file_transfer_service
