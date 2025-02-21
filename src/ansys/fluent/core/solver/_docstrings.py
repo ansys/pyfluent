@@ -208,9 +208,10 @@ def show_all_doc_strings(api_path: str, api_item_type: str, api_cls: object):
 
 if __name__ == "__main__":
     import argparse
+    import importlib
 
     from ansys.fluent.core.codegen import walk_api
-    from ansys.fluent.core.generated.solver import settings_252  # hard-coded
+    import ansys.fluent.core.generated.solver as solver
 
     # Sample Usage
     #
@@ -221,18 +222,21 @@ if __name__ == "__main__":
     parser.add_argument("--cls", dest="api_cls", type=str, default="root")
     parser.add_argument("--path", dest="api_path", type=str, default="")
     parser.add_argument("--output-type", dest="output_type", type=str, default="stats")
+    parser.add_argument("--api-version", dest="api_version", type=str, default="")
 
     args = parser.parse_args()
 
     api_cls = args.api_cls
     api_path = args.api_path
     output_type = args.output_type
+    api_version = args.api_version
+
+    mod = importlib.import_module(name=f"settings_{api_version}", package=solver)
+    cls = getattr(mod, api_cls)
 
     if output_type == "show":
-        walk_api.walk_api(
-            getattr(settings_252, api_cls), show_all_doc_strings, api_path
-        )
+        walk_api.walk_api(cls, show_all_doc_strings, api_path)
     elif output_type == "stats":
         analysis = _DocStringAnalysis()
-        walk_api.walk_api(getattr(settings_252, api_cls), analysis.analyse, api_path)
+        walk_api.walk_api(cls, analysis.analyse, api_path)
         analysis.show_results()

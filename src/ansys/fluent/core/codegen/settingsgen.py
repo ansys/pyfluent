@@ -32,7 +32,8 @@ from typing import IO
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, walk_api
+from ansys.fluent.core.solver import _docstrings
 from ansys.fluent.core.solver.flobject import (
     ListObject,
     NamedObject,
@@ -311,6 +312,22 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         f_stub.write(s_stub.getvalue())
 
 
+def _check_written_docstrings(version, output_file, verbose):
+    settings = pyfluent.utils.load_module(
+        f"settings_{version}",
+        output_file,
+    )
+    analysis = _docstrings._DocStringAnalysis()
+    walk_api.walk_api(getattr(settings, "root"), analysis.analyse, "")
+    dubious = analysis.dubious
+    if dubious:
+        print(
+            f"After running settings, some docstrings appear to be dubious: {dubious}."
+        )
+    elif verbose:
+        print("After running settings, no docstrings appear to be dubious.")
+
+
 def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     """Generate the classes corresponding to the Fluent settings API."""
     start_time = time.time()
@@ -359,6 +376,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     )
     print(f"{output_file.name} size: {file_size:.2f} MB")
     print(f"{output_stub_file.name} size: {file_size_stub:.2f} MB")
+    _check_written_docstrings(version, output_file, verbose)
     return {"<solver_session>": api_tree}
 
 
