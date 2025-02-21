@@ -93,6 +93,13 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
+# Latest released Fluent version
+FLUENT_RELEASE_VERSION = "25.1.0"
+
+# Current dev Fluent version
+FLUENT_DEV_VERSION = "25.2.0"
+
+# Path to the example input/data files are downloaded
 EXAMPLES_PATH = str(get_examples_download_dir())
 
 # Host path which is mounted to the container

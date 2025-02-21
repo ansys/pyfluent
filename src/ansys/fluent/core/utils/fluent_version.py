@@ -28,12 +28,6 @@ import os
 
 import ansys.fluent.core as pyfluent
 
-# Latest released Fluent version
-fluent_release_version = "25.1.0"
-
-# Current dev Fluent version
-fluent_dev_version = "25.2.0"
-
 
 class AnsysVersionNotFound(RuntimeError):
     """Raised when Ansys version is not found."""
@@ -136,7 +130,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(fluent_release_version)
+        return cls(pyfluent.FLUENT_RELEASE_VERSION)
 
     @classmethod
     def current_dev(cls):
@@ -147,7 +141,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(fluent_dev_version)
+        return cls(pyfluent.FLUENT_DEV_VERSION)
 
     @property
     def awp_var(self):

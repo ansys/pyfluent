@@ -81,7 +81,6 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.execution import timeout_loop
-from ansys.fluent.core.utils.fluent_version import fluent_release_version
 from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -328,7 +327,9 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = os.getenv("FLUENT_IMAGE_TAG", f"v{fluent_release_version}")
+            image_tag = os.getenv(
+                "FLUENT_IMAGE_TAG", f"v{pyfluent.FLUENT_RELEASE_VERSION}"
+            )
         if not image_name:
             image_name = os.getenv("FLUENT_IMAGE_NAME", "ghcr.io/ansys/pyfluent")
         if not image_tag or not image_name:
