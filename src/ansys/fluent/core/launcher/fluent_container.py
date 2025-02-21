@@ -78,10 +78,10 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._version import fluent_release_version
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.execution import timeout_loop
+from ansys.fluent.core.utils.fluent_version import fluent_release_version
 from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")

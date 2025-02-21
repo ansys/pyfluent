@@ -27,7 +27,12 @@ from functools import total_ordering
 import os
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._version import fluent_dev_version, fluent_release_version
+
+# Latest released Fluent version
+fluent_release_version = "25.1.0"
+
+# Current dev Fluent version
+fluent_dev_version = "25.2.0"
 
 
 class AnsysVersionNotFound(RuntimeError):
