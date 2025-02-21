@@ -147,7 +147,12 @@ def get_url_content(url: str) -> str:
 
 
 def test_grpc_connection():
-    """Utility function to test viability of grpc connection in the current machine."""
+    """Utility function to test viability of grpc connection in the current machine.
+
+    The function will print a list of ip addresses that can be used to establish a grpc
+    connection. The function will take into account the REMOTING_SERVER_ADDRESS and
+    REMOTING_PORTS environment variables if they are set.
+    """
 
     def test_inner(ip: str, port: int | None = None) -> bool:
         from ansys.fluent.core import INFER_REMOTING_IP_TIMEOUT_PER_IP
