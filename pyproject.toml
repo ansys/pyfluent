@@ -237,6 +237,3 @@ skips = [
     "B604",
     "B607",
     ]
-
-[tool.safety]
-ignore = ["CVE-2023-5752", "CVE-2018-20225"] # ignore pip<23.3
