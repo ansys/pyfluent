@@ -54,7 +54,7 @@ from ansys.fluent.core.solver.flobject import (
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
-from ansys.fluent.core.systemcoupling import SystemCoupling
+from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,

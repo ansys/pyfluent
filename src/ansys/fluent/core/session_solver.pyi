@@ -26,7 +26,7 @@ from ansys.fluent.core.generated.datamodel_242.preferences import (
 from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
 import ansys.fluent.core.generated.solver.settings_242 as settings_root
 from ansys.fluent.core.generated.solver.tui_242 import main_menu
-from ansys.fluent.core.systemcoupling import SystemCoupling
+from ansys.fluent.core.system_coupling import SystemCoupling
 
 class Solver:
     @property

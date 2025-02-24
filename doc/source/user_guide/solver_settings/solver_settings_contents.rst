@@ -399,5 +399,5 @@ The following list summarizes common wildcards:
    :maxdepth: 1
    :hidden:
 
-   set_up/index
+   set_up/set_up_contents
    solution
