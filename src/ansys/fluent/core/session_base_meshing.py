@@ -124,13 +124,13 @@ class BaseMeshing:
                     / "meshing_utilities.py",
                 )
                 meshing_utilities_root = meshing_utilities_module.Root(
-                    self._se_service, "meshing_utilities", []
+                    self._se_service, "MeshingUtilities", []
                 )
         except (ImportError, FileNotFoundError):
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             if self.get_fluent_version() >= FluentVersion.v242:
                 meshing_utilities_root = PyMenuGeneric(
-                    self._se_service, "meshing_utilities"
+                    self._se_service, "MeshingUtilities"
                 )
         return meshing_utilities_root
 
