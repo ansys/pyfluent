@@ -782,8 +782,8 @@ class FluentConnection:
             if cleanup_on_exit:
                 try:
                     connection_interface.exit_server()
-                except Exception as e:
-                    logger.debug(f"Error during exiting server: {e}")
+                except Exception:
+                    pass
             channel.close()
             channel = None
 

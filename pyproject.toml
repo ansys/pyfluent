@@ -5,7 +5,6 @@ build-backend = "flit_core.buildapi"
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-fluent-core"
-version = "0.30.dev2"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
 requires-python = ">=3.10,<3.14"
@@ -35,20 +34,10 @@ dependencies = [
     "pyansys-tools-report>=0.8.1",
     "pyyaml>=6.0",
 ]
+dynamic = ["version"]
 
 [tool.flit.sdist]
-include = [
-    "src/ansys/fluent/core/generated/fluent_version_*.py",
-    "src/ansys/fluent/core/generated/meshing/tui_*.py",
-    "src/ansys/fluent/core/generated/solver/*.py",
-    "src/ansys/fluent/core/generated/solver/*.pyi",
-    "src/ansys/fluent/core/generated/datamodel_*/*.py",
-    "src/ansys/fluent/core/generated/solver/settings_*/*.py",
-    "src/ansys/fluent/core/generated/solver/settings_*/*.pyi",
-    "src/ansys/fluent/core/generated/solver/settings_*.zip",
-    "src/ansys/fluent/core/generated/*.pickle",
-    "src/ansys/fluent/core/generated/api_tree/*.json",
-]
+include = ["src/ansys/fluent/core/generated/"]
 
 [project.optional-dependencies]
 reader = ["h5py==3.12.1"]
@@ -218,22 +207,3 @@ showcontent = true
 directory = "test"
 name = "Test"
 showcontent = true
-
-[tool.bandit]
-exclude_dirs = ["tests"]
-skips = [
-    "B105",
-    "B110",
-    "B112",
-    "B307",
-    "B310",
-    "B311",
-    "B314",
-    "B403",
-    "B404",
-    "B405",
-    "B602",
-    "B603",
-    "B604",
-    "B607",
-    ]
