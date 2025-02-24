@@ -166,8 +166,8 @@ class BatchOps:
             obj = self.response_cls()
             try:
                 obj.ParseFromString(data)
-            except Exception as e:
-                network_logger.debug(f"Failed to parse response: {e}")
+            except Exception:
+                pass
             self._status = status
             self._result = obj
 

@@ -236,13 +236,7 @@ class SystemCoupling:
         """
 
         def get_scp_string() -> str:
-            """Get the SCP file contents in the form of an XML string.
-
-            Raises
-            ------
-            FileNotFoundError
-                If the SCP file could not be created.
-            """
+            """Get the SCP file contents in the form of an XML string."""
 
             scp_file_name = "fluent.scp"
             self._solver.settings.setup.models.system_coupling.write_scp_file(
@@ -262,10 +256,9 @@ class SystemCoupling:
                 if os.path.exists(examples_path_scp):
                     scp_file_name = examples_path_scp
 
-            if not os.path.exists(scp_file_name):
-                raise FileNotFoundError(
-                    f"ERROR: could not create System Coupling SCP file: {scp_file_name}"
-                )
+            assert os.path.exists(
+                scp_file_name
+            ), f"ERROR: could not create System Coupling SCP file: {scp_file_name}"
 
             with open(scp_file_name, "r") as f:
                 xml_string = f.read()
