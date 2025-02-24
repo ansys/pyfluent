@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 # Check https://flit.readthedocs.io/en/latest/pyproject_toml.html for all available sections
 name = "ansys-fluent-core"
-version = "0.29.0"
+version = "0.29.1"
 description = "PyFluent provides Pythonic access to Ansys Fluent."
 readme = "README.rst"
 requires-python = ">=3.10,<3.14"
