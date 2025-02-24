@@ -20,16 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.generated.datamodel_242.MeshingUtilities import (
+from ansys.fluent.core.generated.datamodel_242.meshing import Root as meshing_root
+from ansys.fluent.core.generated.datamodel_242.meshing_utilities import (
     Root as meshing_utilities_root,
 )
-from ansys.fluent.core.generated.datamodel_242.PMFileManagement import (
-    Root as pmfilemanagement_root,
-)
-from ansys.fluent.core.generated.datamodel_242.PartManagement import (
+from ansys.fluent.core.generated.datamodel_242.part_management import (
     Root as partmanagement_root,
 )
-from ansys.fluent.core.generated.datamodel_242.meshing import Root as meshing_root
+from ansys.fluent.core.generated.datamodel_242.pm_file_management import (
+    Root as pmfilemanagement_root,
+)
 from ansys.fluent.core.generated.datamodel_242.preferences import (
     Root as preferences_root,
 )

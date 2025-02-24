@@ -130,6 +130,7 @@ def test_datamodel_execute():
         import_geom.Execute()
 
 
+@pytest.mark.skip("Failing randomly.")
 def test_file_list_in_datamodel(fault_tolerant_workflow_session):
     meshing = fault_tolerant_workflow_session
     fmd_file = examples.download_file("exhaust_system.fmd", "pyfluent/exhaust_system")

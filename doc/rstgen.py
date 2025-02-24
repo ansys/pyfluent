@@ -273,7 +273,8 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
     """
     full_folder_path = _get_docdir(mode, "", True)
     Path(full_folder_path).mkdir(parents=True, exist_ok=True)
-    index_file = Path(full_folder_path) / "index.rst"
+    folder = Path(full_folder_path)
+    index_file = folder / f"{folder.name}_contents.rst"
     datamodel_mode = f"{mode}.datamodel"
     with open(index_file, "w", encoding="utf8") as f:
         f.write(f".. _ref_{mode}_datamodel:\n\n")
@@ -285,7 +286,7 @@ def _write_datamodel_index_doc(datamodels: list, mode: str):
         f.write(".. toctree::\n")
         f.write("   :hidden:\n\n")
         for datamodel in datamodels:
-            f.write(f"   {datamodel}/index\n")
+            f.write(f"   {datamodel}/{datamodel}_contents\n")
 
 
 def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
@@ -359,7 +360,8 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     menu_name, menu_path = _get_menu_name_path(menu["name"], is_datamodel)
     full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
     Path(full_folder_path).mkdir(parents=True, exist_ok=True)
-    index_file = Path(full_folder_path) / "index.rst"
+    folder = Path(full_folder_path)
+    index_file = folder / f"{folder.name}_contents.rst"
     title = _get_title(mode, menu_path, menu, is_datamodel)
     with open(index_file, "w", encoding="utf8") as f:
         f.write(_get_reference(menu, menu_path, mode, is_datamodel))
@@ -380,7 +382,7 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
             for member in _get_sorted_members(menu["with_members"]):
-                f.write(f"   {member}/index\n")
+                f.write(f"   {member}/{member}_contents\n")
 
 
 def _generate_all_attribute_classes(all_menus: list, main_menu: type):
