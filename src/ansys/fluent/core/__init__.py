@@ -32,7 +32,6 @@ from ansys.fluent.core.logging import set_console_logging_level  # noqa: F401
 
 # isort: on
 
-from ansys.fluent.core._version import __version__  # noqa: F401
 from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
@@ -63,8 +62,13 @@ from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
+__version__ = "0.30.dev2"
+
 _VERSION_INFO = None
-"""Global variable indicating the version of the PyFluent package - Empty by default"""
+"""
+Global variable indicating the version info of the PyFluent package.
+Build timestamp and commit hash are added to this variable during packaging.
+"""
 
 _THIS_DIRNAME = os.path.dirname(__file__)
 _README_FILE = os.path.normpath(os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
@@ -89,6 +93,13 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
+# Latest released Fluent version
+FLUENT_RELEASE_VERSION = "25.1.0"
+
+# Current dev Fluent version
+FLUENT_DEV_VERSION = "25.2.0"
+
+# Path to the example input/data files are downloaded
 EXAMPLES_PATH = str(get_examples_download_dir())
 
 # Host path which is mounted to the container
