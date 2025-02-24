@@ -25,8 +25,8 @@
 import argparse
 import hashlib
 from io import StringIO
-import json
 import keyword
+import pickle
 import time
 from typing import IO
 
@@ -153,7 +153,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
 
 def _gethash(obj_info):
     dhash = hashlib.sha256()
-    dhash.update(json.dumps(obj_info).encode())
+    dhash.update(pickle.dumps(obj_info))
     return dhash.hexdigest()
 
 
@@ -367,8 +367,7 @@ if __name__ == "__main__":
     version = get_version_for_file_name(session=solver)
     static_info = solver._settings_service.get_static_info()
     # version = "251"
-    # with open("static_info.json", "r") as f:
-    #     static_info = json.load(f)
+    # static_info = pickle.load(open("static_info.pkl", "rb"))
     static_infos = {StaticInfoType.SETTINGS: static_info}
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."

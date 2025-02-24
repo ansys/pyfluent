@@ -1080,11 +1080,6 @@ class PyStateContainer(PyCallableStateObject):
                     functools.partial(dict.__setitem__, self.cached_attrs, attrib),
                 )
                 self.cached_attrs[attrib] = cached_val
-            except grpc.RpcError as e:
-                logger.debug(f"Failed to add attribute changed callback: {e}")
-                pass
-            except AttributeError:
-                pass
             except Exception:
                 pass
         return cached_val

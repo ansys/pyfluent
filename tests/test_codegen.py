@@ -22,8 +22,8 @@
 
 import ast
 import importlib
-import json
 from pathlib import Path
+import pickle
 import shutil
 import tempfile
 
@@ -63,10 +63,10 @@ def test_codegen_with_no_static_info(monkeypatch):
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.json"}
+    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
     api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "r") as f:
-        api_tree = json.load(f)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
     assert api_tree == {"<meshing_session>": {}, "<solver_session>": {}}
 
 
@@ -155,15 +155,15 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     allapigen.generate(version, static_infos)
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.json", mode}
+    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle", mode}
     solver_paths = list((codegen_outdir / mode).iterdir())
     assert len(solver_paths) == 1
     assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
     with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
         assert f.read().strip() == _get_expected_tui_api_output(mode)
     api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "r") as f:
-        api_tree = json.load(f)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
     tui_tree = {
         "tui": {"M1": {"M2": {"C3": "Command"}, "C2": "Command"}, "C1": "Command"}
     }
@@ -350,7 +350,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
-        f"api_tree_{version}.json",
+        f"api_tree_{version}.pickle",
         f"datamodel_{version}",
     }
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
@@ -366,8 +366,8 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     ) as f:
         assert f.read().strip() == _expected_datamodel_api_output
     api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "r") as f:
-        api_tree = json.load(f)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
     datamodel_tree = {
         rules: {
             "C1": "Command",
@@ -474,7 +474,7 @@ from ansys.fluent.core.solver.flobject import (
     _InOutFile,
 )
 
-SHASH = "70b7c37d8f541e1fa6900d99c19387e00c0e2030270702ab3e57ca92007018a8"
+SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"
 
 class P3(Integer):
     """
@@ -671,7 +671,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
     assert set(p.name for p in generated_paths) == {
-        f"api_tree_{version}.json",
+        f"api_tree_{version}.pickle",
         "solver",
     }
     solver_paths = list((codegen_outdir / "solver").iterdir())
@@ -683,8 +683,8 @@ def test_codegen_with_settings_static_info(monkeypatch):
     with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
         assert f.read().strip() == _expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "r") as f:
-        api_tree = json.load(f)
+    with open(api_tree_file, "rb") as f:
+        api_tree = pickle.load(f)
     settings_tree = {
         "C1": "Command",
         "G1": {
