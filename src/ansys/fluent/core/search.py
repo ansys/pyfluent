@@ -28,7 +28,6 @@ import functools
 import json
 import os
 from pathlib import Path
-import pickle
 import re
 import warnings
 
@@ -51,7 +50,7 @@ def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
     from ansys.fluent.core import CODEGEN_OUTDIR
 
-    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
+    return (CODEGEN_OUTDIR / f"api_tree_{version}.json").resolve()
 
 
 def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
@@ -100,8 +99,8 @@ def _generate_api_data(
             if get_api_tree_file_name(version).exists():
                 break
     api_tree_file = get_api_tree_file_name(version)
-    with open(api_tree_file, "rb") as f:
-        api_tree = pickle.load(f)
+    with open(api_tree_file, "r") as f:
+        api_tree = json.load(f)
 
     def inner(tree, path):
         for k, v in tree.items():
@@ -159,7 +158,7 @@ def _generate_api_data(
     _write_api_tree_file(
         api_tree_data=api_tree_data, api_object_names=list(api_object_names)
     )
-    api_tree_file.unlink()
+    api_tree_file.unlink(missing_ok=True)
 
 
 @functools.cache

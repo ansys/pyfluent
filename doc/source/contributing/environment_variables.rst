@@ -66,3 +66,5 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the IP address of the Fluent server while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - SERVER_INFO_DIR
       - Specifies the directory where the server-info file is created while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - UPLOAD_SERVER_TOKEN
+      - Specifies the token in the `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ configured environment for :ref:`PIM file transfer service <ref_file_transfer_service>`.

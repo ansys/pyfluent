@@ -91,3 +91,31 @@ repos:
     - id: add-license-headers
       args:
       - --start_year=2021
+
+- repo: local
+  hooks:
+    - id: check-vulnerabilities-dependencies
+      name: Check Vulnerabilities Dependencies
+      entry: python -c "import os; import subprocess; subprocess.run(['python', 'requirements/requirements_vulnernabilities.py'])"
+      language: python
+      types: [python]
+      pass_filenames: false
+      always_run: true
+
+    - id: check-vulnerabilities
+      name: Check Vulnerabilities
+      entry: python -c 
+        "import os; 
+         import subprocess;
+         result = []; 
+         result.append(subprocess.run(['python', 'check_vulnerabilities.py', '--run-local'])); 
+         exit(1)
+         if result and result[0].returncode == 1
+         else exit(0)
+         "
+      language: python
+      types: [python]
+      pass_filenames: false
+      always_run: true
+      verbose: true
+    
