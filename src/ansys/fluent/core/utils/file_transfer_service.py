@@ -24,7 +24,6 @@
 
 import os
 import pathlib
-import random
 import shutil
 from typing import Any, Protocol
 import warnings
@@ -263,27 +262,29 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.image_tag = image_tag if image_tag else "latest"
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
         self.mount_source = mount_source if mount_source else MOUNT_SOURCE
-        try:
-            self.host_port = port if port else random.randint(5000, 6000)
-            self.ports = {"50000/tcp": self.host_port}
-            self.container = self.docker_client.containers.run(
-                image=f"{self.image_name}:{self.image_tag}",
-                ports=self.ports,
-                detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
-            )
-        except docker.errors.DockerException:
-            self.host_port = port if port else random.randint(6000, 7000)
-            self.ports = {"50000/tcp": self.host_port}
-            self.container = self.docker_client.containers.run(
-                image=f"{self.image_name}:{self.image_tag}",
-                ports=self.ports,
-                detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
-            )
+        self.host_port = port if port else self._find_available_port()
         import ansys.tools.filetransfer as ft
 
         self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
+
+    def _find_available_port(self, lower_limit=5000, upper_limit=6000):
+        import docker
+
+        for port in range(lower_limit, upper_limit + 1):
+            try:
+                self.host_port = port
+                self.ports = {f"{port}/tcp": self.host_port}
+                self.container = self.docker_client.containers.run(
+                    image=f"{self.image_name}:{self.image_tag}",
+                    ports=self.ports,
+                    detach=True,
+                    volumes=[f"{self.mount_source}:{self.mount_target}"],
+                )
+                return self.host_port
+            except docker.errors.DockerException:
+                continue
+
+        raise Exception("No available ports found in the specified range.")
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
@@ -433,8 +434,9 @@ class PimFileTransferService:
             try:
                 from simple_upload_server.client import Client
 
+                token = os.getenv("UPLOAD_SERVER_TOKEN", "token")
                 self.file_service = Client(
-                    token="token",
+                    token=token,
                     url=self.upload_server.uri,
                     headers=self.upload_server.headers,
                 )
