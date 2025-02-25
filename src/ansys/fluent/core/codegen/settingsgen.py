@@ -368,6 +368,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
+        f_stub.write("from typing import Any\n\n")
         f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
