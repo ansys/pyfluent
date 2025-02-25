@@ -338,7 +338,7 @@ class _AllowedSurfaceNames(_AllowedNames):
             If surface name is invalid.
         """
         if validate_inputs and not self.is_valid(surface_name):
-            raise DisallowedValuesError("surface", surface_name, self())
+            raise DisallowedValuesError("surface", surface_name, list(self()))
         return surface_name
 
 
@@ -818,7 +818,11 @@ def _get_surface_ids(
                 ]
             )
         else:
-            surface_ids.append(surf)
+            allowed_surf_ids = _AllowedSurfaceIDs(field_info)()
+            if surf in allowed_surf_ids:
+                surface_ids.append(surf)
+            else:
+                raise DisallowedValuesError("surface", surf, allowed_surf_ids)
     return surface_ids
 
 
