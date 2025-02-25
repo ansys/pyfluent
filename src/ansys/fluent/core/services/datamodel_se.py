@@ -1894,7 +1894,7 @@ class PyCommand:
             "inout": _InOutFile,
         }
 
-        if file_purpose in purpose_to_class:
+        if file_purpose and file_purpose in purpose_to_class:
             file_class = purpose_to_class[file_purpose]
             self.file_behavior = file_class()
         else:
