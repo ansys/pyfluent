@@ -856,7 +856,7 @@ class FilenameList(SettingsBase[StringListType], Textual):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-class _InputFile(Base):
+class _InputFile:
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
@@ -867,7 +867,7 @@ class _InputFile(Base):
             return value
 
 
-class _OutputFile(Base):
+class _OutputFile:
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
