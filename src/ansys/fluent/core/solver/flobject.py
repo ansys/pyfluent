@@ -856,13 +856,7 @@ class FilenameList(SettingsBase[StringListType], Textual):
         return self.get_attr(_InlineConstants.file_purpose)
 
 
-class FileName(Base):
-    """Resolves MRO for child classes."""
-
-    pass
-
-
-class _InputFile(FileName):
+class _InputFile(Base):
     def _do_before_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
@@ -873,7 +867,7 @@ class _InputFile(FileName):
             return value
 
 
-class _OutputFile(FileName):
+class _OutputFile(Base):
     def _do_after_execute(self, command_name, value, kwargs):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
