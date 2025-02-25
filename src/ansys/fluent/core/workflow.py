@@ -1365,7 +1365,6 @@ class Workflow:
                     "service",
                     "task_object",
                     "workflow",
-                    "rename",
                 },
                 _fluent_version=fluent_version,
             )
