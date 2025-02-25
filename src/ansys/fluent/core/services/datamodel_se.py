@@ -1855,7 +1855,13 @@ class PyQuery:
         print(help_string)
 
 
-class PyCommand:
+class FileName:
+    """Resolves MRO for child classes."""
+
+    pass
+
+
+class PyCommand(FileName):
     """Command class using the StateEngine-based DatamodelService as the backend. Use
     this class instead of directly calling the DatamodelService's method.
 
@@ -1886,7 +1892,7 @@ class PyCommand:
             self.path = path
         self._static_info = None  # command's static info
 
-    def _get_file_purpose(self, arg):
+    def __get_file_purpose(self, arg):
         try:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
@@ -1998,7 +2004,7 @@ class PyCommand:
             )
 
 
-class _InputFile:
+class _InputFile(FileName):
     def _do_before_execute(self, value):
         try:
             file_names = value if isinstance(value, list) else [value]
@@ -2011,7 +2017,7 @@ class _InputFile:
             return value
 
 
-class _OutputFile:
+class _OutputFile(FileName):
     def _do_after_execute(self, value):
         try:
             file_names = value if isinstance(value, list) else [value]
