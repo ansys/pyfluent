@@ -1892,7 +1892,7 @@ class PyCommand(FileName):
             self.path = path
         self._static_info = None  # command's static info
 
-    def __get_file_purpose(self, arg):
+    def _get_file_purpose(self, arg):
         try:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
