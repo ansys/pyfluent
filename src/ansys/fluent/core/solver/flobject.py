@@ -1107,6 +1107,9 @@ class Group(SettingsBase[DictStateType]):
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
+                allowed_values=sorted(
+                    list(set(self.get_active_child_names() + self.command_names))
+                ),
             )
             ex.args = (error_msg,)
             raise
