@@ -334,11 +334,19 @@ class _AllowedSurfaceNames(_AllowedNames):
 
         Raises
         ------
+        RuntimeError
+            If issue in retrieving surface list.
         DisallowedValuesError
             If surface name is invalid.
         """
-        if validate_inputs and not self.is_valid(surface_name):
-            raise DisallowedValuesError("surface", surface_name, list(self()))
+        try:
+            valid_names = list(self())  # Fetch once, upfront
+        except Exception as e:
+            raise RuntimeError("Failed to retrieve valid surface names.") from e
+
+        if validate_inputs and surface_name not in valid_names:
+            raise DisallowedValuesError("surface", surface_name, valid_names)
+
         return surface_name
 
 
