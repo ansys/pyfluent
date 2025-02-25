@@ -51,6 +51,7 @@ def allowed_name_error_message(
             message += f"The most similar names are: {', '.join(matches)}."
         else:
             message += f"The allowed values are: {allowed_values}."
+    # TODO: Should we handle search_results and allowed_values in the same function?
     elif search_results:
         message = message + "\nThe most similar API names are:\n"
         for search_result in search_results:
