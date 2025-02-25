@@ -1894,13 +1894,14 @@ class PyCommand:
             "inout": _InOutFile,
         }
 
-        if file_purpose and file_purpose in purpose_to_class:
-            file_class = purpose_to_class[file_purpose]
-            self.file_behavior = file_class()
-        else:
-            raise DisallowedFilePurpose(
-                "File purpose", file_purpose, ["input", "output", "inout"]
-            )
+        if file_purpose:
+            if file_purpose in purpose_to_class:
+                file_class = purpose_to_class[file_purpose]
+                self.file_behavior = file_class()
+            else:
+                raise DisallowedFilePurpose(
+                    "File purpose", file_purpose, ["input", "output", "inout"]
+                )
 
     def _get_file_purpose(self, arg):
         try:
