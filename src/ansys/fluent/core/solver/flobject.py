@@ -76,6 +76,7 @@ from ansys.fluent.core.pyfluent_warnings import (
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
@@ -1809,11 +1810,20 @@ _baseTypes = {
 
 
 def _clean_helpinfo(helpinfo):
-    helpinfo = helpinfo.strip("\n")
+    helpinfo = helpinfo.strip("\n").lstrip(" ")
     if not helpinfo.endswith("."):
         helpinfo += "."
     helpinfo = helpinfo[0].upper() + helpinfo[1:]
     return helpinfo
+
+
+def _fix_help_info(obj_type, helpinfo):
+    # The else clause is just picking "object" due to our current
+    # knowledge that the implementation only distinguishes between
+    # "method" and everything else. This is fragile.
+    api_item_type = "method" if obj_type in ("command", "query") else "object"
+    fix = _docstrings._fixed_doc_string(api_item_type, helpinfo)
+    return fix or helpinfo
 
 
 class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
@@ -1983,7 +1993,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct = {"fluent_name": name, "version": version}
         helpinfo = info.get("help")
         if helpinfo:
-            dct["__doc__"] = _clean_helpinfo(helpinfo)
+            dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
         else:
             if parent is None:
                 dct["__doc__"] = "'root' object."
