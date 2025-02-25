@@ -340,7 +340,7 @@ class _AllowedSurfaceNames(_AllowedNames):
             If surface name is invalid.
         """
         try:
-            valid_names = list(self())  # Fetch once, upfront
+            valid_names = self()  # Fetch once, upfront
         except Exception as e:
             raise RuntimeError("Failed to retrieve valid surface names.") from e
 

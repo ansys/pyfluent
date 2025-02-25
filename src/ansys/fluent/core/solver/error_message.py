@@ -24,17 +24,17 @@
 
 import difflib
 from functools import partial
-from typing import Any, List
+from typing import Iterable
 
 
-def closest_allowed_names(trial_name: str, allowed_names: str) -> List[str]:
+def closest_allowed_names(trial_name: str, allowed_names: Iterable[str]) -> list[str]:
     """Checks if the 'trail_name' is closely matching the 'allowed_names'."""
     f = partial(difflib.get_close_matches, trial_name, allowed_names)
     return f(cutoff=0.6, n=5) or f(cutoff=0.3, n=1)
 
 
 def allowed_name_error_message(
-    allowed_values: Any | None = None,
+    allowed_values: Iterable[str] | None = None,
     context: str | None = None,
     trial_name: str | None = None,
     message: str | None = None,
@@ -45,10 +45,8 @@ def allowed_name_error_message(
     if not message:
         message = f"'{context}' has no attribute '{trial_name}'"
     message += ".\n"
-    matches = None
     if allowed_values:
-        if isinstance(allowed_values, list) and isinstance(allowed_values[0], str):
-            matches = closest_allowed_names(trial_name, allowed_values)
+        matches = closest_allowed_names(trial_name, allowed_values)
         if matches:
             message += f"The most similar names are: {', '.join(matches)}."
         else:
@@ -62,7 +60,7 @@ def allowed_name_error_message(
 
 
 def allowed_values_error(
-    context: str, trial_name: str, allowed_values: List[str]
+    context: str, trial_name: str, allowed_values: Iterable[str]
 ) -> ValueError:
     """Provide an error message for disallowed values."""
     return ValueError(

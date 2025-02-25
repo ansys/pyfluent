@@ -22,7 +22,7 @@
 
 """Custom common higher level exceptions."""
 
-from typing import Any
+from typing import Any, Iterable
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
@@ -34,7 +34,7 @@ class DisallowedValuesError(ValueError):
         self,
         context: Any | None = None,
         name: Any | None = None,
-        allowed_values: Any | None = None,
+        allowed_values: Iterable[str] | None = None,
     ):
         """Initialize DisallowedValuesError."""
         super().__init__(
