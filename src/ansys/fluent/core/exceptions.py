@@ -39,7 +39,10 @@ class DisallowedValuesError(ValueError):
         """Initialize DisallowedValuesError."""
         super().__init__(
             allowed_name_error_message(
-                context=context, trial_name=name, allowed_values=allowed_values
+                context=context,
+                trial_name=name,
+                allowed_values=allowed_values,
+                message=f"{name} is not an allowed {context}",
             )
         )
 
