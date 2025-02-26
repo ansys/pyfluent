@@ -521,23 +521,22 @@ def test_generated_code_special_cases(new_solver_session):
 def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    # Disabled due to https://github.com/ansys/pyfluent/issues/3591
     # Following set_state should not throw InactiveObjectError
-    # solver.settings.setup.materials.fluid["air"] = {
-    #     "density": {"option": "ideal-gas"},
-    #     "specific_heat": {"value": 1006.43, "option": "constant"},
-    #     "thermal_conductivity": {"value": 0.0242, "option": "constant"},
-    #     "molecular_weight": {"value": 28.966, "option": "constant"},
-    # }
-    # assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
-    # assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
-    # assert (
-    #     solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
-    #     == 0.0242
-    # )
-    # assert (
-    #     solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
-    # )
+    solver.settings.setup.materials.fluid["air"] = {
+        "density": {"option": "ideal-gas"},
+        "specific_heat": {"value": 1006.43, "option": "constant"},
+        "thermal_conductivity": {"value": 0.0242, "option": "constant"},
+        "molecular_weight": {"value": 28.966, "option": "constant"},
+    }
+    assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
+    assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
+    assert (
+        solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
+        == 0.0242
+    )
+    assert (
+        solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
+    )
 
     solver.settings.solution.initialization.hybrid_initialize()
     assert (
@@ -572,6 +571,20 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
         == 0.6
     )
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_nested_alias(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.setup.models.viscous.model = "k-omega"
+    solver.setup.models.viscous.k_omega_model = "standard"
+    # k_omega_options is alias of k_omega
+    # kw_low_re_correction is alias of k_omega_low_re_correction
+    # Testing all 4 combinations
+    solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True
+    solver.setup.models.viscous.k_omega_options.k_omega_low_re_correction = False
+    solver.setup.models.viscous.k_omega_options.kw_low_re_correction = True
+    solver.setup.models.viscous.k_omega.kw_low_re_correction = False
 
 
 @pytest.mark.fluent_version(">=25.1")
