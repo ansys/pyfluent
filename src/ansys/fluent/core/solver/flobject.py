@@ -695,9 +695,14 @@ class _Alias:
 
 def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None):
     if alias_path or isinstance(parent, _Alias):
+        bases = (cls,)
+        # True child of parent alias is already derived from _Alias.
+        # Avoiding duplicate derivation and mro resolution issue.
+        if _Alias not in cls.__mro__:
+            bases = (_Alias, cls)
         alias_cls = type(
             f"{cls.__name__}_alias",
-            (_Alias, cls),
+            bases,
             dict(cls.__dict__) | {"alias_path": alias_path},
         )
         return alias_cls(name, parent.__repr__.__self__)
