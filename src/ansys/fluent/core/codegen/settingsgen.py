@@ -186,7 +186,7 @@ _arg_type_strings = {
     "Filename": "str",
     "BooleanList": "list[bool]",
     "IntegerList": "list[int]",
-    "RealVector": "tuple[float | str, float | str, float | str",
+    "RealVector": "tuple[float | str, float | str, float | str]",
     "RealList": "list[float | str]",
     "StringList": "list[str]",
     "FilenameList": "list[str]",
@@ -196,8 +196,9 @@ _arg_type_strings = {
 def _write_function_stub(name, data, s_stub):
     s_stub.write(f"    def {name}(self")
     for arg_name in data["argument_names"]:
-        arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
-        s_stub.write(f", {arg_name}: {arg_type}")
+        arg_type = data["child_classes"][arg_name]["bases"][0]
+        py_arg_type = _arg_type_strings.get(arg_type, "Any")
+        s_stub.write(f", {arg_name}: {py_arg_type}")
     s_stub.write("):\n")
     # TODO: add return type
     doc = data["doc"]
@@ -367,6 +368,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
+        f_stub.write("from typing import Any\n\n")
         f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
