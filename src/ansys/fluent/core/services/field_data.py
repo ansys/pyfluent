@@ -734,7 +734,7 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.PathlinesFieldRequest(
                     surfaceId=surface_id,
-                    field=field_name,
+                    field=self._allowed_scalar_field_names.valid_name(field_name),
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
                     dataLocation=(
@@ -1449,7 +1449,7 @@ class FieldData:
             [
                 FieldDataProtoModule.PathlinesFieldRequest(
                     surfaceId=surface_id,
-                    field=field_name,
+                    field=self._allowed_scalar_field_names.valid_name(field_name),
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
                     dataLocation=(
