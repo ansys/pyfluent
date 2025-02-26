@@ -1885,42 +1885,47 @@ class PyCommand:
         else:
             self.path = path
         self._static_info = None  # command's static info
+        self.file_behavior = None
+
+    def _update_file_behavior(self, file_purpose):
+        purpose_to_class = {
+            "input": _InputFile,
+            "output": _OutputFile,
+            "inout": _InOutFile,
+        }
+
+        if file_purpose:
+            if file_purpose in purpose_to_class:
+                file_class = purpose_to_class[file_purpose]
+                self.file_behavior = file_class()
+                setattr(self.file_behavior, "service", self.service)
+            else:
+                raise DisallowedFilePurpose(
+                    "File purpose", file_purpose, ["input", "output", "inout"]
+                )
 
     def _get_file_purpose(self, arg):
         try:
             cmd_instance = self.create_instance()
             arg_instance = getattr(cmd_instance, arg)
             file_purpose = arg_instance.get_attr("filePurpose")
-            if file_purpose:
-                if file_purpose == "input":
-                    if _InputFile not in self.__class__.__bases__:
-                        self.__class__.__bases__ += (_InputFile,)
-                elif file_purpose == "output":
-                    if _OutputFile not in self.__class__.__bases__:
-                        self.__class__.__bases__ += (_OutputFile,)
-                elif file_purpose == "inout":
-                    if _InOutFile not in self.__class__.__bases__:
-                        self.__class__.__bases__ += (_InOutFile,)
-                else:
-                    raise DisallowedFilePurpose(
-                        "File purpose", file_purpose, ["input", "output", "inout"]
-                    )
             del cmd_instance, arg_instance
+            self._update_file_behavior(file_purpose)
             return file_purpose if file_purpose else None
         except AttributeError:
             pass
 
     def before_execute(self, value):
         """Executes before command execution."""
-        if hasattr(self, "_do_before_execute"):
-            return self._do_before_execute(value)
+        if hasattr(self.file_behavior, "_do_before_execute"):
+            return self.file_behavior._do_before_execute(value)
         else:
             return value
 
     def after_execute(self, value):
         """Executes after command execution."""
-        if hasattr(self, "_do_after_execute"):
-            self._do_after_execute(value)
+        if hasattr(self.file_behavior, "_do_after_execute"):
+            self.file_behavior._do_after_execute(value)
 
     def __call__(self, *args, **kwds) -> Any:
         """Execute the command.
