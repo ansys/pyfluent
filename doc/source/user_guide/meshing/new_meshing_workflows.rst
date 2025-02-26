@@ -137,9 +137,6 @@ Import CAD and part management
     fault_tolerant.import_cad_and_part_management.fmd_file_name.set_state(import_file_name)
     fault_tolerant.import_cad_and_part_management.file_loaded.set_state("yes")
     fault_tolerant.import_cad_and_part_management.object_setting.set_state("DefaultObjectSetting")
-    fault_tolerant.import_cad_and_part_management.options.line.set_state(False)
-    fault_tolerant.import_cad_and_part_management.options.solid.set_state(False)
-    fault_tolerant.import_cad_and_part_management.options.surface.set_state(False)
     fault_tolerant.import_cad_and_part_management()
 
 Describe geometry and flow
@@ -187,7 +184,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
-    fault_tolerant.task("inlet-1")()
+    fault_tolerant.enclose_fluid_regions_fault_child_1()
 
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-2")
     fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
@@ -209,7 +206,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
-    fault_tolerant.task("inlet-2")()
+    fault_tolerant.enclose_fluid_regions_fault_child_2()
 
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-3")
     fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
@@ -231,7 +228,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
-    fault_tolerant.task("inlet-3")()
+    fault_tolerant.enclose_fluid_regions_fault_child_3()
 
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("outlet-1")
     fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
@@ -255,7 +252,7 @@ Enclose fluid regions (capping)
     fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
     fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
-    fault_tolerant.task("outlet-1")()
+    fault_tolerant.enclose_fluid_regions_fault_child_4()
 
 Extract edge features
 ~~~~~~~~~~~~~~~~~~~~~
