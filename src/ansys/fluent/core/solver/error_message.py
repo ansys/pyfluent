@@ -24,7 +24,7 @@
 
 import difflib
 from functools import partial
-from typing import Iterable
+from typing import Any, Iterable
 
 
 def closest_allowed_names(trial_name: str, allowed_names: Iterable[str]) -> list[str]:
@@ -34,9 +34,9 @@ def closest_allowed_names(trial_name: str, allowed_names: Iterable[str]) -> list
 
 
 def allowed_name_error_message(
-    allowed_values: Iterable[str | int] | None = None,
+    allowed_values: Iterable[Any] | None = None,
     context: str | None = None,
-    trial_name: str | None = None,
+    trial_name: Any | None = None,
     message: str | None = None,
     search_results: list | None = None,
 ) -> str:
