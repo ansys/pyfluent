@@ -1898,6 +1898,7 @@ class PyCommand:
             if file_purpose in purpose_to_class:
                 file_class = purpose_to_class[file_purpose]
                 self.file_behavior = file_class()
+                setattr(self.file_behavior, "service", self.service)
             else:
                 raise DisallowedFilePurpose(
                     "File purpose", file_purpose, ["input", "output", "inout"]
