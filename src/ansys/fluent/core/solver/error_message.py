@@ -34,7 +34,7 @@ def closest_allowed_names(trial_name: str, allowed_names: Iterable[str]) -> list
 
 
 def allowed_name_error_message(
-    allowed_values: Iterable[str] | None = None,
+    allowed_values: Iterable[str | int] | None = None,
     context: str | None = None,
     trial_name: str | None = None,
     message: str | None = None,
@@ -46,7 +46,9 @@ def allowed_name_error_message(
         message = f"'{context}' has no attribute '{trial_name}'"
     message += ".\n"
     if allowed_values:
-        matches = closest_allowed_names(trial_name, allowed_values)
+        matches = None
+        if all(isinstance(item, str) for item in allowed_values) and allowed_values:
+            matches = closest_allowed_names(trial_name, allowed_values)
         if matches:
             message += f"The most similar names are: {', '.join(matches)}."
         else:
@@ -61,7 +63,7 @@ def allowed_name_error_message(
 
 
 def allowed_values_error(
-    context: str, trial_name: str, allowed_values: Iterable[str]
+    context: str, trial_name: str, allowed_values: Iterable[str | int]
 ) -> ValueError:
     """Provide an error message for disallowed values."""
     return ValueError(
