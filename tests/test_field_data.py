@@ -290,16 +290,16 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert velocity_vector_data["cold-inlet"].shape == (152, 3)
 
     path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surfaces=["cold-inlet", "hot-inlet"]
+        field_name="velocity-magnitude", surfaces=["cold-inlet", "hot-inlet"]
     )
 
     assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
     assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
-    assert path_lines_data["cold-inlet"]["velocity"].shape == (76152,)
+    assert path_lines_data["cold-inlet"]["velocity-magnitude"].shape == (76152,)
 
     assert path_lines_data["hot-inlet"]["vertices"].shape == (27555, 3)
     assert len(path_lines_data["hot-inlet"]["lines"]) == 27500
-    assert path_lines_data["hot-inlet"]["velocity"].shape == (27555,)
+    assert path_lines_data["hot-inlet"]["velocity-magnitude"].shape == (27555,)
 
     assert all(path_lines_data["cold-inlet"]["lines"][100] == [100, 101])
 
@@ -359,12 +359,12 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     assert velocity_vector_data["velocity-inlet-2"].shape == (10, 3)
 
     path_lines_data = field_data.get_pathlines_field_data(
-        field_name="velocity", surfaces=["velocity-inlet-2"]
+        field_name="velocity-magnitude", surfaces=["velocity-inlet-2"]
     )
 
     assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
     assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
-    assert path_lines_data["velocity-inlet-2"]["velocity"].shape == (5010,)
+    assert path_lines_data["velocity-inlet-2"]["velocity-magnitude"].shape == (5010,)
 
     assert all(path_lines_data["velocity-inlet-2"]["lines"][100] == [100, 101])
 
