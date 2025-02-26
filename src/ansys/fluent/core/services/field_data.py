@@ -334,11 +334,19 @@ class _AllowedSurfaceNames(_AllowedNames):
 
         Raises
         ------
+        RuntimeError
+            If issue in retrieving surface list.
         DisallowedValuesError
             If surface name is invalid.
         """
-        if validate_inputs and not self.is_valid(surface_name):
-            raise DisallowedValuesError("surface", surface_name, self())
+        try:
+            valid_names = self()  # Fetch once, upfront
+        except Exception as e:
+            raise RuntimeError("Failed to retrieve valid surface names.") from e
+
+        if validate_inputs and surface_name not in valid_names:
+            raise DisallowedValuesError("surface", surface_name, valid_names)
+
         return surface_name
 
 
@@ -726,7 +734,7 @@ class FieldTransaction:
             [
                 FieldDataProtoModule.PathlinesFieldRequest(
                     surfaceId=surface_id,
-                    field=field_name,
+                    field=self._allowed_scalar_field_names.valid_name(field_name),
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
                     dataLocation=(
@@ -818,7 +826,11 @@ def _get_surface_ids(
                 ]
             )
         else:
-            surface_ids.append(surf)
+            allowed_surf_ids = _AllowedSurfaceIDs(field_info)()
+            if surf in allowed_surf_ids:
+                surface_ids.append(surf)
+            else:
+                raise DisallowedValuesError("surface", surf, allowed_surf_ids)
     return surface_ids
 
 
@@ -1437,7 +1449,7 @@ class FieldData:
             [
                 FieldDataProtoModule.PathlinesFieldRequest(
                     surfaceId=surface_id,
-                    field=field_name,
+                    field=self._allowed_scalar_field_names.valid_name(field_name),
                     additionalField=additional_field_name,
                     provideParticleTimeField=provide_particle_time_field,
                     dataLocation=(
