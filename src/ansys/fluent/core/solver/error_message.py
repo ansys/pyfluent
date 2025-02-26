@@ -38,7 +38,6 @@ def allowed_name_error_message(
     context: str | None = None,
     trial_name: Any | None = None,
     message: str | None = None,
-    search_results: list | None = None,
 ) -> str:
     """Provide an error message with the closest names matching the 'trial_name' from
     the 'allowed_values' list."""
@@ -53,11 +52,6 @@ def allowed_name_error_message(
             message += f"The most similar names are: {', '.join(matches)}."
         else:
             message += f"The allowed values are: {allowed_values}."
-    # TODO: Should we handle search_results and allowed_values in the same function?
-    elif search_results:
-        message = message + "\nThe most similar API names are:\n"
-        for search_result in search_results:
-            message += search_result + "\n"
 
     return message
 
