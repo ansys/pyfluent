@@ -1016,7 +1016,7 @@ class PyStateContainer(PyCallableStateObject):
                 service=service,
                 rules=rules,
                 path=[] if path is None else path,
-                cached_attrs={},
+                _cached_attrs={},
             )
         )
 
@@ -1071,15 +1071,15 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def _get_cached_attr(self, attrib: str) -> Any:
-        cached_val = self.cached_attrs.get(attrib)
+        cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
             try:  # will fail for Fluent 23.1 or before
                 self.add_on_attribute_changed(
                     attrib,
-                    functools.partial(dict.__setitem__, self.cached_attrs, attrib),
+                    functools.partial(dict.__setitem__, self._cached_attrs, attrib),
                 )
-                self.cached_attrs[attrib] = cached_val
+                self._cached_attrs[attrib] = cached_val
             except Exception:
                 pass
         return cached_val
@@ -2302,7 +2302,7 @@ class DataModelType(Enum):
 class PyMenuGeneric(PyMenu):
     """Generic PyMenu class for when generated API code is not available."""
 
-    attrs = ("service", "rules", "path", "cached_attrs")
+    attrs = ("service", "rules", "path", "_cached_attrs")
 
     def _get_child_names(self) -> tuple[list, list, list, list]:
         response = self.service.get_specs(

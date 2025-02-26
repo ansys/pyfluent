@@ -69,7 +69,6 @@ from typing import (
 import warnings
 import weakref
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -1106,18 +1105,12 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
-            pyfluent.PRINT_SEARCH_RESULTS = False
-            search_results = pyfluent.utils.search(
-                search_string=name,
-                match_case=False,
-                match_whole_word=False,
-            )
-            pyfluent.PRINT_SEARCH_RESULTS = True
-            results = search_results if search_results else []
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                search_results=results,
+                allowed_values=sorted(
+                    set(self.get_active_child_names() + self.command_names)
+                ),
             )
             ex.args = (error_msg,)
             raise

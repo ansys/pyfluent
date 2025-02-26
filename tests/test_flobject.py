@@ -894,11 +894,7 @@ def test_settings_matching_names(new_solver_session) -> None:
     with pytest.raises(AttributeError) as msg:
         solver.setup.mod
 
-    assert msg.value.args[0].startswith(
-        "'setup' object has no attribute 'mod'.\n\n" "The most similar API names are:\n"
-    )
-
-    assert len(msg.value.args[0].split("\n")) > 5
+    assert msg.value.args[0].startswith("'setup' object has no attribute 'mod'.")
 
     with pytest.raises(ValueError) as msg:
         solver.setup.models.viscous.model = "k_epsilon"
