@@ -950,6 +950,23 @@ def _command_query_name_filter(
     return ret
 
 
+def _get_type_for_completer_info(cls) -> str:
+    if issubclass(cls, (FileName, _InputFile)):
+        return "InputFilename"
+    elif issubclass(cls, (FileName, _OutputFile)):
+        return "OutputFilename"
+    elif issubclass(cls, (FileName, _InOutFile)):
+        return "InOutFilename"
+    elif issubclass(cls, (FilenameList, _InputFile)):
+        return "InputFilenameList"
+    elif issubclass(cls, (FilenameList, _OutputFile)):
+        return "OutputFilenameList"
+    elif issubclass(cls, (FilenameList, _InOutFile)):
+        return "InOutFilenameList"
+    else:
+        return cls.__bases__[0].__name__
+
+
 class Group(SettingsBase[DictStateType]):
     """A ``Group`` container object.
 
@@ -1078,7 +1095,7 @@ class Group(SettingsBase[DictStateType]):
                     ret.append(
                         [
                             child_name,
-                            child.__class__.__bases__[0].__name__,
+                            _get_type_for_completer_info(child.__class__),
                             child.__doc__,
                         ]
                     )
@@ -1624,7 +1641,7 @@ class Action(Base):
                     ret.append(
                         [
                             argument_name,
-                            argument.__class__.__bases__[0].__name__,
+                            _get_type_for_completer_info(argument.__class__),
                             argument.__doc__,
                         ]
                     )
