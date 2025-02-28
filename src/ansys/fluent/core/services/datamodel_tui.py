@@ -364,7 +364,7 @@ class TUIMenu:
         ]
 
     def __getattribute__(self, name) -> Any:
-        if name in ["exit", "switch_to_meshing_mode"] and not self._path:
+        if name in ["exit"] and not self._path:
             raise AttributeError(
                 f"'{self.__class__.__name__}' object has no attribute '{name}'"
             )
