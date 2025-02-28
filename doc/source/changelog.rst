@@ -9,6 +9,46 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.30.dev3 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev3>`_ - 2025-02-28
+=====================================================================================
+
+Fixed
+^^^^^
+
+- Better way to copy the current function argument values `#3751 <https://github.com/ansys/pyfluent/pull/3751>`_
+- Minor issues in PyConsole. `#3770 <https://github.com/ansys/pyfluent/pull/3770>`_
+- Invalid surface_ids check for field_data. `#3773 <https://github.com/ansys/pyfluent/pull/3773>`_
+- Resolve MRO for _InputFile `#3774 <https://github.com/ansys/pyfluent/pull/3774>`_
+- Support Group type argument during codegen `#3777 <https://github.com/ansys/pyfluent/pull/3777>`_
+- update pyi files to match release `#3778 <https://github.com/ansys/pyfluent/pull/3778>`_
+- Fix for nested alias `#3780 <https://github.com/ansys/pyfluent/pull/3780>`_
+- input/output types for completer icons `#3781 <https://github.com/ansys/pyfluent/pull/3781>`_
+
+
+Miscellaneous
+^^^^^^^^^^^^^
+
+- Remove vulnerabilities check `#3768 <https://github.com/ansys/pyfluent/pull/3768>`_
+- Remove 'rename' from Enhanced Meshing Workflow top level. `#3776 <https://github.com/ansys/pyfluent/pull/3776>`_
+
+
+Documentation
+^^^^^^^^^^^^^
+
+- Update local doc build instructions [skip tests] `#3756 <https://github.com/ansys/pyfluent/pull/3756>`_
+- search engine optimization `#3761 <https://github.com/ansys/pyfluent/pull/3761>`_
+- clean doc strs `#3762 <https://github.com/ansys/pyfluent/pull/3762>`_
+- Update cheat sheet link [skip tests] `#3772 <https://github.com/ansys/pyfluent/pull/3772>`_
+- Update meshing docs [skip-tests]. `#3779 <https://github.com/ansys/pyfluent/pull/3779>`_
+
+
+Maintenance
+^^^^^^^^^^^
+
+- update CHANGELOG for v0.30.dev2 `#3759 <https://github.com/ansys/pyfluent/pull/3759>`_
+- Reduce min grpcio-status version `#3764 <https://github.com/ansys/pyfluent/pull/3764>`_
+- Specify PyFluent package version at a single location `#3767 <https://github.com/ansys/pyfluent/pull/3767>`_
+
 `0.30.dev2 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev2>`_ - 2025-02-20
 =====================================================================================
 
