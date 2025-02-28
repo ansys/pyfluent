@@ -1,0 +1,74 @@
+:orphan:
+
+.. _mt_cav_group:
+
+mt_cav_group
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_cav_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================   =====================================================
+
+Attribute                                                                                                                        Summary
+
+================================================================================   =====================================================
+:ref:`mt_cav_p_vap <mt_cav_p_vap>`                                                                            Cavitation vapor pressure.
+
+:ref:`mt_cav_p_vap_constant <mt_cav_p_vap_constant>`                                                                     Constant p-vap.
+
+:ref:`mt_cav_p_vap_udf <mt_cav_p_vap_udf>`                                                                           User-defined p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_table_name <mt_cav_p_vap_ptl_tabular_table_name>`                          PTL tabular setting for p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_sat_temp <mt_cav_p_vap_ptl_tabular_sat_temp>`                            PTL TSAT name setting for p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_sat_press <mt_cav_p_vap_ptl_tabular_sat_press>`                          PTL PSAT name setting for p-vap.
+
+:ref:`mt_cav_p_vap_ptl_tabular_lat_heat <mt_cav_p_vap_ptl_tabular_lat_heat>`                            PTL LSAT name setting for p-vap.
+
+:ref:`mt_cav_p_vap_rgp_data_set <mt_cav_p_vap_rgp_data_set>`                                                         RGP table colummns.
+
+:ref:`mt_cav_p_vap_polynomial <mt_cav_p_vap_polynomial>`                                                               Polynomial p-vap.
+
+:ref:`mt_cav_p_vap_piecewise_polynomial <mt_cav_p_vap_piecewise_polynomial>`                                 Piecewise-polynomial p-vap.
+
+:ref:`mt_cav_p_vap_piecewise_linear <mt_cav_p_vap_piecewise_linear>`                                             Piecewise-linear p-vap.
+
+:ref:`mt_cav_mod_opt <mt_cav_mod_opt>`                                                                                 Cav model option.
+
+:ref:`mt_cav_schnerr_bub_num_den <mt_cav_schnerr_bub_num_den>`                                            Schnerr bubble number density.
+
+:ref:`mt_cav_zwart_bub_dia <mt_cav_zwart_bub_dia>`                                                         Zwart bubble diameter/radius.
+
+:ref:`mt_cav_zwart_nuc_site_vof <mt_cav_zwart_nuc_site_vof>`                                                  Zwart nucleation site VOF.
+
+:ref:`mt_cav_zwart_evap_coeff <mt_cav_zwart_evap_coeff>`                                                  Zwart evaporation coefficient.
+
+:ref:`mt_cav_zwart_cond_coeff <mt_cav_zwart_cond_coeff>`                                                 Zwart condensation coefficient.
+
+:ref:`mt_cav_turb_factor <mt_cav_turb_factor>`                                                                        Turbulence factor.
+
+:ref:`mt_cav_turb_coeff <mt_cav_turb_coeff>`                                                                           Turbulence coeff.
+
+:ref:`mt_cav_p_vap_taylor_sat_press <mt_cav_p_vap_taylor_sat_press>`                       Saturation pressure for Taylor approximation.
+
+:ref:`mt_cav_p_vap_taylor_fs_temp <mt_cav_p_vap_taylor_fs_temp>`                       Free stream temperature for Taylor approximation.
+
+:ref:`mt_cav_p_vap_taylor_tcoeff <mt_cav_p_vap_taylor_tcoeff>`                                   Thermal coeff for Taylor approximation.
+
+================================================================================   =====================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`mass_transfer_list_child <mass_transfer_list_child>`       'child_object_type' of mass_transfer_list.
+
+==========================================================   ==============================================
+

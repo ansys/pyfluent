@@ -1,0 +1,34 @@
+:orphan:
+
+.. _phase_interaction:
+
+phase_interaction
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_interaction
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ========================
+
+Attribute                                               Summary
+
+====================================   ========================
+:ref:`forces <forces>`                      Interfacial forces.
+
+:ref:`mass_transfer <mass_transfer>`       Mass-transfer-group.
+
+====================================   ========================
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`multiphase <multiphase>`       Multiphase model.
+
+==============================   =====================
+

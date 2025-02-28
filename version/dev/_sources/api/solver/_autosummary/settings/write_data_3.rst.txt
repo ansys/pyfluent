@@ -1,0 +1,21 @@
+:orphan:
+
+.. _write_data_3:
+
+write_data
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.write_data_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`create_13 <create_13>`       Add new Design Point.
+
+============================   =========================
+

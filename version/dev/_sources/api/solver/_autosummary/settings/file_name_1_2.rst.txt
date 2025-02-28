@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_2:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_1_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   =============================================
+
+Parent                                                         Summary
+
+======================   =============================================
+:ref:`read_1 <read_1>`       Select the file type and import the file.
+
+======================   =============================================
+

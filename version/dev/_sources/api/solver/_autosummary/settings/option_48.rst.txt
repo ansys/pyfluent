@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_48:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.option_48
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`range_3 <range_3>`       Range using the min max options.
+
+========================   ====================================
+

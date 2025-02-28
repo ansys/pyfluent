@@ -1,0 +1,29 @@
+:orphan:
+
+.. _coefficients:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.coefficients
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ==============================================
+
+Parent                                                                                            Summary
+
+========================================================   ==============================================
+:ref:`polynomial <polynomial>`                                                           Polynomial f(T).
+
+:ref:`mt_cav_p_vap_polynomial <mt_cav_p_vap_polynomial>`                                Polynomial p-vap.
+
+:ref:`polynomial_1 <polynomial_1>`                             Coefficients for interpolation polynomial.
+
+:ref:`polynomial_2 <polynomial_2>`                                      Property polynomial coefficients.
+
+:ref:`polynomial_3 <polynomial_3>`                                                   Polynomial settings.
+
+========================================================   ==============================================
+
