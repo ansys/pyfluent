@@ -2,8 +2,8 @@
 
 .. vale Google.Spacing = NO
 
-Use TUI commands
-================
+Using TUI commands
+==================
 
 TUI commands refer to a programming interface that mirrors the Fluent TUI (text
 user interface). There is a TUI command hierarchy defined for each of the two
