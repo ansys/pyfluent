@@ -169,9 +169,6 @@ build-all-docs:
 	@xvfb-run make -C doc html
 	@python doc/modify_html.py
 
-compare-flobject:
-	@python .ci/compare_flobject.py
-
 cleanup-previous-docker-containers:
 	@if [ -n "$(docker ps -a -q)" ]; then \
 		echo "Found running containers"; \
