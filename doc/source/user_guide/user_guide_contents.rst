@@ -18,6 +18,7 @@ User guide
    units
    file_transfer
    offline/offline_contents
+   convert_journal
    journal
    log
    usability
