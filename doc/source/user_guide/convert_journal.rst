@@ -3,15 +3,25 @@
 Converting TUI Journals to Python
 =================================
 
-The ``topy`` argument in the launch_fluent function is utilized to convert TUI journals into Python journals. 
-This process supports the conversion of multiple TUI journals by passing a list of TUI journal files. 
-The resulting Python journal files are created in the working directory, retaining the same names as their TUI counterparts.
+The ``topy`` and ``journal_file_names`` arguments in the launch_fluent function is utilized to convert TUI journals into Python journals. 
+This process supports the conversion of multiple TUI journals by passing a list of TUI journal files.
 
 .. code-block:: python
 
-  >>> solver = pyfluent.launch_fluent(topy="my_journal.jou")
+  >>> # Write the converted Python commands from journal.jou to journal.py
+  >>> solver = pyfluent.launch_fluent(journal_file_names="journal.jou", topy=True)
   >>> solver.exit()
-  >>> solver = pyfluent.launch_fluent(topy=["my_journal1.jou", "my_journal2.jou"])
+  >>>
+  >>> # Write the converted Python commands from journal.jou to journal_1.py
+  >>> solver = pyfluent.launch_fluent(journal_file_names="journal.jou", topy="journal_1.py")
+  >>> solver.exit()
+  >>>
+  >>> # Write the converted Python commands from journal_1.jou and then from journal_2.jou to a single file journal_1_journal_2.py
+  >>> solver = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy=True)
+  >>> solver.exit()
+  >>>
+  >>> # Write the converted Python commands from journal_1.jou and then from journal_2.jou to journal_1_2.py
+  >>> solver = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy="journal_1_2.py")
   >>> solver.exit()
 
 
