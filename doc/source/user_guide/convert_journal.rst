@@ -3,7 +3,7 @@
 Converting TUI Journals to Python
 =================================
 
-The ``topy`` and ``journal_file_names`` arguments in the launch_fluent function is utilized to convert TUI journals into Python journals. 
+The ``topy`` and ``journal_file_names`` arguments in the :func:`launch_fluent() <ansys.fluent.core.launch_fluent>` function is utilized to convert TUI journals into Python journals. 
 This process supports the conversion of multiple TUI journals by passing a list of TUI journal files.
 
 .. code-block:: python
