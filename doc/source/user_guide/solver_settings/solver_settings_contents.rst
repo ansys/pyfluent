@@ -28,7 +28,7 @@ Example usage
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.launch_fluent()
-  >>> inlet1 = pyfluent.VelocityInlet(settings_source=solver, name="inlet-1")
+  >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver, name="inlet-1")
 
 
 This format provides a more natural way to create and interact with settings objects, 
