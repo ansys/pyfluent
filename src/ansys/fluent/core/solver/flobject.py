@@ -1081,11 +1081,9 @@ class Group(SettingsBase[DictStateType]):
     def _is_deprecated(self, child_name: str) -> bool:
         """If the 'child_name' is deprecated in a specific Fluent version.'"""
         deprecated_version = getattr(self, child_name).get_attr("deprecated-version")
-        if deprecated_version and FluentVersion(self.version) >= FluentVersion(
+        return deprecated_version and FluentVersion(self.version) >= FluentVersion(
             deprecated_version
-        ):
-            return True
-        return False
+        )
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
