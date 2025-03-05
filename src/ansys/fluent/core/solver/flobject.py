@@ -1058,7 +1058,7 @@ class Group(SettingsBase[DictStateType]):
         """Names of children that are currently active."""
         ret = []
         for child in self.child_names:
-            if getattr(self, child).is_active():
+            if getattr(self, child).is_active() and not self._is_deprecated(child):
                 ret.append(child)
         return ret
 
@@ -1066,7 +1066,7 @@ class Group(SettingsBase[DictStateType]):
         """Names of commands that are currently active."""
         ret = []
         for command in self.command_names:
-            if getattr(self, command).is_active():
+            if getattr(self, command).is_active() and not self._is_deprecated(command):
                 ret.append(command)
         return ret
 
@@ -1074,9 +1074,33 @@ class Group(SettingsBase[DictStateType]):
         """Names of queries that are currently active."""
         ret = []
         for query in self.query_names:
-            if getattr(self, query).is_active():
+            if getattr(self, query).is_active() and not self._is_deprecated(query):
                 ret.append(query)
         return ret
+
+    def _is_deprecated(self, child_name: str) -> bool:
+        """If the 'child_name' is deprecated in a specific Fluent version.'"""
+        deprecated_version = getattr(self, child_name).get_attr("deprecated-version")
+        if deprecated_version and FluentVersion(self.version) >= FluentVersion(
+            deprecated_version
+        ):
+            return True
+        return False
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        deprecated_child_names = set(self.child_names) - set(
+            self.get_active_child_names()
+        )
+        deprecated_command_names = set(self.command_names) - set(
+            self.get_active_command_names()
+        )
+        deprecated_query_names = set(self.query_names) - set(
+            self.get_active_query_names()
+        )
+        return dir_list - (
+            deprecated_child_names | deprecated_command_names | deprecated_query_names
+        )
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.

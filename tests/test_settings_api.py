@@ -641,7 +641,10 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     assert var3.obj_name == "air-copied"
 
 
-@pytest.mark.fluent_version(">=25.2")
+# @pytest.mark.fluent_version(">=25.1")
+# import os
+#
+# os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.solution.initialization.hybrid_initialize()
@@ -651,9 +654,11 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
         "surfaces_list": ["wall-elbow"],
     }
     # In the line below, "range_option" and "coloring" are deprecated.
-    assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
-        set(graphics.contour["contour-velocity"]())
-    )
+    if solver.get_fluent_version() <= FluentVersion.v251:
+        # From v252 'get_state' behaviour is to be corrected in Fluent.
+        assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"]())
+        )
     assert (
         graphics.contour["contour-velocity"].range_option.get_attr("deprecated-version")
         == "25.1"
@@ -664,35 +669,41 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
     )
 
     # in 'get_state'
-    assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
-        set(graphics.contour["contour-velocity"].get_state())
-    )
-
-    # assert not {"range_option", "coloring"}.issubset(
-    #     set(graphics.contour["contour-velocity"].get_state()))
-    # assert {"range_options", "colorings"}.issubset(
-    #     set(graphics.contour["contour-velocity"].get_state()))
+    if solver.get_fluent_version() >= FluentVersion.v252:
+        # From v252 'get_state' behaviour is to be corrected in Fluent.
+        assert not {"range_option", "coloring"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+        assert {"range_options", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+    else:
+        assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
 
     # in 'child_names'
+    # 'child_names', 'command_names' and 'query_names' will remain unchanged.
     assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
         set(graphics.contour["contour-velocity"].child_names)
     )
 
     # in 'get_active_child_names'
-    assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+    assert not {"range_option", "coloring"}.issubset(
+        set(graphics.contour["contour-velocity"].get_active_child_names())
+    )
+    assert {"range_options", "colorings"}.issubset(
         set(graphics.contour["contour-velocity"].get_active_child_names())
     )
 
-    # assert not {"range_option", "coloring"}.issubset(
-    #     set(graphics.contour["contour-velocity"].get_active_child_names()))
-    # assert {"range_options", "colorings"}.issubset(
-    #     set(graphics.contour["contour-velocity"].get_active_child_names()))
-
     # in 'dir'
-    assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+    assert not {"range_option", "coloring"}.issubset(
+        set(dir(graphics.contour["contour-velocity"]))
+    )
+    assert {"range_options", "colorings"}.issubset(
         set(dir(graphics.contour["contour-velocity"]))
     )
 
-    # This should be True
+    # This should be True, as attribute is present, just not exposed.
     for item in ["range_option", "range_options", "coloring", "colorings"]:
         assert hasattr(graphics.contour["contour-velocity"], item)
