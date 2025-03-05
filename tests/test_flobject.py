@@ -325,6 +325,7 @@ class Root(Group):
                 "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
                 "webui-release-active?": lambda self: True,
+                "deprecated-version": lambda self: None,
             }
 
         children = {
