@@ -1093,10 +1093,7 @@ class Group(SettingsBase[DictStateType]):
         return dir_list - set(
             [
                 child
-                for child in self.child_names
-                + self.command_names
-                + self.query_names
-                + self.argument_names
+                for child in self.child_names + self.command_names + self.query_names
                 if getattr(self, child)._is_deprecated()
             ]
         )
@@ -1646,6 +1643,16 @@ class Action(Base):
             for argument in self.argument_names:
                 cls = self.__class__._child_classes[argument]
                 self._setattr(argument, _create_child(cls, None, self))
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return dir_list - set(
+            [
+                child
+                for child in self.argument_names
+                if getattr(self, child)._is_deprecated()
+            ]
+        )
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all arguments.
