@@ -409,7 +409,10 @@ class Base:
 
     def _is_deprecated(self) -> bool:
         """Whether the object is deprecated in a specific Fluent version.'"""
-        deprecated_version = self.get_attr("deprecated-version")
+        deprecated_version = self.get_attrs(["deprecated-version"])
+        deprecated_version = (
+            deprecated_version.get("deprecated-version") if deprecated_version else None
+        )
         return deprecated_version and FluentVersion(self.version) >= FluentVersion(
             deprecated_version
         )
@@ -1087,18 +1090,11 @@ class Group(SettingsBase[DictStateType]):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        deprecated_child_names = set(self.child_names) - set(
-            self.get_active_child_names()
-        )
-        deprecated_command_names = set(self.command_names) - set(
-            self.get_active_command_names()
-        )
-        deprecated_query_names = set(self.query_names) - set(
-            self.get_active_query_names()
-        )
-        return dir_list - (
-            deprecated_child_names | deprecated_command_names | deprecated_query_names
-        )
+        deprecated_list = []
+        for child in self.child_names + self.command_names + self.query_names:
+            if getattr(self, child)._is_deprecated():
+                deprecated_list.append(child)
+        return dir_list - set(deprecated_list)
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.
