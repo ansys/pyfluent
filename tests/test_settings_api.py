@@ -646,6 +646,7 @@ def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES", "1")
 
 
+@pytest.mark.fluent_version(">=24.2")
 def test_runtime_python_classes(
     use_runtime_python_classes, mixing_elbow_settings_session
 ):
