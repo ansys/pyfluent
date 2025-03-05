@@ -63,6 +63,7 @@ class Setting:
     attrs = {
         "active?": lambda self: True,
         "webui-release-active?": lambda self: True,
+        "deprecated-version": lambda self: None,
     }
 
 
