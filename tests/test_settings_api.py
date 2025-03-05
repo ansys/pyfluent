@@ -665,6 +665,10 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
         == "25.1"
     )
 
+    # Deprecated objects should not be active
+    assert not graphics.contour["contour-velocity"].range_option.is_active()
+    assert graphics.contour["contour-velocity"].range_options.is_active()
+
     # in 'get_state'
     if solver.get_fluent_version() >= FluentVersion.v252:
         # From v252 'get_state' behaviour is to be corrected in Fluent.

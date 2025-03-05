@@ -1090,11 +1090,13 @@ class Group(SettingsBase[DictStateType]):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        deprecated_list = []
-        for child in self.child_names + self.command_names + self.query_names:
-            if getattr(self, child)._is_deprecated():
-                deprecated_list.append(child)
-        return dir_list - set(deprecated_list)
+        return dir_list - set(
+            [
+                child
+                for child in self.child_names + self.command_names + self.query_names
+                if getattr(self, child)._is_deprecated()
+            ]
+        )
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.
