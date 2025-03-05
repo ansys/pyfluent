@@ -407,9 +407,16 @@ class Base:
             return None
         return val
 
+    def _is_deprecated(self) -> bool:
+        """Whether the object is deprecated in a specific Fluent version.'"""
+        deprecated_version = self.get_attr("deprecated-version")
+        return deprecated_version and FluentVersion(self.version) >= FluentVersion(
+            deprecated_version
+        )
+
     def is_active(self) -> bool:
         """Whether the object is active."""
-        attr = self.get_attr(_InlineConstants.is_active)
+        attr = self.get_attr(_InlineConstants.is_active) and not self._is_deprecated()
         return False if attr is False else True
 
     def _check_stable(self) -> None:
@@ -1058,7 +1065,7 @@ class Group(SettingsBase[DictStateType]):
         """Names of children that are currently active."""
         ret = []
         for child in self.child_names:
-            if getattr(self, child).is_active() and not self._is_deprecated(child):
+            if getattr(self, child).is_active():
                 ret.append(child)
         return ret
 
@@ -1066,7 +1073,7 @@ class Group(SettingsBase[DictStateType]):
         """Names of commands that are currently active."""
         ret = []
         for command in self.command_names:
-            if getattr(self, command).is_active() and not self._is_deprecated(command):
+            if getattr(self, command).is_active():
                 ret.append(command)
         return ret
 
@@ -1074,16 +1081,9 @@ class Group(SettingsBase[DictStateType]):
         """Names of queries that are currently active."""
         ret = []
         for query in self.query_names:
-            if getattr(self, query).is_active() and not self._is_deprecated(query):
+            if getattr(self, query).is_active():
                 ret.append(query)
         return ret
-
-    def _is_deprecated(self, child_name: str) -> bool:
-        """If the 'child_name' is deprecated in a specific Fluent version.'"""
-        deprecated_version = getattr(self, child_name).get_attr("deprecated-version")
-        return deprecated_version and FluentVersion(self.version) >= FluentVersion(
-            deprecated_version
-        )
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
