@@ -1093,7 +1093,10 @@ class Group(SettingsBase[DictStateType]):
         return dir_list - set(
             [
                 child
-                for child in self.child_names + self.command_names + self.query_names
+                for child in self.child_names
+                + self.command_names
+                + self.query_names
+                + self.argument_names
                 if getattr(self, child)._is_deprecated()
             ]
         )
