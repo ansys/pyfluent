@@ -200,10 +200,10 @@ def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
     comps = []
     while obj:
-        python_name = obj._python_name
+        python_name = obj.python_name
         obj = obj._parent
         if isinstance(obj, (NamedObject, ListObject)):
-            comps.append(obj._python_name)
+            comps.append(obj.python_name)
             obj = obj._parent
         else:
             comps.append(python_name)
@@ -1427,7 +1427,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             raise KeyError(
                 allowed_name_error_message(
-                    context=self.__class__._python_name,
+                    context=self.python_name,
                     trial_name=name,
                     allowed_values=self.get_object_names(),
                 )
@@ -1990,7 +1990,7 @@ class _NonCreatableNamedObjectMixin(
             else:
                 raise KeyError(
                     allowed_name_error_message(
-                        context=self.__class__._python_name,
+                        context=self.python_name,
                         trial_name=name,
                         allowed_values=self.get_object_names(),
                     )
@@ -2244,15 +2244,19 @@ def get_root(
     """
     from ansys.fluent.core import CODEGEN_OUTDIR, utils
 
-    try:
-        settings = utils.load_module(
-            f"settings_{version}",
-            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
-        )
-        root_cls = settings.root
-    except FileNotFoundError:
+    if os.getenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1":
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
+    else:
+        try:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+            )
+            root_cls = settings.root
+        except FileNotFoundError:
+            obj_info = flproxy.get_static_info()
+            root_cls, _ = get_cls("", obj_info, version=version)
     root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)

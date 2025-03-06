@@ -724,3 +724,25 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
         solver.settings.solution.report_definitions.surface["report-def-1"],
         "create_output_parameter",
     )
+ 
+
+@pytest.fixture
+def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES", "1")
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_runtime_python_classes(
+    use_runtime_python_classes, mixing_elbow_settings_session
+):
+    solver = mixing_elbow_settings_session
+    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+    solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"] = {
+        "material": "water-liquid"
+    }
+    assert (
+        solver.settings.setup.cell_zone_conditions.fluid[
+            "elbow-fluid"
+        ].general.material()
+        == "water-liquid"
+    )
