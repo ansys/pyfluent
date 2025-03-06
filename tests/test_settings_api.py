@@ -708,3 +708,19 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
     # This should be True, as attribute is present, just not exposed.
     for item in ["range_option", "range_options", "coloring", "colorings"]:
         assert hasattr(graphics.contour["contour-velocity"], item)
+
+    # Named-object
+    solver.settings.solution.report_definitions.surface["report-def-1"] = {}
+    solver.settings.solution.report_definitions.surface["report-def-1"].report_type = (
+        "surface-area"
+    )
+    solver.settings.solution.report_definitions.surface[
+        "report-def-1"
+    ].surface_names = ["cold-inlet", "hot-inlet"]
+    assert "create_output_parameter" not in dir(
+        solver.settings.solution.report_definitions.surface["report-def-1"]
+    )
+    assert hasattr(
+        solver.settings.solution.report_definitions.surface["report-def-1"],
+        "create_output_parameter",
+    )
