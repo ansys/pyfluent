@@ -132,7 +132,7 @@ and ``NamedObject`` types, the state value is a dictionary. For the
   >>> viscous = pyfluent.solver.Viscous(settings_source=solver)
   >>> viscous.model = 'laminar'
   >>> energy = pyfluent.solver.Energy(settings_source=solver)
-  >>> energy = { 'enabled' : False }
+  >>> energy.enabled = False
   >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver, name="inlet1")
   >>> inlet1.vmag.constant = 14
 
