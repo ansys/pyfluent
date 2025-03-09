@@ -1,0 +1,86 @@
+:orphan:
+
+.. _atomizer:
+
+atomizer
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.atomizer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ===============================================================================
+
+Attribute                                                                                                                              Summary
+
+============================================================   ===============================================================================
+:ref:`direction <direction_2>`                                     Help for this object class is not available without an instantiated object.
+
+:ref:`x_center <x_center>`                                         Help for this object class is not available without an instantiated object.
+
+:ref:`y_center <y_center>`                                         Help for this object class is not available without an instantiated object.
+
+:ref:`z_center <z_center>`                                         Help for this object class is not available without an instantiated object.
+
+:ref:`x_virtual_origin <x_virtual_origin>`                         Help for this object class is not available without an instantiated object.
+
+:ref:`y_virtual_origin <y_virtual_origin>`                         Help for this object class is not available without an instantiated object.
+
+:ref:`z_virtual_origin <z_virtual_origin>`                         Help for this object class is not available without an instantiated object.
+
+:ref:`x_fan_normal_vector <x_fan_normal_vector>`                   Help for this object class is not available without an instantiated object.
+
+:ref:`y_fan_normal_vector <y_fan_normal_vector>`                   Help for this object class is not available without an instantiated object.
+
+:ref:`z_fan_normal_vector <z_fan_normal_vector>`                   Help for this object class is not available without an instantiated object.
+
+:ref:`vapor_pressure <vapor_pressure>`                             Help for this object class is not available without an instantiated object.
+
+:ref:`inner_diameter <inner_diameter>`                             Help for this object class is not available without an instantiated object.
+
+:ref:`outer_diameter <outer_diameter>`                             Help for this object class is not available without an instantiated object.
+
+:ref:`spray_half_angle <spray_half_angle>`                         Help for this object class is not available without an instantiated object.
+
+:ref:`orifice_length <orifice_length>`                             Help for this object class is not available without an instantiated object.
+
+:ref:`radius_of_curvature <radius_of_curvature>`                   Help for this object class is not available without an instantiated object.
+
+:ref:`constant_a <constant_a>`                                     Help for this object class is not available without an instantiated object.
+
+:ref:`upstream_pressure <upstream_pressure>`                       Help for this object class is not available without an instantiated object.
+
+:ref:`relative_velocity <relative_velocity>`                       Help for this object class is not available without an instantiated object.
+
+:ref:`mixture_quality <mixture_quality>`                           Help for this object class is not available without an instantiated object.
+
+:ref:`saturation_temperature <saturation_temperature>`             Help for this object class is not available without an instantiated object.
+
+:ref:`orifice_width <orifice_width>`                               Help for this object class is not available without an instantiated object.
+
+:ref:`sheet_constant <sheet_constant>`                             Help for this object class is not available without an instantiated object.
+
+:ref:`ligament_constant <ligament_constant>`                       Help for this object class is not available without an instantiated object.
+
+:ref:`dsipersion_constant <dsipersion_constant>`                   Help for this object class is not available without an instantiated object.
+
+:ref:`maximum_half_angle <maximum_half_angle>`                     Help for this object class is not available without an instantiated object.
+
+:ref:`flaf_fan_sheet_constant <flaf_fan_sheet_constant>`           Help for this object class is not available without an instantiated object.
+
+:ref:`atomizer_dispersion_angle <atomizer_dispersion_angle>`       Help for this object class is not available without an instantiated object.
+
+============================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+======================================   ===============================================================================
+
+Parent                                                                                                           Summary
+
+======================================   ===============================================================================
+:ref:`initial_values <initial_values>`       Help for this object class is not available without an instantiated object.
+
+======================================   ===============================================================================
+

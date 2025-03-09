@@ -1,0 +1,38 @@
+:orphan:
+
+.. _from_location:
+
+from_location
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.from_location
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=============================   ====================================================================
+
+Attribute                                                                                    Summary
+
+=============================   ====================================================================
+:ref:`physics <physics_2>`              The boundary(s) that will be used to define the iso-surface.
+
+:ref:`geometry <geometry_11>`           The geometry(s) that will be used to define the iso-surface.
+
+:ref:`surfaces <surfaces_7>`        The user-surface(s) that will be used to define the iso-surface.
+
+=============================   ====================================================================
+
+.. rubric:: Included in:
+
+============================================   =======================================
+
+Parent                                                                         Summary
+
+============================================   =======================================
+:ref:`iso_surface_child <iso_surface_child>`       'child_object_type' of iso_surface.
+
+:ref:`iso_clip_child <iso_clip_child>`                'child_object_type' of iso_clip.
+
+============================================   =======================================
+

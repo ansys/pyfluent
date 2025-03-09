@@ -1,0 +1,21 @@
+:orphan:
+
+.. _node_values_5:
+
+node_values
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.node_values_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ========================
+
+Parent                                          Summary
+
+============================   ========================
+:ref:`option_55 <option_55>`       Options for XY-Plot.
+
+============================   ========================
+

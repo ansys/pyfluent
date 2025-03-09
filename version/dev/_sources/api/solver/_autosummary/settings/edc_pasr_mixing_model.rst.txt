@@ -1,0 +1,21 @@
+:orphan:
+
+.. _edc_pasr_mixing_model:
+
+edc_pasr_mixing_model
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.edc_pasr_mixing_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===========================
+
+Parent                                                   Summary
+
+==================================   ===========================
+:ref:`pasr_options <pasr_options>`       EDC PaSR model options.
+
+==================================   ===========================
+

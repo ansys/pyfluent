@@ -1,0 +1,36 @@
+:orphan:
+
+.. _sphere_1:
+
+sphere
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sphere_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ===================
+
+Attribute                              Summary
+
+========================   ===================
+:ref:`center <center_1>`       'center' child.
+
+:ref:`radius <radius_4>`       'radius' child.
+
+:ref:`inside <inside>`         'inside' child.
+
+========================   ===================
+
+.. rubric:: Included in:
+
+========================   =================
+
+Parent                               Summary
+
+========================   =================
+:ref:`type_14 <type_14>`       'type' child.
+
+========================   =================
+
