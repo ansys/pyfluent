@@ -641,6 +641,92 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     assert var3.obj_name == "air-copied"
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3813")
+@pytest.mark.fluent_version(">=25.1")
+def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.solution.initialization.hybrid_initialize()
+    graphics = solver.settings.results.graphics
+    graphics.contour["contour-velocity"] = {
+        "field": "velocity-magnitude",
+        "surfaces_list": ["wall-elbow"],
+    }
+    # In the line below, "range_option" and "coloring" are deprecated.
+    if solver.get_fluent_version() <= FluentVersion.v251:
+        # From v252 'get_state' behaviour is to be corrected in Fluent.
+        assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"]())
+        )
+    assert (
+        graphics.contour["contour-velocity"].range_option.get_attr("deprecated-version")
+        == "25.1"
+    )
+    assert (
+        graphics.contour["contour-velocity"].coloring.get_attr("deprecated-version")
+        == "25.1"
+    )
+
+    # Deprecated objects should not be active
+    assert not graphics.contour["contour-velocity"].range_option.is_active()
+    assert graphics.contour["contour-velocity"].range_options.is_active()
+
+    # in 'get_state'
+    if solver.get_fluent_version() >= FluentVersion.v252:
+        # From v252 'get_state' behaviour is to be corrected in Fluent.
+        assert not {"range_option", "coloring"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+        assert {"range_options", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+    else:
+        assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+
+    # in 'child_names'
+    # 'child_names', 'command_names' and 'query_names' will remain unchanged.
+    assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+        set(graphics.contour["contour-velocity"].child_names)
+    )
+
+    # in 'get_active_child_names'
+    assert not {"range_option", "coloring"}.issubset(
+        set(graphics.contour["contour-velocity"].get_active_child_names())
+    )
+    assert {"range_options", "colorings"}.issubset(
+        set(graphics.contour["contour-velocity"].get_active_child_names())
+    )
+
+    # in 'dir'
+    assert not {"range_option", "coloring"}.issubset(
+        set(dir(graphics.contour["contour-velocity"]))
+    )
+    assert {"range_options", "colorings"}.issubset(
+        set(dir(graphics.contour["contour-velocity"]))
+    )
+
+    # This should be True, as attribute is present, just not exposed.
+    for item in ["range_option", "range_options", "coloring", "colorings"]:
+        assert hasattr(graphics.contour["contour-velocity"], item)
+
+    # Named-object
+    solver.settings.solution.report_definitions.surface["report-def-1"] = {}
+    solver.settings.solution.report_definitions.surface["report-def-1"].report_type = (
+        "surface-area"
+    )
+    solver.settings.solution.report_definitions.surface[
+        "report-def-1"
+    ].surface_names = ["cold-inlet", "hot-inlet"]
+    assert "create_output_parameter" not in dir(
+        solver.settings.solution.report_definitions.surface["report-def-1"]
+    )
+    assert hasattr(
+        solver.settings.solution.report_definitions.surface["report-def-1"],
+        "create_output_parameter",
+    )
+
+
 @pytest.fixture
 def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES", "1")

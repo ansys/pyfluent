@@ -407,9 +407,19 @@ class Base:
             return None
         return val
 
+    def _is_deprecated(self) -> bool:
+        """Whether the object is deprecated in a specific Fluent version.'"""
+        deprecated_version = self.get_attrs(["deprecated-version"])
+        deprecated_version = (
+            deprecated_version.get("deprecated-version") if deprecated_version else None
+        )
+        return deprecated_version and FluentVersion(self.version) >= FluentVersion(
+            deprecated_version
+        )
+
     def is_active(self) -> bool:
         """Whether the object is active."""
-        attr = self.get_attr(_InlineConstants.is_active)
+        attr = self.get_attr(_InlineConstants.is_active) and not self._is_deprecated()
         return False if attr is False else True
 
     def _check_stable(self) -> None:
@@ -1078,6 +1088,16 @@ class Group(SettingsBase[DictStateType]):
                 ret.append(query)
         return ret
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return dir_list - set(
+            [
+                child
+                for child in self.child_names + self.command_names + self.query_names
+                if getattr(self, child)._is_deprecated()
+            ]
+        )
+
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.
 
@@ -1623,6 +1643,16 @@ class Action(Base):
             for argument in self.argument_names:
                 cls = self.__class__._child_classes[argument]
                 self._setattr(argument, _create_child(cls, None, self))
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return dir_list - set(
+            [
+                child
+                for child in self.argument_names
+                if getattr(self, child)._is_deprecated()
+            ]
+        )
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all arguments.
