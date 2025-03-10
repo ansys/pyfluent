@@ -9,6 +9,70 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.30.dev4 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev4>`_ - March 10, 2025
+=========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Utility to test viability of grpc connection
+          - `#3766 <https://github.com/ansys/pyfluent/pull/3766>`_
+
+        * - Use 'deprecated-version' flag for settings-api classes
+          - `#3802 <https://github.com/ansys/pyfluent/pull/3802>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Keep switch-to-meshing as hidden to fix Fluent journal replay.
+          - `#3792 <https://github.com/ansys/pyfluent/pull/3792>`_
+
+        * - Fix python_name issue in runtime python classes
+          - `#3797 <https://github.com/ansys/pyfluent/pull/3797>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - add solver to example usage command
+          - `#3788 <https://github.com/ansys/pyfluent/pull/3788>`_
+
+        * - Add doc for journal conversion [skip tests]
+          - `#3791 <https://github.com/ansys/pyfluent/pull/3791>`_
+
+        * - Fix built in settings doc [skip tests]
+          - `#3807 <https://github.com/ansys/pyfluent/pull/3807>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - update CHANGELOG for v0.30.dev3
+          - `#3790 <https://github.com/ansys/pyfluent/pull/3790>`_
+
+        * - Remove compare_flobject.py [skip tests]
+          - `#3793 <https://github.com/ansys/pyfluent/pull/3793>`_
+
+        * - Resolve dependency conflict
+          - `#3800 <https://github.com/ansys/pyfluent/pull/3800>`_
+
+
 `0.30.dev3 <https://github.com/ansys/pyfluent/releases/tag/v0.30.dev3>`_ - 2025-02-28
 =====================================================================================
 
