@@ -564,9 +564,16 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
         == 0.5
     )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
-        0.6
-    )
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor = 0.6"
+        ),
+    ):
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
+            0.6
+        )
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
         == 0.6
@@ -582,9 +589,30 @@ def test_nested_alias(mixing_elbow_settings_session):
     # kw_low_re_correction is alias of k_omega_low_re_correction
     # Testing all 4 combinations
     solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True
-    solver.setup.models.viscous.k_omega_options.k_omega_low_re_correction = False
-    solver.setup.models.viscous.k_omega_options.kw_low_re_correction = True
-    solver.setup.models.viscous.k_omega.kw_low_re_correction = False
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
+        ),
+    ):
+        solver.setup.models.viscous.k_omega_options.k_omega_low_re_correction = False
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
+        ),
+    ):
+        solver.setup.models.viscous.k_omega_options.kw_low_re_correction = True
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
+        ),
+    ):
+        solver.setup.models.viscous.k_omega.kw_low_re_correction = False
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -600,20 +628,28 @@ def test_commands_not_in_settings(new_solver_session):
 @pytest.mark.fluent_version(">=25.1")
 def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
-    with pytest.warns() as record:
-        # all_boundary_zones is an unknown/unsupported keyword
+    with pytest.warns(
+        PyFluentUserWarning,
+        match=(
+            "Unknown keyword 'all_boundary_zones' for command '<session>.settings.results.report.fluxes.mass_flow'. "
+            "It will be ignored."
+        ),
+    ):
         solver.settings.results.report.fluxes.mass_flow(
             all_boundary_zones=False, zones=["cold-inlet", "hot-inlet", "outlet"]
         )
-    assert len(record) == 1
-    assert record[0].category == PyFluentUserWarning
-    assert "all_boundary_zones" in str(record[0].message)
 
     solver.settings.results.graphics.mesh.create("m1")
     solver.settings.results.graphics.mesh.make_a_copy(from_="m1", to="m2")
-    solver.settings.results.graphics.mesh.copy(
-        from_name="m1", new_name="m3"
-    )  # deprecated
+    with pytest.warns(DeprecatedSettingWarning) as record:
+        solver.settings.results.graphics.mesh.copy(from_name="m1", new_name="m3")
+    first, second = str(record[0].message).splitlines()[0:2]
+    assert first == ("A newer syntax is available to perform the last operation:")
+    # It seems that the order of the arguments is not consistent (from Fluent)
+    assert second in [
+        'solver.settings.results.graphics.mesh.make_a_copy(from_ = "m1", to = "m3")',
+        'solver.settings.results.graphics.mesh.make_a_copy(to = "m3", from_ = "m1")',
+    ]
     assert set(solver.settings.results.graphics.mesh.get_object_names()) == {
         "m1",
         "m2",
