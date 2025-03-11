@@ -44,7 +44,7 @@ def test_field_data(new_solver_session) -> None:
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
     solver.file.read(file_type="case", file_name=import_file_name)
-    solver.tui.mesh.check()
+    solver.mesh.check()
 
     solver.setup.models.energy.enabled = True
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
@@ -78,9 +78,7 @@ def test_field_data(new_solver_session) -> None:
 
     transaction = field_data.new_transaction()
 
-    hot_inlet_surf_id = solver.fields.field_info.get_surfaces_info()["hot-inlet"][
-        "surface_id"
-    ][0]
+    hot_inlet_surf_id = solver.fields.field_data.get_surface_ids(["hot-inlet"])[0]
     transaction.add_surfaces_request(
         surfaces=[1, hot_inlet_surf_id],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
@@ -98,27 +96,36 @@ def test_field_data(new_solver_session) -> None:
     )
 
     data = transaction.get_fields()
-
-    surface_data_tag = (("type", "surface-data"),)  # tuple containing surface data info
-    scalar_field_tag = (
-        ("type", "scalar-field"),
-        ("dataLocation", 0),
-        ("boundaryValues", True),
-    )  # tuple containing scalar field info
-    pathline_tag = (("type", "pathlines-field"), ("field", "temperature"))
-    assert len(data) == 3
-    assert list(data[surface_data_tag][hot_inlet_surf_id].keys()) == [
-        "vertices",
-        "centroid",
-    ]
-    assert list(data[scalar_field_tag][hot_inlet_surf_id].keys()) == ["temperature"]
-    temp_inlet_data = data[scalar_field_tag][hot_inlet_surf_id]["temperature"]
-    assert (
-        len(temp_inlet_data)
-        == len(data[surface_data_tag][hot_inlet_surf_id]["vertices"]) / 3
+    scalar_data = data.get_scalar_field_data(
+        surfaces=[1, hot_inlet_surf_id],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=True,
     )
-    assert round(float(np.average(temp_inlet_data)), 2) == HOT_INLET_TEMPERATURE
-    assert sorted(list(data[pathline_tag][hot_inlet_surf_id].keys())) == sorted(
+    surface_data = data.get_surface_data(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+        surfaces=[1, hot_inlet_surf_id],
+    )
+    pathlines_data = data.get_pathlines_field_data(
+        surfaces=[1, hot_inlet_surf_id],
+        field_name="temperature",
+        provide_particle_time_field=True,
+    )
+    assert len(data) == 3
+
+    assert list(surface_data[hot_inlet_surf_id].keys()) == [
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesCentroid,
+    ]
+    assert (
+        len(scalar_data[hot_inlet_surf_id])
+        == surface_data[hot_inlet_surf_id][SurfaceDataType.Vertices].shape[0]
+    )
+    assert (
+        round(float(np.average(scalar_data[hot_inlet_surf_id])), 2)
+        == HOT_INLET_TEMPERATURE
+    )
+    assert sorted(list(pathlines_data[hot_inlet_surf_id])) == sorted(
         [
             "vertices",
             "lines",
