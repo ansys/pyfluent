@@ -1,0 +1,23 @@
+:orphan:
+
+.. _planes:
+
+planes
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.planes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===============================
+
+Parent                                                               Summary
+
+==========================================   ===============================
+:ref:`compute_10 <compute_10>`                            'compute' command.
+
+:ref:`start_file_write <start_file_write>`       'start_file_write' command.
+
+==========================================   ===============================
+

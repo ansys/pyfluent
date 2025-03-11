@@ -1,0 +1,36 @@
+:orphan:
+
+.. _major_gridlines:
+
+major_gridlines
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.major_gridlines
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ================================
+
+Attribute                                           Summary
+
+========================   ================================
+:ref:`color <color>`            Color of gridlines on axis.
+
+:ref:`weight <weight_1>`       Weight of gridlines on axis.
+
+========================   ================================
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`x_3 <x_3>`       X-axis properties.
+
+:ref:`y_3 <y_3>`       Y-axis properties.
+
+================   ======================
+

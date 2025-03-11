@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reference_acoustic_pressure:
+
+reference_acoustic_pressure
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.reference_acoustic_pressure
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`fwh_options <fwh_options>`       Entering object.
+
+================================   ====================
+

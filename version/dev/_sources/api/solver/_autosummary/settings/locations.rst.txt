@@ -1,0 +1,21 @@
+:orphan:
+
+.. _locations:
+
+locations
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`set_location <set_location>`       Input location name.
+
+==================================   ========================
+

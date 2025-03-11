@@ -1,0 +1,36 @@
+:orphan:
+
+.. _direction_2:
+
+direction
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.direction_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===============================================================================
+
+Attribute                                                                                        Summary
+
+======================   ===============================================================================
+:ref:`x_axis <x_axis>`       Help for this object class is not available without an instantiated object.
+
+:ref:`y_axis <y_axis>`       Help for this object class is not available without an instantiated object.
+
+:ref:`z_axis <z_axis>`       Help for this object class is not available without an instantiated object.
+
+======================   ===============================================================================
+
+.. rubric:: Included in:
+
+==========================   ===============================================================================
+
+Parent                                                                                               Summary
+
+==========================   ===============================================================================
+:ref:`atomizer <atomizer>`       Help for this object class is not available without an instantiated object.
+
+==========================   ===============================================================================
+

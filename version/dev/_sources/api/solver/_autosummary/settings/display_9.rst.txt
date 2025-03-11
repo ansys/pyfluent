@@ -1,0 +1,21 @@
+:orphan:
+
+.. _display_9:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.display_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`particle_tracks <particle_tracks>`       'particle_tracks' child.
+
+========================================   ============================
+
