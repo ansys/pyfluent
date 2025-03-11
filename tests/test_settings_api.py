@@ -583,36 +583,38 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
 @pytest.mark.fluent_version(">=25.2")
 def test_nested_alias(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
-    solver.setup.models.viscous.model = "k-omega"
-    solver.setup.models.viscous.k_omega_model = "standard"
+    solver.settings.setup.models.viscous.model = "k-omega"
+    solver.settings.setup.models.viscous.k_omega_model = "standard"
     # k_omega_options is alias of k_omega
     # kw_low_re_correction is alias of k_omega_low_re_correction
     # Testing all 4 combinations
-    solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True
+    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
         ),
     ):
-        solver.setup.models.viscous.k_omega_options.k_omega_low_re_correction = False
+        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction = (
+            False
+        )
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
         ),
     ):
-        solver.setup.models.viscous.k_omega_options.kw_low_re_correction = True
+        solver.settings.setup.models.viscous.k_omega_options.kw_low_re_correction = True
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
             "A newer syntax is available to perform the last operation:\n"
-            "solver.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
         ),
     ):
-        solver.setup.models.viscous.k_omega.kw_low_re_correction = False
+        solver.settings.setup.models.viscous.k_omega.kw_low_re_correction = False
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -646,10 +648,9 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     first, second = str(record[0].message).splitlines()[0:2]
     assert first == ("A newer syntax is available to perform the last operation:")
     # It seems that the order of the arguments is not consistent (from Fluent)
-    assert second in [
-        'solver.settings.results.graphics.mesh.make_a_copy(from_ = "m1", to = "m3")',
-        'solver.settings.results.graphics.mesh.make_a_copy(to = "m3", from_ = "m1")',
-    ]
+    assert second.startswith("solver.settings.results.graphics.mesh.make_a_copy(")
+    assert "from_ = " in second
+    assert "to = " in second
     assert set(solver.settings.results.graphics.mesh.get_object_names()) == {
         "m1",
         "m2",

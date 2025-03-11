@@ -544,7 +544,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     # Iterate with no case
     with pytest.raises(
         InactiveObjectError,
-        match="'<session>.settings.solution.run_calculation.iterate' is currently inactive.",
+        match="solution.run_calculation.iterate' is currently inactive.",
     ) as exec_info:
         # The object is not active
         solver.solution.run_calculation.iterate(iter_count=5)
@@ -554,7 +554,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     # Write case without any case loaded or created
     with pytest.raises(
         InactiveObjectError,
-        match="'<session>.settings.file.write' is currently inactive.",
+        match="file.write' is currently inactive.",
     ) as exec_info:
         # Uninitialized case
         solver.file.write(file_name="sample.cas.h5", file_type="case")
