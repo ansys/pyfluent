@@ -435,7 +435,76 @@ def _data_type_convertor(args_dict):
     return args_dict
 
 
-class _ReturnedFieldData:
+class _FetchFieldData:
+
+    @staticmethod
+    def _surface_data(
+        data_types: List[SurfaceDataType] | List[str],
+        surface_ids: List[int],
+        overset_mesh: bool | None = False,
+    ):
+        return [
+            FieldDataProtoModule.SurfaceRequest(
+                surfaceId=surface_id,
+                oversetMesh=overset_mesh,
+                provideFaces=SurfaceDataType.FacesConnectivity in data_types,
+                provideVertices=SurfaceDataType.Vertices in data_types,
+                provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
+                provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
+            )
+            for surface_id in surface_ids
+        ]
+
+    @staticmethod
+    def _scalar_data(
+        field_name: str,
+        surface_ids: List[int],
+        node_value: bool,
+        boundary_value: bool,
+    ):
+        return [
+            FieldDataProtoModule.ScalarFieldRequest(
+                surfaceId=surface_id,
+                scalarFieldName=field_name,
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if node_value
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                provideBoundaryValues=boundary_value,
+            )
+            for surface_id in surface_ids
+        ]
+
+    @staticmethod
+    def _vector_data(
+        field_name: str,
+        surface_ids: List[int],
+    ):
+        return [
+            FieldDataProtoModule.VectorFieldRequest(
+                surfaceId=surface_id, vectorFieldName=field_name
+            )
+            for surface_id in surface_ids
+        ]
+
+    @staticmethod
+    def _pathlines_data(
+        field_name: str,
+        surface_ids: List[int],
+        **kwargs,
+    ):
+        return [
+            FieldDataProtoModule.PathlinesFieldRequest(
+                surfaceId=surface_id,
+                field=field_name,
+                **kwargs,
+            )
+            for surface_id in surface_ids
+        ]
+
+
+class _ReturnFieldData:
 
     @staticmethod
     def _get_faces_connectivity_data(data):
@@ -448,11 +517,11 @@ class _ReturnedFieldData:
         return faces_data
 
     @staticmethod
-    def scalar_data(
-            field_name: str,
-            surfaces: List[int | str],
-            surface_ids: List[int],
-            scalar_field_data: np.array,
+    def _scalar_data(
+        field_name: str,
+        surfaces: List[int | str],
+        surface_ids: List[int],
+        scalar_field_data: np.array,
     ) -> Dict[int | str, np.array]:
         return {
             surface: scalar_field_data[surface_ids[count]][field_name]
@@ -460,11 +529,11 @@ class _ReturnedFieldData:
         }
 
     @staticmethod
-    def surface_data(
-            data_types: List[SurfaceDataType],
-            surfaces: List[int | str],
-            surface_ids: List[int],
-            surface_data: np.array | List[np.array],
+    def _surface_data(
+        data_types: List[SurfaceDataType],
+        surfaces: List[int | str],
+        surface_ids: List[int],
+        surface_data: np.array | List[np.array],
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
@@ -472,7 +541,7 @@ class _ReturnedFieldData:
             for data_type in data_types:
                 if data_type == SurfaceDataType.FacesConnectivity:
                     ret_surf_data[surface][data_type] = (
-                        _ReturnedFieldData._get_faces_connectivity_data(
+                        _ReturnFieldData._get_faces_connectivity_data(
                             surface_data[surface_ids[count]][
                                 SurfaceDataType.FacesConnectivity.value
                             ]
@@ -485,11 +554,11 @@ class _ReturnedFieldData:
         return ret_surf_data
 
     @staticmethod
-    def vector_data(
-            field_name: str,
-            surfaces: List[int | str],
-            surface_ids: List[int],
-            vector_field_data: np.array,
+    def _vector_data(
+        field_name: str,
+        surfaces: List[int | str],
+        surface_ids: List[int],
+        vector_field_data: np.array,
     ) -> Dict[int | str, np.array]:
         return {
             surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
@@ -497,11 +566,11 @@ class _ReturnedFieldData:
         }
 
     @staticmethod
-    def pathlines_data(
-            field_name: str,
-            surfaces: List[int | str],
-            surface_ids: List[int],
-            pathlines_data: Dict,
+    def _pathlines_data(
+        field_name: str,
+        surfaces: List[int | str],
+        surface_ids: List[int],
+        pathlines_data: Dict,
     ) -> Dict:
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
@@ -509,34 +578,40 @@ class _ReturnedFieldData:
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
-                "lines": _ReturnedFieldData._get_faces_connectivity_data(
+                "lines": _ReturnFieldData._get_faces_connectivity_data(
                     pathlines_data[surface_ids[count]]["lines"]
                 ),
                 field_name: pathlines_data[surface_ids[count]][field_name],
-                "pathlines-count": pathlines_data[surface_ids[count]]["pathlines-count"],
+                "pathlines-count": pathlines_data[surface_ids[count]][
+                    "pathlines-count"
+                ],
             }
             if "particle-time" in pathlines_data[surface_ids[count]]:
-                path_lines_dict[surface]["particle-time"] = pathlines_data[surface_ids[count]]["particle-time"]
+                path_lines_dict[surface]["particle-time"] = pathlines_data[
+                    surface_ids[count]
+                ]["particle-time"]
         return path_lines_dict
 
 
-
-
 class TFieldData:
+    """Provides access to Fluent field data on surfaces collected via transactions."""
+
     def __init__(
-            self,
-            data: Dict,
-            field_info,
-            allowed_surface_names,
-            allowed_scalar_field_names,
+        self,
+        data: Dict,
+        field_info,
+        allowed_surface_names,
+        allowed_scalar_field_names,
     ):
+        """__init__ method of TFieldData class."""
         self.data = data
         self._field_info = field_info
         self._allowed_surface_names = allowed_surface_names
         self._allowed_scalar_field_names = allowed_scalar_field_names
-        self._returned_data = _ReturnedFieldData()
+        self._returned_data = _ReturnFieldData()
 
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -550,17 +625,34 @@ class TFieldData:
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> Dict[int | str, np.array]:
+        """Get scalar field data on a surface.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the scalar field.
+        surfaces : List[int | str]
+            List of surface IDS or surface names for the surface data.
+        node_value : bool, optional
+            Whether to provide data for the nodal location. The default is ``True``.
+            When ``False``, data is provided for the element location.
+        boundary_value : bool, optional
+            Whether to provide slip velocity at the wall boundaries. The default is
+            ``True``. When ``True``, no slip velocity is provided.
+
+        Returns
+        -------
+        Dict[int | str, np.array]
+            Returns a map of surface IDs (or names) to scalar field data.
+        """
         tag = (
             ("type", "scalar-field"),
             ("dataLocation", 0 if node_value else 1),
             ("boundaryValues", boundary_value),
         )
         scalar_field_data = self.data[tag]
-        return self._returned_data.scalar_data(
-            field_name,
-            surfaces,
-            self.get_surface_ids(surfaces),
-            scalar_field_data
+        return self._returned_data._scalar_data(
+            field_name, surfaces, self.get_surface_ids(surfaces), scalar_field_data
         )
 
     def get_surface_data(
@@ -569,16 +661,51 @@ class TFieldData:
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        """Get surface data (vertices, faces connectivity, centroids, and normals).
+
+        Parameters
+        ----------
+        data_types : List[SurfaceDataType],
+            SurfaceDataType Enum members.
+        surfaces : List[int | str]
+            List of surface IDS or surface names for the surface data.
+        overset_mesh : bool, optional
+            Whether to provide the overset method. The default is ``False``.
+
+        Returns
+        -------
+        Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]
+             Returns a map of surface IDs (or names) to face
+             vertices, connectivity data, and normal or centroid data.
+        """
         surface_data = self.data[(("type", "surface-data"),)]
-        return self._returned_data.surface_data(data_types, surfaces, self.get_surface_ids(surfaces), surface_data)
+        return self._returned_data._surface_data(
+            data_types, surfaces, self.get_surface_ids(surfaces), surface_data
+        )
 
     def get_vector_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
     ) -> Dict[int | str, np.array]:
+        """Get vector field data on a surface.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the vector field.
+        surfaces : List[int | str]
+            List of surface IDS or surface names for the surface data.
+
+        Returns
+        -------
+        Dict[int | str, np.array]
+            Returns a  map of surface IDs (or names) to vector field data.
+        """
         vector_field_data = self.data[(("type", "vector-field"),)]
-        return self._returned_data.vector_data(field_name, surfaces, self.get_surface_ids(surfaces), vector_field_data)
+        return self._returned_data._vector_data(
+            field_name, surfaces, self.get_surface_ids(surfaces), vector_field_data
+        )
 
     def get_pathlines_field_data(
         self,
@@ -597,10 +724,52 @@ class TFieldData:
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
     ) -> Dict:
+        """Get the pathlines field data on a surface.
+
+        Parameters
+        ----------
+        field_name : str
+            Name of the scalar field to color pathlines.
+        surfaces : List[int | str]
+            List of surface IDS or surface names for the surface data.
+        additional_field_name : str, optional
+            Additional field if required.
+        provide_particle_time_field: bool, optional
+            Whether to provide the particle time. The default is ``False``.
+        node_value : bool, optional
+                    Whether to provide the nodal values. The default is ``True``. If
+                    ``False``, element values are provided.
+        steps: int, optional
+            Pathlines steps. The default is ``500``
+        step_size: float, optional
+            Pathlines step size. The default is ``0.01``.
+        skip: int, optional
+            Pathlines to skip. The default is ``0``.
+        reverse: bool, optional
+            Whether to draw pathlines in reverse direction. The default is ``False``.
+        accuracy_control_on: bool, optional
+            Whether to control accuracy. The default is ``False``.
+        tolerance: float, optional
+            Pathlines tolerance. The default is ``0.001``.
+        coarsen: int, optional
+            Pathlines coarsen. The default is ``1``.
+        velocity_domain: str, optional
+            Domain for pathlines. The default is ``"all-phases"``.
+        zones: list, optional
+            Zones for pathlines. The default is ``[]``.
+
+        Returns
+        -------
+        Dict
+            Dictionary containing a map of surface IDs to the pathline data.
+            For example, pathlines connectivity, vertices, and field.
+        """
         if zones is None:
             zones = []
         pathlines_data = self.data[(("type", "pathlines-field"), ("field", field_name))]
-        return self._returned_data.pathlines_data(field_name, surfaces, self.get_surface_ids(surfaces), pathlines_data)
+        return self._returned_data._pathlines_data(
+            field_name, surfaces, self.get_surface_ids(surfaces), pathlines_data
+        )
 
     def __len__(self):
         return len(self.data)
@@ -670,6 +839,16 @@ class FieldTransaction:
             self.add_pathlines_fields_request,
         )
 
+        self._fetched_data = _FetchFieldData()
+
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
+            surfaces=surfaces,
+        )
+
     @deprecate_argument(
         old_arg="surface_names",
         new_arg="surfaces",
@@ -703,11 +882,6 @@ class FieldTransaction:
         -------
         None
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
         updated_data_types = []
         for d_type in data_types:
             if isinstance(d_type, str):
@@ -716,17 +890,11 @@ class FieldTransaction:
                 updated_data_types.append(d_type)
         data_types = updated_data_types
         self._fields_request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=overset_mesh,
-                    provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                    provideVertices=SurfaceDataType.Vertices in data_types,
-                    provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                    provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._surface_data(
+                data_types,
+                self.get_surface_ids(surfaces),
+                overset_mesh,
+            )
         )
 
     @deprecate_argument(
@@ -765,27 +933,13 @@ class FieldTransaction:
         -------
         None
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
         self._fields_request.scalarFieldRequest.extend(
-            [
-                FieldDataProtoModule.ScalarFieldRequest(
-                    surfaceId=surface_id,
-                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
-                        field_name
-                    ),
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    provideBoundaryValues=boundary_value,
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._scalar_data(
+                self._allowed_scalar_field_names.valid_name(field_name),
+                self.get_surface_ids(surfaces),
+                node_value,
+                boundary_value,
+            )
         )
 
     @deprecate_argument(
@@ -816,21 +970,11 @@ class FieldTransaction:
         -------
         None
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
         self._fields_request.vectorFieldRequest.extend(
-            [
-                FieldDataProtoModule.VectorFieldRequest(
-                    surfaceId=surface_id,
-                    vectorFieldName=self._allowed_vector_field_names.valid_name(
-                        field_name,
-                    ),
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._vector_data(
+                self._allowed_vector_field_names.valid_name(field_name),
+                self.get_surface_ids(surfaces),
+            )
         )
 
     @deprecate_argument(
@@ -899,35 +1043,27 @@ class FieldTransaction:
         """
         if zones is None:
             zones = []
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
         self._fields_request.pathlinesFieldRequest.extend(
-            [
-                FieldDataProtoModule.PathlinesFieldRequest(
-                    surfaceId=surface_id,
-                    field=self._allowed_scalar_field_names.valid_name(field_name),
-                    additionalField=additional_field_name,
-                    provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    steps=steps,
-                    stepSize=step_size,
-                    skip=skip,
-                    reverse=reverse,
-                    accuracyControlOn=accuracy_control_on,
-                    tolerance=tolerance,
-                    coarsen=coarsen,
-                    velocityDomain=velocity_domain,
-                    zones=zones,
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._pathlines_data(
+                self._allowed_scalar_field_names.valid_name(field_name),
+                self.get_surface_ids(surfaces),
+                additionalField=additional_field_name,
+                provideParticleTimeField=provide_particle_time_field,
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if node_value
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                steps=steps,
+                stepSize=step_size,
+                skip=skip,
+                reverse=reverse,
+                accuracyControlOn=accuracy_control_on,
+                tolerance=tolerance,
+                coarsen=coarsen,
+                velocityDomain=velocity_domain,
+                zones=zones,
+            )
         )
 
     def get_fields(self) -> TFieldData:
@@ -941,9 +1077,14 @@ class FieldTransaction:
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return TFieldData(ChunkParser().extract_fields(
-            self._service.get_fields(self._fields_request)
-        ), self._field_info, self._allowed_surface_names, self._allowed_scalar_field_names)
+        return TFieldData(
+            ChunkParser().extract_fields(
+                self._service.get_fields(self._fields_request)
+            ),
+            self._field_info,
+            self._allowed_surface_names,
+            self._allowed_scalar_field_names,
+        )
 
     def __call__(self):
         self.get_fields()
@@ -1364,9 +1505,11 @@ class FieldData:
             ),
             self.get_pathlines_field_data,
         )
-        self._returned_data = _ReturnedFieldData()
+        self._returned_data = _ReturnFieldData()
+        self._fetched_data = _FetchFieldData()
 
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
         return _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -1414,30 +1557,17 @@ class FieldData:
         surface_ids = self.get_surface_ids(surfaces)
         fields_request = get_fields_request()
         fields_request.scalarFieldRequest.extend(
-            [
-                FieldDataProtoModule.ScalarFieldRequest(
-                    surfaceId=surface_id,
-                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
-                        field_name
-                    ),
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    provideBoundaryValues=boundary_value,
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._scalar_data(
+                self._allowed_scalar_field_names.valid_name(field_name),
+                self.get_surface_ids(surfaces),
+                node_value,
+                boundary_value,
+            )
         )
-
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
-        return self._returned_data.scalar_data(
-            field_name,
-            surfaces,
-            surface_ids,
-            scalar_field_data
+        return self._returned_data._scalar_data(
+            field_name, surfaces, surface_ids, scalar_field_data
         )
 
     def get_surface_data(
@@ -1466,22 +1596,18 @@ class FieldData:
         surface_ids = self.get_surface_ids(surfaces)
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=overset_mesh,
-                    provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                    provideVertices=SurfaceDataType.Vertices in data_types,
-                    provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                    provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._surface_data(
+                data_types,
+                surface_ids,
+                overset_mesh,
+            )
         )
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
 
-        return self._returned_data.surface_data(data_types, surfaces, surface_ids, surface_data)
+        return self._returned_data._surface_data(
+            data_types, surfaces, surface_ids, surface_data
+        )
 
     def get_vector_field_data(
         self,
@@ -1507,20 +1633,16 @@ class FieldData:
             self.scheme_eval.string_eval(f"(surface? {surface_id})")
         fields_request = get_fields_request()
         fields_request.vectorFieldRequest.extend(
-            [
-                FieldDataProtoModule.VectorFieldRequest(
-                    surfaceId=surface_id,
-                    vectorFieldName=self._allowed_vector_field_names.valid_name(
-                        field_name
-                    ),
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._vector_data(
+                self._allowed_vector_field_names.valid_name(field_name), surface_ids
+            )
         )
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         vector_field_data = next(iter(fields.values()))
 
-        return self._returned_data.vector_data(field_name, surfaces, surface_ids, vector_field_data)
+        return self._returned_data._vector_data(
+            field_name, surfaces, surface_ids, vector_field_data
+        )
 
     def get_pathlines_field_data(
         self,
@@ -1584,34 +1706,33 @@ class FieldData:
         surface_ids = self.get_surface_ids(surfaces)
         fields_request = get_fields_request()
         fields_request.pathlinesFieldRequest.extend(
-            [
-                FieldDataProtoModule.PathlinesFieldRequest(
-                    surfaceId=surface_id,
-                    field=self._allowed_scalar_field_names.valid_name(field_name),
-                    additionalField=additional_field_name,
-                    provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    steps=steps,
-                    stepSize=step_size,
-                    skip=skip,
-                    reverse=reverse,
-                    accuracyControlOn=accuracy_control_on,
-                    tolerance=tolerance,
-                    coarsen=coarsen,
-                    velocityDomain=velocity_domain,
-                    zones=zones,
-                )
-                for surface_id in surface_ids
-            ]
+            self._fetched_data._pathlines_data(
+                self._allowed_scalar_field_names.valid_name(field_name),
+                surface_ids,
+                additionalField=additional_field_name,
+                provideParticleTimeField=provide_particle_time_field,
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if node_value
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                steps=steps,
+                stepSize=step_size,
+                skip=skip,
+                reverse=reverse,
+                accuracyControlOn=accuracy_control_on,
+                tolerance=tolerance,
+                coarsen=coarsen,
+                velocityDomain=velocity_domain,
+                zones=zones,
+            )
         )
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         pathlines_data = next(iter(fields.values()))
 
-        return self._returned_data.pathlines_data(field_name, surfaces, surface_ids, pathlines_data)
+        return self._returned_data._pathlines_data(
+            field_name, surfaces, surface_ids, pathlines_data
+        )
 
     def get_mesh(self, zone: str | int) -> Mesh:
         """Get mesh for a zone.
