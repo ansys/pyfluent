@@ -43,6 +43,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvide
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -532,21 +533,33 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     solver = new_solver_session
 
     # Read case with non-existent path
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="File .* not found") as exec_info:
         # File not found
         solver.settings.file.read(
             file_type="case", file_name=r"incorrect_path\incorrect_file.cas.h5"
         )
+    # Assert that exception is propagated from the Fluent server
+    assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     # Iterate with no case
-    with pytest.raises(RuntimeError):
+    with pytest.raises(
+        InactiveObjectError,
+        match="solution.run_calculation.iterate' is currently inactive.",
+    ) as exec_info:
         # The object is not active
         solver.solution.run_calculation.iterate(iter_count=5)
+    # Assert that exception is not propagated from the Fluent server
+    assert not isinstance(exec_info.value.__context__, grpc.RpcError)
 
     # Write case without any case loaded or created
-    with pytest.raises(RuntimeError):
+    with pytest.raises(
+        InactiveObjectError,
+        match="file.write' is currently inactive.",
+    ) as exec_info:
         # Uninitialized case
         solver.file.write(file_name="sample.cas.h5", file_type="case")
+    # Assert that exception is not propagated from the Fluent server
+    assert not isinstance(exec_info.value.__context__, grpc.RpcError)
 
     graphics = solver.results.graphics
 
@@ -568,13 +581,21 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"].display()
 
     # Post-process without data
-    with pytest.raises(RuntimeError):
+    fluent_version = solver.get_fluent_version()
+    match_str = (
+        "Invalid result name."
+        if fluent_version == FluentVersion.v242
+        else "object is not active"
+    )
+    with pytest.raises(RuntimeError, match=match_str) as exec_info:
         # Invalid result.
         graphics.contour["contour-velocity"] = {
             "field": "velocity-magnitude",
             "surfaces_list": ["wall-elbow"],
         }
         graphics.contour["contour-velocity"].display()
+    # Assert that exception is propagated from the Fluent server
+    assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     solver.solution.run_calculation.iterate(iter_count=5)
     graphics.contour["contour-velocity"] = {
