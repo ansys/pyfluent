@@ -409,10 +409,7 @@ class Base:
 
     def _is_deprecated(self) -> bool:
         """Whether the object is deprecated in a specific Fluent version.'"""
-        deprecated_version = self.get_attrs(["deprecated-version"])
-        deprecated_version = (
-            deprecated_version.get("deprecated-version") if deprecated_version else None
-        )
+        deprecated_version = getattr(self, "_deprecated_version", None)
         return deprecated_version and FluentVersion(self.version) >= FluentVersion(
             deprecated_version
         )
@@ -2189,6 +2186,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     ),
                     k,
                 )
+        deprecated_version = info.get("deprecated_version")
+        if deprecated_version:
+            cls._deprecated_version = deprecated_version
 
     except Exception:
         print(

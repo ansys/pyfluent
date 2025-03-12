@@ -641,7 +641,7 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     assert var3.obj_name == "air-copied"
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3813")
+# @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3813")
 @pytest.mark.fluent_version(">=25.1")
 def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session

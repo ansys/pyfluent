@@ -123,6 +123,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["query_names"] = query_names
     data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
+    data["deprecated_version"] = getattr(cls, "_deprecated_version", None)
     data["return_type"] = getattr(cls, "return_type", None)
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
@@ -297,6 +298,10 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             s.write(f"        {k}={v!r},\n")
         s.write("    )\n")
         s_stub.write("    _child_aliases: dict\n")
+    deprecated_version = data["deprecated_version"]
+    if deprecated_version:
+        s.write(f"    _deprecated_version = {deprecated_version!r}\n")
+        s_stub.write("    _deprecated_version: str\n")
     return_type = data["return_type"]
     if return_type:
         s.write(f"    return_type = {return_type!r}\n")
