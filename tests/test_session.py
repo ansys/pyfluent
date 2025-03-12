@@ -527,7 +527,7 @@ def test_solver_structure(new_solver_session):
     }.issubset(set(dir(solver.fields)))
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.2")
 def test_general_exception_behaviour_in_session(new_solver_session):
     solver = new_solver_session
 
@@ -589,11 +589,8 @@ def test_general_exception_behaviour_in_session(new_solver_session):
         return_without_path=False,
     )
 
-    # Error in server:
-    # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
-    # with pytest.raises(RuntimeError):
-    #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)
-    del mesh_file_2d  # Remove this line after the above code snippet is operational
+    with pytest.raises(RuntimeError):
+        solver.settings.file.read(file_type="case", file_name=mesh_file_2d)
 
 
 @pytest.mark.fluent_version(">=23.2")
