@@ -38,7 +38,7 @@ HOT_INLET_TEMPERATURE = 313.15
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_field_data(new_solver_session) -> None:
+def test_field_data_transactions(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
@@ -64,7 +64,7 @@ def test_field_data(new_solver_session) -> None:
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
     hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
-    solver.tui.solve.monitors.residual.plot("no")
+    solver.solution.monitor.residual.options.plot = False
 
     # Initialize flow field
     solver.solution.initialization.hybrid_initialize()
@@ -83,49 +83,82 @@ def test_field_data(new_solver_session) -> None:
         surfaces=[1, hot_inlet_surf_id],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
+    transaction.add_surfaces_request(
+        surfaces=[3],
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+    )
     transaction.add_scalar_fields_request(
-        surfaces=[1, hot_inlet_surf_id],
+        surfaces=[1, "cold-inlet", "hot-inlet"],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
     )
+    transaction.add_scalar_fields_request(
+        surfaces=[2],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=False,
+    )
     transaction.add_pathlines_fields_request(
-        surfaces=[1, hot_inlet_surf_id],
+        surfaces=[1, "hot-inlet"],
         field_name="temperature",
         provide_particle_time_field=True,
     )
 
     data = transaction.get_fields()
     scalar_data = data.get_scalar_field_data(
-        surfaces=[1, hot_inlet_surf_id],
+        surfaces=[1, "cold-inlet"],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
     )
+    scalar_data_1 = data.get_scalar_field_data(
+        surfaces=["hot-inlet"],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=True,
+    )
+    with pytest.raises(
+        KeyError
+    ):  # Since for surface_id=2 data is fetched with boundary_value = False
+        scalar_data_2 = data.get_scalar_field_data(
+            surfaces=[2],
+            field_name="temperature",
+            node_value=True,
+            boundary_value=True,
+        )
+    scalar_data_2 = data.get_scalar_field_data(
+        surfaces=[2],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=False,
+    )
+    assert list(scalar_data) == [1, "cold-inlet"]
+    assert list(scalar_data_2) == [2]
     surface_data = data.get_surface_data(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-        surfaces=[1, hot_inlet_surf_id],
-    )
+        surfaces=[1, 3, "hot-inlet"],
+    )  # Even if you populate the data using surface_id you can access it via surface name.
+
     pathlines_data = data.get_pathlines_field_data(
-        surfaces=[1, hot_inlet_surf_id],
+        surfaces=[1, "hot-inlet"],
         field_name="temperature",
         provide_particle_time_field=True,
     )
-    assert len(data) == 3
+    assert len(data) == 4  # 2 sets of scalar data and 1 of surface and pathlines data.
 
-    assert list(surface_data[hot_inlet_surf_id].keys()) == [
+    assert list(surface_data["hot-inlet"]) == [
         SurfaceDataType.Vertices,
         SurfaceDataType.FacesCentroid,
     ]
     assert (
-        len(scalar_data[hot_inlet_surf_id])
-        == surface_data[hot_inlet_surf_id][SurfaceDataType.Vertices].shape[0]
+        len(scalar_data_1["hot-inlet"])
+        == surface_data["hot-inlet"][SurfaceDataType.Vertices].shape[0]
     )
     assert (
-        round(float(np.average(scalar_data[hot_inlet_surf_id])), 2)
-        == HOT_INLET_TEMPERATURE
+        round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
     )
-    assert sorted(list(pathlines_data[hot_inlet_surf_id])) == sorted(
+    assert sorted(list(pathlines_data["hot-inlet"])) == sorted(
         [
             "vertices",
             "lines",
