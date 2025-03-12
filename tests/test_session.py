@@ -550,11 +550,11 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 
     graphics = solver.results.graphics
 
-    # # Post-process without case
-    # with pytest.raises(RuntimeError):
-    #     # Does not exist. #1197711
-    #     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
-    #     graphics.mesh["mesh-1"].display()
+    # Post-process without case
+    with pytest.raises(RuntimeError):
+        # Does not exist. #1197711
+        graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
+        graphics.mesh["mesh-1"].display()
 
     case_file = examples.download_file(
         "mixing_elbow.cas.h5",
