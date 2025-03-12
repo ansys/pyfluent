@@ -581,7 +581,13 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"].display()
 
     # Post-process without data
-    with pytest.raises(RuntimeError, match="object is not active") as exec_info:
+    fluent_version = solver.get_fluent_version()
+    match_str = (
+        "Invalid result name."
+        if fluent_version == FluentVersion.v242
+        else "object is not active"
+    )
+    with pytest.raises(RuntimeError, match=match_str) as exec_info:
         # Invalid result.
         graphics.contour["contour-velocity"] = {
             "field": "velocity-magnitude",
