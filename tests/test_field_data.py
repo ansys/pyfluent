@@ -267,9 +267,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         node_value=True,
         boundary_value=True,
     )
-    sc2 = ScalarFieldDataRequest(
-        surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
-    )
+    sc2 = sc1._replace(surfaces=[2], boundary_value=False)
     vc1 = VectorFieldDataRequest(surfaces=[3, "hot-inlet"], field_name="velocity")
     pt1 = PathlinesFieldDataRequest(
         surfaces=[1, "hot-inlet"],
@@ -285,33 +283,19 @@ def test_field_data_transactions(new_solver_session) -> None:
         len(data) == 5
     )  # 2 sets of scalar data, 1 vector data, 1 surface data and 1 path-lines data.
 
-    sc1 = ScalarFieldDataRequest(
-        surfaces=[1, "cold-inlet"],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=True,
-    )
-    sc2 = ScalarFieldDataRequest(
-        surfaces=["hot-inlet"],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=True,
-    )
+    sc1 = sc1._replace(surfaces=[1, "cold-inlet"])
+    sc2 = sc1._replace(surfaces=["hot-inlet"])
 
     scalar_data = data.get_field_data(sc1)
     scalar_data_1 = data.get_field_data(sc2)
 
-    sc3 = ScalarFieldDataRequest(
-        surfaces=[2], field_name="temperature", node_value=True, boundary_value=True
-    )
+    sc3 = sc1._replace(surfaces=[2])
     with pytest.raises(
         KeyError
     ):  # Since for surface_id=2 data is fetched with boundary_value = False
         scalar_data_2 = data.get_field_data(sc3)
 
-    sc3 = ScalarFieldDataRequest(
-        surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
-    )
+    sc3 = sc3._replace(boundary_value=False)
     scalar_data_2 = data.get_field_data(sc3)
 
     assert list(scalar_data) == [1, "cold-inlet"]
