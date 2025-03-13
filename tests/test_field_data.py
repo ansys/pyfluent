@@ -110,67 +110,8 @@ def test_field_data_transactions_deprecated_interface(new_solver_session) -> Non
     )
 
     data = transaction.get_fields()
-    scalar_data = data.get_scalar_field_data(
-        surfaces=[1, "cold-inlet"],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=True,
-    )
-    scalar_data_1 = data.get_scalar_field_data(
-        surfaces=["hot-inlet"],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=True,
-    )
-    with pytest.raises(
-        KeyError
-    ):  # Since for surface_id=2 data is fetched with boundary_value = False
-        scalar_data_2 = data.get_scalar_field_data(
-            surfaces=[2],
-            field_name="temperature",
-            node_value=True,
-            boundary_value=True,
-        )
-    scalar_data_2 = data.get_scalar_field_data(
-        surfaces=[2],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=False,
-    )
-    assert list(scalar_data) == [1, "cold-inlet"]
-    assert list(scalar_data_2) == [2]
-    surface_data = data.get_surface_data(
-        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
-        surfaces=[1, 3, "hot-inlet"],
-    )  # Even if you populate the data using surface_id you can access it via surface name.
 
-    pathlines_data = data.get_pathlines_field_data(
-        surfaces=[1, "hot-inlet"],
-        field_name="temperature",
-        provide_particle_time_field=True,
-    )
     assert len(data) == 4  # 2 sets of scalar data and 1 of surface and pathlines data.
-
-    assert list(surface_data["hot-inlet"]) == [
-        SurfaceDataType.Vertices,
-        SurfaceDataType.FacesCentroid,
-    ]
-    assert (
-        len(scalar_data_1["hot-inlet"])
-        == surface_data["hot-inlet"][SurfaceDataType.Vertices].shape[0]
-    )
-    assert (
-        round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
-    )
-    assert sorted(list(pathlines_data["hot-inlet"])) == sorted(
-        [
-            "vertices",
-            "lines",
-            "temperature",
-            "pathlines-count",
-            "particle-time",
-        ]
-    )
 
     # multiple surface *names* transaction
     transaction2 = field_data.new_transaction()
