@@ -593,6 +593,88 @@ class _ReturnFieldData:
         return path_lines_dict
 
 
+class SurfaceFieldData:
+    """Container for storing parameters for surface data."""
+
+    def __init__(
+        self,
+        data_types: List[SurfaceDataType] | List[str],
+        surfaces: List[int | str],
+        overset_mesh: bool | None = False,
+    ):
+        """__init__ method of SurfaceFieldData class."""
+        self.data_types = data_types
+        self.surfaces = surfaces
+        self.overset_mesh = overset_mesh
+
+
+class ScalarFieldData:
+    """Container for storing parameters for scalar field data."""
+
+    def __init__(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
+    ):
+        """__init__ method of ScalarFieldData class."""
+        self.field_name = field_name
+        self.surfaces = surfaces
+        self.node_value = node_value
+        self.boundary_value = boundary_value
+
+
+class VectorFieldData:
+    """Container for storing parameters for vector field data."""
+
+    def __init__(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+    ):
+        """__init__ method of VectorFieldData class."""
+        self.field_name = field_name
+        self.surfaces = surfaces
+
+
+class PathlinesFieldData:
+    """Container for storing parameters for path-lines field data."""
+
+    def __init__(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+        additional_field_name: str = "",
+        provide_particle_time_field: bool | None = False,
+        node_value: bool | None = True,
+        steps: int | None = 500,
+        step_size: float | None = 500,
+        skip: int | None = 0,
+        reverse: bool | None = False,
+        accuracy_control_on: bool | None = False,
+        tolerance: float | None = 0.001,
+        coarsen: int | None = 1,
+        velocity_domain: str | None = "all-phases",
+        zones: list | None = None,
+    ):
+        """__init__ method of PathlinesFieldData class."""
+        self.field_name = field_name
+        self.surfaces = surfaces
+        self.additional_field_name = additional_field_name
+        self.provide_particle_time_field = provide_particle_time_field
+        self.node_value = node_value
+        self.steps = steps
+        self.step_size = step_size
+        self.skip = skip
+        self.reverse = reverse
+        self.accuracy_control_on = accuracy_control_on
+        self.tolerance = tolerance
+        self.coarsen = coarsen
+        self.velocity_domain = velocity_domain
+        self.zones = zones
+
+
 class TransactionSpecs:
     """The input argument specifications while adding a transaction."""
 
@@ -1107,6 +1189,101 @@ class FieldTransaction:
             )
         )
         return TransactionSpecs(specs=locals())
+
+    def add_request(
+        self,
+        obj: [
+            SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData
+        ],
+    ):
+        """Add request to get surface, scalar, vector or path-lines field on surfaces."""
+        if isinstance(obj, SurfaceFieldData):
+            self.add_surfaces_request(
+                data_types=obj.data_types,
+                surfaces=obj.surfaces,
+                overset_mesh=obj.overset_mesh,
+            )
+        elif isinstance(obj, ScalarFieldData):
+            self.add_scalar_fields_request(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                node_value=obj.node_value,
+                boundary_value=obj.boundary_value,
+            )
+        elif isinstance(obj, VectorFieldData):
+            self.add_vector_fields_request(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+            )
+        elif isinstance(obj, PathlinesFieldData):
+            self.add_pathlines_fields_request(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                additional_field_name=obj.additional_field_name,
+                provide_particle_time_field=obj.provide_particle_time_field,
+                node_value=obj.node_value,
+                steps=obj.steps,
+                step_size=obj.step_size,
+                skip=obj.skip,
+                reverse=obj.reverse,
+                accuracy_control_on=obj.accuracy_control_on,
+                tolerance=obj.tolerance,
+                coarsen=obj.coarsen,
+                velocity_domain=obj.velocity_domain,
+                zones=obj.zones,
+            )
+        return self
+
+    def get_field_data(
+        self,
+        obj: [
+            SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData
+        ],
+    ):
+        """Get data for previously added requests and then clear all requests."""
+        ret_obj = TFieldData(
+            ChunkParser().extract_fields(
+                self._service.get_fields(self._fields_request)
+            ),
+            self._field_info,
+            self._allowed_surface_names,
+            self._allowed_scalar_field_names,
+        )
+        if isinstance(obj, SurfaceFieldData):
+            return ret_obj.get_surface_data(
+                data_types=obj.data_types,
+                surfaces=obj.surfaces,
+                overset_mesh=obj.overset_mesh,
+            )
+        elif isinstance(obj, ScalarFieldData):
+            return ret_obj.get_scalar_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                node_value=obj.node_value,
+                boundary_value=obj.boundary_value,
+            )
+        elif isinstance(obj, VectorFieldData):
+            return ret_obj.get_vector_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+            )
+        elif isinstance(obj, PathlinesFieldData):
+            return ret_obj.get_pathlines_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                additional_field_name=obj.additional_field_name,
+                provide_particle_time_field=obj.provide_particle_time_field,
+                node_value=obj.node_value,
+                steps=obj.steps,
+                step_size=obj.step_size,
+                skip=obj.skip,
+                reverse=obj.reverse,
+                accuracy_control_on=obj.accuracy_control_on,
+                tolerance=obj.tolerance,
+                coarsen=obj.coarsen,
+                velocity_domain=obj.velocity_domain,
+                zones=obj.zones,
+            )
 
     def get_fields(self) -> TFieldData:
         """Get data for previously added requests and then clear all requests.
@@ -1775,6 +1952,44 @@ class FieldData:
         return self._returned_data._pathlines_data(
             field_name, surfaces, surface_ids, pathlines_data
         )
+
+    def get_field_data(self, obj):
+        """Get the surface, scalar, vector or pathlines field data on a surface."""
+        if isinstance(obj, SurfaceFieldData):
+            return self.get_surface_data(
+                data_types=obj.data_types,
+                surfaces=obj.surfaces,
+                overset_mesh=obj.overset_mesh,
+            )
+        elif isinstance(obj, ScalarFieldData):
+            return self.get_scalar_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                node_value=obj.node_value,
+                boundary_value=obj.boundary_value,
+            )
+        elif isinstance(obj, VectorFieldData):
+            return self.get_vector_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+            )
+        elif isinstance(obj, PathlinesFieldData):
+            return self.get_pathlines_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                additional_field_name=obj.additional_field_name,
+                provide_particle_time_field=obj.provide_particle_time_field,
+                node_value=obj.node_value,
+                steps=obj.steps,
+                step_size=obj.step_size,
+                skip=obj.skip,
+                reverse=obj.reverse,
+                accuracy_control_on=obj.accuracy_control_on,
+                tolerance=obj.tolerance,
+                coarsen=obj.coarsen,
+                velocity_domain=obj.velocity_domain,
+                zones=obj.zones,
+            )
 
     def get_mesh(self, zone: str | int) -> Mesh:
         """Get mesh for a zone.

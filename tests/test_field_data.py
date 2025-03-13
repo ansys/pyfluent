@@ -30,7 +30,11 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.field_data import (
     CellElementType,
     FieldUnavailable,
+    PathlinesFieldData,
+    ScalarFieldData,
     SurfaceDataType,
+    SurfaceFieldData,
+    VectorFieldData,
     ZoneType,
 )
 
@@ -38,7 +42,7 @@ HOT_INLET_TEMPERATURE = 313.15
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_field_data_transactions(new_solver_session) -> None:
+def test_field_data_transactions_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
@@ -208,6 +212,156 @@ def test_field_data_transactions(new_solver_session) -> None:
     assert list(vector_data) == [3, "hot-inlet"]
 
 
+@pytest.mark.fluent_version(">=24.1")
+def test_field_data_transactions(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.mesh.check()
+
+    solver.setup.models.energy.enabled = True
+    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+
+    # Set up boundary conditions for CFD analysis
+    cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    cold_inlet.momentum.velocity = 0.4
+    cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    cold_inlet.turbulence.turbulent_intensity = 0.05
+    cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
+    cold_inlet.thermal.t = 293.15
+
+    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet.momentum.velocity = 1.2
+    hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
+    hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
+    hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
+
+    solver.solution.monitor.residual.options.plot = False
+
+    # Initialize flow field
+    solver.solution.initialization.hybrid_initialize()
+
+    iterate = solver.solution.run_calculation.iterate
+    iterate.get_attr("arguments")
+    iterate(iter_count=10)
+
+    # Get field data object
+    field_data = solver.fields.field_data
+
+    transaction = field_data.new_transaction()
+
+    su1 = SurfaceFieldData(
+        surfaces=[1, "hot-inlet"],
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+    )
+    su2 = SurfaceFieldData(
+        surfaces=[3],
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+    )
+    sc1 = ScalarFieldData(
+        surfaces=[1, "cold-inlet", "hot-inlet"],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=True,
+    )
+    sc2 = ScalarFieldData(
+        surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
+    )
+    vc1 = VectorFieldData(surfaces=[3, "hot-inlet"], field_name="velocity")
+    pt1 = PathlinesFieldData(
+        surfaces=[1, "hot-inlet"],
+        field_name="temperature",
+        provide_particle_time_field=True,
+    )
+
+    data = (
+        transaction.add_request(su1)
+        .add_request(su2)
+        .add_request(sc1)
+        .add_request(sc2)
+        .add_request(vc1)
+        .add_request(pt1)
+        .get_fields()
+    )
+    assert (
+        len(data) == 5
+    )  # 2 sets of scalar data and 1 surface data and 1 pathlines data.
+
+    sc1 = ScalarFieldData(
+        surfaces=[1, "cold-inlet"],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=True,
+    )
+    sc2 = ScalarFieldData(
+        surfaces=["hot-inlet"],
+        field_name="temperature",
+        node_value=True,
+        boundary_value=True,
+    )
+
+    scalar_data = transaction.get_field_data(sc1)
+    scalar_data_1 = transaction.get_field_data(sc2)
+
+    sc3 = ScalarFieldData(
+        surfaces=[2], field_name="temperature", node_value=True, boundary_value=True
+    )
+    with pytest.raises(
+        KeyError
+    ):  # Since for surface_id=2 data is fetched with boundary_value = False
+        scalar_data_2 = transaction.get_field_data(sc3)
+
+    sc3 = ScalarFieldData(
+        surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
+    )
+    scalar_data_2 = transaction.get_field_data(sc3)
+
+    assert list(scalar_data) == [1, "cold-inlet"]
+    assert list(scalar_data_2) == [2]
+
+    su1 = SurfaceFieldData(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+        surfaces=[1, 3, "hot-inlet"],
+    )
+    surface_data = transaction.get_field_data(
+        su1
+    )  # Even if you populate the data using surface_id you can access it via surface name.
+
+    pt1 = PathlinesFieldData(
+        surfaces=[1, "hot-inlet"],
+        field_name="temperature",
+        provide_particle_time_field=True,
+    )
+    pathlines_data = transaction.get_field_data(pt1)
+
+    assert list(surface_data["hot-inlet"]) == [
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesCentroid,
+    ]
+    assert (
+        len(scalar_data_1["hot-inlet"])
+        == surface_data["hot-inlet"][SurfaceDataType.Vertices].shape[0]
+    )
+    assert (
+        round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
+    )
+    assert sorted(list(pathlines_data["hot-inlet"])) == sorted(
+        [
+            "vertices",
+            "lines",
+            "temperature",
+            "pathlines-count",
+            "particle-time",
+        ]
+    )
+
+    vector_data = transaction.get_field_data(vc1)
+    assert list(vector_data) == [3, "hot-inlet"]
+
+
 def test_field_data_allowed_values(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -264,7 +418,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_field_data_objects_3d(new_solver_session) -> None:
+def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
@@ -362,6 +516,120 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     path_lines_data = field_data.get_pathlines_field_data(
         field_name="velocity-magnitude", surfaces=["cold-inlet", "hot-inlet"]
+    )
+
+    assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
+    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
+    assert path_lines_data["cold-inlet"]["velocity-magnitude"].shape == (76152,)
+
+    assert path_lines_data["hot-inlet"]["vertices"].shape == (27555, 3)
+    assert len(path_lines_data["hot-inlet"]["lines"]) == 27500
+    assert path_lines_data["hot-inlet"]["velocity-magnitude"].shape == (27555,)
+
+    assert all(path_lines_data["cold-inlet"]["lines"][100] == [100, 101])
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_field_data_objects_3d(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+
+    field_data = solver.fields.field_data
+
+    assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
+
+    solver.file.read(file_type="case", file_name=import_file_name)
+
+    allowed_args_no_init = field_data.get_scalar_field_data.field_name.allowed_values()
+    assert len(allowed_args_no_init) != 0
+
+    assert not field_data.is_data_valid()
+
+    solver.solution.initialization.hybrid_initialize()
+
+    assert field_data.is_data_valid()
+
+    # Absolute Pressure data over the cold-inlet (surface_id=3)
+    sc1 = ScalarFieldData(field_name="absolute-pressure", surfaces=["cold-inlet"])
+    abs_press_data = field_data.get_field_data(sc1)
+
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["cold-inlet"][120] == 101325.0
+
+    su1 = SurfaceFieldData(
+        data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
+    )
+    vertices_data = field_data.get_field_data(su1)
+    assert vertices_data["cold-inlet"][SurfaceDataType.Vertices].shape == (241, 3)
+    assert (
+        round(float(vertices_data["cold-inlet"][SurfaceDataType.Vertices][5][0]), 2)
+        == -0.2
+    )
+
+    su2 = SurfaceFieldData(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+        surfaces=["hot-inlet", "cold-inlet"],
+    )
+    vertices_and_faces_centroid_data = field_data.get_field_data(su2)
+    assert list(vertices_and_faces_centroid_data["cold-inlet"].keys()) == [
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesCentroid,
+    ]
+    assert vertices_and_faces_centroid_data["hot-inlet"][
+        SurfaceDataType.Vertices
+    ].shape == (79, 3)
+    assert list(vertices_and_faces_centroid_data.keys()) == [
+        "hot-inlet",
+        "cold-inlet",
+    ]
+    assert (
+        round(
+            float(
+                vertices_and_faces_centroid_data["cold-inlet"][
+                    SurfaceDataType.FacesCentroid
+                ][5][1]
+            ),
+            2,
+        )
+        == -0.18
+    )
+    assert (
+        round(
+            float(
+                vertices_and_faces_centroid_data["hot-inlet"][
+                    SurfaceDataType.FacesCentroid
+                ][5][1]
+            ),
+            2,
+        )
+        == -0.23
+    )
+
+    su3 = SurfaceFieldData(data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5])
+    faces_normal_data = field_data.get_field_data(su3)
+    assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
+    assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
+
+    su4 = SurfaceFieldData(
+        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
+    )
+    faces_connectivity_data = field_data.get_field_data(su4)
+    assert (
+        faces_connectivity_data["cold-inlet"][SurfaceDataType.FacesConnectivity][5]
+        == [12, 13, 17, 16]
+    ).all()
+
+    velocity_vector_data = field_data.get_field_data(
+        VectorFieldData(field_name="velocity", surfaces=["cold-inlet"])
+    )
+    assert velocity_vector_data["cold-inlet"].shape == (152, 3)
+
+    path_lines_data = field_data.get_field_data(
+        PathlinesFieldData(
+            field_name="velocity-magnitude", surfaces=["cold-inlet", "hot-inlet"]
+        )
     )
 
     assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
