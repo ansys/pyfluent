@@ -243,11 +243,22 @@ def test_field_data_transactions(new_solver_session) -> None:
         field_name="temperature",
         provide_particle_time_field=True,
     )
+    pt2 = PathlinesFieldDataRequest(
+        surfaces=[1, "hot-inlet"],
+        field_name="temperature",
+        provide_particle_time_field=False,
+    )
 
     transaction = transaction.add_request(su1)  # adding single request.
     data = transaction.add_request(
         su2, sc1, sc2, vc1, pt1
     ).get_fields()  # adding multiple requests.
+
+    with pytest.raises(ValueError):
+        # Trying to add request with same 'field_name'.
+        # TODO: This is not yet supported. Need to implement in server.
+        transaction.add_request(pt2)
+
     assert (
         len(data) == 5
     )  # 2 sets of scalar data, 1 vector data, 1 surface data and 1 path-lines data.

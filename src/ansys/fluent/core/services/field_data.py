@@ -930,6 +930,7 @@ class FieldTransaction:
         )
 
         self._fetched_data = _FetchFieldData()
+        self._pathline_field_data = []
 
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
@@ -1127,15 +1128,24 @@ class FieldTransaction:
             Domain for pathlines. The default is ``"all-phases"``.
         zones: list, optional
             Zones for pathlines. The default is ``[]``.
+        Raises
+        ------
+        ValueError
+            If 'field_name' is repeated.
         Returns
         -------
         None
         """
         if zones is None:
             zones = []
+        field_name = self._allowed_scalar_field_names.valid_name(field_name)
+        if field_name in self._pathline_field_data:
+            raise ValueError("For 'path-lines' `field_name` should be unique.")
+        else:
+            self._pathline_field_data.append(field_name)
         self._fields_request.pathlinesFieldRequest.extend(
             self._fetched_data._pathlines_data(
-                self._allowed_scalar_field_names.valid_name(field_name),
+                field_name,
                 self.get_surface_ids(surfaces),
                 additionalField=additional_field_name,
                 provideParticleTimeField=provide_particle_time_field,
