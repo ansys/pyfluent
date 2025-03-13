@@ -1235,46 +1235,49 @@ class FieldTransaction:
 
     def add_request(
         self,
-        obj: [
-            SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData
-        ],
+        obj: SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData,
+        *args: SurfaceFieldData
+        | ScalarFieldData
+        | VectorFieldData
+        | PathlinesFieldData,
     ):
         """Add request to get surface, scalar, vector or path-lines field on surfaces."""
-        if isinstance(obj, SurfaceFieldData):
-            self.add_surfaces_request(
-                data_types=obj.data_types,
-                surfaces=obj.surfaces,
-                overset_mesh=obj.overset_mesh,
-            )
-        elif isinstance(obj, ScalarFieldData):
-            self.add_scalar_fields_request(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-                node_value=obj.node_value,
-                boundary_value=obj.boundary_value,
-            )
-        elif isinstance(obj, VectorFieldData):
-            self.add_vector_fields_request(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-            )
-        elif isinstance(obj, PathlinesFieldData):
-            self.add_pathlines_fields_request(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-                additional_field_name=obj.additional_field_name,
-                provide_particle_time_field=obj.provide_particle_time_field,
-                node_value=obj.node_value,
-                steps=obj.steps,
-                step_size=obj.step_size,
-                skip=obj.skip,
-                reverse=obj.reverse,
-                accuracy_control_on=obj.accuracy_control_on,
-                tolerance=obj.tolerance,
-                coarsen=obj.coarsen,
-                velocity_domain=obj.velocity_domain,
-                zones=obj.zones,
-            )
+        for req in (obj,) + args:
+            if isinstance(req, SurfaceFieldData):
+                self.add_surfaces_request(
+                    data_types=req.data_types,
+                    surfaces=req.surfaces,
+                    overset_mesh=req.overset_mesh,
+                )
+            elif isinstance(req, ScalarFieldData):
+                self.add_scalar_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                    node_value=req.node_value,
+                    boundary_value=req.boundary_value,
+                )
+            elif isinstance(req, VectorFieldData):
+                self.add_vector_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                )
+            elif isinstance(req, PathlinesFieldData):
+                self.add_pathlines_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                    additional_field_name=req.additional_field_name,
+                    provide_particle_time_field=req.provide_particle_time_field,
+                    node_value=req.node_value,
+                    steps=req.steps,
+                    step_size=req.step_size,
+                    skip=req.skip,
+                    reverse=req.reverse,
+                    accuracy_control_on=req.accuracy_control_on,
+                    tolerance=req.tolerance,
+                    coarsen=req.coarsen,
+                    velocity_domain=req.velocity_domain,
+                    zones=req.zones,
+                )
         return self
 
     def get_fields(self) -> TFieldData:

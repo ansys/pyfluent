@@ -277,18 +277,13 @@ def test_field_data_transactions(new_solver_session) -> None:
         provide_particle_time_field=True,
     )
 
-    data = (
-        transaction.add_request(su1)
-        .add_request(su2)
-        .add_request(sc1)
-        .add_request(sc2)
-        .add_request(vc1)
-        .add_request(pt1)
-        .get_fields()
-    )
+    transaction = transaction.add_request(su1)  # adding single request.
+    data = transaction.add_request(
+        su2, sc1, sc2, vc1, pt1
+    ).get_fields()  # adding multiple requests.
     assert (
         len(data) == 5
-    )  # 2 sets of scalar data and 1 surface data and 1 pathlines data.
+    )  # 2 sets of scalar data, 1 vector data, 1 surface data and 1 path-lines data.
 
     sc1 = ScalarFieldData(
         surfaces=[1, "cold-inlet"],
