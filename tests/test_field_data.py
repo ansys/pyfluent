@@ -303,8 +303,8 @@ def test_field_data_transactions(new_solver_session) -> None:
         boundary_value=True,
     )
 
-    scalar_data = transaction.get_field_data(sc1)
-    scalar_data_1 = transaction.get_field_data(sc2)
+    scalar_data = data.get_field_data(sc1)
+    scalar_data_1 = data.get_field_data(sc2)
 
     sc3 = ScalarFieldData(
         surfaces=[2], field_name="temperature", node_value=True, boundary_value=True
@@ -312,12 +312,12 @@ def test_field_data_transactions(new_solver_session) -> None:
     with pytest.raises(
         KeyError
     ):  # Since for surface_id=2 data is fetched with boundary_value = False
-        scalar_data_2 = transaction.get_field_data(sc3)
+        scalar_data_2 = data.get_field_data(sc3)
 
     sc3 = ScalarFieldData(
         surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
     )
-    scalar_data_2 = transaction.get_field_data(sc3)
+    scalar_data_2 = data.get_field_data(sc3)
 
     assert list(scalar_data) == [1, "cold-inlet"]
     assert list(scalar_data_2) == [2]
@@ -326,7 +326,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
         surfaces=[1, 3, "hot-inlet"],
     )
-    surface_data = transaction.get_field_data(
+    surface_data = data.get_field_data(
         su1
     )  # Even if you populate the data using surface_id you can access it via surface name.
 
@@ -335,7 +335,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         field_name="temperature",
         provide_particle_time_field=True,
     )
-    pathlines_data = transaction.get_field_data(pt1)
+    pathlines_data = data.get_field_data(pt1)
 
     assert list(surface_data["hot-inlet"]) == [
         SurfaceDataType.Vertices,
@@ -358,7 +358,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         ]
     )
 
-    vector_data = transaction.get_field_data(vc1)
+    vector_data = data.get_field_data(vc1)
     assert list(vector_data) == [3, "hot-inlet"]
 
 

@@ -891,6 +891,49 @@ class TFieldData:
             field_name, surfaces, self.get_surface_ids(surfaces), pathlines_data
         )
 
+    def get_field_data(
+        self,
+        obj: [
+            SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData
+        ],
+    ):
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        if isinstance(obj, SurfaceFieldData):
+            return self.get_surface_data(
+                data_types=obj.data_types,
+                surfaces=obj.surfaces,
+                overset_mesh=obj.overset_mesh,
+            )
+        elif isinstance(obj, ScalarFieldData):
+            return self.get_scalar_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                node_value=obj.node_value,
+                boundary_value=obj.boundary_value,
+            )
+        elif isinstance(obj, VectorFieldData):
+            return self.get_vector_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+            )
+        elif isinstance(obj, PathlinesFieldData):
+            return self.get_pathlines_field_data(
+                field_name=obj.field_name,
+                surfaces=obj.surfaces,
+                additional_field_name=obj.additional_field_name,
+                provide_particle_time_field=obj.provide_particle_time_field,
+                node_value=obj.node_value,
+                steps=obj.steps,
+                step_size=obj.step_size,
+                skip=obj.skip,
+                reverse=obj.reverse,
+                accuracy_control_on=obj.accuracy_control_on,
+                tolerance=obj.tolerance,
+                coarsen=obj.coarsen,
+                velocity_domain=obj.velocity_domain,
+                zones=obj.zones,
+            )
+
     def __len__(self):
         return len(self.data)
 
@@ -1233,57 +1276,6 @@ class FieldTransaction:
                 zones=obj.zones,
             )
         return self
-
-    def get_field_data(
-        self,
-        obj: [
-            SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData
-        ],
-    ):
-        """Get data for previously added requests and then clear all requests."""
-        ret_obj = TFieldData(
-            ChunkParser().extract_fields(
-                self._service.get_fields(self._fields_request)
-            ),
-            self._field_info,
-            self._allowed_surface_names,
-            self._allowed_scalar_field_names,
-        )
-        if isinstance(obj, SurfaceFieldData):
-            return ret_obj.get_surface_data(
-                data_types=obj.data_types,
-                surfaces=obj.surfaces,
-                overset_mesh=obj.overset_mesh,
-            )
-        elif isinstance(obj, ScalarFieldData):
-            return ret_obj.get_scalar_field_data(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-                node_value=obj.node_value,
-                boundary_value=obj.boundary_value,
-            )
-        elif isinstance(obj, VectorFieldData):
-            return ret_obj.get_vector_field_data(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-            )
-        elif isinstance(obj, PathlinesFieldData):
-            return ret_obj.get_pathlines_field_data(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-                additional_field_name=obj.additional_field_name,
-                provide_particle_time_field=obj.provide_particle_time_field,
-                node_value=obj.node_value,
-                steps=obj.steps,
-                step_size=obj.step_size,
-                skip=obj.skip,
-                reverse=obj.reverse,
-                accuracy_control_on=obj.accuracy_control_on,
-                tolerance=obj.tolerance,
-                coarsen=obj.coarsen,
-                velocity_domain=obj.velocity_domain,
-                zones=obj.zones,
-            )
 
     def get_fields(self) -> TFieldData:
         """Get data for previously added requests and then clear all requests.
@@ -1954,7 +1946,7 @@ class FieldData:
         )
 
     def get_field_data(self, obj):
-        """Get the surface, scalar, vector or pathlines field data on a surface."""
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
         if isinstance(obj, SurfaceFieldData):
             return self.get_surface_data(
                 data_types=obj.data_types,
