@@ -1529,6 +1529,108 @@ class FieldData:
             self._allowed_vector_field_names,
         )
 
+    def _get_scalar_field_data(self, **kwargs):
+        surfaces = kwargs.get("surfaces")
+        surface_ids = self.get_surface_ids(surfaces)
+        fields_request = get_fields_request()
+        fields_request.scalarFieldRequest.extend(
+            self._fetched_data._scalar_data(
+                self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
+                self.get_surface_ids(surfaces),
+                kwargs.get("node_value"),
+                kwargs.get("boundary_value"),
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        scalar_field_data = next(iter(fields.values()))
+        return self._returned_data._scalar_data(
+            kwargs.get("field_name"), surfaces, surface_ids, scalar_field_data
+        )
+
+    def _get_surface_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        fields_request = get_fields_request()
+        fields_request.surfaceRequest.extend(
+            self._fetched_data._surface_data(
+                kwargs.get("data_types"),
+                surface_ids,
+                kwargs.get("overset_mesh"),
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        surface_data = next(iter(fields.values()))
+
+        return self._returned_data._surface_data(
+            kwargs.get("data_types"), kwargs.get("surfaces"), surface_ids, surface_data
+        )
+
+    def _get_vector_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        for surface_id in surface_ids:
+            self.scheme_eval.string_eval(f"(surface? {surface_id})")
+        fields_request = get_fields_request()
+        fields_request.vectorFieldRequest.extend(
+            self._fetched_data._vector_data(
+                self._allowed_vector_field_names.valid_name(kwargs.get("field_name")),
+                surface_ids,
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        vector_field_data = next(iter(fields.values()))
+
+        return self._returned_data._vector_data(
+            kwargs.get("field_name"),
+            kwargs.get("surfaces"),
+            surface_ids,
+            vector_field_data,
+        )
+
+    def _get_pathlines_field_data(
+        self,
+        **kwargs,
+    ) -> Dict:
+        if kwargs.get("zones") is None:
+            zones = []
+        surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        fields_request = get_fields_request()
+        fields_request.pathlinesFieldRequest.extend(
+            self._fetched_data._pathlines_data(
+                self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
+                surface_ids,
+                additionalField=kwargs.get("additional_field_name"),
+                provideParticleTimeField=kwargs.get("provide_particle_time_field"),
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if kwargs.get("node_value")
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                steps=kwargs.get("steps"),
+                stepSize=kwargs.get("step_size"),
+                skip=kwargs.get("skip"),
+                reverse=kwargs.get("reverse"),
+                accuracyControlOn=kwargs.get("accuracy_control_on"),
+                tolerance=kwargs.get("tolerance"),
+                coarsen=kwargs.get("coarsen"),
+                velocityDomain=kwargs.get("velocity_domain"),
+                zones=zones,
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        pathlines_data = next(iter(fields.values()))
+
+        return self._returned_data._pathlines_data(
+            kwargs.get("field_name"),
+            kwargs.get("surfaces"),
+            surface_ids,
+            pathlines_data,
+        )
+
     def get_scalar_field_data(
         self,
         field_name: str,
@@ -1536,40 +1638,16 @@ class FieldData:
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> Dict[int | str, np.array]:
-        """Get scalar field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        node_value : bool, optional
-            Whether to provide data for the nodal location. The default is ``True``.
-            When ``False``, data is provided for the element location.
-        boundary_value : bool, optional
-            Whether to provide slip velocity at the wall boundaries. The default is
-            ``True``. When ``True``, no slip velocity is provided.
-
-        Returns
-        -------
-        Dict[int | str, np.array]
-            Returns a map of surface IDs (or names) to scalar field data.
-        """
-        surface_ids = self.get_surface_ids(surfaces)
-        fields_request = get_fields_request()
-        fields_request.scalarFieldRequest.extend(
-            self._fetched_data._scalar_data(
-                self._allowed_scalar_field_names.valid_name(field_name),
-                self.get_surface_ids(surfaces),
-                node_value,
-                boundary_value,
-            )
+        """Get scalar field data on a surface."""
+        warnings.warn(
+            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
         )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        scalar_field_data = next(iter(fields.values()))
-        return self._returned_data._scalar_data(
-            field_name, surfaces, surface_ids, scalar_field_data
+        return self._get_scalar_field_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            node_value=node_value,
+            boundary_value=boundary_value,
         )
 
     def get_surface_data(
@@ -1578,37 +1656,13 @@ class FieldData:
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
-        """Get surface data (vertices, faces connectivity, centroids, and normals).
-
-        Parameters
-        ----------
-        data_types : List[SurfaceDataType],
-            SurfaceDataType Enum members.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        overset_mesh : bool, optional
-            Whether to provide the overset method. The default is ``False``.
-
-        Returns
-        -------
-        Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]
-             Returns a map of surface IDs (or names) to face
-             vertices, connectivity data, and normal or centroid data.
-        """
-        surface_ids = self.get_surface_ids(surfaces)
-        fields_request = get_fields_request()
-        fields_request.surfaceRequest.extend(
-            self._fetched_data._surface_data(
-                data_types,
-                surface_ids,
-                overset_mesh,
-            )
+        """Get surface data (vertices, faces connectivity, centroids, and normals)."""
+        warnings.warn(
+            "'get_surface_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
         )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        surface_data = next(iter(fields.values()))
-
-        return self._returned_data._surface_data(
-            data_types, surfaces, surface_ids, surface_data
+        return self._get_surface_data(
+            data_types=data_types, surfaces=surfaces, overset_mesh=overset_mesh
         )
 
     def get_vector_field_data(
@@ -1616,34 +1670,14 @@ class FieldData:
         field_name: str,
         surfaces: List[int | str],
     ) -> Dict[int | str, np.array]:
-        """Get vector field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the vector field.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-
-        Returns
-        -------
-        Dict[int | str, np.array]
-            Returns a  map of surface IDs (or names) to vector field data.
-        """
-        surface_ids = self.get_surface_ids(surfaces)
-        for surface_id in surface_ids:
-            self.scheme_eval.string_eval(f"(surface? {surface_id})")
-        fields_request = get_fields_request()
-        fields_request.vectorFieldRequest.extend(
-            self._fetched_data._vector_data(
-                self._allowed_vector_field_names.valid_name(field_name), surface_ids
-            )
+        """Get vector field data on a surface."""
+        warnings.warn(
+            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
         )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        vector_field_data = next(iter(fields.values()))
-
-        return self._returned_data._vector_data(
-            field_name, surfaces, surface_ids, vector_field_data
+        return self._get_vector_field_data(
+            field_name=field_name,
+            surfaces=surfaces,
         )
 
     def get_pathlines_field_data(
@@ -1663,77 +1697,26 @@ class FieldData:
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
     ) -> Dict:
-        """Get the pathlines field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field to color pathlines.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        additional_field_name : str, optional
-            Additional field if required.
-        provide_particle_time_field: bool, optional
-            Whether to provide the particle time. The default is ``False``.
-        node_value : bool, optional
-                    Whether to provide the nodal values. The default is ``True``. If
-                    ``False``, element values are provided.
-        steps: int, optional
-            Pathlines steps. The default is ``500``
-        step_size: float, optional
-            Pathlines step size. The default is ``0.01``.
-        skip: int, optional
-            Pathlines to skip. The default is ``0``.
-        reverse: bool, optional
-            Whether to draw pathlines in reverse direction. The default is ``False``.
-        accuracy_control_on: bool, optional
-            Whether to control accuracy. The default is ``False``.
-        tolerance: float, optional
-            Pathlines tolerance. The default is ``0.001``.
-        coarsen: int, optional
-            Pathlines coarsen. The default is ``1``.
-        velocity_domain: str, optional
-            Domain for pathlines. The default is ``"all-phases"``.
-        zones: list, optional
-            Zones for pathlines. The default is ``[]``.
-
-        Returns
-        -------
-        Dict
-            Dictionary containing a map of surface IDs to the pathline data.
-            For example, pathlines connectivity, vertices, and field.
-        """
-        if zones is None:
-            zones = []
-        surface_ids = self.get_surface_ids(surfaces)
-        fields_request = get_fields_request()
-        fields_request.pathlinesFieldRequest.extend(
-            self._fetched_data._pathlines_data(
-                self._allowed_scalar_field_names.valid_name(field_name),
-                surface_ids,
-                additionalField=additional_field_name,
-                provideParticleTimeField=provide_particle_time_field,
-                dataLocation=(
-                    FieldDataProtoModule.DataLocation.Nodes
-                    if node_value
-                    else FieldDataProtoModule.DataLocation.Elements
-                ),
-                steps=steps,
-                stepSize=step_size,
-                skip=skip,
-                reverse=reverse,
-                accuracyControlOn=accuracy_control_on,
-                tolerance=tolerance,
-                coarsen=coarsen,
-                velocityDomain=velocity_domain,
-                zones=zones,
-            )
+        """Get the pathlines field data on a surface."""
+        warnings.warn(
+            "'get_pathlines_field_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
         )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        pathlines_data = next(iter(fields.values()))
-
-        return self._returned_data._pathlines_data(
-            field_name, surfaces, surface_ids, pathlines_data
+        return self._get_pathlines_field_data(
+            field_name=field_name,
+            surfaces=surfaces,
+            additional_field_name=additional_field_name,
+            provide_particle_time_field=provide_particle_time_field,
+            node_value=node_value,
+            steps=steps,
+            step_size=step_size,
+            skip=skip,
+            reverse=reverse,
+            accuracy_control_on=accuracy_control_on,
+            tolerance=tolerance,
+            coarsen=coarsen,
+            velocity_domain=velocity_domain,
+            zones=zones,
         )
 
     def get_field_data(self, obj):
