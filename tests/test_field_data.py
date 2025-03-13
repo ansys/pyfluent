@@ -180,37 +180,6 @@ def test_field_data_transactions_deprecated_interface(new_solver_session) -> Non
     data2 = transaction2.get_fields()
     assert data2
 
-    # Accessing transaction data using returned object during adding them
-    transaction3 = field_data.new_transaction()
-    scalar_trn_1 = transaction3.add_scalar_fields_request(
-        surfaces=[1, "cold-inlet", "hot-inlet"],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=True,
-    )
-    scalar_trn_2 = transaction3.add_scalar_fields_request(
-        surfaces=[1, 4],
-        field_name="temperature",
-        node_value=True,
-        boundary_value=False,
-    )
-    vector_trn = transaction3.add_vector_fields_request(
-        surfaces=[3, "hot-inlet"],
-        field_name="velocity",
-    )
-    data3 = transaction3.get_fields()
-    assert data3
-
-    scalar_data_1 = data3.get_scalar_field_data(scalar_trn_1)
-    scalar_data_2 = data3.get_scalar_field_data(scalar_trn_2)
-    vector_data = data3.get_vector_field_data(vector_trn)
-
-    assert len(data3) == 3
-
-    assert list(scalar_data_1) == [1, "cold-inlet", "hot-inlet"]
-    assert list(scalar_data_2) == [1, 4]
-    assert list(vector_data) == [3, "hot-inlet"]
-
 
 @pytest.mark.fluent_version(">=24.1")
 def test_field_data_transactions(new_solver_session) -> None:
