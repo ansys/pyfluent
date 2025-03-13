@@ -30,11 +30,11 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.field_data import (
     CellElementType,
     FieldUnavailable,
-    PathlinesFieldData,
-    ScalarFieldData,
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
     SurfaceDataType,
-    SurfaceFieldData,
-    VectorFieldData,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
     ZoneType,
 )
 
@@ -253,25 +253,25 @@ def test_field_data_transactions(new_solver_session) -> None:
 
     transaction = field_data.new_transaction()
 
-    su1 = SurfaceFieldData(
+    su1 = SurfaceFieldDataRequest(
         surfaces=[1, "hot-inlet"],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
-    su2 = SurfaceFieldData(
+    su2 = SurfaceFieldDataRequest(
         surfaces=[3],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
-    sc1 = ScalarFieldData(
+    sc1 = ScalarFieldDataRequest(
         surfaces=[1, "cold-inlet", "hot-inlet"],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
     )
-    sc2 = ScalarFieldData(
+    sc2 = ScalarFieldDataRequest(
         surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
     )
-    vc1 = VectorFieldData(surfaces=[3, "hot-inlet"], field_name="velocity")
-    pt1 = PathlinesFieldData(
+    vc1 = VectorFieldDataRequest(surfaces=[3, "hot-inlet"], field_name="velocity")
+    pt1 = PathlinesFieldDataRequest(
         surfaces=[1, "hot-inlet"],
         field_name="temperature",
         provide_particle_time_field=True,
@@ -285,13 +285,13 @@ def test_field_data_transactions(new_solver_session) -> None:
         len(data) == 5
     )  # 2 sets of scalar data, 1 vector data, 1 surface data and 1 path-lines data.
 
-    sc1 = ScalarFieldData(
+    sc1 = ScalarFieldDataRequest(
         surfaces=[1, "cold-inlet"],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
     )
-    sc2 = ScalarFieldData(
+    sc2 = ScalarFieldDataRequest(
         surfaces=["hot-inlet"],
         field_name="temperature",
         node_value=True,
@@ -301,7 +301,7 @@ def test_field_data_transactions(new_solver_session) -> None:
     scalar_data = data.get_field_data(sc1)
     scalar_data_1 = data.get_field_data(sc2)
 
-    sc3 = ScalarFieldData(
+    sc3 = ScalarFieldDataRequest(
         surfaces=[2], field_name="temperature", node_value=True, boundary_value=True
     )
     with pytest.raises(
@@ -309,7 +309,7 @@ def test_field_data_transactions(new_solver_session) -> None:
     ):  # Since for surface_id=2 data is fetched with boundary_value = False
         scalar_data_2 = data.get_field_data(sc3)
 
-    sc3 = ScalarFieldData(
+    sc3 = ScalarFieldDataRequest(
         surfaces=[2], field_name="temperature", node_value=True, boundary_value=False
     )
     scalar_data_2 = data.get_field_data(sc3)
@@ -317,7 +317,7 @@ def test_field_data_transactions(new_solver_session) -> None:
     assert list(scalar_data) == [1, "cold-inlet"]
     assert list(scalar_data_2) == [2]
 
-    su1 = SurfaceFieldData(
+    su1 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
         surfaces=[1, 3, "hot-inlet"],
     )
@@ -325,7 +325,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         su1
     )  # Even if you populate the data using surface_id you can access it via surface name.
 
-    pt1 = PathlinesFieldData(
+    pt1 = PathlinesFieldDataRequest(
         surfaces=[1, "hot-inlet"],
         field_name="temperature",
         provide_particle_time_field=True,
@@ -547,13 +547,15 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert field_data.is_data_valid()
 
     # Absolute Pressure data over the cold-inlet (surface_id=3)
-    sc1 = ScalarFieldData(field_name="absolute-pressure", surfaces=["cold-inlet"])
+    sc1 = ScalarFieldDataRequest(
+        field_name="absolute-pressure", surfaces=["cold-inlet"]
+    )
     abs_press_data = field_data.get_field_data(sc1)
 
     assert abs_press_data["cold-inlet"].shape == (241,)
     assert abs_press_data["cold-inlet"][120] == 101325.0
 
-    su1 = SurfaceFieldData(
+    su1 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
     )
     vertices_data = field_data.get_field_data(su1)
@@ -563,7 +565,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         == -0.2
     )
 
-    su2 = SurfaceFieldData(
+    su2 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
         surfaces=["hot-inlet", "cold-inlet"],
     )
@@ -602,12 +604,14 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         == -0.23
     )
 
-    su3 = SurfaceFieldData(data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5])
+    su3 = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5]
+    )
     faces_normal_data = field_data.get_field_data(su3)
     assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
     assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
 
-    su4 = SurfaceFieldData(
+    su4 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
     faces_connectivity_data = field_data.get_field_data(su4)
@@ -617,12 +621,12 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     ).all()
 
     velocity_vector_data = field_data.get_field_data(
-        VectorFieldData(field_name="velocity", surfaces=["cold-inlet"])
+        VectorFieldDataRequest(field_name="velocity", surfaces=["cold-inlet"])
     )
     assert velocity_vector_data["cold-inlet"].shape == (152, 3)
 
     path_lines_data = field_data.get_field_data(
-        PathlinesFieldData(
+        PathlinesFieldDataRequest(
             field_name="velocity-magnitude", surfaces=["cold-inlet", "hot-inlet"]
         )
     )

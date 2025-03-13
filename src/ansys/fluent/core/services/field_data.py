@@ -593,7 +593,7 @@ class _ReturnFieldData:
         return path_lines_dict
 
 
-class SurfaceFieldData:
+class SurfaceFieldDataRequest:
     """Container for storing parameters for surface data."""
 
     def __init__(
@@ -602,13 +602,13 @@ class SurfaceFieldData:
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
     ):
-        """__init__ method of SurfaceFieldData class."""
+        """__init__ method of SurfaceFieldDataRequest class."""
         self.data_types = data_types
         self.surfaces = surfaces
         self.overset_mesh = overset_mesh
 
 
-class ScalarFieldData:
+class ScalarFieldDataRequest:
     """Container for storing parameters for scalar field data."""
 
     def __init__(
@@ -618,14 +618,14 @@ class ScalarFieldData:
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
-        """__init__ method of ScalarFieldData class."""
+        """__init__ method of ScalarFieldDataRequest class."""
         self.field_name = field_name
         self.surfaces = surfaces
         self.node_value = node_value
         self.boundary_value = boundary_value
 
 
-class VectorFieldData:
+class VectorFieldDataRequest:
     """Container for storing parameters for vector field data."""
 
     def __init__(
@@ -633,12 +633,12 @@ class VectorFieldData:
         field_name: str,
         surfaces: List[int | str],
     ):
-        """__init__ method of VectorFieldData class."""
+        """__init__ method of VectorFieldDataRequest class."""
         self.field_name = field_name
         self.surfaces = surfaces
 
 
-class PathlinesFieldData:
+class PathlinesFieldDataRequest:
     """Container for storing parameters for path-lines field data."""
 
     def __init__(
@@ -658,7 +658,7 @@ class PathlinesFieldData:
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
     ):
-        """__init__ method of PathlinesFieldData class."""
+        """__init__ method of PathlinesFieldDataRequest class."""
         self.field_name = field_name
         self.surfaces = surfaces
         self.additional_field_name = additional_field_name
@@ -894,29 +894,32 @@ class TFieldData:
     def get_field_data(
         self,
         obj: [
-            SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
         ],
     ):
         """Get the surface, scalar, vector or path-lines field data on a surface."""
-        if isinstance(obj, SurfaceFieldData):
+        if isinstance(obj, SurfaceFieldDataRequest):
             return self.get_surface_data(
                 data_types=obj.data_types,
                 surfaces=obj.surfaces,
                 overset_mesh=obj.overset_mesh,
             )
-        elif isinstance(obj, ScalarFieldData):
+        elif isinstance(obj, ScalarFieldDataRequest):
             return self.get_scalar_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
                 node_value=obj.node_value,
                 boundary_value=obj.boundary_value,
             )
-        elif isinstance(obj, VectorFieldData):
+        elif isinstance(obj, VectorFieldDataRequest):
             return self.get_vector_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
             )
-        elif isinstance(obj, PathlinesFieldData):
+        elif isinstance(obj, PathlinesFieldDataRequest):
             return self.get_pathlines_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
@@ -1235,33 +1238,38 @@ class FieldTransaction:
 
     def add_request(
         self,
-        obj: SurfaceFieldData | ScalarFieldData | VectorFieldData | PathlinesFieldData,
-        *args: SurfaceFieldData
-        | ScalarFieldData
-        | VectorFieldData
-        | PathlinesFieldData,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+        *args: SurfaceFieldDataRequest
+        | ScalarFieldDataRequest
+        | VectorFieldDataRequest
+        | PathlinesFieldDataRequest,
     ):
         """Add request to get surface, scalar, vector or path-lines field on surfaces."""
         for req in (obj,) + args:
-            if isinstance(req, SurfaceFieldData):
+            if isinstance(req, SurfaceFieldDataRequest):
                 self.add_surfaces_request(
                     data_types=req.data_types,
                     surfaces=req.surfaces,
                     overset_mesh=req.overset_mesh,
                 )
-            elif isinstance(req, ScalarFieldData):
+            elif isinstance(req, ScalarFieldDataRequest):
                 self.add_scalar_fields_request(
                     field_name=req.field_name,
                     surfaces=req.surfaces,
                     node_value=req.node_value,
                     boundary_value=req.boundary_value,
                 )
-            elif isinstance(req, VectorFieldData):
+            elif isinstance(req, VectorFieldDataRequest):
                 self.add_vector_fields_request(
                     field_name=req.field_name,
                     surfaces=req.surfaces,
                 )
-            elif isinstance(req, PathlinesFieldData):
+            elif isinstance(req, PathlinesFieldDataRequest):
                 self.add_pathlines_fields_request(
                     field_name=req.field_name,
                     surfaces=req.surfaces,
@@ -1950,25 +1958,25 @@ class FieldData:
 
     def get_field_data(self, obj):
         """Get the surface, scalar, vector or path-lines field data on a surface."""
-        if isinstance(obj, SurfaceFieldData):
+        if isinstance(obj, SurfaceFieldDataRequest):
             return self.get_surface_data(
                 data_types=obj.data_types,
                 surfaces=obj.surfaces,
                 overset_mesh=obj.overset_mesh,
             )
-        elif isinstance(obj, ScalarFieldData):
+        elif isinstance(obj, ScalarFieldDataRequest):
             return self.get_scalar_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
                 node_value=obj.node_value,
                 boundary_value=obj.boundary_value,
             )
-        elif isinstance(obj, VectorFieldData):
+        elif isinstance(obj, VectorFieldDataRequest):
             return self.get_vector_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
             )
-        elif isinstance(obj, PathlinesFieldData):
+        elif isinstance(obj, PathlinesFieldDataRequest):
             return self.get_pathlines_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
