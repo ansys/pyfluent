@@ -27,7 +27,7 @@ from enum import Enum
 from functools import reduce
 import logging
 import time
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List, NamedTuple, Tuple
 import weakref
 
 import grpc
@@ -593,94 +593,47 @@ class _ReturnFieldData:
         return path_lines_dict
 
 
-class SurfaceFieldDataRequest:
-    """Container for storing parameters for surface data."""
+class SurfaceFieldDataRequest(NamedTuple):
+    """Container storing parameters for surface data request."""
 
-    def __init__(
-        self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
-        overset_mesh: bool | None = False,
-    ):
-        """__init__ method of SurfaceFieldDataRequest class."""
-        self.data_types = data_types
-        self.surfaces = surfaces
-        self.overset_mesh = overset_mesh
+    data_types: List[SurfaceDataType] | List[str]
+    surfaces: List[int | str]
+    overset_mesh: bool | None = False
 
 
-class ScalarFieldDataRequest:
-    """Container for storing parameters for scalar field data."""
+class ScalarFieldDataRequest(NamedTuple):
+    """Container storing parameters for scalar field data request."""
 
-    def __init__(
-        self,
-        field_name: str,
-        surfaces: List[int | str],
-        node_value: bool | None = True,
-        boundary_value: bool | None = True,
-    ):
-        """__init__ method of ScalarFieldDataRequest class."""
-        self.field_name = field_name
-        self.surfaces = surfaces
-        self.node_value = node_value
-        self.boundary_value = boundary_value
+    field_name: str
+    surfaces: List[int | str]
+    node_value: bool | None = True
+    boundary_value: bool | None = True
 
 
-class VectorFieldDataRequest:
-    """Container for storing parameters for vector field data."""
+class VectorFieldDataRequest(NamedTuple):
+    """Container storing parameters for vector field data request."""
 
-    def __init__(
-        self,
-        field_name: str,
-        surfaces: List[int | str],
-    ):
-        """__init__ method of VectorFieldDataRequest class."""
-        self.field_name = field_name
-        self.surfaces = surfaces
+    field_name: str
+    surfaces: List[int | str]
 
 
-class PathlinesFieldDataRequest:
-    """Container for storing parameters for path-lines field data."""
+class PathlinesFieldDataRequest(NamedTuple):
+    """Container storing parameters for path-lines field data request."""
 
-    def __init__(
-        self,
-        field_name: str,
-        surfaces: List[int | str],
-        additional_field_name: str = "",
-        provide_particle_time_field: bool | None = False,
-        node_value: bool | None = True,
-        steps: int | None = 500,
-        step_size: float | None = 500,
-        skip: int | None = 0,
-        reverse: bool | None = False,
-        accuracy_control_on: bool | None = False,
-        tolerance: float | None = 0.001,
-        coarsen: int | None = 1,
-        velocity_domain: str | None = "all-phases",
-        zones: list | None = None,
-    ):
-        """__init__ method of PathlinesFieldDataRequest class."""
-        self.field_name = field_name
-        self.surfaces = surfaces
-        self.additional_field_name = additional_field_name
-        self.provide_particle_time_field = provide_particle_time_field
-        self.node_value = node_value
-        self.steps = steps
-        self.step_size = step_size
-        self.skip = skip
-        self.reverse = reverse
-        self.accuracy_control_on = accuracy_control_on
-        self.tolerance = tolerance
-        self.coarsen = coarsen
-        self.velocity_domain = velocity_domain
-        self.zones = zones
-
-
-class TransactionSpecs:
-    """The input argument specifications while adding a transaction."""
-
-    def __init__(self, specs: Dict):
-        """__init__ method of TransactionSpecs class."""
-        self.specs = specs
+    field_name: str
+    surfaces: List[int | str]
+    additional_field_name: str = ""
+    provide_particle_time_field: bool | None = False
+    node_value: bool | None = True
+    steps: int | None = 500
+    step_size: float | None = 500
+    skip: int | None = 0
+    reverse: bool | None = False
+    accuracy_control_on: bool | None = False
+    tolerance: float | None = 0.001
+    coarsen: int | None = 1
+    velocity_domain: str | None = "all-phases"
+    zones: list | None = None
 
 
 class TFieldData:
@@ -710,9 +663,8 @@ class TFieldData:
 
     def get_scalar_field_data(
         self,
-        transaction_specs: TransactionSpecs = None,
-        field_name: str = None,
-        surfaces: List[int | str] = None,
+        field_name: str,
+        surfaces: List[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> Dict[int | str, np.array]:
@@ -720,8 +672,6 @@ class TFieldData:
 
         Parameters
         ----------
-        transaction_specs: TransactionSpecs
-            Specification with which the transaction was added.
         field_name : str
             Name of the scalar field.
         surfaces : List[int | str]
@@ -738,12 +688,6 @@ class TFieldData:
         Dict[int | str, np.array]
             Returns a map of surface IDs (or names) to scalar field data.
         """
-        if transaction_specs:
-            field_name = transaction_specs.specs.get("field_name")
-            surfaces = transaction_specs.specs.get("surfaces")
-            node_value = transaction_specs.specs.get("node_value")
-            boundary_value = transaction_specs.specs.get("boundary_value")
-
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
@@ -757,17 +701,14 @@ class TFieldData:
 
     def get_surface_data(
         self,
-        transaction_specs: TransactionSpecs = None,
-        data_types: List[SurfaceDataType] = None,
-        surfaces: List[int | str] = None,
+        data_types: List[SurfaceDataType],
+        surfaces: List[int | str],
         overset_mesh: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
         Parameters
         ----------
-        transaction_specs: TransactionSpecs
-            Specification with which the transaction was added.
         data_types : List[SurfaceDataType],
             SurfaceDataType Enum members.
         surfaces : List[int | str]
@@ -781,10 +722,6 @@ class TFieldData:
              Returns a map of surface IDs (or names) to face
              vertices, connectivity data, and normal or centroid data.
         """
-        if transaction_specs:
-            data_types = transaction_specs.specs.get("data-types")
-            surfaces = transaction_specs.specs.get("surfaces")
-
         surface_data = self.data[(("type", "surface-data"),)]
         return self._returned_data._surface_data(
             data_types, surfaces, self.get_surface_ids(surfaces), surface_data
@@ -792,16 +729,13 @@ class TFieldData:
 
     def get_vector_field_data(
         self,
-        transaction_specs: TransactionSpecs = None,
-        field_name: str = None,
-        surfaces: List[int | str] = None,
+        field_name: str,
+        surfaces: List[int | str],
     ) -> Dict[int | str, np.array]:
         """Get vector field data on a surface.
 
         Parameters
         ----------
-        transaction_specs: TransactionSpecs
-            Specification with which the transaction was added.
         field_name : str
             Name of the vector field.
         surfaces : List[int | str]
@@ -812,10 +746,6 @@ class TFieldData:
         Dict[int | str, np.array]
             Returns a  map of surface IDs (or names) to vector field data.
         """
-        if transaction_specs:
-            field_name = transaction_specs.specs.get("field_name")
-            surfaces = transaction_specs.specs.get("surfaces")
-
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
             field_name, surfaces, self.get_surface_ids(surfaces), vector_field_data
@@ -823,9 +753,8 @@ class TFieldData:
 
     def get_pathlines_field_data(
         self,
-        transaction_specs: TransactionSpecs = None,
-        field_name: str = None,
-        surfaces: List[int | str] = None,
+        field_name: str,
+        surfaces: List[int | str],
         additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
@@ -843,8 +772,6 @@ class TFieldData:
 
         Parameters
         ----------
-        transaction_specs: TransactionSpecs
-            Specification with which the transaction was added.
         field_name : str
             Name of the scalar field to color pathlines.
         surfaces : List[int | str]
@@ -881,9 +808,6 @@ class TFieldData:
             Dictionary containing a map of surface IDs to the pathline data.
             For example, pathlines connectivity, vertices, and field.
         """
-        if transaction_specs:
-            field_name = transaction_specs.specs.get("field_name")
-            surfaces = transaction_specs.specs.get("surfaces")
         if zones is None:
             zones = []
         pathlines_data = self.data[(("type", "pathlines-field"), ("field", field_name))]
@@ -1031,7 +955,7 @@ class FieldTransaction:
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
-    ) -> TransactionSpecs:
+    ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals).
 
@@ -1062,7 +986,6 @@ class FieldTransaction:
                 overset_mesh,
             )
         )
-        return TransactionSpecs(specs=locals())
 
     @deprecate_argument(
         old_arg="surface_names",
@@ -1080,7 +1003,7 @@ class FieldTransaction:
         surfaces: List[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
-    ) -> TransactionSpecs:
+    ) -> None:
         """Add request to get scalar field data on surfaces.
 
         Parameters
@@ -1108,7 +1031,6 @@ class FieldTransaction:
                 boundary_value,
             )
         )
-        return TransactionSpecs(specs=locals())
 
     @deprecate_argument(
         old_arg="surface_names",
@@ -1124,7 +1046,7 @@ class FieldTransaction:
         self,
         field_name: str,
         surfaces: List[int | str],
-    ) -> TransactionSpecs:
+    ) -> None:
         """Add request to get vector field data on surfaces.
 
         Parameters
@@ -1144,7 +1066,6 @@ class FieldTransaction:
                 self.get_surface_ids(surfaces),
             )
         )
-        return TransactionSpecs(specs=locals())
 
     @deprecate_argument(
         old_arg="surface_names",
@@ -1172,7 +1093,7 @@ class FieldTransaction:
         coarsen: int | None = 1,
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
-    ) -> TransactionSpecs:
+    ) -> None:
         """Add request to get pathlines field on surfaces.
 
         Parameters
@@ -1234,7 +1155,6 @@ class FieldTransaction:
                 zones=zones,
             )
         )
-        return TransactionSpecs(specs=locals())
 
     def add_request(
         self,
