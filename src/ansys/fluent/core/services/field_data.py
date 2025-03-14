@@ -110,22 +110,23 @@ class FieldDataService(StreamingService):
             )
         return chunk_iterator
 
-    def get_solver_mesh_nodes(
+    def get_solver_mesh_nodes_float(
+        self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
+    ):
+        """GetSolverMeshNodesFloat RPC of FieldData service."""
+        responses = self._stub.GetSolverMeshNodesFloat(request, metadata=self._metadata)
+        nested_nodes = []
+        for response in responses:
+            nested_nodes.append(response.nodes)
+        return nested_nodes
+
+    def get_solver_mesh_nodes_double(
         self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
     ):
         """GetSolverMeshNodesDouble RPC of FieldData service."""
-        import ansys.fluent.core as pyfluent
-        from ansys.fluent.core.launcher.pyfluent_enums import Precision
-
-        if pyfluent.FLUENT_PRECISION_MODE == Precision.SINGLE:
-            responses = self._stub.GetSolverMeshNodesFloat(
-                request, metadata=self._metadata
-            )
-        else:
-            responses = self._stub.GetSolverMeshNodesDouble(
-                request, metadata=self._metadata
-            )
-
+        responses = self._stub.GetSolverMeshNodesDouble(
+            request, metadata=self._metadata
+        )
         nested_nodes = []
         for response in responses:
             nested_nodes.append(response.nodes)
@@ -1522,7 +1523,12 @@ class FieldData:
         nodes_request = FieldDataProtoModule.GetSolverMeshNodesRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
-        nested_nodes = self._service.get_solver_mesh_nodes(nodes_request)
+        # TODO: Add precision query in AppUtilities service
+        is_double_precision = self.scheme_eval.scheme_eval("(rp-double?)")
+        if is_double_precision:
+            nested_nodes = self._service.get_solver_mesh_nodes_double(nodes_request)
+        else:
+            nested_nodes = self._service.get_solver_mesh_nodes_float(nodes_request)
         logger.info(f"Nodes data received in {time.time() - start_time} seconds")
         logger.info(f"Getting elements for zone {zone_info._id}")
         start_time = time.time()
