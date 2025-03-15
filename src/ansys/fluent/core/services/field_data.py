@@ -909,7 +909,7 @@ class FieldTransaction:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals)."""
         warnings.warn(
-            "'add_surfaces_request' is deprecated, use 'add_request' instead",
+            "'add_surfaces_request' is deprecated, use 'add_requests' instead",
             PyFluentDeprecationWarning,
         )
         self._add_surfaces_request(
@@ -935,7 +935,7 @@ class FieldTransaction:
     ) -> None:
         """Add request to get scalar field data on surfaces."""
         warnings.warn(
-            "'add_scalar_fields_request' is deprecated, use 'add_request' instead",
+            "'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
             PyFluentDeprecationWarning,
         )
         self._add_scalar_fields_request(
@@ -962,7 +962,7 @@ class FieldTransaction:
     ) -> None:
         """Add request to get vector field data on surfaces."""
         warnings.warn(
-            "'add_vector_fields_request' is deprecated, use 'add_request' instead",
+            "'add_vector_fields_request' is deprecated, use 'add_requests' instead",
             PyFluentDeprecationWarning,
         )
         self._add_vector_fields_request(field_name=field_name, surfaces=surfaces)
@@ -996,7 +996,7 @@ class FieldTransaction:
     ) -> None:
         """Add request to get path-lines field on surfaces."""
         warnings.warn(
-            "'add_pathlines_fields_request' is deprecated, use 'add_request' instead",
+            "'add_pathlines_fields_request' is deprecated, use 'add_requests' instead",
             PyFluentDeprecationWarning,
         )
         self._add_pathlines_fields_request(
@@ -1016,7 +1016,7 @@ class FieldTransaction:
             zones=zones,
         )
 
-    def add_request(
+    def add_requests(
         self,
         obj: (
             SurfaceFieldDataRequest
@@ -1069,6 +1069,14 @@ class FieldTransaction:
         return self
 
     def get_fields(self) -> TFieldData:
+        """Get data for previously added requests and then clear all requests."""
+        warnings.warn(
+            "'get_fields' is deprecated, use 'get_response' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self.get_response()
+
+    def get_response(self) -> TFieldData:
         """Get data for previously added requests and then clear all requests.
 
         Returns
@@ -1089,7 +1097,7 @@ class FieldTransaction:
         )
 
     def __call__(self):
-        self.get_fields()
+        self.get_response()
 
 
 class _FieldDataConstants:
@@ -1722,25 +1730,25 @@ class FieldData:
     def get_field_data(self, obj):
         """Get the surface, scalar, vector or path-lines field data on a surface."""
         if isinstance(obj, SurfaceFieldDataRequest):
-            return self.get_surface_data(
+            return self._get_surface_data(
                 data_types=obj.data_types,
                 surfaces=obj.surfaces,
                 overset_mesh=obj.overset_mesh,
             )
         elif isinstance(obj, ScalarFieldDataRequest):
-            return self.get_scalar_field_data(
+            return self._get_scalar_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
                 node_value=obj.node_value,
                 boundary_value=obj.boundary_value,
             )
         elif isinstance(obj, VectorFieldDataRequest):
-            return self.get_vector_field_data(
+            return self._get_vector_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
             )
         elif isinstance(obj, PathlinesFieldDataRequest):
-            return self.get_pathlines_field_data(
+            return self._get_pathlines_field_data(
                 field_name=obj.field_name,
                 surfaces=obj.surfaces,
                 additional_field_name=obj.additional_field_name,

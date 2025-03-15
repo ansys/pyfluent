@@ -190,15 +190,15 @@ def test_field_data_transactions(new_solver_session) -> None:
         provide_particle_time_field=False,
     )
 
-    transaction = transaction.add_request(su1)  # adding single request.
-    data = transaction.add_request(
+    transaction = transaction.add_requests(su1)  # adding single request.
+    data = transaction.add_requests(
         su2, sc1, sc2, vc1, pt1
-    ).get_fields()  # adding multiple requests.
+    ).get_response()  # adding multiple requests.
 
     with pytest.raises(ValueError):
         # Trying to add request with same 'field_name'.
         # TODO: This is not yet supported. Need to implement in server.
-        transaction.add_request(pt2)
+        transaction.add_requests(pt2)
 
     assert (
         len(data) == 5
