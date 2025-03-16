@@ -671,7 +671,7 @@ class _Alias:
                 )
                 if isinstance(journal_str, str):
                     warnings.warn(
-                        "Note: A newer syntax is available to perform the last operation:\n"
+                        "A newer syntax is available to perform the last operation:\n"
                         f"{journal_str.strip()}",
                         DeprecatedSettingWarning,
                     )
