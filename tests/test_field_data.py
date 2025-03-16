@@ -248,7 +248,7 @@ def test_field_data_transactions(new_solver_session) -> None:
     assert (
         round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
     )
-    assert sorted(list(pathlines_data["hot-inlet"])) == sorted(
+    assert sorted(pathlines_data["hot-inlet"]) == sorted(
         [
             "vertices",
             "lines",
