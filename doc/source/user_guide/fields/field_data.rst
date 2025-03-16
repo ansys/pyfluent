@@ -50,7 +50,6 @@ the ``SurfaceFieldDataRequest`` and using ``get_field_data`` method.
   >>>     surfaces=["inlet"],
   >>>     data_types=[SurfaceDataType.Vertices],
   >>> )
-
   >>> vertices_data = field_data.get_field_data(su1)
 
   # The method retrieves surface vertex coordinates as a NumPy array.
@@ -70,7 +69,6 @@ by specifying ``FacesNormal`` and ``FacesCentroid`` for ``data_types`` respectiv
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>>     surfaces=["inlet"],
   >>> )
-
   >>> faces_normal_and_centroid_data = field_data.get_field_data(su2)
 
   # FacesNormal shape: (262, 3) - 262 face normals, each with 3 components (x, y, z).
@@ -89,7 +87,6 @@ the ``get_field_data`` method and specifying ``FacesConnectivity`` for ``data_ty
   >>> su3 = SurfaceFieldDataRequest(
   >>>     data_types=[SurfaceDataType.FacesConnectivity], surfaces=["inlet"]
   >>> )
-
   >>> faces_connectivity_data = field_data.get_field_data(su3)
 
   # FacesConnectivity provides indices of vertices for each face. For example:
@@ -104,9 +101,7 @@ You can call the ``get_field_data`` method to get scalar field data, such as abs
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import ScalarFieldDataRequest
-
   >>> sc1 = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
-
   >>> abs_press_data = field_data.get_field_data(sc1)
 
   # Shape: (389,) - A single scalar value (e.g., pressure) for each of the 389 vertices.
@@ -123,9 +118,7 @@ You can call the ``get_field_data`` method to get vector field data.
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import VectorFieldDataRequest
-
   >>> vc1 = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
-
   >>> velocity_vector_data = field_data.get_field_data(vc1)
   # Shape: (262, 3) - Velocity vectors for 262 faces, each with components (vx, vy, vz) for 'inlet'.
   >>> velocity_vector_data["inlet"].shape
@@ -141,9 +134,7 @@ You can call the ``get_field_data`` method to get pathlines field data.
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import PathlinesFieldDataRequest
-
   >>> pt1 = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
-
   >>> path_lines_data = field_data.get_field_data(pt1)
 
   # Vertices shape: (29565, 3) - 29565 pathline points, each with coordinates (x, y, z).
@@ -182,7 +173,18 @@ and call the ``get_response`` method to execute the transaction and retrieve the
   >>> payload_data = transaction.add_requests(su1, sc1, vc1).get_response()
 
 You can use the ``get_field_data`` method on ``payload_data`` and retrieve the data in the same manner
-like for getting field data.
+like for getting field data. You can either reuse the same request object or form a new one by copying
+from the existing one of similar type:
+
+.. code-block:: python
+
+  >>> scalar_field_data = payload_data.get_field_data(sc1)
+  >>> scalar_field_data.keys()
+  dict_keys([1, 2])
+  >>> sc1 = sc1._replace(surfaces=[1])
+  >>> scalar_field_data = payload_data.get_field_data(sc1)
+  >>> scalar_field_data.keys()
+  dict_keys([1])
 
 .. note::
    ``get_response`` call also clears all requests, so that subsequent calls to this method
