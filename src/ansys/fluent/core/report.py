@@ -64,7 +64,6 @@ dependencies = {
     "grpcio-health-checking": "1.30.0",
     "grpcio-status": "1.30.0",
     "h5py": "3.12.1",
-    "lxml": "4.9.2",
     "nltk": "3.9.1",
     "numpy": "1.14.0,<3.0.0",
     "pandas": "1.1.0,<2.3",
