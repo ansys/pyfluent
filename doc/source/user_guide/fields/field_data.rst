@@ -46,11 +46,11 @@ the ``SurfaceFieldDataRequest`` and using ``get_field_data`` method.
 
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType, SurfaceFieldDataRequest
 
-  >>> su1 = SurfaceFieldDataRequest(
+  >>> surface_request_1 = SurfaceFieldDataRequest(
   >>>     surfaces=["inlet"],
   >>>     data_types=[SurfaceDataType.Vertices],
   >>> )
-  >>> vertices_data = field_data.get_field_data(su1)
+  >>> vertices_data = field_data.get_field_data(surface_request_1)
 
   # The method retrieves surface vertex coordinates as a NumPy array.
   # Shape: (389, 3) - This means 389 vertices, each defined by 3 coordinates (x, y, z).
@@ -65,11 +65,11 @@ by specifying ``FacesNormal`` and ``FacesCentroid`` for ``data_types`` respectiv
 
 .. code-block:: python
 
-  >>> su2 = SurfaceFieldDataRequest(
+  >>> surface_request_2 = SurfaceFieldDataRequest(
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>>     surfaces=["inlet"],
   >>> )
-  >>> faces_normal_and_centroid_data = field_data.get_field_data(su2)
+  >>> faces_normal_and_centroid_data = field_data.get_field_data(surface_request_2)
 
   # FacesNormal shape: (262, 3) - 262 face normals, each with 3 components (x, y, z).
   # FacesCentroid shape: (262, 3) - Centroids for each of the 262 faces, given as (x, y, z).
@@ -84,10 +84,10 @@ the ``get_field_data`` method and specifying ``FacesConnectivity`` for ``data_ty
 
 .. code-block:: python
 
-  >>> su3 = SurfaceFieldDataRequest(
+  >>> surface_request_3 = SurfaceFieldDataRequest(
   >>>     data_types=[SurfaceDataType.FacesConnectivity], surfaces=["inlet"]
   >>> )
-  >>> faces_connectivity_data = field_data.get_field_data(su3)
+  >>> faces_connectivity_data = field_data.get_field_data(surface_request_3)
 
   # FacesConnectivity provides indices of vertices for each face. For example:
   # Face 6 is connected to vertices 4, 5, 12, and 11.
@@ -101,8 +101,8 @@ You can call the ``get_field_data`` method to get scalar field data, such as abs
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import ScalarFieldDataRequest
-  >>> sc1 = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
-  >>> abs_press_data = field_data.get_field_data(sc1)
+  >>> scalar_request_1 = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
+  >>> abs_press_data = field_data.get_field_data(scalar_request_1)
 
   # Shape: (389,) - A single scalar value (e.g., pressure) for each of the 389 vertices.
   >>> abs_press_data["inlet"].shape
@@ -118,8 +118,8 @@ You can call the ``get_field_data`` method to get vector field data.
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import VectorFieldDataRequest
-  >>> vc1 = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
-  >>> velocity_vector_data = field_data.get_field_data(vc1)
+  >>> vector_request_1 = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
+  >>> velocity_vector_data = field_data.get_field_data(vector_request_1)
   # Shape: (262, 3) - Velocity vectors for 262 faces, each with components (vx, vy, vz) for 'inlet'.
   >>> velocity_vector_data["inlet"].shape
   (262, 3)
@@ -134,8 +134,8 @@ You can call the ``get_field_data`` method to get pathlines field data.
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import PathlinesFieldDataRequest
-  >>> pt1 = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
-  >>> path_lines_data = field_data.get_field_data(pt1)
+  >>> pathlines_request_1 = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
+  >>> path_lines_data = field_data.get_field_data(pathlines_request_1)
 
   # Vertices shape: (29565, 3) - 29565 pathline points, each with coordinates (x, y, z).
   # Lines: A list where each entry contains indices of vertices forming a pathline.
@@ -161,37 +161,34 @@ First, create a transaction object for field data.
   >>> transaction = solver.fields.field_data.new_transaction()
   # This creates a new transaction object for batching multiple requests.
 
-Then combine requests for multiple fields using ``add_requests`` methods in a single transaction
-and call the ``get_response`` method to execute the transaction and retrieve the data.
+Next, combine requests for multiple fields using the ``add_requests`` method within a single transaction,
+then call the ``get_response`` method to execute the transaction and retrieve the data.
 
 .. code-block:: python
 
-  >>> su1 = SurfaceFieldDataRequest(surfaces=[1], data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid])
-  >>> sc1 = ScalarFieldDataRequest(surfaces=[1, 2], field_name="pressure", node_value=True, boundary_value=True)
-  >>> vc1 = VectorFieldDataRequest(surfaces=[1, 2], field_name="velocity")
+  >>> surface_request_1 = SurfaceFieldDataRequest(surfaces=[1], data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid])
+  >>> scalar_request_1 = ScalarFieldDataRequest(surfaces=[1, 2], field_name="pressure", node_value=True, boundary_value=True)
+  >>> vector_request_1 = VectorFieldDataRequest(surfaces=[1, 2], field_name="velocity")
 
-  >>> payload_data = transaction.add_requests(su1, sc1, vc1).get_response()
+  >>> payload_data = transaction.add_requests(surface_request_1, scalar_request_1, vector_request_1).get_response()
 
-You can use the ``get_field_data`` method on ``payload_data`` and retrieve the data in the same manner
-like for getting field data. You can either reuse the same request object or form a new one by copying
-from the existing one of similar type:
+You can use the ``get_field_data`` method on ``payload_data`` to retrieve data in the same way
+as fetching field data. You may either reuse the existing request object or create a new one
+by copying from a similar type:
 
 .. code-block:: python
 
-  >>> scalar_field_data = payload_data.get_field_data(sc1)
+  >>> scalar_field_data = payload_data.get_field_data(scalar_request_1)
   >>> scalar_field_data.keys()
   dict_keys([1, 2])
-  >>> sc1 = sc1._replace(surfaces=[1])
-  >>> scalar_field_data = payload_data.get_field_data(sc1)
+  >>> scalar_request_1 = scalar_request_1._replace(surfaces=[1])
+  >>> scalar_field_data = payload_data.get_field_data(scalar_request_1)
   >>> scalar_field_data.keys()
   dict_keys([1])
 
 .. note::
-   ``get_response`` call also clears all requests, so that subsequent calls to this method
-   yield nothing until more requests are added.
-
-.. note::
-  ``PathlinesFieldDataRequest`` can only take an unique ``field_name`` in ``get_field_data``
+  All request objects must be unique when adding requests or fetching data from a transaction.
+  Additionally, ``PathlinesFieldDataRequest`` can have only one unique ``field_name`` per transaction.
 
 Allowed values
 --------------
