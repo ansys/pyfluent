@@ -347,7 +347,7 @@ class Base:
         Constructed in python syntax from 'python_path' and the parents python path.
         """
         if self._parent is None:
-            if FluentVersion(self.version).number < 251:
+            if FluentVersion(self._version).number < 251:
                 return "<session>"
             else:
                 return "<session>.settings"
@@ -413,7 +413,7 @@ class Base:
         deprecated_version = (
             deprecated_version.get("deprecated-version") if deprecated_version else None
         )
-        return deprecated_version and FluentVersion(self.version) >= FluentVersion(
+        return deprecated_version and FluentVersion(self._version) >= FluentVersion(
             deprecated_version
         )
 
@@ -2035,7 +2035,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 f"Falling back to String."
             )
             base = String
-        dct = {"fluent_name": name, "version": version}
+        dct = {"fluent_name": name, "_version": version}
         helpinfo = info.get("help")
         if helpinfo:
             dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
