@@ -1069,7 +1069,7 @@ class FieldTransaction:
         return self
 
     def get_fields(self) -> TFieldData:
-        """Get data for previously added requests and then clear all requests."""
+        """Get data for previously added requests."""
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
             PyFluentDeprecationWarning,
@@ -1077,7 +1077,7 @@ class FieldTransaction:
         return self.get_response()
 
     def get_response(self) -> TFieldData:
-        """Get data for previously added requests and then clear all requests.
+        """Get data for previously added requests.
 
         Returns
         -------
