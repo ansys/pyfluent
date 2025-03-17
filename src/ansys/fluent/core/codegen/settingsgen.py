@@ -226,11 +226,11 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
-    s.write(f"    version = {data['version']!r}\n")
+    s.write(f"    _version = {data['version']!r}\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")
-    s_stub.write("    version: str\n")
+    s_stub.write("    _version: str\n")
     s_stub.write("    fluent_name: str\n")
     s_stub.write("    _python_name: str\n")
     child_names = data["child_names"]
