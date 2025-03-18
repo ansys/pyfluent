@@ -26,7 +26,8 @@ from dataclasses import dataclass
 import os
 from typing import List
 
-from defusedxml.ElementTree import ElementTree, fromstring
+from defusedxml import ElementTree
+from defusedxml.ElementTree import fromstring
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
