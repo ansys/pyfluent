@@ -54,10 +54,11 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
+import platform
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import set_config
-import ansys.fluent.visualization.pyvista as pv
+from ansys.fluent.visualization import Graphics, set_config
 
 #######################################################################################
 # Configure specific settings for this example
@@ -79,10 +80,18 @@ print(session.get_fluent_version())
 # =====================================================================================
 
 workflow = session.workflow
-geometry_filename = examples.download_file(
-    "ahmed_body_20_0degree_boi_half.scdoc",
-    "pyfluent/examples/Ahmed-Body-Simulation",
-)
+
+if platform.system() == "Windows":
+    geometry_filename = examples.download_file(
+        "ahmed_body_20_0degree_boi_half.scdoc",
+        "pyfluent/examples/Ahmed-Body-Simulation",
+    )
+else:
+    geometry_filename = examples.download_file(
+        "ahmed_body_20_0degree_boi_half.scdoc.pmdb",
+        "pyfluent/examples/Ahmed-Body-Simulation",
+    )
+
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
 workflow.TaskObject["Import Geometry"].Execute()
@@ -322,16 +331,16 @@ session.results.surfaces.iso_surface.create(name="xmid")
 session.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
 session.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
-graphics_session1 = pv.Graphics(session)
-contour1 = graphics_session1.Contours["contour-1"]
+graphics_session = Graphics(session)
+contour1 = graphics_session.Contours["contour-1"]
 contour1.field = "velocity-magnitude"
-contour1.surfaces_list = ["xmid"]
+contour1.surfaces = ["xmid"]
 contour1.display("window-1")
 
-contour2 = graphics_session1.Contours["contour-2"]
+contour2 = graphics_session.Contours["contour-2"]
 contour2.field.allowed_values
 contour2.field = "pressure-coefficient"
-contour2.surfaces_list = ["xmid"]
+contour2.surfaces = ["xmid"]
 contour2.display("window-2")
 
 #######################################################################################
