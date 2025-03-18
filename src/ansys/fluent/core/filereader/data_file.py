@@ -40,7 +40,6 @@ from os.path import dirname
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from lxml import etree
 import numpy as np
 
 from . import lispy
@@ -225,8 +224,7 @@ class DataFile:
 
 
 def _get_data_file_name_from_flprj(flprj_file):
-    parser = etree.XMLParser(recover=True)
-    tree = ET.parse(flprj_file, parser)
+    tree = ET.parse(flprj_file)
     root = tree.getroot()
     folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
     return root.find(folder_name).find("Input").find("Case").find("Target").get("value")

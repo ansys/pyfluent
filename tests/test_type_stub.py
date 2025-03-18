@@ -46,7 +46,7 @@ def test_settings_stub():
     assert len(class_def.bases) > 0
     assigns = [x for x in class_def.body if isinstance(x, ast.AnnAssign)]
     for class_attr in [
-        "version",
+        "_version",
         "fluent_name",
         "_python_name",
         "child_names",
