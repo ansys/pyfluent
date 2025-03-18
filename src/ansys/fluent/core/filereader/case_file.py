@@ -44,8 +44,8 @@ import os
 from os.path import dirname
 from pathlib import Path
 from typing import Dict, List
-import xml.etree.ElementTree as ET
 
+from defusedxml import ElementTree as ET
 import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
