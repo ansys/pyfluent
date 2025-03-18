@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_47:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_47
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ==========================================
+
+Parent                                                      Summary
+
+======================   ==========================================
+:ref:`finnie <finnie>`       Settings for the Finnie erosion model.
+
+======================   ==========================================
+

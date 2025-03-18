@@ -1,0 +1,42 @@
+:orphan:
+
+.. _view_sync:
+
+view_sync
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.view_sync
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================   =============================================================
+
+Method                                                                           Summary
+
+========================   =============================================================
+:ref:`list <list_5>`           Print the IDs of the open, synchronized graphics windows.
+
+:ref:`start <start_3>`                           Start the view synchronization process.
+
+:ref:`stop <stop_2>`                                          Stop view synchronization.
+
+:ref:`add_all <add_all>`                                        Synchronize all windows.
+
+:ref:`add <add_1>`              Provide a list of graphics windows (IDs) to synchronize.
+
+:ref:`remove <remove>`                   Remove list of window ids from synchronization.
+
+========================   =============================================================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`views <views>`       'views' child.
+
+====================   ==================
+

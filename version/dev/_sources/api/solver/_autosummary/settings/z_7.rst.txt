@@ -1,0 +1,34 @@
+:orphan:
+
+.. _z_7:
+
+z
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.z_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =================================
+
+Attribute                                                  Summary
+
+==============================   =================================
+:ref:`prescribed <prescribed>`       Prescribed or freeform value.
+
+:ref:`value <value_20>`                          Prescribed value.
+
+==============================   =================================
+
+.. rubric:: Included in:
+
+==================================   ============================================
+
+Parent                                                                    Summary
+
+==================================   ============================================
+:ref:`displacement <displacement>`       Displacements for translation condition.
+
+==================================   ============================================
+
