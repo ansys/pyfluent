@@ -56,22 +56,24 @@ ANSYS_ENV_VARS = [
     "SERVER_INFO_DIR",
 ]
 
-dependencies = {
-    "ansys-api-fluent": version("ansys-api-fluent"),
-    "ansys-platform-instancemanagement": version("ansys-platform-instancemanagement"),
-    "ansys-tools-filetransfer": version("ansys-tools-filetransfer"),
-    "ansys-units": version("ansys-units"),
-    "docker": version("docker"),
-    "grpcio": version("grpcio"),
-    "grpcio-health-checking": version("grpcio-health-checking"),
-    "grpcio-status": version("grpcio-status"),
-    "h5py": version("h5py"),
-    "nltk": version("nltk"),
-    "numpy": version("numpy"),
-    "pandas": version("pandas"),
-    "pyansys-tools-report": version("pyansys-tools-report"),
-    "pyyaml": version("pyyaml"),
-}
+package_names = [
+    "ansys-api-fluent",
+    "ansys-platform-instancemanagement",
+    "ansys-tools-filetransfer",
+    "ansys-units",
+    "docker",
+    "grpcio",
+    "grpcio-health-checking",
+    "grpcio-status",
+    "h5py",
+    "nltk",
+    "numpy",
+    "pandas",
+    "pyansys-tools-report",
+    "pyyaml",
+]
+
+dependencies = {pkg: version(pkg) for pkg in package_names}
 
 if __name__ == "__main__":
     rep = pyansys_report.Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
