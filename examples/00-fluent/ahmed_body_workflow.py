@@ -81,21 +81,19 @@ print(session.get_fluent_version())
 
 workflow = session.workflow
 
-if platform.system() == "Windows":
-    geometry_filename = examples.download_file(
-        "ahmed_body_20_0degree_boi_half.scdoc",
-        "pyfluent/examples/Ahmed-Body-Simulation",
-    )
-else:
-    geometry_filename = examples.download_file(
-        "ahmed_body_20_0degree_boi_half.scdoc.pmdb",
-        "pyfluent/examples/Ahmed-Body-Simulation",
-    )
+filenames = {
+    "Windows": "ahmed_body_20_0degree_boi_half.scdoc",
+    "Other": "ahmed_body_20_0degree_boi_half.scdoc.pmdb",
+}
+
+geometry_filename = examples.download_file(
+    filenames.get(platform.system(), filenames["Other"]),
+    "pyfluent/examples/Ahmed-Body-Simulation",
+)
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
 workflow.TaskObject["Import Geometry"].Execute()
-
 
 #######################################################################################
 # Add Local Face Sizing
