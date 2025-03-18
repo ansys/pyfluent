@@ -27,32 +27,31 @@ You can do this either by loading both case and data files or by reading a case 
 Simple requests
 ---------------
 
-For creating a request you need to construct a request object of type:
+To retrieve field data, instantiate a request object based on the data type:
 
 - ``SurfaceFieldDataRequest`` for surface data.
 - ``ScalarFieldDataRequest`` for scalar field data.
 - ``VectorFieldDataRequest`` for vector field data.
 - ``PathlinesFieldDataRequest`` for pathlines field data.
 
-Following this you need to request the field using ``get_field_data`` by passing the request
-object as argument.
+Then, use ``get_field_data`` and pass the request object as an argument to obtain the desired field data.
 
-Get surface data
-~~~~~~~~~~~~~~~~
-You can request surface vertices for a given surface name by creating
-the ``SurfaceFieldDataRequest`` and using ``get_field_data`` method.
+Retrieving surface data
+~~~~~~~~~~~~~~~~~~~~~~~
+To obtain surface vertex coordinates for a given surface, create a
+``SurfaceFieldDataRequest`` and call the ``get_field_data`` method.
 
 .. code-block:: python
 
   >>> from ansys.fluent.core.services.field_data import SurfaceDataType, SurfaceFieldDataRequest
 
-  >>> surface_request_1 = SurfaceFieldDataRequest(
+  >>> surface_request = SurfaceFieldDataRequest(
   >>>     surfaces=["inlet"],
   >>>     data_types=[SurfaceDataType.Vertices],
   >>> )
-  >>> vertices_data = field_data.get_field_data(surface_request_1)
+  >>> vertices_data = field_data.get_field_data(surface_request)
 
-  # The method retrieves surface vertex coordinates as a NumPy array.
+  # Retrieves vertex coordinates as a NumPy array.
   # Shape: (389, 3) - This means 389 vertices, each defined by 3 coordinates (x, y, z).
   >>> vertices_data["inlet"][SurfaceDataType.Vertices].shape
   (389, 3)
@@ -60,14 +59,14 @@ the ``SurfaceFieldDataRequest`` and using ``get_field_data`` method.
   # Example: The 6th vertex (zero-based indexing) has coordinates [-0.3469, 0.0, -0.0386].
   array([-0.34689394,  0.        , -0.03863097], dtype=float32)
 
-You can call the same method to get the corresponding surface face normals and centroids
-by specifying ``FacesNormal`` and ``FacesCentroid`` for ``data_types`` respectively.
+To retrieve surface face normals and centroids, include ``FacesNormal`` and ``FacesCentroid``
+in the ``data_types`` list.
 
 .. code-block:: python
 
   >>> surface_request_2 = SurfaceFieldDataRequest(
-  >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>>     surfaces=["inlet"],
+  >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>> )
   >>> faces_normal_and_centroid_data = field_data.get_field_data(surface_request_2)
 
@@ -79,13 +78,12 @@ by specifying ``FacesNormal`` and ``FacesCentroid`` for ``data_types`` respectiv
   # Example: The centroid of the 16th face has coordinates [-0.3463, 0.0, -0.0328].
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
-You can request face connectivity data for given ``surfaces`` by calling
-the ``get_field_data`` method and specifying ``FacesConnectivity`` for ``data_types``.
+To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter.
 
 .. code-block:: python
 
   >>> surface_request_3 = SurfaceFieldDataRequest(
-  >>>     data_types=[SurfaceDataType.FacesConnectivity], surfaces=["inlet"]
+  >>>     surfaces=["inlet"], data_types=[SurfaceDataType.FacesConnectivity]
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(surface_request_3)
 
@@ -96,7 +94,7 @@ the ``get_field_data`` method and specifying ``FacesConnectivity`` for ``data_ty
 
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
-You can call the ``get_field_data`` method to get scalar field data, such as absolute pressure:
+To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataRequest``:
 
 .. code-block:: python
 
@@ -113,7 +111,7 @@ You can call the ``get_field_data`` method to get scalar field data, such as abs
 
 Get vector field data
 ~~~~~~~~~~~~~~~~~~~~~
-You can call the ``get_field_data`` method to get vector field data.
+To obtain vector field data, such as velocity vectors, use ``VectorFieldDataRequest``:
 
 .. code-block:: python
 
@@ -129,7 +127,7 @@ You can call the ``get_field_data`` method to get vector field data.
 
 Get pathlines field data
 ~~~~~~~~~~~~~~~~~~~~~~~~
-You can call the ``get_field_data`` method to get pathlines field data.
+To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
 
 .. code-block:: python
 
@@ -152,17 +150,14 @@ You can call the ``get_field_data`` method to get pathlines field data.
 
 Making multiple requests in a single transaction
 ------------------------------------------------
-You can get data for multiple fields in a single transaction.
-
-First, create a transaction object for field data.
+To retrieve multiple field data types in a single transaction, create a transaction object:
 
 .. code-block:: python
 
   >>> transaction = solver.fields.field_data.new_transaction()
   # This creates a new transaction object for batching multiple requests.
 
-Next, combine requests for multiple fields using the ``add_requests`` method within a single transaction,
-then call the ``get_response`` method to execute the transaction and retrieve the data.
+Add multiple requests using ``add_requests`` and access the data with ``get_response``:
 
 .. code-block:: python
 
@@ -172,9 +167,7 @@ then call the ``get_response`` method to execute the transaction and retrieve th
 
   >>> payload_data = transaction.add_requests(surface_request_1, scalar_request_1, vector_request_1).get_response()
 
-You can use the ``get_field_data`` method on ``payload_data`` to retrieve data in the same way
-as fetching field data. You may either reuse the existing request object or create a new one
-by copying from a similar type:
+Retrieve data using ``get_field_data``, either by reusing or modifying request objects:
 
 .. code-block:: python
 
@@ -187,8 +180,7 @@ by copying from a similar type:
   dict_keys([1])
 
 .. note::
-  All request objects must be unique when adding requests or fetching data from a transaction.
-  Additionally, ``PathlinesFieldDataRequest`` can have only one unique ``field_name`` per transaction.
+  ``PathlinesFieldDataRequest`` allows only one unique ``field_name`` per transaction.
 
 Allowed values
 --------------
