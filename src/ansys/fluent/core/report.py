@@ -66,7 +66,7 @@ except ModuleNotFoundError:
 
 def get_project_dependencies():
     """Reads pyproject.toml and extracts dependencies dynamically."""
-    # Locate project root (assuming script is in 'src/ansys/fluent/core/')
+    # Locate project root
     project_root = pathlib.Path(__file__).resolve().parents[4]
     pyproject_path = project_root / "pyproject.toml"
 
