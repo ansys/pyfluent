@@ -46,7 +46,7 @@ import subprocess
 from typing import Any, Dict
 import uuid
 
-from defusedxml import ElementTree
+from defusedxml.ElementTree import parse
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
