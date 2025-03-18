@@ -55,7 +55,7 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     obj = settings_root
     path = DATA[builtin_cls_name][1]
     if isinstance(path, dict):
-        version = FluentVersion(obj.version)
+        version = FluentVersion(obj._version)
         path = path.get(version)
         if path is None:
             raise RuntimeError(

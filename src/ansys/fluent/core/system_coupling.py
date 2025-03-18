@@ -27,6 +27,8 @@ import os
 from typing import List
 import xml.etree.ElementTree as XmlET
 
+from defusedxml.ElementTree import fromstring
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -324,7 +326,7 @@ class SystemCoupling:
 
         setup_info = dict()
 
-        xml_root = XmlET.ElementTree(XmlET.fromstring(get_scp_string()))
+        xml_root = XmlET.ElementTree(fromstring(get_scp_string()))
         cosim_control = xml_root.find("./CosimulationControl")
 
         setup_info["analysis-type"] = cosim_control.find("AnalysisType").text
