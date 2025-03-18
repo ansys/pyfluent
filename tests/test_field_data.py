@@ -167,6 +167,10 @@ def test_field_data_transactions(new_solver_session) -> None:
         surfaces=[1, "hot-inlet"],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
+    sux = SurfaceFieldDataRequest(
+        surfaces=[1, 4],
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+    )
     su2 = SurfaceFieldDataRequest(
         surfaces=[3],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
@@ -191,8 +195,9 @@ def test_field_data_transactions(new_solver_session) -> None:
     )
 
     transaction = transaction.add_requests(su1)  # adding single request.
+    transaction = transaction.add_requests(su1)  # Duplicate and will be ignored
     data = transaction.add_requests(
-        su2, sc1, sc2, vc1, pt1
+        su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
     ).get_response()  # adding multiple requests.
 
     with pytest.raises(ValueError):
