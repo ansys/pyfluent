@@ -138,7 +138,7 @@ def _populate_xml_helpstrings():
     if not Path(_XML_HELP_FILE).exists():
         return
 
-    tree = ElementTree.parse(_XML_HELP_FILE)
+    tree = parse(_XML_HELP_FILE)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
