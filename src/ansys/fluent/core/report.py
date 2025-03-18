@@ -22,6 +22,8 @@
 
 """ansys-tools-report."""
 
+from importlib.metadata import version
+
 import ansys.tools.report as pyansys_report
 
 ANSYS_ENV_VARS = [
@@ -55,20 +57,20 @@ ANSYS_ENV_VARS = [
 ]
 
 dependencies = {
-    "ansys-api-fluent": "0.3.34",
-    "ansys-platform-instancemanagement": "1.1",
-    "ansys-tools-filetransfer": "0.1,<0.3",
-    "ansys-units": "0.3.3,<0.5",
-    "docker": "7.1.0",
-    "grpcio": "1.30.0",
-    "grpcio-health-checking": "1.30.0",
-    "grpcio-status": "1.30.0",
-    "h5py": "3.12.1",
-    "nltk": "3.9.1",
-    "numpy": "1.14.0,<3.0.0",
-    "pandas": "1.1.0,<2.3",
-    "pyansys-tools-report": "0.8.1",
-    "pyyaml": "6.0",
+    "ansys-api-fluent": version("ansys-api-fluent"),
+    "ansys-platform-instancemanagement": version("ansys-platform-instancemanagement"),
+    "ansys-tools-filetransfer": version("ansys-tools-filetransfer"),
+    "ansys-units": version("ansys-units"),
+    "docker": version("docker"),
+    "grpcio": version("grpcio"),
+    "grpcio-health-checking": version("grpcio-health-checking"),
+    "grpcio-status": version("grpcio-status"),
+    "h5py": version("h5py"),
+    "nltk": version("nltk"),
+    "numpy": version("numpy"),
+    "pandas": version("pandas"),
+    "pyansys-tools-report": version("pyansys-tools-report"),
+    "pyyaml": version("pyyaml"),
 }
 
 if __name__ == "__main__":
