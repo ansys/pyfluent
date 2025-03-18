@@ -487,7 +487,6 @@ jobs:
 
   test:
     name: Unit Testing
-    if: ${{ always() }}
     needs: build
     runs-on: [public-ubuntu-latest-8-cores]
     strategy:
