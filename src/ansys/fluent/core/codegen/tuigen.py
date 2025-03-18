@@ -46,7 +46,7 @@ import subprocess
 from typing import Any, Dict
 import uuid
 
-from defusedxml import ElementTree as ET
+from defusedxml import ElementTree
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
@@ -138,7 +138,7 @@ def _populate_xml_helpstrings():
     if not Path(_XML_HELP_FILE).exists():
         return
 
-    tree = ET.parse(_XML_HELP_FILE)
+    tree = ElementTree.parse(_XML_HELP_FILE)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
