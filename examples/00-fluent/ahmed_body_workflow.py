@@ -58,7 +58,7 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import Graphics, set_config
+from ansys.fluent.visualization import Contour, Graphics, GraphicsWindow, set_config
 
 #######################################################################################
 # Configure specific settings for this example
@@ -332,16 +332,23 @@ session.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
 session.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
 graphics_session = Graphics(session)
-contour1 = graphics_session.Contours["contour-1"]
-contour1.field = "velocity-magnitude"
-contour1.surfaces = ["xmid"]
-contour1.display("window-1")
 
-contour2 = graphics_session.Contours["contour-2"]
+contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])
+disp1 = GraphicsWindow()
+disp1.add_graphics(contour1)
+
+disp1 = GraphicsWindow()
+disp1.add_graphics(contour1)
+disp1.show()
+
+contour2 = Contour(solver=session, field="pressure-coefficient", surfaces=["xmid"])
 contour2.field.allowed_values
-contour2.field = "pressure-coefficient"
-contour2.surfaces = ["xmid"]
-contour2.display("window-2")
+disp2 = GraphicsWindow()
+disp2.add_graphics(contour2)
+
+disp2 = GraphicsWindow()
+disp2.add_graphics(contour2)
+disp2.show()
 
 #######################################################################################
 # Simulation Results Visualization
