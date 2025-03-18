@@ -23,6 +23,7 @@
 """ansys-tools-report."""
 
 from importlib.metadata import version
+import pathlib
 
 import ansys.tools.report as pyansys_report
 
@@ -56,24 +57,41 @@ ANSYS_ENV_VARS = [
     "SERVER_INFO_DIR",
 ]
 
-package_names = [
-    "ansys-api-fluent",
-    "ansys-platform-instancemanagement",
-    "ansys-tools-filetransfer",
-    "ansys-units",
-    "docker",
-    "grpcio",
-    "grpcio-health-checking",
-    "grpcio-status",
-    "h5py",
-    "nltk",
-    "numpy",
-    "pandas",
-    "pyansys-tools-report",
-    "pyyaml",
-]
+# Ensure compatibility with different Python versions
+try:
+    import tomllib  # Python 3.11+
+except ModuleNotFoundError:
+    import tomli as tomllib  # Python 3.10 or earlier
 
-dependencies = {pkg: version(pkg) for pkg in package_names}
+
+def get_project_dependencies():
+    """Reads pyproject.toml and extracts dependencies dynamically."""
+    # Locate project root (assuming script is in 'src/ansys/fluent/core/')
+    project_root = pathlib.Path(__file__).resolve().parents[4]
+    pyproject_path = project_root / "pyproject.toml"
+
+    # Read the TOML file
+    with open(pyproject_path, "rb") as f:
+        pyproject_data = tomllib.load(f)
+
+    # Extract dependencies from the 'project' section
+    return pyproject_data.get("project", {}).get("dependencies", [])
+
+
+def get_dependency_versions():
+    """Builds a dictionary of dependencies mapped to their installed versions."""
+    package_versions = get_project_dependencies()
+
+    return {
+        pkg.split(">")[0]
+        .split("<")[0]
+        .split("~")[0]: version(pkg.split(">")[0].split("<")[0].split("~")[0])
+        for pkg in package_versions
+    }
+
+
+# Generate dependencies dictionary dynamically
+dependencies = get_dependency_versions()
 
 if __name__ == "__main__":
     rep = pyansys_report.Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
