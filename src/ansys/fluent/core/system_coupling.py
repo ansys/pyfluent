@@ -325,7 +325,7 @@ class SystemCoupling:
 
         setup_info = dict()
 
-        xml_root = ElementTree.ElementTree(fromstring(get_scp_string()))
+        xml_root = XmlET.ElementTree(fromstring(get_scp_string()))
         cosim_control = xml_root.find("./CosimulationControl")
 
         setup_info["analysis-type"] = cosim_control.find("AnalysisType").text
