@@ -638,7 +638,7 @@ class PathlinesFieldDataRequest(NamedTuple):
     zones: list | None = None
 
 
-class _IFieldData:
+class BaseFieldData:
     """The base field data interface."""
 
     def __init__(
@@ -648,7 +648,7 @@ class _IFieldData:
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of _IFieldData class."""
+        """__init__ method of BaseFieldData class."""
         self.data = data
         self._field_info = field_info
         self._allowed_surface_names = allowed_surface_names
@@ -742,7 +742,7 @@ class _IFieldData:
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class TransactionFieldData(_IFieldData):
+class TransactionFieldData(BaseFieldData):
     """Provides access to Fluent field data on surfaces collected via transactions."""
 
     def __init__(
@@ -1473,7 +1473,7 @@ class Mesh:
     elements: list[Element]
 
 
-class FieldData(_IFieldData):
+class FieldData(BaseFieldData):
     """Provides access to Fluent field data on surfaces."""
 
     def __init__(
