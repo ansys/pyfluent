@@ -730,7 +730,7 @@ class BaseFieldData:
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ):
+    ) -> Dict[int | str, Dict | np.array]:
         """Get the surface, scalar, vector or path-lines field data on a surface."""
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
