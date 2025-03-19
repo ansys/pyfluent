@@ -669,12 +669,12 @@ class _IFieldData:
 
     def get_field_data(
         self,
-        obj: [
+        obj: (
             SurfaceFieldDataRequest
             | ScalarFieldDataRequest
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
-        ],
+        ),
     ):
         """Get the surface, scalar, vector or path-lines field data on a surface."""
         if isinstance(obj, SurfaceFieldDataRequest):
@@ -687,7 +687,7 @@ class _IFieldData:
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class TFieldData(_IFieldData):
+class TransactionFieldData(_IFieldData):
     """Provides access to Fluent field data on surfaces collected via transactions."""
 
     def __init__(
@@ -697,7 +697,7 @@ class TFieldData(_IFieldData):
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of TFieldData class."""
+        """__init__ method of TransactionFieldData class."""
         super().__init__()
         self.data = data
         self._field_info = field_info
@@ -1102,7 +1102,7 @@ class FieldTransaction:
             self._cache_requests.append(req)
         return self
 
-    def get_fields(self) -> TFieldData:
+    def get_fields(self) -> TransactionFieldData:
         """Get data for previously added requests."""
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
@@ -1110,7 +1110,7 @@ class FieldTransaction:
         )
         return self.get_response()
 
-    def get_response(self) -> TFieldData:
+    def get_response(self) -> TransactionFieldData:
         """Get data for previously added requests.
 
         Returns
@@ -1121,7 +1121,7 @@ class FieldTransaction:
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return TFieldData(
+        return TransactionFieldData(
             ChunkParser().extract_fields(
                 self._service.get_fields(self._fields_request)
             ),
