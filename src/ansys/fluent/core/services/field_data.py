@@ -753,7 +753,9 @@ class TransactionFieldData(_IFieldData):
         allowed_scalar_field_names,
     ):
         """__init__ method of TransactionFieldData class."""
-        super().__init__(data, field_info, allowed_surface_names, allowed_scalar_field_names)
+        super().__init__(
+            data, field_info, allowed_surface_names, allowed_scalar_field_names
+        )
 
     def __len__(self):
         return len(self.data)
@@ -1500,7 +1502,12 @@ class FieldData(_IFieldData):
         self._allowed_vector_field_names = _AllowedVectorFieldNames(
             is_data_valid, field_info
         )
-        super().__init__({}, self._field_info, self._allowed_surface_names, self._allowed_scalar_field_names)
+        super().__init__(
+            {},
+            self._field_info,
+            self._allowed_surface_names,
+            self._allowed_scalar_field_names,
+        )
 
         surface_args = dict(
             surface_ids=self._allowed_surface_ids,
