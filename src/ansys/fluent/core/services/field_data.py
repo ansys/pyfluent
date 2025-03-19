@@ -638,7 +638,56 @@ class PathlinesFieldDataRequest(NamedTuple):
     zones: list | None = None
 
 
-class TFieldData:
+class _IFieldData:
+    """The base field data interface."""
+
+    def __init__(self):
+        """__init__ method of _IFieldData class."""
+        self.data = None
+        self._field_info = None
+        self._allowed_surface_names = None
+
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
+            surfaces=surfaces,
+        )
+
+    def _get_scalar_field_data(self, **kwargs):
+        pass
+
+    def _get_surface_data(self, **kwargs):
+        pass
+
+    def _get_vector_field_data(self, **kwargs):
+        pass
+
+    def _get_pathlines_field_data(self, **kwargs):
+        pass
+
+    def get_field_data(
+        self,
+        obj: [
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ],
+    ):
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        if isinstance(obj, SurfaceFieldDataRequest):
+            return self._get_surface_data(**obj._asdict())
+        elif isinstance(obj, ScalarFieldDataRequest):
+            return self._get_scalar_field_data(**obj._asdict())
+        elif isinstance(obj, VectorFieldDataRequest):
+            return self._get_vector_field_data(**obj._asdict())
+        elif isinstance(obj, PathlinesFieldDataRequest):
+            return self._get_pathlines_field_data(**obj._asdict())
+
+
+class TFieldData(_IFieldData):
     """Provides access to Fluent field data on surfaces collected via transactions."""
 
     def __init__(
@@ -649,19 +698,12 @@ class TFieldData:
         allowed_scalar_field_names,
     ):
         """__init__ method of TFieldData class."""
+        super().__init__()
         self.data = data
         self._field_info = field_info
         self._allowed_surface_names = allowed_surface_names
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._returned_data = _ReturnFieldData()
-
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
-        """Get a list of surface ids based on surfaces provided as inputs."""
-        return _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
 
     def _get_scalar_field_data(
         self,
@@ -721,25 +763,6 @@ class TFieldData:
             self.get_surface_ids(kwargs.get("surfaces")),
             pathlines_data,
         )
-
-    def get_field_data(
-        self,
-        obj: [
-            SurfaceFieldDataRequest
-            | ScalarFieldDataRequest
-            | VectorFieldDataRequest
-            | PathlinesFieldDataRequest
-        ],
-    ):
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
-        if isinstance(obj, SurfaceFieldDataRequest):
-            return self._get_surface_data(**obj._asdict())
-        elif isinstance(obj, ScalarFieldDataRequest):
-            return self._get_scalar_field_data(**obj._asdict())
-        elif isinstance(obj, VectorFieldDataRequest):
-            return self._get_vector_field_data(**obj._asdict())
-        elif isinstance(obj, PathlinesFieldDataRequest):
-            return self._get_pathlines_field_data(**obj._asdict())
 
     def __len__(self):
         return len(self.data)
@@ -1457,7 +1480,7 @@ class Mesh:
     elements: list[Element]
 
 
-class FieldData:
+class FieldData(_IFieldData):
     """Provides access to Fluent field data on surfaces."""
 
     def __init__(
@@ -1469,6 +1492,7 @@ class FieldData:
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
         """__init__ method of FieldData class."""
+        super().__init__()
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
@@ -1528,14 +1552,6 @@ class FieldData:
         )
         self._returned_data = _ReturnFieldData()
         self._fetched_data = _FetchFieldData()
-
-    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
-        """Get a list of surface ids based on surfaces provided as inputs."""
-        return _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
 
     def new_transaction(self):
         """Create a new field transaction."""
@@ -1737,17 +1753,6 @@ class FieldData:
             velocity_domain=velocity_domain,
             zones=zones,
         )
-
-    def get_field_data(self, obj):
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
-        if isinstance(obj, SurfaceFieldDataRequest):
-            return self._get_surface_data(**obj._asdict())
-        elif isinstance(obj, ScalarFieldDataRequest):
-            return self._get_scalar_field_data(**obj._asdict())
-        elif isinstance(obj, VectorFieldDataRequest):
-            return self._get_vector_field_data(**obj._asdict())
-        elif isinstance(obj, PathlinesFieldDataRequest):
-            return self._get_pathlines_field_data(**obj._asdict())
 
     def get_mesh(self, zone: str | int) -> Mesh:
         """Get mesh for a zone.
