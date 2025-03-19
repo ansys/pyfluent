@@ -104,6 +104,7 @@ class FluentMode(FluentEnum):
     SOLVER = "solver"
     SOLVER_ICING = "solver_icing"
     SOLVER_AERO = "solver_aero"
+    SOLVER_PRE_POST = "solver_pre_post"
 
     def _default(self):
         return self.SOLVER
@@ -115,6 +116,7 @@ class FluentMode(FluentEnum):
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
+            self.SOLVER_PRE_POST: Solver,
         }
 
     @staticmethod
