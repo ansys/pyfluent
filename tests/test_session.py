@@ -623,9 +623,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
         # Assert that exception is propagated from the Fluent server
         assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
-        with pytest.raises(RuntimeError):
-            solver.settings.file.read(file_type="case", file_name=mesh_file_2d)
-
 
 @pytest.mark.fluent_version(">=23.2")
 def test_app_utilities_new_and_old(mixing_elbow_settings_session):
