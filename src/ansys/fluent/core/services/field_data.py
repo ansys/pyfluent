@@ -1741,40 +1741,13 @@ class FieldData:
     def get_field_data(self, obj):
         """Get the surface, scalar, vector or path-lines field data on a surface."""
         if isinstance(obj, SurfaceFieldDataRequest):
-            return self._get_surface_data(
-                data_types=obj.data_types,
-                surfaces=obj.surfaces,
-                overset_mesh=obj.overset_mesh,
-            )
+            return self._get_surface_data(**obj._asdict())
         elif isinstance(obj, ScalarFieldDataRequest):
-            return self._get_scalar_field_data(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-                node_value=obj.node_value,
-                boundary_value=obj.boundary_value,
-            )
+            return self._get_scalar_field_data(**obj._asdict())
         elif isinstance(obj, VectorFieldDataRequest):
-            return self._get_vector_field_data(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-            )
+            return self._get_vector_field_data(**obj._asdict())
         elif isinstance(obj, PathlinesFieldDataRequest):
-            return self._get_pathlines_field_data(
-                field_name=obj.field_name,
-                surfaces=obj.surfaces,
-                additional_field_name=obj.additional_field_name,
-                provide_particle_time_field=obj.provide_particle_time_field,
-                node_value=obj.node_value,
-                steps=obj.steps,
-                step_size=obj.step_size,
-                skip=obj.skip,
-                reverse=obj.reverse,
-                accuracy_control_on=obj.accuracy_control_on,
-                tolerance=obj.tolerance,
-                coarsen=obj.coarsen,
-                velocity_domain=obj.velocity_domain,
-                zones=obj.zones,
-            )
+            return self._get_pathlines_field_data(**obj._asdict())
 
     def get_mesh(self, zone: str | int) -> Mesh:
         """Get mesh for a zone.
