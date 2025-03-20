@@ -1,8 +1,8 @@
 name: Doc Build Dev Nightly
 
 on:
-  schedule:  # UTC at 0500
-    - cron:  '0 5 * * *'
+  schedule:
+    - cron: '0 5 * * *'
   workflow_dispatch:
 
 env:
@@ -20,6 +20,8 @@ env:
 jobs:
   build_dev_docs:
     runs-on: [self-hosted, pyfluent]
+    env:
+      FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,12 +32,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install OS packages
-        run: |
-          sudo apt update
-          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
+        run: bash scripts/install_os_packages.sh
 
-      - name: Install pyfluent
-        run: make install
+      - name: Install pyfluent and reapply after codegen
+        run: |
+          make install
+          make api-codegen
+          rm -rf dist
+          make install > /dev/null
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -46,48 +50,17 @@ jobs:
 
       - name: Pull Fluent docker image
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
-      - name: Run API codegen
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
-
-      - name: Execute exhaust_system_settings_api.py
-        run: |
-          python examples/00-fluent/exhaust_system_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-      
-      - name: Execute external_compressible_flow.py
-        run: |
-          python examples/00-fluent/external_compressible_flow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-
-      - name: Execute mixing_elbow_settings_api.py
-        run: |
-          python examples/00-fluent/mixing_elbow_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-
-      - name: Execute modeling_cavitation.py
-        run: |
-          python examples/00-fluent/modeling_cavitation.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-
-      - name: Execute species_transport.py
-        run: |
-          python examples/00-fluent/species_transport.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+      - name: Run example scripts
+        run: python examples/00-fluent/${{ matrix.script }}
+        strategy:
+          matrix:
+            script:
+              - exhaust_system_settings_api.py
+              - external_compressible_flow.py
+              - mixing_elbow_settings_api.py
+              - modeling_cavitation.py
+              - species_transport.py
 
       - name: Build All Documentation
         run: |
@@ -95,12 +68,10 @@ jobs:
           pip install ansys-fluent-core[docs,reader,tests]
           make build-all-docs
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           BUILD_ALL_DOCS: 1
 
       - name: Zip HTML Documentation before upload
         run: |
-          sudo apt install zip -y
           pushd doc/_build/html
           zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
           popd
@@ -120,9 +91,10 @@ jobs:
       - name: "Deploy development documentation"
         uses: ansys/actions/doc-deploy-dev@v8
         with:
-            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress-artifact: true
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
-            bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-            bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+          doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
+          decompress-artifact: true
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+ 
