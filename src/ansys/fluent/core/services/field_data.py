@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Wrappers over FieldData gRPC service of Fluent."""
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
@@ -638,7 +639,29 @@ class PathlinesFieldDataRequest(NamedTuple):
     zones: list | None = None
 
 
-class BaseFieldData:
+class FieldDataSource(ABC):
+    """Abstract class for field data interface."""
+
+    @abstractmethod
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        pass
+
+    @abstractmethod
+    def get_field(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        pass
+
+
+class BaseFieldData(FieldDataSource):
     """The base field data interface."""
 
     def __init__(
