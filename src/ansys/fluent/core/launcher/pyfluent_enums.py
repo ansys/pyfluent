@@ -97,15 +97,25 @@ class LaunchMode(FluentEnum):
 
 
 class FluentMode(FluentEnum):
-    """Enumerates over supported Fluent modes."""
+    """Enumerates over supported Fluent modes.
+
+    The Fluent mode is used to determine the type of session to be created.
+
+    Modes:
+    - ``MESHING``: Meshing session.
+    - ``PURE_MESHING``: Pure meshing session.
+    - ``SOLVER``: Solver session.
+    - ``SOLVER_ICING``: Icing solver session.
+    - ``SOLVER_AERO``: Aero solver session.
+    - ``PRE_POST``:  Pre- and post-processing session.
+    """
 
     MESHING = "meshing"
     PURE_MESHING = "pure_meshing"
-    MESHING_PRE_POST = "meshing_pre_post"
     SOLVER = "solver"
     SOLVER_ICING = "solver_icing"
     SOLVER_AERO = "solver_aero"
-    SOLVER_PRE_POST = "solver_pre_post"
+    PRE_POST = "pre_post"
 
     def _default(self):
         return self.SOLVER
@@ -114,11 +124,9 @@ class FluentMode(FluentEnum):
         return {
             self.MESHING: Meshing,
             self.PURE_MESHING: PureMeshing,
-            self.MESHING_PRE_POST: Meshing,
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
-            self.SOLVER_PRE_POST: Solver,
         }
 
     @staticmethod
