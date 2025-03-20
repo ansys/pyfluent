@@ -125,7 +125,7 @@ def _generate_launch_string(
         launch_string += " -flicing -license=enterprise"
     if argvals["mode"] == FluentMode.SOLVER_AERO:
         launch_string += " -flaero_server -license=enterprise"
-    if argvals["mode"] == FluentMode.SOLVER_PRE_POST:
+    if argvals["mode"] in [FluentMode.MESHING_PRE_POST, FluentMode.SOLVER_PRE_POST]:
         launch_string += " -post"
     if FluentMode.is_meshing(argvals["mode"]):
         launch_string += " -meshing"

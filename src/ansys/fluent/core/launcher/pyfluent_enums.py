@@ -101,6 +101,7 @@ class FluentMode(FluentEnum):
 
     MESHING = "meshing"
     PURE_MESHING = "pure_meshing"
+    MESHING_PRE_POST = "meshing_pre_post"
     SOLVER = "solver"
     SOLVER_ICING = "solver_icing"
     SOLVER_AERO = "solver_aero"
@@ -113,6 +114,7 @@ class FluentMode(FluentEnum):
         return {
             self.MESHING: Meshing,
             self.PURE_MESHING: PureMeshing,
+            self.MESHING_PRE_POST: Meshing,
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
