@@ -32,6 +32,7 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyCommandArgumentsSubItem,
     PyMenuGeneric,
     ReadOnlyObjectError,
     _convert_value_to_variant,
@@ -833,3 +834,21 @@ def test_dynamic_dependency(new_meshing_session):
     d = ic.Refaceting.Deviation.get_state()
     cd = ic.Refaceting.CustomDeviation.get_state()
     assert d == cd
+
+
+def test_field_level_help(new_meshing_session, capsys):
+    meshing = new_meshing_session
+    import_geometry = meshing.meshing.ImportGeometry.create_instance()
+    assert isinstance(import_geometry.FileFormat, PyCommandArgumentsSubItem)
+    import_geometry.FileFormat.help()
+    captured = capsys.readouterr()
+    assert (
+        "Indicate whether the imported geometry is a CAD File or a Mesh (either a surface or volume mesh)."
+        in captured.out
+    )
+    import_geometry.ImportType.help()
+    captured = capsys.readouterr()
+    assert (
+        "When the File Format is set to CAD, use the Import Type field to import a Single File (the default), or Multiple Files."
+        in captured.out
+    )
