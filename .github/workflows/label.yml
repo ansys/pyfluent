@@ -40,7 +40,7 @@ jobs:
       uses: actions/labeler@v5
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        sync-labels: true
+        sync-labels: false
 
     # Label based on branch name
     - uses: actions-ecosystem/action-add-labels@v1
