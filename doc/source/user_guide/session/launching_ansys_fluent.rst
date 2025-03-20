@@ -54,13 +54,6 @@ These two examples show equivalent ways to launch Fluent in solution mode:
   >>> solver = pyfluent.launch_fluent()
 
 
-- Launch Fluent in ``PRE_POST`` mode:
-
-.. code:: python
-
-  >>> session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PRE_POST)
-
-
 Meshing mode
 ~~~~~~~~~~~~
 This example shows how to launch Fluent in meshing mode:
