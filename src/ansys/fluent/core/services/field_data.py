@@ -661,6 +661,32 @@ class FieldDataSource(ABC):
         pass
 
 
+class FieldTransactionSource(ABC):
+    """Abstract class for field data interface."""
+
+    @abstractmethod
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        pass
+
+    @abstractmethod
+    def add_requests(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+        *args: SurfaceFieldDataRequest
+        | ScalarFieldDataRequest
+        | VectorFieldDataRequest
+        | PathlinesFieldDataRequest,
+    ):
+        """Add request to get surface, scalar, vector or path-lines field on surfaces."""
+        pass
+
+
 class BaseFieldData(FieldDataSource):
     """The base field data interface."""
 
@@ -787,7 +813,7 @@ class TransactionFieldData(BaseFieldData):
         return self.data
 
 
-class FieldTransaction:
+class FieldTransaction(FieldTransactionSource):
     """Populates Fluent field data on surfaces."""
 
     def __init__(
