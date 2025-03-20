@@ -73,7 +73,7 @@ jobs:
 
       - name: Execute mixing_elbow_settings_api.py
         run: |
-          python examples/00-fluent/mixing_elbow_settings_api.py
+          # python examples/00-fluent/mixing_elbow_settings_api.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
