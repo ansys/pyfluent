@@ -249,6 +249,7 @@ def test_parameters(mixing_elbow_param_case_data_session):
     assert output_jdict == {"outlet_temp-op": "K"}
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3855")
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
