@@ -127,6 +127,7 @@ class FluentMode(FluentEnum):
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
+            self.PRE_POST: Solver,
         }
 
     @staticmethod
