@@ -29,6 +29,7 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import is_windows
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -127,7 +128,7 @@ class FluentMode(FluentEnum):
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
-            self.PRE_POST: Solver,
+            self.PRE_POST: BaseSession,
         }
 
     @staticmethod
