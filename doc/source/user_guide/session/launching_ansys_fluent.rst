@@ -126,7 +126,7 @@ This command enables logging:
 
 .. code:: python
 
-  >>> pyfluent.logging.enable()
+  >>> pyfluent.logger.enable()
 
 
 For more details, see :ref:`ref_logging_guide`.
