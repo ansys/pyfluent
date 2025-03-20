@@ -44,7 +44,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     file_session
     fluent_connection
     journaling
-    logging
+    logger
     parametric
     rpvars
     search
