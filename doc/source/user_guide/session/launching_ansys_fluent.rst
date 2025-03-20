@@ -69,7 +69,7 @@ Pre/Post mode
 ~~~~~~~~~~~~~
 Run Ansys Fluent with only the setup and postprocessing capabilities available. It will not allow you to perform calculations.
 
-This example shows how to launch Fluent in meshing mode:
+This example shows how to launch Fluent in Pre/Post mode:
 
 .. code:: python
 
