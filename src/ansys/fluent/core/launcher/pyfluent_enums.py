@@ -29,7 +29,6 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import is_windows
-from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -105,10 +104,10 @@ class FluentMode(FluentEnum):
     Modes:
     - ``MESHING``: Meshing session.
     - ``PURE_MESHING``: Pure meshing session.
-    - ``SOLVER``: Solver session.
+    - ``SOLVER``: The default Ansys Fluent full solution mode allows you to set up, solve, and postprocess a problem.
     - ``SOLVER_ICING``: Icing solver session.
     - ``SOLVER_AERO``: Aero solver session.
-    - ``PRE_POST``:  Pre- and post-processing session.
+    - ``PRE_POST``:  Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
     """
 
     MESHING = "meshing"
@@ -128,7 +127,7 @@ class FluentMode(FluentEnum):
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
-            self.PRE_POST: BaseSession,
+            self.PRE_POST: Solver,
         }
 
     @staticmethod
