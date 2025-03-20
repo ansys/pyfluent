@@ -1496,7 +1496,7 @@ class Mesh:
     elements: list[Element]
 
 
-class FieldData(BaseFieldData):
+class LiveFieldData(BaseFieldData):
     """Provides access to Fluent field data on surfaces."""
 
     def __init__(
