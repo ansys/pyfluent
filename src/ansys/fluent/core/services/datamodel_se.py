@@ -2254,19 +2254,17 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
 
 
 arg_class_by_type = {
-    "String": PyTextualCommandArgumentsSubItem,
-    "ListString": PyTextualCommandArgumentsSubItem,
-    "String List": PyTextualCommandArgumentsSubItem,
-    "Real": PyNumericalCommandArgumentsSubItem,
-    "Int": PyNumericalCommandArgumentsSubItem,
-    "ListReal": PyNumericalCommandArgumentsSubItem,
-    "Real List": PyNumericalCommandArgumentsSubItem,
-    "Integer": PyNumericalCommandArgumentsSubItem,
-    "ListInt": PyNumericalCommandArgumentsSubItem,
+    **dict.fromkeys(
+        ["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem
+    ),
+    **dict.fromkeys(
+        ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt"],
+        PyNumericalCommandArgumentsSubItem,
+    ),
     "Dict": PyDictionaryCommandArgumentsSubItem,
-    "Bool": PyParameterCommandArgumentsSubItem,
-    "Logical": PyParameterCommandArgumentsSubItem,
-    "Logical List": PyParameterCommandArgumentsSubItem,
+    **dict.fromkeys(
+        ["Bool", "Logical", "Logical List"], PyParameterCommandArgumentsSubItem
+    ),
     "ModelObject": PySingletonCommandArgumentsSubItem,
 }
 
