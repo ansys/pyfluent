@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Wrappers over FieldData gRPC service of Fluent."""
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
@@ -638,7 +639,55 @@ class PathlinesFieldDataRequest(NamedTuple):
     zones: list | None = None
 
 
-class BaseFieldData:
+class FieldDataSource(ABC):
+    """Abstract class for field data interface."""
+
+    @abstractmethod
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        pass
+
+    @abstractmethod
+    def get_field(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        pass
+
+
+class FieldTransactionSource(ABC):
+    """Abstract class for field data interface."""
+
+    @abstractmethod
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        pass
+
+    @abstractmethod
+    def add_requests(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+        *args: SurfaceFieldDataRequest
+        | ScalarFieldDataRequest
+        | VectorFieldDataRequest
+        | PathlinesFieldDataRequest,
+    ):
+        """Add request to get surface, scalar, vector or path-lines field on surfaces."""
+        pass
+
+
+class BaseFieldData(FieldDataSource):
     """The base field data interface."""
 
     def __init__(
@@ -722,7 +771,7 @@ class BaseFieldData:
             pathlines_data,
         )
 
-    def get_field_data(
+    def get_field(
         self,
         obj: (
             SurfaceFieldDataRequest
@@ -764,7 +813,7 @@ class TransactionFieldData(BaseFieldData):
         return self.data
 
 
-class FieldTransaction:
+class FieldTransaction(FieldTransactionSource):
     """Populates Fluent field data on surfaces."""
 
     def __init__(
@@ -1473,7 +1522,7 @@ class Mesh:
     elements: list[Element]
 
 
-class FieldData(BaseFieldData):
+class LiveFieldData(BaseFieldData):
     """Provides access to Fluent field data on surfaces."""
 
     def __init__(
@@ -1673,7 +1722,7 @@ class FieldData(BaseFieldData):
     ) -> Dict[int | str, np.array]:
         """Get scalar field data on a surface."""
         warnings.warn(
-            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
+            "'get_scalar_field_data' is deprecated, use 'get_field' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_scalar_field_data(
@@ -1691,7 +1740,7 @@ class FieldData(BaseFieldData):
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         warnings.warn(
-            "'get_surface_data' is deprecated, use 'get_field_data' instead",
+            "'get_surface_data' is deprecated, use 'get_field' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_surface_data(
@@ -1705,7 +1754,7 @@ class FieldData(BaseFieldData):
     ) -> Dict[int | str, np.array]:
         """Get vector field data on a surface."""
         warnings.warn(
-            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
+            "'get_vector_field_data' is deprecated, use 'get_field' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_vector_field_data(
@@ -1732,7 +1781,7 @@ class FieldData(BaseFieldData):
     ) -> Dict:
         """Get the pathlines field data on a surface."""
         warnings.warn(
-            "'get_pathlines_field_data' is deprecated, use 'get_field_data' instead",
+            "'get_pathlines_field_data' is deprecated, use 'get_field' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_pathlines_field_data(
