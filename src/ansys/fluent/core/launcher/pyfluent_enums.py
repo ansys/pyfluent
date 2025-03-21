@@ -102,12 +102,12 @@ class FluentMode(FluentEnum):
     The Fluent mode is used to determine the type of session to be created.
 
     Modes:
-    - ``MESHING``: Meshing session.
-    - ``PURE_MESHING``: Pure meshing session.
+    - ``MESHING``: Start Fluent in meshing mode.
+    - ``PURE_MESHING``: Start Fluent in meshing mode without switch to solver functionality.
     - ``SOLVER``: The default Ansys Fluent full solution mode allows you to set up, solve, and postprocess a problem.
-    - ``SOLVER_ICING``: Icing solver session.
-    - ``SOLVER_AERO``: Aero solver session.
-    - ``PRE_POST``:  Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
+    - ``SOLVER_ICING``: Fluent Icing allows you to simulate airflow, particles and ice accretion on aircraft surfaces.
+    - ``SOLVER_AERO``: Fluent Aero allows you to easily explore the aerodynamic performance of aircraft from a wide range of flight regimes, from subsonic to hypersonic conditions.
+    - ``PRE_POST``: Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
     """
 
     MESHING = "meshing"
