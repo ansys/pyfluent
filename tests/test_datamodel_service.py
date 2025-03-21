@@ -768,7 +768,7 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logging.enable()
+    pyfluent.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -789,7 +789,7 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logging.enable()
+    pyfluent.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
