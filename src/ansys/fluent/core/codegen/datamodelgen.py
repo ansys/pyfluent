@@ -327,17 +327,19 @@ class DataModelGenerator:
             f.write(
                 f"{indent}        super().__init__(parent, attr, service, rules, path)\n"
             )
-            parameters_info = arg_info["info"]["parameters"]
-            for name, parameter_info in parameters_info.items():
-                py_name = name.translate(_ttable)
-                f.write(
-                    f'{indent}        self.{py_name} = self._{py_name}(self, "{name}", service, rules, path)\n'
-                )
-            f.write("\n")
-            for name, parameter_info in parameters_info.items():
-                self._write_arg_class(
-                    f, parameter_info | {"name": name}, f"{indent}    "
-                )
+            info = arg_info.get("info")
+            if info:
+                parameters_info = info["parameters"]
+                for name, parameter_info in parameters_info.items():
+                    py_name = name.translate(_ttable)
+                    f.write(
+                        f'{indent}        self.{py_name} = self._{py_name}(self, "{name}", service, rules, path)\n'
+                    )
+                f.write("\n")
+                for name, parameter_info in parameters_info.items():
+                    self._write_arg_class(
+                        f, parameter_info | {"name": name}, f"{indent}    "
+                    )
 
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}
