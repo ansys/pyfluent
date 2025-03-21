@@ -1883,7 +1883,6 @@ class PyCommand:
             self.path = []
         else:
             self.path = path
-        self._static_info = None  # command's static info
         self.file_behavior = None
 
     def _update_file_behavior(self, file_purpose):
@@ -1961,31 +1960,9 @@ class PyCommand:
         )
         return commandid
 
-    def _get_static_info(self) -> dict[str, Any]:
-        if self._static_info is None:
-            if self.rules not in PyCommand._full_static_info.keys():
-                # Populate the static info with respect to a rules only if the
-                # same info has not been obtained in another context already.
-                # If the information is available, we can use it without additional remote calls.
-                response = self.service.get_static_info(self.rules)
-                PyCommand._full_static_info[self.rules] = response
-            rules_static_info = PyCommand._full_static_info[self.rules]
-            static_info_path = []
-            for comp in self.path:
-                static_info_path.append("namedobjects" if comp[1] else "singletons")
-                static_info_path.append(comp[0])
-            parent_static_info = _get_value_from_message_dict(
-                rules_static_info, static_info_path
-            )
-            self._static_info = _get_value_from_message_dict(
-                parent_static_info, ["commands", self.command, "commandinfo"]
-            )
-        return self._static_info
-
     def _get_create_instance_args(self):
         """Create a command instance."""
         try:
-            static_info = self._get_static_info()
             id = self._create_command_arguments()
             return [
                 self.service,
@@ -1993,7 +1970,6 @@ class PyCommand:
                 self.command,
                 self.path.copy(),
                 id,
-                static_info.get("args"),
             ]
         # Possible error thrown from the grpc layer
         except (RuntimeError, ValueError):
@@ -2108,13 +2084,11 @@ class PyCommandArguments(PyStateContainer):
         command: str,
         path: Path,
         id: str,
-        static_info,
     ) -> None:
         """__init__ method of PyCommandArguments class."""
         super().__init__(service, rules, path)
         self.__dict__.update(
             dict(
-                static_info=static_info,
                 command=command,
                 id=id,
             )
@@ -2131,12 +2105,6 @@ class PyCommandArguments(PyStateContainer):
             )
         except Exception as exc:
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
-
-    def _get_argument_class_arg(self, attr: str):
-        for arg in self.static_info:
-            if arg["name"] == attr:
-                py_class = arg_class_by_type[arg["type"]]
-                return py_class, arg
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
