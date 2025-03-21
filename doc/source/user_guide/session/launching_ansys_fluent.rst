@@ -46,7 +46,7 @@ These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   
 
 .. code:: python
@@ -63,6 +63,17 @@ This example shows how to launch Fluent in meshing mode:
   >>> meshing_session = pyfluent.launch_fluent(
   >>>      mode=pyfluent.FluentMode.MESHING
   >>> )
+
+
+Pre/Post mode
+~~~~~~~~~~~~~
+Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
+
+This example shows how to launch Fluent in Pre/Post mode:
+
+.. code:: python
+
+  >>> pre_post_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PRE_POST)
 
 
 Precision
