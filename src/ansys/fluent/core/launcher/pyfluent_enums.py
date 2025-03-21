@@ -102,7 +102,7 @@ class FluentMode(FluentEnum):
     The Fluent mode is used to determine the type of session to be created.
 
     Modes:
-    - ``MESHING``: Start Fluent in meshing mode.
+    - ``MESHING``: When in meshing mode, Fluent functions as a robust, unstructured mesh generation program that can handle meshes of virtually unlimited size and complexity..
     - ``PURE_MESHING``: Start Fluent in meshing mode without switch to solver functionality.
     - ``SOLVER``: The default Ansys Fluent full solution mode allows you to set up, solve, and postprocess a problem.
     - ``SOLVER_ICING``: Fluent Icing allows you to simulate airflow, particles and ice accretion on aircraft surfaces.
