@@ -1030,15 +1030,15 @@ solver.journal.stop()
 
 ```{python}
 import ansys.fluent.core as pyfluent
-config_dict = pyfluent.logging.get_default_config()
+config_dict = pyfluent.logger.get_default_config()
 config_dict['handlers']['pyfluent_file'][
     'filename'] = 'test.log'
-pyfluent.logging.enable(custom_config=config_dict)
-pyfluent.logging.list_loggers()
-logger = pyfluent.logging.get_logger(
+pyfluent.logger.enable(custom_config=config_dict)
+pyfluent.logger.list_loggers()
+logger = pyfluent.logger.get_logger(
     'pyfluent.networking')
 logger.setLevel('ERROR')
-pyfluent.logging.set_global_level('DEBUG')
+pyfluent.logger.set_global_level('DEBUG')
 ```
 
 ### API search

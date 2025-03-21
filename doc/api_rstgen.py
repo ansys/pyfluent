@@ -115,7 +115,7 @@ hierarchy = {
         "file_session",
         "fluent_connection",
         "journaling",
-        "logging",
+        "logger",
         "parametric",
         "rpvars",
         "search",
