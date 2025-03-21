@@ -34,3 +34,4 @@ def test_pre_post_session():
     pre_post.settings.solution.initialization.hybrid_initialize()
     with pytest.raises(InactiveObjectError):
         pre_post.settings.solution.run_calculation.iterate(iter_count=10)
+    pre_post.exit()
