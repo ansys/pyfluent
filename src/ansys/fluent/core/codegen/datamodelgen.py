@@ -463,10 +463,10 @@ class DataModelGenerator:
                 f"{indent}        class _{k}CommandArguments(PyCommandArguments):\n"
             )
             f.write(
-                f"{indent}            def __init__(self, service, rules, command, path, id, static_info):\n"
+                f"{indent}            def __init__(self, service, rules, command, path, id):\n"
             )
             f.write(
-                f"{indent}                super().__init__(service, rules, command, path, id, static_info)\n"
+                f"{indent}                super().__init__(service, rules, command, path, id)\n"
             )
             args_info = command_info.get("args", [])
             for arg_info in args_info:
