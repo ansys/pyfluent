@@ -563,11 +563,15 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 
     graphics = solver.results.graphics
 
-    # # Post-process without case
-    # with pytest.raises(RuntimeError):
-    #     # Does not exist. #1197711
-    #     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
-    #     graphics.mesh["mesh-1"].display()
+    fluent_version = solver.get_fluent_version()
+
+    if fluent_version >= FluentVersion.v252:
+        # Post-process without case
+        with pytest.raises(RuntimeError, match="object is not active") as exec_info:
+            # Does not exist. #1197711
+            graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
+            graphics.mesh["mesh-1"].display()
+        assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     case_file = examples.download_file(
         "mixing_elbow.cas.h5",
@@ -581,7 +585,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"].display()
 
     # Post-process without data
-    fluent_version = solver.get_fluent_version()
     match_str = (
         "Invalid result name."
         if fluent_version == FluentVersion.v242
@@ -610,13 +613,15 @@ def test_general_exception_behaviour_in_session(new_solver_session):
         return_without_path=False,
     )
 
-    # Error in server:
-    # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
-    # with pytest.raises(RuntimeError, match="Surface meshes cannot be read") as exec_info:
-    #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)
-    # # Assert that exception is propagated from the Fluent server
-    # assert isinstance(exec_info.value.__context__, grpc.RpcError)
-    del mesh_file_2d  # Remove this line after the above code snippet is operational
+    if fluent_version >= FluentVersion.v252:
+        # Error in server:
+        # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
+        with pytest.raises(
+            RuntimeError, match="Surface meshes cannot be read"
+        ) as exec_info:
+            solver.settings.file.read(file_type="case", file_name=mesh_file_2d)
+        # Assert that exception is propagated from the Fluent server
+        assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
 
 @pytest.mark.fluent_version(">=23.2")

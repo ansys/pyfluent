@@ -61,6 +61,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
+    fluent_env["REMOTING_THROW_LAST_SETTINGS_ERROR"] = "1"
     if pyfluent.CLEAR_FLUENT_PARA_ENVS:
         fluent_env.pop("PARA_NPROCS", None)
         fluent_env.pop("PARA_MESH_NPROCS", None)
