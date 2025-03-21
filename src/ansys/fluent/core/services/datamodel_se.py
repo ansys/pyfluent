@@ -2087,7 +2087,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     def help(self) -> None:
         """Get help."""
-        pass
+        print(self.parent_arg["helpstring"])
 
     def __setattr__(self, key, value):
         if isinstance(value, PyCommandArgumentsSubItem):
