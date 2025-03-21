@@ -837,7 +837,7 @@ def test_dynamic_dependency(new_meshing_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_field_level_help(new_meshing_session, capsys):
+def test_field_level_help(new_meshing_session):
     meshing = new_meshing_session
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
     assert isinstance(import_geometry.FileFormat, PyCommandArgumentsSubItem)
