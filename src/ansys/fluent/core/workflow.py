@@ -673,6 +673,17 @@ class TaskContainer(PyCallableStateObject):
         return self.get_state()
 
 
+def _getattr_recursive(obj, attr):
+    if hasattr(obj, attr):
+        return getattr(obj, attr)
+
+    for sub_attr_name in dir(obj):
+        if sub_attr_name.startswith("_"):
+            continue
+        sub_attr = getattr(obj, sub_attr_name)
+        return _getattr_recursive(sub_attr, attr)
+
+
 class ArgumentsWrapper(PyCallableStateObject):
     """Wrapper for a dictionary of task arguments."""
 
@@ -727,7 +738,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         for key, val in input_dict.items():
             self._snake_to_camel_map[camel_to_snake_case(key)] = key
             if isinstance(
-                getattr(cmd_args, key),
+                # Key can be parameter name of a singleton-type command argument.
+                # Hence, we are searching for the key recursively within the command arguments.
+                _getattr_recursive(cmd_args, key),
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
