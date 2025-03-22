@@ -673,15 +673,28 @@ class TaskContainer(PyCallableStateObject):
         return self.get_state()
 
 
-def _getattr_recursive(obj, attr):
-    if hasattr(obj, attr):
-        return getattr(obj, attr)
+def _getarg_recursive(obj, arg_name):
+    """Search for an argument within a command arguments object at any descendant level."""
 
-    for sub_attr_name in dir(obj):
-        if sub_attr_name.startswith("_"):
-            continue
-        sub_attr = getattr(obj, sub_attr_name)
-        return _getattr_recursive(sub_attr, attr)
+    def inner(obj, arg_name):
+        if hasattr(obj, arg_name):
+            return getattr(obj, arg_name)
+
+        for sub_attr_name in dir(obj):
+            if sub_attr_name.startswith("_"):
+                continue
+            sub_attr = getattr(obj, sub_attr_name)
+            if isinstance(sub_attr, PySingletonCommandArgumentsSubItem):
+                result = inner(sub_attr, arg_name)
+                if result is not None:
+                    return result
+
+    arg = inner(obj, arg_name)
+    if arg is None:
+        raise AttributeError(
+            f"'{obj.__class__.__name__}' object has no attribute '{arg_name}' at any descendant level."
+        )
+    return arg
 
 
 class ArgumentsWrapper(PyCallableStateObject):
@@ -740,7 +753,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             if isinstance(
                 # Key can be parameter name of a singleton-type command argument.
                 # Hence, we are searching for the key recursively within the command arguments.
-                _getattr_recursive(cmd_args, key),
+                _getarg_recursive(cmd_args, key),
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
