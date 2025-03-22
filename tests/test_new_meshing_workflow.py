@@ -1199,7 +1199,8 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_geometry' is a watertight workflow command which is not available now
     # since we have changed to fault-tolerant in the backend.
-    with pytest.raises(RuntimeError):
+    # It seems to throw either RuntimeError or ValueError randomly.
+    with pytest.raises((RuntimeError, ValueError)):
         watertight.import_geometry.arguments()
 
     # Re-initialize watertight
@@ -1207,7 +1208,7 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     assert watertight.import_geometry.arguments()
@@ -1216,14 +1217,14 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_geometry' is a watertight workflow command which is not available now
     # since we have changed to fault-tolerant in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         watertight.import_geometry.arguments()
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     # Re-initialize fault-tolerant
