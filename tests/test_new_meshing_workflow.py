@@ -1719,25 +1719,18 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     with pytest.raises(AttributeError) as msg:
         assert feat_angle.allowed_values()
     assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+        msg.value.args[0] == "'_FeatureAngle' object has no attribute 'allowed_values'"
     )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.num_parts.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
+    assert msg.value.args[0] == "'_NumParts' object has no attribute 'allowed_values'"
 
     # Test intended to fail in string type (min() only available in numerical types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.length_unit.min()
-    assert (
-        msg.value.args[0]
-        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
-    )
+    assert msg.value.args[0] == "'_LengthUnit' object has no attribute 'min'"
 
 
 @pytest.mark.codegen_required
