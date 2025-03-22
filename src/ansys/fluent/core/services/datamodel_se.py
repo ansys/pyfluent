@@ -1978,7 +1978,8 @@ class PyCommand:
     def create_instance(self) -> "PyCommandArguments":
         """Create a command instance."""
         args = self._get_create_instance_args()
-        return PyCommandArguments(*args)
+        if args is not None:
+            return PyCommandArguments(*args)
 
 
 class _InputFile:

@@ -485,7 +485,10 @@ class DataModelGenerator:
                 f"{indent}        def create_instance(self) -> _{k}CommandArguments:\n"
             )
             f.write(f"{indent}            args = self._get_create_instance_args()\n")
-            f.write(f"{indent}            return self._{k}CommandArguments(*args)\n\n")
+            f.write(f"{indent}            if args is not None:\n")
+            f.write(
+                f"{indent}                return self._{k}CommandArguments(*args)\n\n"
+            )
             api_tree[k] = "Command"
         for k in queries:
             f.write(f"{indent}    class {k}(PyQuery):\n")
