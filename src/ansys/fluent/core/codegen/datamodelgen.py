@@ -93,7 +93,27 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
     )
 )
 
-_ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation))
+
+digits = {
+    0: "Zero",
+    1: "One",
+    2: "Two",
+    3: "Three",
+    4: "Four",
+    5: "Five",
+    6: "Six",
+    7: "Seven",
+    8: "Eight",
+    9: "Nine",
+}
+
+
+def _convert_to_py_name(name: str) -> str:
+    ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation))
+    name = name.translate(ttable)
+    if name[0].isdigit():
+        name = f"{digits[int(name[0])]}{name[1:]}"
+    return name
 
 
 def _write_command_query_stub(name: str, info: Any, f: FileIO):
@@ -314,7 +334,7 @@ class DataModelGenerator:
         arg_type = arg_info["type"]
         arg_doc = arg_info.get("helpstring", f"Argument {arg_name}.")
         arg_class = arg_class_by_type[arg_type]
-        py_name = arg_name.translate(_ttable)
+        py_name = _convert_to_py_name(arg_name)
         f.write(f"{indent}class _{py_name}({arg_class.__name__}):\n")
         f.write(f'{indent}    """\n')
         for line in arg_doc.splitlines():
@@ -331,7 +351,7 @@ class DataModelGenerator:
             if info:
                 parameters_info = info["parameters"]
                 for name, parameter_info in parameters_info.items():
-                    py_name = name.translate(_ttable)
+                    py_name = _convert_to_py_name(name)
                     f.write(
                         f'{indent}        self.{py_name} = self._{py_name}(self, "{name}", service, rules, path)\n'
                     )
@@ -473,7 +493,7 @@ class DataModelGenerator:
             args_info = command_info.get("args", [])
             for arg_info in args_info:
                 arg_name = arg_info["name"]
-                py_name = arg_name.translate(_ttable)
+                py_name = _convert_to_py_name(arg_name)
                 f.write(
                     f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
                 )
