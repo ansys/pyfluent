@@ -40,6 +40,8 @@ from ansys.fluent.core.services.field_data import (
     SurfaceFieldDataRequest,
     TransactionFieldData,
     VectorFieldDataRequest,
+    _AllowedScalarFieldNames,
+    _AllowedSurfaceNames,
 )
 from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
 
@@ -391,7 +393,7 @@ class Transaction(FieldTransactionSource):
             self._cache_requests.append(req)
         return self
 
-    def get_fields(self) -> TransactionFieldData:
+    def get_fields(self):
         """Get data for previously added requests."""
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
@@ -465,7 +467,12 @@ class Transaction(FieldTransactionSource):
             field_data_surface[transaction.surface_id]["vertices"] = mesh.get_vertices(
                 transaction.surface_id
             )
-        return TransactionFieldData(field_data, self._field_info, [], [])
+        return TransactionFieldData(
+            field_data,
+            self._field_info,
+            _AllowedSurfaceNames(self._field_info),
+            _AllowedScalarFieldNames(True, self._field_info),
+        )
 
 
 class FileFieldData(FieldDataSource):
@@ -780,6 +787,7 @@ class FileFieldData(FieldDataSource):
         self,
         field_name: str,
         surfaces: List[int | str],
+        **kwargs,
     ):
         raise NotImplementedError("Pathlines are not supported.")
 
