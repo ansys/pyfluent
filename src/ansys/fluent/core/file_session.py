@@ -22,7 +22,7 @@
 
 """Provides a module for file session."""
 
-from typing import List
+from typing import Dict, List
 import warnings
 
 import numpy as np
@@ -480,6 +480,13 @@ class FileFieldData(FieldDataSource):
         """Create a new field transaction."""
         return Transaction(self._file_session, self._field_info)
 
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
+
     @deprecate_argument(
         old_arg="surface_name",
         new_arg="surfaces",
@@ -543,10 +550,7 @@ class FileFieldData(FieldDataSource):
                 data_types.remove(d_type)
                 data_types.append(SurfaceDataType(d_type))
 
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surfaces=surfaces,
-        )
+        surface_ids = self.get_surface_ids(surfaces=surfaces)
 
         if SurfaceDataType.Vertices in data_types:
             return {
@@ -640,10 +644,7 @@ class FileFieldData(FieldDataSource):
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ):
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surfaces=surfaces,
-        )
+        surface_ids = self.get_surface_ids(surfaces=surfaces)
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
@@ -717,10 +718,7 @@ class FileFieldData(FieldDataSource):
         field_name: str,
         surfaces: List[int | str],
     ):
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surfaces=surfaces,
-        )
+        surface_ids = self.get_surface_ids(surfaces=surfaces)
         if (
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
@@ -784,6 +782,25 @@ class FileFieldData(FieldDataSource):
         surfaces: List[int | str],
     ):
         raise NotImplementedError("Pathlines are not supported.")
+
+    def get_field(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        if isinstance(obj, SurfaceFieldDataRequest):
+            return self._get_surface_data(**obj._asdict())
+        elif isinstance(obj, ScalarFieldDataRequest):
+            return self._get_scalar_field_data(**obj._asdict())
+        elif isinstance(obj, VectorFieldDataRequest):
+            return self._get_vector_field_data(**obj._asdict())
+        elif isinstance(obj, PathlinesFieldDataRequest):
+            return self._get_pathlines_field_data(**obj._asdict())
 
 
 class FileFieldInfo:

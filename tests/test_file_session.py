@@ -256,7 +256,7 @@ def test_transaction_request_single_phase():
     assert len(data) == 3
 
     # Surfaces Data
-    surface_data = data[(("type", "surface-data"),)]
+    surface_data = data()[(("type", "surface-data"),)]
     assert len(surface_data) == 2
     assert list(surface_data[3].keys()) == ["faces", "vertices"]
 
@@ -266,7 +266,7 @@ def test_transaction_request_single_phase():
         ("dataLocation", 1),
         ("boundaryValues", False),
     )
-    scalar_data = data[scalar_field_tag]
+    scalar_data = data()[scalar_field_tag]
     assert len(scalar_data) == 3
     assert len(scalar_data[5]["SV_T"]) == 100
     assert round(scalar_data[5]["SV_T"][50], 2) == 295.43
@@ -275,7 +275,7 @@ def test_transaction_request_single_phase():
     assert round(scalar_data[surf_id]["SV_T"][50], 2) == 293.15
 
     # Vector Field Data
-    vector_data = data[(("type", "vector-field"),)]
+    vector_data = data()[(("type", "vector-field"),)]
     assert len(vector_data) == 2
     assert len(vector_data[5]["velocity"]) == 300
     assert round(vector_data[5]["velocity"][150], 5) == 0.03035
@@ -319,10 +319,10 @@ def test_transaction_request_multi_phase():
         ("boundaryValues", False),
     )
 
-    assert len(data[scalar_field_tag]) == 2
+    assert len(data()[scalar_field_tag]) == 2
 
     # Vector Field Data
-    vector_data = data[(("type", "vector-field"),)]
+    vector_data = data()[(("type", "vector-field"),)]
     assert len(vector_data) == 1
     assert len(vector_data[31]["phase-3:velocity"]) == 456
 
