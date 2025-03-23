@@ -25,6 +25,12 @@ Single-phase
 
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.file_session import FileSession
+  >>> from ansys.fluent.core.services.field_data import (
+  >>>   ScalarFieldDataRequest,
+  >>>   SurfaceDataType,
+  >>>   SurfaceFieldDataRequest,
+  >>>   VectorFieldDataRequest,
+  >>> )
 
   >>> case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
   >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
@@ -33,7 +39,7 @@ Single-phase
   >>> file_session.read_data(data_file_name)
 
   >>> file_session.fields.field_info.get_scalar_field_range("SV_T")
-  [293.1446694544748, 313.1515948109515]
+  [0.0, 313.1515948109515]
   >>> file_session.fields.field_info.get_surfaces_info()
   {'wall': {'surface_id': [3],
    'zone_id': -1,
@@ -64,39 +70,43 @@ Single-phase
     'y-component': 'SV_V',
     'z-component': 'SV_W'}}
    >>> transaction = file_session.fields.field_data.new_transaction()
-   >>> transaction.add_surfaces_request([3, 4])
-   >>> transaction.add_scalar_fields_request("SV_T", [3, 4])
-   >>> transaction.add_vector_fields_request("velocity", [3, 4])
-   >>> transaction.get_fields()
-   {(('type', 'scalar-field'),
-     ('dataLocation', 1),
-     ('boundaryValues',
-      False)): {3: {'SV_T': array([293.14999, 293.14999, 293.14999, ..., 293.14999, 293.14999,
-             293.14999])}, 4: {'SV_T': array([293.14999, 293.14999, 293.14999, ..., 293.14999, 293.14999,
-             293.14999])}},
-    (('type',
-      'vector-field'),): {3: {'velocity': array([0., 0., 0., ..., 0., 0., 0.]), 'vector-scale': array([0.1])},
-     4: {'velocity': array([ 3.32643010e-01,  6.64311343e-03,  0.00000000e+00, ...,
-              4.56052223e-01,  2.45034248e-01, -1.24726618e-15]),
-      'vector-scale': array([0.1])}},
-    (('type',
-      'surface-data'),): {3: {'faces': array([   4,    3,    2, ...,  727,  694, 3809], dtype=uint32), 'vertices': array([ 0.        , -0.1016    ,  0.        , ...,  0.00620755,
-             -0.19304685,  0.03033731])},
-     4: {'faces': array([   4,  295,  294, ...,  265, 1482, 2183], dtype=uint32),
-      'vertices': array([ 0.        , -0.1016    ,  0.        , ...,  0.06435075,
-             -0.08779959,  0.        ])}}
-   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
-   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [3, 4])[3].shape
-   (3810, 3)
-   >>> file_session.fields.field_data.get_surface_data(data_types=[SurfaceDataType.Vertices], surfaces=[3, 4])[3][1500][0]
-   0.12405861914157867
-   >>> file_session.fields.field_data.get_scalar_field_data("SV_T", surfaces=["wall"])["wall"].shape
-   (3630,)
-   >>> file_session.fields.field_data.get_scalar_field_data("SV_T", surfaces=["wall"])["wall"][1500]
-   293.18071329432047
-   >>> file_session.fields.field_data.get_vector_field_data("velocity", surfaces=["symmetry"])["symmetry"].shape
+   >>> surf_request = SurfaceFieldDataRequest(
+   >>>      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+   >>>      surfaces=[3, 4],
+   >>> )
+   >>> sc_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 4], node_value=False, boundary_value=False)
+   >>> vc_request = VectorFieldDataRequest(field_name="velocity", surfaces=[3, 4])
+   >>> transaction.add_requests(surf_request, sc_request, vc_request)
+   >>> data = transaction.get_response()
+   >>> data.get_field(surf_request)[3][SurfaceDataType.Vertices]
+   array([[ 0.        , -0.1016    ,  0.        ],
+       [-0.00635   , -0.1016    ,  0.        ],
+       [-0.00634829, -0.10203364,  0.00662349],
+       ...,
+       [ 0.01857703, -0.19223897,  0.03035362],
+       [ 0.0124151 , -0.19273971,  0.03034735],
+       [ 0.00620755, -0.19304685,  0.03033731]])
+   >>> data.get_field(sc_request)[4]
+   array([293.14999, 293.14999, 293.14999, ..., 293.14999, 293.14999,
+       293.14999])
+   >>> data.get_field(vc_request).keys()
+   dict_keys([3, 4]
+   >>> data.get_field(vc_request)[4].shape
    (2018, 3)
-   >>> file_session.fields.field_data.get_vector_field_data("velocity", surfaces=["symmetry"])["symmetry"][1000][0]
+
+   >>> surface_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[3, 4])
+   >>> file_session.fields.field_data.get_field(surface_request)[3].shape
+   (3810, 3)
+   >>> file_session.fields.field_data.get_field(surface_request)[3][1500][0]
+   0.12405861914157867
+   >>> file_session.fields.field_data.get_field(ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"]))["wall"].shape
+   (3630,)
+   >>> file_session.fields.field_data.get_field(ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"]))["wall"][1500]
+   293.18071329432047
+   >>> vector_data_request = VectorFieldDataRequest(field_name="velocity", surfaces=["symmetry"])
+   >>> file_session.fields.field_data.get_field(vector_data_request)["symmetry"].shape
+   (2018, 3)
+   >>> file_session.fields.field_data.get_field(vector_data_request)["symmetry"][1000][0]
    0.001690600193527586
 
 
@@ -107,6 +117,12 @@ Multiphase
 
   >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.file_session import FileSession
+  >>> from ansys.fluent.core.services.field_data import (
+  >>>   ScalarFieldDataRequest,
+  >>>   SurfaceDataType,
+  >>>   SurfaceFieldDataRequest,
+  >>>   VectorFieldDataRequest,
+  >>> )
 
   >>> case_file_name = examples.download_file("mixing_elbow_mul_ph.cas.h5", "pyfluent/file_session")
   >>> data_file_name = examples.download_file("mixing_elbow_mul_ph.dat.h5", "pyfluent/file_session")
@@ -136,28 +152,36 @@ Multiphase
     'y-component': 'phase-4: SV_V',
     'z-component': 'phase-4: SV_W'}}
    >>> transaction = file_session.fields.field_data.new_transaction()
-   >>> transaction.add_scalar_fields_request("phase-1:SV_DENSITY", [30])
-   >>> transaction.add_vector_fields_request("phase-1:velocity", [30])
-   >>> transaction.get_fields()
-   {(('type', 'scalar-field'),
-     ('dataLocation', 1),
-     ('boundaryValues',
-      False)): {30: {'phase-1:SV_DENSITY': array([1.225, .....          1.225])}},
-    (('type',
-      'vector-field'),): {30: {'phase-1:velocity': array([0., ..... 0.]),
-      'vector-scale': array([0.1])}}}
-   >>> from ansys.fluent.core.services.field_data import SurfaceDataType
-   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [30])[30].shape
+   >>> scalar_field_request = ScalarFieldDataRequest(field_name="phase-1:SV_DENSITY", surfaces=[30], node_value=False, boundary_value=False)
+   >>> vector_request = VectorFieldDataRequest(field_name="phase-1:velocity", surfaces=[30])
+   >>> transaction.add_requests(scalar_field_request, vector_request)
+   >>> data = transaction.get_response()
+   >>> data.get_field(scalar_field_request)[30]
+   array([1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
+       1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
+       1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
+       1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
+       1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
+       1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
+       1.225])
+   >>> data.get_field(vector_request)[30].shape
+   (55, 3)
+
+   >>> surf_data_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[30])
+   >>> file_session.fields.field_data.get_field(surf_data_request)
+   >>> file_session.fields.field_data.get_field(surf_data_request)[30].shape
    (79, 3)
-   >>> file_session.fields.field_data.get_surface_data([SurfaceDataType.Vertices], [30])[30][50][0]
+   >>> file_session.fields.field_data.get_field(surf_data_request)[30][50][0]
    0.14896461503555408
-   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surfaces=["wall-elbow"])["wall-elbow"].shape
+   >>> scalar_request = ScalarFieldDataRequest(field_name="phase-1:SV_P", surfaces=["wall-elbow"])
+   >>> file_session.fields.field_data.get_field(scalar_request)["wall-elbow"].shape
    (2168,)
-   >>> file_session.fields.field_data.get_scalar_field_data("phase-1:SV_P", surfaces=["wall-elbow"])["wall-elbow"][1100]
+   >>> file_session.fields.field_data.get_field(scalar_request)["wall-elbow"][1100]
    1.4444035696104466e-11
-   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surfaces=["wall-elbow"])["wall-elbow"].shape
+   >>> vector_request = VectorFieldDataRequest(field_name="phase-2:velocity", surfaces=["wall-elbow"])
+   >>> file_session.fields.field_data.get_field(vector_request)["wall-elbow"].shape
    (2168, 3)
-   >>> file_session.fields.field_data.get_vector_field_data("phase-2:velocity", surfaces=["wall-elbow"])["wall-elbow"][1000][0]
+   >>> file_session.fields.field_data.get_field(vector_request)["wall-elbow"][1000][0]
    0.0
 
 

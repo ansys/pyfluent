@@ -46,9 +46,7 @@ def round_off_list_elements(input_list):
     return input_list
 
 
-#####################################################################################
-######################## USING DEPRECATED FORMAT ####################################
-#####################################################################################
+# USING DEPRECATED FORMAT
 
 
 def test_field_info_data_multi_phase_deprecated():
@@ -388,9 +386,7 @@ def test_error_handling_multi_phase_deprecated():
         field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[34].size
 
 
-#####################################################################################
-########################## USING UPDATED FORMAT #####################################
-#####################################################################################
+# USING UPDATED FORMAT
 
 
 def test_field_info_data_multi_phase():
