@@ -1,0 +1,10 @@
+services:
+  fluent-meshing:
+    image: ${FLUENT_IMAGE}
+    environment:
+      - ANSYSLMD_LICENSE_FILE=${ANSYSLMD_LICENSE_FILE}
+    command: ["3ddp", "-meshing", "-gu", "-sifile=/home/container/workdir/server.txt"]
+    ports:
+      - "9090"        # allowing Docker to select any available port dynamically
+    volumes:
+      - ${MOUNT_SOURCE}:/home/container/workdir  # Mount local directory to the container
