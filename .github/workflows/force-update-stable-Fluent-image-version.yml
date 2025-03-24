@@ -1,4 +1,4 @@
-name: Use latest docker image for CI
+name: Force update stable Fluent image version
 
 on:
     #pull_request:
