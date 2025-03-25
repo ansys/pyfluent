@@ -84,65 +84,99 @@ class PathlinesFieldDataRequest(NamedTuple):
 
 
 class BaseFieldInfo(ABC):
-    """Abstract class for field info. interface."""
+    """
+    Abstract base class for field information retrieval.
+
+    This class defines the interface for obtaining metadata about scalar and vector fields,
+    as well as surface details. It provides abstract methods that allow users to implement
+    their own data sources for retrieving field value ranges,  field characteristics,
+    and surface information.
+
+    Implementing classes should define:
+    - Methods to retrieve the range of scalar fields.
+    - Methods to obtain metadata about scalar and vector fields.
+    - Methods to retrieve surface-related information.
+
+    Subclasses must provide concrete implementations for all abstract methods.
+    """
 
     @abstractmethod
     def get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
-        """Get the range (minimum and maximum values) of the field.
+        """
+        Retrieve the range (minimum and maximum values) of a scalar field.
 
         Parameters
         ----------
-        field: str
-            Field name
-        node_value: bool
-        surface_ids : List[int], optional
-            List of surface IDS for the surface data.
+            field (str): The name of the scalar field.
+            node_value (bool, optional): Whether to retrieve node-based values instead of element-based. Defaults to False.
+            surface_ids (List[int], optional): List of surface IDs for filtering data. Defaults to None.
 
         Returns
         -------
-        List[float]
+            List[float]: A list containing the minimum and maximum values of the requested scalar field.
         """
         pass
 
     @abstractmethod
     def get_scalar_fields_info(self) -> Dict[str, Dict]:
-        """Get fields information (field name, domain, and section).
+        """
+        Retrieve information about available scalar fields.
+
+        This includes field names, associated domains, and sections.
 
         Returns
         -------
-        Dict
+            Dict[str, Dict]: A dictionary containing scalar field metadata.
         """
         pass
 
     @abstractmethod
     def get_vector_fields_info(self) -> Dict[str, Dict]:
-        """Get vector fields information (vector components).
+        """ "
+        Retrieve information about available vector fields.
+
+        This includes vector components and relevant metadata.
 
         Returns
         -------
-        Dict
+            Dict[str, Dict]: A dictionary containing vector field metadata.
         """
         pass
 
     @abstractmethod
     def get_surfaces_info(self) -> Dict[str, Dict]:
-        """Get surfaces information (surface name, ID, and type).
+        """
+        Retrieve information about available surfaces.
+
+        This includes surface names, IDs, and types.
 
         Returns
         -------
-        Dict
+            Dict[str, Dict]: A dictionary containing surface metadata.
         """
         pass
 
 
 class FieldDataSource(ABC):
-    """Abstract class for field data interface."""
+    """
+    Abstract base class for accessing field data.
+
+    This class defines the interface for retrieving field data based on user requests.
+    It provides abstract methods that allow users to implement their own data sources
+    for fetching field data related to surfaces, scalars, vectors, or pathlines.
+
+    Implementing classes should define:
+    - A method to obtain surface IDs from user-provided surface names or numerical identifiers.
+    - A method to retrieve field data based on a given request.
+
+    Subclasses must provide concrete implementations for all abstract methods.
+    """
 
     @abstractmethod
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
-        """Get a list of surface ids based on surfaces provided as inputs."""
+        """Retrieve a list of surface IDs based on input surface names or numerical identifiers."""
         pass
 
     @abstractmethod
@@ -155,16 +189,41 @@ class FieldDataSource(ABC):
             | PathlinesFieldDataRequest
         ),
     ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        """
+        Retrieve the field data for a given request.
+
+        This method processes the specified request and returns the corresponding
+        field data in a structured format.
+
+        Returns
+        -------
+            Dict[int | str, Dict | np.array]: A dictionary where keys represent surface
+            IDs or names, and values contain the corresponding field data.
+        """
         pass
 
 
 class FieldTransactionSource(ABC):
-    """Abstract class for field data interface."""
+    """
+    Abstract base class for handling field data transactions.
+
+    This class defines the interface for requesting field data based on user inputs
+    and retrieving responses from the server. It provides abstract methods that allow
+    users to develop their own implementations for interacting with different field
+    data sources.
+
+    Implementing classes should define:
+    - Methods to obtain surface IDs from user-provided surface names or identifiers.
+    - A mechanism to add requests for different types of field data (surface, scalar,
+      vector, or pathlines).
+    - A method to fetch the response containing the requested field data.
+
+    Subclasses must provide concrete implementations for all abstract methods.
+    """
 
     @abstractmethod
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
-        """Get a list of surface ids based on surfaces provided as inputs."""
+        """Retrieve a list of surface IDs based on input surface names or numerical identifiers."""
         pass
 
     @abstractmethod
@@ -181,7 +240,22 @@ class FieldTransactionSource(ABC):
         | VectorFieldDataRequest
         | PathlinesFieldDataRequest,
     ):
-        """Add request to get surface, scalar, vector or path-lines field on surfaces."""
+        """
+        Add field data requests for surfaces, scalars, vectors, or pathlines.
+
+        This method allows users to specify multiple field data requests, which will
+        later be processed when retrieving responses.
+        """
+        pass
+
+    @abstractmethod
+    def get_response(self) -> FieldDataSource:
+        """
+        Retrieve the response containing data for previously added field requests.
+
+        This method processes all pending requests and returns the corresponding
+        field data.
+        """
         pass
 
 
