@@ -1394,6 +1394,7 @@ class Workflow:
                     "rename",
                 },
                 _fluent_version=fluent_version,
+                _initialized=False,
             )
         )
 
