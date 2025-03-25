@@ -203,7 +203,7 @@ class FieldDataSource(ABC):
         pass
 
 
-class FieldTransactionSource(ABC):
+class FieldTransaction(ABC):
     """
     Abstract base class for handling field data transactions.
 

@@ -31,8 +31,8 @@ from ansys.fluent.core.services.field_data import (
     ChunkParser,
     FieldDataService,
     FieldInfo,
-    FieldTransaction,
     SurfaceDataType,
+    Transaction,
     _AllowedScalarFieldNames,
     _AllowedSurfaceIDs,
     _AllowedSurfaceNames,
@@ -288,7 +288,7 @@ class DeprecatedFieldData:
     def new_transaction(self):
         """Create a new field transaction."""
         warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
-        return FieldTransaction(
+        return Transaction(
             self._service,
             self._field_info,
             self._allowed_surface_ids,

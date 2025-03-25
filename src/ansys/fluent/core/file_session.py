@@ -32,7 +32,7 @@ from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldInfo,
     FieldDataSource,
-    FieldTransactionSource,
+    FieldTransaction,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
@@ -186,7 +186,7 @@ class TransactionFieldData:
         return self.data
 
 
-class Transaction(FieldTransactionSource):
+class Transaction(FieldTransaction):
     """Populates field data on surfaces."""
 
     class _SurfaceTransaction:

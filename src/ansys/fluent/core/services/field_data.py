@@ -39,7 +39,7 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldInfo,
     FieldDataSource,
-    FieldTransactionSource,
+    FieldTransaction,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
@@ -515,7 +515,7 @@ class TransactionFieldData(BaseFieldData):
         return self.data
 
 
-class FieldTransaction(FieldTransactionSource):
+class Transaction(FieldTransaction):
     """Populates Fluent field data on surfaces."""
 
     def __init__(
@@ -527,7 +527,7 @@ class FieldTransaction(FieldTransactionSource):
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
-        """__init__ method of FieldTransaction class."""
+        """__init__ method of Transaction class."""
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
@@ -802,7 +802,12 @@ class FieldTransaction(FieldTransactionSource):
         | VectorFieldDataRequest
         | PathlinesFieldDataRequest,
     ):
-        """Add request to get surface, scalar, vector or path-lines field on surfaces."""
+        """
+        Add field data requests for surfaces, scalars, vectors, or pathlines.
+
+        This method allows users to specify multiple field data requests, which will
+        later be processed when retrieving responses.
+        """
         for req in (obj,) + args:
             req = req._replace(surfaces=self.get_surface_ids(req.surfaces))
             if req in self._cache_requests:
@@ -1304,7 +1309,7 @@ class LiveFieldData(BaseFieldData):
 
     def new_transaction(self):
         """Create a new field transaction."""
-        return FieldTransaction(
+        return Transaction(
             self._service,
             self._field_info,
             self._allowed_surface_ids,
