@@ -29,20 +29,21 @@ import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
 from ansys.fluent.core import PyFluentDeprecationWarning
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.data_file import DataFile
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core.field_data_interfaces import (
+    BaseFieldInfo,
     FieldDataSource,
     FieldTransactionSource,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
-    TransactionFieldData,
     VectorFieldDataRequest,
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,
+    _ReturnFieldData,
 )
+from ansys.fluent.core.filereader.case_file import CaseFile
+from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
 
 
@@ -74,6 +75,115 @@ def _data_type_convertor(args_dict):
         args_dict.pop(key, None)
     args_dict["data_types"] = d_type_list
     return args_dict
+
+
+class TransactionFieldData:
+    """Provides access to Fluent field data on surfaces collected via transactions."""
+
+    def __init__(
+        self,
+        data: Dict,
+        field_info,
+        allowed_surface_names,
+        allowed_scalar_field_names,
+    ):
+        """__init__ method of TransactionFieldData class."""
+        self.data = data
+        self._field_info = field_info
+        self._allowed_surface_names = allowed_surface_names
+        self._allowed_scalar_field_names = allowed_scalar_field_names
+        self._returned_data = _ReturnFieldData()
+
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
+
+    def _get_scalar_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        scalar_field_data = self.data[
+            (
+                ("type", "scalar-field"),
+                ("dataLocation", 0 if kwargs.get("node_value") else 1),
+                ("boundaryValues", kwargs.get("boundary_value")),
+            )
+        ]
+        return self._returned_data._scalar_data(
+            kwargs.get("field_name"),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            scalar_field_data,
+        )
+
+    def _get_surface_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surface_data = self.data[(("type", "surface-data"),)]
+        return self._returned_data._surface_data(
+            kwargs.get("data_types"),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            surface_data,
+        )
+
+    def _get_vector_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        vector_field_data = self.data[(("type", "vector-field"),)]
+        return self._returned_data._vector_data(
+            kwargs.get("field_name"),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            vector_field_data,
+        )
+
+    def _get_pathlines_field_data(
+        self,
+        **kwargs,
+    ) -> Dict:
+        if kwargs.get("zones") is None:
+            zones = []
+        del zones
+        pathlines_data = self.data[
+            (("type", "pathlines-field"), ("field", kwargs.get("field_name")))
+        ]
+        return self._returned_data._pathlines_data(
+            kwargs.get("field_name"),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            pathlines_data,
+        )
+
+    def get_field(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        if isinstance(obj, SurfaceFieldDataRequest):
+            return self._get_surface_data(**obj._asdict())
+        elif isinstance(obj, ScalarFieldDataRequest):
+            return self._get_scalar_field_data(**obj._asdict())
+        elif isinstance(obj, VectorFieldDataRequest):
+            return self._get_vector_field_data(**obj._asdict())
+        elif isinstance(obj, PathlinesFieldDataRequest):
+            return self._get_pathlines_field_data(**obj._asdict())
+
+    def __len__(self):
+        return len(self.data)
+
+    def __call__(self):
+        return self.data
 
 
 class Transaction(FieldTransactionSource):
@@ -811,7 +921,7 @@ class FileFieldData(FieldDataSource):
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class FileFieldInfo:
+class FileFieldInfo((BaseFieldInfo)):
     """File field info."""
 
     def __init__(self, file_session):
