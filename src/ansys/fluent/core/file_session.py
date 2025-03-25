@@ -1049,10 +1049,15 @@ class FileFieldInfo((BaseFieldInfo)):
 class FileSession:
     """File session to read case and data file."""
 
-    def __init__(self):
+    def __init__(self, case_file_name=None, data_file_name=None):
         """__init__ method of FileSession class."""
-        self._case_file = None
-        self._data_file = None
+        self._case_file = CaseFile(case_file_name) if case_file_name else None
+        self._data_file = (
+            DataFile(data_file_name, case_file_handle=self._case_file)
+            if case_file_name and data_file_name
+            else None
+        )
+
         self.monitors = None
         self.session_id = 1
 
@@ -1068,10 +1073,14 @@ class FileSession:
 
     def read_case(self, case_file_name):
         """Read Case file."""
+        if self._case_file:
+            warnings.warn("Case already read during initialization. Over-writing...")
         self._case_file = CaseFile(case_file_name)
 
     def read_data(self, data_file_name):
         """Read Data file."""
+        if self._data_file:
+            warnings.warn("Data already read during initialization. Over-writing...")
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
 
     @property

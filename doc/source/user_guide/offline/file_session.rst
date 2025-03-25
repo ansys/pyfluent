@@ -34,9 +34,7 @@ Single-phase
 
   >>> case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
   >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
-  >>> file_session = FileSession()
-  >>> file_session.read_case(case_file_name)
-  >>> file_session.read_data(data_file_name)
+  >>> file_session = FileSession(case_file_name, data_file_name)
 
   >>> file_session.fields.field_info.get_scalar_field_range("SV_T")
   [0.0, 313.1515948109515]
@@ -70,15 +68,15 @@ Single-phase
     'y-component': 'SV_V',
     'z-component': 'SV_W'}}
    >>> transaction = file_session.fields.field_data.new_transaction()
-   >>> surf_request = SurfaceFieldDataRequest(
+   >>> vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
    >>>      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
    >>>      surfaces=[3, 4],
    >>> )
-   >>> sc_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 4], node_value=False, boundary_value=False)
-   >>> vc_request = VectorFieldDataRequest(field_name="velocity", surfaces=[3, 4])
-   >>> transaction.add_requests(surf_request, sc_request, vc_request)
+   >>> solution_variable_temperature_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 4], node_value=False, boundary_value=False)
+   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=[3, 4])
+   >>> transaction.add_requests(vertices_and_faces_connectivity_request, solution_variable_temperature_request, velocity_request)
    >>> data = transaction.get_response()
-   >>> data.get_field(surf_request)[3][SurfaceDataType.Vertices]
+   >>> data.get_field(vertices_and_faces_connectivity_request)[3][SurfaceDataType.Vertices]
    array([[ 0.        , -0.1016    ,  0.        ],
        [-0.00635   , -0.1016    ,  0.        ],
        [-0.00634829, -0.10203364,  0.00662349],
@@ -86,27 +84,27 @@ Single-phase
        [ 0.01857703, -0.19223897,  0.03035362],
        [ 0.0124151 , -0.19273971,  0.03034735],
        [ 0.00620755, -0.19304685,  0.03033731]])
-   >>> data.get_field(sc_request)[4]
+   >>> data.get_field(solution_variable_temperature_request)[4]
    array([293.14999, 293.14999, 293.14999, ..., 293.14999, 293.14999,
        293.14999])
-   >>> data.get_field(vc_request).keys()
+   >>> data.get_field(velocity_request).keys()
    dict_keys([3, 4]
-   >>> data.get_field(vc_request)[4].shape
+   >>> data.get_field(velocity_request)[4].shape
    (2018, 3)
 
-   >>> surface_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[3, 4])
-   >>> file_session.fields.field_data.get_field(surface_request)[3].shape
+   >>> vertices_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[3, 4])
+   >>> file_session.fields.field_data.get_field(vertices_request)[3].shape
    (3810, 3)
-   >>> file_session.fields.field_data.get_field(surface_request)[3][1500][0]
+   >>> file_session.fields.field_data.get_field(vertices_request)[3][1500][0]
    0.12405861914157867
    >>> file_session.fields.field_data.get_field(ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"]))["wall"].shape
    (3630,)
    >>> file_session.fields.field_data.get_field(ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"]))["wall"][1500]
    293.18071329432047
-   >>> vector_data_request = VectorFieldDataRequest(field_name="velocity", surfaces=["symmetry"])
-   >>> file_session.fields.field_data.get_field(vector_data_request)["symmetry"].shape
+   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=["symmetry"])
+   >>> file_session.fields.field_data.get_field(velocity_request)["symmetry"].shape
    (2018, 3)
-   >>> file_session.fields.field_data.get_field(vector_data_request)["symmetry"][1000][0]
+   >>> file_session.fields.field_data.get_field(velocity_request)["symmetry"][1000][0]
    0.001690600193527586
 
 
@@ -152,11 +150,11 @@ Multiphase
     'y-component': 'phase-4: SV_V',
     'z-component': 'phase-4: SV_W'}}
    >>> transaction = file_session.fields.field_data.new_transaction()
-   >>> scalar_field_request = ScalarFieldDataRequest(field_name="phase-1:SV_DENSITY", surfaces=[30], node_value=False, boundary_value=False)
-   >>> vector_request = VectorFieldDataRequest(field_name="phase-1:velocity", surfaces=[30])
-   >>> transaction.add_requests(scalar_field_request, vector_request)
+   >>> ph1_density_request = ScalarFieldDataRequest(field_name="phase-1:SV_DENSITY", surfaces=[30], node_value=False, boundary_value=False)
+   >>> ph1_velocity_request = VectorFieldDataRequest(field_name="phase-1:velocity", surfaces=[30])
+   >>> transaction.add_requests(ph1_density_request, ph1_velocity_request)
    >>> data = transaction.get_response()
-   >>> data.get_field(scalar_field_request)[30]
+   >>> data.get_field(ph1_density_request)[30]
    array([1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
        1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
        1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
@@ -164,24 +162,23 @@ Multiphase
        1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
        1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
        1.225])
-   >>> data.get_field(vector_request)[30].shape
+   >>> data.get_field(ph1_velocity_request)[30].shape
    (55, 3)
 
-   >>> surf_data_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[30])
-   >>> file_session.fields.field_data.get_field(surf_data_request)
-   >>> file_session.fields.field_data.get_field(surf_data_request)[30].shape
+   >>> vertices_data_request = SurfaceFieldDataRequest(data_types=[SurfaceDataType.Vertices], surfaces=[30])
+   >>> file_session.fields.field_data.get_field(vertices_data_request)[30].shape
    (79, 3)
-   >>> file_session.fields.field_data.get_field(surf_data_request)[30][50][0]
+   >>> file_session.fields.field_data.get_field(vertices_data_request)[30][50][0]
    0.14896461503555408
-   >>> scalar_request = ScalarFieldDataRequest(field_name="phase-1:SV_P", surfaces=["wall-elbow"])
-   >>> file_session.fields.field_data.get_field(scalar_request)["wall-elbow"].shape
+   >>> ph1_pressure_request = ScalarFieldDataRequest(field_name="phase-1:SV_P", surfaces=["wall-elbow"])
+   >>> file_session.fields.field_data.get_field(ph1_pressure_request)["wall-elbow"].shape
    (2168,)
-   >>> file_session.fields.field_data.get_field(scalar_request)["wall-elbow"][1100]
+   >>> file_session.fields.field_data.get_field(ph1_pressure_request)["wall-elbow"][1100]
    1.4444035696104466e-11
-   >>> vector_request = VectorFieldDataRequest(field_name="phase-2:velocity", surfaces=["wall-elbow"])
-   >>> file_session.fields.field_data.get_field(vector_request)["wall-elbow"].shape
+   >>> ph2_velocity_request = VectorFieldDataRequest(field_name="phase-2:velocity", surfaces=["wall-elbow"])
+   >>> file_session.fields.field_data.get_field(ph2_velocity_request)["wall-elbow"].shape
    (2168, 3)
-   >>> file_session.fields.field_data.get_field(vector_request)["wall-elbow"][1000][0]
+   >>> file_session.fields.field_data.get_field(ph2_velocity_request)["wall-elbow"][1000][0]
    0.0
 
 

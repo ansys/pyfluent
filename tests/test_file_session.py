@@ -303,9 +303,7 @@ def test_transaction_request_multi_phase_deprecated():
         "pyfluent/file_session",
         return_without_path=False,
     )
-    file_session = FileSession()
-    file_session.read_case(case_file_name)
-    file_session.read_data(data_file_name)
+    file_session = FileSession(case_file_name, data_file_name)
 
     field_data = file_session.fields.field_data
 
