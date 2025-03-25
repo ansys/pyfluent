@@ -159,7 +159,7 @@ class BaseFieldInfo(ABC):
         pass
 
 
-class FieldDataSource(ABC):
+class BaseFieldDataSource(ABC):
     """
     Abstract base class for accessing field data.
 
@@ -200,6 +200,28 @@ class FieldDataSource(ABC):
             Dict[int | str, Dict | np.array]: A dictionary where keys represent surface
             IDs or names, and values contain the corresponding field data.
         """
+        pass
+
+
+class FieldDataSource(BaseFieldDataSource, ABC):
+    """
+    Abstract base class for accessing field data.
+
+    This class defines the interface for retrieving field data based on user requests.
+    In addition to the methods in `BaseFieldDataSource` it provides a method to create
+    new field transaction objects.
+
+    Implementing classes should define:
+    - A method to obtain surface IDs from user-provided surface names or numerical identifiers.
+    - A method to retrieve field data based on a given request.
+    - A method to create new field transaction.
+
+    Subclasses must provide concrete implementations for all abstract methods.
+    """
+
+    @abstractmethod
+    def new_transaction(self):
+        """Create a new field transaction."""
         pass
 
 

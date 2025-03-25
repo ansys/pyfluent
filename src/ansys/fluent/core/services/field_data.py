@@ -37,6 +37,7 @@ from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
+    BaseFieldDataSource,
     BaseFieldInfo,
     FieldDataSource,
     FieldTransaction,
@@ -389,7 +390,7 @@ class _FetchFieldData:
         ]
 
 
-class BaseFieldData(FieldDataSource):
+class BaseFieldData:
     """The base field data interface."""
 
     def __init__(
@@ -493,7 +494,7 @@ class BaseFieldData(FieldDataSource):
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class TransactionFieldData(BaseFieldData):
+class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
     """Provides access to Fluent field data on surfaces collected via transactions."""
 
     def __init__(
@@ -1229,7 +1230,7 @@ class Mesh:
     elements: list[Element]
 
 
-class LiveFieldData(BaseFieldData):
+class LiveFieldData(BaseFieldData, FieldDataSource):
     """Provides access to Fluent field data on surfaces."""
 
     def __init__(
