@@ -40,6 +40,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PySingletonCommandArgumentsSubItem,
     arg_class_by_type,
 )
+from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -338,7 +339,7 @@ class DataModelGenerator:
         f.write(f"{indent}class _{py_name}({arg_class.__name__}):\n")
         f.write(f'{indent}    """\n')
         for line in arg_doc.splitlines():
-            f.write(f"{indent}    {line}\n")
+            f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n\n')
         if arg_class == PySingletonCommandArgumentsSubItem:
             f.write(
@@ -369,9 +370,11 @@ class DataModelGenerator:
         if not name.isidentifier():
             return api_tree
         indent = " " * level * 4
+        singleton_doc = info.get("helpstring", _build_singleton_docstring(name))
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
-        f.write(f"{indent}    {_build_singleton_docstring(name)}\n")
+        for line in singleton_doc.splitlines():
+            f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n')
         f.write(f"{indent}    def __init__(self, service, rules, path):\n")
         named_objects = sorted(info.get("namedobjects", []))
@@ -427,24 +430,26 @@ class DataModelGenerator:
             else:
                 # print("\t\texcluded", k)
                 pass
-        for k in parameters:
-            k_type = info["parameters"][k]["type"]
-            if k_type in {"String", "String List", "ListString"}:
-                f.write(f"{indent}    class {k}(PyTextual):\n")
-            elif k_type in {"Integer", "Int", "Real"}:
-                f.write(f"{indent}    class {k}(PyNumerical):\n")
-            elif k_type in {"Dict", "ModelObject"}:
-                f.write(f"{indent}    class {k}(PyDictionary):\n")
+        for parameter_name in parameters:
+            parameter_info = info["parameters"][parameter_name]
+            parameter_type = parameter_info["type"]
+            if parameter_type in {"String", "String List", "ListString"}:
+                f.write(f"{indent}    class {parameter_name}(PyTextual):\n")
+            elif parameter_type in {"Integer", "Int", "Real"}:
+                f.write(f"{indent}    class {parameter_name}(PyNumerical):\n")
+            elif parameter_type in {"Dict", "ModelObject"}:
+                f.write(f"{indent}    class {parameter_name}(PyDictionary):\n")
             else:
-                f.write(f"{indent}    class {k}(PyParameter):\n")
-            f.write(f'{indent}        """\n')
-            f.write(
-                f"{indent}        "
-                f'{_build_parameter_docstring(k, info["parameters"][k]["type"])}\n'
+                f.write(f"{indent}    class {parameter_name}(PyParameter):\n")
+            parameter_doc = parameter_info.get(
+                "helpstring", _build_parameter_docstring(parameter_name, parameter_type)
             )
             f.write(f'{indent}        """\n')
+            for line in parameter_doc.splitlines():
+                f.write(f"{indent}        {escape_wildcards(line)}\n")
+            f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
-            api_tree[k] = "Parameter"
+            api_tree[parameter_name] = "Parameter"
         if "meshing_utilities" in f.name:
             stub_file = self._static_info["MeshingUtilities"].stub_file
             stub_file.unlink(missing_ok=True)

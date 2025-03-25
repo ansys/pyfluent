@@ -30,7 +30,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     :hidden:
     :caption: ansys.fluent.core
 
-    file_reader/file_reader_contents
+    filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_contents
     post_objects/post_objects_contents
@@ -56,5 +56,5 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     session_solver
     session
     system_coupling
-    warnings
+    warning
     workflow
