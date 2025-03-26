@@ -127,6 +127,7 @@ class BaseMeshing:
                     self._se_service, "MeshingUtilities", []
                 )
         except (ImportError, FileNotFoundError):
+            datamodel_logger.warning("Generated API not found for MeshingUtilities.")
             datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
             if self.get_fluent_version() >= FluentVersion.v242:
                 meshing_utilities_root = PyMenuGeneric(

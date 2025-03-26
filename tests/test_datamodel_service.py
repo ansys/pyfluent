@@ -837,19 +837,15 @@ def test_dynamic_dependency(new_meshing_session):
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_field_level_help(new_meshing_session, capsys):
+def test_field_level_help(new_meshing_session):
     meshing = new_meshing_session
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
     assert isinstance(import_geometry.FileFormat, PyCommandArgumentsSubItem)
-    import_geometry.FileFormat.help()
-    captured = capsys.readouterr()
     assert (
-        "Indicate whether the imported geometry is a CAD File or a Mesh (either a surface or volume mesh)."
-        in captured.out
+        import_geometry.FileFormat.__doc__.strip()
+        == "Indicate whether the imported geometry is a CAD File or a Mesh (either a surface or volume mesh)."
     )
-    import_geometry.ImportType.help()
-    captured = capsys.readouterr()
     assert (
-        "When the File Format is set to CAD, use the Import Type field to import a Single File (the default), or Multiple Files."
-        in captured.out
+        import_geometry.ImportType.__doc__.strip()
+        == "When the File Format is set to CAD, use the Import Type field to import a Single File (the default), or Multiple Files. When importing multiple files, the Select File dialog allows you to make multiple selections, as long as the files are in the same directory and are of the same CAD format."
     )

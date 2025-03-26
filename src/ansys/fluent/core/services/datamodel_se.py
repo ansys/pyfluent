@@ -38,7 +38,6 @@ from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
-from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -1867,8 +1866,6 @@ class PyCommand:
         Print the command help string.
     """
 
-    _full_static_info: dict[str, dict[str, Any]] = {}
-
     def __init__(
         self,
         service: DatamodelService,
@@ -1884,7 +1881,6 @@ class PyCommand:
             self.path = []
         else:
             self.path = path
-        self._static_info = None  # command's static info
         self.file_behavior = None
 
     def _update_file_behavior(self, file_purpose):
@@ -1962,45 +1958,28 @@ class PyCommand:
         )
         return commandid
 
-    def _get_static_info(self) -> dict[str, Any]:
-        if self._static_info is None:
-            if self.rules not in PyCommand._full_static_info.keys():
-                # Populate the static info with respect to a rules only if the
-                # same info has not been obtained in another context already.
-                # If the information is available, we can use it without additional remote calls.
-                response = self.service.get_static_info(self.rules)
-                PyCommand._full_static_info[self.rules] = response
-            rules_static_info = PyCommand._full_static_info[self.rules]
-            static_info_path = []
-            for comp in self.path:
-                static_info_path.append("namedobjects" if comp[1] else "singletons")
-                static_info_path.append(comp[0])
-            parent_static_info = _get_value_from_message_dict(
-                rules_static_info, static_info_path
-            )
-            self._static_info = _get_value_from_message_dict(
-                parent_static_info, ["commands", self.command, "commandinfo"]
-            )
-        return self._static_info
-
-    def create_instance(self) -> "PyCommandArguments":
+    def _get_create_instance_args(self):
         """Create a command instance."""
         try:
-            static_info = self._get_static_info()
             id = self._create_command_arguments()
-            return PyCommandArguments(
+            return [
                 self.service,
                 self.rules,
                 self.command,
                 self.path.copy(),
                 id,
-                static_info.get("args"),
-            )
+            ]
         # Possible error thrown from the grpc layer
         except (RuntimeError, ValueError):
             logger.warning(
                 "Create command arguments object is available from 23.1 onwards"
             )
+
+    def create_instance(self) -> "PyCommandArguments":
+        """Create a command instance."""
+        args = self._get_create_instance_args()
+        if args is not None:
+            return PyCommandArguments(*args)
 
 
 class _InputFile:
@@ -2040,7 +2019,6 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         service: DatamodelService,
         rules: str,
         path: Path,
-        parent_arg,
     ) -> None:
         """__init__ method of PyCommandArgumentsSubItem class."""
         self.__dict__.update(
@@ -2050,7 +2028,6 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
                 service=service,
                 rules=rules,
                 path=path,
-                parent_arg=parent_arg,
             )
         )
 
@@ -2087,7 +2064,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     def help(self) -> None:
         """Get help."""
-        print(self.parent_arg["helpstring"])
+        print(self.__doc__.strip())
 
     def __setattr__(self, key, value):
         if isinstance(value, PyCommandArgumentsSubItem):
@@ -2106,13 +2083,11 @@ class PyCommandArguments(PyStateContainer):
         command: str,
         path: Path,
         id: str,
-        static_info,
     ) -> None:
         """__init__ method of PyCommandArguments class."""
         super().__init__(service, rules, path)
         self.__dict__.update(
             dict(
-                static_info=static_info,
                 command=command,
                 id=id,
             )
@@ -2129,13 +2104,6 @@ class PyCommandArguments(PyStateContainer):
             )
         except Exception as exc:
             logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
-
-    def __getattr__(self, attr: str) -> PyCommandArgumentsSubItem | None:
-        for arg in self.static_info:
-            if arg["name"] == attr:
-                mode = DataModelType.get_mode(arg["type"])
-                py_class = mode.value[1]
-                return py_class(self, attr, self.service, self.rules, self.path, arg)
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -2169,12 +2137,9 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
         service: DatamodelService,
         rules: str,
         path: Path,
-        arg,
     ) -> None:
         """__init__ method of PyTextualCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, arg
-        )
+        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyTextual.__init__(self, service, rules, path)
 
 
@@ -2188,12 +2153,9 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
         service: DatamodelService,
         rules: str,
         path: Path,
-        arg,
     ) -> None:
         """__init__ method of PyNumericalCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, arg
-        )
+        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyNumerical.__init__(self, service, rules, path)
 
 
@@ -2207,12 +2169,9 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
         service: DatamodelService,
         rules: str,
         path: Path,
-        arg,
     ) -> None:
         """__init__ method of PyDictionaryCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, arg
-        )
+        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyDictionary.__init__(self, service, rules, path)
 
 
@@ -2226,11 +2185,15 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         service: DatamodelService,
         rules: str,
         path: Path,
-        arg,
     ) -> None:
         """__init__ method of PyParameterCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, arg
+            self,
+            parent,
+            attr,
+            service,
+            rules,
+            path,
         )
         PyParameter.__init__(self, service, rules, path)
 
@@ -2245,63 +2208,32 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
         service: DatamodelService,
         rules: str,
         path: Path,
-        arg,
     ) -> None:
         """__init__ method of PySingletonCommandArgumentsSubItem class."""
         PyCommandArgumentsSubItem.__init__(
-            self, parent, attr, service, rules, path, arg
+            self,
+            parent,
+            attr,
+            service,
+            rules,
+            path,
         )
 
-    def __getattr__(self, attr: str) -> PyCommandArgumentsSubItem:
-        arg = self.parent_arg["info"]["parameters"][attr]
 
-        mode = DataModelType.get_mode(arg["type"])
-        py_class = mode.value[1]
-        return py_class(self, attr, self.service, self.rules, self.path, arg)
-
-
-class DataModelType(Enum):
-    """An enumeration over datamodel types."""
-
-    # Really???
-
-    # Tuple:   Name, Solver object type, Meshing flag, Launcher options
-    # Really???
-    TEXT = (["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem)
-    NUMBER = (
+arg_class_by_type = {
+    **dict.fromkeys(
+        ["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem
+    ),
+    **dict.fromkeys(
         ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt"],
         PyNumericalCommandArgumentsSubItem,
-    )
-    DICTIONARY = (["Dict"], PyDictionaryCommandArgumentsSubItem)
-    PARAMETER = (
-        ["Bool", "Logical", "Logical List"],
-        PyParameterCommandArgumentsSubItem,
-    )
-    MODELOBJECT = (["ModelObject"], PySingletonCommandArgumentsSubItem)
-
-    @staticmethod
-    def get_mode(mode: str) -> "DataModelType":
-        """Returns the datamodel type.
-
-        Parameters
-        ----------
-        mode : str
-            mode
-
-        Returns
-        -------
-        DataModelType
-            datamodel type
-
-        Raises
-        ------
-        InvalidArgument
-            If an unknown mode is passed.
-        """
-        for m in DataModelType:
-            if mode in m.value[0]:
-                return m
-        raise InvalidArgument(f"The specified mode: {mode} was not found.")
+    ),
+    "Dict": PyDictionaryCommandArgumentsSubItem,
+    **dict.fromkeys(
+        ["Bool", "Logical", "Logical List"], PyParameterCommandArgumentsSubItem
+    ),
+    "ModelObject": PySingletonCommandArgumentsSubItem,
+}
 
 
 class PyMenuGeneric(PyMenu):

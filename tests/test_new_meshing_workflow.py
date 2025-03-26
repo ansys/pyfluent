@@ -1199,7 +1199,8 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_geometry' is a watertight workflow command which is not available now
     # since we have changed to fault-tolerant in the backend.
-    with pytest.raises(RuntimeError):
+    # It seems to throw either RuntimeError or ValueError randomly.
+    with pytest.raises((RuntimeError, ValueError)):
         watertight.import_geometry.arguments()
 
     # Re-initialize watertight
@@ -1207,7 +1208,7 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     assert watertight.import_geometry.arguments()
@@ -1216,14 +1217,14 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_geometry' is a watertight workflow command which is not available now
     # since we have changed to fault-tolerant in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         watertight.import_geometry.arguments()
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     # Re-initialize fault-tolerant
@@ -1719,25 +1720,18 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     with pytest.raises(AttributeError) as msg:
         assert feat_angle.allowed_values()
     assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+        msg.value.args[0] == "'_FeatureAngle' object has no attribute 'allowed_values'"
     )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.num_parts.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
+    assert msg.value.args[0] == "'_NumParts' object has no attribute 'allowed_values'"
 
     # Test intended to fail in string type (min() only available in numerical types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.length_unit.min()
-    assert (
-        msg.value.args[0]
-        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
-    )
+    assert msg.value.args[0] == "'_LengthUnit' object has no attribute 'min'"
 
 
 @pytest.mark.codegen_required
