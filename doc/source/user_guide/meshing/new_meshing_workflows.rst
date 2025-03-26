@@ -110,12 +110,12 @@ Import CAD and part management
 .. code:: python
 
     import ansys.fluent.core as pyfluent
-from ansys.fluent.core import examples
+    from ansys.fluent.core import examples
 
-import_file_name = examples.download_file(
-    "exhaust_system.fmd", "pyfluent/exhaust_system"
-)
-meshing = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
+    import_file_name = examples.download_file(
+        "exhaust_system.fmd", "pyfluent/exhaust_system"
+    )
+    meshing = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
     fault_tolerant = meshing.fault_tolerant()
     meshing.PartManagement.InputFileChanged(
         FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
@@ -363,7 +363,6 @@ Set regions and boundaries
 
 .. code:: python
 
-    two_dim_mesh.update_regions_2d()
     two_dim_mesh.update_boundaries_2d.selection_type = "zone"
     two_dim_mesh.update_boundaries_2d()
 
@@ -439,53 +438,36 @@ Generate surface mesh
 
 .. code:: python
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
-        True
-    )
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh()
 
-    two_dim_mesh.task("aspect-ratio_1").revert()
-    two_dim_mesh.task("aspect-ratio_1").add_child = "yes"
-    two_dim_mesh.task("aspect-ratio_1").bl_control_name = "uniform_1"
-    two_dim_mesh.task("aspect-ratio_1").first_layer_height = 2
-    two_dim_mesh.task("aspect-ratio_1").number_of_layers = 4
-    two_dim_mesh.task("aspect-ratio_1").offset_method_type = "uniform"
-    two_dim_mesh.task("aspect-ratio_1")()
+    two_dim_mesh.add_2d_boundary_layers_child_1.revert()
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
+    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "uniform_1"
+    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
+    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
+    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
+    two_dim_mesh.add_2d_boundary_layers_child_1()
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
-        True
-    )
+
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh()
 
-    two_dim_mesh.task("uniform_1").revert()
-    two_dim_mesh.task("uniform_1").add_child = "yes"
-    two_dim_mesh.task("uniform_1").bl_control_name = "smooth-transition_1"
-    two_dim_mesh.task("uniform_1").first_layer_height = 2
-    two_dim_mesh.task("uniform_1").number_of_layers = 7
-    two_dim_mesh.task("uniform_1").offset_method_type = "smooth-transition"
-    two_dim_mesh.task("uniform_1")()
+    two_dim_mesh.add_2d_boundary_layers_child_1.revert()
+    two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
+    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "smooth-transition_1"
+    two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
+    two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 7
+    two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "smooth-transition"
+    two_dim_mesh.add_2d_boundary_layers_child_1()
 
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface2_d_preferences.show_advanced_options = (
-        True
-    )
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh()
 
 Switch to solution mode
