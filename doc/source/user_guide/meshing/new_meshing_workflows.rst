@@ -579,8 +579,8 @@ Sample use of ``arguments``
 This simple example shows how to use the ``arguments`` attributes and explicit
 attribute access methods in a watertight geometry meshing workflow. Unlike the
 classic meshing workflow, the arguments in the new workflow are fully populated
-with all parameter values that will be used during command execution, rather
-than only those explicitly set by the user.
+with all parameter values used during command execution, rather than only those
+explicitly set by the user.
 
 .. Note::
    The ``command_arguments()`` method is deprecated.
