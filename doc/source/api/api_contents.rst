@@ -56,5 +56,5 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     session_solver
     session
     system_coupling
-    warning
+    pyfluent_warnings
     workflow
