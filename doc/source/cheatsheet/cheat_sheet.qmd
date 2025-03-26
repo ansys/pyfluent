@@ -136,8 +136,8 @@ wt.update_regions()
 
 ```{python}
 wt.add_boundary_layer.add_child_to_task()
-wt.add_boundary_layer.insert_compound_child_task()
 wt.add_boundary_layer.bl_control_name.set_state("smooth-transition_1")
+wt.add_boundary_layer.insert_compound_child_task()
 wt.add_boundary_layer_child_1()
 ```
 
