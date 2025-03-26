@@ -1,0 +1,21 @@
+:orphan:
+
+.. _exclude_zone_ids:
+
+exclude_zone_ids
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.exclude_zone_ids
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============================
+
+Parent                                            Summary
+
+==========================   ============================
+:ref:`create_6 <create_6>`       Create a mesh interface.
+
+==========================   ============================
+
