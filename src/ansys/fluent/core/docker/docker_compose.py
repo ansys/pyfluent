@@ -224,26 +224,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_file = None
 
-        if self._docker_available and self._podman_available:
-            self._compose_cmds = ["docker", "compose"]
-        elif self._docker_available:
-            self._compose_cmds = ["docker", "compose"]
-        elif self._podman_available:
-            self._compose_cmds = ["podman", "compose"]
-
-        if has_sudo_permissions():
-            self._compose_cmds = ["sudo"].extend(self._compose_cmds)
-
-        if self._docker_compose_available and self._podman_compose_available:
-            self._compose_cmd = ["docker-compose"]
-        elif self._docker_compose_available:
-            self._compose_cmd = ["docker-compose"]
-        elif self._podman_compose_available:
-            self._compose_cmd = ["podman-compose"]
-
-        if has_sudo_permissions():
-            self._compose_cmd = ["sudo"].extend(self._compose_cmd)
-
     def _set_compose_cmds(self):
         """Sets the compose commands based on available tools and permissions."""
 
@@ -317,7 +297,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             ]
 
             try:
-                # Prefer docker-compose of podman-compose
+                # Prefer docker-compose or podman-compose
                 output = subprocess.Popen(  # noqa: F841
                     self._set_compose_cmd() + cmd,
                     env=env,
