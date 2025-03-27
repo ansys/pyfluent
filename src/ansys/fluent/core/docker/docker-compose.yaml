@@ -1,0 +1,17 @@
+services:
+  fluent:
+    image: ${IMAGE_NAME_FLUENT}
+    environment:
+      - ANSYSLMD_LICENSE_FILE=${ANSYSLMD_LICENSE_FILE}
+    command: ${FLUENT_COMMAND}
+    ports:
+      - "9090"        # allowing Docker to select any available port dynamically
+    volumes:
+      - ${MOUNT_SOURCE}:/home/container/workdir  # Mount local directory to the container
+  ansys-tools-filetransfer:
+    image: ${IMAGE_NAME_FILETRANSFER:-ghcr.io/ansys/tools-filetransfer:latest}
+    ports:
+      - "5050"
+    working_dir: /home/container/workdir
+    volumes:
+      - ${MOUNT_SOURCE}:/home/container/workdir
