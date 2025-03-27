@@ -224,30 +224,60 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_file = None
 
-        try:
-            if self._docker_available and self._podman_available:
-                self._compose_cmds = ["docker", "compose"]
-            elif self._docker_available:
-                self._compose_cmds = ["docker", "compose"]
-            elif self._podman_available:
-                self._compose_cmds = ["podman", "compose"]
+        if self._docker_available and self._podman_available:
+            self._compose_cmds = ["docker", "compose"]
+        elif self._docker_available:
+            self._compose_cmds = ["docker", "compose"]
+        elif self._podman_available:
+            self._compose_cmds = ["podman", "compose"]
 
-            if has_sudo_permissions():
-                self._compose_cmds = ["sudo"].extend(self._compose_cmds)
+        if has_sudo_permissions():
+            self._compose_cmds = ["sudo"].extend(self._compose_cmds)
 
-        except subprocess.CalledProcessError:
-            # If 'docker compose' does not work, try 'docker-compose' instead.
-            # If 'podman compose' does not work, try 'podman-compose' instead.
+        if self._docker_compose_available and self._podman_compose_available:
+            self._compose_cmd = ["docker-compose"]
+        elif self._docker_compose_available:
+            self._compose_cmd = ["docker-compose"]
+        elif self._podman_compose_available:
+            self._compose_cmd = ["podman-compose"]
 
-            if self._docker_compose_available and self._podman_compose_available:
-                self._compose_cmds = ["docker-compose"]
-            elif self._docker_compose_available:
-                self._compose_cmds = ["docker-compose"]
-            elif self._podman_compose_available:
-                self._compose_cmds = ["podman-compose"]
+        if has_sudo_permissions():
+            self._compose_cmd = ["sudo"].extend(self._compose_cmd)
 
-            if has_sudo_permissions():
-                self._compose_cmds = ["sudo"].extend(self._compose_cmds)
+    def _set_compose_cmds(self):
+        """Sets the compose commands based on available tools and permissions."""
+
+        # Determine the compose command
+        if self._docker_available and self._podman_available:
+            self._compose_cmds = ["docker", "compose"]
+        elif self._docker_available:
+            self._compose_cmds = ["docker", "compose"]
+        elif self._podman_available:
+            self._compose_cmds = ["podman", "compose"]
+        else:
+            self._compose_cmds = []
+
+        if has_sudo_permissions():
+            self._compose_cmds.insert(0, "sudo")
+
+        return self._compose_cmds
+
+    def _set_compose_cmd(self):
+        """Sets the specific compose command based on available tools and permissions."""
+
+        if self._docker_compose_available and self._podman_compose_available:
+            self._compose_cmd = ["docker-compose"]
+        elif self._docker_compose_available:
+            self._compose_cmd = ["docker-compose"]
+        elif self._podman_compose_available:
+            self._compose_cmd = ["podman-compose"]
+        else:
+            self._compose_cmd = []  # No available commands
+
+        if has_sudo_permissions():
+            self._compose_cmd.insert(0, "sudo")
+
+        return self._compose_cmd
 
     @contextlib.contextmanager
     def _get_compose_file(self) -> Iterator[pathlib.Path]:
@@ -255,7 +285,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             yield self._compose_file
         else:
             with importlib.resources.path(
-                "ansys.fluent.core.docker", "docker_compose.yaml"
+                "ansys.fluent.core.docker", "docker-compose.yaml"
             ) as compose_file:
                 yield compose_file
 
@@ -276,7 +306,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             # The compose_file may be temporary, in particular if the package is a zipfile.
             # To avoid it being deleted before docker compose has read it, we use the '--wait'
             # flag for 'docker compose'.
-            cmd = self._compose_cmds + [
+            cmd = [
                 "-f",
                 str(compose_file.resolve()),
                 "--project-name",
@@ -287,14 +317,20 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             ]
 
             try:
-                output = subprocess.check_output(  # noqa: F841
-                    cmd,
+                # Prefer docker-compose of podman-compose
+                output = subprocess.Popen(  # noqa: F841
+                    self._set_compose_cmd() + cmd,
                     env=env,
                     stderr=subprocess.STDOUT,
                 )
-            except subprocess.CalledProcessError as e:
-                print(f"Command failed with exit code {e.returncode}")
-                print(f"Output: {e.output.decode()}")
+            except subprocess.CalledProcessError as e:  # noqa: F841
+                output = subprocess.Popen(  # noqa: F841
+                    self._set_compose_cmds() + cmd,
+                    env=env,
+                    stderr=subprocess.STDOUT,
+                )
+                # print(f"Command failed with exit code {e.returncode}")
+                # print(f"Output: {e.output.decode()}")
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the services."""
