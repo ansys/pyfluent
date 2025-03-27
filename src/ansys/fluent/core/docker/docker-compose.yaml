@@ -5,13 +5,14 @@ services:
       - ANSYSLMD_LICENSE_FILE=${ANSYSLMD_LICENSE_FILE}
     command: ${FLUENT_COMMAND}
     ports:
-      - "9090"        # allowing Docker to select any available port dynamically
+      - "${FLUENT_PORT:-50555}:50051"
+    working_dir: /home/container/workdir
     volumes:
       - ${MOUNT_SOURCE}:/home/container/workdir  # Mount local directory to the container
   ansys-tools-filetransfer:
     image: ${IMAGE_NAME_FILETRANSFER:-ghcr.io/ansys/tools-filetransfer:latest}
     ports:
-      - "5050"
+      - "${PORT_FILETRANSFER:-50556}:50000"
     working_dir: /home/container/workdir
     volumes:
       - ${MOUNT_SOURCE}:/home/container/workdir

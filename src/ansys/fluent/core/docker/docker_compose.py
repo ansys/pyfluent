@@ -214,6 +214,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             IMAGE_NAME_FILETRANSFER=config.image_name_filetransfer,
             MOUNT_SOURCE=self._container_dict["mount_source"],
             FLUENT_COMMAND=cmd_str,
+            FLUENT_PORT=str(self._container_dict["fluent_port"]),
         )
         self._env.update(self._container_dict["environment"])
         self._env.update(config.environment_variables)
@@ -272,14 +273,14 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
     def start(self) -> None:
         """Start the services."""
         with self._get_compose_file() as compose_file:
-            port_fluent, port_ft = find_free_ports(2)
+            port_ft = find_free_ports(1)
             self._urls = {
-                ServerKey.MAIN: f"localhost:{port_fluent}",
-                ServerKey.FILE_TRANSFER: f"localhost:{port_ft}",
+                ServerKey.MAIN: f"localhost:{self._container_dict['fluent_port']}",
+                ServerKey.FILE_TRANSFER: f"localhost:{port_ft[0]}",
             }
 
             env = collections.ChainMap(
-                {"PORT_Fluent": str(port_fluent), "PORT_FILETRANSFER": str(port_ft)},
+                {"PORT_FILETRANSFER": str(port_ft[0])},
                 self._env,
             )
 

@@ -463,6 +463,8 @@ def start_fluent_container(
         host_server_info_file.touch(exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
 
+        config_dict["fluent_port"] = port
+
         docker_compose_container = DockerComposeLauncher(
             container_dict=config_dict, config=DockerComposeLaunchConfig()
         )
