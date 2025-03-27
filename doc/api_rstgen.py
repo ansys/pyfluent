@@ -40,7 +40,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
-    "file_reader": ["case_file", "data_file", "lispy"],
+    "filereader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
         "error_handler",
@@ -127,7 +127,7 @@ hierarchy = {
         "session_solver",
         "session",
         "system_coupling",
-        "warnings",
+        "warning",
         "workflow",
     ],
 }
