@@ -32,8 +32,11 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
-    PyCommandArgumentsSubItem,
+    PyCommand,
     PyMenuGeneric,
+    PyNumerical,
+    PySingletonCommandArgumentsSubItem,
+    PyTextualCommandArgumentsSubItem,
     ReadOnlyObjectError,
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -839,13 +842,30 @@ def test_dynamic_dependency(new_meshing_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_field_level_help(new_meshing_session):
     meshing = new_meshing_session
-    import_geometry = meshing.meshing.ImportGeometry.create_instance()
-    assert isinstance(import_geometry.FileFormat, PyCommandArgumentsSubItem)
-    assert (
-        import_geometry.FileFormat.__doc__.strip()
-        == "Indicate whether the imported geometry is a CAD File or a Mesh (either a surface or volume mesh)."
+    meshing.PartManagement.AssemblyNode["node-1"] = {}
+    deviation = meshing.PartManagement.AssemblyNode["node-1"].Refaceting.Deviation
+    assert isinstance(deviation, PyNumerical)
+    # Field-level help at parameter level
+    assert deviation.__doc__.strip().startswith(
+        "Specify the distance between facet edges and the geometry edges. Decreasing this value"
     )
-    assert (
-        import_geometry.ImportType.__doc__.strip()
-        == "When the File Format is set to CAD, use the Import Type field to import a Single File (the default), or Multiple Files. When importing multiple files, the Select File dialog allows you to make multiple selections, as long as the files are in the same directory and are of the same CAD format."
+    # TODO Test Field-level help at singleton level when we have that in the datamodel
+    assert meshing.meshing.ImportGeometry, PyCommand
+    # Field-level help at command level
+    assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+        "Specify the CAD geometry that you want to work with. Choose from"
+    )
+    import_geometry = meshing.meshing.ImportGeometry.create_instance()
+    assert isinstance(import_geometry.FileFormat, PyTextualCommandArgumentsSubItem)
+    # Field-level help at parameter-type command argument level
+    assert import_geometry.FileFormat.__doc__.strip().startswith(
+        "Indicate whether the imported geometry is a CAD File or"
+    )
+    linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
+    assert isinstance(
+        linear_mesh_pattern.PatternVector, PySingletonCommandArgumentsSubItem
+    )
+    # Field-level help at singleton-type command argument level
+    assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+        "Specify a name for the mesh pattern or use the default value."
     )
