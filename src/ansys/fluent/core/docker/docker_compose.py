@@ -201,17 +201,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             comp_file.write(
                 f"      - {self._container_dict['mount_source']}:{self._container_dict['mount_target']}\n"
             )
-            comp_file.write("  filetransfer:\n")
-            comp_file.write(f"    image: {config.image_name_filetransfer}\n")
-            comp_file.write("    ports:\n")
-            comp_file.write(f"      - {self._port_ft[0]}:{self._port_ft[0]}\n")
-            comp_file.write(
-                f"    working_dir: {self._container_dict['mount_target']}\n"
-            )
-            comp_file.write("    volumes:\n")
-            comp_file.write(
-                f"      - {self._container_dict['mount_source']}:{self._container_dict['mount_target']}\n"
-            )
 
         self._keep_volume = config.keep_volume
 
@@ -313,7 +302,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         # The compose file needs to be passed for all commands with docker-compose 1.X.
         # With docker-compose 2.X, this no longer seems to be necessary.
         with self._get_compose_file() as compose_file:
-            cmd = self._compose_cmds + [
+            cmd = [
                 "-f",
                 str(compose_file),
                 "--project-name",
@@ -325,11 +314,29 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 cmd.extend(["--timeout", str(math.ceil(timeout))])
             if not self._keep_volume:
                 cmd.append("--volumes")
-            subprocess.check_call(
-                cmd,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
+            try:
+                # Prefer docker-compose or podman-compose
+                output = subprocess.Popen(  # noqa: F841
+                    self._set_compose_cmd() + cmd,
+                    stderr=subprocess.STDOUT,
+                )
+            except subprocess.CalledProcessError as e:  # noqa: F841
+                print(
+                    f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
+                )
+                print(f"Output: {e.output.decode()}")
+                try:
+                    output = subprocess.Popen(  # noqa: F841
+                        self._set_compose_cmds() + cmd,
+                        stderr=subprocess.STDOUT,
+                    )
+                except subprocess.CalledProcessError as e:  # noqa: F841
+                    print(
+                        f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
+                    )
+                    print(f"Output: {e.output.decode()}")
+            finally:
+                compose_file.unlink(missing_ok=True)
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""

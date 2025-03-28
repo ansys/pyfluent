@@ -372,6 +372,7 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: Any | None = None,
     ):
         """Initialize a Session.
 
@@ -408,6 +409,8 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: Any, optional
+            Docker container object.
 
         Raises
         ------
@@ -485,6 +488,8 @@ class FluentConnection:
 
         self._file_transfer_service = file_transfer_service
 
+        self._container = container
+
         self._exit_event = threading.Event()
 
         # session.exit() is handled in the daemon thread (MonitorThread) which ensures
@@ -506,6 +511,7 @@ class FluentConnection:
             self._remote_instance,
             self._file_transfer_service,
             self._exit_event,
+            self._container,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
@@ -588,6 +594,7 @@ class FluentConnection:
                 )
         else:
             logger.debug("Container not found, cancelling cleanup script execution.")
+        self._container.stop()
 
     def register_finalizer_cb(self, cb):
         """Register a callback to run with the finalizer."""
@@ -774,6 +781,7 @@ class FluentConnection:
         remote_instance,
         file_transfer_service,
         exit_event,
+        container,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
         if channel:
@@ -794,5 +802,8 @@ class FluentConnection:
             file_transfer_service, RemoteFileTransferStrategy
         ):
             file_transfer_service.container.kill()
+
+        if container:
+            container.stop()
 
         exit_event.set()
