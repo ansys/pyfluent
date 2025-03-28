@@ -28,7 +28,6 @@ import dataclasses
 import enum
 import importlib.resources
 import math
-import os
 import pathlib
 from pathlib import Path
 import platform
@@ -121,16 +120,6 @@ class ServerKey(str, enum.Enum):
     FILE_TRANSFER = "file_transfer"
 
 
-__all__ = ["DockerComposeLaunchConfig"]
-
-
-def _get_default_license_server() -> str:
-    try:
-        return os.environ["ANSYSLMD_LICENSE_FILE"]
-    except KeyError:
-        return ""
-
-
 @dataclasses.dataclass
 class DockerComposeLaunchConfig:
     """Configuration options for launching Fluent through docker compose."""
@@ -142,15 +131,6 @@ class DockerComposeLaunchConfig:
     image_name_filetransfer: str = dataclasses.field(
         default="ghcr.io/ansys/tools-filetransfer:latest",
         metadata={METADATA_KEY_DOC: "Docker image running the file transfer service."},
-    )
-    license_server: str = dataclasses.field(
-        default=_get_default_license_server(),
-        metadata={
-            METADATA_KEY_DOC: (
-                "License server passed to the container as "
-                "'ANSYSLMD_LICENSE_FILE' environment variable."
-            )
-        },
     )
     keep_volume: bool = dataclasses.field(
         default=False,
@@ -164,18 +144,6 @@ class DockerComposeLaunchConfig:
             METADATA_KEY_DOC: (
                 "Docker compose file used to start the services. Uses the "
                 "'docker-compose.yaml' shipped with PyFluent by default."
-            ),
-            METADATA_KEY_NOPROMPT: True,
-        },
-    )
-    environment_variables: dict[str, str] = dataclasses.field(
-        default_factory=dict,
-        metadata={
-            METADATA_KEY_DOC: (
-                "Additional environment variables passed to docker compose. These take "
-                "precedence over environment variables defined through another configuration "
-                "option (for example 'license_server' which defines 'ANSYSLMD_LICENSE_FILE') "
-                "or the pre-existing environment variables."
             ),
             METADATA_KEY_NOPROMPT: True,
         },
@@ -213,7 +181,9 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         with open(Path(__file__).parents[0] / "docker-compose.yaml", "w") as comp_file:
             comp_file.write("services:\n")
             comp_file.write("  fluent:\n")
-            comp_file.write(f"    image: {self._container_dict['fluent_image']}\n")
+            comp_file.write(
+                f"    image: {self._container_dict.get('fluent_image', config.image_name_fluent)}\n"
+            )
             comp_file.write("    environment:\n")
             comp_file.write(f"      - ANSYSLMD_LICENSE_FILE={config.license_server}\n")
             comp_file.write(f"    command: {cmd_str}\n")
