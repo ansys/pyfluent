@@ -58,7 +58,7 @@ Windows
     quarto install tinytex --no-prompt --update-path
     cd doc
     set BUILD_ALL_DOCS=1
-    set FLUENT_IMAGE_TAG=v0.25.1
+    set FLUENT_IMAGE_TAG=v25.1.0
     make html
 
 Linux
@@ -72,7 +72,7 @@ Linux
     quarto install tinytex --no-prompt --update-path
     cd doc
     set BUILD_ALL_DOCS=1
-    set FLUENT_IMAGE_TAG=v0.25.1
+    set FLUENT_IMAGE_TAG=v25.1.0
     make html
 
 After the build completes, the HTML documentation is located in the
