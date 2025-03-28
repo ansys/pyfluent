@@ -45,6 +45,8 @@ from ansys.tools.local_product_launcher.interface import (
     ServerType,
 )
 
+__all__ = ["DockerComposeLaunchConfig"]
+
 
 def has_sudo_permissions():
     """Check if the user has sudo permissions."""
@@ -185,7 +187,8 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 f"    image: {self._container_dict.get('fluent_image', config.image_name_fluent)}\n"
             )
             comp_file.write("    environment:\n")
-            comp_file.write(f"      - ANSYSLMD_LICENSE_FILE={config.license_server}\n")
+            for env_var, value in self._container_dict["environment"].items():
+                comp_file.write(f"      - {env_var}={value}\n")
             comp_file.write(f"    command: {cmd_str}\n")
             comp_file.write("    ports:\n")
             comp_file.write(
