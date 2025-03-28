@@ -1,18 +1,18 @@
 services:
   fluent:
-    image: ${IMAGE_NAME_FLUENT}
+    image: ghcr.io/ansys/pyfluent:v25.2.0
     environment:
-      - ANSYSLMD_LICENSE_FILE=${ANSYSLMD_LICENSE_FILE}
-    command: ${FLUENT_COMMAND}
+      - ANSYSLMD_LICENSE_FILE=1055@punlnxlicense5.ansys.com
+    command: -sifile=/home/container/workdir/serverinfo-9h2so6_o.txt 3ddp -hidden  -meshing
     ports:
-      - "${FLUENT_PORT}:${FLUENT_PORT}"
+      - 61979:61979
     working_dir: /home/container/workdir
     volumes:
-      - ${MOUNT_SOURCE}:/home/container/workdir  # Mount local directory to the container
-  ansys-tools-filetransfer:
-    image: ${IMAGE_NAME_FILETRANSFER:-ghcr.io/ansys/tools-filetransfer:latest}
+      - D:\Repos\pyfluent:/home/container/workdir
+  filetransfer:
+    image: ghcr.io/ansys/tools-filetransfer:latest
     ports:
-      - "${PORT_FILETRANSFER}:${PORT_FILETRANSFER}"
+      - 61980:61980
     working_dir: /home/container/workdir
     volumes:
-      - ${MOUNT_SOURCE}:/home/container/workdir
+      - D:\Repos\pyfluent:/home/container/workdir

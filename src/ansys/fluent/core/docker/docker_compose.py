@@ -209,30 +209,37 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
         cmd_str = " ".join(self._container_dict["command"])
         self._port_ft = find_free_ports(1)
-        with open(Path(__file__).parents[0] / ".env", "w") as env_file:
-            env_file.write(
-                f"IMAGE_NAME_FLUENT={self._container_dict['fluent_image']}\n"
-            )
-            env_file.write(
-                f"IMAGE_NAME_FILETRANSFER={config.image_name_filetransfer}\n"
-            )
-            env_file.write(f"MOUNT_SOURCE={self._container_dict['mount_source']}\n")
-            env_file.write(f"FLUENT_COMMAND={cmd_str}\n")
-            env_file.write(f"FLUENT_PORT={self._container_dict['fluent_port']}\n")
-            env_file.write(f"PORT_FILETRANSFER={self._port_ft[0]}\n")
-            for key, value in self._container_dict["environment"].items():
-                env_file.write(f"{key}={value}\n")
 
-        # self._env = {}
-        # self._env.update(
-        #     IMAGE_NAME_FLUENT=self._container_dict["fluent_image"],
-        #     IMAGE_NAME_FILETRANSFER=config.image_name_filetransfer,
-        #     MOUNT_SOURCE=self._container_dict["mount_source"],
-        #     FLUENT_COMMAND=cmd_str,
-        #     FLUENT_PORT=str(self._container_dict["fluent_port"]),
-        # )
-        # self._env.update(self._container_dict["environment"])
-        # self._env.update(config.environment_variables)
+        with open(Path(__file__).parents[0] / "docker-compose.yaml", "w") as comp_file:
+            comp_file.write("services:\n")
+            comp_file.write("  fluent:\n")
+            comp_file.write(f"    image: {self._container_dict['fluent_image']}\n")
+            comp_file.write("    environment:\n")
+            comp_file.write(f"      - ANSYSLMD_LICENSE_FILE={config.license_server}\n")
+            comp_file.write(f"    command: {cmd_str}\n")
+            comp_file.write("    ports:\n")
+            comp_file.write(
+                f"      - {self._container_dict['fluent_port']}:{self._container_dict['fluent_port']}\n"
+            )
+            comp_file.write(
+                f"    working_dir: {self._container_dict['mount_target']}\n"
+            )
+            comp_file.write("    volumes:\n")
+            comp_file.write(
+                f"      - {self._container_dict['mount_source']}:{self._container_dict['mount_target']}\n"
+            )
+            comp_file.write("  filetransfer:\n")
+            comp_file.write(f"    image: {config.image_name_filetransfer}\n")
+            comp_file.write("    ports:\n")
+            comp_file.write(f"      - {self._port_ft[0]}:{self._port_ft[0]}\n")
+            comp_file.write(
+                f"    working_dir: {self._container_dict['mount_target']}\n"
+            )
+            comp_file.write("    volumes:\n")
+            comp_file.write(
+                f"      - {self._container_dict['mount_source']}:{self._container_dict['mount_target']}\n"
+            )
+
         self._keep_volume = config.keep_volume
 
         if config.compose_file is not None:
