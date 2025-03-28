@@ -78,6 +78,10 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.docker.docker_compose import (
+    DockerComposeLaunchConfig,
+    DockerComposeLauncher,
+)
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -381,6 +385,9 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
+    container_dict["mount_source"] = mount_source
+    container_dict["mount_target"] = mount_target
+
     return (
         container_dict,
         timeout,
@@ -457,15 +464,12 @@ def start_fluent_container(
         host_server_info_file.touch(exist_ok=True)
         last_mtime = host_server_info_file.stat().st_mtime
 
-        import docker
+        config_dict["fluent_port"] = port
 
-        docker_client = docker.from_env()
-
-        logger.debug("Starting Fluent docker container...")
-
-        container = docker_client.containers.run(
-            config_dict.pop("fluent_image"), **config_dict
+        docker_compose_container = DockerComposeLauncher(
+            container_dict=config_dict, config=DockerComposeLaunchConfig()
         )
+        docker_compose_container.start()
 
         success = timeout_loop(
             lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
@@ -478,7 +482,7 @@ def start_fluent_container(
         else:
             _, _, password = _parse_server_info_file(str(host_server_info_file))
 
-            return port, password, container
+            return port, password, docker_compose_container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
