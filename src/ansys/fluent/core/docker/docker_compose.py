@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import collections
 from collections.abc import Iterator
 import contextlib
 import dataclasses
@@ -31,6 +30,7 @@ import importlib.resources
 import math
 import os
 import pathlib
+from pathlib import Path
 import platform
 import subprocess
 import uuid
@@ -208,16 +208,31 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             ) from err
 
         cmd_str = " ".join(self._container_dict["command"])
-        self._env = {}
-        self._env.update(
-            IMAGE_NAME_FLUENT=self._container_dict["fluent_image"],
-            IMAGE_NAME_FILETRANSFER=config.image_name_filetransfer,
-            MOUNT_SOURCE=self._container_dict["mount_source"],
-            FLUENT_COMMAND=cmd_str,
-            FLUENT_PORT=str(self._container_dict["fluent_port"]),
-        )
-        self._env.update(self._container_dict["environment"])
-        self._env.update(config.environment_variables)
+        self._port_ft = find_free_ports(1)
+        with open(Path(__file__).parents[0] / ".env", "w") as env_file:
+            env_file.write(
+                f"IMAGE_NAME_FLUENT={self._container_dict['fluent_image']}\n"
+            )
+            env_file.write(
+                f"IMAGE_NAME_FILETRANSFER={config.image_name_filetransfer}\n"
+            )
+            env_file.write(f"MOUNT_SOURCE={self._container_dict['mount_source']}\n")
+            env_file.write(f"FLUENT_COMMAND={cmd_str}\n")
+            env_file.write(f"FLUENT_PORT={self._container_dict['fluent_port']}\n")
+            env_file.write(f"PORT_FILETRANSFER={self._port_ft[0]}\n")
+            for key, value in self._container_dict["environment"].items():
+                env_file.write(f"{key}={value}\n")
+
+        # self._env = {}
+        # self._env.update(
+        #     IMAGE_NAME_FLUENT=self._container_dict["fluent_image"],
+        #     IMAGE_NAME_FILETRANSFER=config.image_name_filetransfer,
+        #     MOUNT_SOURCE=self._container_dict["mount_source"],
+        #     FLUENT_COMMAND=cmd_str,
+        #     FLUENT_PORT=str(self._container_dict["fluent_port"]),
+        # )
+        # self._env.update(self._container_dict["environment"])
+        # self._env.update(config.environment_variables)
         self._keep_volume = config.keep_volume
 
         if config.compose_file is not None:
@@ -273,16 +288,10 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
     def start(self) -> None:
         """Start the services."""
         with self._get_compose_file() as compose_file:
-            port_ft = find_free_ports(1)
             self._urls = {
                 ServerKey.MAIN: f"localhost:{self._container_dict['fluent_port']}",
-                ServerKey.FILE_TRANSFER: f"localhost:{port_ft[0]}",
+                ServerKey.FILE_TRANSFER: f"localhost:{self._port_ft[0]}",
             }
-
-            env = collections.ChainMap(
-                {"PORT_FILETRANSFER": str(port_ft[0])},
-                self._env,
-            )
 
             # The compose_file may be temporary, in particular if the package is a zipfile.
             # To avoid it being deleted before docker compose has read it, we use the '--wait'
@@ -301,17 +310,23 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 # Prefer docker-compose or podman-compose
                 output = subprocess.Popen(  # noqa: F841
                     self._set_compose_cmd() + cmd,
-                    env=env,
                     stderr=subprocess.STDOUT,
                 )
             except subprocess.CalledProcessError as e:  # noqa: F841
-                output = subprocess.Popen(  # noqa: F841
-                    self._set_compose_cmds() + cmd,
-                    env=env,
-                    stderr=subprocess.STDOUT,
+                print(
+                    f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
                 )
-                # print(f"Command failed with exit code {e.returncode}")
-                # print(f"Output: {e.output.decode()}")
+                print(f"Output: {e.output.decode()}")
+                try:
+                    output = subprocess.Popen(  # noqa: F841
+                        self._set_compose_cmds() + cmd,
+                        stderr=subprocess.STDOUT,
+                    )
+                except subprocess.CalledProcessError as e:  # noqa: F841
+                    print(
+                        f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
+                    )
+                    print(f"Output: {e.output.decode()}")
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the services."""
