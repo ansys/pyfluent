@@ -220,8 +220,8 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_cmds = []
 
-        # if has_sudo_permissions():
-        #     self._compose_cmds.insert(0, "sudo")
+        if has_sudo_permissions():
+            self._compose_cmds.insert(0, "sudo")
 
         return self._compose_cmds
 
