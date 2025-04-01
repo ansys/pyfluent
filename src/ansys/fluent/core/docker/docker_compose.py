@@ -118,7 +118,6 @@ class ServerKey(str, enum.Enum):
     """Keys for the servers launched through docker compose."""
 
     MAIN = "main"
-    FILE_TRANSFER = "file_transfer"
 
 
 @dataclasses.dataclass
@@ -147,14 +146,47 @@ class DockerComposeLaunchConfig:
     )
 
 
+def _write_yaml_config(compose_name, container_dict, cmd_str):
+    """
+    Writes a YAML configuration file for a Docker Compose setup.
+
+    Parameters
+    ----------
+    compose_name: str
+        The name of the compose file (without extension).
+    container_dict: dict
+        A dictionary containing container configuration.
+    cmd_str: str
+        The command to run in the container.
+    """
+    yaml_file_path = Path(__file__).parents[0] / f"{compose_name}.yaml"
+
+    with open(yaml_file_path, "w") as comp_file:
+        comp_file.write("services:\n")
+        comp_file.write("  fluent:\n")
+        comp_file.write(
+            f"    image: {container_dict.get('fluent_image', 'default_image_name')}\n"
+        )
+        comp_file.write("    environment:\n")
+        for env_var, value in container_dict["environment"].items():
+            comp_file.write(f"      - {env_var}={value}\n")
+        comp_file.write(f"    command: {cmd_str}\n")
+        comp_file.write("    ports:\n")
+        comp_file.write(
+            f"      - {container_dict['fluent_port']}:{container_dict['fluent_port']}\n"
+        )
+        comp_file.write(f"    working_dir: {container_dict['mount_target']}\n")
+        comp_file.write("    volumes:\n")
+        comp_file.write(
+            f"      - {container_dict['mount_source']}:{container_dict['mount_target']}\n"
+        )
+
+
 class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
     """Launch Fluent through docker compose."""
 
     CONFIG_MODEL = DockerComposeLaunchConfig
-    SERVER_SPEC = {
-        ServerKey.MAIN: ServerType.GRPC,
-        ServerKey.FILE_TRANSFER: ServerType.GRPC,
-    }
+    SERVER_SPEC = {ServerKey.MAIN: ServerType.GRPC}
 
     def __init__(self, *, container_dict, config: DockerComposeLaunchConfig):
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
@@ -164,43 +196,11 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         self._docker_compose_available = check_docker_compose_installed()
         self._podman_compose_available = check_podman_compose_installed()
         self._container_dict = container_dict
-
-        try:
-            import ansys.tools.filetransfer  # noqa
-        except ImportError as err:
-            raise ImportError(
-                "The 'ansys.tools.filetransfer' module is needed to launch Fluent via docker-compose."
-            ) from err
+        self._keep_volume = config.keep_volume
 
         cmd_str = " ".join(self._container_dict["command"])
 
-        with open(
-            Path(__file__).parents[0] / f"{self._compose_name}.yaml", "w"
-        ) as comp_file:
-            comp_file.write("services:\n")
-            comp_file.write("  fluent:\n")
-            comp_file.write(
-                f"    image: {self._container_dict.get('fluent_image', config.image_name_fluent)}\n"
-            )
-            # comp_file.write(f"    privileged: true\n")
-            comp_file.write("    environment:\n")
-            for env_var, value in self._container_dict["environment"].items():
-                comp_file.write(f"      - {env_var}={value}\n")
-            comp_file.write(f"    command: {cmd_str}\n")
-            comp_file.write("    ports:\n")
-            comp_file.write(
-                f"      - {self._container_dict['fluent_port']}:{self._container_dict['fluent_port']}\n"
-            )
-            comp_file.write(
-                f"    working_dir: {self._container_dict['mount_target']}\n"
-            )
-            comp_file.write("    volumes:\n")
-            comp_file.write(
-                f"      - {self._container_dict['mount_source']}:{self._container_dict['mount_target']}\n"
-            )
-            # comp_file.write(f'    user: "{user_id}:{group_id}"\n')
-
-        self._keep_volume = config.keep_volume
+        _write_yaml_config(self._compose_name, self._container_dict, cmd_str)
 
         if config.compose_file is not None:
             self._compose_file: pathlib.Path | None = pathlib.Path(config.compose_file)
@@ -308,22 +308,11 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                     stderr=subprocess.STDOUT,
                 )
             except subprocess.CalledProcessError as e:  # noqa: F841
-                print(
-                    f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
+                output = subprocess.Popen(  # noqa: F841
+                    self._set_compose_cmds() + cmd,
+                    stderr=subprocess.STDOUT,
                 )
-                print(f"Output: {e.output.decode()}")
-                try:
-                    output = subprocess.Popen(  # noqa: F841
-                        self._set_compose_cmds() + cmd,
-                        stderr=subprocess.STDOUT,
-                    )
-                except subprocess.CalledProcessError as e:  # noqa: F841
-                    print(
-                        f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
-                    )
-                    print(f"Output: {e.output.decode()}")
-            finally:
-                compose_file.unlink(missing_ok=True)
+        Path(self._get_compose_file()).unlink()
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""
