@@ -474,7 +474,7 @@ class BaseFieldData:
             pathlines_data,
         )
 
-    def get_field(
+    def get_field_data(
         self,
         obj: (
             SurfaceFieldDataRequest
@@ -1430,7 +1430,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     ) -> Dict[int | str, np.array]:
         """Get scalar field data on a surface."""
         warnings.warn(
-            "'get_scalar_field_data' is deprecated, use 'get_field' instead",
+            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_scalar_field_data(
@@ -1448,7 +1448,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         warnings.warn(
-            "'get_surface_data' is deprecated, use 'get_field' instead",
+            "'get_surface_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_surface_data(
@@ -1462,7 +1462,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     ) -> Dict[int | str, np.array]:
         """Get vector field data on a surface."""
         warnings.warn(
-            "'get_vector_field_data' is deprecated, use 'get_field' instead",
+            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_vector_field_data(
@@ -1489,7 +1489,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     ) -> Dict:
         """Get the pathlines field data on a surface."""
         warnings.warn(
-            "'get_pathlines_field_data' is deprecated, use 'get_field' instead",
+            "'get_pathlines_field_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_pathlines_field_data(

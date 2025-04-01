@@ -180,7 +180,7 @@ class BaseFieldDataSource(ABC):
         pass
 
     @abstractmethod
-    def get_field(
+    def get_field_data(
         self,
         obj: (
             SurfaceFieldDataRequest

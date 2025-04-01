@@ -34,12 +34,12 @@ To retrieve field data, instantiate a request object based on the data type:
 - ``VectorFieldDataRequest`` for vector field data.
 - ``PathlinesFieldDataRequest`` for pathlines field data.
 
-Then, use ``get_field`` and pass the request object as an argument to obtain the desired field data.
+Then, use ``get_field_data`` and pass the request object as an argument to obtain the desired field data.
 
 Retrieving surface data
 ~~~~~~~~~~~~~~~~~~~~~~~
 To obtain surface vertex coordinates for a given surface, create a
-``SurfaceFieldDataRequest`` and call the ``get_field`` method.
+``SurfaceFieldDataRequest`` and call the ``get_field_data`` method.
 
 .. code-block:: python
 
@@ -49,7 +49,7 @@ To obtain surface vertex coordinates for a given surface, create a
   >>>     surfaces=["inlet"],
   >>>     data_types=[SurfaceDataType.Vertices],
   >>> )
-  >>> vertices_data = field_data.get_field(vertices_request)
+  >>> vertices_data = field_data.get_field_data(vertices_request)
 
   # Retrieves vertex coordinates as a NumPy array.
   # Shape: (389, 3) - This means 389 vertices, each defined by 3 coordinates (x, y, z).
@@ -68,7 +68,7 @@ in the ``data_types`` list.
   >>>     surfaces=["inlet"],
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>> )
-  >>> faces_normal_and_centroid_data = field_data.get_field(faces_normal_and_centroid_request)
+  >>> faces_normal_and_centroid_data = field_data.get_field_data(faces_normal_and_centroid_request)
 
   # FacesNormal shape: (262, 3) - 262 face normals, each with 3 components (x, y, z).
   # FacesCentroid shape: (262, 3) - Centroids for each of the 262 faces, given as (x, y, z).
@@ -85,7 +85,7 @@ To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_ty
   >>> faces_connectivity_request = SurfaceFieldDataRequest(
   >>>     surfaces=["inlet"], data_types=[SurfaceDataType.FacesConnectivity]
   >>> )
-  >>> faces_connectivity_data = field_data.get_field(faces_connectivity_request)
+  >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
   # FacesConnectivity provides indices of vertices for each face. For example:
   # Face 6 is connected to vertices 4, 5, 12, and 11.
@@ -100,7 +100,7 @@ To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataR
 
   >>> from ansys.fluent.core.services.field_data import ScalarFieldDataRequest
   >>> absolute_pressure_request = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
-  >>> absolute_pressure_data = field_data.get_field(absolute_pressure_request)
+  >>> absolute_pressure_data = field_data.get_field_data(absolute_pressure_request)
 
   # Shape: (389,) - A single scalar value (e.g., pressure) for each of the 389 vertices.
   >>> absolute_pressure_data["inlet"].shape
@@ -117,7 +117,7 @@ To obtain vector field data, such as velocity vectors, use ``VectorFieldDataRequ
 
   >>> from ansys.fluent.core.services.field_data import VectorFieldDataRequest
   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
-  >>> velocity_vector_data = field_data.get_field(velocity_request)
+  >>> velocity_vector_data = field_data.get_field_data(velocity_request)
   # Shape: (262, 3) - Velocity vectors for 262 faces, each with components (vx, vy, vz) for 'inlet'.
   >>> velocity_vector_data["inlet"].shape
   (262, 3)
@@ -133,7 +133,7 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
 
   >>> from ansys.fluent.core.services.field_data import PathlinesFieldDataRequest
   >>> velocity_pathlines_request = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
-  >>> velocity_path_lines_data = field_data.get_field(velocity_pathlines_request)
+  >>> velocity_path_lines_data = field_data.get_field_data(velocity_pathlines_request)
 
   # Vertices shape: (29565, 3) - 29565 pathline points, each with coordinates (x, y, z).
   # Lines: A list where each entry contains indices of vertices forming a pathline.
@@ -167,15 +167,15 @@ Add multiple requests using ``add_requests`` and access the data with ``get_resp
 
   >>> payload_data = transaction.add_requests(vertices_and_centroid_request, pressure_request, velocity_request).get_response()
 
-Retrieve data using ``get_field``, either by reusing or modifying request objects:
+Retrieve data using ``get_field_data``, either by reusing or modifying request objects:
 
 .. code-block:: python
 
-  >>> pressure_data = payload_data.get_field(pressure_request)
+  >>> pressure_data = payload_data.get_field_data(pressure_request)
   >>> pressure_data.keys()
   dict_keys([1, 2])
   >>> pressure_request = pressure_request._replace(surfaces=[1])
-  >>> update_pressure_data = payload_data.get_field(pressure_request)
+  >>> update_pressure_data = payload_data.get_field_data(pressure_request)
   >>> update_pressure_data.keys()
   dict_keys([1])
 

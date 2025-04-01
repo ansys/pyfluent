@@ -160,7 +160,7 @@ class TransactionFieldData:
             pathlines_data,
         )
 
-    def get_field(
+    def get_field_data(
         self,
         obj: (
             SurfaceFieldDataRequest
@@ -647,7 +647,7 @@ class FileFieldData(FieldDataSource):
              vertices, connectivity data, and normal or centroid data is returned.
         """
         warnings.warn(
-            "'get_surface_data' is deprecated, use 'get_field' instead",
+            "'get_surface_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_surface_data(
@@ -744,7 +744,7 @@ class FileFieldData(FieldDataSource):
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         warnings.warn(
-            "'get_scalar_field_data' is deprecated, use 'get_field' instead",
+            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_scalar_field_data(
@@ -822,7 +822,7 @@ class FileFieldData(FieldDataSource):
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
         warnings.warn(
-            "'get_vector_field_data' is deprecated, use 'get_field' instead",
+            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
         return self._get_vector_field_data(
@@ -901,7 +901,7 @@ class FileFieldData(FieldDataSource):
     ):
         raise NotImplementedError("Pathlines are not supported.")
 
-    def get_field(
+    def get_field_data(
         self,
         obj: (
             SurfaceFieldDataRequest

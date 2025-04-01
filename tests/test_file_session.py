@@ -413,7 +413,9 @@ def test_field_info_data_multi_phase():
         surfaces=[33],
     )
 
-    sv_density = file_session.fields.field_data.get_field(scalar_field_data_request)
+    sv_density = file_session.fields.field_data.get_field_data(
+        scalar_field_data_request
+    )
 
     assert sv_density[33].shape == (268,)
     assert sv_density[33][130] == 1.225
@@ -422,9 +424,9 @@ def test_field_info_data_multi_phase():
     )
     assert (
         round(
-            file_session.fields.field_data.get_field(scalar_field_data_request_1)[33][
-                130
-            ],
+            file_session.fields.field_data.get_field_data(scalar_field_data_request_1)[
+                33
+            ][130],
             5,
         )
         == 0.00103
@@ -435,7 +437,7 @@ def test_field_info_data_multi_phase():
     vector_data_request_1 = VectorFieldDataRequest(
         field_name="phase-1:velocity", surfaces=[34]
     )
-    vector_data = file_session.fields.field_data.get_field
+    vector_data = file_session.fields.field_data.get_field_data
     assert vector_data(vector_data_request)[33].shape == (
         268,
         3,
@@ -474,11 +476,11 @@ def test_field_info_data_single_phase():
         "default-interior",
     ]
     sv_t_wall_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"])
-    sv_t_wall = file_session.fields.field_data.get_field(sv_t_wall_request)
+    sv_t_wall = file_session.fields.field_data.get_field_data(sv_t_wall_request)
     assert sv_t_wall["wall"].shape == (3630,)
     assert round(sv_t_wall["wall"][1800], 4) == 313.15
 
-    surface_data = file_session.fields.field_data.get_field
+    surface_data = file_session.fields.field_data.get_field_data
     surface_data_wall_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices], surfaces=[3]
     )
@@ -495,7 +497,7 @@ def test_field_info_data_single_phase():
     assert len(surface_data_symmetry["symmetry"]) == 2018
     assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
 
-    vector_data = file_session.fields.field_data.get_field
+    vector_data = file_session.fields.field_data.get_field_data
     vector_data_request = VectorFieldDataRequest(
         field_name="velocity", surfaces=["wall"]
     )
@@ -554,7 +556,7 @@ def test_transaction_request_single_phase():
     assert len(data) == 3
 
     # Surfaces Data
-    surface_data = data.get_field(surf_data_request)
+    surface_data = data.get_field_data(surf_data_request)
     assert len(surface_data) == 2
     assert list(surface_data[3].keys()) == [
         SurfaceDataType.Vertices,
@@ -562,7 +564,7 @@ def test_transaction_request_single_phase():
     ]
 
     # Scalar Field Data
-    scalar_data = data.get_field(scalar_data_request_2)
+    scalar_data = data.get_field_data(scalar_data_request_2)
     assert len(scalar_data) == 2
     assert len(scalar_data["wall"]) == 3630
     assert round(scalar_data["wall"][50], 2) == 293.15
@@ -570,7 +572,7 @@ def test_transaction_request_single_phase():
     assert round(scalar_data["symmetry"][50], 2) == 293.15
 
     # Vector Field Data
-    vector_data = data.get_field(vector_data_request_1)
+    vector_data = data.get_field_data(vector_data_request_1)
     assert len(vector_data) == 2
     assert vector_data[5].shape == (100, 3)
     assert round(vector_data[5][50][0], 5) == 0.03035
@@ -617,11 +619,11 @@ def test_transaction_request_multi_phase():
 
     # Scalar Field Data
 
-    sc_field_data = data.get_field(scalar_field_request)
+    sc_field_data = data.get_field_data(scalar_field_request)
     assert len(sc_field_data) == 2
 
     # Vector Field Data
-    vector_data = data.get_field(vector_field_request)
+    vector_data = data.get_field_data(vector_field_request)
     assert len(vector_data) == 1
     assert vector_data[31].shape == (152, 3)
 
@@ -647,7 +649,7 @@ def test_error_handling_single_phase():
         )
 
     with pytest.raises(NotImplementedError):
-        field_data.get_field(
+        field_data.get_field_data(
             PathlinesFieldDataRequest(field_name="SV_T", surfaces=[3, 5])
         )
 
@@ -676,11 +678,11 @@ def test_error_handling_multi_phase():
         )
 
     with pytest.raises(InvalidMultiPhaseFieldName):
-        field_data.get_field(
+        field_data.get_field_data(
             VectorFieldDataRequest(field_name="velocity", surfaces=[34])
         )[34].size
 
     with pytest.raises(InvalidFieldName):
-        field_data.get_field(
+        field_data.get_field_data(
             VectorFieldDataRequest(field_name="phase-1:temperature", surfaces=[34])
         )[34].size
