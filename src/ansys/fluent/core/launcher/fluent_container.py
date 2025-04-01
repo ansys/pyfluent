@@ -82,11 +82,7 @@ from ansys.fluent.core.docker.docker_compose import (
     DockerComposeLaunchConfig,
     DockerComposeLauncher,
 )
-
-# from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_argument
-
-# from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")
