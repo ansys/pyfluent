@@ -37,7 +37,6 @@ import uuid
 import grpc
 
 from ansys.tools.local_product_launcher.helpers.grpc import check_grpc_health
-from ansys.tools.local_product_launcher.helpers.ports import find_free_ports
 from ansys.tools.local_product_launcher.interface import (
     METADATA_KEY_DOC,
     METADATA_KEY_NOPROMPT,
@@ -130,10 +129,6 @@ class DockerComposeLaunchConfig:
         default="ghcr.io/ansys/pyfluent:latest",
         metadata={METADATA_KEY_DOC: "Docker image running the Fluent gRPC server."},
     )
-    image_name_filetransfer: str = dataclasses.field(
-        default="ghcr.io/ansys/tools-filetransfer:latest",
-        metadata={METADATA_KEY_DOC: "Docker image running the file transfer service."},
-    )
     keep_volume: bool = dataclasses.field(
         default=False,
         metadata={
@@ -178,14 +173,16 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             ) from err
 
         cmd_str = " ".join(self._container_dict["command"])
-        self._port_ft = find_free_ports(1)
 
-        with open(Path(__file__).parents[0] / "docker-compose.yaml", "w") as comp_file:
+        with open(
+            Path(__file__).parents[0] / f"{self._compose_name}.yaml", "w"
+        ) as comp_file:
             comp_file.write("services:\n")
             comp_file.write("  fluent:\n")
             comp_file.write(
                 f"    image: {self._container_dict.get('fluent_image', config.image_name_fluent)}\n"
             )
+            # comp_file.write(f"    privileged: true\n")
             comp_file.write("    environment:\n")
             for env_var, value in self._container_dict["environment"].items():
                 comp_file.write(f"      - {env_var}={value}\n")
@@ -201,6 +198,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             comp_file.write(
                 f"      - {self._container_dict['mount_source']}:{self._container_dict['mount_target']}\n"
             )
+            # comp_file.write(f'    user: "{user_id}:{group_id}"\n')
 
         self._keep_volume = config.keep_volume
 
@@ -250,7 +248,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             yield self._compose_file
         else:
             with importlib.resources.path(
-                "ansys.fluent.core.docker", "docker-compose.yaml"
+                "ansys.fluent.core.docker", f"{self._compose_name}.yaml"
             ) as compose_file:
                 yield compose_file
 
@@ -259,7 +257,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         with self._get_compose_file() as compose_file:
             self._urls = {
                 ServerKey.MAIN: f"localhost:{self._container_dict['fluent_port']}",
-                ServerKey.FILE_TRANSFER: f"localhost:{self._port_ft[0]}",
             }
 
             # The compose_file may be temporary, in particular if the package is a zipfile.
@@ -282,20 +279,10 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                     stderr=subprocess.STDOUT,
                 )
             except subprocess.CalledProcessError as e:  # noqa: F841
-                print(
-                    f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
+                output = subprocess.Popen(  # noqa: F841
+                    self._set_compose_cmds() + cmd,
+                    stderr=subprocess.STDOUT,
                 )
-                print(f"Output: {e.output.decode()}")
-                try:
-                    output = subprocess.Popen(  # noqa: F841
-                        self._set_compose_cmds() + cmd,
-                        stderr=subprocess.STDOUT,
-                    )
-                except subprocess.CalledProcessError as e:  # noqa: F841
-                    print(
-                        f"\n{self._set_compose_cmd() + cmd} failed with exit code {e.returncode}"
-                    )
-                    print(f"Output: {e.output.decode()}")
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the services."""

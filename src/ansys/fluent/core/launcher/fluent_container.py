@@ -82,9 +82,11 @@ from ansys.fluent.core.docker.docker_compose import (
     DockerComposeLaunchConfig,
     DockerComposeLauncher,
 )
-from ansys.fluent.core.session import _parse_server_info_file
+
+# from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_argument
-from ansys.fluent.core.utils.execution import timeout_loop
+
+# from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -458,12 +460,6 @@ def start_fluent_container(
         del container_vars_tmp
 
     try:
-        if not host_server_info_file.exists():
-            host_server_info_file.parents[0].mkdir(exist_ok=True)
-
-        host_server_info_file.touch(exist_ok=True)
-        last_mtime = host_server_info_file.stat().st_mtime
-
         config_dict["fluent_port"] = port
 
         docker_compose_container = DockerComposeLauncher(
@@ -471,18 +467,8 @@ def start_fluent_container(
         )
         docker_compose_container.start()
 
-        success = timeout_loop(
-            lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
-        )
-
-        if not success:
-            raise TimeoutError(
-                "Fluent container launch has timed out, stop container manually."
-            )
-        else:
-            _, _, password = _parse_server_info_file(str(host_server_info_file))
-
-            return port, password, docker_compose_container
+        # _, _, password = _parse_server_info_file(str(host_server_info_file))
+        # return port, password, docker_compose_container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
