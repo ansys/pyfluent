@@ -312,7 +312,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                     self._set_compose_cmds() + cmd,
                     stderr=subprocess.STDOUT,
                 )
-        Path(self._get_compose_file()).unlink()
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""

@@ -38,6 +38,8 @@ Examples
 import inspect
 import logging
 import os
+import subprocess
+import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -63,6 +65,61 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
+
+
+def _get_password_from_docker(config_dict, container):
+    """
+    Retrieve the password from a specified file in a Docker container.
+
+    Parameters
+    ----------
+    config_dict : dict
+        A dictionary containing configuration settings, including the command with the
+        `-sifile` argument.
+    container : object
+        An object representing the Docker container, which should have a `_compose_name`
+        attribute used to identify the container.
+
+    Returns
+    -------
+    str
+        The password retrieved from the specified file. If the password cannot be found,
+        an empty string is returned.
+
+    Raises
+    ------
+    IndexError
+        If no `-sifile` argument is found in the command.
+    subprocess.CalledProcessError
+        If there is an error executing the Docker command.
+
+    Notes
+    -----
+    The function sleeps for 20 seconds before executing the command to ensure that
+    the Docker container is ready.
+    """
+
+    time.sleep(20)
+
+    sifile_arg = config_dict["command"]
+    sifile_path = [arg for arg in sifile_arg if arg.startswith("-sifile")][0].split(
+        "="
+    )[1]
+
+    out = subprocess.run(
+        [
+            "docker",
+            "exec",
+            f"{container._compose_name}-fluent-1",
+            "cat",
+            f"{sifile_path}",
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    return out.stdout.split("\n")[1] if len(out.stdout.split("\n")) > 1 else ""
 
 
 class DockerLauncher:
@@ -202,27 +259,7 @@ class DockerLauncher:
             self._args, self.argvals["container_dict"]
         )
 
-        import subprocess
-        import time
-
-        time.sleep(20)
-
-        sifile_arg = config_dict["command"]
-        sifile_path = [arg for arg in sifile_arg if arg.startswith("-sifile")][0].split(
-            "="
-        )[1]
-        out = subprocess.run(
-            [
-                "docker",
-                "exec",
-                f"{container._compose_name}-fluent-1",
-                "cat",
-                f"{sifile_path}",
-            ],
-            capture_output=True,
-            text=True,
-        )
-        password = out.stdout.split("\n")[1]
+        password = _get_password_from_docker(config_dict, container)
 
         fluent_connection = FluentConnection(
             port=port,
