@@ -1245,7 +1245,10 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
-        self.arguments.update_dict(state or {})
+        state = state or {}
+        # state.update({"add_child": "yes"})
+        self.arguments.update_dict(state)
+        # self.arguments.update_dict(state or {})
         py_name = self.python_name()
         if py_name not in self._command_source._compound_child_map:
             self._command_source._compound_child_map[py_name] = 1
