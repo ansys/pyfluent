@@ -198,9 +198,31 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password, container = start_fluent_container(
+        port, config_dict, container = start_fluent_container(
             self._args, self.argvals["container_dict"]
         )
+
+        import subprocess
+        import time
+
+        time.sleep(20)
+
+        sifile_arg = config_dict["command"]
+        sifile_path = [arg for arg in sifile_arg if arg.startswith("-sifile")][0].split(
+            "="
+        )[1]
+        out = subprocess.run(
+            [
+                "docker",
+                "exec",
+                f"{container._compose_name}-fluent-1",
+                "cat",
+                f"{sifile_path}",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        password = out.stdout.split("\n")[1]
 
         fluent_connection = FluentConnection(
             port=port,

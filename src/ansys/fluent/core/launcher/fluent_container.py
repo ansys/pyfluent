@@ -467,8 +467,7 @@ def start_fluent_container(
         )
         docker_compose_container.start()
 
-        # _, _, password = _parse_server_info_file(str(host_server_info_file))
-        # return port, password, docker_compose_container
+        return port, config_dict, docker_compose_container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
