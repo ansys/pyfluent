@@ -216,7 +216,13 @@ from ansys.fluent.core.services.datamodel_se import (
     PyDictionary,
     PyNamedObjectContainer,
     PyCommand,
-    PyQuery
+    PyQuery,
+    PyCommandArguments,
+    PyTextualCommandArgumentsSubItem,
+    PyNumericalCommandArgumentsSubItem,
+    PyDictionaryCommandArgumentsSubItem,
+    PyParameterCommandArgumentsSubItem,
+    PySingletonCommandArgumentsSubItem
 )
 
 
@@ -288,7 +294,20 @@ class Root(PyMenu):
             -------
             bool
             """
-            pass
+            class _C2CommandArguments(PyCommandArguments):
+                def __init__(self, service, rules, command, path, id):
+                    super().__init__(service, rules, command, path, id)
+                    self.A2 = self._A2(self, "A2", service, rules, path)
+
+                class _A2(PyNumericalCommandArgumentsSubItem):
+                    """
+                    Argument A2.
+                    """
+
+            def create_instance(self) -> _C2CommandArguments:
+                args = self._get_create_instance_args()
+                if args is not None:
+                    return self._C2CommandArguments(*args)
 
     class P1(PyTextual):
         """
@@ -308,7 +327,20 @@ class Root(PyMenu):
         -------
         bool
         """
-        pass'''
+        class _C1CommandArguments(PyCommandArguments):
+            def __init__(self, service, rules, command, path, id):
+                super().__init__(service, rules, command, path, id)
+                self.A1 = self._A1(self, "A1", service, rules, path)
+
+            class _A1(PyTextualCommandArgumentsSubItem):
+                """
+                Argument A1.
+                """
+
+        def create_instance(self) -> _C1CommandArguments:
+            args = self._get_create_instance_args()
+            if args is not None:
+                return self._C1CommandArguments(*args)'''
 
 
 @pytest.mark.parametrize(
