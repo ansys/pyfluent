@@ -38,7 +38,6 @@ Examples
 import inspect
 import logging
 import os
-from pathlib import Path
 import time
 from typing import Any
 
@@ -71,18 +70,16 @@ logger = logging.getLogger("pyfluent.launcher")
 def _get_server_info_from_container(config_dict):
     """Retrieve the server info from a specified file in a container."""
 
-    sifile_arg = config_dict["command"]
-    sifile_path = [arg for arg in sifile_arg if arg.startswith("-sifile")][0].split(
-        "="
-    )[1]
-    sifile_name = sifile_path.split("/")[-1]
+    host_server_info_file = config_dict["host_server_info_file"]
 
-    sifile_host_path = Path(config_dict["mount_source"]) / sifile_name
-
-    while not Path(sifile_host_path).exists():
+    time_limit = 0
+    while not host_server_info_file.exists():
         time.sleep(2)
+        time_limit += 2
+        if time_limit > 60:
+            raise FileNotFoundError(f"{host_server_info_file} not found.")
 
-    return _parse_server_info_file(str(sifile_host_path))
+    return _parse_server_info_file(str(host_server_info_file))
 
 
 class DockerLauncher:

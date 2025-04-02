@@ -383,6 +383,7 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
+    container_dict["host_server_info_file"] = host_server_info_file
     container_dict["mount_source"] = mount_source
     container_dict["mount_target"] = mount_target
 
