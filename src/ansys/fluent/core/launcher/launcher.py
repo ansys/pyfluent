@@ -396,18 +396,20 @@ def connect_to_fluent(
     """
     if not fluent_connection:
         ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
-        fluent_connection = FluentConnection(
+        new_fluent_connection = FluentConnection(
             ip=ip,
             port=port,
             password=password,
             cleanup_on_exit=cleanup_on_exit,
         )
-    else:
-        new_session = _get_running_session_mode(fluent_connection)
 
-        start_watchdog = _confirm_watchdog_start(
-            start_watchdog, cleanup_on_exit, fluent_connection
-        )
+    connection = fluent_connection if fluent_connection else new_fluent_connection
+
+    new_session = _get_running_session_mode(connection)
+
+    start_watchdog = _confirm_watchdog_start(
+        start_watchdog, cleanup_on_exit, connection
+    )
 
     if start_watchdog and not fluent_connection:
         logger.info("Launching Watchdog for existing Fluent session...")
