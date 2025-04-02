@@ -88,32 +88,6 @@ def check_podman_installed():
         return False
 
 
-def check_docker_compose_installed():
-    """Check if Docker Compose is installed."""
-    try:
-        result = subprocess.run(  # noqa: F841
-            ["docker-compose", "--version"], capture_output=True, text=True, check=True
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
-    except FileNotFoundError:
-        return False
-
-
-def check_podman_compose_installed():
-    """Check if Podman Compose is installed."""
-    try:
-        result = subprocess.run(  # noqa: F841
-            ["podman-compose", "--version"], capture_output=True, text=True, check=True
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
-    except FileNotFoundError:
-        return False
-
-
 class ServerKey(str, enum.Enum):
     """Keys for the servers launched through docker compose."""
 
@@ -193,8 +167,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         self._urls: dict[str, str]
         self._docker_available = check_docker_installed()
         self._podman_available = check_podman_installed()
-        self._docker_compose_available = check_docker_compose_installed()
-        self._podman_compose_available = check_podman_compose_installed()
         self._container_dict = container_dict
         self._keep_volume = config.keep_volume
 
@@ -225,23 +197,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
         return self._compose_cmds
 
-    def _set_compose_cmd(self):
-        """Sets the specific compose command based on available tools and permissions."""
-
-        if self._docker_compose_available and self._podman_compose_available:
-            self._compose_cmd = ["docker-compose"]
-        elif self._docker_compose_available:
-            self._compose_cmd = ["docker-compose"]
-        elif self._podman_compose_available:
-            self._compose_cmd = ["podman-compose"]
-        else:
-            self._compose_cmd = []  # No available commands
-
-        if has_sudo_permissions():
-            self._compose_cmd.insert(0, "sudo")
-
-        return self._compose_cmd
-
     @contextlib.contextmanager
     def _get_compose_file(self) -> Iterator[pathlib.Path]:
         if self._compose_file is not None:
@@ -259,9 +214,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 ServerKey.MAIN: f"localhost:{self._container_dict['fluent_port']}",
             }
 
-            # The compose_file may be temporary, in particular if the package is a zipfile.
-            # To avoid it being deleted before docker compose has read it, we use the '--wait'
-            # flag for 'docker compose'.
             cmd = [
                 "-f",
                 str(compose_file.resolve()),
@@ -269,20 +221,11 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 self._compose_name,
                 "up",
                 "--detach",
-                "--wait",
             ]
 
-            try:
-                # Prefer docker-compose or podman-compose
-                output = subprocess.Popen(  # noqa: F841
-                    self._set_compose_cmd() + cmd,
-                    stderr=subprocess.STDOUT,
-                )
-            except subprocess.CalledProcessError as e:  # noqa: F841
-                output = subprocess.Popen(  # noqa: F841
-                    self._set_compose_cmds() + cmd,
-                    stderr=subprocess.STDOUT,
-                )
+            output = subprocess.Popen(  # noqa: F841
+                self._set_compose_cmds() + cmd,
+            )
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the services."""
@@ -301,17 +244,11 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 cmd.extend(["--timeout", str(math.ceil(timeout))])
             if not self._keep_volume:
                 cmd.append("--volumes")
-            try:
-                # Prefer docker-compose or podman-compose
-                output = subprocess.Popen(  # noqa: F841
-                    self._set_compose_cmd() + cmd,
-                    stderr=subprocess.STDOUT,
-                )
-            except subprocess.CalledProcessError as e:  # noqa: F841
-                output = subprocess.Popen(  # noqa: F841
-                    self._set_compose_cmds() + cmd,
-                    stderr=subprocess.STDOUT,
-                )
+
+            output = subprocess.Popen(  # noqa: F841
+                self._set_compose_cmds() + cmd,
+                stderr=subprocess.STDOUT,
+            )
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""

@@ -38,7 +38,7 @@ Examples
 import inspect
 import logging
 import os
-import subprocess
+from pathlib import Path
 import time
 from typing import Any
 
@@ -60,6 +60,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_argvals_and_session,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -67,7 +68,7 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def _get_password_from_docker(config_dict, container):
+def _get_password_from_docker(config_dict):
     """
     Retrieve the password from a specified file in a Docker container.
 
@@ -76,9 +77,6 @@ def _get_password_from_docker(config_dict, container):
     config_dict : dict
         A dictionary containing configuration settings, including the command with the
         `-sifile` argument.
-    container : object
-        An object representing the Docker container, which should have a `_compose_name`
-        attribute used to identify the container.
 
     Returns
     -------
@@ -90,36 +88,27 @@ def _get_password_from_docker(config_dict, container):
     ------
     IndexError
         If no `-sifile` argument is found in the command.
-    subprocess.CalledProcessError
-        If there is an error executing the Docker command.
 
     Notes
     -----
-    The function sleeps for 20 seconds before executing the command to ensure that
+    The function sleeps for 2 seconds before executing the command to ensure that
     the Docker container is ready.
     """
-
-    time.sleep(20)
 
     sifile_arg = config_dict["command"]
     sifile_path = [arg for arg in sifile_arg if arg.startswith("-sifile")][0].split(
         "="
     )[1]
+    sifile_name = sifile_path.split("/")[-1]
 
-    out = subprocess.run(
-        [
-            "docker",
-            "exec",
-            f"{container._compose_name}-fluent-1",
-            "cat",
-            f"{sifile_path}",
-        ],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    sifile_host_path = Path(config_dict["mount_source"]) / sifile_name
 
-    return out.stdout.split("\n")[1] if len(out.stdout.split("\n")) > 1 else ""
+    while not Path(sifile_host_path).exists():
+        time.sleep(2)
+
+    _, _, password = _parse_server_info_file(str(sifile_host_path))
+
+    return password if password else ""
 
 
 class DockerLauncher:
@@ -259,7 +248,7 @@ class DockerLauncher:
             self._args, self.argvals["container_dict"]
         )
 
-        password = _get_password_from_docker(config_dict, container)
+        password = _get_password_from_docker(config_dict=config_dict)
 
         fluent_connection = FluentConnection(
             port=port,
