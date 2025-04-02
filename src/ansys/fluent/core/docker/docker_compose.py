@@ -253,16 +253,13 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
     def prune_network(self) -> None:
         """Remove the services."""
-        platform_name = (
-            [self._compose_cmds[1]]
-            if self._has_sudo_permissions
-            else [self._compose_cmds[0]]
-        )
+        compose_cmd = self._compose_cmds
+        compose_cmd.remove("compose")
 
         cmd = ["network", "prune"]
 
         output = subprocess.run(  # noqa: F841
-            platform_name + cmd, input="y\n", capture_output=True, text=True
+            compose_cmd + cmd, input="y\n", capture_output=True, text=True
         )
 
     def exit(self) -> None:
