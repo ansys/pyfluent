@@ -565,10 +565,8 @@ def test_general_exception_behaviour_in_session(new_solver_session):
 
     fluent_version = solver.get_fluent_version()
 
-    if fluent_version >= FluentVersion.v252:
-        # Post-process without case
+    if fluent_version >= FluentVersion.v251:
         with pytest.raises(RuntimeError, match="object is not active") as exec_info:
-            # Does not exist. #1197711
             graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
             graphics.mesh["mesh-1"].display()
         assert isinstance(exec_info.value.__context__, grpc.RpcError)
