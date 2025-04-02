@@ -43,6 +43,7 @@ import time
 from typing import Any
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
@@ -221,9 +222,18 @@ class DockerLauncher:
             self._args, self.argvals["container_dict"]
         )
 
-        ip, _, password = _get_server_info_from_container(config_dict=config_dict)
+        _, _, password = _get_server_info_from_container(config_dict=config_dict)
 
-        session = pyfluent.connect_to_fluent(ip=ip, port=port, password=password)
+        fluent_connection = FluentConnection(
+            port=port,
+            password=password,
+            file_transfer_service=self.file_transfer_service,
+            cleanup_on_exit=self.argvals["cleanup_on_exit"],
+            slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
+            inside_container=True,
+        )
+
+        session = pyfluent.connect_to_fluent(fluent_connection=fluent_connection)
 
         session._container = container
 
