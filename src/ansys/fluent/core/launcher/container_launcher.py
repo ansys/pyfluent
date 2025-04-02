@@ -42,7 +42,7 @@ from pathlib import Path
 import time
 from typing import Any
 
-from ansys.fluent.core.fluent_connection import FluentConnection
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
@@ -59,7 +59,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -68,32 +67,8 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def _get_password_from_docker(config_dict):
-    """
-    Retrieve the password from a specified file in a Docker container.
-
-    Parameters
-    ----------
-    config_dict : dict
-        A dictionary containing configuration settings, including the command with the
-        `-sifile` argument.
-
-    Returns
-    -------
-    str
-        The password retrieved from the specified file. If the password cannot be found,
-        an empty string is returned.
-
-    Raises
-    ------
-    IndexError
-        If no `-sifile` argument is found in the command.
-
-    Notes
-    -----
-    The function sleeps for 2 seconds before executing the command to ensure that
-    the Docker container is ready.
-    """
+def _get_server_info_from_container(config_dict):
+    """Retrieve the server info from a specified file in a container."""
 
     sifile_arg = config_dict["command"]
     sifile_path = [arg for arg in sifile_arg if arg.startswith("-sifile")][0].split(
@@ -106,9 +81,7 @@ def _get_password_from_docker(config_dict):
     while not Path(sifile_host_path).exists():
         time.sleep(2)
 
-    _, _, password = _parse_server_info_file(str(sifile_host_path))
-
-    return password if password else ""
+    return _parse_server_info_file(str(sifile_host_path))
 
 
 class DockerLauncher:
@@ -248,29 +221,10 @@ class DockerLauncher:
             self._args, self.argvals["container_dict"]
         )
 
-        password = _get_password_from_docker(config_dict=config_dict)
+        ip, _, password = _get_server_info_from_container(config_dict=config_dict)
 
-        fluent_connection = FluentConnection(
-            port=port,
-            password=password,
-            file_transfer_service=self.file_transfer_service,
-            cleanup_on_exit=self.argvals["cleanup_on_exit"],
-            slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
-            inside_container=True,
-        )
+        session = pyfluent.connect_to_fluent(ip=ip, port=port, password=password)
 
-        session = self.new_session(
-            fluent_connection=fluent_connection,
-            scheme_eval=fluent_connection._connection_interface.scheme_eval,
-            file_transfer_service=self.file_transfer_service,
-            start_transcript=self.argvals["start_transcript"],
-        )
         session._container = container
-
-        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
-            self.argvals["start_watchdog"] = True
-        if self.argvals["start_watchdog"]:
-            logger.debug("Launching Watchdog for Fluent container...")
-            watchdog.launch(os.getpid(), port, password)
 
         return session
