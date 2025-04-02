@@ -169,6 +169,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         self._podman_available = check_podman_installed()
         self._container_dict = container_dict
         self._keep_volume = config.keep_volume
+        self._has_sudo_permissions = has_sudo_permissions()
 
         cmd_str = " ".join(self._container_dict["command"])
 
@@ -192,7 +193,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_cmds = []
 
-        if has_sudo_permissions():
+        if self._has_sudo_permissions:
             self._compose_cmds.insert(0, "sudo")
 
         return self._compose_cmds
@@ -249,6 +250,28 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 self._set_compose_cmds() + cmd,
                 stderr=subprocess.STDOUT,
             )
+
+    def prune_network(self) -> None:
+        """Remove the services."""
+        platform_name = (
+            [self._compose_cmds[1]]
+            if self._has_sudo_permissions
+            else [self._compose_cmds[0]]
+        )
+
+        cmd = ["network", "prune"]
+
+        output = subprocess.run(  # noqa: F841
+            platform_name + cmd, input="y\n", capture_output=True, text=True
+        )
+
+    def remove_compose_file(self) -> None:
+        """Remove the compose file."""
+        try:
+            with self._get_compose_file() as compose_file:
+                Path(str(compose_file)).unlink(missing_ok=True)
+        except FileNotFoundError:
+            pass
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""

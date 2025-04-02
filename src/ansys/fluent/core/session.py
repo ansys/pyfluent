@@ -365,14 +365,26 @@ class BaseSession:
         """Gets and returns the fluent version."""
         return FluentVersion(self.scheme_eval.version)
 
+    def _exit_compose_service(self, inside_container: bool):
+        if inside_container:
+            self._container.stop()
+            self._container.remove_compose_file()
+            self._container.prune_network()
+
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
         if self._fluent_connection:
+            self._exit_compose_service(
+                self._fluent_connection.connection_properties.inside_container
+            )
             self._fluent_connection.exit(**kwargs)
 
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
+        self._exit_compose_service(
+            self._fluent_connection.connection_properties.inside_container
+        )
         self._fluent_connection.force_exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:
