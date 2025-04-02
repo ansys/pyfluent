@@ -804,6 +804,6 @@ class FluentConnection:
             file_transfer_service.container.kill()
 
         if container:
-            container.stop()
+            container.exit()
 
         exit_event.set()

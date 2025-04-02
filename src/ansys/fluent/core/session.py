@@ -367,9 +367,7 @@ class BaseSession:
 
     def _exit_compose_service(self, inside_container: bool):
         if inside_container:
-            self._container.stop()
-            self._container.remove_compose_file()
-            self._container.prune_network()
+            self._container.exit()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
