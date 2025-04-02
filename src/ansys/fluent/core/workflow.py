@@ -1245,7 +1245,8 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
-        self._add_child(state)
+        if state is not None:
+            self._add_child(state)
         py_name = self.python_name()
         if py_name not in self._command_source._compound_child_map:
             self._command_source._compound_child_map[py_name] = 1

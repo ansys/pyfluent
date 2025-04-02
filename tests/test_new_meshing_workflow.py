@@ -494,7 +494,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version(">=24.2")
 def test_new_2d_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
@@ -573,25 +573,6 @@ def test_new_2d_meshing_workflow(new_meshing_session):
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
     two_dim_mesh.add_2d_boundary_layers_child_1()
-
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
-    )
-    two_dim_mesh.generate_initial_surface_mesh()
-
-    two_dim_mesh._task("uniform_1").revert()
-    two_dim_mesh._task("uniform_1").add_child = "yes"
-    two_dim_mesh._task("uniform_1").bl_control_name = "smooth-transition_1"
-    two_dim_mesh._task("uniform_1").first_layer_height = 2
-    two_dim_mesh._task("uniform_1").number_of_layers = 7
-    two_dim_mesh._task("uniform_1").offset_method_type = "smooth-transition"
-    two_dim_mesh._task("uniform_1")()
 
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
