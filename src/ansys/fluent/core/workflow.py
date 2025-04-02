@@ -1247,6 +1247,8 @@ class CompoundTask(CommandTask):
         """
         state = state or {}
         # state.update({"add_child": "yes"})
+        import time
+        time.sleep(1)
         self.arguments.update_dict(state)
         # self.arguments.update_dict(state or {})
         py_name = self.python_name()
