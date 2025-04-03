@@ -136,11 +136,16 @@ def _write_yaml_config(compose_name, container_dict, cmd_str):
     yaml_file_path = Path(__file__).parents[0] / f"{compose_name}.yaml"
 
     with open(yaml_file_path, "w") as comp_file:
+        comp_file.write("networks:\n")
+        comp_file.write(f"  {compose_name}_network:\n")
+        comp_file.write("    external: true\n\n")
         comp_file.write("services:\n")
         comp_file.write("  fluent:\n")
         comp_file.write(
             f"    image: {container_dict.get('fluent_image', 'default_image_name')}\n"
         )
+        comp_file.write("    networks:\n")
+        comp_file.write(f"      - {compose_name}_network\n")
         comp_file.write("    environment:\n")
         for env_var, value in container_dict["environment"].items():
             comp_file.write(f"      - {env_var}={value}\n")
@@ -172,6 +177,16 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         self._has_sudo_permissions = has_sudo_permissions()
 
         cmd_str = " ".join(self._container_dict["command"])
+        self._container_source = self._set_compose_cmds()
+        self._container_source.remove("compose")
+
+        network = subprocess.run(  # noqa: F841
+            self._container_source
+            + ["network", "create", f"{self._compose_name}_network"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
 
         _write_yaml_config(self._compose_name, self._container_dict, cmd_str)
 
@@ -253,13 +268,11 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
     def prune_network(self) -> None:
         """Remove the services."""
-        compose_cmd = self._compose_cmds
-        compose_cmd.remove("compose")
 
         cmd = ["network", "prune"]
 
         output = subprocess.run(  # noqa: F841
-            compose_cmd + cmd, input="y\n", capture_output=True, text=True
+            self._container_source + cmd, input="y\n", capture_output=True, text=True
         )
 
     def exit(self) -> None:
