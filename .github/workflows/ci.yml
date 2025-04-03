@@ -184,7 +184,6 @@ jobs:
 
       - name: Install again after codegen
         run: |
-          rm -rf src/ansys/fluent/core/docker/*.yaml
           rm -rf dist
           make install > /dev/null
 
