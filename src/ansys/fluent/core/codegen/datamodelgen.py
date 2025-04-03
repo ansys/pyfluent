@@ -188,6 +188,7 @@ meshing_rule_file_names = {
     "MeshingUtilities": "meshing_utilities",
     "flicing": "flicing",
     "solverworkflow": "solver_workflow",
+    "meshing_workflow": "meshing_workflow",
 }
 
 
@@ -255,6 +256,13 @@ class DataModelGenerator:
             self._static_info["PMFileManagement"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
                 "PMFileManagement",
+                ("meshing",),
+                self.version,
+            )
+        if StaticInfoType.DATAMODEL_MESHING_WORKFLOW in static_infos:
+            self._static_info["meshing_workflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
+                "meshing_workflow",
                 ("meshing",),
                 self.version,
             )
@@ -604,6 +612,9 @@ if __name__ == "__main__":
         ),
         StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
             "PMFileManagement"
+        ),
+        StaticInfoType.DATAMODEL_MESHING_WORKFLOW: meshing._datamodel_service_se.get_static_info(
+            "meshing_workflow"
         ),
         StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
             "preferences"
