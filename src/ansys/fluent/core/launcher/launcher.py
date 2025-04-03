@@ -418,6 +418,6 @@ def connect_to_fluent(
 
     return new_session(
         fluent_connection=connection,
-        scheme_eval=fluent_connection._connection_interface.scheme_eval,
+        scheme_eval=connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
     )
