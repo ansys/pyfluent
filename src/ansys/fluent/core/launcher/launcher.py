@@ -417,7 +417,7 @@ def connect_to_fluent(
         watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(
-        fluent_connection=fluent_connection,
+        fluent_connection=connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
     )
