@@ -275,10 +275,16 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             self._container_source + cmd, input="y\n", capture_output=True, text=True
         )
 
+    def remove_compose_file(self) -> None:
+        """Remove the compose file."""
+        file_path = Path(__file__).parents[0] / f"{self._compose_name}.yaml"
+        file_path.unlink(missing_ok=True)
+
     def exit(self) -> None:
         """Exit the container launcher."""
         self.stop()
         self.prune_network()
+        self.remove_compose_file()
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""
