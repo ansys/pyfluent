@@ -33,7 +33,6 @@ from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStra
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3855")
 @pytest.mark.nightly
 @pytest.mark.fluent_version("latest")
 def test_parametric_workflow():
