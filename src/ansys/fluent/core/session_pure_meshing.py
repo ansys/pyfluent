@@ -194,6 +194,11 @@ class PureMeshing(BaseSession):
         return self._base_meshing.PMFileManagement
 
     @property
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        return self._base_meshing.meshing_workflow
+
+    @property
     def preferences(self):
         """Datamodel root of preferences."""
         return self._base_meshing.preferences
