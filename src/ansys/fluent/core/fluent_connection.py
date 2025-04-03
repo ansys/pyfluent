@@ -372,6 +372,7 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: ContainerT | None = None,
     ):
         """Initialize a Session.
 
@@ -408,6 +409,9 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: ContainerT, optional
+            The container instance if the Fluent session is running inside
+            a container.
 
         Raises
         ------
@@ -453,22 +457,7 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
-
-        if (
-            (inside_container is None or inside_container is True)
-            and not remote_instance
-            and cortex_host is not None
-        ):
-            logger.info("Checking if Fluent is running inside a container.")
-            inside_container = get_container(cortex_host)
-            logger.debug(f"get_container({cortex_host}): {inside_container}")
-            if inside_container is False:
-                logger.info("Fluent is not running inside a container.")
-            elif inside_container is None:
-                logger.info(
-                    "The current system does not support Docker containers. "
-                    "Assuming Fluent is not inside a container."
-                )
+        self._container = container
 
         self.connection_properties = FluentConnectionProperties(
             ip,
@@ -573,21 +562,7 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        container = self.connection_properties.inside_container
-        container_id = self.connection_properties.cortex_host
-        pid = self.connection_properties.fluent_host_pid
-        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
-        if get_container(container_id):
-            try:
-                container.exec_run(["bash", cleanup_file_name], detach=True)
-            except _docker().errors.APIError as e:
-                logger.info(f"{type(e).__name__}: {e}")
-                logger.debug(
-                    "Caught Docker APIError, Docker container probably not running anymore."
-                )
-        else:
-            logger.debug("Container not found, cancelling cleanup script execution.")
+        self._container.exit()
 
     def register_finalizer_cb(self, cb):
         """Register a callback to run with the finalizer."""

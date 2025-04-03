@@ -228,6 +228,7 @@ class DockerLauncher:
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
+            container=container,
         )
 
         session = pyfluent.connect_to_fluent(fluent_connection=fluent_connection)
