@@ -839,7 +839,7 @@ def test_dynamic_dependency(new_meshing_session):
     assert d == cd
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.2")
 def test_field_level_help(new_meshing_session):
     meshing = new_meshing_session
     meshing.PartManagement.AssemblyNode["node-1"] = {}
