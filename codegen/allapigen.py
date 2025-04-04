@@ -1,6 +1,7 @@
 """Helper module to generate Fluent API classes."""
 
 import argparse
+from pdb import pm
 from time import time
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
@@ -18,49 +19,65 @@ if __name__ == "__main__":
     ge_242 = FluentVersion(version) >= FluentVersion.v242
     ge_252 = FluentVersion(version) >= FluentVersion.v252
 
+    print("w")
+
+    w = True or meshing._datamodel_service_se.get_static_info("workflow")
+    print("m")
+
+    m = True or meshing._datamodel_service_se.get_static_info("meshing")
+    print("pm")
+
+    pm = True or meshing._datamodel_service_se.get_static_info("PartManagement")
+    print("pmf")
+    pmf = True or meshing._datamodel_service_se.get_static_info("PMFileManagement")
+
     static_infos = {
-        StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
-            "workflow"
-        ),
-        StaticInfoType.DATAMODEL_MESHING: meshing._datamodel_service_se.get_static_info(
-            "meshing"
-        ),
-        StaticInfoType.DATAMODEL_PART_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
-            "PartManagement"
-        ),
-        StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
-            "PMFileManagement"
-        ),
+        StaticInfoType.DATAMODEL_WORKFLOW: w,
+        StaticInfoType.DATAMODEL_MESHING: m,
+        StaticInfoType.DATAMODEL_PART_MANAGEMENT: pm,
+        StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: pmf,
     }
-    if gt_222:
+    print("tm")
+    if False and gt_222:
         static_infos[StaticInfoType.TUI_MESHING] = (
             meshing._datamodel_service_tui.get_static_info("")
         )
-    if ge_242:
+    print("mu")
+    if False and ge_242:
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
         )
+    print("mw")
+    input()
     if ge_252:
         static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
             meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
+    print("meshing.exit()")
     meshing.exit()
 
+    print("launch_fluent()")
     solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
+        mode=FluentMode.SOLVER
+        # mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
     )
+    print("p")
     static_infos[StaticInfoType.DATAMODEL_PREFERENCES] = (
         solver._datamodel_service_se.get_static_info("preferences")
     )
+    print("s")
     static_infos[StaticInfoType.SETTINGS] = solver._settings_service.get_static_info()
+    print("st")
     if gt_222:
         static_infos[StaticInfoType.TUI_SOLVER] = (
             solver._datamodel_service_tui.get_static_info("")
         )
-    if ge_231:
+    print("i")
+    if False and ge_231:
         static_infos[StaticInfoType.DATAMODEL_FLICING] = (
             solver._datamodel_service_se.get_static_info("flserver")
         )
+        print("sw")
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )

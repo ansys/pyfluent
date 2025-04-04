@@ -198,6 +198,7 @@ class DataModelStaticInfo:
         version: str,
         rules_save_name: str = "",
     ):
+        print(f"DataModelStaticInfo for {rules}: enter")
         self.static_info_type = static_info_type
         self.rules = rules
         self.modes = modes
@@ -214,6 +215,7 @@ class DataModelStaticInfo:
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
+        print(f"DataModelStaticInfo for {rules}: return")
 
 
 class DataModelGenerator:
@@ -252,7 +254,9 @@ class DataModelGenerator:
                 ("meshing",),
                 self.version,
             )
+        print("check if mw in static_infos")
         if StaticInfoType.DATAMODEL_MESHING_WORKFLOW in static_infos:
+            print("Instantiate DataModelStaticInfo and insert")
             self._static_info["meshing_workflow"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
                 "meshing_workflow",
