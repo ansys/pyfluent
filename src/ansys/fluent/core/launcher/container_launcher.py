@@ -41,7 +41,6 @@ import os
 import time
 from typing import Any
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
@@ -231,7 +230,12 @@ class DockerLauncher:
             container=container,
         )
 
-        session = pyfluent.connect_to_fluent(fluent_connection=fluent_connection)
+        session = self.new_session(
+            fluent_connection=fluent_connection,
+            scheme_eval=fluent_connection._connection_interface.scheme_eval,
+            file_transfer_service=self.file_transfer_service,
+            start_transcript=self.argvals["start_transcript"],
+        )
 
         session._container = container
 
