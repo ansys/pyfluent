@@ -138,38 +138,45 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
-    if info.get("docstring"):
-        doc = ""
+def _build_command_query_docstring(
+    name: str, static_info: Any, indent: str, is_command: bool
+):
+    doc = StringIO()
+    info = static_info["commandinfo"] if is_command else static_info["queryinfo"]
+    if static_info.get("helpstring"):
+        for line in static_info["helpstring"].splitlines():
+            doc.write(f"{indent}{line}\n")
+    elif info.get("docstring"):
         for line in info["docstring"].split("."):
             if line and len(info["docstring"].split(".")) > 2:
-                doc += f"{indent}- {line.lstrip(' ')}.\n"
+                doc.write(f"{indent}- {line.lstrip(' ')}.\n")
             elif line:
-                doc += f"{indent}{line.lstrip(' ')}.\n"
-        if info.get("args"):
-            doc += "\n"
+                doc.write(f"{indent}{line.lstrip(' ')}.\n")
     else:
-        doc = (
+        doc.write(
             f"{indent}Command {name}.\n\n"
             if is_command
             else f"{indent}Query {name}.\n\n"
         )
     if info.get("args"):
-        doc += f"{indent}Parameters\n"
-        doc += f"{indent}{'-' * len('Parameters')}\n"
+        doc.write(f"{indent}Parameters\n")
+        doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
-            doc += f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n'
-            if arg.get("docstring"):
-                doc += f'{indent}    {arg["docstring"]}\n'
-    doc += f"\n{indent}Returns\n"
-    doc += f"{indent}{'-' * len('Returns')}\n"
-    doc += f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n'
+            doc.write(f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n')
+            if arg.get("helpstring"):
+                for line in arg["helpstring"].splitlines():
+                    doc.write(f"{indent}    {line}\n")
+            elif arg.get("docstring"):
+                doc.write(f'{indent}    {arg["docstring"]}\n')
+    doc.write(f"\n{indent}Returns\n")
+    doc.write(f"{indent}{'-' * len('Returns')}\n")
+    doc.write(f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n')
     if meshing_utility_examples.get(name):
-        doc += f"\n{indent}Examples\n"
-        doc += f"{indent}{'-' * len('Examples')}\n"
+        doc.write(f"\n{indent}Examples\n")
+        doc.write(f"{indent}{'-' * len('Examples')}\n")
         for example in meshing_utility_examples[name]:
-            doc += f"{indent}>>> {example}\n"
-    return doc
+            doc.write(f"{indent}>>> {example}\n")
+    return doc.getvalue()
 
 
 meshing_rule_file_names = {
@@ -479,10 +486,10 @@ class DataModelGenerator:
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
-            command_info = info["commands"][k]["commandinfo"]
+            command_static_info = info["commands"][k]
             f.write(
                 _build_command_query_docstring(
-                    k, command_info, f"{indent}        ", True
+                    k, command_static_info, f"{indent}        ", True
                 )
             )
             f.write(f'{indent}        """\n')
@@ -495,7 +502,7 @@ class DataModelGenerator:
             f.write(
                 f"{indent}                super().__init__(service, rules, command, path, id)\n"
             )
-            args_info = command_info.get("args", [])
+            args_info = command_static_info["commandinfo"].get("args", [])
             for arg_info in args_info:
                 arg_name = arg_info["name"]
                 py_name = _convert_to_py_name(arg_name)
@@ -520,7 +527,7 @@ class DataModelGenerator:
             f.write(f'{indent}        """\n')
             f.write(
                 _build_command_query_docstring(
-                    k, info["queries"][k]["queryinfo"], f"{indent}        ", False
+                    k, info["queries"][k], f"{indent}        ", False
                 )
             )
             f.write(f'{indent}        """\n')

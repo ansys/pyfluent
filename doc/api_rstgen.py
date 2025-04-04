@@ -127,7 +127,7 @@ hierarchy = {
         "session_solver",
         "session",
         "system_coupling",
-        "warning",
+        "pyfluent_warnings",
         "workflow",
     ],
 }
