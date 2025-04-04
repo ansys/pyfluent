@@ -366,7 +366,7 @@ class BaseSession:
         return FluentVersion(self.scheme_eval.version)
 
     def _exit_compose_service(self, inside_container: bool):
-        if inside_container:
+        if inside_container and hasattr(self, "_container"):
             self._container.exit()
 
     def exit(self, **kwargs) -> None:
