@@ -256,19 +256,13 @@ def test_interrupt(static_mixer_case_session):
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("PYFLUENT_LOGGING")
     monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
-    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.launch_fluent(start_watchdog=False)
-    cortex = (
-        solver.connection_properties.cortex_host
-        if inside_container
-        else solver.connection_properties.cortex_pid
-    )
+    cortex = solver.connection_properties.cortex_pid
     solver.exit()
     assert timeout_loop(
-        lambda: (inside_container and not get_container(cortex))
-        or (not inside_container and not _pid_exists(cortex)),
+        lambda: not _pid_exists(cortex),
         timeout=60,
         idle_period=1,
     )
