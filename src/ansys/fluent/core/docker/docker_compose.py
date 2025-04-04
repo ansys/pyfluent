@@ -151,14 +151,41 @@ def _write_yaml_config(compose_name, container_dict, cmd_str):
             comp_file.write(f"      - {env_var}={value}\n")
         comp_file.write(f"    command: {cmd_str}\n")
         comp_file.write("    ports:\n")
-        comp_file.write(
-            f"      - {container_dict['fluent_port']}:{container_dict['fluent_port']}\n"
-        )
+        if not container_dict.get("ports"):
+            comp_file.write(
+                f"      - {container_dict['fluent_port']}:{container_dict['fluent_port']}\n"
+            )
+        else:
+            for _, port in container_dict["ports"].items():
+                comp_file.write(f"      - {port}:{port}\n")
         comp_file.write(f"    working_dir: {container_dict['mount_target']}\n")
         comp_file.write("    volumes:\n")
         comp_file.write(
             f"      - {container_dict['mount_source']}:{container_dict['mount_target']}\n"
         )
+
+
+def _extract_ports(port_string):
+    """
+    Extracts ports from a string containing port mappings.
+
+    Parameters
+    ----------
+    port_string: str
+        A string containing port mappings.
+
+    Returns
+    -------
+    ports: list
+        A list of extracted ports.
+    """
+    ports = []
+    for line in port_string.split("\n"):
+        if line:
+            _, target = line.split("->")
+            port = target.split(":")[1]
+            ports.append(port)
+    return ports
 
 
 class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
@@ -298,3 +325,13 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
     def urls(self) -> dict[str, str]:
         """Return the URLs of the launched services."""
         return self._urls
+
+    @property
+    def ports(self) -> list[str]:
+        """Return the URLs of the launched services."""
+        output = subprocess.run(
+            self._container_source + ["port", f"{self._compose_name}-fluent-1"],
+            capture_output=True,
+            text=True,
+        )
+        return _extract_ports(output.stdout)
