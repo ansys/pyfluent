@@ -24,7 +24,6 @@ import os
 from pathlib import Path
 import platform
 import tempfile
-from tempfile import TemporaryDirectory
 
 import pytest
 
@@ -56,6 +55,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
 )
 from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
+from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
 
@@ -517,12 +517,15 @@ def test_container_warning_for_mount_source(caplog):
 def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
         m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
-        with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
-            with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
-                assert list(Path(tmp_dir).glob("*.trn"))
-    with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
-        with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
-            assert not list(Path(tmp_dir).glob("*.trn"))
+        solver = pyfluent.launch_fluent()
+        assert list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
+        solver.exit()
+        for file in list(Path(os.getcwd()).glob("*.trn")):
+            if file.is_file():
+                file.unlink()
+    solver = pyfluent.launch_fluent()
+    assert not list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
+    solver.exit()
 
 
 def test_standalone_launcher_dry_run(monkeypatch):
@@ -554,9 +557,10 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
 
 
 def test_container_ports():
-    container_dict = {"ports": {"5000": 5000, "5001": 5001}}
+    port_1 = get_free_port()
+    port_2 = get_free_port()
+    container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
     with pyfluent.launch_fluent(container_dict=container_dict) as session:
-        session._container.reload()
         assert len(session._container.ports) == 2
 
 

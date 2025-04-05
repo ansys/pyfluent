@@ -93,20 +93,20 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
         session = pyfluent.launch_fluent()
         session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
-        _cortex_host = session.connection_properties.cortex_host
+        _cortex_pid = session.connection_properties.cortex_pid
         _inside_container = session.connection_properties.inside_container
-        return _fluent_host_pid, _cortex_host, _inside_container
+        return _fluent_host_pid, _cortex_pid, _inside_container
 
-    fluent_host_pid, cortex_host, inside_container = f()
+    fluent_host_pid, cortex_pid, inside_container = f()
 
     timeout_loop(
-        lambda: (inside_container and not get_container(cortex_host))
+        lambda: (inside_container and not _pid_exists(cortex_pid))
         or (not inside_container and not _pid_exists(fluent_host_pid)),
         60,
     )
 
     if inside_container:
-        assert not get_container(cortex_host)
+        assert not _pid_exists(cortex_pid)
     else:
         assert not _pid_exists(fluent_host_pid)
 
@@ -256,19 +256,13 @@ def test_interrupt(static_mixer_case_session):
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("PYFLUENT_LOGGING")
     monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
-    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.launch_fluent(start_watchdog=False)
-    cortex = (
-        solver.connection_properties.cortex_host
-        if inside_container
-        else solver.connection_properties.cortex_pid
-    )
+    cortex = solver.connection_properties.cortex_pid
     solver.exit()
     assert timeout_loop(
-        lambda: (inside_container and not get_container(cortex))
-        or (not inside_container and not _pid_exists(cortex)),
+        lambda: not _pid_exists(cortex),
         timeout=60,
         idle_period=1,
     )
