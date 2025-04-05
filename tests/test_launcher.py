@@ -514,18 +514,17 @@ def test_container_warning_for_mount_source(caplog):
 
 
 # runs only in container till cwd is supported for container launch
-def test_fluent_automatic_transcript():
-    pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT = True
+def test_fluent_automatic_transcript(monkeypatch):
+    with monkeypatch.context() as m:
+        m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
+        solver = pyfluent.launch_fluent()
+        assert list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
+        solver.exit()
+        for file in list(Path(os.getcwd()).glob("*.trn")):
+            if file.is_file():
+                file.unlink()
     solver = pyfluent.launch_fluent()
-    assert list(Path(os.getcwd()).glob("*.trn"))
-    solver.exit()
-    for file in list(Path(os.getcwd()).glob("*.trn")):
-        if file.is_file():
-            file.unlink()
-
-    pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT = False
-    solver = pyfluent.launch_fluent()
-    assert not list(Path(os.getcwd()).glob("*.trn"))
+    assert not list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
     solver.exit()
 
 

@@ -185,7 +185,7 @@ def _extract_ports(port_string):
             _, target = line.split("->")
             port = target.split(":")[1]
             ports.append(port)
-    return ports
+    return [port for port in ports if port.isdigit()]
 
 
 class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
