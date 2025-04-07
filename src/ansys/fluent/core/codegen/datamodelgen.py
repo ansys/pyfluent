@@ -263,6 +263,14 @@ class DataModelGenerator:
                 ("meshing",),
                 self.version,
             )
+        if StaticInfoType.DATAMODEL_MESHING_WORKFLOW_X in static_infos:
+            print("Instantiate DataModelStaticInfo and insert")
+            self._static_info["meshing_workflow_x"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING_WORKFLOW_X,
+                "meshing_workflow_x",
+                ("meshing",),
+                self.version,
+            )
         if StaticInfoType.DATAMODEL_FLICING in static_infos:
             self._static_info["flicing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_FLICING,
@@ -612,6 +620,9 @@ if __name__ == "__main__":
         ),
         StaticInfoType.DATAMODEL_MESHING_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "meshing_workflow"
+        ),
+        StaticInfoType.DATAMODEL_MESHING_WORKFLOW_X: meshing._datamodel_service_se.get_static_info(
+            "meshing_workflow_x"
         ),
         StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
             "preferences"
