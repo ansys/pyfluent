@@ -38,17 +38,24 @@ class Trie:
             node = node.children[char]
         node.results.append(result)
 
-    def search(self, word):
+    def search(self, prefix):
         """
-        Searches all results in the Trie for the given word.
+        Searches all results in the Trie for the given word and collects results from all child nodes.
         """
+
+        def collect_results(node):
+            results = list(node.results)
+            for child in node.children.values():
+                results.extend(collect_results(child))
+            return results
+
         node = self._root
-        for char in word:
+        for char in prefix:
             if char not in node.children:
                 return []
             node = node.children[char]
 
-        return node.results
+        return collect_results(node)
 
 
 def get_name_components(name: str):
@@ -56,6 +63,17 @@ def get_name_components(name: str):
     Given a name like 'abc_def' returns ['abc', 'def']
     """
     return name.split("_")
+
+
+def get_all_ending_substrings(name_component: str):
+    """
+    Given a name component like 'abc' returns all ending substrings of length > 1: ['abc', 'bc']
+    """
+    return [
+        name_component[i:]
+        for i in range(len(name_component))
+        if len(name_component[i:]) > 1
+    ]
 
 
 def build_trie(root_cls):
@@ -72,7 +90,7 @@ def build_trie(root_cls):
     while queue:
         current_name, current_cls, current_path = queue.popleft()
         for component in get_name_components(current_name):
-            for substring in get_all_substrings(component):
+            for substring in get_all_ending_substrings(component):
                 SettingsTrie.insert(substring, current_path)
 
         if not hasattr(current_cls, "_child_classes"):
@@ -90,19 +108,6 @@ def build_trie(root_cls):
             queue.append((k, next_cls, next_path))
 
     print(f"Memory usage after building trie: {get_memory_usage():.2f} MB")
-
-
-def get_all_substrings(name_component: str):
-    """
-    Given a name component like 'abc' returns all substrings of length > 1
-    """
-    if len(name_component) < 2:
-        return []
-    return [
-        name_component[i:j]
-        for i in range(len(name_component))
-        for j in range(i + 2, len(name_component) + 1)
-    ]
 
 
 SettingsTrie = Trie()
