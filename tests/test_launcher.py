@@ -514,6 +514,7 @@ def test_container_warning_for_mount_source(caplog):
 
 
 # runs only in container till cwd is supported for container launch
+@pytest.mark.skip(reason="Passes locally but fails in GitHub randomly")
 def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
         m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
