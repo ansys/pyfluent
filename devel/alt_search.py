@@ -1,6 +1,8 @@
 """Alternative implementation of the search function."""
 
 from collections import deque
+import gzip
+import pickle
 from pprint import pprint
 
 import psutil
@@ -82,6 +84,14 @@ def get_memory_usage():
     return memory_info.rss / (1024 * 1024)  # Convert bytes to MB
 
 
+def save_compressed_cache():
+    """
+    Save the cache to a compressed file.
+    """
+    with gzip.open("search_cache.pkl.gz", "wb") as f:
+        pickle.dump(SearchCache, f)
+
+
 if __name__ == "__main__":
     # Example usage
     pprint(search("viscous", match_whole_word=True))
@@ -90,3 +100,4 @@ if __name__ == "__main__":
     pprint(len(search("read_case", match_whole_word=True)))
     pprint(search("viscous"))
     pprint(len(search("viscous")))
+    save_compressed_cache()
