@@ -462,7 +462,16 @@ def start_fluent_container(
         docker_compose_container = DockerComposeLauncher(
             container_dict=config_dict, config=DockerComposeLaunchConfig()
         )
-        docker_compose_container.start()
+
+        if not docker_compose_container.check_image_exists(config_dict["fluent_image"]):
+            logger.debug(
+                f"Fluent image {config_dict['fluent_image']} not found. Pulling image..."
+            )
+            docker_compose_container.pull_image(config_dict["fluent_image"])
+
+        # Need to get back to python parent process after pulling image
+        if docker_compose_container.check_image_exists(config_dict["fluent_image"]):
+            docker_compose_container.start()
 
         return port, config_dict, docker_compose_container
     finally:

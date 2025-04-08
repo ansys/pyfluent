@@ -28,9 +28,9 @@ import dataclasses
 import enum
 import importlib.resources
 import math
+import os
 import pathlib
 from pathlib import Path
-import platform
 import subprocess
 import uuid
 
@@ -45,21 +45,6 @@ from ansys.tools.local_product_launcher.interface import (
 )
 
 __all__ = ["DockerComposeLaunchConfig"]
-
-
-def has_sudo_permissions():
-    """Check if the user has sudo permissions."""
-    if platform.system() == "Windows":
-        return False
-    try:
-        # Run 'sudo -l' to list user's sudo privileges
-        result = subprocess.run(  # noqa: F841
-            ["sudo", "-l"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        print(result.stdout)
-        return True
-    except subprocess.CalledProcessError as e:  # noqa: F841
-        return False
 
 
 def check_docker_installed():
@@ -201,18 +186,14 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         self._podman_available = check_podman_installed()
         self._container_dict = container_dict
         self._keep_volume = config.keep_volume
-        self._has_sudo_permissions = has_sudo_permissions()
 
         cmd_str = " ".join(self._container_dict["command"])
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
-        network = subprocess.run(  # noqa: F841
+        network = subprocess.check_call(  # noqa: F841
             self._container_source
             + ["network", "create", f"{self._compose_name}_network"],
-            check=False,
-            capture_output=True,
-            text=True,
         )
 
         _write_yaml_config(self._compose_name, self._container_dict, cmd_str)
@@ -235,9 +216,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_cmds = []
 
-        # if self._has_sudo_permissions:
-        #     self._compose_cmds.insert(0, "sudo")
-
         return self._compose_cmds
 
     @contextlib.contextmanager
@@ -250,8 +228,34 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             ) as compose_file:
                 yield compose_file
 
+    def check_image_exists(self, image_name: str | None = None) -> bool:
+        """Check if a Docker image exists locally."""
+        image_name = (
+            image_name
+            if image_name
+            else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
+        )
+        try:
+            output = subprocess.check_output(["docker", "images", "-q", image_name])
+            return output.decode("utf-8").strip() != ""
+        except subprocess.CalledProcessError as e:  # noqa: F841
+            return False
+
+    def pull_image(self, image_name: str | None = None) -> None:
+        """Pull a Docker image if it does not exist locally."""
+        image_name = (
+            image_name
+            if image_name
+            else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
+        )
+        try:
+            output = subprocess.check_call(["docker", "pull", image_name])  # noqa: F841
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to pull image: {e}")
+
     def start(self) -> None:
         """Start the services."""
+
         with self._get_compose_file() as compose_file:
             self._urls = {
                 ServerKey.MAIN: f"localhost:{self._container_dict['fluent_port']}",
@@ -266,7 +270,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 "--detach",
             ]
 
-            output = subprocess.Popen(  # noqa: F841
+            output = subprocess.check_call(  # noqa: F841
                 self._set_compose_cmds() + cmd,
             )
 
@@ -288,18 +292,17 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             if not self._keep_volume:
                 cmd.append("--volumes")
 
-            output = subprocess.Popen(  # noqa: F841
+            output = subprocess.check_call(  # noqa: F841
                 self._set_compose_cmds() + cmd,
-                stderr=subprocess.STDOUT,
             )
 
     def prune_network(self) -> None:
         """Remove the services."""
 
-        cmd = ["network", "prune"]
+        cmd = ["network", "prune", "-f"]
 
-        output = subprocess.run(  # noqa: F841
-            self._container_source + cmd, input="y\n", capture_output=True, text=True
+        output = subprocess.check_call(  # noqa: F841
+            self._container_source + cmd,
         )
 
     def remove_compose_file(self) -> None:
@@ -329,9 +332,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
     @property
     def ports(self) -> list[str]:
         """Return the URLs of the launched services."""
-        output = subprocess.run(
+        output = subprocess.check_output(
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
-            capture_output=True,
-            text=True,
         )
-        return _extract_ports(output.stdout)
+        return _extract_ports(output.decode("utf-8").strip())
