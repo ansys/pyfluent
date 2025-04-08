@@ -4,6 +4,7 @@ from collections import deque
 import gzip
 import pickle
 from pprint import pprint
+import re
 
 import psutil
 
@@ -57,7 +58,11 @@ def build_cache(root_cls):
     print(f"Memory usage after building cache: {get_memory_usage():.2f} MB")
 
 
-def search(search_string: str, match_whole_word: bool = False):
+def search(
+    search_string: str,
+    wildcard: bool | None = False,
+    match_whole_word: bool = False,
+):
     """
     Basic string-based search
     """
@@ -67,6 +72,9 @@ def search(search_string: str, match_whole_word: bool = False):
         #     pprint(SearchCache, stream=f)
     if match_whole_word:
         results = SearchCache.get(search_string, [])
+    elif wildcard:
+        r = re.compile(search_string)
+        results = [item for k, v in SearchCache.items() if r.match(k) for item in v]
     else:
         results = [
             item for k, v in SearchCache.items() if search_string in k for item in v
@@ -100,4 +108,6 @@ if __name__ == "__main__":
     pprint(len(search("read_case", match_whole_word=True)))
     pprint(search("viscous"))
     pprint(len(search("viscous")))
+    pprint(search("viscous*", wildcard=True))
+    pprint(len(search("viscous", wildcard=True)))
     save_compressed_cache()
