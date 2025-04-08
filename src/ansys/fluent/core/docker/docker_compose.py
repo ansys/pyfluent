@@ -129,23 +129,19 @@ def _set_env_vars(compose_name, container_dict):
     )
 
     env_vars = {
-        "FLUENT_IMAGE_NAME": container_dict.get("fluent_image", "default_image_name"),
-        "ANSYSLMD_LICENSE_FILE": container_dict["environment"].get(
-            "ANSYSLMD_LICENSE_FILE"
-        ),
-        "REMOTING_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
-        "FLUENT_NO_AUTOMATIC_TRANSCRIPT": container_dict["environment"].get(
+        "IMAGE_NAME": container_dict.get("fluent_image"),
+        "LICENSE_FILE": container_dict["environment"].get("ANSYSLMD_LICENSE_FILE"),
+        "REMOTE_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
+        "NO_TRANSCRIPT": container_dict["environment"].get(
             "FLUENT_NO_AUTOMATIC_TRANSCRIPT"
         ),
-        "FLUENT_COMMAND": " ".join(container_dict["command"]),
-        "FLUENT_MOUNT_TARGET": container_dict.get("mount_target"),
-        "FLUENT_MOUNT_SOURCE": container_dict.get("mount_source"),
+        "COMMAND": " ".join(container_dict["command"]),
+        "MOUNT_TARGET": container_dict.get("mount_target"),
+        "MOUNT_SOURCE": container_dict.get("mount_source"),
     }
 
-    env_vars["FLUENT_PORT_1"] = str(ports[0]) if ports else port
-    env_vars["FLUENT_PORT_2"] = (
-        str(ports[1]) if len(ports) > 1 else str(get_free_port())
-    )
+    env_vars["PORT_1"] = str(ports[0]) if ports else port
+    env_vars["PORT_2"] = str(ports[1]) if len(ports) > 1 else str(get_free_port())
 
     for key, value in env_vars.items():
         os.environ[key] = value
@@ -241,10 +237,10 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             if image_name
             else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
         )
-        try:
-            output = subprocess.check_call(["docker", "pull", image_name])  # noqa: F841
-        except subprocess.CalledProcessError as e:
-            print(f"Failed to pull image: {e}")
+
+        output = subprocess.check_call(  # noqa: F841
+            [f"{self._container_source[0]}", "pull", image_name]
+        )
 
     def start(self) -> None:
         """Start the services."""
