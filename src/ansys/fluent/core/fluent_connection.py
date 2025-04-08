@@ -621,23 +621,15 @@ class FluentConnection:
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
             raise WaitTypeError()
-        if self.connection_properties.inside_container:
-            _response = timeout_loop(
-                get_container,
-                wait,
-                args=(self.connection_properties.cortex_host,),
-                idle_period=0.5,
-                expected="falsy",
-            )
-        else:
-            _response = timeout_loop(
-                lambda connection: _pid_exists(connection.fluent_host_pid)
-                or _pid_exists(connection.cortex_pid),
-                wait,
-                args=(self.connection_properties,),
-                idle_period=0.5,
-                expected="falsy",
-            )
+
+        _response = timeout_loop(
+            lambda connection: _pid_exists(connection.fluent_host_pid)
+            or _pid_exists(connection.cortex_pid),
+            wait,
+            args=(self.connection_properties,),
+            idle_period=0.5,
+            expected="falsy",
+        )
         return not _response
 
     def exit(
