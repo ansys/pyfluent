@@ -520,7 +520,7 @@ def test_fluent_automatic_transcript(monkeypatch):
         solver = pyfluent.launch_fluent()
         assert list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
         solver.exit()
-        for file in list(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"):
+        for file in list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn")):
             if file.is_file():
                 file.unlink()
     solver = pyfluent.launch_fluent()
