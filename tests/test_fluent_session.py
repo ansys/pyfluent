@@ -32,6 +32,7 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import (
     WaitTypeError,
     _pid_exists,
+    get_container,
 )
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
@@ -110,27 +111,21 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
         assert not _pid_exists(fluent_host_pid)
 
 
+@pytest.mark.standalone
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
         session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
         _cortex_host = session.connection_properties.cortex_host
-        _cortex_pid = session.connection_properties.cortex_pid
         _inside_container = session.connection_properties.inside_container
         _cortex_pwd = session.connection_properties.cortex_pwd
-        return (
-            _fluent_host_pid,
-            _cortex_host,
-            _cortex_pid,
-            _inside_container,
-            _cortex_pwd,
-        )
+        return _fluent_host_pid, _cortex_host, _inside_container, _cortex_pwd
 
-    fluent_host_pid, cortex_host, cortex_pid, inside_container, cortex_pwd = f()
+    fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
     time.sleep(10)
     if inside_container:
-        assert _pid_exists(cortex_pid)
+        assert get_container(cortex_host)
         subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
     else:
         from pathlib import Path
@@ -274,6 +269,7 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     )
 
 
+@pytest.mark.standalone
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
     session1.exit()

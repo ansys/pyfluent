@@ -296,14 +296,17 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 self._set_compose_cmds() + cmd,
             )
 
-    def prune_network(self) -> None:
+    def remove_network(self) -> None:
         """Remove the services."""
 
-        cmd = ["network", "prune", "-f"]
+        cmd = ["network", "rm", "-f", f"{self._compose_name}_network"]
 
-        output = subprocess.check_call(  # noqa: F841
-            self._container_source + cmd,
-        )
+        try:
+            output = subprocess.check_call(  # noqa: F841
+                self._container_source + cmd,
+            )
+        except subprocess.CalledProcessError as e:  # noqa: F841
+            pass
 
     def remove_compose_file(self) -> None:
         """Remove the compose file."""
@@ -313,7 +316,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
     def exit(self) -> None:
         """Exit the container launcher."""
         self.stop()
-        self.prune_network()
+        self.remove_network()
         # self.remove_compose_file()
 
     def check(self, timeout: float | None = None) -> bool:
