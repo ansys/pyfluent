@@ -5,6 +5,7 @@ import gzip
 import pickle
 from pprint import pprint
 import re
+import time
 
 import psutil
 
@@ -19,7 +20,8 @@ def get_name_components(name: str):
     return name.split("_")
 
 
-SearchCache = {}
+PathCache = {}  # caching name -> paths
+NameCache = {}  # caching name_component -> names
 
 
 def build_cache(root_cls):
@@ -27,6 +29,7 @@ def build_cache(root_cls):
     Build a trie from the settings module
     """
     print(f"Memory usage before building cache: {get_memory_usage():.2f} MB")
+    start_time = time.time()
 
     # A depth-first algorithm is chosen for the following reasons:
     # 1. Show the search results in a depth-first order of the settings API.
@@ -36,11 +39,10 @@ def build_cache(root_cls):
 
     while queue:
         current_name, current_cls, current_path, rank = queue.popleft()
-        SearchCache.setdefault(current_name, []).append((current_path, rank))
-        name_components = get_name_components(current_name)
-        if len(name_components) > 1:
-            for name_component in name_components:
-                SearchCache.setdefault(name_component, []).append((current_path, rank))
+        PathCache.setdefault(current_name, []).append((current_path, rank))
+        NameCache.setdefault(current_name, set()).add(current_name)
+        for name_component in get_name_components(current_name):
+            NameCache.setdefault(name_component, set()).add(current_name)
 
         if not hasattr(current_cls, "_child_classes"):
             continue
@@ -57,6 +59,7 @@ def build_cache(root_cls):
             queue_order += 1
             queue.append((k, next_cls, next_path, queue_order))
 
+    print(f"Cache built in {time.time() - start_time:.2f} seconds")
     print(f"Memory usage after building cache: {get_memory_usage():.2f} MB")
 
 
@@ -68,16 +71,17 @@ def search(
     """
     Basic string-based search
     """
-    if not SearchCache:
+    if not PathCache:
         build_cache(root)
     if match_whole_word:
-        results = SearchCache.get(search_string, [])
+        names = NameCache.get(search_string, set())
+        results = [item for name in names for item in PathCache[name]]
     elif wildcard:
         r = re.compile(search_string)
-        results = [item for k, v in SearchCache.items() if r.match(k) for item in v]
+        results = [item for k, v in PathCache.items() if r.match(k) for item in v]
     else:
         results = [
-            item for k, v in SearchCache.items() if search_string in k for item in v
+            item for k, v in PathCache.items() if search_string in k for item in v
         ]
     results.sort(key=lambda x: x[1])
     return [x[0] for x in results]
@@ -97,7 +101,7 @@ def save_compressed_cache():
     Save the cache to a compressed file.
     """
     with gzip.open("search_cache.pkl.gz", "wb") as f:
-        pickle.dump(SearchCache, f)
+        pickle.dump((PathCache, NameCache), f)
 
 
 if __name__ == "__main__":
@@ -109,7 +113,8 @@ if __name__ == "__main__":
     pprint(search("viscous"))
     pprint(len(search("viscous")))
     pprint(search("viscous*", wildcard=True))
-    pprint(len(search("viscous", wildcard=True)))
+    pprint(len(search("viscous*", wildcard=True)))
     save_compressed_cache()
     with open("alt_search.log", "w") as f:
-        pprint(SearchCache, stream=f)
+        pprint(PathCache, stream=f)
+        pprint(NameCache, stream=f)
