@@ -30,12 +30,12 @@ import importlib.resources
 import math
 import os
 import pathlib
-from pathlib import Path
 import subprocess
 import uuid
 
 import grpc
 
+from ansys.fluent.core.utils.networking import get_free_port
 from ansys.tools.local_product_launcher.helpers.grpc import check_grpc_health
 from ansys.tools.local_product_launcher.interface import (
     METADATA_KEY_DOC,
@@ -105,49 +105,50 @@ class DockerComposeLaunchConfig:
     )
 
 
-def _write_yaml_config(compose_name, container_dict, cmd_str):
-    """
-    Writes a YAML configuration file for a Docker Compose setup.
+def _set_env_vars(compose_name, container_dict):
+    """Generates environment variables for the Docker Compose setup.
 
     Parameters
     ----------
     compose_name: str
-        The name of the compose file (without extension).
+        The name of the compose instance.
     container_dict: dict
         A dictionary containing container configuration.
-    cmd_str: str
-        The command to run in the container.
     """
-    yaml_file_path = Path(__file__).parents[0] / f"{compose_name}.yaml"
 
-    with open(yaml_file_path, "w") as comp_file:
-        comp_file.write("networks:\n")
-        comp_file.write(f"  {compose_name}_network:\n")
-        comp_file.write("    external: true\n\n")
-        comp_file.write("services:\n")
-        comp_file.write("  fluent:\n")
-        comp_file.write(
-            f"    image: {container_dict.get('fluent_image', 'default_image_name')}\n"
-        )
-        comp_file.write("    networks:\n")
-        comp_file.write(f"      - {compose_name}_network\n")
-        comp_file.write("    environment:\n")
-        for env_var, value in container_dict["environment"].items():
-            comp_file.write(f"      - {env_var}={value}\n")
-        comp_file.write(f"    command: {cmd_str}\n")
-        comp_file.write("    ports:\n")
-        if not container_dict.get("ports"):
-            comp_file.write(
-                f"      - {container_dict['fluent_port']}:{container_dict['fluent_port']}\n"
-            )
-        else:
-            for _, port in container_dict["ports"].items():
-                comp_file.write(f"      - {port}:{port}\n")
-        comp_file.write(f"    working_dir: {container_dict['mount_target']}\n")
-        comp_file.write("    volumes:\n")
-        comp_file.write(
-            f"      - {container_dict['mount_source']}:{container_dict['mount_target']}\n"
-        )
+    port = (
+        container_dict.get("fluent_port", "")
+        if container_dict.get("fluent_port")
+        else ""
+    )
+
+    ports = (
+        list(container_dict.get("ports").values())
+        if container_dict.get("ports")
+        else []
+    )
+
+    env_vars = {
+        "FLUENT_IMAGE_NAME": container_dict.get("fluent_image", "default_image_name"),
+        "ANSYSLMD_LICENSE_FILE": container_dict["environment"].get(
+            "ANSYSLMD_LICENSE_FILE"
+        ),
+        "REMOTING_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
+        "FLUENT_NO_AUTOMATIC_TRANSCRIPT": container_dict["environment"].get(
+            "FLUENT_NO_AUTOMATIC_TRANSCRIPT"
+        ),
+        "FLUENT_COMMAND": " ".join(container_dict["command"]),
+        "FLUENT_MOUNT_TARGET": container_dict.get("mount_target"),
+        "FLUENT_MOUNT_SOURCE": container_dict.get("mount_source"),
+    }
+
+    env_vars["FLUENT_PORT_1"] = str(ports[0]) if ports else port
+    env_vars["FLUENT_PORT_2"] = (
+        str(ports[1]) if len(ports) > 1 else str(get_free_port())
+    )
+
+    for key, value in env_vars.items():
+        os.environ[key] = value
 
 
 def _extract_ports(port_string):
@@ -181,27 +182,19 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
     def __init__(self, *, container_dict, config: DockerComposeLaunchConfig):
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
-        self._urls: dict[str, str]
         self._docker_available = check_docker_installed()
         self._podman_available = check_podman_installed()
         self._container_dict = container_dict
         self._keep_volume = config.keep_volume
-
-        cmd_str = " ".join(self._container_dict["command"])
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
-
-        network = subprocess.check_call(  # noqa: F841
-            self._container_source
-            + ["network", "create", f"{self._compose_name}_network"],
-        )
-
-        _write_yaml_config(self._compose_name, self._container_dict, cmd_str)
 
         if config.compose_file is not None:
             self._compose_file: pathlib.Path | None = pathlib.Path(config.compose_file)
         else:
             self._compose_file = None
+
+        _set_env_vars(self._compose_name, self._container_dict)
 
     def _set_compose_cmds(self):
         """Sets the compose commands based on available tools and permissions."""
@@ -224,7 +217,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             yield self._compose_file
         else:
             with importlib.resources.path(
-                "ansys.fluent.core.docker", f"{self._compose_name}.yaml"
+                "ansys.fluent.core.docker", "docker-compose.yaml"
             ) as compose_file:
                 yield compose_file
 
@@ -257,10 +250,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         """Start the services."""
 
         with self._get_compose_file() as compose_file:
-            self._urls = {
-                ServerKey.MAIN: f"localhost:{self._container_dict['fluent_port']}",
-            }
-
             cmd = [
                 "-f",
                 str(compose_file.resolve()),
@@ -270,7 +259,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 "--detach",
             ]
 
-            output = subprocess.check_call(  # noqa: F841
+            output = subprocess.run(  # noqa: F841
                 self._set_compose_cmds() + cmd,
             )
 
@@ -296,10 +285,10 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 self._set_compose_cmds() + cmd,
             )
 
-    def remove_network(self) -> None:
+    def remove_unused_networks(self) -> None:
         """Remove the services."""
 
-        cmd = ["network", "rm", "-f", f"{self._compose_name}_network"]
+        cmd = ["network", "prune", "-f"]
 
         try:
             output = subprocess.check_call(  # noqa: F841
@@ -308,16 +297,10 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         except subprocess.CalledProcessError as e:  # noqa: F841
             pass
 
-    def remove_compose_file(self) -> None:
-        """Remove the compose file."""
-        file_path = Path(__file__).parents[0] / f"{self._compose_name}.yaml"
-        file_path.unlink(missing_ok=True)
-
     def exit(self) -> None:
         """Exit the container launcher."""
         self.stop()
-        self.remove_network()
-        # self.remove_compose_file()
+        self.remove_unused_networks()
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""
@@ -326,11 +309,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             if not check_grpc_health(channel=channel, timeout=timeout):
                 return False
         return True
-
-    @property
-    def urls(self) -> dict[str, str]:
-        """Return the URLs of the launched services."""
-        return self._urls
 
     @property
     def ports(self) -> list[str]:
