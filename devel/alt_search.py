@@ -37,8 +37,10 @@ def build_cache(root_cls):
     while queue:
         current_name, current_cls, current_path, rank = queue.popleft()
         SearchCache.setdefault(current_name, []).append((current_path, rank))
-        for name_component in get_name_components(current_name):
-            SearchCache.setdefault(name_component, []).append((current_path, rank))
+        name_components = get_name_components(current_name)
+        if len(name_components) > 1:
+            for name_component in name_components:
+                SearchCache.setdefault(name_component, []).append((current_path, rank))
 
         if not hasattr(current_cls, "_child_classes"):
             continue
@@ -68,8 +70,6 @@ def search(
     """
     if not SearchCache:
         build_cache(root)
-        # with open("alt_search.log", "w") as f:
-        #     pprint(SearchCache, stream=f)
     if match_whole_word:
         results = SearchCache.get(search_string, [])
     elif wildcard:
@@ -111,3 +111,5 @@ if __name__ == "__main__":
     pprint(search("viscous*", wildcard=True))
     pprint(len(search("viscous", wildcard=True)))
     save_compressed_cache()
+    with open("alt_search.log", "w") as f:
+        pprint(SearchCache, stream=f)
