@@ -314,7 +314,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         """Exit the container launcher."""
         self.stop()
         self.prune_network()
-        self.remove_compose_file()
+        # self.remove_compose_file()
 
     def check(self, timeout: float | None = None) -> bool:
         """Check if the services are running."""
