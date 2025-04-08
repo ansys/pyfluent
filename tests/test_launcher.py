@@ -514,14 +514,13 @@ def test_container_warning_for_mount_source(caplog):
 
 
 # runs only in container till cwd is supported for container launch
-@pytest.mark.skip(reason="Passes locally but fails in GitHub randomly")
 def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
         m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
         solver = pyfluent.launch_fluent()
         assert list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
         solver.exit()
-        for file in list(Path(os.getcwd()).glob("*.trn")):
+        for file in list(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"):
             if file.is_file():
                 file.unlink()
     solver = pyfluent.launch_fluent()
