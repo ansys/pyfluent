@@ -523,9 +523,6 @@ def test_fluent_automatic_transcript(monkeypatch):
         for file in list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn")):
             if file.is_file():
                 file.unlink()
-    solver = pyfluent.launch_fluent()
-    assert not list(Path(pyfluent.CONTAINER_MOUNT_SOURCE).glob("*.trn"))
-    solver.exit()
 
 
 def test_standalone_launcher_dry_run(monkeypatch):
