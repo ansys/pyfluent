@@ -11,7 +11,7 @@ else
 fi
 
 # Pull fluent image based on tag
-docker compose pull $_IMAGE_NAME
+docker pull $_IMAGE_NAME
 
 # Remove all dangling images
 docker image prune -f
