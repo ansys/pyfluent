@@ -33,10 +33,7 @@ import pathlib
 import subprocess
 import uuid
 
-import grpc
-
 from ansys.fluent.core.utils.networking import get_free_port
-from ansys.tools.local_product_launcher.helpers.grpc import check_grpc_health
 from ansys.tools.local_product_launcher.interface import (
     METADATA_KEY_DOC,
     METADATA_KEY_NOPROMPT,
@@ -47,7 +44,7 @@ from ansys.tools.local_product_launcher.interface import (
 __all__ = ["DockerComposeLaunchConfig"]
 
 
-def check_docker_installed():
+def _check_docker_installed():
     """Check if Docker is installed."""
     try:
         result = subprocess.run(  # noqa: F841
@@ -60,7 +57,7 @@ def check_docker_installed():
         return False
 
 
-def check_podman_installed():
+def _check_podman_installed():
     """Check if Podman is installed."""
     try:
         result = subprocess.run(  # noqa: F841
@@ -178,8 +175,8 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
     def __init__(self, *, container_dict, config: DockerComposeLaunchConfig):
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
-        self._docker_available = check_docker_installed()
-        self._podman_available = check_podman_installed()
+        self._docker_available = _check_docker_installed()
+        self._podman_available = _check_podman_installed()
         self._container_dict = container_dict
         self._keep_volume = config.keep_volume
         self._container_source = self._set_compose_cmds()
@@ -298,17 +295,9 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         self.stop()
         self.remove_unused_networks()
 
-    def check(self, timeout: float | None = None) -> bool:
-        """Check if the services are running."""
-        for url in self.urls.values():
-            channel = grpc.insecure_channel(url)
-            if not check_grpc_health(channel=channel, timeout=timeout):
-                return False
-        return True
-
     @property
     def ports(self) -> list[str]:
-        """Return the URLs of the launched services."""
+        """Return the ports of the launched services."""
         output = subprocess.check_output(
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )

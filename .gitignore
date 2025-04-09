@@ -146,5 +146,4 @@ src/ansys/fluent/core/generated/
 # Fluent generated files
 *.trn
 cleanup-fluent-*-*.*
-pyfluent_compose_*.yaml
 serverinfo-*.txt
