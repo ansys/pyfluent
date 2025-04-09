@@ -766,7 +766,7 @@ def test_on_command_attribute_changed_lifetime(new_solver_session):
     )
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     solver = new_solver_session
     app_name = "test"
