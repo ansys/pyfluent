@@ -58,7 +58,6 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -239,11 +238,5 @@ class DockerLauncher:
         )
 
         session._container = container
-
-        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
-            self.argvals["start_watchdog"] = True
-        if self.argvals["start_watchdog"]:
-            logger.debug("Launching Watchdog for Fluent container...")
-            watchdog.launch(os.getpid(), port, password)
 
         return session
