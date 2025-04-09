@@ -2,15 +2,9 @@ services:
   fluent:
     image: ${IMAGE_NAME}
     environment:
-      - IMAGE_NAME=${IMAGE_NAME}
       - ANSYSLMD_LICENSE_FILE=${LICENSE_FILE}
       - REMOTING_PORTS=${REMOTE_PORTS}
       - FLUENT_NO_AUTOMATIC_TRANSCRIPT=${NO_TRANSCRIPT}
-      - COMMAND=${COMMAND}
-      - PORT_1=${PORT_1}
-      - PORT_2=${PORT_2}
-      - MOUNT_SOURCE=${MOUNT_SOURCE}
-      - MOUNT_TARGET=${MOUNT_TARGET}
     command: ${COMMAND}
     ports:
       - ${PORT_1}:${PORT_1}
