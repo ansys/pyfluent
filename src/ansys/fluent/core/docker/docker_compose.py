@@ -130,7 +130,7 @@ def _set_env_vars(compose_name, container_dict):
         "LICENSE_FILE": container_dict["environment"].get("ANSYSLMD_LICENSE_FILE"),
         "REMOTE_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
         "NO_TRANSCRIPT": container_dict["environment"].get(
-            "FLUENT_NO_AUTOMATIC_TRANSCRIPT"
+            "FLUENT_NO_AUTOMATIC_TRANSCRIPT", "0"
         ),
         "COMMAND": " ".join(container_dict["command"]),
         "MOUNT_TARGET": container_dict.get("mount_target"),

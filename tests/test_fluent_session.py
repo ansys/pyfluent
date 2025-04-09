@@ -32,7 +32,6 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import (
     WaitTypeError,
     _pid_exists,
-    get_container,
 )
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
@@ -111,7 +110,6 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
         assert not _pid_exists(fluent_host_pid)
 
 
-@pytest.mark.standalone
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
         session = pyfluent.launch_fluent(cleanup_on_exit=False)
@@ -125,8 +123,9 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
     time.sleep(10)
     if inside_container:
-        assert get_container(cortex_host)
-        subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
+        result = subprocess.check_call(["docker", "stop", cortex_host])
+        assert result == 0
+        subprocess.check_call(["docker", "rm", cortex_host])
     else:
         from pathlib import Path
 
