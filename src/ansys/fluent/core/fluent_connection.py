@@ -127,35 +127,6 @@ class MonitorThread(threading.Thread):
 ContainerT = TypeVar("ContainerT")
 
 
-def get_container(container_id_or_name: str) -> bool | ContainerT | None:
-    """Get the Docker container object.
-
-    Returns
-    -------
-    bool | Container | None
-        If the system is not correctly set up to run Docker containers, returns ``None``.
-        If the container was not found, returns ``False``.
-        If the container is found, returns the associated Docker container object.
-
-    Notes
-    -----
-    See `Docker container`_ for more information.
-
-    .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
-    """
-    if not isinstance(container_id_or_name, str):
-        container_id_or_name = str(container_id_or_name)
-    try:
-        docker_client = _docker().from_env()
-        container = docker_client.containers.get(container_id_or_name)
-    except _docker().errors.NotFound:  # NotFound is a child from DockerException
-        return False
-    except _docker().errors.DockerException as exc:
-        logger.info(f"{type(exc).__name__}: {exc}")
-        return None
-    return container
-
-
 class ErrorState:
     """Object to indicate the error state of the connected Fluent client.
 

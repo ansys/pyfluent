@@ -322,6 +322,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     assert get_fluent_exe_path() == expected_path
 
 
+@pytest.mark.standalone
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
     pyfluent.launch_fluent(start_watchdog=True)
