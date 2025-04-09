@@ -269,6 +269,7 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     )
 
 
+# Docker compose takes around 11 seconds to stop both container and network
 @pytest.mark.standalone
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()

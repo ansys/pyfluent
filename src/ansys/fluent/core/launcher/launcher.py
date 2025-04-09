@@ -348,7 +348,6 @@ def connect_to_fluent(
     server_info_file_name: str | None = None,
     password: str | None = None,
     start_watchdog: bool | None = None,
-    fluent_connection: FluentConnection | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
@@ -383,8 +382,6 @@ def connect_to_fluent(
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
-    fluent_connection: FluentConnection
-        FluentConnection instance to connect to Fluent.
 
     Returns
     -------
@@ -394,30 +391,26 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
     """
-    if not fluent_connection:
-        ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
-        new_fluent_connection = FluentConnection(
-            ip=ip,
-            port=port,
-            password=password,
-            cleanup_on_exit=cleanup_on_exit,
-        )
-
-    connection = fluent_connection if fluent_connection else new_fluent_connection
-
-    new_session = _get_running_session_mode(connection)
+    ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
+    fluent_connection = FluentConnection(
+        ip=ip,
+        port=port,
+        password=password,
+        cleanup_on_exit=cleanup_on_exit,
+    )
+    new_session = _get_running_session_mode(fluent_connection)
 
     start_watchdog = _confirm_watchdog_start(
-        start_watchdog, cleanup_on_exit, connection
+        start_watchdog, cleanup_on_exit, fluent_connection
     )
 
-    if start_watchdog and not fluent_connection:
+    if start_watchdog:
         logger.info("Launching Watchdog for existing Fluent session...")
         ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
         watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(
-        fluent_connection=connection,
-        scheme_eval=connection._connection_interface.scheme_eval,
+        fluent_connection=fluent_connection,
+        scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
     )
