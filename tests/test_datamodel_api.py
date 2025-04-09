@@ -289,6 +289,7 @@ def test_datamodel_api_on_attribute_changed(
     assert value == "xyz"
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/3910")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_command_attribute_changed(
     datamodel_api_version_all, request, new_solver_session
