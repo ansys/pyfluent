@@ -766,8 +766,7 @@ def test_on_command_attribute_changed_lifetime(new_solver_session):
     )
 
 
-# Hangs for 24R2 - https://github.com/ansys/pyfluent/issues/3910
-@pytest.mark.fluent_version(">=25.1")
+@pytest.mark.fluent_version(">=24.2")
 def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     solver = new_solver_session
     app_name = "test"
