@@ -436,7 +436,13 @@ class FluentConnection:
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
         if pyfluent.CHECK_HEALTH:
-            self.health_check.check_health()
+            connected = timeout_loop(
+                self.health_check.check_health() == "SERVING", timeout=60, idle_period=1
+            )
+            if not connected:
+                raise TimeoutError(
+                    "Fluent is not responding. Please check if the Fluent server is running."
+                )
 
         self._slurm_job_id = slurm_job_id
 
