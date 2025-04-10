@@ -92,7 +92,7 @@ class HealthCheckService:
         Response changes only when the service's serving status changes.
 
         Parameters
-        ----------s
+        ----------
         timeout : int
             timeout in seconds
 
