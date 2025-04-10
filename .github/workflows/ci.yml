@@ -553,6 +553,7 @@ jobs:
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
+          python -c "import os; os.environ["FLUENT_IMAGE_TAG"] = 'v25.2.0'"
           make install-test
           make unittest-dev-${{ matrix.version }}
 
