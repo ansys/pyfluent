@@ -39,6 +39,8 @@ from ansys.fluent.core.services.interceptors import (
 
 logger: logging.Logger = logging.getLogger("pyfluent.general")
 
+TIMEOUT = 60
+
 
 class HealthCheckService:
     """Class wrapping the health check gRPC service of Fluent.
@@ -81,16 +83,16 @@ class HealthCheckService:
             "SERVING" or "NOT_SERVING"
         """
         request = HealthCheckModule.HealthCheckRequest()
-        response = self._stub.Check(request, metadata=self._metadata)
+        response = self._stub.Check(request, metadata=self._metadata, timeout=TIMEOUT)
         return HealthCheckService.Status(response.status).name
 
-    def wait_for_server(self, timeout: int) -> None:
+    def wait_for_server(self, timeout: int = TIMEOUT) -> None:
         """Keeps a watch on the health of the Fluent connection.
 
         Response changes only when the service's serving status changes.
 
         Parameters
-        ----------
+        ----------s
         timeout : int
             timeout in seconds
 
