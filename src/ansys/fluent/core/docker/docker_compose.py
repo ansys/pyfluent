@@ -113,17 +113,10 @@ def _set_env_vars(compose_name, container_dict):
         A dictionary containing container configuration.
     """
 
-    port = (
-        container_dict.get("fluent_port", "")
-        if container_dict.get("fluent_port")
-        else ""
-    )
-
-    ports = (
-        list(container_dict.get("ports").values())
-        if container_dict.get("ports")
-        else []
-    )
+    if container_dict.get("ports"):
+        ports = list(container_dict.get("ports").values())
+    else:
+        ports = [container_dict.get("fluent_port", "")]
 
     env_vars = {
         "IMAGE_NAME": container_dict.get("fluent_image"),
@@ -137,11 +130,16 @@ def _set_env_vars(compose_name, container_dict):
         "MOUNT_SOURCE": container_dict.get("mount_source"),
     }
 
-    env_vars["PORT_1"] = str(ports[0]) if ports else port
+    final_ports = ", ".join([f"{port}:{port}" for port in ports])
+    env_vars["FLUENT_PORTS"] = final_ports
+
+    env_vars["PORT_1"] = str(ports[0]) if ports else str(get_free_port())
     env_vars["PORT_2"] = str(ports[1]) if len(ports) > 1 else str(get_free_port())
 
-    for key, value in env_vars.items():
-        os.environ[key] = value
+    fluent_env = os.environ.copy()
+    fluent_env.update(env_vars)
+
+    return fluent_env
 
 
 def _extract_ports(port_string):
@@ -187,7 +185,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_file = None
 
-        _set_env_vars(self._compose_name, self._container_dict)
+        self._env = _set_env_vars(self._compose_name, self._container_dict)
 
     def _set_compose_cmds(self):
         """Sets the compose commands based on available tools and permissions."""
@@ -252,8 +250,11 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
                 "--detach",
             ]
 
-            output = subprocess.run(  # noqa: F841
+            output = subprocess.check_call(  # noqa: F841
                 self._set_compose_cmds() + cmd,
+                env=self._env,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
 
     def stop(self, *, timeout: float | None = None) -> None:
@@ -276,6 +277,9 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
 
             output = subprocess.check_call(  # noqa: F841
                 self._set_compose_cmds() + cmd,
+                env=self._env,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
 
     def remove_unused_networks(self) -> None:
