@@ -427,9 +427,9 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
 @pytest.fixture(params=["old", "new"])
 def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
     if request.param == "new":
-        os.environ["REMOTING_NEW_DM_API"] = "1"
+        monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
 
 
 @pytest.fixture
 def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
-    os.environ["REMOTING_NEW_DM_API"] = "1"
+    monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
