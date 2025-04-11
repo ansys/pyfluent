@@ -484,7 +484,7 @@ class EventsManager(Generic[TEvent]):
                 session=session, event_info=event_info, **kwargs
             )
 
-    def register_callback(
+    def _register_single_callback(
         self,
         event_name: TEvent | str,
         callback: Callable,
@@ -544,6 +544,51 @@ class EventsManager(Generic[TEvent]):
                     callback_id: callback_to_call
                 }
             return callback_id
+
+    def register_callback(
+        self,
+        event_types: (
+            SolverEvent
+            | MeshingEvent
+            | tuple[SolverEvent, ...]
+            | tuple[MeshingEvent, ...]
+        ),
+        callback: Callable,
+        *args,
+        **kwargs,
+    ):
+        """Register the callback.
+
+        Parameters
+        ----------
+        event_types : TEvent or str
+            Events to register the callback to.
+        callback : Callable
+            Callback to register. If the custom arguments,
+            args and kwargs, are empty then the callback
+            signature must be precisely <function>(session, event_info).
+            Otherwise, the arguments for args and/or kwargs
+            must precede the other arguments in the signature.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
+
+        Returns
+        -------
+        str
+            Registered callback ID.
+
+        Raises
+        ------
+        InvalidArgument
+            If event name is not valid.
+        """
+        if not isinstance(event_types, tuple):
+            event_types = (event_types,)
+
+        for event in event_types:
+            self._register_single_callback(event, callback, *args, **kwargs)
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.
