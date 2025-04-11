@@ -27,7 +27,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Type, TypeVar
+from typing import Callable, Generic, Literal, Sequence, Type, TypeVar
 import warnings
 
 from google.protobuf.json_format import MessageToDict
@@ -548,10 +548,7 @@ class EventsManager(Generic[TEvent]):
     def register_callback(
         self,
         event_types: (
-            SolverEvent
-            | MeshingEvent
-            | tuple[SolverEvent, ...]
-            | tuple[MeshingEvent, ...]
+            SolverEvent | MeshingEvent | Sequence[SolverEvent] | Sequence[MeshingEvent]
         ),
         callback: Callable,
         *args,
@@ -584,7 +581,7 @@ class EventsManager(Generic[TEvent]):
         InvalidArgument
             If event name is not valid.
         """
-        if not isinstance(event_types, tuple):
+        if not isinstance(event_types, (list, tuple)):
             event_types = (event_types,)
 
         for event in event_types:
