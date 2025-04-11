@@ -29,7 +29,6 @@ import pydoc
 # isort: off
 # Logging has to be imported before importing other PyFluent modules
 from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
-from ansys.fluent.core.session_launcher import Solver  # noqa: F401
 
 # isort: on
 from ansys.fluent.core.get_build_details import (  # noqa: F401

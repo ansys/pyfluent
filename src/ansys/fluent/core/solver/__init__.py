@@ -26,3 +26,10 @@ try:
     from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
 except (ImportError, AttributeError, SyntaxError):
     pass
+
+from ansys.fluent.core.session_utilities import (  # noqa: F401
+    from_connection,
+    from_container,
+    from_local_install,
+    from_pim,
+)
