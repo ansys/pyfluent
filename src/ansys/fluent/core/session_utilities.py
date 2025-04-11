@@ -47,10 +47,14 @@ class SessionBase:
     or `from_pim` functions to create a session.
     """
 
-    _mode = None
+    _session_mode = {
+        "Solver": FluentMode.SOLVER,
+        "Meshing": FluentMode.MESHING,
+    }
 
-    @staticmethod
+    @classmethod
     def from_local_install(
+        cls,
         ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
@@ -153,13 +157,15 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        mode = SessionBase._mode
+        mode = cls._session_mode[cls.__name__]
         argvals = locals().copy()
+        argvals.pop("cls", None)  # Remove the class reference from the arguments
         launcher = StandaloneLauncher(**argvals)
         return launcher()
 
-    @staticmethod
+    @classmethod
     def from_container(
+        cls,
         ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
@@ -245,13 +251,15 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        mode = SessionBase._mode
+        mode = cls._session_mode[cls.__name__]
         argvals = locals().copy()
+        argvals.pop("cls", None)
         launcher = DockerLauncher(**argvals)
         return launcher()
 
-    @staticmethod
+    @classmethod
     def from_pim(
+        cls,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -323,13 +331,15 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        mode = SessionBase._mode
+        mode = cls._session_mode[cls.__name__]
         argvals = locals().copy()
+        argvals.pop("cls", None)
         launcher = PIMLauncher(**argvals)
         return launcher()
 
-    @staticmethod
+    @classmethod
     def from_connection(
+        cls,
         ip: str | None = None,
         port: int | None = None,
         server_info_file_name: str | None = None,
@@ -367,10 +377,10 @@ class SessionBase:
 class Solver(SessionBase):
     """Encapsulates a Fluent server for solver session connection."""
 
-    _mode = FluentMode.SOLVER
+    pass
 
 
 class Meshing(SessionBase):
     """Encapsulates a Fluent server for meshing session connection."""
 
-    _mode = FluentMode.MESHING
+    pass
