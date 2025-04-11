@@ -48,8 +48,12 @@ class SessionBase:
     """
 
     _session_mode = {
-        "Solver": FluentMode.SOLVER,
         "Meshing": FluentMode.MESHING,
+        "PureMeshing": FluentMode.PURE_MESHING,
+        "PrePost": FluentMode.PRE_POST,
+        "Solver": FluentMode.SOLVER,
+        "SolverAero": FluentMode.SOLVER_AERO,
+        "SolverIcing": FluentMode.SOLVER_ICING,
     }
 
     @classmethod
@@ -374,13 +378,37 @@ class SessionBase:
         )
 
 
+class Meshing(SessionBase):
+    """Encapsulates a Fluent server for meshing session connection."""
+
+    pass
+
+
+class PureMeshing(SessionBase):
+    """Encapsulates a Fluent server for pure meshing session connection."""
+
+    pass
+
+
+class PrePost(SessionBase):
+    """Encapsulates a Fluent server for pre-post session connection."""
+
+    pass
+
+
 class Solver(SessionBase):
     """Encapsulates a Fluent server for solver session connection."""
 
     pass
 
 
-class Meshing(SessionBase):
-    """Encapsulates a Fluent server for meshing session connection."""
+class SolverAero(SessionBase):
+    """Encapsulates a Fluent server for solver aero session connection."""
+
+    pass
+
+
+class SolverIcing(SessionBase):
+    """Encapsulates a Fluent server for solver icing session connection."""
 
     pass
