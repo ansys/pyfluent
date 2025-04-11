@@ -1,0 +1,40 @@
+:orphan:
+
+.. _polynomials:
+
+polynomials
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.polynomials
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ====================================================
+
+Attribute                                                                                             Summary
+
+======================================================   ====================================================
+:ref:`auto_select_smoothness <auto_select_smoothness>`       Auto-select smoothness of the deformed geometry.
+
+:ref:`prescribed_motions <prescribed_motions>`                                     Prescribed motions object.
+
+:ref:`freeform_motions <freeform_motions>`                                           Freeform motions object.
+
+:ref:`constraint_settings <constraint_settings>`                                         Constraint settings.
+
+:ref:`tolerances <tolerances>`                                                      Motion tolerances object.
+
+======================================================   ====================================================
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`numerics_1 <numerics_1>`       Design tool numerics object.
+
+==============================   ================================
+

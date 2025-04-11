@@ -1,0 +1,21 @@
+:orphan:
+
+.. _compute_9:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ========================================
+
+Parent                                                      Summary
+
+========================   ========================================
+:ref:`range_4 <range_4>`       Specifies Range for Filter Settings.
+
+========================   ========================================
+

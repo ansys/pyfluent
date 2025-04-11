@@ -1,0 +1,43 @@
+:orphan:
+
+.. _geometry_2:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.geometry_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================   =========================
+
+Attribute                                Summary
+
+====================   =========================
+:ref:`parts <parts>`       Define topology Part.
+
+====================   =========================
+
+.. rubric:: Methods
+
+====================================   ====================================
+
+Method                                                              Summary
+
+====================================   ====================================
+:ref:`list_topology <list_topology>`       List topology model information.
+
+====================================   ====================================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`setup <setup>`       'setup' child.
+
+====================   ==================
+

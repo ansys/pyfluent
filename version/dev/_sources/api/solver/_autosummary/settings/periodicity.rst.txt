@@ -1,0 +1,23 @@
+:orphan:
+
+.. _periodicity:
+
+periodicity
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.periodicity
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`create_5 <create_5>`                                  Create mesh interfaces.
+
+:ref:`interfaces_child <interfaces_child>`       'child_object_type' of interfaces.
+
+==========================================   ======================================
+

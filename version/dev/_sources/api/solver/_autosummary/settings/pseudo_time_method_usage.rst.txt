@@ -1,0 +1,34 @@
+:orphan:
+
+.. _pseudo_time_method_usage:
+
+pseudo_time_method_usage
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.pseudo_time_method_usage
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ===================================
+
+Attribute                                                  Summary
+
+============================   ===================================
+:ref:`local_dt <local_dt>`          Local time step method object.
+
+:ref:`global_dt <global_dt>`       Global time step method object.
+
+============================   ===================================
+
+.. rubric:: Included in:
+
+============================   ==========================
+
+Parent                                            Summary
+
+============================   ==========================
+:ref:`expert_10 <expert_10>`       Expert options object.
+
+============================   ==========================
+

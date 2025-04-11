@@ -1,0 +1,38 @@
+:orphan:
+
+.. _multi_grid:
+
+multi_grid
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.multi_grid
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==================================
+
+Attribute                                                                 Summary
+
+============================================   ==================================
+:ref:`mg_controls <mg_controls_1>`                    Multi-grid controls object.
+
+:ref:`amg_controls <amg_controls>`                           AMG controls object.
+
+:ref:`fas_mg_controls <fas_mg_controls>`           FAS multigrid controls object.
+
+:ref:`amg_gpgpu_options <amg_gpgpu_options>`            AMG GPGPU options object.
+
+============================================   ==================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_3 <advanced_3>`       Solution method advanced object.
+
+==============================   ====================================
+
