@@ -463,6 +463,14 @@ def start_fluent_container(
 
         logger.debug("Starting Fluent docker container...")
 
+        # Temporary fix for https://github.com/ansys/pyfluent/issues/3926
+        if os.getenv("CI_RUN"):
+            config_dict.setdefault("environment", {}).update(
+                {
+                    "DISPLAY": "",
+                }
+            )
+
         container = docker_client.containers.run(
             config_dict.pop("fluent_image"), **config_dict
         )
