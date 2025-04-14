@@ -461,6 +461,17 @@ def start_fluent_container(
 
         docker_compose_container = DockerComposeLauncher(
             container_dict=config_dict, config=DockerComposeLaunchConfig()
+          
+        # Temporary fix for https://github.com/ansys/pyfluent/issues/3926
+        if os.getenv("CI_RUN"):
+            config_dict.setdefault("environment", {}).update(
+                {
+                    "DISPLAY": "",
+                }
+            )
+
+        container = docker_client.containers.run(
+            config_dict.pop("fluent_image"), **config_dict
         )
 
         if not docker_compose_container.check_image_exists(config_dict["fluent_image"]):
