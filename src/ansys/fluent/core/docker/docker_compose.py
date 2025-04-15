@@ -102,13 +102,11 @@ class DockerComposeLaunchConfig:
     )
 
 
-def _set_env_vars(compose_name, container_dict):
+def _set_env_vars(container_dict):
     """Generates environment variables for the Docker Compose setup.
 
     Parameters
     ----------
-    compose_name: str
-        The name of the compose instance.
     container_dict: dict
         A dictionary containing container configuration.
     """
@@ -122,6 +120,7 @@ def _set_env_vars(compose_name, container_dict):
         "IMAGE_NAME": container_dict.get("fluent_image"),
         "LICENSE_FILE": container_dict["environment"].get("ANSYSLMD_LICENSE_FILE"),
         "REMOTE_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
+        "DISPLAY": container_dict["environment"].get("DISPLAY", ""),
         "NO_TRANSCRIPT": container_dict["environment"].get(
             "FLUENT_NO_AUTOMATIC_TRANSCRIPT", "0"
         ),
@@ -185,7 +184,7 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_file = None
 
-        self._env = _set_env_vars(self._compose_name, self._container_dict)
+        self._env = _set_env_vars(self._container_dict)
 
     def _set_compose_cmds(self):
         """Sets the compose commands based on available tools and permissions."""
