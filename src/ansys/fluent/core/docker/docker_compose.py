@@ -33,7 +33,6 @@ import pathlib
 import subprocess
 import uuid
 
-from ansys.fluent.core.utils.networking import get_free_port
 from ansys.tools.local_product_launcher.interface import (
     METADATA_KEY_DOC,
     METADATA_KEY_NOPROMPT,
@@ -142,12 +141,6 @@ def _set_env_vars(container_dict):
         "MOUNT_TARGET": container_dict.get("mount_target"),
         "MOUNT_SOURCE": container_dict.get("mount_source"),
     }
-
-    final_ports = ", ".join([f"{port}:{port}" for port in ports])
-    env_vars["FLUENT_PORTS"] = final_ports
-
-    env_vars["PORT_1"] = str(ports[0]) if ports else str(get_free_port())
-    env_vars["PORT_2"] = str(ports[1]) if len(ports) > 1 else str(get_free_port())
 
     fluent_env = os.environ.copy()
     fluent_env.update(env_vars)
