@@ -299,7 +299,6 @@ class Solver(BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            state = self.settings.get_state()
             super(Solver, self)._build_from_fluent_connection(
                 fut_session._fluent_connection,
                 fut_session._fluent_connection._connection_interface.scheme_eval,
@@ -309,8 +308,6 @@ class Solver(BaseSession):
                 fut_session._fluent_connection,
                 fut_session._fluent_connection._connection_interface.scheme_eval,
             )
-            # TODO temporary fix till set_state at settings root is fixed
-            _set_state_safe(self.settings, state)
 
     def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
