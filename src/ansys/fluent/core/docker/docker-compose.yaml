@@ -6,9 +6,6 @@ services:
       - REMOTING_PORTS=${REMOTE_PORTS}
       - FLUENT_NO_AUTOMATIC_TRANSCRIPT=${NO_TRANSCRIPT}
     command: ${COMMAND}
-    ports:
-      - ${PORT_1}:${PORT_1}
-      - ${PORT_2}:${PORT_2}
     working_dir: ${MOUNT_TARGET}
     volumes:
       - ${MOUNT_SOURCE}:${MOUNT_TARGET}

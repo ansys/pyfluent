@@ -116,6 +116,20 @@ def _set_env_vars(container_dict):
     else:
         ports = [container_dict.get("fluent_port", "")]
 
+    second_compose_file_content = f"""
+    services:
+      fluent:
+        image: {container_dict.get("fluent_image")}
+        ports:
+    """
+
+    indent = " "
+    for port in ports:
+        if port == ports[0]:
+            second_compose_file_content += f"{indent * 6}- {port}:{port}\n"
+        else:
+            second_compose_file_content += f"{indent * 10}- {port}:{port}\n"
+
     env_vars = {
         "IMAGE_NAME": container_dict.get("fluent_image"),
         "LICENSE_FILE": container_dict["environment"].get("ANSYSLMD_LICENSE_FILE"),
@@ -138,7 +152,7 @@ def _set_env_vars(container_dict):
     fluent_env = os.environ.copy()
     fluent_env.update(env_vars)
 
-    return fluent_env
+    return second_compose_file_content, fluent_env
 
 
 def _extract_ports(port_string):
@@ -184,7 +198,9 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         else:
             self._compose_file = None
 
-        self._env = _set_env_vars(self._container_dict)
+        self._second_compose_file_content, self._env = _set_env_vars(
+            self._container_dict
+        )
 
     def _set_compose_cmds(self):
         """Sets the compose commands based on available tools and permissions."""
@@ -237,24 +253,43 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         )
 
     def start(self) -> None:
-        """Start the services."""
+        """Start the services.
+
+        Raises
+        -------
+        subprocess.CalledProcessError
+            If the command fails.
+        """
 
         with self._get_compose_file() as compose_file:
             cmd = [
                 "-f",
                 str(compose_file.resolve()),
+                "-f",
+                "-",
                 "--project-name",
                 self._compose_name,
                 "up",
                 "--detach",
             ]
 
-            output = subprocess.check_call(  # noqa: F841
+            process = subprocess.Popen(
                 self._set_compose_cmds() + cmd,
+                stdin=subprocess.PIPE,
+                text=True,
                 env=self._env,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
+
+            process.communicate(input=self._second_compose_file_content)
+
+            return_code = process.wait()
+
+            if return_code != 0:
+                raise subprocess.CalledProcessError(
+                    return_code, self._set_compose_cmds() + cmd
+                )
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the services."""
