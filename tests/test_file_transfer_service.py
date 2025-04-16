@@ -35,30 +35,24 @@ from ansys.fluent.core.utils.file_transfer_service import (
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
-def test_remote_grpc_fts_container(
-    monkeypatch, new_solver_session, new_meshing_session
-):
+def test_remote_grpc_fts_container():
     import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+    from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
-    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
-
-    solver = new_solver_session
-    import_case_file_name = examples.download_file(
-        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    case_file = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
     )
-    import_mesh_file_name = examples.download_file(
-        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    file_transfer_service = RemoteFileTransferStrategy()
+    container_dict = {"mount_source": file_transfer_service.mount_source}
+    session = pyfluent.launch_fluent(
+        file_transfer_service=file_transfer_service, container_dict=container_dict
     )
-    solver.file.read_case(file_name=import_case_file_name)
-    solver.file.write_case(file_name="downloaded_solver_mixing_elbow.cas.h5")
-    assert solver.file_exists_on_remote("downloaded_solver_mixing_elbow.cas.h5")
-    solver.exit()
-
-    meshing = new_meshing_session
-    meshing.meshing.File.ReadMesh(FileName=import_mesh_file_name)
-    meshing.meshing.File.WriteMesh(FileName="downloaded_meshing_mixing_elbow.msh.h5")
-    assert meshing.file_exists_on_remote("downloaded_meshing_mixing_elbow.msh.h5")
-    meshing.exit()
+    session.file.read_case(file_name=case_file)
+    assert session.file_exists_on_remote("mixing_elbow.cas.h5")
+    session.file.write_case(file_name="write_mixing_elbow.cas.h5")
+    assert session.file_exists_on_remote("write_mixing_elbow.cas.h5")
+    session.exit()
 
 
 @pytest.mark.standalone
