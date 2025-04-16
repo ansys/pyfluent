@@ -299,18 +299,23 @@ class Solver(BaseSession):
                 fut_session = fut.result()
             except Exception as ex:
                 raise RuntimeError("Unable to read mesh") from ex
-            state = self.settings.get_state()
-            super(Solver, self)._build_from_fluent_connection(
-                fut_session._fluent_connection,
-                fut_session._fluent_connection._connection_interface.scheme_eval,
-                event_type=SolverEvent,
-            )
-            self._build_from_fluent_connection(
-                fut_session._fluent_connection,
-                fut_session._fluent_connection._connection_interface.scheme_eval,
-            )
-            # TODO temporary fix till set_state at settings root is fixed
-            _set_state_safe(self.settings, state)
+            try:
+                state = self.settings.get_state()
+                super(Solver, self)._build_from_fluent_connection(
+                    fut_session._fluent_connection,
+                    fut_session._fluent_connection._connection_interface.scheme_eval,
+                    event_type=SolverEvent,
+                )
+                self._build_from_fluent_connection(
+                    fut_session._fluent_connection,
+                    fut_session._fluent_connection._connection_interface.scheme_eval,
+                )
+                # TODO temporary fix till set_state at settings root is fixed
+                _set_state_safe(self.settings, state)
+            except RuntimeError:
+                # If the foreground session is exited while the background session
+                # is being launched, we need to exit the background session.
+                fut_session.exit()
 
     def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
