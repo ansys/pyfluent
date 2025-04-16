@@ -406,6 +406,82 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         return name in self(respect_data_valid)
 
 
+class _ReturnInternalDictData:
+    def __init__(self, dict_data):
+        self._dict_data = dict_data
+
+    def _get_internal_dict_data(self, key):
+        try:
+            return self._dict_data[key]
+        except KeyError:
+            raise ValueError(f"{key} was not requested for.")
+
+
+class _ReturnSurfaceData(_ReturnInternalDictData):
+    def __init__(self, surf_data):
+        super().__init__(surf_data)
+        self._surf_data = surf_data
+
+    @property
+    def vertices(self):
+        """Vertices."""
+        return self._get_internal_dict_data(SurfaceDataType.Vertices)
+
+    @property
+    def lines(self):
+        """Faces Connectivity."""
+        return self._get_internal_dict_data(SurfaceDataType.FacesConnectivity)
+
+    @property
+    def faces_centroid(self):
+        """Faces Centroid."""
+        return self._get_internal_dict_data(SurfaceDataType.FacesCentroid)
+
+    @property
+    def faces_normal(self):
+        """Faces Normal."""
+        return self._get_internal_dict_data(SurfaceDataType.FacesNormal)
+
+
+class _ReturnPathlinesData(_ReturnInternalDictData):
+    def __init__(self, pathlines_data_for_surface):
+        super().__init__(pathlines_data_for_surface)
+        self._pathlines_data_for_surface = pathlines_data_for_surface
+
+    @property
+    def vertices(self):
+        """Vertices."""
+        return self._get_internal_dict_data("vertices")
+
+    @property
+    def lines(self):
+        """Faces Connectivity."""
+        return self._get_internal_dict_data("lines")
+
+    @property
+    def scalar_field_name(self):
+        """Scalar Field Name."""
+        return list(
+            set(self._pathlines_data_for_surface.keys())
+            - {"lines", "vertices", "pathlines-count", "particle-time"}
+        )[0]
+
+    @property
+    def scalar_field(self):
+        """Scalar Field."""
+        return self._get_internal_dict_data(self.scalar_field_name)
+
+    @property
+    def pathlines_count(self):
+        """Pathlines Count."""
+        return self._get_internal_dict_data("pathlines-count")
+
+    @property
+    def particle_time(self):
+        """Particle Time."""
+        return self._get_internal_dict_data("particle-time")
+
+
 class _ReturnFieldData:
 
     @staticmethod
@@ -453,6 +529,7 @@ class _ReturnFieldData:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
                     ][data_type.value].reshape(-1, 3)
+            ret_surf_data[surface] = _ReturnSurfaceData(ret_surf_data[surface])
         return ret_surf_data
 
     @staticmethod
@@ -476,7 +553,7 @@ class _ReturnFieldData:
     ) -> Dict:
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
-            path_lines_dict[surface] = {
+            temp_dict = {
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
@@ -489,7 +566,8 @@ class _ReturnFieldData:
                 ],
             }
             if "particle-time" in pathlines_data[surface_ids[count]]:
-                path_lines_dict[surface]["particle-time"] = pathlines_data[
-                    surface_ids[count]
-                ]["particle-time"]
+                temp_dict["particle-time"] = pathlines_data[surface_ids[count]][
+                    "particle-time"
+                ]
+            path_lines_dict[surface] = _ReturnPathlinesData(temp_dict)
         return path_lines_dict

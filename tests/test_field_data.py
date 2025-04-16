@@ -469,46 +469,33 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         data_types=[SurfaceDataType.Vertices], surfaces=["cold-inlet"]
     )
     vertices_data = field_data.get_field_data(su1)
-    assert vertices_data["cold-inlet"][SurfaceDataType.Vertices].shape == (241, 3)
-    assert (
-        round(float(vertices_data["cold-inlet"][SurfaceDataType.Vertices][5][0]), 2)
-        == -0.2
-    )
+    assert vertices_data["cold-inlet"].vertices.shape == (241, 3)
+    assert round(float(vertices_data["cold-inlet"].vertices[5][0]), 2) == -0.2
 
     su2 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
         surfaces=["hot-inlet", "cold-inlet"],
     )
     vertices_and_faces_centroid_data = field_data.get_field_data(su2)
-    assert list(vertices_and_faces_centroid_data["cold-inlet"].keys()) == [
+    assert list(vertices_and_faces_centroid_data["cold-inlet"]._surf_data.keys()) == [
         SurfaceDataType.Vertices,
         SurfaceDataType.FacesCentroid,
     ]
-    assert vertices_and_faces_centroid_data["hot-inlet"][
-        SurfaceDataType.Vertices
-    ].shape == (79, 3)
+    assert vertices_and_faces_centroid_data["hot-inlet"].vertices.shape == (79, 3)
     assert list(vertices_and_faces_centroid_data.keys()) == [
         "hot-inlet",
         "cold-inlet",
     ]
     assert (
         round(
-            float(
-                vertices_and_faces_centroid_data["cold-inlet"][
-                    SurfaceDataType.FacesCentroid
-                ][5][1]
-            ),
+            float(vertices_and_faces_centroid_data["cold-inlet"].faces_centroid[5][1]),
             2,
         )
         == -0.18
     )
     assert (
         round(
-            float(
-                vertices_and_faces_centroid_data["hot-inlet"][
-                    SurfaceDataType.FacesCentroid
-                ][5][1]
-            ),
+            float(vertices_and_faces_centroid_data["hot-inlet"].faces_centroid[5][1]),
             2,
         )
         == -0.23
@@ -518,17 +505,14 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5]
     )
     faces_normal_data = field_data.get_field_data(su3)
-    assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
-    assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
+    assert faces_normal_data[3].faces_normal.shape == (152, 3)
+    assert faces_normal_data[5].faces_normal.shape == (2001, 3)
 
     su4 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
     faces_connectivity_data = field_data.get_field_data(su4)
-    assert (
-        faces_connectivity_data["cold-inlet"][SurfaceDataType.FacesConnectivity][5]
-        == [12, 13, 17, 16]
-    ).all()
+    assert (faces_connectivity_data["cold-inlet"].lines[5] == [12, 13, 17, 16]).all()
 
     velocity_vector_data = field_data.get_field_data(
         VectorFieldDataRequest(field_name="velocity", surfaces=["cold-inlet"])
@@ -541,15 +525,17 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         )
     )
 
-    assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
-    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
-    assert path_lines_data["cold-inlet"]["velocity-magnitude"].shape == (76152,)
+    assert path_lines_data["cold-inlet"].vertices.shape == (76152, 3)
+    assert len(path_lines_data["cold-inlet"].lines) == 76000
+    assert path_lines_data["cold-inlet"].scalar_field.shape == (76152,)
 
-    assert path_lines_data["hot-inlet"]["vertices"].shape == (27555, 3)
-    assert len(path_lines_data["hot-inlet"]["lines"]) == 27500
-    assert path_lines_data["hot-inlet"]["velocity-magnitude"].shape == (27555,)
+    assert path_lines_data["hot-inlet"].vertices.shape == (27555, 3)
+    assert len(path_lines_data["hot-inlet"].lines) == 27500
+    assert path_lines_data["hot-inlet"].scalar_field.shape == (27555,)
 
-    assert all(path_lines_data["cold-inlet"]["lines"][100] == [100, 101])
+    assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
+
+    assert all(path_lines_data["cold-inlet"].lines[100] == [100, 101])
 
 
 @pytest.mark.fluent_version(">=23.2")
