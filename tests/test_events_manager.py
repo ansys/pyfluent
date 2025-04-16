@@ -158,17 +158,13 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
             session.scheme_eval.scheme_eval("(get-current-iteration)")
         )
 
-    cb_ids = []
-    for i in range(2):
-        cb_ids.append(
-            solver.events.register_callback(
-                (
-                    pyfluent.SolverEvent.TIMESTEP_ENDED,
-                    pyfluent.SolverEvent.ITERATION_ENDED,
-                ),
-                cb,
-            )
-        )
+    cb_ids = solver.events.register_callback(
+        (
+            pyfluent.SolverEvent.TIMESTEP_ENDED,
+            pyfluent.SolverEvent.ITERATION_ENDED,
+        ),
+        cb,
+    )
     assert len(cb_ids) == 2
     solver.settings.solution.run_calculation.iterate(iter_count=10)
     for cb_id in cb_ids:
