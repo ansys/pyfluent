@@ -558,7 +558,7 @@ def test_transaction_request_single_phase():
     # Surfaces Data
     surface_data = data.get_field_data(surf_data_request)
     assert len(surface_data) == 2
-    assert list(surface_data[3].keys()) == [
+    assert list(surface_data[3]._surf_data.keys()) == [
         SurfaceDataType.Vertices,
         SurfaceDataType.FacesConnectivity,
     ]
