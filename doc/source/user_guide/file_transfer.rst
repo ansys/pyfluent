@@ -88,14 +88,3 @@ Depending on how Fluent is launched, different file transfer strategies are avai
       >>> session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
       >>> session.download(file_name="write_elbow.msh.h5", local_directory="<local_path>")
 
-
-Defining your own file transfer service
-***************************************
-
-Advanced users can define a custom file transfer strategy and use it when launching Fluent:
-
-.. code-block:: python
-
-   >>> pyfluent.launch_fluent(file_transfer_service=<your_custom_strategy>)
-
-(Instructions for creating a custom strategy are beyond the scope of this guide.)
