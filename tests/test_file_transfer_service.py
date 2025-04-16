@@ -29,8 +29,8 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import (
-    LocalFileTransferStrategy,
-    RemoteFileTransferStrategy,
+    ContainerFileTransferStrategy,
+    StandaloneFileTransferStrategy,
 )
 
 
@@ -94,7 +94,9 @@ def test_read_case_and_data(monkeypatch):
     )
     assert case_file_name
     assert data_file_name
-    solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
+    solver = pyfluent.launch_fluent(
+        file_transfer_service=StandaloneFileTransferStrategy()
+    )
 
     solver.file.read(file_type="case-data", file_name=case_file_name)
     solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
@@ -104,7 +106,7 @@ def test_read_case_and_data(monkeypatch):
     solver.exit()
 
     solver = pyfluent.launch_fluent(
-        file_transfer_service=LocalFileTransferStrategy(server_cwd=os.getcwd())
+        file_transfer_service=StandaloneFileTransferStrategy(server_cwd=os.getcwd())
     )
 
     solver.file.read(file_type="case-data", file_name=case_file_name)
@@ -120,7 +122,7 @@ def test_datamodel_execute():
     import ansys.fluent.core as pyfluent
 
     meshing = pyfluent.launch_fluent(
-        mode="meshing", file_transfer_service=RemoteFileTransferStrategy()
+        mode="meshing", file_transfer_service=ContainerFileTransferStrategy()
     )
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
@@ -153,9 +155,16 @@ def test_file_list_in_datamodel(fault_tolerant_workflow_session):
 
 @pytest.mark.standalone
 def test_local_file_transfer_in_datamodel(monkeypatch):
+    import os
+
+    os.environ["PYFLUENT_FLUENT_ROOT"] = (
+        r"D:\Installations\Ansys\252_14042025\ANSYS Inc\v252\fluent"
+    )
     import ansys.fluent.core as pyfluent
 
-    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
+    pyfluent.USE_FILE_TRANSFER_SERVICE = True
+
+    # monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
 
     fmd_file = examples.download_file("exhaust_system.fmd", "pyfluent/exhaust_system")
 
@@ -163,7 +172,7 @@ def test_local_file_transfer_in_datamodel(monkeypatch):
 
     meshing = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING,
-        file_transfer_service=LocalFileTransferStrategy(),
+        file_transfer_service=StandaloneFileTransferStrategy(),
     )
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")

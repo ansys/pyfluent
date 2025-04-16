@@ -45,7 +45,7 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.execution import timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -382,7 +382,7 @@ def test_read_case_using_lightweight_mode():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
+        file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,

@@ -35,7 +35,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 sys.path.append(Path(__file__).parent / "util")
@@ -246,7 +246,7 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
+        file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
