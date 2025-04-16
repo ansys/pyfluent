@@ -27,7 +27,7 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Type, TypeVar
+from typing import Callable, Generic, Literal, Sequence, Type, TypeVar
 import warnings
 
 from google.protobuf.json_format import MessageToDict
@@ -484,7 +484,7 @@ class EventsManager(Generic[TEvent]):
                 session=session, event_info=event_info, **kwargs
             )
 
-    def register_callback(
+    def _register_single_callback(
         self,
         event_name: TEvent | str,
         callback: Callable,
@@ -544,6 +544,52 @@ class EventsManager(Generic[TEvent]):
                     callback_id: callback_to_call
                 }
             return callback_id
+
+    def register_callback(
+        self,
+        event_types: (
+            SolverEvent | MeshingEvent | Sequence[SolverEvent] | Sequence[MeshingEvent]
+        ),
+        callback: Callable,
+        *args,
+        **kwargs,
+    ):
+        """Register the callback.
+
+        Parameters
+        ----------
+        event_types : TEvent or str
+            Events to register the callback to.
+        callback : Callable
+            Callback to register. If the custom arguments,
+            args and kwargs, are empty then the callback
+            signature must be precisely <function>(session, event_info).
+            Otherwise, the arguments for args and/or kwargs
+            must precede the other arguments in the signature.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
+
+        Returns
+        -------
+        str
+            Registered callback ID.
+
+        Raises
+        ------
+        InvalidArgument
+            If event name is not valid.
+        """
+        cb_ids = []
+        if not isinstance(event_types, (list, tuple)):
+            event_types = (event_types,)
+
+        for event in event_types:
+            cb_ids.append(
+                self._register_single_callback(event, callback, *args, **kwargs)
+            )
+        return cb_ids[0] if len(cb_ids) == 1 else cb_ids
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.
