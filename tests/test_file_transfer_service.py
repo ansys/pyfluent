@@ -23,6 +23,7 @@
 """Test file transfer service."""
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -44,7 +45,10 @@ def test_remote_grpc_fts_container():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
     )
     file_transfer_service = RemoteFileTransferStrategy()
-    container_dict = {"mount_source": file_transfer_service.mount_source}
+    source_path = "/home/ansys/ansys_fluent_core_examples"
+    if not Path(source_path).exists():
+        Path(source_path).mkdir(parents=True, exist_ok=True)
+    container_dict = {"mount_source": source_path}
     session = pyfluent.launch_fluent(
         file_transfer_service=file_transfer_service, container_dict=container_dict
     )
