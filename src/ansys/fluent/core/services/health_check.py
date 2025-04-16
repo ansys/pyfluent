@@ -30,6 +30,7 @@ import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule
 from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -81,7 +82,9 @@ class HealthCheckService:
             "SERVING" or "NOT_SERVING"
         """
         request = HealthCheckModule.HealthCheckRequest()
-        response = self._stub.Check(request, metadata=self._metadata)
+        response = self._stub.Check(
+            request, metadata=self._metadata, timeout=pyfluent.CHECK_HEALTH_TIMEOUT
+        )
         return HealthCheckService.Status(response.status).name
 
     def wait_for_server(self, timeout: int) -> None:
