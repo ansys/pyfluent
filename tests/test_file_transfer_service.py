@@ -45,11 +45,11 @@ def test_remote_grpc_fts_container():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
     )
 
-    source_path = "/home/ansys/ansys_fluent_core_examples"
-    if not Path(source_path).exists():
-        Path(source_path).mkdir(parents=True, exist_ok=True)
+    source_path = Path.home() / "Downloads" / "ansys_fluent_core_examples"
+    if not source_path.exists():
+        source_path.mkdir(parents=True, exist_ok=True)
 
-    file_transfer_service = RemoteFileTransferStrategy(mount_source=source_path)
+    file_transfer_service = RemoteFileTransferStrategy(mount_source=str(source_path))
 
     container_dict = {"mount_source": file_transfer_service.mount_source}
     session = pyfluent.launch_fluent(
