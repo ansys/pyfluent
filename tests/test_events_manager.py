@@ -145,6 +145,36 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
 
 
 @pytest.mark.fluent_version(">=23.1")
+def test_multiple_register_callback_event(static_mixer_case_session, caplog):
+    solver = static_mixer_case_session
+    solver.settings.solution.initialization.hybrid_initialize()
+    event_index = set()
+    iteration_index = set()
+
+    def cb(session, event_info):
+        nonlocal event_index, iteration_index
+        event_index.update(event_info.index)
+        iteration_index.update(
+            session.scheme_eval.scheme_eval("(get-current-iteration)")
+        )
+
+    cb_ids = solver.events.register_callback(
+        (
+            pyfluent.SolverEvent.TIMESTEP_ENDED,
+            pyfluent.SolverEvent.ITERATION_ENDED,
+        ),
+        cb,
+    )
+    assert len(cb_ids) == 2
+    solver.settings.solution.run_calculation.iterate(iter_count=10)
+    for cb_id in cb_ids:
+        solver.events.unregister_callback(cb_id)
+    solver.settings.solution.run_calculation.iterate(iter_count=5)
+    assert len(event_index) == len(iteration_index)
+    solver.exit()
+
+
+@pytest.mark.fluent_version(">=23.1")
 def test_iteration_ended_sync_event_multiple_connections(static_mixer_case_session):
     solver1 = static_mixer_case_session
     solver2 = pyfluent.connect_to_fluent(
