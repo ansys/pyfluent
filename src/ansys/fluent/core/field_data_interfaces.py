@@ -512,6 +512,7 @@ class _ReturnFieldData:
         surfaces: List[int | str],
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
+        deprecated_flag: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
@@ -529,7 +530,8 @@ class _ReturnFieldData:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
                     ][data_type.value].reshape(-1, 3)
-            ret_surf_data[surface] = _ReturnSurfaceData(ret_surf_data[surface])
+            if deprecated_flag is False:
+                ret_surf_data[surface] = _ReturnSurfaceData(ret_surf_data[surface])
         return ret_surf_data
 
     @staticmethod
@@ -550,6 +552,7 @@ class _ReturnFieldData:
         surfaces: List[int | str],
         surface_ids: List[int],
         pathlines_data: Dict,
+        deprecated_flag: bool | None = False,
     ) -> Dict:
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
@@ -569,5 +572,8 @@ class _ReturnFieldData:
                 temp_dict["particle-time"] = pathlines_data[surface_ids[count]][
                     "particle-time"
                 ]
-            path_lines_dict[surface] = _ReturnPathlinesData(temp_dict)
+            if deprecated_flag is False:
+                path_lines_dict[surface] = _ReturnPathlinesData(temp_dict)
+            else:
+                path_lines_dict[surface] = temp_dict
         return path_lines_dict
