@@ -242,18 +242,19 @@ def test_field_data_transactions(new_solver_session) -> None:
     )
     pathlines_data = data.get_field_data(pt1)
 
-    assert list(surface_data["hot-inlet"]) == [
+    assert list(surface_data["hot-inlet"]._surf_data) == [
         SurfaceDataType.Vertices,
         SurfaceDataType.FacesCentroid,
     ]
     assert (
-        len(scalar_data_1["hot-inlet"])
-        == surface_data["hot-inlet"][SurfaceDataType.Vertices].shape[0]
+        len(scalar_data_1["hot-inlet"]) == surface_data["hot-inlet"].vertices.shape[0]
     )
     assert (
         round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
     )
-    assert sorted(list(pathlines_data["hot-inlet"])) == sorted(
+    assert sorted(
+        list(pathlines_data["hot-inlet"]._pathlines_data_for_surface)
+    ) == sorted(
         [
             "vertices",
             "lines",
@@ -262,6 +263,8 @@ def test_field_data_transactions(new_solver_session) -> None:
             "particle-time",
         ]
     )
+
+    assert len(pathlines_data["hot-inlet"].particle_time) == 8811
 
     vector_data = data.get_field_data(vc1)
     assert list(vector_data) == [3, "hot-inlet"]
