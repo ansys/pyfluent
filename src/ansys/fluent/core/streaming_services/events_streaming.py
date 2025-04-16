@@ -581,11 +581,15 @@ class EventsManager(Generic[TEvent]):
         InvalidArgument
             If event name is not valid.
         """
+        cb_ids = []
         if not isinstance(event_types, (list, tuple)):
             event_types = (event_types,)
 
         for event in event_types:
-            self._register_single_callback(event, callback, *args, **kwargs)
+            cb_ids.append(
+                self._register_single_callback(event, callback, *args, **kwargs)
+            )
+        return cb_ids[0] if len(cb_ids) == 1 else cb_ids
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.
