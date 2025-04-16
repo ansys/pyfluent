@@ -15,6 +15,7 @@ env:
   MAIN_PYTHON_VERSION: '3.10'
   FLUENT_IMAGE_TAG: v25.2.0
   FLUENT_VERSION: 252
+  CI_RUN: 1
 
 jobs:
   test:
