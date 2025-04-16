@@ -44,18 +44,24 @@ def test_remote_grpc_fts_container():
     case_file = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
     )
-    file_transfer_service = RemoteFileTransferStrategy()
+
     source_path = "/home/ansys/ansys_fluent_core_examples"
     if not Path(source_path).exists():
         Path(source_path).mkdir(parents=True, exist_ok=True)
-    container_dict = {"mount_source": source_path}
+
+    file_transfer_service = RemoteFileTransferStrategy(mount_source=source_path)
+
+    container_dict = {"mount_source": file_transfer_service.mount_source}
     session = pyfluent.launch_fluent(
         file_transfer_service=file_transfer_service, container_dict=container_dict
     )
+
     session.file.read_case(file_name=case_file)
     assert session.file_exists_on_remote("mixing_elbow.cas.h5")
+
     session.file.write_case(file_name="write_mixing_elbow.cas.h5")
     assert session.file_exists_on_remote("write_mixing_elbow.cas.h5")
+
     session.exit()
 
 
