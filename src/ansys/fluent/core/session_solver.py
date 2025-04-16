@@ -22,8 +22,6 @@
 
 """Module containing class encapsulating Fluent connection."""
 
-from asyncio import Future
-import functools
 import logging
 import threading
 from typing import Any, Dict
@@ -55,7 +53,6 @@ import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
-from ansys.fluent.core.utils.execution import asynchronous
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -148,7 +145,7 @@ class Solver(BaseSession):
         self._system_coupling = None
         self._settings_root = None
         self._fluent_version = None
-        self._lck = threading.Lock()
+        self._bg_session_threads = []
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
@@ -177,6 +174,10 @@ class Solver(BaseSession):
         )
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
+
+        # Background sessions should be finalized before finalizing the
+        # gRPC services of the main session.
+        fluent_connection.register_finalizer_cb(self._stop_bg_sessions, at_start=True)
 
     def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
@@ -293,29 +294,30 @@ class Solver(BaseSession):
             self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
 
-    def _sync_from_future(self, fut: Future):
-        with self._lck:
-            try:
-                fut_session = fut.result()
-            except Exception as ex:
-                raise RuntimeError("Unable to read mesh") from ex
-            try:
-                state = self.settings.get_state()
-                super(Solver, self)._build_from_fluent_connection(
-                    fut_session._fluent_connection,
-                    fut_session._fluent_connection._connection_interface.scheme_eval,
-                    event_type=SolverEvent,
-                )
-                self._build_from_fluent_connection(
-                    fut_session._fluent_connection,
-                    fut_session._fluent_connection._connection_interface.scheme_eval,
-                )
-                # TODO temporary fix till set_state at settings root is fixed
-                _set_state_safe(self.settings, state)
-            except RuntimeError:
-                # If the foreground session is exited while the background session
-                # is being launched, we need to exit the background session.
-                fut_session.exit()
+    def _start_bg_session_and_sync(self, launcher_args):
+        """Start a background session and sync it with the current session."""
+        try:
+            bg_session = pyfluent.launch_fluent(**launcher_args)
+        except Exception as ex:
+            raise RuntimeError("Unable to read mesh") from ex
+        state = self.settings.get_state()
+        super(Solver, self)._build_from_fluent_connection(
+            bg_session._fluent_connection,
+            bg_session._fluent_connection._connection_interface.scheme_eval,
+            event_type=SolverEvent,
+        )
+        self._build_from_fluent_connection(
+            bg_session._fluent_connection,
+            bg_session._fluent_connection._connection_interface.scheme_eval,
+        )
+        # TODO temporary fix till set_state at settings root is fixed
+        _set_state_safe(self.settings, state)
+
+    def _stop_bg_sessions(self):
+        """Stop all background sessions."""
+        for thread in self._bg_session_threads:
+            if thread.is_alive():
+                thread.join()
 
     def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
@@ -325,14 +327,16 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        import ansys.fluent.core as pyfluent
 
         self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
         launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
-        fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
-        fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
+        self._bg_session_threads.append(
+            threading.Thread(
+                target=self._start_bg_session_and_sync, args=(launcher_args,)
+            )
+        )
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
