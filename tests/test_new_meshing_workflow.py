@@ -75,7 +75,7 @@ def test_new_watertight_workflow(new_meshing_session):
 
     # Add boundary layers
     watertight.add_boundary_layer.add_child_to_task()
-    watertight.bl_control_name.bl_control_name.set_state("smooth-transition_1")
+    watertight.add_boundary_layer.bl_control_name.set_state("smooth-transition_1")
     watertight.add_boundary_layer.insert_compound_child_task()
     watertight.add_boundary_layer_child_1()
 
@@ -91,9 +91,9 @@ def test_new_watertight_workflow(new_meshing_session):
     assert solver
 
 
-@pytest.mark.nightly
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=24.1")
+# @pytest.mark.nightly
+# @pytest.mark.codegen_required
+# @pytest.mark.fluent_version(">=24.1")
 def test_new_fault_tolerant_workflow(new_meshing_session):
     meshing = new_meshing_session
 
@@ -195,9 +195,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
 
     # Identify regions
     fault_tolerant.identify_regions.show_coordinates = True
-    fault_tolerant.identify_regions_child_1.material_points_name.set_state(
-        "fluid-region-1"
-    )
+    fault_tolerant.identify_regions.material_points_name.set_state("fluid-region-1")
     fault_tolerant.identify_regions.selection_type.set_state("zone")
     fault_tolerant.identify_regions.x.set_state(377.322045740589)
     fault_tolerant.identify_regions.y.set_state(-176.800676988458)
