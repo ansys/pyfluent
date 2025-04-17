@@ -172,9 +172,9 @@ class Solver(BaseSession):
         )
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
         self.events.register_callback(
-            SolverEvent.SOLUTION_INITIALIZED, self.monitors.refresh
+            (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
+            self.monitors.refresh,
         )
-        self.events.register_callback(SolverEvent.DATA_LOADED, self.monitors.refresh)
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
 
