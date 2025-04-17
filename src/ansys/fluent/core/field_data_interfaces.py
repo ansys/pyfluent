@@ -409,26 +409,14 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
 
 class SurfaceData:
     """
-    A wrapper class for surface data that enables object-style access
-    to nested dictionary structures.
+    Class that enables object-style access to surface data structures.
 
-    This class is used to convert nested dictionary-based surface data
-    into objects for easier attribute-based access.
-
-    Examples
-    --------
-    >>> surface_data = {
-    ...     "surface1": {SurfaceDataType.Vertices: np.array(), FacesConnectivity: np.array()},
-    ...     "surface2": {SurfaceDataType.Vertices: np.array()}
-    ... }
-    >>> surface_obj_1 = SurfaceData(surface_data["surface1"])
-    >>> surface_obj_1.vertices
-    np.array()
-    >>> surface_obj_1.lines
-    np.array()
-    >>> surface_obj_2 = SurfaceData(surface_data["surface2"])
-    >>> surface_obj_2.vertices
-    np.array()
+    Attributes
+    ----------
+    vertices: npt.NDArray[np.float64] | None
+    connectivity: list[npt.NDArray[np.float64]] | None
+    face_centroids: npt.NDArray[np.float64] | None
+    face_normals: npt.NDArray[np.float64] | None
     """
 
     def __init__(self, surf_data):
@@ -450,30 +438,16 @@ class SurfaceData:
 
 class PathlinesData:
     """
-    A wrapper class for pathline data that enables object-style access
-    to nested dictionary structures.
+    Class that enables object-style access to pathlines data structure.
 
-    This class is used to convert nested dictionary-based pathline data
-    into objects for easier attribute-based access.
-
-    Examples
-    --------
-    >>> pathlines_data = {
-    ...     "surface1": {"vertices": np.array(), "pathlines-count": np.array()},
-    ...     "surface2": {"vertices": np.array(), "lines": np.array()}
-    ... }
-    >>> pathline_obj_1 = PathlinesData(pathlines_data["surface1"])
-    >>> pathline_obj_1.vertices
-    np.array()
-    >>> pathline_obj_1.lines
-
-    >>> pathline_obj_1.pathlines_count
-    np.array()
-    >>> pathline_obj_2 = PathlinesData(pathlines_data["surface2"])
-    >>> pathline_obj_2.vertices
-    np.array()
-    >>> pathline_obj_2.lines
-    np.array()
+    Attributes
+    ----------
+    scalar_field_name: str
+    vertices: npt.NDArray[np.float64] | None
+    lines: list[npt.NDArray[np.float64]] | None
+    scalar_field: npt.NDArray[np.float64] | None
+    pathlines_count: npt.NDArray[np.float64] | None
+    particle_time: npt.NDArray[np.float64] | None
     """
 
     def __init__(self, pathlines_data_for_surface):
