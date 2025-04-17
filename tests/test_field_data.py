@@ -475,7 +475,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert vertices_data["cold-inlet"].vertices.shape == (241, 3)
     assert round(float(vertices_data["cold-inlet"].vertices[5][0]), 2) == -0.2
 
-    assert vertices_data.face_centroids is None
+    assert vertices_data["cold-inlet"].face_centroids is None
 
     su2 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
