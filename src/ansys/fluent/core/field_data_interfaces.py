@@ -434,13 +434,13 @@ class SurfaceData:
         """__init__ method of SurfaceData class."""
         self._surf_data = surf_data
         self.vertices: np.ndarray | None = self._surf_data.get(SurfaceDataType.Vertices)
-        self.lines: list(np.ndarray) | None = self._surf_data.get(
+        self.connectivity: list(np.ndarray) | None = self._surf_data.get(
             SurfaceDataType.FacesConnectivity
         )
-        self.faces_centroid: np.ndarray | None = self._surf_data.get(
+        self.face_centroids: np.ndarray | None = self._surf_data.get(
             SurfaceDataType.FacesCentroid
         )
-        self.faces_normal: np.ndarray | None = self._surf_data.get(
+        self.face_normals: np.ndarray | None = self._surf_data.get(
             SurfaceDataType.FacesNormal
         )
 

@@ -475,7 +475,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert vertices_data["cold-inlet"].vertices.shape == (241, 3)
     assert round(float(vertices_data["cold-inlet"].vertices[5][0]), 2) == -0.2
 
-    assert vertices_data.faces_centroid is None
+    assert vertices_data.face_centroids is None
 
     su2 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
@@ -494,14 +494,14 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     ]
     assert (
         round(
-            float(vertices_and_faces_centroid_data["cold-inlet"].faces_centroid[5][1]),
+            float(vertices_and_faces_centroid_data["cold-inlet"].face_centroids[5][1]),
             2,
         )
         == -0.18
     )
     assert (
         round(
-            float(vertices_and_faces_centroid_data["hot-inlet"].faces_centroid[5][1]),
+            float(vertices_and_faces_centroid_data["hot-inlet"].face_centroids[5][1]),
             2,
         )
         == -0.23
@@ -511,14 +511,16 @@ def test_field_data_objects_3d(new_solver_session) -> None:
         data_types=[SurfaceDataType.FacesNormal], surfaces=[3, 5]
     )
     faces_normal_data = field_data.get_field_data(su3)
-    assert faces_normal_data[3].faces_normal.shape == (152, 3)
-    assert faces_normal_data[5].faces_normal.shape == (2001, 3)
+    assert faces_normal_data[3].face_normals.shape == (152, 3)
+    assert faces_normal_data[5].face_normals.shape == (2001, 3)
 
     su4 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
     faces_connectivity_data = field_data.get_field_data(su4)
-    assert (faces_connectivity_data["cold-inlet"].lines[5] == [12, 13, 17, 16]).all()
+    assert (
+        faces_connectivity_data["cold-inlet"].connectivity[5] == [12, 13, 17, 16]
+    ).all()
 
     velocity_vector_data = field_data.get_field_data(
         VectorFieldDataRequest(field_name="velocity", surfaces=["cold-inlet"])
