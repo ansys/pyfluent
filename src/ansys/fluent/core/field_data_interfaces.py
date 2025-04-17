@@ -495,7 +495,7 @@ class ReturnPathlinesData(_ReturnInternalDictData):
             "lines": "lines",
             self.scalar_field_name: "scalar_field",
             "pathlines-count": "pathlines_count",
-            "particle_time": "particle_time",
+            "particle-time": "particle_time",
         }
         for key, val in self._pathlines_map.items():
             if key in self._pathlines_data_for_surface:
