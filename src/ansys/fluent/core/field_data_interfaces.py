@@ -406,7 +406,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         return name in self(respect_data_valid)
 
 
-class ReturnSurfaceData:
+class SurfaceData:
     """
     A wrapper class for surface data that enables object-style access
     to nested dictionary structures.
@@ -420,31 +420,30 @@ class ReturnSurfaceData:
     ...     "surface1": {SurfaceDataType.Vertices: np.array(), FacesConnectivity: np.array()},
     ...     "surface2": {SurfaceDataType.Vertices: np.array()}
     ... }
-    >>> surface_obj_1 = ReturnSurfaceData(surface_data["surface1"])
+    >>> surface_obj_1 = SurfaceData(surface_data["surface1"])
     >>> surface_obj_1.vertices
     np.array()
     >>> surface_obj_1.lines
     np.array()
-    >>> surface_obj_2 = ReturnSurfaceData(surface_data["surface2"])
+    >>> surface_obj_2 = SurfaceData(surface_data["surface2"])
     >>> surface_obj_2.vertices
     np.array()
     """
 
     def __init__(self, surf_data):
-        """__init__ method of ReturnSurfaceData class."""
+        """__init__ method of SurfaceData class."""
         self._surf_data = surf_data
-        self._surface_map = {
-            SurfaceDataType.Vertices: "vertices",
-            SurfaceDataType.FacesConnectivity: "lines",
-            SurfaceDataType.FacesCentroid: "faces_centroid",
-            SurfaceDataType.FacesNormal: "faces_normal",
-        }
-        for key, val in self._surface_map.items():
-            if key in self._surf_data:
-                setattr(self, val, self._surf_data[key])
+        self.vertices: np.ndarray = self._surf_data.get(SurfaceDataType.Vertices)
+        self.lines: list(np.ndarray) = self._surf_data.get(
+            SurfaceDataType.FacesConnectivity
+        )
+        self.faces_centroid: np.ndarray = self._surf_data.get(
+            SurfaceDataType.FacesCentroid
+        )
+        self.faces_normal: np.ndarray = self._surf_data.get(SurfaceDataType.FacesNormal)
 
 
-class ReturnPathlinesData:
+class PathlinesData:
     """
     A wrapper class for pathline data that enables object-style access
     to nested dictionary structures.
@@ -458,12 +457,14 @@ class ReturnPathlinesData:
     ...     "surface1": {"vertices": np.array(), "pathlines-count": np.array()},
     ...     "surface2": {"vertices": np.array(), "lines": np.array()}
     ... }
-    >>> pathline_obj_1 = ReturnPathlinesData(pathlines_data["surface1"])
+    >>> pathline_obj_1 = PathlinesData(pathlines_data["surface1"])
     >>> pathline_obj_1.vertices
     np.array()
+    >>> pathline_obj_1.lines
+
     >>> pathline_obj_1.pathlines_count
     np.array()
-    >>> pathline_obj_2 = ReturnPathlinesData(pathlines_data["surface2"])
+    >>> pathline_obj_2 = PathlinesData(pathlines_data["surface2"])
     >>> pathline_obj_2.vertices
     np.array()
     >>> pathline_obj_2.lines
@@ -471,22 +472,23 @@ class ReturnPathlinesData:
     """
 
     def __init__(self, pathlines_data_for_surface):
-        """__init__ method of ReturnPathlinesData class."""
+        """__init__ method of PathlinesData class."""
         self._pathlines_data_for_surface = pathlines_data_for_surface
         self.scalar_field_name = list(
             set(self._pathlines_data_for_surface.keys())
             - {"lines", "vertices", "pathlines-count", "particle-time"}
         )[0]
-        self._pathlines_map = {
-            "vertices": "vertices",
-            "lines": "lines",
-            self.scalar_field_name: "scalar_field",
-            "pathlines-count": "pathlines_count",
-            "particle-time": "particle_time",
-        }
-        for key, val in self._pathlines_map.items():
-            if key in self._pathlines_data_for_surface:
-                setattr(self, val, self._pathlines_data_for_surface[key])
+        self.vertices: np.ndarray = self._pathlines_data_for_surface.get("vertices")
+        self.lines: list(np.ndarray) = self._pathlines_data_for_surface.get("lines")
+        self.scalar_field: np.ndarray = self._pathlines_data_for_surface.get(
+            self.scalar_field_name
+        )
+        self.pathlines_count: np.ndarray = self._pathlines_data_for_surface.get(
+            "pathlines-count"
+        )
+        self.particle_time: np.ndarray = self._pathlines_data_for_surface.get(
+            "particle-time"
+        )
 
 
 class _ReturnFieldData:
@@ -538,7 +540,7 @@ class _ReturnFieldData:
                         surface_ids[count]
                     ][data_type.value].reshape(-1, 3)
             if deprecated_flag is False:
-                ret_surf_data[surface] = ReturnSurfaceData(ret_surf_data[surface])
+                ret_surf_data[surface] = SurfaceData(ret_surf_data[surface])
         return ret_surf_data
 
     @staticmethod
@@ -580,7 +582,7 @@ class _ReturnFieldData:
                     "particle-time"
                 ]
             if deprecated_flag is False:
-                path_lines_dict[surface] = ReturnPathlinesData(temp_dict)
+                path_lines_dict[surface] = PathlinesData(temp_dict)
             else:
                 path_lines_dict[surface] = temp_dict
         return path_lines_dict
