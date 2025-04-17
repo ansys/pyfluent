@@ -589,9 +589,12 @@ class FluentConnection:
         else:
             logger.debug("Container not found, cancelling cleanup script execution.")
 
-    def register_finalizer_cb(self, cb):
+    def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
-        self.finalizer_cbs.append(cb)
+        if at_start:
+            self.finalizer_cbs.insert(0, cb)
+        else:
+            self.finalizer_cbs.append(cb)
 
     def create_grpc_service(self, service, *args):
         """Create a gRPC service.

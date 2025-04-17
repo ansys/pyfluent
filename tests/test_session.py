@@ -409,6 +409,29 @@ def test_read_case_using_lightweight_mode():
     solver.exit()
 
 
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=23.2")
+def test_read_case_using_lightweight_mode_exiting():
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        file_transfer_service = RemoteFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name,
+            lightweight_mode=True,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name, lightweight_mode=True
+        )
+    solver.exit()
+    assert True
+
+
 def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
 
