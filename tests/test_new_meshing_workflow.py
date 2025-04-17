@@ -91,9 +91,9 @@ def test_new_watertight_workflow(new_meshing_session):
     assert solver
 
 
-# @pytest.mark.nightly
-# @pytest.mark.codegen_required
-# @pytest.mark.fluent_version(">=24.1")
+@pytest.mark.nightly
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=24.1")
 def test_new_fault_tolerant_workflow(new_meshing_session):
     meshing = new_meshing_session
 
