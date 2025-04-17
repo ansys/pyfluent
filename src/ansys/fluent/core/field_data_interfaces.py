@@ -27,6 +27,7 @@ from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
 
 import numpy as np
+import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 
@@ -433,14 +434,16 @@ class SurfaceData:
     def __init__(self, surf_data):
         """__init__ method of SurfaceData class."""
         self._surf_data = surf_data
-        self.vertices: np.ndarray | None = self._surf_data.get(SurfaceDataType.Vertices)
-        self.connectivity: list(np.ndarray) | None = self._surf_data.get(
+        self.vertices: npt.NDArray[np.float64] | None = self._surf_data.get(
+            SurfaceDataType.Vertices
+        )
+        self.connectivity: list[npt.NDArray[np.float64]] | None = self._surf_data.get(
             SurfaceDataType.FacesConnectivity
         )
-        self.face_centroids: np.ndarray | None = self._surf_data.get(
+        self.face_centroids: npt.NDArray[np.float64] | None = self._surf_data.get(
             SurfaceDataType.FacesCentroid
         )
-        self.face_normals: np.ndarray | None = self._surf_data.get(
+        self.face_normals: npt.NDArray[np.float64] | None = self._surf_data.get(
             SurfaceDataType.FacesNormal
         )
 
@@ -480,20 +483,20 @@ class PathlinesData:
             set(self._pathlines_data_for_surface.keys())
             - {"lines", "vertices", "pathlines-count", "particle-time"}
         )[0]
-        self.vertices: np.ndarray | None = self._pathlines_data_for_surface.get(
-            "vertices"
+        self.vertices: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get("vertices")
         )
-        self.lines: list(np.ndarray) | None = self._pathlines_data_for_surface.get(
-            "lines"
+        self.lines: list[npt.NDArray[np.float64]] | None = (
+            self._pathlines_data_for_surface.get("lines")
         )
-        self.scalar_field: np.ndarray | None = self._pathlines_data_for_surface.get(
-            self.scalar_field_name
+        self.scalar_field: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get(self.scalar_field_name)
         )
-        self.pathlines_count: np.ndarray | None = self._pathlines_data_for_surface.get(
-            "pathlines-count"
+        self.pathlines_count: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get("pathlines-count")
         )
-        self.particle_time: np.ndarray | None = self._pathlines_data_for_surface.get(
-            "particle-time"
+        self.particle_time: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get("particle-time")
         )
 
 
