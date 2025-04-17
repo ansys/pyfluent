@@ -133,13 +133,12 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
     ) -> Any:
         response = continuation(client_call_details, request)
         if response.exception() is not None and response.code() != grpc.StatusCode.OK:
-            ex = response.exception()
             new_ex_cls = RuntimeError
             try:
                 from google.rpc import error_details_pb2
                 from grpc_status import rpc_status
 
-                status = rpc_status.from_call(ex)
+                status = rpc_status.from_call(response)
                 if status:
                     for detail in status.details:
                         if detail.Is(error_details_pb2.ErrorInfo.DESCRIPTOR):
@@ -155,6 +154,7 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
                                         break
             except DecodeError:
                 pass
+            ex = response.exception()
             new_ex = new_ex_cls(
                 ex.details() if isinstance(ex, grpc.RpcError) else str(ex)
             )

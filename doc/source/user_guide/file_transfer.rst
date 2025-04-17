@@ -3,58 +3,88 @@
 File transfer
 =============
 
-The file transfer service enables you to upload files to the server and download files from it. You have the option to specify 
-a different name for the file being uploaded; if you do not, the default name is that of the file being uploaded. 
-Similarly, when downloading a file from the server, you can indicate a specific download directory; if not specified, 
-the file is saved in the current working directory. You can define your own file transfer service and utilize it with 
-launch_fluent(file_transfer_service=<name_of_the_file_transfer_service>).
+PyFluent provides a file transfer service that manages how files are uploaded to and downloaded from the Fluent server.  
+This service allows file-based API methods like `read_case()` and `write_mesh()` to work seamlessly—even when Fluent is running remotely, 
+in a container, or in a PIM-managed environment.
 
-The following file transfer services are available:
+Depending on how Fluent is launched, different file transfer strategies are available:
 
-#. **Local file transfer service**:
+1. **PIM file transfer service**
 
-   * The :ref:`Local file transfer service <ref_file_transfer_service>` is suitable for Fluent when launched in standalone mode.
+   When launching Fluent through the `Product Instance Management (PIM) <https://pypim.docs.pyansys.com/version/stable/>`_ file transfer is fully automated.  
+   You don’t need to call `upload()` or `download()`—files are transferred transparently when you use file-based API methods.
 
-#. **Remote file transfer service**:
+   Use this service when:
 
-   * The :ref:`Remote file transfer service <ref_file_transfer_service>` utilizes the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_ and `gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
-   * This service can be employed for Fluent when launched in container mode.
+   - You launch Fluent using PIM.
+   - You want seamless file transfers without needing to manage them directly.
 
-#. **PIM file transfer service**:
+   Example:
 
-   * The :ref:`PIM file transfer service <ref_file_transfer_service>` utilizes the `PIM <https://pypim.docs.pyansys.com/version/stable/>`_.
-   * This service is the default for Fluent when launched in a PIM-configured environment.
+   .. code-block:: python
 
-Examples
---------
+      >>> import ansys.fluent.core as pyfluent
+      >>> from ansys.fluent.core import examples
 
-.. code-block:: python
+      >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 
-   >>> import ansys.fluent.core as pyfluent
-   >>> from ansys.fluent.core import examples
-   >>> from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy, RemoteFileTransferStrategy
+      >>> session = pyfluent.launch_fluent()
+      >>> session.file.read_case(file_name=case_file)
+      >>> session.file.write_case(file_name="write_mixing_elbow.cas.h5")
 
-   >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-   >>> mesh_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
 
-   >>> # Local file transfer service
-   >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=LocalFileTransferStrategy())
-   >>> meshing_session.upload(file_name=mesh_file_name, remote_file_name="elbow.msh.h5")
-   >>> meshing_session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
-   >>> meshing_session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
-   >>> meshing_session.download(file_name="write_elbow.msh.h5", local_directory="<local_directory_path>")
+2. **Container file transfer service**
 
-   >>> # Remote file transfer service
-   >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
-   >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
-   >>> solver_session.file.read_case(file_name="elbow.cas.h5")
-   >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
-   >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
+   When Fluent runs in a Docker container, files cannot be shared directly between client and server.  
+   The remote file transfer service uses a gRPC-based mechanism to manage transfers.
 
-   >>> # PIM file transfer service
-   >>> solver_session = pyfluent.launch_fluent()
-   >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
-   >>> solver_session.file.read_case(file_name="elbow.cas.h5")
-   >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
-   >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
+   Use this service when:
+
+   - Fluent is running in container mode.
+   - You need to transfer files explicitly between environments.
+
+   Example:
+
+   .. code-block:: python
+
+      >>> import os
+      >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
+      >>> import ansys.fluent.core as pyfluent
+      >>> from ansys.fluent.core import examples
+      >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+
+      >>> case_file = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False)
+
+      >>> file_transfer_service = ContainerFileTransferStrategy()
+      >>> container_dict = {"mount_source": file_transfer_service.mount_source}
+      >>> session = pyfluent.launch_fluent(file_transfer_service=file_transfer_service, container_dict=container_dict)
+      >>> session.file.read_case(file_name=case_file)
+      >>> session.file.write_case(file_name="write_mixing_elbow.cas.h5")
+
+
+3. **Standalone file transfer service**
+
+   When Fluent is launched in standalone mode on the same machine as the Python client, files can be accessed directly from the local file system. 
+   In this case, the local file transfer service is used.
+
+   Use this service when:
+
+   - Fluent is running locally.
+   - You want to ensure explicit control over file movement using `upload()` and `download()`.
+
+   Example:
+
+   .. code-block:: python
+
+      >>> import ansys.fluent.core as pyfluent
+      >>> from ansys.fluent.core import examples
+      >>> from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
+
+      >>> mesh_file = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
+
+      >>> session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, file_transfer_service=StandaloneFileTransferStrategy())
+      >>> session.upload(file_name=mesh_file, remote_file_name="elbow.msh.h5")
+      >>> session.meshing.File.ReadMesh(FileName="elbow.msh.h5")
+      >>> session.meshing.File.WriteMesh(FileName="write_elbow.msh.h5")
+      >>> session.download(file_name="write_elbow.msh.h5", local_directory="<local_path>")
 

@@ -29,8 +29,8 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import (
-    LocalFileTransferStrategy,
-    RemoteFileTransferStrategy,
+    ContainerFileTransferStrategy,
+    StandaloneFileTransferStrategy,
 )
 
 
@@ -39,7 +39,9 @@ from ansys.fluent.core.utils.file_transfer_service import (
 def test_remote_grpc_fts_container():
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
-    from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+    from ansys.fluent.core.utils.file_transfer_service import (
+        ContainerFileTransferStrategy,
+    )
 
     case_file = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow", return_without_path=False
@@ -49,7 +51,7 @@ def test_remote_grpc_fts_container():
     if not source_path.exists():
         source_path.mkdir(parents=True, exist_ok=True)
 
-    file_transfer_service = RemoteFileTransferStrategy(mount_source=str(source_path))
+    file_transfer_service = ContainerFileTransferStrategy(mount_source=str(source_path))
 
     container_dict = {"mount_source": file_transfer_service.mount_source}
     session = pyfluent.launch_fluent(
@@ -79,7 +81,9 @@ def test_read_case_and_data(monkeypatch):
     )
     assert case_file_name
     assert data_file_name
-    solver = pyfluent.launch_fluent(file_transfer_service=LocalFileTransferStrategy())
+    solver = pyfluent.launch_fluent(
+        file_transfer_service=StandaloneFileTransferStrategy()
+    )
 
     solver.file.read(file_type="case-data", file_name=case_file_name)
     solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
@@ -89,7 +93,7 @@ def test_read_case_and_data(monkeypatch):
     solver.exit()
 
     solver = pyfluent.launch_fluent(
-        file_transfer_service=LocalFileTransferStrategy(server_cwd=os.getcwd())
+        file_transfer_service=StandaloneFileTransferStrategy(server_cwd=os.getcwd())
     )
 
     solver.file.read(file_type="case-data", file_name=case_file_name)
@@ -105,7 +109,7 @@ def test_datamodel_execute():
     import ansys.fluent.core as pyfluent
 
     meshing = pyfluent.launch_fluent(
-        mode="meshing", file_transfer_service=RemoteFileTransferStrategy()
+        mode="meshing", file_transfer_service=ContainerFileTransferStrategy()
     )
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     import_geom = meshing.workflow.TaskObject["Import Geometry"]
@@ -148,7 +152,7 @@ def test_local_file_transfer_in_datamodel(monkeypatch):
 
     meshing = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING,
-        file_transfer_service=LocalFileTransferStrategy(),
+        file_transfer_service=StandaloneFileTransferStrategy(),
     )
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
