@@ -22,180 +22,120 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from collections.abc import Iterator
-import contextlib
-import dataclasses
-import enum
-import importlib.resources
-import math
 import os
-import pathlib
 import subprocess
 import uuid
 
-from ansys.tools.local_product_launcher.interface import (
-    METADATA_KEY_DOC,
-    METADATA_KEY_NOPROMPT,
-    LauncherProtocol,
-    ServerType,
-)
 
-__all__ = ["DockerComposeLaunchConfig"]
+class ComposeLauncher:
+    """Launch Fluent through docker or Podman compose."""
 
-
-def _check_docker_installed():
-    """Check if Docker is installed."""
-    try:
-        result = subprocess.run(  # noqa: F841
-            ["docker", "--version"], capture_output=True, text=True, check=True
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
-    except FileNotFoundError:
-        return False
-
-
-def _check_podman_installed():
-    """Check if Podman is installed."""
-    try:
-        result = subprocess.run(  # noqa: F841
-            ["podman", "--version"], capture_output=True, text=True, check=True
-        )
-        return True
-    except subprocess.CalledProcessError:
-        return False
-    except FileNotFoundError:
-        return False
-
-
-class ServerKey(str, enum.Enum):
-    """Keys for the servers launched through docker compose."""
-
-    MAIN = "main"
-
-
-@dataclasses.dataclass
-class DockerComposeLaunchConfig:
-    """Configuration options for launching Fluent through docker compose."""
-
-    image_name_fluent: str = dataclasses.field(
-        default="ghcr.io/ansys/pyfluent:latest",
-        metadata={METADATA_KEY_DOC: "Docker image running the Fluent gRPC server."},
-    )
-    keep_volume: bool = dataclasses.field(
-        default=False,
-        metadata={
-            METADATA_KEY_DOC: "If true, keep the volume after docker compose is stopped."
-        },
-    )
-    compose_file: str | None = dataclasses.field(
-        default=None,
-        metadata={
-            METADATA_KEY_DOC: (
-                "Docker compose file used to start the services. Uses the "
-                "'docker-compose.yaml' shipped with PyFluent by default."
-            ),
-            METADATA_KEY_NOPROMPT: True,
-        },
-    )
-
-
-def _set_env_vars(container_dict):
-    """Generates environment variables for the Docker Compose setup.
-
-    Parameters
-    ----------
-    container_dict: dict
-        A dictionary containing container configuration.
-    """
-
-    if container_dict.get("ports"):
-        ports = list(container_dict.get("ports").values())
-    else:
-        ports = [container_dict.get("fluent_port", "")]
-
-    second_compose_file_content = f"""
-    services:
-      fluent:
-        image: {container_dict.get("fluent_image")}
-        ports:
-    """
-
-    indent = " "
-    for port in ports:
-        if port == ports[0]:
-            second_compose_file_content += f"{indent * 6}- {port}:{port}\n"
-        else:
-            second_compose_file_content += f"{indent * 10}- {port}:{port}\n"
-
-    env_vars = {
-        "IMAGE_NAME": container_dict.get("fluent_image"),
-        "LICENSE_FILE": container_dict["environment"].get("ANSYSLMD_LICENSE_FILE"),
-        "REMOTE_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
-        "NO_TRANSCRIPT": container_dict["environment"].get(
-            "FLUENT_NO_AUTOMATIC_TRANSCRIPT", "0"
-        ),
-        "REMOTE_NEW_DM_API": container_dict["environment"].get(
-            "REMOTING_NEW_DM_API", ""
-        ),
-        "COMMAND": " ".join(container_dict["command"]),
-        "MOUNT_TARGET": container_dict.get("mount_target"),
-        "MOUNT_SOURCE": container_dict.get("mount_source"),
-    }
-
-    fluent_env = os.environ.copy()
-    fluent_env.update(env_vars)
-
-    return second_compose_file_content, fluent_env
-
-
-def _extract_ports(port_string):
-    """
-    Extracts ports from a string containing port mappings.
-
-    Parameters
-    ----------
-    port_string: str
-        A string containing port mappings.
-
-    Returns
-    -------
-    ports: list
-        A list of extracted ports.
-    """
-    ports = []
-    for line in port_string.split("\n"):
-        if line:
-            _, target = line.split("->")
-            port = target.split(":")[1]
-            ports.append(port)
-    return [port for port in ports if port.isdigit()]
-
-
-class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
-    """Launch Fluent through docker compose."""
-
-    CONFIG_MODEL = DockerComposeLaunchConfig
-    SERVER_SPEC = {ServerKey.MAIN: ServerType.GRPC}
-
-    def __init__(self, *, container_dict, config: DockerComposeLaunchConfig):
+    def __init__(self, *, container_dict):
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
-        self._docker_available = _check_docker_installed()
-        self._podman_available = _check_podman_installed()
+        self._docker_available = self._check_docker_installed()
+        self._podman_available = self._check_podman_installed()
         self._container_dict = container_dict
-        self._keep_volume = config.keep_volume
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
+        self._compose_file = self._get_compose_file(container_dict)
 
-        if config.compose_file is not None:
-            self._compose_file: pathlib.Path | None = pathlib.Path(config.compose_file)
+    def _get_compose_file(self, container_dict):
+        """Generates compose file for the Docker Compose setup.
+
+        Parameters
+        ----------
+        container_dict: dict
+            A dictionary containing container configuration.
+        """
+
+        indent = "  "
+
+        if container_dict.get("ports"):
+            ports = list(container_dict.get("ports").values())
         else:
-            self._compose_file = None
+            ports = [container_dict.get("fluent_port", "")]
 
-        self._second_compose_file_content, self._env = _set_env_vars(
-            self._container_dict
-        )
+        compose_file = f"""
+        services:
+          fluent:
+            image: {container_dict.get("fluent_image")}
+            command: {" ".join(container_dict["command"])}
+            working_dir: {container_dict.get("mount_target")}
+            volumes:
+            {indent}- {container_dict.get("mount_source")}:{container_dict.get("mount_target")}
+            ports:
+        """
+
+        for port in ports:
+            if len(ports) == 1:
+                compose_file += f"{indent * 3}- {port}:{port}"
+            else:
+                if port == ports[0]:
+                    compose_file += f"{indent * 3}- {port}:{port}\n"
+                elif port == ports[-1]:
+                    compose_file += f"{indent * 7}- {port}:{port}"
+                else:
+                    compose_file += f"{indent * 7}- {port}:{port}\n"
+
+        compose_file_env = f"""
+        {indent * 2}environment:
+        """
+
+        for key, value in container_dict["environment"].items():
+            if key == "ANSYSLMD_LICENSE_FILE":
+                compose_file_env += f"""{indent * 3}- {key}={value}\n"""
+            else:
+                compose_file_env += f"""{indent * 7}- {key}={value}\n"""
+
+        compose_file += compose_file_env
+
+        return compose_file
+
+    def _check_docker_installed(self):
+        """Check if Docker is installed."""
+        try:
+            result = subprocess.run(  # noqa: F841
+                ["docker", "--version"], capture_output=True, text=True, check=True
+            )
+            return True
+        except subprocess.CalledProcessError:
+            return False
+        except FileNotFoundError:
+            return False
+
+    def _check_podman_installed(self):
+        """Check if Podman is installed."""
+        try:
+            result = subprocess.run(  # noqa: F841
+                ["podman", "--version"], capture_output=True, text=True, check=True
+            )
+            return True
+        except subprocess.CalledProcessError:
+            return False
+        except FileNotFoundError:
+            return False
+
+    def _extract_ports(self, port_string):
+        """
+        Extracts ports from a string containing port mappings.
+
+        Parameters
+        ----------
+        port_string: str
+            A string containing port mappings.
+
+        Returns
+        -------
+        ports: list
+            A list of extracted ports.
+        """
+        ports = []
+        for line in port_string.split("\n"):
+            if line:
+                _, target = line.split("->")
+                port = target.split(":")[1]
+                ports.append(port)
+        return [port for port in ports if port.isdigit()]
 
     def _set_compose_cmds(self):
         """Sets the compose commands based on available tools and permissions."""
@@ -211,16 +151,6 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             self._compose_cmds = []
 
         return self._compose_cmds
-
-    @contextlib.contextmanager
-    def _get_compose_file(self) -> Iterator[pathlib.Path]:
-        if self._compose_file is not None:
-            yield self._compose_file
-        else:
-            with importlib.resources.path(
-                "ansys.fluent.core.docker", "docker-compose.yaml"
-            ) as compose_file:
-                yield compose_file
 
     def check_image_exists(self, image_name: str | None = None) -> bool:
         """Check if a Docker image exists locally."""
@@ -256,60 +186,53 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
             If the command fails.
         """
 
-        with self._get_compose_file() as compose_file:
-            cmd = [
-                "-f",
-                str(compose_file.resolve()),
-                "-f",
-                "-",
-                "--project-name",
-                self._compose_name,
-                "up",
-                "--detach",
-            ]
+        cmd = [
+            "-f",
+            "-",
+            "--project-name",
+            self._compose_name,
+            "up",
+            "--detach",
+        ]
 
-            process = subprocess.Popen(
-                self._set_compose_cmds() + cmd,
-                stdin=subprocess.PIPE,
-                text=True,
-                env=self._env,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
+        process = subprocess.Popen(
+            self._set_compose_cmds() + cmd,
+            stdin=subprocess.PIPE,
+            text=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+        process.communicate(input=self._compose_file)
+
+        return_code = process.wait()
+
+        if return_code != 0:
+            raise subprocess.CalledProcessError(
+                return_code, self._set_compose_cmds() + cmd
             )
-
-            process.communicate(input=self._second_compose_file_content)
-
-            return_code = process.wait()
-
-            if return_code != 0:
-                raise subprocess.CalledProcessError(
-                    return_code, self._set_compose_cmds() + cmd
-                )
 
     def stop(self, *, timeout: float | None = None) -> None:
         """Stop the services."""
-        # The compose file needs to be passed for all commands with docker-compose 1.X.
-        # With docker-compose 2.X, this no longer seems to be necessary.
-        with self._get_compose_file() as compose_file:
-            cmd = [
-                "-f",
-                str(compose_file),
-                "--project-name",
-                self._compose_name,
-                "down",
-            ]
-            if timeout is not None:
-                # --timeout must be an integer, so we round up.
-                cmd.extend(["--timeout", str(math.ceil(timeout))])
-            if not self._keep_volume:
-                cmd.append("--volumes")
+        cmd = [
+            "-f",
+            "-",
+            "--project-name",
+            self._compose_name,
+            "down",
+        ]
 
-            output = subprocess.check_call(  # noqa: F841
-                self._set_compose_cmds() + cmd,
-                env=self._env,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
+        process = subprocess.Popen(
+            self._set_compose_cmds() + cmd,
+            stdin=subprocess.PIPE,
+            text=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+        process.communicate(input=self._compose_file)
+
+        return_code = process.wait()  # noqa: F841
 
     def remove_unused_networks(self) -> None:
         """Remove the services."""
@@ -334,4 +257,4 @@ class DockerComposeLauncher(LauncherProtocol[DockerComposeLaunchConfig]):
         output = subprocess.check_output(
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )
-        return _extract_ports(output.decode("utf-8").strip())
+        return self._extract_ports(output.decode("utf-8").strip())

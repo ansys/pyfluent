@@ -78,10 +78,7 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.docker_compose import (
-    DockerComposeLaunchConfig,
-    DockerComposeLauncher,
-)
+from ansys.fluent.core.docker.docker_compose import ComposeLauncher
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -459,21 +456,19 @@ def start_fluent_container(
     try:
         config_dict["fluent_port"] = port
 
-        docker_compose_container = DockerComposeLauncher(
-            container_dict=config_dict, config=DockerComposeLaunchConfig()
-        )
+        compose_container = ComposeLauncher(container_dict=config_dict)
 
-        if not docker_compose_container.check_image_exists(config_dict["fluent_image"]):
+        if not compose_container.check_image_exists(config_dict["fluent_image"]):
             logger.debug(
                 f"Fluent image {config_dict['fluent_image']} not found. Pulling image..."
             )
-            docker_compose_container.pull_image(config_dict["fluent_image"])
+            compose_container.pull_image(config_dict["fluent_image"])
 
         # Need to get back to python parent process after pulling image
-        if docker_compose_container.check_image_exists(config_dict["fluent_image"]):
-            docker_compose_container.start()
+        if compose_container.check_image_exists(config_dict["fluent_image"]):
+            compose_container.start()
 
-        return port, config_dict, docker_compose_container
+        return port, config_dict, compose_container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
