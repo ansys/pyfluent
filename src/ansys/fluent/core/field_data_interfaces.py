@@ -406,18 +406,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         return name in self(respect_data_valid)
 
 
-class _ReturnInternalDictData:
-    def __init__(self, dict_data):
-        self._dict_data = dict_data
-
-    def _get_internal_dict_data(self, key):
-        try:
-            return self._dict_data[key]
-        except KeyError:
-            raise ValueError(f"{key} was not requested for.")
-
-
-class ReturnSurfaceData(_ReturnInternalDictData):
+class ReturnSurfaceData:
     """
     A wrapper class for surface data that enables object-style access
     to nested dictionary structures.
@@ -443,7 +432,6 @@ class ReturnSurfaceData(_ReturnInternalDictData):
 
     def __init__(self, surf_data):
         """__init__ method of ReturnSurfaceData class."""
-        super().__init__(surf_data)
         self._surf_data = surf_data
         self._surface_map = {
             SurfaceDataType.Vertices: "vertices",
@@ -453,10 +441,10 @@ class ReturnSurfaceData(_ReturnInternalDictData):
         }
         for key, val in self._surface_map.items():
             if key in self._surf_data:
-                setattr(self, val, self._get_internal_dict_data(key))
+                setattr(self, val, self._surf_data[key])
 
 
-class ReturnPathlinesData(_ReturnInternalDictData):
+class ReturnPathlinesData:
     """
     A wrapper class for pathline data that enables object-style access
     to nested dictionary structures.
@@ -484,7 +472,6 @@ class ReturnPathlinesData(_ReturnInternalDictData):
 
     def __init__(self, pathlines_data_for_surface):
         """__init__ method of ReturnPathlinesData class."""
-        super().__init__(pathlines_data_for_surface)
         self._pathlines_data_for_surface = pathlines_data_for_surface
         self.scalar_field_name = list(
             set(self._pathlines_data_for_surface.keys())
@@ -499,7 +486,7 @@ class ReturnPathlinesData(_ReturnInternalDictData):
         }
         for key, val in self._pathlines_map.items():
             if key in self._pathlines_data_for_surface:
-                setattr(self, val, self._get_internal_dict_data(key))
+                setattr(self, val, self._pathlines_data_for_surface[key])
 
 
 class _ReturnFieldData:
