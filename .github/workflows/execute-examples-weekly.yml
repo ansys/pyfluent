@@ -15,7 +15,6 @@ env:
   MAIN_PYTHON_VERSION: '3.12'
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
   PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
-  CI_RUN: 1
 
 jobs:
 

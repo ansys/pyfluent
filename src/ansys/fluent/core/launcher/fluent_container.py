@@ -459,14 +459,6 @@ def start_fluent_container(
     try:
         config_dict["fluent_port"] = port
 
-        # Temporary fix for https://github.com/ansys/pyfluent/issues/3926
-        if os.getenv("CI_RUN"):
-            config_dict.setdefault("environment", {}).update(
-                {
-                    "DISPLAY": "",
-                }
-            )
-
         docker_compose_container = DockerComposeLauncher(
             container_dict=config_dict, config=DockerComposeLaunchConfig()
         )

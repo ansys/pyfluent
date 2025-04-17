@@ -133,7 +133,6 @@ def _set_env_vars(container_dict):
         "IMAGE_NAME": container_dict.get("fluent_image"),
         "LICENSE_FILE": container_dict["environment"].get("ANSYSLMD_LICENSE_FILE"),
         "REMOTE_PORTS": container_dict["environment"].get("REMOTING_PORTS"),
-        "DISPLAY": container_dict["environment"].get("DISPLAY", ""),
         "NO_TRANSCRIPT": container_dict["environment"].get(
             "FLUENT_NO_AUTOMATIC_TRANSCRIPT", "0"
         ),
