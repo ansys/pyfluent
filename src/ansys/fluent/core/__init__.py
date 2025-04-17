@@ -148,6 +148,9 @@ SUPPORT_SOLVER_INTERRUPT = False
 # Whether to start watchdog
 START_WATCHDOG = None
 
+# Health check timeout in seconds
+CHECK_HEALTH_TIMEOUT = 60
+
 # Whether to skip health check
 CHECK_HEALTH = True
 
