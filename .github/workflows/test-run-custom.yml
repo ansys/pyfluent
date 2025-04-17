@@ -11,7 +11,7 @@ concurrency:
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 15
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
@@ -26,18 +26,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v22.2.0
-            version: 222
-          - image-tag: v23.1.0
-            version: 231
-          - image-tag: v23.2.0
-            version: 232
-          - image-tag: v24.1.0
-            version: 241
-          - image-tag: v24.2.0
-            version: 242
-          - image-tag: v25.1.0
-            version: 251
+          # - image-tag: v22.2.0
+          #   version: 222
+          # - image-tag: v23.1.0
+          #   version: 231
+          # - image-tag: v23.2.0
+          #   version: 232
+          # - image-tag: v24.1.0
+          #   version: 241
+          # - image-tag: v24.2.0
+          #   version: 242
+          # - image-tag: v25.1.0
+          #   version: 251
+          - image-tag: v25.2.0
+            version: 252
 
     steps:
       - uses: actions/checkout@v4
@@ -105,7 +107,7 @@ jobs:
             echo "Running custom unittest"
             sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
             make install-test
-            python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
+            python -m pytest -v --no-cov --capture=no -k test_datamodel_api_on_command_attribute_changed
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
