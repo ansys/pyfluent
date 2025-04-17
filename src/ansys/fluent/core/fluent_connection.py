@@ -50,7 +50,7 @@ from ansys.fluent.core.services.app_utilities import (
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
@@ -536,9 +536,12 @@ class FluentConnection:
         if hasattr(self, "_container"):
             self._container.exit()
 
-    def register_finalizer_cb(self, cb):
+    def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
-        self.finalizer_cbs.append(cb)
+        if at_start:
+            self.finalizer_cbs.insert(0, cb)
+        else:
+            self.finalizer_cbs.append(cb)
 
     def create_grpc_service(self, service, *args):
         """Create a gRPC service.
@@ -730,7 +733,7 @@ class FluentConnection:
             remote_instance.delete()
 
         if file_transfer_service and isinstance(
-            file_transfer_service, RemoteFileTransferStrategy
+            file_transfer_service, ContainerFileTransferStrategy
         ):
             file_transfer_service.container.kill()
 
