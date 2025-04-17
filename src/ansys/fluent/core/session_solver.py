@@ -177,7 +177,9 @@ class Solver(BaseSession):
 
         # Background sessions should be finalized before finalizing the
         # gRPC services of the main session.
-        fluent_connection.register_finalizer_cb(self._stop_bg_sessions, at_start=True)
+        fluent_connection.register_finalizer_cb(
+            weakref.WeakMethod(self._stop_bg_sessions), at_start=True
+        )
 
     def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
