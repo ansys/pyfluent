@@ -137,7 +137,7 @@ def _set_env_vars(container_dict):
             "FLUENT_NO_AUTOMATIC_TRANSCRIPT", "0"
         ),
         "REMOTE_NEW_DM_API": container_dict["environment"].get(
-            "REMOTING_NEW_DM_API", "0"
+            "REMOTING_NEW_DM_API", ""
         ),
         "COMMAND": " ".join(container_dict["command"]),
         "MOUNT_TARGET": container_dict.get("mount_target"),
