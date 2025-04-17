@@ -433,14 +433,16 @@ class SurfaceData:
     def __init__(self, surf_data):
         """__init__ method of SurfaceData class."""
         self._surf_data = surf_data
-        self.vertices: np.ndarray = self._surf_data.get(SurfaceDataType.Vertices)
-        self.lines: list(np.ndarray) = self._surf_data.get(
+        self.vertices: np.ndarray | None = self._surf_data.get(SurfaceDataType.Vertices)
+        self.lines: list(np.ndarray) | None = self._surf_data.get(
             SurfaceDataType.FacesConnectivity
         )
-        self.faces_centroid: np.ndarray = self._surf_data.get(
+        self.faces_centroid: np.ndarray | None = self._surf_data.get(
             SurfaceDataType.FacesCentroid
         )
-        self.faces_normal: np.ndarray = self._surf_data.get(SurfaceDataType.FacesNormal)
+        self.faces_normal: np.ndarray | None = self._surf_data.get(
+            SurfaceDataType.FacesNormal
+        )
 
 
 class PathlinesData:
@@ -474,19 +476,23 @@ class PathlinesData:
     def __init__(self, pathlines_data_for_surface):
         """__init__ method of PathlinesData class."""
         self._pathlines_data_for_surface = pathlines_data_for_surface
-        self.scalar_field_name = list(
+        self.scalar_field_name: str = list(
             set(self._pathlines_data_for_surface.keys())
             - {"lines", "vertices", "pathlines-count", "particle-time"}
         )[0]
-        self.vertices: np.ndarray = self._pathlines_data_for_surface.get("vertices")
-        self.lines: list(np.ndarray) = self._pathlines_data_for_surface.get("lines")
-        self.scalar_field: np.ndarray = self._pathlines_data_for_surface.get(
+        self.vertices: np.ndarray | None = self._pathlines_data_for_surface.get(
+            "vertices"
+        )
+        self.lines: list(np.ndarray) | None = self._pathlines_data_for_surface.get(
+            "lines"
+        )
+        self.scalar_field: np.ndarray | None = self._pathlines_data_for_surface.get(
             self.scalar_field_name
         )
-        self.pathlines_count: np.ndarray = self._pathlines_data_for_surface.get(
+        self.pathlines_count: np.ndarray | None = self._pathlines_data_for_surface.get(
             "pathlines-count"
         )
-        self.particle_time: np.ndarray = self._pathlines_data_for_surface.get(
+        self.particle_time: np.ndarray | None = self._pathlines_data_for_surface.get(
             "particle-time"
         )
 
