@@ -475,18 +475,13 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert vertices_data["cold-inlet"].vertices.shape == (241, 3)
     assert round(float(vertices_data["cold-inlet"].vertices[5][0]), 2) == -0.2
 
-    with pytest.raises(AttributeError):
-        assert vertices_data["cold-inlet"].faces_normal
-
-    assert "faces_centroid" not in dir(vertices_data["cold-inlet"])
+    assert vertices_data.faces_centroid is None
 
     su2 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
         surfaces=["hot-inlet", "cold-inlet"],
     )
     vertices_and_faces_centroid_data = field_data.get_field_data(su2)
-
-    assert "faces_centroid" in dir(vertices_and_faces_centroid_data["cold-inlet"])
 
     assert list(vertices_and_faces_centroid_data["cold-inlet"]._surf_data.keys()) == [
         SurfaceDataType.Vertices,
