@@ -22,7 +22,6 @@ dependencies = [
     "ansys-api-fluent>=0.3.35",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-filetransfer>=0.1,<0.3",
-    "ansys-tools-local-product-launcher>=0.1.1",
     "ansys-units>=0.4.0,<1.0",
     "defusedxml>=0.7.1",
     "docker>=7.1.0",
