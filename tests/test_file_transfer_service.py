@@ -140,16 +140,9 @@ def test_file_list_in_datamodel(fault_tolerant_workflow_session):
 
 @pytest.mark.standalone
 def test_local_file_transfer_in_datamodel(monkeypatch):
-    import os
-
-    os.environ["PYFLUENT_FLUENT_ROOT"] = (
-        r"D:\Installations\Ansys\252_14042025\ANSYS Inc\v252\fluent"
-    )
     import ansys.fluent.core as pyfluent
 
-    pyfluent.USE_FILE_TRANSFER_SERVICE = True
-
-    # monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
+    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
 
     fmd_file = examples.download_file("exhaust_system.fmd", "pyfluent/exhaust_system")
 
