@@ -417,8 +417,32 @@ class _ReturnInternalDictData:
             raise ValueError(f"{key} was not requested for.")
 
 
-class _ReturnSurfaceData(_ReturnInternalDictData):
+class ReturnSurfaceData(_ReturnInternalDictData):
+    """
+    A wrapper class for surface data that enables object-style access
+    to nested dictionary structures.
+
+    This class is used to convert nested dictionary-based surface data
+    into objects for easier attribute-based access.
+
+    Examples
+    --------
+    >>> surface_data = {
+    ...     "surface1": {SurfaceDataType.Vertices: np.array(), FacesConnectivity: np.array()},
+    ...     "surface2": {SurfaceDataType.Vertices: np.array()}
+    ... }
+    >>> surface_obj_1 = ReturnSurfaceData(surface_data["surface1"])
+    >>> surface_obj_1.vertices
+    np.array()
+    >>> surface_obj_1.lines
+    np.array()
+    >>> surface_obj_2 = ReturnSurfaceData(surface_data["surface2"])
+    >>> surface_obj_2.vertices
+    np.array()
+    """
+
     def __init__(self, surf_data):
+        """__init__ method of ReturnSurfaceData class."""
         super().__init__(surf_data)
         self._surf_data = surf_data
         self._surface_map = {
@@ -432,8 +456,34 @@ class _ReturnSurfaceData(_ReturnInternalDictData):
                 setattr(self, val, self._get_internal_dict_data(key))
 
 
-class _ReturnPathlinesData(_ReturnInternalDictData):
+class ReturnPathlinesData(_ReturnInternalDictData):
+    """
+    A wrapper class for pathline data that enables object-style access
+    to nested dictionary structures.
+
+    This class is used to convert nested dictionary-based pathline data
+    into objects for easier attribute-based access.
+
+    Examples
+    --------
+    >>> pathlines_data = {
+    ...     "surface1": {"vertices": np.array(), "pathlines-count": np.array()},
+    ...     "surface2": {"vertices": np.array(), "lines": np.array()}
+    ... }
+    >>> pathline_obj_1 = ReturnPathlinesData(pathlines_data["surface1"])
+    >>> pathline_obj_1.vertices
+    np.array()
+    >>> pathline_obj_1.pathlines_count
+    np.array()
+    >>> pathline_obj_2 = ReturnPathlinesData(pathlines_data["surface2"])
+    >>> pathline_obj_2.vertices
+    np.array()
+    >>> pathline_obj_2.lines
+    np.array()
+    """
+
     def __init__(self, pathlines_data_for_surface):
+        """__init__ method of ReturnPathlinesData class."""
         super().__init__(pathlines_data_for_surface)
         self._pathlines_data_for_surface = pathlines_data_for_surface
         self.scalar_field_name = list(
@@ -501,7 +551,7 @@ class _ReturnFieldData:
                         surface_ids[count]
                     ][data_type.value].reshape(-1, 3)
             if deprecated_flag is False:
-                ret_surf_data[surface] = _ReturnSurfaceData(ret_surf_data[surface])
+                ret_surf_data[surface] = ReturnSurfaceData(ret_surf_data[surface])
         return ret_surf_data
 
     @staticmethod
@@ -543,7 +593,7 @@ class _ReturnFieldData:
                     "particle-time"
                 ]
             if deprecated_flag is False:
-                path_lines_dict[surface] = _ReturnPathlinesData(temp_dict)
+                path_lines_dict[surface] = ReturnPathlinesData(temp_dict)
             else:
                 path_lines_dict[surface] = temp_dict
         return path_lines_dict
