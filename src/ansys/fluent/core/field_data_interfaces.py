@@ -421,27 +421,35 @@ class _ReturnSurfaceData(_ReturnInternalDictData):
     def __init__(self, surf_data):
         super().__init__(surf_data)
         self._surf_data = surf_data
-        self.vertices = self._get_internal_dict_data(SurfaceDataType.Vertices)
-        self.lines = self._get_internal_dict_data(SurfaceDataType.FacesConnectivity)
-        self.faces_centroid = self._get_internal_dict_data(
-            SurfaceDataType.FacesCentroid
-        )
-        self.faces_normal = self._get_internal_dict_data(SurfaceDataType.FacesNormal)
+        self._surface_map = {
+            SurfaceDataType.Vertices: "vertices",
+            SurfaceDataType.FacesConnectivity: "lines",
+            SurfaceDataType.FacesCentroid: "faces_centroid",
+            SurfaceDataType.FacesNormal: "faces_normal",
+        }
+        for key, val in self._surface_map.items():
+            if key in self._surf_data:
+                setattr(self, val, self._get_internal_dict_data(key))
 
 
 class _ReturnPathlinesData(_ReturnInternalDictData):
     def __init__(self, pathlines_data_for_surface):
         super().__init__(pathlines_data_for_surface)
         self._pathlines_data_for_surface = pathlines_data_for_surface
-        self.vertices = self._get_internal_dict_data("vertices")
-        self.lines = self._get_internal_dict_data("lines")
         self.scalar_field_name = list(
             set(self._pathlines_data_for_surface.keys())
             - {"lines", "vertices", "pathlines-count", "particle-time"}
         )[0]
-        self.scalar_field = self._get_internal_dict_data(self.scalar_field_name)
-        self.pathlines_count = self._get_internal_dict_data("pathlines-count")
-        self.particle_time = self._get_internal_dict_data("particle-time")
+        self._pathlines_map = {
+            "vertices": "vertices",
+            "lines": "lines",
+            self.scalar_field_name: "scalar_field",
+            "pathlines-count": "pathlines_count",
+            "particle_time": "particle_time",
+        }
+        for key, val in self._pathlines_map.items():
+            if key in self._pathlines_data_for_surface:
+                setattr(self, val, self._get_internal_dict_data(key))
 
 
 class _ReturnFieldData:
