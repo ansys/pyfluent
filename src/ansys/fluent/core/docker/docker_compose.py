@@ -199,8 +199,8 @@ class ComposeLauncher:
             self._set_compose_cmds() + cmd,
             stdin=subprocess.PIPE,
             text=True,
-            # stdout=subprocess.DEVNULL,
-            # stderr=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
         process.communicate(input=self._compose_file, timeout=10)
@@ -232,8 +232,8 @@ class ComposeLauncher:
             self._set_compose_cmds() + cmd,
             stdin=subprocess.PIPE,
             text=True,
-            # stdout=subprocess.DEVNULL,
-            # stderr=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
         process.communicate(input=self._compose_file, timeout=20)
@@ -245,10 +245,10 @@ class ComposeLauncher:
                 return_code, self._set_compose_cmds() + cmd
             )
 
-    def remove_unused_networks(self) -> None:
+    def remove_unused_services(self) -> None:
         """Remove the services."""
 
-        cmd = ["network", "prune", "-f"]
+        cmd = ["system", "prune", "--volumes", "-f"]
 
         try:
             output = subprocess.check_call(  # noqa: F841
@@ -260,7 +260,7 @@ class ComposeLauncher:
     def exit(self) -> None:
         """Exit the container launcher."""
         self.stop()
-        self.remove_unused_networks()
+        self.remove_unused_services()
 
     @property
     def ports(self) -> list[str]:
