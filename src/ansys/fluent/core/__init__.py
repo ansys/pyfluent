@@ -106,7 +106,7 @@ EXAMPLES_PATH = str(get_examples_download_dir())
 CONTAINER_MOUNT_SOURCE = None
 
 # Path inside the container where the host path is mounted
-CONTAINER_MOUNT_TARGET = "/mnt/pyfluent"
+CONTAINER_MOUNT_TARGET = "/home/container/workdir"
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True

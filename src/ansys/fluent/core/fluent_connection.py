@@ -127,35 +127,6 @@ class MonitorThread(threading.Thread):
 ContainerT = TypeVar("ContainerT")
 
 
-def get_container(container_id_or_name: str) -> bool | ContainerT | None:
-    """Get the Docker container object.
-
-    Returns
-    -------
-    bool | Container | None
-        If the system is not correctly set up to run Docker containers, returns ``None``.
-        If the container was not found, returns ``False``.
-        If the container is found, returns the associated Docker container object.
-
-    Notes
-    -----
-    See `Docker container`_ for more information.
-
-    .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
-    """
-    if not isinstance(container_id_or_name, str):
-        container_id_or_name = str(container_id_or_name)
-    try:
-        docker_client = _docker().from_env()
-        container = docker_client.containers.get(container_id_or_name)
-    except _docker().errors.NotFound:  # NotFound is a child from DockerException
-        return False
-    except _docker().errors.DockerException as exc:
-        logger.info(f"{type(exc).__name__}: {exc}")
-        return None
-    return container
-
-
 class ErrorState:
     """Object to indicate the error state of the connected Fluent client.
 
@@ -372,6 +343,7 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: ContainerT | None = None,
     ):
         """Initialize a Session.
 
@@ -408,6 +380,9 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: ContainerT, optional
+            The container instance if the Fluent session is running inside
+            a container.
 
         Raises
         ------
@@ -453,22 +428,7 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
-
-        if (
-            (inside_container is None or inside_container is True)
-            and not remote_instance
-            and cortex_host is not None
-        ):
-            logger.info("Checking if Fluent is running inside a container.")
-            inside_container = get_container(cortex_host)
-            logger.debug(f"get_container({cortex_host}): {inside_container}")
-            if inside_container is False:
-                logger.info("Fluent is not running inside a container.")
-            elif inside_container is None:
-                logger.info(
-                    "The current system does not support Docker containers. "
-                    "Assuming Fluent is not inside a container."
-                )
+        self._container = container
 
         self.connection_properties = FluentConnectionProperties(
             ip,
@@ -573,21 +533,8 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        container = self.connection_properties.inside_container
-        container_id = self.connection_properties.cortex_host
-        pid = self.connection_properties.fluent_host_pid
-        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
-        if get_container(container_id):
-            try:
-                container.exec_run(["bash", cleanup_file_name], detach=True)
-            except _docker().errors.APIError as e:
-                logger.info(f"{type(e).__name__}: {e}")
-                logger.debug(
-                    "Caught Docker APIError, Docker container probably not running anymore."
-                )
-        else:
-            logger.debug("Container not found, cancelling cleanup script execution.")
+        if hasattr(self, "_container"):
+            self._container.exit()
 
     def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
@@ -648,23 +595,15 @@ class FluentConnection:
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
             raise WaitTypeError()
-        if self.connection_properties.inside_container:
-            _response = timeout_loop(
-                get_container,
-                wait,
-                args=(self.connection_properties.cortex_host,),
-                idle_period=0.5,
-                expected="falsy",
-            )
-        else:
-            _response = timeout_loop(
-                lambda connection: _pid_exists(connection.fluent_host_pid)
-                or _pid_exists(connection.cortex_pid),
-                wait,
-                args=(self.connection_properties,),
-                idle_period=0.5,
-                expected="falsy",
-            )
+
+        _response = timeout_loop(
+            lambda connection: _pid_exists(connection.fluent_host_pid)
+            or _pid_exists(connection.cortex_pid),
+            wait,
+            args=(self.connection_properties,),
+            idle_period=0.5,
+            expected="falsy",
+        )
         return not _response
 
     def exit(

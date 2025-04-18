@@ -78,9 +78,8 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.session import _parse_server_info_file
+from ansys.fluent.core.docker.docker_compose import ComposeLauncher
 from ansys.fluent.core.utils.deprecate import deprecate_argument
-from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -381,6 +380,10 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
+    container_dict["host_server_info_file"] = host_server_info_file
+    container_dict["mount_source"] = mount_source
+    container_dict["mount_target"] = mount_target
+
     return (
         container_dict,
         timeout,
@@ -451,34 +454,21 @@ def start_fluent_container(
         del container_vars_tmp
 
     try:
-        if not host_server_info_file.exists():
-            host_server_info_file.parents[0].mkdir(exist_ok=True)
+        config_dict["fluent_port"] = port
 
-        host_server_info_file.touch(exist_ok=True)
-        last_mtime = host_server_info_file.stat().st_mtime
+        compose_container = ComposeLauncher(container_dict=config_dict)
 
-        import docker
-
-        docker_client = docker.from_env()
-
-        logger.debug("Starting Fluent docker container...")
-
-        container = docker_client.containers.run(
-            config_dict.pop("fluent_image"), **config_dict
-        )
-
-        success = timeout_loop(
-            lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
-        )
-
-        if not success:
-            raise TimeoutError(
-                "Fluent container launch has timed out, stop container manually."
+        if not compose_container.check_image_exists(config_dict["fluent_image"]):
+            logger.debug(
+                f"Fluent image {config_dict['fluent_image']} not found. Pulling image..."
             )
-        else:
-            _, _, password = _parse_server_info_file(str(host_server_info_file))
+            compose_container.pull_image(config_dict["fluent_image"])
 
-            return port, password, container
+        # Need to get back to python parent process after pulling image
+        if compose_container.check_image_exists(config_dict["fluent_image"]):
+            compose_container.start()
+
+        return port, config_dict, compose_container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
