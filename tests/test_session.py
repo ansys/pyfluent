@@ -383,7 +383,7 @@ def test_read_case_using_lightweight_mode():
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         file_transfer_service = ContainerFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
             lightweight_mode=True,
@@ -416,8 +416,8 @@ def test_read_case_using_lightweight_mode_exiting():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
             lightweight_mode=True,
