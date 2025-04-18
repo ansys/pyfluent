@@ -406,6 +406,7 @@ class BaseFieldData:
         self._allowed_surface_names = allowed_surface_names
         self._allowed_scalar_field_names = allowed_scalar_field_names
         self._returned_data = _ReturnFieldData()
+        self._deprecated_flag = False
 
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""
@@ -1352,6 +1353,15 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         )
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         surface_data = next(iter(fields.values()))
+        if self._deprecated_flag:
+            self._deprecated_flag = False
+            return self._returned_data._surface_data(
+                kwargs.get("data_types"),
+                kwargs.get("surfaces"),
+                surface_ids,
+                surface_data,
+                deprecated_flag=True,
+            )
 
         return self._returned_data._surface_data(
             kwargs.get("data_types"), kwargs.get("surfaces"), surface_ids, surface_data
@@ -1414,6 +1424,16 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         pathlines_data = next(iter(fields.values()))
 
+        if self._deprecated_flag:
+            self._deprecated_flag = False
+            return self._returned_data._pathlines_data(
+                kwargs.get("field_name"),
+                kwargs.get("surfaces"),
+                surface_ids,
+                pathlines_data,
+                deprecated_flag=True,
+            )
+
         return self._returned_data._pathlines_data(
             kwargs.get("field_name"),
             kwargs.get("surfaces"),
@@ -1451,6 +1471,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             "'get_surface_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
+        self._deprecated_flag = True
         return self._get_surface_data(
             data_types=data_types, surfaces=surfaces, overset_mesh=overset_mesh
         )
@@ -1492,6 +1513,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             "'get_pathlines_field_data' is deprecated, use 'get_field_data' instead",
             PyFluentDeprecationWarning,
         )
+        self._deprecated_flag = True
         return self._get_pathlines_field_data(
             field_name=field_name,
             surfaces=surfaces,
