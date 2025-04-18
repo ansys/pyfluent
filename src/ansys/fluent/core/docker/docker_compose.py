@@ -212,7 +212,7 @@ class ComposeLauncher:
                 return_code, self._set_compose_cmds() + cmd
             )
 
-    def stop(self, *, timeout: float | None = None) -> None:
+    def stop(self) -> None:
         """Stop the services.
 
         Raises
