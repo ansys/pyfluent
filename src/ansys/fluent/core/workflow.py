@@ -1270,6 +1270,8 @@ class CompoundTask(CommandTask):
                 self._task.AddChildAndUpdate()
         finally:
             self._command_source._compound_child = False
+        # Updates the workflow after the new task is inserted.
+        _call_refresh_task_accessors(self._command_source)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
