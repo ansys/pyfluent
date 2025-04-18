@@ -203,9 +203,9 @@ class ComposeLauncher:
             stderr=subprocess.DEVNULL,
         )
 
-        process.communicate(input=self._compose_file)
+        process.communicate(input=self._compose_file, timeout=10)
 
-        return_code = process.wait()
+        return_code = process.wait(timeout=10)
 
         if return_code != 0:
             raise subprocess.CalledProcessError(
@@ -213,7 +213,13 @@ class ComposeLauncher:
             )
 
     def stop(self, *, timeout: float | None = None) -> None:
-        """Stop the services."""
+        """Stop the services.
+
+        Raises
+        -------
+        subprocess.CalledProcessError
+            If the command fails.
+        """
         cmd = [
             "-f",
             "-",
@@ -230,9 +236,14 @@ class ComposeLauncher:
             stderr=subprocess.DEVNULL,
         )
 
-        process.communicate(input=self._compose_file)
+        process.communicate(input=self._compose_file, timeout=20)
 
-        return_code = process.wait()  # noqa: F841
+        return_code = process.wait(timeout=20)  # noqa: F841
+
+        if return_code != 0:
+            raise subprocess.CalledProcessError(
+                return_code, self._set_compose_cmds() + cmd
+            )
 
     def remove_unused_networks(self) -> None:
         """Remove the services."""

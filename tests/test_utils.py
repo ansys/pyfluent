@@ -32,7 +32,6 @@ from ansys.fluent.core.utils.execution import (
 )
 
 
-@pytest.mark.fluent_version("!=24.1")
 def test_timeout_exec():
     ret = timeout_exec(time.sleep, timeout=0.25, args=(0.5,))
     assert ret is False
