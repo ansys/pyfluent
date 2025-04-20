@@ -425,7 +425,7 @@ class SurfaceData:
         self.vertices: npt.NDArray[np.float64] | None = self._surf_data.get(
             SurfaceDataType.Vertices
         )
-        self.connectivity: list[npt.NDArray[np.float64]] | None = self._surf_data.get(
+        self.connectivity: list[npt.NDArray[np.int32]] | None = self._surf_data.get(
             SurfaceDataType.FacesConnectivity
         )
         self.face_centroids: npt.NDArray[np.float64] | None = self._surf_data.get(
@@ -460,7 +460,7 @@ class PathlinesData:
         self.vertices: npt.NDArray[np.float64] | None = (
             self._pathlines_data_for_surface.get("vertices")
         )
-        self.lines: list[npt.NDArray[np.float64]] | None = (
+        self.lines: list[npt.NDArray[np.int32]] | None = (
             self._pathlines_data_for_surface.get("lines")
         )
         self.scalar_field: npt.NDArray[np.float64] | None = (
