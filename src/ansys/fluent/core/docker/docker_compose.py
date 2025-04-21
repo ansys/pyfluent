@@ -199,8 +199,8 @@ class ComposeLauncher:
             self._set_compose_cmds() + cmd,
             stdin=subprocess.PIPE,
             text=True,
-            # stdout=subprocess.DEVNULL,
-            # stderr=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
         process.communicate(input=self._compose_file, timeout=10)
@@ -232,8 +232,8 @@ class ComposeLauncher:
             self._set_compose_cmds() + cmd,
             stdin=subprocess.PIPE,
             text=True,
-            # stdout=subprocess.DEVNULL,
-            # stderr=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
         )
 
         process.communicate(input=self._compose_file, timeout=20)
