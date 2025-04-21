@@ -76,10 +76,10 @@ class PortManager:
             If no free ports are available in the specified range.
         """
         with self.lock:
-            for port in range(self.start, self.end):
-                if port not in self.used_ports and self.is_port_free(port):
-                    self.used_ports.add(port)
-                    return port
+            port = get_free_port()
+            if self.is_port_free(port):
+                self.used_ports.add(port)
+                return port
             raise RuntimeError("No free ports available")
 
     def release_port(self, port):
