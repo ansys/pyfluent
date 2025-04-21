@@ -80,7 +80,7 @@ from typing import Any, List
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeLauncher
 from ansys.fluent.core.utils.deprecate import deprecate_argument
-from ansys.fluent.core.utils.networking import PortManager
+from ansys.fluent.core.utils.networking import get_free_port
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -267,10 +267,8 @@ def configure_container_dict(
         port = pyfluent.LAUNCH_FLUENT_PORT
         port_mapping = {port: port}
     if not port_mapping:
-        port_manager = PortManager()
-        port = port_manager.get_free_port()
+        port = get_free_port()
         port_mapping = {port: port}
-        container_dict["port_manager"] = port_manager
 
     container_dict.update(
         ports={str(x): y for x, y in port_mapping.items()}
