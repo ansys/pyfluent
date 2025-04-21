@@ -240,13 +240,6 @@ class ComposeLauncher:
 
         return_code = process.wait(timeout=20)  # noqa: F841
 
-        port_manager = self._container_dict.get("port_manager")
-        if port_manager:
-            for port in list(self._container_dict.get("ports").values()) + [
-                self._container_dict.get("fluent_port")
-            ]:
-                port_manager.release_port(port)
-
         if return_code != 0:
             raise subprocess.CalledProcessError(
                 return_code, self._set_compose_cmds() + cmd
@@ -275,4 +268,9 @@ class ComposeLauncher:
         output = subprocess.check_output(
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )
-        return self._extract_ports(output.decode("utf-8").strip())
+        port_manager = self._container_dict.get("port_manager")
+        ports = self._extract_ports(output.decode("utf-8").strip())
+        if port_manager:
+            for port in ports:
+                port_manager.release_port(port)
+        return ports
