@@ -25,6 +25,7 @@
 from concurrent import futures
 import logging
 import socket
+import threading
 from typing import Any
 import urllib.request
 
@@ -46,6 +47,45 @@ def get_free_port() -> int:
         s.bind(("localhost", 0))
         free_port = s.getsockname()[1]
     return free_port
+
+
+class PortManager:
+    """Manages the allocation and deallocation of ports."""
+
+    def __init__(self, start=5000, end=90000):
+        self.lock = threading.Lock()
+        self.start = start
+        self.end = end
+        self.used_ports = set()
+
+    def is_port_free(self, port):
+        """Check if a port is free by attempting to bind to it."""
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("", port))
+                return True
+            except OSError:
+                return False
+
+    def get_free_port(self):
+        """Get a free port from the range [start, end).
+
+        Raises
+        ------
+        RuntimeError
+            If no free ports are available in the specified range.
+        """
+        with self.lock:
+            for port in range(self.start, self.end):
+                if port not in self.used_ports and self.is_port_free(port):
+                    self.used_ports.add(port)
+                    return port
+            raise RuntimeError("No free ports available")
+
+    def release_port(self, port):
+        """Release a port, making it available for reuse."""
+        with self.lock:
+            self.used_ports.discard(port)
 
 
 class _HealthServicer(health_pb2_grpc.HealthServicer):

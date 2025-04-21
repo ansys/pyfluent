@@ -268,4 +268,9 @@ class ComposeLauncher:
         output = subprocess.check_output(
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )
-        return self._extract_ports(output.decode("utf-8").strip())
+        port_manager = self._container_dict.get("port_manager")
+        ports = self._extract_ports(output.decode("utf-8").strip())
+        if port_manager:
+            for port in ports:
+                port_manager.release_port(port)
+        return ports
