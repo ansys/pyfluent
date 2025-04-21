@@ -30,6 +30,7 @@ import urllib.request
 
 import grpc
 from grpc_health.v1 import health_pb2, health_pb2_grpc
+import psutil
 
 network_logger = logging.getLogger("pyfluent.networking")
 
@@ -46,6 +47,16 @@ def get_free_port() -> int:
         s.bind(("localhost", 0))
         free_port = s.getsockname()[1]
     return free_port
+
+
+def get_allotted_ports():
+    """Get all ports that are currently in use."""
+    connections = psutil.net_connections()
+    ports = set()
+    for conn in connections:
+        if conn.laddr:
+            ports.add(conn.laddr.port)
+    return sorted(ports)
 
 
 class _HealthServicer(health_pb2_grpc.HealthServicer):
