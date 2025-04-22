@@ -496,7 +496,7 @@ graphics.views.auto_scale()
 
 vector1 = Vector(solver, new_instance_name="vector-vel")
 vector1.surfaces_list = ["interior-4"]
-vector1.scale.scale_f = 0.01
+vector1.options.scale = 0.01
 vector1.vector_opt.fixed_length = True
 
 # %%
