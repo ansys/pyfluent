@@ -78,7 +78,7 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.docker_compose import ComposeLauncher
+from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -456,7 +456,7 @@ def start_fluent_container(
     try:
         config_dict["fluent_port"] = port
 
-        compose_container = ComposeLauncher(container_dict=config_dict)
+        compose_container = ComposeBasedLauncher(container_dict=config_dict)
 
         if not compose_container.check_image_exists(config_dict["fluent_image"]):
             logger.debug(

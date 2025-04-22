@@ -27,7 +27,7 @@ import subprocess
 import uuid
 
 
-class ComposeLauncher:
+class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
     def __init__(self, *, container_dict):
