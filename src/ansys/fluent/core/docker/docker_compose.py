@@ -94,7 +94,7 @@ class ComposeLauncher:
     def _check_docker_installed(self):
         """Check if Docker is installed."""
         try:
-            result = subprocess.run(  # noqa: F841
+            subprocess.run(
                 ["docker", "--version"], capture_output=True, text=True, check=True
             )
             return True
@@ -106,7 +106,7 @@ class ComposeLauncher:
     def _check_podman_installed(self):
         """Check if Podman is installed."""
         try:
-            result = subprocess.run(  # noqa: F841
+            subprocess.run(
                 ["podman", "--version"], capture_output=True, text=True, check=True
             )
             return True
@@ -138,17 +138,21 @@ class ComposeLauncher:
         return [port for port in ports if port.isdigit()]
 
     def _set_compose_cmds(self):
-        """Sets the compose commands based on available tools and permissions."""
+        """Sets the compose commands based on available tools and permissions.
+
+        Raises
+        ------
+        RuntimeError
+            If neither Docker nor Podman is installed.
+        """
 
         # Determine the compose command
-        if self._docker_available and self._podman_available:
-            self._compose_cmds = ["docker", "compose"]
+        if self._podman_available:
+            self._compose_cmds = ["podman", "compose"]
         elif self._docker_available:
             self._compose_cmds = ["docker", "compose"]
-        elif self._podman_available:
-            self._compose_cmds = ["podman", "compose"]
         else:
-            self._compose_cmds = []
+            raise RuntimeError("Neither Docker nor Podman is installed.")
 
         return self._compose_cmds
 
@@ -173,9 +177,7 @@ class ComposeLauncher:
             else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
         )
 
-        output = subprocess.check_call(  # noqa: F841
-            [f"{self._container_source[0]}", "pull", image_name]
-        )
+        subprocess.check_call([f"{self._container_source[0]}", "pull", image_name])
 
     def start(self) -> None:
         """Start the services.
@@ -237,42 +239,16 @@ class ComposeLauncher:
         )
 
         process.communicate(input=self._compose_file, timeout=20)
-
-        return_code = process.wait(timeout=20)  # noqa: F841
+        return_code = process.wait(timeout=20)
 
         if return_code != 0:
             raise subprocess.CalledProcessError(
                 return_code, self._set_compose_cmds() + cmd
             )
 
-    def remove_unused_services(self) -> None:
-        """Remove the services."""
-
-        try:
-            output = subprocess.check_call(  # noqa: F841
-                self._container_source + ["stop", f"{self._compose_name}-fluent-1"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            output = subprocess.check_call(  # noqa: F841
-                self._container_source
-                + ["rm", f"{self._compose_name}-fluent-1", "-f", "--volumes"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            output = subprocess.check_call(  # noqa: F841
-                self._container_source
-                + ["network", "rm", f"{self._compose_name}_default", "-f"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-        except subprocess.CalledProcessError as e:  # noqa: F841
-            pass
-
     def exit(self) -> None:
         """Exit the container launcher."""
         self.stop()
-        self.remove_unused_services()
 
     @property
     def ports(self) -> list[str]:
