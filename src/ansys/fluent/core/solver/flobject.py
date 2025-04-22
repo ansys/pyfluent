@@ -1069,25 +1069,28 @@ class Group(SettingsBase[DictStateType]):
     def get_active_child_names(self):
         """Names of children that are currently active."""
         ret = []
-        for child in self.child_names:
-            if getattr(self, child).is_active():
-                ret.append(child)
+        for child_name in self.child_names:
+            child = getattr(self, child_name)
+            if child.is_active() and not child._is_deprecated():
+                ret.append(child_name)
         return ret
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
         ret = []
-        for command in self.command_names:
-            if getattr(self, command).is_active():
-                ret.append(command)
+        for command_name in self.command_names:
+            command = getattr(self, command_name)
+            if command.is_active() and not command._is_deprecated():
+                ret.append(command_name)
         return ret
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
         ret = []
-        for query in self.query_names:
-            if getattr(self, query).is_active():
-                ret.append(query)
+        for query_name in self.query_names:
+            query = getattr(self, query_name)
+            if query.is_active() and not query._is_deprecated():
+                ret.append(query_name)
         return ret
 
     def __dir__(self):
