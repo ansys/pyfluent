@@ -367,7 +367,7 @@ class BaseSession:
 
     def _exit_compose_service(self, inside_container: bool):
         if inside_container and hasattr(self, "_container"):
-            self._container.exit()
+            self._container.stop()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""

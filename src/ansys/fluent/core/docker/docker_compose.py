@@ -176,7 +176,6 @@ class ComposeLauncher:
             if image_name
             else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
         )
-
         subprocess.check_call([f"{self._container_source[0]}", "pull", image_name])
 
     def start(self) -> None:
@@ -204,9 +203,7 @@ class ComposeLauncher:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-
         process.communicate(input=self._compose_file, timeout=10)
-
         return_code = process.wait(timeout=10)
 
         if return_code != 0:
@@ -237,7 +234,6 @@ class ComposeLauncher:
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-
         process.communicate(input=self._compose_file, timeout=20)
         return_code = process.wait(timeout=20)
 
@@ -245,10 +241,6 @@ class ComposeLauncher:
             raise subprocess.CalledProcessError(
                 return_code, self._set_compose_cmds() + cmd
             )
-
-    def exit(self) -> None:
-        """Exit the container launcher."""
-        self.stop()
 
     @property
     def ports(self) -> list[str]:

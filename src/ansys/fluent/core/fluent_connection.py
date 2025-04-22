@@ -543,7 +543,7 @@ class FluentConnection:
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
         if hasattr(self, "_container"):
-            self._container.exit()
+            self._container.stop()
 
     def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
