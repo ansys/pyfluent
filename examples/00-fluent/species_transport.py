@@ -477,7 +477,7 @@ solver.settings.results.report.fluxes.get_heat_transfer_sensible(zones="*")
 contour1 = Contour(solver, new_instance_name="contour-temp")
 contour1.field = "temperature"
 contour1.surfaces_list = contour1.surfaces_list.allowed_values()
-contour1.colorings.banded=True
+contour1.colorings.banded = True
 contour1.display()
 graphics.views.auto_scale()
 # graphics.picture.save_picture(file_name="contour-temp.png")
