@@ -209,7 +209,7 @@ def configure_container_dict(
 
     if not mount_source:
         if file_transfer_service:
-            mount_source = file_transfer_service.MOUNT_SOURCE
+            mount_source = file_transfer_service.mount_source
         else:
             mount_source = os.getenv(
                 "PYFLUENT_CONTAINER_MOUNT_SOURCE",
