@@ -186,7 +186,7 @@ solver.settings.setup.general.units.set_units(
 # ==============================================================================================================
 
 # Models setting
-viscous = solver.setup.models.viscous
+viscous = solver.settings.setup.models.viscous
 viscous.model = "k-omega"
 viscous.k_omega_model = "sst"
 
