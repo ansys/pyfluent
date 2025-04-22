@@ -180,10 +180,8 @@ def launch(
         watchdog_err.unlink()
 
     process = subprocess.Popen(cmd_send, **kwargs)
-
     process.communicate(timeout=120)
-
-    return_code = process.wait(timeout=120)  # noqa: F841
+    return_code = process.wait(timeout=120)
 
     if return_code != 0:
         raise subprocess.CalledProcessError(return_code, cmd_send)

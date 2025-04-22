@@ -150,8 +150,7 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
             stderr=subprocess.DEVNULL,
         )
         process.communicate(timeout=120)
-
-        return_code = process.wait(timeout=120)  # noqa: F841
+        return_code = process.wait(timeout=120)
 
         if return_code != 0:
             raise subprocess.CalledProcessError(return_code, cmd_list)
