@@ -69,6 +69,8 @@ def launch(
     ------
     UnsuccessfulWatchdogLaunch
         If Watchdog fails to launch.
+    subprocess.CalledProcessError
+        If Watchdog subprocess fails to launch.
     """
     watchdog_id = "".join(
         random.choices(
@@ -177,7 +179,14 @@ def launch(
     if watchdog_err.is_file():
         watchdog_err.unlink()
 
-    subprocess.Popen(cmd_send, **kwargs)
+    process = subprocess.Popen(cmd_send, **kwargs)
+
+    process.communicate(timeout=120)
+
+    return_code = process.wait(timeout=120)  # noqa: F841
+
+    if return_code != 0:
+        raise subprocess.CalledProcessError(return_code, cmd_send)
 
     logger.info("Waiting for Watchdog to initialize, then proceeding...")
     file_exists = timeout_loop(

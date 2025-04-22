@@ -44,7 +44,7 @@ def get_free_port() -> int:
         port number
     """
     with socket.socket() as s:
-        s.bind(("localhost", 0))
+        s.bind(("", 0))
         free_port = s.getsockname()[1]
     return free_port
 

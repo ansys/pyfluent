@@ -248,11 +248,23 @@ class ComposeLauncher:
     def remove_unused_services(self) -> None:
         """Remove the services."""
 
-        cmd = ["system", "prune", "--volumes", "-f"]
-
         try:
             output = subprocess.check_call(  # noqa: F841
-                self._container_source + cmd,
+                self._container_source + ["stop", f"{self._compose_name}-fluent-1"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            output = subprocess.check_call(  # noqa: F841
+                self._container_source
+                + ["rm", f"{self._compose_name}-fluent-1", "-f", "--volumes"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            output = subprocess.check_call(  # noqa: F841
+                self._container_source
+                + ["network", "rm", f"{self._compose_name}_default", "-f"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
         except subprocess.CalledProcessError as e:  # noqa: F841
             pass

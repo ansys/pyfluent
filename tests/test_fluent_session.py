@@ -144,11 +144,17 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         print(f"cleanup_file_name: {cleanup_file_name}")
         cmd_list.append(Path(cortex_pwd, cleanup_file_name))
         print(f"cmd_list: {cmd_list}")
-        subprocess.Popen(
+        process = subprocess.Popen(
             cmd_list,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
+        process.communicate(timeout=120)
+
+        return_code = process.wait(timeout=120)  # noqa: F841
+
+        if return_code != 0:
+            raise subprocess.CalledProcessError(return_code, cmd_list)
 
 
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
