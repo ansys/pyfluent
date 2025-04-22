@@ -193,7 +193,7 @@ viscous.k_omega_model = "sst"
 ################################################################################################################
 # Define Materials
 # ==============================================================================================================
-solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+solver.settings.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
 
 ################################################################################################################
 # Define Cell Zone Conditions
