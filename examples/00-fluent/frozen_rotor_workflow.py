@@ -266,7 +266,7 @@ solver.settings.setup.mesh_interfaces.turbo_interface.create(
 )
 
 # Perform the mesh check
-solver.mesh.check()
+solver.settings.mesh.check()
 
 ################################################################################################################
 # Define Solver Settings
