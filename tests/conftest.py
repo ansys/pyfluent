@@ -280,16 +280,18 @@ def new_pure_meshing_session():
 
 @pytest.fixture
 def watertight_workflow_session(new_meshing_session_wo_exit):
-    new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    return new_meshing_session
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Watertight Geometry"
+    )
+    return new_meshing_session_wo_exit
 
 
 @pytest.fixture
 def fault_tolerant_workflow_session(new_meshing_session_wo_exit):
-    new_meshing_session.workflow.InitializeWorkflow(
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
         WorkflowType="Fault-tolerant Meshing"
     )
-    return new_meshing_session
+    return new_meshing_session_wo_exit
 
 
 @pytest.fixture
