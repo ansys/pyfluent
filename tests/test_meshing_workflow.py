@@ -441,3 +441,16 @@ def test_setting_none_type_tasks(new_meshing_session):
         meshing.workflow.TaskObject["Describe Overset Features"].CommandName()
         == "DescribeOversetFeatures"
     )
+
+
+def test_inaccessible_meshing_attributes_after_switching_to_solver(new_meshing_session):
+    meshing = new_meshing_session
+    assert meshing._switched is False
+    solver = meshing.switch_to_solver()
+    assert solver
+    assert meshing._switched is True
+    with pytest.raises(AttributeError):
+        # 'switched' attribute is not there in Meshing.
+        assert meshing.switched
+    # This will exit the session.
+    meshing.exit()

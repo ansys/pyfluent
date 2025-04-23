@@ -93,11 +93,14 @@ class Meshing(PureMeshing):
         return solver_session
 
     def __getattribute__(self, item: str):
-        if item == "_switched":
-            return super(Meshing, self).__getattribute__(item)
-
-        if self._switched and item != "exit":
-            return None
+        if super(Meshing, self).__getattribute__("_switched") and item not in [
+            "_switched",
+            "exit",
+            "_fluent_connection",
+        ]:
+            raise AttributeError(
+                f"'{__class__.__name__}' object has no attribute '{item}'"
+            )
 
         return super(Meshing, self).__getattribute__(item)
 
