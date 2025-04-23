@@ -39,6 +39,10 @@ class ComposeBasedLauncher:
         # Sudo is required for Podman on Linux
         if self._container_source[0] == "podman" and self._has_sudo_access():
             self._container_source.insert(0, "sudo")
+            self._compose_cmds = self._set_compose_cmds()
+            self._compose_cmds.insert(0, "sudo")
+        else:
+            self._compose_cmds = self._set_compose_cmds()
 
         if "docker" in self._container_source:
             self._compose_cmd = ["docker-compose"]
@@ -200,7 +204,7 @@ class ComposeBasedLauncher:
             # Some Docker and Podman versions support compose
             # So use docker compose or podman compose
             process = subprocess.Popen(
-                self._set_compose_cmds() + cmd,
+                self._compose_cmds + cmd,
                 stdin=subprocess.PIPE,
                 text=True,
                 stdout=subprocess.DEVNULL,
@@ -211,7 +215,7 @@ class ComposeBasedLauncher:
 
             if return_code != 0:
                 raise subprocess.CalledProcessError(
-                    return_code, self._set_compose_cmds() + cmd
+                    return_code, self._compose_cmds + cmd
                 )
         except subprocess.CalledProcessError:
             # Some Docker and Podman versions do not support compose
@@ -228,7 +232,7 @@ class ComposeBasedLauncher:
 
             if return_code != 0:
                 raise subprocess.CalledProcessError(
-                    return_code, self._set_compose_cmds() + cmd
+                    return_code, self._compose_cmd + cmd
                 )
 
     def stop(self) -> None:
@@ -249,7 +253,7 @@ class ComposeBasedLauncher:
 
         try:
             process = subprocess.Popen(
-                self._set_compose_cmds() + cmd,
+                self._compose_cmds + cmd,
                 stdin=subprocess.PIPE,
                 text=True,
                 stdout=subprocess.DEVNULL,
@@ -260,7 +264,7 @@ class ComposeBasedLauncher:
 
             if return_code != 0:
                 raise subprocess.CalledProcessError(
-                    return_code, self._set_compose_cmds() + cmd
+                    return_code, self._compose_cmds + cmd
                 )
         except subprocess.CalledProcessError:
             process = subprocess.Popen(
@@ -275,7 +279,7 @@ class ComposeBasedLauncher:
 
             if return_code != 0:
                 raise subprocess.CalledProcessError(
-                    return_code, self._set_compose_cmds() + cmd
+                    return_code, self._compose_cmd + cmd
                 )
 
     @property
