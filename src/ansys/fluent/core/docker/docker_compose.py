@@ -32,11 +32,19 @@ class ComposeBasedLauncher:
 
     def __init__(self, *, container_dict):
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
-        self._docker_available = self._check_docker_installed()
-        self._podman_available = self._check_podman_installed()
         self._container_dict = container_dict
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
+
+        # Sudo is required for Podman on Linux
+        if self._container_source[0] == "podman" and self._has_sudo_access():
+            self._container_source.insert(0, "sudo")
+
+        if "docker" in self._container_source:
+            self._compose_cmd = ["docker-compose"]
+        elif "podman" in self._container_source:
+            self._compose_cmd = ["podman-compose"]
+
         self._compose_file = self._get_compose_file(container_dict)
 
     def _get_compose_file(self, container_dict):
@@ -91,29 +99,11 @@ class ComposeBasedLauncher:
 
         return compose_file
 
-    def _check_docker_installed(self):
-        """Check if Docker is installed."""
-        try:
-            subprocess.run(
-                ["docker", "--version"], capture_output=True, text=True, check=True
-            )
-            return True
-        except subprocess.CalledProcessError:
-            return False
-        except FileNotFoundError:
-            return False
-
-    def _check_podman_installed(self):
-        """Check if Podman is installed."""
-        try:
-            subprocess.run(
-                ["podman", "--version"], capture_output=True, text=True, check=True
-            )
-            return True
-        except subprocess.CalledProcessError:
-            return False
-        except FileNotFoundError:
-            return False
+    def _has_sudo_access(self):
+        result = subprocess.run(
+            ["sudo", "-n", "true"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
+        return result.returncode == 0
 
     def _extract_ports(self, port_string):
         """
@@ -147,9 +137,9 @@ class ComposeBasedLauncher:
         """
 
         # Determine the compose command
-        if self._podman_available:
+        if os.getenv("USE_PODMAN_COMPOSE") == "1":
             self._compose_cmds = ["podman", "compose"]
-        elif self._docker_available:
+        elif os.getenv("USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
         else:
             raise RuntimeError("Neither Docker nor Podman is installed.")
@@ -176,7 +166,17 @@ class ComposeBasedLauncher:
             if image_name
             else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
         )
-        subprocess.check_call([f"{self._container_source[0]}", "pull", image_name])
+        if len(self._container_source) == 1:
+            subprocess.check_call([f"{self._container_source[0]}", "pull", image_name])
+        else:
+            subprocess.check_call(
+                [
+                    f"{self._container_source[0]}",
+                    f"{self._container_source[1]}",
+                    "pull",
+                    image_name,
+                ]
+            )
 
     def start(self) -> None:
         """Start the services.
@@ -196,20 +196,40 @@ class ComposeBasedLauncher:
             "--detach",
         ]
 
-        process = subprocess.Popen(
-            self._set_compose_cmds() + cmd,
-            stdin=subprocess.PIPE,
-            text=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        process.communicate(input=self._compose_file, timeout=10)
-        return_code = process.wait(timeout=10)
-
-        if return_code != 0:
-            raise subprocess.CalledProcessError(
-                return_code, self._set_compose_cmds() + cmd
+        try:
+            # Some Docker and Podman versions support compose
+            # So use docker compose or podman compose
+            process = subprocess.Popen(
+                self._set_compose_cmds() + cmd,
+                stdin=subprocess.PIPE,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
+            process.communicate(input=self._compose_file, timeout=10)
+            return_code = process.wait(timeout=10)
+
+            if return_code != 0:
+                raise subprocess.CalledProcessError(
+                    return_code, self._set_compose_cmds() + cmd
+                )
+        except subprocess.CalledProcessError:
+            # Some Docker and Podman versions do not support compose
+            # So use docker-compose or podman-compose
+            process = subprocess.Popen(
+                self._compose_cmd + cmd,
+                stdin=subprocess.PIPE,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            process.communicate(input=self._compose_file, timeout=10)
+            return_code = process.wait(timeout=10)
+
+            if return_code != 0:
+                raise subprocess.CalledProcessError(
+                    return_code, self._set_compose_cmds() + cmd
+                )
 
     def stop(self) -> None:
         """Stop the services.
@@ -227,20 +247,36 @@ class ComposeBasedLauncher:
             "down",
         ]
 
-        process = subprocess.Popen(
-            self._set_compose_cmds() + cmd,
-            stdin=subprocess.PIPE,
-            text=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        process.communicate(input=self._compose_file, timeout=20)
-        return_code = process.wait(timeout=20)
-
-        if return_code != 0:
-            raise subprocess.CalledProcessError(
-                return_code, self._set_compose_cmds() + cmd
+        try:
+            process = subprocess.Popen(
+                self._set_compose_cmds() + cmd,
+                stdin=subprocess.PIPE,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
+            process.communicate(input=self._compose_file, timeout=20)
+            return_code = process.wait(timeout=20)
+
+            if return_code != 0:
+                raise subprocess.CalledProcessError(
+                    return_code, self._set_compose_cmds() + cmd
+                )
+        except subprocess.CalledProcessError:
+            process = subprocess.Popen(
+                self._compose_cmd + cmd,
+                stdin=subprocess.PIPE,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            process.communicate(input=self._compose_file, timeout=20)
+            return_code = process.wait(timeout=20)
+
+            if return_code != 0:
+                raise subprocess.CalledProcessError(
+                    return_code, self._set_compose_cmds() + cmd
+                )
 
     @property
     def ports(self) -> list[str]:
