@@ -137,7 +137,7 @@ class ComposeBasedLauncher:
         Raises
         ------
         RuntimeError
-            If neither Docker nor Podman is installed.
+            If neither Docker nor Podman is specified.
         """
 
         # Determine the compose command
@@ -146,7 +146,7 @@ class ComposeBasedLauncher:
         elif os.getenv("USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
         else:
-            raise RuntimeError("Neither Docker nor Podman is installed.")
+            raise RuntimeError("Neither Docker nor Podman is specified.")
 
         return self._compose_cmds
 
