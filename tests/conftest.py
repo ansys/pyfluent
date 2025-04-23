@@ -27,6 +27,7 @@ import operator
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 
 from packaging.specifiers import SpecifierSet
@@ -177,6 +178,8 @@ def run_before_each_test(
     monkeypatch.setenv("USE_DOCKER_COMPOSE", "1")
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
+    yield
+    subprocess.run(["docker", "system", "prune", "-f", "--volumes"])
 
 
 class Helpers:
