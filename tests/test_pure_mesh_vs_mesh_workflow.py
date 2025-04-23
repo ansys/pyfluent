@@ -81,8 +81,8 @@ def test_meshing_and_solver_mode_exit(new_meshing_session_wo_exit):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_mode_post_switching_to_solver(new_meshing_session):
-    meshing_session = new_meshing_session
+def test_meshing_mode_post_switching_to_solver(new_meshing_session_wo_exit):
+    meshing_session = new_meshing_session_wo_exit
     solver = meshing_session.switch_to_solver()
     # Post switching to solver session, meshing session specific attributes are unavailable
     with pytest.raises(AttributeError):
