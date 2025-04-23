@@ -325,7 +325,7 @@ def test_journal_creation(file_format, new_meshing_session_wo_exit):
     prev_size = prev_stat.st_size
     print(f"prev_stat: {prev_stat}")
 
-    session = new_meshing_session
+    session = new_meshing_session_wo_exit
     if session.connection_properties.inside_container:
         session.journal.start(file_name.name)
     else:
@@ -339,7 +339,7 @@ def test_journal_creation(file_format, new_meshing_session_wo_exit):
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_start_transcript_file_write(new_meshing_session):
+def test_start_transcript_file_write(new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
@@ -354,7 +354,7 @@ def test_start_transcript_file_write(new_meshing_session):
     # prev_mtime = prev_stat.st_mtime
     # prev_size = prev_stat.st_size
 
-    session = new_meshing_session
+    session = new_meshing_session_wo_exit
     session.transcript.start(file_name)
     session = session.switch_to_solver()
     session.transcript.stop()
