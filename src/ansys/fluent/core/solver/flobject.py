@@ -410,6 +410,8 @@ class Base:
     def _is_deprecated(self) -> bool:
         """Whether the object is deprecated in a specific Fluent version.'"""
         deprecated_version = self.get_attrs(["deprecated-version"])
+        if deprecated_version:
+            deprecated_version = deprecated_version.get("attrs", deprecated_version)
         deprecated_version = (
             deprecated_version.get("deprecated-version") if deprecated_version else None
         )
@@ -419,7 +421,7 @@ class Base:
 
     def is_active(self) -> bool:
         """Whether the object is active."""
-        attr = self.get_attr(_InlineConstants.is_active) and not self._is_deprecated()
+        attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
 
     def _check_stable(self) -> None:
@@ -955,7 +957,7 @@ def _command_query_name_filter(
     for name in names:
         if name not in excluded and name.startswith(prefix):
             child = getattr(parent, name)
-            if child.is_active():
+            if child.is_active() and not child._is_deprecated():
                 ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
     return ret
 
@@ -1067,25 +1069,28 @@ class Group(SettingsBase[DictStateType]):
     def get_active_child_names(self):
         """Names of children that are currently active."""
         ret = []
-        for child in self.child_names:
-            if getattr(self, child).is_active():
-                ret.append(child)
+        for child_name in self.child_names:
+            child = getattr(self, child_name)
+            if child.is_active() and not child._is_deprecated():
+                ret.append(child_name)
         return ret
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
         ret = []
-        for command in self.command_names:
-            if getattr(self, command).is_active():
-                ret.append(command)
+        for command_name in self.command_names:
+            command = getattr(self, command_name)
+            if command.is_active() and not command._is_deprecated():
+                ret.append(command_name)
         return ret
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
         ret = []
-        for query in self.query_names:
-            if getattr(self, query).is_active():
-                ret.append(query)
+        for query_name in self.query_names:
+            query = getattr(self, query_name)
+            if query.is_active() and not query._is_deprecated():
+                ret.append(query_name)
         return ret
 
     def __dir__(self):
@@ -1111,7 +1116,7 @@ class Group(SettingsBase[DictStateType]):
         for child_name in self.child_names:
             if child_name not in excluded and child_name.startswith(prefix):
                 child = getattr(self, child_name)
-                if child.is_active():
+                if child.is_active() and not child._is_deprecated():
                     ret.append(
                         [
                             child_name,
@@ -1667,7 +1672,7 @@ class Action(Base):
         for argument_name in self.argument_names:
             if argument_name not in excluded and argument_name.startswith(prefix):
                 argument = getattr(self, argument_name)
-                if argument.is_active():
+                if argument.is_active() and not argument._is_deprecated():
                     ret.append(
                         [
                             argument_name,
