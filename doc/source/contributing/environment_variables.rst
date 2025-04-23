@@ -6,6 +6,8 @@ Environment Variables
 
 Following is a list of environment variables that can be set to control various aspects of PyFluent.
 
+.. vale off
+
 .. list-table::
     :header-rows: 1
 
