@@ -179,7 +179,11 @@ def run_before_each_test(
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
     yield
-    subprocess.run(["docker", "system", "prune", "-f", "--volumes"])
+    subprocess.run(
+        ["docker", "system", "prune", "-f", "--volumes"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
 
 
 class Helpers:
