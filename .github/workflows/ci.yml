@@ -47,6 +47,12 @@ jobs:
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
 
+  install-podman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: gacts/install-podman@v1
+      - run: podman --help
+
   docs-style:
     name: Documentation Style Check
     runs-on: ubuntu-latest
