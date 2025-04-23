@@ -33,6 +33,10 @@ class ComposeBasedLauncher:
     def __init__(self, *, container_dict):
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
         self._container_dict = container_dict
+        self._image_name = (
+            container_dict.get("fluent_image")
+            or f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
+        )
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
@@ -150,37 +154,40 @@ class ComposeBasedLauncher:
 
         return self._compose_cmds
 
-    def check_image_exists(self, image_name: str | None = None) -> bool:
+    def check_image_exists(self) -> bool:
         """Check if a Docker image exists locally."""
-        image_name = (
-            image_name
-            if image_name
-            else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
-        )
         try:
-            output = subprocess.check_output(["docker", "images", "-q", image_name])
+            output = subprocess.check_output(
+                ["docker", "images", "-q", self._image_name]
+            )
             return output.decode("utf-8").strip() != ""
         except subprocess.CalledProcessError as e:  # noqa: F841
             return False
 
-    def pull_image(self, image_name: str | None = None) -> None:
+    def pull_image(self) -> None:
         """Pull a Docker image if it does not exist locally."""
-        image_name = (
-            image_name
-            if image_name
-            else f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
-        )
-        if len(self._container_source) == 1:
-            subprocess.check_call([f"{self._container_source[0]}", "pull", image_name])
+        cmd = [f"{self._container_source[0]}", "pull", self._image_name]
+        if len(self._container_source) == 2:
+            cmd.insert(1, f"{self._container_source[1]}")
+            subprocess.check_call(cmd)
         else:
-            subprocess.check_call(
-                [
-                    f"{self._container_source[0]}",
-                    f"{self._container_source[1]}",
-                    "pull",
-                    image_name,
-                ]
-            )
+            subprocess.check_call(cmd)
+
+    def _start_stop_helper(
+        self, compose_cmd: list[str], cmd: list[str], timeout: float
+    ) -> None:
+        process = subprocess.Popen(
+            compose_cmd + cmd,
+            stdin=subprocess.PIPE,
+            text=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        process.communicate(input=self._compose_file, timeout=timeout)
+        return_code = process.wait(timeout=timeout)
+
+        if return_code != 0:
+            raise subprocess.CalledProcessError(return_code, compose_cmd + cmd)
 
     def start(self) -> None:
         """Start the services.
@@ -203,37 +210,11 @@ class ComposeBasedLauncher:
         try:
             # Some Docker and Podman versions support compose
             # So use docker compose or podman compose
-            process = subprocess.Popen(
-                self._compose_cmds + cmd,
-                stdin=subprocess.PIPE,
-                text=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            process.communicate(input=self._compose_file, timeout=10)
-            return_code = process.wait(timeout=10)
-
-            if return_code != 0:
-                raise subprocess.CalledProcessError(
-                    return_code, self._compose_cmds + cmd
-                )
+            self._start_stop_helper(self._compose_cmds, cmd, 10)
         except subprocess.CalledProcessError:
             # Some Docker and Podman versions do not support compose
             # So use docker-compose or podman-compose
-            process = subprocess.Popen(
-                self._compose_cmd + cmd,
-                stdin=subprocess.PIPE,
-                text=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            process.communicate(input=self._compose_file, timeout=10)
-            return_code = process.wait(timeout=10)
-
-            if return_code != 0:
-                raise subprocess.CalledProcessError(
-                    return_code, self._compose_cmd + cmd
-                )
+            self._start_stop_helper(self._compose_cmd, cmd, 10)
 
     def stop(self) -> None:
         """Stop the services.
@@ -252,35 +233,9 @@ class ComposeBasedLauncher:
         ]
 
         try:
-            process = subprocess.Popen(
-                self._compose_cmds + cmd,
-                stdin=subprocess.PIPE,
-                text=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            process.communicate(input=self._compose_file, timeout=20)
-            return_code = process.wait(timeout=20)
-
-            if return_code != 0:
-                raise subprocess.CalledProcessError(
-                    return_code, self._compose_cmds + cmd
-                )
+            self._start_stop_helper(self._compose_cmds, cmd, 20)
         except subprocess.CalledProcessError:
-            process = subprocess.Popen(
-                self._compose_cmd + cmd,
-                stdin=subprocess.PIPE,
-                text=True,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            process.communicate(input=self._compose_file, timeout=20)
-            return_code = process.wait(timeout=20)
-
-            if return_code != 0:
-                raise subprocess.CalledProcessError(
-                    return_code, self._compose_cmd + cmd
-                )
+            self._start_stop_helper(self._compose_cmd, cmd, 20)
 
     @property
     def ports(self) -> list[str]:

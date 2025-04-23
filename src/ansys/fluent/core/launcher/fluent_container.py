@@ -458,14 +458,14 @@ def start_fluent_container(
 
         compose_container = ComposeBasedLauncher(container_dict=config_dict)
 
-        if not compose_container.check_image_exists(config_dict["fluent_image"]):
+        if not compose_container.check_image_exists():
             logger.debug(
                 f"Fluent image {config_dict['fluent_image']} not found. Pulling image..."
             )
-            compose_container.pull_image(config_dict["fluent_image"])
+            compose_container.pull_image()
 
         # Need to get back to python parent process after pulling image
-        if compose_container.check_image_exists(config_dict["fluent_image"]):
+        if compose_container.check_image_exists():
             compose_container.start()
 
         return port, config_dict, compose_container
