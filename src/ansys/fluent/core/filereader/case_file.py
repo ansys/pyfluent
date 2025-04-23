@@ -45,12 +45,13 @@ from os.path import dirname
 from pathlib import Path
 from typing import Dict, List
 
-from defusedxml.ElementTree import parse
+import defusedxml.ElementTree as ET
 import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+from .pre_processor import remove_unsupported_xml_chars
 
 try:
     import h5py
@@ -731,15 +732,17 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_file_name_from_flprj(flprj_file):
-    tree = parse(flprj_file)
-    root = tree.getroot()
-    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    # If the project file name begins with a digit then the node to find will be prepended
-    # with "_". Rather than making any assumptions that this is a hard rule, or what
-    # the scope of the rule is, simply retry with the name prepended:
-    folder_obj = (
-        root.find(folder_name)
-        if root.find(folder_name) and len(root.find(folder_name)) > 0
-        else root.find("_" + folder_name)
-    )
-    return folder_obj.find("Input").find("Case").find("Target").get("value")
+    with open(flprj_file, "r") as file:
+        content = file.read()
+        content = remove_unsupported_xml_chars(content)
+        root = ET.fromstring(content)
+        folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+        # If the project file name begins with a digit then the node to find will be prepended
+        # with "_". Rather than making any assumptions that this is a hard rule, or what
+        # the scope of the rule is, simply retry with the name prepended:
+        folder_obj = (
+            root.find(folder_name)
+            if root.find(folder_name) and len(root.find(folder_name)) > 0
+            else root.find("_" + folder_name)
+        )
+        return folder_obj.find("Input").find("Case").find("Target").get("value")
