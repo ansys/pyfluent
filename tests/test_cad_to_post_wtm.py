@@ -270,3 +270,4 @@ def test_mixing_elbow(watertight_workflow_session, mixing_elbow_geometry_filenam
         )
 
         ###############################################################################
+    solver_session.exit()
