@@ -40,7 +40,8 @@ class ComposeBasedLauncher:
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
-        # Sudo is required for Podman on Linux
+        # Users do not configure Podman in rootless mode always
+        # So we need to check if sudo is required
         if self._container_source[0] == "podman" and self._has_sudo_access():
             self._container_source.insert(0, "sudo")
             self._compose_cmds = self._set_compose_cmds()
