@@ -99,8 +99,8 @@ volute_mesh = examples.download_file(
 # Define Constants
 # ==============================================================================================================
 
-rho_water = 998.2  # kg/m^3
-mu_water = 0.001002  # kg/(m.s)
+density_water = 998.2  # kg/m^3
+viscosity_water = 0.001002  # kg/(m.s)
 g = 9.81  # m/s^2
 # Impeller speed
 impeller_speed = 1450  # rpm
@@ -173,11 +173,10 @@ graphics.picture.save_picture(
 #    :alt: Pump Volute Mesh
 
 ################################################################################################################
-# Set Unit for Angular Velocity
+# Set the unit for angular velocity, rad/s to rev/min
 # ==============================================================================================================
 
-# Setting unit for angular velocity to rev/min
-solver.settings.setup.general.units.set_units(
+solver.settings.setup.general.units_settings.new_unit(
     quantity="angular-velocity", units_name="rev/min"
 )
 
@@ -265,9 +264,6 @@ solver.settings.setup.mesh_interfaces.turbo_interface.create(
     zone2="interface-volute-inlet",
 )
 
-# Perform the mesh check
-solver.mesh.check()
-
 ################################################################################################################
 # Define Solver Settings
 # ==============================================================================================================
@@ -290,11 +286,7 @@ pump_head.output_parameter = True
 
 # Create a report definition
 # p-out
-solver.settings.solution.report_definitions.surface.create("p-out")
-
-outlet_pressure_report_def = solver.settings.solution.report_definitions.surface[
-    "p-out"
-]
+outlet_pressure_report_def = solver.settings.solution.report_definitions.surface.create("p-out")
 outlet_pressure_report_def.report_type = "surface-massavg"
 outlet_pressure_report_def.surface_names = ["mass-flow-inlet-11"]
 outlet_pressure_report_def.field = "total-pressure"
@@ -311,8 +303,8 @@ outlet_pressure_report_file = solver.settings.solution.monitor.report_files.crea
 outlet_pressure_report_file.report_defs = "p-out"
 
 # p-in
-solver.settings.solution.report_definitions.surface.create("p-in")
-inlet_pressure_report_def = solver.settings.solution.report_definitions.surface["p-in"]
+inlet_pressure_report_def = solver.settings.solution.report_definitions.surface.create("p-in")
+# inlet_pressure_report_def = solver.settings.solution.report_definitions.surface["p-in"]
 inlet_pressure_report_def.report_type = "surface-massavg"
 inlet_pressure_report_def.surface_names = ["inlet"]
 inlet_pressure_report_def.field = "total-pressure"
@@ -325,9 +317,7 @@ pump_head_report_def = (
         "pump-head"
     )
 )
-pump_head_report_def = (
-    solver.settings.solution.report_definitions.single_valued_expression["pump-head"]
-)
+
 pump_head_report_def.definition = "head"
 
 # report plot
@@ -343,10 +333,10 @@ pump_head_report_file = solver.settings.solution.monitor.report_files.create(
 pump_head_report_file.report_defs = "pump-head"
 
 # p-blade
-solver.settings.solution.report_definitions.surface.create("p-blade")
-blade_pressure_report_def = solver.settings.solution.report_definitions.surface[
-    "p-blade"
-]
+blade_pressure_report_def = solver.settings.solution.report_definitions.surface.create("p-blade")
+# blade_pressure_report_def = solver.settings.solution.report_definitions.surface[
+#     "p-blade"
+# ]
 blade_pressure_report_def.report_type = "surface-massavg"
 blade_pressure_report_def.surface_names = ["blade"]
 blade_pressure_report_def.field = "pressure"
