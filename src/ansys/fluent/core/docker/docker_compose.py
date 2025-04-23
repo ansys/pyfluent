@@ -166,16 +166,28 @@ class ComposeBasedLauncher:
 
     def pull_image(self) -> None:
         """Pull a Docker image if it does not exist locally."""
+
         cmd = [f"{self._container_source[0]}", "pull", self._image_name]
+
         if len(self._container_source) == 2:
             cmd.insert(1, f"{self._container_source[1]}")
-            subprocess.check_call(cmd)
-        else:
-            subprocess.check_call(cmd)
+
+        subprocess.check_call(cmd)
 
     def _start_stop_helper(
         self, compose_cmd: list[str], cmd: list[str], timeout: float
     ) -> None:
+        """Helper function to start or stop the services.
+
+        Parameters
+        ----------
+        compose_cmd: list[str]
+            The command to run.
+        cmd: list[str]
+            The command to run.
+        timeout: float
+            The timeout for the command.
+        """
         process = subprocess.Popen(
             compose_cmd + cmd,
             stdin=subprocess.PIPE,
