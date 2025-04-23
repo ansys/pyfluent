@@ -448,13 +448,17 @@ def test_inaccessible_meshing_attributes_after_switching_to_solver(
 ):
     meshing = new_meshing_session_wo_exit
     assert meshing._switched is False
+    assert meshing.is_active() is True
     solver = meshing.switch_to_solver()
-    assert solver
+    assert solver.is_active() is True
+    assert meshing.is_active() is False
     assert meshing._switched is True
     with pytest.raises(AttributeError):
         # 'switched' attribute is not there in Meshing.
         assert meshing.switched
-    assert dir(meshing) == []
+    assert dir(meshing) == ["is_active"]
     del meshing
-    assert solver
+    assert solver.is_active() is True
     solver.exit()
+    assert solver.is_active() is False
+    assert dir(solver) == ["is_active"]

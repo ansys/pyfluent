@@ -23,7 +23,6 @@
 """Module containing class encapsulating Fluent connection."""
 
 from typing import Any, Dict
-import warnings
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
@@ -90,12 +89,15 @@ class Meshing(PureMeshing):
             scheme_eval=self.scheme_eval,
             file_transfer_service=self._file_transfer_service,
         )
+        self._fluent_connection = None
         self._switched = True
         return solver_session
 
     def __getattribute__(self, item: str):
         if super(Meshing, self).__getattribute__("_switched") and item not in [
             "_switched",
+            "is_active",
+            "_fluent_connection",
         ]:
             raise AttributeError(
                 f"'{__class__.__name__}' object has no attribute '{item}'"
@@ -137,11 +139,3 @@ class Meshing(PureMeshing):
     def preferences(self):
         """Preferences datamodel root."""
         return super(Meshing, self).preferences
-
-    def __dir__(self):
-        if self._switched:
-            warnings.warn(
-                "The meshing session is no longer valid after 'switch_to_solver()'"
-            )
-            return []
-        return set(list(self.__dict__.keys()) + dir(type(self)))
