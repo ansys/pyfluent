@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 from os.path import dirname, join
-import pathlib
+from pathlib import Path
 import shutil
 
 import defusedxml.ElementTree as ET
@@ -35,6 +35,7 @@ from ansys.fluent.core.filereader.case_file import (
     MeshType,
     _get_processed_string,
 )
+from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 from ansys.fluent.core.filereader.pre_processor import remove_unsupported_xml_chars
 
@@ -147,7 +148,7 @@ def create_dir_structure_locally(copy_1: bool = False, copy_2: bool = False):
         return_without_path=False,
     )
     prj_dir = join(dirname(case_file_name), case_file_dir)
-    pathlib.Path(prj_dir).mkdir(parents=True, exist_ok=True)
+    Path(prj_dir).mkdir(parents=True, exist_ok=True)
     if copy_1:
         shutil.copy2(case_file_name, prj_dir)
     if copy_2:
@@ -368,3 +369,17 @@ def test_preprocessor():
     pre_processed = remove_unsupported_xml_chars(content)
     assert pre_processed == expected
     assert ET.fromstring(pre_processed)
+
+
+def test_read_flprj_3891():
+    # Read the .flprj file from https://github.com/ansys/pyfluent/issues/3891
+    data_zip = examples.download_file(
+        "data.zip",
+        "pyfluent/flprj_3891",
+        return_without_path=False,
+    )
+    prj_file_name = next(Path(data_zip).with_suffix("").glob("*.flprj"))
+    assert (
+        CaseFile(project_file_name=prj_file_name).get_mesh().get_mesh_type()
+        == MeshType.VOLUME
+    )
