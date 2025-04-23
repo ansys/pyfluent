@@ -49,8 +49,8 @@ def test_pure_meshing_mode(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_mode(new_meshing_session):
-    meshing_session = new_meshing_session
+def test_meshing_mode(new_meshing_session_wo_exit):
+    meshing_session = new_meshing_session_wo_exit
     # check a few dir elements
     # n.b. 'field_data', 'field_info' need to
     # be eliminated from meshing sessions
@@ -60,27 +60,34 @@ def test_meshing_mode(new_meshing_session):
     assert meshing_session.workflow.InitializeWorkflow(
         WorkflowType="Watertight Geometry"
     )
-    assert meshing_session.switch_to_solver()
+    solver = meshing_session.switch_to_solver()
+    assert meshing_session.is_active() is False
+    solver.exit()
 
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_and_solver_mode_exit(new_meshing_session):
-    meshing_session = new_meshing_session
+def test_meshing_and_solver_mode_exit(new_meshing_session_wo_exit):
+    meshing_session = new_meshing_session_wo_exit
     solver_session = meshing_session.switch_to_solver()
     # Even if exit statement is invoked twice, only one is executed as the channel instance is shared
-    meshing_session.exit()
+    with pytest.raises(AttributeError):
+        meshing_session.exit()
+    assert meshing_session.is_active() is False
+    assert solver_session.is_active() is True
     solver_session.exit()
+    assert solver_session.is_active() is False
 
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
 def test_meshing_mode_post_switching_to_solver(new_meshing_session):
     meshing_session = new_meshing_session
-    meshing_session.switch_to_solver()
+    solver = meshing_session.switch_to_solver()
     # Post switching to solver session, meshing session specific attributes are unavailable
     with pytest.raises(AttributeError):
         meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    solver.exit()
 
 
 # def test_transfer_mesh_to_solvers(

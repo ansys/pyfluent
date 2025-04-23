@@ -102,19 +102,20 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_launch_meshing_and_switch(new_meshing_session):
-    meshing = new_meshing_session
+def test_launch_meshing_and_switch(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
     assert not meshing._switched
-    _ = meshing.switch_to_solver()
+    solver = meshing.switch_to_solver()
     assert meshing._switched
     for attr in ("tui", "meshing", "workflow", "watertight"):
         with pytest.raises(AttributeError):
             getattr(meshing, attr)
+    solver.exit()
 
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_meshing_streaming_and_switch(new_meshing_session):
+def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
@@ -126,7 +127,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     on_trancript.called = False
 
-    meshing = new_meshing_session
+    meshing = new_meshing_session_wo_exit
 
     meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
     meshing.transcript.register_callback(on_trancript)
@@ -144,6 +145,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     assert not on_trancript.called
     assert not on_case_loaded.loaded
+    solver.exit()
 
 
 @pytest.mark.fluent_version("latest")
