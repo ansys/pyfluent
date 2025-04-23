@@ -51,7 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: gacts/install-podman@v1
-      - run: podman --help
+      - run: podman version
+      - run: podman compose --help
 
   docs-style:
     name: Documentation Style Check
