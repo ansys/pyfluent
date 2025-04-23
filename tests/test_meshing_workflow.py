@@ -443,8 +443,10 @@ def test_setting_none_type_tasks(new_meshing_session):
     )
 
 
-def test_inaccessible_meshing_attributes_after_switching_to_solver(new_meshing_session):
-    meshing = new_meshing_session
+def test_inaccessible_meshing_attributes_after_switching_to_solver(
+    new_meshing_session_wo_exit,
+):
+    meshing = new_meshing_session_wo_exit
     assert meshing._switched is False
     solver = meshing.switch_to_solver()
     assert solver
@@ -452,5 +454,7 @@ def test_inaccessible_meshing_attributes_after_switching_to_solver(new_meshing_s
     with pytest.raises(AttributeError):
         # 'switched' attribute is not there in Meshing.
         assert meshing.switched
-    # This will exit the session.
-    meshing.exit()
+    assert dir(meshing) == []
+    del meshing
+    assert solver
+    solver.exit()

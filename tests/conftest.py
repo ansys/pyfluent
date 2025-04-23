@@ -258,6 +258,13 @@ def create_session(**kwargs):
 
 
 @pytest.fixture
+def new_meshing_session_wo_exit():
+    meshing = create_session(mode=pyfluent.FluentMode.MESHING)
+    yield meshing
+    # Exit is intentionally avoided here. Please exit from the method using this.
+
+
+@pytest.fixture
 def new_meshing_session():
     meshing = create_session(mode=pyfluent.FluentMode.MESHING)
     yield meshing
