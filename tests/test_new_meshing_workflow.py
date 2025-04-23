@@ -32,12 +32,12 @@ from ansys.fluent.core.workflow import camel_to_snake_case
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_new_watertight_workflow(new_meshing_session):
+def test_new_watertight_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    watertight = new_meshing_session.watertight()
+    watertight = new_meshing_session_wo_exit.watertight()
     watertight.import_geometry.file_name.set_state(import_file_name)
     assert watertight.import_geometry.length_unit() == "mm"
     watertight.import_geometry.length_unit.set_state("in")
@@ -87,15 +87,18 @@ def test_new_watertight_workflow(new_meshing_session):
     watertight.create_volume_mesh()
 
     # Switch to solution mode
-    solver = new_meshing_session.switch_to_solver()
-    assert solver
+    solver = new_meshing_session_wo_exit.switch_to_solver()
+    assert solver.is_active() is True
+    assert new_meshing_session_wo_exit.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
 
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_new_fault_tolerant_workflow(new_meshing_session):
-    meshing = new_meshing_session
+def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
 
     # Import CAD and part management
     import_file_name = examples.download_file(
@@ -336,16 +339,19 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
 
     # Generate volume mesh
     solver = meshing.switch_to_solver()
-    assert solver
+    assert solver.is_active() is True
+    assert meshing.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
 
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
-def test_new_2d_meshing_workflow(new_meshing_session):
+def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
-    two_dim_mesh = new_meshing_session.two_dimensional_meshing()
+    two_dim_mesh = new_meshing_session_wo_exit.two_dimensional_meshing()
 
     two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
     two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
@@ -432,8 +438,11 @@ def test_new_2d_meshing_workflow(new_meshing_session):
     two_dim_mesh.generate_initial_surface_mesh()
 
     # Switch to solution mode
-    solver = new_meshing_session.switch_to_solver()
-    assert solver
+    solver = new_meshing_session_wo_exit.switch_to_solver()
+    assert solver.is_active() is True
+    assert new_meshing_session_wo_exit.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
 
 
 @pytest.mark.codegen_required
