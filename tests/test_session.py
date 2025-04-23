@@ -309,7 +309,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.fluent_version(">=23.2")
-def test_journal_creation(file_format, new_meshing_session):
+def test_journal_creation(file_format, new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
@@ -335,6 +335,7 @@ def test_journal_creation(file_format, new_meshing_session):
     new_stat = file_name.stat()
     print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
+    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -361,6 +362,7 @@ def test_start_transcript_file_write(new_meshing_session):
     # new_stat = file_name.stat()
     # this assertion is invalid.
     # assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
+    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.1")
