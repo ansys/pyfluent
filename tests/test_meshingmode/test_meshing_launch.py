@@ -107,10 +107,9 @@ def test_launch_meshing_and_switch(new_meshing_session):
     assert not meshing._switched
     _ = meshing.switch_to_solver()
     assert meshing._switched
-    assert not meshing.tui
-    assert not meshing.meshing
-    assert not meshing.workflow
-    assert not meshing.watertight
+    for attr in ("tui", "meshing", "workflow", "watertight"):
+        with pytest.raises(AttributeError):
+            getattr(meshing, attr)
 
 
 @pytest.mark.fluent_version("latest")
