@@ -48,7 +48,8 @@ jobs:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
 
   install-podman:
-    runs-on: ubuntu-latest
+    name: Install Podman
+    runs-on: [ubuntu-latest, self-hosted, pyfluent]
     steps:
       - uses: gacts/install-podman@v1
       - run: podman version
