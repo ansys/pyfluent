@@ -206,7 +206,7 @@ class ComposeBasedLauncher:
             "--detach",
         ]
 
-        self._start_stop_helper(self._compose_cmds, cmd, 10)
+        self._start_stop_helper(self._set_compose_cmds(), cmd, 10)
 
     def stop(self) -> None:
         """Stop the services.
@@ -224,7 +224,7 @@ class ComposeBasedLauncher:
             "down",
         ]
 
-        self._start_stop_helper(self._compose_cmds, cmd, 20)
+        self._start_stop_helper(self._set_compose_cmds(), cmd, 20)
 
     def exit(self) -> None:
         """Exit the services."""
