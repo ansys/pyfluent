@@ -39,10 +39,11 @@ import os
 from os.path import dirname
 from pathlib import Path
 
-from defusedxml.ElementTree import parse
+import defusedxml.ElementTree as ET
 import numpy as np
 
 from . import lispy
+from .pre_processor import remove_unsupported_xml_chars
 
 try:
     import h5py
@@ -224,7 +225,15 @@ class DataFile:
 
 
 def _get_data_file_name_from_flprj(flprj_file):
-    tree = parse(flprj_file)
-    root = tree.getroot()
-    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
+    with open(flprj_file, "r") as file:
+        content = file.read()
+        content = remove_unsupported_xml_chars(content)
+        root = ET.fromstring(content)
+        folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+        return (
+            root.find(folder_name)
+            .find("Input")
+            .find("Case")
+            .find("Target")
+            .get("value")
+        )
