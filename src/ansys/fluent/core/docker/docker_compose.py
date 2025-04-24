@@ -146,9 +146,9 @@ class ComposeBasedLauncher:
         """
 
         # Determine the compose command
-        if os.getenv("USE_PODMAN_COMPOSE") == "1":
+        if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
             self._compose_cmds = ["podman", "compose"]
-        elif os.getenv("USE_DOCKER_COMPOSE") == "1":
+        elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
         else:
             raise RuntimeError("Neither Docker nor Podman is specified.")

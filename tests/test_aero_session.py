@@ -34,6 +34,7 @@ from ansys.fluent.core import examples
 def test_icing_session():
     aero_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER_AERO)
     assert "aero" in dir(aero_session)
+    aero_session.exit()
 
 
 @pytest.mark.skip("Run this locally only as of now.")

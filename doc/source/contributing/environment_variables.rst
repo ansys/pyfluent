@@ -70,7 +70,7 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the IP address of the Fluent server while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - SERVER_INFO_DIR
       - Specifies the directory where the server-info file is created while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
-    * - USE_DOCKER_COMPOSE
+    * - PYFLUENT_USE_DOCKER_COMPOSE
       - Specifies Docker as a compose source to launch Fluent in container mode.
-    * - USE_PODMAN_COMPOSE
+    * - PYFLUENT_USE_PODMAN_COMPOSE
       - Specifies Podman as a compose source to launch Fluent in container mode.
