@@ -258,14 +258,12 @@ def test_display_names_as_keys(
     cache = watertight_workflow_session._datamodel_service_se.cache
     assert "TaskObject:Import Geometry" in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" not in cache.rules_str_to_cache["workflow"]
-    watertight_workflow_session.exit()
 
 
 def test_internal_names_as_keys(watertight_workflow_session):
     cache = watertight_workflow_session._datamodel_service_se.cache
     assert "TaskObject:Import Geometry" not in cache.rules_str_to_cache["workflow"]
     assert "TaskObject:TaskObject1" in cache.rules_str_to_cache["workflow"]
-    watertight_workflow_session.exit()
 
 
 @pytest.mark.parametrize(

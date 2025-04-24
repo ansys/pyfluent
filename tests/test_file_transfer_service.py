@@ -138,7 +138,6 @@ def test_file_list_in_datamodel(fault_tolerant_workflow_session):
         RemoveEmptyParts=True,
         Route="Native",
     )
-    meshing.exit()
 
 
 @pytest.mark.standalone
