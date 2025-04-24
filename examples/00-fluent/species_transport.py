@@ -477,7 +477,7 @@ solver.settings.results.report.fluxes.get_heat_transfer_sensible(zones="*")
 contour1 = Contour(solver, new_instance_name="contour-temp")
 contour1.field = "temperature"
 contour1.surfaces_list = contour1.surfaces_list.allowed_values()
-contour1.coloring.option = "banded"
+contour1.colorings.banded = True
 contour1.display()
 graphics.views.auto_scale()
 # graphics.picture.save_picture(file_name="contour-temp.png")
@@ -496,7 +496,7 @@ graphics.views.auto_scale()
 
 vector1 = Vector(solver, new_instance_name="vector-vel")
 vector1.surfaces_list = ["interior-4"]
-vector1.scale.scale_f = 0.01
+vector1.options.scale = 0.01
 vector1.vector_opt.fixed_length = True
 
 # %%
