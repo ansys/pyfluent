@@ -40,20 +40,6 @@ class ComposeBasedLauncher:
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
-        # Users do not configure Podman in rootless mode always
-        # So we need to check if sudo is required
-        if self._container_source[0] == "podman" and self._has_sudo_access():
-            self._container_source.insert(0, "sudo")
-            self._compose_cmds = self._set_compose_cmds()
-            self._compose_cmds.insert(0, "sudo")
-        else:
-            self._compose_cmds = self._set_compose_cmds()
-
-        if "docker" in self._container_source:
-            self._compose_cmd = ["docker-compose"]
-        elif "podman" in self._container_source:
-            self._compose_cmd = ["podman-compose"]
-
         self._compose_file = self._get_compose_file(container_dict)
 
     def _get_compose_file(self, container_dict):
@@ -220,14 +206,7 @@ class ComposeBasedLauncher:
             "--detach",
         ]
 
-        try:
-            # Some Docker and Podman versions support compose
-            # So use docker compose or podman compose
-            self._start_stop_helper(self._compose_cmds, cmd, 10)
-        except subprocess.CalledProcessError:
-            # Some Docker and Podman versions do not support compose
-            # So use docker-compose or podman-compose
-            self._start_stop_helper(self._compose_cmd, cmd, 10)
+        self._start_stop_helper(self._compose_cmds, cmd, 10)
 
     def stop(self) -> None:
         """Stop the services.
@@ -245,10 +224,20 @@ class ComposeBasedLauncher:
             "down",
         ]
 
+        self._start_stop_helper(self._compose_cmds, cmd, 20)
+
+    def exit(self) -> None:
+        """Exit the services."""
         try:
-            self._start_stop_helper(self._compose_cmds, cmd, 20)
+            self.stop()
         except subprocess.CalledProcessError:
-            self._start_stop_helper(self._compose_cmd, cmd, 20)
+            pass
+        finally:
+            subprocess.run(
+                self._container_source + ["kill", f"{self._compose_name}-fluent-1"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
 
     @property
     def ports(self) -> list[str]:
