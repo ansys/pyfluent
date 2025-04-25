@@ -89,6 +89,9 @@ class Meshing(PureMeshing):
             file_transfer_service=self._file_transfer_service,
         )
         self._fluent_connection = None
+        self.__doc__ = (
+            "Meshing session is not usable anymore after switching to solver mode."
+        )
         return solver_session
 
     def __getattribute__(self, item: str):
