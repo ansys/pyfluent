@@ -92,7 +92,9 @@ class Meshing(PureMeshing):
         return solver_session
 
     def __getattribute__(self, item: str):
-        if super(Meshing, self).__getattribute__("is_active") is False and item not in [
+        if super(Meshing, self).__getattribute__(
+            "_fluent_connection"
+        ) is None and item not in [
             "is_active",
             "_fluent_connection",
         ]:
