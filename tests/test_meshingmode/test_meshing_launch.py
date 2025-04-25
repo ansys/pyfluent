@@ -104,9 +104,9 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 @pytest.mark.codegen_required
 def test_launch_meshing_and_switch(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
-    assert not meshing._switched
+    assert meshing.is_active() is True
     solver = meshing.switch_to_solver()
-    assert meshing._switched
+    assert meshing.is_active() is False
     for attr in ("tui", "meshing", "workflow", "watertight"):
         with pytest.raises(AttributeError):
             getattr(meshing, attr)

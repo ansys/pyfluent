@@ -64,7 +64,6 @@ class Meshing(PureMeshing):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        self._switched = False
         super(Meshing, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
@@ -90,12 +89,10 @@ class Meshing(PureMeshing):
             file_transfer_service=self._file_transfer_service,
         )
         self._fluent_connection = None
-        self._switched = True
         return solver_session
 
     def __getattribute__(self, item: str):
-        if super(Meshing, self).__getattribute__("_switched") and item not in [
-            "_switched",
+        if super(Meshing, self).__getattribute__("is_active") is False and item not in [
             "is_active",
             "_fluent_connection",
         ]:
