@@ -42,6 +42,18 @@ class ComposeBasedLauncher:
 
         self._compose_file = self._get_compose_file(container_dict)
 
+        subprocess.run(
+            [
+                self._container_source[0],
+                "network",
+                "create",
+                f"{self._compose_name}_network",
+            ],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
     def _get_compose_file(self, container_dict):
         """Generates compose file for the Docker Compose setup.
 
@@ -59,10 +71,16 @@ class ComposeBasedLauncher:
             ports = [container_dict.get("fluent_port", "")]
 
         compose_file = f"""
+        networks:
+        {indent}{self._compose_name}_network:
+        {indent * 2}external: true
+
         services:
           fluent:
             image: {container_dict.get("fluent_image")}
             command: {" ".join(container_dict["command"])}
+            networks:
+            {indent}- {self._compose_name}_network
             working_dir: {container_dict.get("mount_target")}
             volumes:
             {indent}- {container_dict.get("mount_source")}:{container_dict.get("mount_target")}
@@ -233,11 +251,17 @@ class ComposeBasedLauncher:
         except subprocess.CalledProcessError:
             pass
         finally:
-            subprocess.run(
-                self._container_source + ["kill", f"{self._compose_name}-fluent-1"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
+            cmds = [
+                ["kill", f"{self._compose_name}-fluent-1"],
+                ["network", "rm", f"{self._compose_name}_network"],
+            ]
+
+            for cmd in cmds:
+                subprocess.run(
+                    self._container_source + cmd,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
 
     @property
     def ports(self) -> list[str]:
