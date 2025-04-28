@@ -204,7 +204,11 @@ class StandaloneLauncher:
         if fluent_version:
             _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
-        if fluent_version and fluent_version >= FluentVersion.v251:
+        if (
+            fluent_version
+            and fluent_version >= FluentVersion.v251
+            and self.argvals["py"] is None
+        ):
             self.argvals["py"] = True
 
         if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":

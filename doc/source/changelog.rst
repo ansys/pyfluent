@@ -9,6 +9,25 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.30.4 <https://github.com/ansys/pyfluent/releases/tag/v0.30.4>`_ - April 24, 2025
+===================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Skip test_reduction_does_not_modify_case [skip tests]
+          - `#3939 <https://github.com/ansys/pyfluent/pull/3939>`_
+
+        * - Preprocess xml content before sending it to ElementTree parser
+          - `#3951 <https://github.com/ansys/pyfluent/pull/3951>`_
+
+
 `0.30.3 <https://github.com/ansys/pyfluent/releases/tag/v0.30.3>`_ - April 11, 2025
 ===================================================================================
 
