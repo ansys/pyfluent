@@ -118,7 +118,7 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     help(meshing)
     captured = capsys.readouterr()
     assert (
-        "Meshing session is not usable anymore after switching to solver mode."
+        "The meshing session is no longer usable after switching to solution mode."
         in captured.out
     )
     solver.exit()
