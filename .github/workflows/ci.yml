@@ -93,9 +93,9 @@ jobs:
 
   check-vulnerabilities:
     name: "Check library vulnerabilities"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: ansys/actions/check-vulnerabilities@v8
+      - uses: ansys/actions/check-vulnerabilities@v9
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
