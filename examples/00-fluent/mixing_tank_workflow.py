@@ -77,11 +77,8 @@ from ansys.fluent.core import examples
 # Launch Fluent session with meshing mode and print Fluent version
 # ===========================================================================================================
 session = pyfluent.launch_fluent(
-    product_version="251",
-    processor_count=4,
     mode="meshing",
     cleanup_on_exit=True,
-    ui_mode="gui",
 )
 print(session.get_fluent_version())
 
