@@ -90,7 +90,7 @@ class Meshing(PureMeshing):
         )
         self._fluent_connection = None
         self.__doc__ = (
-            "Meshing session is not usable anymore after switching to solver mode."
+            "The meshing session is no longer usable after switching to solution mode."
         )
         return solver_session
 
