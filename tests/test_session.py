@@ -674,3 +674,14 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     assert Path(
         solver._app_utilities.get_solver_process_info()["working_directory"]
     ) == Path(tmp_dir)
+
+
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=25.1")
+def test_launch_in_pyconsole_mode():
+    with pyfluent.launch_fluent() as session:
+        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
+    with pyfluent.launch_fluent(py=True) as session:
+        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
+    with pyfluent.launch_fluent(py=False) as session:
+        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is False
