@@ -309,7 +309,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.fluent_version(">=23.2")
-def test_journal_creation(file_format, new_meshing_session):
+def test_journal_creation(file_format, new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
@@ -325,7 +325,7 @@ def test_journal_creation(file_format, new_meshing_session):
     prev_size = prev_stat.st_size
     print(f"prev_stat: {prev_stat}")
 
-    session = new_meshing_session
+    session = new_meshing_session_wo_exit
     if session.connection_properties.inside_container:
         session.journal.start(file_name.name)
     else:
@@ -335,10 +335,11 @@ def test_journal_creation(file_format, new_meshing_session):
     new_stat = file_name.stat()
     print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
+    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_start_transcript_file_write(new_meshing_session):
+def test_start_transcript_file_write(new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
@@ -353,7 +354,7 @@ def test_start_transcript_file_write(new_meshing_session):
     # prev_mtime = prev_stat.st_mtime
     # prev_size = prev_stat.st_size
 
-    session = new_meshing_session
+    session = new_meshing_session_wo_exit
     session.transcript.start(file_name)
     session = session.switch_to_solver()
     session.transcript.stop()
@@ -361,6 +362,7 @@ def test_start_transcript_file_write(new_meshing_session):
     # new_stat = file_name.stat()
     # this assertion is invalid.
     # assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
+    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -383,7 +385,7 @@ def test_read_case_using_lightweight_mode():
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
         file_transfer_service = ContainerFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
             lightweight_mode=True,
@@ -416,8 +418,8 @@ def test_read_case_using_lightweight_mode_exiting():
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
             lightweight_mode=True,
@@ -672,3 +674,14 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
     assert Path(
         solver._app_utilities.get_solver_process_info()["working_directory"]
     ) == Path(tmp_dir)
+
+
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=25.1")
+def test_launch_in_pyconsole_mode():
+    with pyfluent.launch_fluent() as session:
+        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
+    with pyfluent.launch_fluent(py=True) as session:
+        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
+    with pyfluent.launch_fluent(py=False) as session:
+        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is False

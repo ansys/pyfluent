@@ -53,9 +53,9 @@ To obtain surface vertex coordinates for a given surface, create a
 
   # Retrieves vertex coordinates as a NumPy array.
   # Shape: (389, 3) - This means 389 vertices, each defined by 3 coordinates (x, y, z).
-  >>> vertices_data["inlet"][SurfaceDataType.Vertices].shape
+  >>> vertices_data["inlet"].vertices.shape
   (389, 3)
-  >>> vertices_data["inlet"][SurfaceDataType.Vertices][5]
+  >>> vertices_data["inlet"].vertices[5]
   # Example: The 6th vertex (zero-based indexing) has coordinates [-0.3469, 0.0, -0.0386].
   array([-0.34689394,  0.        , -0.03863097], dtype=float32)
 
@@ -72,9 +72,9 @@ in the ``data_types`` list.
 
   # FacesNormal shape: (262, 3) - 262 face normals, each with 3 components (x, y, z).
   # FacesCentroid shape: (262, 3) - Centroids for each of the 262 faces, given as (x, y, z).
-  >>> faces_normal_and_centroid_data["inlet"][SurfaceDataType.FacesNormal].shape
+  >>> faces_normal_and_centroid_data["inlet"].face_normals.shape
   (262, 3)
-  >>> faces_normal_and_centroid_data["inlet"][SurfaceDataType.FacesCentroid][15]
+  >>> faces_normal_and_centroid_data["inlet"].face_centroids[15]
   # Example: The centroid of the 16th face has coordinates [-0.3463, 0.0, -0.0328].
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
@@ -89,7 +89,7 @@ To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_ty
 
   # FacesConnectivity provides indices of vertices for each face. For example:
   # Face 6 is connected to vertices 4, 5, 12, and 11.
-  >>> faces_connectivity_data["inlet"][SurfaceDataType.FacesConnectivity][5]
+  >>> faces_connectivity_data["inlet"].connectivity[5]
   array([ 4,  5, 12, 11])
 
 Get scalar field data
@@ -138,13 +138,13 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   # Vertices shape: (29565, 3) - 29565 pathline points, each with coordinates (x, y, z).
   # Lines: A list where each entry contains indices of vertices forming a pathline.
   # Velocity shape: (29565,) - Scalar velocity values at each pathline point.
-  >>> velocity_path_lines_data["inlet"]["vertices"].shape
+  >>> velocity_path_lines_data["inlet"].vertices.shape
   (29565, 3)
-  >>> len(velocity_path_lines_data["inlet"]["lines"])
+  >>> len(velocity_path_lines_data["inlet"].lines)
   29303
-  >>> velocity_path_lines_data["inlet"]["x-velocity"].shape
+  >>> velocity_path_lines_data["inlet"].scalar_field.shape
   (29565,)
-  >>> velocity_path_lines_data["inlet"]["lines"][100]
+  >>> velocity_path_lines_data["inlet"].lines[100]
   # Example: Pathline 101 connects vertices 100 and 101.
   array([100, 101])
 
