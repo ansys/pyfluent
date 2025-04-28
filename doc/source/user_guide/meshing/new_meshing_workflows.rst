@@ -438,9 +438,9 @@ Generate surface mesh
 
 .. code:: python
 
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
@@ -452,9 +452,9 @@ Generate surface mesh
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
 
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
     two_dim_mesh.generate_initial_surface_mesh()
 
 Switch to solution mode
