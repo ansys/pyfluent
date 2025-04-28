@@ -92,10 +92,15 @@ class SchemeEvalService:
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
-        self, request: SchemeEvalProtoModule.SchemeEvalRequest
+        self,
+        request: SchemeEvalProtoModule.SchemeEvalRequest,
+        metadata: list[tuple[str, str]] = None,
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
         """SchemeEval RPC of SchemeEval service."""
-        return self.__stub.SchemeEval(request, metadata=self.__metadata)
+        new_metadata = self.__metadata
+        if metadata:
+            new_metadata = self.__metadata + metadata
+        return self.__stub.SchemeEval(request, metadata=new_metadata)
 
 
 class Symbol:
@@ -271,13 +276,16 @@ class SchemeEval:
         except Exception:  # for pypim launch
             self.version = FluentVersion.v231.value
 
-    def eval(self, val: Any) -> Any:
+    def eval(self, val: Any, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression.
 
         Parameters
         ----------
         val : Any
             Input scheme expression represented as Python datatype
+
+        suppress_prompts : bool, optional
+            Whether to suppress prompts in Fluent, by default True
 
         Returns
         -------
@@ -292,7 +300,10 @@ class SchemeEval:
         else:
             request = SchemeEvalProtoModule.SchemeEvalRequest()
             _convert_py_value_to_scheme_pointer(val, request.input, self.version)
-            response = self.service.scheme_eval(request)
+            metadata = []
+            if not suppress_prompts:
+                metadata.append(("no-suppress-prompts", "1"))
+            response = self.service.scheme_eval(request, metadata)
             return _convert_scheme_pointer_to_py_value(response.output, self.version)
 
     def exec(
@@ -343,13 +354,16 @@ class SchemeEval:
         response = self.service.string_eval(request)
         return response.output
 
-    def scheme_eval(self, input: str) -> Any:
+    def scheme_eval(self, input: str, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression in string format.
 
         Parameters
         ----------
         input : str
             Input scheme expression in string format
+
+        suppress_prompts : bool, optional
+            Whether to suppress prompts in Fluent, by default True
 
         Returns
         -------
@@ -362,7 +376,7 @@ class SchemeEval:
             (S("with-input-from-string"), input, S("read")),
             S("user-initial-environment"),
         )
-        return self.eval(val)
+        return self.eval(val, suppress_prompts)
 
     def is_defined(self, symbol: str) -> bool:
         """Check if a symbol is defined in the scheme environment.
