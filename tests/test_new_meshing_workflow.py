@@ -407,14 +407,16 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
+        True
+    )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
@@ -426,14 +428,16 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
+        True
+    )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
