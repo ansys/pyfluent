@@ -265,6 +265,10 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
+    def is_active(self):
+        """Whether the current session is active."""
+        return True if self._fluent_connection else False
+
     @property
     def field_info(self):
         """Provides access to Fluent field information."""
@@ -377,6 +381,7 @@ class BaseSession:
                 self._fluent_connection.connection_properties.inside_container
             )
             self._fluent_connection.exit(**kwargs)
+            self._fluent_connection = None
 
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
@@ -459,6 +464,8 @@ class BaseSession:
         self.exit()
 
     def __dir__(self):
+        if self._fluent_connection is None:
+            return ["is_active"]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",

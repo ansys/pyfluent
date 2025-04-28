@@ -366,6 +366,8 @@ class Solver(BaseSession):
         return getattr(self._settings_api_root, attr)
 
     def __dir__(self):
+        if self._fluent_connection is None:
+            return ["is_active"]
         settings_dir = []
         if self.get_fluent_version() <= FluentVersion.v242:
             self._populate_settings_api_root()

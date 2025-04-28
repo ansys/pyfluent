@@ -442,10 +442,10 @@ def test_reductions(
     _test_centroid_2_sources(solver1, solver2)
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/3938")
 @pytest.mark.fluent_version(">=24.2")
 def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
+    solver.solution.initialization.hybrid_initialize()
     # After reading the static-mixer case in Fluent, case-modifed? flag is somehow True
     solver.scheme_eval.scheme_eval("(%save-case-id)")
     assert not solver.scheme_eval.scheme_eval("(case-modified?)")
