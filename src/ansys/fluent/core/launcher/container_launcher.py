@@ -38,6 +38,7 @@ Examples
 import inspect
 import logging
 import os
+import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -58,11 +59,27 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_argvals_and_session,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
+
+
+def _get_server_info_from_container(config_dict):
+    """Retrieve the server info from a specified file in a container."""
+
+    host_server_info_file = config_dict["host_server_info_file"]
+
+    time_limit = 0
+    while not host_server_info_file.exists():
+        time.sleep(2)
+        time_limit += 2
+        if time_limit > 60:
+            raise FileNotFoundError(f"{host_server_info_file} not found.")
+
+    return _parse_server_info_file(str(host_server_info_file))
 
 
 class DockerLauncher:

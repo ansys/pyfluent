@@ -372,6 +372,7 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: ContainerT | None = None,
     ):
         """Initialize a Session.
 
@@ -408,6 +409,9 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: ContainerT, optional
+            The container instance if the Fluent session is running inside
+            a container.
 
         Raises
         ------
@@ -453,6 +457,14 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
+        self._container = container
+        self._compose = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") or os.getenv(
+            "PYFLUENT_USE_PODMAN_COMPOSE"
+        )
+        # ``inside_container`` evaluated using Docker SDK in next block which is incompatible with Podman
+        # Therefore, it will be set to False
+        if self._compose:
+            inside_container = False
 
         if (
             (inside_container is None or inside_container is True)
@@ -573,21 +585,28 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        container = self.connection_properties.inside_container
-        container_id = self.connection_properties.cortex_host
-        pid = self.connection_properties.fluent_host_pid
-        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
-        if get_container(container_id):
-            try:
-                container.exec_run(["bash", cleanup_file_name], detach=True)
-            except _docker().errors.APIError as e:
-                logger.info(f"{type(e).__name__}: {e}")
-                logger.debug(
-                    "Caught Docker APIError, Docker container probably not running anymore."
-                )
+        if self._compose and hasattr(self, "_container"):
+            self._container.exit()
         else:
-            logger.debug("Container not found, cancelling cleanup script execution.")
+            container = self.connection_properties.inside_container
+            container_id = self.connection_properties.cortex_host
+            pid = self.connection_properties.fluent_host_pid
+            cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+            logger.debug(
+                f"Executing Fluent container cleanup script: {cleanup_file_name}"
+            )
+            if get_container(container_id):
+                try:
+                    container.exec_run(["bash", cleanup_file_name], detach=True)
+                except _docker().errors.APIError as e:
+                    logger.info(f"{type(e).__name__}: {e}")
+                    logger.debug(
+                        "Caught Docker APIError, Docker container probably not running anymore."
+                    )
+            else:
+                logger.debug(
+                    "Container not found, cancelling cleanup script execution."
+                )
 
     def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""

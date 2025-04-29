@@ -25,6 +25,7 @@
 from enum import Enum
 import json
 import logging
+import os
 from typing import Any, Callable, Dict
 import warnings
 import weakref
@@ -369,15 +370,25 @@ class BaseSession:
         """Gets and returns the fluent version."""
         return FluentVersion(self.scheme_eval.version)
 
+    def _exit_compose_service(self):
+        if (
+            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE")
+            or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE")
+            and hasattr(self, "_container")
+        ):
+            self._container.exit()
+
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
         if self._fluent_connection:
+            self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
             self._fluent_connection = None
 
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
+        self._exit_compose_service()
         self._fluent_connection.force_exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:
