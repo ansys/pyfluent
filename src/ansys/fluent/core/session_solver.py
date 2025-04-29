@@ -167,6 +167,7 @@ class Solver(BaseSession):
         monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
+        #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
         self.events.register_callback(
             (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
