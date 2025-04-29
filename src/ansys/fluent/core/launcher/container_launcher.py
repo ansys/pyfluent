@@ -58,6 +58,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
+import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -195,6 +196,9 @@ class DockerLauncher:
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
+        self._compose = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") or os.getenv(
+            "PYFLUENT_USE_PODMAN_COMPOSE"
+        )
 
     def __call__(self):
         if self.argvals["dry_run"]:
@@ -214,11 +218,16 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, config_dict, container = start_fluent_container(
-            self._args, self.argvals["container_dict"]
-        )
+        if self._compose:
+            port, config_dict, container = start_fluent_container(
+                self._args, self.argvals["container_dict"]
+            )
 
-        _, _, password = _get_server_info_from_container(config_dict=config_dict)
+            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+        else:
+            port, password, container = start_fluent_container(
+                self._args, self.argvals["container_dict"]
+            )
 
         fluent_connection = FluentConnection(
             port=port,
@@ -238,5 +247,15 @@ class DockerLauncher:
         )
 
         session._container = container
+
+        if not self._compose:
+            if (
+                self.argvals["start_watchdog"] is None
+                and self.argvals["cleanup_on_exit"]
+            ):
+                self.argvals["start_watchdog"] = True
+            if self.argvals["start_watchdog"]:
+                logger.debug("Launching Watchdog for Fluent container...")
+                watchdog.launch(os.getpid(), port, password)
 
         return session

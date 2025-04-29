@@ -16,7 +16,6 @@ env:
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
   PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
-  PYFLUENT_USE_DOCKER_COMPOSE: 1
 
 jobs:
   build_dev_docs:

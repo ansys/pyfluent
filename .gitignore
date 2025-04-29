@@ -146,4 +146,3 @@ src/ansys/fluent/core/generated/
 # Fluent generated files
 *.trn
 cleanup-fluent-*-*.*
-serverinfo-*.txt

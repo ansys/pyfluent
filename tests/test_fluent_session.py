@@ -32,6 +32,7 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import (
     WaitTypeError,
     _pid_exists,
+    get_container,
 )
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
@@ -92,20 +93,20 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
         session = pyfluent.launch_fluent()
         session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
-        _cortex_pid = session.connection_properties.cortex_pid
+        _cortex_host = session.connection_properties.cortex_host
         _inside_container = session.connection_properties.inside_container
-        return _fluent_host_pid, _cortex_pid, _inside_container
+        return _fluent_host_pid, _cortex_host, _inside_container
 
-    fluent_host_pid, cortex_pid, inside_container = f()
+    fluent_host_pid, cortex_host, inside_container = f()
 
     timeout_loop(
-        lambda: (inside_container and not _pid_exists(cortex_pid))
+        lambda: (inside_container and not get_container(cortex_host))
         or (not inside_container and not _pid_exists(fluent_host_pid)),
         60,
     )
 
     if inside_container:
-        assert not _pid_exists(cortex_pid)
+        assert not get_container(cortex_host)
     else:
         assert not _pid_exists(fluent_host_pid)
 
@@ -123,9 +124,8 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     fluent_host_pid, cortex_host, inside_container, cortex_pwd = f()
     time.sleep(10)
     if inside_container:
-        result = subprocess.check_call(["docker", "stop", cortex_host])
-        assert result == 0
-        subprocess.check_call(["docker", "rm", cortex_host])
+        assert get_container(cortex_host)
+        subprocess.Popen(["docker", "stop", cortex_host])  # cortex_host = container_id
     else:
         from pathlib import Path
 
@@ -144,16 +144,11 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         print(f"cleanup_file_name: {cleanup_file_name}")
         cmd_list.append(Path(cortex_pwd, cleanup_file_name))
         print(f"cmd_list: {cmd_list}")
-        process = subprocess.Popen(
+        subprocess.Popen(
             cmd_list,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         )
-        process.communicate(timeout=120)
-        return_code = process.wait(timeout=120)
-
-        if return_code != 0:
-            raise subprocess.CalledProcessError(return_code, cmd_list)
 
 
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
@@ -262,20 +257,24 @@ def test_interrupt(static_mixer_case_session):
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("PYFLUENT_LOGGING")
     monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
+    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.launch_fluent(start_watchdog=False)
-    cortex = solver.connection_properties.cortex_pid
+    cortex = (
+        solver.connection_properties.cortex_host
+        if inside_container
+        else solver.connection_properties.cortex_pid
+    )
     solver.exit()
     assert timeout_loop(
-        lambda: not _pid_exists(cortex),
+        lambda: (inside_container and not get_container(cortex))
+        or (not inside_container and not _pid_exists(cortex)),
         timeout=60,
         idle_period=1,
     )
 
 
-# Docker compose takes around 11 seconds to stop both container and network
-@pytest.mark.standalone
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
     fl_connection1 = session1._fluent_connection

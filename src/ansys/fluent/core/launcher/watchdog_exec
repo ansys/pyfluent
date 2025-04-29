@@ -8,6 +8,7 @@ if __name__ == "__main__":
     try:
         import os
         import signal
+        import subprocess
         import sys
         import time
 
@@ -17,8 +18,9 @@ if __name__ == "__main__":
         from ansys.fluent.core.fluent_connection import (
             FluentConnection,
             _pid_exists,
+            get_container,
         )
-        from ansys.fluent.core.utils.execution import timeout_exec
+        from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
         watchdog_id = sys.argv[5]
 
@@ -113,6 +115,10 @@ if __name__ == "__main__":
             if not fluent.connection_properties.inside_container:
                 check_pid_down(cortex_pid, "Cortex")
                 check_pid_down(fluent_host_pid, "Fluent")
+            else:
+                if not get_container(cortex_host):
+                    logger.debug("Fluent container down")
+                    down.append("Fluent container")
             if down:
                 break
             logger.info("Waiting...")
@@ -137,6 +143,24 @@ if __name__ == "__main__":
                     logger.info("Exit call succeeded.")
             else:
                 logger.info("Fluent client not healthy.")
+        if get_container(cortex_host):
+            logger.info(
+                "Running Fluent cleanup scripts inside container if they are still available..."
+            )
+            fluent.force_exit()
+            response = timeout_loop(
+                get_container,
+                IDLE_PERIOD * 3,
+                args=(cortex_host,),
+                expected="falsy",
+            )
+            if response:
+                logger.info(
+                    "Fluent container still alive somehow, directly terminating it..."
+                )
+                subprocess.run(["docker", "kill", cortex_host])
+            else:
+                logger.info("Fluent container successfully shut down.")
         else:
             logger.info(
                 "Running local Fluent cleanup scripts if they are still available..."

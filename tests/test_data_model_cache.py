@@ -454,5 +454,3 @@ def test_cache_per_session():
         _ = m1.watertight()
         assert not m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()
-        m1.exit()
-        m2.exit()

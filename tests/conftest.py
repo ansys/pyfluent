@@ -174,7 +174,6 @@ def run_before_each_test(
 ) -> None:
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
     monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
-    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
 
