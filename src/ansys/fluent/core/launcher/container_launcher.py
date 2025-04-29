@@ -196,6 +196,9 @@ class DockerLauncher:
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
+        self._compose = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") or os.getenv(
+            "PYFLUENT_USE_PODMAN_COMPOSE"
+        )
 
     def __call__(self):
         if self.argvals["dry_run"]:
@@ -215,9 +218,16 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password, container = start_fluent_container(
-            self._args, self.argvals["container_dict"]
-        )
+        if self._compose:
+            port, config_dict, container = start_fluent_container(
+                self._args, self.argvals["container_dict"]
+            )
+
+            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+        else:
+            port, password, container = start_fluent_container(
+                self._args, self.argvals["container_dict"]
+            )
 
         fluent_connection = FluentConnection(
             port=port,
@@ -226,6 +236,7 @@ class DockerLauncher:
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
+            container=container if self._compose else None,
         )
 
         session = self.new_session(

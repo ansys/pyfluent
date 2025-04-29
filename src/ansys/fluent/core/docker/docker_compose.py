@@ -62,8 +62,6 @@ class ComposeBasedLauncher:
           fluent:
             image: {container_dict.get("fluent_image")}
             command: {" ".join(container_dict["command"])}
-            networks:
-            {indent}- {self._compose_name}_network
             working_dir: {container_dict.get("mount_target")}
             volumes:
             {indent}- {container_dict.get("mount_source")}:{container_dict.get("mount_target")}
