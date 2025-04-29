@@ -584,6 +584,7 @@ def test_report():
     assert str(rep).count("pandas") == 1
 
 
+@pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
     monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
     import ansys.fluent.core as pyfluent
