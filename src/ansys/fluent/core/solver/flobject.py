@@ -413,8 +413,9 @@ class Base:
         deprecated_version = (
             deprecated_version.get("deprecated-version") if deprecated_version else None
         )
-        return deprecated_version and FluentVersion(self._version) >= FluentVersion(
-            deprecated_version
+        return deprecated_version and (
+            float(deprecated_version) <= 22.2
+            or FluentVersion(self._version) >= FluentVersion(deprecated_version)
         )
 
     def is_active(self) -> bool:
