@@ -27,6 +27,7 @@ from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
 
 import numpy as np
+import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 
@@ -406,6 +407,73 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
         return name in self(respect_data_valid)
 
 
+class SurfaceData:
+    """
+    Class that enables object-style access to surface data structures.
+
+    Attributes
+    ----------
+    vertices: npt.NDArray[np.float64] | None
+    connectivity: list[npt.NDArray[np.float64]] | None
+    face_centroids: npt.NDArray[np.float64] | None
+    face_normals: npt.NDArray[np.float64] | None
+    """
+
+    def __init__(self, surf_data):
+        """__init__ method of SurfaceData class."""
+        self._surf_data = surf_data
+        self.vertices: npt.NDArray[np.float64] | None = self._surf_data.get(
+            SurfaceDataType.Vertices
+        )
+        self.connectivity: list[npt.NDArray[np.int32]] | None = self._surf_data.get(
+            SurfaceDataType.FacesConnectivity
+        )
+        self.face_centroids: npt.NDArray[np.float64] | None = self._surf_data.get(
+            SurfaceDataType.FacesCentroid
+        )
+        self.face_normals: npt.NDArray[np.float64] | None = self._surf_data.get(
+            SurfaceDataType.FacesNormal
+        )
+
+
+class PathlinesData:
+    """
+    Class that enables object-style access to pathlines data structure.
+
+    Attributes
+    ----------
+    scalar_field_name: str
+    vertices: npt.NDArray[np.float64] | None
+    lines: list[npt.NDArray[np.float64]] | None
+    scalar_field: npt.NDArray[np.float64] | None
+    pathlines_count: npt.NDArray[np.float64] | None
+    particle_time: npt.NDArray[np.float64] | None
+    """
+
+    def __init__(self, pathlines_data_for_surface):
+        """__init__ method of PathlinesData class."""
+        self._pathlines_data_for_surface = pathlines_data_for_surface
+        self.scalar_field_name: str = list(
+            set(self._pathlines_data_for_surface.keys())
+            - {"lines", "vertices", "pathlines-count", "particle-time"}
+        )[0]
+        self.vertices: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get("vertices")
+        )
+        self.lines: list[npt.NDArray[np.int32]] | None = (
+            self._pathlines_data_for_surface.get("lines")
+        )
+        self.scalar_field: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get(self.scalar_field_name)
+        )
+        self.pathlines_count: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get("pathlines-count")
+        )
+        self.particle_time: npt.NDArray[np.float64] | None = (
+            self._pathlines_data_for_surface.get("particle-time")
+        )
+
+
 class _ReturnFieldData:
 
     @staticmethod
@@ -436,6 +504,7 @@ class _ReturnFieldData:
         surfaces: List[int | str],
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
+        deprecated_flag: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
@@ -453,6 +522,8 @@ class _ReturnFieldData:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
                     ][data_type.value].reshape(-1, 3)
+            if deprecated_flag is False:
+                ret_surf_data[surface] = SurfaceData(ret_surf_data[surface])
         return ret_surf_data
 
     @staticmethod
@@ -473,10 +544,11 @@ class _ReturnFieldData:
         surfaces: List[int | str],
         surface_ids: List[int],
         pathlines_data: Dict,
+        deprecated_flag: bool | None = False,
     ) -> Dict:
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
-            path_lines_dict[surface] = {
+            temp_dict = {
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
@@ -489,7 +561,11 @@ class _ReturnFieldData:
                 ],
             }
             if "particle-time" in pathlines_data[surface_ids[count]]:
-                path_lines_dict[surface]["particle-time"] = pathlines_data[
-                    surface_ids[count]
-                ]["particle-time"]
+                temp_dict["particle-time"] = pathlines_data[surface_ids[count]][
+                    "particle-time"
+                ]
+            if deprecated_flag is False:
+                path_lines_dict[surface] = PathlinesData(temp_dict)
+            else:
+                path_lines_dict[surface] = temp_dict
         return path_lines_dict

@@ -117,7 +117,7 @@ solver.setup.cell_zone_conditions.fluid["elbow-fluid"].general.material = "water
 # Temperature: 293.15 [K]
 cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 
-cold_inlet.momentum.velocity.value = 0.4
+cold_inlet.momentum.velocity_magnitude.value = 0.4
 cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 cold_inlet.turbulence.turbulent_intensity = 0.05
 cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
@@ -132,7 +132,7 @@ cold_inlet.thermal.temperature.value = 293.15
 # Temperature: 313.15 [K]
 hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
-hot_inlet.momentum.velocity.value = 1.2
+hot_inlet.momentum.velocity_magnitude.value = 1.2
 hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
 hot_inlet.thermal.temperature.value = 313.15
@@ -188,7 +188,7 @@ velocity_symmetry.field = "velocity-magnitude"
 velocity_symmetry.surfaces_list = [
     "symmetry-xyplane",
 ]
-velocity_symmetry.scale.scale_f = 4
+velocity_symmetry.options.scale = 4
 velocity_symmetry.style = "arrow"
 velocity_symmetry.display()
 

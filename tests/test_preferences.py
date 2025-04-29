@@ -91,8 +91,6 @@ def test_meshing_preferences(new_meshing_session):
     preferred_graphics.AnimationOption = "wireframe"
     assert preferred_graphics.AnimationOption() == "wireframe"
 
-    meshing.exit()
-
 
 @pytest.mark.codegen_required
 def test_read_only_preferences(new_solver_session):
