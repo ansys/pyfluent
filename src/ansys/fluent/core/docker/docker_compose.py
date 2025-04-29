@@ -58,9 +58,6 @@ class ComposeBasedLauncher:
             ports = [container_dict.get("fluent_port", "")]
 
         compose_file = f"""
-        networks:
-        {indent}{self._compose_name}_network:
-        {indent * 2}external: true
         services:
           fluent:
             image: {container_dict.get("fluent_image")}
@@ -223,10 +220,6 @@ class ComposeBasedLauncher:
         ]
 
         self._start_stop_helper(self._set_compose_cmds(), cmd, 20)
-
-    def exit(self) -> None:
-        """Exit the services."""
-        self.stop()
 
     @property
     def ports(self) -> list[str]:

@@ -376,7 +376,7 @@ class BaseSession:
             or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE")
             and hasattr(self, "_container")
         ):
-            self._container.exit()
+            self._container.stop()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""

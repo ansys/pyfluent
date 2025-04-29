@@ -586,7 +586,7 @@ class FluentConnection:
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
         if self._compose and hasattr(self, "_container"):
-            self._container.exit()
+            self._container.stop()
         else:
             container = self.connection_properties.inside_container
             container_id = self.connection_properties.cortex_host
