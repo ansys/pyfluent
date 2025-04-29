@@ -32,20 +32,6 @@ env:
 
 jobs:
 
-  update-changelog:
-    name: "Update CHANGELOG (on release)"
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - uses: ansys/actions/doc-deploy-changelog@v8
-        with:
-          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
-          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
-
   add-license-headers:
     runs-on: pyfluent
     steps:
@@ -61,8 +47,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install pre-commit
 
-      - name: Run add-license-header (manual stage)
+      - name: Run add-license-headers (manual stage)
         run: pre-commit run add-license-headers --all-files --hook-stage manual
+
+  update-changelog:
+    name: "Update CHANGELOG (on release)"
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: ansys/actions/doc-deploy-changelog@v8
+        with:
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
 
   docs-style:
     name: Documentation Style Check
