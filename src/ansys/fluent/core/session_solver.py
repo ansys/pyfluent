@@ -363,7 +363,10 @@ class Solver(BaseSession):
                     f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
                     DeprecatedSettingWarning,
                 )
-        return getattr(self._settings_api_root, attr)
+        try:
+            return getattr(self._settings_api_root, attr)
+        except AttributeError:
+            return object.__getattribute__(self, attr)
 
     def __dir__(self):
         if self._fluent_connection is None:
