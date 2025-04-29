@@ -47,7 +47,7 @@ jobs:
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
 
   add-license-headers:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
