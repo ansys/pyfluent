@@ -60,6 +60,7 @@ Mixing Tank Workflow
 #
 # .. image:: ../../_static/mixing_tank_geom_view.png
 #    :align: center
+#    :scale: 60%
 #    :alt: Mixing Tank Model
 
 
@@ -179,8 +180,7 @@ geom_view.front_faces_transparent = "disable"
 # %%
 # .. image:: ../../_static/mixing_tank_mesh.png
 #    :align: center
-#    :width: 650px
-#    :height: 400px
+#    :scale: 60%
 #    :alt: Mixing Tank Mesh
 
 
@@ -407,6 +407,7 @@ graphics.picture.save_picture(file_name="mixing_tank_velocity_contour.png")
 # %%
 # .. image:: ../../_static/mixing_tank_velocity_contour.png
 #    :align: center
+#    :scale: 60%
 #    :alt: Mixing Tank Model Velocity Contour
 
 
