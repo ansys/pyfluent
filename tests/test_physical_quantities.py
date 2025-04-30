@@ -56,7 +56,7 @@ def test_field_data_transactions_deprecated_interface(new_solver_session) -> Non
     report_defs.surface["yyy"] = {}
     surface = report_defs.surface["yyy"]
     surface.report_type = "surface-areaavg"
-    surface.field = "temperature"
+    surface.field = temperature
     surface.surface_names = locations
 
     result = report_defs.compute(report_defs=["yyy"])

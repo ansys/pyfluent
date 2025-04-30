@@ -28,6 +28,7 @@ required by a specific system.
 """
 
 from abc import ABC, abstractmethod
+import types
 
 from ansys.fluent.core.physicalquantities.base import PhysicalQuantity
 
@@ -43,7 +44,7 @@ class ConversionStrategy(ABC):
     """
 
     @abstractmethod
-    def to_string(self, quantity: PhysicalQuantity | str) -> str:
+    def to_string(self, quantity: PhysicalQuantity | str | None) -> str | None:
         """
         Convert a `PhysicalQuantity` to its string representation.
 
@@ -167,7 +168,7 @@ class MappingConversionStrategy(ConversionStrategy):
             self.__reverse_mapping = {x: y for y, x in self._mapping.items()}
         return self.__reverse_mapping
 
-    def to_string(self, quantity: PhysicalQuantity | str) -> str:
+    def to_string(self, quantity: PhysicalQuantity | str | None) -> str | None:
         """
         Convert a `PhysicalQuantity` to its string representation.
 
@@ -190,7 +191,7 @@ class MappingConversionStrategy(ConversionStrategy):
         ValueError
             If the `PhysicalQuantity` is not supported by the strategy.
         """
-        if isinstance(quantity, str):
+        if isinstance(quantity, (str, types.NoneType)):
             return quantity
         if not self.supports(quantity):
             raise ValueError(f"{quantity.name} not supported.")
