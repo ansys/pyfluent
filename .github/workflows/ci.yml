@@ -34,6 +34,7 @@ env:
 jobs:
 
   add-license-headers:
+    name: "Add license headers"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,16 +63,13 @@ jobs:
           ${{ env.ACTIVATE_VENV }}
           python -m pip install -U pip
 
-      - name: "Install pre-commit"
+      - name: "Install and run pre-commit"
         shell: bash
         run: |
           ${{ env.ACTIVATE_VENV }}
           pip install pre-commit
           pre-commit install
-
-      - name: Run add-license-headers (manual stage)
-        shell: bash
-        run: pre-commit run add-license-headers --all-files --hook-stage manual
+          pre-commit run add-license-headers --all-files --hook-stage manual
 
   update-changelog:
     name: "Update CHANGELOG (on release)"
