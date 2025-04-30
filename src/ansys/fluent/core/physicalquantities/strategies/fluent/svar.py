@@ -21,9 +21,20 @@
 # SOFTWARE.
 
 """
-Provides ConversionStrategy classes for mapping PhysicalQuantity to variable names used in Fluent.
+Provides a ConversionStrategy for mapping PhysicalQuantity to Fluent's SVAR names.
 """
 
-from .expr import FluentExprStrategy  # noqa: F401
-from .field import FluentFieldNameStrategy  # noqa: F401
-from .svar import FluentSVarStrategy  # noqa: F401
+from ansys.fluent.core.physicalquantities.base import PhysicalQuantities
+from ansys.fluent.core.physicalquantities.strategy import MappingConversionStrategy
+
+
+class FluentSVarStrategy(MappingConversionStrategy):
+    """This strategy handles conversion of selected PhysicalQuantities into Fluent's
+    server-side field variable naming conventions (e.g., "SV_P" for pressure).
+    """
+
+    _mapping = {
+        PhysicalQuantities.PRESSURE: "SV_P",
+        PhysicalQuantities.VELOCITY_X: "SV_U",
+        PhysicalQuantities.TEMPERATURE: "SV_T",
+    }

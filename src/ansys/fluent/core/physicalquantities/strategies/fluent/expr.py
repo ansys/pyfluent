@@ -24,8 +24,8 @@
 Provides a ConversionStrategy for mapping PhysicalQuantity to variable names used in Fluent expressions.
 """
 
-from ansys.core.physicalquantities.base import PhysicalQuantities
-from ansys.core.physicalquantities.strategy import MappingConversionStrategy
+from ansys.fluent.core.physicalquantities.base import PhysicalQuantities
+from ansys.fluent.core.physicalquantities.strategy import MappingConversionStrategy
 
 
 class FluentExprStrategy(MappingConversionStrategy):

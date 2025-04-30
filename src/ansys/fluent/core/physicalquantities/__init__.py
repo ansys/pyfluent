@@ -21,20 +21,33 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping PhysicalQuantity to names used in Fluent's field data API.
+Package initialization for ansys.fluent.core.physicalquantities.
+
+Exports the PhysicalQuantities catalog and core interfaces for working with
+physical quantities in a product-agnostic way.
+
+Example
+-------
+
+.. code-block:: python
+
+    >>> from ansys.fluent.core.physicalquantities import PhysicalQuantities
+    >>> from ansys.fluent.core.physicalquantities.strategies.fluent import FluentSVarStrategy
+
+    >>> quantity = PhysicalQuantities.PRESSURE
+    >>> strategy = FluentSVarStrategy()
+
+    >>> print(strategy.to_string(quantity))
 """
 
-from ansys.core.physicalquantities.base import PhysicalQuantities
-from ansys.core.physicalquantities.strategy import MappingConversionStrategy
+from . import strategies
+from .base import Dimension, PhysicalQuantities, PhysicalQuantity
+from .strategy import ConversionStrategy
 
-
-class FluentFieldNameStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected
-    PhysicalQuantities into Fluent's server-side field variable naming conventions.
-    """
-
-    _mapping = {
-        PhysicalQuantities.PRESSURE: "pressure",
-        PhysicalQuantities.VELOCITY_X: "x-velocity",
-        PhysicalQuantities.TEMPERATURE: "temperature",
-    }
+__all__ = [
+    "Dimension",
+    "PhysicalQuantity",
+    "PhysicalQuantities",
+    "ConversionStrategy",
+    "strategies",
+]

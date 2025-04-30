@@ -52,6 +52,9 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedVectorFieldNames,
     _ReturnFieldData,
 )
+from ansys.fluent.core.physicalquantities.strategies.fluent import (
+    FluentFieldDataStrategy,
+)
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -823,19 +826,19 @@ class Transaction(FieldTransaction):
                 )
             elif isinstance(req, ScalarFieldDataRequest):
                 self._add_scalar_fields_request(
-                    field_name=req.field_name,
+                    field_name=self._quantity_strategy.to_string(req.field_name),
                     surfaces=req.surfaces,
                     node_value=req.node_value,
                     boundary_value=req.boundary_value,
                 )
             elif isinstance(req, VectorFieldDataRequest):
                 self._add_vector_fields_request(
-                    field_name=req.field_name,
+                    field_name=self._quantity_strategy.to_string(req.field_name),
                     surfaces=req.surfaces,
                 )
             elif isinstance(req, PathlinesFieldDataRequest):
                 self._add_pathlines_fields_request(
-                    field_name=req.field_name,
+                    field_name=self._quantity_strategy.to_string(req.field_name),
                     surfaces=req.surfaces,
                     additional_field_name=req.additional_field_name,
                     provide_particle_time_field=req.provide_particle_time_field,
@@ -1247,6 +1250,8 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self._field_info = field_info
         self.is_data_valid = is_data_valid
         self.scheme_eval = scheme_eval
+        self._quantity_strategy = FluentFieldDataStrategy()
+
         self.get_zones_info = lambda: get_zones_info()()
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
@@ -1454,7 +1459,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             PyFluentDeprecationWarning,
         )
         return self._get_scalar_field_data(
-            field_name=field_name,
+            field_name=self._quantity_strategy.to_string(field_name),
             surfaces=surfaces,
             node_value=node_value,
             boundary_value=boundary_value,

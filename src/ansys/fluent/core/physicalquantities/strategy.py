@@ -29,7 +29,7 @@ required by a specific system.
 
 from abc import ABC, abstractmethod
 
-from ansys.core.physicalquantities.base import PhysicalQuantity
+from ansys.fluent.core.physicalquantities.base import PhysicalQuantity
 
 
 class ConversionStrategy(ABC):
