@@ -29,6 +29,7 @@ import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+from ansys.fluent.core.physicalquantities.strategies.fluent import FluentExprStrategy
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -273,6 +274,7 @@ class Reduction:
         """__init__ method of Reduction class."""
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
+        self._quantity_strategy = FluentExprStrategy()
 
     def _validate_str_location(self, loc: str):
         if all(
@@ -398,7 +400,7 @@ class Reduction:
     def minimum(self, expression, locations, ctxt=None) -> Any:
         """Get minimum."""
         request = ReductionProtoModule.MinimumRequest()
-        request.expression = expression
+        request.expression = self._quantity_strategy.to_string(expression)
         request.locations.extend(self._get_location_string(locations, ctxt))
         response = self.service.minimum(request)
         return _convert_variant_to_value(response.value)
