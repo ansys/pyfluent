@@ -25,7 +25,7 @@ from ansys.fluent.core import examples
 from ansys.physicalquantities import PhysicalQuantities
 
 
-def test_field_data_transactions_deprecated_interface(new_solver_session) -> None:
+def test_physical_quantities(new_solver_session) -> None:
     solver = new_solver_session
     case_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     solver.file.read(file_type="case", file_name=case_name)
