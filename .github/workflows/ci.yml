@@ -43,7 +43,7 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - name: "Install and run pre-commit"
+      - name: "Install and run add-license-headers"
         shell: bash
         run: |
           python -m pip install -U pip
