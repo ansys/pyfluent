@@ -262,7 +262,6 @@ impeller_volute_interface = solver.settings.setup.mesh_interfaces.turbo_create.c
     turbo_choice="No-Pitch-Scale",
     zone1="interface-impeller-outlet",
     zone2="interface-volute-inlet",
-
 )
 
 ################################################################################################################
