@@ -33,7 +33,7 @@ env:
 jobs:
 
   add-license-headers:
-    runs-on: pyfluent
+    runs-on: ubuntu-latest
     steps:
       - uses: ansys/actions/code-style@v8
 
