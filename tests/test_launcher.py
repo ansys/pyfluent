@@ -586,7 +586,9 @@ def test_report():
 
 @pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
+    import os
+
+    os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1"
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
     from ansys.fluent.core.utils.networking import get_free_port
@@ -601,3 +603,4 @@ def test_docker_compose(monkeypatch):
     )
     solver.file.read_case(file_name=case_file_name)
     solver.exit()
+    os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "0"
