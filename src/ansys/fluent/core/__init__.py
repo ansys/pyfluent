@@ -26,7 +26,6 @@ import os
 from pathlib import Path
 import pydoc
 import sys
-import types
 
 from . import physicalquantities
 
@@ -181,12 +180,8 @@ LAUNCH_FLUENT_PORT = None
 # Skip password check during rpc execution when Fluent is launched from PyFluent
 LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = False
 
-# Create a virtual `ansys.core` namespace if it doesn't already exist
-if not hasattr(sys.modules["ansys"], "core"):
-    core = types.ModuleType("ansys.core")
-    sys.modules["ansys.core"] = core
-    sys.modules["ansys"].core = core
-
-# Inject `physicalquantities` into the `ansys.core` namespace
-sys.modules["ansys.core.physicalquantities"] = physicalquantities
-sys.modules["ansys.core"].physicalquantities = physicalquantities
+# `ansys.physicalquantities` will eventually be a separate package. Until then:
+# Inject `physicalquantities` into the `ansys` namespace if it doesn't already exist
+if not hasattr(sys.modules["ansys"], "physicalquantities"):
+    sys.modules["ansys.physicalquantities"] = physicalquantities
+    sys.modules["ansys"].physicalquantities = physicalquantities
