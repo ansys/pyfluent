@@ -25,6 +25,19 @@ Package initialization for ansys.core.physicalquantities.
 
 Exports the PhysicalQuantities catalog and core interfaces for working with
 physical quantities in a product-agnostic way.
+
+Example
+-------
+
+.. code-block:: python
+
+    >>> from ansys.core.physicalquantities import PhysicalQuantities
+    >>> from ansys.core.physicalquantities.strategies.fluent import FluentSVarStrategy
+
+    >>> quantity = PhysicalQuantities.PRESSURE
+    >>> strategy = FluentSVarStrategy()
+
+    >>> print(strategy.to_string(quantity))
 """
 
 from . import strategies

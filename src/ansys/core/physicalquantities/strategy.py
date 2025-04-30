@@ -52,10 +52,34 @@ class ConversionStrategy(ABC):
 
 
 class BaseConversionStrategy(ConversionStrategy):
-    """Intermediate base strategy for PhysicalQuantity which
-    makes it easier to write concrete strategy classes.
-    A strategy that inherits from this class need only need define
-    a _mapping dict.
+    """
+    Intermediate base class for implementing PhysicalQuantity conversion strategies.
+
+    This class simplifies the creation of concrete strategy classes by providing
+    default implementations for common methods. Classes inheriting from this base
+    class only need to define a `_mapping` dictionary that maps `PhysicalQuantity`
+    instances to their corresponding string representations.
+
+    Attributes
+    ----------
+    _reverse_mapping : dict
+        A lazily initialized reverse mapping of `_mapping`, used for converting
+        strings back to `PhysicalQuantity` instances.
+
+    Methods
+    -------
+    to_string(quantity: PhysicalQuantity | str) -> str
+        Converts a `PhysicalQuantity` to its string representation. Raises a
+        `ValueError` if the quantity is not supported.
+    to_quantity(quantity: PhysicalQuantity | str) -> PhysicalQuantity
+        Converts a string to its corresponding `PhysicalQuantity`.
+    supports(quantity: PhysicalQuantity) -> bool
+        Checks if the given `PhysicalQuantity` is supported by the strategy.
+
+    Raises
+    ------
+    ValueError
+        If a `PhysicalQuantity` is not supported during conversion to a string.
     """
 
     def __init__(self):
