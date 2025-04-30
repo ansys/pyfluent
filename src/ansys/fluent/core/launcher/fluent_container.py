@@ -78,7 +78,7 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher, compose
+from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import deprecate_argument
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -382,7 +382,10 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
-    if compose:
+    if (
+        os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+    ):
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
@@ -457,7 +460,10 @@ def start_fluent_container(
         del container_vars_tmp
 
     try:
-        if compose:
+        if (
+            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+            or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        ):
             config_dict["fluent_port"] = port
 
             compose_container = ComposeBasedLauncher(container_dict=config_dict)

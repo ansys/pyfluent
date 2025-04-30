@@ -26,10 +26,6 @@ import os
 import subprocess
 import uuid
 
-compose = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") or os.getenv(
-    "PYFLUENT_USE_PODMAN_COMPOSE"
-)
-
 
 class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""

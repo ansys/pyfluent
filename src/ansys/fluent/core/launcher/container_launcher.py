@@ -41,7 +41,6 @@ import os
 import time
 from typing import Any
 
-from ansys.fluent.core.docker.docker_compose import compose
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
@@ -197,6 +196,10 @@ class DockerLauncher:
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
+        self._compose = (
+            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+            or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        )
 
     def __call__(self):
         if self.argvals["dry_run"]:
@@ -216,7 +219,7 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        if compose:
+        if self._compose:
             port, config_dict, container = start_fluent_container(
                 self._args, self.argvals["container_dict"]
             )
@@ -246,7 +249,7 @@ class DockerLauncher:
 
         session._container = container
 
-        if not compose:
+        if not self._compose:
             if (
                 self.argvals["start_watchdog"] is None
                 and self.argvals["cleanup_on_exit"]
