@@ -1,5 +1,5 @@
 """
-Search code for undocumented fields in classes. Requires ast_comments module.
+Search code for undocumented fields in classes. Requires the ast_comments package.
 
 Usage: python search_undocumented_fields.py ../../src
 """
@@ -9,6 +9,16 @@ import sys
 from typing import Dict, Set
 
 import ast_comments as ast
+
+
+def is_ith_undocumented_field(nodes, i: int) -> bool:
+    """Check if the ith node is an undocumented field assignment."""
+    if i > 0 and isinstance(nodes[i - 1], ast.Comment):
+        comment = nodes[i - 1].value.strip()
+        print(f"Comment found: {comment}")
+        if comment.startswith("#:"):
+            return False
+    return True
 
 
 class ClassFieldVisitor(ast.NodeVisitor):
@@ -23,6 +33,24 @@ class ClassFieldVisitor(ast.NodeVisitor):
         old_class = self.current_class
         self.current_class = node.name
         self.classes[node.name] = set()
+        is_enum = False
+        for x in node.bases:
+            if isinstance(x, ast.Name) and x.id in (
+                "Enum",
+                "IntEnum",
+                "StrEnum",
+                "FluentEnum",
+            ):
+                is_enum = True
+            elif isinstance(x, ast.Attribute) and x.attr in (
+                "Enum",
+                "IntEnum",
+                "StrEnum",
+                "FluentEnum",
+            ):
+                is_enum = True
+        if is_enum:
+            return  # Skip Enum classes
 
         # Visit all child nodes
         for i, child in enumerate(node.body):
@@ -31,28 +59,18 @@ class ClassFieldVisitor(ast.NodeVisitor):
                 for target in child.targets:
                     if isinstance(target, ast.Name):
                         # Only add public fields (not starting with underscore)
-                        if not target.id.startswith("_"):
-                            has_doc_comment = False
-                            if i > 0 and isinstance(node.body[i - 1], ast.Comment):
-                                comment = node.body[i - 1].value.strip()
-                                print(f"Comment found: {comment}")
-                                if comment.startswith("#:"):
-                                    has_doc_comment = True
-                            if not has_doc_comment:
-                                self.classes[node.name].add(target.id)
+                        if target.id.startswith("_"):
+                            continue
+                        if is_ith_undocumented_field(node.body, i):
+                            self.classes[node.name].add(target.id)
             elif isinstance(child, ast.AnnAssign) and isinstance(
                 child.target, ast.Name
             ):
                 # Handle annotated assignments (e.g., x: int = 10)
-                if not child.target.id.startswith("_"):
-                    has_doc_comment = False
-                    if i > 0 and isinstance(node.body[i - 1], ast.Comment):
-                        comment = node.body[i - 1].value.strip()
-                        print(f"Comment found: {comment}")
-                        if comment.startswith("#:"):
-                            has_doc_comment = True
-                    if not has_doc_comment:
-                        self.classes[node.name].add(child.target.id)
+                if child.target.id.startswith("_"):
+                    continue
+                if is_ith_undocumented_field(node.body, i):
+                    self.classes[node.name].add(child.target.id)
 
         # Visit methods to find instance attribute assignments (self.attr = value)
         for child in node.body:
@@ -84,13 +102,7 @@ class ClassFieldVisitor(ast.NodeVisitor):
                             and isinstance(target.value, ast.Name)
                             and target.value.id == "self"
                         ):
-                            has_doc_comment = False
-                            if i > 0 and isinstance(results[i - 1], ast.Comment):
-                                comment = results[i - 1].value.strip()
-                                print(f"Comment found: {comment}")
-                                if comment.startswith("#:"):
-                                    has_doc_comment = True
-                            if not has_doc_comment:
+                            if is_ith_undocumented_field(results, i):
                                 self.classes[self.current_class].add(target.attr)
 
                 # Handle annotated assignments: self.attr: Type = value
@@ -101,13 +113,7 @@ class ClassFieldVisitor(ast.NodeVisitor):
                     and child.target.value.id == "self"
                     and not child.target.attr.startswith("_")
                 ):
-                    has_doc_comment = False
-                    if i > 0 and isinstance(results[i - 1], ast.Comment):
-                        comment = results[i - 1].value.strip()
-                        print(f"Comment found: {comment}")
-                        if comment.startswith("#:"):
-                            has_doc_comment = True
-                    if not has_doc_comment:
+                    if is_ith_undocumented_field(results, i):
                         self.classes[self.current_class].add(child.target.attr)
 
 
