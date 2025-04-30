@@ -25,6 +25,10 @@
 import os
 from pathlib import Path
 import pydoc
+import sys
+import types
+
+from . import physicalquantities
 
 # isort: off
 # Logging has to be imported before importing other PyFluent modules
@@ -176,3 +180,13 @@ LAUNCH_FLUENT_PORT = None
 
 # Skip password check during rpc execution when Fluent is launched from PyFluent
 LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = False
+
+# Create a virtual `ansys.core` namespace if it doesn't already exist
+if not hasattr(sys.modules["ansys"], "core"):
+    core = types.ModuleType("ansys.core")
+    sys.modules["ansys.core"] = core
+    sys.modules["ansys"].core = core
+
+# Inject `physicalquantities` into the `ansys.core` namespace
+sys.modules["ansys.core.physicalquantities"] = physicalquantities
+sys.modules["ansys.core"].physicalquantities = physicalquantities
