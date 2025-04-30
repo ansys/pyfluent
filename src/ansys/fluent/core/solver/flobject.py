@@ -69,6 +69,9 @@ from typing import (
 import warnings
 import weakref
 
+from ansys.fluent.core.physicalquantities.strategies.fluent import (
+    FluentFieldDataStrategy,
+)
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -194,6 +197,9 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+_quantity_strategy = FluentFieldDataStrategy()
 
 
 def _get_python_path_comps(obj):
@@ -628,6 +634,18 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            Either str or PhysicalQuantity.
+        kwargs : Any
+            Keyword arguments.
+        """
+        return self.base_set_state(state=_quantity_strategy.to_string(state), **kwargs)
+
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     """Provides deprecated settings warning."""
@@ -852,6 +870,9 @@ class String(SettingsBase[str], Textual):
     """A ``String`` object representing a string value setting."""
 
     _state_type = str
+
+    base_set_state = SettingsBase[str].set_state
+    set_state = Textual.set_state
 
 
 class Filename(SettingsBase[str], Textual):
