@@ -9,10 +9,39 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+
+`0.31.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.31.dev1>`_ - April 29, 2025
+=========================================================================================
+
 `0.30.5 <https://github.com/ansys/pyfluent/releases/tag/v0.30.5>`_ - April 29, 2025
 ===================================================================================
 
 .. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Enhanced error handling in Settings API
+          - `#3825 <https://github.com/ansys/pyfluent/pull/3825>`_
+
+        * - Object based field data access (unifying the interface).
+          - `#3827 <https://github.com/ansys/pyfluent/pull/3827>`_
+
+        * - Support PRE_POST mode
+          - `#3853 <https://github.com/ansys/pyfluent/pull/3853>`_
+
+        * - codegen for datamodel command arguments
+          - `#3865 <https://github.com/ansys/pyfluent/pull/3865>`_
+
+        * - Register multiple event types in register_callback()
+          - `#3924 <https://github.com/ansys/pyfluent/pull/3924>`_
+
+        * - Support unsuppressing prompts in scheme_eval
+          - `#3963 <https://github.com/ansys/pyfluent/pull/3963>`_
 
 
   .. tab-item:: Fixed
@@ -21,8 +50,172 @@ This document contains the release notes for the project.
         :header-rows: 0
         :widths: auto
 
+        * - Make version attr private to avoid conflict with child setting with same name.
+          - `#3830 <https://github.com/ansys/pyfluent/pull/3830>`_
+
+        * - Get dependency version [skip tests]
+          - `#3842 <https://github.com/ansys/pyfluent/pull/3842>`_
+
+        * - Updates for linux support & visualization minor changes
+          - `#3843 <https://github.com/ansys/pyfluent/pull/3843>`_
+
+        * - field-level-help at runtime for datamodel_se objects
+          - `#3859 <https://github.com/ansys/pyfluent/pull/3859>`_
+
+        * - Avoid file name as native Python package
+          - `#3861 <https://github.com/ansys/pyfluent/pull/3861>`_
+
+        * - Minor issue in task.add_child_and_update
+          - `#3875 <https://github.com/ansys/pyfluent/pull/3875>`_
+
+        * - Fix missing field-level help at various levels
+          - `#3879 <https://github.com/ansys/pyfluent/pull/3879>`_
+
+        * - Remove license header hook [skip tests]
+          - `#3925 <https://github.com/ansys/pyfluent/pull/3925>`_
+
+        * - Fix for the exit scenario while launching in lightweight mode
+          - `#3935 <https://github.com/ansys/pyfluent/pull/3935>`_
+
+        * - Create directory within the current user's home
+          - `#3937 <https://github.com/ansys/pyfluent/pull/3937>`_
+
+        * - Update mount_source for container FTS [skip tests]
+          - `#3941 <https://github.com/ansys/pyfluent/pull/3941>`_
+
+        * - Nightly meshing tests.
+          - `#3943 <https://github.com/ansys/pyfluent/pull/3943>`_
+
+        * - Nightly dev doc CI run.
+          - `#3945 <https://github.com/ansys/pyfluent/pull/3945>`_
+
+        * - Fix deprecated behaviour
+          - `#3948 <https://github.com/ansys/pyfluent/pull/3948>`_
+
+        * - Raise AttributeError for non-existing meshing objects after switch_to solver.
+          - `#3949 <https://github.com/ansys/pyfluent/pull/3949>`_
+
         * - deprecated flag for flobject.py
           - `#3953 <https://github.com/ansys/pyfluent/pull/3953>`_
+
+        * - Update reduction test and re-implement it.
+          - `#3958 <https://github.com/ansys/pyfluent/pull/3958>`_
+
+        * - Enable Scheme mode when py=False is set
+          - `#3961 <https://github.com/ansys/pyfluent/pull/3961>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ansys-units version
+          - `#3826 <https://github.com/ansys/pyfluent/pull/3826>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - field data transaction
+          - `#3819 <https://github.com/ansys/pyfluent/pull/3819>`_
+
+        * - internal interface of field data
+          - `#3858 <https://github.com/ansys/pyfluent/pull/3858>`_
+
+        * - Update test_remote_grpc_fts_container
+          - `#3915 <https://github.com/ansys/pyfluent/pull/3915>`_
+
+        * - Add timeout_loop for health check
+          - `#3917 <https://github.com/ansys/pyfluent/pull/3917>`_
+
+        * - Update enhanced meshing wf tests w.r.t. docs.
+          - `#3930 <https://github.com/ansys/pyfluent/pull/3930>`_
+
+        * - Update field data output.
+          - `#3934 <https://github.com/ansys/pyfluent/pull/3934>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ``CONTRIBUTORS.md`` with the latest contributors
+          - `#3902 <https://github.com/ansys/pyfluent/pull/3902>`_
+
+        * - Direct users to use virtual env if Ansys Python is used.
+          - `#3904 <https://github.com/ansys/pyfluent/pull/3904>`_
+
+        * - Update file transfer docs
+          - `#3916 <https://github.com/ansys/pyfluent/pull/3916>`_
+
+        * - Added an end-to-end example focused on Turbomachinery [skip tests]
+          - `#3947 <https://github.com/ansys/pyfluent/pull/3947>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - update CHANGELOG for v0.31.dev0
+          - `#3821 <https://github.com/ansys/pyfluent/pull/3821>`_
+
+        * - Replace FLUENT_PRECISION_MODE global with runtime check
+          - `#3829 <https://github.com/ansys/pyfluent/pull/3829>`_
+
+        * - update CHANGELOG for v0.30.1
+          - `#3838 <https://github.com/ansys/pyfluent/pull/3838>`_
+
+        * - Do not sync labels [skip tests]
+          - `#3840 <https://github.com/ansys/pyfluent/pull/3840>`_
+
+        * - update CHANGELOG for v0.30.2
+          - `#3849 <https://github.com/ansys/pyfluent/pull/3849>`_
+
+        * - Reduce timeout for unittests
+          - `#3851 <https://github.com/ansys/pyfluent/pull/3851>`_
+
+        * - Update nightly doc build workflow [skip tests]
+          - `#3854 <https://github.com/ansys/pyfluent/pull/3854>`_
+
+        * - Workflow to use latest Fluent image in CI [skip tests]
+          - `#3867 <https://github.com/ansys/pyfluent/pull/3867>`_
+
+        * - Add script to write field-level help info from server [skip tests]
+          - `#3921 <https://github.com/ansys/pyfluent/pull/3921>`_
+
+        * - update CHANGELOG for v0.30.3
+          - `#3928 <https://github.com/ansys/pyfluent/pull/3928>`_
+
+        * - update CHANGELOG for v0.30.4
+          - `#3955 <https://github.com/ansys/pyfluent/pull/3955>`_
+
+        * - Update 2d meshing test and doc.
+          - `#3965 <https://github.com/ansys/pyfluent/pull/3965>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Test that Fluent error message is recovered in PyFluent
+          - `#3824 <https://github.com/ansys/pyfluent/pull/3824>`_
+
+        * - Update test.
+          - `#3881 <https://github.com/ansys/pyfluent/pull/3881>`_
+
+        * - Enable the tests which are now passing in nightly
+          - `#3893 <https://github.com/ansys/pyfluent/pull/3893>`_
 
 
 `0.30.4 <https://github.com/ansys/pyfluent/releases/tag/v0.30.4>`_ - April 24, 2025
