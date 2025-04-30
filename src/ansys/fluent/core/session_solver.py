@@ -363,9 +363,13 @@ class Solver(BaseSession):
                     f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
                     DeprecatedSettingWarning,
                 )
+        # Try forwarding attribute access to the settings API root.
+        # If that fails with AttributeError, fall back to normal attribute lookup.
+        # Using object.__getattribute__ triggers the standard AttributeError with default messaging.
         try:
             return getattr(self._settings_api_root, attr)
         except AttributeError:
+            # Let standard attribute access raise the appropriate error
             return object.__getattribute__(self, attr)
 
     def __dir__(self):
