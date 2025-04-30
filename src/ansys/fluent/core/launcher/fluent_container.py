@@ -477,31 +477,31 @@ def start_fluent_container(
             if not host_server_info_file.exists():
                 host_server_info_file.parents[0].mkdir(exist_ok=True)
 
-        host_server_info_file.touch(exist_ok=True)
-        last_mtime = host_server_info_file.stat().st_mtime
+            host_server_info_file.touch(exist_ok=True)
+            last_mtime = host_server_info_file.stat().st_mtime
 
-        import docker
+            import docker
 
-        docker_client = docker.from_env()
+            docker_client = docker.from_env()
 
-        logger.debug("Starting Fluent docker container...")
+            logger.debug("Starting Fluent docker container...")
 
-        container = docker_client.containers.run(
-            config_dict.pop("fluent_image"), **config_dict
-        )
-
-        success = timeout_loop(
-            lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
-        )
-
-        if not success:
-            raise TimeoutError(
-                "Fluent container launch has timed out, stop container manually."
+            container = docker_client.containers.run(
+                config_dict.pop("fluent_image"), **config_dict
             )
-        else:
-            _, _, password = _parse_server_info_file(str(host_server_info_file))
 
-            return port, password, container
+            success = timeout_loop(
+                lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
+            )
+
+            if not success:
+                raise TimeoutError(
+                    "Fluent container launch has timed out, stop container manually."
+                )
+            else:
+                _, _, password = _parse_server_info_file(str(host_server_info_file))
+
+                return port, password, container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()
