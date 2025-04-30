@@ -357,7 +357,7 @@ class Solver(BaseSession):
 
     def __getattr__(self, attr):
         self._populate_settings_api_root()
-        if attr in [x for x in dir(self._settings_api_root) if not x.startswith("_")]:
+        if not attr.startswith("_") and attr in dir(self._settings_api_root):
             if self.get_fluent_version() > FluentVersion.v242:
                 warnings.warn(
                     f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
