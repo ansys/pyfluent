@@ -25,10 +25,10 @@ Provides a ConversionStrategy for mapping PhysicalQuantity to names used in Flue
 """
 
 from ansys.core.physicalquantities.base import PhysicalQuantities
-from ansys.core.physicalquantities.strategy import BaseConversionStrategy
+from ansys.core.physicalquantities.strategy import MappingConversionStrategy
 
 
-class FluentFieldNameStrategy(BaseConversionStrategy):
+class FluentFieldNameStrategy(MappingConversionStrategy):
     """This strategy handles conversion of selected
     PhysicalQuantities into Fluent's server-side field variable naming conventions.
     """

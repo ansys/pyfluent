@@ -25,10 +25,10 @@ Provides a ConversionStrategy for mapping PhysicalQuantity to variable names use
 """
 
 from ansys.core.physicalquantities.base import PhysicalQuantities
-from ansys.core.physicalquantities.strategy import BaseConversionStrategy
+from ansys.core.physicalquantities.strategy import MappingConversionStrategy
 
 
-class FluentExprStrategy(BaseConversionStrategy):
+class FluentExprStrategy(MappingConversionStrategy):
     """This strategy handles conversion of selected PhysicalQuantities into Fluent's
     server-side expression variable naming conventions.
     """

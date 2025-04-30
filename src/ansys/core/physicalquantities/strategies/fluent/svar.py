@@ -25,10 +25,10 @@ Provides a ConversionStrategy for mapping PhysicalQuantity to Fluent's SVAR name
 """
 
 from ansys.core.physicalquantities.base import PhysicalQuantities
-from ansys.core.physicalquantities.strategy import BaseConversionStrategy
+from ansys.core.physicalquantities.strategy import MappingConversionStrategy
 
 
-class FluentSVarStrategy(BaseConversionStrategy):
+class FluentSVarStrategy(MappingConversionStrategy):
     """This strategy handles conversion of selected PhysicalQuantities into Fluent's
     server-side field variable naming conventions (e.g., "SV_P" for pressure).
     """

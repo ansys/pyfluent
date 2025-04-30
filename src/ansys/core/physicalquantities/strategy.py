@@ -21,10 +21,10 @@
 # SOFTWARE.
 
 """
-Defines the ConversionStrategy base class for translating PhysicalQuantity objects.
+Defines the ConversionStrategy base class for translating `PhysicalQuantity` objects.
 
-Each concrete strategy maps PhysicalQuantity instances to the string representations
-required by a specific system (e.g., Fluent, Mechanical).
+Each concrete strategy maps `PhysicalQuantity` instances to the string representations
+required by a specific system.
 """
 
 from abc import ABC, abstractmethod
@@ -33,25 +33,83 @@ from ansys.core.physicalquantities.base import PhysicalQuantity
 
 
 class ConversionStrategy(ABC):
-    """Abstract strategy for PhysicalQuantity"""
+    """
+    Abstract base class for `PhysicalQuantity` conversion strategies.
+
+    This class defines the interface for all conversion strategies. Derived classes
+    must implement the methods defined here to handle the conversion of `PhysicalQuantity`
+    objects to and from their string representations, as well as to check if a
+    `PhysicalQuantity` is supported.
+    """
 
     @abstractmethod
     def to_string(self, quantity: PhysicalQuantity | str) -> str:
-        """Convert from PhysicalQuantity to string."""
+        """
+        Convert a `PhysicalQuantity` to its string representation.
+
+        Parameters
+        ----------
+        quantity : PhysicalQuantity | str
+            The `PhysicalQuantity` to convert, or a string representation.
+
+        Returns
+        -------
+        str
+            The string representation of the `PhysicalQuantity`.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented in a derived class.
+        """
         pass
 
     @abstractmethod
     def to_quantity(self, quantity: PhysicalQuantity | str) -> PhysicalQuantity:
-        """Convert from string to PhysicalQuantity."""
+        """
+        Convert a string to its corresponding `PhysicalQuantity`.
+
+        Parameters
+        ----------
+        quantity : PhysicalQuantity | str
+            The string representation to convert, or a `PhysicalQuantity`.
+
+        Returns
+        -------
+        PhysicalQuantity
+            The corresponding `PhysicalQuantity` instance.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented in a derived class.
+        """
         pass
 
     @abstractmethod
     def supports(self, quantity: PhysicalQuantity) -> bool:
-        """Whether the quantity is supported."""
+        """
+        Check if the given `PhysicalQuantity` is supported by the strategy.
+
+        Parameters
+        ----------
+        quantity : PhysicalQuantity
+            The `PhysicalQuantity` to check.
+
+        Returns
+        -------
+        bool
+            `True` if the `PhysicalQuantity` is supported, `False` otherwise.
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented in a derived class.
+        """
         pass
 
 
-class BaseConversionStrategy(ConversionStrategy):
+class MappingConversionStrategy(ConversionStrategy):
     """
     Intermediate base class for implementing PhysicalQuantity conversion strategies.
 
@@ -83,21 +141,54 @@ class BaseConversionStrategy(ConversionStrategy):
     """
 
     def __init__(self):
+        """
+        Initialize the MappingConversionStrategy.
+
+        This constructor initializes the reverse mapping attribute to `None`.
+        The reverse mapping is lazily initialized when accessed via the `_reverse_mapping` property.
+        """
         self.__reverse_mapping = None
 
     @property
     def _reverse_mapping(self):
+        """
+        Get the reverse mapping of `_mapping`.
+
+        The reverse mapping is a dictionary that maps string representations
+        back to their corresponding `PhysicalQuantity` instances. It is lazily
+        initialized on first access.
+
+        Returns
+        -------
+        dict
+            A dictionary mapping string representations to `PhysicalQuantity` instances.
+        """
         if self.__reverse_mapping is None:
             self.__reverse_mapping = {x: y for y, x in self._mapping.items()}
         return self.__reverse_mapping
 
     def to_string(self, quantity: PhysicalQuantity | str) -> str:
-        """Convert from PhysicalQuantity to string.
+        """
+        Convert a `PhysicalQuantity` to its string representation.
+
+        If the input is already a string, it is returned as-is. If the input
+        is a `PhysicalQuantity` and is supported by the strategy, its string
+        representation is returned. Otherwise, a `ValueError` is raised.
+
+        Parameters
+        ----------
+        quantity : PhysicalQuantity | str
+            The `PhysicalQuantity` to convert, or a string representation.
+
+        Returns
+        -------
+        str
+            The string representation of the `PhysicalQuantity`.
 
         Raises
         ------
         ValueError
-            If the PhysicalQuantity is not supported.
+            If the `PhysicalQuantity` is not supported by the strategy.
         """
         if isinstance(quantity, str):
             return quantity
@@ -106,11 +197,40 @@ class BaseConversionStrategy(ConversionStrategy):
         return self._mapping[quantity]
 
     def to_quantity(self, quantity: PhysicalQuantity | str) -> PhysicalQuantity:
-        """Convert from string to PhysicalQuantity."""
+        """
+        Convert a string to its corresponding `PhysicalQuantity`.
+
+        If the input is already a `PhysicalQuantity`, it is returned as-is.
+        Otherwise, the string is converted to a `PhysicalQuantity` using the
+        reverse mapping.
+
+        Parameters
+        ----------
+        quantity : PhysicalQuantity | str
+            The string representation to convert, or a `PhysicalQuantity`.
+
+        Returns
+        -------
+        PhysicalQuantity
+            The corresponding `PhysicalQuantity` instance, or `None` if the
+            string is not found in the reverse mapping.
+        """
         if isinstance(quantity, PhysicalQuantity):
             return quantity
         return self._reverse_mapping.get(quantity)
 
     def supports(self, quantity: PhysicalQuantity) -> bool:
-        """Whether the quantity is supported."""
+        """
+        Check if the given `PhysicalQuantity` is supported by the strategy.
+
+        Parameters
+        ----------
+        quantity : PhysicalQuantity
+            The `PhysicalQuantity` to check.
+
+        Returns
+        -------
+        bool
+            `True` if the `PhysicalQuantity` is supported, `False` otherwise.
+        """
         return quantity in self._mapping
