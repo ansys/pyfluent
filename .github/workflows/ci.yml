@@ -29,15 +29,48 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  ACTIVATE_VENV: None
 
 jobs:
 
   add-license-headers:
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/code-style@v8
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+  
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+
+      - name: "Set up virtual environment activation command"
+        shell: bash
+        run: |
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+            echo "ACTIVATE_VENV=$(echo 'source .venv/scripts/activate')" >> $GITHUB_ENV
+          else
+            echo "ACTIVATE_VENV=$(echo 'source .venv/bin/activate')" >> $GITHUB_ENV
+          fi
+
+      - name: "Update pip"
+        shell: bash
+        run: |
+          ${{ env.ACTIVATE_VENV }}
+          python -m pip install -U pip
+
+      - name: "Install pre-commit"
+        shell: bash
+        run: |
+          ${{ env.ACTIVATE_VENV }}
+          pip install pre-commit
+          pre-commit install
 
       - name: Run add-license-headers (manual stage)
+        shell: bash
         run: pre-commit run add-license-headers --all-files --hook-stage manual
 
   update-changelog:
