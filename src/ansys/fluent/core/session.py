@@ -25,11 +25,11 @@
 from enum import Enum
 import json
 import logging
-import os
 from typing import Any, Callable, Dict
 import warnings
 import weakref
 
+from ansys.fluent.core.docker.docker_compose import compose
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -371,11 +371,7 @@ class BaseSession:
         return FluentVersion(self.scheme_eval.version)
 
     def _exit_compose_service(self):
-        if (
-            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE")
-            or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE")
-            and hasattr(self, "_container")
-        ):
+        if compose and hasattr(self, "_container"):
             self._container.stop()
 
     def exit(self, **kwargs) -> None:
