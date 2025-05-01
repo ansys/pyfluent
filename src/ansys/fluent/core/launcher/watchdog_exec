@@ -20,6 +20,7 @@ if __name__ == "__main__":
             _pid_exists,
             get_container,
         )
+        from ansys.fluent.core.launcher.launcher_utils import is_compose
         from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
         watchdog_id = sys.argv[5]
@@ -143,7 +144,7 @@ if __name__ == "__main__":
                     logger.info("Exit call succeeded.")
             else:
                 logger.info("Fluent client not healthy.")
-        if get_container(cortex_host):
+        if fluent.connection_properties.inside_container and not is_compose():
             logger.info(
                 "Running Fluent cleanup scripts inside container if they are still available..."
             )
