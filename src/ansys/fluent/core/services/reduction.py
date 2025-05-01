@@ -297,6 +297,13 @@ class Reduction:
         except BadReductionRequest:
             return locations
 
+    def _make_request(self, requestName, locations, expression=None, ctxt=None) -> Any:
+        request = getattr(ReductionProtoModule, requestName)()
+        if expression is not None:
+            request.expression = self._quantity_strategy.to_string(expression)
+        request.locations.extend(self._get_location_string(locations, ctxt))
+        return request
+
     def area(self, locations, ctxt=None) -> Any:
         """Get area."""
         request = ReductionProtoModule.AreaRequest()
@@ -399,9 +406,7 @@ class Reduction:
 
     def minimum(self, expression, locations, ctxt=None) -> Any:
         """Get minimum."""
-        request = ReductionProtoModule.MinimumRequest()
-        request.expression = self._quantity_strategy.to_string(expression)
-        request.locations.extend(self._get_location_string(locations, ctxt))
+        request = self._make_request("MinimumRequest", locations, expression, ctxt)
         response = self.service.minimum(request)
         return _convert_variant_to_value(response.value)
 
