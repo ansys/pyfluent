@@ -31,6 +31,7 @@ import weakref
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
+from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -369,15 +370,21 @@ class BaseSession:
         """Gets and returns the fluent version."""
         return FluentVersion(self.scheme_eval.version)
 
+    def _exit_compose_service(self):
+        if self._fluent_connection._container and is_compose():
+            self._fluent_connection._container.stop()
+
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
         if self._fluent_connection:
+            self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
             self._fluent_connection = None
 
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
+        self._exit_compose_service()
         self._fluent_connection.force_exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:

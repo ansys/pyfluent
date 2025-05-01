@@ -46,6 +46,9 @@ metaclasses
 monitor
 MonitorsManager
 numpy
+PODMAN
+Podman
+podman
 poppler
 postprocess
 PIM
