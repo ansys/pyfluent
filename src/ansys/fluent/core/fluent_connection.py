@@ -468,7 +468,9 @@ class FluentConnection:
             if not is_compose():
                 inside_container = get_container(cortex_host)
                 logger.debug(f"get_container({cortex_host}): {inside_container}")
-            if inside_container is None:
+            if inside_container is False:
+                logger.info("Fluent is not running inside a container.")
+            elif inside_container is None:
                 logger.info(
                     "The current system does not support Docker containers. "
                     "Assuming Fluent is not inside a container."
@@ -522,11 +524,6 @@ class FluentConnection:
         Notes
         -----
         If the Fluent session is responsive, prefer using :func:`exit()` instead.
-
-        Raises
-        ------
-        subprocess.CalledProcessError
-            If the cleanup script fails to execute.
 
         Examples
         --------
