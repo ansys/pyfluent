@@ -130,15 +130,18 @@ ContainerT = TypeVar("ContainerT")
 
 def get_container(container_id_or_name: str) -> bool | ContainerT | None:
     """Get the Docker container object.
+
     Returns
     -------
     bool | Container | None
         If the system is not correctly set up to run Docker containers, returns ``None``.
         If the container was not found, returns ``False``.
         If the container is found, returns the associated Docker container object.
+
     Notes
     -----
     See `Docker container`_ for more information.
+
     .. _Docker container: https://docker-py.readthedocs.io/en/stable/containers.html#docker.models.containers.Container
     """
     if not isinstance(container_id_or_name, str):
@@ -583,7 +586,7 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        if is_compose() and hasattr(self, "_container"):
+        if is_compose() and self._container:
             self._container.stop()
         else:
             container = self.connection_properties.inside_container
