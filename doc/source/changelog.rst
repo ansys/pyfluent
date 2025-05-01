@@ -50,6 +50,9 @@ This document contains the release notes for the project.
         :header-rows: 0
         :widths: auto
 
+        * - deprecated flag for flobject.py
+          - `#3953 <https://github.com/ansys/pyfluent/pull/3953>`_
+
         * - Make version attr private to avoid conflict with child setting with same name.
           - `#3830 <https://github.com/ansys/pyfluent/pull/3830>`_
 
