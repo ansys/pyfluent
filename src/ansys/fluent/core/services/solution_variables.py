@@ -44,6 +44,8 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
+_to_field_name_str = FluentSVarStrategy().to_string
+
 
 class SolutionVariableService:
     """SVAR service of Fluent."""
@@ -355,6 +357,7 @@ class _AllowedSvarNames:
         SvarError
             If the given solution variable name is invalid.
         """
+        solution_variable_name = _to_field_name_str(solution_variable_name)
         if not self.is_valid(
             solution_variable_name, zone_names=zone_names, domain_name=domain_name
         ):
@@ -551,7 +554,6 @@ class SolutionVariableData:
             ),
             SolutionVariableData.get_data,
         )
-        self._quantity_strategy = FluentSVarStrategy()
 
     def _update_solution_variable_info(self):
         self._allowed_zone_names = _AllowedZoneNames(self._solution_variable_info)
@@ -615,7 +617,7 @@ class SolutionVariableData:
         )
         svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name = self._allowed_solution_variable_names.valid_name(
-            self._quantity_strategy.to_string(solution_variable_name),
+            solution_variable_name,
             zone_names,
             domain_name,
         )
