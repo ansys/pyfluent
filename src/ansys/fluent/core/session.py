@@ -371,7 +371,7 @@ class BaseSession:
 
     def _exit_compose_service(self):
         if self._fluent_connection._container:
-            self._container.stop()
+            self._fluent_connection._container.stop()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
