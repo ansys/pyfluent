@@ -20,11 +20,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import pytest
+
 import ansys.fluent.core as pf  # noqa: F401
 from ansys.fluent.core import examples
 from ansys.physicalquantities import PhysicalQuantities
 
 
+@pytest.mark.fluent_version(">=24.2")
 def test_physical_quantities(new_solver_session) -> None:
     solver = new_solver_session
     case_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
