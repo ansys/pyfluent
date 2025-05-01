@@ -167,6 +167,7 @@ class Solver(BaseSession):
         monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
+        #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
         self.events.register_callback(
             (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
@@ -357,13 +358,20 @@ class Solver(BaseSession):
 
     def __getattr__(self, attr):
         self._populate_settings_api_root()
-        if attr in [x for x in dir(self._settings_api_root) if not x.startswith("_")]:
+        if not attr.startswith("_") and attr in dir(self._settings_api_root):
             if self.get_fluent_version() > FluentVersion.v242:
                 warnings.warn(
                     f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
                     DeprecatedSettingWarning,
                 )
-        return getattr(self._settings_api_root, attr)
+        # Try forwarding attribute access to the settings API root.
+        # If that fails with AttributeError, fall back to normal attribute lookup.
+        # Using object.__getattribute__ triggers the standard AttributeError with default messaging.
+        try:
+            return getattr(self._settings_api_root, attr)
+        except AttributeError:
+            # Let standard attribute access raise the appropriate error
+            return object.__getattribute__(self, attr)
 
     def __dir__(self):
         if self._fluent_connection is None:
