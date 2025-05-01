@@ -37,6 +37,14 @@ from ansys.fluent.core.utils.networking import find_remoting_ip
 logger = logging.getLogger("pyfluent.launcher")
 
 
+def is_compose() -> bool:
+    """Check if the Fluent launch is through compose"""
+    return (
+        os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+    )
+
+
 def is_windows():
     """Check if the current operating system is Windows."""
     return platform.system() == "Windows"

@@ -42,6 +42,7 @@ import weakref
 import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
@@ -455,17 +456,13 @@ class FluentConnection:
         )
         self._cleanup_on_exit = cleanup_on_exit
         self._container = container
-        self._compose = (
-            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
-            or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
-        )
         if (
             (inside_container is None or inside_container is True)
             and not remote_instance
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            if not self._compose:
+            if not is_compose():
                 inside_container = get_container(cortex_host)
                 logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is None:
@@ -534,7 +531,7 @@ class FluentConnection:
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container or self._compose:
+        if self.connection_properties.inside_container or is_compose():
             self._force_exit_container()
         elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
@@ -586,7 +583,7 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        if self._compose and hasattr(self, "_container"):
+        if is_compose() and hasattr(self, "_container"):
             self._container.stop()
         else:
             container = self.connection_properties.inside_container
@@ -669,7 +666,7 @@ class FluentConnection:
         else:
             raise WaitTypeError()
 
-        if get_container(self.connection_properties.cortex_host) and not self._compose:
+        if self.connection_properties.inside_container and not is_compose():
             _response = timeout_loop(
                 get_container,
                 wait,

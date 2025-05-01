@@ -25,7 +25,6 @@
 from enum import Enum
 import json
 import logging
-import os
 from typing import Any, Callable, Dict
 import warnings
 import weakref
@@ -371,11 +370,7 @@ class BaseSession:
         return FluentVersion(self.scheme_eval.version)
 
     def _exit_compose_service(self):
-        if (
-            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
-            or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
-            and hasattr(self, "_container")
-        ):
+        if self._fluent_connection._container:
             self._container.stop()
 
     def exit(self, **kwargs) -> None:
