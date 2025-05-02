@@ -1164,6 +1164,10 @@ class Group(SettingsBase[DictStateType]):
             raise
 
     def __setattr__(self, name: str, value):
+        # 'settings_source' will be set to settings object when they are created from builtin settings classes.
+        # We don't allow overwriting it.
+        if name == "settings_source":
+            raise AttributeError("Cannot overwrite settings_source after it is set.")
         attr = None
         try:
             attr = getattr(self, name)
