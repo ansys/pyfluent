@@ -33,20 +33,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v22.2.0
-            version: 222
-          - image-tag: v23.1.0
-            version: 231
-          - image-tag: v23.2.0
-            version: 232
-          - image-tag: v24.1.0
-            version: 241
-          - image-tag: v24.2.0
-            version: 242
           - image-tag: v25.1.0
             version: 251
-          - image-tag: v25.2.0
-            version: 252
 
     steps:
       - uses: actions/checkout@v4
@@ -84,14 +72,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+        run: podman pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
 
       - name: Run API codegen
         run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Print Fluent version info
         run: |
@@ -105,9 +89,10 @@ jobs:
       - name: Run Fluent test script
         run: |
             python tests/podman_compose.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Cleanup previous docker containers
+      - name: Cleanup previous containers
         if: always()
-        run: make cleanup-previous-docker-containers
+        run: |
+          podman system prune -af
+          podman stop $(podman ps -a -q)
+          podman rm $(podman ps -a -q)
