@@ -586,6 +586,17 @@ jobs:
           name: coverage_report
           path: ./htmlcov
 
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(python -c "import xml.etree.ElementTree as ET; \
+          tree = ET.parse('cov_xml.xml'); \
+          print(float(tree.getroot().attrib['line-rate'])*100)")
+          echo "Total coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+            echo "Code coverage $COVERAGE% is below 90%!"
+            exit 1
+          fi
+
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
