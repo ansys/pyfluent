@@ -39,6 +39,7 @@ from ansys.fluent.core.pyfluent_warnings import (
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
+from ansys.fluent.core.services.file_transfer import FileTransfer
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
@@ -47,6 +48,7 @@ from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.utils.networking import get_free_port
 
 from .rpvars import RPVars
 
@@ -176,6 +178,17 @@ class BaseSession:
 
         self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
             self.scheme_eval, self._fluent_connection
+        )
+
+        self._file_transfer = service_creator("file_transfer").create(
+            self._fluent_connection.connection_properties.ip,
+            str(get_free_port()),
+        )
+
+        self.file_transfer = FileTransfer(
+            self._file_transfer,
+            self._fluent_connection.connection_properties.ip,
+            str(get_free_port()),
         )
 
         self.journal = Journal(self._app_utilities)
