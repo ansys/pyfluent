@@ -707,8 +707,7 @@ def test_builtin_singleton_setting_assign_session(
     )
     assert models.is_active()
     assert models == solver.setup.models
-    # TODO: Ideally an AttributeError should be raised here from flobject.py
-    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+    with pytest.raises(AttributeError):  # re-assignment is not allowed
         models.settings_source = solver
 
     models = Models()
@@ -733,8 +732,7 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     inlet.settings_source = solver
     assert inlet == solver.settings.setup.boundary_conditions["inlet1"]
     assert inlet.settings_source == solver.settings
-    # TODO: Ideally an AttributeError should be raised here from flobject.py
-    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+    with pytest.raises(AttributeError):  # re-assignment is not allowed
         inlet.settings_source = solver
 
     inlet = BoundaryCondition(name="inlet1")
@@ -759,8 +757,7 @@ def test_builtin_creatable_named_object_setting_assign_session(
     report_file.settings_source = solver
     assert report_file == solver.solution.monitor.report_files["report-file-1"]
     assert report_file.settings_source == solver.settings
-    # TODO: Ideally an AttributeError should be raised here from flobject.py
-    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+    with pytest.raises(AttributeError):  # re-assignment is not allowed
         report_file.settings_source = solver
 
     report_file = ReportFile(name="report-file-1")
