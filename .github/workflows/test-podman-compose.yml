@@ -29,7 +29,7 @@ jobs:
 
   login-podman:
     name: Log in to GitHub Container Registry
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Log in to ghcr.io
         uses: redhat-actions/podman-login@v1
