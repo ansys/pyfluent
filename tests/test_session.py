@@ -680,7 +680,7 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 def test_new_launch_fluent_api():
     import ansys.fluent.core as pyfluent
 
-    solver = pyfluent.Solver.from_local_install()
+    solver = pyfluent.Solver.from_install()
     assert solver.health_check.check_health() == "SERVING"
 
     ip = solver.connection_properties.ip

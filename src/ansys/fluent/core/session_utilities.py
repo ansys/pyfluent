@@ -43,7 +43,7 @@ class SessionBase:
     """Base class for Fluent sessions.
 
     This class is not intended to be used directly. Instead, use
-    the `from_connection`, `from_container`, `from_local_install`,
+    the `from_connection`, `from_container`, `from_install`,
     or `from_pim` functions to create a session.
     """
 
@@ -57,7 +57,7 @@ class SessionBase:
     }
 
     @classmethod
-    def from_local_install(
+    def from_install(
         cls,
         ui_mode: UIMode | str | None = None,
         graphics_driver: (
