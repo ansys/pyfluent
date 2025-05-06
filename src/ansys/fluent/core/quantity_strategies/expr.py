@@ -21,20 +21,22 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping PhysicalQuantity to names used in Fluent's field data API.
+Provides a ConversionStrategy for mapping QuantityDescriptor to variable names used in Fluent expressions.
 """
 
-from ansys.fluent.core.physicalquantities.base import PhysicalQuantities
-from ansys.fluent.core.physicalquantities.strategy import MappingConversionStrategy
+from ansys.units.quantity_descriptor import (
+    MappingConversionStrategy,
+    QuantityDescriptorCatalog,
+)
 
 
-class FluentFieldDataStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected
-    PhysicalQuantities into Fluent's server-side field variable naming conventions.
+class FluentExprStrategy(MappingConversionStrategy):
+    """This strategy handles conversion of selected QuantityDescriptorCatalog into Fluent's
+    server-side expression variable naming conventions.
     """
 
     _mapping = {
-        PhysicalQuantities.PRESSURE: "pressure",
-        PhysicalQuantities.VELOCITY_X: "x-velocity",
-        PhysicalQuantities.TEMPERATURE: "temperature",
+        QuantityDescriptorCatalog.PRESSURE: "StaticPressure",
+        QuantityDescriptorCatalog.VELOCITY_X: "Velocity.x",
+        QuantityDescriptorCatalog.TEMPERATURE: "StaticTemperature",
     }

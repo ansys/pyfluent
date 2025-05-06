@@ -21,20 +21,9 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping PhysicalQuantity to variable names used in Fluent expressions.
+Provides ConversionStrategy classes for mapping QuantityDescriptor to variable names used in Fluent.
 """
 
-from ansys.fluent.core.physicalquantities.base import PhysicalQuantities
-from ansys.fluent.core.physicalquantities.strategy import MappingConversionStrategy
-
-
-class FluentExprStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected PhysicalQuantities into Fluent's
-    server-side expression variable naming conventions.
-    """
-
-    _mapping = {
-        PhysicalQuantities.PRESSURE: "StaticPressure",
-        PhysicalQuantities.VELOCITY_X: "Velocity.x",
-        PhysicalQuantities.TEMPERATURE: "StaticTemperature",
-    }
+from .expr import FluentExprStrategy  # noqa: F401
+from .field import FluentFieldDataStrategy  # noqa: F401
+from .svar import FluentSVarStrategy  # noqa: F401

@@ -52,10 +52,10 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedVectorFieldNames,
     _ReturnFieldData,
 )
-from ansys.fluent.core.physicalquantities.strategies.fluent import (
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.quantity_strategies import (
     FluentFieldDataStrategy,
 )
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,

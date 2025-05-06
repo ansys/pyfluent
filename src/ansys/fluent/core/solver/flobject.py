@@ -69,12 +69,12 @@ from typing import (
 import warnings
 import weakref
 
-from ansys.fluent.core.physicalquantities.strategies.fluent import (
-    FluentFieldDataStrategy,
-)
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
+)
+from ansys.fluent.core.quantity_strategies import (
+    FluentFieldDataStrategy,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -640,7 +640,7 @@ class Textual(Property):
         Parameters
         ----------
         state
-            Either str or PhysicalQuantity.
+            Either str or QuantityDescriptor.
         kwargs : Any
             Keyword arguments.
         """

@@ -21,20 +21,22 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping PhysicalQuantity to Fluent's SVAR names.
+Provides a ConversionStrategy for mapping QuantityDescriptor to Fluent's SVAR names.
 """
 
-from ansys.fluent.core.physicalquantities.base import PhysicalQuantities
-from ansys.fluent.core.physicalquantities.strategy import MappingConversionStrategy
+from ansys.units.quantity_descriptor import (
+    MappingConversionStrategy,
+    QuantityDescriptorCatalog,
+)
 
 
 class FluentSVarStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected PhysicalQuantities into Fluent's
+    """This strategy handles conversion of selected QuantityDescriptorCatalog into Fluent's
     server-side field variable naming conventions (e.g., "SV_P" for pressure).
     """
 
     _mapping = {
-        PhysicalQuantities.PRESSURE: "SV_P",
-        PhysicalQuantities.VELOCITY_X: "SV_U",
-        PhysicalQuantities.TEMPERATURE: "SV_T",
+        QuantityDescriptorCatalog.PRESSURE: "SV_P",
+        QuantityDescriptorCatalog.VELOCITY_X: "SV_U",
+        QuantityDescriptorCatalog.TEMPERATURE: "SV_T",
     }

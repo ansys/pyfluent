@@ -21,38 +21,22 @@
 # SOFTWARE.
 
 """
-Defines the core PhysicalQuantity class and predefined quantities.
-
-This module provides a structured, extensible way to represent physical quantities
-(e.g., pressure, velocity) independently of any product-specific naming conventions.
+Provides a ConversionStrategy for mapping QuantityDescriptor to names used in Fluent's field data API.
 """
 
-from dataclasses import dataclass
-from enum import Enum, auto
+from ansys.units.quantity_descriptor import (
+    MappingConversionStrategy,
+    QuantityDescriptorCatalog,
+)
 
 
-class Dimension(Enum):
-    """Enumerates physical dimensions."""
+class FluentFieldDataStrategy(MappingConversionStrategy):
+    """This strategy handles conversion of selected
+    QuantityDescriptorCatalog into Fluent's server-side field variable naming conventions.
+    """
 
-    PRESSURE = auto()
-    VELOCITY = auto()
-    TEMPERATURE = auto()
-    # etc.
-
-
-@dataclass(frozen=True)
-class PhysicalQuantity:
-    """Defines a physical quantity."""
-
-    name: str  # Human-readable name
-    dimension: Dimension
-    si_unit: str  # Preferred SI unit (e.g., "Pa", "m/s", "K")
-
-
-class PhysicalQuantities:
-    """A catalogue of physical quantities."""
-
-    PRESSURE = PhysicalQuantity("static pressure", Dimension.PRESSURE, "Pa")
-    VELOCITY_X = PhysicalQuantity("velocity x", Dimension.VELOCITY, "m/s")
-    TEMPERATURE = PhysicalQuantity("temperature", Dimension.TEMPERATURE, "K")
-    # Add more quantities as needed
+    _mapping = {
+        QuantityDescriptorCatalog.PRESSURE: "pressure",
+        QuantityDescriptorCatalog.VELOCITY_X: "x-velocity",
+        QuantityDescriptorCatalog.TEMPERATURE: "temperature",
+    }
