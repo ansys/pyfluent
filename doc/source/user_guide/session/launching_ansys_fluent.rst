@@ -300,11 +300,10 @@ can be launched explicitly using :func:`create_launcher() <ansys.fluent.core.lau
   >>> pim_solver_session = pim_solver_launcher()
 
 
-Launching a Fluent session in container mode using Docker Compose and Podman Compose
-------------------------------------------------------------------------------------
+Launching Fluent in Container Mode with Docker Compose or Podman Compose
+------------------------------------------------------------------------
 
-You can launch an Ansys Fluent session in container mode using PyFluent along with either Docker Compose or Podman Compose. 
-This allows you to manage multi-container workflows with a consistent and reproducible simulation environment.
+Use PyFluent with Docker Compose or Podman Compose to run Fluent in a consistent, reproducible containerized environment.
 
 1. **Docker Compose**
 
