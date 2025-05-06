@@ -300,54 +300,49 @@ can be launched explicitly using :func:`create_launcher() <ansys.fluent.core.lau
   >>> pim_solver_session = pim_solver_launcher()
 
 
-Launching a Fluent Session in Container Mode Using Docker and Podman Compose
-----------------------------------------------------------------------------
+Launching a Fluent session in container mode using Docker Compose and Podman Compose
+------------------------------------------------------------------------------------
 
-You can easily launch an Ansys Fluent session in container mode by leveraging Docker and Podman Compose with PyFluent. 
-This approach enables you to manage multi-container workflows and ensures a consistent, reproducible environment for your simulations.
+You can launch an Ansys Fluent session in container mode using PyFluent along with either Docker Compose or Podman Compose. 
+This allows you to manage multi-container workflows with a consistent and reproducible simulation environment.
 
-1. **Docker compose**
+1. **Docker Compose**
 
     Prerequisites:
 
     - `Docker <https://www.docker.com/>`_
     - `Docker Compose <https://docs.docker.com/compose/>`_
 
-    Example:
 
-    .. code:: python
-
-      >>> import os
-      >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-      >>> os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1"
-      >>> import ansys.fluent.core as pyfluent
-      >>> from ansys.fluent.core import examples
-      >>> solver = pyfluent.launch_fluent()
-      >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-      >>> solver.file.read(file_name=case_file_name, file_type="case")
-      >>> solver.exit()
-
-
-2. **Podman compose**
+2. **Podman Compose**
 
     Prerequisites:
 
     - `Podman <https://podman.io/>`_
     - `Podman Compose <https://docs.podman.io/en/latest/markdown/podman-compose.1.html>`_
 
-    Example:
 
-    .. code:: python
+Example:
 
-      >>> import os
-      >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-      >>> os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
-      >>> import ansys.fluent.core as pyfluent
-      >>> from ansys.fluent.core import examples
-      >>> solver = pyfluent.launch_fluent()
-      >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-      >>> solver.file.read(file_name=case_file_name, file_type="case")
-      >>> solver.exit()
+Set environment variables to select the container engine:
+
+.. code:: python
+
+  >>> import os
+  >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
+  >>> os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
+
+
+Then launch:
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+  >>> solver = pyfluent.launch_fluent()
+  >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+  >>> solver.file.read(file_name=case_file_name, file_type="case")
+  >>> solver.exit()
 
 
 Connecting to a Fluent container running inside WSL from a Windows host
