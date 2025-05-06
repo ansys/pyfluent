@@ -102,20 +102,31 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_launch_meshing_and_switch(new_meshing_session):
-    meshing = new_meshing_session
-    assert not meshing._switched
-    _ = meshing.switch_to_solver()
-    assert meshing._switched
-    assert not meshing.tui
-    assert not meshing.meshing
-    assert not meshing.workflow
-    assert not meshing.watertight
+def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
+    meshing = new_meshing_session_wo_exit
+    assert meshing.is_active() is True
+    capsys.readouterr()
+    help(meshing)
+    captured = capsys.readouterr()
+    assert "Encapsulates a Fluent meshing session." in captured.out
+    solver = meshing.switch_to_solver()
+    assert meshing.is_active() is False
+    for attr in ("tui", "meshing", "workflow", "watertight"):
+        with pytest.raises(AttributeError):
+            getattr(meshing, attr)
+    capsys.readouterr()
+    help(meshing)
+    captured = capsys.readouterr()
+    assert (
+        "The meshing session is no longer usable after switching to solution mode."
+        in captured.out
+    )
+    solver.exit()
 
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_meshing_streaming_and_switch(new_meshing_session):
+def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
@@ -127,7 +138,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     on_trancript.called = False
 
-    meshing = new_meshing_session
+    meshing = new_meshing_session_wo_exit
 
     meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
     meshing.transcript.register_callback(on_trancript)
@@ -145,6 +156,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     assert not on_trancript.called
     assert not on_case_loaded.loaded
+    solver.exit()
 
 
 @pytest.mark.fluent_version("latest")

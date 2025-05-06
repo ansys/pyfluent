@@ -43,12 +43,12 @@ repos:
     args: ["--toml", "pyproject.toml"]
     additional_dependencies: ["tomli"]
 
-- repo: https://github.com/PyCQA/docformatter
-  rev: v1.7.5
-  hooks:
-  - id: docformatter
-    stages: [manual]
-    args: ["--config", "pyproject.toml"]
+# - repo: https://github.com/PyCQA/docformatter
+#   rev: v1.7.5
+#   hooks:
+#   - id: docformatter
+#     stages: [manual]
+#     args: ["--config", "pyproject.toml"]
 
 #- repo: https://github.com/pycqa/pydocstyle
 #  rev: 6.1.1
@@ -89,5 +89,6 @@ repos:
   rev: v0.5.1
   hooks:
     - id: add-license-headers
+      stages: [manual]
       args:
       - --start_year=2021

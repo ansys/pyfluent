@@ -968,7 +968,7 @@ hyd_dia.as_quantity()
 ```{python}
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
 
 mesh_file_name = examples.download_file(
     "mixing_elbow.msh.h5", 
@@ -976,7 +976,7 @@ mesh_file_name = examples.download_file(
 meshing_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.MESHING, 
     file_transfer_service=
-    LocalFileTransferStrategy())
+    StandaloneFileTransferStrategy())
 meshing_session.upload(
     file_name=mesh_file_name, 
     remote_file_name="elbow.msh.h5")
@@ -994,7 +994,7 @@ meshing_session.download(
 ```{python}
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 
 case_file_name = examples.download_file(
     "mixing_elbow.cas.h5", 
@@ -1002,7 +1002,7 @@ case_file_name = examples.download_file(
 solver_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER, 
     file_transfer_service=
-    RemoteFileTransferStrategy())
+    ContainerFileTransferStrategy())
 solver_session.upload(
     file_name=case_file_name, 
     remote_file_name="elbow.cas.h5")

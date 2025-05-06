@@ -42,6 +42,7 @@ import weakref
 import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
@@ -50,7 +51,7 @@ from ansys.fluent.core.services.app_utilities import (
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
@@ -150,7 +151,12 @@ def get_container(container_id_or_name: str) -> bool | ContainerT | None:
         container = docker_client.containers.get(container_id_or_name)
     except _docker().errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except _docker().errors.DockerException as exc:
+    # DockerException is the most common exception we can get here.
+    # However, in some system setup, we get ReadTimeoutError from urllib3 library
+    # (https://github.com/ansys/pyfluent/issues/3425).
+    # As urllib3 is not a direct dependency of PyFluent, we don't want to import it here,
+    # hence we catch the generic Exception.
+    except Exception as exc:
         logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
@@ -372,6 +378,7 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: ContainerT | None = None,
     ):
         """Initialize a Session.
 
@@ -408,6 +415,9 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: ContainerT, optional
+            The container instance if the Fluent session is running inside
+            a container.
 
         Raises
         ------
@@ -453,15 +463,16 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
-
+        self._container = container
         if (
             (inside_container is None or inside_container is True)
             and not remote_instance
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            inside_container = get_container(cortex_host)
-            logger.debug(f"get_container({cortex_host}): {inside_container}")
+            if not is_compose():
+                inside_container = get_container(cortex_host)
+                logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is False:
                 logger.info("Fluent is not running inside a container.")
             elif inside_container is None:
@@ -525,7 +536,7 @@ class FluentConnection:
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container:
+        if self.connection_properties.inside_container or is_compose():
             self._force_exit_container()
         elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
@@ -573,25 +584,35 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        container = self.connection_properties.inside_container
-        container_id = self.connection_properties.cortex_host
-        pid = self.connection_properties.fluent_host_pid
-        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
-        if get_container(container_id):
-            try:
-                container.exec_run(["bash", cleanup_file_name], detach=True)
-            except _docker().errors.APIError as e:
-                logger.info(f"{type(e).__name__}: {e}")
-                logger.debug(
-                    "Caught Docker APIError, Docker container probably not running anymore."
-                )
+        if is_compose() and self._container:
+            self._container.stop()
         else:
-            logger.debug("Container not found, cancelling cleanup script execution.")
+            container = self.connection_properties.inside_container
+            container_id = self.connection_properties.cortex_host
+            pid = self.connection_properties.fluent_host_pid
+            cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+            logger.debug(
+                f"Executing Fluent container cleanup script: {cleanup_file_name}"
+            )
+            if get_container(container_id):
+                try:
+                    container.exec_run(["bash", cleanup_file_name], detach=True)
+                except _docker().errors.APIError as e:
+                    logger.info(f"{type(e).__name__}: {e}")
+                    logger.debug(
+                        "Caught Docker APIError, Docker container probably not running anymore."
+                    )
+            else:
+                logger.debug(
+                    "Container not found, cancelling cleanup script execution."
+                )
 
-    def register_finalizer_cb(self, cb):
+    def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
-        self.finalizer_cbs.append(cb)
+        if at_start:
+            self.finalizer_cbs.insert(0, cb)
+        else:
+            self.finalizer_cbs.append(cb)
 
     def create_grpc_service(self, service, *args):
         """Create a gRPC service.
@@ -645,7 +666,8 @@ class FluentConnection:
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
             raise WaitTypeError()
-        if self.connection_properties.inside_container:
+
+        if self.connection_properties.inside_container and not is_compose():
             _response = timeout_loop(
                 get_container,
                 wait,
@@ -791,7 +813,7 @@ class FluentConnection:
             remote_instance.delete()
 
         if file_transfer_service and isinstance(
-            file_transfer_service, RemoteFileTransferStrategy
+            file_transfer_service, ContainerFileTransferStrategy
         ):
             file_transfer_service.container.kill()
 

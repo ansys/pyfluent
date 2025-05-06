@@ -70,7 +70,7 @@ from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.31.dev0"
+__version__ = "0.31.dev1"
 
 _VERSION_INFO = None
 """
@@ -114,7 +114,7 @@ EXAMPLES_PATH = str(get_examples_download_dir())
 CONTAINER_MOUNT_SOURCE = None
 
 # Path inside the container where the host path is mounted
-CONTAINER_MOUNT_TARGET = "/mnt/pyfluent"
+CONTAINER_MOUNT_TARGET = "/home/container/workdir"
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True
@@ -155,6 +155,9 @@ SUPPORT_SOLVER_INTERRUPT = False
 
 # Whether to start watchdog
 START_WATCHDOG = None
+
+# Health check timeout in seconds
+CHECK_HEALTH_TIMEOUT = 60
 
 # Whether to skip health check
 CHECK_HEALTH = True

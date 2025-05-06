@@ -35,7 +35,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 sys.path.append(Path(__file__).parent / "util")
@@ -246,8 +246,8 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -255,6 +255,13 @@ def create_session(**kwargs):
         )
     else:
         return pyfluent.launch_fluent(**kwargs)
+
+
+@pytest.fixture
+def new_meshing_session_wo_exit():
+    meshing = create_session(mode=pyfluent.FluentMode.MESHING)
+    yield meshing
+    # Exit is intentionally avoided here. Please exit from the method using this.
 
 
 @pytest.fixture
@@ -278,11 +285,27 @@ def watertight_workflow_session(new_meshing_session):
 
 
 @pytest.fixture
+def watertight_workflow_session_wo_exit(new_meshing_session_wo_exit):
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Watertight Geometry"
+    )
+    return new_meshing_session_wo_exit
+
+
+@pytest.fixture
 def fault_tolerant_workflow_session(new_meshing_session):
     new_meshing_session.workflow.InitializeWorkflow(
         WorkflowType="Fault-tolerant Meshing"
     )
     return new_meshing_session
+
+
+@pytest.fixture
+def fault_tolerant_workflow_session_wo_exit(new_meshing_session_wo_exit):
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Fault-tolerant Meshing"
+    )
+    return new_meshing_session_wo_exit
 
 
 @pytest.fixture
