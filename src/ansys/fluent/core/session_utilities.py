@@ -369,13 +369,23 @@ class SessionBase:
             connect to a running Fluent session.
         password : str, optional
             Password to connect to existing Fluent instance.
+
+        Raises
+        ------
+        TypeError
+            If the session type does not match the expected session type.
         """
-        return pyfluent.connect_to_fluent(
+        session = pyfluent.connect_to_fluent(
             ip=ip,
             port=port,
             server_info_file_name=server_info_file_name,
             password=password,
         )
+
+        if session.__class__.__name__ != cls.__name__:
+            raise TypeError(
+                f"Session type mismatch: expected {cls.__name__}, got {session.__class__.__name__}."
+            )
 
 
 class Meshing(SessionBase):
