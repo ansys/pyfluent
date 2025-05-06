@@ -575,15 +575,15 @@ class FluentConnection:
                 )
                 cmd_list.append(cleanup_file_name)
                 logger.debug(f"Cleanup command list = {cmd_list}")
-                process = subprocess.Popen(
+                result = subprocess.run(
                     cmd_list,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
+                    timeout=120,
+                    check=True,
                 )
-                process.communicate(timeout=120)
-                return_code = process.wait(timeout=120)
-                if return_code != 0:
-                    raise subprocess.CalledProcessError(return_code, cmd_list)
+                if result.returncode != 0:
+                    raise subprocess.CalledProcessError(result.returncode, cmd_list)
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()
