@@ -151,7 +151,12 @@ def get_container(container_id_or_name: str) -> bool | ContainerT | None:
         container = docker_client.containers.get(container_id_or_name)
     except _docker().errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except _docker().errors.DockerException as exc:
+    # DockerException is the most common exception we can get here.
+    # However, in some system setup, we get ReadTimeoutError from urllib3 library
+    # (https://github.com/ansys/pyfluent/issues/3425).
+    # As urllib3 is not a direct dependency of PyFluent, we don't want to import it here,
+    # hence we catch the generic Exception.
+    except Exception as exc:
         logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
