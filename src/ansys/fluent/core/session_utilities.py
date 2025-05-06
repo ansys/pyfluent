@@ -387,6 +387,8 @@ class SessionBase:
                 f"Session type mismatch: expected {cls.__name__}, got {session.__class__.__name__}."
             )
 
+        return session
+
 
 class Meshing(SessionBase):
     """Encapsulates a Fluent server for meshing session connection."""
