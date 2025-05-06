@@ -22,6 +22,8 @@
 
 """This module provides a class to handle file transfer operations."""
 
+from typing import List, Tuple
+
 import grpc
 
 from ansys.api.fluent.v0 import file_transfer_service_pb2 as FileTransferProtoModule
@@ -31,27 +33,24 @@ from ansys.api.fluent.v0 import file_transfer_service_pb2_grpc as FileTransferGr
 class FileTransferService:
     """FileTransfer Service."""
 
-    def __init__(self, ip: str, port: str):
+    def __init__(self, channel: grpc.Channel, metadata: List[Tuple[str, str]]):
         """__init__ method of AppUtilities class."""
-        channel = grpc.insecure_channel(f"{ip}:{port}")
-        self._stub = FileTransferGrpcModule.FileTransferServiceStub(channel)
+        from ansys.fluent.core.services.interceptors import GrpcErrorInterceptor
+
+        intercept_channel = grpc.intercept_channel(
+            channel,
+            GrpcErrorInterceptor(),
+        )
+        self._stub = FileTransferGrpcModule.FileTransferServiceStub(intercept_channel)
+        self._metadata = metadata
 
 
 class FileTransfer:
     """FileTransferService."""
 
-    def __init__(self, service: FileTransferService, ip: str, port: str):
+    def __init__(self, service: FileTransferService):
         """__init__ method of FileTransfer class."""
         self.service = service
-        self._ip = ip
-        self._port = port
-
-    def start_server(self) -> str:
-        """Start server."""
-        request = FileTransferProtoModule.StartServerRequest()
-        request.ip = self._ip
-        request.port = self._port
-        self.service._stub.StartServer(request)
 
     def upload(self, file_path: str) -> dict:
         """Upload file to the server.
@@ -60,24 +59,41 @@ class FileTransfer:
         ----------
         file_path : str
             Path to the file to be uploaded.
+        Returns
+        -------
+        dict
+            Server response or error message.
         """
 
-        def request_generator():
+        def generate_requests(file_path):
+            # Send metadata first
             yield FileTransferProtoModule.FileUploadRequest(
                 metadata=FileTransferProtoModule.FileMetaData(
                     name=file_path, type="application/octet-stream"
                 )
             )
-            with open(file_path, "rb") as f:
-                while True:
-                    chunk = f.read(1024 * 1024)
-                    if not chunk:
-                        break
-                    yield FileTransferProtoModule.FileUploadRequest(
-                        chunk=FileTransferProtoModule.FileChunk(content=chunk)
-                    )
+            try:
+                with open(file_path, "rb") as f:
+                    while True:
+                        chunk = f.read(1024 * 1024)
+                        if not chunk:
+                            break
+                        yield FileTransferProtoModule.FileUploadRequest(
+                            chunk=FileTransferProtoModule.FileChunk(content=chunk)
+                        )
+            except Exception as e:
+                print(f"Error reading file: {e}")
+                raise
 
-        self.service._stub.Upload(request_generator())
+        try:
+            response = self.service._stub.Upload(
+                generate_requests(file_path), metadata=self.service._metadata
+            )
+            print("Upload completed.")
+            return {"status": "success", "response": response}
+        except Exception as e:
+            print(f"Upload failed: {e}")
+            return {"status": "error", "message": str(e)}
 
     def download(self, remote_file, local_path):
         """Download file from the server.
@@ -91,5 +107,7 @@ class FileTransfer:
         """
         request = FileTransferProtoModule.FileDownloadRequest(name=remote_file)
         with open(local_path, "wb") as f:
-            for resp in self.service._stub.Download(request):
+            for resp in self.service._stub.Download(
+                request, metadata=self.service._metadata
+            ):
                 f.write(resp.content)
