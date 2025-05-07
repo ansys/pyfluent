@@ -192,7 +192,7 @@ class ComposeBasedLauncher:
         """Start the services.
 
         Raises
-        -------
+        ------
         subprocess.CalledProcessError
             If the command fails.
         """
@@ -212,7 +212,7 @@ class ComposeBasedLauncher:
         """Stop the services.
 
         Raises
-        -------
+        ------
         subprocess.CalledProcessError
             If the command fails.
         """
