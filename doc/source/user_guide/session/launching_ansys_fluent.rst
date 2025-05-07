@@ -344,8 +344,8 @@ Then launch:
   >>> solver.exit()
 
 
-Connecting to a Fluent container running inside WSL from a Windows host
------------------------------------------------------------------------
+Connect to a Fluent container running inside WSL from a Windows host
+--------------------------------------------------------------------
 
 1. Launch Fluent container inside WSL
 
