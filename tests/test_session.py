@@ -713,9 +713,9 @@ def test_new_launch_fluent_api_from_connection():
 
     solver = pyfluent.Solver.from_container()
     assert solver.health_check.check_health() == "SERVING"
-    ip = solver._fluent_connection.connection_properties.ip
-    port = solver._fluent_connection.connection_properties.port
-    password = solver._fluent_connection.connection_properties.password
+    ip = solver.connection_properties.ip
+    port = solver.connection_properties.port
+    password = solver.connection_properties.password
     with pytest.raises(TypeError):
         pyfluent.Meshing.from_connection(ip=ip, port=port, password=password)
     solver.exit()
