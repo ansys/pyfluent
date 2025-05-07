@@ -721,6 +721,7 @@ def test_new_launch_fluent_api_from_connection():
     solver.exit()
 
 
+@pytest.mark.standalone
 @pytest.mark.fluent_version(">=25.1")
 def test_launch_in_pyconsole_mode():
     with pyfluent.launch_fluent() as session:
