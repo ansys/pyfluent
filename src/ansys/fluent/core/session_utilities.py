@@ -382,9 +382,12 @@ class SessionBase:
             password=password,
         )
 
-        if session.__class__.__name__ != cls.__name__:
+        expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__
+        actual = session.__class__.__name__
+
+        if actual != expected:
             raise TypeError(
-                f"Session type mismatch: expected {cls.__name__}, got {session.__class__.__name__}."
+                f"Session type mismatch: expected {expected}, got {actual}."
             )
 
         return session
