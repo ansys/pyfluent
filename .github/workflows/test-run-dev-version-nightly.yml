@@ -13,8 +13,8 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
   MAIN_PYTHON_VERSION: '3.10'
-  FLUENT_IMAGE_TAG: v25.2.0
-  FLUENT_VERSION: 252
+  FLUENT_IMAGE_TAG: v26.1.0
+  FLUENT_VERSION: 261
 
 jobs:
   test:
@@ -105,5 +105,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Delete 25.1 Fluent docker image
+      - name: Clean up Fluent docker image
         run: docker rmi -f ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }}

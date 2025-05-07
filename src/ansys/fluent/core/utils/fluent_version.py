@@ -74,6 +74,7 @@ class FluentVersion(Enum):
     FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
+    v261 = "26.1.0"
     v252 = "25.2.0"
     v251 = "25.1.0"
     v242 = "24.2.0"
