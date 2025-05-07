@@ -26,17 +26,17 @@ Provides a ConversionStrategy for mapping QuantityDescriptor to variable names u
 
 from ansys.units.quantity_descriptor import (
     MappingConversionStrategy,
-    QuantityDescriptorCatalog,
+    QuantityCatalog,
 )
 
 
 class FluentExprStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected QuantityDescriptorCatalog into Fluent's
+    """This strategy handles conversion of selected QuantityCatalog into Fluent's
     server-side expression variable naming conventions.
     """
 
     _mapping = {
-        QuantityDescriptorCatalog.PRESSURE: "StaticPressure",
-        QuantityDescriptorCatalog.VELOCITY_X: "Velocity.x",
-        QuantityDescriptorCatalog.TEMPERATURE: "StaticTemperature",
+        QuantityCatalog.PRESSURE: "StaticPressure",
+        QuantityCatalog.VELOCITY_X: "Velocity.x",
+        QuantityCatalog.TEMPERATURE: "StaticTemperature",
     }

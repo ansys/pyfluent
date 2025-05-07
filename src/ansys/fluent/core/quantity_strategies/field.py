@@ -26,17 +26,17 @@ Provides a ConversionStrategy for mapping QuantityDescriptor to names used in Fl
 
 from ansys.units.quantity_descriptor import (
     MappingConversionStrategy,
-    QuantityDescriptorCatalog,
+    QuantityCatalog,
 )
 
 
 class FluentFieldDataStrategy(MappingConversionStrategy):
     """This strategy handles conversion of selected
-    QuantityDescriptorCatalog into Fluent's server-side field variable naming conventions.
+    QuantityCatalog into Fluent's server-side field variable naming conventions.
     """
 
     _mapping = {
-        QuantityDescriptorCatalog.PRESSURE: "pressure",
-        QuantityDescriptorCatalog.VELOCITY_X: "x-velocity",
-        QuantityDescriptorCatalog.TEMPERATURE: "temperature",
+        QuantityCatalog.PRESSURE: "pressure",
+        QuantityCatalog.VELOCITY_X: "x-velocity",
+        QuantityCatalog.TEMPERATURE: "temperature",
     }

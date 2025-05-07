@@ -26,17 +26,17 @@ Provides a ConversionStrategy for mapping QuantityDescriptor to Fluent's SVAR na
 
 from ansys.units.quantity_descriptor import (
     MappingConversionStrategy,
-    QuantityDescriptorCatalog,
+    QuantityCatalog,
 )
 
 
 class FluentSVarStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected QuantityDescriptorCatalog into Fluent's
+    """This strategy handles conversion of selected QuantityCatalog into Fluent's
     server-side field variable naming conventions (e.g., "SV_P" for pressure).
     """
 
     _mapping = {
-        QuantityDescriptorCatalog.PRESSURE: "SV_P",
-        QuantityDescriptorCatalog.VELOCITY_X: "SV_U",
-        QuantityDescriptorCatalog.TEMPERATURE: "SV_T",
+        QuantityCatalog.PRESSURE: "SV_P",
+        QuantityCatalog.VELOCITY_X: "SV_U",
+        QuantityCatalog.TEMPERATURE: "SV_T",
     }
