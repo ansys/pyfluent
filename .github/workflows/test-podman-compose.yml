@@ -77,7 +77,7 @@ jobs:
 
       - name: Pull Fluent docker image
         run: |
-          make docker-pull
+          docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
           docker images
 
       - name: Transport docker image to podman
