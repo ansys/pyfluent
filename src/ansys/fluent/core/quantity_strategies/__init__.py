@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """
-Provides ConversionStrategy classes for mapping QuantityDescriptor to variable names used in Fluent.
+Provides ConversionStrategy classes for mapping VariableDescriptor to variable names used in Fluent.
 """
 
 from .expr import FluentExprStrategy  # noqa: F401

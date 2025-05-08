@@ -21,22 +21,22 @@
 # SOFTWARE.
 
 """
-Provides a ConversionStrategy for mapping QuantityDescriptor to variable names used in Fluent expressions.
+Provides a ConversionStrategy for mapping VariableDescriptor to variable names used in Fluent expressions.
 """
 
-from ansys.units.quantity_descriptor import (
+from ansys.units.variable_descriptor import (
     MappingConversionStrategy,
-    QuantityCatalog,
+    VariableCatalog,
 )
 
 
 class FluentExprStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected QuantityCatalog into Fluent's
+    """This strategy handles conversion of selected VariableCatalog into Fluent's
     server-side expression variable naming conventions.
     """
 
     _mapping = {
-        QuantityCatalog.PRESSURE: "StaticPressure",
-        QuantityCatalog.VELOCITY_X: "Velocity.x",
-        QuantityCatalog.TEMPERATURE: "StaticTemperature",
+        VariableCatalog.PRESSURE: "StaticPressure",
+        VariableCatalog.VELOCITY_X: "Velocity.x",
+        VariableCatalog.TEMPERATURE: "StaticTemperature",
     }

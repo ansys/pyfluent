@@ -640,7 +640,7 @@ class Textual(Property):
         Parameters
         ----------
         state
-            Either str or QuantityDescriptor.
+            Either str or VariableDescriptor.
         kwargs : Any
             Keyword arguments.
         """

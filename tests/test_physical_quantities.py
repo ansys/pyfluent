@@ -28,7 +28,7 @@ import pytest
 
 import ansys.fluent.core as pf  # noqa: F401
 from ansys.fluent.core import examples
-from ansys.units.quantity_descriptor import QuantityCatalog
+from ansys.units.variable_descriptor import VariableCatalog
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -44,7 +44,7 @@ def test_physical_quantities(new_solver_session) -> None:
 
     fields = solver.fields
 
-    temperature = QuantityCatalog.TEMPERATURE
+    temperature = VariableCatalog.TEMPERATURE
     locations = ["hot-inlet"]
 
     temperature_field_data = fields.field_data.get_scalar_field_data(
