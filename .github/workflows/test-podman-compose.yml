@@ -22,7 +22,7 @@ env:
 
 jobs:
   install-podman:
-    runs-on: [self-hosted, pyfluent]
+    runs-on: [self-hosted]
     steps:
       - uses: gacts/install-podman@v1
       - run: podman compose version
@@ -30,7 +30,7 @@ jobs:
   build_test:
     name: Build and Test
     needs: install-podman
-    runs-on: [self-hosted, pyfluent]
+    runs-on: [self-hosted]
     strategy:
       fail-fast: false
       matrix:
