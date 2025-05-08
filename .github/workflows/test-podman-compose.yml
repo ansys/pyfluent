@@ -27,12 +27,30 @@ jobs:
       - uses: gacts/install-podman@v1
       - run: |
           podman compose version
-          podman pull quay.io/podman/hello
-          podman info
+
+  login-podman:
+    name: Log in to GitHub Container Registry
+    needs: install-podman
+    runs-on: ubuntu-latest	
+    steps:	
+      - name: Log in to ghcr.io	
+        uses: redhat-actions/podman-login@v1
+        with:	
+          username: ansys-bot	
+          password: ${{ secrets.GITHUB_TOKEN }}	
+          registry: ghcr.io
+
+  check-podman:
+    name: Check Podman
+    needs: login-podman
+    runs-on: [public-ubuntu-latest-8-cores]
+    steps:
+      - name: Check Podman
+        run: podman run quay.io/podman/hello
 
   build_test:
     name: Build and Test
-    needs: install-podman
+    needs: login-podman
     runs-on: [public-ubuntu-latest-8-cores]
     strategy:
       fail-fast: false
