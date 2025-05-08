@@ -25,8 +25,7 @@ jobs:
     runs-on: [public-ubuntu-latest-8-cores]
     steps:
       - uses: gacts/install-podman@v1
-      - run: |
-          podman compose version
+      - run: podman compose version
 
   login-podman:
     name: Log in to GitHub Container Registry
