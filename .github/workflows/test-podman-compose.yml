@@ -70,7 +70,9 @@ jobs:
         run: make version-info
 
       - name: Install pyfluent
-        run: make install
+        run: |
+          pip install packaging
+          make install
 
       - name: Retrieve PyFluent version
         run: |
