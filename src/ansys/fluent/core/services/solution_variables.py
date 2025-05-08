@@ -32,6 +32,7 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+from ansys.fluent.core.physicalquantities.strategies.fluent import FluentSVarStrategy
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
@@ -42,6 +43,8 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+
+_to_field_name_str = FluentSVarStrategy().to_string
 
 
 class SolutionVariableService:
@@ -354,6 +357,7 @@ class _AllowedSvarNames:
         SvarError
             If the given solution variable name is invalid.
         """
+        solution_variable_name = _to_field_name_str(solution_variable_name)
         if not self.is_valid(
             solution_variable_name, zone_names=zone_names, domain_name=domain_name
         ):
@@ -613,7 +617,9 @@ class SolutionVariableData:
         )
         svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name = self._allowed_solution_variable_names.valid_name(
-            solution_variable_name, zone_names, domain_name
+            solution_variable_name,
+            zone_names,
+            domain_name,
         )
         zone_id_name_map = {}
         for zone_name in zone_names:
