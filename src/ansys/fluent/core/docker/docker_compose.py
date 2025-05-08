@@ -94,11 +94,16 @@ class ComposeBasedLauncher:
 
         return compose_file
 
-    def _has_sudo_access(self):
-        result = subprocess.run(
-            ["sudo", "-n", "true"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        return result.returncode == 0
+    def _is_podman_rootless():
+        try:
+            result = subprocess.run(
+                ["podman", "pull", "quay.io/podman/hello"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            return result.returncode == 0
+        except Exception:
+            return False
 
     def _extract_ports(self, port_string):
         """
@@ -136,6 +141,8 @@ class ComposeBasedLauncher:
             self._compose_cmds = ["podman", "compose"]
         elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
+            if not self._is_podman_rootless():
+                self._compose_cmds.insert(0, "sudo")
         else:
             raise RuntimeError("Neither Docker nor Podman is specified.")
 
