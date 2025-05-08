@@ -140,8 +140,6 @@ class ComposeBasedLauncher:
         # Determine the compose command
         if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
             self._compose_cmds = ["podman", "compose"]
-            if not self._is_podman_rootless:
-                self._compose_cmds.insert(0, "sudo")
         elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
         else:
@@ -151,47 +149,62 @@ class ComposeBasedLauncher:
 
     def check_image_exists(self) -> bool:
         """Check if a Docker image exists locally."""
+        cmd = self._container_source + ["images", "-q", self._image_name]
         try:
-            output = subprocess.check_output(
-                self._container_source + ["images", "-q", self._image_name]
-            )
+            output = subprocess.check_output(cmd)
             return output.decode("utf-8").strip() != ""
         except subprocess.CalledProcessError as e:  # noqa: F841
-            return False
+            sudo_cmd = ["sudo"] + cmd
+            output = subprocess.check_output(sudo_cmd)
+            return output.decode("utf-8").strip() != ""
 
     def pull_image(self) -> None:
         """Pull a Docker image if it does not exist locally."""
-
         cmd = self._container_source + ["pull", self._image_name]
 
-        subprocess.check_call(cmd)
+        try:
+            subprocess.check_call(cmd)
+        except subprocess.CalledProcessError:
+            sudo_cmd = ["sudo"] + cmd
+            subprocess.check_call(sudo_cmd)
 
     def _start_stop_helper(
         self, compose_cmd: list[str], cmd: list[str], timeout: float
     ) -> None:
-        """Helper function to start or stop the services.
+        """
+        Helper function to start or stop the services.
 
         Parameters
         ----------
         compose_cmd: list[str]
-            The command to run.
+            The base command to run (e.g., ['docker-compose']).
         cmd: list[str]
-            The command to run.
+            Additional command arguments (e.g., ['up', '-d']).
         timeout: float
             The timeout for the command.
         """
-        process = subprocess.Popen(
-            compose_cmd + cmd,
-            stdin=subprocess.PIPE,
-            text=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        process.communicate(input=self._compose_file, timeout=timeout)
-        return_code = process.wait(timeout=timeout)
 
-        if return_code != 0:
-            raise subprocess.CalledProcessError(return_code, compose_cmd + cmd)
+        def run_command(full_cmd: list[str]) -> int:
+            process = subprocess.Popen(
+                full_cmd,
+                stdin=subprocess.PIPE,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            process.communicate(input=self._compose_file, timeout=timeout)
+            return process.wait(timeout=timeout)
+
+        full_cmd = compose_cmd + cmd
+        try:
+            return_code = run_command(full_cmd)
+            if return_code != 0:
+                raise subprocess.CalledProcessError(return_code, full_cmd)
+        except Exception as e:
+            sudo_cmd = ["sudo"] + full_cmd
+            return_code = run_command(sudo_cmd)
+            if return_code != 0:
+                raise subprocess.CalledProcessError(return_code, sudo_cmd) from e
 
     def start(self) -> None:
         """Start the services.

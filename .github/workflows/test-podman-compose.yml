@@ -27,31 +27,9 @@ jobs:
       - uses: gacts/install-podman@v1
       - run: podman compose version
 
-  login-podman:
-    name: Log in to GitHub Container Registry
-    needs: install-podman
-    runs-on: [public-ubuntu-latest-8-cores]
-    steps:	
-      - name: Log in to ghcr.io	
-        uses: redhat-actions/podman-login@v1
-        with:	
-          username: ansys-bot	
-          password: ${{ secrets.GITHUB_TOKEN }}	
-          registry: ghcr.io
-
-  check-podman:
-    name: Check Podman
-    needs: login-podman
-    runs-on: [public-ubuntu-latest-8-cores]
-    steps:
-      - name: Check Podman
-        run: |
-          podman run quay.io/podman/hello
-          podman images
-
   build_test:
     name: Build and Test
-    needs: check-podman
+    needs: install-podman
     runs-on: [public-ubuntu-latest-8-cores]
     strategy:
       fail-fast: false
@@ -104,8 +82,8 @@ jobs:
 
       - name: Transport docker image to podman
         run: |
-          podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-          podman images
+          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          sudo podman images
 
       - name: Run API codegen
         run: make api-codegen
