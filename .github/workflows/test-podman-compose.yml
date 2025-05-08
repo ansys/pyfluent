@@ -76,13 +76,15 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        run: make docker-pull
+        run: |
+          make docker-pull
+          docker images
 
-      - name: Transport docker image to Podman
+      - name: Transport docker image to podman
         run: |
           podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
 
-      - name: Check image is available for Podman
+      - name: Check image is available for podman
         run: podman images
 
       - name: Run API codegen
