@@ -83,7 +83,7 @@ jobs:
       - name: Transport docker image to podman
         run: |
           sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-          podman images
+          sudo podman images
 
       - name: Run API codegen
         run: make api-codegen
