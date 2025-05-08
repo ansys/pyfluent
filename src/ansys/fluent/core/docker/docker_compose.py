@@ -94,7 +94,7 @@ class ComposeBasedLauncher:
 
         return compose_file
 
-    def _is_podman_rootless():
+    def _is_podman_rootless(self):
         try:
             result = subprocess.run(
                 ["podman", "pull", "quay.io/podman/hello"],
