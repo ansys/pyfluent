@@ -22,7 +22,7 @@ env:
 
 jobs:
   install-podman:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
     steps:
       - uses: gacts/install-podman@v1
       - run: podman compose version
@@ -30,7 +30,7 @@ jobs:
   build_test:
     name: Build and Test
     needs: install-podman
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, pyfluent]
     strategy:
       fail-fast: false
       matrix:
@@ -83,9 +83,7 @@ jobs:
       - name: Transport docker image to podman
         run: |
           podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-
-      - name: Check image is available for podman
-        run: podman images
+          podman images
 
       - name: Run API codegen
         run: make api-codegen
