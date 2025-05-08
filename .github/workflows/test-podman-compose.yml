@@ -81,7 +81,7 @@ jobs:
         id: version
 
       - name: Pull Fluent podman image
-        run: podman pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+        run: sudo podman pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
 
       - name: Run API codegen
         run: make api-codegen
