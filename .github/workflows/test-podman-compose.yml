@@ -25,7 +25,10 @@ jobs:
     runs-on: [public-ubuntu-latest-8-cores]
     steps:
       - uses: gacts/install-podman@v1
-      - run: podman compose version
+      - run: |
+          podman compose version
+          podman pull quay.io/podman/hello
+          podman info
 
   build_test:
     name: Build and Test
