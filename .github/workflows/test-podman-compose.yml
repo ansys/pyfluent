@@ -31,7 +31,7 @@ jobs:
   login-podman:
     name: Log in to GitHub Container Registry
     needs: install-podman
-    runs-on: ubuntu-latest	
+    runs-on: [public-ubuntu-latest-8-cores]
     steps:	
       - name: Log in to ghcr.io	
         uses: redhat-actions/podman-login@v1
