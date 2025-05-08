@@ -90,16 +90,9 @@ jobs:
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
         id: version
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Transport docker image to podman
         run: |
-          podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          podman pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
           podman images
 
       - name: Run API codegen
