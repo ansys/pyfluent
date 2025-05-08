@@ -37,7 +37,6 @@ class ComposeBasedLauncher:
             container_dict.get("fluent_image")
             or f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
         )
-        self._is_podman_rootless = self._is_podman_rootless()
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
@@ -94,17 +93,6 @@ class ComposeBasedLauncher:
         compose_file += compose_file_env
 
         return compose_file
-
-    def _is_podman_rootless(self):
-        try:
-            result = subprocess.run(
-                ["podman", "pull", "quay.io/podman/hello"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            return result.returncode == 0
-        except Exception:
-            return False
 
     def _extract_ports(self, port_string):
         """
