@@ -80,9 +80,6 @@ jobs:
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
         id: version
 
-      - name: Pull Fluent podman image
-        run: sudo podman pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-
       - name: Run API codegen
         run: make api-codegen
 
