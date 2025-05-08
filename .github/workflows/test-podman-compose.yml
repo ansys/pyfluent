@@ -86,8 +86,6 @@ jobs:
           sudo podman images
 
       - name: Run API codegen
-        env:
-          PYFLUENT_USE_PODMAN_COMPOSE: "1"
         run: make api-codegen
 
       - name: Print Fluent version info
@@ -100,8 +98,6 @@ jobs:
           make install > /dev/null
 
       - name: Run Fluent test script
-        env:
-          PYFLUENT_USE_PODMAN_COMPOSE: "1"
         run: |
             python tests/podman_compose.py
 
