@@ -37,6 +37,7 @@ class ComposeBasedLauncher:
             container_dict.get("fluent_image")
             or f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
         )
+        self._is_podman_rootless = self._is_podman_rootless()
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
@@ -139,7 +140,7 @@ class ComposeBasedLauncher:
         # Determine the compose command
         if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
             self._compose_cmds = ["podman", "compose"]
-            if not self._is_podman_rootless():
+            if not self._is_podman_rootless:
                 self._compose_cmds.insert(0, "sudo")
         elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
@@ -152,7 +153,7 @@ class ComposeBasedLauncher:
         """Check if a Docker image exists locally."""
         try:
             output = subprocess.check_output(
-                ["docker", "images", "-q", self._image_name]
+                self._container_source + ["images", "-q", self._image_name]
             )
             return output.decode("utf-8").strip() != ""
         except subprocess.CalledProcessError as e:  # noqa: F841
@@ -161,10 +162,7 @@ class ComposeBasedLauncher:
     def pull_image(self) -> None:
         """Pull a Docker image if it does not exist locally."""
 
-        cmd = [f"{self._container_source[0]}", "pull", self._image_name]
-
-        if len(self._container_source) == 2:
-            cmd.insert(1, f"{self._container_source[1]}")
+        cmd = self._container_source + ["pull", self._image_name]
 
         subprocess.check_call(cmd)
 
