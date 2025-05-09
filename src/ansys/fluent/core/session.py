@@ -276,20 +276,12 @@ class BaseSession:
     @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
     def field_info(self):
         """Provides access to Fluent field information."""
-        warnings.warn(
-            "field_info is deprecated. Use fields.field_info instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_info
 
     @property
     @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_data``.")
     def field_data(self):
         """Fluent field data on surfaces."""
-        warnings.warn(
-            "field_data is deprecated. Use fields.field_data instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_data
 
     @property
@@ -298,10 +290,6 @@ class BaseSession:
     )
     def field_data_streaming(self):
         """Field gRPC streaming service of Fluent."""
-        warnings.warn(
-            "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_data_streaming
 
     @property

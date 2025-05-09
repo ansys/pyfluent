@@ -44,7 +44,7 @@ from ansys.fluent.core.field_data_interfaces import (
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import DataFile
-from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
+from ansys.fluent.core.utils.deprecate import all_deprecators
 
 
 class InvalidMultiPhaseFieldName(ValueError):
@@ -223,21 +223,23 @@ class Transaction(FieldTransaction):
             surfaces=surfaces,
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_arguments(
-        converter=_data_type_convertor,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=_data_type_convertor,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_surfaces_request' is deprecated, use 'add_requests' instead.",
     )
     def add_surfaces_request(
         self,
@@ -258,10 +260,6 @@ class Transaction(FieldTransaction):
         -------
         None
         """
-        warnings.warn(
-            "'add_surfaces_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_surfaces_request(data_types=data_types, surfaces=surfaces)
 
     def _add_surfaces_request(
@@ -285,17 +283,23 @@ class Transaction(FieldTransaction):
                 )
             )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead.",
     )
     def add_scalar_fields_request(
         self,
@@ -328,10 +332,6 @@ class Transaction(FieldTransaction):
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        warnings.warn(
-            "'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_scalar_fields_request(
             field_name=field_name,
             surfaces=surfaces,
@@ -360,17 +360,23 @@ class Transaction(FieldTransaction):
                 Transaction._ScalarFieldTransaction(field_name, surface_ids)
             )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead.",
     )
     def add_vector_fields_request(
         self,
@@ -395,10 +401,6 @@ class Transaction(FieldTransaction):
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        warnings.warn(
-            "'add_vector_fields_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_vector_fields_request(field_name=field_name, surfaces=surfaces)
 
     def _add_vector_fields_request(
@@ -420,17 +422,23 @@ class Transaction(FieldTransaction):
                 Transaction._VectorFieldTransaction(field_name, surface_ids)
             )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="Pathlines are not supported.",
     )
     def add_pathlines_fields_request(
         self,
@@ -604,23 +612,28 @@ class FileFieldData(FieldDataSource):
             surfaces=surfaces,
         )
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="data_types",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "data_type",
+                "new_arg": "data_types",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names', 'surface_ids' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
+        warn_message="'get_surface_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_surface_data(
         self,
@@ -646,10 +659,6 @@ class FileFieldData(FieldDataSource):
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
         """
-        warnings.warn(
-            "'get_surface_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         return self._get_surface_data(
             data_types=data_types,
             surfaces=surfaces,
@@ -697,17 +706,23 @@ class FileFieldData(FieldDataSource):
             i = end
         return faces_data
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="'get_scalar_field_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_scalar_field_data(
         self,
@@ -743,10 +758,6 @@ class FileFieldData(FieldDataSource):
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        warnings.warn(
-            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         return self._get_scalar_field_data(
             field_name=field_name,
             surfaces=surfaces,
@@ -781,17 +792,23 @@ class FileFieldData(FieldDataSource):
                 for count, surface in enumerate(surfaces)
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="'get_vector_field_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_vector_field_data(
         self,
@@ -821,10 +838,6 @@ class FileFieldData(FieldDataSource):
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        warnings.warn(
-            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         return self._get_vector_field_data(
             field_name=field_name,
             surfaces=surfaces,
@@ -859,17 +872,23 @@ class FileFieldData(FieldDataSource):
                 for count, surface in enumerate(surfaces)
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=lambda: None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        warn_message="Pathlines are not supported.",
     )
     def get_pathlines_field_data(
         self,
