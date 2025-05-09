@@ -52,10 +52,11 @@ def all_deprecators(
                 converter=mapping.get("converter", lambda x: x),
                 warning_cls=PyFluentDeprecationWarning,
             )(decorated)
-        decorated = deprecate_arguments(
-            converter=data_type_converter,
-            warning_cls=PyFluentDeprecationWarning,
-        )(decorated)
+        if data_type_converter:
+            decorated = deprecate_arguments(
+                converter=data_type_converter,
+                warning_cls=PyFluentDeprecationWarning,
+            )(decorated)
         decorated = deprecated(
             version=deprecated_version,
             reason=deprecated_reason,
