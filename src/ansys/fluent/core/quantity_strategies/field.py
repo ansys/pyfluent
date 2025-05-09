@@ -35,8 +35,10 @@ class FluentFieldDataStrategy(MappingConversionStrategy):
     VariableCatalog into Fluent's server-side field variable naming conventions.
     """
 
+    _c = VariableCatalog
+
     _mapping = {
-        VariableCatalog.PRESSURE: "pressure",
-        VariableCatalog.VELOCITY_X: "x-velocity",
-        VariableCatalog.TEMPERATURE: "temperature",
+        _c.PRESSURE: "pressure",
+        _c.VELOCITY_X: "x-velocity",
+        _c.TEMPERATURE: "temperature",
     }
