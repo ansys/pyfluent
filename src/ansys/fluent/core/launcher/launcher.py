@@ -139,7 +139,7 @@ def _version_to_dimension(old_arg_val):
             "converter": _version_to_dimension,
         },
     ],
-    data_type_converter=lambda: None,
+    data_type_converter=lambda *args, **kwargs: None,
     deprecated_version="v0.22.dev0",
     deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
     warn_message="",

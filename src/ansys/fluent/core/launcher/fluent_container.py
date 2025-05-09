@@ -131,7 +131,7 @@ class LicenseServerNotSpecified(KeyError):
             "converter": lambda old_arg_val: old_arg_val,
         },
     ],
-    data_type_converter=lambda: None,
+    data_type_converter=lambda *args, **kwargs: None,
     deprecated_version="v0.23.dev1",
     deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
     warn_message="",
