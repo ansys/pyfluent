@@ -73,7 +73,7 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.quantity_strategies import (
+from ansys.fluent.core.variable_strategies import (
     FluentFieldDataStrategy,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion

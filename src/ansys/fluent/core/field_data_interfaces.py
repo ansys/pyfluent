@@ -30,7 +30,7 @@ import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.quantity_strategies import (
+from ansys.fluent.core.variable_strategies import (
     FluentFieldDataStrategy,
 )
 
