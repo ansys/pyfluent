@@ -24,6 +24,7 @@ User guide
    usability
    make_container_image
    legacy/legacy_contents
+   deprecated_apis
 
 
 Welcome to the PyFluent user guide. This guide helps you understand how to use PyFluent to
