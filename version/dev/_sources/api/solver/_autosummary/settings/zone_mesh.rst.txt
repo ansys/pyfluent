@@ -1,0 +1,32 @@
+:orphan:
+
+.. _zone_mesh:
+
+zone_mesh
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zone_mesh
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ===================
+
+Argument                                       Summary
+
+================================   ===================
+:ref:`zone_names <zone_names_4>`       Zone name list.
+
+================================   ===================
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`display_10 <display_10>`       'display' child.
+
+==============================   ====================
+
