@@ -478,10 +478,9 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
         f.write(":orphan:\n\n")
         f.write(f"{name}\n")
         f.write(f'{"="*(len(name))}\n\n')
+
         f.write(f"{pyfluent_name}\n")
         f.write(f'{"-"*(len(pyfluent_name))}\n\n')
-        f.write("The following is a list of deprecated interfaces.\n\n")
-
         f.write(".. list-table:: Deprecated PyFluent APIs\n")
         f.write("   :header-rows: 1\n\n")
         f.write("   * - " + "\n     - ".join(pyflunet_header) + "\n")
