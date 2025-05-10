@@ -215,9 +215,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
 
 
 def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
-    deprecated_rst = (
-        Path(rst_dir).parents[3] / "user_guide" / "deprecated_apis.rst"
-    ).resolve()
+    deprecated_rst = (Path(rst_dir).parents[2] / "deprecated_apis.rst").resolve()
     if deprecated_rst.exists():
         deprecated_rst.unlink()
     else:
@@ -242,7 +240,11 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
         )
         for setting in settings:
             if setting and setting.split(".")[-1].split(" ")[0] == class_name:
-                setting = setting.replace("<solver_session>", "solver")
+                setting = (
+                    setting.replace("<solver_session>", "solver")
+                    .replace("<", "")
+                    .replace(">", "")
+                )
                 settings_with_ref = f":ref:`{setting} <{class_name}>`"
                 deprecated_data.append((settings_with_ref, deprecated_version))
 
