@@ -215,114 +215,223 @@ def _populate_rst_from_settings(rst_dir, cls, version):
 
 
 PYFLUENT_DEPRECATED_DATA = [
+    # Target, Deprecated, Alternatives
+    # methods
     (
         ":py:meth:`~ansys.fluent.core.file_session.Transaction.add_surfaces_request`",
-        "v0.25.0",
+        "0.25.0",
         ":py:meth:`~ansys.fluent.core.file_session.Transaction.add_requests`",
     ),
     (
         ":py:meth:`~ansys.fluent.core.file_session.Transaction.add_scalar_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         ":py:meth:`~ansys.fluent.core.file_session.Transaction.add_requests`",
     ),
     (
         ":py:meth:`~ansys.fluent.core.file_session.Transaction.add_vector_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         ":py:meth:`~ansys.fluent.core.file_session.Transaction.add_requests`",
     ),
     (
         ":py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_surface_data`",
-        "v0.25.0",
+        "0.25.0",
         ":py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_field_data`",
     ),
     (
         ":py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data`",
-        "v0.25.0",
+        "0.25.0",
         ":py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_field_data`",
     ),
     (
         ":py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_vector_field_data`",
-        "v0.25.0",
+        "0.25.0",
         ":py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_field_data`",
     ),
+    # properties
+    (
+        ":py:meth:`~ansys.fluent.core.session.BaseSession.field_info`",
+        "0.20.dev9",
+        "`session.fields.field_info`",
+    ),
+    (
+        ":py:meth:`~ansys.fluent.core.session.BaseSession.field_data`",
+        "0.20.dev9",
+        "`session.fields.field_data`",
+    ),
+    (
+        ":py:meth:`~ansys.fluent.core.session.BaseSession.field_data_streaming`",
+        "0.20.dev9",
+        "`session.fields.field_data_streaming`",
+    ),
+    (
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_surfaces_request`",
+        "0.23.dev0",
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_requests`",
+    ),
+    (
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request`",
+        "0.23.dev0",
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_requests`",
+    ),
+    (
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request`",
+        "0.23.dev0",
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_requests`",
+    ),
+    (
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request`",
+        "0.23.dev0",
+        ":py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_requests`",
+    ),
+    # arguments
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_surfaces_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_scalar_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_vector_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_surfaces_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_scalar_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_vector_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.Transaction.add_pathlines_fields_request`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_surface_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_vector_field_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_names` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_surface_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_scalar_field_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_vector_field_data`",
-        "v0.25.0",
+        "0.25.0",
         "`surfaces`",
     ),
     (
         "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.file_session.FileFieldData.get_pathlines_field_data`",
-        "v0.25.0",
+        "0.25.0",
+        "`surfaces`",
+    ),
+    (
+        "The `container_mount_path` argument of :py:meth:`~ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy`",
+        "0.23.dev1",
+        "`mount_target`",
+    ),
+    (
+        "The `host_mount_path` argument of :py:meth:`~ansys.fluent.core.utils.file_transfer_service.ContainerFileTransferStrategy`",
+        "0.23.dev1",
+        "`mount_source`",
+    ),
+    (
+        "The `container_mount_path` argument of :py:func:`~ansys.fluent.core.launcher.fluent_container.configure_container_dict`",
+        "0.23.dev1",
+        "`mount_target`",
+    ),
+    (
+        "The `host_mount_path` argument of :py:func:`~ansys.fluent.core.launcher.fluent_container.configure_container_dict`",
+        "0.23.dev1",
+        "`mount_source`",
+    ),
+    (
+        "The `show_gui` argument of :py:func:`~ansys.fluent.core.launcher.launcher.launch_fluent`",
+        "0.22.dev0",
+        "`ui_mode`",
+    ),
+    (
+        "The `version` argument of :py:func:`~ansys.fluent.core.launcher.launcher.launch_fluent`",
+        "0.22.dev0",
+        "`dimension`",
+    ),
+    (
+        "The `surface_names` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_surfaces_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_names` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_names` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_names` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_surfaces_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_scalar_fields_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_vector_fields_request`",
+        "0.23.dev0",
+        "`surfaces`",
+    ),
+    (
+        "The `surface_ids` argument of :py:meth:`~ansys.fluent.core.services.field_data.Transaction.add_pathlines_fields_request`",
+        "0.23.dev0",
         "`surfaces`",
     ),
 ]
@@ -338,6 +447,7 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
     deprecated_data = []
     fluent_header = ["Target", "Deprecated"]
     pyflunet_header = ["Target", "Deprecated", "Alternatives"]
+    name = "Deprecated APIs"
     pyfluent_name = "Deprecated PyFluent APIs"
     fluent_name = "Deprecated Ansys Fluent APIs"
     buffer = io.StringIO()
@@ -366,19 +476,20 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
 
     with open(deprecated_rst, "w", encoding="utf-8") as f:
         f.write(":orphan:\n\n")
+        f.write(f"{name}\n")
+        f.write(f'{"="*(len(name))}\n\n')
         f.write(f"{pyfluent_name}\n")
-        f.write(f'{"="*(len(pyfluent_name))}\n\n')
+        f.write(f'{"-"*(len(pyfluent_name))}\n\n')
         f.write("The following is a list of deprecated interfaces.\n\n")
 
         f.write(".. list-table:: Deprecated PyFluent APIs\n")
         f.write("   :header-rows: 1\n\n")
         f.write("   * - " + "\n     - ".join(pyflunet_header) + "\n")
-        sorted_data = sorted(PYFLUENT_DEPRECATED_DATA, key=lambda x: len(x[0]))
-        for row in sorted_data:
+        for row in PYFLUENT_DEPRECATED_DATA:
             f.write("   * - " + "\n     - ".join(row) + "\n")
 
         f.write(f"{fluent_name}\n")
-        f.write(f'{"="*(len(fluent_name))}\n\n')
+        f.write(f'{"-"*(len(fluent_name))}\n\n')
         f.write(".. list-table:: Deprecated Ansys Fluent APIs\n")
         f.write("   :header-rows: 1\n\n")
         f.write("   * - " + "\n     - ".join(fluent_header) + "\n")
