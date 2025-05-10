@@ -2107,6 +2107,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
+        deprecated_version = info.get("deprecated_version", "")
+        cls._deprecated_version = deprecated_version
+
         taboo = set(dir(cls))
         taboo |= set(
             [

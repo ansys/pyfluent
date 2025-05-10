@@ -538,7 +538,7 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(PyFluentDeprecationWarning):
+    with pytest.warns(DeprecationWarning):
         solver.field_data
     with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
