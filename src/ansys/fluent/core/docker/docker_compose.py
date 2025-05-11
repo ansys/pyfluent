@@ -172,9 +172,9 @@ class ComposeBasedLauncher:
         timeout: float
             The timeout for the command.
         """
-        compose_cmd = self._container_source.append("compose")
+        self._container_source.append("compose")
         process = subprocess.Popen(
-            compose_cmd + cmd,
+            self._container_source + cmd,
             stdin=subprocess.PIPE,
             text=True,
             stdout=subprocess.DEVNULL,
@@ -184,7 +184,9 @@ class ComposeBasedLauncher:
         return_code = process.wait(timeout=timeout)
 
         if return_code != 0:
-            raise subprocess.CalledProcessError(return_code, compose_cmd + cmd)
+            raise subprocess.CalledProcessError(
+                return_code, self._container_source + cmd
+            )
 
     def start(self) -> None:
         """Start the services.
