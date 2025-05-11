@@ -104,6 +104,7 @@ jobs:
       - name: Cleanup previous containers
         if: always()
         run: |
+          docker system prune -af
           sudo podman system prune -af
-          sudo podman stop $(podman ps -a -q)
-          sudo podman rm $(podman ps -a -q)
+          sudo podman stop $(podman ps -a -q) -i
+          sudo podman rm $(podman ps -a -q) -fi
