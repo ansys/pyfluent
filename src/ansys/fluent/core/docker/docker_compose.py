@@ -136,7 +136,7 @@ class ComposeBasedLauncher:
         return self._compose_cmds
 
     def check_image_exists(self) -> bool:
-        """Check if a Docker image exists locally."""
+        """Check if the image exists locally."""
         try:
             output = subprocess.check_output(
                 self._container_source + ["images", "-q", self._image_name]
