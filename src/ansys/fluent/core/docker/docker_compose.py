@@ -172,7 +172,6 @@ class ComposeBasedLauncher:
         timeout: float
             The timeout for the command.
         """
-        self._container_source.append("compose")
         process = subprocess.Popen(
             self._container_source + cmd,
             stdin=subprocess.PIPE,
