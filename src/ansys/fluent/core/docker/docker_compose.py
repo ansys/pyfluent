@@ -139,7 +139,7 @@ class ComposeBasedLauncher:
         """Check if the image exists locally."""
         try:
             cmd = self._container_source + ["images", "-q", self._image_name]
-            # For podman user does not configure rootless always
+            # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
             if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
                 sudo_cmd = ["sudo"] + cmd
                 output_1 = subprocess.check_output(cmd)
