@@ -162,20 +162,17 @@ class ComposeBasedLauncher:
 
         subprocess.check_call(cmd)
 
-    def _start_stop_helper(
-        self, compose_cmd: list[str], cmd: list[str], timeout: float
-    ) -> None:
+    def _start_stop_helper(self, cmd: list[str], timeout: float) -> None:
         """Helper function to start or stop the services.
 
         Parameters
         ----------
-        compose_cmd: list[str]
-            The command to run.
         cmd: list[str]
             The command to run.
         timeout: float
             The timeout for the command.
         """
+        compose_cmd = self._container_source.append("compose")
         process = subprocess.Popen(
             compose_cmd + cmd,
             stdin=subprocess.PIPE,
@@ -207,7 +204,7 @@ class ComposeBasedLauncher:
             "--detach",
         ]
 
-        self._start_stop_helper(self._set_compose_cmds(), cmd, 10)
+        self._start_stop_helper(cmd, 10)
 
     def stop(self) -> None:
         """Stop the services.
@@ -225,7 +222,7 @@ class ComposeBasedLauncher:
             "down",
         ]
 
-        self._start_stop_helper(self._set_compose_cmds(), cmd, 30)
+        self._start_stop_helper(cmd, 30)
 
     @property
     def ports(self) -> list[str]:

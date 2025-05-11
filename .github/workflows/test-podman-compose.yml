@@ -34,7 +34,7 @@ jobs:
     steps:	
       - name: Log in to ghcr.io	
         run: |	
-          podman login ghcr.io --username ansys-bot --password ${{ secrets.GITHUB_TOKEN }}
+          sudo podman login ghcr.io --username ansys-bot --password ${{ secrets.GITHUB_TOKEN }}
 
   check-podman:
     name: Check Podman
@@ -87,21 +87,22 @@ jobs:
           echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
         id: version
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ansys-bot
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull Fluent docker image
-        run: |
-          docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-          docker images
+      # - name: Pull Fluent docker image
+      #   run: |
+      #     docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+      #     docker images
 
       - name: Transport docker image to podman
         run: |
-          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          # sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          sudo podman pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
           sudo podman images
 
       - name: Run API codegen
