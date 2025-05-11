@@ -33,11 +33,8 @@ jobs:
     runs-on: [public-ubuntu-latest-8-cores]
     steps:	
       - name: Log in to ghcr.io	
-        uses: redhat-actions/podman-login@v1
-        with:	
-          username: ansys-bot	
-          password: ${{ secrets.GITHUB_TOKEN }}	
-          registry: ghcr.io
+        run: |	
+          podman login ghcr.io --username ansys-bot --password ${{ secrets.GITHUB_TOKEN }}
 
   check-podman:
     name: Check Podman
@@ -104,8 +101,8 @@ jobs:
 
       - name: Transport docker image to podman
         run: |
-          podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-          podman images
+          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          sudo podman images
 
       - name: Run API codegen
         run: make api-codegen
