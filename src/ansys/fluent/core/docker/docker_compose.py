@@ -139,14 +139,14 @@ class ComposeBasedLauncher:
         """Check if the image exists locally."""
         try:
             cmd = self._container_source + ["images", "-q", self._image_name]
-            # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
+            # For podman user does not configure rootless always
             if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
                 sudo_cmd = ["sudo"] + cmd
                 output_1 = subprocess.check_output(cmd)
                 output_2 = subprocess.check_output(sudo_cmd)
                 output_1_result = output_1.decode("utf-8").strip() != ""
                 output_2_result = output_2.decode("utf-8").strip() != ""
-                if output_2_result and not output_1_result:
+                if output_2_result:
                     self._container_source.insert(0, "sudo")
                 return output_1_result or output_2_result
             else:
@@ -162,18 +162,21 @@ class ComposeBasedLauncher:
 
         subprocess.check_call(cmd)
 
-    def _start_stop_helper(self, cmd: list[str], timeout: float) -> None:
+    def _start_stop_helper(
+        self, compose_cmd: list[str], cmd: list[str], timeout: float
+    ) -> None:
         """Helper function to start or stop the services.
-
         Parameters
         ----------
+        compose_cmd: list[str]
+            The command to run.
         cmd: list[str]
             The command to run.
         timeout: float
             The timeout for the command.
         """
         process = subprocess.Popen(
-            self._container_source + cmd,
+            compose_cmd + cmd,
             stdin=subprocess.PIPE,
             text=True,
             stdout=subprocess.DEVNULL,
@@ -183,9 +186,7 @@ class ComposeBasedLauncher:
         return_code = process.wait(timeout=timeout)
 
         if return_code != 0:
-            raise subprocess.CalledProcessError(
-                return_code, self._container_source + cmd
-            )
+            raise subprocess.CalledProcessError(return_code, compose_cmd + cmd)
 
     def start(self) -> None:
         """Start the services.
@@ -205,7 +206,7 @@ class ComposeBasedLauncher:
             "--detach",
         ]
 
-        self._start_stop_helper(cmd, 10)
+        self._start_stop_helper(self._set_compose_cmds(), cmd, 10)
 
     def stop(self) -> None:
         """Stop the services.
@@ -223,7 +224,7 @@ class ComposeBasedLauncher:
             "down",
         ]
 
-        self._start_stop_helper(cmd, 30)
+        self._start_stop_helper(self._set_compose_cmds(), cmd, 30)
 
     @property
     def ports(self) -> list[str]:
