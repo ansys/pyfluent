@@ -146,7 +146,7 @@ class ComposeBasedLauncher:
                 output_2 = subprocess.check_output(sudo_cmd)
                 output_1_result = output_1.decode("utf-8").strip() != ""
                 output_2_result = output_2.decode("utf-8").strip() != ""
-                if output_2_result:
+                if output_2_result and not output_1_result:
                     self._container_source.insert(0, "sudo")
                 return output_1_result or output_2_result
             else:
