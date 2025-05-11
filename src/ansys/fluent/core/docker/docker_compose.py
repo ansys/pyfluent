@@ -127,7 +127,12 @@ class ComposeBasedLauncher:
 
         # Determine the compose command
         if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
-            self._compose_cmds = ["podman", "compose"]
+            self._compose_cmds = (
+                ["sudo", "podman", "compose"]
+                if hasattr(self, "_container_source")
+                and "sudo" in self._container_source
+                else ["podman", "compose"]
+            )
         elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
         else:
@@ -139,14 +144,14 @@ class ComposeBasedLauncher:
         """Check if the image exists locally."""
         try:
             cmd = self._container_source + ["images", "-q", self._image_name]
-            # For podman user does not configure rootless always
+            # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
             if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
                 sudo_cmd = ["sudo"] + cmd
                 output_1 = subprocess.check_output(cmd)
                 output_2 = subprocess.check_output(sudo_cmd)
                 output_1_result = output_1.decode("utf-8").strip() != ""
                 output_2_result = output_2.decode("utf-8").strip() != ""
-                if output_2_result:
+                if output_2_result and not output_1_result:
                     self._container_source.insert(0, "sudo")
                 return output_1_result or output_2_result
             else:
