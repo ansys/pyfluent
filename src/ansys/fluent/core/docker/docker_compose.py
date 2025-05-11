@@ -138,10 +138,20 @@ class ComposeBasedLauncher:
     def check_image_exists(self) -> bool:
         """Check if the image exists locally."""
         try:
-            output = subprocess.check_output(
-                self._container_source + ["images", "-q", self._image_name]
-            )
-            return output.decode("utf-8").strip() != ""
+            cmd = self._container_source + ["images", "-q", self._image_name]
+            # For podman user does not configure rootless always
+            if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
+                sudo_cmd = ["sudo"] + cmd
+                output_1 = subprocess.check_output(cmd)
+                output_2 = subprocess.check_output(sudo_cmd)
+                output_1_result = output_1.decode("utf-8").strip() != ""
+                output_2_result = output_2.decode("utf-8").strip() != ""
+                if output_2_result:
+                    self._container_source.insert(0, "sudo")
+                return output_1_result or output_2_result
+            else:
+                output = subprocess.check_output(cmd)
+                return output.decode("utf-8").strip() != ""
         except subprocess.CalledProcessError as e:  # noqa: F841
             return False
 
