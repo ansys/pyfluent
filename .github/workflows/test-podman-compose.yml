@@ -106,5 +106,3 @@ jobs:
         run: |
           docker system prune -af
           sudo podman system prune -af
-          sudo podman stop $(podman ps -a -q) -i
-          sudo podman rm $(podman ps -a -q) -fi
