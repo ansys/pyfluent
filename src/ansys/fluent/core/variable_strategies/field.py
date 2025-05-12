@@ -34,6 +34,7 @@ except ModuleNotFoundError:
 
 
 if MappingConversionStrategy:
+
     class FluentFieldDataNamingStrategy(MappingConversionStrategy):
         """This strategy handles conversion of selected
         VariableCatalog into Fluent's server-side field variable naming conventions.
@@ -42,7 +43,6 @@ if MappingConversionStrategy:
         _c = VariableCatalog
 
         _mapping = {
-
             # pressure
             _c.PRESSURE: "pressure",
             _c.STATIC_PRESSURE: "pressure",
@@ -50,18 +50,17 @@ if MappingConversionStrategy:
             _c.DYNAMIC_PRESSURE: "dynamic-pressure",
             _c.TOTAL_PRESSURE: "total-pressure",
             _c.PRESSURE_COEFFICIENT: "pressure-coefficient",
-
             # velocity
             _c.AXIAL_VELOCITY: "axial-velocity",
             _c.CONVECTIVE_COURANT_NUMBER: "cell-convective-courant-number",
             _c.CELL_REYNOLDS_NUMBER: "cell-reynolds-number",
             _c.fluent.HELICITY: "helicity",
-            _c.fluent.LAMBDA_2_CRITERION: "raw-q-criterion", # ???
-            _c.MESH_VELOCITY: "mesh-velocity", # ?
-            _c.MESH_VELOCITY_X: "mesh-x-velocity", # TODO
-            _c.MESH_VELOCITY_Y: "mesh-y-velocity", # TODO
-            _c.MESH_VELOCITY_Z: "mesh-z-velocity", # TODO
-            _c.MESH_VELOCITY_MAGNITUDE: "MeshVelocityMagnitude", # TODO
+            _c.fluent.LAMBDA_2_CRITERION: "raw-q-criterion",  # ???
+            _c.MESH_VELOCITY: "mesh-velocity",  # ?
+            _c.MESH_VELOCITY_X: "mesh-x-velocity",  # TODO
+            _c.MESH_VELOCITY_Y: "mesh-y-velocity",  # TODO
+            _c.MESH_VELOCITY_Z: "mesh-z-velocity",  # TODO
+            _c.MESH_VELOCITY_MAGNITUDE: "MeshVelocityMagnitude",  # TODO
             _c.NORMALIZED_Q_CRITERION: "q-criterion",
             _c.Q_CRITERION: "raw-q-criterion",
             _c.RADIAL_VELOCITY: "radial-velocity",
@@ -71,23 +70,20 @@ if MappingConversionStrategy:
             _c.VELOCITY_Y: "y-velocity",
             _c.VELOCITY_Z: "z-velocity",
             _c.VELOCITY_MAGNITUDE: "velocity-magnitude",
-            _c.fluent.VELOCITY_ANGLE: "xxx", # eliminate altogether
+            _c.fluent.VELOCITY_ANGLE: "xxx",  # eliminate altogether
             _c.VORTICITY: "vorticity",
             _c.VORTICITY_X: "x-vorticity",
             _c.VORTICITY_Y: "y-vorticity",
             _c.VORTICITY_Z: "z-vorticity",
             _c.VORTICITY_MAGNITUDE: "vorticity-mag",
-        
             # density
             _c.DENSITY: "density",
             _c.fluent.DENSITY_ALL: "density-all",
-
             # "properties"
             _c.DYNAMIC_VISCOSITY: "viscosity-lam",
             _c.PRANDTL_NUMBER: "prandtl-number-lam",
             _c.SPECIFIC_HEAT_CAPACITY: "specific-heat-cp",
             _c.THERMAL_CONDUCTIVITY: "thermal-conductivity",
-        
             # turbulence
             _c.EFFECTIVE_PRANDTL_NUMBER: "prandtl-number-eff",
             _c.EFFECTIVE_THERMAL_CONDUCTIVITY: "thermal-conductivity-eff",
@@ -102,7 +98,6 @@ if MappingConversionStrategy:
             _c.TURBULENT_REYNOLDS_NUMBER: "turb-reynolds-number-rey",
             _c.WALL_Y_PLUS: "y-plus",
             _c.WALL_Y_STAR: "y-star",
-
             # wall fluxes
             _c.SURFACE_HEAT_TRANSFER_COEFFICIENT: "heat-transfer-coef",
             _c.SKIN_FRICTION_COEFFICIENT: "skin-friction-coef",
@@ -117,29 +112,26 @@ if MappingConversionStrategy:
             _c.WALL_SHEAR_STRESS_Z: "z-wall-shear",
             # _c.WALL_SHEAR_STRESS_MAGNITUDE: "WallShearStressVector.mag",
             _c.fluent.Y_PLUS_BASED_HEAT_TRANSFER_COEFFICIENT: "heat-transfer-coef-yplus",
-
             # residuals
             _c.fluent.MASS_IMBALANCE: "mass-imbalance",
-
             # derivatives
             _c.fluent.PRESSURE_HESSIAN_INDICATOR: "pressure-hessian-indicator",
-            _c.STRAIN_RATE: "strain-rate-mag", 
-            #_c.fluent.DVELOCITY_DX: "dVelocitydx",
+            _c.STRAIN_RATE: "strain-rate-mag",
+            # _c.fluent.DVELOCITY_DX: "dVelocitydx",
             _c.fluent.DVELOCITY_DX_X: "dx-velocity-dx",
             _c.fluent.DVELOCITY_DX_Y: "dy-velocity-dx",
             _c.fluent.DVELOCITY_DX_Z: "dz-velocity-dx",
-            #_c.fluent.DVELOCITY_DX_MAGNITUDE: "dVelocitydx.mag",
-            #_c.fluent.DVELOCITY_DY: "dVelocitydy",
+            # _c.fluent.DVELOCITY_DX_MAGNITUDE: "dVelocitydx.mag",
+            # _c.fluent.DVELOCITY_DY: "dVelocitydy",
             _c.fluent.DVELOCITY_DY_X: "dx-velocity-dy",
             _c.fluent.DVELOCITY_DY_Y: "dy-velocity-dy",
             _c.fluent.DVELOCITY_DY_Z: "dz-velocity-dy",
-            #_c.fluent.DVELOCITY_DY_MAGNITUDE: "dVelocitydy.mag",
-            #_c.fluent.DVELOCITY_DZ: "dVelocitydz",
+            # _c.fluent.DVELOCITY_DY_MAGNITUDE: "dVelocitydy.mag",
+            # _c.fluent.DVELOCITY_DZ: "dVelocitydz",
             _c.fluent.DVELOCITY_DZ_X: "dx-velocity-dz",
             _c.fluent.DVELOCITY_DZ_Y: "dy-velocity-dz",
             _c.fluent.DVELOCITY_DZ_Z: "dz-velocity-dz",
-            #_c.fluent.DVELOCITY_DZ_MAGNITUDE: "dVelocitydz.mag",
-
+            # _c.fluent.DVELOCITY_DZ_MAGNITUDE: "dVelocitydz.mag",
             # temperature
             _c.SPECIFIC_ENTHALPY: "enthalpy",
             _c.SPECIFIC_ENTROPY: "entropy",
@@ -153,7 +145,6 @@ if MappingConversionStrategy:
             _c.WALL_TEMPERATURE: "wall-temperature",
             _c.WALL_TEMPERATURE_THIN: "wall-temp-thin",
             _c.fluent.Y_PLUS_BASED_HEAT_TRANSFER_COEFFICIENT: "reference-temperature-at-y+",
-        
             # mesh
             _c.mesh.ANISOTROPIC_ADAPTION_CELLS: "anisotropic-adaption-cells",
             _c.mesh.BOUNDARY_CELL_DISTANCE: "boundary-cell-dist",
@@ -172,11 +163,11 @@ if MappingConversionStrategy:
             _c.mesh.FACE_HANDEDNESS: "face-handedness",
             _c.mesh.INTERFACE_OVERLAP_FRACTION: "interface-overlap-fraction",
             _c.mesh.MARK_POOR_ELEMENTS: "mark-poor-elements",
-            #_c.POSITION: "Position", ???
+            # _c.POSITION: "Position", ???
             _c.POSITION_X: "x-coordinate",
             _c.POSITION_Y: "y-coordinate",
             _c.POSITION_Z: "z-coordinate",
-            #_c.POSITION_MAGNITUDE: "Position.mag", ???
+            # _c.POSITION_MAGNITUDE: "Position.mag", ???
             _c.mesh.SMOOTHED_CELL_REFINE_LEVEL: "smoothed-cell-refine-level",
             _c.mesh.X_FACE_AREA: "x-face-area",
             _c.mesh.Y_FACE_AREA: "y-face-area",
@@ -190,6 +181,6 @@ if MappingConversionStrategy:
             _c.mesh.PARTITION_NEIGHBOURS: "partition-neighbors",
             _c.mesh.STORED_CELL_PARTITIION: "cell-partition-stored",
         }
+
 else:
     FluentFieldDataNamingStrategy = None
-

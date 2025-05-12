@@ -34,6 +34,7 @@ except ModuleNotFoundError:
 
 
 if MappingConversionStrategy:
+
     class FluentSVarNamingStrategy(MappingConversionStrategy):
         """This strategy handles conversion of selected VariableCatalog into Fluent's
         server-side field variable naming conventions (e.g., "SV_P" for pressure).
@@ -42,22 +43,19 @@ if MappingConversionStrategy:
         _c = VariableCatalog
 
         _mapping = {
-
             # pressure
             _c.PRESSURE: "SV_P",
             _c.STATIC_PRESSURE: "SV_P",
-
             # velocity
             _c.VELOCITY_X: "SV_U",
             _c.VELOCITY_Y: "SV_U",
             _c.VELOCITY_Z: "SV_W",
-        
             # density
             _c.DENSITY: "SV_DENSITY",
-
             # temperature
             _c.SPECIFIC_ENTHALPY: "SV_H",
             _c.TEMPERATURE: "SV_T",
         }
+
 else:
     FluentSVarNamingStrategy = None

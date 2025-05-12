@@ -36,6 +36,7 @@ from ansys.fluent.core.variable_strategies import (
 
 _to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
+
 class SurfaceDataType(Enum):
     """Provides surface data types."""
 

@@ -73,10 +73,10 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy,
 )
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error

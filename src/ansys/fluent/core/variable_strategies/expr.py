@@ -34,15 +34,15 @@ except ModuleNotFoundError:
 
 
 if MappingConversionStrategy:
+
     class FluentExprNamingStrategy(MappingConversionStrategy):
         """This strategy handles conversion of selected VariableCatalog into Fluent's
         server-side expression variable naming conventions.
         """
-    
+
         _c = VariableCatalog
 
         _mapping = {
-
             # pressure
             _c.PRESSURE: "StaticPressure",
             _c.STATIC_PRESSURE: "StaticPressure",
@@ -50,7 +50,6 @@ if MappingConversionStrategy:
             _c.DYNAMIC_PRESSURE: "DynamicPressure",
             _c.TOTAL_PRESSURE: "TotalPressure",
             _c.PRESSURE_COEFFICIENT: "PressureCoefficient",
-
             # velocity
             _c.AXIAL_VELOCITY: "AxialVelocity",
             _c.CONVECTIVE_COURANT_NUMBER: "ElementConvectionCourantNumber",
@@ -77,17 +76,14 @@ if MappingConversionStrategy:
             _c.VORTICITY_Y: "Vorticity.y",
             _c.VORTICITY_Z: "Vorticity.z",
             _c.VORTICITY_MAGNITUDE: "VorticityMagnitude",
-        
             # density
             _c.DENSITY: "Density",
             _c.fluent.DENSITY_ALL: "DensityAll",
-
             # "properties"
             _c.DYNAMIC_VISCOSITY: "DynamicViscosity",
             _c.PRANDTL_NUMBER: "PrandtlNumber",
             _c.SPECIFIC_HEAT_CAPACITY: "SpecificHeatCapacity",
             _c.THERMAL_CONDUCTIVITY: "ThermalConductivity",
-        
             # turbulence
             _c.EFFECTIVE_PRANDTL_NUMBER: "EffectivePrandtlNumber",
             _c.EFFECTIVE_THERMAL_CONDUCTIVITY: "EffectiveThermalConductivity",
@@ -102,7 +98,6 @@ if MappingConversionStrategy:
             _c.TURBULENT_REYNOLDS_NUMBER: "TurbulentReynoldsNumberRe_y",
             _c.WALL_Y_PLUS: "WallYplus",
             _c.WALL_Y_STAR: "WallYstar",
-
             # wall fluxes
             _c.SURFACE_HEAT_TRANSFER_COEFFICIENT: "HeatTransferCoefficient",
             _c.SKIN_FRICTION_COEFFICIENT: "SkinFrictionCoefficient",
@@ -117,13 +112,11 @@ if MappingConversionStrategy:
             _c.WALL_SHEAR_STRESS_Z: "WallShearStressVector.z",
             _c.WALL_SHEAR_STRESS_MAGNITUDE: "WallShearStressVector.mag",
             _c.fluent.Y_PLUS_BASED_HEAT_TRANSFER_COEFFICIENT: "YplusBasedHeatTranCoef",
-
             # residuals
             _c.fluent.MASS_IMBALANCE: "MassImbalance",
-
             # derivatives
             _c.fluent.PRESSURE_HESSIAN_INDICATOR: "PressureHessianIndicator",
-            _c.STRAIN_RATE: "StrainRate", 
+            _c.STRAIN_RATE: "StrainRate",
             _c.fluent.DVELOCITY_DX: "dVelocitydx",
             _c.fluent.DVELOCITY_DX_X: "dVelocitydx.x",
             _c.fluent.DVELOCITY_DX_Y: "dVelocitydx.y",
@@ -139,7 +132,6 @@ if MappingConversionStrategy:
             _c.fluent.DVELOCITY_DZ_Y: "dVelocitydz.y",
             _c.fluent.DVELOCITY_DZ_Z: "dVelocitydz.z",
             _c.fluent.DVELOCITY_DZ_MAGNITUDE: "dVelocitydz.mag",
-
             # temperature
             _c.SPECIFIC_ENTHALPY: "SpecificEnthalpy",
             _c.SPECIFIC_ENTROPY: "SpecificEntropy",
@@ -153,7 +145,6 @@ if MappingConversionStrategy:
             _c.WALL_TEMPERATURE: "WallTemperature",
             _c.WALL_TEMPERATURE_THIN: "WallTemperatureThin",
             _c.fluent.Y_PLUS_BASED_HEAT_TRANSFER_COEFFICIENT: "YplusBasedHeatTranRefTemperature",
-        
             # mesh
             _c.mesh.ANISOTROPIC_ADAPTION_CELLS: "AnisotropicAdaptionCells",
             _c.mesh.BOUNDARY_CELL_DISTANCE: "BoundaryCellDistance",
@@ -190,6 +181,6 @@ if MappingConversionStrategy:
             _c.mesh.PARTITION_NEIGHBOURS: "PartitionNeighbors",
             _c.mesh.STORED_CELL_PARTITIION: "StoredElementPartition",
         }
+
 else:
     FluentExprNamingStrategy = None
-

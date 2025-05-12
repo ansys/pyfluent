@@ -28,10 +28,12 @@ import pytest
 
 import ansys.fluent.core as pf  # noqa: F401
 from ansys.fluent.core import examples
+
 try:
     from ansys.units.variable_descriptor import VariableCatalog
 except ModuleNotFoundError:
     VariableCatalog = None
+
 
 @pytest.mark.developer_only
 def test_physical_quantities(new_solver_session) -> None:
