@@ -28,19 +28,26 @@ import pytest
 
 import ansys.fluent.core as pf  # noqa: F401
 from ansys.fluent.core import examples
-from ansys.units.variable_descriptor import VariableCatalog
+try:
+    from ansys.units.variable_descriptor import VariableCatalog
+except ModuleNotFoundError:
+    VariableCatalog = None
 
-
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.developer_only
 def test_physical_quantities(new_solver_session) -> None:
     """
     A test of `PhysicalQuantity` objects.
     """
-    solver = new_solver_session
-    case_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver.file.read(file_type="case", file_name=case_name)
+    if VariableCatalog is None:
+        return
 
-    solver.settings.solution.initialization.hybrid_initialize()
+    solver = new_solver_session
+    settings = solver.settings
+
+    case_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    settings.file.read(file_type="case", file_name=case_name)
+
+    settings.solution.initialization.hybrid_initialize()
 
     fields = solver.fields
 
@@ -62,7 +69,7 @@ def test_physical_quantities(new_solver_session) -> None:
     )
     assert round(temperature_solution_data[locations[0]][0]) == 313
 
-    report_defs = solver.settings.solution.report_definitions
+    report_defs = settings.solution.report_definitions
     report_defs.surface["yyy"] = {}
     surface = report_defs.surface["yyy"]
     surface.report_type = "surface-areaavg"

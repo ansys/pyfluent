@@ -24,19 +24,25 @@
 Provides a ConversionStrategy for mapping VariableDescriptor to Fluent's SVAR names.
 """
 
-from ansys.units.variable_descriptor import (
-    MappingConversionStrategy,
-    VariableCatalog,
-)
+try:
+    from ansys.units.variable_descriptor import (
+        MappingConversionStrategy,
+        VariableCatalog,
+    )
+except ModuleNotFoundError:
+    MappingConversionStrategy = None
 
 
-class FluentSVarStrategy(MappingConversionStrategy):
-    """This strategy handles conversion of selected VariableCatalog into Fluent's
-    server-side field variable naming conventions (e.g., "SV_P" for pressure).
-    """
+if MappingConversionStrategy:
+    class FluentSVarStrategy(MappingConversionStrategy):
+        """This strategy handles conversion of selected VariableCatalog into Fluent's
+        server-side field variable naming conventions (e.g., "SV_P" for pressure).
+        """
 
-    _mapping = {
-        VariableCatalog.PRESSURE: "SV_P",
-        VariableCatalog.VELOCITY_X: "SV_U",
-        VariableCatalog.TEMPERATURE: "SV_T",
-    }
+        _mapping = {
+            VariableCatalog.PRESSURE: "SV_P",
+            VariableCatalog.VELOCITY_X: "SV_U",
+            VariableCatalog.TEMPERATURE: "SV_T",
+        }
+else:
+    FluentSVarStrategy = None
