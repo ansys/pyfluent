@@ -137,11 +137,11 @@ class FluentFieldDataStrategy(MappingConversionStrategy):
         _c.fluent.DVELOCITY_DZ_MAGNITUDE: "dVelocitydz.mag",
 
         # temperature
-        _c.SPECIFIC_ENTHALPY: "SpecificEnthalpy",
-        _c.SPECIFIC_ENTROPY: "SpecificEntropy",
-        _c.SPECIFIC_INTERNAL_ENERGY: "SpecificInternalEnergy",
-        _c.SPECIFIC_TOTAL_ENERGY: "SpecificTotalEnergy",
-        _c.TEMPERATURE: "StaticTemperature",
+        _c.SPECIFIC_ENTHALPY: "enthalpy",
+        _c.SPECIFIC_ENTROPY: "entropy",
+        _c.SPECIFIC_INTERNAL_ENERGY: "internal-energy",
+        _c.SPECIFIC_TOTAL_ENERGY: "total-energy",
+        _c.TEMPERATURE: "temperature",
         # TODO
         # _c.: "SpecificTotalEnthalpy",
         # _c.: "StaticTemperature",
