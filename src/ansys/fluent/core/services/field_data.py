@@ -54,7 +54,7 @@ from ansys.fluent.core.field_data_interfaces import (
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataStrategy,
+    FluentFieldDataStrategy as naming_strategy,
 )
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -67,8 +67,7 @@ from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_argu
 
 logger = logging.getLogger("pyfluent.field_data")
 
-_to_field_name_str = FluentFieldDataStrategy().to_string
-
+_to_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 def override_help_text(func, func_to_be_wrapped):
     """Override function help text."""

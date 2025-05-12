@@ -29,7 +29,7 @@ import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
-from ansys.fluent.core.variable_strategies import FluentExprStrategy
+from ansys.fluent.core.variable_strategies import FluentExprStrategy as naming_strategy
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -274,7 +274,7 @@ class Reduction:
         """__init__ method of Reduction class."""
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
-        self._quantity_strategy = FluentExprStrategy()
+        self._to_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
     def _validate_str_location(self, loc: str):
         if all(
@@ -308,7 +308,7 @@ class Reduction:
     ) -> Any:
         request = getattr(ReductionProtoModule, requestName)()
         if expression is not None:
-            request.expression = self._quantity_strategy.to_string(expression)
+            request.expression = self._to_str(expression)
         if weight is not None:
             request.weight = weight
         if condition is not None:

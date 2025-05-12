@@ -31,7 +31,7 @@ import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataStrategy,
+    FluentFieldDataStrategy as naming_strategy,
 )
 
 
@@ -312,7 +312,7 @@ class _AllowedFieldNames(_AllowedNames):
         super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
 
-    _to_str = FluentFieldDataStrategy().to_string
+    _to_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
     def valid_name(self, field_name):
         """Returns valid names."""
