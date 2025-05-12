@@ -34,6 +34,7 @@ from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
 
+_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 class SurfaceDataType(Enum):
     """Provides surface data types."""
@@ -312,11 +313,9 @@ class _AllowedFieldNames(_AllowedNames):
         super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
 
-    _to_str = naming_strategy().to_string if naming_strategy else lambda s: s
-
     def valid_name(self, field_name):
         """Returns valid names."""
-        field_name = self._to_str(field_name)
+        field_name = _to_field_name_str(field_name)
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):

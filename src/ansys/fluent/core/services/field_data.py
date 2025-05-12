@@ -67,7 +67,7 @@ from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_argu
 
 logger = logging.getLogger("pyfluent.field_data")
 
-_to_str = naming_strategy().to_string if naming_strategy else lambda s: s
+_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 def override_help_text(func, func_to_be_wrapped):
     """Override function help text."""
