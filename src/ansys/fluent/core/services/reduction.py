@@ -29,7 +29,7 @@ import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
-from ansys.fluent.core.variable_strategies import FluentExprStrategy as naming_strategy
+from ansys.fluent.core.variable_strategies import FluentExprNamingStrategy as naming_strategy
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,

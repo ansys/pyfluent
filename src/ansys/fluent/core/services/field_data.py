@@ -54,7 +54,7 @@ from ansys.fluent.core.field_data_interfaces import (
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataStrategy as naming_strategy,
+    FluentFieldDataNamingStrategy as naming_strategy,
 )
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,

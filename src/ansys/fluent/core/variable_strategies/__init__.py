@@ -24,6 +24,6 @@
 Provides ConversionStrategy classes for mapping VariableDescriptor to variable names used in Fluent.
 """
 
-from .expr import FluentExprStrategy  # noqa: F401
-from .field import FluentFieldDataStrategy  # noqa: F401
-from .svar import FluentSVarStrategy  # noqa: F401
+from .expr import FluentExprNamingStrategy  # noqa: F401
+from .field import FluentFieldDataNamingStrategy  # noqa: F401
+from .svar import FluentSVarNamingStrategy  # noqa: F401

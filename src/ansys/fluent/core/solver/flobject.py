@@ -74,7 +74,7 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataStrategy,
+    FluentFieldDataNamingStrategy,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -199,7 +199,7 @@ def to_python_name(fluent_name: str) -> str:
     return name
 
 
-_quantity_strategy = FluentFieldDataStrategy()
+_quantity_strategy = FluentFieldDataNamingStrategy()
 
 
 def _get_python_path_comps(obj):

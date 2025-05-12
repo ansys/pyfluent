@@ -34,7 +34,7 @@ except ModuleNotFoundError:
 
 
 if MappingConversionStrategy:
-    class FluentExprStrategy(MappingConversionStrategy):
+    class FluentExprNamingStrategy(MappingConversionStrategy):
         """This strategy handles conversion of selected VariableCatalog into Fluent's
         server-side expression variable naming conventions.
         """
@@ -146,15 +146,13 @@ if MappingConversionStrategy:
             _c.SPECIFIC_INTERNAL_ENERGY: "SpecificInternalEnergy",
             _c.SPECIFIC_TOTAL_ENERGY: "SpecificTotalEnergy",
             _c.TEMPERATURE: "StaticTemperature",
-            # TODO
-            # _c.: "SpecificTotalEnthalpy",
-            # _c.: "StaticTemperature",
-            # _c.: "TotalEnthalpyDeviation",
-            # _c.: "TotalTemperature",
-            # _c.: "WallAdjacentTemperature",
-            # _c.: "WallTemperature",
-            # _c.: "WallTemperatureThin",
-            # _c.: "YplusBasedHeatTranRefTemperature",
+            _c.SPECIFIC_TOTAL_ENTHALPY: "SpecificTotalEnthalpy",
+            _c.fluent.TOTAL_ENTHALPY_DEVIATION: "TotalEnthalpyDeviation",
+            _c.TOTAL_TEMPERATURE: "TotalTemperature",
+            _c.WALL_ADJACENT_TEMPERATURE: "WallAdjacentTemperature",
+            _c.WALL_TEMPERATURE: "WallTemperature",
+            _c.WALL_TEMPERATURE_THIN: "WallTemperatureThin",
+            _c.fluent.Y_PLUS_BASED_HEAT_TRANSFER_COEFFICIENT: "YplusBasedHeatTranRefTemperature",
         
             # mesh
             _c.mesh.ANISOTROPIC_ADAPTION_CELLS: "AnisotropicAdaptionCells",
@@ -193,5 +191,5 @@ if MappingConversionStrategy:
             _c.mesh.STORED_CELL_PARTITIION: "StoredElementPartition",
         }
 else:
-    FluentExprStrategy = None
+    FluentExprNamingStrategy = None
 

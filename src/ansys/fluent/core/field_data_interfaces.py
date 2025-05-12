@@ -31,7 +31,7 @@ import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataStrategy as naming_strategy,
+    FluentFieldDataNamingStrategy as naming_strategy,
 )
 
 
