@@ -300,8 +300,52 @@ can be launched explicitly using :func:`create_launcher() <ansys.fluent.core.lau
   >>> pim_solver_session = pim_solver_launcher()
 
 
-Connecting to a Fluent container running inside WSL from a Windows host
------------------------------------------------------------------------
+Launching Fluent in container mode with Docker Compose or Podman Compose
+------------------------------------------------------------------------
+
+Use PyFluent with Docker Compose or Podman Compose to run Fluent in a consistent, reproducible containerized environment.
+
+1. **Docker Compose**
+
+    Prerequisites:
+
+    - `Docker <https://www.docker.com/>`_
+    - `Docker Compose <https://docs.docker.com/compose/>`_
+
+
+2. **Podman Compose**
+
+    Prerequisites:
+
+    - `Podman <https://podman.io/>`_
+    - `Podman Compose <https://docs.podman.io/en/latest/markdown/podman-compose.1.html>`_
+
+
+Example:
+
+Set environment variables to select the container engine:
+
+.. code:: python
+
+  >>> import os
+  >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
+  >>> os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
+
+
+Then launch:
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+  >>> solver = pyfluent.launch_fluent()
+  >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+  >>> solver.file.read(file_name=case_file_name, file_type="case")
+  >>> solver.exit()
+
+
+Connect to a Fluent container running inside WSL from a Windows host
+--------------------------------------------------------------------
 
 1. Launch Fluent container inside WSL
 
