@@ -30,6 +30,9 @@ import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.physicalquantities.strategies.fluent import (
+    FluentFieldDataStrategy,
+)
 
 
 class SurfaceDataType(Enum):
@@ -309,8 +312,11 @@ class _AllowedFieldNames(_AllowedNames):
         super().__init__(field_info=field_info, info=info)
         self._is_data_valid = is_data_valid
 
+    _to_str = FluentFieldDataStrategy().to_string
+
     def valid_name(self, field_name):
         """Returns valid names."""
+        field_name = self._to_str(field_name)
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):
