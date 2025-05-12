@@ -198,7 +198,9 @@ def to_python_name(fluent_name: str) -> str:
         name = name + "_"
     return name
 
+
 _to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
+
 
 def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
