@@ -42,6 +42,9 @@ class ComposeBasedLauncher:
 
         self._compose_file = self._get_compose_file(container_dict)
 
+    def _is_podman_selected(self):
+        return os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+
     def _get_compose_file(self, container_dict):
         """Generates compose file for the Docker Compose setup.
 
@@ -94,12 +97,6 @@ class ComposeBasedLauncher:
 
         return compose_file
 
-    def _has_sudo_access(self):
-        result = subprocess.run(
-            ["sudo", "-n", "true"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
-        return result.returncode == 0
-
     def _extract_ports(self, port_string):
         """
         Extracts ports from a string containing port mappings.
@@ -133,7 +130,12 @@ class ComposeBasedLauncher:
 
         # Determine the compose command
         if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
-            self._compose_cmds = ["podman", "compose"]
+            self._compose_cmds = (
+                ["sudo", "podman", "compose"]
+                if hasattr(self, "_container_source")
+                and "sudo" in self._container_source
+                else ["podman", "compose"]
+            )
         elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
             self._compose_cmds = ["docker", "compose"]
         else:
@@ -142,22 +144,29 @@ class ComposeBasedLauncher:
         return self._compose_cmds
 
     def check_image_exists(self) -> bool:
-        """Check if a Docker image exists locally."""
+        """Check if the image exists locally."""
         try:
-            output = subprocess.check_output(
-                ["docker", "images", "-q", self._image_name]
-            )
-            return output.decode("utf-8").strip() != ""
+            cmd = self._container_source + ["images", "-q", self._image_name]
+            # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
+            if self._is_podman_selected():
+                sudo_cmd = ["sudo"] + cmd
+                output_1 = subprocess.check_output(cmd)
+                output_2 = subprocess.check_output(sudo_cmd)
+                output_1_result = output_1.decode("utf-8").strip() != ""
+                output_2_result = output_2.decode("utf-8").strip() != ""
+                if output_2_result and not output_1_result:
+                    self._container_source.insert(0, "sudo")
+                return output_1_result or output_2_result
+            else:
+                output = subprocess.check_output(cmd)
+                return output.decode("utf-8").strip() != ""
         except subprocess.CalledProcessError as e:  # noqa: F841
             return False
 
     def pull_image(self) -> None:
         """Pull a Docker image if it does not exist locally."""
 
-        cmd = [f"{self._container_source[0]}", "pull", self._image_name]
-
-        if len(self._container_source) == 2:
-            cmd.insert(1, f"{self._container_source[1]}")
+        cmd = self._container_source + ["pull", self._image_name]
 
         subprocess.check_call(cmd)
 
@@ -165,7 +174,6 @@ class ComposeBasedLauncher:
         self, compose_cmd: list[str], cmd: list[str], timeout: float
     ) -> None:
         """Helper function to start or stop the services.
-
         Parameters
         ----------
         compose_cmd: list[str]
@@ -206,7 +214,7 @@ class ComposeBasedLauncher:
             "--detach",
         ]
 
-        self._start_stop_helper(self._set_compose_cmds(), cmd, 10)
+        self._start_stop_helper(self._set_compose_cmds(), cmd, 60)
 
     def stop(self) -> None:
         """Stop the services.
