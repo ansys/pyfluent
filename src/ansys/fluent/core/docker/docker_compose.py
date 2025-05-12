@@ -42,6 +42,9 @@ class ComposeBasedLauncher:
 
         self._compose_file = self._get_compose_file(container_dict)
 
+    def _is_podman_selected(self):
+        return os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+
     def _get_compose_file(self, container_dict):
         """Generates compose file for the Docker Compose setup.
 
@@ -145,7 +148,7 @@ class ComposeBasedLauncher:
         try:
             cmd = self._container_source + ["images", "-q", self._image_name]
             # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
-            if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
+            if self._is_podman_selected():
                 sudo_cmd = ["sudo"] + cmd
                 output_1 = subprocess.check_output(cmd)
                 output_2 = subprocess.check_output(sudo_cmd)
