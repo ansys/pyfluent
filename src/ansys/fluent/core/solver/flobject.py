@@ -75,7 +75,7 @@ from ansys.fluent.core.pyfluent_warnings import (
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataNamingStrategy,
+    FluentFieldDataNamingStrategy as naming_strategy,
 )
 
 from . import _docstrings
@@ -198,9 +198,7 @@ def to_python_name(fluent_name: str) -> str:
         name = name + "_"
     return name
 
-
-_quantity_strategy = FluentFieldDataNamingStrategy()
-
+_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
@@ -644,7 +642,7 @@ class Textual(Property):
         kwargs : Any
             Keyword arguments.
         """
-        return self.base_set_state(state=_quantity_strategy.to_string(state), **kwargs)
+        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
