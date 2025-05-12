@@ -88,8 +88,8 @@ All versions of PyFluent support Fluent 2022 R2 and later.
 
 PyFluent uses an environment variable to locate your Ansys installation.
 
-On Windows, the Ansys installer sets the environment variable. For instance, the Ansys 2025 R1
-installer sets the ``AWP_ROOT251`` environment variable to point to ``C:\Program Files\ANSYS Inc\v251``
+On Windows, the Ansys installer sets the environment variable. For instance, the Ansys 2025 R2
+installer sets the ``AWP_ROOT252`` environment variable to point to ``C:\Program Files\ANSYS Inc\v252``
 if you accept the default installation location.
 
 **On Linux, the environment variable is not set automatically.** It can be set for the
@@ -97,7 +97,7 @@ current user in the current shell session as follows:
 
 .. code:: console
 
-    export AWP_ROOT251=/usr/ansys_inc/v251
+    export AWP_ROOT252=/usr/ansys_inc/v252
 
 For this variable to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.

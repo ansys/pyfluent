@@ -80,6 +80,8 @@ numpydoc_validation_exclude = {
     "ansys.fluent.core.generated.solver.settings_241.",
     "ansys.fluent.core.generated.solver.settings_242.",
     "ansys.fluent.core.generated.solver.settings_251.",
+    "ansys.fluent.core.generated.solver.settings_252.",
+    "ansys.fluent.core.generated.solver.settings_261.",
     "ansys.fluent.core.services.batch_ops.BatchOps.__init__",
 }
 

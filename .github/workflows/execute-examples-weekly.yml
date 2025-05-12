@@ -25,10 +25,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v25.1.0
-            version: 251
           - image-tag: v25.2.0
             version: 252
+          - image-tag: v26.1.0
+            version: 261
 
     steps:
       - uses: actions/checkout@v4
