@@ -51,6 +51,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedSurfaceNames,
     _AllowedVectorFieldNames,
     _ReturnFieldData,
+    _to_field_name_str,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
@@ -428,7 +429,7 @@ class BaseFieldData:
             )
         ]
         return self._returned_data._scalar_data(
-            kwargs.get("field_name"),
+            _to_field_name_str(kwargs.get("field_name")),
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             scalar_field_data,
@@ -452,7 +453,7 @@ class BaseFieldData:
     ) -> Dict[int | str, np.array]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
-            kwargs.get("field_name"),
+            _to_field_name_str(kwargs.get("field_name")),
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             vector_field_data,
@@ -465,11 +466,10 @@ class BaseFieldData:
         if kwargs.get("zones") is None:
             zones = []
         del zones
-        pathlines_data = self.data[
-            (("type", "pathlines-field"), ("field", kwargs.get("field_name")))
-        ]
+        field_name = _to_field_name_str(kwargs.get("field_name"))
+        pathlines_data = self.data[(("type", "pathlines-field"), ("field", field_name))]
         return self._returned_data._pathlines_data(
-            kwargs.get("field_name"),
+            field_name,
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             pathlines_data,
@@ -1262,6 +1262,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self._field_info = field_info
         self.is_data_valid = is_data_valid
         self.scheme_eval = scheme_eval
+
         self.get_zones_info = lambda: get_zones_info()()
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
@@ -1339,9 +1340,12 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         surfaces = kwargs.get("surfaces")
         surface_ids = self.get_surface_ids(surfaces)
         fields_request = get_fields_request()
+        field_name = self._allowed_scalar_field_names.valid_name(
+            kwargs.get("field_name")
+        )
         fields_request.scalarFieldRequest.extend(
             self._fetched_data._scalar_data(
-                self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
+                field_name,
                 self.get_surface_ids(surfaces),
                 kwargs.get("node_value"),
                 kwargs.get("boundary_value"),
@@ -1350,7 +1354,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
         scalar_field_data = next(iter(fields.values()))
         return self._returned_data._scalar_data(
-            kwargs.get("field_name"), surfaces, surface_ids, scalar_field_data
+            field_name, surfaces, surface_ids, scalar_field_data
         )
 
     def _get_surface_data(
@@ -1387,12 +1391,15 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         **kwargs,
     ) -> Dict[int | str, np.array]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        field_name = self._allowed_vector_field_names.valid_name(
+            kwargs.get("field_name")
+        )
         for surface_id in surface_ids:
             self.scheme_eval.string_eval(f"(surface? {surface_id})")
         fields_request = get_fields_request()
         fields_request.vectorFieldRequest.extend(
             self._fetched_data._vector_data(
-                self._allowed_vector_field_names.valid_name(kwargs.get("field_name")),
+                field_name,
                 surface_ids,
             )
         )
@@ -1400,7 +1407,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         vector_field_data = next(iter(fields.values()))
 
         return self._returned_data._vector_data(
-            kwargs.get("field_name"),
+            field_name,
             kwargs.get("surfaces"),
             surface_ids,
             vector_field_data,
@@ -1413,12 +1420,17 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         if kwargs.get("zones") is None:
             zones = []
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        field_name = self._allowed_scalar_field_names.valid_name(
+            kwargs.get("field_name")
+        )
         fields_request = get_fields_request()
         fields_request.pathlinesFieldRequest.extend(
             self._fetched_data._pathlines_data(
-                self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
+                field_name,
                 surface_ids,
-                additionalField=kwargs.get("additional_field_name"),
+                additionalField=kwargs.get(
+                    "additional_field_name"
+                ),  # TODO an additional field name
                 provideParticleTimeField=kwargs.get("provide_particle_time_field"),
                 dataLocation=(
                     FieldDataProtoModule.DataLocation.Nodes
@@ -1442,7 +1454,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         if self._deprecated_flag:
             self._deprecated_flag = False
             return self._returned_data._pathlines_data(
-                kwargs.get("field_name"),
+                field_name,
                 kwargs.get("surfaces"),
                 surface_ids,
                 pathlines_data,
@@ -1450,7 +1462,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             )
 
         return self._returned_data._pathlines_data(
-            kwargs.get("field_name"),
+            field_name,
             kwargs.get("surfaces"),
             surface_ids,
             pathlines_data,
