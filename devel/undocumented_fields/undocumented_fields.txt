@@ -395,6 +395,7 @@
     - quantity_type
     - tensor_type
 
+Module: ansys.fluent.core.utils.file_transfer_service
   Class: StandaloneFileTransferStrategy
     - fluent_cwd
     - pyfluent_cwd
