@@ -485,9 +485,7 @@ def start_fluent_container(
                 )
                 compose_container.pull_image()
 
-            # Need to get back to python parent process after pulling image
-            if compose_container.check_image_exists():
-                compose_container.start()
+            compose_container.start()
 
             return port, config_dict, compose_container
         else:
