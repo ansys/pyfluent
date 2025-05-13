@@ -632,7 +632,7 @@ class FileFieldData(FieldDataSource):
         ],
         data_type_converter=None,
         deprecated_version="v0.25.0",
-        deprecated_reason="'surface_names', 'surface_ids' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
+        deprecated_reason="Old arguments 'surface_ids', 'surface_names' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
         warn_message="'get_surface_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_surface_data(

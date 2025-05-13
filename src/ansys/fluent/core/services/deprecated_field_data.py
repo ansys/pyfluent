@@ -403,7 +403,7 @@ class DeprecatedFieldData:
         ],
         data_type_converter=None,
         deprecated_version="v0.27.0",
-        deprecated_reason="'surface_names', 'surface_ids' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
+        deprecated_reason="Old arguments 'surface_names', 'surface_ids' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
         warn_message=DEPRECATION_MSG,
     )
     def get_surface_data(
