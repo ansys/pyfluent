@@ -152,7 +152,7 @@ class BaseSession:
             event_type,
             get_zones_info,
         )
-        self.register_finalizer_cb = fluent_connection.register_finalizer_cb
+        self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
     def _build_from_fluent_connection(
         self,
