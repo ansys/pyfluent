@@ -885,7 +885,7 @@ class _InputFile(FileName):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
             for file_name in file_names:
-                self._file_transfer_handler.upload(file_name=file_name)
+                self._file_transfer_handler.upload(file_path=file_name)
             return os.path.basename(value)
         else:
             return value
@@ -896,7 +896,7 @@ class _OutputFile(FileName):
         file_names = expand_api_file_argument(command_name, value, kwargs)
         if self._file_transfer_handler:
             for file_name in file_names:
-                self._file_transfer_handler.download(file_name=file_name)
+                self._file_transfer_handler.download(remote_file=file_name)
             return os.path.basename(value)
         else:
             return value

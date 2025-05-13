@@ -22,6 +22,7 @@
 
 """This module provides a class to handle file transfer operations."""
 
+import os
 from pathlib import Path
 from typing import List, Tuple
 
@@ -65,7 +66,7 @@ class FileTransfer:
         """__init__ method of FileTransfer class."""
         self._service = service
 
-    def upload(self, file_path: str) -> dict:
+    def upload(self, file_path: str) -> None:
         """Upload file to the server.
 
         Parameters
@@ -93,7 +94,7 @@ class FileTransfer:
 
         self._service.upload(request_generator(file_path))
 
-    def download(self, remote_file, local_path):
+    def download(self, remote_file: str, local_path: str | None = None) -> None:
         """Download file from the server.
 
         Parameters
@@ -105,6 +106,7 @@ class FileTransfer:
         """
         request = FileTransferProtoModule.FileDownloadRequest(name=remote_file)
         response_stream = self._service.download(request)
-        with open(local_path, "wb") as file:
+        path = local_path if local_path else Path(os.getcwd()) / remote_file
+        with open(path, "wb") as file:
             for response in response_stream:
                 file.write(response.chunk)

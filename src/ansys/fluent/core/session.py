@@ -164,7 +164,6 @@ class BaseSession:
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
-        self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
         self.scheme_eval = scheme_eval
         self.rp_vars = RPVars(self.scheme_eval.string_eval)
@@ -186,6 +185,10 @@ class BaseSession:
         )
 
         self.file_transfer = FileTransfer(self._file_transfer)
+
+        self._file_transfer_service = (
+            file_transfer_service if file_transfer_service else self.file_transfer
+        )
 
         self.journal = Journal(self._app_utilities)
 
@@ -389,21 +392,6 @@ class BaseSession:
         self._exit_compose_service()
         self._fluent_connection.force_exit()
 
-    def file_exists_on_remote(self, file_name: str) -> bool:
-        """Check if remote file exists.
-
-        Parameters
-        ----------
-        file_name: str
-            File name.
-
-        Returns
-        -------
-            Whether file exists.
-        """
-        if self._file_transfer_service:
-            return self._file_transfer_service.file_exists_on_remote(file_name)
-
     def _file_transfer_api_warning(self, method_name: str) -> str:
         """User warning for upload/download methods."""
         return f"You have directly called the {method_name} method of the session. \
@@ -414,7 +402,7 @@ class BaseSession:
         file interactions require explicit use of {method_name}  method \
         for relevant files."
 
-    def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
+    def upload(self, file_name: list[str] | str):
         """Upload a file to the server.
 
         Parameters
@@ -425,24 +413,24 @@ class BaseSession:
             remote file name, by default None
         """
         warnings.warn(self._file_transfer_api_warning("upload()"), PyFluentUserWarning)
-        if self._file_transfer_service:
-            return self._file_transfer_service.upload(file_name, remote_file_name)
+        self._file_transfer_service.upload(file_path=file_name)
 
-    def download(self, file_name: str, local_directory: str | None = "."):
+    def download(self, file_name: str, local_path: str | None = None):
         """Download a file from the server.
 
         Parameters
         ----------
         file_name : str
             Name of the file to download from the server.
-        local_directory : str, optional
-            Local destination directory. The default is the current working directory.
+        local_path : str, optional
+            Local destination path. The default is the current working directory.
         """
         warnings.warn(
             self._file_transfer_api_warning("download()"), PyFluentUserWarning
         )
-        if self._file_transfer_service:
-            return self._file_transfer_service.download(file_name, local_directory)
+        self._file_transfer_service.download(
+            remote_file=file_name, local_path=local_path
+        )
 
     def chdir(self, path: str) -> None:
         """Change Fluent working directory.
