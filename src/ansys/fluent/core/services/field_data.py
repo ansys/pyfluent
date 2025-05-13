@@ -51,6 +51,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedSurfaceNames,
     _AllowedVectorFieldNames,
     _ReturnFieldData,
+    _to_field_name_str,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
@@ -66,8 +67,6 @@ from ansys.fluent.core.variable_strategies import (
 )
 
 logger = logging.getLogger("pyfluent.field_data")
-
-_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 
 def override_help_text(func, func_to_be_wrapped):
