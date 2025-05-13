@@ -53,7 +53,6 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
@@ -245,10 +244,6 @@ def launch_remote_fluent(
         launcher_args=launcher_args,
     )
 
-    file_transfer_service = get_file_transfer_service(
-        file_transfer_service, fluent_connection
-    )
-
     return session_cls(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
@@ -283,16 +278,4 @@ def create_fluent_connection(
         cleanup_on_exit=cleanup_on_exit,
         remote_instance=instance,
         slurm_job_id=launcher_args.get("slurm_job_id") if launcher_args else None,
-    )
-
-
-def get_file_transfer_service(
-    file_transfer_service: Any | None, fluent_connection
-) -> Any:
-    """Get the file transfer service."""
-
-    return (
-        file_transfer_service
-        if file_transfer_service
-        else PimFileTransferService(pim_instance=fluent_connection._remote_instance)
     )

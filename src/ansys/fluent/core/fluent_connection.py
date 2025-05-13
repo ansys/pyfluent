@@ -51,7 +51,6 @@ from ansys.fluent.core.services.app_utilities import (
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
@@ -821,9 +820,7 @@ class FluentConnection:
         if remote_instance:
             remote_instance.delete()
 
-        if file_transfer_service and isinstance(
-            file_transfer_service, ContainerFileTransferStrategy
-        ):
+        if file_transfer_service and isinstance(file_transfer_service):
             file_transfer_service.container.kill()
 
         exit_event.set()

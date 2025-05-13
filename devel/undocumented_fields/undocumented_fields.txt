@@ -395,21 +395,6 @@
     - quantity_type
     - tensor_type
 
-  Module: ansys.fluent.core.utils.file_transfer_service
-  Class: ContainerFileTransferStrategy
-    - client
-    - container
-    - docker_client
-    - host_port
-    - image_name
-    - image_tag
-    - mount_source
-    - mount_target
-    - ports
-  Class: PimFileTransferService
-    - file_service
-    - pim_instance
-    - upload_server
   Class: StandaloneFileTransferStrategy
     - fluent_cwd
     - pyfluent_cwd

@@ -29,7 +29,6 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -40,10 +39,6 @@ def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
     tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = ContainerFileTransferStrategy(
-            mount_source=tmp_save_path
-        )
     import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
@@ -55,7 +50,6 @@ def test_parametric_workflow():
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,
-                file_transfer_service=file_transfer_service,
             )
         else:
             solver_session = pyfluent.launch_fluent(
@@ -198,17 +192,10 @@ def test_parametric_workflow():
     solver_session.exit()
 
     if inside_container:
-        if pyfluent.USE_FILE_TRANSFER_SERVICE:
-            solver_session = pyfluent.launch_fluent(
-                processor_count=2,
-                container_dict=config_dict,
-                file_transfer_service=file_transfer_service,
-            )
-        else:
-            solver_session = pyfluent.launch_fluent(
-                processor_count=2,
-                container_dict=config_dict,
-            )
+        solver_session = pyfluent.launch_fluent(
+            processor_count=2,
+            container_dict=config_dict,
+        )
     else:
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 

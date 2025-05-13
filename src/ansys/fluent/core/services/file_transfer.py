@@ -84,9 +84,9 @@ class FileTransfer:
         def request_generator(file_path):
             filename_only = Path(file_path).name
             yield FileTransferProtoModule.FileUploadRequest(name=filename_only)
-            with open(file_path, "rb") as f:
+            with open(file_path, "rb") as file:
                 while True:
-                    chunk = f.read(1024)
+                    chunk = file.read(1024)
                     if not chunk:
                         break
                     yield FileTransferProtoModule.FileUploadRequest(chunk=chunk)
@@ -105,6 +105,6 @@ class FileTransfer:
         """
         request = FileTransferProtoModule.FileDownloadRequest(name=remote_file)
         response_stream = self._service.download(request)
-        with open(local_path, "wb") as f:
-            for resp in response_stream:
-                f.write(resp.chunk)
+        with open(local_path, "wb") as file:
+            for response in response_stream:
+                file.write(response.chunk)

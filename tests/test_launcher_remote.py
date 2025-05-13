@@ -45,7 +45,6 @@ from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
@@ -134,12 +133,6 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
         )
-
-        file_transfer_service = PimFileTransferService(pim_instance=mock_instance)
-        assert not file_transfer_service.file_service
-        assert file_transfer_service.is_configured()
-        assert file_transfer_service.pim_instance
-        assert file_transfer_service.upload_server
 
         session.exit(wait=60)
         session._fluent_connection.wait_process_finished(wait=60)
