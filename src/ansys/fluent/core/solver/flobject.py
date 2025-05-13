@@ -74,6 +74,9 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
+)
 
 from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error
@@ -194,6 +197,9 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 
 def _get_python_path_comps(obj):
@@ -628,6 +634,18 @@ class RealNumerical(Numerical):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            Either str or VariableDescriptor.
+        kwargs : Any
+            Keyword arguments.
+        """
+        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
+
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     """Provides deprecated settings warning."""
@@ -852,6 +870,9 @@ class String(SettingsBase[str], Textual):
     """A ``String`` object representing a string value setting."""
 
     _state_type = str
+
+    base_set_state = SettingsBase[str].set_state
+    set_state = Textual.set_state
 
 
 class Filename(SettingsBase[str], Textual):
