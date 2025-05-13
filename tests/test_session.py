@@ -730,3 +730,17 @@ def test_launch_in_pyconsole_mode():
         assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
     with pyfluent.launch_fluent(py=False) as session:
         assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is False
+
+
+def test_solver_attr_lookup(new_solver_session):
+    solver = new_solver_session
+    with pytest.warns(PyFluentDeprecationWarning):
+        solver.file
+    assert solver.settings.file
+    with pytest.raises(AttributeError):
+        solver.get_completer_info
+    assert solver.settings.get_completer_info
+    with pytest.raises(AttributeError):
+        solver.xyz
+    with pytest.raises(AttributeError):
+        solver.settings.xyz
