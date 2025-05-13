@@ -81,7 +81,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
 from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.session import _parse_server_info_file
-from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -118,8 +118,24 @@ class LicenseServerNotSpecified(KeyError):
         )
 
 
-@deprecate_argument("container_mount_path", "mount_target")
-@deprecate_argument("host_mount_path", "mount_source")
+@all_deprecators(
+    deprecate_arg_mappings=[
+        {
+            "old_arg": "container_mount_path",
+            "new_arg": "mount_target",
+            "converter": lambda old_arg_val: old_arg_val,
+        },
+        {
+            "old_arg": "host_mount_path",
+            "new_arg": "mount_source",
+            "converter": lambda old_arg_val: old_arg_val,
+        },
+    ],
+    data_type_converter=None,
+    deprecated_version="v0.23.dev1",
+    deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
+    warn_message="",
+)
 def configure_container_dict(
     args: List[str],
     mount_source: str | Path | None = None,
