@@ -60,7 +60,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
+from ansys.fluent.core.utils.deprecate import all_deprecators
 
 logger = logging.getLogger("pyfluent.field_data")
 
@@ -660,17 +660,24 @@ class Transaction(FieldTransaction):
             )
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=_data_type_convertor,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_surfaces_request' is deprecated, use 'add_requests' instead",
     )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_arguments(converter=_data_type_convertor)
     def add_surfaces_request(
         self,
         data_types: List[SurfaceDataType] | List[str],
@@ -679,25 +686,29 @@ class Transaction(FieldTransaction):
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
         normals)."""
-        warnings.warn(
-            "'add_surfaces_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_surfaces_request(
             data_types=data_types,
             surfaces=self.get_surface_ids(surfaces),
             overset_mesh=overset_mesh,
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_scalar_fields_request(
         self,
@@ -707,10 +718,6 @@ class Transaction(FieldTransaction):
         boundary_value: bool | None = True,
     ) -> None:
         """Add request to get scalar field data on surfaces."""
-        warnings.warn(
-            "'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_scalar_fields_request(
             field_name=field_name,
             surfaces=self.get_surface_ids(surfaces),
@@ -718,15 +725,23 @@ class Transaction(FieldTransaction):
             boundary_value=boundary_value,
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_vector_fields_request(
         self,
@@ -734,23 +749,27 @@ class Transaction(FieldTransaction):
         surfaces: List[int | str],
     ) -> None:
         """Add request to get vector field data on surfaces."""
-        warnings.warn(
-            "'add_vector_fields_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_vector_fields_request(
             field_name=field_name, surfaces=self.get_surface_ids(surfaces)
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_pathlines_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_pathlines_fields_request(
         self,
@@ -770,10 +789,6 @@ class Transaction(FieldTransaction):
         zones: list | None = None,
     ) -> None:
         """Add request to get path-lines field on surfaces."""
-        warnings.warn(
-            "'add_pathlines_fields_request' is deprecated, use 'add_requests' instead",
-            PyFluentDeprecationWarning,
-        )
         self._add_pathlines_fields_request(
             field_name=field_name,
             surfaces=self.get_surface_ids(surfaces),
