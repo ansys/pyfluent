@@ -514,7 +514,6 @@ class FluentConnection:
             self._connection_interface,
             self.finalizer_cbs,
             self._remote_instance,
-            self._file_transfer_service,
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
@@ -802,7 +801,6 @@ class FluentConnection:
         connection_interface,
         finalizer_cbs,
         remote_instance,
-        file_transfer_service,
         exit_event,
     ) -> None:
         logger.debug("FluentConnection exit method called.")
@@ -819,8 +817,5 @@ class FluentConnection:
 
         if remote_instance:
             remote_instance.delete()
-
-        if file_transfer_service and isinstance(file_transfer_service):
-            file_transfer_service.container.kill()
 
         exit_event.set()
