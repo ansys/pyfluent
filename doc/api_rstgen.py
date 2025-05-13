@@ -40,6 +40,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
+    "docker": ["docker_compose"],
     "filereader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
