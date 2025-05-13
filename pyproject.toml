@@ -24,6 +24,7 @@ dependencies = [
     "ansys-tools-filetransfer>=0.1,<0.3",
     "ansys-units>=0.4.0,<1.0",
     "defusedxml>=0.7.1",
+    "deprecated>=1.2.18",
     "docker>=7.1.0",
     "grpcio>=1.30.0",
     "grpcio-health-checking>=1.30.0",
