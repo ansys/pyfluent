@@ -675,7 +675,7 @@ class Transaction(FieldTransaction):
         ],
         data_type_converter=_data_type_convertor,
         deprecated_version="v0.23.dev0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message="'add_surfaces_request' is deprecated, use 'add_requests' instead",
     )
     def add_surfaces_request(
@@ -707,7 +707,7 @@ class Transaction(FieldTransaction):
         ],
         data_type_converter=None,
         deprecated_version="v0.23.dev0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_scalar_fields_request(
@@ -740,7 +740,7 @@ class Transaction(FieldTransaction):
         ],
         data_type_converter=None,
         deprecated_version="v0.23.dev0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_vector_fields_request(
@@ -768,7 +768,7 @@ class Transaction(FieldTransaction):
         ],
         data_type_converter=None,
         deprecated_version="v0.23.dev0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message="'add_pathlines_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_pathlines_fields_request(

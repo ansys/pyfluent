@@ -312,7 +312,7 @@ class DeprecatedFieldData:
         ],
         data_type_converter=None,
         deprecated_version="v0.27.0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message=DEPRECATION_MSG,
     )
     def get_scalar_field_data(
@@ -538,7 +538,7 @@ class DeprecatedFieldData:
         ],
         data_type_converter=None,
         deprecated_version="v0.27.0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message=DEPRECATION_MSG,
     )
     def get_vector_field_data(
@@ -615,7 +615,7 @@ class DeprecatedFieldData:
         ],
         data_type_converter=None,
         deprecated_version="v0.27.0",
-        deprecated_reason="'surface_names' and 'surface_ids' are deprecated. Use 'surfaces' instead.",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
         warn_message=DEPRECATION_MSG,
     )
     def get_pathlines_field_data(
