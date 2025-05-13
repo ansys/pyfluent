@@ -22,6 +22,7 @@
 
 """This module provides a class to handle file transfer operations."""
 
+from pathlib import Path
 from typing import List, Tuple
 
 import grpc
@@ -44,13 +45,25 @@ class FileTransferService:
         self._stub = FileTransferGrpcModule.FileTransferServiceStub(intercept_channel)
         self._metadata = metadata
 
+    def upload(
+        self, request: FileTransferProtoModule.FileUploadRequest
+    ) -> FileTransferProtoModule.FileUploadResponse:
+        """Upload file RPC of FileTransfer service."""
+        return self._stub.Upload(request, metadata=self._metadata)
+
+    def download(
+        self, request: FileTransferProtoModule.FileDownloadRequest
+    ) -> FileTransferProtoModule.FileDownloadResponse:
+        """Download file RPC of FileTransfer service."""
+        return self._stub.Download(request, metadata=self._metadata)
+
 
 class FileTransfer:
     """FileTransferService."""
 
     def __init__(self, service: FileTransferService):
         """__init__ method of FileTransfer class."""
-        self.service = service
+        self._service = service
 
     def upload(self, file_path: str) -> dict:
         """Upload file to the server.
@@ -64,36 +77,21 @@ class FileTransfer:
         dict
             Server response or error message.
         """
+        if not Path(file_path).exists():
+            print(f"File '{file_path}' does not exist.")
+            return
 
-        def generate_requests(file_path):
-            # Send metadata first
-            yield FileTransferProtoModule.FileUploadRequest(
-                metadata=FileTransferProtoModule.FileMetaData(
-                    name=file_path, type="application/octet-stream"
-                )
-            )
-            try:
-                with open(file_path, "rb") as f:
-                    while True:
-                        chunk = f.read(1024 * 1024)
-                        if not chunk:
-                            break
-                        yield FileTransferProtoModule.FileUploadRequest(
-                            chunk=FileTransferProtoModule.FileChunk(content=chunk)
-                        )
-            except Exception as e:
-                print(f"Error reading file: {e}")
-                raise
+        def request_generator(file_path):
+            filename_only = Path(file_path).name
+            yield FileTransferProtoModule.FileUploadRequest(name=filename_only)
+            with open(file_path, "rb") as f:
+                while True:
+                    chunk = f.read(1024)
+                    if not chunk:
+                        break
+                    yield FileTransferProtoModule.FileUploadRequest(chunk=chunk)
 
-        try:
-            response = self.service._stub.Upload(
-                generate_requests(file_path), metadata=self.service._metadata
-            )
-            print("Upload completed.")
-            return {"status": "success", "response": response}
-        except Exception as e:
-            print(f"Upload failed: {e}")
-            return {"status": "error", "message": str(e)}
+        self._service.upload(request_generator(file_path))
 
     def download(self, remote_file, local_path):
         """Download file from the server.
@@ -106,8 +104,7 @@ class FileTransfer:
             Path to save the downloaded file.
         """
         request = FileTransferProtoModule.FileDownloadRequest(name=remote_file)
+        response_stream = self._service.download(request)
         with open(local_path, "wb") as f:
-            for resp in self.service._stub.Download(
-                request, metadata=self.service._metadata
-            ):
-                f.write(resp.content)
+            for resp in response_stream:
+                f.write(resp.chunk)
