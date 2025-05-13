@@ -62,9 +62,6 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
-from ansys.fluent.core.variable_strategies import (
-    FluentFieldDataNamingStrategy as naming_strategy,
-)
 
 logger = logging.getLogger("pyfluent.field_data")
 
