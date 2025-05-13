@@ -97,6 +97,9 @@ class Solver(BaseSession):
     commanding, and solver settings objects are all exposed here.
     """
 
+    #: This is a class attribute with a docstring.
+    my_attr = 42
+
     def __init__(
         self,
         fluent_connection,
@@ -131,6 +134,8 @@ class Solver(BaseSession):
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
+        #: This is an instance attribute with a docstring.
+        self.monitor = None
 
     def _build_from_fluent_connection(
         self,
