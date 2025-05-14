@@ -25,6 +25,8 @@
 from enum import Enum
 from functools import total_ordering
 import os
+from pathlib import Path
+import platform
 
 import ansys.fluent.core as pyfluent
 
@@ -114,8 +116,22 @@ class FluentVersion(Enum):
         AnsysVersionNotFound
             If an Ansys version cannot be found.
         """
+
+        def fluent_exe_exists(awp_var):
+            awp_root = os.getenv(awp_var)
+            if awp_root is None:
+                return False
+
+            fluent_root = Path(awp_root) / "fluent"
+            fluent_exe = (
+                fluent_root / "ntbin" / "win64" / "fluent.exe"
+                if platform.system() == "Windows"
+                else fluent_root / "bin" / "fluent"
+            )
+            return fluent_exe.exists()
+
         for member in cls:
-            if member.awp_var in os.environ:
+            if fluent_exe_exists(member.awp_var):
                 return member
 
         raise AnsysVersionNotFound(
