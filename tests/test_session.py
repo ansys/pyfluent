@@ -495,7 +495,7 @@ def test_solver_methods(new_solver_session):
             "parametric_studies",
             "current_parametric_study",
         }
-    if solver.get_fluent_version() == FluentVersion.v232:
+    if solver.get_fluent_version() in (FluentVersion.v232, FluentVersion.v231):
         api_keys = {
             "file",
             "mesh",
