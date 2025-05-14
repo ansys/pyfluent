@@ -64,11 +64,12 @@ def all_deprecators(
 
         @wraps(decorated)
         def wrapper(*args, **kwargs):
-            warnings.warn(
-                warn_message,
-                PyFluentDeprecationWarning,
-                stacklevel=2,
-            )
+            if warn_message:
+                warnings.warn(
+                    warn_message,
+                    PyFluentDeprecationWarning,
+                    stacklevel=2,
+                )
             return decorated(*args, **kwargs)
 
         return wrapper
