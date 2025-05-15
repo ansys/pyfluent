@@ -78,6 +78,8 @@ Modeling Ablation
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.visualization.pyvista import Graphics
+import os
+from pathlib import Path
 
 ####################################################################################
 # Download example file
@@ -248,6 +250,7 @@ solver.tui.define.dynamic_mesh.zones.create(
     "189",
     "constant",
     "0",
+    "0",
     "yes",
     "yes",
     "0.7",
@@ -355,9 +358,32 @@ solver.file.write(file_type="case-data", file_name="ablation_Solved.cas.h5")
 # Post Processing
 # ==================================================================================
 
+# Configure picture settings for high-quality exports
+graphics = solver.results.graphics
+if graphics.picture.use_window_resolution.is_active():
+    graphics.picture.use_window_resolution = False
+graphics.picture.x_resolution = 1920
+graphics.picture.y_resolution = 1080
+
 ###############################################
-# Display plots
+# Display and save plots
 # =============
+
+# Save residual plot
+solver.solution.monitor.residual.plot()
+solver.results.graphics.picture.save_picture(file_name="ablation-residual.png")
+
+# Save drag force plot
+solver.solution.monitor.report_plots["drag_force_x"].display()
+solver.results.graphics.picture.save_picture(file_name="ablation-drag_force_x.png")
+
+# Save averaged pressure plot
+solver.solution.monitor.report_plots["pressure_avg_abl_wall"].display()
+solver.results.graphics.picture.save_picture(file_name="ablation-avg_pressure.png")
+
+# Save recede point plot
+solver.solution.monitor.report_plots["recede_point"].display()
+solver.results.graphics.picture.save_picture(file_name="ablation-recede_point.png")
 
 # %%
 # .. image:: ../../_static/ablation-residual.png
@@ -405,6 +431,8 @@ solver.results.graphics.contour["contour_pressure"] = {
     "surfaces_list": ["mid_plane"],
 }
 solver.results.graphics.contour.display(object_name="contour_pressure")
+solver.results.graphics.views.auto_scale()
+solver.results.graphics.picture.save_picture(file_name="ablation-pressure.png")
 
 solver.results.graphics.contour.create(name="contour_mach")
 solver.results.graphics.contour["contour_mach"] = {
@@ -423,6 +451,9 @@ contour1 = graphics_session1.Contours["contour-1"]
 contour1.field = "pressure"
 contour1.surfaces_list = ["mid_plane"]
 contour1.display()
+# Save the image for documentation
+graphics_session1.save_picture("ablation-pressure.png")
+
 # %%
 # .. image:: ../../_static/ablation-pressure.png
 #    :align: center
@@ -436,6 +467,9 @@ contour1.range.option = "auto-range-off"
 contour1.range.auto_range_off.minimum = 0.5
 contour1.range.auto_range_off.maximum = 3.0
 contour1.display()
+# Save the image for documentation and thumbnail
+graphics_session1.save_picture("ablation-mach-number.png")
+graphics_session1.save_picture("ablation-mach-number-thumbnail.png")
 
 # %%
 # .. image:: ../../_static/ablation-mach-number.png
