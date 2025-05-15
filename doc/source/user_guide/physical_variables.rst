@@ -4,9 +4,11 @@
 Working with physical variables
 ===============================
 
-PyFluent supports unit-aware operations through integration with the ``ansys-units`` library. This enables you to reference **physical quantities** in a product-agnostic and consistent way across Fluent APIs.
+PyFluent integrates with the PyAnsys-units library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
 
-Rather than relying on raw string names such as ``temperature`` or ``velocity``, PyFluent accepts symbolic variable references via the ``VariableCatalog`` interface. These ``VariableDescriptor``s are unit-validated and dimensionally consistent.
+Instead of relying on raw strings like "temperature" or "SV_T", which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog (e.g., VariableCatalog.TEMPERATURE). This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
+
+The same catalog is designed to work not just with PyFluent, but also with other PyAnsys libraries, offering a unified and expressive way to interact with physical quantities across products.
 
 Overview
 --------
