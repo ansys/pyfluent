@@ -6,7 +6,7 @@ Working with physical variables
 
 PyFluent integrates with the PyAnsys-units library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
 
-Instead of relying on raw strings like "temperature" or "SV_T", which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog (e.g., VariableCatalog.TEMPERATURE). This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
+Instead of relying on raw strings like ``"temperature"`` or ``"SV_T"``, which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog such as ``VariableCatalog``.``TEMPERATURE``). This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
 
 The same catalog is designed to work not just with PyFluent, but also with other PyAnsys libraries, offering a unified and expressive way to interact with physical quantities across products.
 
@@ -20,7 +20,7 @@ The key benefits of using the ``VariableCatalog`` include:
 - Integrated dimensional consistency (via ``ansys-units``)
 - Autocompletion and discoverability of supported quantities
 
-Accessing Field Data
+Accessing field data
 ---------------------
 
 Here’s how to use ``VariableCatalog`` to read and reduce field data using unit-aware quantity references:
@@ -55,8 +55,8 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
     )
     print(sol_data[locations[0]][0])
 
-Using Quantities in Report Definitions
---------------------------------------
+Using variables with report definitions
+---------------------------------------
 
 You can also use physical quantities in report definitions to improve clarity and maintainability:
 
