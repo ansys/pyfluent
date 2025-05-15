@@ -121,7 +121,9 @@ class FluentVersion(Enum):
                 return member
 
         raise AnsysVersionNotFound(
-            "Unable to locate a compatible Ansys Fluent installation. Ensure that an environment variable like 'AWP_ROOT242' or 'AWP_ROOT251' points to a supported Ansys version, and that Fluent is included in the installation."
+            "Unable to locate a compatible Ansys Fluent installation. "
+            "Ensure that an environment variable like 'AWP_ROOT242' or 'AWP_ROOT251' "
+            "points to a supported Ansys version, and that Fluent is included in the installation."
         )
 
     def get_fluent_exe_path(self) -> Path:
