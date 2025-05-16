@@ -55,7 +55,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     LaunchMode,
     UIMode,
 )
-from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
@@ -256,49 +256,31 @@ def test_gpu_launch_arg_additional_arg():
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
     helpers.delete_all_awp_vars()
-    with pytest.raises(AnsysVersionNotFound):
+    with pytest.raises(FileNotFoundError):
         get_fluent_exe_path()
-    with pytest.raises(AnsysVersionNotFound):
+    with pytest.raises(FileNotFoundError):
         FluentVersion.get_latest_installed()
 
 
-def test_get_fluent_exe_path_from_awp_root_222(helpers):
-    helpers.mock_awp_vars(version="222")
+@pytest.mark.parametrize(
+    "fluent_version",
+    [version for version in FluentVersion],
+)
+def test_get_fluent_exe_path_from_awp_root(fluent_version, helpers, fs):
+    helpers.mock_awp_vars(version=str(fluent_version.number))
+    fs.create_file(fluent_version.get_fluent_exe_path())
     if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v222/fluent") / "ntbin" / "win64" / "fluent.exe"
+        expected_path = (
+            Path(f"ansys_inc/v{fluent_version.number}/fluent")
+            / "ntbin"
+            / "win64"
+            / "fluent.exe"
+        )
     else:
-        expected_path = Path("ansys_inc/v222/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v222
-    assert get_fluent_exe_path() == expected_path
-
-
-def test_get_fluent_exe_path_from_awp_root_231(helpers):
-    helpers.mock_awp_vars(version="231")
-    if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
-    else:
-        expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v231
-    assert get_fluent_exe_path() == expected_path
-
-
-def test_get_fluent_exe_path_from_awp_root_232(helpers):
-    helpers.mock_awp_vars(version="232")
-    if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v232/fluent") / "ntbin" / "win64" / "fluent.exe"
-    else:
-        expected_path = Path("ansys_inc/v232/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v232
-    assert get_fluent_exe_path() == expected_path
-
-
-def test_get_fluent_exe_path_from_awp_root_241(helpers):
-    helpers.mock_awp_vars(version="241")
-    if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v241/fluent") / "ntbin" / "win64" / "fluent.exe"
-    else:
-        expected_path = Path("ansys_inc/v241/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v241
+        expected_path = (
+            Path(f"ansys_inc/v{fluent_version.number}/fluent") / "bin" / "fluent"
+        )
+    assert FluentVersion.get_latest_installed() == fluent_version
     assert get_fluent_exe_path() == expected_path
 
 
