@@ -40,7 +40,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
@@ -91,7 +91,7 @@ class StandaloneLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
@@ -254,7 +254,7 @@ class StandaloneLauncher:
         return self._launch_string
 
     @property
-    def subprocess_keywords(self) -> Dict[str, Any]:
+    def subprocess_keywords(self) -> dict[str, Any]:
         """Return the keyword arguments for launching Fluent via Python subprocess."""
         return self._kwargs
 
