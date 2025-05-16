@@ -184,7 +184,7 @@ class StandaloneLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        import ansys.fluent.core as pyfluent
+        env = env or {}
 
         locals_ = locals().copy()
         argvals = {
@@ -234,6 +234,8 @@ class StandaloneLauncher:
         )
 
         if is_windows():
+            import ansys.fluent.core as pyfluent
+
             if pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR:
                 self._launch_cmd = self._launch_string
             else:
@@ -245,6 +247,16 @@ class StandaloneLauncher:
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
+
+    @property
+    def command(self) -> str:
+        """Return the command for launching Fluent."""
+        return self._launch_string
+
+    @property
+    def subprocess_keywords(self) -> Dict[str, Any]:
+        """Return the keyword arguments for launching Fluent via Python subprocess."""
+        return self._kwargs
 
     def __call__(self):
         if self.argvals["dry_run"]:
