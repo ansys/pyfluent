@@ -27,6 +27,7 @@ from functools import total_ordering
 import os
 from pathlib import Path
 import platform
+from typing import Any
 
 import ansys.fluent.core as pyfluent
 
@@ -34,7 +35,19 @@ import ansys.fluent.core as pyfluent
 class AnsysVersionNotFound(RuntimeError):
     """Raised when Ansys version is not found."""
 
-    pass
+    def __init__(self, version: Any):
+        """Initialize VersionNotFound.
+
+        Parameters
+        ----------
+        version : str
+            Version that was not found.
+        """
+        super().__init__(
+            f"The specified version '{version}' is not supported."
+            + " Supported versions are: "
+            + ", ".join([member.value for member in FluentVersion][::-1])
+        )
 
 
 class ComparisonError(RuntimeError):
@@ -86,7 +99,7 @@ class FluentVersion(Enum):
     v222 = "22.2.0"
 
     @classmethod
-    def _missing_(cls, version):
+    def _missing_(cls, version: Any):
         if isinstance(version, (int, float, str)):
             version = str(version)
             if len(version) == 3:
@@ -95,11 +108,8 @@ class FluentVersion(Enum):
             for member in cls:
                 if version == member.value:
                     return member
-        raise AnsysVersionNotFound(
-            f"The specified version '{version[:-2]}' is not supported."
-            + " Supported versions are: "
-            + ", ".join([member.value for member in cls][::-1])
-        )
+
+        raise AnsysVersionNotFound(version[:-2])
 
     @classmethod
     def get_latest_installed(cls):
@@ -113,14 +123,14 @@ class FluentVersion(Enum):
 
         Raises
         ------
-        AnsysVersionNotFound
+        FileNotFoundError
             If an Ansys version cannot be found.
         """
         for member in cls:
             if member.awp_var in os.environ and member.get_fluent_exe_path().exists():
                 return member
 
-        raise AnsysVersionNotFound(
+        raise FileNotFoundError(
             "Unable to locate a compatible Ansys Fluent installation. "
             "Ensure that an environment variable like 'AWP_ROOT242' or 'AWP_ROOT251' "
             "points to a supported Ansys version, and that Fluent is included in the installation."
