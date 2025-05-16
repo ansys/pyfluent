@@ -184,6 +184,12 @@ def launch_fluent(
         Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
         any of  ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``or ``251``.
         The default is ``None``, in which case the newest installed version is used.
+        PyFluent uses the ``AWP_ROOT<ver>`` environment variable to locate the Fluent
+        installation, where ``<ver>`` is the Ansys release number such as ``251``.
+        The ``AWP_ROOT<ver>`` environment variable is automatically configured on Windows
+        system when Fluent is installed. On Linux systems, ``AWP_ROOT<ver>`` must be
+        configured to point to the absolute path of an Ansys installation such as
+        ``/apps/ansys_inc/v251``.
     dimension : Dimension or int, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``Dimension.THREE`` is used. Options are either the values of the
