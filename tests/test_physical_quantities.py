@@ -44,6 +44,9 @@ from ansys.fluent.core.services.field_data import (
 
 
 def round_off_list_elements(input_list):
+    """
+    A function to round off list elements.
+    """
     for index, value in enumerate(input_list):
         input_list[index] = round(value, 6)
 
@@ -99,6 +102,9 @@ def test_use_variable_catalog(new_solver_session) -> None:
 
 @pytest.mark.developer_only
 def test_use_variable_catalog_offline():
+    """
+    A test of `PhysicalQuantity` objects for offline data.
+    """
     if VariableCatalog is None:
         return
     case_file_name = examples.download_file(
