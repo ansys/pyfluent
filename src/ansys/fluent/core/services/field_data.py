@@ -637,13 +637,16 @@ class Transaction(FieldTransaction):
             raise ValueError("For 'path-lines' `field_name` should be unique.")
         else:
             self._pathline_field_data.append(field_name)
+        additional_field_name = kwargs.get("additional_field_name")
+        if additional_field_name:
+            additional_field_name = self._allowed_scalar_field_names.valid_name(
+                additional_field_name
+            )
         self._fields_request.pathlinesFieldRequest.extend(
             self._fetched_data._pathlines_data(
                 field_name,
                 kwargs.get("surfaces"),
-                additionalField=self._allowed_scalar_field_names.valid_name(
-                    kwargs.get("additional_field_name")
-                ),
+                additionalField=additional_field_name,
                 provideParticleTimeField=kwargs.get("provide_particle_time_field"),
                 dataLocation=(
                     FieldDataProtoModule.DataLocation.Nodes
@@ -1426,13 +1429,16 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             kwargs.get("field_name")
         )
         fields_request = get_fields_request()
+        additional_field_name = kwargs.get("additional_field_name")
+        if additional_field_name:
+            additional_field_name = self._allowed_scalar_field_names.valid_name(
+                additional_field_name
+            )
         fields_request.pathlinesFieldRequest.extend(
             self._fetched_data._pathlines_data(
                 field_name,
                 surface_ids,
-                additionalField=kwargs.get(
-                    "additional_field_name"
-                ),  # TODO an additional field name
+                additionalField=kwargs.get(additional_field_name),
                 provideParticleTimeField=kwargs.get("provide_particle_time_field"),
                 dataLocation=(
                     FieldDataProtoModule.DataLocation.Nodes
