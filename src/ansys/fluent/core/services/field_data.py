@@ -641,7 +641,9 @@ class Transaction(FieldTransaction):
             self._fetched_data._pathlines_data(
                 field_name,
                 kwargs.get("surfaces"),
-                additionalField=kwargs.get("additional_field_name"),
+                additionalField=self._allowed_scalar_field_names.valid_name(
+                    kwargs.get("additional_field_name")
+                ),
                 provideParticleTimeField=kwargs.get("provide_particle_time_field"),
                 dataLocation=(
                     FieldDataProtoModule.DataLocation.Nodes

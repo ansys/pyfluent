@@ -34,9 +34,24 @@ try:
 except ModuleNotFoundError:
     VariableCatalog = None
 
+from ansys.fluent.core.file_session import FileSession
+from ansys.fluent.core.services.field_data import (
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+)
+
+
+def round_off_list_elements(input_list):
+    for index, value in enumerate(input_list):
+        input_list[index] = round(value, 6)
+
+    return input_list
+
 
 @pytest.mark.developer_only
-def test_physical_quantities(new_solver_session) -> None:
+def test_use_variable_catalog(new_solver_session) -> None:
     """
     A test of `PhysicalQuantity` objects.
     """
@@ -80,3 +95,71 @@ def test_physical_quantities(new_solver_session) -> None:
 
     result = report_defs.compute(report_defs=["yyy"])
     assert round(result[0]["yyy"][0]) == 313
+
+
+def test_use_variable_catalog_offline():
+    if VariableCatalog is None:
+        return
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession()
+
+    # backward compatibility check
+    assert file_session.fields.field_data == file_session.field_data
+
+    file_session.read_case(case_file_name)
+    file_session.read_data(data_file_name)
+
+    assert round_off_list_elements(
+        file_session.field_info.get_scalar_field_range(VariableCatalog.PRESSURE)
+    ) == [-339.203452, 339.417934]
+    assert len(file_session.field_info.get_scalar_fields_info()) == 29
+    assert list(file_session.field_info.get_surfaces_info().keys()) == [
+        "wall",
+        "symmetry",
+        "pressure-outlet-7",
+        "velocity-inlet-6",
+        "velocity-inlet-5",
+        "default-interior",
+    ]
+    sv_t_wall_request = ScalarFieldDataRequest(
+        field_name=VariableCatalog.TEMPERATURE, surfaces=["wall"]
+    )
+    sv_t_wall = file_session.fields.field_data.get_field_data(sv_t_wall_request)
+    assert sv_t_wall["wall"].shape == (3630,)
+    assert round(sv_t_wall["wall"][1800], 4) == 313.15
+
+    surface_data = file_session.fields.field_data.get_field_data
+    surface_data_wall_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices], surfaces=[3]
+    )
+    surface_data_wall = surface_data(surface_data_wall_request)
+    assert surface_data_wall[3].shape == (3810, 3)
+    assert round(surface_data_wall[3][1500][0], 5) == 0.12406
+    assert round(surface_data_wall[3][1500][1], 5) == 0.09525
+    assert round(surface_data_wall[3][1500][2], 5) == 0.04216
+
+    surface_data_symmetry_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+    )
+    surface_data_symmetry = surface_data(surface_data_symmetry_request)
+    assert len(surface_data_symmetry["symmetry"]) == 2018
+    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+
+    vector_data = file_session.fields.field_data.get_field_data
+    vector_data_request = VectorFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY, surfaces=["wall"]
+    )
+    assert vector_data(vector_data_request)["wall"].shape == (3630, 3)
+
+    vector_data_symmetry_request = VectorFieldDataRequest(
+        field_name=VariableCatalog.VELOCITY, surfaces=["symmetry"]
+    )
+    vector_data_symmetry = vector_data(vector_data_symmetry_request)["symmetry"]
+    assert vector_data_symmetry.shape == (2018, 3)
+    assert round(vector_data_symmetry[1009][0], 5) == 0.0023
+    assert round(vector_data_symmetry[1009][1], 5) == 1.22311
