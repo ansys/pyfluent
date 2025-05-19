@@ -97,6 +97,7 @@ def test_use_variable_catalog(new_solver_session) -> None:
     assert round(result[0]["yyy"][0]) == 313
 
 
+@pytest.mark.developer_only
 def test_use_variable_catalog_offline():
     if VariableCatalog is None:
         return
