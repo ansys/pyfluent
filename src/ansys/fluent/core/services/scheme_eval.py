@@ -40,14 +40,15 @@ Example
 >>> session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
 0.7
 """
-
 from typing import Any, Sequence
+import warnings
 
 import grpc
 
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -276,7 +277,7 @@ class SchemeEval:
         except Exception:  # for pypim launch
             self.version = FluentVersion.v231.value
 
-    def eval(self, val: Any, suppress_prompts: bool = True) -> Any:
+    def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression.
 
         Parameters
@@ -354,7 +355,7 @@ class SchemeEval:
         response = self.service.string_eval(request)
         return response.output
 
-    def scheme_eval(self, input: str, suppress_prompts: bool = True) -> Any:
+    def eval(self, input: str, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression in string format.
 
         Parameters
@@ -377,6 +378,14 @@ class SchemeEval:
             S("user-initial-environment"),
         )
         return self.eval(val, suppress_prompts)
+
+    def scheme_eval(self, input: str, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression in string format."""
+        warnings.warn(
+            "'get_fields' is deprecated, use 'get_response' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self.eval(input, suppress_prompts)
 
     def is_defined(self, symbol: str) -> bool:
         """Check if a symbol is defined in the scheme environment.

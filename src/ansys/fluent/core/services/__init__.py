@@ -50,7 +50,7 @@ _service_cls_by_name = {
     "datamodel": DatamodelService_SE,
     "tui": DatamodelService_TUI,
     "settings": SettingsService,
-    "scheme_eval": SchemeEval,
+    "scheme": SchemeEval,
     "events": EventsService,
     "field_data": LiveFieldData,
     "field_data_old": DeprecatedFieldData,

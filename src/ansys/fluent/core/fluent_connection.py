@@ -275,14 +275,9 @@ def _get_channel(ip: str, port: int):
 class _ConnectionInterface:
     def __init__(self, create_grpc_service, error_state):
         self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
-        if (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            < pyfluent.FluentVersion.v252
-        ):
-            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+        self.scheme = service_creator("scheme").create(self._scheme_eval_service)
+        if pyfluent.FluentVersion(self.scheme.version) < pyfluent.FluentVersion.v252:
+            self._app_utilities = AppUtilitiesOld(self.scheme)
         else:
             self._app_utilities_service = create_grpc_service(
                 AppUtilitiesService, error_state

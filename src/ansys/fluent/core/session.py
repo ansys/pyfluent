@@ -78,7 +78,7 @@ class _IsDataValid:
         return self()
 
     def __call__(self):
-        return self._scheme_eval.scheme_eval("(data-valid?)")
+        return self._scheme_eval.eval("(data-valid?)")
 
 
 class _AppUtilitiesFactory:
