@@ -43,7 +43,11 @@ from ansys.fluent.core.field_data_interfaces import (
     _ReturnFieldData,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.data_file import DataFile
+from ansys.fluent.core.filereader.data_file import (
+    DataFile,
+    _to_scalar_field_name,
+    _to_vector_field_name,
+)
 from ansys.fluent.core.utils.deprecate import all_deprecators
 
 
@@ -113,7 +117,7 @@ class TransactionFieldData:
             )
         ]
         return self._returned_data._scalar_data(
-            kwargs.get("field_name"),
+            _to_scalar_field_name(kwargs.get("field_name")),
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             scalar_field_data,
@@ -137,7 +141,7 @@ class TransactionFieldData:
     ) -> Dict[int | str, np.array]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
-            kwargs.get("field_name"),
+            _to_vector_field_name(kwargs.get("field_name")),
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             vector_field_data,
@@ -151,10 +155,16 @@ class TransactionFieldData:
             zones = []
         del zones
         pathlines_data = self.data[
-            (("type", "pathlines-field"), ("field", kwargs.get("field_name")))
+            (
+                ("type", "pathlines-field"),
+                (
+                    "field",
+                    _to_scalar_field_name(kwargs.get("field_name")),
+                ),
+            )
         ]
         return self._returned_data._pathlines_data(
-            kwargs.get("field_name"),
+            _to_scalar_field_name(kwargs.get("field_name")),
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             pathlines_data,
@@ -848,6 +858,7 @@ class FileFieldData(FieldDataSource):
         field_name: str,
         surfaces: List[int | str],
     ):
+        field_name = _to_vector_field_name(field_name)
         surface_ids = self.get_surface_ids(surfaces=surfaces)
         if (
             field_name.lower() != "velocity"

@@ -52,6 +52,16 @@ except ModuleNotFoundError as exc:
         "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
     ) from exc
 
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as vector_naming,
+)
+from ansys.fluent.core.variable_strategies import (
+    FluentSVarNamingStrategy as scalar_naming,
+)
+
+_to_scalar_field_name = scalar_naming().to_string if scalar_naming else lambda s: s
+_to_vector_field_name = vector_naming().to_string if vector_naming else lambda s: s
+
 
 class DataFile:
     """Class to read a Fluent case file.
@@ -186,6 +196,7 @@ class DataFile:
         -------
             Numpy array containing scalar field data for a particular phase, field and surface.
         """
+        field_name = _to_scalar_field_name(field_name)
         if ":" in field_name:
             field_name = field_name.split(":")[1]
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
