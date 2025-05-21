@@ -278,26 +278,32 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     fault_tolerant.update_region_settings.filter_category.set_state(
         "Identified Regions"
     )
-    fault_tolerant.update_region_settings.old_region_leakage_size_list.set_state([""])
-    fault_tolerant.update_region_settings.old_region_mesh_method_list.set_state(
+    fault_tolerant.update_region_settings.all_region_leakage_size_list.set_state([""])
+    fault_tolerant.update_region_settings.all_region_mesh_method_list.set_state(
         ["wrap"]
     )
-    fault_tolerant.update_region_settings.old_region_name_list.set_state(
+    fault_tolerant.update_region_settings.all_region_name_list.set_state(
         ["fluid-region-1"]
     )
-    fault_tolerant.update_region_settings.old_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
         ["no"]
     )
-    fault_tolerant.update_region_settings.old_region_type_list.set_state(["fluid"])
-    fault_tolerant.update_region_settings.old_region_volume_fill_list.set_state(
+    fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
+    fault_tolerant.update_region_settings.all_region_volume_fill_list.set_state(
         ["hexcore"]
     )
-    fault_tolerant.update_region_settings.region_leakage_size_list.set_state([""])
-    fault_tolerant.update_region_settings.region_mesh_method_list.set_state(["wrap"])
-    fault_tolerant.update_region_settings.region_name_list.set_state(["fluid-region-1"])
-    fault_tolerant.update_region_settings.region_overset_componen_list.set_state(["no"])
-    fault_tolerant.update_region_settings.region_type_list.set_state(["fluid"])
-    fault_tolerant.update_region_settings.region_volume_fill_list.set_state(["tet"])
+    fault_tolerant.update_region_settings.all_region_leakage_size_list.set_state([""])
+    fault_tolerant.update_region_settings.all_region_mesh_method_list.set_state(
+        ["wrap"]
+    )
+    fault_tolerant.update_region_settings.all_region_name_list.set_state(
+        ["fluid-region-1"]
+    )
+    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+        ["no"]
+    )
+    fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
+    fault_tolerant.update_region_settings.all_region_volume_fill_list.set_state(["tet"])
     fault_tolerant.update_region_settings()
 
     # Choose mesh control options
@@ -1541,15 +1547,18 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
 
     volume_mesh_gen = watertight.create_volume_mesh
     assert (
-        volume_mesh_gen.arguments.volume_fill_controls.type.default_value()
-        == "Cartesian"
+        volume_mesh_gen.arguments.volume_fill_controls.cell_sizing.default_value()
+        == "Geometric"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
-    assert volume_mesh_gen.arguments.volume_fill_controls.type.allowed_values() == [
-        "Octree",
-        "Cartesian",
-    ]
+    assert (
+        volume_mesh_gen.arguments.volume_fill_controls.cell_sizing.allowed_values()
+        == [
+            "Size Field",
+            "Geometric",
+        ]
+    )
     feat_angle = import_geom.arguments.cad_import_options.feature_angle
     assert feat_angle.default_value() == 40.0
 

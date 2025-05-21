@@ -48,7 +48,7 @@ if MappingConversionStrategy:
             _c.STATIC_PRESSURE: "SV_P",
             # velocity
             _c.VELOCITY_X: "SV_U",
-            _c.VELOCITY_Y: "SV_U",
+            _c.VELOCITY_Y: "SV_V",
             _c.VELOCITY_Z: "SV_W",
             # density
             _c.DENSITY: "SV_DENSITY",
