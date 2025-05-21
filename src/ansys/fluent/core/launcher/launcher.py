@@ -54,12 +54,11 @@ from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -127,17 +126,23 @@ def _version_to_dimension(old_arg_val):
 
 
 #   pylint: disable=unused-argument
-@deprecate_argument(
-    old_arg="show_gui",
-    new_arg="ui_mode",
-    converter=_show_gui_to_ui_mode,
-    warning_cls=PyFluentDeprecationWarning,
-)
-@deprecate_argument(
-    old_arg="version",
-    new_arg="dimension",
-    converter=_version_to_dimension,
-    warning_cls=PyFluentDeprecationWarning,
+@all_deprecators(
+    deprecate_arg_mappings=[
+        {
+            "old_arg": "show_gui",
+            "new_arg": "ui_mode",
+            "converter": _show_gui_to_ui_mode,
+        },
+        {
+            "old_arg": "version",
+            "new_arg": "dimension",
+            "converter": _version_to_dimension,
+        },
+    ],
+    data_type_converter=None,
+    deprecated_version="v0.22.dev0",
+    deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
+    warn_message="",
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
@@ -179,6 +184,12 @@ def launch_fluent(
         Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
         any of  ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``or ``251``.
         The default is ``None``, in which case the newest installed version is used.
+        PyFluent uses the ``AWP_ROOT<ver>`` environment variable to locate the Fluent
+        installation, where ``<ver>`` is the Ansys release number such as ``251``.
+        The ``AWP_ROOT<ver>`` environment variable is automatically configured on Windows
+        system when Fluent is installed. On Linux systems, ``AWP_ROOT<ver>`` must be
+        configured to point to the absolute path of an Ansys installation such as
+        ``/apps/ansys_inc/v251``.
     dimension : Dimension or int, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``Dimension.THREE`` is used. Options are either the values of the

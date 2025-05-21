@@ -29,6 +29,8 @@ from typing import Any, Callable, Dict
 import warnings
 import weakref
 
+from deprecated.sphinx import deprecated
+
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.launcher.launcher_utils import is_compose
@@ -150,6 +152,7 @@ class BaseSession:
             event_type,
             get_zones_info,
         )
+        self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
     def _build_from_fluent_connection(
         self,
@@ -271,30 +274,23 @@ class BaseSession:
         return True if self._fluent_connection else False
 
     @property
+    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
     def field_info(self):
         """Provides access to Fluent field information."""
-        warnings.warn(
-            "field_info is deprecated. Use fields.field_info instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_info
 
     @property
+    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_data``.")
     def field_data(self):
         """Fluent field data on surfaces."""
-        warnings.warn(
-            "field_data is deprecated. Use fields.field_data instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_data
 
     @property
+    @deprecated(
+        version="0.20.dev9", reason="Use ``session.fields.field_data_streaming``."
+    )
     def field_data_streaming(self):
         """Field gRPC streaming service of Fluent."""
-        warnings.warn(
-            "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_data_streaming
 
     @property

@@ -495,8 +495,7 @@ def test_solver_methods(new_solver_session):
             "parametric_studies",
             "current_parametric_study",
         }
-        assert api_keys.issubset(set(dir(solver)))
-    if solver.get_fluent_version() == FluentVersion.v232:
+    if solver.get_fluent_version() in (FluentVersion.v232, FluentVersion.v231):
         api_keys = {
             "file",
             "mesh",
@@ -509,7 +508,6 @@ def test_solver_methods(new_solver_session):
             "parallel",
             "report",
         }
-        assert api_keys.issubset(set(dir(solver)))
     if solver.get_fluent_version() >= FluentVersion.v241:
         api_keys = {
             "file",
@@ -522,10 +520,7 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
             "parallel",
         }
-        if solver.get_fluent_version() >= FluentVersion.v251:
-            assert api_keys.issubset(set(dir(solver.settings)))
-        else:
-            assert api_keys.issubset(set(dir(solver)))
+    assert api_keys.issubset(set(dir(solver.settings)))
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -538,7 +533,7 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(PyFluentDeprecationWarning):
+    with pytest.warns(DeprecationWarning):
         solver.field_data
     with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
@@ -730,3 +725,17 @@ def test_launch_in_pyconsole_mode():
         assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
     with pyfluent.launch_fluent(py=False) as session:
         assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is False
+
+
+def test_solver_attr_lookup(new_solver_session):
+    solver = new_solver_session
+    with pytest.warns(PyFluentDeprecationWarning):
+        solver.file
+    assert solver.settings.file
+    with pytest.raises(AttributeError):
+        solver.get_completer_info
+    assert solver.settings.get_completer_info
+    with pytest.raises(AttributeError):
+        solver.xyz
+    with pytest.raises(AttributeError):
+        solver.settings.xyz
