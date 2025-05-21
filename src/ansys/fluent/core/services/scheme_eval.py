@@ -48,7 +48,6 @@ import grpc
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
-from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -381,6 +380,8 @@ class SchemeEval:
 
     def scheme_eval(self, input: str, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression in string format."""
+        from ansys.fluent.core import PyFluentDeprecationWarning
+
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
             PyFluentDeprecationWarning,
