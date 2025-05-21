@@ -226,14 +226,14 @@ def test_solution_variable_does_not_modify_case(new_solver_session):
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file.read_case_data(file_name=case_path)
-    solver.scheme_eval.scheme_eval("(%save-case-id)")
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.scheme.eval("(%save-case-id)")
+    assert not solver.scheme.eval("(case-modified?)")
     solver.fields.solution_variable_data.get_data(
         solution_variable_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
     )
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    assert not solver.scheme.eval("(case-modified?)")
 
 
 @pytest.mark.fluent_version(">=25.2")

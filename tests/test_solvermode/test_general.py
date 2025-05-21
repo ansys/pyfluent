@@ -38,7 +38,7 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     solver_session.journal.start(file_name.as_posix())
     ###
     assert solver_session.setup.models.energy.enabled()
-    scheme_eval = solver_session.scheme_eval.scheme_eval
+    scheme_eval = solver_session.scheme.eval
     assert scheme_eval("(case-valid?)")
     ###
     solver_session.tui.mesh.check()
@@ -111,7 +111,7 @@ def test_disk_2d_setup(disk_settings_session):
     assert session.health_check.is_serving
     ###
     assert not session.setup.models.energy.enabled()
-    assert session.scheme_eval.scheme_eval("(case-valid?)")
+    assert session.scheme.eval("(case-valid?)")
     session.tui.mesh.check()
 
     session_solver = session.setup.general.solver
