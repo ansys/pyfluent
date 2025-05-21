@@ -237,7 +237,7 @@ class BaseSession:
                     _session._field_data_service,
                     self.field_info,
                     self._is_solution_data_valid,
-                    _session.eval,
+                    _session.scheme,
                     get_zones_info,
                 )
                 self.field_data_streaming = FieldDataStreaming(
@@ -247,7 +247,7 @@ class BaseSession:
                     _session._field_data_service,
                     self.field_info,
                     self._is_solution_data_valid,
-                    _session.eval,
+                    _session.scheme,
                 )
 
         self.fields = Fields(self)
