@@ -273,11 +273,11 @@ class BaseSession:
         """Whether the current session is active."""
         return True if self._fluent_connection else False
 
-    @property
-    @deprecated(version="0.32.dev0", reason="Use ``session.scheme``.")
-    def scheme_eval(self):
-        """Provides access to Fluent field information."""
-        return self.scheme
+    # @property
+    # @deprecated(version="0.32.dev0", reason="Use ``session.scheme``.")
+    # def scheme_eval(self):
+    #     """Provides access to Fluent field information."""
+    #     return self.scheme
 
     @property
     @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
