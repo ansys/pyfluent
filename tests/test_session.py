@@ -720,11 +720,11 @@ def test_new_launch_fluent_api_from_connection():
 @pytest.mark.fluent_version(">=25.1")
 def test_launch_in_pyconsole_mode():
     with pyfluent.launch_fluent() as session:
-        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
+        assert session.scheme.scheme_eval("(%cx-pyconsole-activated?)") is True
     with pyfluent.launch_fluent(py=True) as session:
-        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is True
+        assert session.scheme.scheme_eval("(%cx-pyconsole-activated?)") is True
     with pyfluent.launch_fluent(py=False) as session:
-        assert session.scheme_eval.scheme_eval("(%cx-pyconsole-activated?)") is False
+        assert session.scheme.scheme_eval("(%cx-pyconsole-activated?)") is False
 
 
 def test_solver_attr_lookup(new_solver_session):

@@ -166,8 +166,8 @@ class BaseSession:
         self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
-        self.scheme_eval = scheme_eval
-        self.rp_vars = RPVars(self.scheme_eval.string_eval)
+        self.scheme = scheme_eval
+        self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
         self._transcript_service = service_creator("transcript").create(
@@ -178,7 +178,7 @@ class BaseSession:
             self.transcript.start()
 
         self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
-            self.scheme_eval, self._fluent_connection
+            self.scheme, self._fluent_connection
         )
 
         self.journal = Journal(self._app_utilities)
@@ -188,7 +188,7 @@ class BaseSession:
             fluent_connection._metadata,
             self._error_state,
             self._app_utilities,
-            self.scheme_eval,
+            self.scheme,
         )
 
         self._datamodel_service_se = service_creator("datamodel").create(
@@ -256,7 +256,7 @@ class BaseSession:
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
-            self.scheme_eval,
+            self.scheme,
             self._error_state,
         )
 
@@ -272,6 +272,12 @@ class BaseSession:
     def is_active(self):
         """Whether the current session is active."""
         return True if self._fluent_connection else False
+
+    @property
+    @deprecated(version="0.32.dev0", reason="Use ``session.scheme``.")
+    def scheme_eval(self):
+        """Provides access to Fluent field information."""
+        return self.scheme
 
     @property
     @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
@@ -360,11 +366,11 @@ class BaseSession:
 
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
-        self.scheme_eval.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
+        self.scheme.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
 
     def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
-        return FluentVersion(self.scheme_eval.version)
+        return FluentVersion(self.scheme.version)
 
     def _exit_compose_service(self):
         if self._fluent_connection._container and is_compose():
