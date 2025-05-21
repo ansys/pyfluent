@@ -397,6 +397,6 @@ class SchemeEval:
         bool
             True if symbol is defined, False otherwise
         """
-        return not self.scheme_eval(
+        return not self.eval(
             f"(lexical-unreferenceable? user-initial-environment '{symbol})"
         )
