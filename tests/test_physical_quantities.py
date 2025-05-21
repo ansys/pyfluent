@@ -54,6 +54,7 @@ def round_off_list_elements(input_list):
 
 
 @pytest.mark.developer_only
+@pytest.mark.fluent_version(">=24.1")
 def test_use_variable_catalog(new_solver_session) -> None:
     """
     A test of `PhysicalQuantity` objects.
