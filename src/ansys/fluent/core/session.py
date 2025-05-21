@@ -99,7 +99,7 @@ class BaseSession:
 
     Attributes
     ----------
-    scheme_eval: SchemeEval
+    scheme: SchemeEval
         Instance of ``SchemeEval`` to execute Fluent's scheme code on.
 
     Methods
@@ -237,7 +237,7 @@ class BaseSession:
                     _session._field_data_service,
                     self.field_info,
                     self._is_solution_data_valid,
-                    _session.scheme_eval,
+                    _session.eval,
                     get_zones_info,
                 )
                 self.field_data_streaming = FieldDataStreaming(
@@ -247,7 +247,7 @@ class BaseSession:
                     _session._field_data_service,
                     self.field_info,
                     self._is_solution_data_valid,
-                    _session.scheme_eval,
+                    _session.eval,
                 )
 
         self.fields = Fields(self)
@@ -366,7 +366,7 @@ class BaseSession:
 
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
-        self.scheme.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
+        self.scheme.eval(f"(ti-menu-load-string {json.dumps(command)})")
 
     def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
