@@ -151,10 +151,10 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_by_setting_ip_port_env_var(
@@ -176,10 +176,10 @@ def test_create_mock_session_by_setting_ip_port_env_var(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_by_passing_grpc_channel() -> None:
@@ -200,10 +200,10 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
@@ -221,10 +221,10 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_from_server_info_file_with_wrong_password(
@@ -273,10 +273,10 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -301,10 +301,10 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
@@ -446,9 +446,9 @@ def new_solver_session2(new_solver_session):
 def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     solver1 = new_solver_session
     solver2 = new_solver_session2
-    assert solver1.health_check.is_serving
-    assert solver2.health_check.is_serving
-    health_check_service1 = solver1.health_check
+    assert solver1.is_server_healthy()
+    assert solver2.is_server_healthy()
+    health_check_service1 = solver1._health_check
     cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
     # The below hack is performed to check the base class method
     # (child class has a method with same name)
@@ -457,8 +457,8 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
         fluent_connection=solver2._fluent_connection,
         scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
     )
-    assert solver1.health_check.is_serving
-    assert solver2.health_check.is_serving
+    assert solver1.is_server_healthy()
+    assert solver2.is_server_healthy()
     timeout_loop(
         not health_check_service1.is_serving,
         timeout=60,

@@ -33,7 +33,7 @@ from ansys.fluent.core.examples.downloads import download_file
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
-    assert pure_meshing_session.health_check.is_serving
+    assert pure_meshing_session.is_server_healthy()
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)
