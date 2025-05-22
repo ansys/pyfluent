@@ -28,7 +28,7 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentMode,
     Precision,

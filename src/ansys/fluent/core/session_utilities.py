@@ -26,8 +26,7 @@ from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -35,6 +34,7 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     Precision,
     UIMode,
 )
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 

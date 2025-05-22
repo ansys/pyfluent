@@ -39,6 +39,13 @@ from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
+from ansys.fluent.core.launcher.launch_options import (
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    LaunchMode,
+    UIMode,
+)
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
@@ -47,13 +54,6 @@ from ansys.fluent.core.launcher.launcher_utils import (
 from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     get_fluent_exe_path,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    LaunchMode,
-    UIMode,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim

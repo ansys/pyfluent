@@ -50,7 +50,7 @@ hierarchy = {
         "launcher",
         "pim_launcher",
         "process_launch_string",
-        "pyfluent_enums",
+        "launch_options",
         "slurm_launcher",
         "standalone_launcher",
         "watchdog",
