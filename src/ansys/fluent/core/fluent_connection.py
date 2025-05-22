@@ -36,14 +36,12 @@ import socket
 import subprocess
 import threading
 from typing import Any, Callable, List, Tuple, TypeVar
-import warnings
 import weakref
 
 import grpc
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.launcher_utils import is_compose
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -357,8 +355,6 @@ class FluentConnection:
 
     Methods
     -------
-    check_health()
-        Check health of Fluent connection.
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -439,14 +435,14 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check = service_creator("health_check").create(
+        self._health_check = service_creator("health_check").create(
             self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
         if pyfluent.CHECK_HEALTH:
-            self.health_check.check_health()
+            self._health_check.check_health()
 
         self._slurm_job_id = slurm_job_id
 
@@ -639,11 +635,6 @@ class FluentConnection:
             service object
         """
         return service(self._channel, self._metadata, *args)
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        warnings.warn("Use -> health_check.status()", PyFluentDeprecationWarning)
-        return self.health_check.status()
 
     def wait_process_finished(self, wait: float | int | bool = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
