@@ -274,7 +274,7 @@ class BaseSession:
         return True if self._fluent_connection else False
 
     @property
-    @deprecated(version="0.32.dev0", reason="Use ``session.scheme``.")
+    @deprecated(version="0.32", reason="Use ``session.scheme``.")
     def scheme_eval(self):
         """Provides access to Fluent field information."""
         return self.scheme
