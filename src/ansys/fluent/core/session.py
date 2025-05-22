@@ -278,6 +278,12 @@ class BaseSession:
         return True if self._fluent_connection else False
 
     @property
+    @deprecated(version="0.32.dev0", reason="Use ``session.is_server_healthy``.")
+    def health_check(self):
+        """Provides access to Health Check service."""
+        return self._health_check
+
+    @property
     @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
     def field_info(self):
         """Provides access to Fluent field information."""

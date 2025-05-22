@@ -71,6 +71,7 @@ hierarchy = {
         "datamodel_tui",
         "events",
         "field_data",
+        "health_check",
         "interceptors",
         "monitor",
         "reduction",

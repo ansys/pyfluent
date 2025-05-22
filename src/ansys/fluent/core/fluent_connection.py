@@ -38,6 +38,7 @@ import threading
 from typing import Any, Callable, List, Tuple, TypeVar
 import weakref
 
+from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
@@ -515,6 +516,12 @@ class FluentConnection:
             self._exit_event,
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
+
+    @property
+    @deprecated(version="0.32.dev0", reason="Use ``session.is_server_healthy``.")
+    def health_check(self):
+        """Provides access to Health Check service."""
+        return self._health_check
 
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
