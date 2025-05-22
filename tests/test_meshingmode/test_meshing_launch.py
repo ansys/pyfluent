@@ -104,6 +104,7 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 @pytest.mark.codegen_required
 def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     meshing = new_meshing_session_wo_exit
+    assert meshing.is_server_healthy()
     assert meshing.is_active() is True
     capsys.readouterr()
     help(meshing)

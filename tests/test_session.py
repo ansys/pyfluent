@@ -676,7 +676,8 @@ def test_new_launch_fluent_api():
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.Solver.from_install()
-    assert solver.health_check.check_health() == "SERVING"
+    assert solver._health_check.check_health() == solver._health_check.Status.SERVING
+    assert solver.is_server_healthy()
 
     ip = solver.connection_properties.ip
     password = solver.connection_properties.password
@@ -685,7 +686,11 @@ def test_new_launch_fluent_api():
     solver_connected = pyfluent.Solver.from_connection(
         ip=ip, password=password, port=port
     )
-    assert solver_connected.health_check.check_health() == "SERVING"
+    assert (
+        solver_connected._health_check.check_health()
+        == solver._health_check.Status.SERVING
+    )
+    assert solver.is_server_healthy()
 
     solver.exit()
     solver_connected.exit()
@@ -699,7 +704,8 @@ def test_new_launch_fluent_api_from_container():
     port_2 = get_free_port()
     container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
     solver = pyfluent.Solver.from_container(container_dict=container_dict)
-    assert solver.health_check.check_health() == "SERVING"
+    assert solver._health_check.check_health() == solver._health_check.Status.SERVING
+    assert solver.is_server_healthy()
     solver.exit()
 
 
@@ -707,7 +713,8 @@ def test_new_launch_fluent_api_from_connection():
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.Solver.from_container()
-    assert solver.health_check.check_health() == "SERVING"
+    assert solver._health_check.check_health() == solver._health_check.Status.SERVING
+    assert solver.is_server_healthy()
     ip = solver.connection_properties.ip
     port = solver.connection_properties.port
     password = solver.connection_properties.password
