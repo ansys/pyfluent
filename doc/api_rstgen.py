@@ -75,7 +75,7 @@ hierarchy = {
         "interceptors",
         "monitor",
         "reduction",
-        "scheme",
+        "scheme_eval",
         "settings",
         "solution_variables",
         "streaming",
