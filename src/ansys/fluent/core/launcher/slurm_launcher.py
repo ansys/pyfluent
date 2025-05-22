@@ -416,6 +416,7 @@ class SlurmLauncher:
         """
         if not _SlurmWrapper.is_available():
             raise RuntimeError("Slurm is not available.")
+        env = env or {}
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
