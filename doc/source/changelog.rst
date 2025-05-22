@@ -9,6 +9,130 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.32.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.32.dev0>`_ - May 22, 2025
+=======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Docker compose support
+          - `#3872 <https://github.com/ansys/pyfluent/pull/3872>`_
+
+        * - Update launch function API design
+          - `#3919 <https://github.com/ansys/pyfluent/pull/3919>`_
+
+        * - physical quantities baseline code
+          - `#3988 <https://github.com/ansys/pyfluent/pull/3988>`_
+
+        * - physical quantities 2
+          - `#4015 <https://github.com/ansys/pyfluent/pull/4015>`_
+
+        * - Check if fluent exe exists in AWP_ROOT path while determining the Fluent version to launch
+          - `#4024 <https://github.com/ansys/pyfluent/pull/4024>`_
+
+        * - Extend use of VariableCatalog
+          - `#4033 <https://github.com/ansys/pyfluent/pull/4033>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - manual stage for add-license-header [skip tests]
+          - `#3944 <https://github.com/ansys/pyfluent/pull/3944>`_
+
+        * - Handle exceptions from third-party libraries during docker call
+          - `#3994 <https://github.com/ansys/pyfluent/pull/3994>`_
+
+        * - Fix server-side error in builtin settings objects
+          - `#3996 <https://github.com/ansys/pyfluent/pull/3996>`_
+
+        * - Improve subprocess.Popen handling
+          - `#4003 <https://github.com/ansys/pyfluent/pull/4003>`_
+
+        * - Decorator warning message
+          - `#4021 <https://github.com/ansys/pyfluent/pull/4021>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update meshing doc after switching to solver
+          - `#3962 <https://github.com/ansys/pyfluent/pull/3962>`_
+
+        * - Update ``CONTRIBUTORS.md`` with the latest contributors
+          - `#3964 <https://github.com/ansys/pyfluent/pull/3964>`_, `#4013 <https://github.com/ansys/pyfluent/pull/4013>`_
+
+        * - Adding Mixing Tank Example [skip tests]
+          - `#3966 <https://github.com/ansys/pyfluent/pull/3966>`_
+
+        * - Add Docker and Podman compose docs [skip tests]
+          - `#4001 <https://github.com/ansys/pyfluent/pull/4001>`_
+
+        * - Show deprecated APIs
+          - `#4007 <https://github.com/ansys/pyfluent/pull/4007>`_
+
+        * - use variable catalog
+          - `#4025 <https://github.com/ansys/pyfluent/pull/4025>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - update CHANGELOG for v0.31.dev1
+          - `#3974 <https://github.com/ansys/pyfluent/pull/3974>`_
+
+        * - Fix code style [skip tests]
+          - `#3977 <https://github.com/ansys/pyfluent/pull/3977>`_, `#3978 <https://github.com/ansys/pyfluent/pull/3978>`_
+
+        * - update CHANGELOG for v0.30.5
+          - `#3981 <https://github.com/ansys/pyfluent/pull/3981>`_
+
+        * - Update error message for attribute errors from Solver.
+          - `#3982 <https://github.com/ansys/pyfluent/pull/3982>`_
+
+        * - Search for undocumented fields in codebase
+          - `#3984 <https://github.com/ansys/pyfluent/pull/3984>`_
+
+        * - v0.30.5 changelog [skip tests]
+          - `#3986 <https://github.com/ansys/pyfluent/pull/3986>`_
+
+        * - Add a file describing the columns of field_level_help.csv
+          - `#3995 <https://github.com/ansys/pyfluent/pull/3995>`_
+
+        * - Refactor settings_root
+          - `#4016 <https://github.com/ansys/pyfluent/pull/4016>`_
+
+        * - Minor improvements.
+          - `#4018 <https://github.com/ansys/pyfluent/pull/4018>`_
+
+        * - Fix datatype in field_level_help.csv [skip tests]
+          - `#4029 <https://github.com/ansys/pyfluent/pull/4029>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update test w.r.t. recent exposure flag changes in data-model.
+          - `#4031 <https://github.com/ansys/pyfluent/pull/4031>`_
+
 
 `0.31.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.31.dev1>`_ - April 29, 2025
 =========================================================================================
