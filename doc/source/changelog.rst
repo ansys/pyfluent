@@ -9,8 +9,9 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.31.0 <https://github.com/ansys/pyfluent/releases/tag/v0.31.0>`_ - May 21, 2025
+
 `0.32.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.32.dev0>`_ - May 22, 2025
-=======================================================================================
 
 .. tab-set::
 
@@ -122,7 +123,6 @@ This document contains the release notes for the project.
 
         * - Fix datatype in field_level_help.csv [skip tests]
           - `#4029 <https://github.com/ansys/pyfluent/pull/4029>`_
-
 
   .. tab-item:: Test
 
