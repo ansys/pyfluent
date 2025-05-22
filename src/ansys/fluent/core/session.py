@@ -260,7 +260,7 @@ class BaseSession:
             self._error_state,
         )
 
-        self.health_check = fluent_connection.health_check
+        self._health_check = fluent_connection._health_check
         self.connection_properties = fluent_connection.connection_properties
 
         self._fluent_connection.register_finalizer_cb(
@@ -269,7 +269,11 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
-    def is_active(self):
+    def is_server_healthy(self) -> bool:
+        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        return self._health_check.is_serving
+
+    def is_active(self) -> bool:
         """Whether the current session is active."""
         return True if self._fluent_connection else False
 
@@ -278,6 +282,11 @@ class BaseSession:
     def scheme_eval(self):
         """Provides access to Fluent field information."""
         return self.scheme
+
+    @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
+    def health_check(self):
+        """Provides access to Health Check service."""
+        return self._health_check
 
     @property
     @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
