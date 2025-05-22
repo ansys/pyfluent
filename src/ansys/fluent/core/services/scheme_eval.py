@@ -43,7 +43,7 @@ Example
 
 from typing import Any, Sequence
 
-# from deprecated.sphinx import deprecated
+from deprecated.sphinx import deprecated
 import grpc
 
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
@@ -355,10 +355,10 @@ class SchemeEval:
         response = self.service.string_eval(request)
         return response.output
 
-    # @deprecated(version="0.32.dev0", reason="Use ``session.scheme``.")
-    # def scheme_eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
-    #     """Evaluates a scheme expression in string format."""
-    #     return self.eval(scm_input, suppress_prompts)
+    @deprecated(version="0.32.dev0", reason="Use ``session.scheme``.")
+    def scheme_eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression in string format."""
+        return self.eval(scm_input, suppress_prompts)
 
     def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression in string format.
