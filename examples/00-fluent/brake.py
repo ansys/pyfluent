@@ -195,6 +195,7 @@ session.settings.solution.monitor.report_files["max-temperature"].report_defs = 
 
 session.settings.results.graphics.contour.create(name="contour-1")
 session.settings.results.graphics.contour["contour-1"] = {
+    "surfaces_list": "wall*",
     "boundary_values": True,
     "range_option": {"auto_range_on": {"global_range": True}},
     "field": "temperature",
@@ -310,7 +311,7 @@ contour1()
 # ----------------------
 
 contour1.field = "temperature"
-contour1.surfaces_list = [
+contour1.surfaces = [
     "wall-disc1",
     "wall-disc2",
     "wall-pad-disc2",
