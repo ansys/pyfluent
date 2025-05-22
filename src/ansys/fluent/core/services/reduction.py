@@ -351,7 +351,7 @@ class Reduction:
     def count_if(self, condition, locations, ctxt=None) -> Any:
         """Count the number of faces or cells where the specified condition is satisfied."""
         request = self._make_request(
-            "CountIfRequest", locations, ctxt, condition=condition
+            "CountIfRequest", locations, ctxt, expression=condition
         )
         response = self.service.count_if(request)
         return _convert_variant_to_value(response.value)
