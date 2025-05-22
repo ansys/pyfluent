@@ -77,22 +77,12 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+import ansys.units
 
 from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
-
-
-def _ansys_units():
-
-    try:
-        import ansys.units
-
-        return ansys.units
-    except ImportError:
-        pass
-
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -565,14 +555,12 @@ class RealNumerical(Numerical):
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
-        if not _ansys_units():
-            error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
             units = get_si_unit_for_fluent_quantity(quantity)
             if units is not None:
                 try:
-                    return _ansys_units().Quantity(
+                    return ansys.units.Quantity(
                         value=self.get_state(),
                         units=units,
                     )
@@ -608,11 +596,9 @@ class RealNumerical(Numerical):
                     raise UnhandledQuantity(self.path, state)
                 return units
 
-            if _ansys_units() and isinstance(state, (_ansys_units().Quantity, tuple)):
+            if isinstance(state, (ansys.units.Quantity, tuple)):
                 state = (
-                    _ansys_units().Quantity(*state)
-                    if isinstance(state, tuple)
-                    else state
+                    ansys.units.Quantity(*state) if isinstance(state, tuple) else state
                 )
                 state = state.to(get_units()).value
             elif isinstance(state, tuple):
@@ -781,7 +767,7 @@ class SettingsBase(Base, Generic[StateT]):
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
-            if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
+            if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)

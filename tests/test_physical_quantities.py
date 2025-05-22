@@ -28,12 +28,6 @@ import pytest
 
 import ansys.fluent.core as pf  # noqa: F401
 from ansys.fluent.core import examples
-
-try:
-    from ansys.units.variable_descriptor import VariableCatalog
-except ModuleNotFoundError:
-    VariableCatalog = None
-
 from ansys.fluent.core.file_session import FileSession
 from ansys.fluent.core.services.field_data import (
     ScalarFieldDataRequest,
@@ -41,6 +35,7 @@ from ansys.fluent.core.services.field_data import (
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
 )
+from ansys.units.variable_descriptor import VariableCatalog
 
 
 def round_off_list_elements(input_list):
@@ -59,9 +54,6 @@ def test_use_variable_catalog(new_solver_session) -> None:
     """
     A test of `PhysicalQuantity` objects.
     """
-    if VariableCatalog is None:
-        return
-
     solver = new_solver_session
     settings = solver.settings
 
@@ -106,8 +98,6 @@ def test_use_variable_catalog_offline():
     """
     A test of `PhysicalQuantity` objects for offline data.
     """
-    if VariableCatalog is None:
-        return
     case_file_name = examples.download_file(
         "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
