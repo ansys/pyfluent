@@ -189,7 +189,7 @@ def to_python_name(fluent_name: str) -> str:
     return name
 
 
-_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
+_to_field_name_str = naming_strategy().to_string
 
 
 def _get_python_path_comps(obj):

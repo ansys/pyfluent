@@ -276,7 +276,7 @@ class Reduction:
         """__init__ method of Reduction class."""
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
-        self._to_str = naming_strategy().to_string if naming_strategy else lambda s: s
+        self._to_str = naming_strategy().to_string
 
     def _validate_str_location(self, loc: str):
         if all(

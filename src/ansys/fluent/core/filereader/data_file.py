@@ -59,8 +59,8 @@ from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,
 )
 
-_to_scalar_field_name = scalar_naming().to_string if scalar_naming else lambda s: s
-_to_vector_field_name = vector_naming().to_string if vector_naming else lambda s: s
+_to_scalar_field_name = scalar_naming().to_string
+_to_vector_field_name = vector_naming().to_string
 
 
 class DataFile:
