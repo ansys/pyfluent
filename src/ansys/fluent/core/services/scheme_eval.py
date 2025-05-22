@@ -24,11 +24,6 @@
 
 Example
 -------
->>> from ansys.fluent.core.services.scheme_eval import Symbol as S
->>> session.scheme._eval([S('+'), 2, 3])
-5
->>> session.scheme._eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
-0.7
 >>> session.scheme.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 >>> # Returns TUI output string
 >>> session.scheme.eval("(+ 2 3)")
