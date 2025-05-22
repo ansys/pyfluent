@@ -26,7 +26,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING)
 >>> standalone_meshing_session = standalone_meshing_launcher()
@@ -46,15 +46,7 @@ from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
-    _await_fluent_launch,
-    _build_journal_argument,
-    _confirm_watchdog_start,
-    _get_subprocess_kwargs_for_fluent,
-    is_windows,
-)
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -64,6 +56,14 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _await_fluent_launch,
+    _build_journal_argument,
+    _confirm_watchdog_start,
+    _get_subprocess_kwargs_for_fluent,
+    is_windows,
+)
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_names,

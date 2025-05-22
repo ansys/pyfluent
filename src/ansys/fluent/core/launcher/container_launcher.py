@@ -26,7 +26,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING)
 >>> container_meshing_session = container_meshing_launcher()
@@ -46,11 +46,7 @@ from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.launcher_utils import is_compose
-from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_string,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -58,6 +54,10 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+)
+from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.process_launch_string import (
+    _build_fluent_launch_args_string,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
