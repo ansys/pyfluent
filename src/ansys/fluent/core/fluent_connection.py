@@ -518,7 +518,7 @@ class FluentConnection:
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
     @property
-    @deprecated(version="0.32.dev0", reason="No longer required at this level.")
+    @deprecated(version="0.32", reason="No longer required at this level.")
     def health_check(self):
         """Provides access to Health Check service."""
         return self._health_check

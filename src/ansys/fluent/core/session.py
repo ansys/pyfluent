@@ -269,16 +269,16 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
-    def is_server_healthy(self):
+    def is_server_healthy(self) -> bool:
         """Whether the current session is healthy (i.e. The server is 'SERVING')."""
         return self._health_check.is_serving
 
-    def is_active(self):
+    def is_active(self) -> bool:
         """Whether the current session is active."""
         return True if self._fluent_connection else False
 
     @property
-    @deprecated(version="0.32.dev0", reason="Use ``session.is_server_healthy``.")
+    @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
     def health_check(self):
         """Provides access to Health Check service."""
         return self._health_check
