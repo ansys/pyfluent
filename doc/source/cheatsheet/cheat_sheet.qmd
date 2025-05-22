@@ -1100,8 +1100,6 @@ session.scheme._eval([S('+'), 2, 3])
 session.scheme._eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
 session.scheme.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 # Returns TUI output string
-session.scheme.string_eval("(+ 2 3)")
-session.scheme.string_eval("(rpgetvar 'mom/relax)")
 session.scheme.eval("(+ 2 3)")
 session.scheme.eval("(rpgetvar 'mom/relax)")
 ```
