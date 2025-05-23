@@ -127,7 +127,7 @@ for idx1, coldVel in np.ndenumerate(coldVelArr):
         solver.settings.solution.initialization.standard_initialize()
         solver.settings.solution.run_calculation.iterate(iter_count=200)
 
-        res_tui = solver.scheme_eval.exec(
+        res_tui = solver.scheme.exec(
             (
                 "(ti-menu-load-string "
                 '"/report/surface-integrals/mass-weighted-avg outlet () '

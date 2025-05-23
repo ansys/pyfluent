@@ -696,12 +696,12 @@ def test_field_data_does_not_modify_case(new_solver_session):
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file.read_case_data(file_name=case_path)
-    solver.scheme_eval.scheme_eval("(%save-case-id)")
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.scheme.eval("(%save-case-id)")
+    assert not solver.scheme.eval("(case-modified?)")
     solver.fields.field_data.get_scalar_field_data(
         field_name="absolute-pressure", surfaces=["cold-inlet"]
     )
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    assert not solver.scheme.eval("(case-modified?)")
 
 
 @pytest.mark.fluent_version(">=24.1")

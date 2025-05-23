@@ -703,13 +703,13 @@ solver.file.write(file_type="case-data", file_name="hx-fin-2mm.dat.h5")
 # Post-Processing Mass Balance Report
 # ===================================
 
-inlet_mfr = solver.scheme_eval.exec(
+inlet_mfr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/mass-flow no inlet () no")',)
 ).split(" ")[-1]
-outlet_mfr = solver.scheme_eval.exec(
+outlet_mfr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/mass-flow no outlet () no")',)
 ).split(" ")[-1]
-net_mfr = solver.scheme_eval.exec(
+net_mfr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/mass-flow no inlet outlet () no")',)
 ).split(" ")[-1]
 print("Mass Balance Report\n")
@@ -721,7 +721,7 @@ print("Net (kg/s): ", net_mfr)
 # Heat Balance Report
 # ===================
 
-htr = solver.scheme_eval.exec(
+htr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/heat-transfer yes no")',)
 ).split(" ")[-1]
 print("Heat Balance Report\n")

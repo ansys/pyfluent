@@ -155,7 +155,7 @@ class PostAPIHelper:
     def get_field_unit(self, field):
         """Returns the unit of the field."""
         session = self.obj.get_root().session
-        if FluentVersion(session.scheme_eval.version) < FluentVersion.v252:
+        if FluentVersion(session.scheme.version) < FluentVersion.v252:
             quantity = self._field_unit_quantity(field)
             if quantity == "*null*":
                 return ""

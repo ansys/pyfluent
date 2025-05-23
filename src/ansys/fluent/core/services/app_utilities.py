@@ -155,18 +155,18 @@ class AppUtilitiesOld:
 
     def __init__(self, scheme_eval):
         """__init__ method of AppUtilitiesOld class."""
-        self.scheme_eval = scheme_eval
+        self.scheme = scheme_eval
 
     def get_product_version(self) -> str:
         """Get product version."""
-        return self.scheme_eval.version
+        return self.scheme.version
 
     def get_build_info(self) -> dict:
         """Get build info."""
-        build_time = self.scheme_eval.scheme_eval("(inquire-build-time)")
-        build_id = self.scheme_eval.scheme_eval("(inquire-build-id)")
-        vcs_revision = self.scheme_eval.scheme_eval("(inquire-src-vcs-id)")
-        vcs_branch = self.scheme_eval.scheme_eval("(inquire-src-vcs-branch)")
+        build_time = self.scheme.eval("(inquire-build-time)")
+        build_id = self.scheme.eval("(inquire-build-id)")
+        vcs_revision = self.scheme.eval("(inquire-src-vcs-id)")
+        vcs_branch = self.scheme.eval("(inquire-src-vcs-branch)")
         return {
             "build_time": build_time,
             "build_id": build_id,
@@ -176,9 +176,9 @@ class AppUtilitiesOld:
 
     def get_controller_process_info(self) -> dict:
         """Get controller process info."""
-        cortex_host = self.scheme_eval.scheme_eval("(cx-cortex-host)")
-        cortex_pid = self.scheme_eval.scheme_eval("(cx-cortex-id)")
-        cortex_pwd = self.scheme_eval.scheme_eval("(cortex-pwd)")
+        cortex_host = self.scheme.eval("(cx-cortex-host)")
+        cortex_pid = self.scheme.eval("(cx-cortex-id)")
+        cortex_pwd = self.scheme.eval("(cortex-pwd)")
         return {
             "hostname": cortex_host,
             "process_id": cortex_pid,
@@ -187,9 +187,9 @@ class AppUtilitiesOld:
 
     def get_solver_process_info(self) -> dict:
         """Get solver process info."""
-        fluent_host = self.scheme_eval.scheme_eval("(cx-client-host)")
-        fluent_pid = self.scheme_eval.scheme_eval("(cx-client-id)")
-        fluent_pwd = self.scheme_eval.scheme_eval("(cx-send '(cx-client-pwd))")
+        fluent_host = self.scheme.eval("(cx-client-host)")
+        fluent_pid = self.scheme.eval("(cx-client-id)")
+        fluent_pwd = self.scheme.eval("(cx-send '(cx-client-pwd))")
         return {
             "hostname": fluent_host,
             "process_id": fluent_pid,
@@ -200,8 +200,8 @@ class AppUtilitiesOld:
         """Get app mode."""
         from ansys.fluent.core import FluentMode
 
-        if self.scheme_eval.scheme_eval("(cx-solver-mode?)"):
-            mode_str = self.scheme_eval.scheme_eval('(getenv "PRJAPP_APP")')
+        if self.scheme.eval("(cx-solver-mode?)"):
+            mode_str = self.scheme.eval('(getenv "PRJAPP_APP")')
             if mode_str == "flaero_server":
                 return FluentMode.SOLVER_AERO
             elif mode_str == "flicing":
@@ -214,44 +214,38 @@ class AppUtilitiesOld:
     def start_python_journal(self, journal_name: str | None = None) -> int:
         """Start python journal."""
         if journal_name:
-            self.scheme_eval.exec([f'(api-start-python-journal "{journal_name}")'])
+            self.scheme.exec([f'(api-start-python-journal "{journal_name}")'])
         else:
-            self.scheme_eval.scheme_eval(
-                "(define pyfluent-journal-str-port (open-output-string))"
-            )
-            self.scheme_eval.scheme_eval(
-                "(api-echo-python-port pyfluent-journal-str-port)"
-            )
+            self.scheme.eval("(define pyfluent-journal-str-port (open-output-string))")
+            self.scheme.eval("(api-echo-python-port pyfluent-journal-str-port)")
             return "1"
 
     def stop_python_journal(self, journal_id: str | None = None) -> str:
         """Stop python journal."""
         if journal_id:
-            self.scheme_eval.scheme_eval(
-                "(api-unecho-python-port pyfluent-journal-str-port)"
-            )
-            journal_str = self.scheme_eval.scheme_eval(
+            self.scheme.eval("(api-unecho-python-port pyfluent-journal-str-port)")
+            journal_str = self.scheme.eval(
                 "(close-output-port pyfluent-journal-str-port)"
             )
             return journal_str
         else:
-            self.scheme_eval.exec(["(api-stop-python-journal)"])
+            self.scheme.exec(["(api-stop-python-journal)"])
 
     def is_beta_enabled(self) -> bool:
         """Is beta enabled."""
-        return self.scheme_eval.scheme_eval("(is-beta-feature-available?)")
+        return self.scheme.eval("(is-beta-feature-available?)")
 
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
-        return self.scheme_eval.scheme_eval(f'(has-fnmatch-wild-card? "{input}")')
+        return self.scheme.eval(f'(has-fnmatch-wild-card? "{input}")')
 
     def is_solution_data_available(self) -> bool:
         """Is solution data available."""
-        return self.scheme_eval.scheme_eval("(data-valid?)")
+        return self.scheme.eval("(data-valid?)")
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        unique_id: int = self.scheme_eval.scheme_eval(
+        unique_id: int = self.scheme.eval(
             f"""
             (let
                 ((ids
@@ -284,23 +278,21 @@ class AppUtilitiesOld:
 
     def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
-        self.scheme_eval.scheme_eval(
+        self.scheme.eval(
             f"(grpcserver/auto-resume (is-server-running?) 'pyfluent-{registration_id})"
         )
 
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
-        self.scheme_eval.scheme_eval(
-            f"(cancel-solution-monitor 'pyfluent-{registration_id})"
-        )
+        self.scheme.eval(f"(cancel-solution-monitor 'pyfluent-{registration_id})")
 
     def exit(self) -> None:
         """Exit."""
-        self.scheme_eval.exec(("(exit-server)",))
+        self.scheme.exec(("(exit-server)",))
 
     def set_working_directory(self, path: str) -> None:
         """Change client cortex dir."""
-        self.scheme_eval.scheme_eval(f'(syncdir "{path}")')
+        self.scheme.eval(f'(syncdir "{path}")')
 
 
 class AppUtilities:
