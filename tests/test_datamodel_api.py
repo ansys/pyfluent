@@ -73,9 +73,9 @@ def test_env_var_setting(datamodel_api_version_all, request, new_solver_session)
     # TODO: It might be possible to check the param value in the fixture
     # instead of checking the test name here.
     if test_name.endswith("[old]"):
-        assert solver.scheme_eval.scheme_eval('(getenv "REMOTING_NEW_DM_API")') is None
+        assert solver.scheme.eval('(getenv "REMOTING_NEW_DM_API")') is None
     elif test_name.endswith("[new]"):
-        assert solver.scheme_eval.scheme_eval('(getenv "REMOTING_NEW_DM_API")') == "1"
+        assert solver.scheme.eval('(getenv "REMOTING_NEW_DM_API")') == "1"
 
 
 @pytest.mark.fluent_version(">=25.2")

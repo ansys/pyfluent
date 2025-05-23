@@ -4,6 +4,16 @@ PYFLUENT_DEPRECATED_DATA = [
     # Target, Deprecated, Alternatives
     # methods
     (
+        ":py:meth:`ansys.fluent.core.services.scheme_eval.SchemeEval.scheme_eval <ansys.fluent.core.services.scheme_eval.SchemeEval.scheme_eval>`",
+        "0.32",
+        ":py:meth:`ansys.fluent.core.services.scheme_eval.SchemeEval.eval <ansys.fluent.core.services.scheme_eval.SchemeEval.eval>`",
+    ),
+    (
+        ":py:meth:`ansys.fluent.core.session.BaseSession.scheme_eval <ansys.fluent.core.session.BaseSession.scheme_eval>`",
+        "0.32",
+        ":py:meth:`ansys.fluent.core.session.BaseSession.scheme <ansys.fluent.core.session.BaseSession.scheme>`",
+    ),
+    (
         ":py:meth:`ansys.fluent.core.fluent_connection.FluentConnection.health_check <ansys.fluent.core.fluent_connection.FluentConnection.health_check>`",
         "0.32",
         "N/A",

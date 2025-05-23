@@ -413,7 +413,7 @@ def test_task_object_keys_are_display_names(new_meshing_session):
 
 def test_generic_datamodel(new_solver_session):
     solver = new_solver_session
-    solver.scheme_eval.scheme_eval("(init-flserver)")
+    solver.scheme.eval("(init-flserver)")
     flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
 

@@ -28,7 +28,7 @@ def test_systemcoupling_mixing_elbow_settings_apis(mixing_elbow_case_data_sessio
     """Test System Coupling related settings APIs"""
     solver = mixing_elbow_case_data_session
     # enable the feature flag to be able to make the queries
-    solver.scheme_eval.scheme_eval("(enable-feature 'sc/participant-info)")
+    solver.scheme.eval("(enable-feature 'sc/participant-info)")
     elbow_fluid = "elbow-fluid"
     region_names = solver.settings.setup.models.system_coupling.get_all_regions()
     assert elbow_fluid in region_names

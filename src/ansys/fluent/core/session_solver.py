@@ -139,7 +139,7 @@ class Solver(BaseSession):
             version=self._version,
             interrupt=Solver._interrupt,
             file_transfer_service=self._file_transfer_service,
-            scheme_eval=self.scheme_eval.scheme_eval,
+            scheme_eval=self.scheme.eval,
         )
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata

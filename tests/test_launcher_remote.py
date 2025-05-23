@@ -52,6 +52,7 @@ from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4055")
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     monkeypatch.setattr(pyfluent, "CHECK_HEALTH", False)
     fluent = new_solver_session
