@@ -46,7 +46,7 @@ from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as naming_strategy,
 )
 
-_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
+_to_field_name_str = naming_strategy().to_string
 
 
 class SolutionVariableService:
