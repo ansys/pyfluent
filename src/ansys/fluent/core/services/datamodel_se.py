@@ -2225,7 +2225,7 @@ arg_class_by_type = {
         ["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem
     ),
     **dict.fromkeys(
-        ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt"],
+        ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt", "Integer List"],
         PyNumericalCommandArgumentsSubItem,
     ),
     "Dict": PyDictionaryCommandArgumentsSubItem,
