@@ -477,9 +477,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
                 self._client.download_file(
                     remote_filename=os.path.basename(file),
                     local_filename=(
-                        local_directory
-                        if os.path.isdir(local_directory)
-                        else os.path.basename(file)
+                        local_directory if local_directory else os.path.basename(file)
                     ),
                 )
 
