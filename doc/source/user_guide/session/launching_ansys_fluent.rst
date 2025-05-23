@@ -527,7 +527,7 @@ Run the following Python code to connect to Fluent and transfer files:
    solver = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)
 
    # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
-   solver.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
+   solver.file.read_case(file_name="D:\path_to_file\mixing_elbow.cas.h5")
 
    # `elbow_remote.cas.h5` will be downloaded to local working directory
    solver.file.write_case(file_name="elbow_remote.cas.h5")
