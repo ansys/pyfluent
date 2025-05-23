@@ -411,7 +411,6 @@ def connect_to_fluent(
         port=port,
         password=password,
         cleanup_on_exit=cleanup_on_exit,
-        file_transfer_service=file_transfer_service,
     )
     new_session = _get_running_session_mode(fluent_connection)
 
@@ -428,4 +427,5 @@ def connect_to_fluent(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
+        file_transfer_service=file_transfer_service,
     )
