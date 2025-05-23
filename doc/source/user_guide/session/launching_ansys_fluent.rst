@@ -380,3 +380,76 @@ Connecting to a Fluent container running inside Linux from a Windows host
 
   >>> import ansys.fluent.core as pyfluent
   >>> solver = pyfluent.connect_to_fluent(ip="10.18.19.151", port=44383, password="hbsosnni")
+
+
+Connecting to Fluent on Windows from a Linux or WSL Host
+--------------------------------------------------------
+
+This guide describes how to connect to an ANSYS Fluent instance running on a Windows machine from a Linux or WSL host. It also includes steps to enable remote file transfer.
+
+A. **Set Up Fluent and File Transfer Server on Windows**
+
+1. **Launch Fluent**
+
+   Open a command prompt and run:
+
+   .. code:: console
+
+      ANSYS Inc\v252\fluent\ntbin\win64\fluent.exe 3ddp -sifile=server_info.txt
+      type server_info.txt
+
+   Example output:
+   ``10.18.44.179:51344``, ``5scj6c8l``
+
+2. **Retrieve Connection Details**
+
+   Get the IP address, port, and password from the `server_info.txt` file.  
+   Example:
+   - IP: `10.18.44.179`
+   - Port: `51344`
+   - Password: `5scj6c8l`
+
+3. **Set Working Directory**
+
+   Change to the Fluent installation directory:
+
+   .. code:: console
+
+      cd "ANSYS Inc\v252\fluent\ntbin\win64"
+
+4. **Start the File Transfer Server**
+
+   Launch the container:
+
+   .. code:: console
+
+      docker run -p 50000:50000 -v %cd%:/home/container/workdir ghcr.io/ansys/tools-filetransfer:latest
+
+5. **Allow Inbound TCP Connections**
+
+   Configure the Windows Firewall:
+
+   - Open: **Control Panel > Windows Defender Firewall > Advanced Settings > Inbound Rules**
+   - Right-click **Inbound Rules**, select **New Rule**
+   - Choose **Port**, click **Next**
+   - Keep **TCP** selected
+   - Enter the ports in **Specific local ports**: `51344, 50000` then click **Next**
+   - Select **Allow the connection**, click **Next**
+   - Leave all profiles (Domain, Private, Public) checked, click **Next**
+   - Name the rule: `Inbound TCP for Fluent`
+
+B. **Connect from Linux or WSL Host**
+
+Run the following Python code to connect to Fluent and transfer files:
+
+.. code:: python
+
+   from ansys.fluent.core import connect_to_fluent
+   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+   file_service = RemoteFileTransferStrategy("10.18.44.179", 50000)
+   solver = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
+
+   solver.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
+   solver.file.write_case(file_name="elbow_remote.cas.h5")
+
