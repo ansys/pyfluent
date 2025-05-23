@@ -198,10 +198,10 @@ class PureMeshing(BaseSession):
         """Full API to meshing and meshing_workflow."""
         return self._base_meshing.meshing_workflow
 
-    @property
-    def meshing_workflow_x(self):
-        """Full API to dummy meshing and meshing_workflow."""
-        return self._base_meshing.meshing_workflow_x
+    # @property
+    # def meshing_workflow_x(self):
+    #     """Full API to dummy meshing and meshing_workflow."""
+    #     return self._base_meshing.meshing_workflow_x
 
     @property
     def preferences(self):
