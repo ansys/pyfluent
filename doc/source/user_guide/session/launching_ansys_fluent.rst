@@ -382,7 +382,7 @@ Connecting to a Fluent container running inside Linux from a Windows host
   >>> solver = pyfluent.connect_to_fluent(ip="10.18.19.151", port=44383, password="hbsosnni")
 
 
-Connecting to Fluent on Windows from a Linux or WSL Host
+Connecting to Fluent on Windows from a Linux or WSL host
 --------------------------------------------------------
 
 This guide describes how to connect to an ANSYS Fluent instance running on a Windows machine from a Linux or WSL host. 
@@ -391,6 +391,7 @@ It also includes steps to enable remote file transfer.
   Prerequisites:
 
     - `Docker <https://www.docker.com/>`_
+    - `Build file transfer server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/intro.html#>`_
 
 A. **Set Up Fluent and File Transfer Server on Windows**
 
@@ -428,7 +429,7 @@ A. **Set Up Fluent and File Transfer Server on Windows**
 
    .. code:: console
 
-      docker run -p 50000:50000 -v %cd%:/home/container/workdir ghcr.io/ansys/tools-filetransfer:latest
+      docker run -p 50000:50000 -v %cd%:/home/container/workdir filetransfer-tool-server
 
 5. **Allow Inbound TCP Connections**
 
@@ -456,6 +457,74 @@ Run the following Python code to connect to Fluent and transfer files:
 
    file_service = RemoteFileTransferStrategy("10.18.44.179", 50000)
    solver = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
+
+   # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
+   solver.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
+
+   # `elbow_remote.cas.h5` will be downloaded to local working directory
+   solver.file.write_case(file_name="elbow_remote.cas.h5")
+
+
+Connecting to Fluent on Linux or WSL from a Windows host
+--------------------------------------------------------
+
+This guide describes how to connect to an ANSYS Fluent instance running on a Linux or WSL machine from a Windows host. 
+It also includes steps to enable remote file transfer.
+
+  Prerequisites:
+
+    - `Docker <https://www.docker.com/>`_
+    - `Build file transfer server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/intro.html#>`_
+
+A. **Set Up Fluent and File Transfer Server on Linux or WSL**
+
+1. **Launch Fluent**
+
+   Open a shell and run:
+
+   .. code:: console
+
+      ansys_inc/v252/fluent/bin/fluent 3ddp -sifile=server_info.txt
+      cat server_info.txt
+
+   Example output:
+   ``10.18.19.150:41429``, ``u5s3iivh``
+
+2. **Retrieve Connection Details**
+
+   Get the IP address, port, and password from the `server_info.txt` file.  
+   Example:
+   - IP: ``10.18.19.150``
+   - Port: ``41429``
+   - Password: ``u5s3iivh``
+
+3. **Set Working Directory**
+
+   Change to the Fluent installation directory:
+
+   .. code:: console
+
+      cd "ansys_inc/v252/fluent/bin/fluent"
+
+4. **Start the File Transfer Server**
+
+   Launch the container:
+
+   .. code:: console
+
+      docker run -p 50000:50000 -v `pwd`:/home/container/workdir -u `id -u`:`id -g` filetransfer-tool-server
+
+B. **Connect from Windows Host**
+
+Run the following Python code to connect to Fluent and transfer files:
+
+.. code:: python
+
+   from ansys.fluent.core import connect_to_fluent
+   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+   file_service = RemoteFileTransferStrategy("10.18.19.150", 50000)
+   solver = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)
 
    # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
    solver.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
