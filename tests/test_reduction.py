@@ -408,7 +408,7 @@ def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=24.1")
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ) -> None:
