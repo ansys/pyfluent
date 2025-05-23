@@ -33,14 +33,14 @@ from ansys.fluent.core.utils import load_module
 
 def create_datamodel_root_in_server(session, rules_str, app_name) -> None:
     rules_file_name = f"{uuid.uuid4()}.fdl"
-    session.scheme_eval.scheme_eval(
+    session.scheme.eval(
         f'(with-output-to-file "{rules_file_name}" (lambda () (format "~a" "{rules_str}")))',
     )
-    session.scheme_eval.scheme_eval(
+    session.scheme.eval(
         f'(state/register-new-state-engine "{app_name}" "{rules_file_name}")'
     )
-    session.scheme_eval.scheme_eval(f'(remove-file "{rules_file_name}")')
-    assert session.scheme_eval.scheme_eval(f'(state/find-root "{app_name}")') > 0
+    session.scheme.eval(f'(remove-file "{rules_file_name}")')
+    assert session.scheme.eval(f'(state/find-root "{app_name}")') > 0
 
 
 def create_root_using_datamodelgen(service, app_name):

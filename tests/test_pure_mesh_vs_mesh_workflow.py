@@ -97,7 +97,7 @@ def test_meshing_mode_post_switching_to_solver(new_meshing_session_wo_exit):
 #     pure_meshing_session = new_pure_meshing_session
 #     pure_meshing_session.tui.file.read_mesh(mesh_file_name)
 #     pure_meshing_session.tui.mesh.check_mesh()
-#     mesh_info = pure_meshing_session.scheme_eval.string_eval(
+#     mesh_info = pure_meshing_session.scheme.string_eval(
 #         "(%tg-length-of-entity-list)"
 #     )
 #     pure_meshing_session_cell_count = mesh_info.strip("( )").split()[3]
@@ -105,7 +105,7 @@ def test_meshing_mode_post_switching_to_solver(new_meshing_session_wo_exit):
 #     solver_session = new_solver_session
 #     pure_meshing_session.transfer_mesh_to_solvers([solver_session], file_type="mesh")
 #     solver_session.tui.mesh.check()
-#     mesh_info = solver_session.scheme_eval.string_eval("(inquire-grids)")
+#     mesh_info = solver_session.scheme.string_eval("(inquire-grids)")
 #     solver_session_cell_count = mesh_info.strip("( )").split()[1]
 #
 #     assert pure_meshing_session_cell_count == solver_session_cell_count
@@ -116,15 +116,13 @@ def test_transfer_case_to_solvers(new_pure_meshing_session, new_solver_session):
     pure_meshing_session = new_pure_meshing_session
     pure_meshing_session.tui.file.read_case(case_file_name)
     pure_meshing_session.tui.mesh.check_mesh()
-    mesh_info = pure_meshing_session.scheme_eval.string_eval(
-        "(%tg-length-of-entity-list)"
-    )
+    mesh_info = pure_meshing_session.scheme.string_eval("(%tg-length-of-entity-list)")
     pure_meshing_session_cell_count = mesh_info.strip("( )").split()[3]
 
     solver_session = new_solver_session
     pure_meshing_session.transfer_mesh_to_solvers([solver_session], file_type="case")
     solver_session.tui.mesh.check()
-    mesh_info = solver_session.scheme_eval.string_eval("(inquire-grids)")
+    mesh_info = solver_session.scheme.string_eval("(inquire-grids)")
     solver_session_cell_count = mesh_info.strip("( )").split()[1]
 
     assert pure_meshing_session_cell_count == solver_session_cell_count
