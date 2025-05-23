@@ -447,13 +447,13 @@ def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
     # After reading the static-mixer case in Fluent, case-modifed? flag is somehow True
-    solver.scheme_eval.scheme_eval("(%save-case-id)")
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.scheme.eval("(%save-case-id)")
+    assert not solver.scheme.eval("(case-modified?)")
     solver.reduction.area_average(
         expression="AbsolutePressure",
         locations=solver.setup.boundary_conditions.velocity_inlet,
     )
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    assert not solver.scheme.eval("(case-modified?)")
 
 
 @pytest.mark.fluent_version(">=24.2")

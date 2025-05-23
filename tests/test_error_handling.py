@@ -34,7 +34,7 @@ import pytest
     ],
 )
 def test_fluent_fatal_error(error_code, raises, new_solver_session):
-    scheme_eval = new_solver_session.scheme_eval.scheme_eval
+    scheme_eval = new_solver_session.scheme.eval
     with raises:
         scheme_eval(
             "(events/transmit 'error-event "

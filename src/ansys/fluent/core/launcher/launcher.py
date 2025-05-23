@@ -34,12 +34,7 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launcher_utils import (
-    _confirm_watchdog_start,
-    is_windows,
-)
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -50,6 +45,11 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_fluent_launch_mode,
     _get_running_session_mode,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _confirm_watchdog_start,
+    is_windows,
+)
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher

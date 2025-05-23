@@ -36,17 +36,17 @@ from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
 )
-from ansys.fluent.core.launcher.launcher import (  # noqa: F401
-    connect_to_fluent,
-    launch_fluent,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
+from ansys.fluent.core.launcher.launch_options import (  # noqa: F401
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
     UIMode,
+)
+from ansys.fluent.core.launcher.launcher import (  # noqa: F401
+    connect_to_fluent,
+    launch_fluent,
 )
 from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
 from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
@@ -70,7 +70,7 @@ from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.31.dev1"
+__version__ = "0.32.dev0"
 
 _VERSION_INFO = None
 """

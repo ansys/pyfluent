@@ -84,9 +84,7 @@ class SystemCoupling:
             )
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             # enable feature to be able to make System Coupling settings APIs calls
-            self._solver.scheme_eval.scheme_eval(
-                "(enable-feature 'sc/participant-info)"
-            )
+            self._solver.scheme.eval("(enable-feature 'sc/participant-info)")
 
     @property
     def participant_type(self) -> str:

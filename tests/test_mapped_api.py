@@ -84,13 +84,13 @@ def get_static_info_value(static_info, type_path):
 
 
 def get_state_from_remote_app(session, app_name, type_path):
-    return session.scheme_eval.scheme_eval(
+    return session.scheme.eval(
         f'(state/object/get-state (state/object/find-child (state/find-root "{app_name}") "{type_path}"))'
     )
 
 
 def get_error_state_message_from_remote_app(session, app_name, type_path):
-    return session.scheme_eval.scheme_eval(
+    return session.scheme.eval(
         f'(state/object/get-error-state-message (state/object/find-child (state/find-root "{app_name}") "{type_path}"))'
     )
 
@@ -209,7 +209,7 @@ def test_state_of_command_args_with_mapping(
 
 
 def register_external_function_in_remote_app(session, app_name, func_name):
-    session.scheme_eval.scheme_eval(
+    session.scheme.eval(
         f'(state/register-external-fn "{app_name}" "{func_name}" (lambda (obj . args) (car args)) (cons "Variant" (list "ModelObject" "Variant")))'
     )
 
