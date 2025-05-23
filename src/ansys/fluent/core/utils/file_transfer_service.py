@@ -401,6 +401,119 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
                     )
 
 
+class RemoteFileTransferStrategy(FileTransferStrategy):
+    """Provides a file transfer service based on the `gRPC client <https://filetransfer.tools.docs.pyansys.com/version/stable/>`_
+    and `gRPC server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/>`_.
+
+    Examples
+    --------
+    >>> import ansys.fluent.core as pyfluent
+    >>> from ansys.fluent.core import examples
+    >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+    >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
+    >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
+    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
+    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+    >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
+    """
+
+    def __init__(
+        self,
+        server_ip: str | None = None,
+        server_port: int | None = None,
+    ):
+        """Provides the gRPC-based remote file transfer strategy.
+
+        Parameters
+        ----------
+        server_ip: str
+            IP address of the server.
+        server_port : int
+            Port of the server.
+        """
+        import ansys.tools.filetransfer as ft
+
+        self.server_ip = server_ip
+        self.server_port = server_port
+
+        self._client = ft.Client.from_server_address(
+            f"{self.server_ip}:{self.server_port}"
+        )
+
+    def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
+        """Upload a file to the server.
+
+        Parameters
+        ----------
+        file_name : list[str] | str
+            File name.
+        remote_file_name : str, optional
+            Remote file name. The default is ``None``.
+
+        Raises
+        ------
+        FileNotFoundError
+            If a file does not exist.
+
+        Examples
+        --------
+        >>> import ansys.fluent.core as pyfluent
+        >>> from ansys.fluent.core import examples
+        >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+        >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+        >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
+        >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
+        >>> solver_session.file.read_case(file_name="elbow.cas.h5")
+        """
+        files = _get_files(file_name)
+        for file in files:
+            if os.path.isfile(file):
+                self._client.upload_file(
+                    local_filename=file,
+                    remote_filename=(
+                        remote_file_name if remote_file_name else os.path.basename(file)
+                    ),
+                )
+            else:
+                raise FileNotFoundError(f"{file} does not exist.")
+
+    def download(self, file_name: list[str] | str, local_directory: str | None = None):
+        """Download a file from the server.
+
+        Parameters
+        ----------
+        file_name : list[str] | str
+            File name.
+        local_directory : str, optional
+            Local directory. The default is ``None``.
+
+        Examples
+        --------
+        >>> import ansys.fluent.core as pyfluent
+        >>> from ansys.fluent.core import examples
+        >>> from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+        >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+        >>> solver_session = pyfluent.launch_fluent(file_transfer_service=RemoteFileTransferStrategy())
+        >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+        >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
+        """
+        files = _get_files(file_name)
+        for file in files:
+            if os.path.isfile(file):
+                warnings.warn(
+                    f"\nFile already exists. File path:\n{file}\n",
+                    PyFluentUserWarning,
+                )
+            else:
+                self._client.download_file(
+                    remote_filename=os.path.basename(file),
+                    local_filename=(
+                        local_directory if local_directory else os.path.basename(file)
+                    ),
+                )
+
+
 class PimFileTransferService:
     """Provides a file transfer service based on `PyPIM <https://pypim.docs.pyansys.com/version/stable/>`_ and the ``simple_upload_server()`` method.
 
