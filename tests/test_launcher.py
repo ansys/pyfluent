@@ -39,6 +39,13 @@ from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
+from ansys.fluent.core.launcher.launch_options import (
+    FluentLinuxGraphicsDriver,
+    FluentMode,
+    FluentWindowsGraphicsDriver,
+    LaunchMode,
+    UIMode,
+)
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
@@ -48,14 +55,7 @@ from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
     get_fluent_exe_path,
 )
-from ansys.fluent.core.launcher.pyfluent_enums import (
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    LaunchMode,
-    UIMode,
-)
-from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
+from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
@@ -148,7 +148,7 @@ def test_container_launcher():
 
     # test run with configuration dict
     session = pyfluent.launch_fluent(container_dict=container_dict)
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
 
 
 @pytest.mark.standalone
@@ -256,49 +256,31 @@ def test_gpu_launch_arg_additional_arg():
 
 def test_get_fluent_exe_path_when_nothing_is_set(helpers):
     helpers.delete_all_awp_vars()
-    with pytest.raises(AnsysVersionNotFound):
+    with pytest.raises(FileNotFoundError):
         get_fluent_exe_path()
-    with pytest.raises(AnsysVersionNotFound):
+    with pytest.raises(FileNotFoundError):
         FluentVersion.get_latest_installed()
 
 
-def test_get_fluent_exe_path_from_awp_root_222(helpers):
-    helpers.mock_awp_vars(version="222")
+@pytest.mark.parametrize(
+    "fluent_version",
+    [version for version in FluentVersion],
+)
+def test_get_fluent_exe_path_from_awp_root(fluent_version, helpers, fs):
+    helpers.mock_awp_vars(version=str(fluent_version.number))
+    fs.create_file(fluent_version.get_fluent_exe_path())
     if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v222/fluent") / "ntbin" / "win64" / "fluent.exe"
+        expected_path = (
+            Path(f"ansys_inc/v{fluent_version.number}/fluent")
+            / "ntbin"
+            / "win64"
+            / "fluent.exe"
+        )
     else:
-        expected_path = Path("ansys_inc/v222/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v222
-    assert get_fluent_exe_path() == expected_path
-
-
-def test_get_fluent_exe_path_from_awp_root_231(helpers):
-    helpers.mock_awp_vars(version="231")
-    if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
-    else:
-        expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v231
-    assert get_fluent_exe_path() == expected_path
-
-
-def test_get_fluent_exe_path_from_awp_root_232(helpers):
-    helpers.mock_awp_vars(version="232")
-    if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v232/fluent") / "ntbin" / "win64" / "fluent.exe"
-    else:
-        expected_path = Path("ansys_inc/v232/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v232
-    assert get_fluent_exe_path() == expected_path
-
-
-def test_get_fluent_exe_path_from_awp_root_241(helpers):
-    helpers.mock_awp_vars(version="241")
-    if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v241/fluent") / "ntbin" / "win64" / "fluent.exe"
-    else:
-        expected_path = Path("ansys_inc/v241/fluent") / "bin" / "fluent"
-    assert FluentVersion.get_latest_installed() == FluentVersion.v241
+        expected_path = (
+            Path(f"ansys_inc/v{fluent_version.number}/fluent") / "bin" / "fluent"
+        )
+    assert FluentVersion.get_latest_installed() == fluent_version
     assert get_fluent_exe_path() == expected_path
 
 
@@ -582,3 +564,22 @@ def test_report():
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
     assert str(rep).count("pandas") == 1
+
+
+@pytest.mark.fluent_version(">=23.1")
+def test_docker_compose(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core import examples
+    from ansys.fluent.core.utils.networking import get_free_port
+
+    port_1 = get_free_port()
+    port_2 = get_free_port()
+    container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
+    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    assert len(solver._container.ports) == 2
+    case_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read_case(file_name=case_file_name)
+    solver.exit()

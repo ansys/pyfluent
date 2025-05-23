@@ -40,6 +40,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
+    "docker": ["docker_compose"],
     "filereader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
@@ -49,7 +50,7 @@ hierarchy = {
         "launcher",
         "pim_launcher",
         "process_launch_string",
-        "pyfluent_enums",
+        "launch_options",
         "slurm_launcher",
         "standalone_launcher",
         "watchdog",

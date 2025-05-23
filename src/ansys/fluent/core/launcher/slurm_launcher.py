@@ -52,7 +52,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 # Callable slurm launcher
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING)
 >>> slurm_meshing_session = slurm_meshing_launcher()
@@ -72,13 +72,7 @@ import time
 from typing import Any, Callable, Dict
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.launcher_utils import (
-    _await_fluent_launch,
-    _build_journal_argument,
-    _get_subprocess_kwargs_for_fluent,
-)
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -87,6 +81,12 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _await_fluent_launch,
+    _build_journal_argument,
+    _get_subprocess_kwargs_for_fluent,
+)
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing

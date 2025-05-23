@@ -22,8 +22,9 @@ dependencies = [
     "ansys-api-fluent>=0.3.35",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-filetransfer>=0.1,<0.3",
-    "ansys-units>=0.4.0,<1.0",
+    "ansys-units>=0.6.dev1,<1.0",
     "defusedxml>=0.7.1",
+    "deprecated>=1.2.18",
     "docker>=7.1.0",
     "grpcio>=1.30.0",
     "grpcio-health-checking>=1.30.0",
@@ -43,9 +44,10 @@ include = ["src/ansys/fluent/core/generated/"]
 reader = ["h5py==3.13.0"]
 tests = [
     "pytest==8.3.5",
-    "pytest-cov==6.1.0",
+    "pytest-cov==6.1.1",
     "pytest-mock==3.14.0",
     "pytest-xdist==3.6.1",
+    "pyfakefs==5.8.0"
 ]
 docs = [
     "Sphinx==8.1.3",
@@ -64,11 +66,11 @@ docs = [
     "sphinxemoji==0.3.1",
     "sphinx-toggleprompt==0.6.0",
     "autodocsumm==0.2.14",
-    "beautifulsoup4==4.13.3",
+    "beautifulsoup4==4.13.4",
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.6.42",
+    "quarto-cli==1.7.29",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
     "tensorflow>=2.17.0",
@@ -123,6 +125,7 @@ skip = """
     ./src/ansys/fluent/core/codegen/data/fluent_gui_help.xml,
     pyproject.toml,
     CODE_OF_CONDUCT.md,
+    devel/field_level_help/field_level_help.csv
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 

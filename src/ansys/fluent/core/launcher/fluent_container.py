@@ -78,8 +78,10 @@ import tempfile
 from typing import Any, List
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
+from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.session import _parse_server_info_file
-from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -116,8 +118,24 @@ class LicenseServerNotSpecified(KeyError):
         )
 
 
-@deprecate_argument("container_mount_path", "mount_target")
-@deprecate_argument("host_mount_path", "mount_source")
+@all_deprecators(
+    deprecate_arg_mappings=[
+        {
+            "old_arg": "container_mount_path",
+            "new_arg": "mount_target",
+            "converter": lambda old_arg_val: old_arg_val,
+        },
+        {
+            "old_arg": "host_mount_path",
+            "new_arg": "mount_source",
+            "converter": lambda old_arg_val: old_arg_val,
+        },
+    ],
+    data_type_converter=None,
+    deprecated_version="v0.23.dev1",
+    deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
+    warn_message="",
+)
 def configure_container_dict(
     args: List[str],
     mount_source: str | Path | None = None,
@@ -381,6 +399,11 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
+    if is_compose():
+        container_dict["host_server_info_file"] = host_server_info_file
+        container_dict["mount_source"] = mount_source
+        container_dict["mount_target"] = mount_target
+
     return (
         container_dict,
         timeout,
@@ -451,34 +474,49 @@ def start_fluent_container(
         del container_vars_tmp
 
     try:
-        if not host_server_info_file.exists():
-            host_server_info_file.parents[0].mkdir(exist_ok=True)
+        if is_compose():
+            config_dict["fluent_port"] = port
 
-        host_server_info_file.touch(exist_ok=True)
-        last_mtime = host_server_info_file.stat().st_mtime
+            compose_container = ComposeBasedLauncher(container_dict=config_dict)
 
-        import docker
+            if not compose_container.check_image_exists():
+                logger.debug(
+                    f"Fluent image {config_dict['fluent_image']} not found. Pulling image..."
+                )
+                compose_container.pull_image()
 
-        docker_client = docker.from_env()
+            compose_container.start()
 
-        logger.debug("Starting Fluent docker container...")
-
-        container = docker_client.containers.run(
-            config_dict.pop("fluent_image"), **config_dict
-        )
-
-        success = timeout_loop(
-            lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
-        )
-
-        if not success:
-            raise TimeoutError(
-                "Fluent container launch has timed out, stop container manually."
-            )
+            return port, config_dict, compose_container
         else:
-            _, _, password = _parse_server_info_file(str(host_server_info_file))
+            if not host_server_info_file.exists():
+                host_server_info_file.parents[0].mkdir(exist_ok=True)
 
-            return port, password, container
+            host_server_info_file.touch(exist_ok=True)
+            last_mtime = host_server_info_file.stat().st_mtime
+
+            import docker
+
+            docker_client = docker.from_env()
+
+            logger.debug("Starting Fluent docker container...")
+
+            container = docker_client.containers.run(
+                config_dict.pop("fluent_image"), **config_dict
+            )
+
+            success = timeout_loop(
+                lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
+            )
+
+            if not success:
+                raise TimeoutError(
+                    "Fluent container launch has timed out, stop container manually."
+                )
+            else:
+                _, _, password = _parse_server_info_file(str(host_server_info_file))
+
+                return port, password, container
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()

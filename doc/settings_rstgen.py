@@ -20,9 +20,15 @@ Usage
 python <path to settings_rstgen.py>
 """
 
+from contextlib import redirect_stdout
 import importlib
+import io
 import os
+from pathlib import Path
 
+from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
+
+from ansys.fluent.core.search import search
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -30,6 +36,7 @@ from ansys.fluent.core.utils.fluent_version import (
 
 parents_dict = {}
 rst_list = []
+deprecated_class_version = {}
 
 
 def _get_indent_str(indent):
@@ -130,6 +137,10 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             r.write(f".. _{cls_name}:\n\n")
         r.write(f"{cls_orig_name}\n")
         r.write(f'{"="*(len(cls_orig_name))}\n\n')
+        deprecated = getattr(cls, "_deprecated_version", None)
+        if deprecated:
+            r.write(f".. deprecated:: Ansys {cls._deprecated_version}\n\n")
+            deprecated_class_version.update({cls_name: deprecated})
         r.write(
             f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
         )
@@ -205,6 +216,66 @@ def _populate_rst_from_settings(rst_dir, cls, version):
             )
 
 
+def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
+    deprecated_rst = (Path(rst_dir).parents[2] / "deprecated_apis.rst").resolve()
+    if deprecated_rst.exists():
+        deprecated_rst.unlink()
+    else:
+        deprecated_rst.touch()
+
+    deprecated_data = []
+    fluent_header = ["Target", "Deprecated"]
+    pyflunet_header = ["Target", "Deprecated", "Alternatives"]
+    name = "Deprecated APIs"
+    pyfluent_name = "Deprecated PyFluent APIs"
+    fluent_name = "Deprecated Ansys Fluent APIs"
+    buffer = io.StringIO()
+
+    for class_name, deprecated_version in deprecated_class_version.items():
+        with redirect_stdout(buffer):
+            search(class_name)
+        output = buffer.getvalue()
+        out = output.split("\n")
+        settings = set(
+            [
+                setting
+                for setting in out
+                if "tui" not in setting and "meshing" not in setting
+            ]
+        )
+        for setting in settings:
+            if setting and setting.split(".")[-1].split(" ")[0] == class_name:
+                setting = (
+                    setting.replace("<solver_session>", "solver")
+                    .replace("<", "")
+                    .replace(">", "")
+                )
+                settings_with_ref = f":ref:`{setting} <{class_name}>`"
+                deprecated_data.append((settings_with_ref, deprecated_version))
+
+    with open(deprecated_rst, "w", encoding="utf-8") as f:
+        f.write(":orphan:\n\n")
+        f.write(f"{name}\n")
+        f.write(f'{"="*(len(name))}\n\n')
+
+        f.write(f"{pyfluent_name}\n")
+        f.write(f'{"-"*(len(pyfluent_name))}\n\n')
+        f.write(".. list-table:: Deprecated PyFluent APIs\n")
+        f.write("   :header-rows: 1\n\n")
+        f.write("   * - " + "\n     - ".join(pyflunet_header) + "\n")
+        for row in PYFLUENT_DEPRECATED_DATA:
+            f.write("   * - " + "\n     - ".join(row) + "\n")
+
+        f.write(f"{fluent_name}\n")
+        f.write(f'{"-"*(len(fluent_name))}\n\n')
+        f.write(".. list-table:: Deprecated Ansys Fluent APIs\n")
+        f.write("   :header-rows: 1\n\n")
+        f.write("   * - " + "\n     - ".join(fluent_header) + "\n")
+        sorted_data = sorted(deprecated_data, key=lambda x: len(x[0]))
+        for row in sorted_data:
+            f.write("   * - " + "\n     - ".join(row) + "\n")
+
+
 if __name__ == "__main__":
     print("Generating rst files for settings API classes")
     dirname = os.path.dirname(__file__)
@@ -218,6 +289,7 @@ if __name__ == "__main__":
             "settings",
         )
     )
+
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
@@ -230,3 +302,4 @@ if __name__ == "__main__":
     )
     _populate_parents_list(settings.root)
     _populate_rst_from_settings(rst_dir, settings.root, version)
+    _write_deprecated_rst_table(rst_dir, deprecated_class_version)

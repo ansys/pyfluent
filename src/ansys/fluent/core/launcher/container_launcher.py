@@ -26,7 +26,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING)
 >>> container_meshing_session = container_meshing_launcher()
@@ -38,6 +38,7 @@ Examples
 import inspect
 import logging
 import os
+import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -45,10 +46,7 @@ from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_string,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -57,12 +55,32 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
+from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.process_launch_string import (
+    _build_fluent_launch_args_string,
+)
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
+
+
+def _get_server_info_from_container(config_dict):
+    """Retrieve the server info from a specified file in a container."""
+
+    host_server_info_file = config_dict["host_server_info_file"]
+
+    time_limit = 0
+    while not host_server_info_file.exists():
+        time.sleep(2)
+        time_limit += 2
+        if time_limit > 60:
+            raise FileNotFoundError(f"{host_server_info_file} not found.")
+
+    return _parse_server_info_file(str(host_server_info_file))
 
 
 class DockerLauncher:
@@ -198,9 +216,16 @@ class DockerLauncher:
                 del config_dict_h
             return config_dict
 
-        port, password, container = start_fluent_container(
-            self._args, self.argvals["container_dict"]
-        )
+        if is_compose():
+            port, config_dict, container = start_fluent_container(
+                self._args, self.argvals["container_dict"]
+            )
+
+            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+        else:
+            port, password, container = start_fluent_container(
+                self._args, self.argvals["container_dict"]
+            )
 
         fluent_connection = FluentConnection(
             port=port,
@@ -209,6 +234,7 @@ class DockerLauncher:
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
+            container=container,
         )
 
         session = self.new_session(
@@ -217,12 +243,17 @@ class DockerLauncher:
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
         )
+
         session._container = container
 
-        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
-            self.argvals["start_watchdog"] = True
-        if self.argvals["start_watchdog"]:
-            logger.debug("Launching Watchdog for Fluent container...")
-            watchdog.launch(os.getpid(), port, password)
+        if not is_compose():
+            if (
+                self.argvals["start_watchdog"] is None
+                and self.argvals["cleanup_on_exit"]
+            ):
+                self.argvals["start_watchdog"] = True
+            if self.argvals["start_watchdog"]:
+                logger.debug("Launching Watchdog for Fluent container...")
+                watchdog.launch(os.getpid(), port, password)
 
         return session

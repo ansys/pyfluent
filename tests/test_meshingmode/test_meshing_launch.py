@@ -33,7 +33,7 @@ from ansys.fluent.core.examples.downloads import download_file
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
-    assert pure_meshing_session.health_check.is_serving
+    assert pure_meshing_session.is_server_healthy()
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)
@@ -102,14 +102,26 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_launch_meshing_and_switch(new_meshing_session_wo_exit):
+def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     meshing = new_meshing_session_wo_exit
+    assert meshing.is_server_healthy()
     assert meshing.is_active() is True
+    capsys.readouterr()
+    help(meshing)
+    captured = capsys.readouterr()
+    assert "Encapsulates a Fluent meshing session." in captured.out
     solver = meshing.switch_to_solver()
     assert meshing.is_active() is False
     for attr in ("tui", "meshing", "workflow", "watertight"):
         with pytest.raises(AttributeError):
             getattr(meshing, attr)
+    capsys.readouterr()
+    help(meshing)
+    captured = capsys.readouterr()
+    assert (
+        "The meshing session is no longer usable after switching to solution mode."
+        in captured.out
+    )
     solver.exit()
 
 

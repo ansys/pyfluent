@@ -30,6 +30,11 @@ import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
+)
+
+_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
 
 
 class SurfaceDataType(Enum):
@@ -311,6 +316,7 @@ class _AllowedFieldNames(_AllowedNames):
 
     def valid_name(self, field_name):
         """Returns valid names."""
+        field_name = _to_field_name_str(field_name)
         if validate_inputs:
             names = self
             if not names.is_valid(field_name, respect_data_valid=False):

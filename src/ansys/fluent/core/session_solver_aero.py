@@ -75,31 +75,29 @@ class SolverAero(Solver):
         self._fluent_version = None
         self._fluent_connection = fluent_connection
         # TODO: Update Aero DM
-        scheme_eval.scheme_eval("(aero-load-addon)")
+        scheme_eval.eval("(aero-load-addon)")
 
     def new_project(self, project_name: str):
         """Define a new project."""
         # TODO: Update Aero DM
-        self.scheme_eval.scheme_eval(f"""(prjapp-new-project-cb #f "{project_name}")""")
+        self.scheme.eval(f"""(prjapp-new-project-cb #f "{project_name}")""")
 
     def open_project(self, project_name: str):
         """Open a saved project."""
         # TODO: Update Aero DM
-        self.scheme_eval.scheme_eval(
-            f"""(prjapp-project-open-project-cb #f "{project_name}")"""
-        )
+        self.scheme.eval(f"""(prjapp-project-open-project-cb #f "{project_name}")""")
 
     def new_simulation(self, case_file_name: str):
         """Add a new simulation by loading a case-file."""
         # TODO: Update Aero DM
-        self.scheme_eval.scheme_eval(
+        self.scheme.eval(
             f"""(gui-aero-project-add-workflow-cb #f "{case_file_name}" #f #f)"""
         )
 
     def open_simulation(self, simulation_file_name: str):
         """Open a saved simulation."""
         # TODO: Update Aero DM
-        self.scheme_eval.scheme_eval(
+        self.scheme.eval(
             f"""(aero-server-project-open-simulation "{simulation_file_name}")"""
         )
 

@@ -30,6 +30,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     :hidden:
     :caption: ansys.fluent.core
 
+    docker/docker_contents
     filereader/filereader_contents
     launcher/launcher_contents
     meshing/meshing_contents
@@ -58,3 +59,4 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     system_coupling
     pyfluent_warnings
     workflow
+    deprecated_apis

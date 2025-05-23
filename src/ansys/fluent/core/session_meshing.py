@@ -85,10 +85,13 @@ class Meshing(PureMeshing):
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self._fluent_connection,
-            scheme_eval=self.scheme_eval,
+            scheme_eval=self.scheme,
             file_transfer_service=self._file_transfer_service,
         )
         self._fluent_connection = None
+        self.__doc__ = (
+            "The meshing session is no longer usable after switching to solution mode."
+        )
         return solver_session
 
     def __getattribute__(self, item: str):
