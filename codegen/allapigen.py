@@ -15,7 +15,7 @@ if __name__ == "__main__":
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
     ge_242 = FluentVersion(version) >= FluentVersion.v242
-    ge_252 = FluentVersion(version) >= FluentVersion.v252
+    ge_261 = FluentVersion(version) >= FluentVersion.v261
 
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
@@ -39,12 +39,11 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
         )
-    if ge_252:
+    if ge_261:
         static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
             meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
     meshing.exit()
-    """
     solver = launch_fluent(
         mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
     )
@@ -63,11 +62,10 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
             solver._datamodel_service_se.get_static_info("solverworkflow")
         )
-    """
     t1 = time()
     print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
     CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
-    # solver.exit()
+    solver.exit()
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."
     )
