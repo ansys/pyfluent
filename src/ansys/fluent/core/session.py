@@ -432,7 +432,7 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_directory: str | None = "."):
+    def download(self, file_name: str, local_directory: str | None = None):
         """Download a file from the server.
 
         Parameters
