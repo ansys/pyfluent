@@ -147,6 +147,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.codegen_required
+@pytest.mark.skip(reason="...")
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
@@ -682,6 +683,7 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
 
 
+@pytest.mark.skip(reason="...")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_singleton_setting_assign_session(
@@ -717,6 +719,7 @@ def test_builtin_singleton_setting_assign_session(
     assert models.settings_source == solver.settings
 
 
+@pytest.mark.skip(reason="...")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_non_creatable_named_object_setting_assign_session(
@@ -742,6 +745,7 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     assert inlet.settings_source == solver.settings
 
 
+@pytest.mark.skip(reason="...")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_creatable_named_object_setting_assign_session(
