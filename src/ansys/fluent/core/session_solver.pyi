@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.generated.datamodel_251.preferences import (
+from ansys.fluent.core.generated.datamodel_252.preferences import (
     Root as preferences_root,
 )
-from ansys.fluent.core.generated.datamodel_251.workflow import Root as workflow_root
-import ansys.fluent.core.generated.solver.settings_251 as settings_root
-from ansys.fluent.core.generated.solver.tui_251 import main_menu
+from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
+import ansys.fluent.core.generated.solver.settings_252 as settings_root
+from ansys.fluent.core.generated.solver.tui_252 import main_menu
 from ansys.fluent.core.system_coupling import SystemCoupling
 
 class Solver:
