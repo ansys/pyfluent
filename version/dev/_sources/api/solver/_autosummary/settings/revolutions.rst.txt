@@ -1,0 +1,21 @@
+:orphan:
+
+.. _revolutions:
+
+revolutions
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.revolutions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================
+
+Parent                                          Summary
+
+================================   ====================
+:ref:`fwh_options <fwh_options>`       Entering object.
+
+================================   ====================
+

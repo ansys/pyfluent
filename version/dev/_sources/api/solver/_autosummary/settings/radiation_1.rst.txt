@@ -1,0 +1,82 @@
+:orphan:
+
+.. _radiation_1:
+
+radiation
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.radiation_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================================================   ==================================================================
+
+Attribute                                                                                                                                                                   Summary
+
+==============================================================================================================   ==================================================================
+:ref:`radiation_bc <radiation_bc>`                                                                                                                               Radiation BC Type.
+
+:ref:`beam_width <beam_width>`                                                                                                                                 Beam width settings.
+
+:ref:`use_beeam_direction_from_solar_load_model_settings <use_beeam_direction_from_solar_load_model_settings>`                   Use Beam Direction from Solar Load Model Settings.
+
+:ref:`use_irradiation_from_solar_soad_model_settings <use_irradiation_from_solar_soad_model_settings>`                              Use Irradiation from Solar Load Model Settings.
+
+:ref:`direct_irradiation_settings <direct_irradiation_settings>`                                                                                       Direct irradiation settings.
+
+:ref:`diffuse_irradiation_settings <diffuse_irradiation_settings>`                                                                                    Diffuse irradiation settings.
+
+:ref:`external_black_body_temperature_method <external_black_body_temperature_method>`                                                      External Black Body Temperature Method.
+
+:ref:`black_body_temperature <black_body_temperature>`                                                                                                      Black Body Temperature.
+
+:ref:`internal_emissivity <internal_emissivity>`                                                                                                               Internal Emissivity.
+
+:ref:`participates_in_view_factor_calculation <participates_in_view_factor_calculation>`                                                  Participates in View Factor Calculation?.
+
+:ref:`participates_in_solar_ray_tracing <participates_in_solar_ray_tracing>`                                         Specifies whether to participates in Solar Ray Tracing or not.
+
+:ref:`solar_transmissivity_factor <solar_transmissivity_factor>`                                                                                       Solar Transmissivity Factor.
+
+==============================================================================================================   ==================================================================
+
+.. rubric:: Included in:
+
+========================================================   ===========================================
+
+Parent                                                                                         Summary
+
+========================================================   ===========================================
+:ref:`settings_2 <settings_2>`                                      Domain name to define settings on.
+
+:ref:`phase_4_child <phase_4_child>`                                     'child_object_type' of phase.
+
+:ref:`settings_13 <settings_13>`                                    Domain name to define settings on.
+
+:ref:`phase_15_child <phase_15_child>`                                   'child_object_type' of phase.
+
+:ref:`settings_18 <settings_18>`                                    Domain name to define settings on.
+
+:ref:`phase_20_child <phase_20_child>`                                   'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`exhaust_fan_2_child <exhaust_fan_2_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`phase_29_child <phase_29_child>`                                   'child_object_type' of phase.
+
+:ref:`outlet_vent_2_child <outlet_vent_2_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`phase_40_child <phase_40_child>`                                   'child_object_type' of phase.
+
+:ref:`pressure_outlet_2_child <pressure_outlet_2_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`phase_45_child <phase_45_child>`                                   'child_object_type' of phase.
+
+========================================================   ===========================================
+

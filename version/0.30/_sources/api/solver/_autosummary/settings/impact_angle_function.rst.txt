@@ -1,0 +1,44 @@
+:orphan:
+
+.. _impact_angle_function:
+
+impact_angle_function
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.impact_angle_function
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ====================================================
+
+Attribute                                                                                           Summary
+
+====================================================   ====================================================
+:ref:`option <option_32>`                                                                Polynomial method.
+
+:ref:`function_of <function_of>`                                What variable this object is a function of.
+
+:ref:`value <value_17>`                                                    Value as constant or expression.
+
+:ref:`udf <udf_1>`                                                                   User defined function.
+
+:ref:`piecewise_polynomial <piecewise_polynomial_1>`                         Piecewise polynomial settings.
+
+:ref:`piecewise_linear <piecewise_linear_2>`               Ranges and values for piecewise-linear property.
+
+:ref:`polynomial <polynomial_2>`                                                       Polynomial settings.
+
+====================================================   ====================================================
+
+.. rubric:: Included in:
+
+========================   ===========================================
+
+Parent                                                         Summary
+
+========================   ===========================================
+:ref:`generic <generic>`       Settings for the generic erosion model.
+
+========================   ===========================================
+
