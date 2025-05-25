@@ -147,7 +147,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.codegen_required
-@pytest.mark.skip(reason="...")
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
