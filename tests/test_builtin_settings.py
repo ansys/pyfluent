@@ -717,7 +717,6 @@ def test_builtin_singleton_setting_assign_session(
     assert models.settings_source == solver.settings
 
 
-@pytest.mark.skip(reason="...")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_builtin_non_creatable_named_object_setting_assign_session(
