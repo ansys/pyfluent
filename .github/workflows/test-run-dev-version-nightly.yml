@@ -91,6 +91,7 @@ jobs:
       - name: Update Fluent image
         env:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+        if: github.ref == 'refs/heads/main'
         run: |
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
