@@ -59,7 +59,7 @@ def test_allapigen_files(new_solver_session):
 def test_codegen_with_no_static_info(monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
-    version = "251"
+    version = "252"
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
@@ -138,7 +138,7 @@ class main_menu(TUIMenu):
 def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
-    version = "251"
+    version = "252"
     static_infos = {}
     static_info_type = (
         StaticInfoType.TUI_SOLVER if mode == "solver" else StaticInfoType.TUI_MESHING

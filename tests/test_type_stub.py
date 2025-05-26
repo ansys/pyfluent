@@ -28,12 +28,12 @@ from ansys.fluent.core import CODEGEN_OUTDIR
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==25.1")
+@pytest.mark.fluent_version("==25.2")
 def test_settings_stub():
     # The type-stub files, which are generated for settings API, are parsed by the
     # intellisense engine while typing in editors like vscode. This test validates the
     # information contained in a type-stub file.
-    version = "251"
+    version = "252"
     stub_file = CODEGEN_OUTDIR / "solver" / f"settings_{version}.pyi"
     assert stub_file.exists()
     with open(stub_file) as f:
