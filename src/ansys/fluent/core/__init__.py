@@ -36,17 +36,17 @@ from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
 )
-from ansys.fluent.core.launcher.launcher import (  # noqa: F401
-    connect_to_fluent,
-    launch_fluent,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (  # noqa: F401
+from ansys.fluent.core.launcher.launch_options import (  # noqa: F401
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
     UIMode,
+)
+from ansys.fluent.core.launcher.launcher import (  # noqa: F401
+    connect_to_fluent,
+    launch_fluent,
 )
 from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
 from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
@@ -57,12 +57,20 @@ from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
 from ansys.fluent.core.search import search  # noqa: F401
 from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
 from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
+from ansys.fluent.core.session_utilities import (  # noqa: F401
+    Meshing,
+    PrePost,
+    PureMeshing,
+    Solver,
+    SolverAero,
+    SolverIcing,
+)
 from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
 from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.31.dev1"
+__version__ = "0.32.dev0"
 
 _VERSION_INFO = None
 """
@@ -106,7 +114,7 @@ EXAMPLES_PATH = str(get_examples_download_dir())
 CONTAINER_MOUNT_SOURCE = None
 
 # Path inside the container where the host path is mounted
-CONTAINER_MOUNT_TARGET = "/mnt/pyfluent"
+CONTAINER_MOUNT_TARGET = "/home/container/workdir"
 
 # Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
 INFER_REMOTING_IP = True

@@ -77,19 +77,6 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
             datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
-def _import_settings_root(root):
-    _class_dict = {}
-    api_keys = []
-    if hasattr(root, "child_names"):
-        api_keys = root.child_names
-
-    for root_item in api_keys:
-        _class_dict[root_item] = root.__dict__[root_item]
-
-    settings_api_root = type("SettingsRoot", (object,), _class_dict)
-    return settings_api_root()
-
-
 class Solver(BaseSession):
     """Encapsulates a Fluent solver session.
 
@@ -143,9 +130,17 @@ class Solver(BaseSession):
         self._tui = None
         self._workflow = None
         self._system_coupling = None
-        self._settings_root = None
         self._fluent_version = None
         self._bg_session_threads = []
+
+        #: Root settings object.
+        self.settings = flobject.get_root(
+            flproxy=self._settings_service,
+            version=self._version,
+            interrupt=Solver._interrupt,
+            file_transfer_service=self._file_transfer_service,
+            scheme_eval=self.scheme.eval,
+        )
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
@@ -161,7 +156,6 @@ class Solver(BaseSession):
             )
         else:
             self.fields.reduction = reduction_old
-        self._settings_api_root = None
         self.fields.solution_variable_data = self._solution_variable_data()
 
         monitors_service = service_creator("monitors").create(
@@ -271,19 +265,6 @@ class Solver(BaseSession):
                 command._root.solution.run_calculation.interrupt()
 
     @property
-    def settings(self):
-        """Root settings object."""
-        if self._settings_root is None:
-            self._settings_root = flobject.get_root(
-                flproxy=self._settings_service,
-                version=self._version,
-                interrupt=Solver._interrupt,
-                file_transfer_service=self._file_transfer_service,
-                scheme_eval=self.scheme_eval.scheme_eval,
-            )
-        return self._settings_root
-
-    @property
     def system_coupling(self):
         """System coupling object."""
         if self._system_coupling is None:
@@ -352,35 +333,23 @@ class Solver(BaseSession):
     def __call__(self):
         return self.get_state()
 
-    def _populate_settings_api_root(self):
-        if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self.settings)
-
-    def __getattr__(self, attr):
-        self._populate_settings_api_root()
-        if not attr.startswith("_") and attr in dir(self._settings_api_root):
-            if self.get_fluent_version() > FluentVersion.v242:
+    def __getattr__(self, name):
+        try:
+            return super().__getattribute__(name)
+        except AttributeError as ex:
+            if name in self.settings.child_names:
                 warnings.warn(
-                    f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
+                    f"'{name}' is deprecated. Use 'settings.{name}' instead.",
                     DeprecatedSettingWarning,
                 )
-        # Try forwarding attribute access to the settings API root.
-        # If that fails with AttributeError, fall back to normal attribute lookup.
-        # Using object.__getattribute__ triggers the standard AttributeError with default messaging.
-        try:
-            return getattr(self._settings_api_root, attr)
-        except AttributeError:
-            # Let standard attribute access raise the appropriate error
-            return object.__getattribute__(self, attr)
+                return getattr(self.settings, name)
+            else:
+                raise ex
 
     def __dir__(self):
         if self._fluent_connection is None:
             return ["is_active"]
-        settings_dir = []
-        if self.get_fluent_version() <= FluentVersion.v242:
-            self._populate_settings_api_root()
-            settings_dir = dir(self._settings_api_root)
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)) + settings_dir) - {
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "svar_data",
             "svar_info",
             "reduction",

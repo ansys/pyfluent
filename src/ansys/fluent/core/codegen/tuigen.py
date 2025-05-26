@@ -58,7 +58,6 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
-    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
@@ -130,7 +129,7 @@ def _copy_tui_help_xml_file(version: str):
                 shutil.copy(str(xml_source), _XML_HELP_FILE)
             else:
                 logger.warning("fluent_gui_help.xml is not found.")
-        except AnsysVersionNotFound:
+        except FileNotFoundError:
             logger.warning("fluent_gui_help.xml is not found.")
 
 

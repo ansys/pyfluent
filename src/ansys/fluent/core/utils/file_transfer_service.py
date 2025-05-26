@@ -31,7 +31,7 @@ import warnings
 
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils import get_user_data_dir
-from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.utils.deprecate import all_deprecators
 import ansys.platform.instancemanagement as pypim
 
 # Host path which is mounted to the file-transfer-service container
@@ -229,8 +229,24 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
     >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
     """
 
-    @deprecate_argument("container_mount_path", "mount_target")
-    @deprecate_argument("host_mount_path", "mount_source")
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "container_mount_path",
+                "new_arg": "mount_target",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "host_mount_path",
+                "new_arg": "mount_source",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev1",
+        deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
+        warn_message="",
+    )
     def __init__(
         self,
         image_name: str | None = None,

@@ -46,6 +46,8 @@ metaclasses
 monitor
 MonitorsManager
 numpy
+PODMAN
+Podman
 poppler
 postprocess
 PIM
@@ -80,3 +82,4 @@ venv
 create_workflow
 load_workflow
 codegen
+discoverability

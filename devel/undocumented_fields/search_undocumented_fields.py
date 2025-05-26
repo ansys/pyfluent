@@ -33,6 +33,9 @@ class ClassFieldVisitor(ast.NodeVisitor):
         old_class = self.current_class
         self.current_class = node.name
         self.classes[node.name] = set()
+        if node.name.startswith("_"):
+            self.current_class = old_class
+            return
         is_enum = False
         for x in node.bases:
             if isinstance(x, ast.Name) and x.id in (
@@ -50,6 +53,7 @@ class ClassFieldVisitor(ast.NodeVisitor):
             ):
                 is_enum = True
         if is_enum:
+            self.current_class = old_class
             return  # Skip Enum classes
 
         # Visit all child nodes
@@ -140,6 +144,8 @@ def analyze_package(package_path: str) -> Dict[str, Dict[str, Set[str]]]:
             dirs.remove("generated")
 
         for file in files:
+            if file.startswith("_"):
+                continue
             if file.endswith(".py"):
                 file_path = os.path.join(root, file)
                 module_name = os.path.relpath(file_path, package_path).replace(

@@ -36,13 +36,13 @@ import socket
 import subprocess
 import threading
 from typing import Any, Callable, List, Tuple, TypeVar
-import warnings
 import weakref
 
+from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -150,7 +150,12 @@ def get_container(container_id_or_name: str) -> bool | ContainerT | None:
         container = docker_client.containers.get(container_id_or_name)
     except _docker().errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except _docker().errors.DockerException as exc:
+    # DockerException is the most common exception we can get here.
+    # However, in some system setup, we get ReadTimeoutError from urllib3 library
+    # (https://github.com/ansys/pyfluent/issues/3425).
+    # As urllib3 is not a direct dependency of PyFluent, we don't want to import it here,
+    # hence we catch the generic Exception.
+    except Exception as exc:
         logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
@@ -351,8 +356,6 @@ class FluentConnection:
 
     Methods
     -------
-    check_health()
-        Check health of Fluent connection.
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -372,6 +375,7 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: ContainerT | None = None,
     ):
         """Initialize a Session.
 
@@ -408,6 +412,9 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: ContainerT, optional
+            The container instance if the Fluent session is running inside
+            a container.
 
         Raises
         ------
@@ -429,14 +436,14 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check = service_creator("health_check").create(
+        self._health_check = service_creator("health_check").create(
             self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
         if pyfluent.CHECK_HEALTH:
-            self.health_check.check_health()
+            self._health_check.check_health()
 
         self._slurm_job_id = slurm_job_id
 
@@ -453,15 +460,16 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
-
+        self._container = container
         if (
             (inside_container is None or inside_container is True)
             and not remote_instance
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            inside_container = get_container(cortex_host)
-            logger.debug(f"get_container({cortex_host}): {inside_container}")
+            if not is_compose():
+                inside_container = get_container(cortex_host)
+                logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is False:
                 logger.info("Fluent is not running inside a container.")
             elif inside_container is None:
@@ -509,6 +517,12 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
+    @property
+    @deprecated(version="0.32", reason="No longer required at this level.")
+    def health_check(self):
+        """Provides access to Health Check service."""
+        return self._health_check
+
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
 
@@ -519,13 +533,18 @@ class FluentConnection:
         -----
         If the Fluent session is responsive, prefer using :func:`exit()` instead.
 
+        Raises
+        ------
+        subprocess.CalledProcessError
+            If the cleanup script fails to execute.
+
         Examples
         --------
         >>> import ansys.fluent.core as pyfluent
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container:
+        if self.connection_properties.inside_container or is_compose():
             self._force_exit_container()
         elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
@@ -559,11 +578,15 @@ class FluentConnection:
                 )
                 cmd_list.append(cleanup_file_name)
                 logger.debug(f"Cleanup command list = {cmd_list}")
-                subprocess.Popen(
+                result = subprocess.run(
                     cmd_list,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
+                    timeout=120,
+                    check=True,
                 )
+                if result.returncode != 0:
+                    raise subprocess.CalledProcessError(result.returncode, cmd_list)
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()
@@ -573,21 +596,28 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        container = self.connection_properties.inside_container
-        container_id = self.connection_properties.cortex_host
-        pid = self.connection_properties.fluent_host_pid
-        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
-        if get_container(container_id):
-            try:
-                container.exec_run(["bash", cleanup_file_name], detach=True)
-            except _docker().errors.APIError as e:
-                logger.info(f"{type(e).__name__}: {e}")
-                logger.debug(
-                    "Caught Docker APIError, Docker container probably not running anymore."
-                )
+        if is_compose() and self._container:
+            self._container.stop()
         else:
-            logger.debug("Container not found, cancelling cleanup script execution.")
+            container = self.connection_properties.inside_container
+            container_id = self.connection_properties.cortex_host
+            pid = self.connection_properties.fluent_host_pid
+            cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+            logger.debug(
+                f"Executing Fluent container cleanup script: {cleanup_file_name}"
+            )
+            if get_container(container_id):
+                try:
+                    container.exec_run(["bash", cleanup_file_name], detach=True)
+                except _docker().errors.APIError as e:
+                    logger.info(f"{type(e).__name__}: {e}")
+                    logger.debug(
+                        "Caught Docker APIError, Docker container probably not running anymore."
+                    )
+            else:
+                logger.debug(
+                    "Container not found, cancelling cleanup script execution."
+                )
 
     def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
@@ -612,11 +642,6 @@ class FluentConnection:
             service object
         """
         return service(self._channel, self._metadata, *args)
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        warnings.warn("Use -> health_check.status()", PyFluentDeprecationWarning)
-        return self.health_check.status()
 
     def wait_process_finished(self, wait: float | int | bool = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
@@ -648,7 +673,8 @@ class FluentConnection:
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
             raise WaitTypeError()
-        if self.connection_properties.inside_container:
+
+        if self.connection_properties.inside_container and not is_compose():
             _response = timeout_loop(
                 get_container,
                 wait,
@@ -735,7 +761,7 @@ class FluentConnection:
             if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
-            if not timeout_exec(lambda: self.health_check.is_serving, 5):
+            if not timeout_exec(lambda: self._health_check.is_serving, 5):
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
                 logger.info("Attempting to send exit request to Fluent...")

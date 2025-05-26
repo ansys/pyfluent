@@ -16,6 +16,7 @@ User guide
    monitors
    transfer_data
    units
+   physical_variables
    file_transfer
    offline/offline_contents
    convert_journal

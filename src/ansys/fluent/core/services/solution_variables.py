@@ -42,6 +42,11 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.variable_strategies import (
+    FluentSVarNamingStrategy as naming_strategy,
+)
+
+_to_field_name_str = naming_strategy().to_string
 
 
 class SolutionVariableService:
@@ -354,6 +359,7 @@ class _AllowedSvarNames:
         SvarError
             If the given solution variable name is invalid.
         """
+        solution_variable_name = _to_field_name_str(solution_variable_name)
         if not self.is_valid(
             solution_variable_name, zone_names=zone_names, domain_name=domain_name
         ):
@@ -613,7 +619,9 @@ class SolutionVariableData:
         )
         svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name = self._allowed_solution_variable_names.valid_name(
-            solution_variable_name, zone_names, domain_name
+            solution_variable_name,
+            zone_names,
+            domain_name,
         )
         zone_id_name_map = {}
         for zone_name in zone_names:

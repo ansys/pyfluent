@@ -9,22 +9,11 @@
     - static_info_type
     - stub_file
 
-  Module: ansys.fluent.core.codegen.tuigen
-  Class: _TUIMenu
-    - children
-    - doc
-    - is_command
-    - name
-    - path
-    - tui_name
-
   Module: ansys.fluent.core.data_model_cache
   Class: DataModelCache
     - rules_str_to_cache
     - rules_str_to_config
     - use_display_name
-  Class: _CacheImpl
-    - name_key
 
   Module: ansys.fluent.core.field_data_interfaces
   Class: PathlinesData
@@ -114,8 +103,6 @@
     - port
   Class: MonitorThread
     - cbs
-  Class: _ConnectionInterface
-    - scheme_eval
 
   Module: ansys.fluent.core.launcher.container_launcher
   Class: DockerLauncher
@@ -284,12 +271,6 @@
   Class: ZoneInfo
     - name
     - zone_type
-  Class: _FieldDataConstants
-    - bytes_stream
-    - chunk_size
-    - np_data_type_to_proto_field_type
-    - payloadTags
-    - proto_field_type_to_np_data_type
 
   Module: ansys.fluent.core.services.reduction
   Class: Reduction
@@ -330,12 +311,6 @@
   Class: PureMeshing
     - datamodel_streams
 
-  Module: ansys.fluent.core.solver._docstrings
-  Class: _DocStringAnalysis
-    - clean
-    - dubious
-    - empty
-
   Module: ansys.fluent.core.solver.flobject
   Class: Action
     - argument_names
@@ -357,29 +332,10 @@
   Class: RealList
     - base_set_state
     - set_state
-  Class: _Alias
-    - once
-    - scheme_eval
-  Class: _InlineConstants
-    - allowed_values
-    - default_value
-    - file_purpose
-    - is_active
-    - is_read_only
-    - is_stable
-    - max
-    - min
-    - user_creatable
 
   Module: ansys.fluent.core.solver.settings_builtin_bases
   Class: Solver
     - settings
-  Class: _CreatableNamedObjectSetting
-    - settings_source
-  Class: _NonCreatableNamedObjectSetting
-    - settings_source
-  Class: _SingletonSetting
-    - settings_source
 
   Module: ansys.fluent.core.streaming_services.events_streaming
   Class: AboutToLoadCaseEventInfo

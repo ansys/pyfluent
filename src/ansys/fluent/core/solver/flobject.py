@@ -74,22 +74,15 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
+)
+import ansys.units
 
 from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
-
-
-def _ansys_units():
-
-    try:
-        import ansys.units
-
-        return ansys.units
-    except ImportError:
-        pass
-
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -194,6 +187,9 @@ def to_python_name(fluent_name: str) -> str:
     while name in keyword.kwlist:
         name = name + "_"
     return name
+
+
+_to_field_name_str = naming_strategy().to_string
 
 
 def _get_python_path_comps(obj):
@@ -559,14 +555,12 @@ class RealNumerical(Numerical):
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
-        if not _ansys_units():
-            error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
             units = get_si_unit_for_fluent_quantity(quantity)
             if units is not None:
                 try:
-                    return _ansys_units().Quantity(
+                    return ansys.units.Quantity(
                         value=self.get_state(),
                         units=units,
                     )
@@ -602,11 +596,9 @@ class RealNumerical(Numerical):
                     raise UnhandledQuantity(self.path, state)
                 return units
 
-            if _ansys_units() and isinstance(state, (_ansys_units().Quantity, tuple)):
+            if isinstance(state, (ansys.units.Quantity, tuple)):
                 state = (
-                    _ansys_units().Quantity(*state)
-                    if isinstance(state, tuple)
-                    else state
+                    ansys.units.Quantity(*state) if isinstance(state, tuple) else state
                 )
                 state = state.to(get_units()).value
             elif isinstance(state, tuple):
@@ -627,6 +619,18 @@ class RealNumerical(Numerical):
 
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
+
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            Either str or VariableDescriptor.
+        kwargs : Any
+            Keyword arguments.
+        """
+        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
@@ -763,7 +767,7 @@ class SettingsBase(Base, Generic[StateT]):
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
-            if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
+            if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)
@@ -852,6 +856,9 @@ class String(SettingsBase[str], Textual):
     """A ``String`` object representing a string value setting."""
 
     _state_type = str
+
+    base_set_state = SettingsBase[str].set_state
+    set_state = Textual.set_state
 
 
 class Filename(SettingsBase[str], Textual):
@@ -1164,6 +1171,10 @@ class Group(SettingsBase[DictStateType]):
             raise
 
     def __setattr__(self, name: str, value):
+        # 'settings_source' will be set to settings object when they are created from builtin settings classes.
+        # We don't allow overwriting it.
+        if name == "settings_source":
+            raise AttributeError("Cannot overwrite settings_source after it is set.")
         attr = None
         try:
             attr = getattr(self, name)
@@ -2102,6 +2113,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
+
+        deprecated_version = info.get("deprecated_version", "")
+        cls._deprecated_version = deprecated_version
 
         taboo = set(dir(cls))
         taboo |= set(

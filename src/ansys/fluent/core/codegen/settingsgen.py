@@ -124,6 +124,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
+    data["deprecated_version"] = getattr(cls, "_deprecated_version", None)
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
         if k in command_names:
@@ -227,6 +228,11 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write(f"    {doc}\n")
     s.write('    """\n')
     s.write(f"    _version = {data['version']!r}\n")
+    deprecated = data["deprecated_version"]
+    if deprecated:
+        release_version = "20" + data["deprecated_version"].replace(".", "R")
+        s.write(f"    _deprecated_version = {release_version!r}\n")
+        s_stub.write("    _deprecated_version: str\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")

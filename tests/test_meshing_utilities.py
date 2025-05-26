@@ -697,9 +697,9 @@ def test_meshing_utilities(new_meshing_session):
 
     assert (
         meshing_session.meshing_utilities.get_maxsize_cell_zone_by_count(
-            zone_name_list=["outlet", "inlet", "wall", "internal"]
+            zone_name_list=["elbow-fluid"]
         )
-        is None
+        == 87
     )
 
     assert (
@@ -718,9 +718,9 @@ def test_meshing_utilities(new_meshing_session):
 
     assert (
         meshing_session.meshing_utilities.get_maxsize_cell_zone_by_volume(
-            zone_name_list=["outlet", "inlet", "wall", "internal"]
+            zone_name_list=["elbow-fluid"]
         )
-        is None
+        == 87
     )
 
     assert (
