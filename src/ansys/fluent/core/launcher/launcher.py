@@ -359,6 +359,7 @@ def connect_to_fluent(
     server_info_file_name: str | None = None,
     password: str | None = None,
     start_watchdog: bool | None = None,
+    file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
@@ -393,6 +394,8 @@ def connect_to_fluent(
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -424,4 +427,5 @@ def connect_to_fluent(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
+        file_transfer_service=file_transfer_service,
     )
