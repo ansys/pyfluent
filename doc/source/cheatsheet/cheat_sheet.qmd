@@ -1095,13 +1095,8 @@ solver = pyfluent.launch_fluent(
 
 ```{python}
 import ansys.fluent.core as pyfluent
-S = pyfluent.services.scheme_eval.Symbol
-session.scheme_eval.eval([S('+'), 2, 3])
-session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
-session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
+session.scheme.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 # Returns TUI output string
-session.scheme_eval.string_eval("(+ 2 3)")
-session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")
-session.scheme_eval.scheme_eval("(+ 2 3)")
-session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
+session.scheme.eval("(+ 2 3)")
+session.scheme.eval("(rpgetvar 'mom/relax)")
 ```

@@ -130,9 +130,7 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
     count = 0
 
     def cb(session, event_info):
-        assert event_info.index == session.scheme_eval.scheme_eval(
-            "(get-current-iteration)"
-        )
+        assert event_info.index == session.scheme.eval("(get-current-iteration)")
         nonlocal count
         count += 1
 
@@ -154,9 +152,7 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     def cb(session, event_info):
         nonlocal event_index, iteration_index
         event_index.update(event_info.index)
-        iteration_index.update(
-            session.scheme_eval.scheme_eval("(get-current-iteration)")
-        )
+        iteration_index.update(session.scheme.eval("(get-current-iteration)"))
 
     cb_ids = solver.events.register_callback(
         (

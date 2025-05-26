@@ -1266,7 +1266,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
-        self.scheme_eval = scheme_eval
+        self.scheme = scheme_eval
 
         self.get_zones_info = lambda: get_zones_info()()
 
@@ -1400,7 +1400,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             kwargs.get("field_name")
         )
         for surface_id in surface_ids:
-            self.scheme_eval.string_eval(f"(surface? {surface_id})")
+            self.scheme.string_eval(f"(surface? {surface_id})")
         fields_request = get_fields_request()
         fields_request.vectorFieldRequest.extend(
             self._fetched_data._vector_data(
@@ -1602,7 +1602,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
         # TODO: Add precision query in AppUtilities service
-        is_double_precision = self.scheme_eval.scheme_eval("(rp-double?)")
+        is_double_precision = self.scheme.eval("(rp-double?)")
         if is_double_precision:
             nested_nodes = self._service.get_solver_mesh_nodes_double(nodes_request)
         else:

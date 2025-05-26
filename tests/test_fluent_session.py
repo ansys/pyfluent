@@ -251,7 +251,7 @@ def test_interrupt(static_mixer_case_session):
     )
     time.sleep(5)
     solver.solution.run_calculation.interrupt()
-    assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100
+    assert solver.scheme.eval("(rpgetvar 'time-step)") < 100
 
 
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):

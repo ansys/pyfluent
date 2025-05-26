@@ -276,7 +276,7 @@ class Reduction:
         """__init__ method of Reduction class."""
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
-        self._to_str = naming_strategy().to_string if naming_strategy else lambda s: s
+        self._to_str = naming_strategy().to_string
 
     def _validate_str_location(self, loc: str):
         if all(
@@ -351,7 +351,7 @@ class Reduction:
     def count_if(self, condition, locations, ctxt=None) -> Any:
         """Count the number of faces or cells where the specified condition is satisfied."""
         request = self._make_request(
-            "CountIfRequest", locations, ctxt, condition=condition
+            "CountIfRequest", locations, ctxt, expression=condition
         )
         response = self.service.count_if(request)
         return _convert_variant_to_value(response.value)

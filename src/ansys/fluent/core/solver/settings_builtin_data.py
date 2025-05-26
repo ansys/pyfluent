@@ -35,6 +35,7 @@ DATA = {
     "Radiation": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.radiation",
             FluentVersion.v252: "setup.models.radiation",
             FluentVersion.v251: "setup.models.radiation",
             FluentVersion.v242: "setup.models.radiation",
@@ -45,6 +46,7 @@ DATA = {
     "Species": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.species",
             FluentVersion.v252: "setup.models.species",
             FluentVersion.v251: "setup.models.species",
             FluentVersion.v242: "setup.models.species",
@@ -55,6 +57,7 @@ DATA = {
     "DiscretePhase": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.discrete_phase",
             FluentVersion.v252: "setup.models.discrete_phase",
             FluentVersion.v251: "setup.models.discrete_phase",
             FluentVersion.v242: "setup.models.discrete_phase",
@@ -66,6 +69,7 @@ DATA = {
     "Injections": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.discrete_phase.injections",
             FluentVersion.v252: "setup.models.discrete_phase.injections",
             FluentVersion.v251: "setup.models.discrete_phase.injections",
             FluentVersion.v242: "setup.models.discrete_phase.injections",
@@ -77,6 +81,7 @@ DATA = {
     "Injection": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.models.discrete_phase.injections",
             FluentVersion.v252: "setup.models.discrete_phase.injections",
             FluentVersion.v251: "setup.models.discrete_phase.injections",
             FluentVersion.v242: "setup.models.discrete_phase.injections",
@@ -88,6 +93,7 @@ DATA = {
     "VirtualBladeModel": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.virtual_blade_model",
             FluentVersion.v252: "setup.models.virtual_blade_model",
             FluentVersion.v251: "setup.models.virtual_blade_model",
             FluentVersion.v242: "setup.models.virtual_blade_model",
@@ -99,6 +105,7 @@ DATA = {
     "Optics": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.optics",
             FluentVersion.v252: "setup.models.optics",
             FluentVersion.v251: "setup.models.optics",
             FluentVersion.v242: "setup.models.optics",
@@ -110,6 +117,7 @@ DATA = {
     "Structure": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.structure",
             FluentVersion.v252: "setup.models.structure",
             FluentVersion.v251: "setup.models.structure",
             FluentVersion.v242: "setup.models.structure",
@@ -120,6 +128,7 @@ DATA = {
     "Ablation": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.ablation",
             FluentVersion.v252: "setup.models.ablation",
             FluentVersion.v251: "setup.models.ablation",
             FluentVersion.v242: "setup.models.ablation",
@@ -130,6 +139,7 @@ DATA = {
     "EChemistry": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.echemistry",
             FluentVersion.v252: "setup.models.echemistry",
             FluentVersion.v251: "setup.models.echemistry",
             FluentVersion.v242: "setup.models.echemistry",
@@ -139,6 +149,7 @@ DATA = {
     "Battery": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.battery",
             FluentVersion.v252: "setup.models.battery",
             FluentVersion.v251: "setup.models.battery",
             FluentVersion.v242: "setup.models.battery",
@@ -148,6 +159,7 @@ DATA = {
     "SystemCoupling": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.system_coupling",
             FluentVersion.v252: "setup.models.system_coupling",
             FluentVersion.v251: "setup.models.system_coupling",
             FluentVersion.v242: "setup.models.system_coupling",
@@ -157,6 +169,7 @@ DATA = {
     "Sofc": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.sofc",
             FluentVersion.v252: "setup.models.sofc",
             FluentVersion.v251: "setup.models.sofc",
             FluentVersion.v242: "setup.models.sofc",
@@ -166,6 +179,7 @@ DATA = {
     "Pemfc": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.models.pemfc",
             FluentVersion.v252: "setup.models.pemfc",
             FluentVersion.v251: "setup.models.pemfc",
             FluentVersion.v242: "setup.models.pemfc",
@@ -184,6 +198,7 @@ DATA = {
     "CellZoneCondition": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.cell_zone_conditions",
             FluentVersion.v252: "setup.cell_zone_conditions",
             FluentVersion.v251: "setup.cell_zone_conditions",
             FluentVersion.v242: "setup.cell_zone_conditions",
@@ -200,6 +215,7 @@ DATA = {
     "BoundaryCondition": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.boundary_conditions",
             FluentVersion.v252: "setup.boundary_conditions",
             FluentVersion.v251: "setup.boundary_conditions",
             FluentVersion.v242: "setup.boundary_conditions",
@@ -293,6 +309,7 @@ DATA = {
     "NonReflectingBoundaries": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.boundary_conditions.non_reflecting_bc",
             FluentVersion.v252: "setup.boundary_conditions.non_reflecting_bc",
             FluentVersion.v251: "setup.boundary_conditions.non_reflecting_bc",
             FluentVersion.v242: "setup.boundary_conditions.non_reflecting_bc",
@@ -302,6 +319,7 @@ DATA = {
     "NonReflectingBoundary": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.boundary_conditions.non_reflecting_bc",
             FluentVersion.v252: "setup.boundary_conditions.non_reflecting_bc",
             FluentVersion.v251: "setup.boundary_conditions.non_reflecting_bc",
             FluentVersion.v242: "setup.boundary_conditions.non_reflecting_bc",
@@ -311,6 +329,7 @@ DATA = {
     "PerforatedWallBoundaries": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.boundary_conditions.perforated_wall",
             FluentVersion.v252: "setup.boundary_conditions.perforated_wall",
             FluentVersion.v251: "setup.boundary_conditions.perforated_wall",
             FluentVersion.v242: "setup.boundary_conditions.perforated_wall",
@@ -320,6 +339,7 @@ DATA = {
     "PerforatedWallBoundary": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.boundary_conditions.perforated_wall",
             FluentVersion.v252: "setup.boundary_conditions.perforated_wall",
             FluentVersion.v251: "setup.boundary_conditions.perforated_wall",
             FluentVersion.v242: "setup.boundary_conditions.perforated_wall",
@@ -329,6 +349,7 @@ DATA = {
     "MeshInterfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.mesh_interfaces",
             FluentVersion.v252: "setup.mesh_interfaces",
             FluentVersion.v251: "setup.mesh_interfaces",
             FluentVersion.v242: "setup.mesh_interfaces",
@@ -339,6 +360,7 @@ DATA = {
     "DynamicMesh": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.dynamic_mesh",
             FluentVersion.v252: "setup.dynamic_mesh",
             FluentVersion.v251: "setup.dynamic_mesh",
         },
@@ -347,6 +369,7 @@ DATA = {
     "ReferenceFrames": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.reference_frames",
             FluentVersion.v252: "setup.reference_frames",
             FluentVersion.v251: "setup.reference_frames",
             FluentVersion.v242: "setup.reference_frames",
@@ -357,6 +380,7 @@ DATA = {
     "ReferenceFrame": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.reference_frames",
             FluentVersion.v252: "setup.reference_frames",
             FluentVersion.v251: "setup.reference_frames",
             FluentVersion.v242: "setup.reference_frames",
@@ -367,6 +391,7 @@ DATA = {
     "NamedExpressions": (
         "Singleton",
         {
+            FluentVersion.v261: "setup.named_expressions",
             FluentVersion.v252: "setup.named_expressions",
             FluentVersion.v251: "setup.named_expressions",
             FluentVersion.v242: "setup.named_expressions",
@@ -377,6 +402,7 @@ DATA = {
     "NamedExpression": (
         "NamedObject",
         {
+            FluentVersion.v261: "setup.named_expressions",
             FluentVersion.v252: "setup.named_expressions",
             FluentVersion.v251: "setup.named_expressions",
             FluentVersion.v242: "setup.named_expressions",
@@ -391,6 +417,7 @@ DATA = {
     "Monitor": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.monitor",
             FluentVersion.v252: "solution.monitor",
             FluentVersion.v251: "solution.monitor",
             FluentVersion.v242: "solution.monitor",
@@ -402,6 +429,7 @@ DATA = {
     "Residual": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.monitor.residual",
             FluentVersion.v252: "solution.monitor.residual",
             FluentVersion.v251: "solution.monitor.residual",
             FluentVersion.v242: "solution.monitor.residual",
@@ -411,6 +439,7 @@ DATA = {
     "ReportFiles": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.monitor.report_files",
             FluentVersion.v252: "solution.monitor.report_files",
             FluentVersion.v251: "solution.monitor.report_files",
             FluentVersion.v242: "solution.monitor.report_files",
@@ -422,6 +451,7 @@ DATA = {
     "ReportFile": (
         "NamedObject",
         {
+            FluentVersion.v261: "solution.monitor.report_files",
             FluentVersion.v252: "solution.monitor.report_files",
             FluentVersion.v251: "solution.monitor.report_files",
             FluentVersion.v242: "solution.monitor.report_files",
@@ -433,6 +463,7 @@ DATA = {
     "ReportPlots": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.monitor.report_plots",
             FluentVersion.v252: "solution.monitor.report_plots",
             FluentVersion.v251: "solution.monitor.report_plots",
             FluentVersion.v242: "solution.monitor.report_plots",
@@ -444,6 +475,7 @@ DATA = {
     "ReportPlot": (
         "NamedObject",
         {
+            FluentVersion.v261: "solution.monitor.report_plots",
             FluentVersion.v252: "solution.monitor.report_plots",
             FluentVersion.v251: "solution.monitor.report_plots",
             FluentVersion.v242: "solution.monitor.report_plots",
@@ -455,6 +487,7 @@ DATA = {
     "ConvergenceConditions": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.monitor.convergence_conditions",
             FluentVersion.v252: "solution.monitor.convergence_conditions",
             FluentVersion.v251: "solution.monitor.convergence_conditions",
             FluentVersion.v242: "solution.monitor.convergence_conditions",
@@ -466,6 +499,7 @@ DATA = {
     "CellRegisters": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.cell_registers",
             FluentVersion.v252: "solution.cell_registers",
             FluentVersion.v251: "solution.cell_registers",
             FluentVersion.v242: "solution.cell_registers",
@@ -477,6 +511,7 @@ DATA = {
     "CellRegister": (
         "NamedObject",
         {
+            FluentVersion.v261: "solution.cell_registers",
             FluentVersion.v252: "solution.cell_registers",
             FluentVersion.v251: "solution.cell_registers",
             FluentVersion.v242: "solution.cell_registers",
@@ -489,6 +524,7 @@ DATA = {
     "CalculationActivity": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.calculation_activity",
             FluentVersion.v252: "solution.calculation_activity",
             FluentVersion.v251: "solution.calculation_activity",
             FluentVersion.v242: "solution.calculation_activity",
@@ -500,6 +536,7 @@ DATA = {
     "ExecuteCommands": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.calculation_activity.execute_commands",
             FluentVersion.v252: "solution.calculation_activity.execute_commands",
             FluentVersion.v251: "solution.calculation_activity.execute_commands",
             FluentVersion.v242: "solution.calculation_activity.execute_commands",
@@ -511,6 +548,7 @@ DATA = {
     "CaseModification": (
         "Singleton",
         {
+            FluentVersion.v261: "solution.calculation_activity.case_modification",
             FluentVersion.v252: "solution.calculation_activity.case_modification",
             FluentVersion.v251: "solution.calculation_activity.case_modification",
             FluentVersion.v242: "solution.calculation_activity.case_modification",
@@ -523,6 +561,7 @@ DATA = {
     "PointSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.point_surface",
             FluentVersion.v252: "results.surfaces.point_surface",
             FluentVersion.v251: "results.surfaces.point_surface",
             FluentVersion.v242: "results.surfaces.point_surface",
@@ -533,6 +572,7 @@ DATA = {
     "PointSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.point_surface",
             FluentVersion.v252: "results.surfaces.point_surface",
             FluentVersion.v251: "results.surfaces.point_surface",
             FluentVersion.v242: "results.surfaces.point_surface",
@@ -543,6 +583,7 @@ DATA = {
     "LineSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.line_surface",
             FluentVersion.v252: "results.surfaces.line_surface",
             FluentVersion.v251: "results.surfaces.line_surface",
             FluentVersion.v242: "results.surfaces.line_surface",
@@ -553,6 +594,7 @@ DATA = {
     "LineSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.line_surface",
             FluentVersion.v252: "results.surfaces.line_surface",
             FluentVersion.v251: "results.surfaces.line_surface",
             FluentVersion.v242: "results.surfaces.line_surface",
@@ -563,6 +605,7 @@ DATA = {
     "RakeSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.rake_surface",
             FluentVersion.v252: "results.surfaces.rake_surface",
             FluentVersion.v251: "results.surfaces.rake_surface",
             FluentVersion.v242: "results.surfaces.rake_surface",
@@ -573,6 +616,7 @@ DATA = {
     "RakeSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.rake_surface",
             FluentVersion.v252: "results.surfaces.rake_surface",
             FluentVersion.v251: "results.surfaces.rake_surface",
             FluentVersion.v242: "results.surfaces.rake_surface",
@@ -585,6 +629,7 @@ DATA = {
     "IsoSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.iso_surface",
             FluentVersion.v252: "results.surfaces.iso_surface",
             FluentVersion.v251: "results.surfaces.iso_surface",
             FluentVersion.v242: "results.surfaces.iso_surface",
@@ -595,6 +640,7 @@ DATA = {
     "IsoSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.iso_surface",
             FluentVersion.v252: "results.surfaces.iso_surface",
             FluentVersion.v251: "results.surfaces.iso_surface",
             FluentVersion.v242: "results.surfaces.iso_surface",
@@ -605,6 +651,7 @@ DATA = {
     "IsoClips": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.iso_clip",
             FluentVersion.v252: "results.surfaces.iso_clip",
             FluentVersion.v251: "results.surfaces.iso_clip",
             FluentVersion.v242: "results.surfaces.iso_clip",
@@ -614,6 +661,7 @@ DATA = {
     "IsoClip": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.iso_clip",
             FluentVersion.v252: "results.surfaces.iso_clip",
             FluentVersion.v251: "results.surfaces.iso_clip",
             FluentVersion.v242: "results.surfaces.iso_clip",
@@ -623,6 +671,7 @@ DATA = {
     "ZoneSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.zone_surface",
             FluentVersion.v252: "results.surfaces.zone_surface",
             FluentVersion.v251: "results.surfaces.zone_surface",
             FluentVersion.v242: "results.surfaces.zone_surface",
@@ -632,6 +681,7 @@ DATA = {
     "ZoneSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.zone_surface",
             FluentVersion.v252: "results.surfaces.zone_surface",
             FluentVersion.v251: "results.surfaces.zone_surface",
             FluentVersion.v242: "results.surfaces.zone_surface",
@@ -641,6 +691,7 @@ DATA = {
     "PartitionSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.partition_surface",
             FluentVersion.v252: "results.surfaces.partition_surface",
             FluentVersion.v251: "results.surfaces.partition_surface",
             FluentVersion.v242: "results.surfaces.partition_surface",
@@ -650,6 +701,7 @@ DATA = {
     "PartitionSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.partition_surface",
             FluentVersion.v252: "results.surfaces.partition_surface",
             FluentVersion.v251: "results.surfaces.partition_surface",
             FluentVersion.v242: "results.surfaces.partition_surface",
@@ -659,6 +711,7 @@ DATA = {
     "TransformSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.transform_surface",
             FluentVersion.v252: "results.surfaces.transform_surface",
             FluentVersion.v251: "results.surfaces.transform_surface",
             FluentVersion.v242: "results.surfaces.transform_surface",
@@ -668,6 +721,7 @@ DATA = {
     "TransformSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.transform_surface",
             FluentVersion.v252: "results.surfaces.transform_surface",
             FluentVersion.v251: "results.surfaces.transform_surface",
             FluentVersion.v242: "results.surfaces.transform_surface",
@@ -677,6 +731,7 @@ DATA = {
     "ImprintSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.imprint_surface",
             FluentVersion.v252: "results.surfaces.imprint_surface",
             FluentVersion.v251: "results.surfaces.imprint_surface",
             FluentVersion.v242: "results.surfaces.imprint_surface",
@@ -686,6 +741,7 @@ DATA = {
     "ImprintSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.imprint_surface",
             FluentVersion.v252: "results.surfaces.imprint_surface",
             FluentVersion.v251: "results.surfaces.imprint_surface",
             FluentVersion.v242: "results.surfaces.imprint_surface",
@@ -695,6 +751,7 @@ DATA = {
     "PlaneSlices": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.plane_slice",
             FluentVersion.v252: "results.surfaces.plane_slice",
             FluentVersion.v251: "results.surfaces.plane_slice",
             FluentVersion.v242: "results.surfaces.plane_slice",
@@ -704,6 +761,7 @@ DATA = {
     "PlaneSlice": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.plane_slice",
             FluentVersion.v252: "results.surfaces.plane_slice",
             FluentVersion.v251: "results.surfaces.plane_slice",
             FluentVersion.v242: "results.surfaces.plane_slice",
@@ -713,6 +771,7 @@ DATA = {
     "SphereSlices": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.sphere_slice",
             FluentVersion.v252: "results.surfaces.sphere_slice",
             FluentVersion.v251: "results.surfaces.sphere_slice",
             FluentVersion.v242: "results.surfaces.sphere_slice",
@@ -722,6 +781,7 @@ DATA = {
     "SphereSlice": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.sphere_slice",
             FluentVersion.v252: "results.surfaces.sphere_slice",
             FluentVersion.v251: "results.surfaces.sphere_slice",
             FluentVersion.v242: "results.surfaces.sphere_slice",
@@ -731,6 +791,7 @@ DATA = {
     "QuadricSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.quadric_surface",
             FluentVersion.v252: "results.surfaces.quadric_surface",
             FluentVersion.v251: "results.surfaces.quadric_surface",
             FluentVersion.v242: "results.surfaces.quadric_surface",
@@ -740,6 +801,7 @@ DATA = {
     "QuadricSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.quadric_surface",
             FluentVersion.v252: "results.surfaces.quadric_surface",
             FluentVersion.v251: "results.surfaces.quadric_surface",
             FluentVersion.v242: "results.surfaces.quadric_surface",
@@ -749,6 +811,7 @@ DATA = {
     "SurfaceCells": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.surface_cells",
             FluentVersion.v252: "results.surfaces.surface_cells",
             FluentVersion.v251: "results.surfaces.surface_cells",
             FluentVersion.v242: "results.surfaces.surface_cells",
@@ -758,6 +821,7 @@ DATA = {
     "SurfaceCell": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.surface_cells",
             FluentVersion.v252: "results.surfaces.surface_cells",
             FluentVersion.v251: "results.surfaces.surface_cells",
             FluentVersion.v242: "results.surfaces.surface_cells",
@@ -767,6 +831,7 @@ DATA = {
     "ExpressionVolumes": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.expression_volume",
             FluentVersion.v252: "results.surfaces.expression_volume",
             FluentVersion.v251: "results.surfaces.expression_volume",
         },
@@ -774,6 +839,7 @@ DATA = {
     "ExpressionVolume": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.expression_volume",
             FluentVersion.v252: "results.surfaces.expression_volume",
             FluentVersion.v251: "results.surfaces.expression_volume",
         },
@@ -781,6 +847,7 @@ DATA = {
     "GroupSurfaces": (
         "Singleton",
         {
+            FluentVersion.v261: "results.surfaces.group_surface",
             FluentVersion.v252: "results.surfaces.group_surface",
             FluentVersion.v251: "results.surfaces.group_surface",
         },
@@ -788,6 +855,7 @@ DATA = {
     "GroupSurface": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.surfaces.group_surface",
             FluentVersion.v252: "results.surfaces.group_surface",
             FluentVersion.v251: "results.surfaces.group_surface",
         },
@@ -802,6 +870,7 @@ DATA = {
     "Pathlines": (
         "Singleton",
         {
+            FluentVersion.v261: "results.graphics.pathline",
             FluentVersion.v252: "results.graphics.pathline",
             FluentVersion.v251: "results.graphics.pathline",
             FluentVersion.v242: "results.graphics.pathline",
@@ -813,6 +882,7 @@ DATA = {
     "Pathline": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.graphics.pathline",
             FluentVersion.v252: "results.graphics.pathline",
             FluentVersion.v251: "results.graphics.pathline",
             FluentVersion.v242: "results.graphics.pathline",
@@ -824,6 +894,7 @@ DATA = {
     "ParticleTracks": (
         "Singleton",
         {
+            FluentVersion.v261: "results.graphics.particle_track",
             FluentVersion.v252: "results.graphics.particle_track",
             FluentVersion.v251: "results.graphics.particle_track",
             FluentVersion.v242: "results.graphics.particle_track",
@@ -835,6 +906,7 @@ DATA = {
     "ParticleTrack": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.graphics.particle_track",
             FluentVersion.v252: "results.graphics.particle_track",
             FluentVersion.v251: "results.graphics.particle_track",
             FluentVersion.v242: "results.graphics.particle_track",
@@ -848,6 +920,7 @@ DATA = {
     "Plots": (
         "Singleton",
         {
+            FluentVersion.v261: "results.plot",
             FluentVersion.v252: "results.plot",
             FluentVersion.v251: "results.plot",
             FluentVersion.v242: "results.plot",
@@ -859,6 +932,7 @@ DATA = {
     "XYPlots": (
         "Singleton",
         {
+            FluentVersion.v261: "results.plot.xy_plot",
             FluentVersion.v252: "results.plot.xy_plot",
             FluentVersion.v251: "results.plot.xy_plot",
             FluentVersion.v242: "results.plot.xy_plot",
@@ -870,6 +944,7 @@ DATA = {
     "XYPlot": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.plot.xy_plot",
             FluentVersion.v252: "results.plot.xy_plot",
             FluentVersion.v251: "results.plot.xy_plot",
             FluentVersion.v242: "results.plot.xy_plot",
@@ -881,6 +956,7 @@ DATA = {
     "Histogram": (
         "Singleton",
         {
+            FluentVersion.v261: "results.plot.histogram",
             FluentVersion.v252: "results.plot.histogram",
             FluentVersion.v251: "results.plot.histogram",
             FluentVersion.v242: "results.plot.histogram",
@@ -890,6 +966,7 @@ DATA = {
     "CumulativePlots": (
         "Singleton",
         {
+            FluentVersion.v261: "results.plot.cumulative_plot",
             FluentVersion.v252: "results.plot.cumulative_plot",
             FluentVersion.v251: "results.plot.cumulative_plot",
             FluentVersion.v242: "results.plot.cumulative_plot",
@@ -899,6 +976,7 @@ DATA = {
     "CumulativePlot": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.plot.cumulative_plot",
             FluentVersion.v252: "results.plot.cumulative_plot",
             FluentVersion.v251: "results.plot.cumulative_plot",
             FluentVersion.v242: "results.plot.cumulative_plot",
@@ -908,6 +986,7 @@ DATA = {
     "ProfileData": (
         "Singleton",
         {
+            FluentVersion.v261: "results.plot.profile_data",
             FluentVersion.v252: "results.plot.profile_data",
             FluentVersion.v251: "results.plot.profile_data",
             FluentVersion.v242: "results.plot.profile_data",
@@ -916,6 +995,7 @@ DATA = {
     "InterpolatedData": (
         "Singleton",
         {
+            FluentVersion.v261: "results.plot.interpolated_data",
             FluentVersion.v252: "results.plot.interpolated_data",
             FluentVersion.v251: "results.plot.interpolated_data",
             FluentVersion.v242: "results.plot.interpolated_data",
@@ -924,6 +1004,7 @@ DATA = {
     "Scenes": (
         "Singleton",
         {
+            FluentVersion.v261: "results.scene",
             FluentVersion.v252: "results.scene",
             FluentVersion.v251: "results.scene",
             FluentVersion.v242: "results.scene",
@@ -935,6 +1016,7 @@ DATA = {
     "Scene": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.scene",
             FluentVersion.v252: "results.scene",
             FluentVersion.v251: "results.scene",
             FluentVersion.v242: "results.scene",
@@ -946,6 +1028,7 @@ DATA = {
     "SceneAnimation": (
         "Singleton",
         {
+            FluentVersion.v261: "results.animations.scene_animation",
             FluentVersion.v252: "results.animations.scene_animation",
             FluentVersion.v251: "results.animations.scene_animation",
             FluentVersion.v242: "results.animations.scene_animation",
@@ -955,6 +1038,7 @@ DATA = {
     "Report": (
         "Singleton",
         {
+            FluentVersion.v261: "results.report",
             FluentVersion.v252: "results.report",
             FluentVersion.v251: "results.report",
             FluentVersion.v242: "results.report",
@@ -966,6 +1050,7 @@ DATA = {
     "DiscretePhaseHistogram": (
         "Singleton",
         {
+            FluentVersion.v261: "results.report.discrete_phase.histogram",
             FluentVersion.v252: "results.report.discrete_phase.histogram",
             FluentVersion.v251: "results.report.discrete_phase.histogram",
             FluentVersion.v242: "results.report.discrete_phase.histogram",
@@ -977,6 +1062,7 @@ DATA = {
     "Fluxes": (
         "Singleton",
         {
+            FluentVersion.v261: "results.report.fluxes",
             FluentVersion.v252: "results.report.fluxes",
             FluentVersion.v251: "results.report.fluxes",
             FluentVersion.v242: "results.report.fluxes",
@@ -988,6 +1074,7 @@ DATA = {
     "SurfaceIntegrals": (
         "Singleton",
         {
+            FluentVersion.v261: "results.report.surface_integrals",
             FluentVersion.v252: "results.report.surface_integrals",
             FluentVersion.v251: "results.report.surface_integrals",
             FluentVersion.v242: "results.report.surface_integrals",
@@ -999,6 +1086,7 @@ DATA = {
     "VolumeIntegrals": (
         "Singleton",
         {
+            FluentVersion.v261: "results.report.volume_integrals",
             FluentVersion.v252: "results.report.volume_integrals",
             FluentVersion.v251: "results.report.volume_integrals",
             FluentVersion.v242: "results.report.volume_integrals",
@@ -1010,6 +1098,7 @@ DATA = {
     "InputParameters": (
         "Singleton",
         {
+            FluentVersion.v261: "parameters.input_parameters",
             FluentVersion.v252: "parameters.input_parameters",
             FluentVersion.v251: "parameters.input_parameters",
             FluentVersion.v242: "parameters.input_parameters",
@@ -1019,6 +1108,7 @@ DATA = {
     "OutputParameters": (
         "Singleton",
         {
+            FluentVersion.v261: "parameters.output_parameters",
             FluentVersion.v252: "parameters.output_parameters",
             FluentVersion.v251: "parameters.output_parameters",
             FluentVersion.v242: "parameters.output_parameters",
@@ -1028,6 +1118,7 @@ DATA = {
     "CustomFieldFunctions": (
         "Singleton",
         {
+            FluentVersion.v261: "results.custom_field_functions",
             FluentVersion.v252: "results.custom_field_functions",
             FluentVersion.v251: "results.custom_field_functions",
         },
@@ -1035,6 +1126,7 @@ DATA = {
     "CustomFieldFunction": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.custom_field_functions",
             FluentVersion.v252: "results.custom_field_functions",
             FluentVersion.v251: "results.custom_field_functions",
         },
@@ -1042,6 +1134,7 @@ DATA = {
     "CustomVectors": (
         "Singleton",
         {
+            FluentVersion.v261: "results.custom_vectors",
             FluentVersion.v252: "results.custom_vectors",
             FluentVersion.v251: "results.custom_vectors",
             FluentVersion.v242: "results.custom_vectors",
@@ -1051,6 +1144,7 @@ DATA = {
     "CustomVector": (
         "NamedObject",
         {
+            FluentVersion.v261: "results.custom_vectors",
             FluentVersion.v252: "results.custom_vectors",
             FluentVersion.v251: "results.custom_vectors",
             FluentVersion.v242: "results.custom_vectors",
@@ -1060,6 +1154,7 @@ DATA = {
     "SimulationReports": (
         "Singleton",
         {
+            FluentVersion.v261: "results.report.simulation_reports",
             FluentVersion.v252: "results.report.simulation_reports",
             FluentVersion.v251: "results.report.simulation_reports",
             FluentVersion.v242: "results.report.simulation_reports",
