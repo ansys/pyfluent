@@ -417,11 +417,11 @@ A. **Set Up Fluent and File Transfer Server on Windows**
 
 3. **Set Working Directory**
 
-   Change to the Fluent installation directory:
+   Change to the Fluent's working directory:
 
    .. code:: console
 
-      cd "ANSYS Inc\v252\fluent\ntbin\win64"
+      cd "<path to Fluent's working directory>"
 
 4. **Start the File Transfer Server**
 
@@ -500,11 +500,11 @@ A. **Set Up Fluent and File Transfer Server on Linux or WSL**
 
 3. **Set Working Directory**
 
-   Change to the Fluent installation directory:
+   Change to the Fluent's working directory:
 
    .. code:: console
 
-      cd "ansys_inc/v252/fluent/bin/fluent"
+      cd "<path to Fluent's working directory>"
 
 4. **Start the File Transfer Server**
 
