@@ -415,23 +415,15 @@ A. **Set Up Fluent and File Transfer Server on Windows**
    - Port: ``51344``
    - Password: ``5scj6c8l``
 
-3. **Set Working Directory**
+3. **Start the File Transfer Server**
 
-   Change to the Fluent's working directory:
-
-   .. code:: console
-
-      cd "<path to Fluent's working directory>"
-
-4. **Start the File Transfer Server**
-
-   Launch the container:
+   From Fluent's working directory, start the container for file-transfer server.
 
    .. code:: console
 
       docker run -p 50000:50000 -v %cd%:/home/container/workdir filetransfer-tool-server
 
-5. **Allow Inbound TCP Connections**
+4. **Allow Inbound TCP Connections**
 
    Configure the Windows Firewall:
 
@@ -498,17 +490,9 @@ A. **Set Up Fluent and File Transfer Server on Linux or WSL**
    - Port: ``41429``
    - Password: ``u5s3iivh``
 
-3. **Set Working Directory**
+3. **Start the File Transfer Server**
 
-   Change to the Fluent's working directory:
-
-   .. code:: console
-
-      cd "<path to Fluent's working directory>"
-
-4. **Start the File Transfer Server**
-
-   Launch the container:
+   From Fluent's working directory, start the container for file-transfer server.
 
    .. code:: console
 
