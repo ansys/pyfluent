@@ -118,7 +118,7 @@ jobs:
     name: "Check library vulnerabilities"
     runs-on: ubuntu-22.04
     steps:
-      - uses: ansys/actions/check-vulnerabilities@v9
+      - uses: ansys/actions/check-vulnerabilities@main
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
@@ -126,6 +126,7 @@ jobs:
           dev-mode: ${{ github.ref != 'refs/heads/main' }}
           upload-reports: True
           hide-log: false
+          bandit-configfile: "pyproject.toml"
 
   docs_build:
     name: Build Documentation
