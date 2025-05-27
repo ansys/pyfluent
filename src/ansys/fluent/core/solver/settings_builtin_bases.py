@@ -26,7 +26,7 @@ from typing import Protocol, runtime_checkable
 
 from ansys.fluent.core.solver.flobject import NamedObject, SettingsBase
 from ansys.fluent.core.solver.settings_builtin_data import DATA
-from ansys.fluent.core.utils.context_managers import _get_stack
+from ansys.fluent.core.utils.context_managers import _get_active_session
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -76,12 +76,7 @@ def _initialize_settings(instance, defaults: dict, settings_source=None, **kwarg
     if settings_source is not None:
         instance.settings_source = settings_source
     else:
-        stack = _get_stack()
-        if not stack:
-            raise RuntimeError(
-                "No solver context is active. Use `settings_source` or within 'with using(solver_session):' block."
-            )
-        instance.settings_source = stack[-1]
+        instance.settings_source = _get_active_session()
 
 
 class _SingletonSetting:

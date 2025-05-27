@@ -43,7 +43,6 @@ def using(session):
         yield
     finally:
         stack.pop()
-        session.exit()
 
 
 def _get_active_session():
