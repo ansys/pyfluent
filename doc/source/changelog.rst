@@ -9,6 +9,60 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.32.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.32.dev1>`_ - May 27, 2025
+=======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - scheme_eval.
+          - `#4042 <https://github.com/ansys/pyfluent/pull/4042>`_
+
+        * - health_check
+          - `#4048 <https://github.com/ansys/pyfluent/pull/4048>`_
+
+        * - pyfluent_enums -> launch_options
+          - `#4054 <https://github.com/ansys/pyfluent/pull/4054>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ``CONTRIBUTORS.md`` with the latest contributors
+          - `#4030 <https://github.com/ansys/pyfluent/pull/4030>`_
+
+        * - Update automotive brake thermal analysis [skip tests]
+          - `#4049 <https://github.com/ansys/pyfluent/pull/4049>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - update CHANGELOG for v0.31.0
+          - `#4044 <https://github.com/ansys/pyfluent/pull/4044>`_
+
+        * - update CHANGELOG for v0.32.dev0
+          - `#4047 <https://github.com/ansys/pyfluent/pull/4047>`_
+
+        * - skip tests for nightly tests to pass [skip tests]
+          - `#4056 <https://github.com/ansys/pyfluent/pull/4056>`_
+
+        * - clean up units business
+          - `#4057 <https://github.com/ansys/pyfluent/pull/4057>`_
+
+
 `0.31.0 <https://github.com/ansys/pyfluent/releases/tag/v0.31.0>`_ - May 21, 2025
 
 `0.32.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.32.dev0>`_ - May 22, 2025
