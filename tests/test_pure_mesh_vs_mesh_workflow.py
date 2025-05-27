@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import pytest
 
 from ansys.fluent.core.examples import download_file
@@ -27,8 +49,8 @@ def test_pure_meshing_mode(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_mode(new_meshing_session):
-    meshing_session = new_meshing_session
+def test_meshing_mode(new_meshing_session_wo_exit):
+    meshing_session = new_meshing_session_wo_exit
     # check a few dir elements
     # n.b. 'field_data', 'field_info' need to
     # be eliminated from meshing sessions
@@ -38,27 +60,34 @@ def test_meshing_mode(new_meshing_session):
     assert meshing_session.workflow.InitializeWorkflow(
         WorkflowType="Watertight Geometry"
     )
-    assert meshing_session.switch_to_solver()
+    solver = meshing_session.switch_to_solver()
+    assert meshing_session.is_active() is False
+    solver.exit()
 
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_and_solver_mode_exit(new_meshing_session):
-    meshing_session = new_meshing_session
+def test_meshing_and_solver_mode_exit(new_meshing_session_wo_exit):
+    meshing_session = new_meshing_session_wo_exit
     solver_session = meshing_session.switch_to_solver()
     # Even if exit statement is invoked twice, only one is executed as the channel instance is shared
-    meshing_session.exit()
+    with pytest.raises(AttributeError):
+        meshing_session.exit()
+    assert meshing_session.is_active() is False
+    assert solver_session.is_active() is True
     solver_session.exit()
+    assert solver_session.is_active() is False
 
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
-def test_meshing_mode_post_switching_to_solver(new_meshing_session):
-    meshing_session = new_meshing_session
-    meshing_session.switch_to_solver()
+def test_meshing_mode_post_switching_to_solver(new_meshing_session_wo_exit):
+    meshing_session = new_meshing_session_wo_exit
+    solver = meshing_session.switch_to_solver()
     # Post switching to solver session, meshing session specific attributes are unavailable
     with pytest.raises(AttributeError):
         meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    solver.exit()
 
 
 # def test_transfer_mesh_to_solvers(
@@ -68,7 +97,7 @@ def test_meshing_mode_post_switching_to_solver(new_meshing_session):
 #     pure_meshing_session = new_pure_meshing_session
 #     pure_meshing_session.tui.file.read_mesh(mesh_file_name)
 #     pure_meshing_session.tui.mesh.check_mesh()
-#     mesh_info = pure_meshing_session.scheme_eval.string_eval(
+#     mesh_info = pure_meshing_session.scheme.string_eval(
 #         "(%tg-length-of-entity-list)"
 #     )
 #     pure_meshing_session_cell_count = mesh_info.strip("( )").split()[3]
@@ -76,7 +105,7 @@ def test_meshing_mode_post_switching_to_solver(new_meshing_session):
 #     solver_session = new_solver_session
 #     pure_meshing_session.transfer_mesh_to_solvers([solver_session], file_type="mesh")
 #     solver_session.tui.mesh.check()
-#     mesh_info = solver_session.scheme_eval.string_eval("(inquire-grids)")
+#     mesh_info = solver_session.scheme.string_eval("(inquire-grids)")
 #     solver_session_cell_count = mesh_info.strip("( )").split()[1]
 #
 #     assert pure_meshing_session_cell_count == solver_session_cell_count
@@ -87,15 +116,13 @@ def test_transfer_case_to_solvers(new_pure_meshing_session, new_solver_session):
     pure_meshing_session = new_pure_meshing_session
     pure_meshing_session.tui.file.read_case(case_file_name)
     pure_meshing_session.tui.mesh.check_mesh()
-    mesh_info = pure_meshing_session.scheme_eval.string_eval(
-        "(%tg-length-of-entity-list)"
-    )
+    mesh_info = pure_meshing_session.scheme.string_eval("(%tg-length-of-entity-list)")
     pure_meshing_session_cell_count = mesh_info.strip("( )").split()[3]
 
     solver_session = new_solver_session
     pure_meshing_session.transfer_mesh_to_solvers([solver_session], file_type="case")
     solver_session.tui.mesh.check()
-    mesh_info = solver_session.scheme_eval.string_eval("(inquire-grids)")
+    mesh_info = solver_session.scheme.string_eval("(inquire-grids)")
     solver_session_cell_count = mesh_info.strip("( )").split()[1]
 
     assert pure_meshing_session_cell_count == solver_session_cell_count

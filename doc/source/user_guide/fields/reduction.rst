@@ -23,12 +23,12 @@ with two separate examples case files as follows:
     >>> from ansys.fluent.core.solver.function import reduction
     >>> from ansys.fluent.core.examples import download_file
 
-    >>> solver1 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> solver1 = pyfluent.launch_fluent()
     >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
     >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
     >>> solver1.settings.file.read_case_data(file_name=case_path)
 
-    >>> solver2 = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+    >>> solver2 = pyfluent.launch_fluent()
     >>> case_path = download_file("elbow1.cas.h5", "pyfluent/file_session")
     >>> data_path = download_file("elbow1.dat.h5", "pyfluent/file_session")
     >>> solver2.settings.file.read_case_data(file_name=case_path)
@@ -91,21 +91,25 @@ Reduction Functions: Capabilities
 The following reduction functions are available in PyFluent:
 
 - **Area**: Compute the total area.
+
 .. code-block:: python
 
   >>> reduction.area(locations)
 
 - **Area Average**: Compute the area-averaged value of an expression.
+
 .. code-block:: python
 
   >>> reduction.area_average(expression, locations)
 
 - **Area Integral**: Compute the integrated area of an expression.
+
 .. code-block:: python
 
   >>> reduction.area_integral(expression, locations)
 
 - **Volume**: Compute the total volume.
+
 .. code-block:: python
 
   >>> reduction.volume(locations)
@@ -114,61 +118,73 @@ The following reduction functions are available in PyFluent:
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 - **Volume Average**: Compute the volume-averaged value of an expression.
+
 .. code-block:: python
 
   >>> reduction.volume_average(expression, locations)
 
 - **Volume Integral**: Compute the integrated volume of an expression.
+
 .. code-block:: python
 
   >>> reduction.volume_integral(expression, locations)
 
 - **Centroid**: Compute the geometric centroid.
+
 .. code-block:: python
 
   >>> reduction.centroid(locations)
 
 - **Force**: Compute the total force vector on specified walls.
+
 .. code-block:: python
 
   >>> reduction.force(locations)
 
 - **Pressure Force**: Compute the pressure force vector on specified walls.
+
 .. code-block:: python
 
   >>> reduction.pressure_force(locations)
 
 - **Viscous Force**: Compute the viscous force vector on specified walls.
+
 .. code-block:: python
 
   >>> reduction.viscous_force(locations)
 
 - **Moment**: Compute the moment vector about the specified point (which can be single-valued expression).
+
 .. code-block:: python
 
   >>> reduction.moment(expression, locations)
 
 - **Count**: Compute the total number of cells in specified locations.
+
 .. code-block:: python
 
   >>> reduction.count(locations)
 
 - **Count if**: Compute the conditional count.
+
 .. code-block:: python
 
   >>> reduction.count_if(condition, locations)
 
 - **Minimum**: Compute the minimum value of an expression.
+
 .. code-block:: python
 
   >>> reduction.minimum(expression, locations)
 
 - **Maximum**: Compute the maximum value of an expression.
+
 .. code-block:: python
 
   >>> reduction.maximum(expression, locations)
 
 - **Mass average**: Compute the mass-weighted average of an expression.
+
 .. code-block:: python
 
   >>> reduction.mass_average(expression, locations)
@@ -177,6 +193,7 @@ The following reduction functions are available in PyFluent:
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 - **Mass integral**: Compute the integrated mass-weighted value of an expression.
+
 .. code-block:: python
 
   >>> reduction.mass_integral(expression, locations)
@@ -185,26 +202,31 @@ The following reduction functions are available in PyFluent:
    Only boundaries and face zones are allowed locations. It cannot be a user-defined surface.
 
 - **Mass flow average absolute**: Compute the mass-flow-weighted absolute average of an expression.
+
 .. code-block:: python
 
   >>> reduction.mass_flow_average_absolute(expression, locations)
 
 - **Mass flow average**: Compute the mass-flow-weighted average of an expression.
+
 .. code-block:: python
 
   >>> reduction.mass_flow_average(expression, locations)
 
 - **Mass flow integral**: Compute the integrated mass-flow-weighted value of an expression.
+
 .. code-block:: python
 
   >>> reduction.mass_flow_integral(expression, locations)
 
 - **Sum**: Compute the sum of an expression over locations.
+
 .. code-block:: python
 
   >>> reduction.sum(expression, locations, weight)
 
 - **Sum If**: Compute the conditional sum of an expression.
+
 .. code-block:: python
 
   >>> reduction.sum_if(expression, condition, locations, weight)

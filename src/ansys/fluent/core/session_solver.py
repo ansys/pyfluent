@@ -1,7 +1,27 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module containing class encapsulating Fluent connection."""
 
-from asyncio import Future
-import functools
 import logging
 import threading
 from typing import Any, Dict
@@ -10,6 +30,7 @@ import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
 from ansys.fluent.core.services.reduction import ReductionService
@@ -31,13 +52,11 @@ from ansys.fluent.core.solver.flobject import (
 import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
-from ansys.fluent.core.systemcoupling import SystemCoupling
-from ansys.fluent.core.utils.execution import asynchronous
+from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 tui_logger = logging.getLogger("pyfluent.tui")
@@ -56,19 +75,6 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
                 _set_state_safe(getattr(obj, k), v)
         else:
             datamodel_logger.debug(f"set_state failed at {obj.path}")
-
-
-def _import_settings_root(root):
-    _class_dict = {}
-    api_keys = []
-    if hasattr(root, "child_names"):
-        api_keys = root.child_names
-
-    for root_item in api_keys:
-        _class_dict[root_item] = root.__dict__[root_item]
-
-    settings_api_root = type("SettingsRoot", (object,), _class_dict)
-    return settings_api_root()
 
 
 class Solver(BaseSession):
@@ -124,9 +130,17 @@ class Solver(BaseSession):
         self._tui = None
         self._workflow = None
         self._system_coupling = None
-        self._settings_root = None
         self._fluent_version = None
-        self._lck = threading.Lock()
+        self._bg_session_threads = []
+
+        #: Root settings object.
+        self.settings = flobject.get_root(
+            flproxy=self._settings_service,
+            version=self._version,
+            interrupt=Solver._interrupt,
+            file_transfer_service=self._file_transfer_service,
+            scheme_eval=self.scheme.eval,
+        )
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
@@ -142,19 +156,25 @@ class Solver(BaseSession):
             )
         else:
             self.fields.reduction = reduction_old
-        self._settings_api_root = None
         self.fields.solution_variable_data = self._solution_variable_data()
 
         monitors_service = service_creator("monitors").create(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
+        #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
         self.events.register_callback(
-            SolverEvent.SOLUTION_INITIALIZED, self.monitors.refresh
+            (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
+            self.monitors.refresh,
         )
-        self.events.register_callback(SolverEvent.DATA_LOADED, self.monitors.refresh)
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
+
+        # Background sessions should be finalized before finalizing the
+        # gRPC services of the main session.
+        fluent_connection.register_finalizer_cb(
+            weakref.WeakMethod(self._stop_bg_sessions), at_start=True
+        )
 
     def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
@@ -245,19 +265,6 @@ class Solver(BaseSession):
                 command._root.solution.run_calculation.interrupt()
 
     @property
-    def settings(self):
-        """Root settings object."""
-        if self._settings_root is None:
-            self._settings_root = flobject.get_root(
-                flproxy=self._settings_service,
-                version=self._version,
-                interrupt=Solver._interrupt,
-                file_transfer_service=self._file_transfer_service,
-                scheme_eval=self.scheme_eval.scheme_eval,
-            )
-        return self._settings_root
-
-    @property
     def system_coupling(self):
         """System coupling object."""
         if self._system_coupling is None:
@@ -271,24 +278,30 @@ class Solver(BaseSession):
             self._preferences = _make_datamodel_module(self, "preferences")
         return self._preferences
 
-    def _sync_from_future(self, fut: Future):
-        with self._lck:
-            try:
-                fut_session = fut.result()
-            except Exception as ex:
-                raise RuntimeError("Unable to read mesh") from ex
-            state = self.settings.get_state()
-            super(Solver, self)._build_from_fluent_connection(
-                fut_session._fluent_connection,
-                fut_session._fluent_connection._connection_interface.scheme_eval,
-                event_type=SolverEvent,
-            )
-            self._build_from_fluent_connection(
-                fut_session._fluent_connection,
-                fut_session._fluent_connection._connection_interface.scheme_eval,
-            )
-            # TODO temporary fix till set_state at settings root is fixed
-            _set_state_safe(self.settings, state)
+    def _start_bg_session_and_sync(self, launcher_args):
+        """Start a background session and sync it with the current session."""
+        try:
+            bg_session = pyfluent.launch_fluent(**launcher_args)
+        except Exception as ex:
+            raise RuntimeError("Unable to read mesh") from ex
+        state = self.settings.get_state()
+        super(Solver, self)._build_from_fluent_connection(
+            bg_session._fluent_connection,
+            bg_session._fluent_connection._connection_interface.scheme_eval,
+            event_type=SolverEvent,
+        )
+        self._build_from_fluent_connection(
+            bg_session._fluent_connection,
+            bg_session._fluent_connection._connection_interface.scheme_eval,
+        )
+        # TODO temporary fix till set_state at settings root is fixed
+        _set_state_safe(self.settings, state)
+
+    def _stop_bg_sessions(self):
+        """Stop all background sessions."""
+        for thread in self._bg_session_threads:
+            if thread.is_alive():
+                thread.join()
 
     def read_case_lightweight(self, file_name: str):
         """Read a case file using light IO mode.
@@ -298,14 +311,16 @@ class Solver(BaseSession):
         file_name : str
             Case file name
         """
-        import ansys.fluent.core as pyfluent
 
         self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
         launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
-        fut: Future = asynchronous(pyfluent.launch_fluent)(**launcher_args)
-        fut.add_done_callback(functools.partial(Solver._sync_from_future, self))
+        self._bg_session_threads.append(
+            threading.Thread(
+                target=self._start_bg_session_and_sync, args=(launcher_args,)
+            )
+        )
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
@@ -318,26 +333,23 @@ class Solver(BaseSession):
     def __call__(self):
         return self.get_state()
 
-    def _populate_settings_api_root(self):
-        if not self._settings_api_root:
-            self._settings_api_root = _import_settings_root(self.settings)
-
-    def __getattr__(self, attr):
-        self._populate_settings_api_root()
-        if attr in [x for x in dir(self._settings_api_root) if not x.startswith("_")]:
-            if self.get_fluent_version() > FluentVersion.v242:
+    def __getattr__(self, name):
+        try:
+            return super().__getattribute__(name)
+        except AttributeError as ex:
+            if name in self.settings.child_names:
                 warnings.warn(
-                    f"'{attr}' is deprecated. Use 'settings.{attr}' instead.",
+                    f"'{name}' is deprecated. Use 'settings.{name}' instead.",
                     DeprecatedSettingWarning,
                 )
-        return getattr(self._settings_api_root, attr)
+                return getattr(self.settings, name)
+            else:
+                raise ex
 
     def __dir__(self):
-        settings_dir = []
-        if self.get_fluent_version() <= FluentVersion.v242:
-            self._populate_settings_api_root()
-            settings_dir = dir(self._settings_api_root)
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self)) + settings_dir) - {
+        if self._fluent_connection is None:
+            return ["is_active"]
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "svar_data",
             "svar_info",
             "reduction",

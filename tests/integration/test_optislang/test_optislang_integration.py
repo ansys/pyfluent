@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from collections import OrderedDict
 import os
 from pathlib import Path
@@ -32,7 +54,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     """
     # Step 1: Launch fluent session and read case file with and without data file
     solver_session = mixing_elbow_param_case_data_session
-    assert solver_session.health_check.is_serving
+    assert solver_session.is_server_healthy()
     case_path = examples.path("elbow_param.cas.h5")
     solver_session.settings.file.read_case_data(file_name=case_path)
 
@@ -128,7 +150,7 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     meshing = pyfluent.launch_fluent(
         mode="meshing", precision="double", processor_count=2
     )
-    assert meshing.health_check.is_serving
+    assert meshing.is_server_healthy()
     temporary_resource_path = os.path.join(
         pyfluent.EXAMPLES_PATH, "test_generate_read_mesh_resources"
     )

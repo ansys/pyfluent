@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provides a module for codegen messages."""
 
 import logging
@@ -41,12 +63,15 @@ def _make_tui_module(session, module_name):
 def _make_datamodel_module(session, module_name):
     try:
         from ansys.fluent.core import CODEGEN_OUTDIR
+        from ansys.fluent.core.codegen.datamodelgen import meshing_rule_file_names
 
+        file_name = meshing_rule_file_names[module_name]
         module = pyfluent.utils.load_module(
             f"{module_name}_{session._version}",
-            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{module_name}.py",
+            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{file_name}.py",
         )
         return module.Root(session._se_service, module_name, [])
     except (ImportError, FileNotFoundError):
+        datamodel_logger.warning("Generated API not found for %s.", module_name)
         datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
         return PyMenuGeneric(session._se_service, module_name)

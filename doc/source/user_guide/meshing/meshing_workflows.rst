@@ -176,11 +176,6 @@ Import CAD and part management
     >>>         "FMDFileName": import_file_name,
     >>>         "FileLoaded": "yes",
     >>>         "ObjectSetting": "DefaultObjectSetting",
-    >>>         "Options": {
-    >>>             "Line": False,
-    >>>             "Solid": False,
-    >>>             "Surface": False,
-    >>>         }
     >>>     },
     >>> )
     >>> import_cad.Execute()

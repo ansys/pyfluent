@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module for accessing and modifying hierarchy of Fluent settings.
 
 The only useful method is '`get_root``, which returns the root object for
@@ -47,24 +69,20 @@ from typing import (
 import warnings
 import weakref
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core.pyfluent_warnings import (
+    PyFluentDeprecationWarning,
+    PyFluentUserWarning,
+)
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning, PyFluentUserWarning
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as naming_strategy,
+)
+import ansys.units
 
+from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
-
-
-def _ansys_units():
-
-    try:
-        import ansys.units
-
-        return ansys.units
-    except ImportError:
-        pass
-
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -171,14 +189,17 @@ def to_python_name(fluent_name: str) -> str:
     return name
 
 
+_to_field_name_str = naming_strategy().to_string
+
+
 def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
     comps = []
     while obj:
-        python_name = obj._python_name
+        python_name = obj.python_name
         obj = obj._parent
         if isinstance(obj, (NamedObject, ListObject)):
-            comps.append(obj._python_name)
+            comps.append(obj.python_name)
             obj = obj._parent
         else:
             comps.append(python_name)
@@ -322,7 +343,7 @@ class Base:
         Constructed in python syntax from 'python_path' and the parents python path.
         """
         if self._parent is None:
-            if FluentVersion(self.version).number < 251:
+            if FluentVersion(self._version).number < 251:
                 return "<session>"
             else:
                 return "<session>.settings"
@@ -381,6 +402,19 @@ class Base:
                 return bool(val)
             return None
         return val
+
+    def _is_deprecated(self) -> bool:
+        """Whether the object is deprecated in a specific Fluent version.'"""
+        deprecated_version = self.get_attrs(["deprecated-version"])
+        if deprecated_version:
+            deprecated_version = deprecated_version.get("attrs", deprecated_version)
+        deprecated_version = (
+            deprecated_version.get("deprecated-version") if deprecated_version else None
+        )
+        return deprecated_version and (
+            float(deprecated_version) <= 22.2
+            or FluentVersion(self._version) >= FluentVersion(deprecated_version)
+        )
 
     def is_active(self) -> bool:
         """Whether the object is active."""
@@ -521,14 +555,12 @@ class RealNumerical(Numerical):
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
-        if not _ansys_units():
-            error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
             units = get_si_unit_for_fluent_quantity(quantity)
             if units is not None:
                 try:
-                    return _ansys_units().Quantity(
+                    return ansys.units.Quantity(
                         value=self.get_state(),
                         units=units,
                     )
@@ -564,11 +596,9 @@ class RealNumerical(Numerical):
                     raise UnhandledQuantity(self.path, state)
                 return units
 
-            if _ansys_units() and isinstance(state, (_ansys_units().Quantity, tuple)):
+            if isinstance(state, (ansys.units.Quantity, tuple)):
                 state = (
-                    _ansys_units().Quantity(*state)
-                    if isinstance(state, tuple)
-                    else state
+                    ansys.units.Quantity(*state) if isinstance(state, tuple) else state
                 )
                 state = state.to(get_units()).value
             elif isinstance(state, tuple):
@@ -589,6 +619,18 @@ class RealNumerical(Numerical):
 
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
+
+    def set_state(self, state: StateT | None = None, **kwargs):
+        """Set the state of the object.
+
+        Parameters
+        ----------
+        state
+            Either str or VariableDescriptor.
+        kwargs : Any
+            Keyword arguments.
+        """
+        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
@@ -636,7 +678,7 @@ class _Alias:
                 )
                 if isinstance(journal_str, str):
                     warnings.warn(
-                        "Note: A newer syntax is available to perform the last operation:\n"
+                        "A newer syntax is available to perform the last operation:\n"
                         f"{journal_str.strip()}",
                         DeprecatedSettingWarning,
                     )
@@ -670,9 +712,14 @@ class _Alias:
 
 def _create_child(cls, name, parent: weakref.CallableProxyType, alias_path=None):
     if alias_path or isinstance(parent, _Alias):
+        bases = (cls,)
+        # True child of parent alias is already derived from _Alias.
+        # Avoiding duplicate derivation and mro resolution issue.
+        if _Alias not in cls.__mro__:
+            bases = (_Alias, cls)
         alias_cls = type(
             f"{cls.__name__}_alias",
-            (_Alias, cls),
+            bases,
             dict(cls.__dict__) | {"alias_path": alias_path},
         )
         return alias_cls(name, parent.__repr__.__self__)
@@ -720,7 +767,7 @@ class SettingsBase(Base, Generic[StateT]):
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
-            if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
+            if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)
@@ -809,6 +856,9 @@ class String(SettingsBase[str], Textual):
     """A ``String`` object representing a string value setting."""
 
     _state_type = str
+
+    base_set_state = SettingsBase[str].set_state
+    set_state = Textual.set_state
 
 
 class Filename(SettingsBase[str], Textual):
@@ -915,9 +965,26 @@ def _command_query_name_filter(
     for name in names:
         if name not in excluded and name.startswith(prefix):
             child = getattr(parent, name)
-            if child.is_active():
+            if child.is_active() and not child._is_deprecated():
                 ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
     return ret
+
+
+def _get_type_for_completer_info(cls) -> str:
+    if issubclass(cls, (FileName, _InputFile)):
+        return "InputFilename"
+    elif issubclass(cls, (FileName, _OutputFile)):
+        return "OutputFilename"
+    elif issubclass(cls, (FileName, _InOutFile)):
+        return "InOutFilename"
+    elif issubclass(cls, (FilenameList, _InputFile)):
+        return "InputFilenameList"
+    elif issubclass(cls, (FilenameList, _OutputFile)):
+        return "OutputFilenameList"
+    elif issubclass(cls, (FilenameList, _InOutFile)):
+        return "InOutFilenameList"
+    else:
+        return cls.__bases__[0].__name__
 
 
 class Group(SettingsBase[DictStateType]):
@@ -1010,26 +1077,39 @@ class Group(SettingsBase[DictStateType]):
     def get_active_child_names(self):
         """Names of children that are currently active."""
         ret = []
-        for child in self.child_names:
-            if getattr(self, child).is_active():
-                ret.append(child)
+        for child_name in self.child_names:
+            child = getattr(self, child_name)
+            if child.is_active() and not child._is_deprecated():
+                ret.append(child_name)
         return ret
 
     def get_active_command_names(self):
         """Names of commands that are currently active."""
         ret = []
-        for command in self.command_names:
-            if getattr(self, command).is_active():
-                ret.append(command)
+        for command_name in self.command_names:
+            command = getattr(self, command_name)
+            if command.is_active() and not command._is_deprecated():
+                ret.append(command_name)
         return ret
 
     def get_active_query_names(self):
         """Names of queries that are currently active."""
         ret = []
-        for query in self.query_names:
-            if getattr(self, query).is_active():
-                ret.append(query)
+        for query_name in self.query_names:
+            query = getattr(self, query_name)
+            if query.is_active() and not query._is_deprecated():
+                ret.append(query_name)
         return ret
+
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return dir_list - set(
+            [
+                child
+                for child in self.child_names + self.command_names + self.query_names
+                if getattr(self, child)._is_deprecated()
+            ]
+        )
 
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all children.
@@ -1044,11 +1124,11 @@ class Group(SettingsBase[DictStateType]):
         for child_name in self.child_names:
             if child_name not in excluded and child_name.startswith(prefix):
                 child = getattr(self, child_name)
-                if child.is_active():
+                if child.is_active() and not child._is_deprecated():
                     ret.append(
                         [
                             child_name,
-                            child.__class__.__bases__[0].__name__,
+                            _get_type_for_completer_info(child.__class__),
                             child.__doc__,
                         ]
                     )
@@ -1080,23 +1160,21 @@ class Group(SettingsBase[DictStateType]):
                 attr._check_stable()
             return attr
         except AttributeError as ex:
-            pyfluent.PRINT_SEARCH_RESULTS = False
-            search_results = pyfluent.utils.search(
-                search_string=name,
-                match_case=False,
-                match_whole_word=False,
-            )
-            pyfluent.PRINT_SEARCH_RESULTS = True
-            results = search_results if search_results else []
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                search_results=results,
+                allowed_values=sorted(
+                    set(self.get_active_child_names() + self.command_names)
+                ),
             )
             ex.args = (error_msg,)
             raise
 
     def __setattr__(self, name: str, value):
+        # 'settings_source' will be set to settings object when they are created from builtin settings classes.
+        # We don't allow overwriting it.
+        if name == "settings_source":
+            raise AttributeError("Cannot overwrite settings_source after it is set.")
         attr = None
         try:
             attr = getattr(self, name)
@@ -1366,7 +1444,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             raise KeyError(
                 allowed_name_error_message(
-                    context=self.__class__._python_name,
+                    context=self.python_name,
                     trial_name=name,
                     allowed_values=self.get_object_names(),
                 )
@@ -1583,6 +1661,16 @@ class Action(Base):
                 cls = self.__class__._child_classes[argument]
                 self._setattr(argument, _create_child(cls, None, self))
 
+    def __dir__(self):
+        dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
+        return dir_list - set(
+            [
+                child
+                for child in self.argument_names
+                if getattr(self, child)._is_deprecated()
+            ]
+        )
+
     def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
         """Get completer info of all arguments.
 
@@ -1596,11 +1684,11 @@ class Action(Base):
         for argument_name in self.argument_names:
             if argument_name not in excluded and argument_name.startswith(prefix):
                 argument = getattr(self, argument_name)
-                if argument.is_active():
+                if argument.is_active() and not argument._is_deprecated():
                     ret.append(
                         [
                             argument_name,
-                            argument.__class__.__bases__[0].__name__,
+                            _get_type_for_completer_info(argument.__class__),
                             argument.__doc__,
                         ]
                     )
@@ -1784,11 +1872,20 @@ _baseTypes = {
 
 
 def _clean_helpinfo(helpinfo):
-    helpinfo = helpinfo.strip("\n")
+    helpinfo = helpinfo.strip("\n").lstrip(" ")
     if not helpinfo.endswith("."):
         helpinfo += "."
     helpinfo = helpinfo[0].upper() + helpinfo[1:]
     return helpinfo
+
+
+def _fix_help_info(obj_type, helpinfo):
+    # The else clause is just picking "object" due to our current
+    # knowledge that the implementation only distinguishes between
+    # "method" and everything else. This is fragile.
+    api_item_type = "method" if obj_type in ("command", "query") else "object"
+    fix = _docstrings._fixed_doc_string(api_item_type, helpinfo)
+    return fix or helpinfo
 
 
 class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
@@ -1910,7 +2007,7 @@ class _NonCreatableNamedObjectMixin(
             else:
                 raise KeyError(
                     allowed_name_error_message(
-                        context=self.__class__._python_name,
+                        context=self.python_name,
                         trial_name=name,
                         allowed_values=self.get_object_names(),
                     )
@@ -1955,10 +2052,10 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 f"Falling back to String."
             )
             base = String
-        dct = {"fluent_name": name, "version": version}
+        dct = {"fluent_name": name, "_version": version}
         helpinfo = info.get("help")
         if helpinfo:
-            dct["__doc__"] = _clean_helpinfo(helpinfo)
+            dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
         else:
             if parent is None:
                 dct["__doc__"] = "'root' object."
@@ -2016,6 +2113,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
+
+        deprecated_version = info.get("deprecated_version", "")
+        cls._deprecated_version = deprecated_version
 
         taboo = set(dir(cls))
         taboo |= set(
@@ -2164,15 +2264,19 @@ def get_root(
     """
     from ansys.fluent.core import CODEGEN_OUTDIR, utils
 
-    try:
-        settings = utils.load_module(
-            f"settings_{version}",
-            CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
-        )
-        root_cls = settings.root
-    except FileNotFoundError:
+    if os.getenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1":
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
+    else:
+        try:
+            settings = utils.load_module(
+                f"settings_{version}",
+                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+            )
+            root_cls = settings.root
+        except FileNotFoundError:
+            obj_info = flproxy.get_static_info()
+            root_cls, _ = get_cls("", obj_info, version=version)
     root = root_cls()
     root.set_flproxy(flproxy)
     root._set_on_interrupt(interrupt)

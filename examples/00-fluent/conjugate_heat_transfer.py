@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """.. _conjugate_heat_transfer:
 
 Conjugate Heat Transfer
@@ -38,18 +60,9 @@ from ansys.fluent.visualization.matplotlib import Plots
 from ansys.fluent.visualization.pyvista import Graphics, pyvista_windows_manager
 from ansys.fluent.visualization.pyvista.pyvista_windows_manager import PyVistaWindow
 
-###########################################################################
-# Specifying save path
-# ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 geom_filename = examples.download_file(
     "cht_fin_htc_new.scdoc",
     "pyfluent/examples/CHT",
-    save_path=save_path,
 )
 
 #######################
@@ -669,8 +682,7 @@ solver.solution.initialization.initialization_type = "hybrid"
 solver.solution.initialization.hybrid_initialize()
 
 solver.setup.boundary_conditions.slit_interior_between_diff_solids()
-save_case_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.cas.h5")
-solver.file.write(file_type="case", file_name=save_case_as)
+solver.file.write(file_type="case", file_name="hx-fin-2mm.cas.h5")
 
 #############################################################################
 # Set Aggressive Length Scale Method; Run Calculation & Save Data
@@ -685,20 +697,19 @@ solver.solution.run_calculation.pseudo_time_settings.time_step_method.length_sca
 
 solver.solution.run_calculation.iterate(iter_count=250)
 
-save_case_data_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.dat.h5")
-solver.file.write(file_type="case-data", file_name=save_case_data_as)
+solver.file.write(file_type="case-data", file_name="hx-fin-2mm.dat.h5")
 
 #############################################################################
 # Post-Processing Mass Balance Report
 # ===================================
 
-inlet_mfr = solver.scheme_eval.exec(
+inlet_mfr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/mass-flow no inlet () no")',)
 ).split(" ")[-1]
-outlet_mfr = solver.scheme_eval.exec(
+outlet_mfr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/mass-flow no outlet () no")',)
 ).split(" ")[-1]
-net_mfr = solver.scheme_eval.exec(
+net_mfr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/mass-flow no inlet outlet () no")',)
 ).split(" ")[-1]
 print("Mass Balance Report\n")
@@ -710,7 +721,7 @@ print("Net (kg/s): ", net_mfr)
 # Heat Balance Report
 # ===================
 
-htr = solver.scheme_eval.exec(
+htr = solver.scheme.exec(
     ('(ti-menu-load-string "/report/fluxes/heat-transfer yes no")',)
 ).split(" ")[-1]
 print("Heat Balance Report\n")

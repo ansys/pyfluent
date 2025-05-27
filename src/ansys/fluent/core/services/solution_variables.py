@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Wrappers over SVAR gRPC service of Fluent."""
 
 import math
@@ -10,6 +32,7 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
     override_help_text,
@@ -19,7 +42,11 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.variable_strategies import (
+    FluentSVarNamingStrategy as naming_strategy,
+)
+
+_to_field_name_str = naming_strategy().to_string
 
 
 class SolutionVariableService:
@@ -332,6 +359,7 @@ class _AllowedSvarNames:
         SvarError
             If the given solution variable name is invalid.
         """
+        solution_variable_name = _to_field_name_str(solution_variable_name)
         if not self.is_valid(
             solution_variable_name, zone_names=zone_names, domain_name=domain_name
         ):
@@ -591,7 +619,9 @@ class SolutionVariableData:
         )
         svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name = self._allowed_solution_variable_names.valid_name(
-            solution_variable_name, zone_names, domain_name
+            solution_variable_name,
+            zone_names,
+            domain_name,
         )
         zone_id_name_map = {}
         for zone_name in zone_names:

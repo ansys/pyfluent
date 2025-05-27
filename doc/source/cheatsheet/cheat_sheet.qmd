@@ -136,12 +136,9 @@ wt.update_regions()
 
 ```{python}
 wt.add_boundary_layer.add_child_to_task()
+wt.add_boundary_layer.bl_control_name.set_state("smooth-transition_1")
 wt.add_boundary_layer.insert_compound_child_task()
-wt.task("smooth-transition_1"
-    ).bl_control_name.set_state(
-    "smooth-transition_1")
-wt.add_boundary_layer.arguments = {}
-wt.task("smooth-transition_1")()
+wt.add_boundary_layer_child_1()
 ```
 
 ### Generate volume mesh
@@ -185,7 +182,7 @@ cold_inlet.thermal.temperature.set_state(293.15)
 ### Cell zone conditions
 
 ```{python}
-elbow_fluid = pyfluent.FluidCellZone(solver, name="elbow-fluid")
+elbow_fluid = pyfluent.solver.FluidCellZone(solver, name="elbow-fluid")
 elbow_fluid.laminar.set_state(True)
 ```
 
@@ -232,7 +229,7 @@ from ansys.fluent.core import examples
 file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
 solver = pyfluent.launch_fluent()
 solver.settings.file.read_case(file_name=file_name)
-energy = pyfluent.Energy(solver)
+energy = pyfluent.solver.Energy(solver)
 energy.enabled.get_state()
 from pprint import pprint
 pprint(energy.get_state(), width=1)
@@ -247,7 +244,7 @@ pprint(energy.get_state(), width=1)
 ### Viscous model
 
 ```{python}
-vs = pyfluent.Viscous(solver)
+vs = pyfluent.solver.Viscous(solver)
 from pprint import pprint
 pprint(vs.get_state(), width=1)
 pprint(vs.model.allowed_values(), width=1)
@@ -267,7 +264,7 @@ vs_ops.production_kato_launder_enabled.is_active()
 ### Discrete phase model
 
 ```{python}
-dpm = pyfluent.DiscretePhase(solver)
+dpm = pyfluent.solver.DiscretePhase(solver)
 dpm_models = dpm.physical_models
 dpm_vmf = dpm_models.virtual_mass_force
 dpm_vmf.enabled.get_state()
@@ -279,7 +276,7 @@ dpm_vmf.virtual_mass_factor.get_state()
 ### Radiation model
 
 ```{python}
-rn = pyfluent.Radiation(solver)
+rn = pyfluent.solver.Radiation(solver)
 from pprint import pprint
 pprint(rn.get_state(), width=1)
 pprint(rn.model.allowed_values(), width=1)
@@ -303,7 +300,7 @@ pprint(rn.get_state(), width=1)
 
 ```{python}
 solver.settings.file.read_case(file_name=file_name)
-species = pyfluent.Species(solver)
+species = pyfluent.solver.Species(solver)
 species.get_state()
 from pprint import pprint
 pprint(species.model.option.allowed_values(), width=1)
@@ -316,7 +313,7 @@ species.model.material.allowed_values()
 ### Battery model
 
 ```{python}
-battery = pyfluent.Battery(solver)
+battery = pyfluent.solver.Battery(solver)
 battery.enabled.set_state(True)
 battery.solution_method.allowed_values()
 ```
@@ -324,7 +321,7 @@ battery.solution_method.allowed_values()
 ### Steady or transient solution model
 
 ```{python}
-setup = pyfluent.Setup(solver)
+setup = pyfluent.solver.Setup(solver)
 solver_time = setup.general.solver.time
 solver_time.get_state()
 solver_time.allowed_values()
@@ -334,7 +331,7 @@ solver_time.set_state("unsteady-1st-order")
 ### Pressure-based or density-based solver
 
 ```{python}
-setup = pyfluent.Setup(solver)
+setup = pyfluent.solver.Setup(solver)
 solver_type = setup.general.solver.type
 solver_type.get_state()
 solver_type.allowed_values()
@@ -345,7 +342,7 @@ solver_type.get_state()
 ### Velocity coupling scheme and gradient options
 
 ```{python}
-methods = pyfluent.Methods(solver)
+methods = pyfluent.solver.Methods(solver)
 flow_scheme = methods.p_v_coupling.flow_scheme
 flow_scheme.allowed_values()
 flow_scheme.set_state("Coupled")
@@ -357,7 +354,7 @@ gradient_scheme.set_state("green-gauss-node-based")
 ### Solution controls
 
 ```{python}
-controls = pyfluent.Controls(solver)
+controls = pyfluent.solver.Controls(solver)
 pvc = controls.p_v_controls
 emur = pvc.explicit_momentum_under_relaxation
 emur.min()
@@ -372,7 +369,7 @@ flow_courant_number.set_state(0.3)
 ### Create a report definition
 
 ```{python}
-rep_defs = pyfluent.ReportDefinitions(solver)
+rep_defs = pyfluent.solver.ReportDefinitions(solver)
 surface = rep_defs.surface
 defn_name = "outlet-temp-avg"
 surface[defn_name] = {}
@@ -971,7 +968,7 @@ hyd_dia.as_quantity()
 ```{python}
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
 
 mesh_file_name = examples.download_file(
     "mixing_elbow.msh.h5", 
@@ -979,7 +976,7 @@ mesh_file_name = examples.download_file(
 meshing_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.MESHING, 
     file_transfer_service=
-    LocalFileTransferStrategy())
+    StandaloneFileTransferStrategy())
 meshing_session.upload(
     file_name=mesh_file_name, 
     remote_file_name="elbow.msh.h5")
@@ -997,7 +994,7 @@ meshing_session.download(
 ```{python}
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 
 case_file_name = examples.download_file(
     "mixing_elbow.cas.h5", 
@@ -1005,7 +1002,7 @@ case_file_name = examples.download_file(
 solver_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER, 
     file_transfer_service=
-    RemoteFileTransferStrategy())
+    ContainerFileTransferStrategy())
 solver_session.upload(
     file_name=case_file_name, 
     remote_file_name="elbow.cas.h5")
@@ -1030,15 +1027,15 @@ solver.journal.stop()
 
 ```{python}
 import ansys.fluent.core as pyfluent
-config_dict = pyfluent.logging.get_default_config()
+config_dict = pyfluent.logger.get_default_config()
 config_dict['handlers']['pyfluent_file'][
     'filename'] = 'test.log'
-pyfluent.logging.enable(custom_config=config_dict)
-pyfluent.logging.list_loggers()
-logger = pyfluent.logging.get_logger(
+pyfluent.logger.enable(custom_config=config_dict)
+pyfluent.logger.list_loggers()
+logger = pyfluent.logger.get_logger(
     'pyfluent.networking')
 logger.setLevel('ERROR')
-pyfluent.logging.set_global_level('DEBUG')
+pyfluent.logger.set_global_level('DEBUG')
 ```
 
 ### API search
@@ -1098,13 +1095,8 @@ solver = pyfluent.launch_fluent(
 
 ```{python}
 import ansys.fluent.core as pyfluent
-S = pyfluent.services.scheme_eval.Symbol
-session.scheme_eval.eval([S('+'), 2, 3])
-session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
-session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
+session.scheme.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 # Returns TUI output string
-session.scheme_eval.string_eval("(+ 2 3)")
-session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")
-session.scheme_eval.scheme_eval("(+ 2 3)")
-session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
+session.scheme.eval("(+ 2 3)")
+session.scheme.eval("(rpgetvar 'mom/relax)")
 ```

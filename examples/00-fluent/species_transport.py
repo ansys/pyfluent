@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """.. _species_transport:
 
 Modeling Species Transport and Gaseous Combustion
@@ -70,6 +92,7 @@ print(solver.get_fluent_version())
 
 from pathlib import Path  # noqa: E402
 
+from ansys.fluent.core import FluentVersion  # noqa: E402
 from ansys.fluent.core.examples import download_file  # noqa: E402
 from ansys.fluent.core.solver import (  # noqa: E402
     Contour,
@@ -90,7 +113,9 @@ from ansys.fluent.core.solver import (  # noqa: E402
 #
 # Download the mesh file and read it into the Fluent session.
 
-mesh_file = Path(download_file("gascomb.msh", "pyfluent/tutorials/species_transport"))
+mesh_file = Path(
+    download_file("gascomb.msh.gz", "pyfluent/tutorials/species_transport")
+)
 solver.settings.file.read_mesh(file_name=mesh_file)
 
 # %%
@@ -220,7 +245,12 @@ print(f"Density option: {mixture_material.density.option()}")
 print(f"Cp (specific heat) option: {mixture_material.specific_heat.option()}")
 print(f"Thermal conductivity value: {mixture_material.thermal_conductivity.value()}")
 print(f"Viscosity value: {mixture_material.viscosity.value()}")
-print(f"Mass diffusivity value: {mixture_material.mass_diffusivity.value()}")
+if solver.get_fluent_version() < FluentVersion.v252:
+    print(f"Mass diffusivity value: {mixture_material.mass_diffusivity.value()}")
+else:
+    print(
+        f"Mass diffusivity value: {mixture_material.mass_diffusivity.constant_mass_diffusivity()}"
+    )
 
 # %%
 # Boundary Conditions
@@ -240,8 +270,8 @@ solver.settings.setup.boundary_conditions.set_zone_type(
 #
 # *This name is more descriptive for the zone than velocity-inlet-8.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="velocity-inlet-8", newname="air-inlet"
+solver.settings.setup.boundary_conditions.velocity_inlet["velocity-inlet-8"].rename(
+    "air-inlet"
 )
 
 # %%
@@ -277,8 +307,8 @@ air_inlet.print_state()
 #
 # *This name is more descriptive for the zone than velocity-inlet-6.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="velocity-inlet-6", newname="fuel-inlet"
+solver.settings.setup.boundary_conditions.velocity_inlet["velocity-inlet-6"].rename(
+    "fuel-inlet"
 )
 
 # %%
@@ -343,9 +373,7 @@ pressure_outlet.print_state()
 #
 # *This name is more descriptive for the zone than wall-7.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="wall-7", newname="outer-wall"
-)
+solver.settings.setup.boundary_conditions.wall["wall-7"].rename("outer-wall")
 
 # %%
 # Set the following boundary conditions for the outer-wall:
@@ -368,9 +396,7 @@ outer_wall.thermal.print_state()
 #
 # *This name is more descriptive for the zone than wall-2.*
 
-solver.settings.setup.boundary_conditions.set_zone_name(
-    zonename="wall-2", newname="nozzle"
-)
+solver.settings.setup.boundary_conditions.wall["wall-2"].rename("nozzle")
 
 # %%
 # Set the following boundary conditions for the nozzle for adiabatic wall conditions:
@@ -451,7 +477,7 @@ solver.settings.results.report.fluxes.get_heat_transfer_sensible(zones="*")
 contour1 = Contour(solver, new_instance_name="contour-temp")
 contour1.field = "temperature"
 contour1.surfaces_list = contour1.surfaces_list.allowed_values()
-contour1.coloring.option = "banded"
+contour1.colorings.banded = True
 contour1.display()
 graphics.views.auto_scale()
 # graphics.picture.save_picture(file_name="contour-temp.png")
@@ -470,7 +496,7 @@ graphics.views.auto_scale()
 
 vector1 = Vector(solver, new_instance_name="vector-vel")
 vector1.surfaces_list = ["interior-4"]
-vector1.scale.scale_f = 0.01
+vector1.options.scale = 0.01
 vector1.vector_opt.fixed_length = True
 
 # %%

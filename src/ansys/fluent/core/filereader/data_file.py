@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Reader for Fluent data files.
 
 Example
@@ -16,12 +38,12 @@ Example
 import os
 from os.path import dirname
 from pathlib import Path
-import xml.etree.ElementTree as ET
 
-from lxml import etree
+import defusedxml.ElementTree as ET
 import numpy as np
 
 from . import lispy
+from .pre_processor import remove_unsupported_xml_chars
 
 try:
     import h5py
@@ -29,6 +51,16 @@ except ModuleNotFoundError as exc:
     raise ModuleNotFoundError(
         "Missing dependencies, use 'pip install ansys-fluent-core[reader]' to install them."
     ) from exc
+
+from ansys.fluent.core.variable_strategies import (
+    FluentFieldDataNamingStrategy as vector_naming,
+)
+from ansys.fluent.core.variable_strategies import (
+    FluentSVarNamingStrategy as scalar_naming,
+)
+
+_to_scalar_field_name = scalar_naming().to_string
+_to_vector_field_name = vector_naming().to_string
 
 
 class DataFile:
@@ -164,6 +196,7 @@ class DataFile:
         -------
             Numpy array containing scalar field data for a particular phase, field and surface.
         """
+        field_name = _to_scalar_field_name(field_name)
         if ":" in field_name:
             field_name = field_name.split(":")[1]
         min_id, max_id = self._case_file_handle.get_mesh().get_surface_locs(surface_id)
@@ -203,8 +236,15 @@ class DataFile:
 
 
 def _get_data_file_name_from_flprj(flprj_file):
-    parser = etree.XMLParser(recover=True)
-    tree = ET.parse(flprj_file, parser)
-    root = tree.getroot()
-    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    return root.find(folder_name).find("Input").find("Case").find("Target").get("value")
+    with open(flprj_file, "r") as file:
+        content = file.read()
+        content = remove_unsupported_xml_chars(content)
+        root = ET.fromstring(content)
+        folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+        return (
+            root.find(folder_name)
+            .find("Input")
+            .find("Case")
+            .find("Target")
+            .get("value")
+        )

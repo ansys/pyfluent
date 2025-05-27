@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module for events management."""
 
 from dataclasses import dataclass, field, fields
@@ -5,15 +27,15 @@ from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Type, TypeVar
+from typing import Callable, Generic, Literal, Sequence, Type, TypeVar
 import warnings
 
 from google.protobuf.json_format import MessageToDict
 
 from ansys.api.fluent.v0 import events_pb2 as EventsProtoModule
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.streaming_services.streaming import StreamingService
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 __all__ = [
     "EventsManager",
@@ -462,7 +484,7 @@ class EventsManager(Generic[TEvent]):
                 session=session, event_info=event_info, **kwargs
             )
 
-    def register_callback(
+    def _register_single_callback(
         self,
         event_name: TEvent | str,
         callback: Callable,
@@ -522,6 +544,52 @@ class EventsManager(Generic[TEvent]):
                     callback_id: callback_to_call
                 }
             return callback_id
+
+    def register_callback(
+        self,
+        event_types: (
+            SolverEvent | MeshingEvent | Sequence[SolverEvent] | Sequence[MeshingEvent]
+        ),
+        callback: Callable,
+        *args,
+        **kwargs,
+    ):
+        """Register the callback.
+
+        Parameters
+        ----------
+        event_types : TEvent or str
+            Events to register the callback to.
+        callback : Callable
+            Callback to register. If the custom arguments,
+            args and kwargs, are empty then the callback
+            signature must be precisely <function>(session, event_info).
+            Otherwise, the arguments for args and/or kwargs
+            must precede the other arguments in the signature.
+        args : Any
+            Arguments.
+        kwargs : Any
+            Keyword arguments.
+
+        Returns
+        -------
+        str
+            Registered callback ID.
+
+        Raises
+        ------
+        InvalidArgument
+            If event name is not valid.
+        """
+        cb_ids = []
+        if not isinstance(event_types, (list, tuple)):
+            event_types = (event_types,)
+
+        for event in event_types:
+            cb_ids.append(
+                self._register_single_callback(event, callback, *args, **kwargs)
+            )
+        return cb_ids[0] if len(cb_ids) == 1 else cb_ids
 
     def unregister_callback(self, callback_id: str):
         """Unregister the callback.

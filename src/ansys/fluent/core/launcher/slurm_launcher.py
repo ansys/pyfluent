@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provides a module for launching Fluent within a Slurm environment.
 
 Examples
@@ -30,7 +52,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 # Callable slurm launcher
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> slurm_meshing_launcher = create_launcher(LaunchMode.SLURM, mode=FluentMode.MESHING)
 >>> slurm_meshing_session = slurm_meshing_launcher()
@@ -40,6 +62,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 """
 
 from concurrent.futures import Future, ThreadPoolExecutor
+import inspect
 import logging
 import os
 from pathlib import Path
@@ -49,13 +72,7 @@ import time
 from typing import Any, Callable, Dict
 
 from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher.launcher_utils import (
-    _await_fluent_launch,
-    _build_journal_argument,
-    _get_subprocess_kwargs_for_fluent,
-)
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -64,6 +81,12 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _await_fluent_launch,
+    _build_journal_argument,
+    _get_subprocess_kwargs_for_fluent,
+)
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
@@ -272,7 +295,7 @@ class SlurmLauncher:
         processor_count: int | None = None,
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
-        additional_arguments: str | None = "",
+        additional_arguments: str = "",
         env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
@@ -393,7 +416,12 @@ class SlurmLauncher:
         """
         if not _SlurmWrapper.is_available():
             raise RuntimeError("Slurm is not available.")
-        self._argvals, self._new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
             ui_mode = UIMode.GUI

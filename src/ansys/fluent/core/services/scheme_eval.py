@@ -1,26 +1,40 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Wrappers over SchemeEval gRPC service of Fluent.
 
 Example
 -------
->>> from ansys.fluent.core.services.scheme_eval import Symbol as S
->>> session.scheme_eval.eval([S('+'), 2, 3])
-5
->>> session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
-0.7
->>> session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
+>>> session.scheme.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 >>> # Returns TUI output string
->>> session.scheme_eval.string_eval("(+ 2 3)")
-'5'
->>> session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")
-'0.7'
->>> session.scheme_eval.scheme_eval("(+ 2 3)")
+>>> session.scheme.eval("(+ 2 3)")
 5
->>> session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
+>>> session.scheme.eval("(rpgetvar 'mom/relax)")
 0.7
 """
 
 from typing import Any, Sequence
 
+from deprecated.sphinx import deprecated
 import grpc
 
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
@@ -70,10 +84,15 @@ class SchemeEvalService:
         return self.__stub.StringEval(request, metadata=self.__metadata)
 
     def scheme_eval(
-        self, request: SchemeEvalProtoModule.SchemeEvalRequest
+        self,
+        request: SchemeEvalProtoModule.SchemeEvalRequest,
+        metadata: list[tuple[str, str]] = None,
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
         """SchemeEval RPC of SchemeEval service."""
-        return self.__stub.SchemeEval(request, metadata=self.__metadata)
+        new_metadata = self.__metadata
+        if metadata:
+            new_metadata = self.__metadata + metadata
+        return self.__stub.SchemeEval(request, metadata=new_metadata)
 
 
 class Symbol:
@@ -228,14 +247,10 @@ class SchemeEval:
 
     Methods
     -------
-    eval(val)
-        Evaluates a scheme expression, returns Python value
     exec(commands, wait, silent)
         Executes a sequence of scheme commands, returns TUI output
         string
-    string_eval(input)
-        Evaluates a scheme expression in string format, returns string
-    scheme_eval(input)
+    eval(input)
         Evaluates a scheme expression in string format, returns Python
         value
     """
@@ -249,13 +264,16 @@ class SchemeEval:
         except Exception:  # for pypim launch
             self.version = FluentVersion.v231.value
 
-    def eval(self, val: Any) -> Any:
+    def _eval(self, val: Any, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression.
 
         Parameters
         ----------
         val : Any
             Input scheme expression represented as Python datatype
+
+        suppress_prompts : bool, optional
+            Whether to suppress prompts in Fluent, by default True
 
         Returns
         -------
@@ -270,7 +288,10 @@ class SchemeEval:
         else:
             request = SchemeEvalProtoModule.SchemeEvalRequest()
             _convert_py_value_to_scheme_pointer(val, request.input, self.version)
-            response = self.service.scheme_eval(request)
+            metadata = []
+            if not suppress_prompts:
+                metadata.append(("no-suppress-prompts", "1"))
+            response = self.service.scheme_eval(request, metadata)
             return _convert_scheme_pointer_to_py_value(response.output, self.version)
 
     def exec(
@@ -321,13 +342,21 @@ class SchemeEval:
         response = self.service.string_eval(request)
         return response.output
 
-    def scheme_eval(self, input: str) -> Any:
+    @deprecated(version="0.32", reason="Use ``session.scheme``.")
+    def scheme_eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
+        """Evaluates a scheme expression in string format."""
+        return self.eval(scm_input, suppress_prompts)
+
+    def eval(self, scm_input: str, suppress_prompts: bool = True) -> Any:
         """Evaluates a scheme expression in string format.
 
         Parameters
         ----------
-        input : str
+        scm_input : str
             Input scheme expression in string format
+
+        suppress_prompts : bool, optional
+            Whether to suppress prompts in Fluent, by default True
 
         Returns
         -------
@@ -337,10 +366,10 @@ class SchemeEval:
         S = Symbol  # noqa N806
         val = (
             S("eval"),
-            (S("with-input-from-string"), input, S("read")),
+            (S("with-input-from-string"), scm_input, S("read")),
             S("user-initial-environment"),
         )
-        return self.eval(val)
+        return self._eval(val, suppress_prompts)
 
     def is_defined(self, symbol: str) -> bool:
         """Check if a symbol is defined in the scheme environment.
@@ -355,6 +384,6 @@ class SchemeEval:
         bool
             True if symbol is defined, False otherwise
         """
-        return not self.scheme_eval(
+        return not self.eval(
             f"(lexical-unreferenceable? user-initial-environment '{symbol})"
         )

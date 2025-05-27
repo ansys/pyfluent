@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """.. _ref_mixing_elbow_settings_api_beta:
 
 Fluent setup and solution using settings objects
@@ -95,7 +117,7 @@ solver.setup.cell_zone_conditions.fluid["elbow-fluid"].general.material = "water
 # Temperature: 293.15 [K]
 cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
 
-cold_inlet.momentum.velocity.value = 0.4
+cold_inlet.momentum.velocity_magnitude.value = 0.4
 cold_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 cold_inlet.turbulence.turbulent_intensity = 0.05
 cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
@@ -110,7 +132,7 @@ cold_inlet.thermal.temperature.value = 293.15
 # Temperature: 313.15 [K]
 hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
-hot_inlet.momentum.velocity.value = 1.2
+hot_inlet.momentum.velocity_magnitude.value = 1.2
 hot_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
 hot_inlet.thermal.temperature.value = 313.15
@@ -166,7 +188,7 @@ velocity_symmetry.field = "velocity-magnitude"
 velocity_symmetry.surfaces_list = [
     "symmetry-xyplane",
 ]
-velocity_symmetry.scale.scale_f = 4
+velocity_symmetry.options.scale = 4
 velocity_symmetry.style = "arrow"
 velocity_symmetry.display()
 

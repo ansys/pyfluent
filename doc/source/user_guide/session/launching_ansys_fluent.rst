@@ -9,9 +9,7 @@ Fluent's gRPC server so that commands can be sent to it from the Python interpre
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(
-  >>>     mode=pyfluent.FluentMode.SOLVER
-  >>> )
+  >>> solver = pyfluent.launch_fluent()
 
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
@@ -48,9 +46,7 @@ These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
-  >>>     mode=pyfluent.FluentMode.SOLVER
-  >>> )
+  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   
 
 .. code:: python
@@ -67,6 +63,17 @@ This example shows how to launch Fluent in meshing mode:
   >>> meshing_session = pyfluent.launch_fluent(
   >>>      mode=pyfluent.FluentMode.MESHING
   >>> )
+
+
+Pre/Post mode
+~~~~~~~~~~~~~
+Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
+
+This example shows how to launch Fluent in Pre/Post mode:
+
+.. code:: python
+
+  >>> pre_post_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PRE_POST)
 
 
 Precision
@@ -130,7 +137,7 @@ This command enables logging:
 
 .. code:: python
 
-  >>> pyfluent.logging.enable()
+  >>> pyfluent.logger.enable()
 
 
 For more details, see :ref:`ref_logging_guide`.
@@ -161,7 +168,7 @@ scheduler using the ``sbatch`` command:
    #
    # Activate your favorite Python environment
    #
-   export AWP_ROOT251=/apps/ansys_inc/v251
+   export AWP_ROOT252=/apps/ansys_inc/v252
    . ./venv/bin/activate
    #
    # Run a PyFluent script
@@ -204,7 +211,6 @@ Fluent uses:
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     processor_count=16,
-  >>>     mode=pyfluent.FluentMode.SOLVER
   >>> )
 
 
@@ -274,3 +280,239 @@ The ``scheduler_options`` parameter doesn't support the automatic scheduler allo
 the ``-t`` and ``-cnf`` arguments must be passed to the
 :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function
 using the ``additional_arguments`` parameter for distributed parallel processing.
+
+Launching a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ session
+---------------------------------------------------------------------------
+When PyFluent is used within a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ configured environment, 
+the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` function automatically launches 
+Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode and in that same environment it 
+can be launched explicitly using :func:`create_launcher() <ansys.fluent.core.launcher.launcher.create_launcher>` as follows:
+
+.. code:: python
+
+  >>> from ansys.fluent.core.launcher.launcher import create_launcher
+  >>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
+
+  >>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
+  >>> pim_meshing_session = pim_meshing_launcher()
+
+  >>> pim_solver_launcher = create_launcher(LaunchMode.PIM)
+  >>> pim_solver_session = pim_solver_launcher()
+
+
+Launching Fluent in container mode with Docker Compose or Podman Compose
+------------------------------------------------------------------------
+
+Use PyFluent with Docker Compose or Podman Compose to run Fluent in a consistent, reproducible containerized environment.
+
+1. **Docker Compose**
+
+    Prerequisites:
+
+    - `Docker <https://www.docker.com/>`_
+    - `Docker Compose <https://docs.docker.com/compose/>`_
+
+
+2. **Podman Compose**
+
+    Prerequisites:
+
+    - `Podman <https://podman.io/>`_
+    - `Podman Compose <https://docs.podman.io/en/latest/markdown/podman-compose.1.html>`_
+
+
+Example:
+
+Set environment variables to select the container engine:
+
+.. code:: python
+
+  >>> import os
+  >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
+  >>> os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
+
+
+Then launch:
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import examples
+  >>> solver = pyfluent.launch_fluent()
+  >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+  >>> solver.file.read(file_name=case_file_name, file_type="case")
+  >>> solver.exit()
+
+
+Connect to a Fluent container running inside WSL from a Windows host
+--------------------------------------------------------------------
+
+1. Launch Fluent container inside WSL
+
+.. code:: console
+
+    docker run -it -p 63084:63084 -v /mnt/d/testing:/testing -e "ANSYSLMD_LICENSE_FILE=<license file or server>" -e "REMOTING_PORTS=63084/portspan=2" ghcr.io/ansys/pyfluent:v25.2.0 3ddp -gu -sifile=/testing/server.txt
+    /ansys_inc/v252/fluent/fluent25.2.0/bin/fluent -r25.2.0 3ddp -gu -sifile=/testing/server.txt
+
+2. Connect from PyFluent running on a Windows host
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written `server.txt`>)
+
+
+Connecting to a Fluent container running inside Linux from a Windows host
+-------------------------------------------------------------------------
+
+1. Launch Fluent container inside Linux
+
+.. code:: console
+
+    ansys_inc/v251/fluent/bin/fluent 3ddp -gu -sifile=server.txt
+    cat server.txt
+    10.18.19.151:44383
+    hbsosnni
+
+2. Connect from PyFluent running on a Windows host
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> solver = pyfluent.connect_to_fluent(ip="10.18.19.151", port=44383, password="hbsosnni")
+
+
+Connecting to Fluent on Windows from a Linux or WSL host
+--------------------------------------------------------
+
+This guide describes how to connect to an ANSYS Fluent instance running on a Windows machine from a Linux or WSL host. 
+It also includes steps to enable remote file transfer.
+
+  Prerequisites:
+
+    - `Docker <https://www.docker.com/>`_
+    - `Build file transfer server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/intro.html#>`_
+
+A. **Set Up Fluent and File Transfer Server on Windows**
+
+1. **Launch Fluent**
+
+   Open a command prompt and run:
+
+   .. code:: console
+
+      ANSYS Inc\v252\fluent\ntbin\win64\fluent.exe 3ddp -sifile=server_info.txt
+      type server_info.txt
+
+   Example output:
+   ``10.18.44.179:51344``, ``5scj6c8l``
+
+2. **Retrieve Connection Details**
+
+   Get the IP address, port, and password from the `server_info.txt` file.  
+   Example:
+   - IP: ``10.18.44.179``
+   - Port: ``51344``
+   - Password: ``5scj6c8l``
+
+3. **Start the File Transfer Server**
+
+   From Fluent's working directory, start the container for file-transfer server.
+
+   .. code:: console
+
+      docker run -p 50000:50000 -v %cd%:/home/container/workdir filetransfer-tool-server
+
+4. **Allow Inbound TCP Connections**
+
+   Configure the Windows Firewall:
+
+   - Open: **Control Panel > Windows Defender Firewall > Advanced Settings > Inbound Rules**
+   - Right-click **Inbound Rules**, select **New Rule**
+   - Choose **Port**, click **Next**
+   - Keep **TCP** selected
+   - Enter the ports in **Specific local ports**: `51344, 50000` then click **Next**
+   - Select **Allow the connection**, click **Next**
+   - Leave all profiles (Domain, Private, Public) checked, click **Next**
+   - Name the rule: `Inbound TCP for Fluent`
+
+Note: Delete the added inbound rule after the Fluent session is closed.
+
+B. **Connect from Linux or WSL Host**
+
+Run the following Python code to connect to Fluent and transfer files:
+
+.. code:: python
+
+   from ansys.fluent.core import connect_to_fluent
+   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+   file_service = RemoteFileTransferStrategy("10.18.44.179", 50000)
+   solver = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
+
+   # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
+   solver.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
+
+   # `elbow_remote.cas.h5` will be downloaded to local working directory
+   solver.file.write_case(file_name="elbow_remote.cas.h5")
+
+
+Connecting to Fluent on Linux or WSL from a Windows host
+--------------------------------------------------------
+
+This guide describes how to connect to an ANSYS Fluent instance running on a Linux or WSL machine from a Windows host. 
+It also includes steps to enable remote file transfer.
+
+  Prerequisites:
+
+    - `Docker <https://www.docker.com/>`_
+    - `Build file transfer server <https://filetransfer-server.tools.docs.pyansys.com/version/stable/intro.html#>`_
+
+A. **Set Up Fluent and File Transfer Server on Linux or WSL**
+
+1. **Launch Fluent**
+
+   Open a shell and run:
+
+   .. code:: console
+
+      ansys_inc/v252/fluent/bin/fluent 3ddp -sifile=server_info.txt
+      cat server_info.txt
+
+   Example output:
+   ``10.18.19.150:41429``, ``u5s3iivh``
+
+2. **Retrieve Connection Details**
+
+   Get the IP address, port, and password from the `server_info.txt` file.  
+   Example:
+   - IP: ``10.18.19.150``
+   - Port: ``41429``
+   - Password: ``u5s3iivh``
+
+3. **Start the File Transfer Server**
+
+   From Fluent's working directory, start the container for file-transfer server.
+
+   .. code:: console
+
+      docker run -p 50000:50000 -v `pwd`:/home/container/workdir -u `id -u`:`id -g` filetransfer-tool-server
+
+B. **Connect from Windows Host**
+
+Run the following Python code to connect to Fluent and transfer files:
+
+.. code:: python
+
+   from ansys.fluent.core import connect_to_fluent
+   from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+
+   file_service = RemoteFileTransferStrategy("10.18.19.150", 50000)
+   solver = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)
+
+   # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
+   solver.file.read_case(file_name="D:\path_to_file\mixing_elbow.cas.h5")
+
+   # `elbow_remote.cas.h5` will be downloaded to local working directory
+   solver.file.write_case(file_name="elbow_remote.cas.h5")
+

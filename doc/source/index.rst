@@ -5,11 +5,12 @@ PyFluent documentation |version|
    :hidden:
    :maxdepth: 2
 
-   getting_started/index
-   user_guide/index
-   api/index
+   getting_started/getting_started_contents
+   user_guide/user_guide_contents
+   api/api_contents
    examples/index
-   contributing/index
+   contributing/contributing_contents
+   changelog
 
 
 Welcome to PyFluent documentation

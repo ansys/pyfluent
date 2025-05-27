@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provides a module for enums used in the PyFluent."""
 
 from enum import Enum
@@ -75,13 +97,25 @@ class LaunchMode(FluentEnum):
 
 
 class FluentMode(FluentEnum):
-    """Enumerates over supported Fluent modes."""
+    """Enumerates over supported Fluent modes.
+
+    The Fluent mode is used to determine the type of session to be created.
+
+    Modes:
+    - ``MESHING``: When in meshing mode, Fluent functions as a robust, unstructured mesh generation program that can handle meshes of virtually unlimited size and complexity..
+    - ``PURE_MESHING``: Start Fluent in meshing mode without switch to solver functionality.
+    - ``SOLVER``: The default Ansys Fluent full solution mode allows you to set up, solve, and postprocess a problem.
+    - ``SOLVER_ICING``: Fluent Icing allows you to simulate airflow, particles and ice accretion on aircraft surfaces.
+    - ``SOLVER_AERO``: Fluent Aero allows you to easily explore the aerodynamic performance of aircraft from a wide range of flight regimes, from subsonic to hypersonic conditions.
+    - ``PRE_POST``: Run Ansys Fluent with only the setup and postprocessing capabilities available. It does not allow you to perform calculations.
+    """
 
     MESHING = "meshing"
     PURE_MESHING = "pure_meshing"
     SOLVER = "solver"
     SOLVER_ICING = "solver_icing"
     SOLVER_AERO = "solver_aero"
+    PRE_POST = "pre_post"
 
     def _default(self):
         return self.SOLVER
@@ -93,6 +127,7 @@ class FluentMode(FluentEnum):
             self.SOLVER: Solver,
             self.SOLVER_ICING: SolverIcing,
             self.SOLVER_AERO: SolverAero,
+            self.PRE_POST: Solver,
         }
 
     @staticmethod

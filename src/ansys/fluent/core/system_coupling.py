@@ -1,9 +1,33 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module containing System Coupling-related functionality."""
 
 from dataclasses import dataclass
 import os
 from typing import List
 import xml.etree.ElementTree as XmlET
+
+from defusedxml.ElementTree import fromstring
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -60,9 +84,7 @@ class SystemCoupling:
             )
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             # enable feature to be able to make System Coupling settings APIs calls
-            self._solver.scheme_eval.scheme_eval(
-                "(enable-feature 'sc/participant-info)"
-            )
+            self._solver.scheme.eval("(enable-feature 'sc/participant-info)")
 
     @property
     def participant_type(self) -> str:
@@ -302,7 +324,7 @@ class SystemCoupling:
 
         setup_info = dict()
 
-        xml_root = XmlET.ElementTree(XmlET.fromstring(get_scp_string()))
+        xml_root = XmlET.ElementTree(fromstring(get_scp_string()))
         cosim_control = xml_root.find("./CosimulationControl")
 
         setup_info["analysis-type"] = cosim_control.find("AnalysisType").text

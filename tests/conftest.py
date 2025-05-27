@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from contextlib import nullcontext
 import functools
 import inspect
@@ -13,7 +35,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 sys.path.append(Path(__file__).parent / "util")
@@ -224,8 +246,8 @@ def exhaust_system_geometry_filename():
 
 def create_session(**kwargs):
     if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -233,6 +255,13 @@ def create_session(**kwargs):
         )
     else:
         return pyfluent.launch_fluent(**kwargs)
+
+
+@pytest.fixture
+def new_meshing_session_wo_exit():
+    meshing = create_session(mode=pyfluent.FluentMode.MESHING)
+    yield meshing
+    # Exit is intentionally avoided here. Please exit from the method using this.
 
 
 @pytest.fixture
@@ -256,11 +285,27 @@ def watertight_workflow_session(new_meshing_session):
 
 
 @pytest.fixture
+def watertight_workflow_session_wo_exit(new_meshing_session_wo_exit):
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Watertight Geometry"
+    )
+    return new_meshing_session_wo_exit
+
+
+@pytest.fixture
 def fault_tolerant_workflow_session(new_meshing_session):
     new_meshing_session.workflow.InitializeWorkflow(
         WorkflowType="Fault-tolerant Meshing"
     )
     return new_meshing_session
+
+
+@pytest.fixture
+def fault_tolerant_workflow_session_wo_exit(new_meshing_session_wo_exit):
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Fault-tolerant Meshing"
+    )
+    return new_meshing_session_wo_exit
 
 
 @pytest.fixture
@@ -406,10 +451,8 @@ def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
 def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
     if request.param == "new":
         monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
-        monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")
 
 
 @pytest.fixture
 def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
-    monkeypatch.setenv("REMOTING_MAPPED_NEW_DM_API", "1")

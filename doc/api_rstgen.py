@@ -40,6 +40,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
+    "docker": ["docker_compose"],
     "filereader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
@@ -49,12 +50,12 @@ hierarchy = {
         "launcher",
         "pim_launcher",
         "process_launch_string",
-        "pyfluent_enums",
+        "launch_options",
         "slurm_launcher",
         "standalone_launcher",
         "watchdog",
     ],
-    "meshing": ["meshing_workflow", "datamodel/index", "tui/index"],
+    "meshing": ["meshing_workflow", "datamodel/datamodel_contents", "tui/tui_contents"],
     "post_objects": [
         "check_in_notebook",
         "post_helper",
@@ -83,11 +84,9 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "flunits",
-        "settings_external",
-        "datamodel/index",
+        "datamodel/datamodel_contents",
         "settings_root",
-        "tui/index",
+        "tui/tui_contents",
     ],
     "streaming_services": [
         "datamodel_event_streaming",
@@ -113,12 +112,11 @@ hierarchy = {
         "setup_for_fluent",
     ],
     "other": [
-        "data_model_cache",
         "exceptions",
         "file_session",
         "fluent_connection",
         "journaling",
-        "logging",
+        "logger",
         "parametric",
         "rpvars",
         "search",
@@ -129,8 +127,8 @@ hierarchy = {
         "session_solver_lite",
         "session_solver",
         "session",
-        "systemcoupling",
-        "warnings",
+        "system_coupling",
+        "pyfluent_warnings",
         "workflow",
     ],
 }
@@ -147,7 +145,7 @@ def _write_common_rst_members(rst_file):
 
 def _generate_api_source_rst_files(folder: str, files: list):
     for file in files:
-        if "index" in file:
+        if file.endswith("_contents"):
             pass
         else:
             if folder:
@@ -188,8 +186,8 @@ def _generate_api_index_rst_files():
             _generate_api_source_rst_files(None, files)
         else:
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
-            file = _get_file_path(folder, "index")
-            with open(file, "w", encoding="utf8") as index:
+            folder_index = _get_file_path(folder, f"{folder}_contents")
+            with open(folder_index, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
                 index.write(f"{folder}\n")
                 index.write(f'{"="*(len(f"{folder}"))}\n\n')

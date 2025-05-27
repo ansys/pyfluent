@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from typing import Any
 
 import pytest
@@ -386,8 +408,7 @@ def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
 
 
-@pytest.mark.nightly
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=24.1")
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ) -> None:
@@ -423,14 +444,15 @@ def test_reductions(
 @pytest.mark.fluent_version(">=24.2")
 def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
+    solver.solution.initialization.hybrid_initialize()
     # After reading the static-mixer case in Fluent, case-modifed? flag is somehow True
-    solver.scheme_eval.scheme_eval("(%save-case-id)")
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.scheme.eval("(%save-case-id)")
+    assert not solver.scheme.eval("(case-modified?)")
     solver.reduction.area_average(
         expression="AbsolutePressure",
         locations=solver.setup.boundary_conditions.velocity_inlet,
     )
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    assert not solver.scheme.eval("(case-modified?)")
 
 
 @pytest.mark.fluent_version(">=24.2")

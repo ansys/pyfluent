@@ -141,9 +141,12 @@ all PyFluent packages in a Python *virtual environment*:
 Which version of Python should you use?
 ---------------------------------------
 PyFluent supports Python 3.10 through Python 3.12 on Windows and Linux. Python
-3.10 is shipped with Ansys 2023 R2 and later. For example, in a 2023 R2 Windows
+3.10 is shipped with Ansys 2023 R2 and later. For example, in a 2025 R2 Windows
 installation, the executable file Python 3.10 is typically located at:
-``C:\Program Files\ANSYS Inc\v232\commonfiles\CPython\3_10\winx64\Release\python.exe``.
+``C:\Program Files\ANSYS Inc\v252\commonfiles\CPython\3_10\winx64\Release\python.exe``.
+If you're using Python from Ansys installation, make sure to install PyFluent
+within a Python virtual environment to prevent any possible conflicts with
+Ansys Python packages.
 
 Alternatively, you can download any compatible version of Python directly from
 the `Downloads page <https://www.python.org/downloads/>`_ of the Python web

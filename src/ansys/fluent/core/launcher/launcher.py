@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provides a module for launching Fluent.
 
 This module supports both starting Fluent locally and connecting to a remote instance
@@ -12,9 +34,7 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launcher_utils import _confirm_watchdog_start
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -25,6 +45,11 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_fluent_launch_mode,
     _get_running_session_mode,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _confirm_watchdog_start,
+    is_windows,
+)
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
@@ -33,9 +58,8 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -71,6 +95,27 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return SlurmLauncher(**kwargs)
 
 
+def _show_gui_to_ui_mode(old_arg_val, **kwds):
+    start_container = kwds.get("start_container")
+    container_dict = kwds.get("container_dict")
+    if old_arg_val is True:
+        if start_container is True:
+            return UIMode.NO_GUI
+        elif container_dict:
+            return UIMode.NO_GUI
+        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+            return UIMode.NO_GUI
+        else:
+            return UIMode.GUI
+    elif not old_arg_val:
+        if is_windows():
+            return UIMode.HIDDEN_GUI
+        elif not is_windows():
+            return UIMode.NO_GUI
+        else:
+            return None
+
+
 def _version_to_dimension(old_arg_val):
     if old_arg_val == "2d":
         return Dimension.TWO
@@ -81,17 +126,23 @@ def _version_to_dimension(old_arg_val):
 
 
 #   pylint: disable=unused-argument
-@deprecate_argument(
-    old_arg="show_gui",
-    new_arg="ui_mode",
-    converter=lambda old_arg_val: UIMode.GUI if old_arg_val is True else None,
-    warning_cls=PyFluentDeprecationWarning,
-)
-@deprecate_argument(
-    old_arg="version",
-    new_arg="dimension",
-    converter=_version_to_dimension,
-    warning_cls=PyFluentDeprecationWarning,
+@all_deprecators(
+    deprecate_arg_mappings=[
+        {
+            "old_arg": "show_gui",
+            "new_arg": "ui_mode",
+            "converter": _show_gui_to_ui_mode,
+        },
+        {
+            "old_arg": "version",
+            "new_arg": "dimension",
+            "converter": _version_to_dimension,
+        },
+    ],
+    data_type_converter=None,
+    deprecated_version="v0.22.dev0",
+    deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
+    warn_message="",
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
@@ -100,7 +151,7 @@ def launch_fluent(
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
     start_timeout: int = None,
-    additional_arguments: str | None = "",
+    additional_arguments: str = "",
     env: Dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict | None = None,
@@ -133,6 +184,12 @@ def launch_fluent(
         Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
         any of  ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``or ``251``.
         The default is ``None``, in which case the newest installed version is used.
+        PyFluent uses the ``AWP_ROOT<ver>`` environment variable to locate the Fluent
+        installation, where ``<ver>`` is the Ansys release number such as ``251``.
+        The ``AWP_ROOT<ver>`` environment variable is automatically configured on Windows
+        system when Fluent is installed. On Linux systems, ``AWP_ROOT<ver>`` must be
+        configured to point to the absolute path of an Ansys installation such as
+        ``/apps/ansys_inc/v251``.
     dimension : Dimension or int, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``Dimension.THREE`` is used. Options are either the values of the
@@ -302,6 +359,7 @@ def connect_to_fluent(
     server_info_file_name: str | None = None,
     password: str | None = None,
     start_watchdog: bool | None = None,
+    file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
@@ -336,6 +394,8 @@ def connect_to_fluent(
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -367,4 +427,5 @@ def connect_to_fluent(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
+        file_transfer_service=file_transfer_service,
     )

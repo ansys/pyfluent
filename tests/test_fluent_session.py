@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import os
 import subprocess
 import threading
@@ -145,16 +167,16 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
-    assert session2.health_check.is_serving
+    assert session2.is_server_healthy()
     session2.exit()
 
     timeout_loop(
-        session1.health_check.is_serving,
+        session1.is_server_healthy(),
         5.0,
         expected="truthy",
     )
 
-    assert session1.health_check.is_serving
+    assert session1.is_server_healthy()
     session1.exit()
 
 
@@ -171,12 +193,12 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.health_check.is_serving,
+        session1.is_server_healthy(),
         5.0,
         expected="falsy",
     )
 
-    assert not session1.health_check.is_serving
+    assert not session1.is_server_healthy()
 
 
 def test_fluent_connection_properties(
@@ -209,13 +231,14 @@ def test_fluent_freeze_kill(
     tmp_thread = threading.Thread(target=_freeze_fluent, args=(session,), daemon=True)
     tmp_thread.start()
     tmp_thread.join(5)
+    fl_connection = session._fluent_connection
     if tmp_thread.is_alive():
         session.exit(timeout=1, timeout_force=True)
         tmp_thread.join()
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    assert session._fluent_connection.wait_process_finished(wait=5)
+    assert fl_connection.wait_process_finished(wait=5)
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -228,7 +251,7 @@ def test_interrupt(static_mixer_case_session):
     )
     time.sleep(5)
     solver.solution.run_calculation.interrupt()
-    assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100
+    assert solver.scheme.eval("(rpgetvar 'time-step)") < 100
 
 
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
@@ -254,16 +277,19 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
 
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
+    fl_connection1 = session1._fluent_connection
     session1.exit()
-    assert not session1._fluent_connection.wait_process_finished(wait=0)
+    assert not fl_connection1.wait_process_finished(wait=0)
 
     session2 = pyfluent.launch_fluent()
+    fl_connection2 = session2._fluent_connection
     session2.exit(wait=60)
-    assert session2._fluent_connection.wait_process_finished(wait=0)
+    assert fl_connection2.wait_process_finished(wait=0)
 
     session3 = pyfluent.launch_fluent()
+    fl_connection3 = session3._fluent_connection
     session3.exit(wait=True)
-    assert session3._fluent_connection.wait_process_finished(wait=0)
+    assert fl_connection3.wait_process_finished(wait=0)
 
     with pytest.raises(WaitTypeError):
         session4 = pyfluent.launch_fluent()

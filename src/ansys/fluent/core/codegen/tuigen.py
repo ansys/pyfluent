@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provide a module to generate explicit Fluent TUI menu classes.
 
 This module starts up Fluent and calls the underlying gRPC APIs to generate the
@@ -12,6 +34,7 @@ Usage
 `python codegen/tuigen.py`
 """
 
+import argparse
 import logging
 import os
 from pathlib import Path
@@ -22,7 +45,8 @@ import string
 import subprocess
 from typing import Any, Dict
 import uuid
-import xml.etree.ElementTree as ET
+
+from defusedxml.ElementTree import parse
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
@@ -34,7 +58,6 @@ from ansys.fluent.core.services.datamodel_tui import (
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
-    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
@@ -106,7 +129,7 @@ def _copy_tui_help_xml_file(version: str):
                 shutil.copy(str(xml_source), _XML_HELP_FILE)
             else:
                 logger.warning("fluent_gui_help.xml is not found.")
-        except AnsysVersionNotFound:
+        except FileNotFoundError:
             logger.warning("fluent_gui_help.xml is not found.")
 
 
@@ -114,7 +137,7 @@ def _populate_xml_helpstrings():
     if not Path(_XML_HELP_FILE).exists():
         return
 
-    tree = ET.parse(_XML_HELP_FILE)
+    tree = parse(_XML_HELP_FILE)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
@@ -176,7 +199,9 @@ class _RenameModuleUnpickler(pickle.Unpickler):
 class TUIGenerator:
     """Generates explicit TUI menu classes."""
 
-    def __init__(self, mode: str, version: str, static_infos: dict):
+    def __init__(
+        self, mode: str, version: str, static_infos: dict, verbose: bool = False
+    ):
         self._mode = mode
         self._version = version
         self._tui_file = _get_tui_filepath(mode, version)
@@ -189,6 +214,7 @@ class TUIGenerator:
             shutil.rmtree(Path(self._tui_doc_dir))
         self._main_menu = _TUIMenu([], "")
         self._static_infos = static_infos
+        self._verbose = verbose
 
     def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
         for child_menu_name, child_menu_info in sorted(info["menus"].items()):
@@ -260,6 +286,8 @@ class TUIGenerator:
         """Generate TUI API classes."""
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
+        if self._verbose:
+            print(f"{str(self._tui_file)}")
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             if FluentVersion(self._version) == FluentVersion.v222:
                 with open(
@@ -298,7 +326,7 @@ class TUIGenerator:
         return api_tree
 
 
-def generate(version, static_infos: dict):
+def generate(version, static_infos: dict, verbose: bool = False):
     """Generate TUI API classes."""
     api_tree = {}
     gt_222 = FluentVersion(version) > FluentVersion.v222
@@ -312,11 +340,11 @@ def generate(version, static_infos: dict):
     _populate_xml_helpstrings()
     if not gt_222 or StaticInfoType.TUI_MESHING in static_infos:
         api_tree["<meshing_session>"] = TUIGenerator(
-            "meshing", version, static_infos
+            "meshing", version, static_infos, verbose
         ).generate()
     if not gt_222 or StaticInfoType.TUI_SOLVER in static_infos:
         api_tree["<solver_session>"] = TUIGenerator(
-            "solver", version, static_infos
+            "solver", version, static_infos, verbose
         ).generate()
     if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
         logger.info(
@@ -340,4 +368,14 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.TUI_MESHING] = (
             meshing._datamodel_service_tui.get_static_info("")
         )
-    generate(version, static_infos)
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    generate(version, static_infos, args.verbose)

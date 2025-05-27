@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Metaclasses used in various explicit classes in PyFluent."""
 
 from abc import ABCMeta
@@ -743,7 +765,7 @@ class PyLocalContainer(MutableMapping):
         self._parent = parent
         self._name = name
         self.__object_class = object_class
-        self.__collection: dict = {}
+        self._local_collection = {}
         self.__api_helper = api_helper
         self.type = "named-object"
         self._command_names = []
@@ -834,15 +856,15 @@ class PyLocalContainer(MutableMapping):
         return self.get_session_handle()
 
     def __iter__(self):
-        return iter(self.__collection)
+        return iter(self._local_collection)
 
     def __len__(self):
-        return len(self.__collection)
+        return len(self._local_collection)
 
     def __getitem__(self, name):
-        o = self.__collection.get(name, None)
+        o = self._local_collection.get(name, None)
         if not o:
-            o = self.__collection[name] = self.__object_class(
+            o = self._local_collection[name] = self.__object_class(
                 name, self, self.__api_helper
             )
             on_create = getattr(self._PyLocalContainer__object_class, "on_create", None)
@@ -855,7 +877,7 @@ class PyLocalContainer(MutableMapping):
         o.update(value)
 
     def __delitem__(self, name):
-        del self.__collection[name]
+        del self._local_collection[name]
         on_delete = getattr(self._PyLocalContainer__object_class, "on_delete", None)
         if on_delete:
             on_delete(self, name)

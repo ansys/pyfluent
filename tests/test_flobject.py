@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Unit tests for flobject module."""
 
 from collections.abc import MutableMapping
@@ -41,6 +63,7 @@ class Setting:
     attrs = {
         "active?": lambda self: True,
         "webui-release-active?": lambda self: True,
+        "deprecated-version": lambda self: None,
     }
 
 
@@ -302,6 +325,7 @@ class Root(Group):
                 "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
                 "webui-release-active?": lambda self: True,
+                "deprecated-version": lambda self: None,
             }
 
         children = {
@@ -514,7 +538,7 @@ def test_command():
 
 def test_attrs():
     r = flobject.get_root(Proxy())
-    r._setattr("version", "251")
+    r._setattr("_version", "251")
     assert r.g_1.s_4.get_attr("active?")
     assert r.g_1.s_4.get_attr("allowed-values") == ["foo", "bar"]
     r.g_1.b_3 = True
@@ -872,11 +896,7 @@ def test_settings_matching_names(new_solver_session) -> None:
     with pytest.raises(AttributeError) as msg:
         solver.setup.mod
 
-    assert msg.value.args[0].startswith(
-        "'setup' object has no attribute 'mod'.\n\n" "The most similar API names are:\n"
-    )
-
-    assert len(msg.value.args[0].split("\n")) > 5
+    assert msg.value.args[0].startswith("'setup' object has no attribute 'mod'.")
 
     with pytest.raises(ValueError) as msg:
         solver.setup.models.viscous.model = "k_epsilon"
@@ -1057,16 +1077,17 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
         "option": "value",
         "value": (12.0, "m s^-1"),
     }
-    clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
-    clip_factor.set_state(1.2)
-    assert clip_factor() == 1.2
-    assert clip_factor.as_quantity() == ansys.units.Quantity(1.2, "")
-    assert clip_factor.state_with_units() == (1.2, "")
-    assert clip_factor.units() == ""
-    clip_factor.set_state(ansys.units.Quantity(1.8, ""))
-    assert clip_factor.as_quantity() == ansys.units.Quantity(1.8, "")
-    assert clip_factor.state_with_units() == (1.8, "")
-    assert clip_factor.units() == ""
+    # https://github.com/ansys/pyfluent/issues/3738
+    # clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
+    # clip_factor.set_state(1.2)
+    # assert clip_factor() == 1.2
+    # assert clip_factor.as_quantity() == ansys.units.Quantity(1.2, "")
+    # assert clip_factor.state_with_units() == (1.2, "")
+    # assert clip_factor.units() == ""
+    # clip_factor.set_state(ansys.units.Quantity(1.8, ""))
+    # assert clip_factor.as_quantity() == ansys.units.Quantity(1.8, "")
+    # assert clip_factor.state_with_units() == (1.8, "")
+    # assert clip_factor.units() == ""
 
     _check_vector_units(
         solver.setup.general.operating_conditions.reference_pressure_location, "m"

@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from pathlib import Path
 import tempfile
 
@@ -685,8 +707,7 @@ def test_builtin_singleton_setting_assign_session(
     )
     assert models.is_active()
     assert models == solver.setup.models
-    # TODO: Ideally an AttributeError should be raised here from flobject.py
-    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+    with pytest.raises(AttributeError):  # re-assignment is not allowed
         models.settings_source = solver
 
     models = Models()
@@ -711,8 +732,7 @@ def test_builtin_non_creatable_named_object_setting_assign_session(
     inlet.settings_source = solver
     assert inlet == solver.settings.setup.boundary_conditions["inlet1"]
     assert inlet.settings_source == solver.settings
-    # TODO: Ideally an AttributeError should be raised here from flobject.py
-    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+    with pytest.raises(AttributeError):  # re-assignment is not allowed
         inlet.settings_source = solver
 
     inlet = BoundaryCondition(name="inlet1")
@@ -737,8 +757,7 @@ def test_builtin_creatable_named_object_setting_assign_session(
     report_file.settings_source = solver
     assert report_file == solver.solution.monitor.report_files["report-file-1"]
     assert report_file.settings_source == solver.settings
-    # TODO: Ideally an AttributeError should be raised here from flobject.py
-    with pytest.raises(RuntimeError):  # re-assignment is not allowed
+    with pytest.raises(AttributeError):  # re-assignment is not allowed
         report_file.settings_source = solver
 
     report_file = ReportFile(name="report-file-1")

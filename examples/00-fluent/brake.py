@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """
 #################################
 Automotive Brake Thermal Analysis
@@ -20,7 +42,6 @@ This example demonstrates:
 # ==================================================================================
 
 import csv
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 
@@ -28,18 +49,9 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 import ansys.fluent.visualization.pyvista as pv
 
-###############################################################################
-# Specifying save path
-# ====================
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 import_filename = examples.download_file(
-    "brake.msh",
+    "brake.msh.h5",
     "pyfluent/examples/Brake-Thermal-PyVista-Matplotlib",
-    save_path=save_path,
 )
 
 ####################################################################################
@@ -170,11 +182,10 @@ session.settings.solution.monitor.report_plots["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"]
 }
 
-report_file_path = Path(save_path) / "max-temperature.out"
 session.settings.solution.monitor.report_files.create(name="max-temperature")
 session.settings.solution.monitor.report_files["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"],
-    "file_name": str(report_file_path),
+    "file_name": "max-temperature.out",
 }
 session.settings.solution.monitor.report_files["max-temperature"].report_defs = [
     "max-pad-temperature",
@@ -184,6 +195,7 @@ session.settings.solution.monitor.report_files["max-temperature"].report_defs = 
 
 session.settings.results.graphics.contour.create(name="contour-1")
 session.settings.results.graphics.contour["contour-1"] = {
+    "surfaces_list": "wall*",
     "boundary_values": True,
     "range_option": {"auto_range_on": {"global_range": True}},
     "field": "temperature",
@@ -272,8 +284,7 @@ session.settings.solution.run_calculation.dual_time_iterate(
 # Save simulation data
 # --------------------
 # Write case and data files
-save_case_data_as = Path(save_path) / "brake-final.cas.h5"
-session.settings.file.write(file_type="case-data", file_name=str(save_case_data_as))
+session.settings.file.write(file_type="case-data", file_name="brake-final.cas.h5")
 
 ###############################################
 # Post processing with PyVista (3D visualization)
@@ -300,7 +311,7 @@ contour1()
 # ----------------------
 
 contour1.field = "temperature"
-contour1.surfaces_list = [
+contour1.surfaces = [
     "wall-disc1",
     "wall-disc2",
     "wall-pad-disc2",
@@ -341,7 +352,7 @@ X = []
 Y = []
 Z = []
 i = -1
-with open(report_file_path, "r") as datafile:
+with open("max-temperature.out", "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1

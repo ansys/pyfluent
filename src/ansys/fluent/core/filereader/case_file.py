@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Reader for Fluent case files.
 
 Example
@@ -22,14 +44,14 @@ import os
 from os.path import dirname
 from pathlib import Path
 from typing import Dict, List
-import xml.etree.ElementTree as ET
 
-from lxml import etree
+import defusedxml.ElementTree as ET
 import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+from .pre_processor import remove_unsupported_xml_chars
 
 try:
     import h5py
@@ -224,10 +246,30 @@ class MeshType(Enum):
     UNKNOWN = "unknown"
 
 
+def _check_h5_extension(file_path):
+    """
+    Checks if a given file path ends with the '.h5' extension.
+
+    Parameters
+    ----------
+    file_path: str
+        The path to the file.
+
+    Raises
+    ------
+    ValueError
+        If the file path does not end with '.h5'.
+    """
+    if not Path(file_path).match("*.h5"):
+        raise ValueError("Supports `.h5` extension file format only.")
+
+
 class Mesh:
     """Class to provide data from and information about Fluent mesh files.
 
     This class is applicable only to HDF5, Fluent's default format for mesh files.
+    Fluent writes HDF5 files with an extension,`.h5` and thus files without that extension
+    are not supported.
     HDF5 (Hierarchical Data Format version 5) is commonly used for storing large amounts
     of scientific data, including Fluent mesh data.
 
@@ -248,6 +290,7 @@ class Mesh:
 
     def __init__(self, file_handle):
         """Initialize the object."""
+        _check_h5_extension(file_handle.filename)
         self._file_handle = file_handle
 
     def get_mesh_type(self) -> MeshType:
@@ -611,11 +654,13 @@ class CaseFile(RPVarProcessor):
                 "*.msh.h5"
             ):
                 _file = h5py.File(case_file_name)
-                if Path(case_file_name).match("*.cas.h5"):
-                    self._is_case_file = True
-                    settings = _file["settings"]
-                    rpvars = settings["Rampant Variables"][0]
-                    rp_vars_str = rpvars.decode()
+                if Path(case_file_name).match("*.h5"):
+                    if Path(case_file_name).match("*.cas.h5"):
+                        self._is_case_file = True
+                        settings = _file["settings"]
+                        rpvars = settings["Rampant Variables"][0]
+                        rp_vars_str = rpvars.decode()
+                    self._mesh = Mesh(_file)
             elif Path(case_file_name).match("*.cas") or Path(case_file_name).match(
                 "*.msh"
             ):
@@ -652,7 +697,6 @@ class CaseFile(RPVarProcessor):
 
         if self._is_case_file:
             super().__init__(rp_vars_str=rp_vars_str)
-        self._mesh = Mesh(_file)
 
     def get_mesh(self):
         """Get the mesh data."""
@@ -688,16 +732,17 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_file_name_from_flprj(flprj_file):
-    parser = etree.XMLParser(recover=True)
-    tree = ET.parse(flprj_file, parser)
-    root = tree.getroot()
-    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    # If the project file name begins with a digit then the node to find will be prepended
-    # with "_". Rather than making any assumptions that this is a hard rule, or what
-    # the scope of the rule is, simply retry with the name prepended:
-    folder_obj = (
-        root.find(folder_name)
-        if root.find(folder_name) and len(root.find(folder_name)) > 0
-        else root.find("_" + folder_name)
-    )
-    return folder_obj.find("Input").find("Case").find("Target").get("value")
+    with open(flprj_file, "r") as file:
+        content = file.read()
+        content = remove_unsupported_xml_chars(content)
+        root = ET.fromstring(content)
+        folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+        # If the project file name begins with a digit then the node to find will be prepended
+        # with "_". Rather than making any assumptions that this is a hard rule, or what
+        # the scope of the rule is, simply retry with the name prepended:
+        folder_obj = (
+            root.find(folder_name)
+            if root.find(folder_name) and len(root.find(folder_name)) > 0
+            else root.find("_" + folder_name)
+        )
+        return folder_obj.find("Input").find("Case").find("Target").get("value")

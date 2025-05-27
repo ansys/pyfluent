@@ -1,10 +1,32 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 from pathlib import Path
 
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentVersion, MeshingEvent, SolverEvent, examples
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
@@ -108,9 +130,7 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
     count = 0
 
     def cb(session, event_info):
-        assert event_info.index == session.scheme_eval.scheme_eval(
-            "(get-current-iteration)"
-        )
+        assert event_info.index == session.scheme.eval("(get-current-iteration)")
         nonlocal count
         count += 1
 
@@ -120,6 +140,34 @@ def test_iteration_ended_sync_event(static_mixer_case_session):
     solver.events.unregister_callback(cb_id)
     solver.settings.solution.run_calculation.iterate(iter_count=5)
     assert count == 10
+
+
+@pytest.mark.fluent_version(">=23.1")
+def test_multiple_register_callback_event(static_mixer_case_session, caplog):
+    solver = static_mixer_case_session
+    solver.settings.solution.initialization.hybrid_initialize()
+    event_index = set()
+    iteration_index = set()
+
+    def cb(session, event_info):
+        nonlocal event_index, iteration_index
+        event_index.update(event_info.index)
+        iteration_index.update(session.scheme.eval("(get-current-iteration)"))
+
+    cb_ids = solver.events.register_callback(
+        (
+            pyfluent.SolverEvent.TIMESTEP_ENDED,
+            pyfluent.SolverEvent.ITERATION_ENDED,
+        ),
+        cb,
+    )
+    assert len(cb_ids) == 2
+    solver.settings.solution.run_calculation.iterate(iter_count=10)
+    for cb_id in cb_ids:
+        solver.events.unregister_callback(cb_id)
+    solver.settings.solution.run_calculation.iterate(iter_count=5)
+    assert len(event_index) == len(iteration_index)
+    solver.exit()
 
 
 @pytest.mark.fluent_version(">=23.1")

@@ -42,10 +42,37 @@ Build documentation
 To build the PyFluent documentation locally, run the following commands in the root
 (``pyfluent``) directory of the repository:
 
+Windows
+~~~~~~~
+
+1. Install poppler
+    i. Download `Release-24.08.0-0.zip <https://github.com/oschwartz10612/poppler-windows/releases/download/v24.08.0-0/Release-24.08.0-0.zip>`_.
+    ii. Unzip `Release-24.08.0-0.zip`.
+    iii. Add `<path to..>/Release-24.08.0-0/poppler-24.08.0/Library/bin` to PATH.
+
+2. Execute the following commands:
+
 .. code:: console
 
     pip install ansys-fluent-core[docs]
+    quarto install tinytex --no-prompt --update-path
     cd doc
+    set BUILD_ALL_DOCS=1
+    set FLUENT_IMAGE_TAG=v25.1.0
+    make html
+
+Linux
+~~~~~
+
+.. code:: console
+
+    pip install ansys-fluent-core[docs]
+    sudo apt-get update
+    sudo apt-get install -y poppler-utils
+    quarto install tinytex --no-prompt --update-path
+    cd doc
+    set BUILD_ALL_DOCS=1
+    set FLUENT_IMAGE_TAG=v25.1.0
     make html
 
 After the build completes, the HTML documentation is located in the
@@ -87,3 +114,9 @@ Or, you can directly execute `pre-commit <https://pre-commit.com/>`_ with:
 .. code:: bash
 
     pre-commit run --all-files --show-diff-on-failure
+
+In order to have a nice :ref:`ref_release_notes` section, it is important to follow
+the branch and commit names conventions as described in the *PyAnsys Developer's Guide*
+`branch <https://dev.docs.pyansys.com/how-to/contributing.html#branch-naming-conventions>`_ and 
+`commit <https://dev.docs.pyansys.com/how-to/contributing.html#commit-naming-conventions>`_ naming
+sections.

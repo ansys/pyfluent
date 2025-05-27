@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module controlling PyFluent's logging functionality."""
 
 import logging.config
@@ -49,7 +71,7 @@ def get_default_config() -> dict:
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logging.get_default_config()
+    >>> pyfluent.logger.get_default_config()
     {'disable_existing_loggers': False,
      'formatters': {'logfile_fmt': {'format': '%(asctime)s %(name)-21s '
                                               '%(levelname)-8s %(message)s'}},
@@ -61,6 +83,8 @@ def get_default_config() -> dict:
                                     'maxBytes': 10485760}},
      'loggers': {'pyfluent.datamodel': {'handlers': ['pyfluent_file'],
                                         'level': 'DEBUG'},
+                 'pyfluent.field_data': {'handlers': ['pyfluent_file'],
+                                         'level': 'DEBUG'},
                  'pyfluent.general': {'handlers': ['pyfluent_file'],
                                       'level': 'DEBUG'},
                  'pyfluent.launcher': {'handlers': ['pyfluent_file'],
@@ -104,14 +128,14 @@ def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
     Using the default logging setup:
 
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logging.enable()
+    >>> pyfluent.logger.enable()
 
     Customizing logging configuration (see also :func:`get_default_config`):
 
     >>> import ansys.fluent.core as pyfluent
-    >>> config_dict = pyfluent.logging.get_default_config()
+    >>> config_dict = pyfluent.logger.get_default_config()
     >>> config_dict['handlers']['pyfluent_file']['filename'] = 'test.log'
-    >>> pyfluent.logging.enable(custom_config=config_dict)
+    >>> pyfluent.logger.enable(custom_config=config_dict)
     """
     global _logging_file_enabled
 
@@ -159,11 +183,11 @@ def set_global_level(level: str | int):
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logging.set_global_level(10)
+    >>> pyfluent.logger.set_global_level(10)
 
     or
 
-    >>> pyfluent.logging.set_global_level('DEBUG')
+    >>> pyfluent.logger.set_global_level('DEBUG')
     """
     if not is_active():
         print("Logging is not active, enable it first.")
@@ -197,10 +221,10 @@ def list_loggers():
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
-    >>> pyfluent.logging.enable()
-    >>> pyfluent.logging.list_loggers()
+    >>> pyfluent.logger.enable()
+    >>> pyfluent.logger.list_loggers()
     ['pyfluent.general', 'pyfluent.launcher', 'pyfluent.networking', ...]
-    >>> logger = pyfluent.logging.get_logger('pyfluent.networking')
+    >>> logger = pyfluent.logger.get_logger('pyfluent.networking')
     >>> logger
     <Logger pyfluent.networking (DEBUG)>
     >>> logger.setLevel('ERROR')

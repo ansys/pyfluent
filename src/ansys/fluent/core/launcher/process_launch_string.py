@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provides a module to process launch string."""
 
 import json
@@ -6,7 +28,7 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentMode,
     Precision,
@@ -103,6 +125,8 @@ def _generate_launch_string(
         launch_string += " -flicing -license=enterprise"
     if argvals["mode"] == FluentMode.SOLVER_AERO:
         launch_string += " -flaero_server -license=enterprise"
+    if argvals["mode"] == FluentMode.PRE_POST:
+        launch_string += " -post"
     if FluentMode.is_meshing(argvals["mode"]):
         launch_string += " -meshing"
     if " " in server_info_file_name:
@@ -126,10 +150,6 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         Fluent executable path
     """
 
-    def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ[version.awp_var]
-        return Path(awp_root) / "fluent"
-
     def get_exe_path(fluent_root: Path) -> Path:
         if launcher_utils.is_windows():
             return fluent_root / "ntbin" / "win64" / "fluent.exe"
@@ -147,7 +167,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     # 2. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
-        return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+        return FluentVersion(product_version).get_fluent_exe_path()
 
     # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
     fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
@@ -155,4 +175,4 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return get_exe_path(Path(fluent_root))
 
     # 3. the latest ANSYS version from AWP_ROOT environment variables
-    return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
+    return FluentVersion.get_latest_installed().get_fluent_exe_path()

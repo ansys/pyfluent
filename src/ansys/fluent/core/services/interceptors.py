@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Interceptor classes to use with gRPC services."""
 
 import builtins
@@ -111,13 +133,12 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
     ) -> Any:
         response = continuation(client_call_details, request)
         if response.exception() is not None and response.code() != grpc.StatusCode.OK:
-            ex = response.exception()
             new_ex_cls = RuntimeError
             try:
                 from google.rpc import error_details_pb2
                 from grpc_status import rpc_status
 
-                status = rpc_status.from_call(ex)
+                status = rpc_status.from_call(response)
                 if status:
                     for detail in status.details:
                         if detail.Is(error_details_pb2.ErrorInfo.DESCRIPTOR):
@@ -133,6 +154,7 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
                                         break
             except DecodeError:
                 pass
+            ex = response.exception()
             new_ex = new_ex_cls(
                 ex.details() if isinstance(ex, grpc.RpcError) else str(ex)
             )

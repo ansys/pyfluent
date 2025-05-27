@@ -6,6 +6,8 @@ Environment Variables
 
 Following is a list of environment variables that can be set to control various aspects of PyFluent.
 
+.. vale off
+
 .. list-table::
     :header-rows: 1
 
@@ -55,6 +57,8 @@ Following is a list of environment variables that can be set to control various 
       - Disables printing of TUI to settings API upgrade advice.
     * - PYFLUENT_TIMEOUT_FORCE_EXIT
       - Enables force exit while exiting a Fluent session and specifies the timeout in seconds.
+    * - PYFLUENT_USE_RUNTIME_PYTHON_CLASSES
+      - Uses runtime Python classes for settings API.
     * - PYFLUENT_WATCHDOG_DEBUG
       - Enables debugging for the PyFluent watchdog process.
     * - PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR
@@ -66,3 +70,7 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the IP address of the Fluent server while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - SERVER_INFO_DIR
       - Specifies the directory where the server-info file is created while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_USE_DOCKER_COMPOSE
+      - Specifies Docker as a compose source to launch Fluent in container mode.
+    * - PYFLUENT_USE_PODMAN_COMPOSE
+      - Specifies Podman as a compose source to launch Fluent in container mode.

@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import os
 
 import pytest
@@ -11,7 +33,7 @@ from ansys.fluent.core.examples.downloads import download_file
 @pytest.mark.codegen_required
 def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session = mixing_elbow_watertight_pure_meshing_session
-    assert pure_meshing_session.health_check.is_serving
+    assert pure_meshing_session.is_server_healthy()
     file_name = "launch_pure_meshing_journal.py"
     pure_meshing_session.journal.start(file_name)
     session_dir = dir(pure_meshing_session)
@@ -80,20 +102,32 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_launch_meshing_and_switch(new_meshing_session):
-    meshing = new_meshing_session
-    assert not meshing.switched
-    _ = meshing.switch_to_solver()
-    assert meshing.switched
-    assert not meshing.tui
-    assert not meshing.meshing
-    assert not meshing.workflow
-    assert not meshing.watertight
+def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
+    meshing = new_meshing_session_wo_exit
+    assert meshing.is_server_healthy()
+    assert meshing.is_active() is True
+    capsys.readouterr()
+    help(meshing)
+    captured = capsys.readouterr()
+    assert "Encapsulates a Fluent meshing session." in captured.out
+    solver = meshing.switch_to_solver()
+    assert meshing.is_active() is False
+    for attr in ("tui", "meshing", "workflow", "watertight"):
+        with pytest.raises(AttributeError):
+            getattr(meshing, attr)
+    capsys.readouterr()
+    help(meshing)
+    captured = capsys.readouterr()
+    assert (
+        "The meshing session is no longer usable after switching to solution mode."
+        in captured.out
+    )
+    solver.exit()
 
 
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
-def test_meshing_streaming_and_switch(new_meshing_session):
+def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
@@ -105,7 +139,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     on_trancript.called = False
 
-    meshing = new_meshing_session
+    meshing = new_meshing_session_wo_exit
 
     meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
     meshing.transcript.register_callback(on_trancript)
@@ -123,6 +157,7 @@ def test_meshing_streaming_and_switch(new_meshing_session):
 
     assert not on_trancript.called
     assert not on_case_loaded.loaded
+    solver.exit()
 
 
 @pytest.mark.fluent_version("latest")
@@ -143,13 +178,13 @@ def test_fake_session():
     class fake_session(fake_session_base):
 
         def __init__(self) -> None:
-            self.switched = False
+            self._switched = False
 
         def __getattribute__(self, item: str):
-            if item == "switched":
+            if item == "_switched":
                 return super(fake_session, self).__getattribute__(item)
 
-            if self.switched:
+            if self._switched:
                 return None
 
             return super(fake_session, self).__getattribute__(item)
@@ -161,7 +196,7 @@ def test_fake_session():
 
     assert f.foo() == 42
 
-    f.switched = True
+    f._switched = True
 
     assert f.foo is None
 

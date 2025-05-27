@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """.. _ahmed_body_simulation:
 
 Ahmed Body External Aerodynamics Simulation
@@ -32,20 +54,11 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
-from pathlib import Path
+import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import set_config
-import ansys.fluent.visualization.pyvista as pv
-
-#######################################################################################
-# Specifying save path
-# =====================================================================================
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
+from ansys.fluent.visualization import Contour, GraphicsWindow, set_config
 
 #######################################################################################
 # Configure specific settings for this example
@@ -67,15 +80,20 @@ print(session.get_fluent_version())
 # =====================================================================================
 
 workflow = session.workflow
+
+filenames = {
+    "Windows": "ahmed_body_20_0degree_boi_half.scdoc",
+    "Other": "ahmed_body_20_0degree_boi_half.scdoc.pmdb",
+}
+
 geometry_filename = examples.download_file(
-    "ahmed_body_20_0degree_boi_half.scdoc",
+    filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/Ahmed-Body-Simulation",
-    save_path=save_path,
 )
+
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
 workflow.TaskObject["Import Geometry"].Execute()
-
 
 #######################################################################################
 # Add Local Face Sizing
@@ -311,17 +329,17 @@ session.results.surfaces.iso_surface.create(name="xmid")
 session.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
 session.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
-graphics_session1 = pv.Graphics(session)
-contour1 = graphics_session1.Contours["contour-1"]
-contour1.field = "velocity-magnitude"
-contour1.surfaces_list = ["xmid"]
-contour1.display("window-1")
+contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])
+disp1 = GraphicsWindow()
+disp1.add_graphics(contour1)
+disp1.show()
 
-contour2 = graphics_session1.Contours["contour-2"]
+contour2 = Contour(solver=session, surfaces=["xmid"])
 contour2.field.allowed_values
 contour2.field = "pressure-coefficient"
-contour2.surfaces_list = ["xmid"]
-contour2.display("window-2")
+disp2 = GraphicsWindow()
+disp2.add_graphics(contour2)
+disp2.show()
 
 #######################################################################################
 # Simulation Results Visualization
@@ -346,9 +364,8 @@ contour2.display("window-2")
 #######################################################################################
 # Save the case file
 # =====================================================================================
+session.settings.file.write(file_type="case-data", file_name="ahmed_body_final.cas.h5")
 
-save_case_data_as = Path(save_path) / "ahmed_body_final.cas.h5"
-session.settings.file.write(file_type="case-data", file_name=str(save_case_data_as))
 #######################################################################################
 # Close the session
 # =====================================================================================

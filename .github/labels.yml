@@ -1,0 +1,168 @@
+#############################################################
+# Reason for this file
+# ====================
+#
+# This file is used by labeler to sync the labels (and their colors),
+# and assign a label to the new pull request.
+# 
+# Check the yml for more info: .github\workflows\label.yml
+#
+
+#############################################################
+# NOTES
+# =====
+#
+# If the labels names are change, the file ``./.github/release.yml`` should be also updated!
+#
+
+#############################################################
+# Main colors (hex)
+# =================
+
+# C0392B # Red: International Orange (Golden Gate Bridge)
+# E67E22 # Orange: Vivid Tangelo
+# F4D03F # Yellow: Sandstorm
+# F9E79F # Light yellow: Medium champagne
+# 27AE60 # Green: Green (Crayola)
+# ffffff # White
+# 2E86C1 # Dark blue: Cyan Cornflower Blue
+# 85C1E9 # Light blue: Aero
+# A569BD # Purple: Rich Lavender
+# 76D7C4 # Light green: Pearl Aqua
+# 000000 # Black
+
+# https://htmlcolorcodes.com/ -- For color picking
+# https://www.color-name.com/ -- For colors to names
+
+#############################################################
+# By priority
+# ===========
+
+- name: BLOCKER
+  description: "No further development until this is fixed"
+  color: C0392B
+
+- name: critical priority
+  description: "This issue affects almost all users"
+  color: E67E22
+
+- name: major priority
+  description: "This issue affects some users"
+  color: F4D03F
+
+- name: minor priority
+  description: "This issue affects few users"
+  color: F9E79F
+
+- name: future
+  description: "To work on it in the future, since it can be delayed"
+  color: 27AE60
+
+- name: won't fix
+  description: "For different reasons, this won't be fixed"
+  color: ffffff
+
+#############################################################
+# By Category
+# ===========
+
+- name: bug
+  description: "Issue, problem or error in PyFluent"
+  color: E67E22
+
+- name: new feature
+  description: "Request or proposal for a new feature"
+  color: 85C1E9
+  
+- name: enhancement
+  description: "Improve any current implemented feature"
+  color: 85C1E9
+
+- name: examples
+  description: "Publishing PyFluent examples"
+  color: A569BD
+
+- name: documentation
+  description: "Documentation related (improving, adding, etc)"
+  color: A569BD
+
+- name: maintenance
+  description: "General maintenance of the repo (libraries, cicd, etc)"
+  color: 76D7C4
+
+- name: discussion
+  description: ""
+  color: 76D7C4
+
+- name: question
+  description: ""
+  color: 76D7C4
+
+#############################################################
+# Issue management
+# ================
+
+- name: duplicate
+  description: "Duplicated issue"
+  color: E67E22
+
+- name: good first issue
+  description: "Best way to start working on PyFluent development"
+  color: 27AE60
+
+- name: help wanted!
+  description: "Tell the developers you need help or guidance"
+  color: F4D03F
+
+- name: stale
+  description: "Stale issue likely to be closed soon"
+  color: E67E22
+
+- name: waiting doc review
+  description: "This PR is waiting for its documentation to be reviewed."
+  color: 27AE60
+
+#############################################################
+# For repo maintenance
+# ====================
+# (Only maintainers should use them)
+
+- name: Settings API
+  description: "Related to the settings API"
+  color: C0392B
+
+- name: Fluent
+  description: "Related to Fluent"
+  color: E67E22
+
+- name: Datamodel API
+  description: "Related to the datamodel API"
+  color: F4D03F
+
+- name: Fluent
+  description: "Requires changes in Fluent"
+  color: F9E79F
+
+- name: refactoring
+  description: "Related to refactoring"
+  color: 27AE60
+
+- name: testing
+  description: "Related to testing"
+  color: ffffff
+
+- name: ci_failed
+  description: "Related to CI failures"
+  color: 2E86C1
+
+- name: flobject
+  description: "Related to Flobject"
+  color: 85C1E9
+
+- name: design
+  description: "Related to design"
+  color: A569BD
+
+- name: epic
+  description: "Related to an epic issue"
+  color: 76D7C4

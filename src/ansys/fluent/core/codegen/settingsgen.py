@@ -1,5 +1,28 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module to generate the classes corresponding to the Fluent settings API."""
 
+import argparse
 import hashlib
 from io import StringIO
 import keyword
@@ -9,7 +32,8 @@ from typing import IO
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, walk_api
+from ansys.fluent.core.solver import _docstrings
 from ansys.fluent.core.solver.flobject import (
     ListObject,
     NamedObject,
@@ -58,12 +82,39 @@ def _construct_bases_stub(original_bases, child_object_name):
     return bases
 
 
+def strip_parameters(docstring: str) -> str:
+    """
+    Strips everything from the 'Parameters' section onwards in the given docstring.
+
+    Parameters
+    ----------
+    docstring: str
+        The original docstring to process.
+
+    Returns
+    -------
+        The modified docstring with the 'Parameters' section removed.
+    """
+    lines = docstring.strip().splitlines()
+    filtered_lines = []
+
+    for line in lines:
+        if line.strip().startswith("Parameters"):
+            break
+        filtered_lines.append(line)
+
+    return "\n".join(filtered_lines).strip()
+
+
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data = {}
     data["version"] = version
     data["name"] = cls.__name__
     data["bases"] = [base.__name__ for base in cls.__bases__]
-    data["doc"] = fix_settings_doc(cls.__doc__)
+    if "command" in cls.__doc__:
+        data["doc"] = strip_parameters(cls.__doc__)
+    else:
+        data["doc"] = fix_settings_doc(cls.__doc__)
     data["fluent_name"] = getattr(cls, "fluent_name")
     data["child_names"] = getattr(cls, "child_names", [])
     command_names = getattr(cls, "command_names", [])
@@ -73,6 +124,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
+    data["deprecated_version"] = getattr(cls, "_deprecated_version", None)
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
         if k in command_names:
@@ -135,7 +187,7 @@ _arg_type_strings = {
     "Filename": "str",
     "BooleanList": "list[bool]",
     "IntegerList": "list[int]",
-    "RealVector": "tuple[float | str, float | str, float | str",
+    "RealVector": "tuple[float | str, float | str, float | str]",
     "RealList": "list[float | str]",
     "StringList": "list[str]",
     "FilenameList": "list[str]",
@@ -145,8 +197,9 @@ _arg_type_strings = {
 def _write_function_stub(name, data, s_stub):
     s_stub.write(f"    def {name}(self")
     for arg_name in data["argument_names"]:
-        arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
-        s_stub.write(f", {arg_name}: {arg_type}")
+        arg_type = data["child_classes"][arg_name]["bases"][0]
+        py_arg_type = _arg_type_strings.get(arg_type, "Any")
+        s_stub.write(f", {arg_name}: {py_arg_type}")
     s_stub.write("):\n")
     # TODO: add return type
     doc = data["doc"]
@@ -174,11 +227,16 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
-    s.write(f"    version = {data['version']!r}\n")
+    s.write(f"    _version = {data['version']!r}\n")
+    deprecated = data["deprecated_version"]
+    if deprecated:
+        release_version = "20" + data["deprecated_version"].replace(".", "R")
+        s.write(f"    _deprecated_version = {release_version!r}\n")
+        s_stub.write("    _deprecated_version: str\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")
-    s_stub.write("    version: str\n")
+    s_stub.write("    _version: str\n")
     s_stub.write("    fluent_name: str\n")
     s_stub.write("    _python_name: str\n")
     child_names = data["child_names"]
@@ -261,7 +319,25 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         f_stub.write(s_stub.getvalue())
 
 
-def generate(version: str, static_infos: dict) -> None:
+def _check_written_docstrings(version, output_file, verbose):
+    settings = pyfluent.utils.load_module(
+        f"settings_{version}",
+        output_file,
+    )
+    analysis = _docstrings._DocStringAnalysis()
+    walk_api.walk_api(getattr(settings, "root"), analysis.analyse, "")
+    dubious = analysis.dubious
+    if dubious:
+        print(
+            f"Some docstrings appear to be dubious in the solver settings generated classes: {dubious}."
+        )
+    elif verbose:
+        print(
+            "The solver settings generated classes contain no reported docstring issues."
+        )
+
+
+def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     """Generate the classes corresponding to the Fluent settings API."""
     start_time = time.time()
     api_tree = {}
@@ -279,6 +355,9 @@ def generate(version: str, static_infos: dict) -> None:
     data = _populate_data(cls, api_tree, version)
     _NAME_BY_HASH.clear()
     _CLASS_WRITTEN.clear()
+    if verbose:
+        print(f"{str(output_file)}")
+        print(f"{str(output_stub_file)}")
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
         header = StringIO()
         header.write("#\n")
@@ -295,6 +374,7 @@ def generate(version: str, static_infos: dict) -> None:
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
+        f_stub.write("from typing import Any\n\n")
         f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
@@ -302,10 +382,11 @@ def generate(version: str, static_infos: dict) -> None:
     file_size = output_file.stat().st_size / 1024 / 1024
     file_size_stub = output_stub_file.stat().st_size / 1024 / 1024
     print(
-        f"Generated {output_file.name} and {output_stub_file.name} in {time.time() - start_time:.2f} seconds."
+        f"\nGenerated {output_file.name} and {output_stub_file.name} in {time.time() - start_time:.2f} seconds."
     )
     print(f"{output_file.name} size: {file_size:.2f} MB")
     print(f"{output_stub_file.name} size: {file_size_stub:.2f} MB")
+    _check_written_docstrings(version, output_file, verbose)
     return {"<solver_session>": api_tree}
 
 
@@ -316,4 +397,14 @@ if __name__ == "__main__":
     # version = "251"
     # static_info = pickle.load(open("static_info.pkl", "rb"))
     static_infos = {StaticInfoType.SETTINGS: static_info}
-    generate(version, static_infos)
+    parser = argparse.ArgumentParser(
+        description="A script to write Fluent API files with an optional verbose output."
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Show paths of written Fluent API files.",
+    )
+    args = parser.parse_args()
+    generate(version, static_infos, args.verbose)

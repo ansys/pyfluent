@@ -1,10 +1,33 @@
-"""Wrappers over FieldData gRPC service of Fluent."""
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
+"""Wrappers over FieldData gRPC service of Fluent."""
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
-import io
+import logging
+import time
 from typing import Callable, Dict, List, Tuple
+import warnings
 import weakref
 
 import grpc
@@ -13,6 +36,24 @@ import numpy as np
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.field_data_interfaces import (
+    BaseFieldDataSource,
+    BaseFieldInfo,
+    FieldDataSource,
+    FieldTransaction,
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+    _AllowedScalarFieldNames,
+    _AllowedSurfaceIDs,
+    _AllowedSurfaceNames,
+    _AllowedVectorFieldNames,
+    _ReturnFieldData,
+    _to_field_name_str,
+)
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -20,7 +61,9 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
+from ansys.fluent.core.utils.deprecate import all_deprecators
+
+logger = logging.getLogger("pyfluent.field_data")
 
 
 def override_help_text(func, func_to_be_wrapped):
@@ -29,11 +72,6 @@ def override_help_text(func, func_to_be_wrapped):
         func.__doc__ = "\n" + func_to_be_wrapped.__doc__
     func.__name__ = func_to_be_wrapped.__qualname__
     return func
-
-
-# this can be switched to False in scenarios where the field_data request inputs are
-# fed by results of field_info queries, which might be true in GUI code.
-validate_inputs = True
 
 
 class FieldDataService(StreamingService):
@@ -85,38 +123,40 @@ class FieldDataService(StreamingService):
             )
         return chunk_iterator
 
-    def get_solver_mesh_nodes(
+    def get_solver_mesh_nodes_float(
+        self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
+    ):
+        """GetSolverMeshNodesFloat RPC of FieldData service."""
+        responses = self._stub.GetSolverMeshNodesFloat(request, metadata=self._metadata)
+        nested_nodes = []
+        for response in responses:
+            nested_nodes.append(response.nodes)
+        return nested_nodes
+
+    def get_solver_mesh_nodes_double(
         self, request: FieldDataProtoModule.GetSolverMeshNodesRequest
     ):
         """GetSolverMeshNodesDouble RPC of FieldData service."""
-        chuncked_responses = self._stub.GetSolverMeshNodesDouble(
+        responses = self._stub.GetSolverMeshNodesDouble(
             request, metadata=self._metadata
         )
-        buffer = io.BytesIO()
-        for chuncked_response in chuncked_responses:
-            buffer.write(chuncked_response.chunk)
-        serialized_response = buffer.getvalue()
-        response = FieldDataProtoModule.GetSolverMeshNodesDoubleResponse()
-        response.ParseFromString(serialized_response)
-        return response
+        nested_nodes = []
+        for response in responses:
+            nested_nodes.append(response.nodes)
+        return nested_nodes
 
     def get_solver_mesh_elements(
         self, request: FieldDataProtoModule.GetSolverMeshElementsRequest
     ):
         """GetSolverMeshElements RPC of FieldData service."""
-        chuncked_responses = self._stub.GetSolverMeshElements(
-            request, metadata=self._metadata
-        )
-        buffer = io.BytesIO()
-        for chuncked_response in chuncked_responses:
-            buffer.write(chuncked_response.chunk)
-        serialized_response = buffer.getvalue()
-        response = FieldDataProtoModule.GetSolverMeshElementsResponse()
-        response.ParseFromString(serialized_response)
-        return response
+        responses = self._stub.GetSolverMeshElements(request, metadata=self._metadata)
+        elementss = []
+        for response in responses:
+            elementss.append(response.elements)
+        return elementss
 
 
-class FieldInfo:
+class FieldInfo(BaseFieldInfo):
     """Provides access to Fluent field information.
 
     Methods
@@ -247,125 +287,6 @@ class FieldInfo:
             _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
 
 
-class FieldUnavailable(RuntimeError):
-    """Raised when field is unavailable."""
-
-    pass
-
-
-class SurfaceDataType(Enum):
-    """Provides surface data types."""
-
-    Vertices = "vertices"
-    FacesConnectivity = "faces"
-    FacesNormal = "face-normal"
-    FacesCentroid = "centroid"
-
-
-class _AllowedNames:
-    def __init__(self, field_info: FieldInfo | None = None, info: dict | None = None):
-        self._field_info = field_info
-        self._info = info
-
-    def is_valid(self, name, respect_data_valid=True):
-        """Checks validity."""
-        return name in self(respect_data_valid)
-
-
-class _AllowedFieldNames(_AllowedNames):
-    def __init__(
-        self,
-        is_data_valid: Callable[[], bool],
-        field_info: FieldInfo | None = None,
-        info: dict | None = None,
-    ):
-        super().__init__(field_info=field_info, info=info)
-        self._is_data_valid = is_data_valid
-
-    def valid_name(self, field_name):
-        """Returns valid names."""
-        if validate_inputs:
-            names = self
-            if not names.is_valid(field_name, respect_data_valid=False):
-                raise self._field_name_error(
-                    context="field",
-                    name=field_name,
-                    allowed_values=list(names(respect_data_valid=False).keys()),
-                )
-            if not names.is_valid(field_name, respect_data_valid=True):
-                raise self._field_unavailable_error(
-                    f"{field_name} is not a currently available field."
-                )
-        return field_name
-
-
-class _AllowedSurfaceNames(_AllowedNames):
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._info if self._info else self._field_info.get_surfaces_info()
-
-    def valid_name(self, surface_name: str) -> str:
-        """Returns valid names.
-
-        Raises
-        ------
-        DisallowedValuesError
-            If surface name is invalid.
-        """
-        if validate_inputs and not self.is_valid(surface_name):
-            raise DisallowedValuesError("surface", surface_name, self())
-        return surface_name
-
-
-class _AllowedSurfaceIDs(_AllowedNames):
-    def __call__(self, respect_data_valid: bool = True) -> List[int]:
-        try:
-            return [
-                info["surface_id"][0]
-                for _, info in self._field_info.get_surfaces_info().items()
-            ]
-        except (KeyError, IndexError):
-            pass
-
-
-class _AllowedScalarFieldNames(_AllowedFieldNames):
-    _field_name_error = DisallowedValuesError
-    _field_unavailable_error = FieldUnavailable
-
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        field_dict = (
-            self._info if self._info else self._field_info.get_scalar_fields_info()
-        )
-        return (
-            field_dict
-            if (not respect_data_valid or self._is_data_valid())
-            else [
-                name
-                for name, info in field_dict.items()
-                if info["section"] in ("Mesh...", "Cell Info...")
-            ]
-        )
-
-
-class _AllowedVectorFieldNames(_AllowedFieldNames):
-    _field_name_error = DisallowedValuesError
-    _field_unavailable_error = FieldUnavailable
-
-    def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return (
-            self._info
-            if self._info
-            else (
-                self._field_info.get_vector_fields_info()
-                if (not respect_data_valid or self._is_data_valid())
-                else []
-            )
-        )
-
-    def is_valid(self, name, respect_data_valid=True):
-        """Checks validity."""
-        return name in self(respect_data_valid)
-
-
 class _FieldMethod:
     class _Arg:
         def __init__(self, accessor):
@@ -401,7 +322,202 @@ def _data_type_convertor(args_dict):
     return args_dict
 
 
-class FieldTransaction:
+class _FetchFieldData:
+
+    @staticmethod
+    def _surface_data(
+        data_types: List[SurfaceDataType] | List[str],
+        surface_ids: List[int],
+        overset_mesh: bool | None = False,
+    ):
+        return [
+            FieldDataProtoModule.SurfaceRequest(
+                surfaceId=surface_id,
+                oversetMesh=overset_mesh,
+                provideFaces=SurfaceDataType.FacesConnectivity in data_types,
+                provideVertices=SurfaceDataType.Vertices in data_types,
+                provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
+                provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
+            )
+            for surface_id in surface_ids
+        ]
+
+    @staticmethod
+    def _scalar_data(
+        field_name: str,
+        surface_ids: List[int],
+        node_value: bool,
+        boundary_value: bool,
+    ):
+        return [
+            FieldDataProtoModule.ScalarFieldRequest(
+                surfaceId=surface_id,
+                scalarFieldName=field_name,
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if node_value
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                provideBoundaryValues=boundary_value,
+            )
+            for surface_id in surface_ids
+        ]
+
+    @staticmethod
+    def _vector_data(
+        field_name: str,
+        surface_ids: List[int],
+    ):
+        return [
+            FieldDataProtoModule.VectorFieldRequest(
+                surfaceId=surface_id, vectorFieldName=field_name
+            )
+            for surface_id in surface_ids
+        ]
+
+    @staticmethod
+    def _pathlines_data(
+        field_name: str,
+        surface_ids: List[int],
+        **kwargs,
+    ):
+        return [
+            FieldDataProtoModule.PathlinesFieldRequest(
+                surfaceId=surface_id,
+                field=field_name,
+                **kwargs,
+            )
+            for surface_id in surface_ids
+        ]
+
+
+class BaseFieldData:
+    """The base field data interface."""
+
+    def __init__(
+        self,
+        data: Dict,
+        field_info,
+        allowed_surface_names,
+        allowed_scalar_field_names,
+    ):
+        """__init__ method of BaseFieldData class."""
+        self.data = data
+        self._field_info = field_info
+        self._allowed_surface_names = allowed_surface_names
+        self._allowed_scalar_field_names = allowed_scalar_field_names
+        self._returned_data = _ReturnFieldData()
+        self._deprecated_flag = False
+
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
+            surfaces=surfaces,
+        )
+
+    def _get_scalar_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        scalar_field_data = self.data[
+            (
+                ("type", "scalar-field"),
+                ("dataLocation", 0 if kwargs.get("node_value") else 1),
+                ("boundaryValues", kwargs.get("boundary_value")),
+            )
+        ]
+        return self._returned_data._scalar_data(
+            _to_field_name_str(kwargs.get("field_name")),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            scalar_field_data,
+        )
+
+    def _get_surface_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surface_data = self.data[(("type", "surface-data"),)]
+        return self._returned_data._surface_data(
+            kwargs.get("data_types"),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            surface_data,
+        )
+
+    def _get_vector_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        vector_field_data = self.data[(("type", "vector-field"),)]
+        return self._returned_data._vector_data(
+            _to_field_name_str(kwargs.get("field_name")),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            vector_field_data,
+        )
+
+    def _get_pathlines_field_data(
+        self,
+        **kwargs,
+    ) -> Dict:
+        if kwargs.get("zones") is None:
+            zones = []
+        del zones
+        field_name = _to_field_name_str(kwargs.get("field_name"))
+        pathlines_data = self.data[(("type", "pathlines-field"), ("field", field_name))]
+        return self._returned_data._pathlines_data(
+            field_name,
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            pathlines_data,
+        )
+
+    def get_field_data(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        if isinstance(obj, SurfaceFieldDataRequest):
+            return self._get_surface_data(**obj._asdict())
+        elif isinstance(obj, ScalarFieldDataRequest):
+            return self._get_scalar_field_data(**obj._asdict())
+        elif isinstance(obj, VectorFieldDataRequest):
+            return self._get_vector_field_data(**obj._asdict())
+        elif isinstance(obj, PathlinesFieldDataRequest):
+            return self._get_pathlines_field_data(**obj._asdict())
+
+
+class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
+    """Provides access to Fluent field data on surfaces collected via transactions."""
+
+    def __init__(
+        self,
+        data: Dict,
+        field_info,
+        allowed_surface_names,
+        allowed_scalar_field_names,
+    ):
+        """__init__ method of TransactionFieldData class."""
+        super().__init__(
+            data, field_info, allowed_surface_names, allowed_scalar_field_names
+        )
+
+    def __len__(self):
+        return len(self.data)
+
+    def __call__(self):
+        return self.data
+
+
+class Transaction(FieldTransaction):
     """Populates Fluent field data on surfaces."""
 
     def __init__(
@@ -413,7 +529,7 @@ class FieldTransaction:
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
-        """__init__ method of FieldTransaction class."""
+        """__init__ method of Transaction class."""
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
@@ -462,17 +578,111 @@ class FieldTransaction:
             self.add_pathlines_fields_request,
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+        self._fetched_data = _FetchFieldData()
+        self._pathline_field_data = []
+        self._cache_requests = []
+
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            allowed_surface_names=self._allowed_surface_names,
+            surfaces=surfaces,
+        )
+
+    def _add_surfaces_request(self, **kwargs) -> None:
+        updated_data_types = []
+        for d_type in kwargs.get("data_types"):
+            if isinstance(d_type, str):
+                updated_data_types.append(SurfaceDataType(d_type))
+            else:
+                updated_data_types.append(d_type)
+        data_types = updated_data_types
+        self._fields_request.surfaceRequest.extend(
+            self._fetched_data._surface_data(
+                data_types,
+                kwargs.get("surfaces"),
+                kwargs.get("overset_mesh"),
+            )
+        )
+
+    def _add_scalar_fields_request(self, **kwargs) -> None:
+        self._fields_request.scalarFieldRequest.extend(
+            self._fetched_data._scalar_data(
+                self._allowed_scalar_field_names.valid_name(kwargs.get("field_name")),
+                kwargs.get("surfaces"),
+                kwargs.get("node_value"),
+                kwargs.get("boundary_value"),
+            )
+        )
+
+    def _add_vector_fields_request(self, **kwargs) -> None:
+        self._fields_request.vectorFieldRequest.extend(
+            self._fetched_data._vector_data(
+                self._allowed_vector_field_names.valid_name(kwargs.get("field_name")),
+                kwargs.get("surfaces"),
+            )
+        )
+
+    def _add_pathlines_fields_request(
+        self,
+        **kwargs,
+    ) -> None:
+        if kwargs.get("zones") is None:
+            zones = []
+        field_name = self._allowed_scalar_field_names.valid_name(
+            kwargs.get("field_name")
+        )
+        if field_name in self._pathline_field_data:
+            raise ValueError("For 'path-lines' `field_name` should be unique.")
+        else:
+            self._pathline_field_data.append(field_name)
+        additional_field_name = kwargs.get("additional_field_name")
+        if additional_field_name:
+            additional_field_name = self._allowed_scalar_field_names.valid_name(
+                additional_field_name
+            )
+        self._fields_request.pathlinesFieldRequest.extend(
+            self._fetched_data._pathlines_data(
+                field_name,
+                kwargs.get("surfaces"),
+                additionalField=additional_field_name,
+                provideParticleTimeField=kwargs.get("provide_particle_time_field"),
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if kwargs.get("node_value")
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                steps=kwargs.get("steps"),
+                stepSize=kwargs.get("step_size"),
+                skip=kwargs.get("skip"),
+                reverse=kwargs.get("reverse"),
+                accuracyControlOn=kwargs.get("accuracy_control_on"),
+                tolerance=kwargs.get("tolerance"),
+                coarsen=kwargs.get("coarsen"),
+                velocityDomain=kwargs.get("velocity_domain"),
+                zones=zones,
+            )
+        )
+
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=_data_type_convertor,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_surfaces_request' is deprecated, use 'add_requests' instead",
     )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_arguments(converter=_data_type_convertor)
     def add_surfaces_request(
         self,
         data_types: List[SurfaceDataType] | List[str],
@@ -480,56 +690,30 @@ class FieldTransaction:
         overset_mesh: bool | None = False,
     ) -> None:
         """Add request to get surface data (vertices, face connectivity, centroids, and
-        normals).
-
-        Parameters
-        ----------
-        data_types : List[SurfaceDataType] | List[str],
-            SurfaceDataType Enum members.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        overset_mesh : bool, optional
-            Whether to get the overset met. The default is ``False``.
-
-        Returns
-        -------
-        None
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
-        updated_data_types = []
-        for d_type in data_types:
-            if isinstance(d_type, str):
-                updated_data_types.append(SurfaceDataType(d_type))
-            else:
-                updated_data_types.append(d_type)
-        data_types = updated_data_types
-        self._fields_request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=overset_mesh,
-                    provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                    provideVertices=SurfaceDataType.Vertices in data_types,
-                    provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                    provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
-                )
-                for surface_id in surface_ids
-            ]
+        normals)."""
+        self._add_surfaces_request(
+            data_types=data_types,
+            surfaces=self.get_surface_ids(surfaces),
+            overset_mesh=overset_mesh,
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_scalar_fields_request(
         self,
@@ -538,108 +722,65 @@ class FieldTransaction:
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> None:
-        """Add request to get scalar field data on surfaces.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        node_value : bool, optional
-            Whether to provide the nodal location. The default is ``True``. If
-            ``False``, the element location is provided.
-        boundary_value : bool, optional
-            Whether to provide the slip velocity at the wall boundaries. The default
-            is ``True``. When ``True``, no slip velocity is provided.
-
-        Returns
-        -------
-        None
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
-        self._fields_request.scalarFieldRequest.extend(
-            [
-                FieldDataProtoModule.ScalarFieldRequest(
-                    surfaceId=surface_id,
-                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
-                        field_name
-                    ),
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    provideBoundaryValues=boundary_value,
-                )
-                for surface_id in surface_ids
-            ]
+        """Add request to get scalar field data on surfaces."""
+        self._add_scalar_fields_request(
+            field_name=field_name,
+            surfaces=self.get_surface_ids(surfaces),
+            node_value=node_value,
+            boundary_value=boundary_value,
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_vector_fields_request(
         self,
         field_name: str,
         surfaces: List[int | str],
     ) -> None:
-        """Add request to get vector field data on surfaces.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the vector field.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-
-        Returns
-        -------
-        None
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
-        self._fields_request.vectorFieldRequest.extend(
-            [
-                FieldDataProtoModule.VectorFieldRequest(
-                    surfaceId=surface_id,
-                    vectorFieldName=self._allowed_vector_field_names.valid_name(
-                        field_name,
-                    ),
-                )
-                for surface_id in surface_ids
-            ]
+        """Add request to get vector field data on surfaces."""
+        self._add_vector_fields_request(
+            field_name=field_name, surfaces=self.get_surface_ids(surfaces)
         )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.23.dev0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_pathlines_fields_request' is deprecated, use 'add_requests' instead",
     )
     def add_pathlines_fields_request(
         self,
         field_name: str,
         surfaces: List[int | str],
-        additional_field_name: str | None = "",
+        additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
         steps: int | None = 500,
@@ -652,78 +793,96 @@ class FieldTransaction:
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
     ) -> None:
-        """Add request to get pathlines field on surfaces.
+        """Add request to get path-lines field on surfaces."""
+        self._add_pathlines_fields_request(
+            field_name=field_name,
+            surfaces=self.get_surface_ids(surfaces),
+            additional_field_name=additional_field_name,
+            provide_particle_time_field=provide_particle_time_field,
+            node_value=node_value,
+            steps=steps,
+            step_size=step_size,
+            skip=skip,
+            reverse=reverse,
+            accuracy_control_on=accuracy_control_on,
+            tolerance=tolerance,
+            coarsen=coarsen,
+            velocity_domain=velocity_domain,
+            zones=zones,
+        )
 
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field to color pathlines.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        additional_field_name : str, optional
-            Additional field if required.
-        provide_particle_time_field: bool, optional
-            Whether to provide the particle time. The default is ``False``.
-        node_value : bool, optional
-                    Whether to provide the nodal values. The default is ``True``. If
-                    ``False``, element values are provided.
-        steps: int, optional
-            Pathlines steps. The default is ``500``
-        step_size: float, optional
-            Pathlines step size. The default is ``0.01``.
-        skip: int, optional
-            Pathlines to skip. The default is ``0``.
-        reverse: bool, optional
-            Whether to draw pathlines in a reverse direction. The default is ``False``.
-        accuracy_control_on: bool, optional
-            Whether to control accuracy. The default is ``False``.
-        tolerance: float, optional
-            Pathlines tolerance. The default is ``0.001``.
-        coarsen: int, optional
-            Pathlines coarsen. The default is ``1``.
-        velocity_domain: str, optional
-            Domain for pathlines. The default is ``"all-phases"``.
-        zones: list, optional
-            Zones for pathlines. The default is ``[]``.
-        Returns
-        -------
-        None
+    def add_requests(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+        *args: SurfaceFieldDataRequest
+        | ScalarFieldDataRequest
+        | VectorFieldDataRequest
+        | PathlinesFieldDataRequest,
+    ):
         """
-        if zones is None:
-            zones = []
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
-        )
-        self._fields_request.pathlinesFieldRequest.extend(
-            [
-                FieldDataProtoModule.PathlinesFieldRequest(
-                    surfaceId=surface_id,
-                    field=field_name,
-                    additionalField=additional_field_name,
-                    provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    steps=steps,
-                    stepSize=step_size,
-                    skip=skip,
-                    reverse=reverse,
-                    accuracyControlOn=accuracy_control_on,
-                    tolerance=tolerance,
-                    coarsen=coarsen,
-                    velocityDomain=velocity_domain,
-                    zones=zones,
-                )
-                for surface_id in surface_ids
-            ]
-        )
+        Add field data requests for surfaces, scalars, vectors, or pathlines.
 
-    def get_fields(self) -> Dict[int | Tuple, Dict[int, Dict[str, np.array]]]:
-        """Get data for previously added requests and then clear all requests.
+        This method allows users to specify multiple field data requests, which will
+        later be processed when retrieving responses.
+        """
+        for req in (obj,) + args:
+            req = req._replace(surfaces=self.get_surface_ids(req.surfaces))
+            if req in self._cache_requests:
+                warnings.warn(f"{req._asdict()} is duplicate and being ignored.")
+                continue
+            elif isinstance(req, SurfaceFieldDataRequest):
+                self._add_surfaces_request(
+                    data_types=req.data_types,
+                    surfaces=req.surfaces,
+                    overset_mesh=req.overset_mesh,
+                )
+            elif isinstance(req, ScalarFieldDataRequest):
+                self._add_scalar_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                    node_value=req.node_value,
+                    boundary_value=req.boundary_value,
+                )
+            elif isinstance(req, VectorFieldDataRequest):
+                self._add_vector_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                )
+            elif isinstance(req, PathlinesFieldDataRequest):
+                self._add_pathlines_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                    additional_field_name=req.additional_field_name,
+                    provide_particle_time_field=req.provide_particle_time_field,
+                    node_value=req.node_value,
+                    steps=req.steps,
+                    step_size=req.step_size,
+                    skip=req.skip,
+                    reverse=req.reverse,
+                    accuracy_control_on=req.accuracy_control_on,
+                    tolerance=req.tolerance,
+                    coarsen=req.coarsen,
+                    velocity_domain=req.velocity_domain,
+                    zones=req.zones,
+                )
+            self._cache_requests.append(req)
+        return self
+
+    def get_fields(self) -> TransactionFieldData:
+        """Get data for previously added requests."""
+        warnings.warn(
+            "'get_fields' is deprecated, use 'get_response' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self.get_response()
+
+    def get_response(self) -> TransactionFieldData:
+        """Get data for previously added requests.
 
         Returns
         -------
@@ -733,12 +892,17 @@ class FieldTransaction:
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return ChunkParser().extract_fields(
-            self._service.get_fields(self._fields_request)
+        return TransactionFieldData(
+            ChunkParser().extract_fields(
+                self._service.get_fields(self._fields_request)
+            ),
+            self._field_info,
+            self._allowed_surface_names,
+            self._allowed_scalar_field_names,
         )
 
     def __call__(self):
-        self.get_fields()
+        self.get_response()
 
 
 class _FieldDataConstants:
@@ -792,7 +956,11 @@ def _get_surface_ids(
                 ]
             )
         else:
-            surface_ids.append(surf)
+            allowed_surf_ids = _AllowedSurfaceIDs(field_info)()
+            if surf in allowed_surf_ids:
+                surface_ids.append(surf)
+            else:
+                raise DisallowedValuesError("surface", surf, allowed_surf_ids)
     return surface_ids
 
 
@@ -970,8 +1138,8 @@ class ZoneType(Enum):
 class ZoneInfo:
     """Zone information for mesh.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     _id : int
         Zone ID.
     name : str
@@ -989,8 +1157,8 @@ class ZoneInfo:
 class Node:
     """Node class for mesh.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     x : float
         x-coordinate of the node.
     y : float
@@ -1038,8 +1206,8 @@ class CellElementType(Enum):
 class Facet:
     """Facet class within a mesh element.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     node_indices : list[int]
         0-based node indices of the facet.
     """
@@ -1051,8 +1219,8 @@ class Facet:
 class Element:
     """Element class for mesh.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     element_type : CellElementType
         Element type of the element.
     node_indices : list[int]
@@ -1071,20 +1239,19 @@ class Element:
 class Mesh:
     """Mesh class for Fluent field data.
 
-    Attributes:
-    -----------
+    Attributes
+    ----------
     nodes : list[Node]
-        List of nodes in the mesh. Sorted by Fluent's node ID.
+        List of nodes in the mesh.
     elements : list[Element]
-        List of elements in the mesh. Unsorted as we want to correlate with the
-        solution data retrieved via svar service.
+        List of elements in the mesh.
     """
 
     nodes: list[Node]
     elements: list[Element]
 
 
-class FieldData:
+class LiveFieldData(BaseFieldData, FieldDataSource):
     """Provides access to Fluent field data on surfaces."""
 
     def __init__(
@@ -1099,7 +1266,8 @@ class FieldData:
         self._service = service
         self._field_info = field_info
         self.is_data_valid = is_data_valid
-        self.scheme_eval = scheme_eval
+        self.scheme = scheme_eval
+
         self.get_zones_info = lambda: get_zones_info()()
 
         self._allowed_surface_names = _AllowedSurfaceNames(field_info)
@@ -1112,6 +1280,12 @@ class FieldData:
 
         self._allowed_vector_field_names = _AllowedVectorFieldNames(
             is_data_valid, field_info
+        )
+        super().__init__(
+            {},
+            self._field_info,
+            self._allowed_surface_names,
+            self._allowed_scalar_field_names,
         )
 
         surface_args = dict(
@@ -1153,16 +1327,153 @@ class FieldData:
             ),
             self.get_pathlines_field_data,
         )
+        self._returned_data = _ReturnFieldData()
+        self._fetched_data = _FetchFieldData()
 
     def new_transaction(self):
         """Create a new field transaction."""
-        return FieldTransaction(
+        return Transaction(
             self._service,
             self._field_info,
             self._allowed_surface_ids,
             self._allowed_surface_names,
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
+        )
+
+    def _get_scalar_field_data(self, **kwargs):
+        surfaces = kwargs.get("surfaces")
+        surface_ids = self.get_surface_ids(surfaces)
+        fields_request = get_fields_request()
+        field_name = self._allowed_scalar_field_names.valid_name(
+            kwargs.get("field_name")
+        )
+        fields_request.scalarFieldRequest.extend(
+            self._fetched_data._scalar_data(
+                field_name,
+                self.get_surface_ids(surfaces),
+                kwargs.get("node_value"),
+                kwargs.get("boundary_value"),
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        scalar_field_data = next(iter(fields.values()))
+        return self._returned_data._scalar_data(
+            field_name, surfaces, surface_ids, scalar_field_data
+        )
+
+    def _get_surface_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        fields_request = get_fields_request()
+        fields_request.surfaceRequest.extend(
+            self._fetched_data._surface_data(
+                kwargs.get("data_types"),
+                surface_ids,
+                kwargs.get("overset_mesh"),
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        surface_data = next(iter(fields.values()))
+        if self._deprecated_flag:
+            self._deprecated_flag = False
+            return self._returned_data._surface_data(
+                kwargs.get("data_types"),
+                kwargs.get("surfaces"),
+                surface_ids,
+                surface_data,
+                deprecated_flag=True,
+            )
+
+        return self._returned_data._surface_data(
+            kwargs.get("data_types"), kwargs.get("surfaces"), surface_ids, surface_data
+        )
+
+    def _get_vector_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        field_name = self._allowed_vector_field_names.valid_name(
+            kwargs.get("field_name")
+        )
+        for surface_id in surface_ids:
+            self.scheme.string_eval(f"(surface? {surface_id})")
+        fields_request = get_fields_request()
+        fields_request.vectorFieldRequest.extend(
+            self._fetched_data._vector_data(
+                field_name,
+                surface_ids,
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        vector_field_data = next(iter(fields.values()))
+
+        return self._returned_data._vector_data(
+            field_name,
+            kwargs.get("surfaces"),
+            surface_ids,
+            vector_field_data,
+        )
+
+    def _get_pathlines_field_data(
+        self,
+        **kwargs,
+    ) -> Dict:
+        if kwargs.get("zones") is None:
+            zones = []
+        surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
+        field_name = self._allowed_scalar_field_names.valid_name(
+            kwargs.get("field_name")
+        )
+        fields_request = get_fields_request()
+        additional_field_name = kwargs.get("additional_field_name")
+        if additional_field_name:
+            additional_field_name = self._allowed_scalar_field_names.valid_name(
+                additional_field_name
+            )
+        fields_request.pathlinesFieldRequest.extend(
+            self._fetched_data._pathlines_data(
+                field_name,
+                surface_ids,
+                additionalField=kwargs.get(additional_field_name),
+                provideParticleTimeField=kwargs.get("provide_particle_time_field"),
+                dataLocation=(
+                    FieldDataProtoModule.DataLocation.Nodes
+                    if kwargs.get("node_value")
+                    else FieldDataProtoModule.DataLocation.Elements
+                ),
+                steps=kwargs.get("steps"),
+                stepSize=kwargs.get("step_size"),
+                skip=kwargs.get("skip"),
+                reverse=kwargs.get("reverse"),
+                accuracyControlOn=kwargs.get("accuracy_control_on"),
+                tolerance=kwargs.get("tolerance"),
+                coarsen=kwargs.get("coarsen"),
+                velocityDomain=kwargs.get("velocity_domain"),
+                zones=zones,
+            )
+        )
+        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
+        pathlines_data = next(iter(fields.values()))
+
+        if self._deprecated_flag:
+            self._deprecated_flag = False
+            return self._returned_data._pathlines_data(
+                field_name,
+                kwargs.get("surfaces"),
+                surface_ids,
+                pathlines_data,
+                deprecated_flag=True,
+            )
+
+        return self._returned_data._pathlines_data(
+            field_name,
+            kwargs.get("surfaces"),
+            surface_ids,
+            pathlines_data,
         )
 
     def get_scalar_field_data(
@@ -1172,57 +1483,17 @@ class FieldData:
         node_value: bool | None = True,
         boundary_value: bool | None = True,
     ) -> Dict[int | str, np.array]:
-        """Get scalar field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        node_value : bool, optional
-            Whether to provide data for the nodal location. The default is ``True``.
-            When ``False``, data is provided for the element location.
-        boundary_value : bool, optional
-            Whether to provide slip velocity at the wall boundaries. The default is
-            ``True``. When ``True``, no slip velocity is provided.
-
-        Returns
-        -------
-        Dict[int | str, np.array]
-            Returns a map of surface IDs (or names) to scalar field data.
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
+        """Get scalar field data on a surface."""
+        warnings.warn(
+            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_field_data(
+            field_name=field_name,
             surfaces=surfaces,
+            node_value=node_value,
+            boundary_value=boundary_value,
         )
-        fields_request = get_fields_request()
-        fields_request.scalarFieldRequest.extend(
-            [
-                FieldDataProtoModule.ScalarFieldRequest(
-                    surfaceId=surface_id,
-                    scalarFieldName=self._allowed_scalar_field_names.valid_name(
-                        field_name
-                    ),
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    provideBoundaryValues=boundary_value,
-                )
-                for surface_id in surface_ids
-            ]
-        )
-
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        scalar_field_data = next(iter(fields.values()))
-
-        return {
-            surface: scalar_field_data[surface_ids[count]][field_name]
-            for count, surface in enumerate(surfaces)
-        }
 
     def get_surface_data(
         self,
@@ -1230,124 +1501,36 @@ class FieldData:
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
-        """Get surface data (vertices, faces connectivity, centroids, and normals).
-
-        Parameters
-        ----------
-        data_types : List[SurfaceDataType],
-            SurfaceDataType Enum members.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        overset_mesh : bool, optional
-            Whether to provide the overset method. The default is ``False``.
-
-        Returns
-        -------
-        Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]
-             Returns a map of surface IDs (or names) to face
-             vertices, connectivity data, and normal or centroid data.
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
-            surfaces=surfaces,
+        """Get surface data (vertices, faces connectivity, centroids, and normals)."""
+        warnings.warn(
+            "'get_surface_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
         )
-        fields_request = get_fields_request()
-        fields_request.surfaceRequest.extend(
-            [
-                FieldDataProtoModule.SurfaceRequest(
-                    surfaceId=surface_id,
-                    oversetMesh=overset_mesh,
-                    provideFaces=SurfaceDataType.FacesConnectivity in data_types,
-                    provideVertices=SurfaceDataType.Vertices in data_types,
-                    provideFacesCentroid=SurfaceDataType.FacesCentroid in data_types,
-                    provideFacesNormal=SurfaceDataType.FacesNormal in data_types,
-                )
-                for surface_id in surface_ids
-            ]
+        self._deprecated_flag = True
+        return self._get_surface_data(
+            data_types=data_types, surfaces=surfaces, overset_mesh=overset_mesh
         )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        surface_data = next(iter(fields.values()))
-
-        ret_surf_data = {}
-        for count, surface in enumerate(surfaces):
-            ret_surf_data[surface] = {}
-            for data_type in data_types:
-                if data_type == SurfaceDataType.FacesConnectivity:
-                    ret_surf_data[surface][data_type] = (
-                        self._get_faces_connectivity_data(
-                            surface_data[surface_ids[count]][
-                                SurfaceDataType.FacesConnectivity.value
-                            ]
-                        )
-                    )
-                else:
-                    ret_surf_data[surface][data_type] = surface_data[
-                        surface_ids[count]
-                    ][data_type.value].reshape(-1, 3)
-        return ret_surf_data
-
-    @staticmethod
-    def _get_faces_connectivity_data(data):
-        faces_data = []
-        i = 0
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(data[i + 1 : end])
-            i = end
-        return faces_data
 
     def get_vector_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
     ) -> Dict[int | str, np.array]:
-        """Get vector field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the vector field.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-
-        Returns
-        -------
-        Dict[int | str, np.array]
-            Returns a  map of surface IDs (or names) to vector field data.
-        """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
+        """Get vector field data on a surface."""
+        warnings.warn(
+            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_vector_field_data(
+            field_name=field_name,
             surfaces=surfaces,
         )
-        for surface_id in surface_ids:
-            self.scheme_eval.string_eval(f"(surface? {surface_id})")
-        fields_request = get_fields_request()
-        fields_request.vectorFieldRequest.extend(
-            [
-                FieldDataProtoModule.VectorFieldRequest(
-                    surfaceId=surface_id,
-                    vectorFieldName=self._allowed_vector_field_names.valid_name(
-                        field_name
-                    ),
-                )
-                for surface_id in surface_ids
-            ]
-        )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        vector_field_data = next(iter(fields.values()))
-
-        return {
-            surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
-            for count, surface in enumerate(surfaces)
-        }
 
     def get_pathlines_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
-        additional_field_name: str | None = "",
+        additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
         steps: int | None = 500,
@@ -1360,95 +1543,28 @@ class FieldData:
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
     ) -> Dict:
-        """Get the pathlines field data on a surface.
-
-        Parameters
-        ----------
-        field_name : str
-            Name of the scalar field to color pathlines.
-        surfaces : List[int | str]
-            List of surface IDS or surface names for the surface data.
-        additional_field_name : str, optional
-            Additional field if required.
-        provide_particle_time_field: bool, optional
-            Whether to provide the particle time. The default is ``False``.
-        node_value : bool, optional
-                    Whether to provide the nodal values. The default is ``True``. If
-                    ``False``, element values are provided.
-        steps: int, optional
-            Pathlines steps. The default is ``500``
-        step_size: float, optional
-            Pathlines step size. The default is ``0.01``.
-        skip: int, optional
-            Pathlines to skip. The default is ``0``.
-        reverse: bool, optional
-            Whether to draw pathlines in reverse direction. The default is ``False``.
-        accuracy_control_on: bool, optional
-            Whether to control accuracy. The default is ``False``.
-        tolerance: float, optional
-            Pathlines tolerance. The default is ``0.001``.
-        coarsen: int, optional
-            Pathlines coarsen. The default is ``1``.
-        velocity_domain: str, optional
-            Domain for pathlines. The default is ``"all-phases"``.
-        zones: list, optional
-            Zones for pathlines. The default is ``[]``.
-
-        Returns
-        -------
-        Dict
-            Dictionary containing a map of surface IDs to the pathline data.
-            For example, pathlines connectivity, vertices, and field.
-        """
-        if zones is None:
-            zones = []
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            allowed_surface_names=self._allowed_surface_names,
+        """Get the pathlines field data on a surface."""
+        warnings.warn(
+            "'get_pathlines_field_data' is deprecated, use 'get_field_data' instead",
+            PyFluentDeprecationWarning,
+        )
+        self._deprecated_flag = True
+        return self._get_pathlines_field_data(
+            field_name=field_name,
             surfaces=surfaces,
+            additional_field_name=additional_field_name,
+            provide_particle_time_field=provide_particle_time_field,
+            node_value=node_value,
+            steps=steps,
+            step_size=step_size,
+            skip=skip,
+            reverse=reverse,
+            accuracy_control_on=accuracy_control_on,
+            tolerance=tolerance,
+            coarsen=coarsen,
+            velocity_domain=velocity_domain,
+            zones=zones,
         )
-        fields_request = get_fields_request()
-        fields_request.pathlinesFieldRequest.extend(
-            [
-                FieldDataProtoModule.PathlinesFieldRequest(
-                    surfaceId=surface_id,
-                    field=field_name,
-                    additionalField=additional_field_name,
-                    provideParticleTimeField=provide_particle_time_field,
-                    dataLocation=(
-                        FieldDataProtoModule.DataLocation.Nodes
-                        if node_value
-                        else FieldDataProtoModule.DataLocation.Elements
-                    ),
-                    steps=steps,
-                    stepSize=step_size,
-                    skip=skip,
-                    reverse=reverse,
-                    accuracyControlOn=accuracy_control_on,
-                    tolerance=tolerance,
-                    coarsen=coarsen,
-                    velocityDomain=velocity_domain,
-                    zones=zones,
-                )
-                for surface_id in surface_ids
-            ]
-        )
-        fields = ChunkParser().extract_fields(self._service.get_fields(fields_request))
-        pathlines_data = next(iter(fields.values()))
-
-        path_lines_dict = {}
-
-        for count, surface in enumerate(surfaces):
-            path_lines_dict[surface] = {
-                "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
-                    -1, 3
-                ),
-                "lines": self._get_faces_connectivity_data(
-                    pathlines_data[surface_ids[count]]["lines"]
-                ),
-                field_name: pathlines_data[surface_ids[count]][field_name],
-            }
-        return path_lines_dict
 
     def get_mesh(self, zone: str | int) -> Mesh:
         """Get mesh for a zone.
@@ -1480,36 +1596,71 @@ class FieldData:
             raise NotImplementedError("Face zone mesh is not supported.")
 
         # Mesh data is retrieved from the root domain in Fluent
-        request = FieldDataProtoModule.GetSolverMeshNodesRequest(
+        logger.info(f"Getting nodes data for zone {zone_info._id}")
+        start_time = time.time()
+        nodes_request = FieldDataProtoModule.GetSolverMeshNodesRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
-        response = self._service.get_solver_mesh_nodes(request)
-        nodes = response.nodes
-        nodes = [Node(_id=node.id, x=node.x, y=node.y, z=node.z) for node in nodes]
-        nodes = sorted(nodes, key=lambda x: x._id)
-        request = FieldDataProtoModule.GetSolverMeshElementsRequest(
+        # TODO: Add precision query in AppUtilities service
+        is_double_precision = self.scheme.eval("(rp-double?)")
+        if is_double_precision:
+            nested_nodes = self._service.get_solver_mesh_nodes_double(nodes_request)
+        else:
+            nested_nodes = self._service.get_solver_mesh_nodes_float(nodes_request)
+        logger.info(f"Nodes data received in {time.time() - start_time} seconds")
+        logger.info(f"Getting elements for zone {zone_info._id}")
+        start_time = time.time()
+        elements_request = FieldDataProtoModule.GetSolverMeshElementsRequest(
             domain_id=ROOT_DOMAIN_ID, thread_id=zone_info._id
         )
-        response = self._service.get_solver_mesh_elements(request)
-        elements_pb = response.elements
-        elements = []
-        for element_pb in elements_pb:
-            element_type = CellElementType(element_pb.element_type)
-            if element_type == CellElementType.POLYHEDRON:
-                facets = []
-                for facet_pb in element_pb.facets:
-                    facet = Facet(node_indices=[(id - 1) for id in facet_pb.node])
-                    facets.append(facet)
-                element = Element(
-                    _id=element_pb.id,
-                    element_type=element_type,
-                    facets=facets,
-                )
-            else:
-                element = Element(
-                    _id=element_pb.id,
-                    element_type=element_type,
-                    node_indices=[(id - 1) for id in element_pb.node_ids],
-                )
-            elements.append(element)
+        elementss_pb = self._service.get_solver_mesh_elements(elements_request)
+        logger.info(f"Elements data received in {time.time() - start_time} seconds")
+        logger.info("Constructing nodes structure in PyFluent")
+        start_time = time.time()
+        node_count = sum(len(nodes) for nodes in nested_nodes)
+        nodes = np.empty(node_count, dtype=Node)
+        node_index_by_id = {}
+        i = 0
+        for nodes_pb in nested_nodes:
+            for node_pb in nodes_pb:
+                nodes[i] = Node(_id=node_pb.id, x=node_pb.x, y=node_pb.y, z=node_pb.z)
+                node_index_by_id[node_pb.id] = i
+                i += 1
+        logger.info(
+            f"Nodes structure constructed in {time.time() - start_time} seconds"
+        )
+        logger.info("Constructing elements structure in PyFluent")
+        start_time = time.time()
+        element_count = sum(len(elements) for elements in elementss_pb)
+        elements = np.empty(element_count, dtype=Element)
+        i = 0
+        for elements_pb in elementss_pb:
+            for element_pb in elements_pb:
+                element_type = CellElementType(element_pb.element_type)
+                if element_type == CellElementType.POLYHEDRON:
+                    facets = []
+                    for facet_pb in element_pb.facets:
+                        facet = Facet(
+                            node_indices=[node_index_by_id[id] for id in facet_pb.node]
+                        )
+                        facets.append(facet)
+                    element = Element(
+                        _id=element_pb.id,
+                        element_type=element_type,
+                        facets=facets,
+                    )
+                else:
+                    element = Element(
+                        _id=element_pb.id,
+                        element_type=element_type,
+                        node_indices=[
+                            node_index_by_id[id] for id in element_pb.node_ids
+                        ],
+                    )
+                elements[i] = element
+                i += 1
+        logger.info(
+            f"Elements structure constructed in {time.time() - start_time} seconds"
+        )
+        logger.info("Returning mesh")
         return Mesh(nodes=nodes, elements=elements)

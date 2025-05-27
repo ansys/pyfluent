@@ -8,21 +8,23 @@ User guide
    :maxdepth: 1
    :hidden:
 
-   session/index
-   solver_settings/index
-   meshing/index
-   fields/index
+   session/session_contents
+   solver_settings/solver_settings_contents
+   meshing/meshing_contents
+   fields/fields_contents
    events
    monitors
    transfer_data
    units
+   physical_variables
    file_transfer
-   offline/index
+   offline/offline_contents
+   convert_journal
    journal
    log
    usability
    make_container_image
-   legacy/index
+   legacy/legacy_contents
 
 
 Welcome to the PyFluent user guide. This guide helps you understand how to use PyFluent to

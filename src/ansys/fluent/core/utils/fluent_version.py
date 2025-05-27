@@ -1,17 +1,53 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Provides a module to get Fluent version."""
 
 from enum import Enum
 from functools import total_ordering
 import os
+from pathlib import Path
+import platform
+from typing import Any
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._version import fluent_dev_version, fluent_release_version
 
 
 class AnsysVersionNotFound(RuntimeError):
     """Raised when Ansys version is not found."""
 
-    pass
+    def __init__(self, version: Any):
+        """Initialize VersionNotFound.
+
+        Parameters
+        ----------
+        version : str
+            Version that was not found.
+        """
+        super().__init__(
+            f"The specified version '{version}' is not supported."
+            + " Supported versions are: "
+            + ", ".join([member.value for member in FluentVersion][::-1])
+        )
 
 
 class ComparisonError(RuntimeError):
@@ -53,6 +89,7 @@ class FluentVersion(Enum):
     FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
+    v261 = "26.1.0"
     v252 = "25.2.0"
     v251 = "25.1.0"
     v242 = "24.2.0"
@@ -62,7 +99,7 @@ class FluentVersion(Enum):
     v222 = "22.2.0"
 
     @classmethod
-    def _missing_(cls, version):
+    def _missing_(cls, version: Any):
         if isinstance(version, (int, float, str)):
             version = str(version)
             if len(version) == 3:
@@ -71,11 +108,8 @@ class FluentVersion(Enum):
             for member in cls:
                 if version == member.value:
                     return member
-        raise AnsysVersionNotFound(
-            f"The specified version '{version[:-2]}' is not supported."
-            + " Supported versions are: "
-            + ", ".join([member.value for member in cls][::-1])
-        )
+
+        raise AnsysVersionNotFound(version[:-2])
 
     @classmethod
     def get_latest_installed(cls):
@@ -89,15 +123,33 @@ class FluentVersion(Enum):
 
         Raises
         ------
-        AnsysVersionNotFound
+        FileNotFoundError
             If an Ansys version cannot be found.
         """
         for member in cls:
-            if member.awp_var in os.environ:
+            if member.awp_var in os.environ and member.get_fluent_exe_path().exists():
                 return member
 
-        raise AnsysVersionNotFound(
-            "Verify the value of the 'AWP_ROOT' environment variable."
+        raise FileNotFoundError(
+            "Unable to locate a compatible Ansys Fluent installation. "
+            "Ensure that an environment variable like 'AWP_ROOT242' or 'AWP_ROOT251' "
+            "points to a supported Ansys version, and that Fluent is included in the installation."
+        )
+
+    def get_fluent_exe_path(self) -> Path:
+        """Get the path for the Fluent executable file.
+
+        Returns
+        -------
+        Path
+            Fluent executable path.
+        """
+        awp_root = os.environ[self.awp_var]
+        fluent_root = Path(awp_root) / "fluent"
+        return (
+            fluent_root / "ntbin" / "win64" / "fluent.exe"
+            if platform.system() == "Windows"
+            else fluent_root / "bin" / "fluent"
         )
 
     @classmethod
@@ -109,7 +161,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(fluent_release_version)
+        return cls(pyfluent.FLUENT_RELEASE_VERSION)
 
     @classmethod
     def current_dev(cls):
@@ -120,7 +172,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(fluent_dev_version)
+        return cls(pyfluent.FLUENT_DEV_VERSION)
 
     @property
     def awp_var(self):

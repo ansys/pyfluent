@@ -1,15 +1,38 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Deprecated wrappers over FieldData gRPC service of Fluent."""
 
 from typing import Callable, Dict, List
 import warnings
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     ChunkParser,
     FieldDataService,
     FieldInfo,
-    FieldTransaction,
     SurfaceDataType,
+    Transaction,
     _AllowedScalarFieldNames,
     _AllowedSurfaceIDs,
     _AllowedSurfaceNames,
@@ -19,8 +42,7 @@ from ansys.fluent.core.services.field_data import (
     get_fields_request,
     override_help_text,
 )
-from ansys.fluent.core.utils.deprecate import deprecate_argument
-from ansys.fluent.core.warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.utils.deprecate import all_deprecators
 
 DEPRECATION_MSG = "'field_data_old' is deprecated. Use 'field_data' instead."
 
@@ -266,7 +288,7 @@ class DeprecatedFieldData:
     def new_transaction(self):
         """Create a new field transaction."""
         warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
-        return FieldTransaction(
+        return Transaction(
             self._service,
             self._field_info,
             self._allowed_surface_ids,
@@ -275,15 +297,23 @@ class DeprecatedFieldData:
             self._allowed_vector_field_names,
         )
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.27.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message=DEPRECATION_MSG,
     )
     def get_scalar_field_data(
         self,
@@ -314,7 +344,6 @@ class DeprecatedFieldData:
             IDs are provided as input, a dictionary containing a map of surface IDs to scalar
             field data.
         """
-        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -354,20 +383,28 @@ class DeprecatedFieldData:
                 for surface_id in surface_ids
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="data_types",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+            {
+                "old_arg": "data_type",
+                "new_arg": "data_types",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.27.0",
+        deprecated_reason="Old arguments 'surface_names', 'surface_ids' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
+        warn_message=DEPRECATION_MSG,
     )
     def get_surface_data(
         self,
@@ -399,7 +436,6 @@ class DeprecatedFieldData:
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
         """
-        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -487,15 +523,23 @@ class DeprecatedFieldData:
                     for surface_id in surface_ids
                 }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.27.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message=DEPRECATION_MSG,
     )
     def get_vector_field_data(
         self,
@@ -518,7 +562,6 @@ class DeprecatedFieldData:
             If surface IDs are provided as input, a dictionary containing a map of
             surface IDs to vector field data is returned.
         """
-        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,
@@ -557,21 +600,29 @@ class DeprecatedFieldData:
                 for surface_id in surface_ids
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else [],
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val or [],
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else [],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val or [],
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.27.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message=DEPRECATION_MSG,
     )
     def get_pathlines_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
-        additional_field_name: str | None = "",
+        additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
         steps: int | None = 500,
@@ -626,7 +677,6 @@ class DeprecatedFieldData:
         """
         if zones is None:
             zones = []
-        warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
         surface_ids = _get_surface_ids(
             field_info=self._field_info,
             allowed_surface_names=self._allowed_surface_names,

@@ -7,7 +7,7 @@ on:
 
 env:
   DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
-  DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v25.2.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -59,6 +59,36 @@ jobs:
           rm -rf dist
           make install > /dev/null
 
+      - name: Execute exhaust_system_settings_api.py
+        run: |
+          python examples/00-fluent/exhaust_system_settings_api.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+      
+      - name: Execute external_compressible_flow.py
+        run: |
+          python examples/00-fluent/external_compressible_flow.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Execute mixing_elbow_settings_api.py
+        run: |
+          python examples/00-fluent/mixing_elbow_settings_api.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Execute modeling_cavitation.py
+        run: |
+          python examples/00-fluent/modeling_cavitation.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
+      - name: Execute species_transport.py
+        run: |
+          python examples/00-fluent/species_transport.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+
       - name: Build All Documentation
         run: |
           pip install -r requirements/requirements_build.txt
@@ -66,6 +96,7 @@ jobs:
           make build-all-docs
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          BUILD_ALL_DOCS: 1
 
       - name: Zip HTML Documentation before upload
         run: |
@@ -87,7 +118,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy development documentation"
-        uses: ansys/actions/doc-deploy-dev@v8
+        uses: ansys/actions/doc-deploy-dev@v9.0
         with:
             doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
             decompress-artifact: true

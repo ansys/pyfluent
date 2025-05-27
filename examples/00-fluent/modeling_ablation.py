@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """.. _modeling_ablation:
 
 Modeling Ablation
@@ -52,25 +74,17 @@ Modeling Ablation
 ####################################################################################
 # Import required libraries/modules
 # ==================================================================================
-from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.visualization.pyvista import Graphics
 
-###############################################################################
-# Specifying save path
-# ++++++++++++++++++++++
-# save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# Path("~/pyfluent-examples-tests") in Linux.
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
 ####################################################################################
 # Download example file
 # ==================================================================================
 import_filename = examples.download_file(
-    "ablation.msh.h5", "pyfluent/examples/Ablation-tutorial", save_path=save_path
+    "ablation.msh.h5",
+    "pyfluent/examples/Ablation-tutorial",
 )
 
 ####################################################################################
@@ -320,8 +334,7 @@ solver.solution.initialization.initialization_type = "standard"
 solver.solution.initialization.standard_initialize()
 solver.solution.run_calculation.transient_controls.time_step_size = 1e-06
 
-save_case_data_as = Path(save_path) / "ablation.cas.h5"
-solver.file.write(file_type="case", file_name=save_case_data_as)
+solver.file.write(file_type="case", file_name="ablation.cas.h5")
 
 ############################################
 # Run the calculation
@@ -336,8 +349,7 @@ solver.solution.run_calculation.dual_time_iterate(
 # Save simulation data
 # ====================
 # Write case and data files
-save_case_data_as = Path(save_path) / "ablation_Solved.cas.h5"
-solver.file.write(file_type="case-data", file_name=str(save_case_data_as))
+solver.file.write(file_type="case-data", file_name="ablation_Solved.cas.h5")
 
 ####################################################################################
 # Post Processing

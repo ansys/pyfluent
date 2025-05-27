@@ -9,4 +9,4 @@ Solver set-up
 
    boundary_conditions
    materials
-   models/index
+   models/models_contents

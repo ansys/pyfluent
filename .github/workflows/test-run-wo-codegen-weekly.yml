@@ -49,7 +49,7 @@ jobs:
 
       - name: Check package
         run: |
-          pip install twine==5.0.0
+          pip install twine
           twine check dist/*
 
       - name: Upload package
@@ -81,6 +81,10 @@ jobs:
             version: 242
           - image-tag: v25.1.0
             version: 251
+          - image-tag: v25.2.0
+            version: 252
+          - image-tag: v26.1.0
+            version: 261
 
     steps:
 

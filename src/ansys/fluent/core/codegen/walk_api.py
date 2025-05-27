@@ -1,3 +1,25 @@
+# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# SPDX-License-Identifier: MIT
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 """Module containing tool for walking (generated) API class hierarchy.
 
 Example
@@ -15,6 +37,8 @@ Example
 from inspect import signature
 from typing import List
 
+import ansys.fluent.core.solver.flobject as flobject
+
 
 def walk_api(
     api_cls, on_each_path, current_path: str | List[str] = "", api_item_type: str = ""
@@ -31,7 +55,9 @@ def walk_api(
     """
     # Skip the root path
     if current_path:
-        if len(signature(on_each_path).parameters) == 2:
+        if len(signature(on_each_path).parameters) == 3:
+            on_each_path(current_path, api_item_type, api_cls)
+        elif len(signature(on_each_path).parameters) == 2:
             on_each_path(current_path, api_item_type)
         else:
             on_each_path(current_path)
@@ -49,6 +75,12 @@ def walk_api(
                     f"{current_path}.{child_name}" if current_path else child_name
                 )
             # Recursively walk the child
+            if not api_item_type:
+                api_item_type = (
+                    "parameter"
+                    if isinstance(child_cls, flobject.Property)
+                    else "object"
+                )
             walk_api(child_cls, on_each_path, new_path, api_item_type)
 
             # Delegate directly to any child_object_type (relevant for named objects)

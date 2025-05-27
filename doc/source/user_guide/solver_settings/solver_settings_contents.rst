@@ -22,13 +22,13 @@ This new approach allows for straightforward access to various settings without
 navigating through the hierarchical structure of the solver settings.
 
 Example usage
--------------
+~~~~~~~~~~~~~
 
 .. code-block:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
-  >>> inlet1 = pyfluent.VelocityInlet(settings_source=solver, name="inlet-1")
+  >>> solver = pyfluent.launch_fluent()
+  >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver, name="inlet-1")
 
 
 This format provides a more natural way to create and interact with settings objects, 
@@ -132,7 +132,7 @@ and ``NamedObject`` types, the state value is a dictionary. For the
   >>> viscous = pyfluent.solver.Viscous(settings_source=solver)
   >>> viscous.model = 'laminar'
   >>> energy = pyfluent.solver.Energy(settings_source=solver)
-  >>> energy = { 'enabled' : False }
+  >>> energy.enabled = False
   >>> inlet1 = pyfluent.solver.VelocityInlet(settings_source=solver, name="inlet1")
   >>> inlet1.vmag.constant = 14
 
@@ -293,7 +293,7 @@ in a single solver session:
   >>> from ansys.fluent.core import examples
   >>> from pprint import pprint
   >>> import_file_name = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> solver = pyfluent.launch_fluent()
   >>> solver.settings.file.read(file_type="case", file_name=import_file_name)
   Fast-loading...
   ...Done
@@ -399,5 +399,5 @@ The following list summarizes common wildcards:
    :maxdepth: 1
    :hidden:
 
-   set_up/index
+   set_up/set_up_contents
    solution
