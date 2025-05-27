@@ -782,7 +782,7 @@ def test_builtin_creatable_named_object_setting_assign_session(
 
 
 @pytest.mark.codegen_required
-def test_context_manager_1(mixing_elbow_case_data_session, new_solver_session):
+def test_context_manager_1(mixing_elbow_case_data_session):
     import threading
 
     solver = mixing_elbow_case_data_session
