@@ -143,6 +143,7 @@ except ImportError:
     pass  # for no-codegen testing workflow
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.solver import *  # noqa: F401, F403
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -781,14 +782,13 @@ def test_builtin_creatable_named_object_setting_assign_session(
 
 
 @pytest.mark.codegen_required
-def test_context_manager(mixing_elbow_case_data_session):
+def test_context_manager_1(mixing_elbow_case_data_session, new_solver_session):
     import threading
-
-    from ansys.fluent.core.utils.context_managers import using
 
     solver = mixing_elbow_case_data_session
 
-    with using(solver):
+    # Test that the context manager works with a solver session
+    with using(solver):  # noqa: F405
         assert Setup() == solver.setup
         assert General() == solver.setup.general
         assert Models() == solver.setup.models
@@ -796,8 +796,9 @@ def test_context_manager(mixing_elbow_case_data_session):
         assert Energy() == solver.setup.models.energy
         assert Viscous() == solver.setup.models.viscous
 
+    # Test that the context manager works with multiple threads
     def run_solver_context():
-        with using(solver):
+        with using(solver):  # noqa: F405
             setup = Setup()
             print(
                 f"Setup in thread {threading.current_thread().name}: {setup == solver.setup}"
@@ -811,3 +812,17 @@ def test_context_manager(mixing_elbow_case_data_session):
         t.start()
     for t in threads:
         t.join()
+
+
+@pytest.mark.codegen_required
+def test_context_manager_2(new_solver_session):
+    solver = new_solver_session
+
+    import_filename = download_file(
+        "elbow.cas.h5",
+        "pyfluent/examples/DOE-ML-Mixing-Elbow",
+    )
+
+    with using(solver):  # noqa: F405
+        ReadCase(import_filename)  # noqa: F405
+        assert Viscous().model() == "laminar"
