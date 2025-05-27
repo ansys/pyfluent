@@ -778,3 +778,36 @@ def test_builtin_creatable_named_object_setting_assign_session(
         report_file.settings_source = solver
         assert report_file == solver.solution.monitor.report_files["report-file-2"]
         assert report_file.settings_source == solver.settings
+
+
+@pytest.mark.codegen_required
+def test_context_manager(mixing_elbow_case_data_session):
+    import threading
+
+    from ansys.fluent.core.utils.context_managers import using
+
+    solver = mixing_elbow_case_data_session
+
+    with using(solver):
+        assert Setup() == solver.setup
+        assert General() == solver.setup.general
+        assert Models() == solver.setup.models
+        assert Multiphase() == solver.setup.models.multiphase
+        assert Energy() == solver.setup.models.energy
+        assert Viscous() == solver.setup.models.viscous
+
+    def run_solver_context():
+        with using(solver):
+            setup = Setup()
+            print(
+                f"Setup in thread {threading.current_thread().name}: {setup == solver.setup}"
+            )
+
+    threads = [
+        threading.Thread(target=run_solver_context, name=f"Thread-{i}")
+        for i in range(3)
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()

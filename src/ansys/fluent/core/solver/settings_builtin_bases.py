@@ -26,6 +26,7 @@ from typing import Protocol, runtime_checkable
 
 from ansys.fluent.core.solver.flobject import NamedObject, SettingsBase
 from ansys.fluent.core.solver.settings_builtin_data import DATA
+from ansys.fluent.core.utils.context_managers import _get_stack
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -70,12 +71,23 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     return obj
 
 
+def _initialize_settings(instance, defaults: dict, settings_source=None, **kwargs):
+    instance.__dict__.update(defaults | kwargs)
+    if settings_source is not None:
+        instance.settings_source = settings_source
+    else:
+        stack = _get_stack()
+        if not stack:
+            raise RuntimeError(
+                "No solver context is active. Use `settings_source` or within 'with using(solver_session):' block."
+            )
+        instance.settings_source = stack[-1]
+
+
 class _SingletonSetting:
     # Covers both groups and named-object containers
     def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
-        self.__dict__.update(dict(settings_source=None) | kwargs)
-        if settings_source is not None:
-            self.settings_source = settings_source
+        _initialize_settings(self, {"settings_source": None}, settings_source, **kwargs)
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -92,9 +104,9 @@ class _NonCreatableNamedObjectSetting:
     def __init__(
         self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
     ):
-        self.__dict__.update(dict(settings_source=None, name=name) | kwargs)
-        if settings_source is not None:
-            self.settings_source = settings_source
+        _initialize_settings(
+            self, {"settings_source": None, "name": name}, settings_source, **kwargs
+        )
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -118,12 +130,16 @@ class _CreatableNamedObjectSetting:
     ):
         if name and new_instance_name:
             raise ValueError("Cannot specify both name and new_instance_name.")
-        self.__dict__.update(
-            dict(settings_source=None, name=name, new_instance_name=new_instance_name)
-            | kwargs
+        _initialize_settings(
+            self,
+            {
+                "settings_source": None,
+                "name": name,
+                "new_instance_name": new_instance_name,
+            },
+            settings_source,
+            **kwargs,
         )
-        if settings_source is not None:
-            self.settings_source = settings_source
 
     def __setattr__(self, name, value):
         if name == "settings_source":
