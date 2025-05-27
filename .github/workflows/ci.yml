@@ -11,6 +11,10 @@ on:
       - "*"
     branches:
       - main
+  workflow_run:
+    workflows: [ "Test Run Dev Version Nightly" ]
+    types:
+      - completed
 
 concurrency:
   group: ${{ github.ref }}
@@ -115,7 +119,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v25.1.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.0
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
@@ -463,25 +467,56 @@ jobs:
             doc/source/api/core/meshing/datamodel
             doc/source/api/core/solver/tui
             doc/source/api/core/solver/datamodel
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0
 
       - name: Pull 25.2 Fluent docker image
-        if: steps.cache-251-api-code.outputs.cache-hit != 'true'
+        if: steps.cache-252-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v25.2.0
 
       - name: Run 25.2 API codegen
         if: steps.cache-252-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v25.2.0
+          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 25.2 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_252.py
           python -c "from ansys.fluent.core.generated.solver.settings_252 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Cache 26.1 API Code
+        uses: actions/cache@v4
+        id: cache-261-api-code
+        with:
+          path:
+            src/ansys/fluent/core/generated
+            doc/source/api/core/meshing/tui
+            doc/source/api/core/meshing/datamodel
+            doc/source/api/core/solver/tui
+            doc/source/api/core/solver/datamodel
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Pull 26.1 Fluent docker image
+        if: steps.cache-261-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Run 26.1 API codegen
+        if: steps.cache-261-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Print 26.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_261.py
+          python -c "from ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -525,9 +560,11 @@ jobs:
             version: 251
           - image-tag: v25.2.0
             version: 252
+          - image-tag: v26.1.0
+            version: 261
     timeout-minutes: 60
     env:
-        FLUENT_IMAGE_TAG: ${{ matrix.version == 252 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+        FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
 
@@ -579,8 +616,8 @@ jobs:
         if: always()
         run: make cleanup-previous-docker-containers
 
-      - name: Upload 25.1 Coverage Artifacts
-        if: matrix.image-tag == 'v25.1.0'
+      - name: Upload 25.2 Coverage Artifacts
+        if: matrix.image-tag == 'v25.2.0'
         uses: actions/upload-artifact@v4
         with:
           name: coverage_report
@@ -588,7 +625,7 @@ jobs:
 
   release:
     name: Release
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.event.workflow_run.conclusion == 'success'
     needs: [test, update-changelog]
     runs-on: ubuntu-latest
     steps:

@@ -11,8 +11,8 @@ concurrency:
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   MAIN_PYTHON_VERSION: '3.10'
-  FLUENT_IMAGE_TAG: v25.2.0
-  FLUENT_VERSION: 252
+  FLUENT_IMAGE_TAG: v26.1.0
+  FLUENT_VERSION: 261
 
 jobs:
   test:
