@@ -1,5 +1,6 @@
 """Provides a module to copy files from the Ansys installation directory."""
 
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -38,8 +39,16 @@ def copy_files(src: Path | str, fluent_version: Path | str):
     fluent_version: Path | str
         Path of ``docker/fluent_<version>`` folder.
     """
-    copy_files = ["cadList.txt", "ceiList.txt", "cfdpostList.txt", "fluentList.txt"]
-    remove_files = ["excludeCEIList.txt", "excludeFluentList.txt"]
+    copy_files = [
+        file
+        for file in os.listdir(fluent_version)
+        if file.endswith(".txt") and not file.startswith("exclude")
+    ]
+    remove_files = [
+        file
+        for file in os.listdir(fluent_version)
+        if file.endswith(".txt") and file.startswith("exclude")
+    ]
     copy_list = create_file_folders_list(
         files_list=copy_files, fluent_version=fluent_version
     )

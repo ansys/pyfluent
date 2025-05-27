@@ -1,7 +1,7 @@
-v252/commonfiles/CAD
-v252/aisol
-v252/commonfiles/MainWin
-v252/Framework
-v252/commonfiles/registry
-v252/tp/stdc++
-v252/tp/openssl
+v261/commonfiles/CAD
+v261/aisol
+v261/commonfiles/MainWin
+v261/Framework
+v261/commonfiles/registry
+v261/tp/stdc++
+v261/tp/openssl
