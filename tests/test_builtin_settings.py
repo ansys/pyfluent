@@ -143,6 +143,7 @@ except ImportError:
     pass  # for no-codegen testing workflow
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.solver import *  # noqa: F401, F403
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -778,3 +779,50 @@ def test_builtin_creatable_named_object_setting_assign_session(
         report_file.settings_source = solver
         assert report_file == solver.solution.monitor.report_files["report-file-2"]
         assert report_file.settings_source == solver.settings
+
+
+@pytest.mark.codegen_required
+def test_context_manager_1(mixing_elbow_case_data_session):
+    import threading
+
+    solver = mixing_elbow_case_data_session
+
+    # Test that the context manager works with a solver session
+    with using(solver):  # noqa: F405
+        assert Setup() == solver.setup
+        assert General() == solver.setup.general
+        assert Models() == solver.setup.models
+        assert Multiphase() == solver.setup.models.multiphase
+        assert Energy() == solver.setup.models.energy
+        assert Viscous() == solver.setup.models.viscous
+
+    # Test that the context manager works with multiple threads
+    def run_solver_context():
+        with using(solver):  # noqa: F405
+            setup = Setup()
+            print(
+                f"Setup in thread {threading.current_thread().name}: {setup == solver.setup}"
+            )
+
+    threads = [
+        threading.Thread(target=run_solver_context, name=f"Thread-{i}")
+        for i in range(3)
+    ]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+
+
+@pytest.mark.codegen_required
+def test_context_manager_2(new_solver_session):
+    solver = new_solver_session
+
+    import_filename = download_file(
+        "elbow.cas.h5",
+        "pyfluent/examples/DOE-ML-Mixing-Elbow",
+    )
+
+    with using(solver):  # noqa: F405
+        ReadCase(import_filename)  # noqa: F405
+        assert Viscous().model() == "laminar"
