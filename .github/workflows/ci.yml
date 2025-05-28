@@ -620,7 +620,7 @@ jobs:
           path: ./htmlcov
 
   nightly-dev-test:
-    name: Unit Testing
+    name: Release Testing
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: [ self-hosted, pyfluent ]
     timeout-minutes: 120
