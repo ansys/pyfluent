@@ -693,8 +693,8 @@ jobs:
 
   clean-up:
     name: Remove docker image
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: [ self-hosted, pyfluent ]
-    if: ${{ always() }}
     needs: nightly-dev-test
 
     steps:
