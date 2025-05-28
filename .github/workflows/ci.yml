@@ -110,6 +110,20 @@ jobs:
           operating-system: ${{ matrix.os }}
           python-version: ${{ matrix.python-version }}
 
+  check-vulnerabilities:
+    name: "Check library vulnerabilities"
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: ansys/actions/check-vulnerabilities@main
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          token: ${{ secrets.PYANSYS_CI_BOT_TOKEN }}
+          python-package-name: ${{ env.PACKAGE_NAME }}
+          dev-mode: ${{ github.ref != 'refs/heads/main' }}
+          upload-reports: True
+          hide-log: false
+          bandit-configfile: "pyproject.toml"
+
   docs_build:
     name: Build Documentation
     needs: [docs-style]
