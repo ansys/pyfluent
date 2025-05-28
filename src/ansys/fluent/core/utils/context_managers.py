@@ -47,12 +47,8 @@ def using(session):
 
 def _get_active_session():
     stack = _get_stack()
-    if not stack:
-        raise RuntimeError(
-            "No session context is active. Use `session` explicitly "
-            "or use this within a 'with using(session):' block."
-        )
-    return stack[-1]
+    if stack:
+        return stack[-1]
 
 
 class ReadCase:
