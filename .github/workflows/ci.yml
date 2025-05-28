@@ -619,55 +619,45 @@ jobs:
           name: coverage_report
           path: ./htmlcov
 
-  name: Release
-  on:
-    push:
-      tags:
-        - 'v*'
+  release:
+    name: Release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [test, update-changelog]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-  jobs:
-    call-tests:
-      uses: ./.github/workflows/test-run-dev-version-nightly.yml
+      - uses: actions/download-artifact@v4
 
-    release:
-      name: Release
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-      needs: [test, update-changelog, call-tests]
-      runs-on: ubuntu-latest
-      steps:
-        - name: Set up Python
-          uses: actions/setup-python@v5
-          with:
-            python-version: ${{ env.MAIN_PYTHON_VERSION }}
+      - name: Display package file list
+        run: ls -R
 
-        - uses: actions/download-artifact@v4
+      - name: Upload to Private PyPi
+        run: |
+          pip install twine
+          python -m twine upload --skip-existing ./**/*.whl
+          python -m twine upload --skip-existing ./**/*.tar.gz
+        env:
+          TWINE_USERNAME: PAT
+          TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
+          TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
-        - name: Display package file list
-          run: ls -R
+      - name: Upload to Public PyPi
+        run: |
+          pip install twine
+          twine upload --skip-existing ./**/*.whl
+          python -m twine upload --skip-existing ./**/*.tar.gz
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
-        - name: Upload to Private PyPi
-          run: |
-            pip install twine
-            python -m twine upload --skip-existing ./**/*.whl
-            python -m twine upload --skip-existing ./**/*.tar.gz
-          env:
-            TWINE_USERNAME: PAT
-            TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
-            TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
-
-        - name: Upload to Public PyPi
-          run: |
-            pip install twine
-            twine upload --skip-existing ./**/*.whl
-            python -m twine upload --skip-existing ./**/*.tar.gz
-          env:
-            TWINE_USERNAME: __token__
-            TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
-
-        - name: Release
-          uses: softprops/action-gh-release@v2
-          with:
-            files: |
-              ./**/*.whl
-              ./**/*.tar.gz
-              ./**/*-wheelhouse-*.zip
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./**/*.whl
+            ./**/*.tar.gz
+            ./**/*-wheelhouse-*.zip
