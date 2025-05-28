@@ -72,11 +72,12 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
 
 
 def _initialize_settings(instance, defaults: dict, settings_source=None, **kwargs):
+    active_session = _get_active_session()
     instance.__dict__.update(defaults | kwargs)
     if settings_source is not None:
         instance.settings_source = settings_source
-    else:
-        instance.settings_source = _get_active_session()
+    elif active_session:
+        instance.settings_source = active_session
 
 
 class _SingletonSetting:
