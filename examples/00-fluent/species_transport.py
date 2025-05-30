@@ -151,6 +151,7 @@ graphics = solver.settings.results.graphics
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
+
 graphics.picture.x_resolution = 3840
 graphics.picture.y_resolution = 2880
 graphics.picture.save_picture(file_name="mesh.png")
