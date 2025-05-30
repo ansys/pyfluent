@@ -100,7 +100,6 @@ set_config(blocking=True, set_view_on_display="isometric")
 # ==================================================================================
 
 solver = pyfluent.launch_fluent(
-    product_version="25.1.0",
     dimension=3,
     precision="double",
     processor_count=4,

@@ -6,6 +6,7 @@ install:
 	@pip install -r requirements/requirements_build.txt
 	@flit build
 	@pip install -q --force-reinstall dist/*.whl
+	@pip install packaging
 	@python src/ansys/fluent/core/report.py
 
 install-test:

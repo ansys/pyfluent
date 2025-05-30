@@ -12,7 +12,7 @@ env:
   PYFLUENT_LOGGING: 'DEBUG'
   PYFLUENT_WATCHDOG_DEBUG: 'OFF'
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  MAIN_PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: '3.10'
   FLUENT_IMAGE_TAG: v25.2.0
   FLUENT_VERSION: 252
 
@@ -28,15 +28,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ PYTHON_VERSION }}
 
       - name: Cache pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+          key: Python-${{ runner.os }}-${{ PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
+            Python-${{ runner.os }}-${{ PYTHON_VERSION }}
 
       - name: Add version information
         run: make version-info
