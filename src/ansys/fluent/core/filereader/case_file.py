@@ -334,7 +334,7 @@ class Mesh:
         nodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nodes"]
         previous = sum(nnodes[0:min_id])
         nnodes = nnodes[min_id : max_id + 1]
-        nodes = nodes[previous : previous + sum(nnodes)]
+        nodes = nodes[previous : previous + np.sum(nnodes)]
         return [nodes, nnodes]
 
     def get_connectivity(self, surface_id) -> np.array:
