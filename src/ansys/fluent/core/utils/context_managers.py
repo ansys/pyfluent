@@ -20,11 +20,49 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""The top-level module of PyFluent providing solver-related functionality."""
+"""Module for context managers used in PyFluent."""
 
-try:
-    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
-except (ImportError, AttributeError, SyntaxError):
-    pass
+from contextlib import contextmanager
+from threading import local
 
-from ansys.fluent.core.utils.context_managers import ReadCase, using  # noqa: F401
+_thread_local = local()
+
+
+def _get_stack():
+    if not hasattr(_thread_local, "stack"):
+        _thread_local.stack = []
+    return _thread_local.stack
+
+
+@contextmanager
+def using(session):
+    """Context manager to use a Fluent session."""
+    stack = _get_stack()
+    stack.append(session)
+    try:
+        yield
+    finally:
+        stack.pop()
+
+
+def _get_active_session():
+    stack = _get_stack()
+    if stack:
+        return stack[-1]
+
+
+class ReadCase:
+    """Context manager to read a Fluent case file."""
+
+    def __init__(self, session=None, case_file: str | None = None):
+        self.session = session or _get_active_session()
+        self.case_file = case_file
+
+    def __enter__(self):
+        if not self.case_file:
+            raise ValueError("A case file path must be provided to read.")
+        self.session.settings.file.read_case(file_name=self.case_file)
+        return self.session
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass

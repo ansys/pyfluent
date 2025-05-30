@@ -9,8 +9,12 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+
 `0.32.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.32.dev1>`_ - May 28, 2025
-=======================================================================================
+
+`0.32.0 <https://github.com/ansys/pyfluent/releases/tag/v0.32.0>`_ - May 29, 2025
+
+`0.33.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.33.dev0>`_ - May 29, 2025
 
 .. tab-set::
 
@@ -24,6 +28,8 @@ This document contains the release notes for the project.
         * - Remote file transfer strategy
           - `#4062 <https://github.com/ansys/pyfluent/pull/4062>`_
 
+        * - Context managers
+          - `#4073 <https://github.com/ansys/pyfluent/pull/4073>`_
 
   .. tab-item:: Miscellaneous
 
