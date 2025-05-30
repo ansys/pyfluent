@@ -74,7 +74,6 @@ geom_filename = examples.download_file(
 # ================================================================
 
 meshing = pyfluent.launch_fluent(
-    product_version="25.1.0",
     mode="meshing",
     dimension=3,
     precision="double",
