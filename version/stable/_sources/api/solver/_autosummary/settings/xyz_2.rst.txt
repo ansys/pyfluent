@@ -1,0 +1,21 @@
+:orphan:
+
+.. _xyz_2:
+
+xyz
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.xyz_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================================================
+
+Parent                                                                   Summary
+
+============================   =================================================
+:ref:`up_vector <up_vector>`       Settings for specifying the camera up-vector.
+
+============================   =================================================
+

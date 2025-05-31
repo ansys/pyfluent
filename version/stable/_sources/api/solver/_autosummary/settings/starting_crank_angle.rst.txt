@@ -1,0 +1,21 @@
+:orphan:
+
+.. _starting_crank_angle:
+
+starting_crank_angle
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.starting_crank_angle
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`in_cylinder <in_cylinder>`       'in_cylinder' child.
+
+================================   ========================
+
