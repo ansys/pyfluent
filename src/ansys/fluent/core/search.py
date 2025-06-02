@@ -54,16 +54,6 @@ def get_api_tree_file_name(version: str) -> Path:
     return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
 
 
-def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
-    if not match_case:
-        source = source.lower()
-        word = word.lower()
-    if match_whole_word:
-        return source == word
-    else:
-        return word in source
-
-
 def _remove_suffix(input: str, suffix):
     if hasattr(input, "removesuffix"):
         return input.removesuffix(suffix)
@@ -71,9 +61,6 @@ def _remove_suffix(input: str, suffix):
         if suffix and input.endswith(suffix):
             return input[: -len(suffix)]
         return input
-
-
-_meshing_rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
 
 
 def _generate_api_data(
@@ -118,6 +105,11 @@ def _generate_api_data(
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
                 api_object_names.add(k)
+                next_path = (
+                    next_path.replace("MeshingUtilities", "meshing_utilities")
+                    if "MeshingUtilities" in next_path
+                    else next_path
+                )
                 if "tui" in next_path:
                     api_tui_objects.add(f"{next_path} ({type_})")
                 else:
@@ -172,7 +164,9 @@ def _get_api_tree_data():
         return api_tree_data
 
 
-def _print_search_results(queries: list, api_tree_data: dict):
+def _print_search_results(
+    queries: list, api_tree_data: dict, target: str | None = None
+):
     """Print search results.
 
     Parameters
@@ -181,21 +175,30 @@ def _print_search_results(queries: list, api_tree_data: dict):
         List of search string to match API object names.
     api_tree_data: dict
         All API object data.
+    target: str, optional
+        Target to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
     """
     results = []
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
-    def _get_results(api_tree_data):
+    def _get_results(api_tree_data, target=None):
         results = []
         for query in queries:
             for api_object in api_tree_data:
-                if api_object.split()[0].endswith(query):
-                    results.append(api_object)
+                if target:
+                    if api_object.startswith(target) and api_object.split()[0].endswith(
+                        query
+                    ):
+                        results.append(api_object)
+                else:
+                    if api_object.split()[0].endswith(query):
+                        results.append(api_object)
         return results
 
-    settings_results = _get_results(api_tree_datas[0])
-    tui_results = _get_results(api_tree_datas[1])
+    settings_results = _get_results(api_tree_datas[0], target=target)
+    tui_results = _get_results(api_tree_datas[1], target=target)
 
     settings_results.sort()
     tui_results.sort()
@@ -230,7 +233,9 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
     return [name for name in names if regex.match(name)]
 
 
-def _search_wildcard(search_string: str, api_tree_data: dict):
+def _search_wildcard(
+    search_string: str, api_tree_data: dict, target: str | None = None
+):
     """Perform wildcard search for a word through the Fluent's object hierarchy.
 
     Parameters
@@ -239,6 +244,9 @@ def _search_wildcard(search_string: str, api_tree_data: dict):
         Word to search for. Semantic search is default.
     api_tree_data: dict
         All API object data.
+    target: str, optional
+        Target to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
 
     Returns
     -------
@@ -249,7 +257,9 @@ def _search_wildcard(search_string: str, api_tree_data: dict):
         search_string, names=api_tree_data["all_api_object_names"]
     )
     if queries:
-        return _print_search_results(queries, api_tree_data=api_tree_data)
+        return _print_search_results(
+            queries, api_tree_data=api_tree_data, target=target
+        )
 
 
 def _get_exact_match_for_word_from_names(
@@ -343,6 +353,7 @@ def _search_whole_word(
     match_case: bool = False,
     match_whole_word: bool = True,
     api_tree_data: dict = None,
+    target: str | None = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.
 
@@ -358,6 +369,9 @@ def _search_whole_word(
         If ``True``, it matches the given word, and it's capitalize case.
     api_tree_data: dict
         All API object data.
+    target: str, optional
+        Target to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
 
     Returns
     -------
@@ -401,7 +415,9 @@ def _search_whole_word(
                 )
             )
     if queries:
-        return _print_search_results(queries, api_tree_data=api_tree_data)
+        return _print_search_results(
+            queries, api_tree_data=api_tree_data, target=target
+        )
 
 
 def _download_nltk_data():
@@ -426,17 +442,15 @@ def _download_nltk_data():
         )
 
 
-def _search_semantic(search_string: str, language: str, api_tree_data: dict):
+def _search_semantic(
+    search_string: str, api_tree_data: dict, target: str | None = None
+):
     """Perform semantic search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
     search_string: str
         Word to search for. Semantic search is the default.
-    language: str
-        ISO 639-3 code for the language to use for the semantic search.
-        The default is ``eng`` for English. For the list of supported languages,
-        see `OMW Version 1 <https://omwn.org/omw1.html>`_.
     api_tree_data: dict
         All API object data.
 
@@ -449,7 +463,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
 
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    search_string_synsets = set(wn.synsets(search_string, lang=language))
+    search_string_synsets = set(wn.synsets(search_string, lang="eng"))
     for api_object_name, api_object_synset_names in list(
         api_tree_data["all_api_object_name_synsets"].items()
     ):
@@ -462,7 +476,7 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     if similar_keys:
         results = []
         for key in similar_keys:
-            result = _search_wildcard(key, api_tree_data)
+            result = _search_wildcard(key, api_tree_data, target=target)
             if result:
                 results.extend(result)
         if results:
@@ -473,15 +487,17 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
             names=api_tree_data["all_api_object_names"],
         )
         if queries:
-            return _print_search_results(queries, api_tree_data=api_tree_data)
+            return _print_search_results(
+                queries, api_tree_data=api_tree_data, target=target
+            )
 
 
 def search(
     search_string: str,
-    language: str | None = "eng",
     wildcard: bool | None = False,
     match_whole_word: bool = False,
     match_case: bool | None = True,
+    target: str | None = None,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -489,10 +505,6 @@ def search(
     ----------
     search_string: str
         Word to search for. Semantic search is the default.
-    language: str
-        ISO 639-3 code for the language to use for the semantic search.
-        The default is ``eng`` for English. For the list of supported languages,
-        see `OMW Version 1 <https://omwn.org/omw1.html>`_.
     wildcard: bool, optional
         Whether to use the wildcard pattern. The default is ``False``. If ``True``, the
         wildcard pattern is based on the ``fnmatch`` module and semantic matching
@@ -502,27 +514,21 @@ def search(
         only exact matches are found and semantic matching is turned off.
     match_case: bool, optional
         Whether to match case. The default is ``True``. If ``False``, the search is case-insensitive.
+    target: str, optional
+        Target to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
 
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.search("font", match_whole_word=True)
     >>> pyfluent.search("Font")
-    >>> pyfluent.search("iter*", wildcard=True)
-    >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
-    The most similar API objects are:
-    <solver_session>.file.read (Command)
-    <solver_session>.file.import_.read (Command)
-    <solver_session>.mesh.surface_mesh.read (Command)
-    <solver_session>.tui.display.display_states.read (Command)
-    <meshing_session>.tui.display.display_states.read (Command)
+    >>> pyfluent.search("local*", wildcard=True, target="<solver_session>.setup")
+    <solver_session>.setup.dynamic_mesh.methods.smoothing.radial_settings.local_smoothing (Parameter)
+    <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
+    <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
     """
     if (wildcard and match_whole_word) or (wildcard and match_case):
-        warnings.warn(
-            "``wildcard=True`` matches wildcard pattern.",
-            UserWarning,
-        )
-    elif language and wildcard:
         warnings.warn(
             "``wildcard=True`` matches wildcard pattern.",
             UserWarning,
@@ -534,11 +540,15 @@ def search(
         return _search_wildcard(
             search_string,
             api_tree_data=api_tree_data,
+            target=target,
         )
     elif match_whole_word:
         if not match_case:
             return _search_whole_word(
-                search_string, match_whole_word=True, api_tree_data=api_tree_data
+                search_string,
+                match_whole_word=True,
+                api_tree_data=api_tree_data,
+                target=target,
             )
         else:
             return _search_whole_word(
@@ -546,16 +556,24 @@ def search(
                 match_case=True,
                 match_whole_word=True,
                 api_tree_data=api_tree_data,
+                target=target,
             )
     else:
         try:
             return _search_semantic(
-                search_string, language, api_tree_data=api_tree_data
+                search_string, api_tree_data=api_tree_data, target=target
             )
         except ModuleNotFoundError:
             pass
         except LookupError:
             _download_nltk_data()
             return _search_semantic(
-                search_string, language, api_tree_data=api_tree_data
+                search_string, api_tree_data=api_tree_data, target=target
             )
+
+
+if __name__ == "__main__":
+    # search(search_string="faces_zones", target="<meshing_session>")
+    # search(search_string="font", target="<solver_session>.results.graphics.contour")
+    # search("ApplicationFontSize", match_whole_word=True, target="<meshing_session>")
+    search("local*", wildcard=True, target="<solver_session>.setup")
