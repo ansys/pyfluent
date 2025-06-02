@@ -112,7 +112,7 @@ Examples
    ...
    >>>
    >> # Wildcard pattern search within a specific API object
-   >>> pyfluent.search("local*")
+   >>> pyfluent.search("local*", api_path="mesh_interfaces")
    <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
    <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
    >>>
