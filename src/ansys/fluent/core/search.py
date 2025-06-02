@@ -188,11 +188,7 @@ def _print_search_results(
             for api_object in api_tree_data:
                 if api_path:
                     start_index = api_object.find(api_path)
-                    if api_object.startswith(api_path) and api_object.split()[
-                        0
-                    ].endswith(query):
-                        results.append(api_object)
-                    elif start_index != -1 and api_object[start_index:].split()[
+                    if start_index != -1 and api_object[start_index:].split()[
                         0
                     ].endswith(query):
                         results.append(api_object)
