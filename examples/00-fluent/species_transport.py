@@ -90,7 +90,6 @@ print(solver.get_fluent_version())
 # Import some direct settings classes which will be used in the following sections.
 # These classes allow straightforward access to various settings without the need to navigate through the settings hierarchy.
 
-from pathlib import Path  # noqa: E402
 
 from ansys.fluent.core import FluentVersion  # noqa: E402
 from ansys.fluent.core.examples import download_file  # noqa: E402
@@ -113,9 +112,7 @@ from ansys.fluent.core.solver import (  # noqa: E402
 #
 # Download the mesh file and read it into the Fluent session.
 
-mesh_file = Path(
-    download_file("gascomb.msh.gz", "pyfluent/tutorials/species_transport")
-)
+mesh_file = download_file("gascomb.msh.gz", "pyfluent/tutorials/species_transport")
 solver.settings.file.read_mesh(file_name=mesh_file)
 
 # %%
@@ -151,6 +148,7 @@ graphics = solver.settings.results.graphics
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
+
 graphics.picture.x_resolution = 3840
 graphics.picture.y_resolution = 2880
 graphics.picture.save_picture(file_name="mesh.png")
