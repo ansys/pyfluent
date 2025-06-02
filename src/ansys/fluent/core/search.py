@@ -182,23 +182,24 @@ def _print_search_results(
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
-    def _get_results(api_tree_data, api_path=None):
-        results = []
-        for query in queries:
-            for api_object in api_tree_data:
-                if api_path:
-                    start_index = api_object.find(api_path)
-                    if start_index != -1 and api_object[start_index:].split()[
-                        0
-                    ].endswith(query):
-                        results.append(api_object)
-                else:
-                    if api_object.split()[0].endswith(query):
-                        results.append(api_object)
-        return results
+    def _get_results(api_tree_data, queries, api_path=None):
+        return [
+            api_object
+            for api_object in api_tree_data
+            if (
+                (
+                    target := (
+                        api_object[api_object.find(api_path) :]
+                        if api_path and api_object.find(api_path) != -1
+                        else api_object
+                    )
+                )
+                and any(target.split()[0].endswith(query) for query in queries)
+            )
+        ]
 
-    settings_results = _get_results(api_tree_datas[0], api_path=api_path)
-    tui_results = _get_results(api_tree_datas[1], api_path=api_path)
+    settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
+    tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
 
     settings_results.sort()
     tui_results.sort()
