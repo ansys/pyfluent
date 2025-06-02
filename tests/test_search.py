@@ -407,3 +407,33 @@ def test_wildcard_with_api_path():
         '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
         in results
     )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_wildcard_with_api_object():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.PRINT_SEARCH_RESULTS = False
+    results = pyfluent.search("local*", api_path="mesh_interfaces")
+    assert "<meshing_session>" not in results
+    assert (
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_match_whole_word_with_api_object_2():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.PRINT_SEARCH_RESULTS = False
+    results = pyfluent.search(
+        "ApplicationFontSize", match_whole_word=True, api_path="Appearance"
+    )
+    assert "<solver_session>" not in results
+    assert (
+        "<meshing_session>.preferences.Appearance.ApplicationFontSize (Parameter)"
+        in results
+    )
