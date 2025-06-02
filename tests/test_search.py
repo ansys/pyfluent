@@ -177,19 +177,6 @@ def test_search_wildcard(capsys):
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
-def test_search_semantic(capsys):
-    api_tree_data = _get_api_tree_data()
-    _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.read_surface_mesh (Command)" in lines
-
-    _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
-    lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
-
-
-@pytest.mark.fluent_version("==24.2")
-@pytest.mark.codegen_required
 def test_search_whole_word(capsys):
     api_tree_data = _get_api_tree_data()
     _search_whole_word(
@@ -289,6 +276,19 @@ def test_chinese_semantic_search(capsys):
 @pytest.mark.codegen_required
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
+def test_search_semantic(capsys):
+    api_tree_data = _get_api_tree_data()
+    _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.read_surface_mesh (Command)" in lines
+
+    _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
