@@ -31,6 +31,7 @@ from ansys.fluent.core.search import (
     _get_close_matches_for_word_from_names,
     _get_exact_match_for_word_from_names,
     _get_wildcard_matches_for_word_from_names,
+    _search_semantic,
     _search_whole_word,
     _search_wildcard,
 )
@@ -44,6 +45,9 @@ def test_nltk_data_download():
     packages = ["wordnet", "omw-1.4"]
     for package in packages:
         nltk.download(package, quiet=True)
+
+    api_tree_data = _get_api_tree_data()
+    _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
 
     from nltk.corpus import wordnet as wn
 
@@ -173,6 +177,19 @@ def test_search_wildcard(capsys):
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
+def test_search_semantic(capsys):
+    api_tree_data = _get_api_tree_data()
+    _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.read_surface_mesh (Command)" in lines
+
+    _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
 def test_search_whole_word(capsys):
     api_tree_data = _get_api_tree_data()
     _search_whole_word(
@@ -254,6 +271,26 @@ def test_wildcard_search(capsys):
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.solution.run_calculation.iter_count (Parameter)" in lines
     assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
+def test_chinese_semantic_search(capsys):
+    pyfluent.search("读", language="cmn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.read_case (Command)" in lines
+
+    pyfluent.search("写", language="cmn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.file.write_case (Command)" in lines
+
+
+@pytest.mark.fluent_version("==24.2")
+@pytest.mark.codegen_required
+def test_japanese_semantic_search(capsys):
+    pyfluent.search("フォント", language="jpn")
+    lines = capsys.readouterr().out.splitlines()
+    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
 def test_match_whole_word(monkeypatch):

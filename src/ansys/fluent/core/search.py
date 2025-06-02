@@ -448,7 +448,7 @@ def _download_nltk_data():
 
 
 def _search_semantic(
-    search_string: str, api_tree_data: dict, api_path: str | None = None
+    search_string: str, language: str, api_tree_data: dict, api_path: str | None = None
 ):
     """Perform semantic search for a word through the Fluent's object hierarchy.
 
@@ -456,6 +456,10 @@ def _search_semantic(
     ----------
     search_string: str
         Word to search for. Semantic search is the default.
+    language: str
+        ISO 639-3 code for the language to use for the semantic search.
+        The default is ``eng`` for English. For the list of supported languages,
+        see `OMW Version 1 <https://omwn.org/omw1.html>`_.
     api_tree_data: dict
         All API object data.
 
@@ -468,7 +472,7 @@ def _search_semantic(
 
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    search_string_synsets = set(wn.synsets(search_string, lang="eng"))
+    search_string_synsets = set(wn.synsets(search_string, lang=language))
     for api_object_name, api_object_synset_names in list(
         api_tree_data["all_api_object_name_synsets"].items()
     ):
@@ -499,6 +503,7 @@ def _search_semantic(
 
 def search(
     search_string: str,
+    language: str | None = "eng",
     wildcard: bool | None = False,
     match_whole_word: bool = False,
     match_case: bool | None = True,
@@ -510,6 +515,10 @@ def search(
     ----------
     search_string: str
         Word to search for. Semantic search is the default.
+    language: str
+        ISO 639-3 code for the language to use for the semantic search.
+        The default is ``eng`` for English. For the list of supported languages,
+        see `OMW Version 1 <https://omwn.org/omw1.html>`_.
     wildcard: bool, optional
         Whether to use the wildcard pattern. The default is ``False``. If ``True``, the
         wildcard pattern is based on the ``fnmatch`` module and semantic matching
@@ -532,8 +541,19 @@ def search(
     <solver_session>.setup.dynamic_mesh.methods.smoothing.radial_settings.local_smoothing (Parameter)
     <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
     <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
+    >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
+    <solver_session>.file.read (Command)
+    <solver_session>.file.import_.read (Command)
+    <solver_session>.mesh.surface_mesh.read (Command)
+    <solver_session>.tui.display.display_states.read (Command)
+    <meshing_session>.tui.display.display_states.read (Command)
     """
     if (wildcard and match_whole_word) or (wildcard and match_case):
+        warnings.warn(
+            "``wildcard=True`` matches wildcard pattern.",
+            UserWarning,
+        )
+    elif language and wildcard:
         warnings.warn(
             "``wildcard=True`` matches wildcard pattern.",
             UserWarning,
@@ -566,12 +586,12 @@ def search(
     else:
         try:
             return _search_semantic(
-                search_string, api_tree_data=api_tree_data, api_path=api_path
+                search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
         except ModuleNotFoundError:
             pass
         except LookupError:
             _download_nltk_data()
             return _search_semantic(
-                search_string, api_tree_data=api_tree_data, api_path=api_path
+                search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
