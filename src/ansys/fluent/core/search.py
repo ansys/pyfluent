@@ -30,7 +30,6 @@ import os
 from pathlib import Path
 import pickle
 import re
-import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver.error_message import closest_allowed_names
@@ -504,7 +503,6 @@ def _search_semantic(
 def search(
     search_string: str,
     language: str | None = "eng",
-    wildcard: bool | None = False,
     match_whole_word: bool = False,
     match_case: bool | None = True,
     api_path: str | None = None,
@@ -519,10 +517,6 @@ def search(
         ISO 639-3 code for the language to use for the semantic search.
         The default is ``eng`` for English. For the list of supported languages,
         see `OMW Version 1 <https://omwn.org/omw1.html>`_.
-    wildcard: bool, optional
-        Whether to use the wildcard pattern. The default is ``False``. If ``True``, the
-        wildcard pattern is based on the ``fnmatch`` module and semantic matching
-        is turned off.
     match_whole_word: bool, optional
         Whether to find only exact matches. The default is ``False``. If ``True``,
         only exact matches are found and semantic matching is turned off.
@@ -537,7 +531,7 @@ def search(
     >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.search("font", match_whole_word=True)
     >>> pyfluent.search("Font")
-    >>> pyfluent.search("local*", wildcard=True, api_path="<solver_session>.setup")
+    >>> pyfluent.search("local*", api_path="<solver_session>.setup")
     <solver_session>.setup.dynamic_mesh.methods.smoothing.radial_settings.local_smoothing (Parameter)
     <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
     <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
@@ -548,20 +542,12 @@ def search(
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
-    if (wildcard and match_whole_word) or (wildcard and match_case):
-        warnings.warn(
-            "``wildcard=True`` matches wildcard pattern.",
-            UserWarning,
-        )
-    elif language and wildcard:
-        warnings.warn(
-            "``wildcard=True`` matches wildcard pattern.",
-            UserWarning,
-        )
 
     api_tree_data = _get_api_tree_data()
 
-    if wildcard:
+    wildcard_pattern = re.compile(r"[*?\[\]]")
+
+    if bool(wildcard_pattern.search(search_string)):
         return _search_wildcard(
             search_string,
             api_tree_data=api_tree_data,

@@ -267,7 +267,7 @@ def test_misspelled_search(capsys):
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
-    pyfluent.search("iter*", wildcard=True)
+    pyfluent.search("iter*")
     lines = capsys.readouterr().out.splitlines()
     assert "<solver_session>.solution.run_calculation.iter_count (Parameter)" in lines
     assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
@@ -339,11 +339,11 @@ def test_match_whole_word(monkeypatch):
 
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
-def test_solver_target():
+def test_solver_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
-    results = pyfluent.search(search_string="faces_zones", target="<solver_session>")
+    results = pyfluent.search(search_string="faces_zones", api_path="<solver_session>")
     assert "<meshing_session>" not in results
     assert "<solver_session>.mesh.modify_zones.project_face_zones (Command)" in results
     assert (
@@ -353,11 +353,11 @@ def test_solver_target():
 
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
-def test_meshing_target():
+def test_meshing_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
-    results = pyfluent.search(search_string="faces_zones", target="<meshing_session>")
+    results = pyfluent.search(search_string="faces_zones", api_path="<meshing_session>")
     assert "<solver_session>" not in results
     assert "<meshing_session>.tui.mesh.manage.adjacent_face_zones (Command)" in results
     assert "<meshing_session>.meshing_utilities.merge_face_zones (Command)" in results
@@ -365,12 +365,12 @@ def test_meshing_target():
 
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
-def test_solver_specific_target():
+def test_solver_specific_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
     results = pyfluent.search(
-        search_string="font", target="<solver_session>.results.graphics.contour"
+        search_string="font", api_path="<solver_session>.results.graphics.contour"
     )
     assert "<meshing_session>" not in results
     assert (
@@ -381,12 +381,12 @@ def test_solver_specific_target():
 
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
-def test_match_whole_word_with_target():
+def test_match_whole_word_with_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
     results = pyfluent.search(
-        "ApplicationFontSize", match_whole_word=True, target="<meshing_session>"
+        "ApplicationFontSize", match_whole_word=True, api_path="<meshing_session>"
     )
     assert "<solver_session>" not in results
     assert (
@@ -397,11 +397,11 @@ def test_match_whole_word_with_target():
 
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
-def test_wildcard_with_target():
+def test_wildcard_with_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
-    results = pyfluent.search("local*", wildcard=True, target="<solver_session>.setup")
+    results = pyfluent.search("local*", api_path="<solver_session>.setup")
     assert "<meshing_session>" not in results
     assert (
         '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
