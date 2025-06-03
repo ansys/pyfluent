@@ -264,7 +264,7 @@ def test_misspelled_search(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version("==25.1")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
     pyfluent.search("iter*")
@@ -316,13 +316,15 @@ def test_match_whole_word(monkeypatch):
     monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
 
     assert _search_whole_word("parent", api_tree_data=api_tree_data) == [
-        "<solver_session>.parent (Object)"
+        "<solver_session>.parent (Object)",
+        "<solver_session>.parent.child (Parameter)",
     ]
     assert _search_whole_word("child", api_tree_data=api_tree_data) == [
-        "<solver_session>.parent.child (Parameter)"
+        "<solver_session>.parent.child (Parameter)",
     ]
     assert pyfluent.search("parent", match_whole_word=True) == [
-        "<solver_session>.parent (Object)"
+        "<solver_session>.parent (Object)",
+        "<solver_session>.parent.child (Parameter)",
     ]
 
     assert pyfluent.search("first", match_whole_word=True) == [
@@ -369,9 +371,7 @@ def test_solver_specific_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
-    results = pyfluent.search(
-        search_string="font", api_path="<solver_session>.results.graphics.contour"
-    )
+    results = pyfluent.search(search_string="font", api_path="contour")
     assert "<meshing_session>" not in results
     assert (
         '<solver_session>.results.graphics.contour["<name>"].color_map.font_name (Parameter)'

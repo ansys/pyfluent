@@ -182,10 +182,10 @@ def _print_search_results(
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
-    def _get_results(api_tree_data, queries, api_path=None):
+    def _get_results(api_data, queries, api_path=None):
         results = []
 
-        for api_object in api_tree_data:
+        for api_object in api_data:
             target = api_object
 
             if api_path:
@@ -195,7 +195,7 @@ def _print_search_results(
                 target = api_object[start_index:]
 
             first_token = target.split()[0]
-            if any(first_token.endswith(query) for query in queries):
+            if any(query in first_token for query in queries):
                 results.append(api_object)
 
         return results
