@@ -74,13 +74,9 @@ def test_use_variable_catalog(new_solver_session) -> None:
     assert len(allowed_vars) != 0 and all(
         isinstance(x, VariableDescriptor) for x in allowed_vars
     )
-    assert (
-        len(allowed_vars_names) != 0
-        and all(
-            x[0] is None or isinstance(x[0], VariableDescriptor)
-            for x in allowed_vars_names
-        )
-        and all(isinstance(x[1], str) for x in allowed_vars_names)
+    assert len(allowed_vars_names) != 0 and all(
+        (x[0] is None or isinstance(x[0], VariableDescriptor)) and isinstance(x[1], str)
+        for x in allowed_vars_names
     )
 
     temperature_field_data = fields.field_data.get_field_data(
