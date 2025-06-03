@@ -294,8 +294,8 @@ class _FieldMethod:
         def __init__(self, accessor):
             self._accessor = accessor
 
-        def allowed_values(self):
-            """Returns sorted list of allowed values."""
+        def allowed_values(self) -> List[str]:
+            """Returns sorted list of allowed field names."""
             return sorted(self._accessor())
 
         def allowed_variables(self) -> List[VariableDescriptor]:
