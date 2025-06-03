@@ -35,7 +35,7 @@ from ansys.fluent.core.services.field_data import (
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
 )
-from ansys.units.variable_descriptor import VariableCatalog
+from ansys.units import VariableCatalog
 
 
 def round_off_list_elements(input_list):
@@ -68,9 +68,7 @@ def test_use_variable_catalog(new_solver_session) -> None:
     locations = ["hot-inlet"]
 
     temperature_field_data = fields.field_data.get_field_data(
-        ScalarFieldDataRequest(
-            field_name=VariableCatalog.TEMPERATURE, surfaces=locations
-        )
+        ScalarFieldDataRequest(field_name=temperature, surfaces=locations)
     )
     assert round(temperature_field_data[locations[0]][0]) == 305
 

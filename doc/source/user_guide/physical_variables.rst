@@ -28,7 +28,7 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
 .. code-block:: python
 
     from ansys.fluent.core import launch_fluent, examples
-    from ansys.units.variable_descriptor import VariableCatalog
+    from ansys.units import VariableCatalog
 
     solver = launch_fluent()
     case_path = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

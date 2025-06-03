@@ -35,6 +35,7 @@ from ansys.fluent.core.variable_strategies import (
 )
 
 _to_field_name_str = naming_strategy().to_string
+_to_variable_descriptor = naming_strategy().to_variable_descriptor
 
 
 class SurfaceDataType(Enum):

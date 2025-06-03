@@ -52,6 +52,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedVectorFieldNames,
     _ReturnFieldData,
     _to_field_name_str,
+    _to_variable_descriptor,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
@@ -62,6 +63,7 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.units import VariableDescriptor
 
 logger = logging.getLogger("pyfluent.field_data")
 
@@ -293,8 +295,28 @@ class _FieldMethod:
             self._accessor = accessor
 
         def allowed_values(self):
-            """Returns set of allowed values."""
+            """Returns sorted list of allowed values."""
             return sorted(self._accessor())
+
+        def allowed_variables(self) -> List[VariableDescriptor]:
+            """Returns list of allowed field variables sorted by field name."""
+            descriptors = []
+            for name in self.allowed_values():
+                descriptor = _to_variable_descriptor(name)
+                if descriptor is not None:
+                    descriptors.append(descriptor)
+            return descriptors
+
+        def allowed_variables_with_fluent_names(
+            self,
+        ) -> List[Tuple[VariableDescriptor, str]]:
+            """Returns list of allowed field variables and field names sorted
+            by field name."""
+            descriptors = []
+            for name in self.allowed_values():
+                descriptor = _to_variable_descriptor(name)
+                descriptors.append((descriptor, name))
+            return descriptors
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):
         self._field_data_accessor = field_data_accessor
