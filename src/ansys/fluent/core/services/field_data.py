@@ -300,23 +300,20 @@ class _FieldMethod:
 
         def allowed_variables(self) -> List[VariableDescriptor]:
             """Returns list of allowed field variables sorted by field name."""
-            descriptors = []
-            for name in self.allowed_values():
-                descriptor = _to_variable_descriptor(name)
-                if descriptor is not None:
-                    descriptors.append(descriptor)
-            return descriptors
+            return [
+                descriptor
+                for name in self.allowed_values()
+                if (descriptor := _to_variable_descriptor(name)) is not None
+            ]
 
         def allowed_variables_with_fluent_names(
             self,
         ) -> List[Tuple[VariableDescriptor, str]]:
             """Returns list of allowed field variables and field names sorted
             by field name."""
-            descriptors = []
-            for name in self.allowed_values():
-                descriptor = _to_variable_descriptor(name)
-                descriptors.append((descriptor, name))
-            return descriptors
+            return [
+                (_to_variable_descriptor(name), name) for name in self.allowed_values()
+            ]
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):
         self._field_data_accessor = field_data_accessor
