@@ -261,7 +261,7 @@ def test_misspelled_search(capsys):
 
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4105")
-@pytest.mark.fluent_version("==25.2")
+@pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
     pyfluent.search("iter*", wildcard=True)
