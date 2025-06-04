@@ -122,7 +122,7 @@ session.tui.file.write_mesh("mixing_tank.msh.h5")
 #############################################################################################################
 # Switch to the Solver Mode
 # ===========================================================================================================
-solver = session.switch_to_solver()
+solver_session = session.switch_to_solver()
 
 
 ###############################################################################################################
@@ -130,14 +130,16 @@ solver = session.switch_to_solver()
 # ===========================================================================================================
 
 # Create a middle plane to display the mesh
-y_mid_plane = solver.settings.results.surfaces.plane_surface.create(name="mid_plane")
+y_mid_plane = solver_session.settings.results.surfaces.plane_surface.create(
+    name="mid_plane"
+)
 y_mid_plane.method = "zx-plane"
 y_mid_plane.y = 0
 y_mid_plane.display()
 
 
 # Access the graphics object
-graphics = solver.settings.results.graphics
+graphics = solver_session.settings.results.graphics
 # Set the hardcopy format for saving the image
 graphics.picture.driver_options.hardcopy_format = "png"
 
@@ -147,11 +149,11 @@ geom_view.front_faces_transparent = "enable"
 geom_view.view_name = "top"
 
 # Get the list of all walls
-all_walls = solver.settings.setup.boundary_conditions.wall.get_object_names()
+all_walls = solver_session.settings.setup.boundary_conditions.wall.get_object_names()
 filtered_walls_to_display = [wall for wall in all_walls if "mrf" not in wall]
 
 # Create a mesh object and configure its settings
-mesh_object = solver.settings.results.graphics.mesh.create(name="mesh-1")
+mesh_object = solver_session.settings.results.graphics.mesh.create(name="mesh-1")
 mesh_object.surfaces_list = filtered_walls_to_display
 mesh_object.options.edges = False
 
@@ -193,14 +195,20 @@ agitation_speed = 10  # rad/s
 #############################################################################################################
 # Solver Setup and Solve Workflow
 # ===========================================================================================================
-solver.settings.setup.general.operating_conditions.gravity.enable = True
-solver.settings.setup.general.operating_conditions.gravity.components = [0.0, 0.0, -g]
+solver_session.settings.setup.general.operating_conditions.gravity.enable = True
+solver_session.settings.setup.general.operating_conditions.gravity.components = [
+    0.0,
+    0.0,
+    -g,
+]
 
 #############################################################################################################
 # Define Materials
 # ===========================================================================================================
-solver.settings.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
-fluid_mat = solver.settings.setup.materials.fluid["water-liquid"]
+solver_session.settings.setup.materials.database.copy_by_name(
+    type="fluid", name="water-liquid"
+)
+fluid_mat = solver_session.settings.setup.materials.fluid["water-liquid"]
 fluid_mat.density.value = water_density
 fluid_mat.viscosity.value = water_viscosity
 
@@ -209,13 +217,17 @@ fluid_mat.viscosity.value = water_viscosity
 # ===========================================================================================================
 
 # Get the list of all Fluid Cell Zones,
-fluid_cell_zones = solver.settings.setup.cell_zone_conditions.fluid.get_object_names()
+fluid_cell_zones = (
+    solver_session.settings.setup.cell_zone_conditions.fluid.get_object_names()
+)
 fluid_mrf_cell_zones = [zone for zone in fluid_cell_zones if "mrf" in zone]
 
 for cell_zone in fluid_mrf_cell_zones:
     print(cell_zone)
     # Set the material for each cell zone
-    fluid_cell_zone = solver.settings.setup.cell_zone_conditions.fluid[cell_zone]
+    fluid_cell_zone = solver_session.settings.setup.cell_zone_conditions.fluid[
+        cell_zone
+    ]
     fluid_cell_zone.general.material = "water-liquid"
     # Set the reference frame for each cell zone
     fluid_cell_zone.reference_frame.reference_frame_axis_origin = [0, 0, 0.4]
@@ -225,7 +237,7 @@ for cell_zone in fluid_mrf_cell_zones:
     fluid_cell_zone.reference_frame.mrf_omega.value = agitation_speed
 
 stationary_cell_zones = [zone for zone in fluid_cell_zones if "mrf" not in zone]
-stationary_cell_zones = solver.settings.setup.cell_zone_conditions.fluid[
+stationary_cell_zones = solver_session.settings.setup.cell_zone_conditions.fluid[
     stationary_cell_zones[0]
 ]
 stationary_cell_zones.general.material = "water-liquid"
@@ -235,7 +247,7 @@ wall_shaft = [wall for wall in all_walls if "shaft" in wall]
 
 for wall in wall_shaft:
     print(wall)
-    wall_boundary = solver.settings.setup.boundary_conditions.wall[wall]
+    wall_boundary = solver_session.settings.setup.boundary_conditions.wall[wall]
     wall_boundary.momentum.wall_motion = "Moving Wall"
     wall_boundary.momentum.relative = False
     wall_boundary.momentum.rotating = True
@@ -243,34 +255,36 @@ for wall in wall_shaft:
     wall_boundary.momentum.rotation_speed = agitation_speed
 
 
-liquid_level_bc = solver.settings.setup.boundary_conditions.wall["wall_liquid_level"]
+liquid_level_bc = solver_session.settings.setup.boundary_conditions.wall[
+    "wall_liquid_level"
+]
 liquid_level_bc.momentum.wall_motion = "Stationary Wall"
 liquid_level_bc.momentum.shear_condition = "Specified Shear"
 
 # Change the Zone type for internal walls to interior
-solver.setup.boundary_conditions.set_zone_type(
+solver_session.setup.boundary_conditions.set_zone_type(
     zone_list=["fluid_mrf_1-fluid_tank"], new_type="interior"
 )
 
 #############################################################################################################
 # Solution Methods and Controls
 # ===========================================================================================================
-solver.settings.solution.methods.p_v_coupling.flow_scheme = "SIMPLE"
-solver.settings.solution.methods.spatial_discretization.discretization_scheme[
+solver_session.settings.solution.methods.p_v_coupling.flow_scheme = "SIMPLE"
+solver_session.settings.solution.methods.spatial_discretization.discretization_scheme[
     "pressure"
 ] = "presto!"
-solver.settings.solution.controls.under_relaxation["pressure"] = 0.5
-solver.settings.solution.controls.under_relaxation["mom"] = 0.3
-solver.settings.solution.controls.under_relaxation["k"] = 0.6
-solver.settings.solution.controls.under_relaxation["omega"] = 0.6
-solver.settings.solution.controls.under_relaxation["turb-viscosity"] = 0.6
+solver_session.settings.solution.controls.under_relaxation["pressure"] = 0.5
+solver_session.settings.solution.controls.under_relaxation["mom"] = 0.3
+solver_session.settings.solution.controls.under_relaxation["k"] = 0.6
+solver_session.settings.solution.controls.under_relaxation["omega"] = 0.6
+solver_session.settings.solution.controls.under_relaxation["turb-viscosity"] = 0.6
 
 ##############################################################################################################
 #  Residuals Criteria & Initialization
 # ===========================================================================================================
 
 # Residuals criteria
-residuals_options = solver.settings.solution.monitor.residual
+residuals_options = solver_session.settings.solution.monitor.residual
 residuals_options.equations["continuity"].absolute_criteria = 0.0001
 residuals_options.equations["continuity"].monitor = True  # Enable continuity residuals
 residuals_options.equations["x-velocity"].absolute_criteria = 0.0001
@@ -281,7 +295,7 @@ residuals_options.equations["omega"].absolute_criteria = 0.0001
 
 
 # Initialize the solution
-initialization = solver.settings.solution.initialization
+initialization = solver_session.settings.solution.initialization
 initialization.reference_frame = "absolute"
 initialization.initialization_type = "standard"
 initialization.standard_initialize()
@@ -292,8 +306,8 @@ initialization.standard_initialize()
 # ===========================================================================================================
 
 # Create a report definition for the volume average velocity magnitude
-volume_avg_vmag_report_def = solver.settings.solution.report_definitions.volume.create(
-    "volume-avg-vmag"
+volume_avg_vmag_report_def = (
+    solver_session.settings.solution.report_definitions.volume.create("volume-avg-vmag")
 )
 volume_avg_vmag_report_def.report_type.allowed_values()  # output the allowed values for report type
 volume_avg_vmag_report_def.report_type = "volume-average"
@@ -301,19 +315,23 @@ volume_avg_vmag_report_def.field = "velocity-magnitude"
 volume_avg_vmag_report_def.cell_zones = fluid_cell_zones
 
 # Report plot
-volume_avg_vmag_report_plot = solver.settings.solution.monitor.report_plots.create(
-    "volume-avg-vmag-rplot"
+volume_avg_vmag_report_plot = (
+    solver_session.settings.solution.monitor.report_plots.create(
+        "volume-avg-vmag-rplot"
+    )
 )
 volume_avg_vmag_report_plot.report_defs = "volume-avg-vmag"
 # Report file
-volume_avg_vmag_report_file = solver.settings.solution.monitor.report_files.create(
-    "volume-avg-vmag-rfile"
+volume_avg_vmag_report_file = (
+    solver_session.settings.solution.monitor.report_files.create(
+        "volume-avg-vmag-rfile"
+    )
 )
 volume_avg_vmag_report_file.report_defs = "volume-avg-vmag"
 
 
 # Create a report definition for the torque on the impeller walls
-torque_report_def = solver.settings.solution.report_definitions.moment.create(
+torque_report_def = solver_session.settings.solution.report_definitions.moment.create(
     "torque_imp_walls"
 )
 torque_report_def.report_output_type.allowed_values()  # output the allowed values for report output type
@@ -322,12 +340,12 @@ filtered_walls = fnmatch.filter(all_walls, "wall_impeller*")
 torque_report_def.zones = filtered_walls
 
 # Report plot
-torque_report_plot = solver.settings.solution.monitor.report_plots.create(
+torque_report_plot = solver_session.settings.solution.monitor.report_plots.create(
     "torque_imp_walls_rplot"
 )
 torque_report_plot.report_defs = "torque_imp_walls"
 # Report file
-torque_report_file = solver.settings.solution.monitor.report_files.create(
+torque_report_file = solver_session.settings.solution.monitor.report_files.create(
     "torque_imp_walls_rfile"
 )
 torque_report_file.report_defs = "torque_imp_walls"
@@ -335,7 +353,7 @@ torque_report_file.report_defs = "torque_imp_walls"
 
 # Average and maximum dissipation rate report definitions
 average_dissipation_rate_report_def = (
-    solver.settings.solution.report_definitions.volume.create(
+    solver_session.settings.solution.report_definitions.volume.create(
         "average-dissipation-rate"
     )
 )
@@ -344,7 +362,7 @@ average_dissipation_rate_report_def.field = "turb-diss-rate"
 average_dissipation_rate_report_def.cell_zones = fluid_cell_zones
 
 maximum_dissipation_rate_report_def = (
-    solver.settings.solution.report_definitions.volume.create(
+    solver_session.settings.solution.report_definitions.volume.create(
         "maximum-dissipation-rate"
     )
 )
@@ -354,7 +372,9 @@ maximum_dissipation_rate_report_def.cell_zones = fluid_cell_zones
 
 # Average and maximum strain rate report definitions
 average_strain_rate_report_def = (
-    solver.settings.solution.report_definitions.volume.create("average-strain-rate")
+    solver_session.settings.solution.report_definitions.volume.create(
+        "average-strain-rate"
+    )
 )
 average_strain_rate_report_def.report_type = "volume-average"
 average_strain_rate_report_def.field = "strain-rate-mag"
@@ -362,7 +382,9 @@ average_strain_rate_report_def.cell_zones = fluid_cell_zones
 
 
 maximum_strain_rate_report_def = (
-    solver.settings.solution.report_definitions.volume.create("maximum-strain-rate")
+    solver_session.settings.solution.report_definitions.volume.create(
+        "maximum-strain-rate"
+    )
 )
 maximum_strain_rate_report_def.report_type = "volume-max"
 maximum_strain_rate_report_def.field = "strain-rate-mag"
@@ -373,11 +395,13 @@ maximum_strain_rate_report_def.cell_zones = fluid_cell_zones
 # ===========================================================================================================
 
 # Run the calculation
-run_calculation = solver.settings.solution.run_calculation
+run_calculation = solver_session.settings.solution.run_calculation
 run_calculation.iter_count = 500
 
 # Write the case file
-solver.settings.file.write(file_type="case", file_name="mixing_tank_final.cas.h5")
+solver_session.settings.file.write(
+    file_type="case", file_name="mixing_tank_final.cas.h5"
+)
 # Run the calculation
 run_calculation.calculate()
 
@@ -391,7 +415,7 @@ contour_view.front_faces_transparent = "disable"
 contour_view.view_name = "top"
 
 # Define the contour for velocity magnitude
-velocity_contour = solver.settings.results.graphics.contour.create(
+velocity_contour = solver_session.settings.results.graphics.contour.create(
     name="velocity-contour"
 )
 velocity_contour.field = "velocity-magnitude"
@@ -412,7 +436,9 @@ graphics.picture.save_picture(file_name="mixing_tank_velocity_contour.png")
 #############################################################################################################
 # Save the case file
 # ===========================================================================================================
-solver.settings.file.write(file_type="case-data", file_name="mixing_tank_final.cas.h5")
+solver_session.settings.file.write(
+    file_type="case-data", file_name="mixing_tank_final.cas.h5"
+)
 
 #############################################################################################################
 # Close the session

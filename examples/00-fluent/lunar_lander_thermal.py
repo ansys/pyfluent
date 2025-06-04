@@ -261,19 +261,19 @@ def get_surf_mean_temp(
 # Launch Fluent and print Fluent version
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver = pyfluent.launch_fluent(
+solver_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=12,
     mode="solver",
     cwd=pyfluent.EXAMPLES_PATH,
 )
-print(solver.get_fluent_version())
+print(solver_session.get_fluent_version())
 
 ###############################################################################
 # Load the mesh
 # ~~~~~~~~~~~~~
 
-solver.file.read_mesh(file_name=lander_mesh_file)
+solver_session.file.read_mesh(file_name=lander_mesh_file)
 
 ###############################################################################
 # Case Setup
@@ -288,10 +288,10 @@ solver.file.read_mesh(file_name=lander_mesh_file)
 # 1.
 
 # Set solution to transient
-solver.setup.general.solver.time = "unsteady-2nd-order"
+solver_session.setup.general.solver.time = "unsteady-2nd-order"
 
 # Set transient settings
-trans_controls = solver.solution.run_calculation.transient_controls
+trans_controls = solver_session.solution.run_calculation.transient_controls
 trans_controls.type = "Fixed"
 trans_controls.max_iter_per_time_step = 20
 trans_controls.time_step_count = 1
@@ -303,7 +303,7 @@ trans_controls.time_step_size = step_size
 # Enable the energy model. Since fluid flow is not simulated, we will set the
 # viscosity model to laminar.
 
-models = solver.setup.models
+models = solver_session.setup.models
 models.energy.enabled = True
 models.viscous.model = "laminar"
 
@@ -353,7 +353,7 @@ radiation_freq.time_step_interval = 1
 # --- Properties of vacuum ---
 # Thermal conductivity: 0
 
-vacuum = solver.setup.materials.solid.create("vacuum")
+vacuum = solver_session.setup.materials.solid.create("vacuum")
 vacuum.chemical_formula = ""
 vacuum.thermal_conductivity.value = 0
 vacuum.absorption_coefficient.value = 0
@@ -364,7 +364,7 @@ vacuum.refractive_index.value = 1
 # Specific heat capacity: 1050 [J kg^-1 K^-1]
 # Thermal conductivity: 9.22e-4*(1 + 1.48*(temperature/350 K)^3) [W m^-1 K^-1]
 
-fluff = solver.setup.materials.solid.create("fluff")
+fluff = solver_session.setup.materials.solid.create("fluff")
 fluff.chemical_formula = ""
 fluff.density.value = 1000
 fluff.specific_heat.value = 1050
@@ -378,7 +378,7 @@ fluff.thermal_conductivity.expression = (
 # Specific heat capacity: 1050 [J kg^-1 K^-1]
 # Thermal conductivity: 9.30e-4*(1 + 0.73*(temperature/350 K)^3) [W m^-1 K^-1]
 
-regolith = solver.setup.materials.solid.create("regolith")
+regolith = solver_session.setup.materials.solid.create("regolith")
 regolith.chemical_formula = ""
 regolith.density.value = 2000
 regolith.specific_heat.value = 1050
@@ -395,7 +395,7 @@ regolith.thermal_conductivity.expression = (
 # lander. This cell zone must be set to be a solid so that the fluid equations
 # are not solved there, then it must be assigned to the vacuum material.
 
-cellzones = solver.setup.cell_zone_conditions
+cellzones = solver_session.setup.cell_zone_conditions
 cellzones.set_zone_type(
     zone_list=["geom-2_domain"],
     new_type="solid",
@@ -416,7 +416,7 @@ cellzones.solid["geom-2_domain"].material = "vacuum"
 # Surface absorptivity: 0.87
 # Surface emissivity: 0.97
 
-regolith_bc = solver.setup.boundary_conditions.wall["regolith"]
+regolith_bc = solver_session.setup.boundary_conditions.wall["regolith"]
 
 regolith_bc.thermal.q.value = 0.031
 regolith_bc.thermal.planar_conduction = True
@@ -459,7 +459,7 @@ regolith_bc.radiation.band_in_emiss = {
 # Absorptivity: 1
 # Solar flux: 1414 [W m^-2]
 
-space_bc = solver.setup.boundary_conditions.wall["space"]
+space_bc = solver_session.setup.boundary_conditions.wall["space"]
 
 space_bc.thermal.thermal_bc = "Temperature"
 space_bc.thermal.t.value = 3
@@ -487,7 +487,7 @@ space_bc.radiation.band_in_emiss = {
 # Absorptivity: 0.05
 # Emissivity: 0.05
 
-sc_mli_bc = solver.setup.boundary_conditions.wall["sc-mli"]
+sc_mli_bc = solver_session.setup.boundary_conditions.wall["sc-mli"]
 
 sc_mli_bc.thermal.planar_conduction = True
 sc_mli_bc.thermal.shell_conduction = [
@@ -514,7 +514,7 @@ sc_mli_bc.radiation.band_in_emiss = {
 # Absorptivity: 0.17
 # Emissivity: 0.09 below 273 K, 0.70 otherwise
 
-sc_rad_bc = solver.setup.boundary_conditions.wall["sc-radiator"]
+sc_rad_bc = solver_session.setup.boundary_conditions.wall["sc-radiator"]
 
 sc_rad_bc.thermal.planar_conduction = True
 sc_rad_bc.thermal.shell_conduction = [
@@ -535,7 +535,7 @@ sc_rad_bc.radiation.band_in_emiss = {
 # definitions on them in the next step. The entire domain will be initialized
 # to a temperature of 230 K, or -43 °C.
 
-sim_init = solver.solution.initialization
+sim_init = solver_session.solution.initialization
 sim_init.defaults["temperature"] = 230
 sim_init.initialize()
 
@@ -544,7 +544,7 @@ sim_init.initialize()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Create reports for the spacecraft's minimum, mean, and maximum temperatures.
 
-surf_report_defs = solver.solution.report_definitions.surface
+surf_report_defs = solver_session.solution.report_definitions.surface
 
 sc_surfs = ["sc-radiator", "sc-mli"]
 
@@ -570,7 +570,7 @@ surf_report_defs["sc-max-temp"] = {
 # Create reports for the mean temperatures of each regolith layer. We will
 # store the report names for use later.
 
-surf_report_defs = solver.solution.report_definitions.surface
+surf_report_defs = solver_session.solution.report_definitions.surface
 
 # Loop over all regolith reports to set common properties
 regolith_report_names = []
@@ -593,7 +593,7 @@ surf_report_defs["regolith-layer-5-temp"].surface_names = ["regolith-4:5"]
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Create temperature report files for post-processing.
 
-surf_report_files = solver.solution.monitor.report_files
+surf_report_files = solver_session.solution.monitor.report_files
 
 # Spacecraft temperatures
 surf_report_files["sc-temps-rfile"] = {
@@ -610,7 +610,7 @@ surf_report_files["regolith-temps-rfile"] = {
 # ~~~~~~~~
 # Set the case to save only the data file at each timestep for post-processing.
 
-autosave = solver.file.auto_save
+autosave = solver_session.file.auto_save
 
 autosave.case_frequency = "if-mesh-is-modified"
 autosave.data_frequency = 1
@@ -623,7 +623,7 @@ autosave.append_file_name_with.file_suffix_type = "time-step"
 # Turn off the convergence criteria pertaining to fluid flow as there is no
 # fluid flow in this simulation. Keep only the energy convergence criterion.
 
-residuals = solver.solution.monitor.residual.equations
+residuals = solver_session.solution.monitor.residual.equations
 
 for criterion in ["continuity", "x-velocity", "y-velocity", "z-velocity"]:
     residuals[criterion].check_convergence = False
@@ -634,8 +634,8 @@ for criterion in ["continuity", "x-velocity", "y-velocity", "z-velocity"]:
 # ~~~~~~~~~~~~~~~
 # Write the case file. Enable overwrite.
 
-solver.file.batch_options.confirm_overwrite = True
-solver.file.write(
+solver_session.file.batch_options.confirm_overwrite = True
+solver_session.file.write(
     file_name="lunar_lander_thermal.cas.h5",
     file_type="case",
 )
@@ -653,7 +653,7 @@ solver.file.write(
 
 for i in range(n_steps):
     # Get current simulation time
-    t = solver.rp_vars("flow-time")
+    t = solver_session.rp_vars("flow-time")
 
     # Calculate sun vector
     sun_alt, sun_azm = calc_sun_vecs_for_moon(
@@ -669,7 +669,9 @@ for i in range(n_steps):
     )
 
     # Set beam direction
-    solver.setup.boundary_conditions.wall["space"].radiation.reference_direction = [
+    solver_session.setup.boundary_conditions.wall[
+        "space"
+    ].radiation.reference_direction = [
         beam_x,
         beam_y,
         beam_z,
@@ -682,7 +684,7 @@ for i in range(n_steps):
     )
 
     # Simulate closing louvers below 273 K by changing emissivity
-    rad_emiss = solver.setup.boundary_conditions.wall[
+    rad_emiss = solver_session.setup.boundary_conditions.wall[
         "sc-radiator"
     ].radiation.band_in_emiss["thermal-ir"]
     if rad_mean_temp < 273:
@@ -691,14 +693,14 @@ for i in range(n_steps):
         rad_emiss.value = 0.70
 
     # Run simulation for 1 timestep
-    solver.solution.run_calculation.calculate()
+    solver_session.solution.run_calculation.calculate()
 
 ###############################################################################
 # Close Fluent
 # ~~~~~~~~~~~~
 # Shut down the solver.
 
-solver.exit()
+solver_session.exit()
 
 ###############################################################################
 # Post-process
