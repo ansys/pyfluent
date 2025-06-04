@@ -438,3 +438,18 @@ def test_match_whole_word_with_api_object_2():
         "<meshing_session>.preferences.Appearance.ApplicationFontSize (Parameter)"
         in results
     )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_semantic_search_read():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.PRINT_SEARCH_RESULTS = False
+    results = pyfluent.search("读", language="cmn")
+    for result in results:
+        assert "thread" not in result
+    assert (
+        "<solver_session>.setup.models.battery.ecm_model_settings.table_c3_c.read_table (Command)"
+        in results
+    )

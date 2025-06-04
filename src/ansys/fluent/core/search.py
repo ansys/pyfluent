@@ -195,9 +195,13 @@ def _print_search_results(
                 target = api_object[start_index:]
 
             first_token = target.split()[0]
-            if any(query in first_token for query in queries):
-                results.append(api_object)
-
+            substrings = first_token.split(".")
+            for query in queries:
+                if query in first_token and any(
+                    substring.startswith(query) for substring in substrings
+                ):
+                    results.append(api_object)
+        results = list(set(results))
         return results
 
     settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
@@ -237,13 +241,13 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
 
 
 def _search_wildcard(
-    search_string: str, api_tree_data: dict, api_path: str | None = None
+    search_string: str | list[str], api_tree_data: dict, api_path: str | None = None
 ):
     """Perform wildcard search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
-    search_string: str
+    search_string: str or list[str]
         Word to search for. Semantic search is default.
     api_tree_data: dict
         All API object data.
@@ -255,10 +259,17 @@ def _search_wildcard(
     -------
         List of search string matches.
     """
+    queries = []
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
-    queries = _get_wildcard_matches_for_word_from_names(
-        search_string, names=api_tree_data["all_api_object_names"]
-    )
+
+    if isinstance(search_string, str):
+        search_string = [search_string]
+    for word in search_string:
+        queries.extend(
+            _get_wildcard_matches_for_word_from_names(
+                word, names=api_tree_data["all_api_object_names"]
+            )
+        )
     if queries:
         return _print_search_results(
             queries, api_tree_data=api_tree_data, api_path=api_path
@@ -481,11 +492,11 @@ def _search_semantic(
         if search_string_synsets & api_object_synsets:
             similar_keys.add(api_object_name + "*")
     if similar_keys:
+        sorted_similar_keys = sorted(similar_keys)
         results = []
-        for key in similar_keys:
-            result = _search_wildcard(key, api_tree_data, api_path=api_path)
-            if result:
-                results.extend(result)
+        result = _search_wildcard(sorted_similar_keys, api_tree_data, api_path=api_path)
+        if result:
+            results.extend(result)
         if results:
             return results
     else:
@@ -580,3 +591,7 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
+
+
+if __name__ == "__main__":
+    search("read")
