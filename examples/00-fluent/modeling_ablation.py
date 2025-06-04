@@ -77,7 +77,7 @@ Modeling Ablation
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization.pyvista import Graphics
+from ansys.fluent.visualization import Contour, GraphicsWindow, config
 
 ####################################################################################
 # Download example file
@@ -91,9 +91,7 @@ import_filename = examples.download_file(
 # Fluent Solution Setup
 # ==================================================================================
 
-from ansys.fluent.visualization import set_config  # noqa: E402
-
-set_config(blocking=True, set_view_on_display="isometric")
+config.interactive = False
 
 ####################################################################################
 # Launch Fluent session with solver mode and print Fluent version
@@ -417,11 +415,12 @@ solver.results.graphics.contour.display(object_name="contour_mach")
 # ===============================================
 # Following graphics is displayed in the a new window/notebook
 
-graphics_session1 = Graphics(solver)
-contour1 = graphics_session1.Contours["contour-1"]
-contour1.field = "pressure"
-contour1.surfaces_list = ["mid_plane"]
-contour1.display()
+
+contour1 = Contour(solver=solver, field="pressure", surfaces=["mid_plane"])
+
+window = GraphicsWindow()
+window.add_graphics(contour1)
+window.show()
 # %%
 # .. image:: ../../_static/ablation-pressure.png
 #    :align: center
@@ -434,7 +433,9 @@ contour1.field = "mach-number"
 contour1.range.option = "auto-range-off"
 contour1.range.auto_range_off.minimum = 0.5
 contour1.range.auto_range_off.maximum = 3.0
-contour1.display()
+window = GraphicsWindow()
+window.add_graphics(contour1)
+window.show()
 
 # %%
 # .. image:: ../../_static/ablation-mach-number.png
