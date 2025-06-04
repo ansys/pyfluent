@@ -1090,15 +1090,6 @@ class FileSession:
 
         self.monitors = None
         self.session_id = 1
-
-        class Fields:
-            """Container for field and solution variables."""
-
-            def __init__(self, _session):
-                """Initialize Fields."""
-                self.field_info = FileFieldInfo(_session)
-                self.field_data = FileFieldData(_session, self.field_info)
-
         self.fields = Fields(self)
 
     def read_case(self, case_file_name):
@@ -1154,3 +1145,12 @@ def _get_surface_ids(
         else:
             surface_ids.append(surf)
     return surface_ids
+
+
+class Fields:
+    """Container for field and solution variables."""
+
+    def __init__(self, _session: FileSession):
+        """Initialize Fields."""
+        self.field_info = FileFieldInfo(_session)
+        self.field_data = FileFieldData(_session, self.field_info)

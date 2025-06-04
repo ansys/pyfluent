@@ -221,36 +221,7 @@ class BaseSession:
             FieldDataService, self._error_state
         )
 
-        class Fields:
-            """Container for field and solution variables."""
-
-            def __init__(self, _session):
-                """Initialize Fields."""
-                self._is_solution_data_valid = (
-                    _session._app_utilities.is_solution_data_available
-                )
-                self.field_info = service_creator("field_info").create(
-                    _session._field_data_service,
-                    self._is_solution_data_valid,
-                )
-                self.field_data = service_creator("field_data").create(
-                    _session._field_data_service,
-                    self.field_info,
-                    self._is_solution_data_valid,
-                    _session.scheme,
-                    get_zones_info,
-                )
-                self.field_data_streaming = FieldDataStreaming(
-                    _session._fluent_connection._id, _session._field_data_service
-                )
-                self.field_data_old = service_creator("field_data_old").create(
-                    _session._field_data_service,
-                    self.field_info,
-                    self._is_solution_data_valid,
-                    _session.scheme,
-                )
-
-        self.fields = Fields(self)
+        self.fields = Fields(self, get_zones_info)
 
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
@@ -482,3 +453,37 @@ class BaseSession:
             "stop_journal",
         }
         return sorted(dir_list)
+
+
+class Fields:
+    """Container for field and solution variables."""
+
+    def __init__(
+        self,
+        _session: BaseSession,
+        get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+    ):
+        """Initialize Fields."""
+        self._is_solution_data_valid = (
+            _session._app_utilities.is_solution_data_available
+        )
+        self.field_info = service_creator("field_info").create(
+            _session._field_data_service,
+            self._is_solution_data_valid,
+        )
+        self.field_data = service_creator("field_data").create(
+            _session._field_data_service,
+            self.field_info,
+            self._is_solution_data_valid,
+            _session.scheme,
+            get_zones_info,
+        )
+        self.field_data_streaming = FieldDataStreaming(
+            _session._fluent_connection._id, _session._field_data_service
+        )
+        self.field_data_old = service_creator("field_data_old").create(
+            _session._field_data_service,
+            self.field_info,
+            self._is_solution_data_valid,
+            _session.scheme,
+        )
