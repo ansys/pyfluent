@@ -470,6 +470,31 @@ def _download_nltk_data():
         )
 
 
+def _are_words_semantically_close(query, api_name, language="eng"):
+    from nltk.corpus import wordnet as wn
+
+    similarity_threshold = 3.3 if language == "eng" else 1.0
+    max_similarity = 0.0
+
+    synsets1 = wn.synsets(query, lang=language)
+    synsets2 = wn.synsets(api_name, lang="eng")
+
+    for syn1 in synsets1:
+        for syn2 in synsets2:
+            if syn1.pos() == syn2.pos():
+                similarity = (
+                    syn1.lch_similarity(syn2)
+                    if language == "eng"
+                    else syn1.wup_similarity(syn2)
+                )
+                if similarity is not None:
+                    max_similarity = max(max_similarity, similarity)
+                    if similarity >= similarity_threshold:
+                        return True
+
+    return False
+
+
 def _search_semantic(
     search_string: str, language: str, api_tree_data: dict, api_path: str | None = None
 ):
@@ -491,19 +516,13 @@ def _search_semantic(
     queries: list
         List of search string matches.
     """
-    from nltk.corpus import wordnet as wn
-
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    search_string_synsets = set(wn.synsets(search_string, lang=language))
-    for api_object_name, api_object_synset_names in list(
-        api_tree_data["all_api_object_name_synsets"].items()
-    ):
-        api_object_synsets = {
-            wn.synset(api_object_synset_name)
-            for api_object_synset_name in api_object_synset_names
-        }
-        if search_string_synsets & api_object_synsets:
+    api_object_names = api_tree_data["all_api_object_names"]
+    for api_object_name in api_object_names:
+        if _are_words_semantically_close(
+            search_string, api_object_name, language=language
+        ):
             similar_keys.add(api_object_name + "*")
     if similar_keys:
         sorted_similar_keys = sorted(similar_keys)
@@ -605,9 +624,3 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
-
-
-if __name__ == "__main__":
-    search("read")
-    # search(search_string="face_zones", api_path="<meshing_session>")
-    # search(search_string="faces_zones", api_path="<solver_session>")

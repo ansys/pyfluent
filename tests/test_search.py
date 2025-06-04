@@ -109,6 +109,7 @@ def test_get_wildcard_matches_for_word_from_names():
     assert "iterations" in wildcard_matches
     assert "iterate" in wildcard_matches
     assert "iterate_steady_2way_fsi" in wildcard_matches
+    assert "limiter" not in wildcard_matches
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -432,6 +433,21 @@ def test_match_whole_word_with_api_object_2():
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
 def test_semantic_search_read():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.PRINT_SEARCH_RESULTS = False
+    results = pyfluent.search("读", language="cmn")
+    for result in results:
+        assert "thread" not in result
+    assert (
+        "<solver_session>.setup.models.battery.ecm_model_settings.table_c3_c.read_table (Command)"
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_semantic_search_font():
     import ansys.fluent.core as pyfluent
 
     pyfluent.PRINT_SEARCH_RESULTS = False
