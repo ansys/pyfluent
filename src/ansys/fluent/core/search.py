@@ -183,7 +183,19 @@ def _print_search_results(
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
     def _get_results(api_data, queries, api_path=None):
-        results = []
+        def has_query_in_substrings(query, substrings):
+            """Check if the query matches the substring conditions."""
+            return any(substring.startswith(query) for substring in substrings)
+
+        def has_query_in_substring_with_underscore(query, substrings):
+            """Check if the query appears in a substring with an underscore."""
+            return any(
+                substring.find("_") != -1
+                and (f"_{query}" in substring or f"_{query}_" in substring)
+                for substring in substrings
+            )
+
+        results = set()
 
         for api_object in api_data:
             target = api_object
@@ -196,21 +208,15 @@ def _print_search_results(
 
             first_token = target.split()[0]
             substrings = first_token.split(".")
+
             for query in queries:
-                if query in first_token and any(
-                    substring.startswith(query) for substring in substrings
+                if query in first_token and (
+                    has_query_in_substrings(query, substrings)
+                    or has_query_in_substring_with_underscore(query, substrings)
                 ):
-                    results.append(api_object)
-                if query in first_token and any(
-                    query
-                    for substring in substrings
-                    if substring.find("_") != -1
-                    and f"_{query}" in substring
-                    or f"_{query}_" in substring
-                ):
-                    results.append(api_object)
-        results = list(set(results))
-        return results
+                    results.add(api_object)
+
+        return list(results)
 
     settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
     tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
@@ -602,6 +608,6 @@ def search(
 
 
 if __name__ == "__main__":
-    # search("read")
-    search(search_string="face_zones", api_path="<meshing_session>")
+    search("read")
+    # search(search_string="face_zones", api_path="<meshing_session>")
     # search(search_string="faces_zones", api_path="<solver_session>")
