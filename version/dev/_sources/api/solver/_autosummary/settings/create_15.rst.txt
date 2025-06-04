@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_15:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_15
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================================================   ===========================================================
+
+Argument                                                                                                                     Summary
+
+======================================================================   ===========================================================
+:ref:`write_data <write_data_3>`                                                                 Write Data option for Design Point.
+
+:ref:`capture_simulation_report_data <capture_simulation_report_data>`       Capture Simulation Report Data option for Design Point.
+
+======================================================================   ===========================================================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

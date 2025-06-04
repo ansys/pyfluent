@@ -1,0 +1,21 @@
+:orphan:
+
+.. _contact_udf:
+
+contact_udf
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.contact_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`contact_detection <contact_detection>`       'contact_detection' child.
+
+============================================   ==============================
+

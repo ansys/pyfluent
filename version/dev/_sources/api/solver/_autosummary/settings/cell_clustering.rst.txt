@@ -1,0 +1,46 @@
+:orphan:
+
+.. _cell_clustering:
+
+cell_clustering
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cell_clustering
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ====================================
+
+Attribute                                                               Summary
+
+========================================   ====================================
+:ref:`enabled <enabled_29>`                             Enable cell clustering.
+
+:ref:`clustering_type <clustering_type>`                       Clustering type.
+
+:ref:`nx <nx>`                                 Number of blocks in x direction.
+
+:ref:`ny <ny>`                                 Number of blocks in y direction.
+
+:ref:`nz <nz>`                                 Number of blocks in z direction.
+
+:ref:`cluster_number <cluster_number>`                          Cluster number.
+
+:ref:`target_variable <target_variable>`                  Target variable name.
+
+:ref:`udf_name <udf_name_1>`                          Cell clustering udf name.
+
+========================================   ====================================
+
+.. rubric:: Included in:
+
+========================================   =====================
+
+Parent                                                   Summary
+
+========================================   =====================
+:ref:`solution_option <solution_option>`       Solution options.
+
+========================================   =====================
+

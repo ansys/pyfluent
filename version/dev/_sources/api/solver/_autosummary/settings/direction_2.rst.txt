@@ -1,0 +1,36 @@
+:orphan:
+
+.. _direction_2:
+
+direction
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.direction_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===========
+
+Attribute                    Summary
+
+======================   ===========
+:ref:`x_axis <x_axis>`       X-Axis.
+
+:ref:`y_axis <y_axis>`       Y-Axis.
+
+:ref:`z_axis <z_axis>`       Z-Axis.
+
+======================   ===========
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

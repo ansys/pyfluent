@@ -1,0 +1,34 @@
+:orphan:
+
+.. _sf_piecewise_linear:
+
+sf_piecewise_linear
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sf_piecewise_linear
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================================================
+
+Attribute                                                                         Summary
+
+==================================   ====================================================
+:ref:`function_of <function_of_1>`            What variable this object is a function of.
+
+:ref:`data_points <data_points>`         Ranges and values for piecewise-linear property.
+
+==================================   ====================================================
+
+.. rubric:: Included in:
+
+================================================================   =============================================
+
+Parent                                                                                                   Summary
+
+================================================================   =============================================
+:ref:`surface_tension_child_child <surface_tension_child_child>`       'child_object_type' of child_object_type.
+
+================================================================   =============================================
+

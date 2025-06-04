@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inlets_2:
+
+inlets
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.inlets_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`definition_1_child <definition_1_child>`       'child_object_type' of definition.
+
+==============================================   ======================================
+

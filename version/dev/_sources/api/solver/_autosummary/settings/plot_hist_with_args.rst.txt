@@ -1,0 +1,40 @@
+:orphan:
+
+.. _plot_hist_with_args:
+
+plot_hist_with_args
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.plot_hist_with_args
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ==========================================================================================
+
+Argument                                                                                                                                Summary
+
+==================================================   ==========================================================================================
+:ref:`sample <sample>`                                                                       Pick a loaded sample to then pick a variable from.
+
+:ref:`variable_to_sample <variable_to_sample>`                                      Pick a variable to calculate a distribution histogram from.
+
+:ref:`weighting_variable <weighting_variable>`                         Pick a weighting variable for the distribution histogram to be computed.
+
+:ref:`correlation_variable <correlation_variable>`       Pick a second variable to calculate a histogram of its correlation with the first one.
+
+:ref:`file_name <file_name_22>`                                                  A name for a file to write the distribution histogram data to.
+
+==================================================   ==========================================================================================
+
+.. rubric:: Included in:
+
+==================================================   =====================================================================================================
+
+Parent                                                                                                                                             Summary
+
+==================================================   =====================================================================================================
+:ref:`plot_write_histogram <plot_write_histogram>`       Commands to plot (or write a data file from) a distribution histogram based on a DPM sample file.
+
+==================================================   =====================================================================================================
+

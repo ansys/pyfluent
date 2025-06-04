@@ -1,0 +1,65 @@
+:orphan:
+
+.. _user_defined_1:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_defined_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ===================================================================================================================================
+
+Attribute                                                                                                                                                                                              Summary
+
+========================================================================   ===================================================================================================================================
+:ref:`auto_compile_compiled_functions <auto_compile_compiled_functions>`       For this Fluent session, specify whether to allow auto-compilation of compiled UDF when a case file (or settings file) is read.
+
+:ref:`function_hooks <function_hooks>`                                                                                                                                         Hook up user-defined functions.
+
+:ref:`memory <memory>`                                                                                                                                                           Allocate user-defined memory.
+
+:ref:`scalars <scalars>`                                                                                                                                                          Define user-defined scalars.
+
+========================================================================   ===================================================================================================================================
+
+.. rubric:: Methods
+
+==========================================================   ============================================
+
+Method                                                                                            Summary
+
+==========================================================   ============================================
+:ref:`compiled_udf <compiled_udf>`                                        Compile user-defined functions.
+
+:ref:`load <load>`                                                                      Load UDF library.
+
+:ref:`unload <unload>`                                                                Unload UDF library.
+
+:ref:`interpreted_functions <interpreted_functions>`             Load interpreted user-defined functions.
+
+:ref:`execute_on_demand <execute_on_demand>`                                      Execute UDFs on demand.
+
+:ref:`oned_coupling <oned_coupling>`                                                     Load 1D library.
+
+:ref:`enable_udf_on_gpu <enable_udf_on_gpu>`                            Compile UDFs with OpenCL support.
+
+:ref:`fan_model <fan_model>`                                            Configure user-defined fan model.
+
+:ref:`customized_addon_library <customized_addon_library>`              Compile customized addon module?.
+
+==========================================================   ============================================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`setup <setup>`       'setup' child.
+
+====================   ==================
+

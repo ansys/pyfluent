@@ -1,0 +1,59 @@
+:orphan:
+
+.. _solar_load:
+
+solar_load
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solar_load
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ================================================================================
+
+Attribute                                                                                                                                           Summary
+
+========================================================================   ================================================================================
+:ref:`solar_model <solar_model>`                                                                                                      Model for solar load.
+
+:ref:`sun_direction_vector_definition <sun_direction_vector_definition>`                                                     Sun direction vector settings.
+
+:ref:`illumination_parameters <illumination_parameters>`                                                                   Settings for solar illumination.
+
+:ref:`quad_tree_parameters <quad_tree_parameters>`                                                                      Maximum Quad-Tree Refinement level.
+
+:ref:`ground_reflectivity <ground_reflectivity>`                                                                                 Ground Reflectivity value.
+
+:ref:`scattering_fraction <scattering_fraction>`                                                                                       Scattering fraction.
+
+:ref:`solar_on_adjacent_fluid <solar_on_adjacent_fluid>`                                                        Enable solar load for adjacent fluid cells.
+
+:ref:`solar_load_frequency <solar_load_frequency>`                                                                           Solar model update parameters.
+
+:ref:`apply_full_solar_irradiation <apply_full_solar_irradiation>`             Enable/Disable application of solar irradiation to first band with DO model.
+
+========================================================================   ================================================================================
+
+.. rubric:: Methods
+
+========================================   ===================================
+
+Method                                                                 Summary
+
+========================================   ===================================
+:ref:`solar_on_demand <solar_on_demand>`       Calculate solar load on demand.
+
+========================================   ===================================
+
+.. rubric:: Included in:
+
+============================   ======================================
+
+Parent                                                        Summary
+
+============================   ======================================
+:ref:`radiation <radiation>`       Model for radiative heat-transfer.
+
+============================   ======================================
+

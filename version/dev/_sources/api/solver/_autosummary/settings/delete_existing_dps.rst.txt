@@ -1,0 +1,21 @@
+:orphan:
+
+.. _delete_existing_dps:
+
+delete_existing_dps
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.delete_existing_dps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================================
+
+Parent                                                                     Summary
+
+==============================   =================================================
+:ref:`create_doe <create_doe>`       Create Design of Experiments using optiSLang.
+
+==============================   =================================================
+

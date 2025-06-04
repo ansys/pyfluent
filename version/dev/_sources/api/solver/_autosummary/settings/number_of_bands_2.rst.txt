@@ -1,0 +1,23 @@
+:orphan:
+
+.. _number_of_bands_2:
+
+number_of_bands
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.number_of_bands_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================================================================
+
+Parent                                                                                                                Summary
+
+============================================   ==============================================================================
+:ref:`circum_avg_axial <circum_avg_axial>`         Compute iso-axial band surfaces and plot data vs axial coordinate on them.
+
+:ref:`circum_avg_radial <circum_avg_radial>`                Compute iso-radial band surfaces and plot data vs radius on them.
+
+============================================   ==============================================================================
+

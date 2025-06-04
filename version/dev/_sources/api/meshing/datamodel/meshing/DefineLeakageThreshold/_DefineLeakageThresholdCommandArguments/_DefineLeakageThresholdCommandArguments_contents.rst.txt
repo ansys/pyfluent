@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_DefineLeakageThreshold__DefineLeakageThresholdCommandArguments:
+
+_DefineLeakageThresholdCommandArguments
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.DefineLeakageThreshold._DefineLeakageThresholdCommandArguments
+   :members: _AddChild, _DeadRegionsList, _DeadRegionsSize, _FlipDirection, _LeakageName, _PlaneClippingValue, _PlaneDirection, _RegionSelectionSingle, _SelectionType
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateLocalRefinementRegions__CreateLocalRefinementRegionsCommandArguments__CylinderObject:
+
+_CylinderObject
+===============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateLocalRefinementRegions._CreateLocalRefinementRegionsCommandArguments._CylinderObject
+   :members: _HeightBackInc, _HeightFrontInc, _HeightNode, _Node1, _Node2, _Node3, _Radius1, _Radius2, _X1, _X2, _X_Offset, _Y1, _Y2, _Y_Offset, _Z1, _Z2, _Z_Offset
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

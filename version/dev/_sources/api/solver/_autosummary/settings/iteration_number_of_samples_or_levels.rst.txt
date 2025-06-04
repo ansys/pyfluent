@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iteration_number_of_samples_or_levels:
+
+iteration_number_of_samples_or_levels
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.iteration_number_of_samples_or_levels
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================
+
+Parent                                                          Summary
+
+==============================================   ======================
+:ref:`algorithm_settings <algorithm_settings>`       Optimize Settings.
+
+==============================================   ======================
+

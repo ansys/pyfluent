@@ -1,0 +1,21 @@
+:orphan:
+
+.. _plane_1:
+
+plane
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.plane_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==========================
+
+Parent                                                  Summary
+
+==================================   ==========================
+:ref:`custom_plane <custom_plane>`       Custom symmetry plane.
+
+==================================   ==========================
+

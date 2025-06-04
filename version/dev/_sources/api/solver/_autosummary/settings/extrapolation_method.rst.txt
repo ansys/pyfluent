@@ -1,0 +1,21 @@
+:orphan:
+
+.. _extrapolation_method:
+
+extrapolation_method
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.extrapolation_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================================
+
+Parent                                                                         Summary
+
+==================================   =================================================
+:ref:`parameters_7 <parameters_7>`       Flexible numerics controls parameters object.
+
+==================================   =================================================
+

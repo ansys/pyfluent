@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_48:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enabled_48
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===========================================
+
+Parent                                                         Summary
+
+========================   ===========================================
+:ref:`generic <generic>`       Settings for the generic erosion model.
+
+========================   ===========================================
+
