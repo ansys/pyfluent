@@ -56,9 +56,7 @@ import pyvista as pv
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization.matplotlib import Plots
-from ansys.fluent.visualization.pyvista import Graphics, pyvista_windows_manager
-from ansys.fluent.visualization.pyvista.pyvista_windows_manager import PyVistaWindow
+from ansys.fluent.visualization import Contour, GraphicsWindow, Mesh, Vector, XYPlot
 
 geom_filename = examples.download_file(
     "cht_fin_htc_new.scdoc",
@@ -464,14 +462,13 @@ solver.mesh.check()
 # Create a few boundary list for display and post-processing
 # ==========================================================
 
-graphics_session1 = Graphics(solver)
-mesh1 = graphics_session1.Meshes["mesh-1"]
+mesh1 = Mesh(solver=solver)
 
 wall_list = []
 periodic_list = []
 symmetry_list = []
 
-for item in mesh1.surfaces_list.allowed_values:
+for item in mesh1.surfaces.allowed_values:
     if len(item.split("wall")) > 1:
         wall_list.append(item)
     if len(item.split("periodic")) > 1:
@@ -484,9 +481,12 @@ for item in mesh1.surfaces_list.allowed_values:
 # ============
 
 mesh1.show_edges = True
-mesh1.surfaces_list = wall_list
-mesh1.display("window-1")
-p = pyvista_windows_manager.get_plotter("window-1")
+mesh1.surfaces = wall_list
+
+window1 = GraphicsWindow()
+window1.add_graphics(mesh1)
+window1.show()
+p = window1.renderer
 p.view_isometric()
 p.add_axes()
 p.add_floor(offset=1, show_edges=False)
@@ -780,23 +780,23 @@ plt.show()
 # Contour Plot
 # ============
 
-graphics_session1 = Graphics(solver)
-contour1 = graphics_session1.Contours["contour-1"]
-contour1.field = "temperature"
-contour1.surfaces_list = wall_list
-contour1.display("window-2")
+contour1 = Contour(solver=solver, field="temperature", surfaces=wall_list)
+window2 = GraphicsWindow()
+window2.add_graphics(contour1)
+window2.show()
 
-p = pyvista_windows_manager.get_plotter("window-2")
+p = window2.renderer
 p.view_isometric()
 p.add_axes()
 p.add_floor(offset=1, show_edges=False)
-p.add_title(
-    "Contour of Temperature on Walls", font="courier", color="grey", font_size=10
-)
+# known vtk issue in rendering the below
+# p.add_text(
+#     "Contour of Temperature on Walls", font="courier", color="grey", font_size=10
+# )
 light = pv.Light(light_type="headlight")
 p.add_light(light)
 
-p.remove_scalar_bar()
+p.scalar_bar.SetVisibility(False)
 p.add_scalar_bar(
     "Temperature [K]",
     interactive=True,
@@ -820,22 +820,21 @@ solver.results.surfaces.iso_surface["x=0.012826"] = {"iso_values": [0.012826]}
 # Vecotor Plot
 # ============
 
-graphics_session1 = Graphics(solver)
-vector1 = graphics_session1.Vectors["vector-1"]
-vector1.surfaces_list = ["x=0.012826"]
-vector1.scale = 2.0
-vector1.skip = 5
-vector1.display("window-3")
+vector1 = Vector(solver=solver, surfaces=["x=0.012826"], scale=2.0, skip=5)
+window3 = GraphicsWindow()
+window3.add_graphics(vector1)
+window3.show()
 
-p = pyvista_windows_manager.get_plotter("window-3")
+p = window3.renderer
 p.view_isometric()
 p.add_axes()
+# known vtk issues in rendering the below
 # p.add_floor( offset=1, show_edges=False)
-p.add_title("Vector Plot", font="courier", color="grey", font_size=10)
+# p.add_text("Vector Plot", font="courier", color="grey", font_size=10)
 light = pv.Light(light_type="headlight")
 p.add_light(light)
 
-p.remove_scalar_bar()
+p.scalar_bar.SetVisibility(False)
 p.add_scalar_bar(
     "Velocity [m/s]",
     interactive=True,
@@ -847,26 +846,25 @@ p.add_scalar_bar(
     fmt="%10.1f",
 )
 
-o = PyVistaWindow(None, None)
-o._fetch_mesh(mesh1)
-o._display_mesh(mesh1, p)
-
 #############################################################################
 # XY Plot of Pressure
 # ===================
 
-plots_session1 = Plots(solver)
-p1 = plots_session1.XYPlots["p1"]
-p1.surfaces_list = ["x=0.012826"]
-p1.y_axis_function = "pressure"
-p1.x_axis_function = "direction-vector"
-p1.direction_vector.set_state([0, 1, 0])
+p1 = XYPlot(
+    solver=solver,
+    surfaces=["x=0.012826"],
+    y_axis_function="pressure",
+    x_axis_function="direction-vector",
+    direction_vector=[0, 1, 0],
+)
 
 #############################################################################
 # Show graph
 # ==========
 
-p1.plot("p1")
+plot_window = GraphicsWindow()
+plot_window.add_plot(p1)
+plot_window.show()
 
 # %%
 # .. image:: ../../_static/cht_xy_pressure.png
