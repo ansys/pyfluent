@@ -201,6 +201,14 @@ def _print_search_results(
                     substring.startswith(query) for substring in substrings
                 ):
                     results.append(api_object)
+                if query in first_token and any(
+                    query
+                    for substring in substrings
+                    if substring.find("_") != -1
+                    and f"_{query}" in substring
+                    or f"_{query}_" in substring
+                ):
+                    results.append(api_object)
         results = list(set(results))
         return results
 
@@ -594,4 +602,6 @@ def search(
 
 
 if __name__ == "__main__":
-    search("read")
+    # search("read")
+    search(search_string="face_zones", api_path="<meshing_session>")
+    # search(search_string="faces_zones", api_path="<solver_session>")
