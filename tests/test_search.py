@@ -94,7 +94,7 @@ def test_get_capitalize_match_for_word_from_names():
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -252,14 +252,15 @@ def test_misspelled_search(capsys):
     )
 
 
-@pytest.mark.skip("Started failing suddenly.")
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
-    pyfluent.search("iter*")
+    pyfluent.search("local*")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.solution.run_calculation.iter_count (Parameter)" in lines
-    assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
+    assert (
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        in lines
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
