@@ -452,3 +452,28 @@ def test_semantic_search_read():
         "<solver_session>.file.convert_hanging_nodes_during_read (Parameter) (similarity: 100.0%)"
         in results
     )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_multiple_words():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.PRINT_SEARCH_RESULTS = False
+    # TODO: Support semantic search with multiple words
+    results = pyfluent.search("remove empty face zones")
+    assert "<meshing_session>.tui.mesh.cavity.remove_zones (Command)" in results
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_multiple_words_2():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.PRINT_SEARCH_RESULTS = False
+    # TODO: Support semantic search with multiple words
+    results = pyfluent.search("remove, empty, face, zones")
+    assert (
+        "<meshing_session>.meshing_utilities.delete_empty_face_zones (Command)"
+        in results
+    )
