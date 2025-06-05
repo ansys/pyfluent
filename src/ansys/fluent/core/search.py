@@ -209,23 +209,50 @@ def _print_search_results(
             first_token = target.split()[0]
             substrings = first_token.split(".")
 
-            for query in queries:
-                if query in first_token and (
-                    has_query_in_substrings(query, substrings)
-                    or has_query_in_substring_with_underscore(query, substrings)
-                ):
-                    results.add(api_object)
+            if isinstance(queries[0], tuple):
+                for query in queries:
+                    api_name, score = query[0], query[1]
+                    if api_name in first_token and (
+                        has_query_in_substrings(api_name, substrings)
+                        or has_query_in_substring_with_underscore(api_name, substrings)
+                    ):
+                        results.add((api_object, round(score, 2)))
+            else:
+                for query in queries:
+                    if query in first_token and (
+                        has_query_in_substrings(query, substrings)
+                        or has_query_in_substring_with_underscore(query, substrings)
+                    ):
+                        results.add(api_object)
 
         return list(results)
 
-    settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
-    tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
+    if not isinstance(queries[0], tuple):
+        settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
+        tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
 
-    settings_results.sort()
-    tui_results.sort()
+        settings_results.sort()
+        tui_results.sort()
 
-    results.extend(settings_results)
-    results.extend(tui_results)
+        results.extend(settings_results)
+        results.extend(tui_results)
+    else:
+        settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
+        tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
+
+        settings_results.sort()
+        tui_results.sort()
+
+        results.extend(settings_results)
+        results.extend(tui_results)
+
+        results = sorted(
+            results, key=lambda api_name_score: api_name_score[1], reverse=True
+        )
+        results = [
+            f"{api_name_score[0]} (similarity: {api_name_score[1]}%)"
+            for api_name_score in results
+        ]
 
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
@@ -255,13 +282,15 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
 
 
 def _search_wildcard(
-    search_string: str | list[str], api_tree_data: dict, api_path: str | None = None
+    search_string: str | list[(str, float)],
+    api_tree_data: dict,
+    api_path: str | None = None,
 ):
     """Perform wildcard search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
-    search_string: str or list[str]
+    search_string: str | list[(str, float)]
         Word to search for. Semantic search is default.
     api_tree_data: dict
         All API object data.
@@ -277,13 +306,19 @@ def _search_wildcard(
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
 
     if isinstance(search_string, str):
-        search_string = [search_string]
-    for word in search_string:
         queries.extend(
             _get_wildcard_matches_for_word_from_names(
-                word, names=api_tree_data["all_api_object_names"]
+                search_string, names=api_tree_data["all_api_object_names"]
             )
         )
+    if isinstance(search_string, list):
+        for api_name_score in search_string:
+            matches = _get_wildcard_matches_for_word_from_names(
+                api_name_score[0], names=api_tree_data["all_api_object_names"]
+            )
+            if matches:
+                queries.extend([(match, api_name_score[1]) for match in matches])
+
     if queries:
         return _print_search_results(
             queries, api_tree_data=api_tree_data, api_path=api_path
@@ -473,7 +508,9 @@ def _download_nltk_data():
 def _are_words_semantically_close(query, api_name, language="eng"):
     from nltk.corpus import wordnet as wn
 
-    similarity_threshold = 3.3 if language == "eng" else 1.0
+    similarity_threshold = (
+        3.2 if language == "eng" else 0.8
+    )  # Max values are 3.7 and 1.0 respectively
     max_similarity = 0.0
 
     synsets1 = wn.synsets(query, lang=language)
@@ -483,16 +520,21 @@ def _are_words_semantically_close(query, api_name, language="eng"):
         for syn2 in synsets2:
             if syn1.pos() == syn2.pos():
                 similarity = (
-                    syn1.lch_similarity(syn2)
+                    syn1.lch_similarity(syn2)  # Leacock–Chodorow similarity
                     if language == "eng"
-                    else syn1.wup_similarity(syn2)
+                    else syn1.wup_similarity(syn2)  # Wu–Palmer similarity
                 )
                 if similarity is not None:
                     max_similarity = max(max_similarity, similarity)
                     if similarity >= similarity_threshold:
-                        return True
+                        score = (
+                            (similarity / 3.7) * 100
+                            if language == "eng"
+                            else similarity * 100
+                        )
+                        return True, score
 
-    return False
+    return False, 0
 
 
 def _search_semantic(
@@ -520,10 +562,16 @@ def _search_semantic(
     similar_keys = set()
     api_object_names = api_tree_data["all_api_object_names"]
     for api_object_name in api_object_names:
-        if _are_words_semantically_close(
-            search_string, api_object_name, language=language
-        ):
-            similar_keys.add(api_object_name + "*")
+        api_obj_name = (
+            api_object_name.replace("_", " ")
+            if "_" in api_object_name
+            else api_object_name
+        )
+        is_similar, score = _are_words_semantically_close(
+            search_string, api_obj_name, language=language
+        )
+        if is_similar:
+            similar_keys.add((api_object_name + "*", score))
     if similar_keys:
         sorted_similar_keys = sorted(similar_keys)
         results = []

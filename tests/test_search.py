@@ -197,11 +197,17 @@ def test_search_semantic(capsys):
     api_tree_data = _get_api_tree_data()
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.read_surface_mesh (Command)" in lines
+    assert (
+        "<solver_session>.file.read_surface_mesh (Command) (similarity: 100.0%)"
+        in lines
+    )
 
     _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert (
+        "<solver_session>.tui.preferences.appearance.charts.font (Object) (similarity: 100.0%)"
+        in lines
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -269,11 +275,11 @@ def test_wildcard_search(capsys):
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.read_case (Command)" in lines
+    assert "<solver_session>.file.read_case (Command) (similarity: 100.0%)" in lines
 
     pyfluent.search("写", language="cmn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.write_case (Command)" in lines
+    assert "<solver_session>.file.write_case (Command) (similarity: 100.0%)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -281,7 +287,10 @@ def test_chinese_semantic_search(capsys):
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert (
+        "<solver_session>.tui.preferences.appearance.charts.font (Object) (similarity: 100.0%)"
+        in lines
+    )
 
 
 def test_match_whole_word(monkeypatch):
@@ -365,7 +374,7 @@ def test_solver_specific_api_path():
     results = pyfluent.search(search_string="font", api_path="contour")
     assert "<meshing_session>" not in results
     assert (
-        '<solver_session>.results.graphics.contour["<name>"].color_map.font_name (Parameter)'
+        '<solver_session>.results.graphics.contour["<name>"].color_map.font_automatic (Parameter) (similarity: 98.31%)'
         in results
     )
 
@@ -440,6 +449,6 @@ def test_semantic_search_read():
     for result in results:
         assert "thread" not in result
     assert (
-        "<solver_session>.setup.models.battery.ecm_model_settings.table_c3_c.read_table (Command)"
+        "<solver_session>.file.convert_hanging_nodes_during_read (Parameter) (similarity: 100.0%)"
         in results
     )
