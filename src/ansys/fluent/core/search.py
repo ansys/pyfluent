@@ -134,7 +134,6 @@ def _generate_api_data(
 
         all_api_object_name_synsets = dict()
         for name in api_object_names:
-            name = name.replace("_", " ") if "_" in name else name
             api_object_name_synsets = wn.synsets(name, lang="eng")
             synset_names = set()
             for api_object_name_synset in api_object_name_synsets:
@@ -184,57 +183,76 @@ def _print_search_results(
     api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
     def _get_results(api_data, queries, api_path=None):
-        def has_query(query, substrings):
-            """Check if the query matches any of the substring conditions."""
+        def has_query_in_substrings(query, substrings):
+            """Check if the query matches the substring conditions."""
+            return any(substring.startswith(query) for substring in substrings)
+
+        def has_query_in_substring_with_underscore(query, substrings):
+            """Check if the query appears in a substring with an underscore."""
             return any(
-                substring.startswith(query)
-                or (
-                    "_" in substring
-                    and (f"_{query}" in substring or f"_{query}_" in substring)
-                )
+                substring.find("_") != -1
+                and (f"_{query}" in substring or f"_{query}_" in substring)
                 for substring in substrings
             )
 
-        def extract_target(api_object):
-            """Extract the relevant portion of the api_object based on api_path."""
-            if not api_path:
-                return api_object
-            start_index = api_object.find(api_path)
-            return api_object[start_index:] if start_index != -1 else None
-
         results = set()
-        use_scores = isinstance(queries[0], tuple)
 
         for api_object in api_data:
-            target = extract_target(api_object)
-            if not target:
-                continue
+            target = api_object
+
+            if api_path:
+                start_index = api_object.find(api_path)
+                if start_index == -1:
+                    continue
+                target = api_object[start_index:]
 
             first_token = target.split()[0]
             substrings = first_token.split(".")
 
-            for query in queries:
-                api_name = query[0] if use_scores else query
-                if api_name in first_token and has_query(api_name, substrings):
-                    if use_scores:
-                        results.add((api_object, round(query[1], 2)))
-                    else:
+            if isinstance(queries[0], tuple):
+                for query in queries:
+                    api_name, score = query[0], query[1]
+                    if api_name in first_token and (
+                        has_query_in_substrings(api_name, substrings)
+                        or has_query_in_substring_with_underscore(api_name, substrings)
+                    ):
+                        results.add((api_object, round(score, 2)))
+            else:
+                for query in queries:
+                    if query in first_token and (
+                        has_query_in_substrings(query, substrings)
+                        or has_query_in_substring_with_underscore(query, substrings)
+                    ):
                         results.add(api_object)
 
         return list(results)
 
-    settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
-    tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
+    if not isinstance(queries[0], tuple):
+        settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
+        tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
 
-    settings_results.sort()
-    tui_results.sort()
+        settings_results.sort()
+        tui_results.sort()
 
-    results.extend(settings_results)
-    results.extend(tui_results)
+        results.extend(settings_results)
+        results.extend(tui_results)
+    else:
+        settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
+        tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
 
-    if isinstance(queries[0], tuple):
-        results = sorted(results, key=lambda item: item[1], reverse=True)
-        results = [f"{item[0]} (similarity: {item[1]}%)" for item in results]
+        settings_results.sort()
+        tui_results.sort()
+
+        results.extend(settings_results)
+        results.extend(tui_results)
+
+        results = sorted(
+            results, key=lambda api_name_score: api_name_score[1], reverse=True
+        )
+        results = [
+            f"{api_name_score[0]} (similarity: {api_name_score[1]}%)"
+            for api_name_score in results
+        ]
 
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
@@ -284,24 +302,22 @@ def _search_wildcard(
     -------
         List of search string matches.
     """
-    api_tree_data = api_tree_data or _get_api_tree_data()
     queries = []
-
-    def add_matches(word, score=None):
-        matches = _get_wildcard_matches_for_word_from_names(
-            word, names=api_tree_data["all_api_object_names"]
-        )
-        if matches:
-            if score is not None:
-                queries.extend((match, score) for match in matches)
-            else:
-                queries.extend(matches)
+    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
 
     if isinstance(search_string, str):
-        add_matches(search_string)
-    elif isinstance(search_string, list):
+        queries.extend(
+            _get_wildcard_matches_for_word_from_names(
+                search_string, names=api_tree_data["all_api_object_names"]
+            )
+        )
+    if isinstance(search_string, list):
         for api_name_score in search_string:
-            add_matches(api_name_score[0], api_name_score[1])
+            matches = _get_wildcard_matches_for_word_from_names(
+                api_name_score[0], names=api_tree_data["all_api_object_names"]
+            )
+            if matches:
+                queries.extend([(match, api_name_score[1]) for match in matches])
 
     if queries:
         return _print_search_results(
@@ -542,32 +558,37 @@ def _search_semantic(
     queries: list
         List of search string matches.
     """
-    api_tree_data = api_tree_data or _get_api_tree_data()
-    api_object_names = api_tree_data["all_api_object_names"]
-
+    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    for name in api_object_names:
-        normalized_name = name.replace("_", " ") if "_" in name else name
+    api_object_names = api_tree_data["all_api_object_names"]
+    for api_object_name in api_object_names:
+        api_obj_name = (
+            api_object_name.replace("_", " ")
+            if "_" in api_object_name
+            else api_object_name
+        )
         is_similar, score = _are_words_semantically_close(
-            search_string, normalized_name, language=language
+            search_string, api_obj_name, language=language
         )
         if is_similar:
-            similar_keys.add((f"{name}*", score))
-
+            similar_keys.add((api_object_name + "*", score))
     if similar_keys:
-        sorted_keys = sorted(similar_keys)
-        results = _search_wildcard(sorted_keys, api_tree_data, api_path=api_path)
+        sorted_similar_keys = sorted(similar_keys)
+        results = []
+        result = _search_wildcard(sorted_similar_keys, api_tree_data, api_path=api_path)
+        if result:
+            results.extend(result)
         if results:
             return results
-
-    # Fallback to close match search
-    close_matches = _get_close_matches_for_word_from_names(
-        search_string, names=api_object_names
-    )
-    if close_matches:
-        return _print_search_results(
-            close_matches, api_tree_data=api_tree_data, api_path=api_path
+    else:
+        queries = _get_close_matches_for_word_from_names(
+            search_string,
+            names=api_tree_data["all_api_object_names"],
         )
+        if queries:
+            return _print_search_results(
+                queries, api_tree_data=api_tree_data, api_path=api_path
+            )
 
 
 def search(
@@ -651,10 +672,3 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
-
-
-if __name__ == "__main__":
-    search("remove, empty, face, zones")
-    # search("font")
-    # search("读", language="cmn")
-    # search("读", language="cmn", api_path="results")
