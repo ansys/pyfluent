@@ -230,7 +230,7 @@ def _print_search_results(
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
             print(result)
-    if results:
+    elif results:
         return results
 
 
