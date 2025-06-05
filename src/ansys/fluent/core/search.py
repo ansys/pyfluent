@@ -169,7 +169,7 @@ def _print_search_results(
     """
     Print search results.
 
-    Parameters:
+    Parameters
     ----------
     queries : list
         List of search strings or (string, score) tuples to match against API object names.
@@ -255,7 +255,7 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
 
 
 def _search_wildcard(
-    search_string: str | list[(str, float)],
+    search_string: str | list[tuple[str, float]],
     api_tree_data: dict,
     api_path: str | None = None,
 ):
@@ -275,22 +275,23 @@ def _search_wildcard(
     -------
         List of search string matches.
     """
+    api_tree_data = api_tree_data or _get_api_tree_data()
+    all_names = api_tree_data["all_api_object_names"]
     queries = []
-    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
+
+    def add_matches(word: str, score: float | None = None):
+        matches = _get_wildcard_matches_for_word_from_names(word, names=all_names)
+        if matches:
+            if score is not None:
+                queries.extend((match, score) for match in matches)
+            else:
+                queries.extend(matches)
 
     if isinstance(search_string, str):
-        queries.extend(
-            _get_wildcard_matches_for_word_from_names(
-                search_string, names=api_tree_data["all_api_object_names"]
-            )
-        )
-    if isinstance(search_string, list):
-        for api_name_score in search_string:
-            matches = _get_wildcard_matches_for_word_from_names(
-                api_name_score[0], names=api_tree_data["all_api_object_names"]
-            )
-            if matches:
-                queries.extend([(match, api_name_score[1]) for match in matches])
+        add_matches(search_string)
+    elif isinstance(search_string, list):
+        for word, score in search_string:
+            add_matches(word, score)
 
     if queries:
         return _print_search_results(
@@ -645,8 +646,3 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
-
-
-if __name__ == "__main__":
-    search("read")
-    # search("读", language="cmn")
