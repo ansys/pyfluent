@@ -164,100 +164,73 @@ def _get_api_tree_data():
 
 
 def _print_search_results(
-    queries: list, api_tree_data: dict, api_path: str | None = None
+    queries: list, api_tree_data: dict | None = None, api_path: str | None = None
 ):
-    """Print search results.
-
-    Parameters
-    ----------
-    queries: list
-        List of search string to match API object names.
-    api_tree_data: dict
-        All API object data.
-    api_path: str, optional
-        The API path to search in. The default is ``None``. If ``None``, it searches in the whole
-        Fluent's object hierarchy.
     """
-    results = []
-    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
-    api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
+    Print search results.
 
-    def _get_results(api_data, queries, api_path=None):
-        def has_query_in_substrings(query, substrings):
-            """Check if the query matches the substring conditions."""
-            return any(substring.startswith(query) for substring in substrings)
+    Parameters:
+    ----------
+    queries : list
+        List of search strings or (string, score) tuples to match against API object names.
+    api_tree_data : dict, optional
+        The full API tree data, containing 'api_objects' and 'api_tui_objects'.
+        If None, it is retrieved using _get_api_tree_data().
+    api_path : str, optional
+        Specific path to restrict the search to. If None, searches the entire object hierarchy.
+    """
+    api_tree_data = api_tree_data or _get_api_tree_data()
+    api_sources = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
-        def has_query_in_substring_with_underscore(query, substrings):
-            """Check if the query appears in a substring with an underscore."""
-            return any(
-                substring.find("_") != -1
-                and (f"_{query}" in substring or f"_{query}_" in substring)
-                for substring in substrings
-            )
+    def has_query(query, substrings):
+        """Check if query is present via dot or underscore notation."""
+        return any(
+            s.startswith(query)
+            or ("_" in s and (f"_{query}" in s or f"_{query}_" in s))
+            for s in substrings
+        )
 
+    def extract_results(api_data):
         results = set()
 
         for api_object in api_data:
             target = api_object
-
             if api_path:
-                start_index = api_object.find(api_path)
-                if start_index == -1:
+                start = api_object.find(api_path)
+                if start == -1:
                     continue
-                target = api_object[start_index:]
+                target = api_object[start:]
 
             first_token = target.split()[0]
             substrings = first_token.split(".")
 
-            if isinstance(queries[0], tuple):
-                for query in queries:
-                    api_name, score = query[0], query[1]
-                    if api_name in first_token and (
-                        has_query_in_substrings(api_name, substrings)
-                        or has_query_in_substring_with_underscore(api_name, substrings)
-                    ):
+            for query in queries:
+                if isinstance(query, tuple):
+                    name, score = query
+                    if name in first_token and has_query(name, substrings):
                         results.add((api_object, round(score, 2)))
-            else:
-                for query in queries:
-                    if query in first_token and (
-                        has_query_in_substrings(query, substrings)
-                        or has_query_in_substring_with_underscore(query, substrings)
-                    ):
+                else:
+                    if query in first_token and has_query(query, substrings):
                         results.add(api_object)
 
-        return list(results)
+        return sorted(results)
 
-    if not isinstance(queries[0], tuple):
-        settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
-        tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
+    all_results = []
+    final_results = []
+    for source in api_sources:
+        all_results.extend(extract_results(source))
 
-        settings_results.sort()
-        tui_results.sort()
-
-        results.extend(settings_results)
-        results.extend(tui_results)
-    else:
-        settings_results = _get_results(api_tree_datas[0], queries, api_path=api_path)
-        tui_results = _get_results(api_tree_datas[1], queries, api_path=api_path)
-
-        settings_results.sort()
-        tui_results.sort()
-
-        results.extend(settings_results)
-        results.extend(tui_results)
-
-        results = sorted(
-            results, key=lambda api_name_score: api_name_score[1], reverse=True
+    if all_results and isinstance(queries[0], tuple):
+        all_results = sorted(all_results, key=lambda item: item[1], reverse=True)
+        final_results.extend(
+            [f"{api_name} (similarity: {score}%)" for api_name, score in all_results]
         )
-        results = [
-            f"{api_name_score[0]} (similarity: {api_name_score[1]}%)"
-            for api_name_score in results
-        ]
 
+    results = final_results or all_results
     if pyfluent.PRINT_SEARCH_RESULTS:
         for result in results:
             print(result)
-    elif results:
+    if results:
         return results
 
 
@@ -672,3 +645,8 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
+
+
+if __name__ == "__main__":
+    search("read")
+    # search("读", language="cmn")
