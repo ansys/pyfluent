@@ -32,10 +32,10 @@ def print_fluent_version(app_utilities):
     version_file = (CODEGEN_OUTDIR / f"fluent_version_{version}.py").resolve()
     with open(version_file, "w", encoding="utf8") as f:
         f.write(f'FLUENT_VERSION = "{version}"\n')
-        f.write(f'FLUENT_BUILD_TIME = "{build_info["build_time"]}"\n')
-        f.write(f'FLUENT_BUILD_ID = "{build_info["build_id"]}"\n')
-        f.write(f'FLUENT_REVISION = "{build_info["vcs_revision"]}"\n')
-        f.write(f'FLUENT_BRANCH = "{build_info["vcs_branch"]}"\n')
+        f.write(f'FLUENT_BUILD_TIME = "{build_info.build_time}"\n')
+        f.write(f'FLUENT_BUILD_ID = "{build_info.build_id}"\n')
+        f.write(f'FLUENT_REVISION = "{build_info.vcs_revision}"\n')
+        f.write(f'FLUENT_BRANCH = "{build_info.vcs_branch}"\n')
 
 
 if __name__ == "__main__":

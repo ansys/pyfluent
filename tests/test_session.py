@@ -662,13 +662,12 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     solver.chdir(tmp_dir)
 
-    assert Path(
-        solver._app_utilities.get_controller_process_info()["working_directory"]
-    ) == Path(tmp_dir)
+    cortex_info = solver._app_utilities.get_controller_process_info()
+    solver_info = solver._app_utilities.get_solver_process_info()
 
-    assert Path(
-        solver._app_utilities.get_solver_process_info()["working_directory"]
-    ) == Path(tmp_dir)
+    assert Path(cortex_info.working_directory) == Path(tmp_dir)
+
+    assert Path(solver_info.working_directory) == Path(tmp_dir)
 
 
 @pytest.mark.standalone
