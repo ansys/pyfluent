@@ -31,7 +31,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
-from ansys.fluent.core.codegen.datamodelgen import meshing_rule_file_names
+from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
 from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -388,12 +388,12 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
     assert len(datamodel_paths) == 1 or 2
     assert set(p.name for p in datamodel_paths) == {
-        f"{meshing_rule_file_names[rules]}.py"
-    } or {f"{meshing_rule_file_names[rules]}.pyi"}
+        f"{datamodel_file_name_map[rules]}.py"
+    } or {f"{datamodel_file_name_map[rules]}.pyi"}
     with open(
         codegen_outdir
         / f"datamodel_{version}"
-        / f"{meshing_rule_file_names[rules]}.py",
+        / f"{datamodel_file_name_map[rules]}.py",
         "r",
     ) as f:
         assert f.read().strip() == _expected_datamodel_api_output

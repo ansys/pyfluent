@@ -39,8 +39,8 @@ command line arguments and run this script to copy needed files from the Ansys i
 
 * These files indicate the files that are excluded during the copying:
 
-  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
-  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
+  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent_252/excludeCEIList.txt>`_
+  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent_252/excludeFluentList.txt>`_
 
 1. Above excluded files are not needed to run typical Fluent workflows.
 

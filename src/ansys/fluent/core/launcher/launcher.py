@@ -263,10 +263,11 @@ def launch_fluent(
         made by the user in the current Fluent solver session have been applied in the background Fluent
         solver session. This is all orchestrated by PyFluent and requires no special usage.
         This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-    mode : str, optional
-        Launch mode of Fluent to point to a specific session type.
-        The default value is ``None``. Options are ``"meshing"``,
-        ``"pure-meshing"`` and ``"solver"``.
+    mode : FluentMode or str or None, optional
+        Launch mode of Fluent to point to a specific session type. Can be a
+        ``FluentMode`` enum member or a string. The default value is ``None``.
+        Valid string options include ``"meshing"``, ``"pure-meshing"``, and
+        ``"solver"``.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
     gpu : bool or list, optional
