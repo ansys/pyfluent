@@ -22,6 +22,7 @@
 
 """Wrappers over AppUtilities gRPC service of Fluent."""
 
+from dataclasses import dataclass
 from enum import Enum
 from typing import List, Tuple
 
@@ -150,6 +151,25 @@ class AppUtilitiesService:
         return self._stub.SetWorkingDirectory(request, metadata=self._metadata)
 
 
+@dataclass
+class ProcessInfo:
+    """ProcessInfo dataclass to hold process information."""
+
+    process_id: int
+    hostname: str
+    working_directory: str
+
+
+@dataclass
+class BuildInfo:
+    """BuildInfo dataclass to hold build information."""
+
+    build_time: str
+    build_id: str
+    vcs_revision: str
+    vcs_branch: str
+
+
 class AppUtilitiesOld:
     """AppUtilitiesOld."""
 
@@ -167,34 +187,34 @@ class AppUtilitiesOld:
         build_id = self.scheme.eval("(inquire-build-id)")
         vcs_revision = self.scheme.eval("(inquire-src-vcs-id)")
         vcs_branch = self.scheme.eval("(inquire-src-vcs-branch)")
-        return {
-            "build_time": build_time,
-            "build_id": build_id,
-            "vcs_revision": vcs_revision,
-            "vcs_branch": vcs_branch,
-        }
+        return BuildInfo(
+            build_time=build_time,
+            build_id=build_id,
+            vcs_revision=vcs_revision,
+            vcs_branch=vcs_branch,
+        )
 
     def get_controller_process_info(self) -> dict:
         """Get controller process info."""
         cortex_host = self.scheme.eval("(cx-cortex-host)")
         cortex_pid = self.scheme.eval("(cx-cortex-id)")
         cortex_pwd = self.scheme.eval("(cortex-pwd)")
-        return {
-            "hostname": cortex_host,
-            "process_id": cortex_pid,
-            "working_directory": cortex_pwd,
-        }
+        return ProcessInfo(
+            process_id=cortex_pid,
+            hostname=cortex_host,
+            working_directory=cortex_pwd,
+        )
 
     def get_solver_process_info(self) -> dict:
         """Get solver process info."""
         fluent_host = self.scheme.eval("(cx-client-host)")
         fluent_pid = self.scheme.eval("(cx-client-id)")
         fluent_pwd = self.scheme.eval("(cx-send '(cx-client-pwd))")
-        return {
-            "hostname": fluent_host,
-            "process_id": fluent_pid,
-            "working_directory": fluent_pwd,
-        }
+        return ProcessInfo(
+            process_id=fluent_pid,
+            hostname=fluent_host,
+            working_directory=fluent_pwd,
+        )
 
     def get_app_mode(self) -> Enum:
         """Get app mode."""
@@ -312,32 +332,32 @@ class AppUtilities:
         """Get build info."""
         request = AppUtilitiesProtoModule.GetBuildInfoRequest()
         response = self.service.get_build_info(request)
-        return {
-            "build_time": response.build_time,
-            "build_id": response.build_id,
-            "vcs_revision": response.vcs_revision,
-            "vcs_branch": response.vcs_branch,
-        }
+        return BuildInfo(
+            build_time=response.build_time,
+            build_id=response.build_id,
+            vcs_revision=response.vcs_revision,
+            vcs_branch=response.vcs_branch,
+        )
 
     def get_controller_process_info(self) -> dict:
         """Get controller process info."""
         request = AppUtilitiesProtoModule.GetControllerProcessInfoRequest()
         response = self.service.get_controller_process_info(request)
-        return {
-            "hostname": response.hostname,
-            "process_id": response.process_id,
-            "working_directory": response.working_directory,
-        }
+        return ProcessInfo(
+            process_id=response.process_id,
+            hostname=response.hostname,
+            working_directory=response.working_directory,
+        )
 
     def get_solver_process_info(self) -> dict:
         """Get solver process info."""
         request = AppUtilitiesProtoModule.GetSolverProcessInfoRequest()
         response = self.service.get_solver_process_info(request)
-        return {
-            "hostname": response.hostname,
-            "process_id": response.process_id,
-            "working_directory": response.working_directory,
-        }
+        return ProcessInfo(
+            process_id=response.process_id,
+            hostname=response.hostname,
+            working_directory=response.working_directory,
+        )
 
     def get_app_mode(self) -> Enum:
         """Get app mode.
