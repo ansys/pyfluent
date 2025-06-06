@@ -170,12 +170,18 @@ def pytest_collection_finish(session):
 
 @pytest.fixture(autouse=True)
 def run_before_each_test(
-    monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
-) -> None:
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+    request: pytest.FixtureRequest,
+):
     monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
     monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
+    original_cwd = os.getcwd()
+    monkeypatch.chdir(tmp_path)
+    yield
+    os.chdir(original_cwd)
 
 
 class Helpers:
