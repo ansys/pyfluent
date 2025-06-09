@@ -92,7 +92,7 @@ class SolutionVariableInfo:
     >>> print(solution_variable_info_centroid)
     >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
     >>> zones_info = solution_variable_info.get_zones_info()
-    >>> print(zones_info.zones)
+    >>> print(zones_info.zone_names)
     >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
     >>> zone_info = zones_info['wall']
     >>> print(zone_info)
@@ -208,7 +208,16 @@ class SolutionVariableInfo:
             return self._zones_info.get(name, None)
 
         @property
-        def zones(self) -> List[str]:
+        def zones(self):
+            """Get zone names."""
+            warnings.warn(
+                "'zones' is deprecated, use 'zone_names' instead",
+                PyFluentDeprecationWarning,
+            )
+            return self.zone_names
+
+        @property
+        def zone_names(self) -> List[str]:
             """Get zone names."""
             return list(self._zones_info.keys())
 
@@ -375,7 +384,7 @@ class _AllowedZoneNames(_AllowedNames):
         self._zones_info = solution_variable_info.get_zones_info()
 
     def __call__(self) -> List[str]:
-        return self._zones_info.zones
+        return self._zones_info.zone_names
 
     def valid_name(self, zone_name):
         """Get a valid zone name.
@@ -494,7 +503,7 @@ class SolutionVariableData:
     >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
     >>> print(sv_t_wall_fluid.domain)
     >>> 'mixture'
-    >>> print(sv_t_wall_fluid.zones)
+    >>> print(sv_t_wall_fluid.zone_names)
     >>> ['fluid', 'wall']
     >>> fluid_temp = sv_t_wall_fluid['fluid']
     >>> print(fluid_temp.size)
@@ -529,7 +538,16 @@ class SolutionVariableData:
 
         @property
         def zones(self):
-            """Zone name."""
+            """Zone names."""
+            warnings.warn(
+                "'zones' is deprecated, use 'zone_names' instead",
+                PyFluentDeprecationWarning,
+            )
+            return self.zone_names
+
+        @property
+        def zone_names(self):
+            """Zone names."""
             return list(self._data.keys())
 
         @property
@@ -579,7 +597,7 @@ class SolutionVariableData:
         self._update_solution_variable_info()
 
         zones_info = self._solution_variable_info.get_zones_info()
-        if zone_name in zones_info.zones:
+        if zone_name in zones_info.zone_names:
             solution_variables_info = self._solution_variable_info.get_variables_info(
                 zone_names=[zone_name], domain_name=domain_name
             )
@@ -637,7 +655,7 @@ class SolutionVariableData:
 
     def get_svar_data(
         self,
-        svar_name: str,
+        solution_variable_name: str,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ) -> Data:
@@ -647,7 +665,7 @@ class SolutionVariableData:
             PyFluentDeprecationWarning,
         )
         return self.get_data(
-            solution_variable_name=svar_name,
+            solution_variable_name=solution_variable_name,
             zone_names=zone_names,
             domain_name=domain_name,
         )
@@ -754,7 +772,7 @@ class SolutionVariableData:
 
     def set_svar_data(
         self,
-        svar_name: str,
+        solution_variable_name: str,
         zone_names_to_svar_data: List[str],
         domain_name: str | None = "mixture",
     ) -> Data:
@@ -764,7 +782,7 @@ class SolutionVariableData:
             PyFluentDeprecationWarning,
         )
         return self.set_data(
-            solution_variable_name=svar_name,
+            solution_variable_name=solution_variable_name,
             zone_names_to_solution_variable_data=zone_names_to_svar_data,
             domain_name=domain_name,
         )
