@@ -35,6 +35,110 @@ function.
 Examples
 --------
 
+This script demonstrates how to use the Fluent event callback mechanism in PyFluent
+to trigger a custom Python function when a specific solver event occurs. In this example,
+a callback is registered to the CASE_LOADED event. When a case file is read into the solver,
+the registered function is automatically called, allowing users to perform custom actions
+(like logging, validation, or automated workflows) immediately after the case is loaded.
+
+.. code-block:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import SolverEvent, examples
+  >>> case_file_name = examples.download_file(
+  >>>     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+  >>> )
+  >>> def on_case_loaded(session, event_info):
+  >>>     on_case_loaded.loaded = True
+
+  >>> on_case_loaded.loaded = False
+
+  >>> solver = pyfluent.launch_fluent()
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+
+  >>> on_case_loaded.loaded
+  False
+
+  >>> solver.settings.file.read_case(file_name=case_file_name)
+
+  >>> on_case_loaded.loaded
+  True
+
+
+The next example demonstrates how to register multiple event callbacks with additional arguments
+in PyFluent's event handling system.
+It builds on the basic usage of event callbacks by showcasing how to pass both positional and
+keyword arguments to the callback functions. The script registers three different callbacks to the CASE_LOADED event:
+
+1. A simple callback that sets a flag when the case is loaded.
+
+2. A callback that accepts optional arguments (x, y) before the standard parameters.
+
+3. A callback that expects x and y after the standard parameters.
+
+When a case file is read into Fluent, all three callbacks are triggered in order,
+and their internal state is updated accordingly. This pattern is useful for building flexible,
+reusable handlers that can react differently based on runtime configuration or contextual data.
+
+.. code-block:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import SolverEvent, examples
+  >>> case_file_name = examples.download_file(
+  >>>     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+  >>> )
+  >>> def on_case_loaded(session, event_info):
+  >>>     on_case_loaded.loaded = True
+
+  >>> on_case_loaded.loaded = False
+
+  >>> def on_case_loaded_with_args_optional_first(x, y, session, event_info):
+  >>>     on_case_loaded_with_args_optional_first.state = dict(x=x, y=y)
+
+  >>> on_case_loaded_with_args_optional_first.state = None
+
+  >>> def on_case_loaded_with_args(session, event_info, x, y):
+  >>>     on_case_loaded_with_args.state = dict(x=x, y=y)
+
+  >>> on_case_loaded_with_args.state = None
+
+  >>> solver = pyfluent.launch_fluent()
+
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42)
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
+
+  >>> on_case_loaded.loaded
+  False
+
+  >>> solver.settings.file.read_case(file_name=case_file_name)
+
+  >>> on_case_loaded.loaded
+  True
+  >>> on_case_loaded_with_args_optional_first.state
+  {'x': 12, 'y': 42}
+  >>> on_case_loaded_with_args.state
+  {'x': 12, 'y': 42}
+
+
+Finally an advanced example that showcases how to integrate PyFluent's event handling with its
+visualization capabilities.
+It demonstrates how to automatically refresh visualizations in response to simulation events like
+iteration progress, solution initialization, and data loading.
+
+The script performs the following:
+
+1. Configures two contour plots for temperature and velocity magnitude using PyFluent's Graphics interface.
+
+2. Registers a callback to refresh these contour plots every 5 iterations during the solver run using the ITERATION_ENDED event.
+
+3. Registers callbacks for both the SOLUTION_INITIALIZED and DATA_LOADED events to refresh the graphics and residual plots once initialization or data import completes.
+
+4. Demonstrates case load callbacks with and without custom arguments for both the meshing and solver contexts.
+
+It highlights how to build an interactive, event-driven simulation monitoring workflow by seamlessly
+combining Fluent’s event hooks with real-time visualization updates.
+
 .. code-block:: python
 
   >>> from ansys.fluent.core import MeshingEvent, SolverEvent
