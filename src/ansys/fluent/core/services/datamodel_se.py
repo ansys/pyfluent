@@ -1972,7 +1972,7 @@ class PyCommand:
         # Possible error thrown from the grpc layer
         except (RuntimeError, ValueError) as e:
             logger.warning(
-                "Failed to create command arguments object in `_get_create_instance_args`. "
+                "datamodels_se.PyCommand was unable to construct command arguments. "
                 "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
                 f"Details: {e}"
             )
