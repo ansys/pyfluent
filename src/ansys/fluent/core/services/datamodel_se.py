@@ -1970,9 +1970,11 @@ class PyCommand:
                 id,
             ]
         # Possible error thrown from the grpc layer
-        except (RuntimeError, ValueError):
+        except (RuntimeError, ValueError) as e:
             logger.warning(
-                "Create command arguments object is available from 23.1 onwards"
+                "Failed to create command arguments object in `_get_create_instance_args`. "
+                "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
+                f"Details: {e}"
             )
 
     def create_instance(self) -> "PyCommandArguments":
