@@ -58,12 +58,12 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import Contour, GraphicsWindow, set_config
+from ansys.fluent.visualization import Contour, GraphicsWindow, config
 
 #######################################################################################
 # Configure specific settings for this example
 # =====================================================================================
-set_config(blocking=True, set_view_on_display="isometric")
+config.interactive = False
 
 #######################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
