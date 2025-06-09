@@ -1974,7 +1974,7 @@ class PyCommand:
             logger.warning(
                 "datamodels_se.PyCommand was unable to construct command arguments. "
                 "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
-                "Error details: %s", 
+                "Error details: %s",
                 e,
             )
 
