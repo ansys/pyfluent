@@ -39,7 +39,7 @@ This script demonstrates how to use the Fluent event callback mechanism in PyFlu
 to trigger a custom Python function when a specific solver event occurs. In this example,
 a callback is registered to the CASE_LOADED event. When a case file is read into the solver,
 the registered function is automatically called, allowing users to perform custom actions
-(e.g., logging, validation, or automated workflows) immediately after the case is loaded.
+(like logging, validation, or automated workflows) immediately after the case is loaded.
 
 .. code-block:: python
 
@@ -72,7 +72,7 @@ keyword arguments to the callback functions. The script registers three differen
 
 1. A simple callback that sets a flag when the case is loaded.
 
-2. A callback that accepts optional arguments (x, y) before the standard session and event_info parameters.
+2. A callback that accepts optional arguments (x, y) before the standard parameters.
 
 3. A callback that expects x and y after the standard parameters.
 
