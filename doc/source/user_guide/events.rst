@@ -37,6 +37,75 @@ Examples
 
 .. code-block:: python
 
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import SolverEvent, examples
+  >>> case_file_name = examples.download_file(
+  >>>     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+  >>> )
+  >>> def on_case_loaded(session, event_info):
+  >>>     on_case_loaded.loaded = True
+
+  >>> on_case_loaded.loaded = False
+
+  >>> solver = pyfluent.launch_fluent()
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+
+  >>> on_case_loaded.loaded
+  False
+
+  >>> solver.settings.file.read_case(file_name=case_file_name)
+
+  >>> on_case_loaded.loaded
+  True
+
+
+Another example using arguments in callback:
+
+.. code-block:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core import SolverEvent, examples
+  >>> case_file_name = examples.download_file(
+  >>>     "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+  >>> )
+  >>> def on_case_loaded(session, event_info):
+  >>>     on_case_loaded.loaded = True
+
+  >>> on_case_loaded.loaded = False
+
+  >>> def on_case_loaded_with_args_optional_first(x, y, session, event_info):
+  >>>     on_case_loaded_with_args_optional_first.state = dict(x=x, y=y)
+
+  >>> on_case_loaded_with_args_optional_first.state = None
+
+  >>> def on_case_loaded_with_args(session, event_info, x, y):
+  >>>     on_case_loaded_with_args.state = dict(x=x, y=y)
+
+  >>> on_case_loaded_with_args.state = None
+
+  >>> solver = pyfluent.launch_fluent()
+
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42)
+  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
+
+  >>> on_case_loaded.loaded
+  False
+
+  >>> solver.settings.file.read_case(file_name=case_file_name)
+
+  >>> on_case_loaded.loaded
+  True
+  >>> on_case_loaded_with_args_optional_first.state
+  {'x': 12, 'y': 42}
+  >>> on_case_loaded_with_args.state
+  {'x': 12, 'y': 42}
+
+
+You can look into this extended example using pyfluent visualization as well:
+
+.. code-block:: python
+
   >>> from ansys.fluent.core import MeshingEvent, SolverEvent
   >>> from ansys.fluent.core import CaseLoadedEventInfo, DataLoadedEventInfo, SolutionInitializedEventInfo, IterationEndedEventInfo
   >>> from ansys.fluent.core.utils.event_loop import execute_in_event_loop_threadsafe
