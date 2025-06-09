@@ -102,7 +102,7 @@ Another example using arguments in callback:
   {'x': 12, 'y': 42}
 
 
-You can look into this extended example using pyfluent visualization as well:
+You can look into this extended example using PyFluent Visualization as well:
 
 .. code-block:: python
 
