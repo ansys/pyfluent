@@ -299,15 +299,15 @@ class SolutionVariableInfo:
         return SolutionVariableInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
 
 
-class SvarError(ValueError):
+class InvalidSolutionVariableNameError(ValueError):
     """Exception class for errors in solution variable name."""
 
-    def __init__(self, svar_name: str, allowed_values: List[str]):
-        """Initialize SvarError."""
+    def __init__(self, variable_name: str, allowed_values: List[str]):
+        """Initialize InvalidSolutionVariableNameError."""
         super().__init__(
             allowed_name_error_message(
                 context="solution variable",
-                trial_name=svar_name,
+                trial_name=variable_name,
                 allowed_values=allowed_values,
             )
         )
@@ -345,16 +345,16 @@ class _AllowedSvarNames:
 
     def is_valid(
         self,
-        svar_name,
+        variable_name,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ):
         """Check whether solution variable name is valid or not."""
-        return svar_name in self(zone_names=zone_names, domain_name=domain_name)
+        return variable_name in self(zone_names=zone_names, domain_name=domain_name)
 
     def valid_name(
         self,
-        svar_name,
+        variable_name,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ):
@@ -362,16 +362,18 @@ class _AllowedSvarNames:
 
         Raises
         ------
-        SvarError
+        InvalidSolutionVariableNameError
             If the given solution variable name is invalid.
         """
-        svar_name = _to_field_name_str(svar_name)
-        if not self.is_valid(svar_name, zone_names=zone_names, domain_name=domain_name):
-            raise SvarError(
-                svar_name=svar_name,
+        variable_name = _to_field_name_str(variable_name)
+        if not self.is_valid(
+            variable_name, zone_names=zone_names, domain_name=domain_name
+        ):
+            raise InvalidSolutionVariableNameError(
+                variable_name=variable_name,
                 allowed_values=self(zone_names=zone_names, domain_name=domain_name),
             )
-        return svar_name
+        return variable_name
 
 
 class _AllowedZoneNames(_AllowedNames):
