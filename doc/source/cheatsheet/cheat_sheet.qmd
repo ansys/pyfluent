@@ -782,7 +782,7 @@ solution_variable_info_centroid.field_type
 
 ```{python}
 sv_t_wall_fluid= solution_variable_data.get_data(
-    solution_variable_name="SV_T", 
+    variable_name="SV_T",
     zone_names=["fluid", "wall"], 
     domain_name="mixture")
 sv_t_wall_fluid.domain
@@ -804,7 +804,7 @@ wall_temp_array[:] = 500
 fluid_temp_array[:] = 600
 zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
 solution_variable_data.set_data(
-    solution_variable_name="SV_T", 
+    variable_name="SV_T",
     zone_names_to_solution_variable_data=
     zone_names_to_solution_variable_data, 
     domain_name="mixture")

@@ -80,7 +80,7 @@ def test_use_variable_catalog(new_solver_session) -> None:
     assert round(temperature_min) == 313
 
     temperature_solution_data = fields.solution_variable_data.get_data(
-        solution_variable_name=temperature, zone_names=locations
+        variable_name=temperature, zone_names=locations
     )
     assert round(temperature_solution_data[locations[0]][0]) == 313
 

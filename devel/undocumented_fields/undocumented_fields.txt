@@ -288,7 +288,7 @@
   Class: SolutionVariableData
     - get_data
   Class: SvarError
-    - solution_variable_name
+    - svar_name
   Class: ZoneError
     - zone_name
 

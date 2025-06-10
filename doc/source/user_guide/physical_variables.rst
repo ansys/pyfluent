@@ -51,7 +51,7 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
 
     # Access solution variable data
     sol_data = solver.fields.solution_variable_data.get_data(
-        solution_variable_name=temperature, zone_names=locations
+        variable_name=temperature, zone_names=locations
     )
     print(sol_data[locations[0]][0])
 
