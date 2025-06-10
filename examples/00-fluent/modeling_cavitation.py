@@ -91,7 +91,7 @@ solver_session.mesh.check()
 ###############################################################################
 # Specify an axisymmetric model.
 
-solver_session.setup.general.solver_session.two_dim_space = "axisymmetric"
+solver_session.setup.general.solver.two_dim_space = "axisymmetric"
 
 ###############################################################################
 # Enable the multiphase mixture model.

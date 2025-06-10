@@ -575,7 +575,7 @@ meshing_session.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Switch to the solution mode.
 
-solver_session = meshing_session.switch_to_solver_session()
+solver_session = meshing_session.switch_to_solver()
 
 solver_session.mesh.check()
 
