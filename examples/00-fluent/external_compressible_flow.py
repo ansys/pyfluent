@@ -234,7 +234,7 @@ meshing_session.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~
 # Save the mesh file (``wing.msh.h5``).
 
-meshing_session.meshing_session.File.WriteMesh(FileName="wing.msh.h5")
+meshing_session.meshing.File.WriteMesh(FileName="wing.msh.h5")
 
 ###############################################################################
 # Solve and postprocess
