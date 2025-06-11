@@ -144,4 +144,4 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
     >>> wall_temp_array[:] = 500
     >>> fluid_temp_array[:] = 600
     >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-    >>> solution_variable_data.set_data(variable_name="SV_T", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data, domain_name="mixture")
+    >>> solution_variable_data.set_data(variable_name="SV_T", zone_names_to_data=zone_names_to_solution_variable_data, domain_name="mixture")

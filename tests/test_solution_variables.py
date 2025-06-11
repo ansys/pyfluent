@@ -120,7 +120,7 @@ def test_solution_variables(new_solver_session):
     }
     solution_variable_data.set_data(
         variable_name="SV_P",
-        zone_names_to_solution_variable_data=zone_names_to_solution_variable_data,
+        zone_names_to_data=zone_names_to_solution_variable_data,
         domain_name="mixture",
     )
 
@@ -253,7 +253,7 @@ def test_solution_variable_udm_data(mixing_elbow_case_session_t4):
     solver.fields.solution_variable_data.set_data(
         variable_name="SV_UDM_I",
         domain_name="mixture",
-        zone_names_to_solution_variable_data={"wall-elbow": udm_data},
+        zone_names_to_data={"wall-elbow": udm_data},
     )
     new_array = solver.fields.solution_variable_data.get_data(
         variable_name="SV_UDM_I",
