@@ -1,18 +1,24 @@
 name: Doc Build Dev Nightly
 
 on:
-  schedule:  # UTC at 0500
-    - cron:  '0 5 * * *'
+  schedule: # UTC at 0500
+    - cron: "0 5 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
+
 env:
-  DOCUMENTATION_CNAME: 'fluent.docs.pyansys.com'
+  DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   DOC_DEPLOYMENT_IMAGE_TAG: v26.1.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
-  PYFLUENT_LOGGING: 'DEBUG'
-  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
   PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
@@ -27,7 +33,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install OS packages
         run: |
@@ -64,7 +70,7 @@ jobs:
           python examples/00-fluent/exhaust_system_settings_api.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-      
+
       - name: Execute external_compressible_flow.py
         run: |
           python examples/00-fluent/external_compressible_flow.py
@@ -120,9 +126,9 @@ jobs:
       - name: "Deploy development documentation"
         uses: ansys/actions/doc-deploy-dev@v9.0
         with:
-            doc-artifact-name: 'HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}'
-            decompress-artifact: true
-            cname: ${{ env.DOCUMENTATION_CNAME }}
-            token: ${{ secrets.GITHUB_TOKEN }}
-            bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
-            bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
+          doc-artifact-name: "HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}"
+          decompress-artifact: true
+          cname: ${{ env.DOCUMENTATION_CNAME }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
+          bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}

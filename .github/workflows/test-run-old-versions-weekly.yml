@@ -1,18 +1,24 @@
 name: Test Run Old Versions Weekly
 
 on:
-  schedule:  # UTC at 0900 on Saturday
-    - cron:  '0 9 * * SAT'
+  schedule: # UTC at 0900 on Saturday
+    - cron: "0 9 * * SAT"
   workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
-  PYFLUENT_LOGGING: 'DEBUG'
-  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: "3.10"
 
 jobs:
   build:
@@ -118,7 +124,7 @@ jobs:
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: v25.1.0
-  
+
         # The version-independent built-in settings classes are generated only with Fluent 25.1
         # which are required for the unit tests
       - name: Run 25.1 API codegen
@@ -167,7 +173,6 @@ jobs:
             version: 251
 
     steps:
-
       - uses: actions/checkout@v4
 
       - name: Setup Python
