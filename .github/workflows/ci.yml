@@ -240,6 +240,10 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
   build:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
@@ -325,6 +329,10 @@ jobs:
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
       - name: Pull 23.2 Fluent docker image
         if: steps.cache-232-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
@@ -355,6 +363,10 @@ jobs:
             doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
       - name: Pull 24.1 Fluent docker image
         if: steps.cache-241-api-code.outputs.cache-hit != 'true'
@@ -387,6 +399,10 @@ jobs:
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
       - name: Pull 24.2 Fluent docker image
         if: steps.cache-242-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
@@ -417,6 +433,10 @@ jobs:
             doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-251-api-code.outputs.cache-hit != 'true'
@@ -449,6 +469,10 @@ jobs:
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
       - name: Pull 25.2 Fluent docker image
         if: steps.cache-252-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
@@ -479,6 +503,10 @@ jobs:
             doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
       - name: Pull 26.1 Fluent docker image
         if: steps.cache-261-api-code.outputs.cache-hit != 'true'
@@ -515,6 +543,10 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
           retention-days: 7
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
   test:
     name: Unit Testing
@@ -600,6 +632,10 @@ jobs:
           name: coverage_report
           path: ./htmlcov
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
   nightly-dev-test:
     name: Release Testing
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
@@ -671,6 +707,10 @@ jobs:
       - name: Cleanup previous docker containers
         if: always()
         run: make cleanup-previous-docker-containers
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
   clean-up:
     name: Remove docker image

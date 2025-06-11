@@ -69,6 +69,10 @@ jobs:
           cat src/ansys/fluent/core/generated/fluent_version_222.py
           python -c "from ansys.fluent.core.generated.solver.settings_222 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
       - name: Pull 23.1 Fluent docker image
         run: make docker-pull
         env:
@@ -83,6 +87,10 @@ jobs:
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_231.py
           python -c "from ansys.fluent.core.generated.solver.settings_231 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
       - name: Pull 23.2 Fluent docker image
         run: make docker-pull
@@ -99,6 +107,10 @@ jobs:
           cat src/ansys/fluent/core/generated/fluent_version_232.py
           python -c "from ansys.fluent.core.generated.solver.settings_232 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
       - name: Pull 24.1 Fluent docker image
         run: make docker-pull
         env:
@@ -113,6 +125,10 @@ jobs:
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_241.py
           python -c "from ansys.fluent.core.generated.solver.settings_241 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
       - name: Pull 25.1 Fluent docker image
         run: make docker-pull
@@ -144,6 +160,10 @@ jobs:
             dist/*.whl
             dist/*.tar.gz
           retention-days: 7
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
   test:
     name: Unit Testing
@@ -212,3 +232,7 @@ jobs:
       - name: Cleanup previous docker containers
         if: always()
         run: make cleanup-previous-docker-containers
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images

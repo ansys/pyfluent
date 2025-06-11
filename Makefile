@@ -21,6 +21,9 @@ version-info:
 docker-pull:
 	@bash .ci/pull_fluent_image.sh
 
+docker-clean-images:
+	@docker system prune --volumes -a -f
+
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
