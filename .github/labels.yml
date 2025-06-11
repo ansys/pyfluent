@@ -162,3 +162,11 @@
 - name: epic
   description: "Related to an epic issue"
   color: 76D7C4
+
+- name: dependencies
+  description: "Related to dependencies"
+  color: A569BD
+
+- name: CI/CD
+  description: "Related to CI/CD"
+  color: 85C1E9
