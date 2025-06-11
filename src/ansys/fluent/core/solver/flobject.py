@@ -80,6 +80,7 @@ from ansys.fluent.core.variable_strategies import (
 import ansys.units
 
 from . import _docstrings
+from ..exceptions import warning_for_fluent_dev_version
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
@@ -2274,6 +2275,7 @@ def get_root(
                 CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
+            warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()
             root_cls, _ = get_cls("", obj_info, version=version)
