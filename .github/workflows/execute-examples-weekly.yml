@@ -1,23 +1,28 @@
 name: Execute Examples Weekly
 
 on:
-  schedule:  # UTC at 0400 on Saturday
-    - cron:  '0 4 * * SAT'
+  schedule: # UTC at 0400 on Saturday
+    - cron: "0 4 * * SAT"
   workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
-  PYFLUENT_LOGGING: 'DEBUG'
-  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  PYTHON_VERSION: '3.12'
+  PYTHON_VERSION: "3.12"
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
   PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
 jobs:
-
   execute_examples:
     name: Build
     runs-on: [public-ubuntu-latest-8-cores]
@@ -90,8 +95,8 @@ jobs:
 
       - name: Execute Examples
         run: |
-            echo "Executing examples"
-            sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
+          echo "Executing examples"
+          sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 

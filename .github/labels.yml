@@ -4,7 +4,7 @@
 #
 # This file is used by labeler to sync the labels (and their colors),
 # and assign a label to the new pull request.
-# 
+#
 # Check the yml for more info: .github\workflows\label.yml
 #
 
@@ -73,7 +73,7 @@
 - name: new feature
   description: "Request or proposal for a new feature"
   color: 85C1E9
-  
+
 - name: enhancement
   description: "Improve any current implemented feature"
   color: 85C1E9
@@ -139,10 +139,6 @@
   description: "Related to the datamodel API"
   color: F4D03F
 
-- name: Fluent
-  description: "Requires changes in Fluent"
-  color: F9E79F
-
 - name: refactoring
   description: "Related to refactoring"
   color: 27AE60
@@ -166,3 +162,11 @@
 - name: epic
   description: "Related to an epic issue"
   color: 76D7C4
+
+- name: dependencies
+  description: "Related to dependencies"
+  color: A569BD
+
+- name: CI/CD
+  description: "Related to CI/CD"
+  color: 85C1E9
