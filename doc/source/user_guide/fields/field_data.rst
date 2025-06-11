@@ -43,7 +43,7 @@ To obtain surface vertex coordinates for a given surface, create a
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import SurfaceDataType, SurfaceFieldDataRequest
+  >>> from ansys.fluent.core import SurfaceDataType, SurfaceFieldDataRequest
 
   >>> vertices_request = SurfaceFieldDataRequest(
   >>>     surfaces=["inlet"],
@@ -98,7 +98,7 @@ To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataR
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import ScalarFieldDataRequest
+  >>> from ansys.fluent.core import ScalarFieldDataRequest
   >>> absolute_pressure_request = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
   >>> absolute_pressure_data = field_data.get_field_data(absolute_pressure_request)
 
@@ -115,7 +115,7 @@ To obtain vector field data, such as velocity vectors, use ``VectorFieldDataRequ
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import VectorFieldDataRequest
+  >>> from ansys.fluent.core import VectorFieldDataRequest
   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
   >>> velocity_vector_data = field_data.get_field_data(velocity_request)
   # Shape: (262, 3) - Velocity vectors for 262 faces, each with components (vx, vy, vz) for 'inlet'.
@@ -131,7 +131,7 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import PathlinesFieldDataRequest
+  >>> from ansys.fluent.core import PathlinesFieldDataRequest
   >>> velocity_pathlines_request = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
   >>> velocity_path_lines_data = field_data.get_field_data(velocity_pathlines_request)
 
