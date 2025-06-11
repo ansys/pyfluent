@@ -13,16 +13,16 @@ Accessing field info objects
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent()
-  >>> solver.settings.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
-  >>> solver.settings.solution.initialization.hybrid_initialize()
+  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session.settings.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
+  >>> solver_session.settings.solution.initialization.hybrid_initialize()
 
 
-The field info object is an attribute of the :obj:`~ansys.fluent.core.session_solver.Solver` object:
+The field info object is an attribute of the :obj:`~ansys.fluent.core.session_solver_session.Solver` object:
 
 .. code-block:: python
 
-  >>> field_info = solver.fields.field_info
+  >>> field_info = solver_session.fields.field_info
 
 Sample requests
 ---------------

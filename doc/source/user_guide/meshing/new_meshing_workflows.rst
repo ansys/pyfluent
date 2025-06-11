@@ -20,10 +20,10 @@ Import geometry
     from ansys.fluent.core import examples
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    watertight = meshing.watertight()
+    watertight = meshing_session.watertight()
     watertight.import_geometry.file_name.set_state(import_file_name)
     watertight.import_geometry.length_unit.set_state('in')
     watertight.import_geometry()
@@ -96,7 +96,7 @@ Switch to solution mode
 
 .. code:: python
 
-    solver = meshing.switch_to_solver()
+    solver_session = meshing_session.switch_to_solver()
 
 Fault-tolerant meshing workflow
 -------------------------------
@@ -115,13 +115,13 @@ Import CAD and part management
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
-    meshing = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
-    fault_tolerant = meshing.fault_tolerant()
-    meshing.PartManagement.InputFileChanged(
+    meshing_session = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
+    fault_tolerant = meshing_session.fault_tolerant()
+    meshing_session.PartManagement.InputFileChanged(
         FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
     )
-    meshing.PMFileManagement.FileManager.LoadFiles()
-    meshing.PartManagement.Node["Meshing Model"].Copy(
+    meshing_session.PMFileManagement.FileManager.LoadFiles()
+    meshing_session.PartManagement.Node["Meshing Model"].Copy(
         Paths=[
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
@@ -130,7 +130,7 @@ Import CAD and part management
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-    meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state("part")
+    meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state("part")
     fault_tolerant.import_cad_and_part_management.context.set_state(0)
     fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
     fault_tolerant.import_cad_and_part_management.fmd_file_name.set_state(import_file_name)
@@ -331,7 +331,7 @@ Switch to solution mode
 
 .. code:: python
 
-    solver = meshing.switch_to_solver()
+    solver_session = meshing_session.switch_to_solver()
 
 
 2D meshing workflow
@@ -348,10 +348,10 @@ Import geometry
     from ansys.fluent.core import examples
 
     import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
-    meshing = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    two_dim_mesh = meshing.two_dimensional_meshing()
+    two_dim_mesh = meshing_session.two_dimensional_meshing()
 
     two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
     two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
@@ -481,10 +481,10 @@ Create workflow
     from ansys.fluent.core import examples
 
     import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    meshing = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    created_workflow = meshing.create_workflow()
+    created_workflow = meshing_session.create_workflow()
 
 Insert first task
 ~~~~~~~~~~~~~~~~~
@@ -521,10 +521,10 @@ Load workflow
     saved_workflow_path = examples.download_file(
         "sample_watertight_workflow.wft", "pyfluent/meshing_workflow"
     )
-    meshing = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
+    loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path)
 
 
 Insert new task
@@ -535,10 +535,10 @@ You can insert new tasks into the meshing workflow in an object-oriented manner.
 
     import ansys.fluent.core as pyfluent
 
-    meshing = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
-    watertight = meshing.watertight()
+    watertight = meshing_session.watertight()
     watertight.import_geometry.insertable_tasks()
     watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
 
@@ -563,7 +563,7 @@ Current workflow
 
 .. code:: python
 
-    meshing.current_workflow
+    meshing_session.current_workflow
 
 .. Note::
    The ``current_workflow`` property raises an attribute error when no workflow is initialized.
@@ -595,12 +595,12 @@ explicitly set by the user.
     >>> from ansys.fluent.core import examples
 
     >>> import_file_name = examples.download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
-    >>> meshing = pyfluent.launch_fluent(
+    >>> meshing_session = pyfluent.launch_fluent(
     >>>     mode=pyfluent.FluentMode.MESHING,
     >>>     precision=pyfluent.Precision.DOUBLE,
     >>>     processor_count=2
     >>> )
-    >>> watertight = meshing.watertight()
+    >>> watertight = meshing_session.watertight()
 
     >>> import_geometry = watertight.import_geometry
     >>> import_geometry.arguments()
