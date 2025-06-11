@@ -62,6 +62,9 @@ from tensorflow import keras
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.visualization import config
+
+config.interactive = False
 
 ###########################################################################
 # Specifying save path

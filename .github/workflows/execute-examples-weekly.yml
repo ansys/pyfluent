@@ -79,14 +79,12 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
       - name: Execute brake.py
         run: |
           python examples/00-fluent/brake.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
       - name: Execute conjugate_heat_transfer.py
         run: |
           python examples/00-fluent/conjugate_heat_transfer.py
