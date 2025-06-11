@@ -57,7 +57,16 @@ import pyvista as pv
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import Contour, GraphicsWindow, Mesh, Vector, XYPlot
+from ansys.fluent.visualization import (
+    Contour,
+    GraphicsWindow,
+    Mesh,
+    Vector,
+    XYPlot,
+    config,
+)
+
+config.interactive = False
 
 filenames = {
     "Windows": "cht_fin_htc_new.scdoc",
