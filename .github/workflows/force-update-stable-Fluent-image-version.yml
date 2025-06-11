@@ -53,6 +53,11 @@ jobs:
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
+# TODO: Remove the following job
   clean-up:
     name: Remove docker image
     runs-on: [self-hosted, pyfluent]

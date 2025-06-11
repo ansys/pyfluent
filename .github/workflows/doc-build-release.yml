@@ -85,6 +85,10 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
   deploy_release_docs:
     runs-on: ubuntu-latest
     needs: [build_release_docs]

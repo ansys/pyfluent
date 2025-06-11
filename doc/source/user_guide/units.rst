@@ -8,7 +8,7 @@ However, PyFluent also allows you to work in arbitrary physical examples. Here's
 .. code-block:: python
 
   >>> from ansys.units import Quantity
-  >>> hydraulic_diameter = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"].turbulence.hydraulic_diameter
+  >>> hydraulic_diameter = solver_session.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"].turbulence.hydraulic_diameter
   >>> hydraulic_diameter.set_state(.02)
   >>> hydraulic_diameter.get_state()
   0.02

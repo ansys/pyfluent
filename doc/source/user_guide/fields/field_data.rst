@@ -17,12 +17,12 @@ You can do this either by loading both case and data files or by reading a case 
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
   >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
   >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
-  >>> solver.settings.file.read_case_data(file_name=case_path)
+  >>> solver_session.settings.file.read_case_data(file_name=case_path)
 
-  >>> field_data = solver.fields.field_data  # This creates an instance of the FieldData class.
+  >>> field_data = solver_session.fields.field_data  # This creates an instance of the FieldData class.
 
 Simple requests
 ---------------
@@ -154,7 +154,7 @@ To retrieve multiple field data types in a single transaction, create a transact
 
 .. code-block:: python
 
-  >>> transaction = solver.fields.field_data.new_transaction()
+  >>> transaction = solver_session.fields.field_data.new_transaction()
   # This creates a new transaction object for batching multiple requests.
 
 Add multiple requests using ``add_requests`` and access the data with ``get_response``:
@@ -238,7 +238,7 @@ using the field data streaming mechanism:
   >>> )
 
   >>> # Launch Fluent in Meshing mode
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
   >>> # Dictionary to store mesh data
   >>> mesh_data = {}
@@ -252,18 +252,18 @@ using the field data streaming mechanism:
   >>>             mesh_data[index] = {field_name: data}
 
   >>> # Register the callback function
-  >>> meshing.fields.field_data_streaming.register_callback(plot_mesh)
+  >>> meshing_session.fields.field_data_streaming.register_callback(plot_mesh)
 
   >>> # Start field data streaming with byte stream and chunk size
-  >>> meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
+  >>> meshing_session.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
 
   >>> # Initialize the Meshing workflow
-  >>> meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+  >>> meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
   >>> # Import the geometry into the workflow
-  >>> meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
   >>>    "FileName": import_file_name,
   >>>    "LengthUnit": "in",
   >>> }
 
-  >>> meshing.workflow.TaskObject["Import Geometry"].Execute()
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Execute()

@@ -105,3 +105,7 @@ jobs:
         with:
           name: coverage_report
           path: ./htmlcov
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
