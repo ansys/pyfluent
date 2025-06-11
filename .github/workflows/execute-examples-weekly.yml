@@ -45,6 +45,18 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
       - name: Install Dependencies
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
