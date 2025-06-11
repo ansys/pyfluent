@@ -23,7 +23,7 @@ The following code triggers a callback at the end of every iteration.
   >>> def on_iteration_ended(session, event_info: IterationEndedEventInfo):
   >>>     print("Iteration ended. Index = ", event_info.index)
   >>>
-  >>> callback_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
+  >>> callback_id = solver_session.events.register_callback(SolverEvent.ITERATION_ENDED, on_iteration_ended)
 
 The general signature of the callback function is ``cb(session, event_info, <additional arguments>)``, where ``session`` is the session instance
 and ``event_info`` instance holds information about the event. The event information classes for each event are documented in the
@@ -53,13 +53,13 @@ the registered function is automatically called, allowing users to perform custo
 
   >>> on_case_loaded.loaded = False
 
-  >>> solver = pyfluent.launch_fluent()
-  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
 
   >>> on_case_loaded.loaded
   False
 
-  >>> solver.settings.file.read_case(file_name=case_file_name)
+  >>> solver_session.settings.file.read_case(file_name=case_file_name)
 
   >>> on_case_loaded.loaded
   True
@@ -102,16 +102,16 @@ reusable handlers that can react differently based on runtime configuration or c
 
   >>> on_case_loaded_with_args.state = None
 
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
 
-  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
-  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42)
-  >>> solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
+  >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args_optional_first, 12, y=42)
+  >>> solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
 
   >>> on_case_loaded.loaded
   False
 
-  >>> solver.settings.file.read_case(file_name=case_file_name)
+  >>> solver_session.settings.file.read_case(file_name=case_file_name)
 
   >>> on_case_loaded.loaded
   True
@@ -148,7 +148,7 @@ combining Fluent’s event hooks with real-time visualization updates.
   >>> from ansys.fluent.visualization.pyvista import pyvista_windows_manager
   >>> from ansys.fluent.visualization import Graphics
   >>>
-  >>> graphics = Graphics(session=solver)
+  >>> graphics = Graphics(session=solver_session)
   >>>
   >>> contour1 = graphics.Contours["contour-1"]
   >>> contour1.field = "temperature"
@@ -164,16 +164,16 @@ combining Fluent’s event hooks with real-time visualization updates.
   >>>       pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
   >>>       matplot_windows_manager.refresh_windows("", ["residual"])
   >>>
-  >>> callback_itr_id = solver.events.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
+  >>> callback_itr_id = solver_session.events.register_callback(SolverEvent.ITERATION_ENDED, auto_refersh_call_back_iteration)
   >>>
   >>> @execute_in_event_loop_threadsafe
   >>> def initialize_call_back(session, event_info: SolutionInitializedEventInfo | DataLoadedEventInfo):
   >>>     pyvista_windows_manager.refresh_windows(session.id, ["contour-1", "contour-2"])
   >>>     matplot_windows_manager.refresh_windows("", ["residual"])
   >>>
-  >>> callback_init_id = solver.events.register_callback(SolverEvent.SOLUTION_INITIALIZED, initialize_call_back)
+  >>> callback_init_id = solver_session.events.register_callback(SolverEvent.SOLUTION_INITIALIZED, initialize_call_back)
   >>>
-  >>> callback_data_read_id = solver.events.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
+  >>> callback_data_read_id = solver_session.events.register_callback(SolverEvent.DATA_LOADED, initialize_call_back)
   >>>
   >>> def on_case_loaded(session, event_info: CaseLoadedEventInfo):
   >>>     print("Case loaded. Index = ", event_info.index)
@@ -183,7 +183,7 @@ combining Fluent’s event hooks with real-time visualization updates.
   >>>
   >>> callback = meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
   >>>
-  >>> callback_case = solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
+  >>> callback_case = solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
   >>>
-  >>> callback_case_with_args = solver.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
+  >>> callback_case_with_args = solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded_with_args, 12, y=42)
   >>>

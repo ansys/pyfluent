@@ -17,12 +17,12 @@ You can do this either by loading both case and data files or by reading a case 
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
   >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
   >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
-  >>> solver.settings.file.read_case_data(file_name=case_path)
+  >>> solver_session.settings.file.read_case_data(file_name=case_path)
 
-  >>> field_data = solver.fields.field_data  # This creates an instance of the FieldData class.
+  >>> field_data = solver_session.fields.field_data  # This creates an instance of the FieldData class.
 
 Simple requests
 ---------------
@@ -154,7 +154,7 @@ To retrieve multiple field data types in a single transaction, create a transact
 
 .. code-block:: python
 
-  >>> transaction = solver.fields.field_data.new_transaction()
+  >>> transaction = solver_session.fields.field_data.new_transaction()
   # This creates a new transaction object for batching multiple requests.
 
 Add multiple requests using ``add_requests`` and access the data with ``get_response``:

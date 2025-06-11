@@ -96,7 +96,7 @@ Switch to solution mode
 
 .. code:: python
 
-    solver = meshing.switch_to_solver()
+    solver_session = meshing.switch_to_solver()
 
 Fault-tolerant meshing workflow
 -------------------------------
@@ -331,7 +331,7 @@ Switch to solution mode
 
 .. code:: python
 
-    solver = meshing.switch_to_solver()
+    solver_session = meshing.switch_to_solver()
 
 
 2D meshing workflow

@@ -10,9 +10,9 @@ Copy material from database
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver = pyfluent.launch_fluent()
-    >>> solver.settings.file.read_case(file_name=file_name)
-    >>> materials = pyfluent.Materials(settings_source=solver)
+    >>> solver_session = pyfluent.launch_fluent()
+    >>> solver_session.settings.file.read_case(file_name=file_name)
+    >>> materials = pyfluent.Materials(settings_source=solver_session)
     >>> fluids = materials.fluid
     >>> fluids.make_a_copy(from_="air",to="air-2")
     >>> air_copy = fluids["air-2"]
@@ -34,7 +34,7 @@ Copy material from database
      'sutherland',
      'kinetic-theory']
     >>> air_copy.viscosity.value.set_state(1.81e-05)
-    >>> elbow_fluid = pyfluent.solver.FluidCellZone(settings_source=solver, name="elbow-fluid")
+    >>> elbow_fluid = pyfluent.solver.FluidCellZone(settings_source=solver_session, name="elbow-fluid")
     >>> elbow_fluid.material.set_state("air-2")
 
 

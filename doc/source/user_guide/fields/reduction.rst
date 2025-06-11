@@ -33,7 +33,7 @@ with two separate examples case files as follows:
     >>> data_path = download_file("elbow1.dat.h5", "pyfluent/file_session")
     >>> solver2.settings.file.read_case_data(file_name=case_path)
 
-    >>> solver = solver1
+    >>> solver_session =solver1
 
 
 Functional Usage
@@ -53,7 +53,7 @@ Here's how to set up a simple example:
   >>> # Compute the minimum of absolute pressure across multiple solvers
   >>> reduction.minimum(
     ...     expression="AbsolutePressure",
-    ...     locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]],
+    ...     locations=[VelocityInlets(settings_source=solver_session) for solver in [solver1, solver2]],
     ... )
     101343.2241809384
 
@@ -61,16 +61,16 @@ Here's how to set up a simple example:
 Object-Oriented Usage
 ---------------------
 The **object-oriented approach** leverages solver instance attributes
-like `solver.fields.reduction` to perform reductions. While this approach
+like `solver_session.fields.reduction` to perform reductions. While this approach
 is intuitive for single-solver scenarios, it may be less suited to multi-solver or functional-style workflows.
 
-To use reduction functions within a specific solver instance, initialize the solver and access the functions via `solver.fields.reduction`:
+To use reduction functions within a specific solver instance, initialize the solver and access the functions via `solver_session.fields.reduction`:
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.area_average(
+  >>> solver_session.fields.reduction.area_average(
   ...     expression="AbsolutePressure",
-  ...     locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+  ...     locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
 
@@ -78,10 +78,10 @@ For convenience, context-aware reductions are also supported:
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.area(locations=["inlet1"])
+  >>> solver_session.fields.reduction.area(locations=["inlet1"])
   0.002555675491754098
 
-  >>> reduction.area(locations=["inlet1"], ctxt=solver)
+  >>> reduction.area(locations=["inlet1"], ctxt=solver_session)
   0.002555675491754098
 
 
@@ -249,7 +249,7 @@ Functional:
 
   >>> reduction.area_average(
   ...     expression="AbsolutePressure",
-  ...     locations=solver.setup.boundary_conditions.velocity_inlet,
+  ...     locations=solver_session.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
 
@@ -257,9 +257,9 @@ Object-Oriented:
 
 .. code-block:: python
 
-  >>> solver.fields.reduction.area_average(
+  >>> solver_session.fields.reduction.area_average(
   ...     expression="AbsolutePressure",
-  ...     locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+  ...     locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
 
@@ -283,7 +283,7 @@ Object-Oriented:
   >>> reduction.minimum(
   ...     expression="AbsolutePressure",
   ...     locations=[
-  ...         VelocityInlets(settings_source=solver) for solver in [solver1, solver2]
+  ...         VelocityInlets(settings_source=solver_session) for solver in [solver1, solver2]
   ...     ],
   ... )
   101343.2241809384
@@ -293,7 +293,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> cent = reduction.centroid(
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
+  >>>   locations=[solver_session.settings.setup.boundary_conditions.velocity_inlet["inlet2"]]
   >>> )
   >>> cent.array
   array([-2.85751176e-02, -7.92555538e-20, -4.41951790e-02])
@@ -303,7 +303,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> cent = reduction.centroid(
-  >>>   locations=[VelocityInlets(settings_source=solver) for solver in [solver1, solver2]]
+  >>>   locations=[VelocityInlets(settings_source=solver_session) for solver in [solver1, solver2]]
   >>> )
   >>> cent.array
   array([-0.35755706, -0.15706201, -0.02360788])
@@ -315,7 +315,7 @@ Object-Oriented:
 
   >>> reduction.sum(
   >>>   expression="AbsolutePressure",
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
+  >>>   locations=[solver_session.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
   80349034.56621933
@@ -327,7 +327,7 @@ Object-Oriented:
   >>> reduction.sum_if(
   >>>   expression="AbsolutePressure",
   >>>   condition="AbsolutePressure > 0[Pa]",
-  >>>   locations=[solver.settings.setup.boundary_conditions.velocity_inlet],
+  >>>   locations=[solver_session.settings.setup.boundary_conditions.velocity_inlet],
   >>>   weight="Area"
   >>> )
   80349034.56621933
