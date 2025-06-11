@@ -27,14 +27,14 @@ Tests for `PhysicalQuantity` objects.
 import pytest
 
 import ansys.fluent.core as pf  # noqa: F401
-from ansys.fluent.core import examples
-from ansys.fluent.core.file_session import FileSession
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core import (
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
+    examples,
 )
+from ansys.fluent.core.file_session import FileSession
 from ansys.units.variable_descriptor import VariableCatalog
 
 

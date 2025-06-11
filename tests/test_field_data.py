@@ -24,17 +24,19 @@ import numpy as np
 import pytest
 from test_utils import pytest_approx
 
-from ansys.fluent.core import examples
-from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.exceptions import DisallowedValuesError
-from ansys.fluent.core.field_data_interfaces import FieldUnavailable
-from ansys.fluent.core.services.field_data import (
-    CellElementType,
+from ansys.fluent.core import (
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
+    examples,
+)
+from ansys.fluent.core.examples.downloads import download_file
+from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.field_data_interfaces import FieldUnavailable
+from ansys.fluent.core.services.field_data import (
+    CellElementType,
     ZoneType,
 )
 

@@ -9,20 +9,20 @@ This process supports the conversion of multiple TUI journals by passing a list 
 .. code-block:: python
 
   >>> # Write the converted Python commands from journal.jou to journal.py
-  >>> solver = pyfluent.launch_fluent(journal_file_names="journal.jou", topy=True)
-  >>> solver.exit()
+  >>> solver_session = pyfluent.launch_fluent(journal_file_names="journal.jou", topy=True)
+  >>> solver_session.exit()
   >>>
   >>> # Write the converted Python commands from journal.jou to journal_1.py
-  >>> solver = pyfluent.launch_fluent(journal_file_names="journal.jou", topy="journal_1.py")
-  >>> solver.exit()
+  >>> solver_session = pyfluent.launch_fluent(journal_file_names="journal.jou", topy="journal_1.py")
+  >>> solver_session.exit()
   >>>
   >>> # Write the converted Python commands from journal_1.jou and then from journal_2.jou to a single file journal_1_journal_2.py
-  >>> solver = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy=True)
-  >>> solver.exit()
+  >>> solver_session = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy=True)
+  >>> solver_session.exit()
   >>>
   >>> # Write the converted Python commands from journal_1.jou and then from journal_2.jou to journal_1_2.py
-  >>> solver = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy="journal_1_2.py")
-  >>> solver.exit()
+  >>> solver_session = pyfluent.launch_fluent(journal_file_names=["journal_1.jou", "journal_2.jou"], topy="journal_1_2.py")
+  >>> solver_session.exit()
 
 
 Recording a Python Journal
@@ -34,9 +34,9 @@ Here’s how to record a Fluent Python journal:
 
 .. code-block:: python
 
-  >>> solver.journal.start(file_name="pyfluent_journal.py")
+  >>> solver_session.journal.start(file_name="pyfluent_journal.py")
   <Python code>
-  >>> solver.journal.stop()
+  >>> solver_session.journal.stop()
 
 
 The specified file is created or overwritten, capturing both scripted and interactive actions as Python code until the ``stop()`` method is invoked.

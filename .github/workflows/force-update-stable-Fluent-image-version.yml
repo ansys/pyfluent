@@ -1,16 +1,22 @@
 name: Force update stable Fluent image version
 
 on:
-    #pull_request:
-    workflow_dispatch:
-  
+  #pull_request:
+  workflow_dispatch:
+
 concurrency:
-    group: ${{ github.ref }}
-    cancel-in-progress: true
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
-  MAIN_PYTHON_VERSION: '3.10'
+  MAIN_PYTHON_VERSION: "3.10"
   FLUENT_IMAGE_TAG: v26.1.0
   FLUENT_VERSION: 261
 
@@ -47,6 +53,11 @@ jobs:
           DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
+
+# TODO: Remove the following job
   clean-up:
     name: Remove docker image
     runs-on: [self-hosted, pyfluent]

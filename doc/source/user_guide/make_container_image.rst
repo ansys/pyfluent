@@ -88,5 +88,5 @@ to run the Docker container using PyFluent:
     import ansys.fluent.core as pyfluent
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
     custom_config = {'fluent_image': 'ansys_inc:latest', 'mount_source': f"{os.getcwd()}", 'auto_remove': False}
-    solver = pyfluent.launch_fluent(container_dict=custom_config)
+    solver_session = pyfluent.launch_fluent(container_dict=custom_config)
 

@@ -1,25 +1,29 @@
-
 name: Test Podman Compose
 
 on:
-  schedule:  # UTC at 0600
-      - cron:  '0 6 * * *'
+  schedule: # UTC at 0600
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
+
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_USE_PODMAN_COMPOSE: 1
-  PYFLUENT_LOGGING: 'DEBUG'
-  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  PYTHON_VERSION: '3.12'
-
+  PYTHON_VERSION: "3.12"
 
 jobs:
   install-podman:
@@ -100,7 +104,7 @@ jobs:
 
       - name: Run Fluent test script
         run: |
-            python tests/podman_compose.py
+          python tests/podman_compose.py
 
       - name: Cleanup previous containers
         if: always()
