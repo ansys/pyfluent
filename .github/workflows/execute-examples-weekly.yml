@@ -61,6 +61,8 @@ jobs:
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo apt update
+          sudo apt install libegl1
           pip install ansys-fluent-core>=0.32.1
           pip install ansys-fluent-visualization>=0.20.0
 
