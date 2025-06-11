@@ -102,10 +102,10 @@ def version_info() -> str:
 
 
 # Latest released Fluent version
-FLUENT_RELEASE_VERSION = "25.1.0"
+FLUENT_RELEASE_VERSION = "25.2.0"
 
 # Current dev Fluent version
-FLUENT_DEV_VERSION = "25.2.0"
+FLUENT_DEV_VERSION = "26.1.0"
 
 # Path to the example input/data files are downloaded
 EXAMPLES_PATH = str(get_examples_download_dir())

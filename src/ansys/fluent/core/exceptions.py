@@ -24,7 +24,6 @@
 from typing import Any, Iterable
 import warnings
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 
@@ -56,17 +55,11 @@ class InvalidArgument(ValueError):
 
 def warning_for_fluent_dev_version(version):
     """Provides warning if Fluent develop branch is used."""
-    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core import FLUENT_RELEASE_VERSION, FluentVersion
 
-    if (
-        pyfluent.utils.load_module(
-            f"fluent_version_{version}", CODEGEN_OUTDIR / f"fluent_version_{version}.py"
-        ).FLUENT_BRANCH
-        == "develop"
-    ):
+    if FluentVersion(version) > FluentVersion(FLUENT_RELEASE_VERSION):
         warnings.warn(
-            "WARNING:\n"
-            "This is using a prototype version of FLUENT that has not yet been tested and validated.\n"
-            "ANSYS, Inc. makes no commitment to resolve defects reported against this FLUENT prototype version.\n"
-            "However, your feedback will help us improve the overall quality of the product."
+            "⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.\n"
+            "Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released "
+            "version of Fluent that is officially supported by this version of PyFluent."
         )
