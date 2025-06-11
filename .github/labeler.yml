@@ -1,9 +1,3 @@
-permissions:
-  contents: write
-  packages: read
-  pull-requests: write
-  issues: write
-
 documentation:
   - changed-files:
       - any-glob-to-any-file:
