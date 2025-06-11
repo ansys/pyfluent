@@ -73,7 +73,7 @@ jobs:
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
-          pip install ansys-fluent-visualization==0.18.dev0
+          pip install ansys-fluent-visualization>=0.20.0
           make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
@@ -94,12 +94,11 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # Requires discovery which is not available in the Fluent image
-      # - name: Execute ahmed_body_workflow.py
-      #   run: |
-      #     python examples/00-fluent/ahmed_body_workflow.py
-      #   env:
-      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      - name: Execute ahmed_body_workflow.py
+        run: |
+          python examples/00-fluent/ahmed_body_workflow.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute brake.py
         run: |
