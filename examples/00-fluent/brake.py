@@ -43,6 +43,7 @@ This example demonstrates:
 
 import csv
 import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 
@@ -186,9 +187,12 @@ session.settings.solution.monitor.report_plots["max-temperature"] = {
 }
 
 session.settings.solution.monitor.report_files.create(name="max-temperature")
+
+file_path = Path(os.getcwd()) / "max-temperature.out"
+
 session.settings.solution.monitor.report_files["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"],
-    "file_name": "max-temperature.out",
+    "file_name": str(file_path),
 }
 session.settings.solution.monitor.report_files["max-temperature"].report_defs = [
     "max-pad-temperature",
@@ -346,7 +350,7 @@ Y = []
 Z = []
 i = -1
 session.chdir(os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", os.getcwd()))
-with open("max-temperature.out", "r") as datafile:
+with open(file_path, "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1

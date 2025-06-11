@@ -52,8 +52,14 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull Fluent docker image
-        run: make docker-pull
+      - name: Pull Fluent docker image if not present
+        run: |
+          if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
+            echo "Image not found locally, pulling..."
+            make docker-pull
+          else
+            echo "Image already exists locally, skipping pull."
+          fi
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
