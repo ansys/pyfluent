@@ -238,7 +238,7 @@ using the field data streaming mechanism:
   >>> )
 
   >>> # Launch Fluent in Meshing mode
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
   >>> # Dictionary to store mesh data
   >>> mesh_data = {}
@@ -252,18 +252,18 @@ using the field data streaming mechanism:
   >>>             mesh_data[index] = {field_name: data}
 
   >>> # Register the callback function
-  >>> meshing.fields.field_data_streaming.register_callback(plot_mesh)
+  >>> meshing_session.fields.field_data_streaming.register_callback(plot_mesh)
 
   >>> # Start field data streaming with byte stream and chunk size
-  >>> meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
+  >>> meshing_session.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
 
   >>> # Initialize the Meshing workflow
-  >>> meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+  >>> meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
   >>> # Import the geometry into the workflow
-  >>> meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
   >>>    "FileName": import_file_name,
   >>>    "LengthUnit": "in",
   >>> }
 
-  >>> meshing.workflow.TaskObject["Import Geometry"].Execute()
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Execute()

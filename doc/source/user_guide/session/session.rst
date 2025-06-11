@@ -51,7 +51,7 @@ session that starts a second Fluent instance and is independent of your PyFluent
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
 
 A uniform interface exists across solver settings objects. For instance,
@@ -138,7 +138,7 @@ task-based meshing workflow code:
 
 .. code:: python
 
-  >>> watertight = meshing.watertight()
+  >>> watertight = meshing_session.watertight()
   >>> from ansys.fluent.core.examples import download_file
   >>> import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
   >>> import_geometry = watertight.import_geometry
@@ -181,7 +181,7 @@ You switch between meshing and solution modes by calling the :obj:`switch_to_sol
 
 .. code:: python
 
-  >>> switched_solver = meshing.switch_to_solver()
+  >>> switched_solver = meshing_session.switch_to_solver()
 
 
 The ``switched_solver`` session uses the same Fluent instance that was previously used by the

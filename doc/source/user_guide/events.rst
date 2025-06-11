@@ -181,7 +181,7 @@ combining Fluent’s event hooks with real-time visualization updates.
   >>> def on_case_loaded_with_args(session, event_info: CaseLoadedEventInfo, x, y):
   >>>     print(f"Case loaded with {x}, {y}. Index = ", event_info.index)
   >>>
-  >>> callback = meshing.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
+  >>> callback = meshing_session.events.register_callback(MeshingEvent.CASE_LOADED, on_case_loaded)
   >>>
   >>> callback_case = solver_session.events.register_callback(SolverEvent.CASE_LOADED, on_case_loaded)
   >>>

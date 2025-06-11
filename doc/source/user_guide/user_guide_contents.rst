@@ -37,12 +37,12 @@ A simple example
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v251)
-  >>> watertight = meshing.watertight()
+  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING, product_version=pyfluent.FluentVersion.v251)
+  >>> watertight = meshing_session.watertight()
   >>> watertight.import_geometry.file_name = pyfluent.examples.download_file("mixing_elbow.pmdb","pyfluent/mixing_elbow")
   >>> watertight.import_geometry()
   >>> watertight.create_volume_mesh()
-  >>> solver_session = meshing.switch_to_solver()
+  >>> solver_session = meshing_session.switch_to_solver()
   >>> setup, solution = solver_session.settings.setup, solver_session.settings.solution
   >>> setup.boundary_conditions.set_zone_type(zone_list=["cold-inlet", "hot-inlet"], new_type="velocity-inlet")
   >>> setup.boundary_conditions.set_zone_type(zone_list=["outlet"], new_type="pressure-outlet")

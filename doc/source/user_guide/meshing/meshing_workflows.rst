@@ -21,10 +21,10 @@ Import geometry
     >>> from ansys.fluent.core import examples
 
     >>> import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
-    >>> meshing = pyfluent.launch_fluent(
+    >>> meshing_session = pyfluent.launch_fluent(
     >>>     mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     >>> )
-    >>> workflow = meshing.workflow
+    >>> workflow = meshing_session.workflow
     >>> workflow.InitializeWorkflow(WorkflowType='Watertight Geometry')
     >>> tasks = workflow.TaskObject
     >>> import_geometry = tasks['Import Geometry']
@@ -123,7 +123,7 @@ Switch to solution mode
 
 .. code:: python
 
-    >>> solver_session = meshing.switch_to_solver()
+    >>> solver_session = meshing_session.switch_to_solver()
 
 Fault-tolerant meshing workflow
 -------------------------------
@@ -142,15 +142,15 @@ Import CAD and part management
     >>> import_file_name = examples.download_file(
     >>>     "exhaust_system.fmd", "pyfluent/exhaust_system"
     >>> )
-    >>> meshing = pyfluent.launch_fluent(
+    >>> meshing_session = pyfluent.launch_fluent(
     >>>     precision=pyfluent.Precision.DOUBLE,
     >>>     processor_count=2,
     >>>     mode=pyfluent.FluentMode.MESHING
     >>> )
-    >>> workflow = meshing.workflow
+    >>> workflow = meshing_session.workflow
     >>> workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
-    >>> part_management = meshing.PartManagement
-    >>> file_management = meshing.PMFileManagement
+    >>> part_management = meshing_session.PartManagement
+    >>> file_management = meshing_session.PMFileManagement
     >>> part_management.InputFileChanged(
     >>>     FilePath=import_file_name,
     >>>     IgnoreSolidNames=False,
@@ -309,7 +309,7 @@ Enclose fluid regions (capping)
 
     >>> enclose.InsertCompoundChildTask()
     >>> enclose.Arguments.set_state({})
-    meshing.workflow.TaskObject["inlet-3"].Execute()
+    meshing_session.workflow.TaskObject["inlet-3"].Execute()
     >>> enclose.Arguments.set_state(
     >>>     {
     >>>         "PatchName": "outlet-1",
@@ -595,7 +595,7 @@ Switch to solution mode
 
 .. code:: python
 
-    >>> solver_session = meshing.switch_to_solver()
+    >>> solver_session = meshing_session.switch_to_solver()
 
 
 2D meshing workflow
@@ -612,12 +612,12 @@ Import geometry
     >>> from ansys.fluent.core import examples
 
     >>> import_file_name = examples.download_file('NACA0012.fmd', 'pyfluent/airfoils')
-    >>> meshing = pyfluent.launch_fluent(
+    >>> meshing_session = pyfluent.launch_fluent(
     >>>     mode=pyfluent.FluentMode.MESHING,
     >>>     precision=pyfluent.Precision.DOUBLE,
     >>>     processor_count=2
     >>> )
-    >>> workflow = meshing.workflow
+    >>> workflow = meshing_session.workflow
     >>> tasks = workflow.TaskObject
     >>> load_cad = workflow.TaskObject["Load CAD Geometry"]
     >>> load_cad.Arguments.set_state(
@@ -837,5 +837,5 @@ The ``TaskObject`` container supports dictionary semantics:
 
 .. code:: python
 
-    >>> for name, object_dict in meshing.workflow.TaskObject.items():
+    >>> for name, object_dict in meshing_session.workflow.TaskObject.items():
     >>>     print(f"Task name: {name}, state: {object_dict}")
