@@ -50,6 +50,7 @@ Conjugate Heat Transfer
 import csv
 import os
 from pathlib import Path
+import platform
 
 import matplotlib.pyplot as plt
 import pyvista as pv
@@ -58,8 +59,13 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.visualization import Contour, GraphicsWindow, Mesh, Vector, XYPlot
 
+filenames = {
+    "Windows": "cht_fin_htc_new.scdoc",
+    "Other": "cht_fin_htc_new.scdoc.pmdb",
+}
+
 geom_filename = examples.download_file(
-    "cht_fin_htc_new.scdoc",
+    filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/CHT",
 )
 
