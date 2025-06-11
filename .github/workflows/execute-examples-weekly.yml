@@ -45,47 +45,12 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
-      - name: Add version information
-        run: make version-info
-
-      - name: Install pyfluent
-        run: make install
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ansys-bot
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Pull Fluent docker image
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Run API codegen
+      - name: Install Dependencies
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
+          pip install ansys-fluent-core>=0.32.1
           pip install ansys-fluent-visualization>=0.20.0
-          make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Print Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
 
       - name: Execute Examples
         run: |
@@ -127,6 +92,12 @@ jobs:
       - name: Execute external_compressible_flow.py
         run: |
           python examples/00-fluent/external_compressible_flow.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Execute frozen_rotor_workflow.py
+        run: |
+          python examples/00-fluent/frozen_rotor_workflow.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
