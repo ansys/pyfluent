@@ -23,9 +23,9 @@ Single-phase
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.file_session import FileSession
-  >>> from ansys.fluent.core.services.field_data import (
+  >>> from ansys.fluent.core import (
+  >>>   examples,
   >>>   ScalarFieldDataRequest,
   >>>   SurfaceDataType,
   >>>   SurfaceFieldDataRequest,
@@ -113,9 +113,9 @@ Multiphase
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core import examples
   >>> from ansys.fluent.core.file_session import FileSession
-  >>> from ansys.fluent.core.services.field_data import (
+  >>> from ansys.fluent.core import (
+  >>>   examples,
   >>>   ScalarFieldDataRequest,
   >>>   SurfaceDataType,
   >>>   SurfaceFieldDataRequest,
