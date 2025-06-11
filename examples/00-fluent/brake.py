@@ -42,6 +42,7 @@ This example demonstrates:
 # ==================================================================================
 
 import csv
+import os
 
 import matplotlib.pyplot as plt
 
@@ -344,6 +345,7 @@ X = []
 Y = []
 Z = []
 i = -1
+session.chdir(os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", os.getcwd()))
 with open("max-temperature.out", "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:

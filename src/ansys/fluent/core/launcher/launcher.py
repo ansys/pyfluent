@@ -340,8 +340,6 @@ def launch_fluent(
     )
 
     launcher_type = _mode_to_launcher_type(fluent_launch_mode)
-    if launcher_type == LaunchMode.CONTAINER:
-        argvals["cwd"] = os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", "")
     launch_fluent_args = set(inspect.signature(launch_fluent).parameters.keys())
     launcher_type_args = set(
         inspect.signature(launcher_type.__init__).parameters.keys()
