@@ -42,6 +42,7 @@ This example demonstrates:
 # ==================================================================================
 
 import csv
+import os
 
 import matplotlib.pyplot as plt
 
@@ -54,7 +55,7 @@ config.interactive = False
 import_filename = examples.download_file(
     "brake.msh.h5",
     "pyfluent/examples/Brake-Thermal-PyVista-Matplotlib",
-    return_without_path=False,
+    save_path=os.getcwd(),
 )
 
 ####################################################################################
@@ -345,7 +346,7 @@ X = []
 Y = []
 Z = []
 i = -1
-with open("max-temperature.out", "r") as datafile:
+with open(os.path.join(os.getcwd(), "max-temperature.out"), "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1
