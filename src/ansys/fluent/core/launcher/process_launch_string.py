@@ -25,6 +25,8 @@
 import json
 import os
 from pathlib import Path
+import platform
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
@@ -34,11 +36,24 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
 )
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.scheduler import build_parallel_options, load_machines
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
+
+
+def _get_default_ui_mode() -> str:
+    """Get the default UI mode based on the operating system."""
+    if platform.system() == "Linux":
+        return UIMode.NO_GUI
+
+
+def _should_add_driver_null(ui_mode: UIMode | None = None) -> bool:
+    if ui_mode is None:
+        ui_mode = _get_default_ui_mode()
+    return ui_mode not in {UIMode.GUI, UIMode.HIDDEN_GUI}
 
 
 def _build_fluent_launch_args_string(**kwargs) -> str:
@@ -100,11 +115,25 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
     ui_mode = UIMode(kwargs.get("ui_mode"))
-    if ui_mode and ui_mode.get_fluent_value()[0]:
-        launch_args_string += f" -{ui_mode.get_fluent_value()[0]}"
+    ui_mode_value = ui_mode.get_fluent_value()[0]
+    if ui_mode_value:
+        launch_args_string += f" -{ui_mode_value}"
     graphics_driver = kwargs.get("graphics_driver")
-    if graphics_driver and graphics_driver.get_fluent_value()[0]:
-        launch_args_string += f" -driver {graphics_driver.get_fluent_value()[0]}"
+    graphics_driver_value = graphics_driver.get_fluent_value()[0]
+    if _should_add_driver_null(ui_mode):
+        launch_args_string += " -driver null"
+    if graphics_driver_value != "null" and ui_mode not in {
+        UIMode.GUI,
+        UIMode.HIDDEN_GUI,
+    }:
+        warnings.warn(
+            """\nIf the UI mode is ``UIMode.GUI`` or ``UIMode.HIDDEN_GUI``,
+                      then we need to start fluent with ``FluentWindowsGraphicsDriver.AUTO`` or ``FluentLinuxGraphicsDriver.AUTO``
+                      which should be automatic (no action needed on PyFluent side).\n""",
+            PyFluentUserWarning,
+        )
+    if graphics_driver_value != "null" and ui_mode in {UIMode.GUI, UIMode.HIDDEN_GUI}:
+        launch_args_string += f" -driver {graphics_driver_value}"
     return launch_args_string
 
 

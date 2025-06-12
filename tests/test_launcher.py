@@ -29,7 +29,7 @@ from tempfile import TemporaryDirectory
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import PyFluentDeprecationWarning
+from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
@@ -583,3 +583,67 @@ def test_docker_compose(monkeypatch):
     )
     solver.file.read_case(file_name=case_file_name)
     solver.exit()
+
+
+def test_respect_driver_is_not_null():
+    assert (
+        _build_fluent_launch_args_string(
+            ui_mode=UIMode.GUI,
+            graphics_driver=FluentWindowsGraphicsDriver.DX11,
+            additional_arguments="",
+            processor_count=None,
+        ).strip()
+        == "3ddp -driver dx11"
+        if is_windows()
+        else "3ddp -gu -driver null"
+    )
+    assert (
+        _build_fluent_launch_args_string(
+            ui_mode=UIMode.HIDDEN_GUI,
+            graphics_driver=FluentWindowsGraphicsDriver.AUTO,
+            additional_arguments="",
+            processor_count=None,
+        ).strip()
+        == "3ddp -hidden -driver"
+        if is_windows()
+        else "3ddp -gu -driver null"
+    )
+
+
+def test_driver_is_null():
+    with pytest.warns(PyFluentUserWarning):
+        assert (
+            _build_fluent_launch_args_string(
+                ui_mode=UIMode.NO_GUI,
+                graphics_driver=FluentWindowsGraphicsDriver.DX11,
+                additional_arguments="",
+                processor_count=None,
+            ).strip()
+            == "3ddp -gu -driver null"
+            if is_windows()
+            else "3ddp -gu -driver null"
+        )
+    with pytest.warns(PyFluentUserWarning):
+        assert (
+            _build_fluent_launch_args_string(
+                ui_mode=UIMode.NO_GRAPHICS,
+                graphics_driver=FluentWindowsGraphicsDriver.AUTO,
+                additional_arguments="",
+                processor_count=None,
+            ).strip()
+            == "3ddp -gr -driver null"
+            if is_windows()
+            else "3ddp -gr -driver null"
+        )
+    with pytest.warns(PyFluentUserWarning):
+        assert (
+            _build_fluent_launch_args_string(
+                ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
+                graphics_driver=FluentWindowsGraphicsDriver.AUTO,
+                additional_arguments="",
+                processor_count=None,
+            ).strip()
+            == "3ddp -g -driver null"
+            if is_windows()
+            else "3ddp -g -driver null"
+        )
