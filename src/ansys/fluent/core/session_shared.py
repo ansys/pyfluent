@@ -69,7 +69,7 @@ def _make_datamodel_module(session, module_name):
 
         file_name = datamodel_file_name_map[module_name]
         module = pyfluent.utils.load_module(
-            f"{module_name}_{session._version}",
+            f"{module_name if module_name != 'MeshingUtilities' else file_name}_{session._version}",
             CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{file_name}.py",
         )
         warning_for_fluent_dev_version(session._version)
