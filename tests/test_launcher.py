@@ -585,7 +585,7 @@ def test_docker_compose(monkeypatch):
     solver.exit()
 
 
-def test_respect_driver_is_not_null():
+def test_respect_driver_is_not_null_on_windows():
     assert (
         _build_fluent_launch_args_string(
             ui_mode=UIMode.GUI,
@@ -594,8 +594,6 @@ def test_respect_driver_is_not_null():
             processor_count=None,
         ).strip()
         == "3ddp -driver dx11"
-        if is_windows()
-        else "3ddp -gu -driver null"
     )
     assert (
         _build_fluent_launch_args_string(
@@ -605,12 +603,10 @@ def test_respect_driver_is_not_null():
             processor_count=None,
         ).strip()
         == "3ddp -hidden -driver"
-        if is_windows()
-        else "3ddp -gu -driver null"
     )
 
 
-def test_driver_is_null():
+def test_driver_is_null_on_windows():
     with pytest.warns(PyFluentUserWarning):
         assert (
             _build_fluent_launch_args_string(
@@ -620,8 +616,6 @@ def test_driver_is_null():
                 processor_count=None,
             ).strip()
             == "3ddp -gu -driver null"
-            if is_windows()
-            else "3ddp -gu -driver null"
         )
     with pytest.warns(PyFluentUserWarning):
         assert (
@@ -632,8 +626,6 @@ def test_driver_is_null():
                 processor_count=None,
             ).strip()
             == "3ddp -gr -driver null"
-            if is_windows()
-            else "3ddp -gr -driver null"
         )
     with pytest.warns(PyFluentUserWarning):
         assert (
@@ -644,6 +636,58 @@ def test_driver_is_null():
                 processor_count=None,
             ).strip()
             == "3ddp -g -driver null"
-            if is_windows()
-            else "3ddp -g -driver null"
+        )
+
+
+def test_respect_driver_is_not_null_on_linux():
+    assert (
+        _build_fluent_launch_args_string(
+            ui_mode=UIMode.GUI,
+            graphics_driver=FluentLinuxGraphicsDriver.X11,
+            additional_arguments="",
+            processor_count=None,
+        ).strip()
+        == "3ddp -gu -driver null"
+    )
+    assert (
+        _build_fluent_launch_args_string(
+            ui_mode=UIMode.HIDDEN_GUI,
+            graphics_driver=FluentLinuxGraphicsDriver.AUTO,
+            additional_arguments="",
+            processor_count=None,
+        ).strip()
+        == "3ddp -gu -driver null"
+    )
+
+
+def test_driver_is_null_on_linux():
+    with pytest.warns(PyFluentUserWarning):
+        assert (
+            _build_fluent_launch_args_string(
+                ui_mode=UIMode.NO_GUI,
+                graphics_driver=FluentLinuxGraphicsDriver.X11,
+                additional_arguments="",
+                processor_count=None,
+            ).strip()
+            == "3ddp -gu -driver null"
+        )
+    with pytest.warns(PyFluentUserWarning):
+        assert (
+            _build_fluent_launch_args_string(
+                ui_mode=UIMode.NO_GRAPHICS,
+                graphics_driver=FluentLinuxGraphicsDriver.AUTO,
+                additional_arguments="",
+                processor_count=None,
+            ).strip()
+            == "3ddp -gr -driver null"
+        )
+    with pytest.warns(PyFluentUserWarning):
+        assert (
+            _build_fluent_launch_args_string(
+                ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
+                graphics_driver=FluentLinuxGraphicsDriver.AUTO,
+                additional_arguments="",
+                processor_count=None,
+            ).strip()
+            == "3ddp -g -driver null"
         )
