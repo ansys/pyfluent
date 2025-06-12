@@ -294,12 +294,7 @@ jobs:
         id: cache-231-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0
 
       - name: Pull 23.1 Fluent docker image
         if: steps.cache-231-api-code.outputs.cache-hit != 'true'
@@ -324,12 +319,7 @@ jobs:
         id: cache-232-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.2.0
 
       - name: Remove all docker images
         if: always()
@@ -358,12 +348,7 @@ jobs:
         id: cache-241-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.1.0
 
       - name: Remove all docker images
         if: always()
@@ -392,12 +377,7 @@ jobs:
         id: cache-242-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0
 
       - name: Remove all docker images
         if: always()
@@ -426,12 +406,7 @@ jobs:
         id: cache-251-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.1.0
 
       - name: Remove all docker images
         if: always()
@@ -460,12 +435,7 @@ jobs:
         id: cache-252-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v25.2.0
 
       - name: Remove all docker images
         if: always()
@@ -494,12 +464,7 @@ jobs:
         id: cache-261-api-code
         with:
           path: src/ansys/fluent/core/generated
-            doc/source/api/core/meshing/tui
-            doc/source/api/core/meshing/datamodel
-            doc/source/api/core/solver/tui
-            doc/source/api/core/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Remove all docker images
         if: always()
