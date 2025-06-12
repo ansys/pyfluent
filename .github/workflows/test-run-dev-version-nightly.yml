@@ -57,7 +57,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v3.4.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -106,7 +106,7 @@ jobs:
         if: always()
         run: make docker-clean-images
 
-# TODO: Remove the following job
+  # TODO: Remove the following job
   clean-up:
     name: Remove docker image
     runs-on: [self-hosted, pyfluent]
