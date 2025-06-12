@@ -190,12 +190,7 @@ jobs:
         with:
           path: |
             src/ansys/fluent/core/generated
-            doc/source/api/meshing/tui
-            doc/source/api/meshing/datamodel
-            doc/source/api/solver/tui
-            doc/source/api/solver/datamodel
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          restore-keys: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
