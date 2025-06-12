@@ -49,6 +49,7 @@ Design of Experiments and Machine Learning model building
 
 # flake8: noqa: E402
 
+import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -69,16 +70,11 @@ config.interactive = False
 ###########################################################################
 # Specifying save path
 # ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-
-save_path = Path(pyfluent.EXAMPLES_PATH)
 
 import_filename = examples.download_file(
     "elbow.cas.h5",
     "pyfluent/examples/DOE-ML-Mixing-Elbow",
-    save_path=save_path,
+    save_path=os.getcwd(),
 )
 
 #######################
@@ -301,7 +297,9 @@ def fit_and_predict(model):
 
     df_combined = pd.concat([com_train_set, com_test_set])
 
-    df_combined.to_csv("PyFluent_Output.csv", header=True, index=False)
+    df_combined.to_csv(
+        os.path.join(os.getcwd(), "PyFluent_Output.csv"), header=True, index=False
+    )
 
     fig = plt.figure(figsize=(12, 5))
 

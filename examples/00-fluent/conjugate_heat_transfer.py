@@ -76,6 +76,7 @@ filenames = {
 geom_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/CHT",
+    save_path=os.getcwd(),
 )
 
 #######################

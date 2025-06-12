@@ -70,6 +70,7 @@ jobs:
           sudo apt install libegl1
           pip install ansys-fluent-core>=0.32.1
           pip install ansys-fluent-visualization>=0.20.0
+          pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
 
       - name: Execute Examples
         run: |
@@ -90,11 +91,12 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute conjugate_heat_transfer.py
-        run: |
-          python examples/00-fluent/conjugate_heat_transfer.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # https://github.com/ansys/pyfluent/issues/4157
+      # - name: Execute conjugate_heat_transfer.py
+      #   run: |
+      #     python examples/00-fluent/conjugate_heat_transfer.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute DOE_ML.py
         run: |
