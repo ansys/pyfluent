@@ -42,8 +42,6 @@ This example demonstrates:
 # ==================================================================================
 
 import csv
-import os
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 
@@ -56,6 +54,7 @@ config.interactive = False
 import_filename = examples.download_file(
     "brake.msh.h5",
     "pyfluent/examples/Brake-Thermal-PyVista-Matplotlib",
+    return_without_path=False,
 )
 
 ####################################################################################
@@ -187,12 +186,9 @@ session.settings.solution.monitor.report_plots["max-temperature"] = {
 }
 
 session.settings.solution.monitor.report_files.create(name="max-temperature")
-
-file_path = Path(os.getcwd()) / "max-temperature.out"
-
 session.settings.solution.monitor.report_files["max-temperature"] = {
     "report_defs": ["max-pad-temperature", "max-disc-temperature"],
-    "file_name": str(file_path),
+    "file_name": "max-temperature.out",
 }
 session.settings.solution.monitor.report_files["max-temperature"].report_defs = [
     "max-pad-temperature",
@@ -349,8 +345,7 @@ X = []
 Y = []
 Z = []
 i = -1
-session.chdir(os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE", os.getcwd()))
-with open(file_path, "r") as datafile:
+with open("max-temperature.out", "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1
