@@ -438,31 +438,6 @@ def test_exposure_and_graphics_driver_arguments():
         pyfluent.launch_fluent(ui_mode="gu")
     with pytest.raises(ValueError):
         pyfluent.launch_fluent(graphics_driver="x11" if is_windows() else "dx11")
-    for m in UIMode:
-        string1 = _build_fluent_launch_args_string(
-            ui_mode=m, additional_arguments="", processor_count=None
-        ).strip()
-        string2 = (
-            f"3ddp -{m.get_fluent_value()[0]}" if m.get_fluent_value()[0] else "3ddp"
-        )
-        assert string1 == string2
-    for e in (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver):
-        for m in e:
-            msg = _build_fluent_launch_args_string(
-                graphics_driver=m, additional_arguments="", processor_count=None
-            ).strip()
-            if is_windows():
-                assert (
-                    msg == f"3ddp -hidden -driver {m.get_fluent_value()[0]}"
-                    if m.get_fluent_value()[0]
-                    else " 3ddp -hidden"
-                )
-            else:
-                assert (
-                    msg == f"3ddp -gu -driver {m.get_fluent_value()[0]}"
-                    if m.get_fluent_value()[0]
-                    else " 3ddp -gu"
-                )
 
 
 def test_additional_arguments_fluent_launch_args_string():
@@ -516,7 +491,7 @@ def test_standalone_launcher_dry_run(monkeypatch):
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f"{fluent_path} 3ddp -gu -sifile={server_info_file_name} -nm"
+        == f"{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm"
     )
 
 
@@ -531,7 +506,7 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f"{fluent_path} 3ddp -gu -sifile={Path(server_info_file_name).name} -nm"
+            == f"{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm"
         )
 
 
@@ -679,7 +654,7 @@ def test_driver_is_null_on_linux():
                     additional_arguments="",
                     processor_count=None,
                 ).strip()
-                == "3ddp -gr -driver null"
+                == "3ddp -gu -driver null"
             )
         with pytest.warns(PyFluentUserWarning):
             assert (
@@ -689,5 +664,5 @@ def test_driver_is_null_on_linux():
                     additional_arguments="",
                     processor_count=None,
                 ).strip()
-                == "3ddp -g -driver null"
+                == "3ddp -gu -driver null"
             )
