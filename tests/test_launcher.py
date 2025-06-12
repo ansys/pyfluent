@@ -639,7 +639,7 @@ def test_driver_is_null_on_windows():
         )
 
 
-def test_respect_driver_is_not_null_on_linux():
+def test_driver_is_null_on_linux():
     assert (
         _build_fluent_launch_args_string(
             ui_mode=UIMode.GUI,
@@ -658,9 +658,6 @@ def test_respect_driver_is_not_null_on_linux():
         ).strip()
         == "3ddp -gu -driver null"
     )
-
-
-def test_driver_is_null_on_linux():
     with pytest.warns(PyFluentUserWarning):
         assert (
             _build_fluent_launch_args_string(
