@@ -360,3 +360,7 @@ class Solver(BaseSession):
             "stop_journal",
         }
         return sorted(dir_list)
+
+    def enable_beta_features(self):
+        """Enable access to Fluent beta-features"""
+        self.settings.file.beta_settings(enable=True)

@@ -238,3 +238,7 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
+
+    def enable_beta_features(self):
+        """Enable access to Fluent beta-features"""
+        self.tui.beta_feature_access("yes")
