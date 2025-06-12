@@ -9,7 +9,7 @@ Fluent's gRPC server so that commands can be sent to it from the Python interpre
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
 
 
 You can use the :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`
@@ -30,7 +30,7 @@ directory:
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.connect_to_fluent(
+  >>> solver_session = pyfluent.connect_to_fluent(
   >>>     server_info_file_name="server.txt"
   >>> )
 
@@ -46,12 +46,12 @@ These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
+  >>> solver_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER)
   
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
 
 
 Meshing mode
@@ -83,7 +83,7 @@ and set the floating point precision:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE
   >>> )
 
@@ -95,7 +95,7 @@ modeling dimension to two:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE,
   >>>      dimension=pyfluent.Dimension.TWO
   >>> )
@@ -108,7 +108,7 @@ number of processors for local parallel execution:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE,
   >>>      dimension=pyfluent.Dimension.TWO,
   >>>      processor_count=2
@@ -122,7 +122,7 @@ distributed across more than one machine:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     processor_count=16
@@ -196,7 +196,7 @@ machines and cores:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>      precision=pyfluent.Precision.DOUBLE,
   >>>      dimension=pyfluent.Dimension.THREE
   >>> )
@@ -207,7 +207,7 @@ Fluent uses:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     processor_count=16,
@@ -228,7 +228,7 @@ using the ``additional_arguments`` parameter. For local parallel execution, simp
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     additional_arguments="-t16"
@@ -239,7 +239,7 @@ For distributed parallel processing, you usually pass both parameters:
 
 .. code:: python
 
-  >>> solver = pyfluent.launch_fluent(
+  >>> solver_session = pyfluent.launch_fluent(
   >>>     precision=pyfluent.Precision.DOUBLE,
   >>>     dimension=pyfluent.Dimension.THREE,
   >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
@@ -261,7 +261,7 @@ scheduler without using any bash script:
   >>>     },
   >>>     additional_arguments="-t16 -cnf=m1:8,m2:8",
   >>> )
-  >>> solver = slurm.result()
+  >>> solver_session = slurm.result()
 
 
 .. vale off
@@ -338,10 +338,10 @@ Then launch:
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
   >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> solver.file.read(file_name=case_file_name, file_type="case")
-  >>> solver.exit()
+  >>> solver_session.file.read(file_name=case_file_name, file_type="case")
+  >>> solver_session.exit()
 
 
 Connect to a Fluent container running inside WSL from a Windows host
@@ -359,7 +359,7 @@ Connect to a Fluent container running inside WSL from a Windows host
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written `server.txt`>)
+  >>> solver_session = pyfluent.connect_to_fluent(ip="localhost", port=63084, password=<password written `server.txt`>)
 
 
 Connecting to a Fluent container running inside Linux from a Windows host
@@ -379,7 +379,7 @@ Connecting to a Fluent container running inside Linux from a Windows host
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> solver = pyfluent.connect_to_fluent(ip="10.18.19.151", port=44383, password="hbsosnni")
+  >>> solver_session = pyfluent.connect_to_fluent(ip="10.18.19.151", port=44383, password="hbsosnni")
 
 
 Connecting to Fluent on Windows from a Linux or WSL host
@@ -448,13 +448,13 @@ Run the following Python code to connect to Fluent and transfer files:
    from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
    file_service = RemoteFileTransferStrategy("10.18.44.179", 50000)
-   solver = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
+   solver_session = connect_to_fluent(ip="10.18.44.179", port=51344, password="5scj6c8l", file_transfer_service=file_service)
 
    # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
-   solver.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
+   solver_session.file.read_case(file_name="/home/user_name/mixing_elbow.cas.h5")
 
    # `elbow_remote.cas.h5` will be downloaded to local working directory
-   solver.file.write_case(file_name="elbow_remote.cas.h5")
+   solver_session.file.write_case(file_name="elbow_remote.cas.h5")
 
 
 Connecting to Fluent on Linux or WSL from a Windows host
@@ -508,11 +508,11 @@ Run the following Python code to connect to Fluent and transfer files:
    from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
 
    file_service = RemoteFileTransferStrategy("10.18.19.150", 50000)
-   solver = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)
+   solver_session = connect_to_fluent(ip="10.18.19.150", port=41429, password="u5s3iivh", file_transfer_service=file_service)
 
    # `mixing_elbow.cas.h5` will be uploaded to remote Fluent working directory
-   solver.file.read_case(file_name="D:\path_to_file\mixing_elbow.cas.h5")
+   solver_session.file.read_case(file_name="D:\path_to_file\mixing_elbow.cas.h5")
 
    # `elbow_remote.cas.h5` will be downloaded to local working directory
-   solver.file.write_case(file_name="elbow_remote.cas.h5")
+   solver_session.file.write_case(file_name="elbow_remote.cas.h5")
 

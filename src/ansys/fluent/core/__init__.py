@@ -32,6 +32,13 @@ from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
 
 # isort: on
 
+from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+)
 from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,

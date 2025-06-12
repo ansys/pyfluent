@@ -24,18 +24,18 @@ from pathlib import Path
 
 import pytest
 
-from ansys.fluent.core import examples
-from ansys.fluent.core.file_session import (
-    FileSession,
-    InvalidFieldName,
-    InvalidMultiPhaseFieldName,
-)
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core import (
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
+    examples,
+)
+from ansys.fluent.core.file_session import (
+    FileSession,
+    InvalidFieldName,
+    InvalidMultiPhaseFieldName,
 )
 
 
