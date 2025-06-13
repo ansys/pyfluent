@@ -81,7 +81,12 @@ Modeling Species Transport and Gaseous Combustion
 # sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
 # sphinx_gallery_thumbnail_path = '_static/species_transport/setup.png'
 
+import os
+
 import ansys.fluent.core as pyfluent
+from ansys.fluent.visualization import config
+
+config.interactive = False
 
 solver_session = pyfluent.launch_fluent(dimension=2)
 print(solver_session.get_fluent_version())
@@ -112,7 +117,9 @@ from ansys.fluent.core.solver import (  # noqa: E402
 #
 # Download the mesh file and read it into the Fluent session.
 
-mesh_file = download_file("gascomb.msh.gz", "pyfluent/tutorials/species_transport")
+mesh_file = download_file(
+    "gascomb.msh.gz", "pyfluent/tutorials/species_transport", save_path=os.getcwd()
+)
 solver_session.settings.file.read_mesh(file_name=mesh_file)
 
 # %%

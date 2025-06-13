@@ -86,16 +86,22 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 # flake8: noqa: E402
 
 from itertools import chain
+import os
 
 import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.visualization import config
+
+config.interactive = False
+
 
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     examples.download_file(
         f,
         "pyfluent/lunar_lander_thermal",
+        save_path=os.getcwd(),
     )
     for f in [
         "lander_geom.scdoc",
@@ -265,7 +271,7 @@ solver_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=12,
     mode="solver",
-    cwd=pyfluent.EXAMPLES_PATH,
+    cwd=os.getcwd(),
 )
 print(solver_session.get_fluent_version())
 
@@ -680,7 +686,7 @@ for i in range(n_steps):
     # Calculate radiator mean temperature
     rad_mean_temp = get_surf_mean_temp(
         ["sc-radiator"],
-        solver,
+        solver_session,
     )
 
     # Simulate closing louvers below 273 K by changing emissivity
@@ -739,7 +745,7 @@ def clean_col_names(df):
 # alphabetical character, implemented as negative lookarounds in a regular
 # expression.
 
-root = Path(pyfluent.EXAMPLES_PATH)
+root = Path(os.getcwd())
 sep = r"(?<![a-zA-Z])\s+(?![a-zA-Z])"
 
 # Read in regolith data

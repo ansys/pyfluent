@@ -98,12 +98,6 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute DOE_ML.py
-        run: |
-          python examples/00-fluent/DOE_ML.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
       - name: Execute exhaust_system_settings_api.py
         run: |
           python examples/00-fluent/exhaust_system_settings_api.py
@@ -167,6 +161,13 @@ jobs:
       - name: Execute tyler_sofrin_modes.py
         run: |
           python examples/00-fluent/tyler_sofrin_modes.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # Execute this at the end as it takes a long time to run (~17 minutes)
+      - name: Execute DOE_ML.py
+        run: |
+          python examples/00-fluent/DOE_ML.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 

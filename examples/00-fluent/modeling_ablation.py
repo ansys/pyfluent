@@ -74,6 +74,7 @@ Modeling Ablation
 ####################################################################################
 # Import required libraries/modules
 # ==================================================================================
+import os
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -85,6 +86,7 @@ from ansys.fluent.visualization import Contour, GraphicsWindow, config
 import_filename = examples.download_file(
     "ablation.msh.h5",
     "pyfluent/examples/Ablation-tutorial",
+    save_path=os.getcwd(),
 )
 
 ####################################################################################
