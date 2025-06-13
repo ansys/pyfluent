@@ -25,7 +25,7 @@
 import logging
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.exceptions import warning_for_fluent_dev_version
+from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 

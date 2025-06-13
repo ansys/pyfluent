@@ -80,7 +80,7 @@ from ansys.fluent.core.variable_strategies import (
 import ansys.units
 
 from . import _docstrings
-from ..exceptions import warning_for_fluent_dev_version
+from ..pyfluent_warnings import warning_for_fluent_dev_version
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
