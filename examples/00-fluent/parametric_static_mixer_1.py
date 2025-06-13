@@ -28,6 +28,7 @@ This example shows how you can use the parametric study workflow to analyze a
 static mixer.
 """
 
+import os
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
@@ -58,7 +59,7 @@ print(solver_session.get_fluent_version())
 import_filename = examples.download_file(
     "Static_Mixer_main.cas.h5",
     "pyfluent/static_mixer",
-    return_without_path=False,
+    save_path=os.getcwd(),
 )
 
 solver_session.settings.file.read_case(file_name=import_filename)
@@ -195,7 +196,7 @@ solver_session.settings.solution.monitor.residual.options.criterion_type = "abso
 # ~~~~~~~~~~
 # Write the case with all settings in place.
 
-case_path = str(Path(pyfluent.EXAMPLES_PATH) / "Static_Mixer_Parameters.cas.h5")
+case_path = str(Path(os.getcwd()) / "Static_Mixer_Parameters.cas.h5")
 solver_session.settings.file.write_case(file_name=case_path)
 
 ###########################################################################
@@ -279,9 +280,7 @@ solver_session.settings.parametric_studies[
 # ~~~~~~~~~~~~~~~~~~~~~~~~~
 # Export the design point table to a CSV file.
 
-design_point_table = str(
-    Path(pyfluent.EXAMPLES_PATH) / "design_point_table_study_1.csv"
-)
+design_point_table = str(Path(os.getcwd()) / "design_point_table_study_1.csv")
 
 solver_session.settings.parametric_studies.export_design_table(
     filepath=design_point_table
@@ -324,7 +323,7 @@ solver_session.settings.parametric_studies.delete(name_list="Static_Mixer_main-S
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Save the parametric project and close Fluent.
 
-project_filepath = str(Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save.flprj")
+project_filepath = str(Path(os.getcwd()) / "static_mixer_study_save.flprj")
 
 solver_session.settings.file.parametric_project.save_as(
     project_filename=project_filepath
@@ -341,9 +340,7 @@ solver_session = pyfluent.launch_fluent(
     precision="double", processor_count=2, mode="solver"
 )
 
-project_filepath_read = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save.flprj"
-)
+project_filepath_read = str(Path(os.getcwd()) / "static_mixer_study_save.flprj")
 
 solver_session.settings.file.parametric_project.open(
     project_filename=project_filepath_read, load_case=True
@@ -361,9 +358,7 @@ solver_session.settings.file.parametric_project.save()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Save the current project as a different project.
 
-project_filepath_save_as = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_save_as.flprj"
-)
+project_filepath_save_as = str(Path(os.getcwd()) / "static_mixer_study_save_as.flprj")
 
 solver_session.settings.file.parametric_project.save_as(
     project_filename=project_filepath_save_as
@@ -374,9 +369,7 @@ solver_session.settings.file.parametric_project.save_as(
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Export the current project.
 
-project_filepath_export = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_export.flprj"
-)
+project_filepath_export = str(Path(os.getcwd()) / "static_mixer_study_export.flprj")
 
 solver_session.settings.file.parametric_project.save_as_copy(
     project_filename=project_filepath_export, convert_to_managed=False
@@ -387,9 +380,7 @@ solver_session.settings.file.parametric_project.save_as_copy(
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Archive the current project.
 
-project_filepath_archive = str(
-    Path(pyfluent.EXAMPLES_PATH) / "static_mixer_study_archive.flprj"
-)
+project_filepath_archive = str(Path(os.getcwd()) / "static_mixer_study_archive.flprj")
 
 solver_session.settings.file.parametric_project.archive(
     archive_name=project_filepath_archive

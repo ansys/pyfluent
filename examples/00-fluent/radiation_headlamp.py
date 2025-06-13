@@ -65,6 +65,8 @@ material degradation.
 # Perform required imports, which includes downloading and importing the
 # geometry files.
 
+import os
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -72,6 +74,7 @@ headlamp_spaceclaim_file, headlamp_pmdb_file = [
     examples.download_file(
         f,
         "pyfluent/radiation_headlamp",
+        save_path=os.getcwd(),
     )
     for f in ["headlamp.scdoc", "headlamp.pmdb"]
 ]

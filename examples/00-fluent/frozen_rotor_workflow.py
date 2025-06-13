@@ -75,6 +75,7 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 # Import required libraries/modules
 # ==============================================================================================================
 import math
+import os
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
@@ -88,11 +89,13 @@ from ansys.fluent.core import examples
 impeller_mesh = examples.download_file(
     "impeller.msh.h5",
     "pyfluent/examples/pump-volute",
+    save_path=os.getcwd(),
 )
 
 volute_mesh = examples.download_file(
     "volute.msh.h5",
     "pyfluent/examples/pump-volute",
+    save_path=os.getcwd(),
 )
 
 ################################################################################################################
@@ -113,7 +116,6 @@ impeller_speed_rad = impeller_speed * 2 * math.pi / 60  # rad/s
 
 solver_session = pyfluent.launch_fluent(
     mode="solver",
-    ui_mode="gui",
     processor_count=4,
     cleanup_on_exit=True,
 )

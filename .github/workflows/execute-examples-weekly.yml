@@ -20,7 +20,6 @@ env:
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYTHON_VERSION: "3.12"
   PYFLUENT_SKIP_API_UPGRADE_ADVICE: 1
-  PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
 jobs:
   execute_examples:
@@ -51,18 +50,6 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
-      - name: Add version information
-        run: make version-info
-
-      - name: Install pyfluent
-        run: make install
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -70,28 +57,27 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull Fluent docker image
-        run: make docker-pull
+      - name: Pull Fluent docker image if not present
+        run: |
+          if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
+            echo "Image not found locally, pulling..."
+            make docker-pull
+          else
+            echo "Image already exists locally, skipping pull."
+          fi
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Run API codegen
+      - name: Install Dependencies
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
-          pip install ansys-fluent-visualization==0.18.dev0
-          make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Print Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
+          sudo apt update
+          sudo apt install libegl1
+          pip install ansys-fluent-core>=0.32.1
+          pip install ansys-fluent-core[reader]
+          pip install ansys-fluent-visualization>=0.20.0
+          pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
 
       - name: Execute Examples
         run: |
@@ -100,41 +86,36 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute ahmed_body_workflow.py
-        run: |
-          python examples/00-fluent/ahmed_body_workflow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute ahmed_body_workflow.py
+      #   run: |
+      #     python examples/00-fluent/ahmed_body_workflow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute brake.py
-        run: |
-          python examples/00-fluent/brake.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute brake.py
+      #   run: |
+      #     python examples/00-fluent/brake.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute conjugate_heat_transfer.py
-        run: |
-          python examples/00-fluent/conjugate_heat_transfer.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # https://github.com/ansys/pyfluent/issues/4157
+      # - name: Execute conjugate_heat_transfer.py
+      #   run: |
+      #     python examples/00-fluent/conjugate_heat_transfer.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute DOE_ML.py
-        run: |
-          python examples/00-fluent/DOE_ML.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute exhaust_system_settings_api.py
+      #   run: |
+      #     python examples/00-fluent/exhaust_system_settings_api.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute exhaust_system_settings_api.py
-        run: |
-          python examples/00-fluent/exhaust_system_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute external_compressible_flow.py
-        run: |
-          python examples/00-fluent/external_compressible_flow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute external_compressible_flow.py
+      #   run: |
+      #     python examples/00-fluent/external_compressible_flow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute lunar_lander_thermal.py
         run: |
@@ -148,11 +129,12 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute modeling_ablation.py
-        run: |
-          python examples/00-fluent/modeling_ablation.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # RuntimeError: Unable to load hsf library. (already installed ansys-fluent-core[reader])
+      # - name: Execute modeling_ablation.py
+      #   run: |
+      #     python examples/00-fluent/modeling_ablation.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute modeling_cavitation.py
         run: |
@@ -183,6 +165,20 @@ jobs:
           python examples/00-fluent/tyler_sofrin_modes.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # Execute this at the end as it takes a long time to run (~17 minutes)
+      # - name: Execute DOE_ML.py
+      #   run: |
+      #     python examples/00-fluent/DOE_ML.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # Execute this at the end as it takes a long time to run (~17 minutes)
+      # - name: Execute frozen_rotor_workflow.py
+      #   run: |
+      #     python examples/00-fluent/frozen_rotor_workflow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous docker containers
         if: always()

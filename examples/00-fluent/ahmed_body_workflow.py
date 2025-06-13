@@ -54,6 +54,7 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
+import os
 import platform
 
 import ansys.fluent.core as pyfluent
@@ -89,6 +90,7 @@ filenames = {
 geometry_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/Ahmed-Body-Simulation",
+    save_path=os.getcwd(),
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")

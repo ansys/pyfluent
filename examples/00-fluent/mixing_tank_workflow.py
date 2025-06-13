@@ -69,10 +69,14 @@ Mixing Tank Workflow
 # ===========================================================================================================
 
 import fnmatch
+import os
 import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.visualization import config
+
+config.interactive = False
 
 #############################################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
@@ -96,6 +100,7 @@ filenames = {
 geometry_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/MixingTank-WorkFlow",
+    save_path=os.getcwd(),
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
