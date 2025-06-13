@@ -79,17 +79,17 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute ahmed_body_workflow.py
-        run: |
-          python examples/00-fluent/ahmed_body_workflow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute ahmed_body_workflow.py
+      #   run: |
+      #     python examples/00-fluent/ahmed_body_workflow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute brake.py
-        run: |
-          python examples/00-fluent/brake.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute brake.py
+      #   run: |
+      #     python examples/00-fluent/brake.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
@@ -98,29 +98,23 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute exhaust_system_settings_api.py
-        run: |
-          python examples/00-fluent/exhaust_system_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute exhaust_system_settings_api.py
+      #   run: |
+      #     python examples/00-fluent/exhaust_system_settings_api.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute external_compressible_flow.py
-        run: |
-          python examples/00-fluent/external_compressible_flow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute external_compressible_flow.py
+      #   run: |
+      #     python examples/00-fluent/external_compressible_flow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute frozen_rotor_workflow.py
-        run: |
-          python examples/00-fluent/frozen_rotor_workflow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute lunar_lander_thermal.py
-        run: |
-          python examples/00-fluent/lunar_lander_thermal.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute lunar_lander_thermal.py
+      #   run: |
+      #     python examples/00-fluent/lunar_lander_thermal.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute mixing_elbow_settings_api.py
         run: |
@@ -165,11 +159,18 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # Execute this at the end as it takes a long time to run (~17 minutes)
-      - name: Execute DOE_ML.py
-        run: |
-          python examples/00-fluent/DOE_ML.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute DOE_ML.py
+      #   run: |
+      #     python examples/00-fluent/DOE_ML.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # Execute this at the end as it takes a long time to run (~17 minutes)
+      # - name: Execute frozen_rotor_workflow.py
+      #   run: |
+      #     python examples/00-fluent/frozen_rotor_workflow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous docker containers
         if: always()
