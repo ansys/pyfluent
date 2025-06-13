@@ -664,7 +664,9 @@ for i in range(n_steps):
     )
 
     # Set beam direction
-    solver_session.setup.boundary_conditions.wall["space"].radiation.beam_direction = [
+    solver_session.setup.boundary_conditions.wall[
+        "space"
+    ].radiation.direct_irradiation_settings.beam_direction = [
         beam_x,
         beam_y,
         beam_z,
