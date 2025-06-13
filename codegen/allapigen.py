@@ -5,7 +5,6 @@ from time import time
 
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentMode, FluentVersion, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
-from ansys.fluent.core.codegen.print_fluent_version import print_fluent_version
 from ansys.fluent.core.search import _generate_api_data
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -16,6 +15,7 @@ if __name__ == "__main__":
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
     ge_242 = FluentVersion(version) >= FluentVersion.v242
+    ge_261 = FluentVersion(version) >= FluentVersion.v261
 
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
@@ -39,8 +39,11 @@ if __name__ == "__main__":
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
         )
+    if ge_261:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
+            meshing._datamodel_service_se.get_static_info("meshing_workflow")
+        )
     meshing.exit()
-
     solver = launch_fluent(
         mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
     )
@@ -62,7 +65,6 @@ if __name__ == "__main__":
     t1 = time()
     print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
     CODEGEN_OUTDIR.mkdir(parents=True, exist_ok=True)
-    print_fluent_version(solver._app_utilities)
     solver.exit()
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."
