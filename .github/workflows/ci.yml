@@ -199,7 +199,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@v3.4.0
+        uses: docker/login-action@c65cd883420fd2eb864698a825fc4162dd94482c # v44
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -283,7 +283,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.4.0
+        uses: docker/login-action@c65cd883420fd2eb864698a825fc4162dd94482c # v44
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -601,7 +601,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@v3.4.0
+        uses: docker/login-action@c65cd883420fd2eb864698a825fc4162dd94482c # v44
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -667,7 +667,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3.4.0
+        uses: docker/login-action@c65cd883420fd2eb864698a825fc4162dd94482c # v3.4.0
         with:
           registry: ghcr.io
           username: ansys-bot
