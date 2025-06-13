@@ -151,6 +151,15 @@ def test_container_launcher():
     assert session.is_server_healthy()
 
 
+def test_container_launcher_working_dir():
+    container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
+    container_dict.update(
+        volumes=[f"{os.getcwd()}:/mnt/pyfluent"], working_dir="/mnt/pyfluent"
+    )
+    session = pyfluent.launch_fluent(container_dict=container_dict)
+    assert session.is_server_healthy()
+
+
 @pytest.mark.standalone
 def test_case_load():
     # Test that launch_fluent() works with a case file as an argument
