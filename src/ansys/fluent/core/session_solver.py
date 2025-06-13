@@ -117,6 +117,7 @@ class Solver(BaseSession):
             event_type=SolverEvent,
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
+        self._settings = None
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
 
     def _build_from_fluent_connection(
@@ -132,15 +133,6 @@ class Solver(BaseSession):
         self._system_coupling = None
         self._fluent_version = None
         self._bg_session_threads = []
-
-        #: Root settings object.
-        self.settings = flobject.get_root(
-            flproxy=self._settings_service,
-            version=self._version,
-            interrupt=Solver._interrupt,
-            file_transfer_service=self._file_transfer_service,
-            scheme_eval=self.scheme.eval,
-        )
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
@@ -181,6 +173,20 @@ class Solver(BaseSession):
         return service_creator("svar_data").create(
             self._solution_variable_service, self.fields.solution_variable_info
         )
+
+    @property
+    def settings(self):
+        """Settings root handle."""
+        if self._settings is None:
+            #: Root settings object.
+            self._settings = flobject.get_root(
+                flproxy=self._settings_service,
+                version=self._version,
+                interrupt=Solver._interrupt,
+                file_transfer_service=self._file_transfer_service,
+                scheme_eval=self.scheme.eval,
+            )
+        return self._settings
 
     @property
     def svar_data(self):

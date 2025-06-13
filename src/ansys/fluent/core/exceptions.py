@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 """Custom common higher level exceptions."""
-
 from typing import Any, Iterable
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
