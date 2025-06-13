@@ -580,6 +580,22 @@ def test_respect_driver_is_not_null():
         _build_fluent_launch_args_string(
             ui_mode=UIMode.HIDDEN_GUI,
             graphics_driver=(
+                FluentWindowsGraphicsDriver.OPENGL
+                if is_windows()
+                else FluentLinuxGraphicsDriver.OPENGL
+            ),
+            additional_arguments="",
+            processor_count=None,
+        ).strip()
+        == "3ddp -hidden -driver opengl"
+    )
+
+
+def test_do_not_add_auto_driver():
+    assert (
+        _build_fluent_launch_args_string(
+            ui_mode=UIMode.HIDDEN_GUI,
+            graphics_driver=(
                 FluentWindowsGraphicsDriver.AUTO
                 if is_windows()
                 else FluentLinuxGraphicsDriver.AUTO
@@ -587,7 +603,7 @@ def test_respect_driver_is_not_null():
             additional_arguments="",
             processor_count=None,
         ).strip()
-        == "3ddp -hidden -driver"
+        == "3ddp -hidden"
     )
 
 

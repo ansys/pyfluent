@@ -127,7 +127,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
     which should be automatic (no action needed on PyFluent side).\n""",
                 PyFluentUserWarning,
             )
-        else:
+        elif graphics_driver_value:
             launch_args_string += f" -driver {graphics_driver_value}"
     return launch_args_string
 
