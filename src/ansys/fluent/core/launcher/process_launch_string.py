@@ -25,7 +25,6 @@
 import json
 import os
 from pathlib import Path
-import platform
 import warnings
 
 import ansys.fluent.core as pyfluent
@@ -42,14 +41,6 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
-
-
-def _get_default_ui_mode(ui_mode: UIMode | None = None) -> UIMode:
-    """Get the default UI mode based on the operating system."""
-    if platform.system() == "Linux":
-        return UIMode.NO_GUI
-    else:
-        return ui_mode
 
 
 def _should_add_driver_null(ui_mode: UIMode | None = None) -> bool:
