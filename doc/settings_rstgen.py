@@ -139,8 +139,9 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f'{"="*(len(cls_orig_name))}\n\n')
         deprecated = getattr(cls, "_deprecated_version", None)
         if deprecated:
-            r.write(f".. deprecated:: Ansys {cls._deprecated_version}\n\n")
-            deprecated_class_version.update({cls_name: deprecated})
+            release_version = "20" + cls._deprecated_version.replace(".", "R")
+            r.write(f".. deprecated:: Ansys {release_version}\n\n")
+            deprecated_class_version.update({cls_name: release_version})
         r.write(
             f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
         )
