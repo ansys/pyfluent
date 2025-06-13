@@ -128,7 +128,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: "Deploy development documentation"
-        uses: ansys/actions/doc-deploy-dev@@54d45960ae9d009b2a3f26dfa687f611a85c6da3 # v10.0.11
+        uses: ansys/actions/doc-deploy-dev@v9.0
         with:
           doc-artifact-name: "HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}"
           decompress-artifact: true
