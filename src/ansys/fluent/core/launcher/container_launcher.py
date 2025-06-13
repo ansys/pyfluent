@@ -209,7 +209,6 @@ class DockerLauncher:
             print("\nDocker container run configuration:\n")
             print("config_dict = ")
             print(dict_str)
-            logger.debug(f"Docker container config_dict:\n{dict_str}")
             return config_dict
 
         logger.debug(f"Fluent container launcher args: {self._args}")

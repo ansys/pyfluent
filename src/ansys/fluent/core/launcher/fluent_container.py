@@ -452,7 +452,12 @@ def configure_container_dict(
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
 
-    logger.debug(f"Fluent container dict command: {container_dict['command']}")
+    logger.debug(
+        f"Fluent container timeout: {timeout}, container_grpc_port: {container_grpc_port}, "
+        f"host_server_info_file: '{host_server_info_file}', "
+        f"remove_server_info_file: {remove_server_info_file}"
+    )
+    logger.debug(f"container_dict after processing:\n{dict_to_str(container_dict)}")
 
     return (
         container_dict,
@@ -507,21 +512,6 @@ def start_fluent_container(
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
-
-    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-        logger.debug(f"container_vars: {container_vars}")
-    else:
-        config_dict_h = config_dict.copy()
-        config_dict_h.pop("environment")
-        container_vars_tmp = (
-            config_dict_h,
-            timeout,
-            port,
-            host_server_info_file,
-            remove_server_info_file,
-        )
-        logger.debug(f"container_vars: {container_vars_tmp}")
-        del container_vars_tmp
 
     try:
         if is_compose():

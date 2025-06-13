@@ -494,17 +494,18 @@ def test_processor_count():
     #     assert get_processor_count(solver) == 2
 
 
-def test_container_warning_for_mount_source(caplog):
+def test_container_mount_source_target(caplog):
     container_dict = {
         "mount_source": os.getcwd(),
         "mount_target": "/mnt/pyfluent/tests",
     }
-    _ = pyfluent.launch_fluent(container_dict=container_dict)
+    session = pyfluent.launch_fluent(container_dict=container_dict)
+    assert session.is_server_healthy()
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
 
 
-# runs only in container till cwd is supported for container launch
+# runs only in container till cwd is supported for standalone launch
 def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
         m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
