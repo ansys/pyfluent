@@ -448,10 +448,7 @@ regolith_bc.thermal.shell_conduction = [
         "material": "regolith",
     },
 ]
-regolith_bc.radiation.band_in_emiss = {
-    "solar": 0.87,
-    "thermal-ir": 0.97,
-}
+regolith_bc.radiation.internal_emissivity_band = {"solar": 0.87, "thermal-ir": 0.97}
 
 ###############################################################################
 # Space boundary condition
@@ -471,15 +468,12 @@ space_bc.thermal.thermal_bc = "Temperature"
 space_bc.thermal.t.value = 3
 space_bc.thermal.material = "vacuum"
 space_bc.radiation.mc_bsource_p = True
-space_bc.radiation.band_q_irrad["solar"].value = 1414
-space_bc.radiation.band_diffuse_frac = {
+space_bc.radiation.direct_irradiation_settings.direct_irradiation["solar"] = 1414
+space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {
     "solar": 0,
     "thermal-ir": 0,
 }
-space_bc.radiation.band_in_emiss = {
-    "solar": 1,
-    "thermal-ir": 1,
-}
+space_bc.radiation.internal_emissivity_band = {"solar": 1, "thermal-ir": 1}
 
 ###############################################################################
 # Spacecraft walls boundary condition
@@ -502,10 +496,7 @@ sc_mli_bc.thermal.shell_conduction = [
         "material": "aluminum",
     },
 ]
-sc_mli_bc.radiation.band_in_emiss = {
-    "solar": 0.05,
-    "thermal-ir": 0.05,
-}
+sc_mli_bc.radiation.internal_emissivity_band = {"solar": 0.05, "thermal-ir": 0.05}
 
 ###############################################################################
 # Spacecraft radiator boundary condition
@@ -529,9 +520,7 @@ sc_rad_bc.thermal.shell_conduction = [
         "material": "aluminum",
     },
 ]
-sc_rad_bc.radiation.band_in_emiss = {
-    "solar": 0.17,
-}
+sc_rad_bc.radiation.internal_emissivity_band = {"solar": 0.17}
 
 ###############################################################################
 # Initialize simulation
@@ -675,9 +664,7 @@ for i in range(n_steps):
     )
 
     # Set beam direction
-    solver_session.setup.boundary_conditions.wall[
-        "space"
-    ].radiation.reference_direction = [
+    solver_session.setup.boundary_conditions.wall["space"].radiation.beam_direction = [
         beam_x,
         beam_y,
         beam_z,
@@ -692,7 +679,7 @@ for i in range(n_steps):
     # Simulate closing louvers below 273 K by changing emissivity
     rad_emiss = solver_session.setup.boundary_conditions.wall[
         "sc-radiator"
-    ].radiation.band_in_emiss["thermal-ir"]
+    ].radiation.internal_emissivity_band["thermal-ir"]
     if rad_mean_temp < 273:
         rad_emiss.value = 0.09
     else:

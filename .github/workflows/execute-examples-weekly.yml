@@ -111,11 +111,11 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # - name: Execute lunar_lander_thermal.py
-      #   run: |
-      #     python examples/00-fluent/lunar_lander_thermal.py
-      #   env:
-      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      - name: Execute lunar_lander_thermal.py
+        run: |
+          python examples/00-fluent/lunar_lander_thermal.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute mixing_elbow_settings_api.py
         run: |
@@ -123,11 +123,12 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute modeling_ablation.py
-        run: |
-          python examples/00-fluent/modeling_ablation.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # RuntimeError: Unable to load hsf library. (already installed ansys-fluent-core[reader])
+      # - name: Execute modeling_ablation.py
+      #   run: |
+      #     python examples/00-fluent/modeling_ablation.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute modeling_cavitation.py
         run: |
