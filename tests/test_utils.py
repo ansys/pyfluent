@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections import Counter
 import time
 
 import pytest
@@ -102,3 +103,18 @@ PYTEST_RELATIVE_TOLERANCE = 1e-3
 
 def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
+
+
+class MockTracingInterceptor:
+    """A mock tracing interceptor for tracing gRPC calls during tests."""
+
+    def __init__(self):
+        self._calls = []
+
+    def __call__(self, continuation, client_call_details, request):
+        self._calls.append(client_call_details.method)
+        return continuation(client_call_details, request)
+
+    def expect_call_count(self, call_count: dict[str, int]):
+        """Check if the expected number of calls were made."""
+        assert Counter(self._calls) == call_count
