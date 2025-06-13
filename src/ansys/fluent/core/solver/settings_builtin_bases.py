@@ -81,7 +81,7 @@ def _initialize_settings(instance, defaults: dict, settings_source=None, **kwarg
 
 
 class _SingletonSetting:
-    # Covers both groups and named-object containers
+    # Covers groups, named-object containers and commands.
     def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
         _initialize_settings(self, {"settings_source": None}, settings_source, **kwargs)
 
@@ -152,3 +152,6 @@ class _CreatableNamedObjectSetting:
             self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
         else:
             super().__setattr__(name, value)
+
+
+_CommandSetting = _SingletonSetting

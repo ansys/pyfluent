@@ -1167,4 +1167,5 @@ DATA = {
     "ParametricStudy": ("NamedObject", "parametric_studies"),
     "DesignPoints": ("Singleton", "parametric_studies.design_points"),
     "DesignPoint": ("NamedObject", "parametric_studies.design_points"),
+    "ReadCase": ("Command", "file.read_case"),
 }
