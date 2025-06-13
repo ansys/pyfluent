@@ -67,7 +67,7 @@ def generate(version: str):
     with open(_PY_FILE, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
-            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, Solver\n"
+            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
             "from ansys.fluent.core.solver.flobject import SettingsBase\n\n\n"
         )
         f.write("__all__ = [\n")
@@ -84,7 +84,8 @@ def generate(version: str):
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
-            f.write(f'    """{name} setting."""\n\n')
+            doc_kind = "command" if kind == "Command" else "setting"
+            f.write(f'    """{name} {doc_kind}."""\n\n')
             f.write("    def __init__(self")
             for named_object in named_objects:
                 f.write(f", {named_object}: str")
@@ -93,6 +94,8 @@ def generate(version: str):
                 f.write(", name: str = None")
             elif kind == "CreatableNamedObject":
                 f.write(", name: str = None, new_instance_name: str = None")
+            if kind == "Command":
+                f.write(", **kwargs")
             f.write("):\n")
             f.write("        super().__init__(settings_source=settings_source")
             if kind == "NonCreatableNamedObject":
@@ -101,6 +104,8 @@ def generate(version: str):
                 f.write(", name=name, new_instance_name=new_instance_name")
             for named_object in named_objects:
                 f.write(f", {named_object}={named_object}")
+            if kind == "Command":
+                f.write(", **kwargs")
             f.write(")\n\n")
 
     with open(_PYI_FILE, "w") as f:

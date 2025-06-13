@@ -824,5 +824,5 @@ def test_context_manager_2(new_solver_session):
     )
 
     with using(solver):  # noqa: F405
-        ReadCase(import_filename)  # noqa: F405
+        ReadCase(file_name=import_filename)  # noqa: F405
         assert Viscous().model() == "laminar"
