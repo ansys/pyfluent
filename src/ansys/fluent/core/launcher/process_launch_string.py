@@ -114,9 +114,8 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
         launch_args_string += " -gpu"
     elif isinstance(gpu, list):
         launch_args_string += f" -gpu={','.join(map(str, gpu))}"
-    ui_mode_input = kwargs.get("ui_mode")
-    ui_mode = _get_default_ui_mode(UIMode(ui_mode_input))
-    ui_mode_value = ui_mode.get_fluent_value()[0]
+    ui_mode = kwargs.get("ui_mode")
+    ui_mode_value = ui_mode.get_fluent_value()[0] if ui_mode else None
 
     if ui_mode_value:
         launch_args_string += f" -{ui_mode_value}"
