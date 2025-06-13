@@ -151,12 +151,56 @@ def test_container_launcher():
     assert session.is_server_healthy()
 
 
-def test_container_launcher_working_dir():
+def test_container_working_dir():
+    pyfluent.CONTAINER_MOUNT_SOURCE = None
+
     container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
-    container_dict.update(
-        volumes=[f"{os.getcwd()}:/mnt/pyfluent"], working_dir="/mnt/pyfluent"
+    assert container_dict["volumes"][0].startswith(os.getcwd())
+    assert container_dict["volumes"][0].endswith(pyfluent.CONTAINER_MOUNT_TARGET)
+    assert container_dict["working_dir"] == pyfluent.CONTAINER_MOUNT_TARGET
+    server_info_matches = [
+        arg
+        for arg in container_dict["command"]
+        if arg.startswith(f"-sifile={pyfluent.CONTAINER_MOUNT_TARGET}/serverinfo")
+    ]
+    assert len(server_info_matches) == 1, "Expected one server info file in command"
+
+    target_mount1 = "/mnt/test1"
+    container_dict.update(working_dir=target_mount1)
+    container_dict2 = pyfluent.launch_fluent(
+        container_dict=container_dict, dry_run=True
     )
-    session = pyfluent.launch_fluent(container_dict=container_dict)
+    del container_dict
+    assert container_dict2["volumes"][0].startswith(os.getcwd())
+    assert container_dict2["volumes"][0].endswith(target_mount1)
+    assert container_dict2["working_dir"] == target_mount1
+    server_info_matches2 = [
+        arg
+        for arg in container_dict2["command"]
+        if arg.startswith(f"-sifile={target_mount1}/serverinfo")
+    ]
+    assert len(server_info_matches2) == 1, "Expected one server info file in command"
+
+    target_mount2 = "/mnt/test2"
+    container_dict2.update(
+        volumes=[f"{pyfluent.EXAMPLES_PATH}:{target_mount2}"], working_dir=target_mount2
+    )
+    container_dict3 = pyfluent.launch_fluent(
+        container_dict=container_dict2, dry_run=True
+    )
+    del container_dict2
+    assert container_dict3["volumes"][0].startswith(pyfluent.EXAMPLES_PATH)
+    assert container_dict3["volumes"][0].endswith(target_mount2)
+    assert container_dict3["working_dir"] == target_mount2
+    server_info_matches3 = [
+        arg
+        for arg in container_dict3["command"]
+        if arg.startswith(f"-sifile={target_mount2}/serverinfo")
+    ]
+    assert len(server_info_matches3) == 1, "Expected one server info file in command"
+
+    # after all these 'working_dir' changes, the container should still launch
+    session = pyfluent.launch_fluent(container_dict=container_dict3)
     assert session.is_server_healthy()
 
 

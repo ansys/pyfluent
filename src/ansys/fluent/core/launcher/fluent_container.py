@@ -239,32 +239,51 @@ def configure_container_dict(
 
     logger.debug(f"container_dict before processing:\n{dict_to_str(container_dict)}")
 
+    # Starting with 'mount_source' because it is not tied to the 'working_dir'.
+    # The intended 'mount_source' logic is as follows, if it is not directly specified:
+    # 1. If 'file_transfer_service' is provided, use its 'mount_source'.
+    # 2. Try to use the environment variable 'PYFLUENT_CONTAINER_MOUNT_SOURCE', if it is set.
+    # 3. Use the value from 'pyfluent.CONTAINER_MOUNT_SOURCE', if it is set.
+    # 4. If 'volumes' is specified in 'container_dict', try to infer the value from it.
+    # 5. Finally, use the current working directory, which is always available.
+
     if not mount_source:
         if file_transfer_service:
             mount_source = file_transfer_service.mount_source
         else:
             mount_source = os.getenv(
                 "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-                pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
+                pyfluent.CONTAINER_MOUNT_SOURCE,
             )
 
-    elif "volumes" in container_dict:
-        logger.warning(
-            "'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by specified 'mount_source'."
-        )
-        container_dict.pop("volumes")
+    if "volumes" in container_dict:
+        if len(container_dict["volumes"]) != 1:
+            logger.warning(
+                "Multiple volumes being mounted in the Docker container, "
+                "Assuming the first mount is the working directory for Fluent."
+            )
+        volumes_string = container_dict["volumes"][0]
+        if mount_source:
+            logger.warning(
+                "'volumes' keyword specified in 'container_dict', but "
+                "it is going to be overwritten by specified 'mount_source'."
+            )
+        else:
+            mount_source = volumes_string.split(":")[0]
+            logger.debug(f"mount_source: {mount_source}")
+        inferred_mount_target = volumes_string.split(":")[1]
+        logger.debug(f"inferred_mount_target: {inferred_mount_target}")
 
-    if not os.path.exists(mount_source):
-        os.makedirs(mount_source)
+    if not mount_source:
+        logger.debug("No container 'mount_source' specified, using default value.")
+        mount_source = os.getcwd()
 
-    # The intended 'mount_target' logic is as follows:
-    # 1. If 'mount_target' is specified, use it.
-    # 2. If 'mount_target' is not specified, but 'working_dir' is specified in 'container_dict',
-    #    use it as 'mount_target'.
-    # 3. If 'mount_target' is not specified and neither is 'working_dir',
-    #    try to use the environment variable 'PYFLUENT_CONTAINER_MOUNT_TARGET'.
-    # 4. If none of the above are specified, use the default value from 'pyfluent.CONTAINER_MOUNT_TARGET'.
+    # The intended 'mount_target' logic is as follows, if it is not directly specified:
+    # 1. If 'working_dir' is specified in 'container_dict', use it as 'mount_target'.
+    # 2. Use the environment variable 'PYFLUENT_CONTAINER_MOUNT_TARGET', if it is set.
+    # 3. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
+    # 4. Finally, use the value from 'pyfluent.CONTAINER_MOUNT_TARGET', which is always set.
+
     if not mount_target:
         if "working_dir" in container_dict:
             mount_target = container_dict["working_dir"]
@@ -272,53 +291,30 @@ def configure_container_dict(
             mount_target = os.getenv("PYFLUENT_CONTAINER_MOUNT_TARGET")
 
     if "working_dir" in container_dict and mount_target:
-        logger.warning(
-            "There is a 'working_dir' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by the specified 'mount_target'."
-        )
+        # working_dir will be set later to the final value of mount_target
         container_dict.pop("working_dir")
 
-    if "volumes" in container_dict and (
-        "working_dir" in container_dict or mount_target
-    ):
-        logger.warning(
-            "There is a 'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by the specified 'mount_target' or 'working_dir'."
-        )
-        container_dict.pop("volumes")
+    if not mount_target and "volumes" in container_dict:
+        mount_target = inferred_mount_target
 
     if not mount_target:
         logger.debug("No container 'mount_target' specified, using default value.")
         mount_target = pyfluent.CONTAINER_MOUNT_TARGET
+
+    if "volumes" not in container_dict:
+        container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
+    else:
+        container_dict["volumes"][0] = f"{mount_source}:{mount_target}"
+
+    logger.warning(
+        f"Configuring Fluent container to mount to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
+    )
 
     if "working_dir" not in container_dict:
         container_dict.update(
             working_dir=mount_target,
         )
 
-    if "volumes" not in container_dict:
-        container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
-    else:
-        logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
-        if len(container_dict["volumes"]) != 1:
-            logger.warning(
-                "Multiple volumes being mounted in the Docker container, "
-                "using the first mount as the working directory for Fluent."
-            )
-        volumes_string = container_dict["volumes"][0]
-        mount_target = ""
-        for c in reversed(volumes_string):
-            if c == ":":
-                break
-            else:
-                mount_target += c
-        mount_target = mount_target[::-1]
-        mount_source = volumes_string.replace(":" + mount_target, "")
-        logger.debug(f"mount_source: {mount_source}")
-        logger.debug(f"mount_target: {mount_target}")
-    logger.warning(
-        f"Configuring Fluent container to mount to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
-    )
     port_mapping = {port: port} if port else {}
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
