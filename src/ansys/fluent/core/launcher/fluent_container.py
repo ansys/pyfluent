@@ -74,6 +74,7 @@ config_dict =
 import logging
 import os
 from pathlib import Path, PurePosixPath
+from pprint import pformat
 import tempfile
 from typing import Any, List
 
@@ -116,6 +117,29 @@ class LicenseServerNotSpecified(KeyError):
         super().__init__(
             "Specify licence server either using 'ANSYSLMD_LICENSE_FILE' environment variable or in the 'container_dict'."
         )
+
+
+def dict_to_str(dict: dict) -> str:
+    """Converts the dict to string while hiding the 'environment' argument from the dictionary,
+    if the environment variable 'PYFLUENT_HIDE_LOG_SECRETS' is '1'.
+    This is useful for logging purposes, to avoid printing sensitive information such as license server details.
+
+    Parameters
+    ----------
+    dict : dict
+        The container dictionary to be converted to string.
+    Returns
+    -------
+    string
+        Nicely formatted string representation of the dictionary, with the 'environment' argument removed.
+    """
+
+    if "environment" in dict and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+        modified_dict = dict.copy()
+        modified_dict.pop("environment")
+        return pformat(modified_dict)
+    else:
+        return pformat(dict)
 
 
 @all_deprecators(
@@ -213,17 +237,7 @@ def configure_container_dict(
     See also :func:`start_fluent_container`.
     """
 
-    if (
-        container_dict
-        and "environment" in container_dict
-        and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1"
-    ):
-        container_dict_h = container_dict.copy()
-        container_dict_h.pop("environment")
-        logger.debug(f"container_dict before processing: {container_dict_h}")
-        del container_dict_h
-    else:
-        logger.debug(f"container_dict before processing: {container_dict}")
+    logger.debug(f"container_dict before processing:\n{dict_to_str(container_dict)}")
 
     if not mount_source:
         if file_transfer_service:
@@ -244,16 +258,43 @@ def configure_container_dict(
     if not os.path.exists(mount_source):
         os.makedirs(mount_source)
 
+    # The intended 'mount_target' logic is as follows:
+    # 1. If 'mount_target' is specified, use it.
+    # 2. If 'mount_target' is not specified, but 'working_dir' is specified in 'container_dict',
+    #    use it as 'mount_target'.
+    # 3. If 'mount_target' is not specified and neither is 'working_dir',
+    #    try to use the environment variable 'PYFLUENT_CONTAINER_MOUNT_TARGET'.
+    # 4. If none of the above are specified, use the default value from 'pyfluent.CONTAINER_MOUNT_TARGET'.
     if not mount_target:
-        mount_target = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_TARGET", pyfluent.CONTAINER_MOUNT_TARGET
-        )
-    elif "volumes" in container_dict:
+        if "working_dir" in container_dict:
+            mount_target = container_dict["working_dir"]
+        else:
+            mount_target = os.getenv("PYFLUENT_CONTAINER_MOUNT_TARGET")
+
+    if "working_dir" in container_dict and mount_target:
         logger.warning(
-            "'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by specified 'mount_target'."
+            "There is a 'working_dir' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by the specified 'mount_target'."
+        )
+        container_dict.pop("working_dir")
+
+    if "volumes" in container_dict and (
+        "working_dir" in container_dict or mount_target
+    ):
+        logger.warning(
+            "There is a 'volumes' keyword specified in 'container_dict', but "
+            "it is going to be overwritten by the specified 'mount_target' or 'working_dir'."
         )
         container_dict.pop("volumes")
+
+    if not mount_target:
+        logger.debug("No container 'mount_target' specified, using default value.")
+        mount_target = pyfluent.CONTAINER_MOUNT_TARGET
+
+    if "working_dir" not in container_dict:
+        container_dict.update(
+            working_dir=mount_target,
+        )
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
@@ -276,7 +317,7 @@ def configure_container_dict(
         logger.debug(f"mount_source: {mount_source}")
         logger.debug(f"mount_target: {mount_target}")
     logger.warning(
-        f"Starting Fluent container mounted to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
+        f"Configuring Fluent container to mount to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
     )
     port_mapping = {port: port} if port else {}
     if not port_mapping and "ports" in container_dict:
@@ -315,11 +356,7 @@ def configure_container_dict(
             labels={"test_name": test_name},
         )
 
-    if "working_dir" not in container_dict:
-        container_dict.update(
-            working_dir=mount_target,
-        )
-
+    # Find the server info file name from the command line arguments
     if "command" in container_dict:
         for v in container_dict["command"]:
             if v.startswith("-sifile="):
@@ -342,6 +379,20 @@ def configure_container_dict(
         )
         os.close(fd)
         container_server_info_file = PurePosixPath(mount_target) / Path(sifile).name
+
+    logger.debug(
+        f"Using server info file '{container_server_info_file}' for Fluent container."
+    )
+
+    # If the 'command' had already been specified in the 'container_dict',
+    # maintain other 'command' arguments but update the '-sifile' argument,
+    # as the 'mount_target' or 'working_dir' may have changed.
+    if "command" in container_dict:
+        for i, item in enumerate(container_dict["command"]):
+            if item.startswith("-sifile="):
+                container_dict["command"][i] = f"-sifile={container_server_info_file}"
+    else:
+        container_dict["command"] = args + [f"-sifile={container_server_info_file}"]
 
     if not fluent_image:
         if not image_tag:
@@ -384,16 +435,13 @@ def configure_container_dict(
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
-    fluent_commands = [f"-sifile={container_server_info_file}"] + args
-
-    container_dict_default = {}
-    container_dict_default.update(
-        command=fluent_commands,
+    container_dict_base = {}
+    container_dict_base.update(
         detach=True,
         auto_remove=True,
     )
 
-    for k, v in container_dict_default.items():
+    for k, v in container_dict_base.items():
         if k not in container_dict:
             container_dict[k] = v
 
@@ -403,6 +451,8 @@ def configure_container_dict(
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
+
+    logger.debug(f"Fluent container dict command: {container_dict['command']}")
 
     return (
         container_dict,

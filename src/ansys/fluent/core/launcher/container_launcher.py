@@ -44,6 +44,7 @@ from typing import Any
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
+    dict_to_str,
     start_fluent_container,
 )
 from ansys.fluent.core.launcher.launch_options import (
@@ -199,22 +200,20 @@ class DockerLauncher:
             self._args.append(" -meshing")
 
     def __call__(self):
+
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
                 self._args, **self.argvals["container_dict"]
             )
-            from pprint import pprint
-
+            dict_str = dict_to_str(config_dict)
             print("\nDocker container run configuration:\n")
             print("config_dict = ")
-            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-                pprint(config_dict)
-            else:
-                config_dict_h = config_dict.copy()
-                config_dict_h.pop("environment")
-                pprint(config_dict_h)
-                del config_dict_h
+            print(dict_str)
+            logger.debug(f"Docker container config_dict:\n{dict_str}")
             return config_dict
+
+        logger.debug(f"Fluent container launcher args: {self._args}")
+        logger.debug(f"Fluent container launcher argvals:\n{dict_to_str(self.argvals)}")
 
         if is_compose():
             port, config_dict, container = start_fluent_container(
