@@ -1262,12 +1262,21 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
             "momentum": {"velocity_magnitude": 11.0}
         }
 
-    mock_interceptor.expect_call_count(
-        {
-            "/ansys.api.fluent.v0.settings.Settings/GetAttrs": 3,
-            "/ansys.api.fluent.v0.settings.Settings/GetObjectNames": 1,
-            "/ansys.api.fluent.v0.settings.Settings/SetVar": 1,
-        }
+    calls = mock_interceptor.get_calls()
+    assert len(calls) == 5
+    assert all(
+        x.method == "/ansys.api.fluent.v0.settings.Settings/GetAttrs"
+        for x in calls[0:3]
+    )
+    assert calls[0].request.path_info.path == ""
+    assert calls[1].request.path_info.path == "setup"
+    assert calls[2].request.path_info.path == "setup/boundary-conditions"
+    assert calls[3].method == "/ansys.api.fluent.v0.settings.Settings/GetObjectNames"
+    assert calls[3].request.path_info.path == "setup/boundary-conditions/velocity-inlet"
+    assert calls[4].method == "/ansys.api.fluent.v0.settings.Settings/SetVar"
+    assert (
+        calls[4].request.path_info.path
+        == "setup/boundary-conditions/velocity-inlet/inlet1"
     )
 
     assert (
