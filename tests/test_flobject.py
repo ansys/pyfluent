@@ -1264,16 +1264,15 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
 
     calls = mock_interceptor.get_traced_calls()
     assert len(calls) == 5
-    assert all(
-        x.method == "/ansys.api.fluent.v0.settings.Settings/GetAttrs"
-        for x in calls[0:3]
-    )
+    service = "/ansys.api.fluent.v0.settings.Settings/"
+    assert all(x.method == service + "GetAttrs" for x in calls[0:3])
+    assert all(x.request.attrs == ["active?"] for x in calls[0:3])
     assert calls[0].request.path_info.path == ""
     assert calls[1].request.path_info.path == "setup"
     assert calls[2].request.path_info.path == "setup/boundary-conditions"
-    assert calls[3].method == "/ansys.api.fluent.v0.settings.Settings/GetObjectNames"
+    assert calls[3].method == service + "GetObjectNames"
     assert calls[3].request.path_info.path == "setup/boundary-conditions/velocity-inlet"
-    assert calls[4].method == "/ansys.api.fluent.v0.settings.Settings/SetVar"
+    assert calls[4].method == service + "SetVar"
     assert (
         calls[4].request.path_info.path
         == "setup/boundary-conditions/velocity-inlet/inlet1"
