@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_File_ReadCase__ReadCaseCommandArguments:
+
+_ReadCaseCommandArguments
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.File.ReadCase._ReadCaseCommandArguments
+   :members: _FileName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

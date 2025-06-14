@@ -1,0 +1,21 @@
+:orphan:
+
+.. _threshold_1:
+
+threshold
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.threshold_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`residual_1 <residual_1>`       'residual' child.
+
+==============================   =====================
+

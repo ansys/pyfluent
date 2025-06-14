@@ -1,0 +1,23 @@
+.. _ref_solver_tui_mesh_adapt:
+
+adapt
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.mesh.adapt
+   :members: adapt_mesh, anisotropic_adaption, coarsening_criteria, display_adaption_cells, free_hierarchy, list_adaption_cells, manual_coarsening_criteria, manual_refinement_criteria, refinement_criteria
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   cell_registers/cell_registers_contents
+   geometry/geometry_contents
+   manage_criteria/manage_criteria_contents
+   multi_layer_refinement/multi_layer_refinement_contents
+   profile/profile_contents
+   set/set_contents

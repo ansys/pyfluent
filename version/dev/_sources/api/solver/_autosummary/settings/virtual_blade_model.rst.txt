@@ -1,0 +1,47 @@
+:orphan:
+
+.. _virtual_blade_model:
+
+virtual_blade_model
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.virtual_blade_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   =============================
+
+Attribute                                           Summary
+
+===========================   =============================
+:ref:`enabled <enabled_22>`       Enable/disable vbm model.
+
+:ref:`mode <mode>`                             VBM mode:  .
+
+:ref:`rotor <rotor>`                           Main object.
+
+===========================   =============================
+
+.. rubric:: Methods
+
+====================   ===============================
+
+Method                                         Summary
+
+====================   ===============================
+:ref:`apply <apply>`       Read and apply VBM setting.
+
+====================   ===============================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

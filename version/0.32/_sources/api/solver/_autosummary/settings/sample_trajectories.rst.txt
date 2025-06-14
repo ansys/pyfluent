@@ -1,0 +1,51 @@
+:orphan:
+
+.. _sample_trajectories:
+
+sample_trajectories
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sample_trajectories
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =====================================================================================
+
+Attribute                                                                                                                                                      Summary
+
+==============================================================================   =====================================================================================
+:ref:`output_udf <output_udf>`                                                                                                            The DPM sampling output UDF.
+
+:ref:`sort_sample_files <sort_sample_files>`                                                                                Enable writing of sorted DPM sample files.
+
+:ref:`accumulate_erosion_accretion_rates <accumulate_erosion_accretion_rates>`       Enable accumulation of erosion and accretion rates over multiple tracking passes.
+
+==============================================================================   =====================================================================================
+
+.. rubric:: Methods
+
+==========================================   ================================================================================================================
+
+Method                                                                                                                                                Summary
+
+==========================================   ================================================================================================================
+:ref:`compute <compute_12>`                                               Compute particle trajectories to record sampling data at planes and boundary zones.
+
+:ref:`start_file_write <start_file_write>`       Enable recording particle sampling data at planes and boundary zones when the simulation progresses in time.
+
+:ref:`stop_file_write <stop_file_write>`                  Stop recording particle sampling data at planes and boundary zones, finalise the output data files.
+
+==========================================   ================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===========================
+
+Parent                                                           Summary
+
+==========================================   ===========================
+:ref:`discrete_phase_6 <discrete_phase_6>`       'discrete_phase' child.
+
+==========================================   ===========================
+

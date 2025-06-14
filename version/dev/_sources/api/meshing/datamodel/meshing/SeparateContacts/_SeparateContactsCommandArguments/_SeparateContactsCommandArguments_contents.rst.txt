@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_SeparateContacts__SeparateContactsCommandArguments:
+
+_SeparateContactsCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.SeparateContacts._SeparateContactsCommandArguments
+   :members: _SeparateContactsOption
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _species_diffusivity_child:
+
+species_diffusivity_child
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_diffusivity_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ==========================================
+
+Attribute                                                             Summary
+
+================================   ==========================================
+:ref:`option <option_38>`                           Material property method.
+
+:ref:`value <value_16>`                Constant or expression property value.
+
+:ref:`polynomial <polynomial_2>`            Property polynomial coefficients.
+
+================================   ==========================================
+
+.. rubric:: Included in:
+
+================================================   ==============================================
+
+Parent                                                                                    Summary
+
+================================================   ==============================================
+:ref:`species_diffusivity <species_diffusivity>`       Mixture species mass diffusion coeffients.
+
+================================================   ==============================================
+

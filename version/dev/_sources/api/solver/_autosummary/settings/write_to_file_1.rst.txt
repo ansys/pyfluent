@@ -1,0 +1,32 @@
+:orphan:
+
+.. _write_to_file_1:
+
+write_to_file
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_to_file_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ==========================================
+
+Argument                                                             Summary
+
+===============================   ==========================================
+:ref:`file_name <file_name_17>`       The name you want the file saved with.
+
+===============================   ==========================================
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`cumulative_plot_child <cumulative_plot_child>`       'child_object_type' of cumulative_plot.
+
+====================================================   ===========================================
+

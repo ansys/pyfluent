@@ -1,0 +1,32 @@
+:orphan:
+
+.. _position_1:
+
+position
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.position_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================   ===============================================================
+
+Argument                                                                   Summary
+
+================   ===============================================================
+:ref:`xyz <xyz>`       The position of the camera in the domain (XYZ coordinates).
+
+================   ===============================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`camera <camera>`       'camera' child.
+
+======================   ===================
+

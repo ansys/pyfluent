@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_lscale:
+
+max_lscale
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.max_lscale
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`parameters_5 <parameters_5>`       'parameters' child.
+
+==================================   =======================
+

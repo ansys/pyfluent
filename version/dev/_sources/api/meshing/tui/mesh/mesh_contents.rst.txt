@@ -1,0 +1,36 @@
+.. _ref_meshing_tui_mesh:
+
+mesh
+====
+
+.. autoclass:: ansys.fluent.core.generated.meshing.tui_261.main_menu.mesh
+   :members: activate_lean_datastructures, auto_mesh, auto_mesh_multiple_objects, auto_prefix_cell_zones, check_mesh, check_quality, check_quality_level, clear_mesh, clear_undo_stack, create_frustrum, create_heat_exchanger, deactivate_lean_datastructures, laplace_smooth_nodes, list_mesh_parameter, prepare_for_solve, prime_meshing, repair_face_handedness, reset_mesh, reset_mesh_parameter, selective_mesh_check, zone_names_clean_up
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   auto_mesh_controls/auto_mesh_controls_contents
+   cartesian/cartesian_contents
+   cavity/cavity_contents
+   cell_zone_conditions/cell_zone_conditions_contents
+   domains/domains_contents
+   hexcore/hexcore_contents
+   manage/manage_contents
+   modify/modify_contents
+   non_conformals/non_conformals_contents
+   poly/poly_contents
+   poly_hexcore/poly_hexcore_contents
+   prism/prism_contents
+   pyramid/pyramid_contents
+   rapid_octree/rapid_octree_contents
+   scoped_prisms/scoped_prisms_contents
+   scoped_thin_volume/scoped_thin_volume_contents
+   separate/separate_contents
+   tet/tet_contents
+   thin_volume_mesh/thin_volume_mesh_contents

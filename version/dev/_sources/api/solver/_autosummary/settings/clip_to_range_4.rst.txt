@@ -1,0 +1,21 @@
+:orphan:
+
+.. _clip_to_range_4:
+
+clip_to_range
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.clip_to_range_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==========================
+
+Parent                                Summary
+
+================   ==========================
+:ref:`fft <fft>`       Plot FFT of file data.
+
+================   ==========================
+

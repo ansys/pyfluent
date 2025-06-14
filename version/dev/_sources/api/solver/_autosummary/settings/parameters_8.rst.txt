@@ -1,0 +1,42 @@
+:orphan:
+
+.. _parameters_8:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parameters_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===============================================================
+
+Attribute                                                                                                          Summary
+
+========================================================   ===============================================================
+:ref:`time_step_count <time_step_count_2>`                                                Inceremtal number of Time steps.
+
+:ref:`time_step_size <time_step_size_2>`                                                      The physical time step size.
+
+:ref:`max_iter_per_time_step <max_iter_per_time_step>`                                           Max Iterations/Time Step.
+
+:ref:`iter_count <iter_count_2>`                                                                     Number of iterations.
+
+:ref:`reporting_interval <reporting_interval>`                     Number of solver iterations before returning to scheme.
+
+:ref:`profile_update_interval <profile_update_interval>`       Number of solver iterations after which profile is updated.
+
+========================================================   ===============================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

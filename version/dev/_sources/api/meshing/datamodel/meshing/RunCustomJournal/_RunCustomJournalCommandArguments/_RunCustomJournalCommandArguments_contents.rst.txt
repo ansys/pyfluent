@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_RunCustomJournal__RunCustomJournalCommandArguments:
+
+_RunCustomJournalCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.RunCustomJournal._RunCustomJournalCommandArguments
+   :members: _JournalString, _PrimeJournal, _PythonJournal
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

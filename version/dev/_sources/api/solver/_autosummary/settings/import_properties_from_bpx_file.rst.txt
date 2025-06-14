@@ -1,0 +1,32 @@
+:orphan:
+
+.. _import_properties_from_bpx_file:
+
+import_properties_from_bpx_file
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.import_properties_from_bpx_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   =====================================
+
+Argument                                                          Summary
+
+=================================   =====================================
+:ref:`file_name <file_name_1_13>`       BPX file name with its full path.
+
+=================================   =====================================
+
+.. rubric:: Included in:
+
+==============================================   ================================
+
+Parent                                                                    Summary
+
+==============================================   ================================
+:ref:`p2d_model_settings <p2d_model_settings>`       Newman's P2D model settings.
+
+==============================================   ================================
+

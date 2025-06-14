@@ -1,0 +1,25 @@
+.. _ref_meshing_datamodel_part_management_AssemblyNode__AssemblyNode:
+
+_AssemblyNode
+=============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.AssemblyNode._AssemblyNode
+   :members: Children, Context, EdgeExtraction, FeatureAngle, IsChildrenSettingsChanged, KeyId, MergeChildren, Name, OneZonePer, Parent, PrefixObjectName, RefacetOperation, Transformations, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   ChangeChildrenSettings/ChangeChildrenSettings_contents
+   Copy/Copy_contents
+   CreateChild/CreateChild_contents
+   Move/Move_contents
+   ReFacet/ReFacet_contents
+   ReFacetNow/ReFacetNow_contents
+   Refaceting/Refaceting_contents
+   Rename/Rename_contents

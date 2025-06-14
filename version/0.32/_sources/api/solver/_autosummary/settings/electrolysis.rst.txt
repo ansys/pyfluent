@@ -1,0 +1,46 @@
+:orphan:
+
+.. _electrolysis:
+
+electrolysis
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.electrolysis
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =========================================
+
+Attribute                                                                  Summary
+
+======================================   =========================================
+:ref:`options <options_5>`                                          Model options.
+
+:ref:`parameters <parameters_3>`                                 Model parameters.
+
+:ref:`anode <anode>`                                                     Up anode.
+
+:ref:`electrolyte <electrolyte>`                                   Up electrolyte.
+
+:ref:`cathode <cathode>`                                               Up cathode.
+
+:ref:`electrical_tab <electrical_tab>`                Up external electrical tabs.
+
+:ref:`customization <customization>`         Customization for electrolysis model.
+
+:ref:`advanced <advanced>`                                      Advanced settings.
+
+======================================   =========================================
+
+.. rubric:: Included in:
+
+==============================   ============================================
+
+Parent                                                                Summary
+
+==============================   ============================================
+:ref:`echemistry <echemistry>`       The potential/echemistry model settings.
+
+==============================   ============================================
+

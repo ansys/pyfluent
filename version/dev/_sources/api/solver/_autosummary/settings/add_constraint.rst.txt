@@ -1,0 +1,38 @@
+:orphan:
+
+.. _add_constraint:
+
+add_constraint
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_constraint
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =========================
+
+Argument                                             Summary
+
+================================   =========================
+:ref:`name <name_36>`                        Criterion Name.
+
+:ref:`expression <expression_8>`       Criterion Expression.
+
+:ref:`criteria <criteria_2>`                      Criterion.
+
+:ref:`limit <limit>`                        Criterion Limit.
+
+================================   =========================
+
+.. rubric:: Included in:
+
+==============================   ==================
+
+Parent                                      Summary
+
+==============================   ==================
+:ref:`criteria_1 <criteria_1>`       Criteria List.
+
+==============================   ==================
+

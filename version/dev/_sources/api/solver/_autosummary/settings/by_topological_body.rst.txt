@@ -1,0 +1,21 @@
+:orphan:
+
+.. _by_topological_body:
+
+by_topological_body
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.by_topological_body
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`automatic <automatic>`       'automatic' child.
+
+============================   ======================
+

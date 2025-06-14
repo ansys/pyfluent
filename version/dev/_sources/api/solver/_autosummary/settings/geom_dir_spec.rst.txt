@@ -1,0 +1,23 @@
+:orphan:
+
+.. _geom_dir_spec:
+
+geom_dir_spec
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geom_dir_spec
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==========================================================
+
+Parent                                                                              Summary
+
+==============================   ==========================================================
+:ref:`geometry_6 <geometry_6>`       Allows to change geometry model variables or settings.
+
+:ref:`geometry_7 <geometry_7>`                                          Help not available.
+
+==============================   ==========================================================
+

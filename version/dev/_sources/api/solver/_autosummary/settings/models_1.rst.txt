@@ -1,0 +1,45 @@
+:orphan:
+
+.. _models_1:
+
+models
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.models_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   =========================================
+
+Attribute                                                                                    Summary
+
+========================================================   =========================================
+:ref:`enabled <enabled_62>`                                       Enable/disable turbo model object.
+
+:ref:`general_turbo_interface <general_turbo_interface>`       The general turbo interface settings.
+
+========================================================   =========================================
+
+.. rubric:: Methods
+
+==================================================   ==============================
+
+Method                                                                      Summary
+
+==================================================   ==============================
+:ref:`export_boundary_mesh <export_boundary_mesh>`       Export boundary mesh file.
+
+==================================================   ==============================
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`turbomachinery <turbomachinery>`       The turbomachinery models.
+
+======================================   ==============================
+

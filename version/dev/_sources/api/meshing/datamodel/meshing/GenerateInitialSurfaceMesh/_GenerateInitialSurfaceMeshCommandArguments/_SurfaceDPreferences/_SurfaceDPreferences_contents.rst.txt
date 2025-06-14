@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_GenerateInitialSurfaceMesh__GenerateInitialSurfaceMeshCommandArguments__SurfaceDPreferences:
+
+_Surface2DPreferences
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.GenerateInitialSurfaceMesh._GenerateInitialSurfaceMeshCommandArguments._Surface2DPreferences
+   :members: _MergeEdgeZonesBasedOnLabels, _MergeFaceZonesBasedOnLabels, _ShowAdvancedOptions
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

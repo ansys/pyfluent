@@ -1,0 +1,34 @@
+:orphan:
+
+.. _joule_heat_parameter:
+
+joule_heat_parameter
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.joule_heat_parameter
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   ================================================
+
+Attribute                                                              Summary
+
+===========================   ================================================
+:ref:`enabled <enabled_38>`       Add joule heating as input parameter in ROM.
+
+:ref:`value <value_15>`                       Electric tab current in ROM run.
+
+===========================   ================================================
+
+.. rubric:: Included in:
+
+====================================================   =================
+
+Parent                                                           Summary
+
+====================================================   =================
+:ref:`rom_data_creator_tool <rom_data_creator_tool>`       Rom tool kit.
+
+====================================================   =================
+
