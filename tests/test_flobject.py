@@ -1251,6 +1251,7 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     assert solver.results.graphics.contour.list.argument_names == []
 
 
+@pytest.mark.fluent_version(">=25.1")
 def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
     solver = static_mixer_settings_session
 
