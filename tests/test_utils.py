@@ -119,6 +119,6 @@ class MockTracingInterceptor:
         )
         return continuation(client_call_details, request)
 
-    def get_calls(self) -> list[TracedCall]:
+    def get_traced_calls(self) -> list[TracedCall]:
         """Returns the list of calls made to the interceptor."""
         return self._calls

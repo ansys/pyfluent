@@ -1262,7 +1262,7 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
             "momentum": {"velocity_magnitude": 11.0}
         }
 
-    calls = mock_interceptor.get_calls()
+    calls = mock_interceptor.get_traced_calls()
     assert len(calls) == 5
     assert all(
         x.method == "/ansys.api.fluent.v0.settings.Settings/GetAttrs"
