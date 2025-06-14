@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections import namedtuple
 import time
 
 import pytest
@@ -102,3 +103,22 @@ PYTEST_RELATIVE_TOLERANCE = 1e-3
 
 def pytest_approx(expected):
     return pytest.approx(expected=expected, rel=PYTEST_RELATIVE_TOLERANCE)
+
+
+class MockTracingInterceptor:
+    """A mock tracing interceptor for tracing gRPC calls during tests."""
+
+    TracedCall = namedtuple("TracedCall", ["method", "request"])
+
+    def __init__(self):
+        self._calls = []
+
+    def __call__(self, continuation, client_call_details, request):
+        self._calls.append(
+            self.TracedCall(method=client_call_details.method, request=request)
+        )
+        return continuation(client_call_details, request)
+
+    def get_traced_calls(self) -> list[TracedCall]:
+        """Returns the list of calls made to the interceptor."""
+        return self._calls
