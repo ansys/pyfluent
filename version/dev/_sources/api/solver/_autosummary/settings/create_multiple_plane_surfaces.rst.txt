@@ -1,0 +1,64 @@
+:orphan:
+
+.. _create_multiple_plane_surfaces:
+
+create_multiple_plane_surfaces
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_multiple_plane_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================================   ===============================================================================================
+
+Argument                                                                                                                                               Summary
+
+============================================================   ===============================================================================================
+:ref:`method <method_15>`                                          The method you want to use to create the plane surface. The required inputs vary by method.
+
+:ref:`name_format <name_format>`                                                                                                              The Name Format.
+
+:ref:`x <x_7>`                                                                                  The location on the X-axis where the YZ plane will be created.
+
+:ref:`y <y_7>`                                                                                  The location on the Y-axis where the ZX plane will be created.
+
+:ref:`z <z_7>`                                                                                  The location on the Z-axis where the XY plane will be created.
+
+:ref:`point <point_3>`                                                                                                       The XYZ coordinates of the point.
+
+:ref:`normal_computation_method <normal_computation_method>`                                                                    The normal computation method.
+
+:ref:`surface_aligned_normal <surface_aligned_normal>`                                                  The surface you want to compute the normal components.
+
+:ref:`normal <normal_3>`                                                                                                     The XYZ components of the normal.
+
+:ref:`p0 <p0_1>`                                                                    The XYZ coordinates of Point 1 for the Three Points plane creation method.
+
+:ref:`p1 <p1_1>`                                                                    The XYZ coordinates of Point 2 for the Three Points plane creation method.
+
+:ref:`p2 <p2>`                                                                      The XYZ coordinates of Point 3 for the Three Points plane creation method.
+
+:ref:`bounded <bounded>`                                                                        Specifies whether the plane is bounded by its defining points.
+
+:ref:`sample_points <sample_points>`                                      Specifies whether you want to specify a uniform distribution of points on the plane.
+
+:ref:`edges <edges>`                                                                                                              The point density for edges.
+
+:ref:`surfaces <surfaces_13>`                                                                                            The number of surfaces to be created.
+
+:ref:`spacing <spacing>`                                                                                                                          The spacing.
+
+============================================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================================================================
+
+Parent                                                                                                                   Summary
+
+==============================   ===============================================================================================
+:ref:`surfaces_9 <surfaces_9>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+==============================   ===============================================================================================
+

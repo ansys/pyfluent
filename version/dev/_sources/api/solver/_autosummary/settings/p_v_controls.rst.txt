@@ -1,0 +1,48 @@
+:orphan:
+
+.. _p_v_controls:
+
+p_v_controls
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.p_v_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================================   ==============================================
+
+Attribute                                                                                                                             Summary
+
+============================================================================================   ==============================================
+:ref:`skewness_correction_itr_count <skewness_correction_itr_count_1>`                                    Iterations for skewness correction.
+
+:ref:`neighbor_correction_itr_count <neighbor_correction_itr_count_1>`                                    Iterations for neighbor correction.
+
+:ref:`skewness_neighbor_coupling <skewness_neighbor_coupling_2>`                                                 Skewness-Neighbor Coupling?.
+
+:ref:`vof_correction_itr_count <vof_correction_itr_count>`                                                     Iterations for vof correction.
+
+:ref:`flow_courant_number <flow_courant_number>`                                                                         Flow Courant number.
+
+:ref:`volume_fraction_courant_number <volume_fraction_courant_number>`                                        Volume fraction Courant number.
+
+:ref:`explicit_pressure_under_relaxation <explicit_pressure_under_relaxation>`                            Explicit pressure under-relaxation.
+
+:ref:`explicit_momentum_under_relaxation <explicit_momentum_under_relaxation>`                            Explicit momentum under-relaxation.
+
+:ref:`explicit_volume_fraction_under_relaxation <explicit_volume_fraction_under_relaxation>`       Explicit volume fraction under-relaxation.
+
+============================================================================================   ==============================================
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`controls_1 <controls_1>`       Solution controls object.
+
+==============================   =============================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _injection_type:
+
+injection_type
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.injection_type
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =================================================================================
+
+Attribute                                                                                                                          Summary
+
+======================================================   =================================================================================
+:ref:`option <option_26>`                                                                                                 Injection Type:.
+
+:ref:`cone_type <cone_type>`                                                                                                   Cone Type:.
+
+:ref:`mass_flux_distribution <mass_flux_distribution>`       Define the shape of the mass flux distribution across the cone cross section.
+
+:ref:`inject_as_film <inject_as_film>`                                                                                    Inject as film?.
+
+:ref:`file_name <file_name_2_1>`                                                                                                File name.
+
+======================================================   =================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`injections_child <injections_child>`       'child_object_type' of injections.
+
+==========================================   ======================================
+

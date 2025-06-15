@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_part_management_ObjectSetting__ObjectSetting_Add:
+
+Add
+===
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.ObjectSetting._ObjectSetting.Add
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _AddCommandArguments/_AddCommandArguments_contents

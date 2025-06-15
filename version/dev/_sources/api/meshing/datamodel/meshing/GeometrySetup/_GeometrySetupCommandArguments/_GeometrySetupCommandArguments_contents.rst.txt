@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_GeometrySetup__GeometrySetupCommandArguments:
+
+_GeometrySetupCommandArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.GeometrySetup._GeometrySetupCommandArguments
+   :members: _CappingRequired, _Duplicates, _EdgeLabels, _EdgeZoneList, _FluidRegions, _InvokeShareTopology, _Multizone, _NonConformal, _OldZoneList, _OldZoneTypeList, _RegionList, _SetupInternalTypes, _SetupInternals, _SetupType, _WallToInternal
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _SMImprovePreferences/_SMImprovePreferences_contents

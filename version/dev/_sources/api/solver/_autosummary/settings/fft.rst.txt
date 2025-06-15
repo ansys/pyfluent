@@ -1,0 +1,72 @@
+:orphan:
+
+.. _fft:
+
+fft
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fft
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================================   ==============================================================================================================================================
+
+Argument                                                                                                                                                                                      Summary
+
+====================================================   ==============================================================================================================================================
+:ref:`process_options <process_options>`                                                                                                                Option to process from Receiver or File Data.
+
+:ref:`receiver <receiver>`                                                                                                                                                          Receiver for FFT.
+
+:ref:`filename <filename>`                                                                                                                                                          Filename for FFT.
+
+:ref:`x_var <x_var>`                                                                                                                                                      The X Axis Field from File.
+
+:ref:`y_var <y_var>`                                                                                                                                                      The Y Axis Field from File.
+
+:ref:`plot <plot_15>`                                                                                                                   Specifies whether to Plot FFT, modified Input Signal or None.
+
+:ref:`write <write_7>`                                                                      Specifies whether to write the FFT to a file, include it in the simulation report, or Write Input Signal.
+
+:ref:`output_filename <output_filename>`                                                                                                   Type in the desired file name to save FFT or Input Signal.
+
+:ref:`acoustics_analysis <acoustics_analysis>`                                                                                                     Specifies whether to do acoustics analysis or not.
+
+:ref:`ref_acoustic_pressure <ref_acoustic_pressure>`                                                                                                              Change acoustic reference pressure.
+
+:ref:`fft_x_func <fft_x_func>`                                                                                                                                          X Axis Function for FFT Plot.
+
+:ref:`fft_y_func <fft_y_func>`                                                                                                                                          Y Axis Function for FFT Plot.
+
+:ref:`modify_input_signal <modify_input_signal>`                                                                                                                             Prune input time signal.
+
+:ref:`window <window>`                                                                                                                                                                   Window type.
+
+:ref:`subtract_mean <subtract_mean>`                                                                                                             Specifies whether to subtract Mean from data or not.
+
+:ref:`clip_to_range <clip_to_range_4>`                     Specifies whether to process the entire dataset or limit it to specific range by specifying the minimum and maximum values for the x-axis.
+
+:ref:`x_axis_range <x_axis_range>`                                                                                                                         The minimum and maximum values for X axis.
+
+:ref:`signal_stat <signal_stat>`                                                                                                                           The minimum and maximum values for X axis.
+
+:ref:`title <title_2>`                                                                                                                                                                Title for Plot.
+
+:ref:`x_label <x_label_1>`                                                                                                                                                              X Axis label.
+
+:ref:`y_label <y_label_1>`                                                                                                                                                              Y Axis label.
+
+====================================================   ==============================================================================================================================================
+
+.. rubric:: Included in:
+
+======================   =======================================================================================================================
+
+Parent                                                                                                                                   Summary
+
+======================   =======================================================================================================================
+:ref:`plot_4 <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+======================   =======================================================================================================================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _amg_controls:
+
+amg_controls
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.amg_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ========================================
+
+Attribute                                                                                       Summary
+
+============================================================   ========================================
+:ref:`scalar_parameters <scalar_parameters>`                              AMG scalar parameters object.
+
+:ref:`coupled_parameters <coupled_parameters>`                           AMG coupled-parameters object.
+
+:ref:`flexible_cycle_parameters <flexible_cycle_parameters>`       AMG flexible cycle paramters object.
+
+:ref:`options <options_10>`                                                         AMG options object.
+
+============================================================   ========================================
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`multi_grid <multi_grid>`       Multi-grid object.
+
+==============================   ======================
+

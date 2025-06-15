@@ -1,0 +1,21 @@
+:orphan:
+
+.. _from_physics_name:
+
+from_physics_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.from_physics_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`compute_1 <compute_1>`       'compute' command.
+
+============================   ======================
+

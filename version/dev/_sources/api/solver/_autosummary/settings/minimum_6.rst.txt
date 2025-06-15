@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_6:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================
+
+Parent                                                             Summary
+
+==================================   =====================================
+:ref:`range_sphere <range_sphere>`       Specifies Range for Sphere Style.
+
+==================================   =====================================
+

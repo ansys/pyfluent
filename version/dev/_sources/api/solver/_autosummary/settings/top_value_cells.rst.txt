@@ -1,0 +1,21 @@
+:orphan:
+
+.. _top_value_cells:
+
+top_value_cells
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.top_value_cells
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================================================
+
+Parent                                                                              Summary
+
+============================   ============================================================
+:ref:`option_49 <option_49>`       The range option for cell marking based on field values.
+
+============================   ============================================================
+

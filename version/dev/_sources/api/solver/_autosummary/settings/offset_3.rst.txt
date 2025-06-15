@@ -1,0 +1,21 @@
+:orphan:
+
+.. _offset_3:
+
+offset
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.offset_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`units_child <units_child>`       'child_object_type' of units.
+
+================================   =================================
+

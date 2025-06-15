@@ -1,0 +1,23 @@
+:orphan:
+
+.. _type_12:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============   ===============
+
+Parent                   Summary
+
+==============   ===============
+:ref:`t0 <t0>`       't0' child.
+
+:ref:`t1 <t1>`       't1' child.
+
+==============   ===============
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _option_5:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.option_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   =============================================
+
+Parent                                                                                               Summary
+
+============================================================   =============================================
+:ref:`intf_area_child_child <intf_area_child_child>`               'child_object_type' of child_object_type.
+
+:ref:`slope_limiter_child_child <slope_limiter_child_child>`       'child_object_type' of child_object_type.
+
+============================================================   =============================================
+

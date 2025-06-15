@@ -1,0 +1,21 @@
+:orphan:
+
+.. _subtract_mean:
+
+subtract_mean
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.subtract_mean
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==========================
+
+Parent                                Summary
+
+================   ==========================
+:ref:`fft <fft>`       Plot FFT of file data.
+
+================   ==========================
+

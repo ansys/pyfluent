@@ -1,0 +1,42 @@
+:orphan:
+
+.. _design_points_child:
+
+design_points_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.design_points_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ===========================================================
+
+Attribute                                                                                                                    Summary
+
+======================================================================   ===========================================================
+:ref:`name <name_4>`                                                                                             Name of the object.
+
+:ref:`input_parameters <input_parameters_1>`                                                 Input Parameter Values of Design Point.
+
+:ref:`output_parameters <output_parameters>`                                                Output Parameter Values of Design Point.
+
+:ref:`status <status>`                                                                                       Status of Design Point.
+
+:ref:`write_data <write_data_3>`                                                                 Write Data option for Design Point.
+
+:ref:`capture_simulation_report_data <capture_simulation_report_data>`       Capture Simulation Report Data option for Design Point.
+
+======================================================================   ===========================================================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

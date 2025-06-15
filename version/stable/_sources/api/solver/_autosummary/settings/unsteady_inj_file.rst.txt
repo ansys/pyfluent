@@ -1,0 +1,34 @@
+:orphan:
+
+.. _unsteady_inj_file:
+
+unsteady_inj_file
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.unsteady_inj_file
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ============================
+
+Attribute                                                                                                       Summary
+
+========================================================================================   ============================
+:ref:`start_at_flow_time_in_unsteady_inj_file <start_at_flow_time_in_unsteady_inj_file>`       Start Flow-time in File.
+
+:ref:`interval_to_repeat_in_unsteady_inj_file <interval_to_repeat_in_unsteady_inj_file>`       Repeat Interval in File.
+
+========================================================================================   ============================
+
+.. rubric:: Included in:
+
+======================================   ===========================================
+
+Parent                                                                       Summary
+
+======================================   ===========================================
+:ref:`initial_values <initial_values>`       Lagrangian particle initial properties.
+
+======================================   ===========================================
+

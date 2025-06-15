@@ -1,0 +1,21 @@
+:orphan:
+
+.. _separation:
+
+separation
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.separation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`viewfactor_settings <viewfactor_settings>`       Viewfactor related settings.
+
+================================================   ================================
+
