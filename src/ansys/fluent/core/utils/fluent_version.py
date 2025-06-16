@@ -206,7 +206,6 @@ class FluentVersion(Enum):
         )
 
 
-@total_ordering
 class FluentVersionSet(Set[FluentVersion]):
     """A set of Fluent versions defined by a predicate."""
 
@@ -239,6 +238,24 @@ class FluentVersionSet(Set[FluentVersion]):
         if not isinstance(other, FluentVersionSet):
             raise TypeError("Can only compare with another FluentVersionSet.")
         return all(v in other for v in self) and len(self) < len(other)
+
+    def __le__(self, other: "FluentVersionSet") -> bool:
+        """Check if this FluentVersionSet is a subset of another."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only compare with another FluentVersionSet.")
+        return all(v in other for v in self)
+
+    def __gt__(self, other: "FluentVersionSet") -> bool:
+        """Check if this FluentVersionSet is a superset of another."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only compare with another FluentVersionSet.")
+        return all(v in self for v in other) and len(self) > len(other)
+
+    def __ge__(self, other: "FluentVersionSet") -> bool:
+        """Check if this FluentVersionSet is a superset or equal to another."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only compare with another FluentVersionSet.")
+        return all(v in self for v in other)
 
     def __and__(self, other: "FluentVersionSet") -> "FluentVersionSet":
         """Return the intersection of two FluentVersionSets."""
