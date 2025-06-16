@@ -1168,4 +1168,11 @@ DATA = {
     "DesignPoints": ("Singleton", "parametric_studies.design_points"),
     "DesignPoint": ("NamedObject", "parametric_studies.design_points"),
     "ReadCase": ("Command", "file.read_case"),
+    "ReadData": ("Command", "file.read_data"),
+    "ReadCaseData": ("Command", "file.read_case_data"),
+    "WriteCase": ("Command", "file.write_case"),
+    "WriteData": ("Command", "file.write_data"),
+    "WriteCaseData": ("Command", "file.write_case_data"),
+    "Initialize": ("Command", "solution.initialization.initialize"),
+    "Calculate": ("Command", "solution.run_calculation.calculate"),
 }
