@@ -307,9 +307,7 @@ def _get_graphics_driver(
         UIMode.HIDDEN_GUI,
     }:
         warnings.warn(
-            """\nIf the UI mode is ``UIMode.GUI`` or ``UIMode.HIDDEN_GUI``,
-    then we need to start fluent with ``FluentWindowsGraphicsDriver.AUTO`` or ``FluentLinuxGraphicsDriver.AUTO``
-    which should be automatic (no action needed on PyFluent side).\n""",
+            "User-specified value for graphics driver is ignored while launching Fluent without GUI or without graphics.",
             PyFluentUserWarning,
         )
     if _should_add_driver_null(ui_mode_):
