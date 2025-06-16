@@ -302,7 +302,10 @@ def _get_graphics_driver(
         if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
-    if graphics_driver != "null" and ui_mode_ not in {UIMode.GUI, UIMode.HIDDEN_GUI}:
+    if graphics_driver.value != "null" and ui_mode_ not in {
+        UIMode.GUI,
+        UIMode.HIDDEN_GUI,
+    }:
         warnings.warn(
             """\nIf the UI mode is ``UIMode.GUI`` or ``UIMode.HIDDEN_GUI``,
     then we need to start fluent with ``FluentWindowsGraphicsDriver.AUTO`` or ``FluentLinuxGraphicsDriver.AUTO``
