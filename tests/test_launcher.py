@@ -29,7 +29,7 @@ from tempfile import TemporaryDirectory
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import PyFluentDeprecationWarning
+from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
@@ -45,6 +45,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentWindowsGraphicsDriver,
     LaunchMode,
     UIMode,
+    _get_graphics_driver,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -587,98 +588,67 @@ def test_docker_compose(monkeypatch):
 
 @pytest.mark.standalone
 def test_respect_driver_is_not_null_in_windows():
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.GUI,
-        graphics_driver=FluentWindowsGraphicsDriver.DX11,
-        dry_run=True,
+    driver = _get_graphics_driver(
+        graphics_driver=FluentWindowsGraphicsDriver.DX11, ui_mode=UIMode.GUI
     )
-    assert "-driver dx11" in " ".join(solver)
+    assert driver == FluentWindowsGraphicsDriver.DX11
 
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.HIDDEN_GUI,
-        graphics_driver=FluentWindowsGraphicsDriver.OPENGL,
-        dry_run=True,
+    driver = _get_graphics_driver(
+        graphics_driver=FluentWindowsGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
     )
-    assert "-hidden -driver opengl" in " ".join(solver)
+    assert driver == FluentWindowsGraphicsDriver.OPENGL
 
 
 def test_respect_driver_is_not_null_in_linux():
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.GUI,
-        graphics_driver=FluentLinuxGraphicsDriver.X11,
-        dry_run=True,
+    driver = _get_graphics_driver(
+        graphics_driver=FluentLinuxGraphicsDriver.DX11, ui_mode=UIMode.GUI
     )
-    assert "-driver x11" in " ".join(solver)
+    assert driver == FluentLinuxGraphicsDriver.X11
 
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.HIDDEN_GUI,
-        graphics_driver=FluentLinuxGraphicsDriver.OPENGL,
-        dry_run=True,
+    driver = _get_graphics_driver(
+        graphics_driver=FluentLinuxGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
     )
-    assert "-hidden -driver opengl" in " ".join(solver)
+    assert driver == FluentLinuxGraphicsDriver.OPENGL
 
 
 @pytest.mark.standalone
-def test_do_not_add_auto_driver_in_windows():
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.HIDDEN_GUI,
-        graphics_driver=FluentWindowsGraphicsDriver.AUTO,
-        dry_run=True,
-    )
-    assert "-driver" not in " ".join(solver)
+def test_warning_in_windows():
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentWindowsGraphicsDriver.DX11, ui_mode=UIMode.NO_GUI
+        )
+        assert driver == FluentWindowsGraphicsDriver.NULL
+
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentWindowsGraphicsDriver.AUTO, ui_mode=UIMode.NO_GRAPHICS
+        )
+        assert driver == FluentWindowsGraphicsDriver.NULL
+
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentWindowsGraphicsDriver.AUTO,
+            ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
+        )
+        assert driver == FluentWindowsGraphicsDriver.NULL
 
 
-def test_do_not_add_auto_driver_in_linux():
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.HIDDEN_GUI,
-        graphics_driver=FluentLinuxGraphicsDriver.AUTO,
-        dry_run=True,
-    )
-    assert "-driver" not in " ".join(solver)
+def test_warning_in_linux():
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentLinuxGraphicsDriver.X11, ui_mode=UIMode.NO_GUI
+        )
+        assert driver == FluentLinuxGraphicsDriver.NULL
 
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentLinuxGraphicsDriver.AUTO, ui_mode=UIMode.NO_GRAPHICS
+        )
+        assert driver == FluentLinuxGraphicsDriver.NULL
 
-@pytest.mark.standalone
-def test_driver_is_null_in_windows():
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.NO_GUI,
-        graphics_driver=FluentWindowsGraphicsDriver.DX11,
-        dry_run=True,
-    )
-    assert "-gu -driver null" in " ".join(solver)
-
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.NO_GRAPHICS,
-        graphics_driver=FluentWindowsGraphicsDriver.AUTO,
-        dry_run=True,
-    )
-    assert "-gr -driver null" in " ".join(solver)
-
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
-        graphics_driver=FluentWindowsGraphicsDriver.AUTO,
-        dry_run=True,
-    )
-    assert "-g -driver null" in " ".join(solver)
-
-
-def test_driver_is_null_in_linux():
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.NO_GUI,
-        graphics_driver=FluentLinuxGraphicsDriver.X11,
-        dry_run=True,
-    )
-    assert "-gu -driver null" in " ".join(solver)
-
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.NO_GRAPHICS,
-        graphics_driver=FluentLinuxGraphicsDriver.AUTO,
-        dry_run=True,
-    )
-    assert "-gr -driver null" in " ".join(solver)
-
-    solver = pyfluent.launch_fluent(
-        ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
-        graphics_driver=FluentLinuxGraphicsDriver.AUTO,
-        dry_run=True,
-    )
-    assert "-g -driver null" in " ".join(solver)
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentLinuxGraphicsDriver.AUTO,
+            ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
+        )
+        assert driver == FluentLinuxGraphicsDriver.NULL
