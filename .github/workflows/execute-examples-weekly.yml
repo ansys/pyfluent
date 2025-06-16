@@ -117,17 +117,11 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute lunar_lander_thermal.py
-        run: |
-          python examples/00-fluent/lunar_lander_thermal.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute mixing_elbow_settings_api.py
-        run: |
-          python examples/00-fluent/mixing_elbow_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute mixing_elbow_settings_api.py
+      #   run: |
+      #     python examples/00-fluent/mixing_elbow_settings_api.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # RuntimeError: Unable to load hsf library and requires separate license.
       # - name: Execute modeling_ablation.py
@@ -136,17 +130,11 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute modeling_cavitation.py
-        run: |
-          python examples/00-fluent/modeling_cavitation.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute parametric_static_mixer_1.py
-        run: |
-          python examples/00-fluent/parametric_static_mixer_1.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute modeling_cavitation.py
+      #   run: |
+      #     python examples/00-fluent/modeling_cavitation.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute radiation_headlamp.py
         run: |
@@ -166,6 +154,12 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      - name: Execute parametric_static_mixer_1.py
+        run: |
+          python examples/00-fluent/parametric_static_mixer_1.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
       # Execute this at the end as it takes a long time to run (~17 minutes)
       # - name: Execute DOE_ML.py
       #   run: |
@@ -177,6 +171,13 @@ jobs:
       # - name: Execute frozen_rotor_workflow.py
       #   run: |
       #     python examples/00-fluent/frozen_rotor_workflow.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # Execute this at the end as it takes a long time to run (~26 minutes)
+      # - name: Execute lunar_lander_thermal.py
+      #   run: |
+      #     python examples/00-fluent/lunar_lander_thermal.py
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
