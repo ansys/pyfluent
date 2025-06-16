@@ -661,8 +661,8 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     else:
         with pytest.raises(RuntimeError):
             CustomVectors(settings_source=solver)
-    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    project_file = Path(tmp_save_path) / "mixing_elbow_param.flprj"
+    tmp_save_path = Path(tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH))
+    project_file = Path(tmp_save_path.parts[-1]) / "mixing_elbow_param.flprj"
     solver.settings.parametric_studies.initialize(project_filename=str(project_file))
     assert ParametricStudies(settings_source=solver) == solver.parametric_studies
     assert (

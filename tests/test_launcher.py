@@ -554,10 +554,10 @@ def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
         m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
         with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
-            with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
+            with pyfluent.launch_fluent(container_dict=dict(mount_source=tmp_dir)):
                 assert list(Path(tmp_dir).glob("*.trn"))
     with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
-        with pyfluent.launch_fluent(container_dict=dict(working_dir=tmp_dir)):
+        with pyfluent.launch_fluent(container_dict=dict(mount_source=tmp_dir)):
             assert not list(Path(tmp_dir).glob("*.trn"))
 
 

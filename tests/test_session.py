@@ -594,7 +594,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     case_file = examples.download_file(
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
-        return_without_path=False,
     )
     solver.settings.file.read(file_type="case", file_name=case_file)
     solver.file.write(file_name="sample.cas.h5", file_type="case")
@@ -660,14 +659,18 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     tmp_dir = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
 
-    solver.chdir(tmp_dir)
+    # when running in a container, only the randomly generated folder name will be seen
+    # the full paths will be different between host and container
+    tmp_folder = Path(tmp_dir).parts[-1]
+
+    solver.chdir(tmp_folder)
 
     cortex_info = solver._app_utilities.get_controller_process_info()
     solver_info = solver._app_utilities.get_solver_process_info()
 
-    assert Path(cortex_info.working_directory) == Path(tmp_dir)
+    assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
 
-    assert Path(solver_info.working_directory) == Path(tmp_dir)
+    assert Path(solver_info.working_directory).parts[-1] == tmp_folder
 
 
 @pytest.mark.standalone
