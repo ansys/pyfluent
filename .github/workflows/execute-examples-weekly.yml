@@ -136,23 +136,17 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute radiation_headlamp.py
-        run: |
-          python examples/00-fluent/radiation_headlamp.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute radiation_headlamp.py
+      #   run: |
+      #     python examples/00-fluent/radiation_headlamp.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute species_transport.py
-        run: |
-          python examples/00-fluent/species_transport.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute tyler_sofrin_modes.py
-        run: |
-          python examples/00-fluent/tyler_sofrin_modes.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+      # - name: Execute species_transport.py
+      #   run: |
+      #     python examples/00-fluent/species_transport.py
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Execute parametric_static_mixer_1.py
         run: |
@@ -175,9 +169,16 @@ jobs:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # Execute this at the end as it takes a long time to run (~26 minutes)
-      # - name: Execute lunar_lander_thermal.py
+      - name: Execute lunar_lander_thermal.py
+        run: |
+          python examples/00-fluent/lunar_lander_thermal.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # Execute this at the end as it takes a long time to run (~40 minutes)
+      # - name: Execute tyler_sofrin_modes.py
       #   run: |
-      #     python examples/00-fluent/lunar_lander_thermal.py
+      #     python examples/00-fluent/tyler_sofrin_modes.py
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
