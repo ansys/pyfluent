@@ -11,9 +11,9 @@ Boundary conditions
     >>> import ansys.fluent.core as pyfluent
     >>> from ansys.fluent.core import examples
     >>> file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    >>> solver = pyfluent.launch_fluent()
-    >>> solver.settings.file.read_case(file_name=file_name)
-    >>> cold_inlet = pyfluent.VelocityInlet(settings_source=solver, name="cold-inlet")
+    >>> solver_session = pyfluent.launch_fluent()
+    >>> solver_session.settings.file.read_case(file_name=file_name)
+    >>> cold_inlet = pyfluent.VelocityInlet(settings_source=solver_session, name="cold-inlet")
     >>> cold_inlet.momentum.velocity.set_state(0.4)
     >>> inlet_turbulence = cold_inlet.turbulence
     >>> turbulence_specification = inlet_turbulence.turbulence_specification
@@ -33,5 +33,5 @@ Cell zone conditions
 
 .. code:: python
 
-    >>> elbow_fluid = pyfluent.solver.FluidCellZone(settings_source=solver, name="elbow-fluid")
+    >>> elbow_fluid = pyfluent.solver.FluidCellZone(settings_source=solver_session, name="elbow-fluid")
     >>> elbow_fluid.laminar.set_state(True)

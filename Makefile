@@ -4,6 +4,7 @@ style:
 
 install:
 	@pip install -r requirements/requirements_build.txt
+	@git clean -fd
 	@flit build
 	@pip install -q --force-reinstall dist/*.whl
 	@pip install packaging
@@ -20,6 +21,9 @@ version-info:
 
 docker-pull:
 	@bash .ci/pull_fluent_image.sh
+
+docker-clean-images:
+	@docker system prune --volumes -a -f
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"

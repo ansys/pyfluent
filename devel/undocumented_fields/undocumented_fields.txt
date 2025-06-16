@@ -287,8 +287,8 @@
   Module: ansys.fluent.core.services.solution_variables
   Class: SolutionVariableData
     - get_data
-  Class: SvarError
-    - solution_variable_name
+  Class: InvalidSolutionVariableNameError
+    - variable_name
   Class: ZoneError
     - zone_name
 
