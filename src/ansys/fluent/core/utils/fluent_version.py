@@ -22,6 +22,7 @@
 
 """Provides a module to get Fluent version."""
 
+from collections.abc import Set
 from enum import Enum
 from functools import total_ordering
 import os
@@ -203,3 +204,122 @@ class FluentVersion(Enum):
         return (
             f"Fluent version 20{self.value.split('.')[0]} R{self.value.split('.')[1]}"
         )
+
+
+@total_ordering
+class FluentVersionSet(Set[FluentVersion]):
+    """A set of Fluent versions defined by a predicate."""
+
+    def __init__(self, predicate):
+        """Initialize the FluentVersionSet with a predicate."""
+        self._predicate = predicate
+
+    def __contains__(self, version: FluentVersion) -> bool:
+        """Check if the version is in the set."""
+        return self._predicate(version)
+
+    def __iter__(self):
+        """Iterate over all Fluent versions."""
+        return (v for v in reversed(FluentVersion) if self._predicate(v))
+
+    def __len__(self) -> int:
+        """Return the number of versions in the set."""
+        return sum(1 for v in self)
+
+    def __eq__(self, other) -> bool:
+        """Check equality with another FluentVersionSet."""
+        if isinstance(other, FluentVersionSet):
+            if len(self) != len(other):
+                return False
+            return all(v in other for v in self)
+        return False
+
+    def __lt__(self, other: "FluentVersionSet") -> bool:
+        """Compare two FluentVersionSets."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only compare with another FluentVersionSet.")
+        return all(v in other for v in self) and len(self) < len(other)
+
+    def __and__(self, other: "FluentVersionSet") -> "FluentVersionSet":
+        """Return the intersection of two FluentVersionSets."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only intersect with another FluentVersionSet.")
+        return FluentVersionSet(lambda v: self._predicate(v) and other._predicate(v))
+
+    def __or__(self, other):
+        """Return the union of two FluentVersionSets."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only union with another FluentVersionSet.")
+        return FluentVersionSet(lambda v: self._predicate(v) or other._predicate(v))
+
+    def __sub__(self, other):
+        """Return the difference of two FluentVersionSets."""
+        if not isinstance(other, FluentVersionSet):
+            raise TypeError("Can only subtract another FluentVersionSet.")
+        return FluentVersionSet(
+            lambda v: self._predicate(v) and not other._predicate(v)
+        )
+
+
+def since(version: FluentVersion) -> FluentVersionSet:
+    """
+    Create a FluentVersionSet that includes all versions since the specified version.
+
+    Parameters
+    ----------
+    version : FluentVersion
+        The version since which the set should include versions.
+
+    Returns
+    -------
+    FluentVersionSet
+    """
+    return FluentVersionSet(lambda v: v >= version)
+
+
+def until(version: FluentVersion) -> FluentVersionSet:
+    """
+    Create a FluentVersionSet that includes all versions until the specified version.
+
+    Parameters
+    ----------
+    version : FluentVersion
+        The version until which the set should include versions.
+
+    Returns
+    -------
+    FluentVersionSet
+    """
+    return FluentVersionSet(lambda v: v < version)
+
+
+def only_at(version: FluentVersion) -> FluentVersionSet:
+    """
+    Create a FluentVersionSet that includes only the specified version.
+
+    Parameters
+    ----------
+    version : FluentVersion
+        The version to include in the set.
+
+    Returns
+    -------
+    FluentVersionSet
+    """
+    return FluentVersionSet(lambda v: v == version)
+
+
+def except_for(version: FluentVersion) -> FluentVersionSet:
+    """
+    Create a FluentVersionSet that includes all versions except the specified version.
+
+    Parameters
+    ----------
+    version : FluentVersion
+        The version to exclude from the set.
+
+    Returns
+    -------
+    FluentVersionSet
+    """
+    return FluentVersionSet(lambda v: v != version)
