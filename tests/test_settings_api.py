@@ -29,7 +29,6 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
-    UnstableSettingWarning,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -460,31 +459,6 @@ def warning_record():
     with wrec:
         warnings.simplefilter("ignore", ResourceWarning)
         yield wrec
-
-
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2712")
-@pytest.mark.fluent_version(">=24.2")
-def test_unstable_settings_warning(new_solver_session, warning_record):
-    solver = new_solver_session
-    solver.file.export
-    assert len(warning_record) == 1
-    assert warning_record.pop().category == UnstableSettingWarning
-    try:
-        solver.file.exp
-    except AttributeError:
-        pass
-    assert len(warning_record) == 0
-    solver.file.export
-    assert len(warning_record) == 1
-    assert warning_record.pop().category == UnstableSettingWarning
-
-    # Issue in running in CI (probably due to -gu mode)
-    # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    # solver.file.read_case_data(file_name=case_path)
-    # img_path = "a.png"
-    # Path(img_path).unlink(missing_ok=True)
-    # solver.results.graphics.picture.save_picture(file_name=img_path)
-    # assert len(recwarn) == 0
 
 
 @pytest.mark.fluent_version(">=24.2")
