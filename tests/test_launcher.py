@@ -601,7 +601,7 @@ def test_respect_driver_is_not_null_in_windows():
 
 def test_respect_driver_is_not_null_in_linux():
     driver = _get_graphics_driver(
-        graphics_driver=FluentLinuxGraphicsDriver.DX11, ui_mode=UIMode.GUI
+        graphics_driver=FluentLinuxGraphicsDriver.X11, ui_mode=UIMode.GUI
     )
     assert driver == FluentLinuxGraphicsDriver.X11
 
