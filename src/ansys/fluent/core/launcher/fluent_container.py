@@ -131,7 +131,7 @@ def dict_to_str(dict: dict) -> str:
     Returns
     -------
     string
-        Nicely formatted string representation of the dictionary, with the 'environment' argument removed.
+        Nicely formatted string representation of the dictionary, with the 'environment' key removed if hiding secrets.
     """
 
     if "environment" in dict and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
@@ -307,7 +307,8 @@ def configure_container_dict(
         container_dict["volumes"][0] = f"{mount_source}:{mount_target}"
 
     logger.warning(
-        f"Configuring Fluent container to mount to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
+        f"Configuring Fluent container to mount to {mount_source}, "
+        f"with this path available as {mount_target} for the Fluent session running inside the container."
     )
 
     if "working_dir" not in container_dict:
