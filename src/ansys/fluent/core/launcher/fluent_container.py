@@ -182,9 +182,12 @@ def configure_container_dict(
     args : List[str]
         List of Fluent launch arguments.
     mount_source : str | Path, optional
-        Existing path in the host operating system that will be mounted to ``mount_target``.
+        Path on the host system to mount into the container. This directory will serve as the working directory
+        for the Fluent process inside the container. If not specified, PyFluent's current working directory will
+        be used.
     mount_target : str | Path, optional
-        Path inside the container where ``mount_source`` will be mounted to.
+        Path inside the container where ``mount_source`` will be mounted. This will be the working directory path
+        visible to the Fluent process running inside the container.
     timeout : int, optional
         Time limit  for the Fluent container to start, in seconds. By default, 30 seconds.
     port : int, optional
