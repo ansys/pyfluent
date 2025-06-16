@@ -247,16 +247,7 @@ def get_surf_mean_temp(
     )
 
     # Calculate mean temperature across surfaces
-    temps = np.array([])
-    for x in temp_data.values():
-        temps = np.concatenate(
-            (
-                temps,
-                np.array([y.scalar_data for y in x.data]),
-            ),
-        )
-
-    return np.mean(temps)
+    return float(np.mean(list(temp_data.values())))
 
 
 ###############################################################################

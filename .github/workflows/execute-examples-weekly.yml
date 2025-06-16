@@ -129,7 +129,7 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # RuntimeError: Unable to load hsf library. (already installed ansys-fluent-core[reader])
+      # RuntimeError: Unable to load hsf library and requires separate license.
       # - name: Execute modeling_ablation.py
       #   run: |
       #     python examples/00-fluent/modeling_ablation.py
