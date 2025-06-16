@@ -657,11 +657,11 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     assert not solver._app_utilities.is_solution_data_available()
 
-    tmp_dir = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    tmp_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
 
     # when running in a container, only the randomly generated folder name will be seen
     # the full paths will be different between host and container
-    tmp_folder = Path(tmp_dir).parts[-1]
+    tmp_folder = Path(tmp_path).parts[-1]
 
     solver.chdir(tmp_folder)
 

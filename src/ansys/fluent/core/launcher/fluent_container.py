@@ -123,15 +123,6 @@ def dict_to_str(dict: dict) -> str:
     """Converts the dict to string while hiding the 'environment' argument from the dictionary,
     if the environment variable 'PYFLUENT_HIDE_LOG_SECRETS' is '1'.
     This is useful for logging purposes, to avoid printing sensitive information such as license server details.
-
-    Parameters
-    ----------
-    dict : dict
-        The container dictionary to be converted to string.
-    Returns
-    -------
-    string
-        Nicely formatted string representation of the dictionary, with the 'environment' key removed if hiding secrets.
     """
 
     if "environment" in dict and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
