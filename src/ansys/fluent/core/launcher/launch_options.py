@@ -309,7 +309,7 @@ def _get_graphics_driver(
     which should be automatic (no action needed on PyFluent side).\n""",
             PyFluentUserWarning,
         )
-    if _should_add_driver_null(ui_mode):
+    if _should_add_driver_null(ui_mode_):
         return (
             FluentWindowsGraphicsDriver.NULL
             if is_windows()
