@@ -340,3 +340,21 @@ def except_for(version: FluentVersion) -> FluentVersionSet:
     FluentVersionSet
     """
     return FluentVersionSet(lambda v: v != version)
+
+
+def between(start: FluentVersion, end: FluentVersion) -> FluentVersionSet:
+    """
+    Create a FluentVersionSet that includes all versions between the specified start (inclusive) and end (exclusive) versions.
+
+    Parameters
+    ----------
+    start : FluentVersion
+        The starting version of the range, inclusive.
+    end : FluentVersion
+        The ending version of the range, exclusive.
+
+    Returns
+    -------
+    FluentVersionSet
+    """
+    return FluentVersionSet(lambda v: start <= v < end)

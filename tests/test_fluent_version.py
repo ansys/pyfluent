@@ -25,6 +25,7 @@ import pytest
 from ansys.fluent.core.utils.fluent_version import (
     AnsysVersionNotFound,
     FluentVersion,
+    between,
     except_for,
     only_at,
     since,
@@ -103,6 +104,7 @@ def test_fluent_version_set():
     set2 = until(FluentVersion.v232)
     set3 = only_at(FluentVersion.v232)
     set4 = except_for(FluentVersion.v232)
+    set5 = between(FluentVersion.v231, FluentVersion.v241)
     assert FluentVersion.v232 in set1
     assert FluentVersion.v232 not in set2
     assert FluentVersion.v232 in set3
@@ -111,3 +113,5 @@ def test_fluent_version_set():
     assert set1 | set2 == set3 | set4
     assert set1 & set4 == set1 - set3
     assert set1 > set4 - set2
+    assert len(set5) == 2
+    assert set5 == since(FluentVersion.v231) & until(FluentVersion.v241)
