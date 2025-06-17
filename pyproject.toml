@@ -69,7 +69,7 @@ docs = [
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.6.42",
+    "quarto-cli==1.6.43",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
     "tensorflow>=2.17.0",
