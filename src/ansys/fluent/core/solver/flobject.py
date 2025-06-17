@@ -97,7 +97,6 @@ class InactiveObjectError(RuntimeError):
 
 class _InlineConstants:
     is_active = "active?"
-    is_stable = "webui-release-active?"
     is_read_only = "read-only?"
     default_value = "default"
     min = "min"
@@ -195,7 +194,7 @@ _to_field_name_str = naming_strategy().to_string
 def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
     comps = []
-    while obj:
+    while obj is not None:
         python_name = obj.python_name
         obj = obj._parent
         if isinstance(obj, (NamedObject, ListObject)):
@@ -304,12 +303,10 @@ class Base:
 
         Supports file upload and download.
         """
-        with warnings.catch_warnings():
-            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
-            if self._file_transfer_service:
-                return self._file_transfer_service
-            elif self._parent:
-                return self._parent._file_transfer_handler
+        if self._file_transfer_service:
+            return self._file_transfer_service
+        elif self._parent:
+            return self._parent._file_transfer_handler
 
     _name = None
     fluent_name = None
@@ -425,20 +422,6 @@ class Base:
         """Whether the object is active."""
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
-
-    def _check_stable(self) -> None:
-        """Whether the object is stable."""
-        if not self.is_active():
-            return
-        attr = self.get_attr(_InlineConstants.is_stable)
-        attr = True if attr is None else attr
-        if not attr:
-            warnings.warn(
-                f"The API feature at '{self.path}' is not stable. "
-                f"It is not guaranteed that it is fully validated and "
-                f"there is no commitment to its backwards compatibility.",
-                UnstableSettingWarning,
-            )
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -644,6 +627,7 @@ class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     pass
 
 
+# TODO: Delete this after updating PyConsole code when next PyFluent version is pushed.
 class UnstableSettingWarning(PyFluentUserWarning):
     """Provides unstable settings warning."""
 
@@ -1161,10 +1145,7 @@ class Group(SettingsBase[DictStateType]):
                 )
             return alias_obj
         try:
-            attr = super().__getattribute__(name)
-            if name in super().__getattribute__("_child_classes"):
-                attr._check_stable()
-            return attr
+            return super().__getattribute__(name)
         except AttributeError as ex:
             error_msg = allowed_name_error_message(
                 trial_name=name,
