@@ -154,28 +154,28 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # Execute this at the end as it takes a long time to run (~17 minutes)
+      # ~17 minutes
       # - name: Execute DOE_ML.py
       #   run: |
       #     python examples/00-fluent/DOE_ML.py
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # Execute this at the end as it takes a long time to run (~17 minutes)
+      # ~17 minutes
       # - name: Execute frozen_rotor_workflow.py
       #   run: |
       #     python examples/00-fluent/frozen_rotor_workflow.py
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # Execute this at the end as it takes a long time to run (~26 minutes)
+      # ~26 minutes
       - name: Execute lunar_lander_thermal.py
         run: |
           python examples/00-fluent/lunar_lander_thermal.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      # Execute this at the end as it takes a long time to run (~40 minutes)
+      # ~40 minutes
       # - name: Execute tyler_sofrin_modes.py
       #   run: |
       #     python examples/00-fluent/tyler_sofrin_modes.py

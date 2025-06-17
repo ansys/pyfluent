@@ -323,16 +323,10 @@ solver_session.settings.file.parametric_project.save_as(
     project_filename="static_mixer_study_save.flprj"
 )
 
-solver_session.exit()
-
 #########################################################################
-# Launch Fluent and read saved project
+# Read saved project
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Launch Fluent once again and read the previously saved project.
-
-solver_session = pyfluent.launch_fluent(
-    precision="double", processor_count=2, mode="solver"
-)
+# Read the previously saved project.
 
 solver_session.settings.file.parametric_project.open(
     project_filename="static_mixer_study_save.flprj", load_case=True
