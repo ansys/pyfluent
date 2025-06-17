@@ -1132,6 +1132,7 @@ class Group(SettingsBase[DictStateType]):
 
     def __getattribute__(self, name):
         # Static class attributes should not do server query
+        from ansys.fluent.core.codegen.settingsgen import _static_class_attributes
         if name in _static_class_attributes:
             return getattr(self, name, None)
         if name in super().__getattribute__("child_names"):
