@@ -29,7 +29,7 @@ jobs:
   install-podman:
     runs-on: [public-ubuntu-latest-8-cores]
     steps:
-      - uses: gacts/install-podman@v1
+      - uses: gacts/install-podman@09c5e20ddd93a78b419d6b0b78d6aba2268997d1 # v1.0.0
       - run: podman compose version
 
   build_test:
