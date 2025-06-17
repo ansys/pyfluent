@@ -86,57 +86,66 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute ahmed_body_workflow.py
-        run: |
-          python examples/00-fluent/ahmed_body_workflow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute brake.py
-        run: |
-          python examples/00-fluent/brake.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute exhaust_system_settings_api.py
-        run: |
-          python examples/00-fluent/exhaust_system_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute external_compressible_flow.py
-        run: |
-          python examples/00-fluent/external_compressible_flow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
+      # ~1 minute
       - name: Execute mixing_elbow_settings_api.py
         run: |
           python examples/00-fluent/mixing_elbow_settings_api.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Execute modeling_cavitation.py
-        run: |
-          python examples/00-fluent/modeling_cavitation.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Execute radiation_headlamp.py
-        run: |
-          python examples/00-fluent/radiation_headlamp.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
+      # ~1 minute
       - name: Execute species_transport.py
         run: |
           python examples/00-fluent/species_transport.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
+      # ~1 minute
+      - name: Execute modeling_cavitation.py
+        run: |
+          python examples/00-fluent/modeling_cavitation.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # ~3 minutes
+      - name: Execute ahmed_body_workflow.py
+        run: |
+          python examples/00-fluent/ahmed_body_workflow.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # ~4 minutes
+      - name: Execute exhaust_system_settings_api.py
+        run: |
+          python examples/00-fluent/exhaust_system_settings_api.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # ~4 minutes
       - name: Execute parametric_static_mixer_1.py
         run: |
           python examples/00-fluent/parametric_static_mixer_1.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # ~5 minutes
+      - name: Execute brake.py
+        run: |
+          python examples/00-fluent/brake.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # ~5 minutes
+      - name: Execute external_compressible_flow.py
+        run: |
+          python examples/00-fluent/external_compressible_flow.py
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      # ~15 minutes
+      - name: Execute radiation_headlamp.py
+        run: |
+          python examples/00-fluent/radiation_headlamp.py
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
