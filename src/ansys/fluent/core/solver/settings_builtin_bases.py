@@ -59,9 +59,7 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
         version = FluentVersion(obj._version)
         path = path.get(version)
         if path is None:
-            raise RuntimeError(
-                f"{builtin_cls_name} is not supported in Fluent version {version}."
-            )
+            raise RuntimeError(f"{builtin_cls_name} is not supported in {version}.")
     comps = path.split(".")
     for i, comp in enumerate(comps):
         obj = SettingsBase.__getattribute__(obj, comp)  # bypass InactiveObjectError

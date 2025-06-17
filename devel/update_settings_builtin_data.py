@@ -3,17 +3,7 @@ Script to update the settings_builtin_data.py file with the new Fluent version.
 Usage: python devel/update_settings_builtin_data.py --version 252
 """
 
-import argparse
 from pathlib import Path
-
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
-parser = argparse.ArgumentParser()
-parser.add_argument("--version", type=str, required=True)
-args = parser.parse_args()
-new_version = FluentVersion(args.version).name
-index = FluentVersion._member_names_.index(new_version)
-previous_version = FluentVersion._member_names_[index + 1]
 
 file_path = (
     Path(__file__).parent.parent
@@ -26,12 +16,30 @@ file_path = (
 ).resolve()
 lines = []
 
+
 with open(file_path, "r") as file:
+    skip = False
+    versions = []
+    path = ""
     for line in file:
-        if previous_version in line:
-            new_line = line.replace(previous_version, new_version)
-            lines.append(new_line)
-        lines.append(line)
+        if line.strip() == "{":
+            skip = True
+            lines.append(line)
+            continue
+        if line.strip() == "},":
+            min_version = versions[-1]
+            lines.append(f"            since({min_version}): {path}\n")
+            skip = False
+            versions = []
+            path = ""
+        if skip:
+            version, path_ = line.strip().split(":", 1)
+            if path:
+                assert path == path_, line
+            path = path_
+            versions.append(version.strip())
+        else:
+            lines.append(line)
 
 with open(file_path, "w") as file:
     file.writelines(lines)
