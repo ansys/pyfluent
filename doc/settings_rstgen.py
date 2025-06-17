@@ -140,6 +140,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
     with open(rstpath, "w") as r:
         # Populate initial rst
         r.write(":orphan:\n\n")
+        # ``root`` used to create a hyperlink for settings API
         if cls_orig_name == "root":
             r.write(f".. _ref_{cls_name}:\n\n")
         else:
