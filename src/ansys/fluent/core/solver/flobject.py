@@ -69,7 +69,6 @@ from typing import (
 import warnings
 import weakref
 
-from ansys.fluent.core.codegen.settingsgen import _static_class_attributes
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
