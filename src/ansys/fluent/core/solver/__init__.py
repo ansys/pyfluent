@@ -27,4 +27,4 @@ try:
 except (ImportError, AttributeError, SyntaxError):
     pass
 
-from ansys.fluent.core.utils.context_managers import ReadCase, using  # noqa: F401
+from ansys.fluent.core.utils.context_managers import using  # noqa: F401
