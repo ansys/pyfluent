@@ -29,7 +29,7 @@ from tempfile import TemporaryDirectory
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import PyFluentDeprecationWarning
+from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
 from ansys.fluent.core.launcher import launcher_utils
@@ -45,6 +45,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentWindowsGraphicsDriver,
     LaunchMode,
     UIMode,
+    _get_graphics_driver,
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
@@ -516,7 +517,7 @@ def test_standalone_launcher_dry_run(monkeypatch):
     assert str(Path(server_info_file_name).parent) == tempfile.gettempdir()
     assert (
         fluent_launch_string
-        == f"{fluent_path} 3ddp -gu -sifile={server_info_file_name} -nm"
+        == f"{fluent_path} 3ddp -gu -driver null -sifile={server_info_file_name} -nm"
     )
 
 
@@ -531,7 +532,7 @@ def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
         assert str(Path(server_info_file_name).parent) == tmp_dir
         assert (
             fluent_launch_string
-            == f"{fluent_path} 3ddp -gu -sifile={Path(server_info_file_name).name} -nm"
+            == f"{fluent_path} 3ddp -gu -driver null -sifile={Path(server_info_file_name).name} -nm"
         )
 
 
@@ -583,3 +584,71 @@ def test_docker_compose(monkeypatch):
     )
     solver.file.read_case(file_name=case_file_name)
     solver.exit()
+
+
+@pytest.mark.standalone
+def test_respect_driver_is_not_null_in_windows():
+    driver = _get_graphics_driver(
+        graphics_driver=FluentWindowsGraphicsDriver.DX11, ui_mode=UIMode.GUI
+    )
+    assert driver == FluentWindowsGraphicsDriver.DX11
+
+    driver = _get_graphics_driver(
+        graphics_driver=FluentWindowsGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
+    )
+    assert driver == FluentWindowsGraphicsDriver.OPENGL
+
+
+def test_respect_driver_is_not_null_in_linux():
+    driver = _get_graphics_driver(
+        graphics_driver=FluentLinuxGraphicsDriver.X11, ui_mode=UIMode.GUI
+    )
+    assert driver == FluentLinuxGraphicsDriver.X11
+
+    driver = _get_graphics_driver(
+        graphics_driver=FluentLinuxGraphicsDriver.OPENGL, ui_mode=UIMode.HIDDEN_GUI
+    )
+    assert driver == FluentLinuxGraphicsDriver.OPENGL
+
+
+@pytest.mark.standalone
+def test_warning_in_windows():
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentWindowsGraphicsDriver.DX11, ui_mode=UIMode.NO_GUI
+        )
+        assert driver == FluentWindowsGraphicsDriver.NULL
+
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentWindowsGraphicsDriver.AUTO, ui_mode=UIMode.NO_GRAPHICS
+        )
+        assert driver == FluentWindowsGraphicsDriver.NULL
+
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentWindowsGraphicsDriver.AUTO,
+            ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
+        )
+        assert driver == FluentWindowsGraphicsDriver.NULL
+
+
+def test_warning_in_linux():
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentLinuxGraphicsDriver.X11, ui_mode=UIMode.NO_GUI
+        )
+        assert driver == FluentLinuxGraphicsDriver.NULL
+
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentLinuxGraphicsDriver.AUTO, ui_mode=UIMode.NO_GRAPHICS
+        )
+        assert driver == FluentLinuxGraphicsDriver.NULL
+
+    with pytest.warns(PyFluentUserWarning):
+        driver = _get_graphics_driver(
+            graphics_driver=FluentLinuxGraphicsDriver.AUTO,
+            ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
+        )
+        assert driver == FluentLinuxGraphicsDriver.NULL
