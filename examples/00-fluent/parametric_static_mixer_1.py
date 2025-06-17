@@ -329,7 +329,8 @@ solver_session.settings.file.parametric_project.save_as(
 # Read the previously saved project.
 
 solver_session.settings.file.parametric_project.open(
-    project_filename="static_mixer_study_save.flprj", load_case=True
+    project_filename=os.path.join(os.getcwd(), "static_mixer_study_save.flprj"),
+    load_case=True,
 )
 
 #########################################################################
