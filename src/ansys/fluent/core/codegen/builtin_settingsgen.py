@@ -124,7 +124,7 @@ def generate(version: str):
             for version_set, p in path.items():
                 if kind == "NamedObject":
                     p = f"{p}.child_object_type"
-                for v in version_set:
+                for v in reversed(list(version_set)):
                     f.write(f"    type(settings_root_{v.number}.{p}),\n")
             f.write("): ...\n\n")
 

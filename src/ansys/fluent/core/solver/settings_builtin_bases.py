@@ -55,12 +55,18 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     builtin_cls_name = builtin_settings_obj.__class__.__name__
     obj = settings_root
     path = DATA[builtin_cls_name][1]
+    found_path = None
     if isinstance(path, dict):
         version = FluentVersion(obj._version)
-        path = path.get(version)
-        if path is None:
+        for version_set, p in path.items():
+            if version in version_set:
+                found_path = p
+                break
+        if found_path is None:
             raise RuntimeError(f"{builtin_cls_name} is not supported in {version}.")
-    comps = path.split(".")
+    elif isinstance(path, str):
+        found_path = path
+    comps = found_path.split(".")
     for i, comp in enumerate(comps):
         obj = SettingsBase.__getattribute__(obj, comp)  # bypass InactiveObjectError
         if i < len(comps) - 1 and isinstance(obj, NamedObject):
