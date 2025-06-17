@@ -46,7 +46,8 @@ def warning_for_fluent_dev_version(version):
         warnings.warn(
             "⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.\n"
             "Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released "
-            "version of Fluent that is officially supported by this version of PyFluent."
+            "version of Fluent that is officially supported by this version of PyFluent.",
+            PyFluentUserWarning,
         )
 
 
