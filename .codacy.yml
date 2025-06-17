@@ -1,0 +1,31 @@
+---
+engines:
+  pylint:
+    enabled: true
+    exclude_paths:
+      - test/**/*
+
+  flake8:
+    enabled: true
+    exclude_paths:
+      - test/**/*
+
+tools:
+  pylint:
+    enabled: true
+    config:
+      disable:
+        - C0114 # Missing module docstring
+        - C0115 # Missing class docstring
+        - C0116 # Missing function or method docstring
+
+  flake8:
+    enabled: true
+    config:
+      ignore:
+        - D100 # Missing docstring in public module
+        - D101 # Missing docstring in public class
+        - D102 # Missing docstring in public method
+
+exclude_paths:
+  - test/**/*
