@@ -212,6 +212,9 @@ class FluentVersionSet(Set[FluentVersion]):
     def __init__(self, predicate):
         """Initialize the FluentVersionSet with a predicate."""
         self._predicate = predicate
+        self._versions = tuple(
+            v for v in reversed(FluentVersion) if self._predicate(v)
+        )  # precompute versions for efficiency
 
     def __contains__(self, version: FluentVersion) -> bool:
         """Check if the version is in the set."""
@@ -219,11 +222,11 @@ class FluentVersionSet(Set[FluentVersion]):
 
     def __iter__(self):
         """Iterate over all Fluent versions."""
-        return (v for v in reversed(FluentVersion) if self._predicate(v))
+        yield from self._versions
 
     def __len__(self) -> int:
         """Return the number of versions in the set."""
-        return sum(1 for v in self)
+        return len(self._versions)
 
     def __eq__(self, other) -> bool:
         """Check equality with another FluentVersionSet."""
@@ -276,6 +279,21 @@ class FluentVersionSet(Set[FluentVersion]):
         return FluentVersionSet(
             lambda v: self._predicate(v) and not other._predicate(v)
         )
+
+    def __hash__(self):
+        return hash(self._versions)
+
+
+def all_versions() -> FluentVersionSet:
+    """
+    Create a FluentVersionSet that includes all supported Fluent versions.
+
+    Returns
+    -------
+    FluentVersionSet
+        A set containing all Fluent versions.
+    """
+    return FluentVersionSet(lambda v: True)
 
 
 def since(version: FluentVersion) -> FluentVersionSet:
