@@ -226,9 +226,18 @@ def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str])
 
 def _is_deprecated(obj) -> bool | None:
     """Whether the object is deprecated in a specific Fluent version."""
-    deprecated_version = getattr(obj, "_deprecated_version", None)
+    if FluentVersion(obj._version) >= FluentVersion.v252:
+        # "_deprecated_version" is part of generated data since 25R2
+        deprecated_version = getattr(obj, "_deprecated_version", None)
+    else:
+        deprecated_version = obj.get_attrs(["deprecated-version"])
+        if deprecated_version:
+            deprecated_version = deprecated_version.get("attrs", deprecated_version)
+        deprecated_version = (
+            deprecated_version.get("deprecated-version") if deprecated_version else None
+        )
     return deprecated_version and (
-        float(deprecated_version) <= 22.2
+        FluentVersion(float(deprecated_version)) <= FluentVersion.v222
         or FluentVersion(obj._version) >= FluentVersion(deprecated_version)
     )
 
