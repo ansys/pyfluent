@@ -25,126 +25,12 @@ import tempfile
 
 import pytest
 
-try:
-    from ansys.fluent.core.solver import (
-        Ablation,
-        Battery,
-        BoundaryCondition,
-        BoundaryConditions,
-        CalculationActivity,
-        CaseModification,
-        CellRegister,
-        CellRegisters,
-        CellZoneCondition,
-        CellZoneConditions,
-        Contour,
-        Contours,
-        Controls,
-        ConvergenceConditions,
-        CumulativePlots,
-        CustomFieldFunctions,
-        CustomVectors,
-        DesignPoint,
-        DesignPoints,
-        DiscretePhase,
-        DiscretePhaseHistogram,
-        DynamicMesh,
-        EChemistry,
-        Energy,
-        ExecuteCommands,
-        ExpressionVolumes,
-        FluidCellZone,
-        FluidCellZones,
-        FluidMaterial,
-        FluidMaterials,
-        Fluxes,
-        General,
-        Graphics,
-        GroupSurfaces,
-        Histogram,
-        ImprintSurfaces,
-        Initialization,
-        Injections,
-        InputParameters,
-        InteriorBoundaries,
-        InteriorBoundary,
-        InterpolatedData,
-        IsoClips,
-        IsoSurfaces,
-        LICs,
-        LineSurfaces,
-        Materials,
-        Meshes,
-        MeshInterfaces,
-        Methods,
-        Models,
-        Monitor,
-        Multiphase,
-        NamedExpressions,
-        Optics,
-        OutputParameters,
-        ParametricStudies,
-        ParametricStudy,
-        ParticleTracks,
-        PartitionSurfaces,
-        Pathlines,
-        Pemfc,
-        PlaneSlices,
-        PlaneSurface,
-        PlaneSurfaces,
-        Plots,
-        PointSurfaces,
-        PressureOutlet,
-        PressureOutlets,
-        ProfileData,
-        QuadricSurfaces,
-        Radiation,
-        RakeSurfaces,
-        ReferenceFrame,
-        ReferenceFrames,
-        ReferenceValues,
-        Report,
-        ReportDefinitions,
-        ReportFile,
-        ReportFiles,
-        ReportPlot,
-        ReportPlots,
-        Residual,
-        Results,
-        RunCalculation,
-        SceneAnimation,
-        Scenes,
-        Setup,
-        SimulationReports,
-        Sofc,
-        SolidMaterial,
-        SolidMaterials,
-        Solution,
-        Species,
-        SphereSlices,
-        Structure,
-        SurfaceCells,
-        SurfaceIntegrals,
-        Surfaces,
-        SystemCoupling,
-        TransformSurfaces,
-        Vectors,
-        VelocityInlet,
-        VelocityInlets,
-        VirtualBladeModel,
-        Viscous,
-        VolumeIntegrals,
-        WallBoundaries,
-        WallBoundary,
-        XYPlots,
-        ZoneSurfaces,
-    )
-except ImportError:
-    pass  # for no-codegen testing workflow
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import *  # noqa: F401, F403
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+# flake8: noqa: F405
 
 
 @pytest.mark.codegen_required
@@ -681,6 +567,26 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         )
         == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
     )
+    assert ReadCase(settings_source=solver) == solver.file.read_case
+    assert ReadData(settings_source=solver) == solver.file.read_data
+    assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
+    if fluent_version >= FluentVersion.v241:
+        assert WriteCase(settings_source=solver) == solver.file.write_case
+        assert WriteData(settings_source=solver) == solver.file.write_data
+        assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
+    else:
+        with pytest.raises(RuntimeError):
+            WriteCase(settings_source=solver)
+        with pytest.raises(RuntimeError):
+            WriteData(settings_source=solver)
+        with pytest.raises(RuntimeError):
+            WriteCaseData(settings_source=solver)
+    assert (
+        Initialize(settings_source=solver) == solver.solution.initialization.initialize
+    )
+    assert (
+        Calculate(settings_source=solver) == solver.solution.run_calculation.calculate
+    )
 
 
 @pytest.mark.codegen_required
@@ -788,7 +694,7 @@ def test_context_manager_1(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
 
     # Test that the context manager works with a solver session
-    with using(solver):  # noqa: F405
+    with using(solver):
         assert Setup() == solver.setup
         assert General() == solver.setup.general
         assert Models() == solver.setup.models
@@ -798,7 +704,7 @@ def test_context_manager_1(mixing_elbow_case_data_session):
 
     # Test that the context manager works with multiple threads
     def run_solver_context():
-        with using(solver):  # noqa: F405
+        with using(solver):
             setup = Setup()
             print(
                 f"Setup in thread {threading.current_thread().name}: {setup == solver.setup}"
@@ -823,6 +729,6 @@ def test_context_manager_2(new_solver_session):
         "pyfluent/examples/DOE-ML-Mixing-Elbow",
     )
 
-    with using(solver):  # noqa: F405
-        ReadCase(import_filename)  # noqa: F405
+    with using(solver):
+        ReadCase(file_name=import_filename)
         assert Viscous().model() == "laminar"
