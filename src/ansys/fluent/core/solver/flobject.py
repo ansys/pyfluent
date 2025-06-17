@@ -69,6 +69,7 @@ from typing import (
 import warnings
 import weakref
 
+from ansys.fluent.core.codegen.settingsgen import _static_class_attributes
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -1096,8 +1097,7 @@ class Group(SettingsBase[DictStateType]):
             [
                 child
                 for child in self.child_names + self.command_names + self.query_names
-                if getattr(self, child).is_active()
-                and _is_deprecated(getattr(self, child))
+                if _is_deprecated(getattr(self, child))
             ]
         )
 
@@ -1131,6 +1131,9 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def __getattribute__(self, name):
+        # Static class attributes should not do server query
+        if name in _static_class_attributes:
+            return getattr(self, name, None)
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
                 raise InactiveObjectError(self.python_path)
@@ -1654,8 +1657,7 @@ class Action(Base):
             [
                 child
                 for child in self.argument_names
-                if getattr(self, child).is_active()
-                and _is_deprecated(getattr(self, child))
+                if _is_deprecated(getattr(self, child))
             ]
         )
 

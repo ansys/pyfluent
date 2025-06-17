@@ -107,10 +107,11 @@ def strip_parameters(docstring: str) -> str:
 
 
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
-    data = {}
-    data["version"] = version
-    data["name"] = cls.__name__
-    data["bases"] = [base.__name__ for base in cls.__bases__]
+    data = {
+        "version": version,
+        "name": cls.__name__,
+        "bases": [base.__name__ for base in cls.__bases__],
+    }
     if "command" in cls.__doc__:
         data["doc"] = strip_parameters(cls.__doc__)
     else:
@@ -193,6 +194,13 @@ _arg_type_strings = {
     "FilenameList": "list[str]",
 }
 
+_static_class_attributes = [
+    "_version",
+    "_deprecated_version",
+    "_python_name",
+    "fluent_name",
+]
+
 
 def _write_function_stub(name, data, s_stub):
     s_stub.write(f"    def {name}(self")
@@ -227,17 +235,19 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
-    s.write(f"    _version = {data['version']!r}\n")
+    s.write(f"    {_static_class_attributes[0]} = {data['version']!r}\n")
     deprecated = data["deprecated_version"]
     if deprecated:
-        s.write(f"    _deprecated_version = {deprecated!r}\n")
-        s_stub.write("    _deprecated_version: str\n")
-    s.write(f"    fluent_name = {data['fluent_name']!r}\n")
+        s.write(f"    {_static_class_attributes[1]} = {deprecated!r}\n")
+        s_stub.write(f"    {_static_class_attributes[1]}: str\n")
+    s.write(
+        f"    {_static_class_attributes[3]} = {data[f'{_static_class_attributes[3]}']!r}\n"
+    )
     # _python_name preserves the original non-suffixed name of the class.
-    s.write(f"    _python_name = {python_name!r}\n")
-    s_stub.write("    _version: str\n")
-    s_stub.write("    fluent_name: str\n")
-    s_stub.write("    _python_name: str\n")
+    s.write(f"    {_static_class_attributes[2]} = {python_name!r}\n")
+    s_stub.write(f"    {_static_class_attributes[0]}: str\n")
+    s_stub.write(f"    {_static_class_attributes[3]}: str\n")
+    s_stub.write(f"    {_static_class_attributes[2]}: str\n")
     child_names = data["child_names"]
     if child_names:
         s.write(f"    child_names = {child_names}\n")
@@ -260,7 +270,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         for k, v in data["child_classes"].items():
             name = v["name"]
             # Retrieving the original python name before get_cls() modifies it.
-            child_python_name = to_python_name(v["fluent_name"])
+            child_python_name = to_python_name(v[f"{_static_class_attributes[3]}"])
             hash_ = _gethash(v)
             # We are within a tree-traversal, so the global _NAME_BY_HASH dict
             # must be updated immediately at the point of lookup. Same lookup
