@@ -39,6 +39,7 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
@@ -364,3 +365,25 @@ class Solver(BaseSession):
     def enable_beta_features(self):
         """Enable access to Fluent beta-features"""
         self.settings.file.beta_settings(enable=True)
+
+    def switch_to_meshing(self):
+        """Switch to meshing mode and return a meshing session object. Deactivate this
+        object's public interface and streaming services.
+
+        Returns
+        -------
+        Meshing
+        """
+        self.settings.switch_to_meshing_mode()
+        for cb in self._fluent_connection.finalizer_cbs:
+            cb()
+        meshing_session = Meshing(
+            fluent_connection=self._fluent_connection,
+            scheme_eval=self.scheme,
+            file_transfer_service=self._file_transfer_service,
+        )
+        self._fluent_connection = None
+        self.__doc__ = (
+            "The solver session is no longer usable after switching to meshing mode."
+        )
+        return meshing_session
