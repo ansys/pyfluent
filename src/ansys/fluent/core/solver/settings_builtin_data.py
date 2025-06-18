@@ -1167,4 +1167,39 @@ DATA = {
     "ParametricStudy": ("NamedObject", "parametric_studies"),
     "DesignPoints": ("Singleton", "parametric_studies.design_points"),
     "DesignPoint": ("NamedObject", "parametric_studies.design_points"),
+    "ReadCase": ("Command", "file.read_case"),
+    "ReadData": ("Command", "file.read_data"),
+    "ReadCaseData": ("Command", "file.read_case_data"),
+    "WriteCase": (
+        "Singleton",
+        {
+            FluentVersion.v261: "file.write_case",
+            FluentVersion.v252: "file.write_case",
+            FluentVersion.v251: "file.write_case",
+            FluentVersion.v242: "file.write_case",
+            FluentVersion.v241: "file.write_case",
+        },
+    ),
+    "WriteData": (
+        "Singleton",
+        {
+            FluentVersion.v261: "file.write_data",
+            FluentVersion.v252: "file.write_data",
+            FluentVersion.v251: "file.write_data",
+            FluentVersion.v242: "file.write_data",
+            FluentVersion.v241: "file.write_data",
+        },
+    ),
+    "WriteCaseData": (
+        "Singleton",
+        {
+            FluentVersion.v261: "file.write_case_data",
+            FluentVersion.v252: "file.write_case_data",
+            FluentVersion.v251: "file.write_case_data",
+            FluentVersion.v242: "file.write_case_data",
+            FluentVersion.v241: "file.write_case_data",
+        },
+    ),
+    "Initialize": ("Command", "solution.initialization.initialize"),
+    "Calculate": ("Command", "solution.run_calculation.calculate"),
 }

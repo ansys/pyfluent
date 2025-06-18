@@ -80,6 +80,7 @@ from ansys.fluent.core.variable_strategies import (
 import ansys.units
 
 from . import _docstrings
+from ..pyfluent_warnings import warning_for_fluent_dev_version
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
@@ -97,7 +98,6 @@ class InactiveObjectError(RuntimeError):
 
 class _InlineConstants:
     is_active = "active?"
-    is_stable = "webui-release-active?"
     is_read_only = "read-only?"
     default_value = "default"
     min = "min"
@@ -195,7 +195,7 @@ _to_field_name_str = naming_strategy().to_string
 def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
     comps = []
-    while obj:
+    while obj is not None:
         python_name = obj.python_name
         obj = obj._parent
         if isinstance(obj, (NamedObject, ListObject)):
@@ -222,6 +222,24 @@ def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str])
         if issubclass(cls, (NamedObject, ListObject)):
             cls = cls.child_object_type
     return cls, full_path
+
+
+def _is_deprecated(obj) -> bool | None:
+    """Whether the object is deprecated in a specific Fluent version."""
+    if FluentVersion(obj._version) >= FluentVersion.v252:
+        # "_deprecated_version" is part of generated data since 25R2
+        deprecated_version = getattr(obj, "_deprecated_version", None)
+    else:
+        deprecated_version = obj.get_attrs(["deprecated-version"])
+        if deprecated_version:
+            deprecated_version = deprecated_version.get("attrs", deprecated_version)
+        deprecated_version = (
+            deprecated_version.get("deprecated-version") if deprecated_version else None
+        )
+    return deprecated_version and (
+        FluentVersion(float(deprecated_version)) <= FluentVersion.v222
+        or FluentVersion(obj._version) >= FluentVersion(deprecated_version)
+    )
 
 
 class Base:
@@ -286,12 +304,10 @@ class Base:
 
         Supports file upload and download.
         """
-        with warnings.catch_warnings():
-            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
-            if self._file_transfer_service:
-                return self._file_transfer_service
-            elif self._parent:
-                return self._parent._file_transfer_handler
+        if self._file_transfer_service:
+            return self._file_transfer_service
+        elif self._parent:
+            return self._parent._file_transfer_handler
 
     _name = None
     fluent_name = None
@@ -403,37 +419,10 @@ class Base:
             return None
         return val
 
-    def _is_deprecated(self) -> bool:
-        """Whether the object is deprecated in a specific Fluent version.'"""
-        deprecated_version = self.get_attrs(["deprecated-version"])
-        if deprecated_version:
-            deprecated_version = deprecated_version.get("attrs", deprecated_version)
-        deprecated_version = (
-            deprecated_version.get("deprecated-version") if deprecated_version else None
-        )
-        return deprecated_version and (
-            float(deprecated_version) <= 22.2
-            or FluentVersion(self._version) >= FluentVersion(deprecated_version)
-        )
-
     def is_active(self) -> bool:
         """Whether the object is active."""
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
-
-    def _check_stable(self) -> None:
-        """Whether the object is stable."""
-        if not self.is_active():
-            return
-        attr = self.get_attr(_InlineConstants.is_stable)
-        attr = True if attr is None else attr
-        if not attr:
-            warnings.warn(
-                f"The API feature at '{self.path}' is not stable. "
-                f"It is not guaranteed that it is fully validated and "
-                f"there is no commitment to its backwards compatibility.",
-                UnstableSettingWarning,
-            )
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -639,6 +628,7 @@ class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     pass
 
 
+# TODO: Delete this after updating PyConsole code when next PyFluent version is pushed.
 class UnstableSettingWarning(PyFluentUserWarning):
     """Provides unstable settings warning."""
 
@@ -965,7 +955,7 @@ def _command_query_name_filter(
     for name in names:
         if name not in excluded and name.startswith(prefix):
             child = getattr(parent, name)
-            if child.is_active() and not child._is_deprecated():
+            if child.is_active() and not _is_deprecated(child):
                 ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
     return ret
 
@@ -1079,7 +1069,7 @@ class Group(SettingsBase[DictStateType]):
         ret = []
         for child_name in self.child_names:
             child = getattr(self, child_name)
-            if child.is_active() and not child._is_deprecated():
+            if child.is_active() and not _is_deprecated(child):
                 ret.append(child_name)
         return ret
 
@@ -1088,7 +1078,7 @@ class Group(SettingsBase[DictStateType]):
         ret = []
         for command_name in self.command_names:
             command = getattr(self, command_name)
-            if command.is_active() and not command._is_deprecated():
+            if command.is_active() and not _is_deprecated(command):
                 ret.append(command_name)
         return ret
 
@@ -1097,7 +1087,7 @@ class Group(SettingsBase[DictStateType]):
         ret = []
         for query_name in self.query_names:
             query = getattr(self, query_name)
-            if query.is_active() and not query._is_deprecated():
+            if query.is_active() and not _is_deprecated(query):
                 ret.append(query_name)
         return ret
 
@@ -1107,7 +1097,8 @@ class Group(SettingsBase[DictStateType]):
             [
                 child
                 for child in self.child_names + self.command_names + self.query_names
-                if getattr(self, child)._is_deprecated()
+                if getattr(self, child).is_active()
+                and _is_deprecated(getattr(self, child))
             ]
         )
 
@@ -1124,7 +1115,7 @@ class Group(SettingsBase[DictStateType]):
         for child_name in self.child_names:
             if child_name not in excluded and child_name.startswith(prefix):
                 child = getattr(self, child_name)
-                if child.is_active() and not child._is_deprecated():
+                if child.is_active() and not _is_deprecated(child):
                     ret.append(
                         [
                             child_name,
@@ -1155,10 +1146,7 @@ class Group(SettingsBase[DictStateType]):
                 )
             return alias_obj
         try:
-            attr = super().__getattribute__(name)
-            if name in super().__getattribute__("_child_classes"):
-                attr._check_stable()
-            return attr
+            return super().__getattribute__(name)
         except AttributeError as ex:
             error_msg = allowed_name_error_message(
                 trial_name=name,
@@ -1667,7 +1655,8 @@ class Action(Base):
             [
                 child
                 for child in self.argument_names
-                if getattr(self, child)._is_deprecated()
+                if getattr(self, child).is_active()
+                and _is_deprecated(getattr(self, child))
             ]
         )
 
@@ -1684,7 +1673,7 @@ class Action(Base):
         for argument_name in self.argument_names:
             if argument_name not in excluded and argument_name.startswith(prefix):
                 argument = getattr(self, argument_name)
-                if argument.is_active() and not argument._is_deprecated():
+                if argument.is_active() and not _is_deprecated(argument):
                     ret.append(
                         [
                             argument_name,
@@ -2274,6 +2263,7 @@ def get_root(
                 CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
+            warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()
             root_cls, _ = get_cls("", obj_info, version=version)

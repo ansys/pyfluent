@@ -27,9 +27,10 @@ import io
 import weakref
 
 import pytest
-from test_utils import count_key_recursive
+from test_utils import MockTracingInterceptor, count_key_recursive
 
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.services.interceptors import TracingInterceptor
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
@@ -62,7 +63,6 @@ class Setting:
 
     attrs = {
         "active?": lambda self: True,
-        "webui-release-active?": lambda self: True,
         "deprecated-version": lambda self: None,
     }
 
@@ -324,7 +324,6 @@ class Root(Group):
             attrs = {
                 "active?": lambda self: not self.parent.objs["b-3"].get_state(),
                 "allowed-values": lambda self: ["foo", "bar"],
-                "webui-release-active?": lambda self: True,
                 "deprecated-version": lambda self: None,
             }
 
@@ -1250,3 +1249,39 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
     # The following is the default behavior when no arguments are associated with the command.
     assert solver.results.graphics.contour.list.argument_names == []
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
+    solver = static_mixer_settings_session
+
+    mock_interceptor = MockTracingInterceptor()
+
+    with monkeypatch.context() as m:
+        m.setattr(TracingInterceptor, "_intercept_call", mock_interceptor)
+        solver.setup.boundary_conditions.velocity_inlet["inlet1"] = {
+            "momentum": {"velocity_magnitude": 11.0}
+        }
+
+    calls = mock_interceptor.get_traced_calls()
+    assert len(calls) == 5
+    service = "/ansys.api.fluent.v0.settings.Settings/"
+    assert all(x.method == service + "GetAttrs" for x in calls[0:3])
+    assert all(x.request.attrs == ["active?"] for x in calls[0:3])
+    assert calls[0].request.path_info.path == ""
+    assert calls[1].request.path_info.path == "setup"
+    assert calls[2].request.path_info.path == "setup/boundary-conditions"
+    assert calls[3].method == service + "GetObjectNames"
+    assert calls[3].request.path_info.path == "setup/boundary-conditions/velocity-inlet"
+    assert calls[4].method == service + "SetVar"
+    assert (
+        calls[4].request.path_info.path
+        == "setup/boundary-conditions/velocity-inlet/inlet1"
+    )
+
+    assert (
+        solver.setup.boundary_conditions.velocity_inlet[
+            "inlet1"
+        ].momentum.velocity_magnitude.value()
+        == 11.0
+    )
