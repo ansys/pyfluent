@@ -242,7 +242,7 @@ def get_surf_mean_temp(
 
     # Get temperature data
     temp_data = solver.field_data.get_scalar_field_data(
-        "temperature",
+        field_name="temperature",
         surfaces=surf_ids,
     )
 
@@ -262,7 +262,6 @@ solver_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=12,
     mode="solver",
-    cwd=os.getcwd(),
 )
 print(solver_session.get_fluent_version())
 
