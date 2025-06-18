@@ -386,7 +386,3 @@ test_datamodel_api_update_dict(solver)  # noqa: F821
 test_datamodel_api_static_info(solver)  # noqa: F821
 
 print("\n Testing finished. All tests passed.\n")
-
-
-def test_codacy():
-    assert True
