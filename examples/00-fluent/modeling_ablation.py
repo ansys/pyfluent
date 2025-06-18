@@ -78,7 +78,7 @@ import os
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import Contour, GraphicsWindow, config
+from ansys.fluent.visualization import Contour, GraphicsWindow
 
 ####################################################################################
 # Download example file
@@ -92,8 +92,6 @@ import_filename = examples.download_file(
 ####################################################################################
 # Fluent Solution Setup
 # ==================================================================================
-
-config.interactive = False
 
 ####################################################################################
 # Launch Fluent session with solver mode and print Fluent version

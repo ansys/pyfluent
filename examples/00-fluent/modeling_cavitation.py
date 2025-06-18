@@ -68,9 +68,6 @@ import os
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import config
-
-config.interactive = False
 
 cav_file = examples.download_file(
     "cav.msh.gz", "pyfluent/cavitation", save_path=os.getcwd()

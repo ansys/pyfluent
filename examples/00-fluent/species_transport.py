@@ -84,9 +84,6 @@ Modeling Species Transport and Gaseous Combustion
 import os
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.visualization import config
-
-config.interactive = False
 
 solver_session = pyfluent.launch_fluent(dimension=2)
 print(solver_session.get_fluent_version())

@@ -48,9 +48,7 @@ import matplotlib.pyplot as plt
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import Contour, GraphicsWindow, config
-
-config.interactive = False
+from ansys.fluent.visualization import Contour, GraphicsWindow
 
 import_filename = examples.download_file(
     "brake.msh.h5",

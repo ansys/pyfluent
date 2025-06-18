@@ -74,9 +74,6 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import config
-
-config.interactive = False
 
 #############################################################################################################
 # Launch Fluent session with meshing mode and print Fluent version

@@ -63,10 +63,7 @@ from ansys.fluent.visualization import (
     Mesh,
     Vector,
     XYPlot,
-    config,
 )
-
-config.interactive = False
 
 filenames = {
     "Windows": "cht_fin_htc_new.scdoc",

@@ -92,10 +92,6 @@ import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import config
-
-config.interactive = False
-
 
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     examples.download_file(
