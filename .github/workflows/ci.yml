@@ -158,7 +158,7 @@ jobs:
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@9e48da27e184aa238fcb49f5db75469626d43adb # v2.1.9
 
       - name: Check Quarto Version
         shell: bash
