@@ -43,6 +43,7 @@ from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
+    GrpcErrorInterceptor,
     TracingInterceptor,
 )
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -60,6 +61,7 @@ class SchemeEvalService:
         """__init__ method of SchemeEvalService class."""
         intercept_channel = grpc.intercept_channel(
             channel,
+            GrpcErrorInterceptor(),
             ErrorStateInterceptor(fluent_error_state),
             TracingInterceptor(),
             BatchInterceptor(),
