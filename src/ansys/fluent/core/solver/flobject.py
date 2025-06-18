@@ -187,7 +187,7 @@ _ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation), "?'")
 def to_python_name(fluent_name: str) -> str:
     """Convert a scheme string to a Python variable name.
 
-    This function replaces symbols with _. Any ``?`` symbols are
+    This function replaces symbols with _. ``'`` and ``?`` symbols are
     ignored.
     """
     if not fluent_name:
@@ -195,6 +195,20 @@ def to_python_name(fluent_name: str) -> str:
     name = fluent_name.translate(_ttable)
     while name in keyword.kwlist:
         name = name + "_"
+    return name
+
+
+def to_constant_name(fluent_name: str) -> str:
+    """Convert a scheme string to a Python constant name.
+
+    This function replaces symbols and spaces with _ and converts the name to uppercase.
+    ``'`` and ``?`` symbols are ignored.
+    """
+    fluent_name = fluent_name.replace(" ", "_")
+    name = fluent_name.translate(_ttable).upper()
+    if name[0].isdigit():
+        # If the first character is a digit, prepend "CASE_"
+        name = "CASE_" + name
     return name
 
 
@@ -2029,6 +2043,19 @@ class AllowedValuesMixin:
             return []
 
 
+class _FlConstant:
+    """A descriptor class to hold a constant value."""
+
+    def __init__(self, value):
+        self._value = value
+
+    def __get__(self, instance, owner):
+        return self._value
+
+    def __set__(self, instance, value):
+        raise AttributeError("Cannot set a constant value.")
+
+
 _bases_by_class = {}
 
 
@@ -2216,6 +2243,14 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     ),
                     k,
                 )
+
+        allowed_values = info.get("allowed-values") or info.get("allowed_values", [])
+        if allowed_values:
+            for allowed_value in allowed_values:
+                setattr(
+                    cls, to_constant_name(allowed_value), _FlConstant(allowed_value)
+                )
+            cls._allowed_values = allowed_values
 
     except Exception:
         print(
