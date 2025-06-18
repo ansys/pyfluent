@@ -317,6 +317,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             f"    {to_constant_name(allowed_value)}: Final[str] = {allowed_value!r}\n"
         )
     s.write("\n")
+    s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
         if name not in _CLASS_WRITTEN:
             _write_data(
