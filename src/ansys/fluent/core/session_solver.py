@@ -39,7 +39,6 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
@@ -374,6 +373,8 @@ class Solver(BaseSession):
         -------
         Meshing
         """
+        from ansys.fluent.core.session_meshing import Meshing
+
         self.settings.switch_to_meshing_mode()
         for cb in self._fluent_connection.finalizer_cbs:
             cb()
