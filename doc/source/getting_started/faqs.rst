@@ -266,10 +266,12 @@ How to set up JupyterLab to get a better code completion for the API code in PyF
 By default, JupyterLab ignores the static typing information provided by PyFluent
 and relies on dynamic lookup of the API for code completion. As the dynamic lookup
 generally involves gRPC calls to the Fluent server, it can be slow and often times out.
-You can install `jupyterlab-lsp <https://jupyterlab-lsp.readthedocs.io/en/latest/>`_ along with
-a Python language server like `python-lsp-server <https://github.com/python-lsp/python-lsp-server>`_
-within your JupyterLab environment to get a faster code completion experience
-based on the static typing information provided by PyFluent.
+to get a faster code completion experience based on the static typing information
+provided by PyFluent, you can install the JupyterLab extension
+`jupyterlab-lsp <https://jupyterlab-lsp.readthedocs.io/en/latest/>`_
+along with a Python language server like
+`python-lsp-server <https://github.com/python-lsp/python-lsp-server>`_
+within your JupyterLab environment .
 
 
 How do you get help for PyFluent?
