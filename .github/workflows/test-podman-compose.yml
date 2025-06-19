@@ -29,7 +29,7 @@ jobs:
   install-podman:
     runs-on: [public-ubuntu-latest-8-cores]
     steps:
-      - uses: gacts/install-podman@v1
+      - uses: gacts/install-podman@96e73075ee4b6669429c80458d063924472fb04d # v1.1.1
       - run: podman compose version
 
   build_test:
@@ -40,8 +40,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v25.1.0
-            version: 251
+          - image-tag: v25.2.0
+            version: 252
 
     steps:
       - uses: actions/checkout@v4

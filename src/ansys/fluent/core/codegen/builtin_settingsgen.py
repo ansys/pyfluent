@@ -25,6 +25,7 @@
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
 from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
 from ansys.fluent.core.solver.settings_builtin_data import DATA
+from ansys.fluent.core.utils.fluent_version import all_versions
 
 _PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
 _PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
@@ -77,9 +78,10 @@ def generate(version: str):
         for name, v in DATA.items():
             kind, path = v
             if isinstance(path, dict):
-                if version not in path:
-                    continue
-                path = path[version]
+                for version_set, p in path.items():
+                    if version in version_set:
+                        path = p
+                        break
             named_objects, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
@@ -118,11 +120,12 @@ def generate(version: str):
             kind, path = v
             f.write(f"class {name}(\n")
             if isinstance(path, str):
-                path = {v: path for v in FluentVersion}
-            for v, p in path.items():
+                path = {all_versions(): path}
+            for version_set, p in path.items():
                 if kind == "NamedObject":
                     p = f"{p}.child_object_type"
-                f.write(f"    type(settings_root_{v.number}.{p}),\n")
+                for v in reversed(list(version_set)):
+                    f.write(f"    type(settings_root_{v.number}.{p}),\n")
             f.write("): ...\n\n")
 
 
