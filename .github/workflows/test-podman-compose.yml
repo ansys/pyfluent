@@ -108,19 +108,18 @@ jobs:
 
       - name: Clean up
         run: |
-          docker stop ${{ matrix.version }}-container
           docker rm ${{ matrix.version }}-container
           docker rmi ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
           rm new_${{ matrix.version }}.tar
 
       - name: Verify reduced image
         run: |
-          docker exec ${{ matrix.version }}-reduced-container ls -l /ansys_inc/v261/FluidsOne
           docker images ${{ matrix.version }}_reduced:${{ matrix.image-tag }}
 
       - name: Run solver container from the new reduced image
         run: |
           docker run -it -d --name ${{ matrix.version }}-reduced-container-solver -e ANSYSLMD_LICENSE_FILE="$ANSYSLMD_LICENSE_FILE" ${{ matrix.version }}_reduced:${{ matrix.image-tag }} 3ddp -gu
+          docker exec ${{ matrix.version }}-reduced-container-solver ls -l /ansys_inc/v261/FluidsOne
           docker stop ${{ matrix.version }}-reduced-container-solver
           docker rm ${{ matrix.version }}-reduced-container-solver
 
