@@ -1789,10 +1789,16 @@ def _fix_parameter_list_return(val):
                 # Symbols are not stripped in the command return in PyConsole.
                 # Following code will work in both PyConsole and PyFluent.
                 unit = units[0].lstrip("'")
-                unit_labels = _fix_parameter_list_return.scheme_eval(
-                    f"(units/inquire-available-label-strings-for-quantity '{unit})"
-                )
-                unit_label = unit_labels[0] if len(unit_labels) > 0 else ""
+                if unit != "*null*":
+                    try:
+                        unit_labels = _fix_parameter_list_return.scheme_eval(
+                            f"(units/inquire-available-label-strings-for-quantity '{unit})"
+                        )
+                    except RuntimeError:
+                        unit_labels = []
+                    unit_label = unit_labels[0] if len(unit_labels) > 0 else ""
+                else:
+                    unit_label = ""
             else:
                 unit_label = ""
             new_val[name] = [value, unit_label]

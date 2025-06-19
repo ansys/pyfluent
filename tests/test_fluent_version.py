@@ -22,7 +22,16 @@
 
 import pytest
 
-from ansys.fluent.core.utils.fluent_version import AnsysVersionNotFound, FluentVersion
+from ansys.fluent.core.utils.fluent_version import (
+    AnsysVersionNotFound,
+    FluentVersion,
+    all_versions,
+    between,
+    except_for,
+    only_at,
+    since,
+    until,
+)
 
 
 def test_examples():
@@ -89,3 +98,25 @@ def test_eq():
 def test_str_output():
     assert str(FluentVersion.v232) == "Fluent version 2023 R2"
     assert str(FluentVersion.v251) == "Fluent version 2025 R1"
+
+
+def test_fluent_version_set():
+    set0 = all_versions()
+    set1 = since(FluentVersion.v232)
+    set2 = until(FluentVersion.v232)
+    set3 = only_at(FluentVersion.v232)
+    set4 = except_for(FluentVersion.v232)
+    set5 = between(FluentVersion.v231, FluentVersion.v241)
+    assert FluentVersion.v232 in set1
+    assert FluentVersion.v232 not in set2
+    assert FluentVersion.v232 in set3
+    assert FluentVersion.v232 not in set4
+    assert set4 - set2 == set1 - set3
+    assert set1 | set2 == set3 | set4 == set0
+    assert set1 & set4 == set1 - set3
+    assert set1 > set4 - set2
+    assert len(set5) == 2
+    assert set5 == since(FluentVersion.v231) & until(FluentVersion.v241)
+    d = {}
+    d[set1] = "test"
+    assert set1 in d

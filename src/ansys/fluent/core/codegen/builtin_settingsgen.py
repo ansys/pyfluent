@@ -25,6 +25,7 @@
 from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
 from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
 from ansys.fluent.core.solver.settings_builtin_data import DATA
+from ansys.fluent.core.utils.fluent_version import all_versions
 
 _PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
 _PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
@@ -67,7 +68,7 @@ def generate(version: str):
     with open(_PY_FILE, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
-            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, Solver\n"
+            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
             "from ansys.fluent.core.solver.flobject import SettingsBase\n\n\n"
         )
         f.write("__all__ = [\n")
@@ -77,14 +78,16 @@ def generate(version: str):
         for name, v in DATA.items():
             kind, path = v
             if isinstance(path, dict):
-                if version not in path:
-                    continue
-                path = path[version]
+                for version_set, p in path.items():
+                    if version in version_set:
+                        path = p
+                        break
             named_objects, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
-            f.write(f'    """{name} setting."""\n\n')
+            doc_kind = "command" if kind == "Command" else "setting"
+            f.write(f'    """{name} {doc_kind}."""\n\n')
             f.write("    def __init__(self")
             for named_object in named_objects:
                 f.write(f", {named_object}: str")
@@ -93,6 +96,8 @@ def generate(version: str):
                 f.write(", name: str = None")
             elif kind == "CreatableNamedObject":
                 f.write(", name: str = None, new_instance_name: str = None")
+            if kind == "Command":
+                f.write(", **kwargs")
             f.write("):\n")
             f.write("        super().__init__(settings_source=settings_source")
             if kind == "NonCreatableNamedObject":
@@ -101,6 +106,8 @@ def generate(version: str):
                 f.write(", name=name, new_instance_name=new_instance_name")
             for named_object in named_objects:
                 f.write(f", {named_object}={named_object}")
+            if kind == "Command":
+                f.write(", **kwargs")
             f.write(")\n\n")
 
     with open(_PYI_FILE, "w") as f:
@@ -113,11 +120,12 @@ def generate(version: str):
             kind, path = v
             f.write(f"class {name}(\n")
             if isinstance(path, str):
-                path = {v: path for v in FluentVersion}
-            for v, p in path.items():
+                path = {all_versions(): path}
+            for version_set, p in path.items():
                 if kind == "NamedObject":
                     p = f"{p}.child_object_type"
-                f.write(f"    type(settings_root_{v.number}.{p}),\n")
+                for v in reversed(list(version_set)):
+                    f.write(f"    type(settings_root_{v.number}.{p}),\n")
             f.write("): ...\n\n")
 
 
