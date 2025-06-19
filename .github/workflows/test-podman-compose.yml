@@ -129,6 +129,10 @@ jobs:
           docker stop ${{ matrix.version }}-reduced-container-meshing
           docker rm ${{ matrix.version }}-reduced-container-meshing
 
+      - name: Run reduced image test script
+        run: |
+          python tests/verify_reduced_image.py
+
       # - name: Transport docker image to podman
       #   run: |
       #     sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
