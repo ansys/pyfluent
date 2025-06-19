@@ -83,6 +83,7 @@ jobs:
       - name: Pull Fluent docker image
         run: |
           docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          docker images
 
       - name: Size of the original image
         run: |
