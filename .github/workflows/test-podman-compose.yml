@@ -80,6 +80,10 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Pull Fluent docker image
+        run: |
+          docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+
       - name: Size of the original image
         run: |
           docker images ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
@@ -124,11 +128,6 @@ jobs:
           docker run -it -d --name ${{ matrix.version }}-reduced-container-meshing -e ANSYSLMD_LICENSE_FILE="$ANSYSLMD_LICENSE_FILE" ${{ matrix.version }}_reduced:${{ matrix.image-tag }} 3ddp -gu -meshing
           docker stop ${{ matrix.version }}-reduced-container-meshing
           docker rm ${{ matrix.version }}-reduced-container-meshing
-
-      # - name: Pull Fluent docker image
-      #   run: |
-      #     docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
-      #     docker images
 
       # - name: Transport docker image to podman
       #   run: |
