@@ -59,19 +59,10 @@ jobs:
           restore-keys: |
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
-      - name: Add version information
-        run: make version-info
-
       - name: Install pyfluent
         run: |
-          pip install packaging
+          pip install ansys-fluent-core>=0.32.1
           make install
-
-      - name: Retrieve PyFluent version
-        run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-        id: version
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
@@ -89,18 +80,6 @@ jobs:
         run: |
           sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
           sudo podman images
-
-      - name: Run API codegen
-        run: make api-codegen
-
-      - name: Print Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
-
-      - name: Install again after codegen
-        run: |
-          rm -rf dist
-          make install > /dev/null
 
       - name: Run Fluent test script
         run: |
