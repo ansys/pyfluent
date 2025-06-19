@@ -1,0 +1,42 @@
+:orphan:
+
+.. _six_dof:
+
+six_dof
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.six_dof
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =========================================================================
+
+Attribute                                                                                                              Summary
+
+==================================================   =========================================================================
+:ref:`enabled <enabled_59>`                                                                                   'enabled' child.
+
+:ref:`gravity <gravity_1>`                                                                                    'gravity' child.
+
+:ref:`write_motion_history <write_motion_history>`       Enable/disable writing position/orientation of six DOF zones to file.
+
+:ref:`basename <basename>`                                                            Location of six DOF motion history file.
+
+:ref:`second_order <second_order>`                                                 Enable/disable second order six DOF solver.
+
+:ref:`sdof_properties <sdof_properties>`                                                              'sdof_properties' child.
+
+==================================================   =========================================================================
+
+.. rubric:: Included in:
+
+============================   ====================
+
+Parent                                      Summary
+
+============================   ====================
+:ref:`options_8 <options_8>`       'options' child.
+
+============================   ====================
+

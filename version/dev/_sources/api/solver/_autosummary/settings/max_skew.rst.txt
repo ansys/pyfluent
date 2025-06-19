@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_skew:
+
+max_skew
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.max_skew
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================
+
+Parent                                           Summary
+
+==============================   =======================
+:ref:`udf_deform <udf_deform>`       'udf_deform' child.
+
+==============================   =======================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _cathode_jref:
+
+cathode_jref
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cathode_jref
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_3 <parameters_3>`       Model parameters.
+
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+==================================   =====================
+

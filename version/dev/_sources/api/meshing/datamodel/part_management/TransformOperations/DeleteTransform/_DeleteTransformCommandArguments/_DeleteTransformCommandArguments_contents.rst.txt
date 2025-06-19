@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_TransformOperations_DeleteTransform__DeleteTransformCommandArguments:
+
+_DeleteTransformCommandArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.TransformOperations.DeleteTransform._DeleteTransformCommandArguments
+   :members: _Paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

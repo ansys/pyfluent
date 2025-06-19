@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateLocalRefinementRegions__CreateLocalRefinementRegionsCommandArguments__GeometryToolsProperties:
+
+_GeometryToolsProperties
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateLocalRefinementRegions._CreateLocalRefinementRegionsCommandArguments._GeometryToolsProperties
+   :members: _BoxCenterX, _BoxCenterY, _BoxCenterZ, _BoxXLength, _BoxYLength, _BoxZLength, _CylinderRadius1, _CylinderRadius2, _CylinderX1, _CylinderX2, _CylinderY1, _CylinderY2, _CylinderZ1, _CylinderZ2
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

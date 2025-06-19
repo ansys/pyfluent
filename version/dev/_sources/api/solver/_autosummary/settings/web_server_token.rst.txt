@@ -1,0 +1,21 @@
+:orphan:
+
+.. _web_server_token:
+
+web_server_token
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.web_server_token
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

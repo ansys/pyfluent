@@ -1,0 +1,36 @@
+:orphan:
+
+.. _physics_1:
+
+physics
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.physics_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==================================
+
+Attribute                                                   Summary
+
+==============================   ==================================
+:ref:`volumes <volumes>`                       Volumes definitions.
+
+:ref:`boundaries <boundaries>`                  'boundaries' child.
+
+:ref:`interfaces <interfaces>`       Physics interface definitions.
+
+==============================   ==================================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`setup <setup>`       'setup' child.
+
+====================   ==================
+

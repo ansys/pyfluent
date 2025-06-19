@@ -1,0 +1,62 @@
+:orphan:
+
+.. _parametric_studies_child:
+
+parametric_studies_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parametric_studies_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   ==========================================
+
+Attribute                                                                                                                 Summary
+
+====================================================================================   ==========================================
+:ref:`name <name_4>`                                                                                          Name of the object.
+
+:ref:`design_points <design_points>`                                                                       'design_points' child.
+
+:ref:`current_design_point <current_design_point>`                                                  Name of Current Design Point.
+
+:ref:`initialize_method <initialize_method>`                                                               Initialization Method.
+
+:ref:`read_case_before_each_dp_update <read_case_before_each_dp_update>`                         Read Case Before Each DP Update.
+
+:ref:`update_method <update_method>`                                                                               Update method.
+
+:ref:`concurrent_settings <concurrent_settings>`                                                             Concurrent Settings.
+
+:ref:`optislang_capabilities <optislang_capabilities>`                                                    OptiSLang Capabilities.
+
+:ref:`auto_update_mesh_morphs <auto_update_mesh_morphs>`                                                 Auto Update Mesh Morphs.
+
+:ref:`auto_dp_report_generation <auto_dp_report_generation>`                                   Auto Generate Design Point Report.
+
+:ref:`auto_parametric_report_generation <auto_parametric_report_generation>`                     Auto Generate Parametric Report.
+
+:ref:`auto_dp_report_html_export <auto_dp_report_html_export>`                              Auto Export Design Point HTML Report.
+
+:ref:`auto_dp_report_pdf_export <auto_dp_report_pdf_export>`                                 Auto Export Design Point PDF Report.
+
+:ref:`auto_dp_report_pptx_export <auto_dp_report_pptx_export>`                              Auto Export Design Point PPTX Report.
+
+:ref:`auto_parametric_report_update_dp_data <auto_parametric_report_update_dp_data>`       Auto Parametric Report Update DP Data.
+
+:ref:`auto_parametric_report_html_export <auto_parametric_report_html_export>`                Auto Export Parametric HTML Report.
+
+====================================================================================   ==========================================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`parametric_studies <parametric_studies>`       'parametric_studies' child.
+
+==============================================   ===============================
+

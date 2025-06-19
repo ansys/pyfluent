@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_ImproveVolumeMesh__ImproveVolumeMeshCommandArguments:
+
+_ImproveVolumeMeshCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.ImproveVolumeMesh._ImproveVolumeMeshCommandArguments
+   :members: _AddMultipleQualityMethods, _CellQualityLimit, _OldQualityCriteriaList, _OldQualityMethodList, _QualityCriteriaList, _QualityMethod, _QualityMethodList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _VMImprovePreferences/_VMImprovePreferences_contents

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_add_labels_on_cell_zones__add_labels_on_cell_zonesCommandArguments:
+
+_add_labels_on_cell_zonesCommandArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.add_labels_on_cell_zones._add_labels_on_cell_zonesCommandArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern, _label_name_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

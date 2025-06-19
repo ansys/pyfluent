@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_ModifyMeshRefinement__ModifyMeshRefinementCommandArguments:
+
+_ModifyMeshRefinementCommandArguments
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.ModifyMeshRefinement._ModifyMeshRefinementCommandArguments
+   :members: _FaceZoneOrLabel, _LocalMaxSize, _LocalMinSize, _LocalSize, _MeshObject, _RemeshCellsPerGap, _RemeshControlName, _RemeshCurvatureNormalAngle, _RemeshExecution, _RemeshFaceLabelList, _RemeshFaceZoneList, _RemeshGrowthRate, _SizingType
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _CFDSurfaceMeshControls/_CFDSurfaceMeshControls_contents
+   _RemeshPreferences/_RemeshPreferences_contents

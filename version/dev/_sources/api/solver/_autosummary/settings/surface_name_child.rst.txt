@@ -1,0 +1,34 @@
+:orphan:
+
+.. _surface_name_child:
+
+surface_name_child
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surface_name_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================================
+
+Attribute                                                      Summary
+
+============================   =======================================
+:ref:`color <color_9>`                      The color for the surface.
+
+:ref:`material <material_9>`       The material color for the surface.
+
+============================   =======================================
+
+.. rubric:: Included in:
+
+==================================   ===================================================
+
+Parent                                                                           Summary
+
+==================================   ===================================================
+:ref:`surface_name <surface_name>`       The surface to specify colors and/or materials.
+
+==================================   ===================================================
+

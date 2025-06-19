@@ -1,0 +1,21 @@
+:orphan:
+
+.. _anode_mpl_brugg_coeff:
+
+anode_mpl_brugg_coeff
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.anode_mpl_brugg_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================
+
+Parent                                             Summary
+
+======================================   =================
+:ref:`anode_mpl_zone <anode_mpl_zone>`       Up anode MPL.
+
+======================================   =================
+

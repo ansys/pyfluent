@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_Capping__CappingCommandArguments__CreatePatchPreferences:
+
+_CreatePatchPreferences
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.Capping._CappingCommandArguments._CreatePatchPreferences
+   :members: _CAPIntersectionCheck, _MaxCapLimit, _ShowCreatePatchPreferences
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _dynamic_injection_child:
+
+dynamic_injection_child
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dynamic_injection_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ============================
+
+Attribute                                             Summary
+
+==============================   ============================
+:ref:`acd <acd>`                                       ACd: .
+
+:ref:`cd <cd>`                                          Cd: .
+
+:ref:`direction <direction_4>`       The vector of direction.
+
+:ref:`angle <angle_2>`                            The angles.
+
+==============================   ============================
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`dynamic_injection <dynamic_injection>`       'dynamic_injection' child.
+
+============================================   ==============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_25:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_1_25
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ================================
+
+Parent                                                    Summary
+
+==============================   ================================
+:ref:`read_views <read_views>`       Read views from a view file.
+
+==============================   ================================
+

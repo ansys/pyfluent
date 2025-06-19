@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_Graphics_MarkGaps__MarkGapsCommandArguments__ShareTopologyPreferences:
+
+_ShareTopologyPreferences
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.Graphics.MarkGaps._MarkGapsCommandArguments._ShareTopologyPreferences
+   :members: _AdvancedImprove, _AllowDefeaturing, _ConnectLabelWildcard, _ExecuteJoinIntersect, _FluidLabelWildcard, _IntfLabelList, _ModelIsPeriodic, _NumberOfJoinTries, _Operation, _PerLabelList, _RelativeShareTopologyTolerance, _STRenameInternals, _STToleranceIncrement, _ShareTopologyAngle, _ShowShareTopologyPreferences
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

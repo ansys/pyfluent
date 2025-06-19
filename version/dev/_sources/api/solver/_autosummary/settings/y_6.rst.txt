@@ -1,0 +1,54 @@
+:orphan:
+
+.. _y_6:
+
+y
+=
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.y_6
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ======================================================
+
+Attribute                                                                                           Summary
+
+==================================================   ======================================================
+:ref:`label <label>`                                                                            Axis label.
+
+:ref:`number_format <number_format>`                                             Number-formatting options.
+
+:ref:`log_scale <log_scale>`                                          Represent axis in logarithmic scale?.
+
+:ref:`auto_range <auto_range>`                                                   Axis-range automatically?.
+
+:ref:`auto_range_min <auto_range_min>`                             Minimum axis range value automatically?.
+
+:ref:`auto_range_max <auto_range_max>`                             Maximum axis range value automatically?.
+
+:ref:`min <min>`                                                         Minimum value represented on axis.
+
+:ref:`max <max>`                                                         Maximum value represented on axis.
+
+:ref:`show_major_gridlines <show_major_gridlines>`       Specifies whether to show major gridlines on plot.
+
+:ref:`major_gridlines <major_gridlines>`                                   Properties of gridlines on axis.
+
+:ref:`show_minor_gridlines <show_minor_gridlines>`       Specifies whether to show minor gridlines on plot.
+
+:ref:`minor_gridlines <minor_gridlines>`                                   Properties of gridlines on axis.
+
+==================================================   ======================================================
+
+.. rubric:: Included in:
+
+==================   ====================
+
+Parent                            Summary
+
+==================   ====================
+:ref:`axes <axes>`       Axes-properties.
+
+==================   ====================
+

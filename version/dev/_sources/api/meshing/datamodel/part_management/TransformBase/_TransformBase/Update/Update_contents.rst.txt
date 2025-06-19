@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_TransformBase__TransformBase_Update:
+
+Update
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.TransformBase._TransformBase.Update
+   :members: _UpdateCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
