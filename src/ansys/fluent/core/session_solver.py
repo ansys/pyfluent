@@ -359,7 +359,9 @@ class Solver(BaseSession):
             "start_journal",
             "stop_journal",
         }
-        return sorted(dir_list)
+        if self._app_utilities.is_beta_enabled():
+            return sorted(dir_list)
+        return sorted(dir_list - {"switch_to_meshing"})
 
     def enable_beta_features(self):
         """Enable access to Fluent beta-features"""
@@ -369,10 +371,19 @@ class Solver(BaseSession):
         """Switch to meshing mode and return a meshing session object. Deactivate this
         object's public interface and streaming services.
 
+        Raises
+        ------
+        AttributeError
+            If beta features are not enabled in Fluent.
+
         Returns
         -------
         Meshing
         """
+        if not self._app_utilities.is_beta_enabled():
+            raise AttributeError(
+                "Switching to meshing mode is a beta feature in Fluent."
+            )
         from ansys.fluent.core.session_meshing import Meshing
 
         self.settings.switch_to_meshing_mode()

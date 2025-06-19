@@ -745,3 +745,37 @@ def test_solver_attr_lookup(new_solver_session):
         solver.xyz
     with pytest.raises(AttributeError):
         solver.settings.xyz
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_beta_meshing_session(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+    assert "topology_based" not in dir(meshing)
+    with pytest.raises(AttributeError):
+        tp = meshing.topology_based()
+    meshing.enable_beta_features()
+    assert "topology_based" in dir(meshing)
+    tp = meshing.topology_based()
+    assert tp
+
+    assert meshing.is_active() is True
+    solver = meshing.switch_to_solver()
+    assert meshing.is_active() is False
+    assert solver.is_active() is True
+    solver.exit()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_beta_solver_session(new_solver_session_wo_exit):
+    solver = new_solver_session_wo_exit
+    assert solver.is_active() is True
+    assert "switch_to_meshing" not in dir(solver)
+    with pytest.raises(AttributeError):
+        meshing = solver.switch_to_meshing()
+    solver.enable_beta_features()
+    assert "switch_to_meshing" in dir(solver)
+    meshing = solver.switch_to_meshing()
+
+    assert solver.is_active() is False
+    assert meshing.is_active() is True
+    meshing.exit()
