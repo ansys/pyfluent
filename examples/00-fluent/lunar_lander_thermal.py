@@ -86,6 +86,7 @@ measurements conducted by the Apollo 17 mission to the Moon [3_].
 # flake8: noqa: E402
 
 from itertools import chain
+import os
 
 import numpy as np
 
@@ -96,6 +97,7 @@ lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
     examples.download_file(
         f,
         "pyfluent/lunar_lander_thermal",
+        save_path=os.getcwd(),
     )
     for f in [
         "lander_geom.scdoc",
@@ -236,21 +238,12 @@ def get_surf_mean_temp(
 
     # Get temperature data
     temp_data = solver.field_data.get_scalar_field_data(
-        "temperature",
+        field_name="temperature",
         surfaces=surf_ids,
     )
 
     # Calculate mean temperature across surfaces
-    temps = np.array([])
-    for x in temp_data.values():
-        temps = np.concatenate(
-            (
-                temps,
-                np.array([y.scalar_data for y in x.data]),
-            ),
-        )
-
-    return np.mean(temps)
+    return float(np.mean(list(temp_data.values())))
 
 
 ###############################################################################
@@ -265,7 +258,6 @@ solver_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=12,
     mode="solver",
-    cwd=pyfluent.EXAMPLES_PATH,
 )
 print(solver_session.get_fluent_version())
 
@@ -442,10 +434,7 @@ regolith_bc.thermal.shell_conduction = [
         "material": "regolith",
     },
 ]
-regolith_bc.radiation.band_in_emiss = {
-    "solar": 0.87,
-    "thermal-ir": 0.97,
-}
+regolith_bc.radiation.internal_emissivity_band = {"solar": 0.87, "thermal-ir": 0.97}
 
 ###############################################################################
 # Space boundary condition
@@ -465,15 +454,12 @@ space_bc.thermal.thermal_bc = "Temperature"
 space_bc.thermal.t.value = 3
 space_bc.thermal.material = "vacuum"
 space_bc.radiation.mc_bsource_p = True
-space_bc.radiation.band_q_irrad["solar"].value = 1414
-space_bc.radiation.band_diffuse_frac = {
+space_bc.radiation.direct_irradiation_settings.direct_irradiation["solar"] = 1414
+space_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {
     "solar": 0,
     "thermal-ir": 0,
 }
-space_bc.radiation.band_in_emiss = {
-    "solar": 1,
-    "thermal-ir": 1,
-}
+space_bc.radiation.internal_emissivity_band = {"solar": 1, "thermal-ir": 1}
 
 ###############################################################################
 # Spacecraft walls boundary condition
@@ -496,10 +482,7 @@ sc_mli_bc.thermal.shell_conduction = [
         "material": "aluminum",
     },
 ]
-sc_mli_bc.radiation.band_in_emiss = {
-    "solar": 0.05,
-    "thermal-ir": 0.05,
-}
+sc_mli_bc.radiation.internal_emissivity_band = {"solar": 0.05, "thermal-ir": 0.05}
 
 ###############################################################################
 # Spacecraft radiator boundary condition
@@ -523,9 +506,7 @@ sc_rad_bc.thermal.shell_conduction = [
         "material": "aluminum",
     },
 ]
-sc_rad_bc.radiation.band_in_emiss = {
-    "solar": 0.17,
-}
+sc_rad_bc.radiation.internal_emissivity_band = {"solar": 0.17}
 
 ###############################################################################
 # Initialize simulation
@@ -671,7 +652,7 @@ for i in range(n_steps):
     # Set beam direction
     solver_session.setup.boundary_conditions.wall[
         "space"
-    ].radiation.reference_direction = [
+    ].radiation.direct_irradiation_settings.beam_direction = [
         beam_x,
         beam_y,
         beam_z,
@@ -680,13 +661,13 @@ for i in range(n_steps):
     # Calculate radiator mean temperature
     rad_mean_temp = get_surf_mean_temp(
         ["sc-radiator"],
-        solver,
+        solver_session,
     )
 
     # Simulate closing louvers below 273 K by changing emissivity
     rad_emiss = solver_session.setup.boundary_conditions.wall[
         "sc-radiator"
-    ].radiation.band_in_emiss["thermal-ir"]
+    ].radiation.internal_emissivity_band["thermal-ir"]
     if rad_mean_temp < 273:
         rad_emiss.value = 0.09
     else:
@@ -739,7 +720,7 @@ def clean_col_names(df):
 # alphabetical character, implemented as negative lookarounds in a regular
 # expression.
 
-root = Path(pyfluent.EXAMPLES_PATH)
+root = Path(os.getcwd())
 sep = r"(?<![a-zA-Z])\s+(?![a-zA-Z])"
 
 # Read in regolith data

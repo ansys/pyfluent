@@ -47,12 +47,16 @@ flow at the larger inlet is ``50, 800``, a turbulent flow model is required.
 # Perform required imports, which includes downloading and importing
 # the geometry file.
 
+import os
+
 # sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 import_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    "mixing_elbow.msh.h5",
+    "pyfluent/mixing_elbow",
+    save_path=os.getcwd(),
 )
 
 ###############################################################################

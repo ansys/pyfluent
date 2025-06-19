@@ -64,10 +64,14 @@ and L are the inlet diameter, orifice diameter, and orifice length respectively.
 
 # sphinx_gallery_thumbnail_path = '_static/cavitation_model_thumb.png'
 
+import os
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
-cav_file = examples.download_file("cav.msh.gz", "pyfluent/cavitation")
+cav_file = examples.download_file(
+    "cav.msh.gz", "pyfluent/cavitation", save_path=os.getcwd()
+)
 
 ###############################################################################
 # Launch a Fluent session in the 2d solution mode with double precision running

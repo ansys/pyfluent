@@ -69,6 +69,7 @@ Mixing Tank Workflow
 # ===========================================================================================================
 
 import fnmatch
+import os
 import platform
 
 import ansys.fluent.core as pyfluent
@@ -96,6 +97,7 @@ filenames = {
 geometry_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/MixingTank-WorkFlow",
+    save_path=os.getcwd(),
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
