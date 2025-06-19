@@ -88,6 +88,14 @@ from .settings_external import expand_api_file_argument
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
+_static_class_attributes = [
+    "_version",
+    "_deprecated_version",
+    "_python_name",
+    "fluent_name",
+]
+
+
 class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
@@ -1132,9 +1140,8 @@ class Group(SettingsBase[DictStateType]):
 
     def __getattribute__(self, name):
         # Static class attributes should not do server query
-        from ansys.fluent.core.codegen.settingsgen import _static_class_attributes
         if name in _static_class_attributes:
-            return getattr(self, name, None)
+            return super().__getattribute__(name)
         if name in super().__getattribute__("child_names"):
             if self.is_active() is False:
                 raise InactiveObjectError(self.python_path)
