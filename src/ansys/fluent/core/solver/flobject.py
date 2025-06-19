@@ -1139,7 +1139,7 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def __getattribute__(self, name):
-        # Static class attributes should not do server query
+        # Avoiding server queries for static attributes
         if name in _static_class_attributes:
             return super().__getattribute__(name)
         if name in super().__getattribute__("child_names"):
