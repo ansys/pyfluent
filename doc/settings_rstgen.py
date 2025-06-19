@@ -120,6 +120,7 @@ def _populate_parents_list(cls):
 
 
 def _write_common(initial_param, r, cls, attr):
+    # TODO Add clarifying comments here
     data_dict = {initial_param: "Summary"}
     for child in getattr(cls, attr):
         child_cls = cls._child_classes[child]
