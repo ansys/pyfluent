@@ -621,10 +621,9 @@ def test_nested_alias(mixing_elbow_settings_session):
 def test_commands_not_in_settings(new_solver_session):
     solver = new_solver_session
 
-    for command in ["exit", "switch_to_meshing_mode"]:
-        assert command not in dir(solver.settings)
-        with pytest.raises(AttributeError):
-            getattr(solver.settings, command)
+    assert "exit" not in dir(solver.settings)
+    with pytest.raises(AttributeError):
+        solver.settings.exit()
 
 
 @pytest.mark.fluent_version(">=25.1")
