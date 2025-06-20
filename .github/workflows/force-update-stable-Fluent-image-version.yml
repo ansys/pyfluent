@@ -56,16 +56,3 @@ jobs:
       - name: Remove all docker images
         if: always()
         run: make docker-clean-images
-
-  # TODO: Remove the following job
-  clean-up:
-    name: Remove docker image
-    runs-on: [self-hosted, pyfluent]
-    if: ${{ always() }}
-    needs: test
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Delete Fluent docker image
-        run: docker rmi -f ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }}
