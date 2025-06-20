@@ -628,18 +628,6 @@ jobs:
         if: always()
         run: make docker-clean-images
 
-  clean-up:
-    name: Remove docker image
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    runs-on: [self-hosted, pyfluent]
-    needs: nightly-dev-test
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Clean up Fluent docker image
-        run: docker rmi -f ghcr.io/ansys/pyfluent:v26.1.0
-
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
