@@ -175,13 +175,12 @@ class PureMeshing(BaseSession):
 
         Raises
         ------
-        RuntimeError
+        AttributeError
             If beta features are not enabled in Fluent.
         """
-        if not self._app_utilities.is_beta_enabled():
-            raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
-        self._base_meshing.topology_based_meshing_workflow.initialize()
-        return self._base_meshing.topology_based_meshing_workflow
+        if not self._is_beta_enabled:
+            raise AttributeError("Topology-based Meshing is a beta feature in Fluent.")
+        return self._base_meshing.topology_based_meshing_workflow()
 
     @property
     def PartManagement(self):
@@ -238,3 +237,8 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
+
+    def __dir__(self):
+        if self._fluent_connection is not None and self._is_beta_enabled is False:
+            return sorted(set(super().__dir__()) - {"topology_based"})
+        return super().__dir__()

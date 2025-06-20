@@ -334,6 +334,13 @@ def new_solver_session():
 
 
 @pytest.fixture
+def new_solver_session_wo_exit():
+    solver = create_session()
+    yield solver
+    # Exit is intentionally avoided here. Please exit from the method using this.
+
+
+@pytest.fixture
 def new_solver_session_t4():
     solver = create_session(processor_count=4)
     yield solver
