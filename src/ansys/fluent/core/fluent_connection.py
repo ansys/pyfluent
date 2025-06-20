@@ -47,6 +47,7 @@ from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
     AppUtilitiesService,
+    AppUtilitiesV252,
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -282,6 +283,11 @@ class _ConnectionInterface:
             < pyfluent.FluentVersion.v252
         ):
             self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+        elif (
+            pyfluent.FluentVersion(self.scheme_eval.version)
+            == pyfluent.FluentVersion.v252
+        ):
+            self._app_utilities = AppUtilitiesV252(self.scheme_eval)
         else:
             self._app_utilities_service = create_grpc_service(
                 AppUtilitiesService, error_state

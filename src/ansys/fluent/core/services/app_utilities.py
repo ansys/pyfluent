@@ -104,6 +104,12 @@ class AppUtilitiesService:
         """Is beta enabled RPC of AppUtilities service."""
         return self._stub.IsBetaEnabled(request, metadata=self._metadata)
 
+    def enable_beta(
+        self, request: AppUtilitiesProtoModule.EnableBetaRequest
+    ) -> AppUtilitiesProtoModule.EnableBetaResponse:
+        """Is beta enabled RPC of AppUtilities service."""
+        return self._stub.EnableBeta(request, metadata=self._metadata)
+
     def is_wildcard(
         self, request: AppUtilitiesProtoModule.IsWildcardRequest
     ) -> AppUtilitiesProtoModule.IsWildcardResponse:
@@ -405,6 +411,11 @@ class AppUtilities:
         response = self.service.is_beta_enabled(request)
         return response.is_beta_enabled
 
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        request = AppUtilitiesProtoModule.EnableBetaRequest()
+        self.service.enable_beta(request)
+
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
         request = AppUtilitiesProtoModule.IsWildcardRequest()
@@ -456,3 +467,15 @@ class AppUtilities:
         request = AppUtilitiesProtoModule.SetWorkingDirectoryRequest()
         request.path = path
         self.service.set_working_directory(request)
+
+
+class AppUtilitiesV252(AppUtilitiesOld):
+    """AppUtilitiesV252.
+    This is for methods whose implementations are missing in the 25R2 server.
+    """
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        self.scheme.eval(
+            '(fl-execute-cmd "file" "beta-settings" (list (cons "enable?" #t)))'
+        )
