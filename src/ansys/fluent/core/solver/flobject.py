@@ -1132,22 +1132,24 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def __getattribute__(self, name):
-        if name in super().__getattribute__("child_names"):
-            if self.is_active() is False:
-                raise InactiveObjectError(self.python_path)
-        alias = super().__getattribute__("_child_aliases").get(name)
-        if alias:
-            alias = alias[0]
-            alias_obj = self._child_alias_objs.get(name)
-            if alias_obj is None:
-                obj = self.find_object(alias)
-                alias_obj = self._child_alias_objs[name] = _create_child(
-                    obj.__class__, None, obj.parent, alias
-                )
-            return alias_obj
+        if (
+            name in super().__getattribute__("child_names")
+            and self.is_active() is False
+        ):
+            raise InactiveObjectError(self.python_path)
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
+            alias = self._child_aliases.get(name)
+            if alias is not None:
+                alias = alias[0]
+                alias_obj = self._child_alias_objs.get(name)
+                if alias_obj is None:
+                    obj = self.find_object(alias)
+                    alias_obj = self._child_alias_objs[name] = _create_child(
+                        obj.__class__, None, obj.parent, alias
+                    )
+                return alias_obj
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
