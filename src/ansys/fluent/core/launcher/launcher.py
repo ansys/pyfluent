@@ -58,6 +58,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -103,7 +104,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        elif env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"):
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -206,9 +207,8 @@ def launch_fluent(
         The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
         journal(s). The default is ``None``.
     start_timeout : int, optional
-        Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``60`` if Fluent is launched outside a Slurm environment,
-        no timeout if Fluent is launched within a Slurm environment.
+        Maximum allowable time, in seconds, to connect to the Fluent server after launching it,
+        before raising a timeout error. The default is ``60`` seconds.
     additional_arguments : str, optional
         Additional arguments to send to Fluent as a string in the same
         format they are normally passed to Fluent on the command line.
@@ -321,6 +321,9 @@ def launch_fluent(
     """
     if env is None:
         env = {}
+
+    if start_timeout is None:
+        start_timeout = int(os.getenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "60"))
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {

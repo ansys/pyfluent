@@ -35,6 +35,7 @@ import sys
 import time
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.execution import timeout_loop
 
 logger = pyfluent.logger.get_logger("pyfluent.launcher")
@@ -76,8 +77,8 @@ def launch(
         )
     )
 
-    env_watchdog_debug = os.getenv("PYFLUENT_WATCHDOG_DEBUG", "off").upper()
-    if env_watchdog_debug in ("1", "ON"):
+    debug_watchdog = env_var_to_bool("PYFLUENT_WATCHDOG_DEBUG")
+    if debug_watchdog:
         logger.debug(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
             f"enabling debugging for watchdog ID {watchdog_id}..."
@@ -131,7 +132,7 @@ def launch(
         watchdog_id,
     ]
 
-    if env_watchdog_debug in ("1", "ON"):
+    if debug_watchdog:
         logger.debug(f"Starting Watchdog logging to directory {os.getcwd()}")
 
     kwargs = {"env": watchdog_env, "stdin": subprocess.DEVNULL, "close_fds": True}
@@ -151,7 +152,7 @@ def launch(
     if os.name == "posix":
         kwargs.update(start_new_session=True)
 
-    if env_watchdog_debug in ("1", "ON") and os.name != "nt":
+    if debug_watchdog and os.name != "nt":
         kwargs.update(
             stdout=open(f"pyfluent_watchdog_out_{watchdog_id}.log", mode="w"),
             stderr=open(f"pyfluent_watchdog_err_{watchdog_id}.log", mode="w"),

@@ -56,6 +56,7 @@ from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
+from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -95,7 +96,7 @@ _XML_HELPSTRINGS = {}
 
 
 def _copy_tui_help_xml_file(version: str):
-    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+    if env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"):
         image_tag = os.getenv("FLUENT_IMAGE_TAG", "v25.1.0")
         image_name = f"ghcr.io/ansys/pyfluent:{image_tag}"
         container_name = uuid.uuid4().hex
@@ -346,7 +347,7 @@ def generate(version, static_infos: dict, verbose: bool = False):
         api_tree["<solver_session>"] = TUIGenerator(
             "solver", version, static_infos, verbose
         ).generate()
-    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+    if not env_var_to_bool("PYFLUENT_HIDE_LOG_SECRETS"):
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
             len(_XML_HELPSTRINGS),

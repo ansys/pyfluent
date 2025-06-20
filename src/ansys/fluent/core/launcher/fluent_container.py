@@ -80,6 +80,9 @@ from typing import Any, List
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
+from ansys.fluent.core.launcher.error_handler import (
+    LaunchFluentError,
+)
 from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import all_deprecators
@@ -155,7 +158,6 @@ def configure_container_dict(
     args: List[str],
     mount_source: str | Path | None = None,
     mount_target: str | Path | None = None,
-    timeout: int = 60,
     port: int | None = None,
     license_server: str | None = None,
     container_server_info_file: str | Path | None = None,
@@ -179,8 +181,6 @@ def configure_container_dict(
     mount_target : str | Path, optional
         Path inside the container where ``mount_source`` will be mounted. This will be the working directory path
         visible to the Fluent process running inside the container.
-    timeout : int, optional
-        Time limit  for the Fluent container to start, in seconds. By default, 30 seconds.
     port : int, optional
         Port for Fluent container to use.
     license_server : str, optional
@@ -206,7 +206,6 @@ def configure_container_dict(
     -------
     fluent_image : str
     container_dict : dict
-    timeout : int
     port : int
     host_server_info_file : Path
     remove_server_info_file: bool
@@ -444,7 +443,7 @@ def configure_container_dict(
         container_dict["mount_target"] = mount_target
 
     logger.debug(
-        f"Fluent container timeout: {timeout}, container_grpc_port: {container_grpc_port}, "
+        f"Fluent container container_grpc_port: {container_grpc_port}, "
         f"host_server_info_file: '{host_server_info_file}', "
         f"remove_server_info_file: {remove_server_info_file}"
     )
@@ -452,7 +451,6 @@ def configure_container_dict(
 
     return (
         container_dict,
-        timeout,
         container_grpc_port,
         host_server_info_file,
         remove_server_info_file,
@@ -460,7 +458,7 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str], container_dict: dict | None = None
+    args: List[str], container_dict: dict | None = None, start_timeout: int = 60
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
@@ -470,6 +468,9 @@ def start_fluent_container(
         List of Fluent launch arguments.
     container_dict : dict, optional
         Dictionary with Docker container configuration.
+    start_timeout : int, optional
+        Timeout in seconds for the container to start. If not specified, it defaults to 60
+        seconds.
 
     Returns
     -------
@@ -498,11 +499,11 @@ def start_fluent_container(
 
     (
         config_dict,
-        timeout,
         port,
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
+    launch_string = " ".join(config_dict["command"])
 
     try:
         if is_compose():
@@ -536,18 +537,26 @@ def start_fluent_container(
                 config_dict.pop("fluent_image"), **config_dict
             )
 
+            logger.debug(
+                f"Waiting for Fluent container for up to {start_timeout} seconds..."
+            )
+
             success = timeout_loop(
-                lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
+                lambda: host_server_info_file.stat().st_mtime > last_mtime,
+                start_timeout,
             )
 
             if not success:
                 raise TimeoutError(
-                    "Fluent container launch has timed out, stop container manually."
+                    f"Fluent container launch has timed out after {start_timeout} seconds. Container will need to be stopped manually."
                 )
             else:
                 _, _, password = _parse_server_info_file(str(host_server_info_file))
 
                 return port, password, container
+    except Exception as ex:
+        logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
+        raise LaunchFluentError(launch_string) from ex
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()

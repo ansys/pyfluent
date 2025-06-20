@@ -88,11 +88,10 @@ def test_mode():
         )
 
 
-@pytest.mark.standalone
 def test_unsuccessful_fluent_connection():
-    # start-timeout is intentionally provided to be 2s for the connection to fail
+    # start-timeout is intentionally provided to be 1s for the connection to fail
     with pytest.raises(LaunchFluentError) as ex:
-        pyfluent.launch_fluent(mode="solver", start_timeout=2)
+        pyfluent.launch_fluent(mode="solver", start_timeout=1)
     # TimeoutError -> LaunchFluentError
     assert isinstance(ex.value.__context__, TimeoutError)
 
