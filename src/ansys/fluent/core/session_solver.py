@@ -347,25 +347,14 @@ class Solver(BaseSession):
                 raise ex
 
     def __dir__(self):
-        if self._fluent_connection is None:
-            return ["is_active"]
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
+        dir_list = set(super().__dir__()) - {
             "svar_data",
             "svar_info",
             "reduction",
-            "field_data",
-            "field_info",
-            "field_data_streaming",
-            "start_journal",
-            "stop_journal",
         }
-        if self._app_utilities.is_beta_enabled():
-            return sorted(dir_list)
-        return sorted(dir_list - {"switch_to_meshing"})
-
-    def enable_beta_features(self):
-        """Enable access to Fluent beta-features"""
-        self.settings.file.beta_settings(enable=True)
+        if self._fluent_connection is not None and self._is_beta_enabled is False:
+            return sorted(dir_list - {"switch_to_meshing"})
+        return sorted(dir_list)
 
     def switch_to_meshing(self):
         """Switch to meshing mode and return a meshing session object. Deactivate this
@@ -380,7 +369,7 @@ class Solver(BaseSession):
         -------
         Meshing
         """
-        if not self._app_utilities.is_beta_enabled():
+        if not self._is_beta_enabled:
             raise AttributeError(
                 "Switching to meshing mode is a beta feature in Fluent."
             )

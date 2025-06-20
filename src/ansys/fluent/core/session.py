@@ -452,8 +452,17 @@ class BaseSession:
             "field_data_streaming",
             "start_journal",
             "stop_journal",
+            "scheme_eval",
         }
         return sorted(dir_list)
+
+    def enable_beta_features(self):
+        """Enable access to Fluent beta-features"""
+        self._app_utilities.enable_beta()
+
+    @property
+    def _is_beta_enabled(self):
+        return self._app_utilities.is_beta_enabled()
 
 
 class Fields:

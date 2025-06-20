@@ -779,3 +779,49 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     assert solver.is_active() is False
     assert meshing.is_active() is True
     meshing.exit()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_dir_for_session(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+
+    for attr in [
+        "watertight",
+        "fault_tolerant",
+        "two_dimensional_meshing",
+        "fields",
+        "scheme",
+    ]:
+        assert getattr(meshing, attr)
+        assert attr in dir(meshing)
+
+    for attr in ["field_data", "field_info", "scheme_eval"]:
+        # Deprecated methods are accessible but hidden in dir()
+        assert getattr(meshing, attr)
+        assert attr not in dir(meshing)
+
+    solver = meshing.switch_to_solver()
+
+    assert dir(meshing) == ["is_active"]
+
+    for attr in ["read_case_lightweight", "settings"]:
+        assert getattr(solver, attr)
+        assert attr in dir(solver)
+
+    for attr in [
+        "field_data",
+        "field_info",
+        "scheme_eval",
+        "svar_data",
+        "svar_info",
+        "reduction",
+    ]:
+        # Deprecated methods are accessible but hidden in dir()
+        assert getattr(solver, attr)
+        assert attr not in dir(solver)
+
+    solver.enable_beta_features()
+    meshing_new = solver.switch_to_meshing()
+
+    assert dir(solver) == ["is_active"]
+    assert len(dir(meshing_new)) > 1
