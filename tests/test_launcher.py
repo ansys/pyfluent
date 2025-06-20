@@ -706,3 +706,12 @@ def test_warning_in_linux():
             ui_mode=UIMode.NO_GUI_OR_GRAPHICS,
         )
         assert driver == FluentLinuxGraphicsDriver.NULL
+
+
+def test_no_warning_for_none_values(caplog):
+    driver = _get_graphics_driver(graphics_driver=None, ui_mode=None)  # noqa: F841
+    assert "PyFluentUserWarning" not in caplog.text
+    caplog.clear()
+    driver = _get_graphics_driver(graphics_driver=None, ui_mode=None)  # noqa: F841
+    assert "PyFluentUserWarning" not in caplog.text
+    caplog.clear()

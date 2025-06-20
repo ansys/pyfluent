@@ -286,6 +286,19 @@ def _should_add_driver_null(ui_mode: UIMode | None = None) -> bool:
     return ui_mode not in {UIMode.GUI, UIMode.HIDDEN_GUI}
 
 
+def is_graphics_driver_setting_ignored(
+    ui_mode, graphics_driver_, graphics_driver, ui_mode_
+):
+    """Return True if user-specified graphics driver setting is ignored based on UI mode and driver."""
+    is_ui_mode_set = ui_mode is not None
+    is_graphics_driver_set = (
+        graphics_driver_ is not None and graphics_driver.value != "null"
+    )
+    is_ui_mode_not_gui = ui_mode_ not in {UIMode.GUI, UIMode.HIDDEN_GUI}
+
+    return is_ui_mode_set and is_graphics_driver_set and is_ui_mode_not_gui
+
+
 def _get_graphics_driver(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
@@ -293,6 +306,7 @@ def _get_graphics_driver(
     ui_mode: UIMode | None = None,
 ):
     ui_mode_ = UIMode(ui_mode)
+    graphics_driver_ = graphics_driver
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
     ):
@@ -302,10 +316,9 @@ def _get_graphics_driver(
         if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
-    if graphics_driver.value != "null" and ui_mode_ not in {
-        UIMode.GUI,
-        UIMode.HIDDEN_GUI,
-    }:
+    if is_graphics_driver_setting_ignored(
+        ui_mode, graphics_driver_, graphics_driver, ui_mode_
+    ):
         warnings.warn(
             "User-specified value for graphics driver is ignored while launching Fluent without GUI or without graphics.",
             PyFluentUserWarning,
