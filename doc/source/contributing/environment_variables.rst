@@ -43,6 +43,10 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the port of the Fluent server in :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`.
     * - PYFLUENT_FLUENT_ROOT
       - Specifies the Fluent root directory while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_FLUENT_LAUNCH_TIMEOUT
+      - Specifies the timeout, in seconds, for launching Fluent through :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT
+      - Can be used to enable automatic writing of transcript .trn file by Fluent. By default, it is disabled.
     * - PYFLUENT_GRPC_LOG_BYTES_LIMIT
       - Specifies the length of gRPC logging messages. Set to 0 to disable the limit.
     * - PYFLUENT_LAUNCH_CONTAINER

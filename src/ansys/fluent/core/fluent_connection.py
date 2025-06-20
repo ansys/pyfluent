@@ -746,13 +746,16 @@ class FluentConnection:
             env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
 
             if env_timeout:
-                logger.debug("Found PYFLUENT_TIMEOUT_FORCE_EXIT env var")
+                logger.debug(
+                    f"Found PYFLUENT_TIMEOUT_FORCE_EXIT env var: '{env_timeout}'"
+                )
                 try:
                     timeout = float(env_timeout)
                     logger.debug(f"Setting TIMEOUT_FORCE_EXIT to {timeout}")
                 except ValueError:
                     logger.debug(
-                        "Off or unrecognized PYFLUENT_TIMEOUT_FORCE_EXIT value, not enabling timeout force exit"
+                        "Off or unrecognized PYFLUENT_TIMEOUT_FORCE_EXIT value (floats and integers are also supported), "
+                        "disabling timeout forced exit."
                     )
 
         if timeout is None:

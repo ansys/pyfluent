@@ -73,7 +73,7 @@ from ansys.fluent.core.session_utilities import (  # noqa: F401
     SolverIcing,
 )
 from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
-from ansys.fluent.core.utils import fldoc, get_examples_download_dir
+from ansys.fluent.core.utils import env_var_to_bool, fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
@@ -155,7 +155,7 @@ CODEGEN_OUTDIR = os.getenv(
 FLUENT_SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to write the automatic transcript in Fluent
-FLUENT_AUTOMATIC_TRANSCRIPT = False
+FLUENT_AUTOMATIC_TRANSCRIPT = env_var_to_bool("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT")
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False

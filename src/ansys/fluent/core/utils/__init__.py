@@ -24,6 +24,7 @@
 
 import importlib.util
 import logging
+import os
 from pathlib import Path
 import sys
 
@@ -55,3 +56,12 @@ def get_user_data_dir():
         return Path.home() / "AppData" / "Local" / "Ansys" / "ansys_fluent_core"
     else:
         return Path.home() / ".local" / "share" / "Ansys" / "ansys_fluent_core"
+
+
+def env_var_to_bool(var_name: str, default: str = "false") -> bool:
+    """Converts environment variable to boolean. By default, returns 'False' if the variable is not set."""
+    value = os.getenv(var_name, default).strip().lower()
+    if value in ("0", "off", "false", "no"):
+        return False
+    else:
+        return True

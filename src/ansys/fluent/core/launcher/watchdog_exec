@@ -20,6 +20,7 @@ if __name__ == "__main__":
             _pid_exists,
             get_container,
         )
+        from ansys.fluent.core.utils import env_var_to_bool
         from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 
         watchdog_id = sys.argv[5]
@@ -34,7 +35,7 @@ if __name__ == "__main__":
 
         logger = pyfluent.logger.get_logger("pyfluent.watchdog")
 
-        if os.getenv("PYFLUENT_WATCHDOG_DEBUG", "OFF").upper() in ("1", "ON"):
+        if env_var_to_bool("PYFLUENT_WATCHDOG_DEBUG"):
             pyfluent.logger.enable(custom_config=log_config)
             logger.setLevel("DEBUG")
             logger.handlers = pyfluent.logger.get_logger(
