@@ -107,7 +107,7 @@ def test_container_timeout_deprecation():
         )
 
 
-def test_container_timeout_override(caplog):
+def test_container_timeout_deprecation_override(caplog):
     # timeout should override start_timeout
     with pytest.raises(LaunchFluentError) as ex:
         with pytest.warns(PyFluentDeprecationWarning):
