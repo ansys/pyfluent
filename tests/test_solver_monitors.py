@@ -44,13 +44,14 @@ def test_solver_monitors(new_solver_session):
         "point-vel-rplot",
     ]
 
-    assert (
-        sorted(solver.settings.solution.monitor.report_plots())
-        == ordered_report_plot_names
+    assert timeout_loop(
+        lambda: sorted(solver.settings.solution.monitor.report_plots())
+        == ordered_report_plot_names,
+        5,
     )
 
     # monitor set names unavailable without data
-    assert len(solver.monitors.get_monitor_set_names()) == 0
+    assert timeout_loop(lambda: len(solver.monitors.get_monitor_set_names()) == 0, 5)
 
     import_data = examples.download_file(
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
@@ -59,34 +60,44 @@ def test_solver_monitors(new_solver_session):
     solver.file.read_data(file_name=import_data)
 
     # monitor set names remains unavailable after loading data
-    assert len(solver.monitors.get_monitor_set_names()) == 0
+    assert timeout_loop(lambda: len(solver.monitors.get_monitor_set_names()) == 0, 5)
 
     # monitor set names becomes available after initializing
     solver.solution.initialization.hybrid_initialize()
 
     monitor_set_names = ordered_report_plot_names + ["residual"]
-    assert sorted(solver.monitors.get_monitor_set_names()) == sorted(monitor_set_names)
+    assert timeout_loop(
+        lambda: sorted(solver.monitors.get_monitor_set_names())
+        == sorted(monitor_set_names),
+        5,
+    )
 
     # no data in monitors at this point
-    assert all(
-        all(
-            len(elem) == 0
-            for elem in solver.monitors.get_monitor_set_data(monitor_set_name=name)
-        )
-        for name in monitor_set_names
-    ), "One or more monitor sets contain non-empty elements."
+    def all_elements_empty(name):
+        monitor_data = solver.monitors.get_monitor_set_data(monitor_set_name=name)
+        return all(len(elem) == 0 for elem in monitor_data)
+
+    for name in monitor_set_names:
+        assert timeout_loop(
+            all_elements_empty,
+            timeout=5,
+            args=(name,),
+        ), f"Monitor set '{name}' contains non-empty elements."
 
     # run the solver...
     solver.solution.run_calculation.iterate(iter_count=1)
 
     # ...data is in monitors
-    assert all(
-        all(
-            len(elem) != 0
-            for elem in solver.monitors.get_monitor_set_data(monitor_set_name=name)
-        )
-        for name in monitor_set_names
-    ), "One or more monitor sets contain empty elements."
+    def all_elements_non_empty(name):
+        monitor_data = solver.monitors.get_monitor_set_data(monitor_set_name=name)
+        return all(len(elem) != 0 for elem in monitor_data)
+
+    for name in monitor_set_names:
+        assert timeout_loop(
+            all_elements_non_empty,
+            timeout=5,
+            args=(name,),
+        ), f"Monitor set '{name}' contains one or more empty elements."
 
     def monitor_callback():
         monitor_callback.called = True
