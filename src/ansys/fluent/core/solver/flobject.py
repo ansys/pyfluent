@@ -88,6 +88,14 @@ from .settings_external import expand_api_file_argument
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
 
+_static_class_attributes = [
+    "_version",
+    "_deprecated_version",
+    "_python_name",
+    "fluent_name",
+]
+
+
 class InactiveObjectError(RuntimeError):
     """Inactive object access."""
 
@@ -236,8 +244,10 @@ def _is_deprecated(obj) -> bool | None:
         deprecated_version = (
             deprecated_version.get("deprecated-version") if deprecated_version else None
         )
+    # The comparison is made in terms of float because some deprecated versions,
+    # for instance 21.1 might not be part of FluentVersion
     return deprecated_version and (
-        FluentVersion(float(deprecated_version)) <= FluentVersion.v222
+        float(deprecated_version) <= 22.2
         or FluentVersion(obj._version) >= FluentVersion(deprecated_version)
     )
 
@@ -1097,8 +1107,7 @@ class Group(SettingsBase[DictStateType]):
             [
                 child
                 for child in self.child_names + self.command_names + self.query_names
-                if getattr(self, child).is_active()
-                and _is_deprecated(getattr(self, child))
+                if _is_deprecated(getattr(self, child))
             ]
         )
 
@@ -1132,11 +1141,9 @@ class Group(SettingsBase[DictStateType]):
         return ret
 
     def __getattribute__(self, name):
-        if (
-            name in super().__getattribute__("child_names")
-            and self.is_active() is False
-        ):
-            raise InactiveObjectError(self.python_path)
+        # Avoiding server queries for static attributes
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -1657,8 +1664,7 @@ class Action(Base):
             [
                 child
                 for child in self.argument_names
-                if getattr(self, child).is_active()
-                and _is_deprecated(getattr(self, child))
+                if _is_deprecated(getattr(self, child))
             ]
         )
 

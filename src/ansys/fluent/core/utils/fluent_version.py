@@ -201,9 +201,7 @@ class FluentVersion(Enum):
 
     def __str__(self) -> str:
         """String output for the Fluent version."""
-        return (
-            f"Fluent version 20{self.value.split('.')[0]} R{self.value.split('.')[1]}"
-        )
+        return f"Ansys Fluent 20{self.value.split('.')[0]} R{self.value.split('.')[1]}"
 
 
 class FluentVersionSet(Set[FluentVersion]):

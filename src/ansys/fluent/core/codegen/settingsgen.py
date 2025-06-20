@@ -107,10 +107,11 @@ def strip_parameters(docstring: str) -> str:
 
 
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
-    data = {}
-    data["version"] = version
-    data["name"] = cls.__name__
-    data["bases"] = [base.__name__ for base in cls.__bases__]
+    data = {
+        "version": version,
+        "name": cls.__name__,
+        "bases": [base.__name__ for base in cls.__bases__],
+    }
     if "command" in cls.__doc__:
         data["doc"] = strip_parameters(cls.__doc__)
     else:
