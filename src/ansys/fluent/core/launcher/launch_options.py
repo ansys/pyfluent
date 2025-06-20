@@ -295,7 +295,7 @@ def _get_graphics_driver(
     ui_mode_ = UIMode(ui_mode)
     if graphics_driver is not None and ui_mode_ not in {UIMode.GUI, UIMode.HIDDEN_GUI}:
         warnings.warn(
-            "The 'graphics_driver' parameter is only applicable when the 'ui_mode' is set to 'gui' or 'hidden_gui'.",
+            "User-specified value for graphics driver is ignored while launching Fluent without GUI or without graphics.",
             PyFluentUserWarning,
         )
     if isinstance(
