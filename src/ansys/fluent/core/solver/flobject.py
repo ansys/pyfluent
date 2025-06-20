@@ -244,8 +244,10 @@ def _is_deprecated(obj) -> bool | None:
         deprecated_version = (
             deprecated_version.get("deprecated-version") if deprecated_version else None
         )
+    # The comparison is made in terms of float because some deprecated versions,
+    # for instance 21.1 might not be part of FluentVersion
     return deprecated_version and (
-        FluentVersion(float(deprecated_version)) <= FluentVersion.v222
+        float(deprecated_version) <= 22.2
         or FluentVersion(obj._version) >= FluentVersion(deprecated_version)
     )
 

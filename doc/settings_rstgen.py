@@ -150,10 +150,12 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f'{"="*(len(cls_orig_name))}\n\n')
         deprecated = getattr(cls, "_deprecated_version", None)
         if deprecated:
-            release_version = str(
-                FluentVersion(float(cls._deprecated_version))
-            ).replace("Fluent version ", "")
-            r.write(f".. deprecated:: Ansys {release_version}\n\n")
+            if float(cls._deprecated_version) < 22.2:
+                pyfluent_fluent_version = FluentVersion.v222
+            else:
+                pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
+            release_version = str(pyfluent_fluent_version)
+            r.write(f".. deprecated:: {release_version}\n\n")
             deprecated_class_version.update({cls_name: release_version})
         r.write(
             f".. autoclass:: ansys.fluent.core.generated.solver.settings_{version}.{cls_name}\n"
