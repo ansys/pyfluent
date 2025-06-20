@@ -185,7 +185,7 @@ def configure_container_dict(
         Path inside the container where ``mount_source`` will be mounted. This will be the working directory path
         visible to the Fluent process running inside the container.
     timeout : int, optional
-        Time limit for the Fluent container to start, in seconds. By default, 60 seconds.
+        Time limit for the Fluent container to start, in seconds.
         .. deprecated:: v0.33.dev0
                 Use the ``start_timeout`` argument of ``launch_fluent`` instead.
     port : int, optional
