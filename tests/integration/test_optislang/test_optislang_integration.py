@@ -55,11 +55,13 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     # Step 1: Launch fluent session and read case file with and without data file
     solver_session = mixing_elbow_param_case_data_session
     assert solver_session.is_server_healthy()
-    case_path = examples.path("elbow_param.cas.h5")
-    solver_session.settings.file.read_case_data(file_name=case_path)
+    if not solver_session.connection_properties.inside_container:
+        solver_session.chdir(pyfluent.EXAMPLES_PATH)
+    case_name = "elbow_param.cas.h5"
+    solver_session.settings.file.read_case_data(file_name=case_name)
 
     # Step 2: Get input and output parameters and create a dictionary
-    reader = CaseFile(case_file_name=case_path)
+    reader = CaseFile(case_file_name=examples.path(case_name))
 
     input_parameters = {}
     for p in reader.input_parameters():
@@ -67,7 +69,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     output_parameters = {}
     for o in reader.output_parameters():
         output_parameters[o.name] = (0, o.units)
-    solver_session.settings.file.read_case(file_name=case_path)
+    solver_session.settings.file.read_case(file_name=case_name)
 
     input_parameters = input_parameters["inlet2_temp"]
     output_parameters = output_parameters["outlet_temp-op"]
@@ -79,12 +81,12 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
         "inlet2_temp"
     ] = {"value": 600}
 
-    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
-    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    design_elbow_param_path = Path(tmp_save_path) / "design_elbow_param.cas.h5"
+    tmp_save_dir = Path(tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)).parts[-1]
+    design_elbow_param_path = Path(tmp_save_dir) / "design_elbow_param.cas.h5"
+
     solver_session.settings.file.write_case(file_name=str(design_elbow_param_path))
 
-    assert design_elbow_param_path.exists()
+    assert (Path(pyfluent.EXAMPLES_PATH) / design_elbow_param_path).exists()
 
     # Step 4: Solve
     solver_session.settings.solution.initialization.standard_initialize()
@@ -109,7 +111,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     assert convergence, "Solution failed to converge"
 
     # Step 5: Read the data again from the case and data file
-    solver_session.settings.file.read_case_data(file_name=case_path)
+    solver_session.settings.file.read_case_data(file_name=case_name)
 
     inputs_table = solver_session.settings.parameters.input_parameters.expression[
         "inlet2_temp"
@@ -147,47 +149,51 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     - Session health
     """
     # Step 1: Launch fluent session in meshing mode
-    meshing = pyfluent.launch_fluent(
+    meshing_session = pyfluent.launch_fluent(
         mode="meshing", precision="double", processor_count=2
     )
-    assert meshing.is_server_healthy()
-    temporary_resource_path = os.path.join(
-        pyfluent.EXAMPLES_PATH, "test_generate_read_mesh_resources"
+    assert meshing_session.is_server_healthy()
+    if not meshing_session.connection_properties.inside_container:
+        meshing_session.chdir(pyfluent.EXAMPLES_PATH)
+    temporary_resource_path = (
+        Path(pyfluent.EXAMPLES_PATH) / "test_generate_read_mesh_resources"
     )
+
     if os.path.exists(temporary_resource_path):
         shutil.rmtree(temporary_resource_path, ignore_errors=True)
     if not os.path.exists(temporary_resource_path):
         os.mkdir(temporary_resource_path)
 
     # Step 2: Generate mesh from geometry with default workflow settings
-    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    geo_import = meshing.workflow.TaskObject["Import Geometry"]
+    meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    geo_import = meshing_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName=mixing_elbow_geometry_filename)
     geo_import.Execute()
-    meshing.workflow.TaskObject["Generate the Volume Mesh"].Execute()
-    meshing.tui.mesh.check_mesh()
-    gz_path = str(Path(temporary_resource_path) / "default_mesh.msh.gz")
-    h5_path = str(Path(temporary_resource_path) / "default_mesh.msh.h5")
-    meshing.tui.file.write_mesh(gz_path)
-    meshing.tui.file.write_mesh(h5_path)
-    assert (Path(temporary_resource_path) / "default_mesh.msh.gz").exists()
-    assert (Path(temporary_resource_path) / "default_mesh.msh.h5").exists()
+    meshing_session.workflow.TaskObject["Generate the Volume Mesh"].Execute()
+    meshing_session.meshing.CheckMesh()
+    temporary_resource_dir = Path(temporary_resource_path.parts[-1])
+    gz_path = str(temporary_resource_dir / "default_mesh.msh.gz")
+    h5_path = str(temporary_resource_dir / "default_mesh.msh.h5")
+    meshing_session.meshing.File.WriteMesh(FileName=gz_path)
+    meshing_session.meshing.File.WriteMesh(FileName=h5_path)
+    assert (temporary_resource_path / "default_mesh.msh.gz").exists()
+    assert (temporary_resource_path / "default_mesh.msh.h5").exists()
 
     # Step 3: use created mesh file - .msh.gz/.msh.h5
-    meshing.tui.file.read_mesh(gz_path, "ok")
-    meshing.tui.file.read_mesh(h5_path, "ok")
+    meshing_session.meshing.File.ReadMesh(FileName=gz_path)
+    meshing_session.meshing.File.ReadMesh(FileName=h5_path)
 
     # Step 4: Switch to solution and Write case file
-    solver = meshing.switch_to_solver()
-    solver.settings.solution.initialization.hybrid_initialize()
-    gz_path = str(Path(temporary_resource_path) / "default_case.cas.gz")
-    h5_path = str(Path(temporary_resource_path) / "default_case.cas.h5")
-    write_case = solver.settings.file.write_case
+    solver_session = meshing_session.switch_to_solver()
+    solver_session.settings.solution.initialization.hybrid_initialize()
+    gz_path = str(temporary_resource_dir / "default_case.cas.gz")
+    h5_path = str(temporary_resource_dir / "default_case.cas.h5")
+    write_case = solver_session.settings.file.write_case
     write_case(file_name=gz_path)
     write_case(file_name=h5_path)
-    assert (Path(temporary_resource_path) / "default_case.cas.gz").exists()
-    assert (Path(temporary_resource_path) / "default_case.cas.h5").exists()
-    solver.exit()
+    assert (temporary_resource_path / "default_case.cas.gz").exists()
+    assert (temporary_resource_path / "default_case.cas.h5").exists()
+    solver_session.exit()
     shutil.rmtree(temporary_resource_path, ignore_errors=True)
 
 
@@ -253,18 +259,23 @@ def test_parameters(mixing_elbow_param_case_data_session):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_session):
-    session1 = mixing_elbow_param_case_data_session
     Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
-    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    init_project = Path(tmp_save_path) / "mixing_elbow_param_init.flprj"
-    project_file = Path(tmp_save_path) / "mixing_elbow_param.flprj"
+    tmp_save_dir = Path(tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)).parts[-1]
+    init_project = Path(tmp_save_dir) / "mixing_elbow_param_init.flprj"
+    project_file = Path(tmp_save_dir) / "mixing_elbow_param.flprj"
+
+    session1 = mixing_elbow_param_case_data_session
+    if not session1.connection_properties.inside_container:
+        session1.chdir(pyfluent.EXAMPLES_PATH)
     session1.settings.parametric_studies.initialize(project_filename=str(init_project))
     session1.settings.file.parametric_project.save_as(
         project_filename=str(project_file)
     )
-    assert project_file.exists()
+    assert (Path(pyfluent.EXAMPLES_PATH) / project_file).exists()
 
     session2 = new_solver_session
+    if not session2.connection_properties.inside_container:
+        session2.chdir(pyfluent.EXAMPLES_PATH)
     session2.settings.file.parametric_project.open(project_filename=str(project_file))
     current_pstudy_name = session2.settings.current_parametric_study()
     assert current_pstudy_name == "elbow_param-Solve"
