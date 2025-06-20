@@ -269,7 +269,9 @@ class AppUtilitiesOld:
         RuntimeError
             Not supported before Fluent 2025 R2.
         """
-        raise RuntimeError("Enabling beta is not supported py PyFluent for Fluent versions before 2025 R2.")
+        raise RuntimeError(
+            "Enabling beta is not supported py PyFluent for Fluent versions before 2025 R2."
+        )
 
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
