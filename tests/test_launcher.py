@@ -39,6 +39,7 @@ from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
+from ansys.fluent.core.launcher.fluent_container import configure_container_dict
 from ansys.fluent.core.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -94,6 +95,27 @@ def test_unsuccessful_fluent_connection():
         pyfluent.launch_fluent(mode="solver", start_timeout=1)
     # TimeoutError -> LaunchFluentError
     assert isinstance(ex.value.__context__, TimeoutError)
+
+
+def test_container_timeout_deprecation():
+    with pytest.warns(PyFluentDeprecationWarning):
+        configure_container_dict([], timeout=0)
+
+    with pytest.warns(PyFluentDeprecationWarning):
+        pyfluent.launch_fluent(
+            start_container=True, container_dict=dict(timeout=0), dry_run=True
+        )
+
+
+def test_container_timeout_override(caplog):
+    # timeout should override start_timeout
+    with pytest.raises(LaunchFluentError) as ex:
+        with pytest.warns(PyFluentDeprecationWarning):
+            pyfluent.launch_fluent(
+                start_container=True, container_dict=dict(timeout=1), start_timeout=60
+            )
+    assert isinstance(ex.value.__context__, TimeoutError)
+    assert "overridden" in caplog.text
 
 
 @pytest.mark.fluent_version("<24.1")

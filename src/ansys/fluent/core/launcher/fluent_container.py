@@ -77,6 +77,7 @@ from pathlib import Path, PurePosixPath
 from pprint import pformat
 import tempfile
 from typing import Any, List
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
@@ -84,6 +85,7 @@ from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
 from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -158,6 +160,7 @@ def configure_container_dict(
     args: List[str],
     mount_source: str | Path | None = None,
     mount_target: str | Path | None = None,
+    timeout: int | None = None,
     port: int | None = None,
     license_server: str | None = None,
     container_server_info_file: str | Path | None = None,
@@ -181,6 +184,10 @@ def configure_container_dict(
     mount_target : str | Path, optional
         Path inside the container where ``mount_source`` will be mounted. This will be the working directory path
         visible to the Fluent process running inside the container.
+    timeout : int, optional
+        Time limit for the Fluent container to start, in seconds. By default, 60 seconds.
+        .. deprecated:: v0.33.dev0
+                Use the ``start_timeout`` argument of ``launch_fluent`` instead.
     port : int, optional
         Port for Fluent container to use.
     license_server : str, optional
@@ -206,6 +213,7 @@ def configure_container_dict(
     -------
     fluent_image : str
     container_dict : dict
+    timeout : int
     port : int
     host_server_info_file : Path
     remove_server_info_file: bool
@@ -229,6 +237,12 @@ def configure_container_dict(
 
     See also :func:`start_fluent_container`.
     """
+
+    if timeout is not None:
+        warnings.warn(
+            "configure_container_dict(timeout) is deprecated, use launch_fluent(start_timeout) instead.",
+            PyFluentDeprecationWarning,
+        )
 
     logger.debug(f"container_dict before processing:\n{dict_to_str(container_dict)}")
 
@@ -451,6 +465,7 @@ def configure_container_dict(
 
     return (
         container_dict,
+        timeout,
         container_grpc_port,
         host_server_info_file,
         remove_server_info_file,
@@ -499,11 +514,19 @@ def start_fluent_container(
 
     (
         config_dict,
+        timeout,
         port,
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
     launch_string = " ".join(config_dict["command"])
+
+    if timeout:
+        logger.warning(
+            "launch_fluent(start_timeout) overridden by configure_container_dict(timeout) value."
+        )
+        start_timeout = timeout
+        del timeout
 
     try:
         if is_compose():
@@ -547,9 +570,19 @@ def start_fluent_container(
             )
 
             if not success:
-                raise TimeoutError(
-                    f"Fluent container launch has timed out after {start_timeout} seconds. Container will need to be stopped manually."
-                )
+                try:
+                    container.stop()
+                except Exception as stop_ex:
+                    logger.error(f"Failed to stop container: {stop_ex}")
+                    raise TimeoutError(
+                        f"Fluent container launch has timed out after {start_timeout} seconds. "
+                        f"Additionally, stopping the container failed: {stop_ex}"
+                    ) from stop_ex
+                else:
+                    raise TimeoutError(
+                        f"Fluent container launch has timed out after {start_timeout} seconds."
+                        " The container was stopped."
+                    )
             else:
                 _, _, password = _parse_server_info_file(str(host_server_info_file))
 
