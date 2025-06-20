@@ -469,10 +469,14 @@ class AppUtilities:
         self.service.set_working_directory(request)
 
 
-class AppUtilitiesV252(AppUtilitiesOld):
+class AppUtilitiesV252(AppUtilities):
     """AppUtilitiesV252.
     This is for methods whose implementations are missing in the 25R2 server.
     """
+
+    def __init__(self, service: AppUtilitiesService, scheme):
+        super().__init__(service)
+        self.scheme = scheme
 
     def enable_beta(self) -> None:
         """Enable beta features."""

@@ -283,18 +283,21 @@ class _ConnectionInterface:
             < pyfluent.FluentVersion.v252
         ):
             self._app_utilities = AppUtilitiesOld(self.scheme_eval)
-        elif (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            == pyfluent.FluentVersion.v252
-        ):
-            self._app_utilities = AppUtilitiesV252(self.scheme_eval)
         else:
             self._app_utilities_service = create_grpc_service(
                 AppUtilitiesService, error_state
             )
-            self._app_utilities = service_creator("app_utilities").create(
-                self._app_utilities_service
-            )
+            if (
+                pyfluent.FluentVersion(self.scheme_eval.version)
+                == pyfluent.FluentVersion.v252
+            ):
+                self._app_utilities = AppUtilitiesV252(
+                    self._app_utilities_service, self.scheme_eval
+                )
+            else:
+                self._app_utilities = service_creator("app_utilities").create(
+                    self._app_utilities_service
+                )
 
     @property
     def product_build_info(self) -> str:

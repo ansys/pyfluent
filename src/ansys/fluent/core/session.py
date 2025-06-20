@@ -39,7 +39,7 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentUserWarning,
 )
 from ansys.fluent.core.services import service_creator
-from ansys.fluent.core.services.app_utilities import AppUtilitiesOld, AppUtilitiesV252
+from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
 from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
@@ -88,8 +88,6 @@ class _AppUtilitiesFactory:
     def _create_app_utilities(scheme_eval, fluent_connection):
         if FluentVersion(scheme_eval.version) < FluentVersion.v252:
             return AppUtilitiesOld(scheme_eval)
-        elif FluentVersion(scheme_eval.version) == FluentVersion.v252:
-            return AppUtilitiesV252(scheme_eval)
         else:
             return fluent_connection._connection_interface._app_utilities
 
