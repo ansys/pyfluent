@@ -781,6 +781,28 @@ def test_beta_solver_session(new_solver_session_wo_exit):
     meshing.exit()
 
 
+@pytest.mark.fluent_version(">=24.2")
+def test_error_raised_for_beta_feature_access_for_older_versions(
+    new_meshing_session, new_solver_session
+):
+    meshing = new_meshing_session
+    solver = new_solver_session
+
+    if meshing.get_fluent_version() >= FluentVersion.v252:
+        meshing.enable_beta_features()
+        assert "topology_based" in dir(meshing)
+    else:
+        with pytest.raises(RuntimeError):
+            meshing.enable_beta_features()
+
+    if solver.get_fluent_version() >= FluentVersion.v252:
+        solver.enable_beta_features()
+        assert "switch_to_meshing" in dir(solver)
+    else:
+        with pytest.raises(RuntimeError):
+            solver.enable_beta_features()
+
+
 @pytest.mark.fluent_version(">=25.2")
 def test_dir_for_session(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit

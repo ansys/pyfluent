@@ -278,23 +278,19 @@ class _ConnectionInterface:
         self.scheme_eval = service_creator("scheme_eval").create(
             self._scheme_eval_service
         )
-        if (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            < pyfluent.FluentVersion.v252
-        ):
-            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
-        else:
-            self._app_utilities_service = create_grpc_service(
-                AppUtilitiesService, error_state
-            )
-            if (
-                pyfluent.FluentVersion(self.scheme_eval.version)
-                == pyfluent.FluentVersion.v252
-            ):
+        self._app_utilities_service = create_grpc_service(
+            AppUtilitiesService, error_state
+        )
+        match pyfluent.FluentVersion(self.scheme_eval.version):
+            case v if v < pyfluent.FluentVersion.v252:
+                self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+
+            case pyfluent.FluentVersion.v252:
                 self._app_utilities = AppUtilitiesV252(
                     self._app_utilities_service, self.scheme_eval
                 )
-            else:
+
+            case _:
                 self._app_utilities = service_creator("app_utilities").create(
                     self._app_utilities_service
                 )

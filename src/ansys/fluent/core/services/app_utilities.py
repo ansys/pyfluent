@@ -261,6 +261,16 @@ class AppUtilitiesOld:
         """Is beta enabled."""
         return self.scheme.eval("(is-beta-feature-available?)")
 
+    def enable_beta(self):
+        """Enable beta features.
+
+        Raises
+        ------
+        RuntimeError
+            Not supported before Fluent 2025 R2.
+        """
+        raise RuntimeError("Enabling beta is not supported py PyFluent for Fluent versions before 2025 R2.")
+
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
         return self.scheme.eval(f'(has-fnmatch-wild-card? "{input}")')
