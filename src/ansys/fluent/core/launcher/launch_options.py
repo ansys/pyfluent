@@ -286,7 +286,7 @@ def _should_add_driver_null(ui_mode: UIMode | None = None) -> bool:
     return ui_mode not in {UIMode.GUI, UIMode.HIDDEN_GUI}
 
 
-def is_graphics_driver_setting_ignored(
+def _is_graphics_driver_setting_ignored(
     ui_mode, graphics_driver_, graphics_driver, ui_mode_
 ):
     """Return True if user-specified graphics driver setting is ignored based on UI mode and driver."""
@@ -316,7 +316,7 @@ def _get_graphics_driver(
         if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
-    if is_graphics_driver_setting_ignored(
+    if _is_graphics_driver_setting_ignored(
         ui_mode, graphics_driver_, graphics_driver, ui_mode_
     ):
         warnings.warn(
