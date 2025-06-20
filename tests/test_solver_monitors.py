@@ -73,12 +73,11 @@ def test_solver_monitors(new_solver_session):
     )
 
     # no data in monitors at this point
+    def all_elements_empty(name):
+        monitor_data = solver.monitors.get_monitor_set_data(monitor_set_name=name)
+        return all(len(elem) == 0 for elem in monitor_data)
+
     for name in monitor_set_names:
-
-        def all_elements_empty(name):
-            monitor_data = solver.monitors.get_monitor_set_data(monitor_set_name=name)
-            return all(len(elem) == 0 for elem in monitor_data)
-
         assert timeout_loop(
             all_elements_empty,
             timeout=5,
@@ -89,12 +88,11 @@ def test_solver_monitors(new_solver_session):
     solver.solution.run_calculation.iterate(iter_count=1)
 
     # ...data is in monitors
+    def all_elements_non_empty(name):
+        monitor_data = solver.monitors.get_monitor_set_data(monitor_set_name=name)
+        return all(len(elem) != 0 for elem in monitor_data)
+
     for name in monitor_set_names:
-
-        def all_elements_non_empty(name):
-            monitor_data = solver.monitors.get_monitor_set_data(monitor_set_name=name)
-            return all(len(elem) != 0 for elem in monitor_data)
-
         assert timeout_loop(
             all_elements_non_empty,
             timeout=5,
