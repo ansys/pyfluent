@@ -72,7 +72,6 @@ docs = [
     "quarto-cli==1.7.32",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
-    "tensorflow>=2.17.0",
 ]
 
 [tool.flit.module]
