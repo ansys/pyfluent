@@ -77,7 +77,7 @@ from ansys.fluent.core.utils import env_var_to_bool, fldoc, get_examples_downloa
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.33.dev0"
+__version__ = "0.34.dev0"
 
 _VERSION_INFO = None
 """

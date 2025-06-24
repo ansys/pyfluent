@@ -104,6 +104,12 @@ class AppUtilitiesService:
         """Is beta enabled RPC of AppUtilities service."""
         return self._stub.IsBetaEnabled(request, metadata=self._metadata)
 
+    def enable_beta(
+        self, request: AppUtilitiesProtoModule.EnableBetaRequest
+    ) -> AppUtilitiesProtoModule.EnableBetaResponse:
+        """Is beta enabled RPC of AppUtilities service."""
+        return self._stub.EnableBeta(request, metadata=self._metadata)
+
     def is_wildcard(
         self, request: AppUtilitiesProtoModule.IsWildcardRequest
     ) -> AppUtilitiesProtoModule.IsWildcardResponse:
@@ -255,6 +261,18 @@ class AppUtilitiesOld:
         """Is beta enabled."""
         return self.scheme.eval("(is-beta-feature-available?)")
 
+    def enable_beta(self):
+        """Enable beta features.
+
+        Raises
+        ------
+        RuntimeError
+            Not supported before Fluent 2025 R2.
+        """
+        raise RuntimeError(
+            "Enabling beta is not supported by PyFluent for Fluent versions before 2025 R2."
+        )
+
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
         return self.scheme.eval(f'(has-fnmatch-wild-card? "{input}")')
@@ -405,6 +423,11 @@ class AppUtilities:
         response = self.service.is_beta_enabled(request)
         return response.is_beta_enabled
 
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        request = AppUtilitiesProtoModule.EnableBetaRequest()
+        self.service.enable_beta(request)
+
     def is_wildcard(self, input: str | None = None) -> bool:
         """Is wildcard."""
         request = AppUtilitiesProtoModule.IsWildcardRequest()
@@ -456,3 +479,19 @@ class AppUtilities:
         request = AppUtilitiesProtoModule.SetWorkingDirectoryRequest()
         request.path = path
         self.service.set_working_directory(request)
+
+
+class AppUtilitiesV252(AppUtilities):
+    """AppUtilitiesV252.
+    This is for methods whose implementations are missing in the 25R2 server.
+    """
+
+    def __init__(self, service: AppUtilitiesService, scheme):
+        super().__init__(service)
+        self.scheme = scheme
+
+    def enable_beta(self) -> None:
+        """Enable beta features."""
+        self.scheme.eval(
+            '(fl-execute-cmd "file" "beta-settings" (list (cons "enable?" #t)))'
+        )

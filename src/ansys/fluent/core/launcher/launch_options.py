@@ -294,6 +294,11 @@ def _get_graphics_driver(
     ui_mode: UIMode | None = None,
 ):
     ui_mode_ = UIMode(ui_mode)
+    if graphics_driver is not None and ui_mode_ not in {UIMode.GUI, UIMode.HIDDEN_GUI}:
+        warnings.warn(
+            "User-specified value for graphics driver is ignored while launching Fluent without GUI or without graphics.",
+            PyFluentUserWarning,
+        )
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
     ):
@@ -303,14 +308,6 @@ def _get_graphics_driver(
         if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
-    if graphics_driver.value != "null" and ui_mode_ not in {
-        UIMode.GUI,
-        UIMode.HIDDEN_GUI,
-    }:
-        warnings.warn(
-            "User-specified value for graphics driver is ignored while launching Fluent without GUI or without graphics.",
-            PyFluentUserWarning,
-        )
     if _should_add_driver_null(ui_mode_):
         return (
             FluentWindowsGraphicsDriver.NULL
