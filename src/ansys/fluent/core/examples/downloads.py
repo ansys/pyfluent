@@ -30,7 +30,6 @@ import shutil
 import zipfile
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
 
 logger = logging.getLogger("pyfluent.networking")
@@ -181,7 +180,7 @@ def download_file(
     'bracket.iges'
     """
     if return_without_path is None:
-        if env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"):
+        if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             if pyfluent.USE_FILE_TRANSFER_SERVICE:
                 return_without_path = False
             else:

@@ -36,7 +36,6 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
@@ -272,7 +271,7 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
         fluent_launch_mode = LaunchMode.PIM
     elif start_container is True or (
         start_container is None
-        and (container_dict or env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"))
+        and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
     ):
         fluent_launch_mode = LaunchMode.CONTAINER
     # Currently, only Slurm scheduler is supported and within SlurmLauncher we check the value of the scheduler

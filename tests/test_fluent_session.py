@@ -35,7 +35,6 @@ from ansys.fluent.core.fluent_connection import (
     get_container,
 )
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from docker.models.containers import Container
@@ -258,7 +257,7 @@ def test_interrupt(static_mixer_case_session):
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.delenv("PYFLUENT_LOGGING")
     monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
-    inside_container = env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER")
+    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.launch_fluent(start_watchdog=False)

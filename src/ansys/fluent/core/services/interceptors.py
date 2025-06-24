@@ -32,7 +32,6 @@ from google.protobuf.message import DecodeError, Message
 import grpc
 
 from ansys.fluent.core.services.batch_ops import BatchOps
-from ansys.fluent.core.utils import env_var_to_bool
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 log_bytes_limit: int = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
@@ -76,7 +75,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         if not response.exception():
             # call _truncate_grpc_str early to get the size warning even when hiding secrets
             response_str = _truncate_grpc_str(response.result())
-            if not env_var_to_bool("PYFLUENT_HIDE_LOG_SECRETS"):
+            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
                 network_logger.debug(f"GRPC_TRACE: response = {response_str}")
         return response
 

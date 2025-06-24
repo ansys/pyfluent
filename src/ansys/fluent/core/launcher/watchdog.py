@@ -35,7 +35,6 @@ import sys
 import time
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.execution import timeout_loop
 
 logger = pyfluent.logger.get_logger("pyfluent.launcher")
@@ -77,7 +76,7 @@ def launch(
         )
     )
 
-    debug_watchdog = env_var_to_bool("PYFLUENT_WATCHDOG_DEBUG")
+    debug_watchdog = os.getenv("PYFLUENT_WATCHDOG_DEBUG") == "1"
     if debug_watchdog:
         logger.debug(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
@@ -195,13 +194,13 @@ def launch(
                 err_content = "Watchdog - %s" % f.read().replace("\n", "")
             watchdog_err.unlink()
             logger.error(err_content)
-            if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
+            if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1":
                 raise UnsuccessfulWatchdogLaunch(err_content)
 
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
-        if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR"):
+        if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1":
             raise UnsuccessfulWatchdogLaunch(
                 "PyFluent Watchdog did not initialize correctly."
             )

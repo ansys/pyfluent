@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 from pathlib import Path, PurePosixPath
 import tempfile
 
@@ -28,7 +29,6 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -47,7 +47,7 @@ def test_parametric_workflow():
     import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
-    if env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"):
+    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         inside_container = True
         config_dict = {}
         config_dict.update(mount_source=tmp_save_path)

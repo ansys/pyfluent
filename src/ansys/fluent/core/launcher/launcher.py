@@ -58,7 +58,6 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -104,7 +103,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"):
+        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
             return UIMode.NO_GUI
         else:
             return UIMode.GUI

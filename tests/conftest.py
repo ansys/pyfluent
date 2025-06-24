@@ -35,7 +35,6 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.utils import env_var_to_bool
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -64,9 +63,10 @@ def pytest_addoption(parser):
 
 
 def pytest_runtest_setup(item):
-    if any(
-        mark.name == "standalone" for mark in item.iter_markers()
-    ) and env_var_to_bool("PYFLUENT_LAUNCH_CONTAINER"):
+    if (
+        any(mark.name == "standalone" for mark in item.iter_markers())
+        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+    ):
         pytest.skip()
 
     is_nightly = item.config.getoption("--nightly")
