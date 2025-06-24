@@ -186,8 +186,6 @@ def configure_container_dict(
         visible to the Fluent process running inside the container.
     timeout : int, optional
         Time limit for the Fluent container to start, in seconds.
-        .. deprecated:: v0.33.dev0
-                Use the ``start_timeout`` argument of ``launch_fluent`` instead.
     port : int, optional
         Port for Fluent container to use.
     license_server : str, optional
