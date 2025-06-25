@@ -282,7 +282,7 @@ class _ConnectionInterface:
             AppUtilitiesService, error_state
         )
         match pyfluent.FluentVersion(self.scheme_eval.version):
-            case v if v < pyfluent.FluentVersion.v252 or pyfluent.FLUENT_INTEGRATED:
+            case v if v < pyfluent.FluentVersion.v252:
                 self._app_utilities = AppUtilitiesOld(self.scheme_eval)
 
             case pyfluent.FluentVersion.v252:
