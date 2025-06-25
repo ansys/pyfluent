@@ -1144,6 +1144,11 @@ class Group(SettingsBase[DictStateType]):
         # Avoiding server queries for static attributes
         if name in _static_class_attributes:
             return super().__getattribute__(name)
+        if (
+            name in super().__getattribute__("child_names")
+            and self.is_active() is False
+        ):
+            raise InactiveObjectError(self.python_path)
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
@@ -1160,9 +1165,7 @@ class Group(SettingsBase[DictStateType]):
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                allowed_values=sorted(
-                    set(self.get_active_child_names() + self.command_names)
-                ),
+                allowed_values=sorted(set(self.child_names + self.command_names)),
             )
             ex.args = (error_msg,)
             raise
