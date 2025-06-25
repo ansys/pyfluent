@@ -1285,3 +1285,39 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
         ].momentum.velocity_magnitude.value()
         == 11.0
     )
+
+
+def test_get_completer_info(static_mixer_settings_session):
+    solver = static_mixer_settings_session
+    # group
+    completer_info = solver.settings.file.get_completer_info()
+    assert {
+        "batch_options",
+        "beta_settings",
+        "child_names",
+        "get_active_child_names",
+        "is_active",
+        "python_name",
+        "read_case",
+    } < set([x[0] for x in completer_info])
+    # command
+    completer_info = solver.settings.file.read_case.get_completer_info()
+    assert {"argument_names", "file_name", "is_active", "python_path"} < set(
+        [x[0] for x in completer_info]
+    )
+    # parameter
+    completer_info = solver.settings.file.read_case.file_name.get_completer_info()
+    assert {"default_value", "is_active", "python_name", "set_state"} < set(
+        [x[0] for x in completer_info]
+    )
+    # named-object
+    completer_info = (
+        solver.settings.setup.boundary_conditions.velocity_inlet.get_completer_info()
+    )
+    assert {
+        "command_names",
+        "get_object_names",
+        "is_active",
+        "list",
+        "python_name",
+    } < set([x[0] for x in completer_info])

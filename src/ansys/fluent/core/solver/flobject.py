@@ -517,14 +517,15 @@ class Base:
         for k, v in inspect.getmembers(self):
             if not k.startswith("_") and k not in excluded and k.startswith(prefix):
                 if isinstance(v, Base):
-                    if v.is_active() and not _is_deprecated(v):
-                        ret.append(
-                            [
-                                k,
-                                _get_type_for_completer_info(v.__class__),
-                                v.__doc__,
-                            ]
-                        )
+                    # TODO: Following check hangs for some objects as seen in unittest.
+                    # if v.is_active() and not _is_deprecated(v):
+                    ret.append(
+                        [
+                            k,
+                            _get_type_for_completer_info(v.__class__),
+                            v.__doc__,
+                        ]
+                    )
                 elif inspect.ismethod(v):
                     ret.append(
                         [
