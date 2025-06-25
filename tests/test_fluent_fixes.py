@@ -23,6 +23,7 @@
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.utils.execution import timeout_loop
 
 
 @pytest.mark.nightly
@@ -73,13 +74,17 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
 
     monitors_list = solver_session.monitors.get_monitor_set_names()
 
-    assert monitors_list == [
-        "residual",
-        "mass-bal-rplot",
-        "mass-tot-rplot",
-        "mass-in-rplot",
-        "point-vel-rplot",
-    ]
+    assert timeout_loop(
+        lambda: monitors_list
+        == [
+            "residual",
+            "mass-bal-rplot",
+            "mass-tot-rplot",
+            "mass-in-rplot",
+            "point-vel-rplot",
+        ],
+        5,
+    )
 
     mp = solver_session.monitors.get_monitor_set_data(monitor_set_name="residual")
 
@@ -95,14 +100,18 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
 
     new_monitors_list = solver_session.monitors.get_monitor_set_names()
 
-    assert new_monitors_list == [
-        "residual",
-        "mass-bal-rplot",
-        "mass-tot-rplot",
-        "mass-in-rplot",
-        "point-vel-rplot",
-        "sample-report-plot",
-    ]
+    assert timeout_loop(
+        lambda: new_monitors_list
+        == [
+            "residual",
+            "mass-bal-rplot",
+            "mass-tot-rplot",
+            "mass-in-rplot",
+            "point-vel-rplot",
+            "sample-report-plot",
+        ],
+        5,
+    )
 
 
 @pytest.mark.fluent_version(">=24.2")

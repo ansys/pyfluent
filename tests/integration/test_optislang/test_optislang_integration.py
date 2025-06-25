@@ -35,6 +35,7 @@ from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4204")
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
@@ -236,6 +237,7 @@ def test_case_file():
     assert output_params["units"] == "K"
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4204")
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
