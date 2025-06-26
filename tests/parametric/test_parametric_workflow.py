@@ -253,7 +253,6 @@ def test_parametric_workflow():
     solver_session.exit()
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4204")
 @pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(static_mixer_settings_session):
     solver = static_mixer_settings_session
@@ -293,13 +292,25 @@ def test_parameters_list_function(static_mixer_settings_session):
     input_parameters_list = solver.parameters.input_parameters.list()
     output_parameters_list = solver.parameters.output_parameters.list()
     assert input_parameters_list == {
-        "inlet1_temp": [300.0, "K"],
-        "inlet1_vel": [1.0, "m/s"],
-        "inlet2_temp": [350.0, "K"],
-        "inlet2_vel": [1.0, "m/s"],
+        "inlet1_temp": [
+            300.0,
+            {
+                "temperature": ["k", 1.0, 0.0, "K"],
+                "temperature-difference": ["k", 1.0, 0.0, "K"],
+            },
+        ],
+        "inlet1_vel": [1.0, {"velocity": ["m/s", 1.0, 0.0, "m s^-1"]}],
+        "inlet2_temp": [
+            350.0,
+            {
+                "temperature": ["k", 1.0, 0.0, "K"],
+                "temperature-difference": ["k", 1.0, 0.0, "K"],
+            },
+        ],
+        "inlet2_vel": [1.0, {"velocity": ["m/s", 1.0, 0.0, "m s^-1"]}],
     }
     assert output_parameters_list == {
-        "outlet-temp-avg-op": [0.0, "K"],
-        "outlet-vel-avg-op": [0.0, "m/s"],
-        "temp-outlet-uniformity-op": [0.0, ""],
+        "outlet-temp-avg-op": [0.0, {"temperature": ["k", 1.0, 0.0, "K"]}],
+        "outlet-vel-avg-op": [0.0, {"velocity": ["m/s", 1.0, 0.0, "m s^-1"]}],
+        "temp-outlet-uniformity-op": [0.0, [False]],
     }
