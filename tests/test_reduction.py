@@ -38,7 +38,6 @@ def _test_locn_extraction(solver1, solver2):
     all_bcs = solver1_boundary_conditions
     locns = _locn_names_and_objs(all_bcs)
     assert locns == [
-        ["interior--fluid", all_bcs],
         ["outlet", all_bcs],
         ["inlet1", all_bcs],
         ["inlet2", all_bcs],
@@ -52,12 +51,10 @@ def _test_locn_extraction(solver1, solver2):
     all_bcs2 = solver2_boundary_conditions
     locns = _locn_names_and_objs([all_bcs, all_bcs2])
     assert locns == [
-        ["interior--fluid", all_bcs],
         ["outlet", all_bcs],
         ["inlet1", all_bcs],
         ["inlet2", all_bcs],
         ["wall", all_bcs],
-        ["interior--fluid", all_bcs2],
         ["outlet", all_bcs2],
         ["inlet1", all_bcs2],
         ["inlet2", all_bcs2],
