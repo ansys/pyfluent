@@ -33,6 +33,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 # flake8: noqa: F405
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4218")
 @pytest.mark.codegen_required
 def test_builtin_settings(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session

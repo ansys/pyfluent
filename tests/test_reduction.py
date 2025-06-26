@@ -408,6 +408,7 @@ def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4218")
 @pytest.mark.fluent_version(">=24.1")
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
