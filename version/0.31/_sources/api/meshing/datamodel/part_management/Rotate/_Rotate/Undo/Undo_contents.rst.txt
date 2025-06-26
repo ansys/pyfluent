@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_Rotate__Rotate_Undo:
+
+Undo
+====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root.Rotate._Rotate.Undo
+   :members: _UndoCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

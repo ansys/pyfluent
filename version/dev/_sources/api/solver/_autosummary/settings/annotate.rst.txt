@@ -1,0 +1,38 @@
+:orphan:
+
+.. _annotate:
+
+annotate
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.annotate
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =======================================================================================================================================================
+
+Argument                                                                                                                                                                           Summary
+
+================================   =======================================================================================================================================================
+:ref:`text <text_2>`                                                                                                                    Specifies the text that appears in the annotation.
+
+:ref:`append_text <append_text>`       Append the following values to the text: Date | Time | Version | Number of iterations | Number of timesteps | Flow time | <any defined expression>.
+
+:ref:`start <start_4>`                                                                                                                        The origin point for your annotation's line.
+
+:ref:`end <end_1>`                                                                                                                           The position for your annotation's placement.
+
+================================   =======================================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`annotation <annotation>`       Add, Edit, Remove annotations in case file.
+
+==============================   ===============================================
+

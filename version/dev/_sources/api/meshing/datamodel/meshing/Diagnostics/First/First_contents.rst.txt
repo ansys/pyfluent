@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_Diagnostics_First:
+
+First
+=====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.Diagnostics.First
+   :members: _FirstCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

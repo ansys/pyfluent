@@ -1,0 +1,47 @@
+:orphan:
+
+.. _range_2:
+
+range
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.range_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   ====================
+
+Attribute                                 Summary
+
+==========================   ====================
+:ref:`minimum <minimum_2>`       'minimum' child.
+
+:ref:`maximum <maximum_2>`       'maximum' child.
+
+==========================   ====================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`compute <compute_4>`       'compute' command.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`yplus_star <yplus_star>`          'yplus_star' child.
+
+:ref:`yplus_ystar <yplus_ystar>`       'yplus_ystar' child.
+
+================================   ========================
+

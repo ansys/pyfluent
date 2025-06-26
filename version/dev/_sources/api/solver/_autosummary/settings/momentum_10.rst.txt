@@ -1,0 +1,84 @@
+:orphan:
+
+.. _momentum_10:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.momentum_10
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================================   =======================================
+
+Attribute                                                                                                        Summary
+
+==============================================================================   =======================================
+:ref:`open_channel_wave_bc <open_channel_wave_bc>`                                                 Open Channel Wave BC.
+
+:ref:`segregated_velocity_inputs <segregated_velocity_inputs>`                               Segregated Velocity Inputs.
+
+:ref:`system_coupling <system_coupling_1>`                                                             System Coupling?.
+
+:ref:`velocity_specification_method <velocity_specification_method>`                      Velocity Specification Method.
+
+:ref:`reference_frame <reference_frame_5>`                                                              Reference frame.
+
+:ref:`averaged_flow_specification_method <averaged_flow_specification_method>`       Averaged Flow Specification Method.
+
+:ref:`avg_flow_velocity <avg_flow_velocity>`                                           Averaged Flow Velocity Magnitude.
+
+:ref:`velocity_magnitude <velocity_magnitude>`                                                       Velocity Magnitude.
+
+:ref:`initial_gauge_pressure <initial_gauge_pressure>`                                                   Gauge Pressure.
+
+:ref:`coordinate_system <coordinate_system>`                                                          Coordinate System.
+
+:ref:`velocity_components <velocity_components>`                                                    Velocity components.
+
+:ref:`swirl_angular_velocity <swirl_angular_velocity>`                                               Help not available.
+
+:ref:`flow_direction <flow_direction>`                                                        Flow direction components.
+
+:ref:`axis_direction <axis_direction_2>`                                                      Axis direction components.
+
+:ref:`axis_origin <axis_origin_2>`                                                               Axis origin components.
+
+:ref:`gauge_pressure <gauge_pressure>`                                                                   Gauge Pressure.
+
+:ref:`acoustic_wave_model <acoustic_wave_model>`                                                    Acoustic wave model.
+
+:ref:`impedance_zero_order_term <impedance_zero_order_term>`                                  Impedance zero order term.
+
+:ref:`real_pole_series <real_pole_series>`                                                     List of Real Pole Series.
+
+:ref:`complex_pole_series <complex_pole_series>`                                            List of Complex Pole Series.
+
+:ref:`incoming_wave <incoming_wave>`                                                                      Incoming wave.
+
+:ref:`moving_object_velocity_inputs <moving_object_velocity_inputs>`                    Moving object velocity settings.
+
+:ref:`primary_phase_velocity_inputs <primary_phase_velocity_inputs>`                    Primary phase velocity settings.
+
+:ref:`secondary_phase_velocity_inputs <secondary_phase_velocity_inputs>`              Secondary phase velocity settings.
+
+==============================================================================   =======================================
+
+.. rubric:: Included in:
+
+======================================================   ==========================================
+
+Parent                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`velocity_inlet_child <velocity_inlet_child>`           'child_object_type' of velocity_inlet.
+
+:ref:`phase_26_child <phase_26_child>`                                'child_object_type' of phase.
+
+:ref:`velocity_inlet_1_child <velocity_inlet_1_child>`       'child_object_type' of velocity_inlet.
+
+:ref:`phase_50_child <phase_50_child>`                                'child_object_type' of phase.
+
+======================================================   ==========================================
+

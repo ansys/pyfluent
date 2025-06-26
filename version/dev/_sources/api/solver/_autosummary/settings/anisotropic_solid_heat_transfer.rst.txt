@@ -1,0 +1,36 @@
+:orphan:
+
+.. _anisotropic_solid_heat_transfer:
+
+anisotropic_solid_heat_transfer
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.anisotropic_solid_heat_transfer
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ================================================================
+
+Attribute                                                                                 Summary
+
+==============================   ================================================================
+:ref:`relaxation <relaxation>`                    The under-relaxation for heat flux coefficient.
+
+:ref:`flux <flux>`                              The heat flux calculation method for solid zones.
+
+:ref:`gradient <gradient>`           The temperature gradient calculation method for solid zones.
+
+==============================   ================================================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_3 <advanced_3>`       Solution method advanced object.
+
+==============================   ====================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _set_type_2:
+
+set_type
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_type_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ==========================
+
+Argument                                                    Summary
+
+======================================   ==========================
+:ref:`boundary_names <boundary_names>`       Input boundary names .
+
+:ref:`type <type_5>`                           Input boundary type.
+
+======================================   ==========================
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`boundaries_1 <boundaries_1>`       'boundaries' child.
+
+:ref:`boundaries <boundaries>`           'boundaries' child.
+
+==================================   =======================
+

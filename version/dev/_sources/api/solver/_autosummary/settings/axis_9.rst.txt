@@ -1,0 +1,21 @@
+:orphan:
+
+.. _axis_9:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.axis_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ======================================================
+
+Parent                                                                                            Summary
+
+================================================   ======================================================
+:ref:`coordinate_system_1 <coordinate_system_1>`       Design tool cylindrical frame of reference object.
+
+================================================   ======================================================
+

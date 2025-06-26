@@ -1,0 +1,23 @@
+:orphan:
+
+.. _planes:
+
+planes
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.planes
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ================================================================================================================
+
+Parent                                                                                                                                                Summary
+
+==========================================   ================================================================================================================
+:ref:`compute_12 <compute_12>`                                            Compute particle trajectories to record sampling data at planes and boundary zones.
+
+:ref:`start_file_write <start_file_write>`       Enable recording particle sampling data at planes and boundary zones when the simulation progresses in time.
+
+==========================================   ================================================================================================================
+

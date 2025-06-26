@@ -1,0 +1,34 @@
+:orphan:
+
+.. _kill_node:
+
+kill_node
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.kill_node
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ============================
+
+Argument                                                        Summary
+
+========================================   ============================
+:ref:`compute_node <compute_node>`                'compute_node' child.
+
+:ref:`invalidate_case <invalidate_case>`       'invalidate_case' child.
+
+========================================   ============================
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`network_3 <network_3>`       The network configuration object.
+
+============================   =====================================
+

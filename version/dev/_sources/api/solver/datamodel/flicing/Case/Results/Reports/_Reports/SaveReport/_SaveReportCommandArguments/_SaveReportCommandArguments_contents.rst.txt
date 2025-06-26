@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Reports__Reports_SaveReport__SaveReportCommandArguments:
+
+_SaveReportCommandArguments
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Results.Reports._Reports.SaveReport._SaveReportCommandArguments
+   :members: _Filename
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _TimestepSelection/_TimestepSelection_contents

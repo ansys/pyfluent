@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_9:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =================================================
+
+Parent                                                                                         Summary
+
+==================================================   =================================================
+:ref:`pressure_far_field_3 <pressure_far_field_3>`       Presure-far-field boundary-condition options.
+
+==================================================   =================================================
+

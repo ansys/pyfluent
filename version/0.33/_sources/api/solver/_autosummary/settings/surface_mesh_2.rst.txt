@@ -1,0 +1,32 @@
+:orphan:
+
+.. _surface_mesh_2:
+
+surface_mesh
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.surface_mesh_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ============
+
+Argument                                      Summary
+
+======================================   ============
+:ref:`surface_names <surface_names_3>`       Surface.
+
+======================================   ============
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`display_10 <display_10>`       'display' child.
+
+==============================   ====================
+
