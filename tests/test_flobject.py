@@ -1287,6 +1287,7 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
     )
 
 
+@pytest.mark.fluent_version(">=25.1")
 def test_get_completer_info(static_mixer_settings_session):
     solver = static_mixer_settings_session
     # group
