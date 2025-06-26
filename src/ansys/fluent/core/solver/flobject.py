@@ -517,7 +517,7 @@ class Base:
         for k, v in inspect.getmembers(self):
             if not k.startswith("_") and k not in excluded and k.startswith(prefix):
                 if isinstance(v, Base):
-                    if v.is_active() and not _is_deprecated(v):
+                    if not _is_deprecated(v):
                         ret.append(
                             [
                                 k,
