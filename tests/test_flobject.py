@@ -879,7 +879,7 @@ def test_settings_wild_card_access(new_solver_session) -> None:
         solver.setup.boundary_conditions.velocity_inlet["inlet-1"]
     assert (
         msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet-1'.\n"
-        "The most similar names are: inlet1, inlet2."
+        "The most similar names are: inlet1, inlet2"
     )
 
 
@@ -902,7 +902,7 @@ def test_settings_matching_names(new_solver_session) -> None:
 
     assert (
         msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
-        "The most similar names are: k-epsilon."
+        "The most similar names are: k-epsilon"
     )
 
 

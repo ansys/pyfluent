@@ -241,7 +241,7 @@ def test_case_reader_get_rp_and_config_vars():
         reader.config_var("rp-3d")
     assert (
         msg.value.args[0] == "'config-vars' has no attribute 'rp-3d'.\n"
-        "The most similar names are: rp-3d?, rp-des?."
+        "The most similar names are: rp-3d?, rp-des?"
     )
 
 
