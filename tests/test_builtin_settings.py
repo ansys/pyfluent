@@ -175,10 +175,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         == solver.setup.boundary_conditions.interior
     )
     assert (
-        InteriorBoundary(settings_source=solver, name="interior--elbow-fluid")
-        == solver.setup.boundary_conditions.interior["interior--elbow-fluid"]
-    )
-    assert (
         PressureOutlets(settings_source=solver)
         == solver.setup.boundary_conditions.pressure_outlet
     )
@@ -547,9 +543,9 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     else:
         with pytest.raises(RuntimeError):
             CustomVectors(settings_source=solver)
-    tmp_save_path = Path(tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH))
-    project_file = Path(tmp_save_path.parts[-1]) / "mixing_elbow_param.flprj"
-    solver.settings.parametric_studies.initialize(project_filename=str(project_file))
+    solver.settings.parametric_studies.initialize(
+        project_filename="mixing_elbow_param.flprj"
+    )
     assert ParametricStudies(settings_source=solver) == solver.parametric_studies
     assert (
         ParametricStudy(settings_source=solver, name="mixing_elbow-Solve")

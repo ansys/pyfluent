@@ -44,6 +44,7 @@ import collections
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
+import inspect
 import keyword
 import logging
 import os
@@ -503,6 +504,39 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        excluded = excluded or []
+        ret = []
+        for k, v in inspect.getmembers(self):
+            if not k.startswith("_") and k not in excluded and k.startswith(prefix):
+                if isinstance(v, Base):
+                    if not _is_deprecated(v):
+                        ret.append(
+                            [
+                                k,
+                                _get_type_for_completer_info(v.__class__),
+                                v.__doc__,
+                            ]
+                        )
+                elif inspect.ismethod(v):
+                    ret.append(
+                        [
+                            k,
+                            "Method",
+                            v.__doc__ or "",
+                        ]
+                    )
+                else:
+                    ret.append([k, "Data", ""])
+        return ret
+
 
 StateT = TypeVar("StateT")
 
@@ -953,20 +987,6 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _command_query_name_filter(
-    parent, list_attr: str, prefix: str, excluded: List[str]
-) -> List:
-    """Auto completer info of commands and queries."""
-    ret = []
-    names = getattr(parent, list_attr)
-    for name in names:
-        if name not in excluded and name.startswith(prefix):
-            child = getattr(parent, name)
-            if child.is_active() and not _is_deprecated(child):
-                ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
-    return ret
-
-
 def _get_type_for_completer_info(cls) -> str:
     if issubclass(cls, (FileName, _InputFile)):
         return "InputFilename"
@@ -1107,35 +1127,6 @@ class Group(SettingsBase[DictStateType]):
                 if _is_deprecated(getattr(self, child))
             ]
         )
-
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
-
-        Returns
-        -------
-        List[List[str]]
-            Name, type and docstring of all children.
-        """
-        excluded = excluded or []
-        ret = []
-        for child_name in self.child_names:
-            if child_name not in excluded and child_name.startswith(prefix):
-                child = getattr(self, child_name)
-                if child.is_active() and not _is_deprecated(child):
-                    ret.append(
-                        [
-                            child_name,
-                            _get_type_for_completer_info(child.__class__),
-                            child.__doc__,
-                        ]
-                    )
-        command_info = _command_query_name_filter(
-            self, "command_names", prefix, excluded
-        )
-        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
-        for items in [command_info, query_info]:
-            ret.extend(items)
-        return ret
 
     def __getattribute__(self, name):
         # Avoiding server queries for static attributes
@@ -1409,24 +1400,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
-
-        Returns
-        -------
-        List[List[str]]
-            Name, type and docstring of all children.
-        """
-        excluded = excluded or []
-        ret = []
-        command_info = _command_query_name_filter(
-            self, "command_names", prefix, excluded
-        )
-        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
-        for items in [command_info, query_info]:
-            ret.extend(items)
-        return ret
-
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
@@ -1667,29 +1640,6 @@ class Action(Base):
                 if _is_deprecated(getattr(self, child))
             ]
         )
-
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all arguments.
-
-        Returns
-        -------
-        List[List[str]]
-            Name, type and docstring of all arguments.
-        """
-        excluded = excluded or []
-        ret = []
-        for argument_name in self.argument_names:
-            if argument_name not in excluded and argument_name.startswith(prefix):
-                argument = getattr(self, argument_name)
-                if argument.is_active() and not _is_deprecated(argument):
-                    ret.append(
-                        [
-                            argument_name,
-                            _get_type_for_completer_info(argument.__class__),
-                            argument.__doc__,
-                        ]
-                    )
-        return ret
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
