@@ -523,7 +523,7 @@ def test_list_object():
 
 
 def test_command():
-    r = flobject.get_root(Proxy())
+    r = flobject.get_root(Proxy(), version="252")
     r.g_1.r_1 = 2.4
     r.c_1()
     assert r.g_1.r_1() == 2.4 + 2.3

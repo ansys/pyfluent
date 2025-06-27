@@ -120,9 +120,13 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     assert inputs_table["value"] == 500.0
 
     fluent_output_table = solver_session.settings.parameters.output_parameters.list()
+    fluent_version = solver_session.get_fluent_version()
     for key, entry in fluent_output_table.items():
         output_value = entry[0]
-        output_unit = list(entry[1].values())[0][-1]
+        if fluent_version >= FluentVersion.v261:
+            output_unit = list(entry[1].values())[0][-1]
+        else:
+            output_unit = entry[1]
 
     assert output_value == pytest_approx(322.3360076327905)
 
@@ -248,8 +252,12 @@ def test_parameters(mixing_elbow_param_case_data_session):
 
     output_params = solver_session.settings.parameters.output_parameters.list()
     output_jdict = {}
+    fluent_version = solver_session.get_fluent_version()
     for key, entry in output_params.items():
-        output_jdict[key] = list(entry[1].values())[0][-1]
+        if fluent_version >= FluentVersion.v261:
+            output_jdict[key] = list(entry[1].values())[0][-1]
+        else:
+            output_jdict[key] = entry[1]
 
     assert output_jdict == {"outlet_temp-op": "K"}
 
