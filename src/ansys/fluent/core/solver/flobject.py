@@ -1677,12 +1677,16 @@ class BaseCommand(Action):
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
-            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
-                if (self._parent.path, self.obj_name) in [
-                    ("parameters/input-parameters", "list"),
-                    ("parameters/output-parameters", "list"),
-                ]:
-                    ret = _fix_parameter_list_return(ret)
+            if (
+                os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1"
+                and FluentVersion(self._version) <= FluentVersion.v252
+                and self.path
+                in [
+                    "parameters/input-parameters/list",
+                    "parameters/output-parameters/list",
+                ]
+            ):
+                ret = _fix_parameter_list_return(ret)
             return ret
 
     def execute_command(self, *args, **kwds):
