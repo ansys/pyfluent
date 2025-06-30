@@ -53,7 +53,7 @@ docs = [
     "jupyter_sphinx==0.5.3",
     "numpydoc==1.8.0",
     "matplotlib==3.10.3",
-    "ansys-sphinx-theme==1.4.2",
+    "ansys-sphinx-theme>=1.0.0,<1.5",
     "pypandoc==1.15",
     "pytest-sphinx==0.6.3",
     "sphinx-autobuild==2024.10.3",
