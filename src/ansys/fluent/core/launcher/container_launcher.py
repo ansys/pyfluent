@@ -216,13 +216,17 @@ class DockerLauncher:
 
         if is_compose():
             port, config_dict, container = start_fluent_container(
-                self._args, self.argvals["container_dict"]
+                self._args,
+                self.argvals["container_dict"],
+                self.argvals["start_timeout"],
             )
 
             _, _, password = _get_server_info_from_container(config_dict=config_dict)
         else:
             port, password, container = start_fluent_container(
-                self._args, self.argvals["container_dict"]
+                self._args,
+                self.argvals["container_dict"],
+                self.argvals["start_timeout"],
             )
 
         fluent_connection = FluentConnection(

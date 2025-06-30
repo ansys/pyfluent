@@ -155,7 +155,7 @@ CODEGEN_OUTDIR = os.getenv(
 FLUENT_SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to write the automatic transcript in Fluent
-FLUENT_AUTOMATIC_TRANSCRIPT = False
+FLUENT_AUTOMATIC_TRANSCRIPT = os.getenv("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False
