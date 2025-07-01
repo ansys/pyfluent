@@ -39,7 +39,7 @@ extraction.
 
 Compatibility
 -------------
-PyFluent supports Ansys Fluent 2022 R2 and later.
+PyFluent supports **Ansys Fluent 2022 R2 and later**.
 
 
 Getting started
