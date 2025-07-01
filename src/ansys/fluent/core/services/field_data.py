@@ -52,6 +52,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedVectorFieldNames,
     _ReturnFieldData,
     _to_field_name_str,
+    get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
@@ -934,7 +935,7 @@ class _FieldDataConstants:
 def _get_surface_ids(
     field_info: FieldInfo,
     allowed_surface_names,
-    surfaces: List[int | str],
+    surfaces: List[int | str | object],
 ) -> List[int]:
     """Get surface IDs based on surface names or IDs.
 
@@ -948,7 +949,8 @@ def _get_surface_ids(
     List[int]
     """
     surface_ids = []
-    for surf in surfaces:
+    updated_surfaces = get_surfaces_from_objects(surfaces)
+    for surf in updated_surfaces:
         if isinstance(surf, str):
             surface_ids.extend(
                 field_info.get_surfaces_info()[allowed_surface_names.valid_name(surf)][

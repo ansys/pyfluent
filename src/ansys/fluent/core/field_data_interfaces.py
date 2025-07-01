@@ -23,6 +23,7 @@
 """Common interfaces for field data."""
 
 from abc import ABC, abstractmethod
+from collections.abc import Iterable
 from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
 
@@ -50,7 +51,7 @@ class SurfaceFieldDataRequest(NamedTuple):
     """Container storing parameters for surface data request."""
 
     data_types: List[SurfaceDataType] | List[str]
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
     overset_mesh: bool | None = False
 
 
@@ -58,7 +59,7 @@ class ScalarFieldDataRequest(NamedTuple):
     """Container storing parameters for scalar field data request."""
 
     field_name: str
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
     node_value: bool | None = True
     boundary_value: bool | None = True
 
@@ -67,14 +68,14 @@ class VectorFieldDataRequest(NamedTuple):
     """Container storing parameters for vector field data request."""
 
     field_name: str
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
 
 
 class PathlinesFieldDataRequest(NamedTuple):
     """Container storing parameters for path-lines field data request."""
 
     field_name: str
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
@@ -495,10 +496,11 @@ class _ReturnFieldData:
     @staticmethod
     def _scalar_data(
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         scalar_field_data: np.array,
     ) -> Dict[int | str, np.array]:
+        surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: scalar_field_data[surface_ids[count]][field_name]
             for count, surface in enumerate(surfaces)
@@ -507,11 +509,12 @@ class _ReturnFieldData:
     @staticmethod
     def _surface_data(
         data_types: List[SurfaceDataType],
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
         deprecated_flag: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
             ret_surf_data[surface] = {}
@@ -535,10 +538,11 @@ class _ReturnFieldData:
     @staticmethod
     def _vector_data(
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         vector_field_data: np.array,
     ) -> Dict[int | str, np.array]:
+        surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
             for count, surface in enumerate(surfaces)
@@ -547,11 +551,12 @@ class _ReturnFieldData:
     @staticmethod
     def _pathlines_data(
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         pathlines_data: Dict,
         deprecated_flag: bool | None = False,
     ) -> Dict:
+        surfaces = get_surfaces_from_objects(surfaces)
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
             temp_dict = {
@@ -575,3 +580,34 @@ class _ReturnFieldData:
             else:
                 path_lines_dict[surface] = temp_dict
         return path_lines_dict
+
+
+def get_surfaces_from_objects(surfaces: List[int | str | object]):
+    """
+    Extract surface names or identifiers from a list of surfaces.
+
+    Parameters
+    ----------
+    surfaces : List[int | str | object]
+        A list of surface identifiers, which may include:
+          - integers or strings representing surface names/IDs,
+          - objects with a callable `name()` method,
+          - or iterables (e.g., lists or tuples) containing such elements.
+
+    Returns
+    -------
+    List
+        A flattened list of surface names/identifiers:
+          - If an element is iterable (excluding strings/bytes), its items are unpacked.
+          - If an element has a `name()` method, the result of `surface.name()` is used.
+          - Otherwise, the element itself is returned as-is.
+    """
+    updated_surfaces = []
+    for surface in surfaces:
+        if isinstance(surface, Iterable) and not isinstance(surface, (str, bytes)):
+            updated_surfaces.extend(list(surface))
+        elif hasattr(surface, "name"):
+            updated_surfaces.append(surface.name())
+        else:
+            updated_surfaces.append(surface)
+    return updated_surfaces

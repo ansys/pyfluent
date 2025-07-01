@@ -39,6 +39,7 @@ from ansys.fluent.core.services.field_data import (
     CellElementType,
     ZoneType,
 )
+from ansys.fluent.core.solver import VelocityInlet, VelocityInlets
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -786,3 +787,150 @@ def test_mesh_data_3d_poly(static_mixer_case_session):
     assert max(mesh.nodes, key=lambda x: x.y).y == pytest_approx(3.000000e-03)
     assert min(mesh.nodes, key=lambda x: x.z).z == pytest_approx(-2.000000e-03)
     assert max(mesh.nodes, key=lambda x: x.z).z == pytest_approx(2.500000e-03)
+
+
+@pytest.mark.fluent_version(">=23.2")
+def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    field_data = solver.fields.field_data
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.solution.initialization.hybrid_initialize()
+    assert field_data.is_data_valid()
+
+    # Check different iterations with location objects
+
+    scalar_object_from_surface_list = ScalarFieldDataRequest(
+        field_name="absolute-pressure", surfaces=["hot-inlet", "cold-inlet"]
+    )
+    abs_press_data = field_data.get_field_data(scalar_object_from_surface_list)
+    assert list(abs_press_data) == ["hot-inlet", "cold-inlet"]
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["cold-inlet"][120] == 101325.0
+    assert abs_press_data["hot-inlet"].shape == (79,)
+
+    scalar_object_from_surface_objects = ScalarFieldDataRequest(
+        field_name="absolute-pressure",
+        surfaces=solver.setup.boundary_conditions.velocity_inlet,
+    )
+    abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
+    assert list(abs_press_data) == ["hot-inlet", "cold-inlet"]
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["cold-inlet"][120] == 101325.0
+    assert abs_press_data["hot-inlet"].shape == (79,)
+
+    scalar_object_from_surface_objects = ScalarFieldDataRequest(
+        field_name="absolute-pressure",
+        surfaces=[solver.setup.boundary_conditions.velocity_inlet],
+    )
+    abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
+    assert list(abs_press_data) == ["hot-inlet", "cold-inlet"]
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["cold-inlet"][120] == 101325.0
+    assert abs_press_data["hot-inlet"].shape == (79,)
+
+    scalar_object_from_surface_objects = ScalarFieldDataRequest(
+        field_name="absolute-pressure",
+        surfaces=[
+            solver.setup.boundary_conditions.velocity_inlet["hot-inlet"],
+            solver.setup.boundary_conditions.velocity_inlet["cold-inlet"],
+        ],
+    )
+    abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
+    assert list(abs_press_data) == ["hot-inlet", "cold-inlet"]
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["cold-inlet"][120] == 101325.0
+    assert abs_press_data["hot-inlet"].shape == (79,)
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=23.2")
+def test_field_data_objects_3d_with_location_objects_overall(
+    new_solver_session,
+) -> None:
+    solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    field_data = solver.fields.field_data
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.solution.initialization.hybrid_initialize()
+    assert field_data.is_data_valid()
+
+    su1 = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices],
+        surfaces=[VelocityInlet(settings_source=solver, name="cold-inlet")],
+    )
+    vertices_data = field_data.get_field_data(su1)
+    assert vertices_data["cold-inlet"].vertices.shape == (241, 3)
+    assert round(float(vertices_data["cold-inlet"].vertices[5][0]), 2) == -0.2
+
+    assert vertices_data["cold-inlet"].face_centroids is None
+
+    su2 = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+        surfaces=VelocityInlets(settings_source=solver),
+    )
+    vertices_and_faces_centroid_data = field_data.get_field_data(su2)
+
+    assert list(vertices_and_faces_centroid_data["cold-inlet"]._surf_data.keys()) == [
+        SurfaceDataType.Vertices,
+        SurfaceDataType.FacesCentroid,
+    ]
+    assert vertices_and_faces_centroid_data["hot-inlet"].vertices.shape == (79, 3)
+    assert list(vertices_and_faces_centroid_data.keys()) == [
+        "cold-inlet",
+        "hot-inlet",
+    ]
+    assert (
+        round(
+            float(vertices_and_faces_centroid_data["cold-inlet"].face_centroids[5][1]),
+            2,
+        )
+        == -0.18
+    )
+    assert (
+        round(
+            float(vertices_and_faces_centroid_data["hot-inlet"].face_centroids[5][1]),
+            2,
+        )
+        == -0.23
+    )
+
+    su4 = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=[VelocityInlet(settings_source=solver, name="cold-inlet")],
+    )
+    faces_connectivity_data = field_data.get_field_data(su4)
+    assert (
+        faces_connectivity_data["cold-inlet"].connectivity[5] == [12, 13, 17, 16]
+    ).all()
+
+    velocity_vector_data = field_data.get_field_data(
+        VectorFieldDataRequest(
+            field_name="velocity",
+            surfaces=[VelocityInlet(settings_source=solver, name="cold-inlet")],
+        )
+    )
+    assert velocity_vector_data["cold-inlet"].shape == (152, 3)
+
+    path_lines_data = field_data.get_field_data(
+        PathlinesFieldDataRequest(
+            field_name="velocity-magnitude",
+            surfaces=[VelocityInlets(settings_source=solver)],
+        )
+    )
+
+    assert path_lines_data["cold-inlet"].vertices.shape == (76152, 3)
+    assert len(path_lines_data["cold-inlet"].lines) == 76000
+    assert path_lines_data["cold-inlet"].scalar_field.shape == (76152,)
+
+    assert path_lines_data["hot-inlet"].vertices.shape == (27555, 3)
+    assert len(path_lines_data["hot-inlet"].lines) == 27500
+    assert path_lines_data["hot-inlet"].scalar_field.shape == (27555,)
+
+    assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
+
+    assert all(path_lines_data["cold-inlet"].lines[100] == [100, 101])
