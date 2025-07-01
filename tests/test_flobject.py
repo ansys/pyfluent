@@ -1362,3 +1362,22 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
             solver.settings.setup.boundary_conditions.velocity_inlet
             + solver.settings.setup.boundary_conditions.wall["wall-inlet"]
         )
+
+    chained_named_objects = (
+        solver.settings.setup.boundary_conditions.velocity_inlet
+        + solver.settings.setup.boundary_conditions.wall
+        + solver.settings.setup.boundary_conditions.pressure_outlet
+    )
+
+    assert list(chained_named_objects) == [
+        "hot-inlet",
+        "cold-inlet",
+        "wall-inlet",
+        "wall-elbow",
+        "outlet",
+    ]
+
+    assert (
+        list(solver.settings.setup.boundary_conditions.pressure_outlet.items())[0]
+        in chained_named_objects.items()
+    )
