@@ -64,8 +64,10 @@ in the ``data_types`` list.
 
 .. code-block:: python
 
+  >>> from ansys.fluent.core.solver import VelocityInlet
+
   >>> faces_normal_and_centroid_request = SurfaceFieldDataRequest(
-  >>>     surfaces=["inlet"],
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>> )
   >>> faces_normal_and_centroid_data = field_data.get_field_data(faces_normal_and_centroid_request)
