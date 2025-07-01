@@ -37,6 +37,11 @@ modern Python API. It supports simulation setup, execution, monitoring, and resu
 extraction.
 
 
+Compatibility
+-------------
+PyFluent supports Ansys Fluent 2022 R2 and later.
+
+
 Getting started
 ---------------
 
