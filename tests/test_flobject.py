@@ -1323,3 +1323,36 @@ def test_get_completer_info(static_mixer_settings_session):
         "list",
         "python_name",
     } < set([x[0] for x in completer_info])
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
+    solver = mixing_elbow_case_data_session
+
+    assert list(solver.settings.setup.boundary_conditions.velocity_inlet) == [
+        "hot-inlet",
+        "cold-inlet",
+    ]
+    assert list(solver.settings.setup.boundary_conditions.wall) == [
+        "wall-inlet",
+        "wall-elbow",
+    ]
+
+    concatenated_named_objects = (
+        solver.settings.setup.boundary_conditions.velocity_inlet
+        + solver.settings.setup.boundary_conditions.wall
+    )
+    assert list(concatenated_named_objects) == [
+        "hot-inlet",
+        "cold-inlet",
+        "wall-inlet",
+        "wall-elbow",
+    ]
+
+    assert list(concatenated_named_objects()) == list(
+        solver.settings.setup.boundary_conditions.velocity_inlet()
+    ) + list(solver.settings.setup.boundary_conditions.wall())
+
+    assert concatenated_named_objects.items() == list(
+        solver.settings.setup.boundary_conditions.velocity_inlet.items()
+    ) + list(solver.settings.setup.boundary_conditions.wall.items())
