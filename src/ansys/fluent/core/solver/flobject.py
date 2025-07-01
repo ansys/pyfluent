@@ -1457,6 +1457,48 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         else:
             return getattr(super(), name)
 
+    def __add__(self, other):
+        if not isinstance(other, NamedObject):
+            raise TypeError(
+                f"Can only add NamedObject to NamedObject, not {type(other).__name__}"
+            )
+        return CombinedNamedObject([self, other])
+
+
+class CombinedNamedObject:
+    """A ``CombinedNamedObject`` contains the concatenated named-objects."""
+
+    def __init__(self, objects: list[NamedObject]):
+        """__init__ of CombinedNamedObject."""
+        self.objects = []
+        self._items = []
+        for obj in objects:
+            if isinstance(obj, CombinedNamedObject):
+                self.objects.extend(obj.objects)
+            else:
+                self.objects.append(obj)
+        for obj in self.objects:
+            self._items.extend(obj.items())
+
+    def items(self):
+        """Return items like a dictionary."""
+        return self._items
+
+    def __iter__(self):
+        for obj in self.objects:
+            yield from obj
+
+    def __add__(self, other):
+        if not isinstance(other, NamedObject):
+            raise TypeError(f"Cannot add {type(self)} to NamedObject")
+        return CombinedNamedObject(self.objects + [other])
+
+    def __call__(self):
+        temp_dict = {}
+        for obj in self.objects:
+            temp_dict.update(obj())
+        return temp_dict
+
 
 def _rename(obj: NamedObject | _Alias, new: str, old: str):
     """Rename a named object.

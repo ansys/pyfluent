@@ -167,7 +167,7 @@ def test_field_data_transactions(new_solver_session) -> None:
     transaction = field_data.new_transaction()
 
     su1 = SurfaceFieldDataRequest(
-        surfaces=[1, "hot-inlet"],
+        surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     sux = SurfaceFieldDataRequest(
@@ -179,7 +179,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     sc1 = ScalarFieldDataRequest(
-        surfaces=[1, "cold-inlet", "hot-inlet"],
+        surfaces=[1, VelocityInlets(settings_source=solver)],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
@@ -187,12 +187,12 @@ def test_field_data_transactions(new_solver_session) -> None:
     sc2 = sc1._replace(surfaces=[2], boundary_value=False)
     vc1 = VectorFieldDataRequest(surfaces=[3, "hot-inlet"], field_name="velocity")
     pt1 = PathlinesFieldDataRequest(
-        surfaces=[1, "hot-inlet"],
+        surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
         field_name="temperature",
         provide_particle_time_field=True,
     )
     pt2 = PathlinesFieldDataRequest(
-        surfaces=[1, "hot-inlet"],
+        surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
         field_name="temperature",
         provide_particle_time_field=False,
     )
