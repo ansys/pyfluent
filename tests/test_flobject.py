@@ -1356,3 +1356,9 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
     assert concatenated_named_objects.items() == list(
         solver.settings.setup.boundary_conditions.velocity_inlet.items()
     ) + list(solver.settings.setup.boundary_conditions.wall.items())
+
+    with pytest.raises(TypeError):
+        (
+            solver.settings.setup.boundary_conditions.velocity_inlet
+            + solver.settings.setup.boundary_conditions.wall["wall-inlet"]
+        )
