@@ -1,0 +1,21 @@
+:orphan:
+
+.. _z_2_1:
+
+z_2
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.z_2_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================================================
+
+Parent                                                                                                    Summary
+
+==========================================   ====================================================================
+:ref:`angular_velocity <angular_velocity>`       Lagrangian particle injection initial angular velocity settings.
+
+==========================================   ====================================================================
+

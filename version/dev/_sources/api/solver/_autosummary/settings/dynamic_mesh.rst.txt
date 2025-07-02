@@ -1,0 +1,49 @@
+:orphan:
+
+.. _dynamic_mesh:
+
+dynamic_mesh
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dynamic_mesh
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ========================
+
+Attribute                                               Summary
+
+====================================   ========================
+:ref:`enabled <enabled_55>`                Enable dynamic mesh.
+
+:ref:`methods <methods>`                       'methods' child.
+
+:ref:`options <options_8>`                     'options' child.
+
+:ref:`dynamic_zones <dynamic_zones>`             Dynamic Zones.
+
+====================================   ========================
+
+.. rubric:: Methods
+
+==================================   ========================
+
+Method                                                Summary
+
+==================================   ========================
+:ref:`mesh_motion <mesh_motion_2>`       Perform mesh motion.
+
+==================================   ========================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`setup <setup>`       'setup' child.
+
+====================   ==================
+

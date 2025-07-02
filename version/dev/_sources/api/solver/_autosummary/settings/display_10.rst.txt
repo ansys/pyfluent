@@ -1,0 +1,38 @@
+:orphan:
+
+.. _display_10:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.display_10
+    :show-inheritance:
+
+.. rubric:: Methods
+
+======================================   =============================================================
+
+Method                                                                                         Summary
+
+======================================   =============================================================
+:ref:`surface_mesh <surface_mesh_2>`                  Draw the mesh defined by the specified surfaces.
+
+:ref:`zone_mesh <zone_mesh>`                            Draw the mesh defined by specified face zones.
+
+:ref:`hsf_file <hsf_file>`                   Display hoops stream file data to active graphics window.
+
+:ref:`surface_cells <surface_cells_1>`                       Draw the cells on the specified surfaces.
+
+======================================   =============================================================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`graphics <graphics>`       'graphics' child.
+
+==========================   =====================
+

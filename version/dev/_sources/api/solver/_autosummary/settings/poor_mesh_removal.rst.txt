@@ -1,0 +1,44 @@
+:orphan:
+
+.. _poor_mesh_removal:
+
+poor_mesh_removal
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.poor_mesh_removal
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   =======================================================================
+
+Attribute                                                                                                                                            Summary
+
+==================================================================================   =======================================================================
+:ref:`enable <enable_27>`                                                                                                  Enable/disable poor mesh removal.
+
+:ref:`orthogonal_quality_threshold_enabled <orthogonal_quality_threshold_enabled>`             Enable/disable poor mesh removal based on orthogonal quality.
+
+:ref:`orthogonal_quality_threshold <orthogonal_quality_threshold>`                                       Orthogonal quality threshold for poor mesh removal.
+
+:ref:`tangent_skewness_threshold_enabled <tangent_skewness_threshold_enabled>`           Enable/disable poor mesh removal based on tangent skewness quality.
+
+:ref:`tangent_skewness_threshold <tangent_skewness_threshold>`                                             Tangent skewness threshold for poor mesh removal.
+
+:ref:`warpage_threshold_enabled <warpage_threshold_enabled>`                                      Enable/disable poor mesh removal based on warpage quality.
+
+:ref:`warpage_threshold <warpage_threshold>`                                                              Warpage threshold threshold for poor mesh removal.
+
+==================================================================================   =======================================================================
+
+.. rubric:: Included in:
+
+==================================================   ====================================
+
+Parent                                                                            Summary
+
+==================================================   ====================================
+:ref:`poor_mesh_robustness <poor_mesh_robustness>`       The poor mesh robustness object.
+
+==================================================   ====================================
+

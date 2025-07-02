@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sample_2:
+
+sample
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sample_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================================
+
+Parent                                                                             Summary
+
+======================================   =================================================
+:ref:`compute_sample <compute_sample>`       Compute minimum/maximum of a sample variable.
+
+======================================   =================================================
+

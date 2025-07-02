@@ -1,0 +1,175 @@
+:orphan:
+
+.. _user_defined_function:
+
+user_defined_function
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_defined_function
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ==================================================
+
+Parent                                                                                                      Summary
+
+==============================================================   ==================================================
+:ref:`density_3 <density_3>`                                                            Material property: density.
+
+:ref:`viscosity <viscosity>`                                                          Material property: viscosity.
+
+:ref:`specific_heat <specific_heat>`                                              Material property: specific-heat.
+
+:ref:`thermal_conductivity_1 <thermal_conductivity_1>`                     Material property: thermal-conductivity.
+
+:ref:`premix_laminar_speed <premix_laminar_speed>`                         Material property: premix-laminar-speed.
+
+:ref:`premix_critical_strain <premix_critical_strain>`                   Material property: premix-critical-strain.
+
+:ref:`premix_unburnt_fuel_mf <premix_unburnt_fuel_mf>`                   Material property: premix-unburnt-fuel-mf.
+
+:ref:`premix_adiabatic_temp <premix_adiabatic_temp>`                      Material property: premix-adiabatic-temp.
+
+:ref:`absorption_coefficient <absorption_coefficient>`                   Material property: absorption-coefficient.
+
+:ref:`partition_coeff <partition_coeff>`                                        Material property: partition-coeff.
+
+:ref:`scattering_coefficient <scattering_coefficient>`                   Material property: scattering-coefficient.
+
+:ref:`scattering_phase_function <scattering_phase_function>`          Material property: scattering-phase-function.
+
+:ref:`electric_conductivity <electric_conductivity>`                      Material property: electric-conductivity.
+
+:ref:`dual_electric_conductivity <dual_electric_conductivity>`       Material property: dual-electric-conductivity.
+
+:ref:`lithium_diffusivity <lithium_diffusivity>`                            Material property: lithium-diffusivity.
+
+:ref:`speed_of_sound <speed_of_sound>`                                           Material property: speed-of-sound.
+
+:ref:`saturation_pressure <saturation_pressure>`                            Material property: saturation-pressure.
+
+:ref:`vaporization_temperature <vaporization_temperature>`             Material property: vaporization-temperature.
+
+:ref:`uds_diffusivity <uds_diffusivity>`                                        Material property: uds-diffusivity.
+
+:ref:`uds_diffusivities_child <uds_diffusivities_child>`                  'child_object_type' of uds_diffusivities.
+
+:ref:`diffusivity <diffusivity>`                                                                 Property settings.
+
+:ref:`diffusivity_0 <diffusivity_0>`                                                             Property settings.
+
+:ref:`diffusivity_1 <diffusivity_1>`                                                             Property settings.
+
+:ref:`diffusivity_2 <diffusivity_2>`                                                             Property settings.
+
+:ref:`radial_diffusivity <radial_diffusivity>`                                                   Property settings.
+
+:ref:`tangential_diffusivity <tangential_diffusivity>`                                           Property settings.
+
+:ref:`axial_diffusivity <axial_diffusivity>`                                                     Property settings.
+
+:ref:`density_4 <density_4>`                                                            Material property: density.
+
+:ref:`specific_heat_1 <specific_heat_1>`                                          Material property: specific-heat.
+
+:ref:`thermal_conductivity_2 <thermal_conductivity_2>`                     Material property: thermal-conductivity.
+
+:ref:`planar_conductivity <planar_conductivity>`                                                 Property settings.
+
+:ref:`transverse_conductivity <transverse_conductivity>`                                         Property settings.
+
+:ref:`radial_conductivity <radial_conductivity>`                                                 Property settings.
+
+:ref:`tangential_conductivity <tangential_conductivity>`                                         Property settings.
+
+:ref:`axial_conductivity <axial_conductivity>`                                                   Property settings.
+
+:ref:`conductivity_0 <conductivity_0>`                                                           Property settings.
+
+:ref:`conductivity_1 <conductivity_1>`                                                           Property settings.
+
+:ref:`conductivity_2 <conductivity_2>`                                                           Property settings.
+
+:ref:`conductivity <conductivity>`                                                               Property settings.
+
+:ref:`electric_conductivity_1 <electric_conductivity_1>`                  Material property: electric-conductivity.
+
+:ref:`struct_youngs_modulus <struct_youngs_modulus>`                      Material property: struct-youngs-modulus.
+
+:ref:`struct_poisson_ratio <struct_poisson_ratio>`                         Material property: struct-poisson-ratio.
+
+:ref:`struct_thermal_expansion <struct_thermal_expansion>`             Material property: struct-thermal-expansion.
+
+:ref:`density_5 <density_5>`                                                            Material property: density.
+
+:ref:`viscosity_1 <viscosity_1>`                                                      Material property: viscosity.
+
+:ref:`specific_heat_2 <specific_heat_2>`                                          Material property: specific-heat.
+
+:ref:`thermal_conductivity_3 <thermal_conductivity_3>`                     Material property: thermal-conductivity.
+
+:ref:`premix_laminar_thickness <premix_laminar_thickness>`             Material property: premix-laminar-thickness.
+
+:ref:`premix_unburnt_temp_1 <premix_unburnt_temp_1>`                        Material property: premix-unburnt-temp.
+
+:ref:`premix_unburnt_cp <premix_unburnt_cp>`                                  Material property: premix-unburnt-cp.
+
+:ref:`premix_unburnt_density_1 <premix_unburnt_density_1>`               Material property: premix-unburnt-density.
+
+:ref:`premix_heat_trans_coeff_1 <premix_heat_trans_coeff_1>`            Material property: premix-heat-trans-coeff.
+
+:ref:`absorption_coefficient_1 <absorption_coefficient_1>`               Material property: absorption-coefficient.
+
+:ref:`mass_diffusivity <mass_diffusivity>`                                     Material property: mass-diffusivity.
+
+:ref:`thermal_diffusivity <thermal_diffusivity>`                            Material property: thermal-diffusivity.
+
+:ref:`tmelt <tmelt>`                                                                      Material property: tmelt.
+
+:ref:`density_6 <density_6>`                                                            Material property: density.
+
+:ref:`viscosity_2 <viscosity_2>`                                                      Material property: viscosity.
+
+:ref:`specific_heat_3 <specific_heat_3>`                                          Material property: specific-heat.
+
+:ref:`thermophoretic_co <thermophoretic_co>`                                  Material property: thermophoretic-co.
+
+:ref:`scattering_factor <scattering_factor>`                                  Material property: scattering-factor.
+
+:ref:`emissivity <emissivity>`                                                       Material property: emissivity.
+
+:ref:`dpm_surften <dpm_surften>`                                                    Material property: dpm-surften.
+
+:ref:`charge_density <charge_density>`                                           Material property: charge-density.
+
+:ref:`latent_heat_1 <latent_heat_1>`                                                Material property: latent-heat.
+
+:ref:`binary_diffusivity <binary_diffusivity>`                               Material property: binary-diffusivity.
+
+:ref:`binary_diffusivity_1 <binary_diffusivity_1>`                                       Binary diffusivity method.
+
+:ref:`vapor_pressure_1 <vapor_pressure_1>`                                       Material property: vapor-pressure.
+
+:ref:`boiling_point <boiling_point>`                                              Material property: boiling-point.
+
+:ref:`scattering_factor_1 <scattering_factor_1>`                              Material property: scattering-factor.
+
+:ref:`emissivity_1 <emissivity_1>`                                                   Material property: emissivity.
+
+:ref:`dpm_surften_1 <dpm_surften_1>`                                                Material property: dpm-surften.
+
+:ref:`density_7 <density_7>`                                                            Material property: density.
+
+:ref:`swelling_coefficient <swelling_coefficient>`                         Material property: swelling-coefficient.
+
+:ref:`binary_diffusivity_2 <binary_diffusivity_2>`                           Material property: binary-diffusivity.
+
+:ref:`density_8 <density_8>`                                                            Material property: density.
+
+:ref:`specific_heat_4 <specific_heat_4>`                                          Material property: specific-heat.
+
+:ref:`vp_equilib <vp_equilib>`                                                       Material property: vp-equilib.
+
+==============================================================   ==================================================
+

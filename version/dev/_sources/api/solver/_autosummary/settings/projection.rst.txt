@@ -1,0 +1,32 @@
+:orphan:
+
+.. _projection:
+
+projection
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.projection
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   =============================================================
+
+Argument                                                                      Summary
+
+=====================   =============================================================
+:ref:`type <type_18>`       Specifies whether the view is orthographic or projection.
+
+=====================   =============================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`camera <camera>`       'camera' child.
+
+======================   ===================
+

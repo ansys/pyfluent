@@ -1,0 +1,38 @@
+:orphan:
+
+.. _cylinder_1:
+
+cylinder
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cylinder_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ==========================================================================
+
+Attribute                                                                                           Summary
+
+==============================   ==========================================================================
+:ref:`axis_begin <axis_begin>`                               The minimum coordinates for the cylinder axis.
+
+:ref:`axis_end <axis_end>`                                   The maximum coordinates for the cylinder axis.
+
+:ref:`radius <radius_5>`                                                                        The radius.
+
+:ref:`inside <inside>`               Specifies whether this register marks cells inside the defined region.
+
+==============================   ==========================================================================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

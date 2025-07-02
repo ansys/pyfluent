@@ -1,0 +1,23 @@
+:orphan:
+
+.. _geometry_12:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.geometry_12
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =================================================
+
+Parent                                                                           Summary
+
+====================================   =================================================
+:ref:`solution_plot <solution_plot>`                             Plot the solution data.
+
+:ref:`plot_11 <plot_11>`                   Provides access to plot solution on surfaces.
+
+====================================   =================================================
+

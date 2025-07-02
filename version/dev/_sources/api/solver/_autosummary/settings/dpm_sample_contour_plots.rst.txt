@@ -1,0 +1,36 @@
+:orphan:
+
+.. _dpm_sample_contour_plots:
+
+dpm_sample_contour_plots
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dpm_sample_contour_plots
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================================================   =====================================================================================================================================================================================================================
+
+Argument                                                                                                                                                                                                                                                                                           Summary
+
+==================================================================================   =====================================================================================================================================================================================================================
+:ref:`sample_name <sample_name>`                                                                                                                                                         Pick a sample, for which a .dpm sample file of the same name is available, for creating DPM Sample Contour Plots.
+
+:ref:`interval_size <interval_size>`                                                     Define the spatial resolution of the DPM Sample Contour Plots. Higher resolution (i.e. a smaller interval size) may cause noisy plots and data points representing too few statistical events in the sample file.
+
+:ref:`writing_radial_profile_files_enabled <writing_radial_profile_files_enabled>`                           If the plane is (parallel to) a cartesian coordinate plane, instead of producing the Expressions for DPM Sample Contour Plots, calculate radial profiles and write them into .csv data files.
+
+==================================================================================   =====================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`histogram_1 <histogram_1>`       'histogram' child.
+
+================================   ======================
+

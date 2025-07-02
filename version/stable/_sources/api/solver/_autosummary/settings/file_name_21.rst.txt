@@ -1,0 +1,25 @@
+:orphan:
+
+.. _file_name_21:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_21
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================================================================
+
+Parent                                                                                                                Summary
+
+============================================   ==============================================================================
+:ref:`write_to_file <write_to_file>`                                                                    Write data to a file.
+
+:ref:`circum_avg_axial <circum_avg_axial>`         Compute iso-axial band surfaces and plot data vs axial coordinate on them.
+
+:ref:`circum_avg_radial <circum_avg_radial>`                Compute iso-radial band surfaces and plot data vs radius on them.
+
+============================================   ==============================================================================
+

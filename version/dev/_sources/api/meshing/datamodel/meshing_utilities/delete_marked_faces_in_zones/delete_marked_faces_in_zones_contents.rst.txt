@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_delete_marked_faces_in_zones:
+
+delete_marked_faces_in_zones
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.delete_marked_faces_in_zones
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _delete_marked_faces_in_zonesCommandArguments/_delete_marked_faces_in_zonesCommandArguments_contents

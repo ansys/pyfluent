@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_11:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_1_11
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =============================
+
+Parent                                                     Summary
+
+==================================   =============================
+:ref:`read_table_1 <read_table_1>`       3D Reading table command.
+
+==================================   =============================
+

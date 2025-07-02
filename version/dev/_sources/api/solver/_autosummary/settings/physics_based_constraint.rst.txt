@@ -1,0 +1,21 @@
+:orphan:
+
+.. _physics_based_constraint:
+
+physics_based_constraint
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.physics_based_constraint
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =============================================
+
+Parent                                                                                             Summary
+
+==========================================================   =============================================
+:ref:`adaptive_time_stepping_1 <adaptive_time_stepping_1>`       Adaptive time stepping parameters object.
+
+==========================================================   =============================================
+

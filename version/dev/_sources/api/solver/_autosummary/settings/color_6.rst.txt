@@ -1,0 +1,29 @@
+:orphan:
+
+.. _color_6:
+
+color
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.color_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =============================================================
+
+Parent                                                                                           Summary
+
+========================================   =============================================================
+:ref:`lines_child <lines_child>`                                           'child_object_type' of lines.
+
+:ref:`markers_child <markers_child>`                                     'child_object_type' of markers.
+
+:ref:`constant_color <constant_color>`                                         The constant color value.
+
+:ref:`type_name_child <type_name_child>`                               'child_object_type' of type_name.
+
+:ref:`surfaces_16 <surfaces_16>`               Select the surface(s) to specify colors and/or materials.
+
+========================================   =============================================================
+

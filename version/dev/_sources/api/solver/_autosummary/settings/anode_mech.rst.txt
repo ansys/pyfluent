@@ -1,0 +1,21 @@
+:orphan:
+
+.. _anode_mech:
+
+anode_mech
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.anode_mech
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_3 <parameters_3>`       Model parameters.
+
+==================================   =====================
+

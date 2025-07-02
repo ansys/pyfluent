@@ -1,0 +1,23 @@
+:orphan:
+
+.. _node_values_8:
+
+node_values
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.node_values_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =================================================
+
+Parent                                                                           Summary
+
+====================================   =================================================
+:ref:`solution_plot <solution_plot>`                             Plot the solution data.
+
+:ref:`plot_11 <plot_11>`                   Provides access to plot solution on surfaces.
+
+====================================   =================================================
+

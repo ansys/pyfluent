@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_part_management_LoadFmdFile__LoadFmdFileCommandArguments:
+
+_LoadFmdFileCommandArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.LoadFmdFile._LoadFmdFileCommandArguments
+   :members: _FilePath, _FileUnit, _IgnoreSolidNames, _JtLOD, _PartPerBody, _PrefixParentName, _RemoveEmptyParts, _Route
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _Options/_Options_contents
+   _RefacetOptions/_RefacetOptions_contents

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _physical_velocity_formulation:
+
+physical_velocity_formulation
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.physical_velocity_formulation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================
+
+Parent                                  Summary
+
+==========================   ==================
+:ref:`expert_7 <expert_7>`       Expert object.
+
+==========================   ==================
+

@@ -1,0 +1,51 @@
+:orphan:
+
+.. _species_mass_fraction:
+
+species_mass_fraction
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_mass_fraction
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`species_mass_fraction_child <species_mass_fraction_child>`
+
+
+.. rubric:: Included in:
+
+==============================   =========================================================
+
+Parent                                                                             Summary
+
+==============================   =========================================================
+:ref:`species_7 <species_7>`         Allows to change species model variables or settings.
+
+:ref:`species_8 <species_8>`         Allows to change species model variables or settings.
+
+:ref:`species_10 <species_10>`       Allows to change species model variables or settings.
+
+==============================   =========================================================
+

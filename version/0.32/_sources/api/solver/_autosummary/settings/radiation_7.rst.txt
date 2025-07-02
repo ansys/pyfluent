@@ -1,0 +1,72 @@
+:orphan:
+
+.. _radiation_7:
+
+radiation
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.radiation_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ======================================================
+
+Attribute                                                                                                                           Summary
+
+==================================================================================   ======================================================
+:ref:`bc_type <bc_type_2>`                                                                                               Radiation BC Type.
+
+:ref:`boundary_source <boundary_source>`                                                                    Enable/disable Boundary Source.
+
+:ref:`polar_distribution_function <polar_distribution_function>`                                Enable/disable Polar Distribution Function.
+
+:ref:`polar_distribution_function_settings <polar_distribution_function_settings>`                    Polar distribution function settings.
+
+:ref:`beam_width <beam_width_1>`                                                                                       Beam width settings.
+
+:ref:`solar_direction <solar_direction>`                                                 Use Beam Direction from Solar Load Model Settings.
+
+:ref:`solar_irradiation <solar_irradiation>`                                                Use Irradiation from Solar Load Model Settings.
+
+:ref:`direct_irradiation_settings <direct_irradiation_settings_1>`                                             Direct irradiation settings.
+
+:ref:`diffuse_irradiation_settings <diffuse_irradiation_settings_1>`                                          Diffuse irradiation settings.
+
+:ref:`internal_emissivity <internal_emissivity>`                                                                       Internal Emissivity.
+
+:ref:`internal_emissivity_band <internal_emissivity_band>`                                                             Internal emissivity.
+
+:ref:`radiating_s2s_surface <radiating_s2s_surface>`                                              Participates in View Factor Calculation?.
+
+:ref:`critical_zone <critical_zone>`                                                                                         Critical Zone.
+
+:ref:`faces_per_surface_cluster <faces_per_surface_cluster>`                                                     Faces Per Surface Cluster.
+
+:ref:`solar_fluxes <solar_fluxes>`                                                                      Participates in Solar Ray Tracing?.
+
+:ref:`transmissivity <transmissivity>`                                                                             Transmissivity settings.
+
+:ref:`absorptivity <absorptivity>`                                                                                   Absorptivity settings.
+
+==================================================================================   ======================================================
+
+.. rubric:: Included in:
+
+======================================   ======================================
+
+Parent                                                                  Summary
+
+======================================   ======================================
+:ref:`settings_24 <settings_24>`             Domain name to define settings on.
+
+:ref:`phase_26_child <phase_26_child>`            'child_object_type' of phase.
+
+:ref:`wall_1_child <wall_1_child>`                 'child_object_type' of wall.
+
+:ref:`wall_2_child <wall_2_child>`                 'child_object_type' of wall.
+
+:ref:`phase_51_child <phase_51_child>`            'child_object_type' of phase.
+
+======================================   ======================================
+

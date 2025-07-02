@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pre_iterations:
+
+pre_iterations
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pre_iterations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================
+
+Parent                                                   Summary
+
+==============================   ===============================
+:ref:`settings_4 <settings_4>`       Solution Steering Settings.
+
+==============================   ===============================
+

@@ -1,0 +1,17 @@
+.. _ref_solver_datamodel:
+
+solver.datamodel
+================
+
+.. automodule:: ansys.fluent.core.datamodel
+   :autosummary:
+
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   flicing/flicing_contents
+   preferences/preferences_contents
+   solver_workflow/solver_workflow_contents
+   workflow/workflow_contents

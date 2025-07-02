@@ -1,0 +1,40 @@
+:orphan:
+
+.. _dynamic_mechanism_reduction_options:
+
+dynamic_mechanism_reduction_options
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dynamic_mechanism_reduction_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =====================================================================
+
+Attribute                                                                                                  Summary
+
+==========================================   =====================================================================
+:ref:`tolerance <tolerance>`                                              The mechanism reduction error tolerance.
+
+:ref:`expert <expert_1>`                                    Enable expert options for dynamic mechanism reduction.
+
+:ref:`min_target <min_target>`                   Minimum number of target species for dynamic mechanism reduction.
+
+:ref:`target_threshold <target_threshold>`                                Minimum mass fraction of target species.
+
+:ref:`targets <targets>`                                                                       The target species.
+
+==========================================   =====================================================================
+
+.. rubric:: Included in:
+
+======================================================   ================================================
+
+Parent                                                                                            Summary
+
+======================================================   ================================================
+:ref:`integration_parameters <integration_parameters>`       Species model integration parameters option.
+
+======================================================   ================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_13:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.option_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================================   ======================================================
+
+Parent                                                                                                                              Summary
+
+==================================================================================   ======================================================
+:ref:`critical_reynolds_number_correlation <critical_reynolds_number_correlation>`       The critical Reynolds number correlation function.
+
+==================================================================================   ======================================================
+

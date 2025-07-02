@@ -1,0 +1,53 @@
+:orphan:
+
+.. _case_modification:
+
+case_modification
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.case_modification
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   =======================================================================================
+
+Attribute                                                                                                                                          Summary
+
+================================================================   =======================================================================================
+:ref:`strategy_enable <strategy_enable>`                               Specifies whether automatic initialization and case modification should be enabled.
+
+:ref:`automatic_case_modification <automatic_case_modification>`                                                              Automatic Case Modification.
+
+================================================================   =======================================================================================
+
+.. rubric:: Methods
+
+================================================================   =========================================================================================================
+
+Method                                                                                                                                                               Summary
+
+================================================================   =========================================================================================================
+:ref:`automatic_initialization <automatic_initialization>`                                                           Define how the case is to be initialized automatically.
+
+:ref:`import_ <import__2>`                                                                                              Import a list of case modifications from a tsv file.
+
+:ref:`export <export_2>`                                                                                                        Export all case modifications to a tsv file.
+
+:ref:`execute_strategy <execute_strategy>`                                          Execute the automatic initialization and case modification strategy defined at present .
+
+:ref:`continue_strategy_execution <continue_strategy_execution>`       Continue execution of the automatic initialization and case modification strategy defined at present.
+
+================================================================   =========================================================================================================
+
+.. rubric:: Included in:
+
+==================================================   =================================
+
+Parent                                                                         Summary
+
+==================================================   =================================
+:ref:`calculation_activity <calculation_activity>`       'calculation_activity' child.
+
+==================================================   =================================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _compute_1:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ===========================
+
+Argument                                                           Summary
+
+============================================   ===========================
+:ref:`from_zone_type <from_zone_type>`             'from_zone_type' child.
+
+:ref:`from_physics_type <from_physics_type>`          Physics region type.
+
+:ref:`from_zone_name <from_zone_name>`             'from_zone_name' child.
+
+:ref:`from_physics_name <from_physics_name>`          Physics region name.
+
+:ref:`phase <phase_52>`                                     'phase' child.
+
+============================================   ===========================
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`reference_values <reference_values>`       'reference_values' child.
+
+==========================================   =============================
+

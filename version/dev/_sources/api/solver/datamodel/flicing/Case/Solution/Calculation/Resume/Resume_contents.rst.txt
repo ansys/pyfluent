@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_Solution_Calculation_Resume:
+
+Resume
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Solution.Calculation.Resume
+   :members: _ResumeCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

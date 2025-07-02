@@ -1,0 +1,61 @@
+:orphan:
+
+.. _outflow_1_child:
+
+outflow_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.outflow_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===========================================================
+
+Attribute                                                                                      Summary
+
+========================================   ===========================================================
+:ref:`name <name_4>`                                                               Name of the object.
+
+:ref:`phase <phase_39>`                                                                 'phase' child.
+
+:ref:`momentum <momentum_5>`                    Allows to change momentum model variables or settings.
+
+:ref:`potential <potential>`                   Allows to change potential model variables or settings.
+
+:ref:`structure <structure_1>`                 Allows to change structure model variables or settings.
+
+:ref:`uds <uds_2>`                                   Allows to change uds model variables or settings.
+
+:ref:`radiation <radiation_2>`                         Radiation settings for this boundary-condition.
+
+:ref:`discrete_phase <discrete_phase_4>`             Allows to change DPM model variables or settings.
+
+:ref:`geometry <geometry_6>`                    Allows to change geometry model variables or settings.
+
+========================================   ===========================================================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+============================   ===========================================
+
+Parent                                                             Summary
+
+============================   ===========================================
+:ref:`outflow_1 <outflow_1>`       Settings for boundary-condition object.
+
+============================   ===========================================
+
