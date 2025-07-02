@@ -30,6 +30,7 @@ import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
@@ -358,8 +359,6 @@ class Solver(BaseSession):
             "svar_info",
             "reduction",
         }
-        if self._fluent_connection is not None and self._is_beta_enabled is False:
-            return sorted(dir_list - {"switch_to_meshing"})
         return sorted(dir_list)
 
     def switch_to_meshing(self):
@@ -376,9 +375,7 @@ class Solver(BaseSession):
         Meshing
         """
         if not self._is_beta_enabled:
-            raise AttributeError(
-                "Switching to meshing mode is a beta feature in Fluent."
-            )
+            raise BetaFeaturesNotEnabled("switch_to_meshing")
         from ansys.fluent.core.session_meshing import Meshing
 
         self.settings.switch_to_meshing_mode()
