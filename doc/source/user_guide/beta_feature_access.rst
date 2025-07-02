@@ -8,7 +8,7 @@ Fluent via **beta features**. These features are disabled by default and can be
 enabled at runtime by calling the `enable_beta_features()` method on a session object.
 Once activated, the additional beta methods and workflows become available.
 
-Currently, limited beta features are available in both **Meshing** and **Solver** sessions.
+Currently, limited number of beta features are available in both **Meshing** and **Solver** sessions.
 
 Meshing Session
 ---------------
