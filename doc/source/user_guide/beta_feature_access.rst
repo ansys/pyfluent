@@ -1,6 +1,6 @@
 .. _ref_beta_feature_access:
 
-Beta Features
+Beta features
 =============
 
 PyFluent provides access to experimental or under-development capabilities of
