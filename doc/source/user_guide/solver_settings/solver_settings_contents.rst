@@ -401,3 +401,4 @@ The following list summarizes common wildcards:
 
    set_up/set_up_contents
    solution
+   settings_examples
