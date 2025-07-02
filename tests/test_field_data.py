@@ -789,6 +789,7 @@ def test_mesh_data_3d_poly(static_mixer_case_session):
     assert max(mesh.nodes, key=lambda x: x.z).z == pytest_approx(2.500000e-03)
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None:
     solver = new_solver_session
