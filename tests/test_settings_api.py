@@ -772,6 +772,7 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
     # viscous.model.INVISCID is a string constant
     assert viscous.model.INVISCID == "inviscid"
+    assert isinstance(viscous.model.INVISCID, str)
     with pytest.raises(AttributeError):
         viscous.model.INVISCID = "invalid"
 
@@ -781,7 +782,9 @@ def test_setting_string_constants(mixing_elbow_settings_session):
     viscous.model = viscous.model.K_EPSILON
     assert viscous.model() == "k-epsilon"
     viscous.k_epsilon_model = viscous.k_epsilon_model.RNG
+    assert viscous.k_epsilon_model.RNG.is_active() is True
     assert viscous.k_epsilon_model() == "rng"
+    assert viscous.k_epsilon_model.EASM.is_active() is False
 
     with pytest.raises(ValueError):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM

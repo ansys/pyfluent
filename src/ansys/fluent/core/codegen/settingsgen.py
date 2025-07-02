@@ -311,7 +311,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         s_stub.write("    return_type: str\n")
     for allowed_value in data["allowed_values"]:
         s.write(
-            f"    {to_constant_name(allowed_value)} = _FlConstant({allowed_value!r})\n"
+            f"    {to_constant_name(allowed_value)} = _FlStringConstant({allowed_value!r})\n"
         )
         s_stub.write(
             f"    {to_constant_name(allowed_value)}: Final[str] = {allowed_value!r}\n"
@@ -381,7 +381,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("    _InputFile,\n")
         header.write("    _OutputFile,\n")
         header.write("    _InOutFile,\n")
-        header.write("    _FlConstant,\n")
+        header.write("    _FlStringConstant,\n")
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())

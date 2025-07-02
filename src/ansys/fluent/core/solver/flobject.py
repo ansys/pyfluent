@@ -55,6 +55,7 @@ import sys
 import types
 from typing import (
     Any,
+    Callable,
     Dict,
     ForwardRef,
     Generic,
@@ -2043,14 +2044,28 @@ class AllowedValuesMixin:
             return []
 
 
-class _FlConstant:
-    """A descriptor class to hold a constant value."""
+class _MaybeActiveString(str):
+    """A string class with an is_active() method."""
+
+    def __new__(cls, value, is_active: Callable[[], bool]):
+        return super().__new__(cls, value)
+
+    def __init__(self, value, is_active: Callable[[], bool]):
+        super().__init__()
+        self.is_active = is_active
+
+
+class _FlStringConstant:
+    """A descriptor class to hold a constant string value."""
 
     def __init__(self, value):
         self._value = value
 
     def __get__(self, instance, owner):
-        return self._value
+        def is_active():
+            return self._value in instance.allowed_values()
+
+        return _MaybeActiveString(self._value, is_active=is_active)
 
     def __set__(self, instance, value):
         raise AttributeError("Cannot set a constant value.")
@@ -2248,7 +2263,9 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         if allowed_values:
             for allowed_value in allowed_values:
                 setattr(
-                    cls, to_constant_name(allowed_value), _FlConstant(allowed_value)
+                    cls,
+                    to_constant_name(allowed_value),
+                    _FlStringConstant(allowed_value),
                 )
             cls._allowed_values = allowed_values
 
