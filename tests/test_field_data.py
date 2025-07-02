@@ -39,7 +39,7 @@ from ansys.fluent.core.services.field_data import (
     CellElementType,
     ZoneType,
 )
-from ansys.fluent.core.solver import VelocityInlet, VelocityInlets
+from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -179,7 +179,7 @@ def test_field_data_transactions(new_solver_session) -> None:
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     sc1 = ScalarFieldDataRequest(
-        surfaces=[1, VelocityInlets(settings_source=solver)],
+        surfaces=[1] + [item for item in VelocityInlets(settings_source=solver)],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
@@ -823,16 +823,6 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
 
     scalar_object_from_surface_objects = ScalarFieldDataRequest(
         field_name="absolute-pressure",
-        surfaces=[solver.setup.boundary_conditions.velocity_inlet],
-    )
-    abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
-    assert list(abs_press_data) == ["hot-inlet", "cold-inlet"]
-    assert abs_press_data["cold-inlet"].shape == (241,)
-    assert abs_press_data["cold-inlet"][120] == 101325.0
-    assert abs_press_data["hot-inlet"].shape == (79,)
-
-    scalar_object_from_surface_objects = ScalarFieldDataRequest(
-        field_name="absolute-pressure",
         surfaces=[
             solver.setup.boundary_conditions.velocity_inlet["hot-inlet"],
             solver.setup.boundary_conditions.velocity_inlet["cold-inlet"],
@@ -843,6 +833,24 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
     assert abs_press_data["cold-inlet"].shape == (241,)
     assert abs_press_data["cold-inlet"][120] == 101325.0
     assert abs_press_data["hot-inlet"].shape == (79,)
+
+    # For multiple surface objects
+    scalar_object_from_surface_objects = ScalarFieldDataRequest(
+        field_name="absolute-pressure",
+        surfaces=VelocityInlets(settings_source=solver)
+        + WallBoundaries(settings_source=solver),
+    )
+    abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
+    assert list(abs_press_data) == [
+        "hot-inlet",
+        "cold-inlet",
+        "wall-inlet",
+        "wall-elbow",
+    ]
+    assert abs_press_data["cold-inlet"].shape == (241,)
+    assert abs_press_data["hot-inlet"].shape == (79,)
+    assert abs_press_data["wall-inlet"].shape == (538,)
+    assert abs_press_data["wall-elbow"].shape == (4339,)
 
 
 @pytest.mark.codegen_required
@@ -919,7 +927,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
     path_lines_data = field_data.get_field_data(
         PathlinesFieldDataRequest(
             field_name="velocity-magnitude",
-            surfaces=[VelocityInlets(settings_source=solver)],
+            surfaces=VelocityInlets(settings_source=solver),
         )
     )
 

@@ -23,7 +23,6 @@
 """Common interfaces for field data."""
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
 from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
 
@@ -598,15 +597,12 @@ def get_surfaces_from_objects(surfaces: List[int | str | object]):
     -------
     List
         A flattened list of surface names/identifiers:
-          - If an element is iterable (excluding strings/bytes), its items are unpacked.
           - If an element has a `name()` method, the result of `surface.name()` is used.
           - Otherwise, the element itself is returned as-is.
     """
     updated_surfaces = []
     for surface in surfaces:
-        if isinstance(surface, Iterable) and not isinstance(surface, (str, bytes)):
-            updated_surfaces.extend(list(surface))
-        elif hasattr(surface, "name"):
+        if hasattr(surface, "name"):
             updated_surfaces.append(surface.name())
         else:
             updated_surfaces.append(surface)

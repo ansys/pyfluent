@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Wrappers over FieldData gRPC service of Fluent."""
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
@@ -961,6 +962,8 @@ def _get_surface_ids(
             allowed_surf_ids = _AllowedSurfaceIDs(field_info)()
             if surf in allowed_surf_ids:
                 surface_ids.append(surf)
+            elif isinstance(surf, Iterable) and not isinstance(surf, (str, bytes)):
+                raise DisallowedValuesError("surface", surf, list(surf))
             else:
                 raise DisallowedValuesError("surface", surf, allowed_surf_ids)
     return surface_ids
