@@ -60,10 +60,8 @@ To enable and use it:
 
   >>> # Method is now usable
   >>> switched_meshing_session = solver_session.switch_to_meshing()
-  >>> switched_meshing_session.is_active()
-  True
-  >>> solver_session.is_active()
-  False
+  >>> assert switched_meshing_session.is_active()
+  >>> assert not solver_session.is_active()
 
 
 .. note::
