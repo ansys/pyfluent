@@ -74,15 +74,17 @@ Examples
 >>> vsquared.definition = "VelocityMagnitude ** 2"
 >>> reduction.minimum(
 ...     expr = vsquared,
-...     locations = [
-...         solver1.setup.boundary_conditions.pressure_outlet,
-...         solver2.setup.boundary_conditions.pressure_outlet
-...     ])
+...     locations = solver1.setup.boundary_conditions.pressure_outlet
+...     + solver2.setup.boundary_conditions.pressure_outlet
+...     )
 19.28151
 """
+from collections.abc import Iterable
 
 import numpy as np
 from numpy import array
+
+from ansys.fluent.core.exceptions import DisallowedValuesError
 
 
 class BadReductionRequest(Exception):
@@ -117,7 +119,12 @@ def _locn_name_and_obj(locn, locns):
 def _locn_names_and_objs(locns):
     if _is_iterable(locns):
         names_and_objs = []
+        if locns.__class__.__name__ == "CombinedNamedObject":
+            return locns.items()
+
         for locn in locns:
+            if isinstance(locn, Iterable) and not isinstance(locn, (str, bytes)):
+                raise DisallowedValuesError("location", locn, list(locn))
             name_and_obj = _locn_name_and_obj(locn, locns)
             if _is_iterable(name_and_obj):
                 if isinstance(name_and_obj[0], str):
