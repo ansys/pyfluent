@@ -3,9 +3,9 @@
 Beta features
 =============
 
-PyFluent provides access to experimental or under-development capabilities of
-Fluent via **beta features**. These features are disabled by default and can be
-enabled at runtime by calling the `enable_beta_features()` method on a session object.
+PyFluent provides access to experimental capabilities of Fluent via **beta features**.
+These features are disabled by default and can be enabled at runtime by calling
+the `enable_beta_features()` method on a session object.
 Once activated, the additional beta methods and workflows become available.
 
 Currently, limited number of beta features are available in both **Meshing** and **Solver** sessions.
