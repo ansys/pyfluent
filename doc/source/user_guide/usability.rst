@@ -48,50 +48,50 @@ Examples
    ...
    >>>
    >>> # Semantic search within a specific API object
-   >>> pyfluent.search("speed", api_path="<solver_session>.solution.methods.multiphase_numerics.solution_stabilization")
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment (Object) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.enable_velocity_limiting (Parameter) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strength (Parameter) (similarity: 98.31%)    
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"] (Object) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"].create (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"].delete (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"].list (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"].list_properties (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"].make_a_copy (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_damping_strengths["<name>"].rename (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"] (Object) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].create (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].delete (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].list (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].list_properties (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].make_a_copy (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].max_vel_mag (Parameter) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].rename (Command) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_and_vof_cutoffs["<name>"].vol_frac_cutoff (Parameter) (similarity: 98.31%)
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.set_velocity_cutoff (Parameter) (similarity: 98.31%)     
-   <solver_session>.solution.methods.multiphase_numerics.solution_stabilization.velocity_limiting_treatment.verbosity (Parameter) (similarity: 98.31%)
+   >>> pyfluent.search("load", api_path="<solver_session>.parallel.partition.set")
+   <solver_session>.parallel.partition.set.dpm_load_balancing (Object) (similarity: 98.31%)
+   <solver_session>.parallel.partition.set.dpm_load_balancing.interval (Parameter) (similarity: 98.31%)
+   <solver_session>.parallel.partition.set.dpm_load_balancing.load_balancing (Parameter) (similarity: 98.31%)
+   <solver_session>.parallel.partition.set.dpm_load_balancing.threshold (Parameter) (similarity: 98.31%)
+   <solver_session>.parallel.partition.set.load_distribution (Parameter) (similarity: 98.31%)
    >>>
-   >>> # Chinese semantic search
-   >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
-   <solver_session>.file.convert_hanging_nodes_during_read (Parameter) (similarity: 100.0%)
-   <solver_session>.file.import_.read (Command) (similarity: 100.0%)
-   <solver_session>.file.interpolate.read_data (Command) (similarity: 100.0%)
-   <solver_session>.file.read (Command) (similarity: 100.0%)
-   <solver_session>.file.read_case (Command) (similarity: 100.0%)
-   <solver_session>.file.read_case_data (Command) (similarity: 100.0%)
-   <solver_session>.file.read_case_lightweight (Command) (similarity: 100.0%)
-   <solver_session>.file.read_data (Command) (similarity: 100.0%)
-   <solver_session>.file.read_field_functions (Command) (similarity: 100.0%)
-   <solver_session>.file.read_injections (Command) (similarity: 100.0%)
-   <solver_session>.file.read_isat_table (Command) (similarity: 100.0%)
-   <solver_session>.file.read_journal (Command) (similarity: 100.0%)
-   <solver_session>.file.read_macros (Command) (similarity: 100.0%)
-   <solver_session>.file.read_mesh (Command) (similarity: 100.0%)
-   <solver_session>.file.read_pdf (Command) (similarity: 100.0%)
-   <solver_session>.file.read_profile (Command) (similarity: 100.0%)
-   <solver_session>.file.read_settings (Command) (similarity: 100.0%)
-   <solver_session>.file.read_surface_mesh (Command) (similarity: 100.0%)
-   <solver_session>.file.table_file_manager.read_table_file (Command) (similarity: 100.0%)
+   >>> # Spanish semantic search
+   >>> pyfluent.search("superficie", language="spa")   # search 'surface' in Spanish
+   <meshing_session>.preferences.Appearance.SurfaceEmissivity (Parameter) (similarity: 100.0%)
+   <meshing_session>.preferences.Appearance.SurfaceSpecularity (Parameter) (similarity: 100.0%)
+   <meshing_session>.preferences.Appearance.SurfaceSpecularityForContours (Parameter) (similarity: 100.0%)
+   <meshing_session>.preferences.Graphics.Performance.SurfaceCaching (Parameter) (similarity: 100.0%)
+   <meshing_session>.preferences.Graphics.SurfaceGeneralDisplacement (Parameter) (similarity: 100.0%)
+   <solver_session>.design.geometry.parameterize_and_explore.design_change.export.stl_surfaces (Command) (similarity: 100.0%)
+   <solver_session>.design.geometry.parameterize_and_explore.design_change.history.surfaces (Parameter) (similarity: 100.0%)
+   <solver_session>.design.geometry.parameterize_and_explore.design_change.preview.surfaces (Parameter) (similarity: 100.0%)
+   ...
+   <solver_session>.setup.boundary_conditions.intake_fan["<name>"].multiphase.ht_bottom (Object) (similarity: 88.89%)
+   <solver_session>.setup.boundary_conditions.intake_fan["<name>"].multiphase.ht_bottom.field_name (Parameter) (similarity: 88.89%)
+   <solver_session>.setup.boundary_conditions.intake_fan["<name>"].multiphase.ht_bottom.option (Parameter) (similarity: 88.89%)
+   <solver_session>.setup.boundary_conditions.intake_fan["<name>"].multiphase.ht_bottom.profile_name (Parameter) (similarity: 88.89%)
+   <solver_session>.setup.boundary_conditions.intake_fan["<name>"].multiphase.ht_bottom.udf (Parameter) (similarity: 88.89%)
+   <solver_session>.setup.boundary_conditions.intake_fan["<name>"].multiphase.ht_bottom.value (Parameter) (similarity: 88.89%)
+   ...
+   <solver_session>.setup.boundary_conditions.outlet_vent["<name>"].list (Command) (similarity: 85.71%)
+   <solver_session>.setup.boundary_conditions.outlet_vent["<name>"].list_properties (Command) (similarity: 85.71%)
+   <solver_session>.setup.boundary_conditions.outlet_vent["<name>"].make_a_copy (Command) (similarity: 85.71%)
+   <solver_session>.setup.boundary_conditions.outlet_vent["<name>"].momentum (Object) (similarity: 85.71%)
+   ...
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.x_axis.major_rule_line_color (Parameter) (similarity: 83.33%)
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.x_axis.major_rule_weight (Parameter) (similarity: 83.33%)
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.x_axis.minor_rule_line_color (Parameter) (similarity: 83.33%)
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.x_axis.minor_rule_weight (Parameter) (similarity: 83.33%)
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.y_axis.major_rule_line_color (Parameter) (similarity: 83.33%)
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.y_axis.major_rule_weight (Parameter) (similarity: 83.33%)
+   <solver_session>.results.graphics.pathline["<name>"].axes.rules.y_axis.minor_rule_line_color (Parameter) (similarity: 83.33%)
+   ...
+   <solver_session>.setup.physics.volumes.solid["<name>"].boundaries.pressure_outlet["<name>"].settings.species.tss_scalar["<name>"].profile_name (Parameter) (similarity: 82.35%)
+   <solver_session>.setup.physics.volumes.solid["<name>"].boundaries.pressure_outlet["<name>"].settings.structure.x_disp_boundary_value.profile_name (Parameter) (similarity: 82.35%)
+   <solver_session>.setup.physics.volumes.solid["<name>"].boundaries.pressure_outlet["<name>"].settings.structure.y_disp_boundary_value.profile_name (Parameter) (similarity: 82.35%)
+   <solver_session>.setup.physics.volumes.solid["<name>"].boundaries.pressure_outlet["<name>"].settings.structure.z_disp_boundary_value.profile_name (Parameter) (similarity: 82.35%)
+   <solver_session>.setup.physics.volumes.solid["<name>"].boundaries.pressure_outlet["<name>"].settings.thermal.backflow_total_temperature.profile_name (Parameter) (similarity: 82.35%)
+   <solver_session>.setup.physics.volumes.solid["<name>"].boundaries.pressure_outlet["<name>"].settings.turbulence.backflow_intermittency.profile_name (Parameter) (similarity: 82.35%)
    ...
    >>>
    >>> # Chinese semantic search within a specific API object
@@ -111,11 +111,8 @@ Examples
    <solver_session>.tui.results.report.simulation_reports.read_simulation_report_template_file (Command) (similarity: 100.0%)
    >>>
    >>> # Whole word search
-   >>> pyfluent.search("ApplicationFontSize", match_whole_word=True)
-   <meshing_session>.preferences.Appearance.ApplicationFontSize (Parameter)
-   <solver_session>.preferences.Appearance.ApplicationFontSize (Parameter)
-   <meshing_session>.tui.preferences.appearance.application_font_size (Command)
-   <solver_session>.tui.preferences.appearance.application_font_size (Command)
+   >>> pyfluent.search("iteration_at_creation_or_edit", match_whole_word=True) 
+   <solver_session>.solution.monitor.convergence_conditions.convergence_reports["<name>"].iteration_at_creation_or_edit (Parameter)
    >>>
    >>> # Whole word search within a specific API object
    >>> pyfluent.search("ApplicationFontSize", match_whole_word=True, api_path="preferences")
@@ -137,9 +134,11 @@ Examples
    ...
    >>>
    >> # Wildcard pattern search within a specific API object
-   >>> pyfluent.search("local*", api_path="mesh_interfaces")
-   <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
-   <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
+   >>> pyfluent.search("iter*", api_path="<solver_session>.parallel.multidomain") 
+   <solver_session>.parallel.multidomain.conjugate_heat_transfer.set.coupling.iter_per_coupling_count (Parameter)
+   <solver_session>.parallel.multidomain.conjugate_heat_transfer.set.coupling.single_session_coupling.iteration (Parameter)
+   <solver_session>.parallel.multidomain.solve.dual_time_iterate (Command)
+   <solver_session>.parallel.multidomain.solve.iterate (Command)
    >>>
    >>> # Misspelled search
    >>> pyfluent.search("cfb_lma")
