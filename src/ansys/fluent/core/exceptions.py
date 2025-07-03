@@ -59,6 +59,6 @@ class BetaFeaturesNotEnabled(RuntimeError):
         message = (
             f"The feature '{feature_name}' requires the 'enable_beta_features()' to be set."
             if feature_name
-            else "This feature requires the 'enable_beta_features()' flag to be set."
+            else "This feature requires the 'enable_beta_features()' to be set."
         )
         super().__init__(message)
