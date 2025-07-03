@@ -95,7 +95,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 
 class FluentImageNameTagNotSpecified(ValueError):
-    """Raised when Fluent image name or image tag is not specified."""
+    """Raised when Fluent image name or image tag is not specified. Test."""
 
     def __init__(self):
         """Initializes FluentImageNameTagNotSpecified."""
