@@ -91,6 +91,11 @@ PYFLUENT_DEPRECATED_DATA = [
     ),
     # arguments
     (
+        "``timeout`` argument of :py:func:`ansys.fluent.core.launcher.fluent_container.configure_container_dict <ansys.fluent.core.launcher.fluent_container.configure_container_dict>`",
+        "0.34.dev0",
+        "``start_timeout`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+    ),
+    (
         "The `surface_names` argument of :py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`",
         "0.25.0",
         "`surfaces`",
