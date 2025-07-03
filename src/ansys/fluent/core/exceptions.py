@@ -59,6 +59,6 @@ class BetaFeaturesNotEnabled(RuntimeError):
         message = (
             f"The feature '{feature_name}' is not available until 'enable_beta_features()' has been called."
             if feature_name
-            else "This feature is not available until enable_beta_features() has been called."
+            else "This feature is not available until 'enable_beta_features()' has been called."
         )
         super().__init__(message)
