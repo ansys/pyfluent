@@ -34,7 +34,7 @@ class DisallowedValuesError(ValueError):
         context: str | None = None,
         name: Any | None = None,
         allowed_values: Iterable[Any] | None = None,
-    ):
+    ) -> None:
         """Initialize DisallowedValuesError."""
         super().__init__(
             allowed_name_error_message(
@@ -53,9 +53,9 @@ class InvalidArgument(ValueError):
 
 
 class BetaFeaturesNotEnabled(RuntimeError):
-    """Raised when a beta feature is accessed before enabling beta features."""
+    """Raised when a beta feature is accessed without enabling beta features."""
 
-    def __init__(self, feature_name: str | None = None):
+    def __init__(self, feature_name: str | None = None) -> None:
         message = (
             f"The feature '{feature_name}' requires 'enable_beta_features' flag to be enabled."
             if feature_name
