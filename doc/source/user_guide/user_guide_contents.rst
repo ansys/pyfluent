@@ -25,6 +25,7 @@ User guide
    usability
    make_container_image
    legacy/legacy_contents
+   beta_feature_access
 
 
 Welcome to the PyFluent user guide. This guide helps you understand how to use PyFluent to
