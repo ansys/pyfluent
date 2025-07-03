@@ -55,7 +55,7 @@ class InvalidArgument(ValueError):
 class BetaFeaturesNotEnabled(RuntimeError):
     """Raised when a beta feature is accessed before enabling beta features."""
 
-    def __init__(self, feature_name: str = None):
+    def __init__(self, feature_name: str | None = None):
         message = (
             f"The feature '{feature_name}' requires 'enable_beta_features' flag to be enabled."
             if feature_name
