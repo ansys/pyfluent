@@ -64,8 +64,10 @@ in the ``data_types`` list.
 
 .. code-block:: python
 
+  >>> from ansys.fluent.core.solver import VelocityInlet
+
   >>> faces_normal_and_centroid_request = SurfaceFieldDataRequest(
-  >>>     surfaces=["inlet"],
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>> )
   >>> faces_normal_and_centroid_data = field_data.get_field_data(faces_normal_and_centroid_request)
@@ -83,7 +85,8 @@ To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_ty
 .. code-block:: python
 
   >>> faces_connectivity_request = SurfaceFieldDataRequest(
-  >>>     surfaces=["inlet"], data_types=[SurfaceDataType.FacesConnectivity]
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
+  >>>     data_types=[SurfaceDataType.FacesConnectivity]
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
@@ -132,7 +135,10 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
 .. code-block:: python
 
   >>> from ansys.fluent.core import PathlinesFieldDataRequest
-  >>> velocity_pathlines_request = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
+  >>> velocity_pathlines_request = PathlinesFieldDataRequest(
+  >>>           field_name="x-velocity",
+  >>>           surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")]
+  >>>       )
   >>> velocity_path_lines_data = field_data.get_field_data(velocity_pathlines_request)
 
   # Vertices shape: (29565, 3) - 29565 pathline points, each with coordinates (x, y, z).

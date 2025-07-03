@@ -322,6 +322,9 @@ def launch_fluent(
     if env is None:
         env = {}
 
+    if start_timeout is None:
+        start_timeout = int(os.getenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "60"))
+
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
             LaunchMode.CONTAINER: DockerLauncher,
