@@ -38,6 +38,7 @@ from ansys.fluent.core.solver.flobject import (
     ListObject,
     NamedObject,
     get_cls,
+    to_constant_name,
     to_python_name,
 )
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
@@ -151,6 +152,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
         data["child_object_type"]["doc"] = f"'child_object_type' of {cls.__name__}."
     else:
         data["child_object_type"] = None
+    data["allowed_values"] = getattr(cls, "_allowed_values", [])
     return data
 
 
@@ -307,7 +309,15 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if return_type:
         s.write(f"    return_type = {return_type!r}\n")
         s_stub.write("    return_type: str\n")
+    for allowed_value in data["allowed_values"]:
+        s.write(
+            f"    {to_constant_name(allowed_value)} = _FlStringConstant({allowed_value!r})\n"
+        )
+        s_stub.write(
+            f"    {to_constant_name(allowed_value)}: Final[str] = {allowed_value!r}\n"
+        )
     s.write("\n")
+    s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
         if name not in _CLASS_WRITTEN:
             _write_data(
@@ -371,10 +381,11 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("    _InputFile,\n")
         header.write("    _OutputFile,\n")
         header.write("    _InOutFile,\n")
+        header.write("    _FlStringConstant,\n")
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
-        f_stub.write("from typing import Any\n\n")
+        f_stub.write("from typing import Any, Final\n\n")
         f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
