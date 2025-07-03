@@ -63,7 +63,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v9.0
+      - uses: ansys/actions/doc-deploy-changelog@v10.0
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
@@ -74,7 +74,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running Vale
-        uses: ansys/actions/doc-style@v9.0
+        uses: ansys/actions/doc-style@v10.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -83,13 +83,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v9.0
+        uses: ansys/actions/code-style@v10.0
 
   commit-style:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-pr-title@v9.0
+      - uses: ansys/actions/check-pr-title@v10.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -108,7 +108,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@v9.0
+        uses: ansys/actions/build-wheelhouse@v10.0
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
