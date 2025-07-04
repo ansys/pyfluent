@@ -40,8 +40,8 @@ Launcher options
 The following examples show different ways that you can launch Fluent locally.
 For more information, see :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
 
-Solver mode
-~~~~~~~~~~~
+Solution mode
+~~~~~~~~~~~~~
 These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
@@ -329,7 +329,7 @@ Set environment variables to select the container engine:
 
   >>> import os
   >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-  >>> os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
+  >>> os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
 
 
 Then launch:
