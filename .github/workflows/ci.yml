@@ -26,7 +26,7 @@ env:
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
-  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.TMP_LICENSE_SERVER) }}
   MAIN_PYTHON_VERSION: "3.10"
   PYTHON_VERSION: "3.12"
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30

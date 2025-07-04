@@ -15,7 +15,7 @@ permissions:
   issues: write
 
 env:
-  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.TMP_LICENSE_SERVER) }}
   MAIN_PYTHON_VERSION: "3.10"
   FLUENT_IMAGE_TAG: v26.1.0
   FLUENT_VERSION: 261
