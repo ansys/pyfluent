@@ -329,7 +329,7 @@ Set environment variables to select the container engine:
 
   >>> import os
   >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-  >>> os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
+  >>> os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
 
 
 Then launch:
