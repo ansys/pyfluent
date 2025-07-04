@@ -63,7 +63,7 @@ Run Docker container using the command line
 
 When you run the Docker container, you must specify the Ansys license file.
 
-To launch the container in solver mode, use:
+To launch the container in solution mode, use:
 
 .. code:: console
 
@@ -95,7 +95,7 @@ Run Docker container using PyFluent
 Run Podman container using the command line
 -------------------------------------------
 
-Follow these steps to pull and run an Ansys container using Podman.
+Follow these steps to pull and run a Fluent container using Podman.
 
 1. Pull the Docker image into Podman:
 
@@ -113,7 +113,7 @@ Follow these steps to pull and run an Ansys container using Podman.
 
 When you run the Podman container, you must specify the Ansys license file.
 
-To launch the container in solver mode, use:
+To launch the container in solution mode, use:
 
 .. code:: console
 
