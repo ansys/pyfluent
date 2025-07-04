@@ -413,7 +413,7 @@ def configure_container_dict(
         else:
             raise FluentImageNameTagNotSpecified()
 
-    container_dict["fluent_image"] = fluent_image
+    container_dict["fluent_image"] = "ghcr.io/ansys/fluent:v26.1.68"
 
     if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
         if "environment" not in container_dict:

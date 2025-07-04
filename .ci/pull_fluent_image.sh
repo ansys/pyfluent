@@ -11,7 +11,7 @@ else
 fi
 
 # Pull fluent image based on tag
-docker pull $_IMAGE_NAME
+docker pull ghcr.io/ansys/fluent:v26.1.68
 
 # Remove all dangling images
 docker image prune -f
