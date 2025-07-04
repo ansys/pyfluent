@@ -1650,15 +1650,11 @@ def _get_new_keywords(obj, *args, **kwds):
             newkwds[argName] = arg
     if kwds:
         # Convert deprecated keywords through aliases
-        # We don't get arguments-aliases from static-info yet.
-        argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
-        argument_aliases = {}
-        for k, v in argument_aliases_scm.items():
-            argument_aliases[to_python_name(k)] = to_python_name(v.removeprefix("'"))
+        child_aliases = obj._child_aliases
         for k, v in kwds.items():
-            alias = argument_aliases.get(k)
+            alias = child_aliases.get(k)
             if alias:
-                newkwds[alias] = v
+                newkwds[alias[0]] = v
             elif k in obj.argument_names:
                 newkwds[k] = v
             else:
