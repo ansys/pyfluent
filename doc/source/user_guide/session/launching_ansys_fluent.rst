@@ -40,8 +40,8 @@ Launcher options
 The following examples show different ways that you can launch Fluent locally.
 For more information, see :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
 
-Solver mode
-~~~~~~~~~~~
+Solution mode
+~~~~~~~~~~~~~
 These two examples show equivalent ways to launch Fluent in solution mode:
 
 .. code:: python
