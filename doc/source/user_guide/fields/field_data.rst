@@ -95,6 +95,23 @@ To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_ty
   >>> faces_connectivity_data["inlet"].connectivity[5]
   array([ 4,  5, 12, 11])
 
+You can also query the face connectivity data in raw format:
+
+.. code-block:: python
+
+  >>> faces_connectivity_request = SurfaceFieldDataRequest(
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
+  >>>     data_types=[SurfaceDataType.FacesConnectivity]
+  >>>     raw_data=True,
+  >>> )
+  >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
+
+  # FacesConnectivity provides indices of vertices for each face. For example:
+  # Face 6 is connected to vertices 4, 5, 12, and 11.
+  >>> faces_connectivity_data["inlet"].connectivity[5]
+  array([  4,   3,   2, ..., 379, 382, 388], shape=(1518,), dtype=int32)
+
+
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
 To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataRequest``:

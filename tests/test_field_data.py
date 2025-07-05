@@ -166,6 +166,16 @@ def test_field_data_transactions(new_solver_session) -> None:
 
     transaction = field_data.new_transaction()
 
+    surface_request_with_faces_connectivity = SurfaceFieldDataRequest(
+        surfaces=VelocityInlets(settings_source=solver),
+        data_types=[SurfaceDataType.FacesConnectivity],
+    )
+    surface_request_with_faces_connectivity_raw = SurfaceFieldDataRequest(
+        surfaces=VelocityInlets(settings_source=solver),
+        data_types=[SurfaceDataType.FacesConnectivity],
+        raw_data=True,
+    )
+
     su1 = SurfaceFieldDataRequest(
         surfaces=[1, VelocityInlet(settings_source=solver, name="hot-inlet")],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
@@ -198,6 +208,10 @@ def test_field_data_transactions(new_solver_session) -> None:
     )
 
     transaction = transaction.add_requests(su1)  # adding single request.
+    transaction = transaction.add_requests(
+        surface_request_with_faces_connectivity,
+        surface_request_with_faces_connectivity_raw,
+    )
     transaction = transaction.add_requests(su1)  # Duplicate and will be ignored
     data = transaction.add_requests(
         su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
@@ -211,6 +225,25 @@ def test_field_data_transactions(new_solver_session) -> None:
     assert (
         len(data) == 5
     )  # 2 sets of scalar data, 1 vector data, 1 surface data and 1 path-lines data.
+
+    faces_connectivity_data = data.get_field_data(
+        surface_request_with_faces_connectivity
+    )
+    faces_connectivity_data_raw = data.get_field_data(
+        surface_request_with_faces_connectivity_raw
+    )
+
+    assert len(faces_connectivity_data["cold-inlet"].connectivity) == 304
+    assert len(faces_connectivity_data_raw["cold-inlet"].connectivity) == 1788
+
+    assert list(faces_connectivity_data["cold-inlet"].connectivity[0]) == [3, 2, 1, 0]
+    assert list(faces_connectivity_data_raw["cold-inlet"].connectivity[0:5]) == [
+        4,
+        3,
+        2,
+        1,
+        0,
+    ]
 
     sc1 = sc1._replace(surfaces=[1, "cold-inlet"])
     sc2 = sc1._replace(surfaces=["hot-inlet"])
@@ -524,6 +557,24 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert (
         faces_connectivity_data["cold-inlet"].connectivity[5] == [12, 13, 17, 16]
     ).all()
+
+    # Get raw data for faces connectivity
+    faces_connectivity_data_raw = field_data.get_field_data(
+        SurfaceFieldDataRequest(
+            data_types=[SurfaceDataType.FacesConnectivity],
+            surfaces=["cold-inlet"],
+            raw_data=True,
+        )
+    )
+    assert len(faces_connectivity_data_raw["cold-inlet"].connectivity) == 894
+    assert list(faces_connectivity_data["cold-inlet"].connectivity[0]) == [3, 2, 1, 0]
+    assert list(faces_connectivity_data_raw["cold-inlet"].connectivity[0:5]) == [
+        4,
+        3,
+        2,
+        1,
+        0,
+    ]
 
     velocity_vector_data = field_data.get_field_data(
         VectorFieldDataRequest(field_name="velocity", surfaces=["cold-inlet"])
