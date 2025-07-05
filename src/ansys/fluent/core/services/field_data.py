@@ -447,6 +447,7 @@ class BaseFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             surface_data,
+            raw_data=kwargs.get("raw_data"),
         )
 
     def _get_vector_field_data(
@@ -1393,7 +1394,11 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             )
 
         return self._returned_data._surface_data(
-            kwargs.get("data_types"), kwargs.get("surfaces"), surface_ids, surface_data
+            kwargs.get("data_types"),
+            kwargs.get("surfaces"),
+            surface_ids,
+            surface_data,
+            raw_data=kwargs.get("raw_data"),
         )
 
     def _get_vector_field_data(
