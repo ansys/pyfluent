@@ -52,6 +52,7 @@ class SurfaceFieldDataRequest(NamedTuple):
     data_types: List[SurfaceDataType] | List[str]
     surfaces: List[int | str | object]
     overset_mesh: bool | None = False
+    raw_data: bool | None = False
 
 
 class ScalarFieldDataRequest(NamedTuple):
@@ -483,7 +484,9 @@ class PathlinesData:
 class _ReturnFieldData:
 
     @staticmethod
-    def _get_faces_connectivity_data(data):
+    def _get_faces_connectivity_data(data, raw_output=False):
+        if raw_output:
+            return data
         faces_data = []
         i = 0
         while i < len(data):
@@ -512,6 +515,7 @@ class _ReturnFieldData:
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
         deprecated_flag: bool | None = False,
+        raw_data: bool = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
@@ -523,7 +527,8 @@ class _ReturnFieldData:
                         _ReturnFieldData._get_faces_connectivity_data(
                             surface_data[surface_ids[count]][
                                 SurfaceDataType.FacesConnectivity.value
-                            ]
+                            ],
+                            raw_output=raw_data,
                         )
                     )
                 else:
