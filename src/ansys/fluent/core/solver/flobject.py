@@ -1777,13 +1777,6 @@ class BaseCommand(Action):
                 assert_type(ret, base_t._state_type)
             return ret
 
-    def __call__(self, *args, **kwds):
-        try:
-            return self.execute_command(*args, **kwds)
-        except KeyboardInterrupt:
-            self._root._on_interrupt(self)
-            raise KeyboardInterrupt
-
 
 # TODO: Remove this after parameter list() method is fixed from Fluent side
 def _fix_parameter_list_return(val):
@@ -1820,6 +1813,8 @@ class Command(BaseCommand):
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
@@ -1832,6 +1827,8 @@ class CommandWithPositionalArgs(BaseCommand):
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified positional and keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
@@ -1844,6 +1841,8 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         kwds = _get_new_keywords(self, **kwds)
         scmKwds = {}
         for arg, value in kwds.items():
