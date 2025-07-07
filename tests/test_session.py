@@ -39,6 +39,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
@@ -753,11 +754,13 @@ def test_solver_attr_lookup(new_solver_session):
 @pytest.mark.fluent_version(">=25.2")
 def test_beta_meshing_session(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
-    assert "topology_based" not in dir(meshing)
-    with pytest.raises(AttributeError):
+    assert "topology_based" in dir(meshing)
+    assert hasattr(meshing, "topology_based")
+    with pytest.raises(BetaFeaturesNotEnabled):
         tp = meshing.topology_based()
     meshing.enable_beta_features()
     assert "topology_based" in dir(meshing)
+    assert hasattr(meshing, "topology_based")
     tp = meshing.topology_based()
     assert tp
 
@@ -772,11 +775,13 @@ def test_beta_meshing_session(new_meshing_session_wo_exit):
 def test_beta_solver_session(new_solver_session_wo_exit):
     solver = new_solver_session_wo_exit
     assert solver.is_active() is True
-    assert "switch_to_meshing" not in dir(solver)
-    with pytest.raises(AttributeError):
+    assert "switch_to_meshing" in dir(solver)
+    assert hasattr(solver, "switch_to_meshing")
+    with pytest.raises(BetaFeaturesNotEnabled):
         meshing = solver.switch_to_meshing()
     solver.enable_beta_features()
     assert "switch_to_meshing" in dir(solver)
+    assert hasattr(solver, "switch_to_meshing")
     meshing = solver.switch_to_meshing()
 
     assert solver.is_active() is False

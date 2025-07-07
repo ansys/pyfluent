@@ -27,6 +27,7 @@ from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
@@ -179,7 +180,7 @@ class PureMeshing(BaseSession):
             If beta features are not enabled in Fluent.
         """
         if not self._is_beta_enabled:
-            raise AttributeError("Topology-based Meshing is a beta feature in Fluent.")
+            raise BetaFeaturesNotEnabled("Topology-based meshing")
         return self._base_meshing.topology_based_meshing_workflow()
 
     @property
@@ -237,8 +238,3 @@ class PureMeshing(BaseSession):
             clean_up_mesh_file,
             overwrite_previous,
         )
-
-    def __dir__(self):
-        if self._fluent_connection is not None and self._is_beta_enabled is False:
-            return sorted(set(super().__dir__()) - {"topology_based"})
-        return super().__dir__()
