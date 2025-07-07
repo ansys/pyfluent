@@ -106,9 +106,7 @@ You can also query the face connectivity data in raw format:
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
-  # FacesConnectivity provides indices of vertices for each face. For example:
-  # Face 6 is connected to vertices 4, 5, 12, and 11.
-  >>> faces_connectivity_data["inlet"].connectivity[5]
+  >>> faces_connectivity_data["inlet"].connectivity
   array([  4,   3,   2, ..., 379, 382, 388], shape=(1518,), dtype=int32)
 
 
