@@ -680,6 +680,7 @@ class FileFieldData(FieldDataSource):
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
+        raw_data: bool = False,
     ):
         for d_type in data_types:
             if isinstance(d_type, str):
@@ -701,13 +702,16 @@ class FileFieldData(FieldDataSource):
                 surface: self._get_faces_connectivity_data(
                     self._file_session._case_file.get_mesh().get_connectivity(
                         surface_ids[count]
-                    )
+                    ),
+                    raw_data=raw_data,
                 )
                 for count, surface in enumerate(surfaces)
             }
 
     @staticmethod
-    def _get_faces_connectivity_data(data):
+    def _get_faces_connectivity_data(data, raw_data=False):
+        if raw_data:
+            return data
         faces_data = []
         i = 0
         while i < len(data):
