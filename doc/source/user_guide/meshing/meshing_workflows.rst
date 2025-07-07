@@ -819,10 +819,10 @@ Export Fluent 2D mesh
     >>> )
     >>> export_mesh.Execute()
 
-Switch to solver mode
-~~~~~~~~~~~~~~~~~~~~~
+Switch to solution mode
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Switching to solver mode is not allowed in 2D Meshing mode.
+Switching to solution mode is not allowed in 2D Meshing mode.
 
 
 State access
