@@ -80,14 +80,25 @@ in the ``data_types`` list.
   # Example: The centroid of the 16th face has coordinates [-0.3463, 0.0, -0.0328].
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
-To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter. The
-returned data provides face connectivity in a flat numpy array of vertex indices.
+To obtain face connectivity data, specify ``FacesConnectivity`` in the ``data_types`` parameter
+when constructing a ``SurfaceFieldDataRequest``. The returned data provides a flat, NumPy array
+of vertex indices that describe how each face is connected to the mesh's vertices.
 
-Each face is represented by a contiguous group of vertex indices, depending on the number of vertices that
-form the face (for example, 3 for a triangle, 4 for a quad, and so on).
+The data is stored in a compact "flattened" format. Each face is represented by a sequence of
+vertex indices, preceded by an integer specifying how many vertices the face contains. This means
+the array is structured as:
 
-This format is useful for custom geometry processing, exporting surface definitions, or manual reconstruction
-of mesh elements.
+::
+
+   [N₀, V₀₁, V₀₂, ..., V₀ₙ₀, N₁, V₁₁, V₁₂, ..., V₁ₙ₁, ...]
+
+Where:
+- ``Nᵢ`` is the number of vertices in the *i*-th face,
+- ``Vᵢⱼ`` are the vertex indices that make up that face.
+
+This format is compact and well-suited for custom post-processing, visualization, or exporting mesh
+data to third-party tools. It supports arbitrary polygonal faces, including triangles, quads, and
+NGons (with more than 4 vertices).
 
 .. code-block:: python
 
@@ -98,10 +109,10 @@ of mesh elements.
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
   >>> faces_connectivity_data["inlet"].connectivity
-  array([  4,   3,   2, ..., 379, 382, 388], shape=(1518,), dtype=int32)
+  array([ 4,  3,  2,  1,  0,   3, 10, 11, 12, ...], dtype=int32)
 
-Each group of indices in the returned data represents a face. For example, a quad face defined by
-four vertices appears as four consecutive indices.
+In this example, the first face has 4 vertices (a quad), connected to vertices [3, 2, 1, 0]. The second
+face has 3 vertices (a triangle), connected to [10, 11, 12], and so on.
 
 .. note::
 
