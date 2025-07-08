@@ -77,7 +77,7 @@ Connect to an existing session
 
 The :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
 
-You can use this when:
+Use this method when:
 
 - Fluent was launched externally or earlier.
 - You need to connect from a different process or system.
@@ -102,6 +102,28 @@ You can use this when:
 
    solver.exit()
    solver_connected.exit()
+
+
+Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
+----------------------------------------------------------------------
+
+The :meth:`from_pim() <ansys.fluent.core.session_utilities.SessionBase.from_pim>` method launches Fluent in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
+
+Use this method when:
+
+- PyFluent is used within a `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ configured environment.
+
+**Example:**
+
+.. code-block:: python
+
+  import ansys.fluent.core as pyfluent
+  meshing = pyfluent.Meshing.from_pim()
+  pure_meshing = pyfluent.PureMeshing.from_pim()
+  solver = pyfluent.Solver.from_pim()
+  solver_aero = pyfluent.SolverAero.from_pim()
+  solver_icing = pyfluent.SolverIcing.from_pim()
+  pre_post = pyfluent.PrePost.from_pim()  
 
 
 .. vale Google.Spacing = YES
