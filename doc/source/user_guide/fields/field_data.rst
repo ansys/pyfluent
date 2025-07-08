@@ -80,34 +80,32 @@ in the ``data_types`` list.
   # Example: The centroid of the 16th face has coordinates [-0.3463, 0.0, -0.0328].
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
-To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter.
+To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter. The
+returned data provides face connectivity in a flat NumPy array of vertex indices.
+
+Each face is represented by a contiguous group of vertex indices, depending on the number of vertices that
+form the face (for example, 3 for a triangle, 4 for a quad, and so on).
+
+This format is useful for custom geometry processing, exporting surface definitions, or manual reconstruction
+of mesh elements.
 
 .. code-block:: python
 
   >>> faces_connectivity_request = SurfaceFieldDataRequest(
   >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
   >>>     data_types=[SurfaceDataType.FacesConnectivity]
-  >>> )
-  >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
-
-  # FacesConnectivity provides indices of vertices for each face. For example:
-  # Face 6 is connected to vertices 4, 5, 12, and 11.
-  >>> faces_connectivity_data["inlet"].connectivity[5]
-  array([ 4,  5, 12, 11])
-
-You can also query the face connectivity data in raw format:
-
-.. code-block:: python
-
-  >>> faces_connectivity_request = SurfaceFieldDataRequest(
-  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
-  >>>     data_types=[SurfaceDataType.FacesConnectivity]
-  >>>     raw_data=True,
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
   >>> faces_connectivity_data["inlet"].connectivity
   array([  4,   3,   2, ..., 379, 382, 388], shape=(1518,), dtype=int32)
+
+Each group of indices in the returned data represents a face. For example, a quad face defined by
+four vertices will appear as four consecutive indices.
+
+.. note::
+
+   This format is consistent with VTK-style unstructured mesh representations (for example, as used in PyVista or Paraview).
 
 
 Get scalar field data
