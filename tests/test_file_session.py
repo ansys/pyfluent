@@ -151,7 +151,9 @@ def test_field_info_data_single_phase():
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
     assert len(surface_data_symmetry["symmetry"]) == 10090
@@ -442,7 +444,9 @@ def test_field_info_data_single_phase_deprecated():
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry = surface_data(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
     )
     assert (
         len(transform_faces_connectivity_data(surface_data_symmetry["symmetry"]))

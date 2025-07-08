@@ -41,6 +41,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,
     _ReturnFieldData,
+    transform_faces_connectivity_data,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import (
@@ -650,6 +651,7 @@ class FileFieldData(FieldDataSource):
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
+        flatten_connectivity: bool = False,
     ):
         """Get surface data (vertices and faces connectivity).
 
@@ -661,6 +663,8 @@ class FileFieldData(FieldDataSource):
             List of surface IDS or surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
+        flatten_connectivity: bool, optional
+            Whether to provide faces connectivity data in flattened format.
 
         Returns
         -------
@@ -673,6 +677,7 @@ class FileFieldData(FieldDataSource):
             data_types=data_types,
             surfaces=surfaces,
             overset_mesh=overset_mesh,
+            flatten_connectivity=flatten_connectivity,
         )
 
     def _get_surface_data(
@@ -680,6 +685,7 @@ class FileFieldData(FieldDataSource):
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
+        flatten_connectivity: bool = False,
     ):
         for d_type in data_types:
             if isinstance(d_type, str):
@@ -697,12 +703,29 @@ class FileFieldData(FieldDataSource):
             }
 
         if SurfaceDataType.FacesConnectivity in data_types:
-            return {
-                surface: self._file_session._case_file.get_mesh().get_connectivity(
-                    surface_ids[count]
+            if flatten_connectivity:
+                return {
+                    surface: self._file_session._case_file.get_mesh().get_connectivity(
+                        surface_ids[count]
+                    )
+                    for count, surface in enumerate(surfaces)
+                }
+            else:
+                warnings.warn(
+                    "Structured face connectivity output is deprecated and will be removed "
+                    "in a future release. Use 'flatten_connectivity=True' to receive data in the "
+                    "upcoming flat format. To retain structured behavior, use "
+                    "'transform_faces_connectivity_data()' to convert the flat output.",
+                    PyFluentDeprecationWarning,
                 )
-                for count, surface in enumerate(surfaces)
-            }
+                return {
+                    surface: transform_faces_connectivity_data(
+                        self._file_session._case_file.get_mesh().get_connectivity(
+                            surface_ids[count]
+                        )
+                    )
+                    for count, surface in enumerate(surfaces)
+                }
 
     @all_deprecators(
         deprecate_arg_mappings=[

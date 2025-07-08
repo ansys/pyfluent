@@ -52,6 +52,7 @@ class SurfaceFieldDataRequest(NamedTuple):
     data_types: List[SurfaceDataType] | List[str]
     surfaces: List[int | str | object]
     overset_mesh: bool | None = False
+    flatten_connectivity: bool = False
 
 
 class ScalarFieldDataRequest(NamedTuple):
