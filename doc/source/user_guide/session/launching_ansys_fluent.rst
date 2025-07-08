@@ -2,6 +2,109 @@
 
 Launching and connecting to Fluent
 ==================================
+
+This document provides a comprehensive guide for launching and connecting to Ansys Fluent sessions using PyFluent, the Python interface for Fluent. 
+It covers multiple methods to start Fluent, including launching from a local installation, containerized environments (Docker or Podman), and connecting 
+to existing Fluent sessions. Detailed examples illustrate how to initialize Fluent in various modes such as meshing, solution, and pre/post processing.
+
+Additionally, the guide explains advanced launching options such as setting precision, dimensions, and parallel execution configurations. 
+It also covers integration with job schedulers like Slurm, enabling efficient high-performance computing workflows. 
+Furthermore, instructions for launching Fluent within PIM environments and detailed procedures for cross-platform remote connections and file transfers between Windows, Linux, and WSL hosts are provided.
+
+This reference aims to equip users with the knowledge and tools required to flexibly and efficiently manage Fluent sessions in diverse computing environments.
+
+Launch from local installation
+------------------------------
+
+The :meth:`from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>` method launches Fluent using a locally installed version of Ansys Fluent.
+
+Use this method when:
+
+- You have Fluent installed on your local machine.
+- You want to run Fluent from Python without needing tools like Docker or Podman.
+
+**Example:**
+
+.. code-block:: python
+
+  import ansys.fluent.core as pyfluent
+  meshing = pyfluent.Meshing.from_install()
+  pure_meshing = pyfluent.PureMeshing.from_install()
+  solver = pyfluent.Solver.from_install()
+  solver_aero = pyfluent.SolverAero.from_install()
+  solver_icing = pyfluent.SolverIcing.from_install()
+  pre_post = pyfluent.PrePost.from_install()   
+
+
+Launch in a container
+---------------------
+
+The :meth:`from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>` method launches Fluent inside a Docker container.
+
+Use this method when:
+
+- You are working in a containerized setup.
+- You need to configure port mappings.
+- You're running isolated or parallel sessions.
+
+**Example:**
+
+.. code-block:: python
+
+  import os
+  os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
+  os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1"  # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
+
+  import ansys.fluent.core as pyfluent
+  from ansys.fluent.core.utils.networking import get_free_port
+
+  port_1 = get_free_port()
+  port_2 = get_free_port()
+  container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
+
+  meshing = pyfluent.Meshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+  pure_meshing = pyfluent.PureMeshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+  solver = pyfluent.Solver.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+  solver_aero = pyfluent.SolverAero.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+  solver_icing = pyfluent.SolverIcing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+  pre_post = pyfluent.PrePost.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+
+
+Connect to an existing session
+------------------------------
+
+The :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>` method connects to a previously launched Fluent session.
+
+You can use this when:
+
+- Fluent was launched externally or earlier.
+- You need to connect from a different process or system.
+
+**Example:**
+
+.. code-block:: python
+
+   import ansys.fluent.core as pyfluent
+
+   # Launch to retrieve credentials
+   solver = pyfluent.Solver.from_local_install()
+   print(solver.health_check.check_health())
+
+   ip = solver.connection_properties.ip
+   password = solver.connection_properties.password
+   port = solver.connection_properties.port
+
+   # Connect to the session
+   solver_connected = pyfluent.Solver.from_connection(ip=ip, password=password, port=port)
+   print(solver_connected.health_check.check_health())
+
+   solver.exit()
+   solver_connected.exit()
+
+
+Using :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
+---------------------------------------------------------------------------------
+
 You can use the :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
 function to start Fluent from Python. This code starts Fluent in the background and starts
 Fluent's gRPC server so that commands can be sent to it from the Python interpreter:
