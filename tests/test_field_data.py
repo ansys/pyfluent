@@ -662,10 +662,10 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     )
 
     assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
-    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
+    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 15000
     assert path_lines_data["velocity-inlet-2"]["velocity-magnitude"].shape == (5010,)
 
-    assert all(path_lines_data["velocity-inlet-2"]["lines"][100] == [100, 101])
+    assert list(path_lines_data["velocity-inlet-2"]["lines"][:3]) == [2, 0, 1]
 
 
 def test_field_data_errors(new_solver_session) -> None:
@@ -968,7 +968,10 @@ def test_field_data_objects_3d_with_location_objects_overall(
     )
     faces_connectivity_data = field_data.get_field_data(su4)
     assert (
-        faces_connectivity_data["cold-inlet"].connectivity[5] == [12, 13, 17, 16]
+        transform_faces_connectivity_data(
+            faces_connectivity_data["cold-inlet"].connectivity
+        )[5]
+        == [12, 13, 17, 16]
     ).all()
 
     velocity_vector_data = field_data.get_field_data(
@@ -987,13 +990,13 @@ def test_field_data_objects_3d_with_location_objects_overall(
     )
 
     assert path_lines_data["cold-inlet"].vertices.shape == (76152, 3)
-    assert len(path_lines_data["cold-inlet"].lines) == 76000
+    assert len(path_lines_data["cold-inlet"].lines) == 228000
     assert path_lines_data["cold-inlet"].scalar_field.shape == (76152,)
 
     assert path_lines_data["hot-inlet"].vertices.shape == (27555, 3)
-    assert len(path_lines_data["hot-inlet"].lines) == 27500
+    assert len(path_lines_data["hot-inlet"].lines) == 82500
     assert path_lines_data["hot-inlet"].scalar_field.shape == (27555,)
 
     assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
 
-    assert all(path_lines_data["cold-inlet"].lines[100] == [100, 101])
+    assert list(path_lines_data["cold-inlet"].lines[:3]) == [2, 0, 1]
