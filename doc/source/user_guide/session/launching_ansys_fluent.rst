@@ -16,6 +16,8 @@ This reference aims to equip users with the knowledge and tools required to flex
 Launch from local installation
 ------------------------------
 
+.. vale Google.Spacing = NO
+
 The :meth:`from_install() <ansys.fluent.core.session_utilities.SessionBase.from_install>` method launches Fluent using a locally installed version of Ansys Fluent.
 
 Use this method when:
@@ -101,6 +103,8 @@ You can use this when:
    solver.exit()
    solver_connected.exit()
 
+
+.. vale Google.Spacing = YES
 
 Using :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`
 ---------------------------------------------------------------------------------
