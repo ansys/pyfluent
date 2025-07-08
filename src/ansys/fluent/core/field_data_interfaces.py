@@ -52,7 +52,6 @@ class SurfaceFieldDataRequest(NamedTuple):
     data_types: List[SurfaceDataType] | List[str]
     surfaces: List[int | str | object]
     overset_mesh: bool | None = False
-    raw_data: bool | None = False
 
 
 class ScalarFieldDataRequest(NamedTuple):
@@ -484,18 +483,6 @@ class PathlinesData:
 class _ReturnFieldData:
 
     @staticmethod
-    def _get_faces_connectivity_data(data, raw_output=False):
-        if raw_output:
-            return data
-        faces_data = []
-        i = 0
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(data[i + 1 : end])
-            i = end
-        return faces_data
-
-    @staticmethod
     def _scalar_data(
         field_name: str,
         surfaces: List[int | str | object],
@@ -515,7 +502,6 @@ class _ReturnFieldData:
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
         deprecated_flag: bool | None = False,
-        raw_data: bool = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
@@ -523,14 +509,9 @@ class _ReturnFieldData:
             ret_surf_data[surface] = {}
             for data_type in data_types:
                 if data_type == SurfaceDataType.FacesConnectivity:
-                    ret_surf_data[surface][data_type] = (
-                        _ReturnFieldData._get_faces_connectivity_data(
-                            surface_data[surface_ids[count]][
-                                SurfaceDataType.FacesConnectivity.value
-                            ],
-                            raw_output=raw_data,
-                        )
-                    )
+                    ret_surf_data[surface][data_type] = surface_data[
+                        surface_ids[count]
+                    ][SurfaceDataType.FacesConnectivity.value]
                 else:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
@@ -567,9 +548,7 @@ class _ReturnFieldData:
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
-                "lines": _ReturnFieldData._get_faces_connectivity_data(
-                    pathlines_data[surface_ids[count]]["lines"]
-                ),
+                "lines": pathlines_data[surface_ids[count]]["lines"],
                 field_name: pathlines_data[surface_ids[count]][field_name],
                 "pathlines-count": pathlines_data[surface_ids[count]][
                     "pathlines-count"
@@ -612,3 +591,42 @@ def get_surfaces_from_objects(surfaces: List[int | str | object]):
         else:
             updated_surfaces.append(surface)
     return updated_surfaces
+
+
+def transform_faces_connectivity_data(data):
+    """
+    Transform flat face connectivity data into structured face-wise format.
+
+    Each face in the flat array is represented by:
+    [N, v0, v1, ..., vN], where:
+      - N is the number of vertices in the face
+      - v0...vN are the vertex indices
+
+    This function parses such a flat array and returns a list of vertex index arrays,
+    each representing a face.
+
+    Parameters
+    ----------
+    data : array-like of int
+        Flat array containing face connectivity data, typically returned from
+        `faces_connectivity_data["inlet"].connectivity`.
+
+    Returns
+    -------
+    faces_data : list of ndarray
+        List of 1D NumPy arrays, where each array contains the vertex indices
+        of a face.
+
+    Examples
+    --------
+    >>> flat_data = np.array([4, 4, 5, 12, 11, 3, 1, 2, 3], dtype=np.int32)
+    >>> transform_faces_connectivity_data(flat_data)
+    [array([ 4,  5, 12, 11]), array([1, 2, 3])]
+    """
+    faces_data = []
+    i = 0
+    while i < len(data):
+        end = i + 1 + data[i]
+        faces_data.append(data[i + 1 : end])
+        i = end
+    return faces_data
