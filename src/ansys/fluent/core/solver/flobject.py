@@ -1650,11 +1650,20 @@ def _get_new_keywords(obj, *args, **kwds):
             newkwds[argName] = arg
     if kwds:
         # Convert deprecated keywords through aliases
-        child_aliases = obj._child_aliases
+        if FluentVersion(obj._version) >= FluentVersion.v252:
+            argument_aliases = {k: v[0] for k, v in obj._child_aliases.items()}
+        else:
+            # Arguments-aliases was not statically available before v252.
+            argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
+            argument_aliases = {}
+            for k, v in argument_aliases_scm.items():
+                argument_aliases[to_python_name(k)] = to_python_name(
+                    v.removeprefix("'")
+                )
         for k, v in kwds.items():
-            alias = child_aliases.get(k)
+            alias = argument_aliases.get(k)
             if alias:
-                newkwds[alias[0]] = v
+                newkwds[alias] = v
             elif k in obj.argument_names:
                 newkwds[k] = v
             else:
@@ -2236,14 +2245,14 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        argument_aliases = info.get("arguments-aliases") or info.get(
+        arguments_aliases = info.get("arguments-aliases") or info.get(
             "arguments_aliases", {}
         )
-        if child_aliases or command_aliases or query_aliases or argument_aliases:
+        if child_aliases or command_aliases or query_aliases or arguments_aliases:
             cls._child_aliases = {}
             # No need to differentiate in the Python implementation
             for k, v in (
-                child_aliases | command_aliases | query_aliases | argument_aliases
+                child_aliases | command_aliases | query_aliases | arguments_aliases
             ).items():
                 # Storing the original name as we don't have any other way
                 # to recover it at runtime.
