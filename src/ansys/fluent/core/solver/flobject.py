@@ -1650,11 +1650,16 @@ def _get_new_keywords(obj, *args, **kwds):
             newkwds[argName] = arg
     if kwds:
         # Convert deprecated keywords through aliases
-        # We don't get arguments-aliases from static-info yet.
-        argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
-        argument_aliases = {}
-        for k, v in argument_aliases_scm.items():
-            argument_aliases[to_python_name(k)] = to_python_name(v.removeprefix("'"))
+        if FluentVersion(obj._version) >= FluentVersion.v252:
+            argument_aliases = {k: v[0] for k, v in obj._child_aliases.items()}
+        else:
+            # Arguments-aliases was not statically available before v252.
+            argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
+            argument_aliases = {}
+            for k, v in argument_aliases_scm.items():
+                argument_aliases[to_python_name(k)] = to_python_name(
+                    v.removeprefix("'")
+                )
         for k, v in kwds.items():
             alias = argument_aliases.get(k)
             if alias:
@@ -1781,13 +1786,6 @@ class BaseCommand(Action):
                 assert_type(ret, base_t._state_type)
             return ret
 
-    def __call__(self, *args, **kwds):
-        try:
-            return self.execute_command(*args, **kwds)
-        except KeyboardInterrupt:
-            self._root._on_interrupt(self)
-            raise KeyboardInterrupt
-
 
 # TODO: Remove this after parameter list() method is fixed from Fluent side
 def _fix_parameter_list_return(val):
@@ -1824,6 +1822,8 @@ class Command(BaseCommand):
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
@@ -1836,6 +1836,8 @@ class CommandWithPositionalArgs(BaseCommand):
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified positional and keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
@@ -1848,6 +1850,8 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         kwds = _get_new_keywords(self, **kwds)
         scmKwds = {}
         for arg, value in kwds.items():
@@ -2241,14 +2245,14 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        argument_aliases = info.get("arguments-aliases") or info.get(
+        arguments_aliases = info.get("arguments-aliases") or info.get(
             "arguments_aliases", {}
         )
-        if child_aliases or command_aliases or query_aliases or argument_aliases:
+        if child_aliases or command_aliases or query_aliases or arguments_aliases:
             cls._child_aliases = {}
             # No need to differentiate in the Python implementation
             for k, v in (
-                child_aliases | command_aliases | query_aliases | argument_aliases
+                child_aliases | command_aliases | query_aliases | arguments_aliases
             ).items():
                 # Storing the original name as we don't have any other way
                 # to recover it at runtime.
