@@ -81,7 +81,7 @@ in the ``data_types`` list.
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
 To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter. The
-returned data provides face connectivity in a flat NumPy array of vertex indices.
+returned data provides face connectivity in a flat numyy array of vertex indices.
 
 Each face is represented by a contiguous group of vertex indices, depending on the number of vertices that
 form the face (for example, 3 for a triangle, 4 for a quad, and so on).
@@ -101,11 +101,11 @@ of mesh elements.
   array([  4,   3,   2, ..., 379, 382, 388], shape=(1518,), dtype=int32)
 
 Each group of indices in the returned data represents a face. For example, a quad face defined by
-four vertices will appear as four consecutive indices.
+four vertices appears as four consecutive indices.
 
 .. note::
 
-   This format is consistent with VTK-style unstructured mesh representations (for example, as used in PyVista or Paraview).
+   This format is consistent with VTK-style unstructured mesh representations (for example, as used in pyvista).
 
 
 Get scalar field data
