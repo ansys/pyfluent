@@ -81,7 +81,7 @@ in the ``data_types`` list.
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
 To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter. The
-returned data provides face connectivity in a flat numyy array of vertex indices.
+returned data provides face connectivity in a flat numpy array of vertex indices.
 
 Each face is represented by a contiguous group of vertex indices, depending on the number of vertices that
 form the face (for example, 3 for a triangle, 4 for a quad, and so on).
