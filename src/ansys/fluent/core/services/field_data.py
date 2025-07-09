@@ -447,6 +447,7 @@ class BaseFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             surface_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def _get_vector_field_data(
@@ -475,6 +476,7 @@ class BaseFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             pathlines_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def get_field_data(
@@ -1390,6 +1392,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 surface_ids,
                 surface_data,
                 deprecated_flag=True,
+                flatten_connectivity=kwargs.get("flatten_connectivity"),
             )
 
         return self._returned_data._surface_data(
@@ -1397,6 +1400,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             kwargs.get("surfaces"),
             surface_ids,
             surface_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def _get_vector_field_data(
@@ -1475,6 +1479,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 surface_ids,
                 pathlines_data,
                 deprecated_flag=True,
+                flatten_connectivity=kwargs.get("flatten_connectivity"),
             )
 
         return self._returned_data._pathlines_data(
@@ -1482,6 +1487,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             kwargs.get("surfaces"),
             surface_ids,
             pathlines_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def get_scalar_field_data(

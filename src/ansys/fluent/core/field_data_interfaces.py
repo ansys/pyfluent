@@ -21,15 +21,16 @@
 # SOFTWARE.
 
 """Common interfaces for field data."""
-
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
+import warnings
 
 import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -88,6 +89,7 @@ class PathlinesFieldDataRequest(NamedTuple):
     coarsen: int | None = 1
     velocity_domain: str | None = "all-phases"
     zones: list | None = None
+    flatten_connectivity: bool = False
 
 
 class BaseFieldInfo(ABC):
@@ -516,6 +518,12 @@ class _ReturnFieldData:
                             surface_ids[count]
                         ][SurfaceDataType.FacesConnectivity.value]
                     else:
+                        warnings.warn(
+                            "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                            "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                            "'SurfaceFieldDataRequest' to request data in the flat format.",
+                            PyFluentDeprecationWarning,
+                        )
                         ret_surf_data[surface][data_type] = (
                             _transform_faces_connectivity_data(
                                 surface_data[surface_ids[count]][
@@ -551,15 +559,28 @@ class _ReturnFieldData:
         surface_ids: List[int],
         pathlines_data: Dict,
         deprecated_flag: bool | None = False,
+        flatten_connectivity: bool = False,
     ) -> Dict:
         surfaces = get_surfaces_from_objects(surfaces)
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
+            if flatten_connectivity:
+                lines_data = pathlines_data[surface_ids[count]]["lines"]
+            else:
+                warnings.warn(
+                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                    "'SurfaceFieldDataRequest' to request data in the flat format.",
+                    PyFluentDeprecationWarning,
+                )
+                lines_data = _transform_faces_connectivity_data(
+                    pathlines_data[surface_ids[count]]["lines"]
+                )
             temp_dict = {
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
-                "lines": pathlines_data[surface_ids[count]]["lines"],
+                "lines": lines_data,
                 field_name: pathlines_data[surface_ids[count]][field_name],
                 "pathlines-count": pathlines_data[surface_ids[count]][
                     "pathlines-count"

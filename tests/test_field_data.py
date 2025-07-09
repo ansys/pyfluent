@@ -36,7 +36,6 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
-    transform_faces_connectivity_data,
 )
 from ansys.fluent.core.services.field_data import (
     CellElementType,
@@ -172,6 +171,12 @@ def test_field_data_transactions(new_solver_session) -> None:
     surface_request_with_faces_connectivity = SurfaceFieldDataRequest(
         surfaces=VelocityInlets(settings_source=solver),
         data_types=[SurfaceDataType.FacesConnectivity],
+        flatten_connectivity=True,
+    )
+
+    surface_request_with_faces_connectivity_deprecated = SurfaceFieldDataRequest(
+        surfaces=VelocityInlets(settings_source=solver),
+        data_types=[SurfaceDataType.FacesConnectivity],
     )
 
     su1 = SurfaceFieldDataRequest(
@@ -207,7 +212,10 @@ def test_field_data_transactions(new_solver_session) -> None:
 
     transaction = transaction.add_requests(su1)  # adding single request.
     transaction = transaction.add_requests(su1)  # Duplicate and will be ignored
-    transaction = transaction.add_requests(surface_request_with_faces_connectivity)
+    transaction = transaction.add_requests(
+        surface_request_with_faces_connectivity,
+        surface_request_with_faces_connectivity_deprecated,
+    )
     data = transaction.add_requests(
         su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
     ).get_response()  # adding multiple requests.
@@ -225,14 +233,19 @@ def test_field_data_transactions(new_solver_session) -> None:
         surface_request_with_faces_connectivity
     )
 
-    transformed_faces_connectivity_data = transform_faces_connectivity_data(
-        faces_connectivity_data["cold-inlet"].connectivity
+    faces_connectivity_data_deprecated = data.get_field_data(
+        surface_request_with_faces_connectivity_deprecated
     )
 
-    assert len(transformed_faces_connectivity_data) == 152
-    assert len(faces_connectivity_data["cold-inlet"].connectivity) == 894
+    assert len(faces_connectivity_data_deprecated["cold-inlet"].connectivity) == 304
+    assert len(faces_connectivity_data["cold-inlet"].connectivity) == 1788
 
-    assert list(transformed_faces_connectivity_data[0]) == [3, 2, 1, 0]
+    assert list(faces_connectivity_data_deprecated["cold-inlet"].connectivity[0]) == [
+        3,
+        2,
+        1,
+        0,
+    ]
     assert list(faces_connectivity_data["cold-inlet"].connectivity[0:5]) == [
         4,
         3,
@@ -440,13 +453,14 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     assert faces_normal_data[3][SurfaceDataType.FacesNormal].shape == (152, 3)
     assert faces_normal_data[5][SurfaceDataType.FacesNormal].shape == (2001, 3)
 
-    faces_connectivity_data = field_data.get_surface_data(
+    faces_connectivity_data_deprecated = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
-    transformed_faces_connectivity_data = transform_faces_connectivity_data(
-        faces_connectivity_data["cold-inlet"][SurfaceDataType.FacesConnectivity]
-    )
-    assert list(transformed_faces_connectivity_data[5]) == [12, 13, 17, 16]
+    assert list(
+        faces_connectivity_data_deprecated["cold-inlet"][
+            SurfaceDataType.FacesConnectivity
+        ][5]
+    ) == [12, 13, 17, 16]
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["cold-inlet"]
@@ -459,17 +473,14 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     )
 
     assert path_lines_data["cold-inlet"]["vertices"].shape == (76152, 3)
-    assert len(path_lines_data["cold-inlet"]["lines"]) == 228000
+    assert len(path_lines_data["cold-inlet"]["lines"]) == 76000
     assert path_lines_data["cold-inlet"]["velocity-magnitude"].shape == (76152,)
 
     assert path_lines_data["hot-inlet"]["vertices"].shape == (27555, 3)
-    assert (
-        len(transform_faces_connectivity_data(path_lines_data["hot-inlet"]["lines"]))
-        == 27500
-    )
+    assert len(path_lines_data["hot-inlet"]["lines"]) == 27500
     assert path_lines_data["hot-inlet"]["velocity-magnitude"].shape == (27555,)
 
-    assert list(path_lines_data["cold-inlet"]["lines"][:6]) == [2, 0, 1, 2, 1, 2]
+    assert list(path_lines_data["cold-inlet"]["lines"][100]) == [100, 101]
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -552,20 +563,26 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     su4 = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["cold-inlet"]
     )
-    faces_connectivity_data = field_data.get_field_data(su4)
+    faces_connectivity_data_deprecated = field_data.get_field_data(su4)
+    faces_connectivity_data = field_data.get_field_data(
+        SurfaceFieldDataRequest(
+            data_types=[SurfaceDataType.FacesConnectivity],
+            surfaces=["cold-inlet"],
+            flatten_connectivity=True,
+        )
+    )
+
     assert (
-        transform_faces_connectivity_data(
-            faces_connectivity_data["cold-inlet"].connectivity
-        )[5]
+        faces_connectivity_data_deprecated["cold-inlet"].connectivity[5]
         == [12, 13, 17, 16]
     ).all()
-
     assert len(faces_connectivity_data["cold-inlet"].connectivity) == 894
-    assert list(
-        transform_faces_connectivity_data(
-            faces_connectivity_data["cold-inlet"].connectivity
-        )[0]
-    ) == [3, 2, 1, 0]
+    assert list(faces_connectivity_data_deprecated["cold-inlet"].connectivity[0]) == [
+        3,
+        2,
+        1,
+        0,
+    ]
     assert list(faces_connectivity_data["cold-inlet"].connectivity[0:5]) == [
         4,
         3,
@@ -579,17 +596,21 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     )
     assert velocity_vector_data["cold-inlet"].shape == (152, 3)
 
-    path_lines_data = field_data.get_field_data(
+    path_lines_data_deprecated = field_data.get_field_data(
         PathlinesFieldDataRequest(
             field_name="velocity-magnitude", surfaces=["cold-inlet", "hot-inlet"]
         )
     )
+    path_lines_data = field_data.get_field_data(
+        PathlinesFieldDataRequest(
+            field_name="velocity-magnitude",
+            surfaces=["cold-inlet", "hot-inlet"],
+            flatten_connectivity=True,
+        )
+    )
 
     assert path_lines_data["cold-inlet"].vertices.shape == (76152, 3)
-    assert (
-        len(transform_faces_connectivity_data(path_lines_data["cold-inlet"].lines))
-        == 76000
-    )
+    assert len(path_lines_data_deprecated["cold-inlet"].lines) == 76000
     assert path_lines_data["cold-inlet"].scalar_field.shape == (76152,)
 
     assert path_lines_data["hot-inlet"].vertices.shape == (27555, 3)
@@ -647,9 +668,7 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     faces_connectivity_data = field_data.get_surface_data(
         data_types=[SurfaceDataType.FacesConnectivity], surfaces=["velocity-inlet-2"]
     )["velocity-inlet-2"][SurfaceDataType.FacesConnectivity]
-    assert (
-        transform_faces_connectivity_data(faces_connectivity_data)[5] == [5, 6]
-    ).all()
+    assert (faces_connectivity_data[5] == [5, 6]).all()
 
     velocity_vector_data = field_data.get_vector_field_data(
         field_name="velocity", surfaces=["velocity-inlet-2"]
@@ -662,10 +681,10 @@ def test_field_data_objects_2d(disk_case_session) -> None:
     )
 
     assert path_lines_data["velocity-inlet-2"]["vertices"].shape == (5010, 3)
-    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 15000
+    assert len(path_lines_data["velocity-inlet-2"]["lines"]) == 5000
     assert path_lines_data["velocity-inlet-2"]["velocity-magnitude"].shape == (5010,)
 
-    assert list(path_lines_data["velocity-inlet-2"]["lines"][:3]) == [2, 0, 1]
+    assert list(path_lines_data["velocity-inlet-2"]["lines"][100]) == [100, 101]
 
 
 def test_field_data_errors(new_solver_session) -> None:
@@ -968,10 +987,7 @@ def test_field_data_objects_3d_with_location_objects_overall(
     )
     faces_connectivity_data = field_data.get_field_data(su4)
     assert (
-        transform_faces_connectivity_data(
-            faces_connectivity_data["cold-inlet"].connectivity
-        )[5]
-        == [12, 13, 17, 16]
+        faces_connectivity_data["cold-inlet"].connectivity[5] == [12, 13, 17, 16]
     ).all()
 
     velocity_vector_data = field_data.get_field_data(
@@ -990,13 +1006,13 @@ def test_field_data_objects_3d_with_location_objects_overall(
     )
 
     assert path_lines_data["cold-inlet"].vertices.shape == (76152, 3)
-    assert len(path_lines_data["cold-inlet"].lines) == 228000
+    assert len(path_lines_data["cold-inlet"].lines) == 76000
     assert path_lines_data["cold-inlet"].scalar_field.shape == (76152,)
 
     assert path_lines_data["hot-inlet"].vertices.shape == (27555, 3)
-    assert len(path_lines_data["hot-inlet"].lines) == 82500
+    assert len(path_lines_data["hot-inlet"].lines) == 27500
     assert path_lines_data["hot-inlet"].scalar_field.shape == (27555,)
 
     assert path_lines_data["hot-inlet"].scalar_field_name == "velocity-magnitude"
 
-    assert list(path_lines_data["cold-inlet"].lines[:3]) == [2, 0, 1]
+    assert list(path_lines_data["cold-inlet"].lines[100]) == [100, 101]
