@@ -705,3 +705,43 @@ def test_error_handling_multi_phase_deprecated():
 
     with pytest.raises(InvalidFieldName):
         field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[34].size
+
+
+def test_faces_connectivity_behaviour():
+    case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
+    data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+    file_session = FileSession(case_file_name, data_file_name)
+    transaction = file_session.fields.field_data.new_transaction()
+    vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+        surfaces=[3, 4],
+    )
+    data = transaction.add_requests(
+        vertices_and_faces_connectivity_request
+    ).get_response()
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        3
+    ].vertices.shape == (3810, 3)
+    assert (
+        len(
+            data.get_field_data(vertices_and_faces_connectivity_request)[4].connectivity
+        )
+        == 2018
+    )
+    del transaction
+
+    transaction = file_session.fields.field_data.new_transaction()
+    vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+        surfaces=[3, 4],
+        flatten_connectivity=True,
+    )
+    data = transaction.add_requests(
+        vertices_and_faces_connectivity_request
+    ).get_response()
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        3
+    ].vertices.shape == (3810, 3)
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        4
+    ].connectivity.shape == (10090,)

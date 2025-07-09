@@ -134,7 +134,7 @@ class TransactionFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             surface_data,
-            kwargs.get("flatten_connectivity"),
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def _get_vector_field_data(

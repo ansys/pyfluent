@@ -104,7 +104,8 @@ NGons (with more than 4 vertices).
 
   >>> faces_connectivity_request = SurfaceFieldDataRequest(
   >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
-  >>>     data_types=[SurfaceDataType.FacesConnectivity]
+  >>>     data_types=[SurfaceDataType.FacesConnectivity],
+  >>>     flatten_connectivity=True,
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
@@ -162,6 +163,7 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   >>> velocity_pathlines_request = PathlinesFieldDataRequest(
   >>>           field_name="x-velocity",
   >>>           surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")]
+  >>>           flatten_connectivity=True,
   >>>       )
   >>> velocity_path_lines_data = field_data.get_field_data(velocity_pathlines_request)
 
@@ -170,13 +172,13 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   # Velocity shape: (29565,) - Scalar velocity values at each pathline point.
   >>> velocity_path_lines_data["inlet"].vertices.shape
   (29565, 3)
-  >>> len(velocity_path_lines_data["inlet"].lines)
-  29303
+  >>> velocity_path_lines_data["inlet"].lines.shape
+  (87909,)
   >>> velocity_path_lines_data["inlet"].scalar_field.shape
   (29565,)
-  >>> velocity_path_lines_data["inlet"].lines[100]
-  # Example: Pathline 101 connects vertices 100 and 101.
-  array([100, 101])
+  >>> velocity_path_lines_data["inlet"].lines[:6]
+  # Example: First line connects vertices 0 and 1. Following line connects vertices 1 and 2, and so on.
+  array([2, 0, 1, 2, 1, 2], dtype=int32)
 
 Making multiple requests in a single transaction
 ------------------------------------------------

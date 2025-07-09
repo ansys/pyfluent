@@ -71,6 +71,7 @@ Single-phase
    >>> vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
    >>>      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
    >>>      surfaces=[3, 4],
+   >>>      flatten_connectivity=True,
    >>> )
    >>> solution_variable_temperature_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 4], node_value=False, boundary_value=False)
    >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=[3, 4])
@@ -83,7 +84,7 @@ Single-phase
        ...,
        [ 0.01857703, -0.19223897,  0.03035362],
        [ 0.0124151 , -0.19273971,  0.03034735],
-       [ 0.00620755, -0.19304685,  0.03033731]])
+       [ 0.00620755, -0.19304685,  0.03033731]], shape=(3810, 3))
    >>> data.get_field_data(vertices_and_faces_connectivity_request)[4].connectivity
    array([   4,  295,  294, ...,  265, 1482, 2183],
          shape=(10090,), dtype=uint32)
