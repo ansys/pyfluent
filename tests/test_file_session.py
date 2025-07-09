@@ -708,8 +708,12 @@ def test_error_handling_multi_phase_deprecated():
 
 
 def test_faces_connectivity_behaviour():
-    case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
-    data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
     file_session = FileSession(case_file_name, data_file_name)
     transaction = file_session.fields.field_data.new_transaction()
     vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
