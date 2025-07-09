@@ -131,7 +131,7 @@ Set solution variable data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can set solution variable data for a given ``domain_name`` by calling the ``set_data``
 method and passing required ``variable_name`` and dictionary of ``zone_name``
-to numpy array of ``solution_variable_data``
+to NumPy array of ``solution_variable_data``
 
 Additionally solution_variable_data object also supports ``create_empty_array`` method. This method can be used to 
 generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and 

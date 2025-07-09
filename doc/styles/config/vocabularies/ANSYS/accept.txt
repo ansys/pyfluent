@@ -46,6 +46,7 @@ metaclasses
 monitor
 MonitorsManager
 numpy
+NumPy
 PODMAN
 Podman
 poppler
@@ -83,3 +84,4 @@ create_workflow
 load_workflow
 codegen
 discoverability
+NGons
