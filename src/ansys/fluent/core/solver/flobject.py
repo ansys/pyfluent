@@ -1474,7 +1474,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 return getattr(super(), name)
             except AttributeError as ex:
                 raise AttributeError(
-                    self.__class__.__name__ + " has no attribute " + name
+                    f"'{self.__class__.__name__}' has no attribute '{name}'"
                 ) from ex
 
     def __add__(self, other):
