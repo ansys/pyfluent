@@ -150,11 +150,26 @@ def test_field_info_data_single_phase():
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
-    assert len(surface_data_symmetry["symmetry"]) == 2018
-    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry["symmetry"]) == 10090
+
+    surface_data_symmetry_request_deprecated = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+    )
+    surface_data_symmetry_deprecated = surface_data(
+        surface_data_symmetry_request_deprecated
+    )
+    assert list((surface_data_symmetry_deprecated["symmetry"])[1000]) == [
+        1259,
+        1260,
+        1227,
+        1226,
+    ]
 
     vector_data = file_session.fields.field_data.get_field_data
     vector_data_request = VectorFieldDataRequest(
@@ -438,11 +453,18 @@ def test_field_info_data_single_phase_deprecated():
     assert round(surface_data_wall[3][1500][1], 5) == 0.09525
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
-    surface_data_symmetry = surface_data(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+    surface_data_symmetry_deprecated = surface_data(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
     )
-    assert len(surface_data_symmetry["symmetry"]) == 2018
-    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry_deprecated["symmetry"]) == 2018
+
+    surface_data_symmetry = surface_data(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
+    )
+    assert list(surface_data_symmetry["symmetry"][:5]) == [4, 295, 294, 33, 34]
 
     vector_data = file_session.fields.field_data.get_vector_field_data
     assert vector_data("velocity", surfaces=["wall"])["wall"].shape == (3630, 3)
@@ -683,3 +705,47 @@ def test_error_handling_multi_phase_deprecated():
 
     with pytest.raises(InvalidFieldName):
         field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[34].size
+
+
+def test_faces_connectivity_behaviour():
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession(case_file_name, data_file_name)
+    transaction = file_session.fields.field_data.new_transaction()
+    vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+        surfaces=[3, 4],
+    )
+    data = transaction.add_requests(
+        vertices_and_faces_connectivity_request
+    ).get_response()
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        3
+    ].vertices.shape == (3810, 3)
+    assert (
+        len(
+            data.get_field_data(vertices_and_faces_connectivity_request)[4].connectivity
+        )
+        == 2018
+    )
+    del transaction
+
+    transaction = file_session.fields.field_data.new_transaction()
+    vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+        surfaces=[3, 4],
+        flatten_connectivity=True,
+    )
+    data = transaction.add_requests(
+        vertices_and_faces_connectivity_request
+    ).get_response()
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        3
+    ].vertices.shape == (3810, 3)
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        4
+    ].connectivity.shape == (10090,)
