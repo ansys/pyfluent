@@ -21,15 +21,16 @@
 # SOFTWARE.
 
 """Common interfaces for field data."""
-
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
+import warnings
 
 import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
@@ -52,6 +53,7 @@ class SurfaceFieldDataRequest(NamedTuple):
     data_types: List[SurfaceDataType] | List[str]
     surfaces: List[int | str | object]
     overset_mesh: bool | None = False
+    flatten_connectivity: bool = False
 
 
 class ScalarFieldDataRequest(NamedTuple):
@@ -87,6 +89,7 @@ class PathlinesFieldDataRequest(NamedTuple):
     coarsen: int | None = 1
     velocity_domain: str | None = "all-phases"
     zones: list | None = None
+    flatten_connectivity: bool = False
 
 
 class BaseFieldInfo(ABC):
@@ -483,16 +486,6 @@ class PathlinesData:
 class _ReturnFieldData:
 
     @staticmethod
-    def _get_faces_connectivity_data(data):
-        faces_data = []
-        i = 0
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(data[i + 1 : end])
-            i = end
-        return faces_data
-
-    @staticmethod
     def _scalar_data(
         field_name: str,
         surfaces: List[int | str | object],
@@ -512,6 +505,7 @@ class _ReturnFieldData:
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
         deprecated_flag: bool | None = False,
+        flatten_connectivity: bool = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
@@ -519,13 +513,24 @@ class _ReturnFieldData:
             ret_surf_data[surface] = {}
             for data_type in data_types:
                 if data_type == SurfaceDataType.FacesConnectivity:
-                    ret_surf_data[surface][data_type] = (
-                        _ReturnFieldData._get_faces_connectivity_data(
-                            surface_data[surface_ids[count]][
-                                SurfaceDataType.FacesConnectivity.value
-                            ]
+                    if flatten_connectivity:
+                        ret_surf_data[surface][data_type] = surface_data[
+                            surface_ids[count]
+                        ][SurfaceDataType.FacesConnectivity.value]
+                    else:
+                        warnings.warn(
+                            "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                            "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                            "'SurfaceFieldDataRequest' to request data in the flat format.",
+                            PyFluentDeprecationWarning,
                         )
-                    )
+                        ret_surf_data[surface][data_type] = (
+                            _transform_faces_connectivity_data(
+                                surface_data[surface_ids[count]][
+                                    SurfaceDataType.FacesConnectivity.value
+                                ]
+                            )
+                        )
                 else:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
@@ -554,17 +559,28 @@ class _ReturnFieldData:
         surface_ids: List[int],
         pathlines_data: Dict,
         deprecated_flag: bool | None = False,
+        flatten_connectivity: bool = False,
     ) -> Dict:
         surfaces = get_surfaces_from_objects(surfaces)
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
+            if flatten_connectivity:
+                lines_data = pathlines_data[surface_ids[count]]["lines"]
+            else:
+                warnings.warn(
+                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                    "'SurfaceFieldDataRequest' to request data in the flat format.",
+                    PyFluentDeprecationWarning,
+                )
+                lines_data = _transform_faces_connectivity_data(
+                    pathlines_data[surface_ids[count]]["lines"]
+                )
             temp_dict = {
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
-                "lines": _ReturnFieldData._get_faces_connectivity_data(
-                    pathlines_data[surface_ids[count]]["lines"]
-                ),
+                "lines": lines_data,
                 field_name: pathlines_data[surface_ids[count]][field_name],
                 "pathlines-count": pathlines_data[surface_ids[count]][
                     "pathlines-count"
@@ -607,3 +623,42 @@ def get_surfaces_from_objects(surfaces: List[int | str | object]):
         else:
             updated_surfaces.append(surface)
     return updated_surfaces
+
+
+def _transform_faces_connectivity_data(data):
+    """
+    Transform flat face connectivity data into structured face-wise format.
+
+    Each face in the flat array is represented by:
+    [N, v0, v1, ..., vN], where:
+      - N is the number of vertices in the face
+      - v0...vN are the vertex indices
+
+    This function parses such a flat array and returns a list of vertex index arrays,
+    each representing a face.
+
+    Parameters
+    ----------
+    data : array-like of int
+        Flat array containing face connectivity data, typically returned from
+        `faces_connectivity_data["inlet"].connectivity`.
+
+    Returns
+    -------
+    faces_data : list of ndarray
+        List of 1D NumPy arrays, where each array contains the vertex indices
+        of a face.
+
+    Examples
+    --------
+    >>> flat_data = np.array([4, 4, 5, 12, 11, 3, 1, 2, 3], dtype=np.int32)
+    >>> _transform_faces_connectivity_data(flat_data)
+    [array([ 4,  5, 12, 11]), array([1, 2, 3])]
+    """
+    faces_data = []
+    i = 0
+    while i < len(data):
+        end = i + 1 + data[i]
+        faces_data.append(data[i + 1 : end])
+        i = end
+    return faces_data
