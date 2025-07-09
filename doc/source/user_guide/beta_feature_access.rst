@@ -3,19 +3,23 @@
 Beta features
 =============
 
-PyFluent provides access to experimental capabilities of Fluent via **beta features**.
-These features are disabled by default and can be enabled at runtime by calling
-the `enable_beta_features()` method on a session object.
-Once activated, the additional beta methods and workflows become available.
+PyFluent provides access to experimental Fluent capabilities through **beta features**. These features
+are intended for early access, evaluation, and feedback, and may be subject to change in future releases.
 
-Currently, limited number of beta features are available in both **Meshing** and **Solver** sessions.
+Beta features are not enabled by default. To access them, call the ``enable_beta_features()`` method
+on a session object. After doing so, additional methods specific to that session type become usable.
+
+Beta features differ between **Meshing** and **Solver** sessions. Each session exposes a distinct
+set of beta-specific capabilities that are only operable after the beta mode is explicitly enabled.
 
 Meshing Session
 ---------------
 
-The **Topology-Based Meshing** workflow is available as a beta feature in meshing mode.
+In meshing mode, the **Topology-Based Meshing** workflow is available as a beta feature. While
+the associated method is visible on the session object, attempting to use it without enabling beta
+features will result in a ``BetaFeaturesNotEnabled`` exception.
 
-To enable and access it:
+Example usage:
 
 .. code-block:: python
 
@@ -41,9 +45,11 @@ To enable and access it:
 Solver Session
 --------------
 
-The ability to **switch to meshing mode** from a solver session is a beta feature.
+In solver mode, the ability to **switch to meshing mode** is available as a beta feature.
+Similar to the meshing session, the method is present on the session object but raises
+``BetaFeaturesNotEnabled`` until beta features are enabled.
 
-To enable and use it:
+Example usage:
 
 .. code-block:: python
 
@@ -66,6 +72,7 @@ To enable and use it:
 
 .. note::
 
-   Beta features are subject to change and may not be fully supported in all versions of Fluent.
-   Use them with caution in production workflows. Feedback on beta features is encouraged and
-   helps improve future releases.
+   Beta features are actively developed and may evolve over time. They are provided to allow early
+   access to upcoming capabilities in Fluent and may undergo changes in behavior or interface in future
+   releases. They may not yet be fully supported in all workflows. Feedback from users is encouraged
+   and helps guide ongoing development.
