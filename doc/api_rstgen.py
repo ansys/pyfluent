@@ -56,13 +56,6 @@ hierarchy = {
         "watchdog",
     ],
     "meshing": ["meshing_workflow", "datamodel/datamodel_contents", "tui/tui_contents"],
-    "post_objects": [
-        "check_in_notebook",
-        "post_helper",
-        "post_objects_container",
-        "singleton_meta",
-        "timing_decorator",
-    ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
         "api_upgrade",
@@ -126,6 +119,7 @@ hierarchy = {
         "session_solver_icing",
         "session_solver_lite",
         "session_solver",
+        "session_utilities",
         "session",
         "system_coupling",
         "pyfluent_warnings",
