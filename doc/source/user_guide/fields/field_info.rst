@@ -32,10 +32,10 @@ Available methods
 
 You can use the following methods to retrieve various types of field metadata:
 
-- ``get_scalar_fields_info`` — Returns information about scalar fields.
-- ``get_scalar_field_range`` — Returns the minimum and maximum values for a given scalar field.
-- ``get_vector_fields_info`` — Returns information about vector fields.
-- ``get_surfaces_info`` — Returns information about available surfaces.
+- ``get_scalar_fields_info`` - Returns information about scalar fields.
+- ``get_scalar_field_range`` - Returns the minimum and maximum values for a given scalar field.
+- ``get_vector_fields_info`` - Returns information about vector fields.
+- ``get_surfaces_info`` - Returns information about available surfaces.
 
 Scalar fields information
 ~~~~~~~~~~~~~~~~~~~~~~~~~
