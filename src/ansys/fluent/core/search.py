@@ -207,10 +207,18 @@ def _print_search_results(
             for query in queries:
                 if isinstance(query, tuple):
                     name, score = query
-                    if name in first_token and has_query(name, substrings):
-                        results.add((api_object, round(score, 2)))
                 else:
-                    if query in first_token and has_query(query, substrings):
+                    name = query
+                    score = None
+
+                if (
+                    name in first_token
+                    and has_query(name, substrings)
+                    and name in substrings[-1]
+                ):
+                    if score is not None:
+                        results.add((api_object, round(score, 2)))
+                    else:
                         results.add(api_object)
 
         return sorted(results)
