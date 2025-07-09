@@ -27,6 +27,7 @@ from pytest import WarningsRecorder
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
+from ansys.fluent.core.solver import Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
     _Alias,
@@ -762,3 +763,28 @@ def test_runtime_python_classes(
         ].general.material()
         == "water-liquid"
     )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_setting_string_constants(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    viscous = Viscous(solver)
+
+    # viscous.model.INVISCID is a string constant
+    assert viscous.model.INVISCID == "inviscid"
+    assert isinstance(viscous.model.INVISCID, str)
+    with pytest.raises(AttributeError):
+        viscous.model.INVISCID = "invalid"
+
+    # Setting using string constants
+    viscous.model = viscous.model.INVISCID
+    assert viscous.model() == "inviscid"
+    viscous.model = viscous.model.K_EPSILON
+    assert viscous.model() == "k-epsilon"
+    viscous.k_epsilon_model = viscous.k_epsilon_model.RNG
+    assert viscous.k_epsilon_model.RNG.is_active() is True
+    assert viscous.k_epsilon_model() == "rng"
+    assert viscous.k_epsilon_model.EASM.is_active() is False
+
+    with pytest.raises(ValueError):
+        viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
