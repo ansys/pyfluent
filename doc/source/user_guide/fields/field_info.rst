@@ -5,39 +5,42 @@
 Field info
 ==========
 
-You can use field info objects to access Fluent field information.
+You can use field info objects to access field-related metadata from Fluent.
 
 Accessing field info objects
 ----------------------------
 
 .. code:: python
 
+  >>> from ansys.fluent.core.examples.downloads import download_file
+  >>> mixing_elbow_case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+
   >>> import ansys.fluent.core as pyfluent
   >>> solver_session = pyfluent.launch_fluent()
-  >>> solver_session.settings.file.read(file_type="case-dats", file_name=mixing_elbow_case_path)
+  >>> solver_session.settings.file.read(file_type="case", file_name=mixing_elbow_case_path)
   >>> solver_session.settings.solution.initialization.hybrid_initialize()
 
 
-The field info object is an attribute of the :obj:`~ansys.fluent.core.session_solver_session.Solver` object:
+The field info object is available as an attribute of the :obj:`~ansys.fluent.core.session_solver_session.Solver` object:
 
 .. code-block:: python
 
   >>> field_info = solver_session.fields.field_info
 
-Sample requests
----------------
+Available methods
+-----------------
 
-Here are the methods for requesting field information:
+You can use the following methods to retrieve various types of field metadata:
 
-- ``get_scalar_fields_info`` for getting fields information.
-- ``get_range`` for getting the range of the field.
-- ``get_vector_fields_info`` for getting vector fields information.
-- ``get_surfaces_info`` for getting the surfaces information.
+- ``get_scalar_fields_info`` — Returns information about scalar fields.
+- ``get_scalar_field_range`` — Returns the minimum and maximum values for a given scalar field.
+- ``get_vector_fields_info`` — Returns information about vector fields.
+- ``get_surfaces_info`` — Returns information about available surfaces.
 
-Get scalar fields info
-~~~~~~~~~~~~~~~~~~~~~~
-You can request the fields information (field name, domain, and section) by
-calling the ``get_scalar_fields_info`` method.
+Scalar fields information
+~~~~~~~~~~~~~~~~~~~~~~~~~
+To retrieve details about scalar fields (such as field name, domain, and section),
+use the ``get_scalar_fields_info`` method:
 
 .. code-block:: python
 
@@ -48,23 +51,21 @@ calling the ``get_scalar_fields_info`` method.
    'absolute-pressure': {'display_name': 'Absolute Pressure', 'section': 'Pressure...', 'domain': 'mixture'},
     ...}
 
-Get range
-~~~~~~~~~
-You can request the range (minimum and maximum values) for a given ``field`` by
-calling the ``get_range`` method. It takes a ``field`` argument which can be obtained
-from the keys of the dictionary returned by ``get_scalar_fields_info`` method.
+Scalar field range
+~~~~~~~~~~~~~~~~~~
+To get the range (minimum and maximum values) of a specific scalar field, use the ``get_scalar_field_range`` method.
+The field name must be one of the keys returned by the ``get_scalar_fields_info`` method.
 
 .. code-block:: python
 
-  >>> field_info.get_range("velocity")
+  >>> field_info.get_scalar_field_range("velocity")
   [0.0, 0.0]
-  >>> field_info.get_range("cell-weight")
+  >>> field_info.get_scalar_field_range("cell-weight")
   [8.0, 24.0]
 
-Get vector fields info
-~~~~~~~~~~~~~~~~~~~~~~
-You can request the vector fields information by calling the
-``get_vector_fields_info`` method.
+Vector fields info
+~~~~~~~~~~~~~~~~~~
+To retrieve metadata about vector fields, use the ``get_vector_fields_info`` method:
 
 .. code-block:: python
 
@@ -74,9 +75,8 @@ You can request the vector fields information by calling the
 
 Get surfaces info
 ~~~~~~~~~~~~~~~~~
-You can request the surfaces information (surface name, ID, and type) by
-calling the ``get_surfaces_info`` method.
-
+To get information about available surfaces (including surface ID, zone ID, and zone type),
+use the ``get_surfaces_info`` method:
 .. code-block:: python
 
   >>> field_info.get_surfaces_info()
