@@ -144,11 +144,25 @@ def test_use_variable_catalog_offline():
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
-    assert len(surface_data_symmetry["symmetry"]) == 2018
-    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry["symmetry"]) == 10090
+    surface_data_symmetry_request_deprecated = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+    )
+    surface_data_symmetry_deprecated = surface_data(
+        surface_data_symmetry_request_deprecated
+    )
+    assert list(surface_data_symmetry_deprecated["symmetry"][1000]) == [
+        1259,
+        1260,
+        1227,
+        1226,
+    ]
 
     vector_data = file_session.fields.field_data.get_field_data
     vector_data_request = VectorFieldDataRequest(

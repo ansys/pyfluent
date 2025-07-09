@@ -80,20 +80,45 @@ in the ``data_types`` list.
   # Example: The centroid of the 16th face has coordinates [-0.3463, 0.0, -0.0328].
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
-To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter.
+To obtain face connectivity data, specify ``FacesConnectivity`` in the ``data_types`` parameter
+when constructing a ``SurfaceFieldDataRequest``. The returned data provides a flat, NumPy array
+of vertex indices that describe how each face is connected to the mesh's vertices.
+
+The data is stored in a compact "flattened" format. Each face is represented by a sequence of
+vertex indices, preceded by an integer specifying how many vertices the face contains. This means
+the array is structured as:
+
+::
+
+   [N₀, V₀₁, V₀₂, ..., V₀ₙ₀, N₁, V₁₁, V₁₂, ..., V₁ₙ₁, ...]
+
+Where:
+- ``Nᵢ`` is the number of vertices in the *i*-th face,
+- ``Vᵢⱼ`` are the vertex indices that make up that face.
+
+This format is compact and well-suited for custom post-processing, visualization, or exporting mesh
+data to third-party tools. It supports arbitrary polygonal faces, including triangles, quads, and
+NGons (with more than 4 vertices).
 
 .. code-block:: python
 
   >>> faces_connectivity_request = SurfaceFieldDataRequest(
   >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
-  >>>     data_types=[SurfaceDataType.FacesConnectivity]
+  >>>     data_types=[SurfaceDataType.FacesConnectivity],
+  >>>     flatten_connectivity=True,
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
-  # FacesConnectivity provides indices of vertices for each face. For example:
-  # Face 6 is connected to vertices 4, 5, 12, and 11.
-  >>> faces_connectivity_data["inlet"].connectivity[5]
-  array([ 4,  5, 12, 11])
+  >>> faces_connectivity_data["inlet"].connectivity
+  array([ 4,  3,  2,  1,  0,   3, 10, 11, 12, ...], dtype=int32)
+
+In this example, the first face has 4 vertices (a quad), connected to vertices [3, 2, 1, 0]. The second
+face has 3 vertices (a triangle), connected to [10, 11, 12], and so on.
+
+.. note::
+
+   This format is consistent with VTK-style unstructured mesh representations (for example, as used in pyvista).
+
 
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
@@ -138,6 +163,7 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   >>> velocity_pathlines_request = PathlinesFieldDataRequest(
   >>>           field_name="x-velocity",
   >>>           surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")]
+  >>>           flatten_connectivity=True,
   >>>       )
   >>> velocity_path_lines_data = field_data.get_field_data(velocity_pathlines_request)
 
@@ -146,13 +172,13 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   # Velocity shape: (29565,) - Scalar velocity values at each pathline point.
   >>> velocity_path_lines_data["inlet"].vertices.shape
   (29565, 3)
-  >>> len(velocity_path_lines_data["inlet"].lines)
-  29303
+  >>> velocity_path_lines_data["inlet"].lines.shape
+  (87909,)
   >>> velocity_path_lines_data["inlet"].scalar_field.shape
   (29565,)
-  >>> velocity_path_lines_data["inlet"].lines[100]
-  # Example: Pathline 101 connects vertices 100 and 101.
-  array([100, 101])
+  >>> velocity_path_lines_data["inlet"].lines[:6]
+  # Example: First line connects vertices 0 and 1. Following line connects vertices 1 and 2, and so on.
+  array([2, 0, 1, 2, 1, 2], dtype=int32)
 
 Making multiple requests in a single transaction
 ------------------------------------------------
