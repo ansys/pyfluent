@@ -503,6 +503,7 @@ class _ReturnFieldData:
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
         deprecated_flag: bool | None = False,
+        flatten_connectivity: bool = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
@@ -510,9 +511,18 @@ class _ReturnFieldData:
             ret_surf_data[surface] = {}
             for data_type in data_types:
                 if data_type == SurfaceDataType.FacesConnectivity:
-                    ret_surf_data[surface][data_type] = surface_data[
-                        surface_ids[count]
-                    ][SurfaceDataType.FacesConnectivity.value]
+                    if flatten_connectivity:
+                        ret_surf_data[surface][data_type] = surface_data[
+                            surface_ids[count]
+                        ][SurfaceDataType.FacesConnectivity.value]
+                    else:
+                        ret_surf_data[surface][data_type] = (
+                            _transform_faces_connectivity_data(
+                                surface_data[surface_ids[count]][
+                                    SurfaceDataType.FacesConnectivity.value
+                                ]
+                            )
+                        )
                 else:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
@@ -594,7 +604,7 @@ def get_surfaces_from_objects(surfaces: List[int | str | object]):
     return updated_surfaces
 
 
-def transform_faces_connectivity_data(data):
+def _transform_faces_connectivity_data(data):
     """
     Transform flat face connectivity data into structured face-wise format.
 
@@ -621,7 +631,7 @@ def transform_faces_connectivity_data(data):
     Examples
     --------
     >>> flat_data = np.array([4, 4, 5, 12, 11, 3, 1, 2, 3], dtype=np.int32)
-    >>> transform_faces_connectivity_data(flat_data)
+    >>> _transform_faces_connectivity_data(flat_data)
     [array([ 4,  5, 12, 11]), array([1, 2, 3])]
     """
     faces_data = []

@@ -41,7 +41,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,
     _ReturnFieldData,
-    transform_faces_connectivity_data,
+    _transform_faces_connectivity_data,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import (
@@ -134,6 +134,7 @@ class TransactionFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             surface_data,
+            kwargs.get("flatten_connectivity"),
         )
 
     def _get_vector_field_data(
@@ -712,14 +713,13 @@ class FileFieldData(FieldDataSource):
                 }
             else:
                 warnings.warn(
-                    "Structured face connectivity output is deprecated and will be removed "
-                    "in a future release. Use 'flatten_connectivity=True' to receive data in the "
-                    "upcoming flat format. To retain structured behavior, use "
-                    "'transform_faces_connectivity_data()' to convert the flat output.",
+                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                    "'SurfaceFieldDataRequest' to request data in the flat format.",
                     PyFluentDeprecationWarning,
                 )
                 return {
-                    surface: transform_faces_connectivity_data(
+                    surface: _transform_faces_connectivity_data(
                         self._file_session._case_file.get_mesh().get_connectivity(
                             surface_ids[count]
                         )
