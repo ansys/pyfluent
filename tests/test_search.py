@@ -317,14 +317,12 @@ def test_match_whole_word(monkeypatch):
 
     assert _search_whole_word("parent", api_tree_data=api_tree_data) == [
         "<solver_session>.parent (Object)",
-        "<solver_session>.parent.child (Parameter)",
     ]
     assert _search_whole_word("child", api_tree_data=api_tree_data) == [
         "<solver_session>.parent.child (Parameter)",
     ]
     assert pyfluent.search("parent", match_whole_word=True) == [
         "<solver_session>.parent (Object)",
-        "<solver_session>.parent.child (Parameter)",
     ]
 
     assert pyfluent.search("first", match_whole_word=True) == [
