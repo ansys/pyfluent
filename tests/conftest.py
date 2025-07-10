@@ -382,6 +382,16 @@ def static_mixer_case_session(new_solver_session):
 
 
 @pytest.fixture
+def static_mixer_params_unitless_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file(
+        "Static_Mixer_Parameters_unitless.cas.h5", "pyfluent/static_mixer"
+    )
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
 def mixing_elbow_settings_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
