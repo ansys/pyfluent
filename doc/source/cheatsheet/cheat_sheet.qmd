@@ -617,7 +617,6 @@ field_info = solver.fields.field_info
 
 ```{python}
 field_info.get_scalar_fields_info()
-field_info.get_scalar_field_range("velocity")
 field_info.get_scalar_field_range("cell-weight")
 ```
 
