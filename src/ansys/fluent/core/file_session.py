@@ -25,6 +25,7 @@
 from typing import Dict, List
 import warnings
 
+from deprecated.sphinx import deprecated
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
@@ -613,9 +614,14 @@ class FileFieldData(FieldDataSource):
         self._file_session = file_session
         self._field_info = field_info
 
+    def new_batch(self):
+        """Create a new field batch."""
+        return Transaction(self._file_session, self._field_info)
+
+    @deprecated(version="0.34", reason="Use `new_batch` instead.")
     def new_transaction(self):
         """Create a new field transaction."""
-        return Transaction(self._file_session, self._field_info)
+        return self.new_batch()
 
     def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
         """Get a list of surface ids based on surfaces provided as inputs."""

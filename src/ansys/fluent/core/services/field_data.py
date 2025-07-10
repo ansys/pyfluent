@@ -31,6 +31,7 @@ from typing import Callable, Dict, List, Tuple
 import warnings
 import weakref
 
+from deprecated.sphinx import deprecated
 import grpc
 import numpy as np
 
@@ -1337,8 +1338,8 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self._returned_data = _ReturnFieldData()
         self._fetched_data = _FetchFieldData()
 
-    def new_transaction(self):
-        """Create a new field transaction."""
+    def new_batch(self):
+        """Create a new field batch."""
         return Transaction(
             self._service,
             self._field_info,
@@ -1347,6 +1348,11 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
         )
+
+    @deprecated(version="0.34", reason="Use `new_batch` instead.")
+    def new_transaction(self):
+        """Create a new field transaction."""
+        return self.new_batch()
 
     def _get_scalar_field_data(self, **kwargs):
         surfaces = kwargs.get("surfaces")
