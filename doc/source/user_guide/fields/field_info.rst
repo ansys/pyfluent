@@ -5,10 +5,10 @@
 Field info
 ==========
 
-You can use field info objects to access field-related metadata from Fluent.
+You can use field information objects to access field-related metadata from Fluent.
 
-Accessing field info objects
-----------------------------
+Accessing field information objects
+-----------------------------------
 
 .. code:: python
 
@@ -21,7 +21,7 @@ Accessing field info objects
   >>> solver_session.settings.solution.initialization.hybrid_initialize()
 
 
-The field info object is available as an attribute of the :obj:`~ansys.fluent.core.session_solver_session.Solver` object:
+The field information object is available as an attribute of the :obj:`~ansys.fluent.core.session_solver_session.Solver` object:
 
 .. code-block:: python
 
@@ -61,8 +61,8 @@ The field name must be one of the keys returned by the ``get_scalar_fields_info`
   >>> field_info.get_scalar_field_range("cell-weight")
   [8.0, 24.0]
 
-Vector fields info
-~~~~~~~~~~~~~~~~~~
+Vector fields information
+~~~~~~~~~~~~~~~~~~~~~~~~~
 To retrieve metadata about vector fields, use the ``get_vector_fields_info`` method:
 
 .. code-block:: python
@@ -71,8 +71,8 @@ To retrieve metadata about vector fields, use the ``get_vector_fields_info`` met
   {'velocity': {'x-component': 'x-velocity', 'y-component': 'y-velocity', 'z-component': 'z-velocity'},
    'relative-velocity': {'x-component': 'relative-x-velocity', 'y-component': 'relative-y-velocity', 'z-component': 'relative-z-velocity'}}
 
-Get surfaces info
-~~~~~~~~~~~~~~~~~
+Get surfaces information
+~~~~~~~~~~~~~~~~~~~~~~~~
 To get information about available surfaces (including surface ID, zone ID, and zone type),
 use the ``get_surfaces_info`` method:
 .. code-block:: python
