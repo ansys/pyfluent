@@ -58,7 +58,6 @@ The field name must be one of the keys returned by the ``get_scalar_fields_info`
 
 .. code-block:: python
 
-  [0.0, 0.0]
   >>> field_info.get_scalar_field_range("cell-weight")
   [8.0, 24.0]
 
