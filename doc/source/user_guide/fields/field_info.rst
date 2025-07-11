@@ -71,7 +71,7 @@ To retrieve metadata about vector fields, use :meth:`get_vector_fields_info() <a
   {'velocity': {'x-component': 'x-velocity', 'y-component': 'y-velocity', 'z-component': 'z-velocity'},
    'relative-velocity': {'x-component': 'relative-x-velocity', 'y-component': 'relative-y-velocity', 'z-component': 'relative-z-velocity'}}
 
-Get surface information
+Surface information
 ~~~~~~~~~~~~~~~~~~~~~~~
 To get information about available surfaces (including surface ID, zone ID, and zone type),
 use :meth:`get_surfaces_info() <ansys.fluent.core.services.field_data.FieldInfo.get_surfaces_info>`:
