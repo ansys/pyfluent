@@ -28,11 +28,11 @@ import warnings
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
+    Batch,
     ChunkParser,
     FieldDataService,
     FieldInfo,
     SurfaceDataType,
-    Transaction,
     _AllowedScalarFieldNames,
     _AllowedSurfaceIDs,
     _AllowedSurfaceNames,
@@ -288,7 +288,7 @@ class DeprecatedFieldData:
     def new_transaction(self):
         """Create a new field transaction."""
         warnings.warn(DEPRECATION_MSG, PyFluentDeprecationWarning)
-        return Transaction(
+        return Batch(
             self._service,
             self._field_info,
             self._allowed_surface_ids,

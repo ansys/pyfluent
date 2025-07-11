@@ -47,7 +47,7 @@ HOT_INLET_TEMPERATURE = 313.15
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_field_data_transactions_deprecated_interface(new_solver_session) -> None:
+def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
@@ -85,50 +85,50 @@ def test_field_data_transactions_deprecated_interface(new_solver_session) -> Non
     # Get field data object
     field_data = solver.fields.field_data
 
-    transaction = field_data.new_transaction()
+    batch = field_data.new_batch()
 
     hot_inlet_surf_id = solver.fields.field_data.get_surface_ids(["hot-inlet"])[0]
-    transaction.add_surfaces_request(
+    batch.add_surfaces_request(
         surfaces=[1, hot_inlet_surf_id],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
-    transaction.add_surfaces_request(
+    batch.add_surfaces_request(
         surfaces=[3],
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
-    transaction.add_scalar_fields_request(
+    batch.add_scalar_fields_request(
         surfaces=[1, "cold-inlet", "hot-inlet"],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
     )
-    transaction.add_scalar_fields_request(
+    batch.add_scalar_fields_request(
         surfaces=[2],
         field_name="temperature",
         node_value=True,
         boundary_value=False,
     )
-    transaction.add_pathlines_fields_request(
+    batch.add_pathlines_fields_request(
         surfaces=[1, "hot-inlet"],
         field_name="temperature",
         provide_particle_time_field=True,
     )
 
-    data = transaction.get_fields()
+    data = batch.get_fields()
 
     assert len(data) == 4  # 2 sets of scalar data and 1 of surface and pathlines data.
 
-    # multiple surface *names* transaction
-    transaction2 = field_data.new_transaction()
-    fields_request = transaction2.add_scalar_fields_request
+    # multiple surface *names* batches
+    batch2 = field_data.new_batch()
+    fields_request = batch2.add_scalar_fields_request
     surface_names = fields_request.surface_names.allowed_values()
     fields_request(surfaces=surface_names, field_name="temperature")
-    data2 = transaction2.get_fields()
+    data2 = batch2.get_fields()
     assert data2
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_field_data_transactions(new_solver_session) -> None:
+def test_field_data_batches(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
@@ -166,7 +166,7 @@ def test_field_data_transactions(new_solver_session) -> None:
     # Get field data object
     field_data = solver.fields.field_data
 
-    transaction = field_data.new_transaction()
+    batch = field_data.new_batch()
 
     surface_request_with_faces_connectivity = SurfaceFieldDataRequest(
         surfaces=VelocityInlets(settings_source=solver),
@@ -210,20 +210,20 @@ def test_field_data_transactions(new_solver_session) -> None:
         provide_particle_time_field=False,
     )
 
-    transaction = transaction.add_requests(su1)  # adding single request.
-    transaction = transaction.add_requests(su1)  # Duplicate and will be ignored
-    transaction = transaction.add_requests(
+    batch = batch.add_requests(su1)  # adding single request.
+    batch = batch.add_requests(su1)  # Duplicate and will be ignored
+    batch = batch.add_requests(
         surface_request_with_faces_connectivity,
         surface_request_with_faces_connectivity_deprecated,
     )
-    data = transaction.add_requests(
+    data = batch.add_requests(
         su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
     ).get_response()  # adding multiple requests.
 
     with pytest.raises(ValueError):
         # Trying to add request with same 'field_name'.
         # TODO: This is not yet supported. Need to implement in server.
-        transaction.add_requests(pt2)
+        batch.add_requests(pt2)
 
     assert (
         len(data) == 5
@@ -323,8 +323,8 @@ def test_field_data_allowed_values(new_solver_session) -> None:
 
     field_data = solver.fields.field_data
     field_info = solver.fields.field_info
-    transaction = field_data.new_transaction()
-    fields_request = transaction.add_scalar_fields_request
+    batch = field_data.new_batch()
+    fields_request = batch.add_scalar_fields_request
 
     assert [] == field_data.get_scalar_field_data.field_name.allowed_values()
 
@@ -366,7 +366,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     expected_allowed_args = sorted(field_info.get_vector_fields_info())
     allowed_args = field_data.get_vector_field_data.field_name.allowed_values()
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
-    allowed_args = transaction.add_vector_fields_request.field_name.allowed_values()
+    allowed_args = batch.add_vector_fields_request.field_name.allowed_values()
     assert expected_allowed_args == allowed_args
 
 
