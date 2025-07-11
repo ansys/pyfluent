@@ -83,8 +83,8 @@ def _data_type_convertor(args_dict):
     return args_dict
 
 
-class TransactionFieldData:
-    """Provides access to Fluent field data on surfaces collected via transactions."""
+class BatchFieldData:
+    """Provides access to Fluent field data on surfaces collected via batches."""
 
     def __init__(
         self,
@@ -93,7 +93,7 @@ class TransactionFieldData:
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of TransactionFieldData class."""
+        """__init__ method of BatchFieldData class."""
         self.data = data
         self._field_info = field_info
         self._allowed_surface_names = allowed_surface_names
@@ -199,7 +199,7 @@ class TransactionFieldData:
         return self.data
 
 
-class Transaction(FieldTransaction):
+class Batch(FieldTransaction):
     """Populates field data on surfaces."""
 
     class _SurfaceTransaction:
@@ -221,10 +221,10 @@ class Transaction(FieldTransaction):
             self.surface_ids = surface_ids
 
     def __init__(self, file_session, field_info):
-        """__init__ method of Transaction class."""
-        self._surface_transactions = []
-        self._scalar_field_transactions = []
-        self._vector_field_transactions = []
+        """__init__ method of Batch class."""
+        self._surface_batches = []
+        self._scalar_field_batches = []
+        self._vector_field_batches = []
         self._file_session = file_session
         self._field_info = field_info
         self._cache_requests = []
@@ -290,10 +290,8 @@ class Transaction(FieldTransaction):
         provide_vertices = SurfaceDataType.Vertices in data_types
         provide_faces = SurfaceDataType.FacesConnectivity in data_types
         for surface_id in self.get_surface_ids(surfaces):
-            self._surface_transactions.append(
-                Transaction._SurfaceTransaction(
-                    surface_id, provide_vertices, provide_faces
-                )
+            self._surface_batches.append(
+                Batch._SurfaceTransaction(surface_id, provide_vertices, provide_faces)
             )
 
     @all_deprecators(
@@ -363,14 +361,14 @@ class Transaction(FieldTransaction):
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            self._scalar_field_transactions.append(
-                Transaction._ScalarFieldTransaction(
+            self._scalar_field_batches.append(
+                Batch._ScalarFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
-            self._scalar_field_transactions.append(
-                Transaction._ScalarFieldTransaction(field_name, surface_ids)
+            self._scalar_field_batches.append(
+                Batch._ScalarFieldTransaction(field_name, surface_ids)
             )
 
     @all_deprecators(
@@ -425,14 +423,14 @@ class Transaction(FieldTransaction):
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            self._vector_field_transactions.append(
-                Transaction._VectorFieldTransaction(
+            self._vector_field_batches.append(
+                Batch._VectorFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
-            self._vector_field_transactions.append(
-                Transaction._VectorFieldTransaction(field_name, surface_ids)
+            self._vector_field_batches.append(
+                Batch._VectorFieldTransaction(field_name, surface_ids)
             )
 
     @all_deprecators(
@@ -558,47 +556,47 @@ class Transaction(FieldTransaction):
             ("boundaryValues", False),
         )
 
-        for transaction in self._scalar_field_transactions:
+        for batch in self._scalar_field_batches:
             if scalar_field_tag not in field_data:
                 field_data[scalar_field_tag] = {}
             field_data_surface = field_data[scalar_field_tag]
-            for surface_id in transaction.surface_ids:
+            for surface_id in batch.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][transaction.field_name] = (
+                field_data_surface[surface_id][batch.field_name] = (
                     self._file_session._data_file.get_face_scalar_field_data(
-                        transaction.phase_name, transaction.field_name, surface_id
+                        batch.phase_name, batch.field_name, surface_id
                     )
                 )
 
         vector_field_tag = (("type", "vector-field"),)
 
-        for transaction in self._vector_field_transactions:
-            if "velocity" not in transaction.field_name:
+        for batch in self._vector_field_batches:
+            if "velocity" not in batch.field_name:
                 raise InvalidFieldName()
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
-            for surface_id in transaction.surface_ids:
+            for surface_id in batch.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][transaction.field_name] = (
+                field_data_surface[surface_id][batch.field_name] = (
                     self._file_session._data_file.get_face_vector_field_data(
-                        transaction.phase_name, surface_id
+                        batch.phase_name, surface_id
                     )
                 )
                 field_data_surface[surface_id]["vector-scale"] = np.array([0.1])
 
-        for transaction in self._surface_transactions:
+        for batch in self._surface_batches:
             if (("type", "surface-data"),) not in field_data:
                 field_data[(("type", "surface-data"),)] = {}
             field_data_surface = field_data[(("type", "surface-data"),)]
-            field_data_surface[transaction.surface_id] = {}
-            field_data_surface[transaction.surface_id]["faces"] = mesh.get_connectivity(
-                transaction.surface_id
+            field_data_surface[batch.surface_id] = {}
+            field_data_surface[batch.surface_id]["faces"] = mesh.get_connectivity(
+                batch.surface_id
             )
-            field_data_surface[transaction.surface_id]["vertices"] = mesh.get_vertices(
-                transaction.surface_id
+            field_data_surface[batch.surface_id]["vertices"] = mesh.get_vertices(
+                batch.surface_id
             )
-        return TransactionFieldData(
+        return BatchFieldData(
             field_data,
             self._field_info,
             _AllowedSurfaceNames(self._field_info),
@@ -616,7 +614,7 @@ class FileFieldData(FieldDataSource):
 
     def new_batch(self):
         """Create a new field batch."""
-        return Transaction(self._file_session, self._field_info)
+        return Batch(self._file_session, self._field_info)
 
     @deprecated(version="0.34", reason="Use `new_batch` instead.")
     def new_transaction(self):
