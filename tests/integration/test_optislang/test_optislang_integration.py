@@ -149,6 +149,20 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
 def test_simple_solve_unitless(static_mixer_params_unitless_session):
     solver_session = static_mixer_params_unitless_session
     fluent_version = solver_session.get_fluent_version()
+
+    case_name = "Static_Mixer_Parameters_unitless.cas.h5"
+    reader = CaseFile(case_file_name=examples.path(case_name))
+
+    input_parameters = {}
+    for p in reader.input_parameters():
+        input_parameters[p.name] = (p.value, p.numeric_value, p.units)
+    output_parameters = {}
+    for o in reader.output_parameters():
+        output_parameters[o.name] = (0, o.units)
+
+    assert input_parameters["inlets_v_ratio"] == ("2", 2.0, "")
+    assert output_parameters["outlet-temp-uniformity-op"] == (0, "")
+
     solver_session.settings.parameters.input_parameters.expression["inlets_v_ratio"] = {
         "value": 3.0
     }
