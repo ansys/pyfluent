@@ -180,14 +180,14 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   # Example: First line connects vertices 0 and 1. Following line connects vertices 1 and 2, and so on.
   array([2, 0, 1, 2, 1, 2], dtype=int32)
 
-Making multiple requests in a single transaction
-------------------------------------------------
-To retrieve multiple field data types in a single transaction, create a transaction object:
+Making multiple requests in a single batch
+------------------------------------------
+To retrieve multiple field data types in a single batch, create a batch object:
 
 .. code-block:: python
 
-  >>> transaction = solver_session.fields.field_data.new_transaction()
-  # This creates a new transaction object for batching multiple requests.
+  >>> batch = solver_session.fields.field_data.new_batch()
+  # This creates a new batch object for batching multiple requests.
 
 Add multiple requests using ``add_requests`` and access the data with ``get_response``:
 
@@ -197,7 +197,7 @@ Add multiple requests using ``add_requests`` and access the data with ``get_resp
   >>> pressure_request = ScalarFieldDataRequest(surfaces=[1, 2], field_name="pressure", node_value=True, boundary_value=True)
   >>> velocity_request = VectorFieldDataRequest(surfaces=[1, 2], field_name="velocity")
 
-  >>> payload_data = transaction.add_requests(vertices_and_centroid_request, pressure_request, velocity_request).get_response()
+  >>> payload_data = batch.add_requests(vertices_and_centroid_request, pressure_request, velocity_request).get_response()
 
 Retrieve data using ``get_field_data``, either by reusing or modifying request objects:
 
@@ -212,7 +212,7 @@ Retrieve data using ``get_field_data``, either by reusing or modifying request o
   dict_keys([1])
 
 .. note::
-  ``PathlinesFieldDataRequest`` allows only one unique ``field_name`` per transaction.
+  ``PathlinesFieldDataRequest`` allows only one unique ``field_name`` per batch.
 
 Allowed values
 --------------
@@ -229,8 +229,8 @@ Some sample use cases are demonstrated below:
   'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
   'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
 
-  >>> transaction = field_data.new_transaction()
-  >>> transaction.add_scalar_fields_request.field_name.allowed_values()
+  >>> batch = field_data.new_batch()
+  >>> batch.add_scalar_fields_request.field_name.allowed_values()
   ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
   'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
   'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]

@@ -218,25 +218,25 @@ class FieldDataSource(BaseFieldDataSource, ABC):
 
     This class defines the interface for retrieving field data based on user requests.
     In addition to the methods in `BaseFieldDataSource` it provides a method to create
-    new field transaction objects.
+    new field batch objects.
 
     Implementing classes should define:
     - A method to obtain surface IDs from user-provided surface names or numerical identifiers.
     - A method to retrieve field data based on a given request.
-    - A method to create new field transaction.
+    - A method to create new field batch.
 
     Subclasses must provide concrete implementations for all abstract methods.
     """
 
     @abstractmethod
-    def new_transaction(self):
-        """Create a new field transaction."""
+    def new_batch(self):
+        """Create a new field batch."""
         pass
 
 
-class FieldTransaction(ABC):
+class FieldBatch(ABC):
     """
-    Abstract base class for handling field data transactions.
+    Abstract base class for handling field data batches.
 
     This class defines the interface for requesting field data based on user inputs
     and retrieving responses from the server. It provides abstract methods that allow
