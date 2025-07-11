@@ -81,14 +81,24 @@ def find_remoting_ip() -> str:
     """
     from ansys.fluent.core import INFER_REMOTING_IP_TIMEOUT_PER_IP
 
-    for addrinfo in socket.getaddrinfo(
-        "localhost",
-        0,
-        family=socket.AF_INET,
-        type=socket.SOCK_STREAM,
-        flags=socket.AI_PASSIVE,
-    ):
-        ip = addrinfo[-1][0]
+    all_ips = [
+        addrinfo[-1][0]
+        for addrinfo in socket.getaddrinfo(
+            "localhost",
+            0,
+            family=socket.AF_INET,
+            type=socket.SOCK_STREAM,
+            flags=socket.AI_PASSIVE,
+        )
+    ]
+    # Check if we can establish a gRPC connection using localhost first
+    # before trying other IPs. It has been observed that in some systems,
+    # although we can establish a test gRPC connection using one of the
+    # resolved IP addresses in addrinfo, PyFluent fails to connect to Fluent
+    # using that IP address. Using localhost usually helps in such cases.
+    all_ips.insert(0, "localhost")
+
+    for ip in all_ips:
         port = get_free_port()
         address = f"{ip}:{port}"
         with _GrpcServer(address):
