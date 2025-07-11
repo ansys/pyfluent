@@ -32,8 +32,8 @@ from ansys.api.fluent.v0.field_data_pb2 import DataLocation
 from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldInfo,
+    FieldBatch,
     FieldDataSource,
-    FieldTransaction,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
@@ -199,7 +199,7 @@ class BatchFieldData:
         return self.data
 
 
-class Batch(FieldTransaction):
+class Batch(FieldBatch):
     """Populates field data on surfaces."""
 
     class _SurfaceTransaction:

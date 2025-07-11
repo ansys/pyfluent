@@ -41,8 +41,8 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldDataSource,
     BaseFieldInfo,
+    FieldBatch,
     FieldDataSource,
-    FieldTransaction,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
@@ -500,8 +500,8 @@ class BaseFieldData:
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
-    """Provides access to Fluent field data on surfaces collected via transactions."""
+class BatchFieldData(BaseFieldData, BaseFieldDataSource):
+    """Provides access to Fluent field data on surfaces collected via batches."""
 
     def __init__(
         self,
@@ -510,7 +510,7 @@ class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of TransactionFieldData class."""
+        """__init__ method of BatchFieldData class."""
         super().__init__(
             data, field_info, allowed_surface_names, allowed_scalar_field_names
         )
@@ -522,7 +522,7 @@ class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
         return self.data
 
 
-class Transaction(FieldTransaction):
+class Batch(FieldBatch):
     """Populates Fluent field data on surfaces."""
 
     def __init__(
@@ -534,7 +534,7 @@ class Transaction(FieldTransaction):
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
-        """__init__ method of Transaction class."""
+        """__init__ method of Batch class."""
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
@@ -878,7 +878,7 @@ class Transaction(FieldTransaction):
             self._cache_requests.append(req)
         return self
 
-    def get_fields(self) -> TransactionFieldData:
+    def get_fields(self) -> BatchFieldData:
         """Get data for previously added requests."""
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
@@ -886,7 +886,7 @@ class Transaction(FieldTransaction):
         )
         return self.get_response()
 
-    def get_response(self) -> TransactionFieldData:
+    def get_response(self) -> BatchFieldData:
         """Get data for previously added requests.
 
         Returns
@@ -897,7 +897,7 @@ class Transaction(FieldTransaction):
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return TransactionFieldData(
+        return BatchFieldData(
             ChunkParser().extract_fields(
                 self._service.get_fields(self._fields_request)
             ),
@@ -1340,7 +1340,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
 
     def new_batch(self):
         """Create a new field batch."""
-        return Transaction(
+        return Batch(
             self._service,
             self._field_info,
             self._allowed_surface_ids,
