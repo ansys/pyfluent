@@ -37,8 +37,8 @@ You can use the following methods to retrieve various types of field metadata:
 - ``get_vector_fields_info`` - Returns information about vector fields.
 - ``get_surfaces_info`` - Returns information about available surfaces.
 
-Scalar fields information
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Scalar field information
+~~~~~~~~~~~~~~~~~~~~~~~~
 To retrieve details about scalar fields (such as field name, domain, and section),
 use the ``get_scalar_fields_info`` method:
 
@@ -61,7 +61,7 @@ The field name must be one of the keys returned by the ``get_scalar_fields_info`
   >>> field_info.get_scalar_field_range("cell-weight")
   [8.0, 24.0]
 
-Vector fields information
+Vector field information
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 To retrieve metadata about vector fields, use the ``get_vector_fields_info`` method:
 
@@ -71,8 +71,8 @@ To retrieve metadata about vector fields, use the ``get_vector_fields_info`` met
   {'velocity': {'x-component': 'x-velocity', 'y-component': 'y-velocity', 'z-component': 'z-velocity'},
    'relative-velocity': {'x-component': 'relative-x-velocity', 'y-component': 'relative-y-velocity', 'z-component': 'relative-z-velocity'}}
 
-Get surfaces information
-~~~~~~~~~~~~~~~~~~~~~~~~
+Get surface information
+~~~~~~~~~~~~~~~~~~~~~~~
 To get information about available surfaces (including surface ID, zone ID, and zone type),
 use the ``get_surfaces_info`` method:
 .. code-block:: python
