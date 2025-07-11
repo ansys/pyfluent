@@ -1470,7 +1470,12 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             return alias_obj
         else:
-            return getattr(super(), name)
+            try:
+                return getattr(super(), name)
+            except AttributeError as ex:
+                raise AttributeError(
+                    f"'{self.__class__.__name__}' has no attribute '{name}'"
+                ) from ex
 
     def __add__(self, other):
         if not isinstance(other, NamedObject):
