@@ -39,8 +39,8 @@ You can use the following methods to retrieve various types of field metadata:
 
 Scalar field information
 ~~~~~~~~~~~~~~~~~~~~~~~~
-To retrieve details about scalar fields (such as field name, domain, and section),
-use the ``get_scalar_fields_info`` method:
+To retrieve details about scalar fields (such as field name, domain, and section), use
+the :meth:`get_scalar_fields_info() <ansys.fluent.core.services.field_data.FieldInfo.get_scalar_fields_info>`:
 
 .. code-block:: python
 
@@ -53,8 +53,8 @@ use the ``get_scalar_fields_info`` method:
 
 Scalar field range
 ~~~~~~~~~~~~~~~~~~
-To get the range (minimum and maximum values) of a specific scalar field, use the ``get_scalar_field_range`` method.
-The field name must be one of the keys returned by the ``get_scalar_fields_info`` method.
+To get the range (minimum and maximum values) of a specific scalar field, use :meth:`get_scalar_field_range() <ansys.fluent.core.services.field_data.FieldInfo.get_scalar_field_range>`.
+The field name must be one of the keys returned by :meth:`get_scalar_fields_info() <ansys.fluent.core.services.field_data.FieldInfo.get_scalar_fields_info>`.
 
 .. code-block:: python
 
@@ -63,7 +63,7 @@ The field name must be one of the keys returned by the ``get_scalar_fields_info`
 
 Vector field information
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-To retrieve metadata about vector fields, use the ``get_vector_fields_info`` method:
+To retrieve metadata about vector fields, use :meth:`get_vector_fields_info() <ansys.fluent.core.services.field_data.FieldInfo.get_vector_fields_info>`:
 
 .. code-block:: python
 
@@ -74,7 +74,7 @@ To retrieve metadata about vector fields, use the ``get_vector_fields_info`` met
 Get surface information
 ~~~~~~~~~~~~~~~~~~~~~~~
 To get information about available surfaces (including surface ID, zone ID, and zone type),
-use the ``get_surfaces_info`` method:
+use :meth:`get_surfaces_info() <ansys.fluent.core.services.field_data.FieldInfo.get_surfaces_info>`:
 .. code-block:: python
 
   >>> field_info.get_surfaces_info()
