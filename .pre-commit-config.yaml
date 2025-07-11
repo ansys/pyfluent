@@ -1,94 +1,94 @@
 ci:
   autofix_commit_msg: |
-      ci: auto fixes from pre-commit.com hooks
+    ci: auto fixes from pre-commit.com hooks
 
-      for more information, see https://pre-commit.ci
-  autoupdate_commit_msg: 'ci: pre-commit autoupdate'
+    for more information, see https://pre-commit.ci
+  autoupdate_commit_msg: "ci: pre-commit autoupdate"
   autoupdate_schedule: monthly
 
 repos:
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        args: [--target-version=py310]
 
-- repo: https://github.com/psf/black
-  rev: 24.10.0
-  hooks:
-  - id: black
-    args: [
-      --target-version=py310
-    ]
+  - repo: https://github.com/pycqa/isort
+    rev: 6.0.0
+    hooks:
+      - id: isort
 
-- repo: https://github.com/pycqa/isort
-  rev: 6.0.0
-  hooks:
-  - id: isort
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-bugbear==24.10.31]
+        args:
+          [
+            --exclude,
+            src/ansys/fluent/core/generated,
+            --count,
+            --statistics,
+            --max-complexity,
+            "10",
+            --max-line-length,
+            "88",
+            --extend-ignore,
+            E203 E501 C901 B007 B009 B010 B011 B028,
+            src,
+            doc,
+            examples,
+            tests,
+          ]
 
-- repo: https://github.com/PyCQA/flake8
-  rev: 7.1.1
-  hooks:
-  - id: flake8
-    additional_dependencies: [flake8-bugbear==24.10.31]
-    args: [
-      --exclude, src/ansys/fluent/core/generated,
-      --count,
-      --statistics,
-      --max-complexity, "10",
-      --max-line-length, "88",
-      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028,
-      src, doc, examples, tests
-    ]
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args: ["--toml", "pyproject.toml"]
+        additional_dependencies: ["tomli"]
 
-- repo: https://github.com/codespell-project/codespell
-  rev: v2.3.0
-  hooks:
-  - id: codespell
-    args: ["--toml", "pyproject.toml"]
-    additional_dependencies: ["tomli"]
+  # - repo: https://github.com/PyCQA/docformatter
+  #   rev: v1.7.5
+  #   hooks:
+  #   - id: docformatter
+  #     stages: [manual]
+  #     args: ["--config", "pyproject.toml"]
 
-# - repo: https://github.com/PyCQA/docformatter
-#   rev: v1.7.5
-#   hooks:
-#   - id: docformatter
-#     stages: [manual]
-#     args: ["--config", "pyproject.toml"]
+  #- repo: https://github.com/pycqa/pydocstyle
+  #  rev: 6.1.1
+  #  hooks:
+  #  - id: pydocstyle
+  #    additional_dependencies: [toml]
+  #    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py)
+  #    args: [
+  #      # Error codes: http://www.pydocstyle.org/en/stable/error_codes.html
+  #      --ignore, "D107,D105,D4",
+  #      --count,
+  #    ]
 
-#- repo: https://github.com/pycqa/pydocstyle
-#  rev: 6.1.1
-#  hooks:
-#  - id: pydocstyle
-#    additional_dependencies: [toml]
-#    exclude: ^(tests\/|ansys\/api\/fluent\/v0\/|ansys\/fluent\/core\/meshing\/tui.py|ansys\/fluent\/core\/solver\/tui.py|ansys\/fluent\/core\/solver\/settings.py)
-#    args: [
-#      # Error codes: http://www.pydocstyle.org/en/stable/error_codes.html
-#      --ignore, "D107,D105,D4",
-#      --count,
-#    ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
 
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
-  hooks:
-    - id: check-yaml
+  - repo: https://github.com/PyCQA/pylint
+    rev: v3.3.1
+    hooks:
+      - id: pylint
+        args: ["--reports", "n", "--score", "n", "--rcfile=pylintrc"]
 
-- repo: https://github.com/PyCQA/pylint
-  rev: v3.3.1
-  hooks:
-    - id: pylint
-      args:
-        [
-          "--reports", "n",
-          "--score", "n",
-          "--rcfile=pylintrc",
-        ]
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []
 
-- repo: https://github.com/compilerla/conventional-pre-commit
-  rev: v3.4.0
-  hooks:
-    - id: conventional-pre-commit
-      stages: [commit-msg]
-      args: []
-
-- repo: https://github.com/ansys/pre-commit-hooks
-  rev: v0.5.1
-  hooks:
-    - id: add-license-headers
-      stages: [manual]
-      args:
-      - --start_year=2021
+  - repo: https://github.com/ansys/pre-commit-hooks
+    rev: v0.5.1
+    hooks:
+      - id: add-license-headers
+        stages: [manual]
+        args:
+          - --start_year=2021
