@@ -108,6 +108,8 @@ class DockerLauncher:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
+        use_docker_compose: bool = False,
+        use_podman_compose: bool = False,
     ):
         """
         Launch a Fluent session in container mode.
@@ -161,6 +163,10 @@ class DockerLauncher:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
+        use_docker_compose : bool, optional
+            If True, uses Docker Compose to start the Fluent container. Defaults to False.
+        use_podman_compose : bool, optional
+            If True, uses Podman Compose to start the Fluent container. Defaults to False.
 
         Returns
         -------
@@ -203,7 +209,10 @@ class DockerLauncher:
 
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
-                self._args, **self.argvals["container_dict"]
+                self._args,
+                **self.argvals["container_dict"],
+                use_docker_compose=self.argvals["use_docker_compose"],
+                use_podman_compose=self.argvals["use_podman_compose"],
             )
             dict_str = dict_to_str(config_dict)
             print("\nDocker container run configuration:\n")
@@ -214,11 +223,15 @@ class DockerLauncher:
         logger.debug(f"Fluent container launcher args: {self._args}")
         logger.debug(f"Fluent container launcher argvals:\n{dict_to_str(self.argvals)}")
 
-        if is_compose():
+        if is_compose(
+            self.argvals["use_docker_compose"], self.argvals["use_podman_compose"]
+        ):
             port, config_dict, container = start_fluent_container(
                 self._args,
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
+                use_docker_compose=self.argvals["use_docker_compose"],
+                use_podman_compose=self.argvals["use_podman_compose"],
             )
 
             _, _, password = _get_server_info_from_container(config_dict=config_dict)
@@ -237,6 +250,8 @@ class DockerLauncher:
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
             container=container,
+            use_docker_compose=self.argvals["use_docker_compose"],
+            use_podman_compose=self.argvals["use_podman_compose"],
         )
 
         session = self.new_session(
@@ -248,7 +263,9 @@ class DockerLauncher:
 
         session._container = container
 
-        if not is_compose():
+        if not is_compose(
+            self.argvals["use_docker_compose"], self.argvals["use_podman_compose"]
+        ):
             if (
                 self.argvals["start_watchdog"] is None
                 and self.argvals["cleanup_on_exit"]

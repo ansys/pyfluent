@@ -30,7 +30,9 @@ import uuid
 class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
-    def __init__(self, *, container_dict):
+    def __init__(self, use_docker_compose, use_podman_compose, container_dict):
+        self._use_docker_compose = use_docker_compose
+        self._use_podman_compose = use_podman_compose
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
         self._container_dict = container_dict
         self._image_name = (
@@ -41,9 +43,6 @@ class ComposeBasedLauncher:
         self._container_source.remove("compose")
 
         self._compose_file = self._get_compose_file(container_dict)
-
-    def _is_podman_selected(self):
-        return os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
 
     def _get_compose_file(self, container_dict):
         """Generates compose file for the Docker Compose setup.
@@ -129,14 +128,14 @@ class ComposeBasedLauncher:
         """
 
         # Determine the compose command
-        if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1":
+        if self._use_podman_compose:
             self._compose_cmds = (
                 ["sudo", "podman", "compose"]
                 if hasattr(self, "_container_source")
                 and "sudo" in self._container_source
                 else ["podman", "compose"]
             )
-        elif os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1":
+        elif self._use_docker_compose:
             self._compose_cmds = ["docker", "compose"]
         else:
             raise RuntimeError("Neither Docker nor Podman is specified.")
@@ -148,7 +147,7 @@ class ComposeBasedLauncher:
         try:
             cmd = self._container_source + ["images", "-q", self._image_name]
             # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
-            if self._is_podman_selected():
+            if self._use_podman_compose:
                 sudo_cmd = ["sudo"] + cmd
                 output_1 = subprocess.check_output(cmd)
                 output_2 = subprocess.check_output(sudo_cmd)
