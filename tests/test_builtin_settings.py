@@ -727,4 +727,4 @@ def test_context_manager_2(new_solver_session):
 
     with using(solver):
         ReadCase(file_name=import_filename)
-        assert Viscous().model() == "laminar"
+        assert Viscous().model() == "k-omega"

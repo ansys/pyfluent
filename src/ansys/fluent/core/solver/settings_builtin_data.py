@@ -729,19 +729,19 @@ DATA = {
     "ReadData": ("Command", "file.read_data"),
     "ReadCaseData": ("Command", "file.read_case_data"),
     "WriteCase": (
-        "Singleton",
+        "Command",
         {
             since(FluentVersion.v241): "file.write_case",
         },
     ),
     "WriteData": (
-        "Singleton",
+        "Command",
         {
             since(FluentVersion.v241): "file.write_data",
         },
     ),
     "WriteCaseData": (
-        "Singleton",
+        "Command",
         {
             since(FluentVersion.v241): "file.write_case_data",
         },

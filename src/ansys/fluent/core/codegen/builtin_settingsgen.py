@@ -88,26 +88,32 @@ def generate(version: str):
             f.write(f"class {name}(_{kind}Setting):\n")
             doc_kind = "command" if kind == "Command" else "setting"
             f.write(f'    """{name} {doc_kind}."""\n\n')
-            f.write("    def __init__(self")
-            for named_object in named_objects:
-                f.write(f", {named_object}: str")
-            f.write(", settings_source: SettingsBase | Solver | None = None")
-            if kind == "NonCreatableNamedObject":
-                f.write(", name: str = None")
-            elif kind == "CreatableNamedObject":
-                f.write(", name: str = None, new_instance_name: str = None")
             if kind == "Command":
-                f.write(", **kwargs")
-            f.write("):\n")
-            f.write("        super().__init__(settings_source=settings_source")
-            if kind == "NonCreatableNamedObject":
-                f.write(", name=name")
-            elif kind == "CreatableNamedObject":
-                f.write(", name=name, new_instance_name=new_instance_name")
-            for named_object in named_objects:
-                f.write(f", {named_object}={named_object}")
-            if kind == "Command":
-                f.write(", **kwargs")
+                f.write(
+                    "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
+                )
+                f.write("       instance = super().__new__(cls)\n")
+                f.write(
+                    "       instance.__init__(settings_source=settings_source, **kwargs)\n"
+                )
+                f.write("       return instance(**kwargs")
+            else:
+                f.write("    def __init__(self")
+                for named_object in named_objects:
+                    f.write(f", {named_object}: str")
+                f.write(", settings_source: SettingsBase | Solver | None = None")
+                if kind == "NonCreatableNamedObject":
+                    f.write(", name: str = None")
+                elif kind == "CreatableNamedObject":
+                    f.write(", name: str = None, new_instance_name: str = None")
+                f.write("):\n")
+                f.write("        super().__init__(settings_source=settings_source")
+                if kind == "NonCreatableNamedObject":
+                    f.write(", name=name")
+                elif kind == "CreatableNamedObject":
+                    f.write(", name=name, new_instance_name=new_instance_name")
+                for named_object in named_objects:
+                    f.write(f", {named_object}={named_object}")
             f.write(")\n\n")
 
     with open(_PYI_FILE, "w") as f:
