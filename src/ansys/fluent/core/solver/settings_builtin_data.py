@@ -748,4 +748,6 @@ DATA = {
     ),
     "Initialize": ("Command", "solution.initialization.initialize"),
     "Calculate": ("Command", "solution.run_calculation.calculate"),
+    "Iterate": ("Command", "solution.run_calculation.iterate"),
+    "DualTimeIterate": ("Command", "solution.run_calculation.dual_time_iterate"),
 }
