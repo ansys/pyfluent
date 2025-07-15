@@ -355,8 +355,8 @@ class BaseSession:
 
     def _exit_compose_service(self):
         if self._fluent_connection._container and is_compose(
-            self._launcher_args["use_docker_compose"],
-            self._launcher_args["use_podman_compose"],
+            self._fluent_connection._use_docker_compose,
+            self._fluent_connection._use_podman_compose,
         ):
             self._fluent_connection._container.stop()
 
