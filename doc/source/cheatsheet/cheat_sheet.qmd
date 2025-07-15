@@ -1058,7 +1058,7 @@ pyfluent.search("local*", wildcard=True)
 cd pyfluent/docker
 
 # Copy needed files
-python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
+python copy_ansys_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
 
 # Build the Docker image
 sudo docker build -t ansys_inc <path to 'docker/fluent_<version>' directory>
