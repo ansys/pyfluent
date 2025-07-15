@@ -70,7 +70,7 @@ class LaunchFluentError(Exception):
 
     def __init__(self, launch_string):
         """__init__ method of LaunchFluentError class."""
-        details = "\n" + "Fluent Launch string: " + launch_string
+        details = "\n" + "Fluent Launch command: " + launch_string
         super().__init__(details)
 
 

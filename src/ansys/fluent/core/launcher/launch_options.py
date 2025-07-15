@@ -24,11 +24,13 @@
 
 from enum import Enum
 import os
+import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
 from ansys.fluent.core.launcher.launcher_utils import is_windows
+from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -280,11 +282,22 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     return fluent_launch_mode
 
 
+def _should_add_driver_null(ui_mode: UIMode | None = None) -> bool:
+    return ui_mode not in {UIMode.GUI, UIMode.HIDDEN_GUI}
+
+
 def _get_graphics_driver(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
+    ui_mode: UIMode | None = None,
 ):
+    ui_mode_ = UIMode(ui_mode)
+    if graphics_driver is not None and ui_mode_ not in {UIMode.GUI, UIMode.HIDDEN_GUI}:
+        warnings.warn(
+            "User-specified value for graphics driver is ignored while launching Fluent without GUI or without graphics.",
+            PyFluentUserWarning,
+        )
     if isinstance(
         graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
     ):
@@ -294,6 +307,12 @@ def _get_graphics_driver(
         if is_windows()
         else FluentLinuxGraphicsDriver(graphics_driver)
     )
+    if _should_add_driver_null(ui_mode_):
+        return (
+            FluentWindowsGraphicsDriver.NULL
+            if is_windows()
+            else FluentLinuxGraphicsDriver.NULL
+        )
     return graphics_driver
 
 
@@ -361,7 +380,9 @@ def _validate_gpu(gpu: bool | list, dimension: int):
 
 def _get_argvals_and_session(argvals):
     _validate_gpu(argvals["gpu"], argvals["dimension"])
-    argvals["graphics_driver"] = _get_graphics_driver(argvals["graphics_driver"])
+    argvals["graphics_driver"] = _get_graphics_driver(
+        argvals["graphics_driver"], argvals["ui_mode"]
+    )
     argvals["mode"] = FluentMode(argvals["mode"])
     del argvals["self"]
     new_session = argvals["mode"].get_fluent_value()

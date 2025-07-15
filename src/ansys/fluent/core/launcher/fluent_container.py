@@ -74,12 +74,18 @@ config_dict =
 import logging
 import os
 from pathlib import Path, PurePosixPath
+from pprint import pformat
 import tempfile
 from typing import Any, List
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
+from ansys.fluent.core.launcher.error_handler import (
+    LaunchFluentError,
+)
 from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.execution import timeout_loop
@@ -118,6 +124,20 @@ class LicenseServerNotSpecified(KeyError):
         )
 
 
+def dict_to_str(dict: dict) -> str:
+    """Converts the dict to string while hiding the 'environment' argument from the dictionary,
+    if the environment variable 'PYFLUENT_HIDE_LOG_SECRETS' is '1'.
+    This is useful for logging purposes, to avoid printing sensitive information such as license server details.
+    """
+
+    if "environment" in dict and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+        modified_dict = dict.copy()
+        modified_dict.pop("environment")
+        return pformat(modified_dict)
+    else:
+        return pformat(dict)
+
+
 @all_deprecators(
     deprecate_arg_mappings=[
         {
@@ -140,7 +160,7 @@ def configure_container_dict(
     args: List[str],
     mount_source: str | Path | None = None,
     mount_target: str | Path | None = None,
-    timeout: int = 60,
+    timeout: int | None = None,
     port: int | None = None,
     license_server: str | None = None,
     container_server_info_file: str | Path | None = None,
@@ -158,11 +178,14 @@ def configure_container_dict(
     args : List[str]
         List of Fluent launch arguments.
     mount_source : str | Path, optional
-        Existing path in the host operating system that will be mounted to ``mount_target``.
+        Path on the host system to mount into the container. This directory will serve as the working directory
+        for the Fluent process inside the container. If not specified, PyFluent's current working directory will
+        be used.
     mount_target : str | Path, optional
-        Path inside the container where ``mount_source`` will be mounted to.
+        Path inside the container where ``mount_source`` will be mounted. This will be the working directory path
+        visible to the Fluent process running inside the container.
     timeout : int, optional
-        Time limit  for the Fluent container to start, in seconds. By default, 30 seconds.
+        Time limit for the Fluent container to start, in seconds.
     port : int, optional
         Port for Fluent container to use.
     license_server : str, optional
@@ -213,17 +236,21 @@ def configure_container_dict(
     See also :func:`start_fluent_container`.
     """
 
-    if (
-        container_dict
-        and "environment" in container_dict
-        and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1"
-    ):
-        container_dict_h = container_dict.copy()
-        container_dict_h.pop("environment")
-        logger.debug(f"container_dict before processing: {container_dict_h}")
-        del container_dict_h
-    else:
-        logger.debug(f"container_dict before processing: {container_dict}")
+    if timeout is not None:
+        warnings.warn(
+            "configure_container_dict(timeout) is deprecated, use launch_fluent(start_timeout) instead.",
+            PyFluentDeprecationWarning,
+        )
+
+    logger.debug(f"container_dict before processing:\n{dict_to_str(container_dict)}")
+
+    # Starting with 'mount_source' because it is not tied to the 'working_dir'.
+    # The intended 'mount_source' logic is as follows, if it is not directly specified:
+    # 1. If 'file_transfer_service' is provided, use its 'mount_source'.
+    # 2. Try to use the environment variable 'PYFLUENT_CONTAINER_MOUNT_SOURCE', if it is set.
+    # 3. Use the value from 'pyfluent.CONTAINER_MOUNT_SOURCE', if it is set.
+    # 4. If 'volumes' is specified in 'container_dict', try to infer the value from it.
+    # 5. Finally, use the current working directory, which is always available.
 
     if not mount_source:
         if file_transfer_service:
@@ -231,53 +258,69 @@ def configure_container_dict(
         else:
             mount_source = os.getenv(
                 "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-                pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
+                pyfluent.CONTAINER_MOUNT_SOURCE,
             )
 
-    elif "volumes" in container_dict:
-        logger.warning(
-            "'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by specified 'mount_source'."
-        )
-        container_dict.pop("volumes")
+    if "volumes" in container_dict:
+        if len(container_dict["volumes"]) != 1:
+            logger.warning(
+                "Multiple volumes being mounted in the Docker container, "
+                "Assuming the first mount is the working directory for Fluent."
+            )
+        volumes_string = container_dict["volumes"][0]
+        if mount_source:
+            logger.warning(
+                "'volumes' keyword specified in 'container_dict', but "
+                "it is going to be overwritten by specified 'mount_source'."
+            )
+        else:
+            mount_source = volumes_string.split(":")[0]
+            logger.debug(f"mount_source: {mount_source}")
+        inferred_mount_target = volumes_string.split(":")[1]
+        logger.debug(f"inferred_mount_target: {inferred_mount_target}")
 
-    if not os.path.exists(mount_source):
-        os.makedirs(mount_source)
+    if not mount_source:
+        logger.debug("No container 'mount_source' specified, using default value.")
+        mount_source = os.getcwd()
+
+    # The intended 'mount_target' logic is as follows, if it is not directly specified:
+    # 1. If 'working_dir' is specified in 'container_dict', use it as 'mount_target'.
+    # 2. Use the environment variable 'PYFLUENT_CONTAINER_MOUNT_TARGET', if it is set.
+    # 3. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
+    # 4. Finally, use the value from 'pyfluent.CONTAINER_MOUNT_TARGET', which is always set.
 
     if not mount_target:
-        mount_target = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_TARGET", pyfluent.CONTAINER_MOUNT_TARGET
-        )
-    elif "volumes" in container_dict:
-        logger.warning(
-            "'volumes' keyword specified in 'container_dict', but "
-            "it is going to be overwritten by specified 'mount_target'."
-        )
-        container_dict.pop("volumes")
+        if "working_dir" in container_dict:
+            mount_target = container_dict["working_dir"]
+        else:
+            mount_target = os.getenv("PYFLUENT_CONTAINER_MOUNT_TARGET")
+
+    if "working_dir" in container_dict and mount_target:
+        # working_dir will be set later to the final value of mount_target
+        container_dict.pop("working_dir")
+
+    if not mount_target and "volumes" in container_dict:
+        mount_target = inferred_mount_target
+
+    if not mount_target:
+        logger.debug("No container 'mount_target' specified, using default value.")
+        mount_target = pyfluent.CONTAINER_MOUNT_TARGET
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
     else:
-        logger.debug(f"container_dict['volumes']: {container_dict['volumes']}")
-        if len(container_dict["volumes"]) != 1:
-            logger.warning(
-                "Multiple volumes being mounted in the Docker container, "
-                "using the first mount as the working directory for Fluent."
-            )
-        volumes_string = container_dict["volumes"][0]
-        mount_target = ""
-        for c in reversed(volumes_string):
-            if c == ":":
-                break
-            else:
-                mount_target += c
-        mount_target = mount_target[::-1]
-        mount_source = volumes_string.replace(":" + mount_target, "")
-        logger.debug(f"mount_source: {mount_source}")
-        logger.debug(f"mount_target: {mount_target}")
+        container_dict["volumes"][0] = f"{mount_source}:{mount_target}"
+
     logger.warning(
-        f"Starting Fluent container mounted to {mount_source}, with this path available as {mount_target} for the Fluent session running inside the container."
+        f"Configuring Fluent container to mount to {mount_source}, "
+        f"with this path available as {mount_target} for the Fluent session running inside the container."
     )
+
+    if "working_dir" not in container_dict:
+        container_dict.update(
+            working_dir=mount_target,
+        )
+
     port_mapping = {port: port} if port else {}
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
@@ -315,11 +358,7 @@ def configure_container_dict(
             labels={"test_name": test_name},
         )
 
-    if "working_dir" not in container_dict:
-        container_dict.update(
-            working_dir=mount_target,
-        )
-
+    # Find the server info file name from the command line arguments
     if "command" in container_dict:
         for v in container_dict["command"]:
             if v.startswith("-sifile="):
@@ -342,6 +381,20 @@ def configure_container_dict(
         )
         os.close(fd)
         container_server_info_file = PurePosixPath(mount_target) / Path(sifile).name
+
+    logger.debug(
+        f"Using server info file '{container_server_info_file}' for Fluent container."
+    )
+
+    # If the 'command' had already been specified in the 'container_dict',
+    # maintain other 'command' arguments but update the '-sifile' argument,
+    # as the 'mount_target' or 'working_dir' may have changed.
+    if "command" in container_dict:
+        for i, item in enumerate(container_dict["command"]):
+            if item.startswith("-sifile="):
+                container_dict["command"][i] = f"-sifile={container_server_info_file}"
+    else:
+        container_dict["command"] = args + [f"-sifile={container_server_info_file}"]
 
     if not fluent_image:
         if not image_tag:
@@ -384,16 +437,13 @@ def configure_container_dict(
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
-    fluent_commands = [f"-sifile={container_server_info_file}"] + args
-
-    container_dict_default = {}
-    container_dict_default.update(
-        command=fluent_commands,
+    container_dict_base = {}
+    container_dict_base.update(
         detach=True,
         auto_remove=True,
     )
 
-    for k, v in container_dict_default.items():
+    for k, v in container_dict_base.items():
         if k not in container_dict:
             container_dict[k] = v
 
@@ -403,6 +453,13 @@ def configure_container_dict(
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
+
+    logger.debug(
+        f"Fluent container container_grpc_port: {container_grpc_port}, "
+        f"host_server_info_file: '{host_server_info_file}', "
+        f"remove_server_info_file: {remove_server_info_file}"
+    )
+    logger.debug(f"container_dict after processing:\n{dict_to_str(container_dict)}")
 
     return (
         container_dict,
@@ -414,7 +471,7 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str], container_dict: dict | None = None
+    args: List[str], container_dict: dict | None = None, start_timeout: int = 60
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
@@ -424,6 +481,9 @@ def start_fluent_container(
         List of Fluent launch arguments.
     container_dict : dict, optional
         Dictionary with Docker container configuration.
+    start_timeout : int, optional
+        Timeout in seconds for the container to start. If not specified, it defaults to 60
+        seconds.
 
     Returns
     -------
@@ -457,21 +517,14 @@ def start_fluent_container(
         host_server_info_file,
         remove_server_info_file,
     ) = container_vars
+    launch_string = " ".join(config_dict["command"])
 
-    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-        logger.debug(f"container_vars: {container_vars}")
-    else:
-        config_dict_h = config_dict.copy()
-        config_dict_h.pop("environment")
-        container_vars_tmp = (
-            config_dict_h,
-            timeout,
-            port,
-            host_server_info_file,
-            remove_server_info_file,
+    if timeout:
+        logger.warning(
+            "launch_fluent(start_timeout) overridden by configure_container_dict(timeout) value."
         )
-        logger.debug(f"container_vars: {container_vars_tmp}")
-        del container_vars_tmp
+        start_timeout = timeout
+        del timeout
 
     try:
         if is_compose():
@@ -505,18 +558,36 @@ def start_fluent_container(
                 config_dict.pop("fluent_image"), **config_dict
             )
 
+            logger.debug(
+                f"Waiting for Fluent container for up to {start_timeout} seconds..."
+            )
+
             success = timeout_loop(
-                lambda: host_server_info_file.stat().st_mtime > last_mtime, timeout
+                lambda: host_server_info_file.stat().st_mtime > last_mtime,
+                start_timeout,
             )
 
             if not success:
-                raise TimeoutError(
-                    "Fluent container launch has timed out, stop container manually."
-                )
+                try:
+                    container.stop()
+                except Exception as stop_ex:
+                    logger.error(f"Failed to stop container: {stop_ex}")
+                    raise TimeoutError(
+                        f"Fluent container launch has timed out after {start_timeout} seconds. "
+                        f"Additionally, stopping the container failed: {stop_ex}"
+                    ) from stop_ex
+                else:
+                    raise TimeoutError(
+                        f"Fluent container launch has timed out after {start_timeout} seconds."
+                        " The container was stopped."
+                    )
             else:
                 _, _, password = _parse_server_info_file(str(host_server_info_file))
 
                 return port, password, container
+    except Exception as ex:
+        logger.error(f"Exception caught - {type(ex).__name__}: {ex}")
+        raise LaunchFluentError(launch_string) from ex
     finally:
         if remove_server_info_file and host_server_info_file.exists():
             host_server_info_file.unlink()

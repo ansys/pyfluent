@@ -221,36 +221,7 @@ class BaseSession:
             FieldDataService, self._error_state
         )
 
-        class Fields:
-            """Container for field and solution variables."""
-
-            def __init__(self, _session):
-                """Initialize Fields."""
-                self._is_solution_data_valid = (
-                    _session._app_utilities.is_solution_data_available
-                )
-                self.field_info = service_creator("field_info").create(
-                    _session._field_data_service,
-                    self._is_solution_data_valid,
-                )
-                self.field_data = service_creator("field_data").create(
-                    _session._field_data_service,
-                    self.field_info,
-                    self._is_solution_data_valid,
-                    _session.scheme,
-                    get_zones_info,
-                )
-                self.field_data_streaming = FieldDataStreaming(
-                    _session._fluent_connection._id, _session._field_data_service
-                )
-                self.field_data_old = service_creator("field_data_old").create(
-                    _session._field_data_service,
-                    self.field_info,
-                    self._is_solution_data_valid,
-                    _session.scheme,
-                )
-
-        self.fields = Fields(self)
+        self.fields = Fields(self, get_zones_info)
 
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
@@ -283,6 +254,7 @@ class BaseSession:
         """Provides access to Fluent field information."""
         return self.scheme
 
+    @property
     @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
     def health_check(self):
         """Provides access to Health Check service."""
@@ -437,7 +409,7 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_directory: str | None = "."):
+    def download(self, file_name: str, local_directory: str | None = None):
         """Download a file from the server.
 
         Parameters
@@ -480,5 +452,48 @@ class BaseSession:
             "field_data_streaming",
             "start_journal",
             "stop_journal",
+            "scheme_eval",
         }
         return sorted(dir_list)
+
+    def enable_beta_features(self):
+        """Enable access to Fluent beta-features"""
+        self._app_utilities.enable_beta()
+
+    @property
+    def _is_beta_enabled(self):
+        return self._app_utilities.is_beta_enabled()
+
+
+class Fields:
+    """Container for field and solution variables."""
+
+    def __init__(
+        self,
+        _session: BaseSession,
+        get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+    ):
+        """Initialize Fields."""
+        self._is_solution_data_valid = (
+            _session._app_utilities.is_solution_data_available
+        )
+        self.field_info = service_creator("field_info").create(
+            _session._field_data_service,
+            self._is_solution_data_valid,
+        )
+        self.field_data = service_creator("field_data").create(
+            _session._field_data_service,
+            self.field_info,
+            self._is_solution_data_valid,
+            _session.scheme,
+            get_zones_info,
+        )
+        self.field_data_streaming = FieldDataStreaming(
+            _session._fluent_connection._id, _session._field_data_service
+        )
+        self.field_data_old = service_creator("field_data_old").create(
+            _session._field_data_service,
+            self.field_info,
+            self._is_solution_data_valid,
+            _session.scheme,
+        )

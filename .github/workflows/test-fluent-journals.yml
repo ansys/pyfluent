@@ -1,21 +1,27 @@
 name: Test Fluent journals with PyFluent changes
 
 on:
-  schedule:  # UTC at 0700
-    - cron:  '0 7 * * *'
+  schedule: # UTC at 0700
+    - cron: "0 7 * * *"
   workflow_dispatch:
   push:
     branches:
       - main
 
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
+
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
-  PYFLUENT_LOGGING: 'DEBUG'
-  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  MAIN_PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: "3.10"
   FLUENT_IMAGE_TAG: v25.2.0
   FLUENT_VERSION: 252
 
@@ -31,15 +37,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
       - name: Add version information
         run: make version-info
@@ -54,7 +60,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -89,3 +95,7 @@ jobs:
       - name: Cleanup previous docker containers
         if: always()
         run: make cleanup-previous-docker-containers
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images

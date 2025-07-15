@@ -14,7 +14,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 COPY ansys_inc /ansys_inc
 
 # Add metadata
-LABEL description="Ansys Fluent 2025 R2"
+LABEL description="Ansys Fluent 2026 R1"
 LABEL email="pyansys.core@ansys.com"
 
 # OCI label
@@ -22,19 +22,20 @@ LABEL org.opencontainers.image.documentation="https://fluent.docs.pyansys.com"
 
 # Install dependencies
 RUN apt-get -y update && apt-get -y install \
-        csh \
-        fontconfig \
-        libxi-dev \
-        libsm6 \
-        libice-dev \
-        libxrandr-dev \
-        libxinerama-dev \
-        libxcursor-dev \
-        libglu1-mesa \
-        libglvnd-dev  && apt-get clean all
+    csh \
+    fontconfig \
+    libxi-dev \
+    libsm6 \
+    libice-dev \
+    libxrandr-dev \
+    libxinerama-dev \
+    libxcursor-dev \
+    libglu1-mesa \
+    libglvnd-dev  && apt-get clean all
 
 # Specify working directory
-ENV WORKING_DIRECTORY=/home/$USERNAME/$WORKING_DIRECTORY
+ARG WORK_DIR=fluent_work_dir
+ENV WORKING_DIRECTORY=/home/$USERNAME/$WORK_DIR
 
 # Specify home directory
 ENV HOME=/home/$USERNAME
@@ -53,4 +54,4 @@ USER $USERNAME
 WORKDIR /home/$USERNAME/$WORKING_DIRECTORY
 
 # Specify default Fluent executable
-ENTRYPOINT ["/ansys_inc/v252/fluent/bin/fluent"]
+ENTRYPOINT ["/ansys_inc/v261/fluent/bin/fluent"]

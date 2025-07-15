@@ -39,6 +39,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
@@ -594,7 +595,6 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     case_file = examples.download_file(
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
-        return_without_path=False,
     )
     solver.settings.file.read(file_type="case", file_name=case_file)
     solver.file.write(file_name="sample.cas.h5", file_type="case")
@@ -658,17 +658,20 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     assert not solver._app_utilities.is_solution_data_available()
 
-    tmp_dir = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    tmp_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
 
-    solver.chdir(tmp_dir)
+    # when running in a container, only the randomly generated folder name will be seen
+    # the full paths will be different between host and container
+    tmp_folder = Path(tmp_path).parts[-1]
 
-    assert Path(
-        solver._app_utilities.get_controller_process_info()["working_directory"]
-    ) == Path(tmp_dir)
+    solver.chdir(tmp_folder)
 
-    assert Path(
-        solver._app_utilities.get_solver_process_info()["working_directory"]
-    ) == Path(tmp_dir)
+    cortex_info = solver._app_utilities.get_controller_process_info()
+    solver_info = solver._app_utilities.get_solver_process_info()
+
+    assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
+
+    assert Path(solver_info.working_directory).parts[-1] == tmp_folder
 
 
 @pytest.mark.standalone
@@ -746,3 +749,109 @@ def test_solver_attr_lookup(new_solver_session):
         solver.xyz
     with pytest.raises(AttributeError):
         solver.settings.xyz
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_beta_meshing_session(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+    assert "topology_based" in dir(meshing)
+    assert hasattr(meshing, "topology_based")
+    with pytest.raises(BetaFeaturesNotEnabled):
+        tp = meshing.topology_based()
+    meshing.enable_beta_features()
+    assert "topology_based" in dir(meshing)
+    assert hasattr(meshing, "topology_based")
+    tp = meshing.topology_based()
+    assert tp
+
+    assert meshing.is_active() is True
+    solver = meshing.switch_to_solver()
+    assert meshing.is_active() is False
+    assert solver.is_active() is True
+    solver.exit()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_beta_solver_session(new_solver_session_wo_exit):
+    solver = new_solver_session_wo_exit
+    assert solver.is_active() is True
+    assert "switch_to_meshing" in dir(solver)
+    assert hasattr(solver, "switch_to_meshing")
+    with pytest.raises(BetaFeaturesNotEnabled):
+        meshing = solver.switch_to_meshing()
+    solver.enable_beta_features()
+    assert "switch_to_meshing" in dir(solver)
+    assert hasattr(solver, "switch_to_meshing")
+    meshing = solver.switch_to_meshing()
+
+    assert solver.is_active() is False
+    assert meshing.is_active() is True
+    meshing.exit()
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_error_raised_for_beta_feature_access_for_older_versions(
+    new_meshing_session, new_solver_session
+):
+    meshing = new_meshing_session
+    solver = new_solver_session
+
+    if meshing.get_fluent_version() >= FluentVersion.v252:
+        meshing.enable_beta_features()
+        assert "topology_based" in dir(meshing)
+    else:
+        with pytest.raises(RuntimeError):
+            meshing.enable_beta_features()
+
+    if solver.get_fluent_version() >= FluentVersion.v252:
+        solver.enable_beta_features()
+        assert "switch_to_meshing" in dir(solver)
+    else:
+        with pytest.raises(RuntimeError):
+            solver.enable_beta_features()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_dir_for_session(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+
+    for attr in [
+        "watertight",
+        "fault_tolerant",
+        "two_dimensional_meshing",
+        "fields",
+        "scheme",
+    ]:
+        assert getattr(meshing, attr)
+        assert attr in dir(meshing)
+
+    for attr in ["field_data", "field_info", "scheme_eval"]:
+        # Deprecated methods are accessible but hidden in dir()
+        assert getattr(meshing, attr)
+        assert attr not in dir(meshing)
+
+    solver = meshing.switch_to_solver()
+
+    assert dir(meshing) == ["is_active"]
+
+    for attr in ["read_case_lightweight", "settings"]:
+        assert getattr(solver, attr)
+        assert attr in dir(solver)
+
+    for attr in [
+        "field_data",
+        "field_info",
+        "scheme_eval",
+        "svar_data",
+        "svar_info",
+        "reduction",
+    ]:
+        # Deprecated methods are accessible but hidden in dir()
+        assert getattr(solver, attr)
+        assert attr not in dir(solver)
+
+    solver.enable_beta_features()
+    meshing_new = solver.switch_to_meshing()
+
+    assert dir(solver) == ["is_active"]
+    assert len(dir(meshing_new)) > 1

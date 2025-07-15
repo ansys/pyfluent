@@ -18,16 +18,16 @@ Launch the fluent solver, and make solution variable objects available
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
   >>> import_filename = examples.download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent()
-  >>> solver.settings.file.read(file_type="case", file_name=import_filename)
+  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session.settings.file.read(file_type="case", file_name=import_filename)
 
 
-The ``solution_variable_info`` and ``solution_variable_data`` objects are attributes of the ``solver.fields`` object:
+The ``solution_variable_info`` and ``solution_variable_data`` objects are attributes of the ``solver_session.fields`` object:
 
 .. code-block:: python
 
-  >>> solution_variable_info = solver.fields.solution_variable_info
-  >>> solution_variable_data = solver.fields.solution_variable_data
+  >>> solution_variable_info = solver_session.fields.solution_variable_info
+  >>> solution_variable_data = solver_session.fields.solution_variable_data
 
 
 Solution variable info
@@ -104,11 +104,11 @@ solution variable data can be extracted and modified via the following solution_
 Get solution variable data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can request solution variable data for a given ``domain_name`` and multiple ``zone_names`` by calling
-the ``get_data`` method and passing the particular ``solution_variable_name``.
+the ``get_data`` method and passing the particular ``variable_name``.
 
 .. code-block:: python
   
-    >>> sv_t_wall_fluid= solution_variable_data.get_data(solution_variable_name="SV_T", zone_names=["fluid", "wall"], domain_name="mixture")
+    >>> sv_t_wall_fluid= solution_variable_data.get_data(variable_name="SV_T", zone_names=["fluid", "wall"], domain_name="mixture")
     >>>
     >>> sv_t_wall_fluid.domain
     'mixture'
@@ -130,12 +130,12 @@ the ``get_data`` method and passing the particular ``solution_variable_name``.
 Set solution variable data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can set solution variable data for a given ``domain_name`` by calling the ``set_data``
-method and passing required ``solution_variable_name`` and dictionary of ``zone_name`` 
-to numpy array of ``solution_variable_data``
+method and passing required ``variable_name`` and dictionary of ``zone_name``
+to NumPy array of ``solution_variable_data``
 
 Additionally solution_variable_data object also supports ``create_empty_array`` method. This method can be used to 
 generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and 
-``solution_variable_name``. This array can be populated and passed to ``set_data``.
+``variable_name``. This array can be populated and passed to ``set_data``.
 
 .. code-block:: python
   
@@ -144,4 +144,4 @@ generate ``numpy zeros array`` for a given ``domain_name``, ``zone_name`` and
     >>> wall_temp_array[:] = 500
     >>> fluid_temp_array[:] = 600
     >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-    >>> solution_variable_data.set_data(solution_variable_name="SV_T", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data, domain_name="mixture")
+    >>> solution_variable_data.set_data(variable_name="SV_T", zone_names_to_data=zone_names_to_solution_variable_data, domain_name="mixture")

@@ -26,3 +26,5 @@ try:
     from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
 except (ImportError, AttributeError, SyntaxError):
     pass
+
+from ansys.fluent.core.utils.context_managers import using  # noqa: F401

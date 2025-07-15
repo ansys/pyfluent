@@ -6,7 +6,7 @@ Working with physical variables
 
 PyFluent integrates with the PyAnsys-units library, which provides a shared catalog of variable objects based on physical quantities like temperature, pressure, and velocity. These variable objects, or VariableDescriptors, can be used throughout PyFluent to reference fields and quantities in a clear, consistent, and reliable way.
 
-Instead of relying on raw strings like ``"temperature"`` or ``"SV_T"``, which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog such as ``VariableCatalog``.``TEMPERATURE``). This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
+Instead of relying on raw strings like ``"temperature"`` or ``"SV_T"``, which may vary between Fluent interfaces or be hard to interpret, you can use named descriptors from the catalog. This improves code readability, reduces the chance of errors, and makes it easier to work across different APIs.
 
 The same catalog is designed to work not just with PyFluent, but also with other PyAnsys libraries, offering a unified and expressive way to interact with physical quantities across products.
 
@@ -30,28 +30,28 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
     from ansys.fluent.core import launch_fluent, examples
     from ansys.units.variable_descriptor import VariableCatalog
 
-    solver = launch_fluent()
+    solver_session = launch_fluent()
     case_path = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver.file.read(file_type="case", file_name=case_path)
+    solver_session.file.read(file_type="case", file_name=case_path)
 
-    solver.settings.solution.initialization.hybrid_initialize()
+    solver_session.settings.solution.initialization.hybrid_initialize()
 
     temperature = VariableCatalog.TEMPERATURE
     locations = ["hot-inlet"]
 
     # Access scalar field data
-    temp_data = solver.fields.field_data.get_scalar_field_data(
+    temp_data = solver_session.fields.field_data.get_scalar_field_data(
         field_name=temperature, surfaces=locations
     )
     print(temp_data[locations[0]][0])  # value at hot-inlet
 
     # Compute minimum of a physical quantity
-    temp_min = solver.fields.reduction.minimum(expression=temperature, locations=locations)
+    temp_min = solver_session.fields.reduction.minimum(expression=temperature, locations=locations)
     print(temp_min)
 
     # Access solution variable data
-    sol_data = solver.fields.solution_variable_data.get_data(
-        solution_variable_name=temperature, zone_names=locations
+    sol_data = solver_session.fields.solution_variable_data.get_data(
+        variable_name=temperature, zone_names=locations
     )
     print(sol_data[locations[0]][0])
 
@@ -62,12 +62,12 @@ You can also use physical quantities in report definitions to improve clarity an
 
 .. code-block:: python
 
-    surface_report = solver.settings.solution.report_definitions.surface["avg_temp"]
+    surface_report = solver_session.settings.solution.report_definitions.surface["avg_temp"]
     surface_report.report_type = "surface-areaavg"
     surface_report.field = temperature  # Note: using VariableCatalog, not a string
     surface_report.surface_names = locations
 
-    result = solver.solution.report_definitions.compute(report_defs=["avg_temp"])
+    result = solver_session.solution.report_definitions.compute(report_defs=["avg_temp"])
     print(result[0]["avg_temp"][0])
 
 Notes

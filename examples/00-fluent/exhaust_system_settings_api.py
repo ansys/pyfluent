@@ -80,19 +80,19 @@ import_file_name = examples.download_file(
 # Launch Fluent as a service in meshing mode with double precision running on
 # two processors and print Fluent version.
 
-meshing = pyfluent.launch_fluent(
+meshing_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=2,
     mode="meshing",
 )
-print(meshing.get_fluent_version())
+print(meshing_session.get_fluent_version())
 
 ###############################################################################
 # Initialize workflow
 # ~~~~~~~~~~~~~~~~~~~
 # Initialize the fault-tolerant meshing workflow.
 
-meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+meshing_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 
 ###############################################################################
 # Fault-folerant meshing workflow
@@ -105,12 +105,12 @@ meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
 # Import the CAD geometry file (``exhaust_system.fmd``) and selectively manage some
 # parts.
 
-meshing.upload(import_file_name)
-meshing.PartManagement.InputFileChanged(
+meshing_session.upload(import_file_name)
+meshing_session.PartManagement.InputFileChanged(
     FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
 )
-meshing.PMFileManagement.FileManager.LoadFiles()
-meshing.PartManagement.Node["Meshing Model"].Copy(
+meshing_session.PMFileManagement.FileManager.LoadFiles()
+meshing_session.PartManagement.Node["Meshing Model"].Copy(
     Paths=[
         "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
         "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
@@ -119,10 +119,10 @@ meshing.PartManagement.Node["Meshing Model"].Copy(
         "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
-meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(
-    "part"
-)
-cad_import = meshing.workflow.TaskObject["Import CAD and Part Management"]
+meshing_session.PartManagement.ObjectSetting[
+    "DefaultObjectSetting"
+].OneZonePer.set_state("part")
+cad_import = meshing_session.workflow.TaskObject["Import CAD and Part Management"]
 cad_import.Arguments.set_state(
     {
         "Context": 0,
@@ -144,7 +144,7 @@ cad_import.Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Describe the geometry and the flow characteristics.
 
-describe_geom = meshing.workflow.TaskObject["Describe Geometry and Flow"]
+describe_geom = meshing_session.workflow.TaskObject["Describe Geometry and Flow"]
 describe_geom.Arguments.set_state(
     {
         "AddEnclosure": "No",
@@ -181,7 +181,7 @@ describe_geom.Execute()
 # .. image:: /_static/exhaust_system_012.png
 #   :width: 400pt
 #   :align: center
-capping = meshing.workflow.TaskObject["Enclose Fluid Regions (Capping)"]
+capping = meshing_session.workflow.TaskObject["Enclose Fluid Regions (Capping)"]
 capping.Arguments.set_state(
     {
         "CreatePatchPreferences": {
@@ -216,7 +216,7 @@ capping.AddChildToTask()
 
 capping.InsertCompoundChildTask()
 capping.Arguments.set_state({})
-meshing.workflow.TaskObject["inlet-1"].Execute()
+meshing_session.workflow.TaskObject["inlet-1"].Execute()
 capping.Arguments.set_state(
     {
         "PatchName": "inlet-2",
@@ -245,7 +245,7 @@ capping.AddChildToTask()
 
 capping.InsertCompoundChildTask()
 capping.Arguments.set_state({})
-meshing.workflow.TaskObject["inlet-2"].Execute()
+meshing_session.workflow.TaskObject["inlet-2"].Execute()
 capping.Arguments.set_state(
     {
         "PatchName": "inlet-3",
@@ -274,7 +274,7 @@ capping.AddChildToTask()
 
 capping.InsertCompoundChildTask()
 capping.Arguments.set_state({})
-meshing.workflow.TaskObject["inlet-3"].Execute()
+meshing_session.workflow.TaskObject["inlet-3"].Execute()
 capping.Arguments.set_state(
     {
         "PatchName": "outlet-1",
@@ -305,13 +305,13 @@ capping.AddChildToTask()
 
 capping.InsertCompoundChildTask()
 capping.Arguments.set_state({})
-meshing.workflow.TaskObject["outlet-1"].Execute()
+meshing_session.workflow.TaskObject["outlet-1"].Execute()
 
 ###############################################################################
 # Extract edge features
 # ~~~~~~~~~~~~~~~~~~~~~
 # Extract edge features.
-edge_features = meshing.workflow.TaskObject["Extract Edge Features"]
+edge_features = meshing_session.workflow.TaskObject["Extract Edge Features"]
 edge_features.Arguments.set_state(
     {
         "ExtractMethodType": "Intersection Loops",
@@ -321,7 +321,7 @@ edge_features.Arguments.set_state(
 edge_features.AddChildToTask()
 
 edge_features.InsertCompoundChildTask()
-edge_group = meshing.workflow.TaskObject["edge-group-1"]
+edge_group = meshing_session.workflow.TaskObject["edge-group-1"]
 edge_group.Arguments.set_state(
     {
         "ExtractEdgesName": "edge-group-1",
@@ -337,7 +337,7 @@ edge_group.Execute()
 # Identify regions
 # ~~~~~~~~~~~~~~~~
 # Identify regions.
-identify_regions = meshing.workflow.TaskObject["Identify Regions"]
+identify_regions = meshing_session.workflow.TaskObject["Identify Regions"]
 identify_regions.Arguments.set_state(
     {
         "SelectionType": "zone",
@@ -369,7 +369,7 @@ identify_regions.Arguments.set_state(
 identify_regions.AddChildToTask()
 
 identify_regions.InsertCompoundChildTask()
-fluid_region_1 = meshing.workflow.TaskObject["fluid-region-1"]
+fluid_region_1 = meshing_session.workflow.TaskObject["fluid-region-1"]
 fluid_region_1.Arguments.set_state(
     {
         "MaterialPointsName": "fluid-region-1",
@@ -409,13 +409,13 @@ identify_regions.InsertCompoundChildTask()
 
 identify_regions.Arguments.set_state({})
 
-meshing.workflow.TaskObject["void-region-1"].Execute()
+meshing_session.workflow.TaskObject["void-region-1"].Execute()
 
 ###############################################################################
 # Define thresholds for leakages
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Define thresholds for potential leakages.
-leakage_threshold = meshing.workflow.TaskObject["Define Leakage Threshold"]
+leakage_threshold = meshing_session.workflow.TaskObject["Define Leakage Threshold"]
 leakage_threshold.Arguments.set_state(
     {
         "AddChild": "yes",
@@ -427,7 +427,7 @@ leakage_threshold.Arguments.set_state(
 leakage_threshold.AddChildToTask()
 
 leakage_threshold.InsertCompoundChildTask()
-leakage_1 = meshing.workflow.TaskObject["leakage-1"]
+leakage_1 = meshing_session.workflow.TaskObject["leakage-1"]
 leakage_1.Arguments.set_state(
     {
         "AddChild": "yes",
@@ -448,7 +448,7 @@ leakage_1.Execute()
 # Review region settings
 # ~~~~~~~~~~~~~~~~~~~~~~
 # Review the region settings.
-update_region = meshing.workflow.TaskObject["Update Region Settings"]
+update_region = meshing_session.workflow.TaskObject["Update Region Settings"]
 update_region.Arguments.set_state(
     {
         "AllRegionFilterCategories": ["2"] * 5 + ["1"] * 2,
@@ -491,7 +491,7 @@ update_region.Execute()
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Set mesh control options.
 
-meshing.workflow.TaskObject["Choose Mesh Control Options"].Execute()
+meshing_session.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
 ###############################################################################
 # Generate surface mesh
@@ -503,32 +503,32 @@ meshing.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 #   :width: 500pt
 #   :align: center
 
-meshing.workflow.TaskObject["Generate the Surface Mesh"].Execute()
+meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 ###############################################################################
 # Confirm and update boundaries
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Confirm and update the boundaries.
 
-meshing.workflow.TaskObject["Update Boundaries"].Execute()
+meshing_session.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
 # Add boundary layers
 # ~~~~~~~~~~~~~~~~~~~
 # Add boundary layers.
 
-meshing.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
+meshing_session.workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
 
-meshing.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
+meshing_session.workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
 
-meshing.workflow.TaskObject["aspect-ratio_1"].Arguments.set_state(
+meshing_session.workflow.TaskObject["aspect-ratio_1"].Arguments.set_state(
     {
         "BLControlName": "aspect-ratio_1",
     }
 )
-meshing.workflow.TaskObject["Add Boundary Layers"].Arguments.set_state({})
+meshing_session.workflow.TaskObject["Add Boundary Layers"].Arguments.set_state({})
 
-meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
+meshing_session.workflow.TaskObject["aspect-ratio_1"].Execute()
 
 ###############################################################################
 # Generate volume mesh
@@ -539,7 +539,7 @@ meshing.workflow.TaskObject["aspect-ratio_1"].Execute()
 # .. image:: /_static/exhaust_system_014.png
 #   :width: 500pt
 #   :align: center
-volume_mesh_gen = meshing.workflow.TaskObject["Generate the Volume Mesh"]
+volume_mesh_gen = meshing_session.workflow.TaskObject["Generate the Volume Mesh"]
 volume_mesh_gen.Arguments.set_state(
     {
         "AllRegionNameList": [
@@ -563,7 +563,7 @@ volume_mesh_gen.Execute()
 # ~~~~~~~~~~
 # Check the mesh.
 
-meshing.tui.mesh.check_mesh()
+meshing_session.tui.mesh.check_mesh()
 
 ###############################################################################
 # Solve and postprocess
@@ -575,16 +575,16 @@ meshing.tui.mesh.check_mesh()
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Switch to the solution mode.
 
-solver = meshing.switch_to_solver()
+solver_session = meshing_session.switch_to_solver()
 
-solver.mesh.check()
+solver_session.mesh.check()
 
 ###############################################################################
 # Select turbulence model
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Select the kw sst turbulence model.
 
-viscous = solver.setup.models.viscous
+viscous = solver_session.setup.models.viscous
 
 viscous.model = "k-omega"
 viscous.k_omega_model = "sst"
@@ -595,7 +595,7 @@ viscous.k_omega_model = "sst"
 # Set the velocity and turbulence boundary conditions for the first inlet
 # (``inlet-1``).
 
-boundary_conditions = solver.setup.boundary_conditions
+boundary_conditions = solver_session.setup.boundary_conditions
 
 boundary_conditions.velocity_inlet["inlet-1"] = {
     "momentum": {
@@ -629,7 +629,7 @@ boundary_conditions.pressure_outlet["outlet-1"].turbulence.turbulent_intensity =
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
 
-solver.solution.initialization.hybrid_initialize()
+solver_session.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Start calculation
@@ -641,13 +641,13 @@ solver.solution.initialization.hybrid_initialize()
 #   :width: 500pt
 #   :align: center
 
-solver.solution.run_calculation.iterate(iter_count=100)
+solver_session.solution.run_calculation.iterate(iter_count=100)
 
 ###############################################################################
 # Write the case and data files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver.file.write(
+solver_session.file.write(
     file_type="case-data",
     file_name="exhaust_system.cas.h5",
 )
@@ -659,10 +659,11 @@ solver.file.write(
 # picture files. Edit the picture settings to use a custom resolution so that
 # the images are large enough.
 
-graphics = solver.results.graphics
+graphics = solver_session.results.graphics
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
+
 graphics.picture.x_resolution = 1920
 graphics.picture.y_resolution = 1440
 
@@ -696,7 +697,7 @@ graphics.picture.save_picture(file_name="pathlines-1.png")
 # ~~~~~~~~~~~~~~~~~~
 # Create an iso-surface through the manifold geometry.
 
-solver.results.surfaces.iso_surface["surf-x-coordinate"] = {
+solver_session.results.surfaces.iso_surface["surf-x-coordinate"] = {
     "field": "x-coordinate",
     "zones": ["fluid-region-1"],
     "iso_values": [0.38],
@@ -744,8 +745,8 @@ graphics.picture.save_picture(file_name="contour-velocity.png")
 #   :width: 500pt
 #   :align: center
 
-solver.results.scene["scene-1"] = {}
-scene1 = solver.results.scene["scene-1"]
+solver_session.results.scene["scene-1"] = {}
+scene1 = solver_session.results.scene["scene-1"]
 scene1.graphics_objects.add(name="mesh-1")
 scene1.graphics_objects["mesh-1"].transparency = 90
 scene1.graphics_objects.add(name="contour-velocity")
@@ -760,4 +761,4 @@ graphics.picture.save_picture(file_name="scene-1.png")
 # ~~~~~~~~~~~~
 # Close Fluent.
 
-solver.exit()
+solver_session.exit()

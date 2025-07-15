@@ -32,6 +32,13 @@ from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
 
 # isort: on
 
+from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+)
 from ansys.fluent.core.get_build_details import (  # noqa: F401
     get_build_version,
     get_build_version_string,
@@ -70,7 +77,7 @@ from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.32.dev0"
+__version__ = "0.34.dev0"
 
 _VERSION_INFO = None
 """
@@ -102,10 +109,10 @@ def version_info() -> str:
 
 
 # Latest released Fluent version
-FLUENT_RELEASE_VERSION = "25.1.0"
+FLUENT_RELEASE_VERSION = "25.2.0"
 
 # Current dev Fluent version
-FLUENT_DEV_VERSION = "25.2.0"
+FLUENT_DEV_VERSION = "26.1.0"
 
 # Path to the example input/data files are downloaded
 EXAMPLES_PATH = str(get_examples_download_dir())
@@ -148,7 +155,7 @@ CODEGEN_OUTDIR = os.getenv(
 FLUENT_SHOW_MESH_AFTER_CASE_READ = False
 
 # Whether to write the automatic transcript in Fluent
-FLUENT_AUTOMATIC_TRANSCRIPT = False
+FLUENT_AUTOMATIC_TRANSCRIPT = os.getenv("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
 
 # Whether to interrupt Fluent solver from PyFluent
 SUPPORT_SOLVER_INTERRUPT = False

@@ -267,11 +267,11 @@ def test_old_workflow_structure(new_meshing_session):
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==24.2")
-def test_new_2d_meshing_workflow(new_meshing_session):
+@pytest.mark.fluent_version(">=24.2")
+def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
-    meshing = new_meshing_session
+    meshing = new_meshing_session_wo_exit
     meshing.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
     meshing.workflow.TaskObject["Load CAD Geometry"].Arguments.set_state(
         {
@@ -414,14 +414,16 @@ def test_new_2d_meshing_workflow(new_meshing_session):
 
     meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Arguments.set_state(
         {
-            r"FileName": r"C:\ANSYSDev\PyFluent_Dev_01\pyfluent\out\case1.msh.h5",
+            r"FileName": r"case1.msh.h5",
         }
     )
     meshing.workflow.TaskObject["Export Fluent 2D Mesh"].Execute()
 
     # Switch to solution mode
     solver = meshing.switch_to_solver()
-    assert solver
+    assert solver.is_active() is True
+    assert meshing.is_active() is False
+    solver.exit()
 
 
 @pytest.mark.fluent_version(">=24.1")

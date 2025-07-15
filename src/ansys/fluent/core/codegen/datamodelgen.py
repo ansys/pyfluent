@@ -179,7 +179,7 @@ def _build_command_query_docstring(
     return doc.getvalue()
 
 
-meshing_rule_file_names = {
+datamodel_file_name_map = {
     "workflow": "workflow",
     "meshing": "meshing",
     "PartManagement": "part_management",
@@ -215,7 +215,7 @@ class DataModelStaticInfo:
         datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (
-            datamodel_dir / f"{meshing_rule_file_names[rules_save_name]}.py"
+            datamodel_dir / f"{datamodel_file_name_map[rules_save_name]}.py"
         ).resolve()
         if rules == "MeshingUtilities":
             self.stub_file = (datamodel_dir / "meshing_utilities.pyi").resolve()

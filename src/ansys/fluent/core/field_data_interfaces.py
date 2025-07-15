@@ -21,20 +21,21 @@
 # SOFTWARE.
 
 """Common interfaces for field data."""
-
 from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Callable, Dict, List, NamedTuple
+import warnings
 
 import numpy as np
 import numpy.typing as npt
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
 
-_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
+_to_field_name_str = naming_strategy().to_string
 
 
 class SurfaceDataType(Enum):
@@ -50,15 +51,16 @@ class SurfaceFieldDataRequest(NamedTuple):
     """Container storing parameters for surface data request."""
 
     data_types: List[SurfaceDataType] | List[str]
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
     overset_mesh: bool | None = False
+    flatten_connectivity: bool = False
 
 
 class ScalarFieldDataRequest(NamedTuple):
     """Container storing parameters for scalar field data request."""
 
     field_name: str
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
     node_value: bool | None = True
     boundary_value: bool | None = True
 
@@ -67,14 +69,14 @@ class VectorFieldDataRequest(NamedTuple):
     """Container storing parameters for vector field data request."""
 
     field_name: str
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
 
 
 class PathlinesFieldDataRequest(NamedTuple):
     """Container storing parameters for path-lines field data request."""
 
     field_name: str
-    surfaces: List[int | str]
+    surfaces: List[int | str | object]
     additional_field_name: str = ""
     provide_particle_time_field: bool | None = False
     node_value: bool | None = True
@@ -87,6 +89,7 @@ class PathlinesFieldDataRequest(NamedTuple):
     coarsen: int | None = 1
     velocity_domain: str | None = "all-phases"
     zones: list | None = None
+    flatten_connectivity: bool = False
 
 
 class BaseFieldInfo(ABC):
@@ -215,25 +218,25 @@ class FieldDataSource(BaseFieldDataSource, ABC):
 
     This class defines the interface for retrieving field data based on user requests.
     In addition to the methods in `BaseFieldDataSource` it provides a method to create
-    new field transaction objects.
+    new field batch objects.
 
     Implementing classes should define:
     - A method to obtain surface IDs from user-provided surface names or numerical identifiers.
     - A method to retrieve field data based on a given request.
-    - A method to create new field transaction.
+    - A method to create new field batch.
 
     Subclasses must provide concrete implementations for all abstract methods.
     """
 
     @abstractmethod
-    def new_transaction(self):
-        """Create a new field transaction."""
+    def new_batch(self):
+        """Create a new field batch."""
         pass
 
 
-class FieldTransaction(ABC):
+class FieldBatch(ABC):
     """
-    Abstract base class for handling field data transactions.
+    Abstract base class for handling field data batches.
 
     This class defines the interface for requesting field data based on user inputs
     and retrieving responses from the server. It provides abstract methods that allow
@@ -483,22 +486,13 @@ class PathlinesData:
 class _ReturnFieldData:
 
     @staticmethod
-    def _get_faces_connectivity_data(data):
-        faces_data = []
-        i = 0
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(data[i + 1 : end])
-            i = end
-        return faces_data
-
-    @staticmethod
     def _scalar_data(
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         scalar_field_data: np.array,
     ) -> Dict[int | str, np.array]:
+        surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: scalar_field_data[surface_ids[count]][field_name]
             for count, surface in enumerate(surfaces)
@@ -507,23 +501,36 @@ class _ReturnFieldData:
     @staticmethod
     def _surface_data(
         data_types: List[SurfaceDataType],
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         surface_data: np.array | List[np.array],
         deprecated_flag: bool | None = False,
+        flatten_connectivity: bool = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
             ret_surf_data[surface] = {}
             for data_type in data_types:
                 if data_type == SurfaceDataType.FacesConnectivity:
-                    ret_surf_data[surface][data_type] = (
-                        _ReturnFieldData._get_faces_connectivity_data(
-                            surface_data[surface_ids[count]][
-                                SurfaceDataType.FacesConnectivity.value
-                            ]
+                    if flatten_connectivity:
+                        ret_surf_data[surface][data_type] = surface_data[
+                            surface_ids[count]
+                        ][SurfaceDataType.FacesConnectivity.value]
+                    else:
+                        warnings.warn(
+                            "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                            "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                            "'SurfaceFieldDataRequest' to request data in the flat format.",
+                            PyFluentDeprecationWarning,
                         )
-                    )
+                        ret_surf_data[surface][data_type] = (
+                            _transform_faces_connectivity_data(
+                                surface_data[surface_ids[count]][
+                                    SurfaceDataType.FacesConnectivity.value
+                                ]
+                            )
+                        )
                 else:
                     ret_surf_data[surface][data_type] = surface_data[
                         surface_ids[count]
@@ -535,10 +542,11 @@ class _ReturnFieldData:
     @staticmethod
     def _vector_data(
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         vector_field_data: np.array,
     ) -> Dict[int | str, np.array]:
+        surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)
             for count, surface in enumerate(surfaces)
@@ -547,20 +555,32 @@ class _ReturnFieldData:
     @staticmethod
     def _pathlines_data(
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: List[int | str | object],
         surface_ids: List[int],
         pathlines_data: Dict,
         deprecated_flag: bool | None = False,
+        flatten_connectivity: bool = False,
     ) -> Dict:
+        surfaces = get_surfaces_from_objects(surfaces)
         path_lines_dict = {}
         for count, surface in enumerate(surfaces):
+            if flatten_connectivity:
+                lines_data = pathlines_data[surface_ids[count]]["lines"]
+            else:
+                warnings.warn(
+                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                    "'SurfaceFieldDataRequest' to request data in the flat format.",
+                    PyFluentDeprecationWarning,
+                )
+                lines_data = _transform_faces_connectivity_data(
+                    pathlines_data[surface_ids[count]]["lines"]
+                )
             temp_dict = {
                 "vertices": pathlines_data[surface_ids[count]]["vertices"].reshape(
                     -1, 3
                 ),
-                "lines": _ReturnFieldData._get_faces_connectivity_data(
-                    pathlines_data[surface_ids[count]]["lines"]
-                ),
+                "lines": lines_data,
                 field_name: pathlines_data[surface_ids[count]][field_name],
                 "pathlines-count": pathlines_data[surface_ids[count]][
                     "pathlines-count"
@@ -575,3 +595,70 @@ class _ReturnFieldData:
             else:
                 path_lines_dict[surface] = temp_dict
         return path_lines_dict
+
+
+def get_surfaces_from_objects(surfaces: List[int | str | object]):
+    """
+    Extract surface names or identifiers from a list of surfaces.
+
+    Parameters
+    ----------
+    surfaces : List[int | str | object]
+        A list of surface identifiers, which may include:
+          - integers or strings representing surface names/IDs,
+          - objects with a callable `name()` method,
+          - or iterables (e.g., lists or tuples) containing such elements.
+
+    Returns
+    -------
+    List
+        A flattened list of surface names/identifiers:
+          - If an element has a `name()` method, the result of `surface.name()` is used.
+          - Otherwise, the element itself is returned as-is.
+    """
+    updated_surfaces = []
+    for surface in surfaces:
+        if hasattr(surface, "name"):
+            updated_surfaces.append(surface.name())
+        else:
+            updated_surfaces.append(surface)
+    return updated_surfaces
+
+
+def _transform_faces_connectivity_data(data):
+    """
+    Transform flat face connectivity data into structured face-wise format.
+
+    Each face in the flat array is represented by:
+    [N, v0, v1, ..., vN], where:
+      - N is the number of vertices in the face
+      - v0...vN are the vertex indices
+
+    This function parses such a flat array and returns a list of vertex index arrays,
+    each representing a face.
+
+    Parameters
+    ----------
+    data : array-like of int
+        Flat array containing face connectivity data, typically returned from
+        `faces_connectivity_data["inlet"].connectivity`.
+
+    Returns
+    -------
+    faces_data : list of ndarray
+        List of 1D NumPy arrays, where each array contains the vertex indices
+        of a face.
+
+    Examples
+    --------
+    >>> flat_data = np.array([4, 4, 5, 12, 11, 3, 1, 2, 3], dtype=np.int32)
+    >>> _transform_faces_connectivity_data(flat_data)
+    [array([ 4,  5, 12, 11]), array([1, 2, 3])]
+    """
+    faces_data = []
+    i = 0
+    while i < len(data):
+        end = i + 1 + data[i]
+        faces_data.append(data[i + 1 : end])
+        i = end
+    return faces_data

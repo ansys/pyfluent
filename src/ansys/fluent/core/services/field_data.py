@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Wrappers over FieldData gRPC service of Fluent."""
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
@@ -30,6 +31,7 @@ from typing import Callable, Dict, List, Tuple
 import warnings
 import weakref
 
+from deprecated.sphinx import deprecated
 import grpc
 import numpy as np
 
@@ -39,8 +41,8 @@ from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldDataSource,
     BaseFieldInfo,
+    FieldBatch,
     FieldDataSource,
-    FieldTransaction,
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
@@ -52,6 +54,7 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedVectorFieldNames,
     _ReturnFieldData,
     _to_field_name_str,
+    get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.interceptors import (
@@ -445,6 +448,7 @@ class BaseFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             surface_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def _get_vector_field_data(
@@ -473,6 +477,7 @@ class BaseFieldData:
             kwargs.get("surfaces"),
             self.get_surface_ids(kwargs.get("surfaces")),
             pathlines_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def get_field_data(
@@ -495,8 +500,8 @@ class BaseFieldData:
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
-    """Provides access to Fluent field data on surfaces collected via transactions."""
+class BatchFieldData(BaseFieldData, BaseFieldDataSource):
+    """Provides access to Fluent field data on surfaces collected via batches."""
 
     def __init__(
         self,
@@ -505,7 +510,7 @@ class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
         allowed_surface_names,
         allowed_scalar_field_names,
     ):
-        """__init__ method of TransactionFieldData class."""
+        """__init__ method of BatchFieldData class."""
         super().__init__(
             data, field_info, allowed_surface_names, allowed_scalar_field_names
         )
@@ -517,7 +522,7 @@ class TransactionFieldData(BaseFieldData, BaseFieldDataSource):
         return self.data
 
 
-class Transaction(FieldTransaction):
+class Batch(FieldBatch):
     """Populates Fluent field data on surfaces."""
 
     def __init__(
@@ -529,7 +534,7 @@ class Transaction(FieldTransaction):
         allowed_scalar_field_names,
         allowed_vector_field_names,
     ):
-        """__init__ method of Transaction class."""
+        """__init__ method of Batch class."""
         self._service = service
         self._field_info = field_info
         self._fields_request = get_fields_request()
@@ -873,7 +878,7 @@ class Transaction(FieldTransaction):
             self._cache_requests.append(req)
         return self
 
-    def get_fields(self) -> TransactionFieldData:
+    def get_fields(self) -> BatchFieldData:
         """Get data for previously added requests."""
         warnings.warn(
             "'get_fields' is deprecated, use 'get_response' instead",
@@ -881,7 +886,7 @@ class Transaction(FieldTransaction):
         )
         return self.get_response()
 
-    def get_response(self) -> TransactionFieldData:
+    def get_response(self) -> BatchFieldData:
         """Get data for previously added requests.
 
         Returns
@@ -892,7 +897,7 @@ class Transaction(FieldTransaction):
 
             The tag is a tuple for Fluent 2023 R1 or later.
         """
-        return TransactionFieldData(
+        return BatchFieldData(
             ChunkParser().extract_fields(
                 self._service.get_fields(self._fields_request)
             ),
@@ -934,7 +939,7 @@ class _FieldDataConstants:
 def _get_surface_ids(
     field_info: FieldInfo,
     allowed_surface_names,
-    surfaces: List[int | str],
+    surfaces: List[int | str | object],
 ) -> List[int]:
     """Get surface IDs based on surface names or IDs.
 
@@ -948,7 +953,8 @@ def _get_surface_ids(
     List[int]
     """
     surface_ids = []
-    for surf in surfaces:
+    updated_surfaces = get_surfaces_from_objects(surfaces)
+    for surf in updated_surfaces:
         if isinstance(surf, str):
             surface_ids.extend(
                 field_info.get_surfaces_info()[allowed_surface_names.valid_name(surf)][
@@ -959,6 +965,8 @@ def _get_surface_ids(
             allowed_surf_ids = _AllowedSurfaceIDs(field_info)()
             if surf in allowed_surf_ids:
                 surface_ids.append(surf)
+            elif isinstance(surf, Iterable) and not isinstance(surf, (str, bytes)):
+                raise DisallowedValuesError("surface", surf, list(surf))
             else:
                 raise DisallowedValuesError("surface", surf, allowed_surf_ids)
     return surface_ids
@@ -1330,9 +1338,9 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self._returned_data = _ReturnFieldData()
         self._fetched_data = _FetchFieldData()
 
-    def new_transaction(self):
-        """Create a new field transaction."""
-        return Transaction(
+    def new_batch(self):
+        """Create a new field batch."""
+        return Batch(
             self._service,
             self._field_info,
             self._allowed_surface_ids,
@@ -1340,6 +1348,11 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             self._allowed_scalar_field_names,
             self._allowed_vector_field_names,
         )
+
+    @deprecated(version="0.34", reason="Use `new_batch` instead.")
+    def new_transaction(self):
+        """Create a new field transaction."""
+        return self.new_batch()
 
     def _get_scalar_field_data(self, **kwargs):
         surfaces = kwargs.get("surfaces")
@@ -1385,10 +1398,15 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 surface_ids,
                 surface_data,
                 deprecated_flag=True,
+                flatten_connectivity=kwargs.get("flatten_connectivity"),
             )
 
         return self._returned_data._surface_data(
-            kwargs.get("data_types"), kwargs.get("surfaces"), surface_ids, surface_data
+            kwargs.get("data_types"),
+            kwargs.get("surfaces"),
+            surface_ids,
+            surface_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def _get_vector_field_data(
@@ -1467,6 +1485,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 surface_ids,
                 pathlines_data,
                 deprecated_flag=True,
+                flatten_connectivity=kwargs.get("flatten_connectivity"),
             )
 
         return self._returned_data._pathlines_data(
@@ -1474,6 +1493,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             kwargs.get("surfaces"),
             surface_ids,
             pathlines_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
     def get_scalar_field_data(

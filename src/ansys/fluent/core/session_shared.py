@@ -25,6 +25,7 @@
 import logging
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.pyfluent_warnings import warning_for_fluent_dev_version
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 
@@ -52,6 +53,7 @@ def _make_tui_module(session, module_name):
             f"{module_name}_tui_{session._version}",
             CODEGEN_OUTDIR / module_name / f"tui_{session._version}.py",
         )
+        warning_for_fluent_dev_version(session._version)
         return tui_module.main_menu(
             session._tui_service, session._version, module_name, []
         )
@@ -63,13 +65,14 @@ def _make_tui_module(session, module_name):
 def _make_datamodel_module(session, module_name):
     try:
         from ansys.fluent.core import CODEGEN_OUTDIR
-        from ansys.fluent.core.codegen.datamodelgen import meshing_rule_file_names
+        from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
 
-        file_name = meshing_rule_file_names[module_name]
+        file_name = datamodel_file_name_map[module_name]
         module = pyfluent.utils.load_module(
             f"{module_name}_{session._version}",
             CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{file_name}.py",
         )
+        warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])
     except (ImportError, FileNotFoundError):
         datamodel_logger.warning("Generated API not found for %s.", module_name)

@@ -617,8 +617,7 @@ field_info = solver.fields.field_info
 
 ```{python}
 field_info.get_scalar_fields_info()
-field_info.get_range("velocity")
-field_info.get_range("cell-weight")
+field_info.get_scalar_field_range("cell-weight")
 ```
 
 ### Get vector fields and surfaces info
@@ -782,7 +781,7 @@ solution_variable_info_centroid.field_type
 
 ```{python}
 sv_t_wall_fluid= solution_variable_data.get_data(
-    solution_variable_name="SV_T", 
+    variable_name="SV_T",
     zone_names=["fluid", "wall"], 
     domain_name="mixture")
 sv_t_wall_fluid.domain
@@ -804,9 +803,8 @@ wall_temp_array[:] = 500
 fluid_temp_array[:] = 600
 zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
 solution_variable_data.set_data(
-    solution_variable_name="SV_T", 
-    zone_names_to_solution_variable_data=
-    zone_names_to_solution_variable_data, 
+    variable_name="SV_T",
+    zone_names_to_data=zone_names_to_solution_variable_data,
     domain_name="mixture")
 ```
 
@@ -1060,7 +1058,7 @@ pyfluent.search("local*", wildcard=True)
 cd pyfluent/docker
 
 # Copy needed files
-python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
+python copy_ansys_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
 
 # Build the Docker image
 sudo docker build -t ansys_inc <path to 'docker/fluent_<version>' directory>

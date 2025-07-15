@@ -4,8 +4,10 @@ style:
 
 install:
 	@pip install -r requirements/requirements_build.txt
+	@git clean -fd
 	@flit build
 	@pip install -q --force-reinstall dist/*.whl
+	@pip install packaging
 	@python src/ansys/fluent/core/report.py
 
 install-test:
@@ -19,6 +21,9 @@ version-info:
 
 docker-pull:
 	@bash .ci/pull_fluent_image.sh
+
+docker-clean-images:
+	@docker system prune --volumes -a -f
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
@@ -62,6 +67,11 @@ unittest-dev-252:
 	@echo "Running unittests"
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --fluent-version=25.2 $(PYTESTEXTRA) || python -m pytest --fluent-version=25.2 $(PYTESTRERUN)
+
+unittest-dev-261:
+	@echo "Running unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --fluent-version=26.1 $(PYTESTEXTRA) || python -m pytest --fluent-version=26.1 $(PYTESTRERUN)
 
 unittest-all-222:
 	@echo "Running all unittests"
@@ -142,6 +152,21 @@ unittest-all-252-no-codegen:
 	@echo "Running all unittests"
 	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
 	@python -m pytest --nightly --fluent-version=25.2 -m "not codegen_required" $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=25.2 -m "not codegen_required" $(PYTESTRERUN)
+
+unittest-all-261:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --nightly --fluent-version=26.1 $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=26.1 $(PYTESTRERUN)
+
+unittest-solvermode-261:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --fluent-version=26.1 --solvermode $(PYTESTEXTRA) || python -m pytest --fluent-version=26.1 --solvermode $(PYTESTRERUN)
+
+unittest-all-261-no-codegen:
+	@echo "Running all unittests"
+	@sudo rm -rf /home/ansys/Documents/ansys_fluent_core_examples/*
+	@python -m pytest --nightly --fluent-version=26.1 -m "not codegen_required" $(PYTESTEXTRA) || python -m pytest --nightly --fluent-version=26.1 -m "not codegen_required" $(PYTESTRERUN)
 
 api-codegen:
 	@echo "Running API codegen"

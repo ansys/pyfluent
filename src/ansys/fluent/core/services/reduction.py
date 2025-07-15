@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 """Wrappers over Reduction gRPC service of Fluent."""
-
+from collections.abc import Iterable
 from typing import Any, List, Tuple
 import weakref
 
@@ -29,6 +29,7 @@ import grpc
 
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -276,7 +277,7 @@ class Reduction:
         """__init__ method of Reduction class."""
         self.service = service
         self.ctxt = weakref.proxy(ctxt)
-        self._to_str = naming_strategy().to_string if naming_strategy else lambda s: s
+        self._to_str = naming_strategy().to_string
 
     def _validate_str_location(self, loc: str):
         if all(
@@ -292,6 +293,8 @@ class Reduction:
         if locations == []:
             return []
         for loc in locations:
+            if isinstance(loc, Iterable) and not isinstance(loc, (str, bytes)):
+                raise DisallowedValuesError("location", loc, list(loc))
             if isinstance(loc, str):
                 self._validate_str_location(loc)
         try:
@@ -351,7 +354,7 @@ class Reduction:
     def count_if(self, condition, locations, ctxt=None) -> Any:
         """Count the number of faces or cells where the specified condition is satisfied."""
         request = self._make_request(
-            "CountIfRequest", locations, ctxt, condition=condition
+            "CountIfRequest", locations, ctxt, expression=condition
         )
         response = self.service.count_if(request)
         return _convert_variant_to_value(response.value)

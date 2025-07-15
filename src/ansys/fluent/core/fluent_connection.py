@@ -47,6 +47,7 @@ from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
     AppUtilitiesService,
+    AppUtilitiesV252,
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
@@ -277,24 +278,28 @@ class _ConnectionInterface:
         self.scheme_eval = service_creator("scheme_eval").create(
             self._scheme_eval_service
         )
-        if (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            < pyfluent.FluentVersion.v252
-        ):
-            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
-        else:
-            self._app_utilities_service = create_grpc_service(
-                AppUtilitiesService, error_state
-            )
-            self._app_utilities = service_creator("app_utilities").create(
-                self._app_utilities_service
-            )
+        self._app_utilities_service = create_grpc_service(
+            AppUtilitiesService, error_state
+        )
+        match pyfluent.FluentVersion(self.scheme_eval.version):
+            case v if v < pyfluent.FluentVersion.v252:
+                self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+
+            case pyfluent.FluentVersion.v252:
+                self._app_utilities = AppUtilitiesV252(
+                    self._app_utilities_service, self.scheme_eval
+                )
+
+            case _:
+                self._app_utilities = service_creator("app_utilities").create(
+                    self._app_utilities_service
+                )
 
     @property
     def product_build_info(self) -> str:
         """Get Fluent build information."""
         build_info = self._app_utilities.get_build_info()
-        return f'Build Time: {build_info["build_time"]}  Build Id: {build_info["build_id"]}  Revision: {build_info["vcs_revision"]}  Branch: {build_info["vcs_branch"]}'
+        return f"Build Time: {build_info.build_time}  Build Id: {build_info.build_id}  Revision: {build_info.vcs_revision}  Branch: {build_info.vcs_branch}"
 
     def get_cortex_connection_properties(self):
         """Get connection properties of Fluent."""
@@ -305,10 +310,10 @@ class _ConnectionInterface:
             logger.debug("Obtaining Cortex connection properties...")
             cortex_info = self._app_utilities.get_controller_process_info()
             solver_info = self._app_utilities.get_solver_process_info()
-            fluent_host_pid = solver_info["process_id"]
-            cortex_host = cortex_info["hostname"]
-            cortex_pid = cortex_info["process_id"]
-            cortex_pwd = cortex_info["working_directory"]
+            fluent_host_pid = solver_info.process_id
+            cortex_host = cortex_info.hostname
+            cortex_pid = cortex_info.process_id
+            cortex_pwd = cortex_info.working_directory
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
@@ -744,15 +749,17 @@ class FluentConnection:
 
         if timeout is None:
             env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
-
-            if env_timeout:
-                logger.debug("Found PYFLUENT_TIMEOUT_FORCE_EXIT env var")
+            if env_timeout is not None:
+                logger.debug(
+                    f"Found PYFLUENT_TIMEOUT_FORCE_EXIT env var: '{env_timeout}'"
+                )
                 try:
                     timeout = float(env_timeout)
                     logger.debug(f"Setting TIMEOUT_FORCE_EXIT to {timeout}")
                 except ValueError:
                     logger.debug(
-                        "Off or unrecognized PYFLUENT_TIMEOUT_FORCE_EXIT value, not enabling timeout force exit"
+                        "Invalid PYFLUENT_TIMEOUT_FORCE_EXIT. Must be a float or int. "
+                        "Timeout forced exit is disabled."
                     )
 
         if timeout is None:

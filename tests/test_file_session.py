@@ -24,18 +24,18 @@ from pathlib import Path
 
 import pytest
 
-from ansys.fluent.core import examples
-from ansys.fluent.core.file_session import (
-    FileSession,
-    InvalidFieldName,
-    InvalidMultiPhaseFieldName,
-)
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core import (
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
+    examples,
+)
+from ansys.fluent.core.file_session import (
+    FileSession,
+    InvalidFieldName,
+    InvalidMultiPhaseFieldName,
 )
 
 
@@ -150,11 +150,26 @@ def test_field_info_data_single_phase():
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
-    assert len(surface_data_symmetry["symmetry"]) == 2018
-    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry["symmetry"]) == 10090
+
+    surface_data_symmetry_request_deprecated = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+    )
+    surface_data_symmetry_deprecated = surface_data(
+        surface_data_symmetry_request_deprecated
+    )
+    assert list((surface_data_symmetry_deprecated["symmetry"])[1000]) == [
+        1259,
+        1260,
+        1227,
+        1226,
+    ]
 
     vector_data = file_session.fields.field_data.get_field_data
     vector_data_request = VectorFieldDataRequest(
@@ -171,7 +186,7 @@ def test_field_info_data_single_phase():
     assert round(vector_data_symmetry[1009][1], 5) == 1.22311
 
 
-def test_transaction_request_single_phase():
+def test_batch_request_single_phase():
     case_file_name = examples.download_file(
         "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
@@ -184,7 +199,7 @@ def test_transaction_request_single_phase():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
 
     surf_data_request = SurfaceFieldDataRequest(
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
@@ -201,14 +216,14 @@ def test_transaction_request_single_phase():
         field_name="velocity", surfaces=[3, 5]
     )
 
-    transaction_1.add_requests(
+    batch_1.add_requests(
         surf_data_request,
         scalar_data_request_1,
         scalar_data_request_2,
         vector_data_request_1,
     )
 
-    data = transaction_1.get_response()
+    data = batch_1.get_response()
 
     assert data
 
@@ -239,7 +254,7 @@ def test_transaction_request_single_phase():
     assert round(vector_data[5][50][2], 5) == 0.00468
 
 
-def test_transaction_request_multi_phase():
+def test_batch_request_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
@@ -256,7 +271,7 @@ def test_transaction_request_multi_phase():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
 
     scalar_field_request = ScalarFieldDataRequest(
         field_name="phase-2:SV_WALL_YPLUS",
@@ -268,9 +283,9 @@ def test_transaction_request_multi_phase():
         field_name="phase-3:velocity", surfaces=[31]
     )
 
-    transaction_1.add_requests(scalar_field_request, vector_field_request)
+    batch_1.add_requests(scalar_field_request, vector_field_request)
 
-    data = transaction_1.get_response()
+    data = batch_1.get_response()
 
     assert data
 
@@ -300,10 +315,10 @@ def test_error_handling_single_phase():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
 
     with pytest.raises(NotImplementedError):
-        transaction_1.add_requests(
+        batch_1.add_requests(
             PathlinesFieldDataRequest(field_name="SV_T", surfaces=[3, 5])
         )
 
@@ -330,11 +345,9 @@ def test_error_handling_multi_phase():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
     with pytest.raises(InvalidMultiPhaseFieldName):
-        transaction_1.add_requests(
-            ScalarFieldDataRequest("SV_WALL_YPLUS", surfaces=[29, 30])
-        )
+        batch_1.add_requests(ScalarFieldDataRequest("SV_WALL_YPLUS", surfaces=[29, 30]))
 
     with pytest.raises(InvalidMultiPhaseFieldName):
         field_data.get_field_data(
@@ -438,11 +451,18 @@ def test_field_info_data_single_phase_deprecated():
     assert round(surface_data_wall[3][1500][1], 5) == 0.09525
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
-    surface_data_symmetry = surface_data(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+    surface_data_symmetry_deprecated = surface_data(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
     )
-    assert len(surface_data_symmetry["symmetry"]) == 2018
-    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry_deprecated["symmetry"]) == 2018
+
+    surface_data_symmetry = surface_data(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
+    )
+    assert list(surface_data_symmetry["symmetry"][:5]) == [4, 295, 294, 33, 34]
 
     vector_data = file_session.fields.field_data.get_vector_field_data
     assert vector_data("velocity", surfaces=["wall"])["wall"].shape == (3630, 3)
@@ -537,7 +557,7 @@ def test_data_reader_multi_phase_deprecated():
     assert len(data_file.get_face_scalar_field_data("phase-1", "SV_DENSITY", 33)) == 268
 
 
-def test_transaction_request_single_phase_deprecated():
+def test_batch_request_single_phase_deprecated():
     case_file_name = examples.download_file(
         "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
@@ -550,16 +570,16 @@ def test_transaction_request_single_phase_deprecated():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
 
-    transaction_1.add_surfaces_request(surfaces=[3, 5])
+    batch_1.add_surfaces_request(surfaces=[3, 5])
 
-    transaction_1.add_scalar_fields_request("SV_T", surfaces=[3, 5])
-    transaction_1.add_scalar_fields_request("SV_T", surfaces=["wall", "symmetry"])
+    batch_1.add_scalar_fields_request("SV_T", surfaces=[3, 5])
+    batch_1.add_scalar_fields_request("SV_T", surfaces=["wall", "symmetry"])
 
-    transaction_1.add_vector_fields_request("velocity", surfaces=[3, 5])
+    batch_1.add_vector_fields_request("velocity", surfaces=[3, 5])
 
-    data = transaction_1.get_fields()
+    data = batch_1.get_fields()
 
     assert data
 
@@ -593,7 +613,7 @@ def test_transaction_request_single_phase_deprecated():
     assert round(vector_data[5]["velocity"][152], 5) == 0.00468
 
 
-def test_transaction_request_multi_phase_deprecated():
+def test_batch_request_multi_phase_deprecated():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
@@ -608,13 +628,13 @@ def test_transaction_request_multi_phase_deprecated():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
 
-    transaction_1.add_scalar_fields_request("phase-2:SV_WALL_YPLUS", surfaces=[29, 30])
+    batch_1.add_scalar_fields_request("phase-2:SV_WALL_YPLUS", surfaces=[29, 30])
 
-    transaction_1.add_vector_fields_request("phase-3:velocity", surfaces=[31])
+    batch_1.add_vector_fields_request("phase-3:velocity", surfaces=[31])
 
-    data = transaction_1.get_fields()
+    data = batch_1.get_fields()
 
     assert data
 
@@ -648,10 +668,10 @@ def test_error_handling_single_phase_deprecated():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
 
     with pytest.raises(NotImplementedError):
-        transaction_1.add_pathlines_fields_request("SV_T", surfaces=[3, 5])
+        batch_1.add_pathlines_fields_request("SV_T", surfaces=[3, 5])
 
     with pytest.raises(NotImplementedError):
         field_data.get_pathlines_field_data("SV_T", surfaces=[3, 5])
@@ -674,12 +694,52 @@ def test_error_handling_multi_phase_deprecated():
 
     field_data = file_session.fields.field_data
 
-    transaction_1 = field_data.new_transaction()
+    batch_1 = field_data.new_batch()
     with pytest.raises(InvalidMultiPhaseFieldName):
-        transaction_1.add_scalar_fields_request("SV_WALL_YPLUS", surfaces=[29, 30])
+        batch_1.add_scalar_fields_request("SV_WALL_YPLUS", surfaces=[29, 30])
 
     with pytest.raises(InvalidMultiPhaseFieldName):
         field_data.get_vector_field_data("velocity", surfaces=[34])[34].size
 
     with pytest.raises(InvalidFieldName):
         field_data.get_vector_field_data("phase-1:temperature", surfaces=[34])[34].size
+
+
+def test_faces_connectivity_behaviour():
+    case_file_name = examples.download_file(
+        "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
+    )
+    data_file_name = examples.download_file(
+        "elbow1.dat.h5", "pyfluent/file_session", return_without_path=False
+    )
+    file_session = FileSession(case_file_name, data_file_name)
+    batch = file_session.fields.field_data.new_batch()
+    vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+        surfaces=[3, 4],
+    )
+    data = batch.add_requests(vertices_and_faces_connectivity_request).get_response()
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        3
+    ].vertices.shape == (3810, 3)
+    assert (
+        len(
+            data.get_field_data(vertices_and_faces_connectivity_request)[4].connectivity
+        )
+        == 2018
+    )
+    del batch
+
+    batch = file_session.fields.field_data.new_batch()
+    vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
+        surfaces=[3, 4],
+        flatten_connectivity=True,
+    )
+    data = batch.add_requests(vertices_and_faces_connectivity_request).get_response()
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        3
+    ].vertices.shape == (3810, 3)
+    assert data.get_field_data(vertices_and_faces_connectivity_request)[
+        4
+    ].connectivity.shape == (10090,)

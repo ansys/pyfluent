@@ -27,9 +27,9 @@ from pytest import WarningsRecorder
 
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
+from ansys.fluent.core.solver import Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
-    UnstableSettingWarning,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -462,31 +462,6 @@ def warning_record():
         yield wrec
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2712")
-@pytest.mark.fluent_version(">=24.2")
-def test_unstable_settings_warning(new_solver_session, warning_record):
-    solver = new_solver_session
-    solver.file.export
-    assert len(warning_record) == 1
-    assert warning_record.pop().category == UnstableSettingWarning
-    try:
-        solver.file.exp
-    except AttributeError:
-        pass
-    assert len(warning_record) == 0
-    solver.file.export
-    assert len(warning_record) == 1
-    assert warning_record.pop().category == UnstableSettingWarning
-
-    # Issue in running in CI (probably due to -gu mode)
-    # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    # solver.file.read_case_data(file_name=case_path)
-    # img_path = "a.png"
-    # Path(img_path).unlink(missing_ok=True)
-    # solver.results.graphics.picture.save_picture(file_name=img_path)
-    # assert len(recwarn) == 0
-
-
 @pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
@@ -621,10 +596,9 @@ def test_nested_alias(mixing_elbow_settings_session):
 def test_commands_not_in_settings(new_solver_session):
     solver = new_solver_session
 
-    for command in ["exit", "switch_to_meshing_mode"]:
-        assert command not in dir(solver.settings)
-        with pytest.raises(AttributeError):
-            getattr(solver.settings, command)
+    assert "exit" not in dir(solver.settings)
+    with pytest.raises(AttributeError):
+        solver.settings.exit()
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -789,3 +763,28 @@ def test_runtime_python_classes(
         ].general.material()
         == "water-liquid"
     )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_setting_string_constants(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    viscous = Viscous(solver)
+
+    # viscous.model.INVISCID is a string constant
+    assert viscous.model.INVISCID == "inviscid"
+    assert isinstance(viscous.model.INVISCID, str)
+    with pytest.raises(AttributeError):
+        viscous.model.INVISCID = "invalid"
+
+    # Setting using string constants
+    viscous.model = viscous.model.INVISCID
+    assert viscous.model() == "inviscid"
+    viscous.model = viscous.model.K_EPSILON
+    assert viscous.model() == "k-epsilon"
+    viscous.k_epsilon_model = viscous.k_epsilon_model.RNG
+    assert viscous.k_epsilon_model.RNG.is_active() is True
+    assert viscous.k_epsilon_model() == "rng"
+    assert viscous.k_epsilon_model.EASM.is_active() is False
+
+    with pytest.raises(ValueError):
+        viscous.k_epsilon_model = viscous.k_epsilon_model.EASM

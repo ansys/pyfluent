@@ -44,6 +44,7 @@ import collections
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
+import inspect
 import keyword
 import logging
 import os
@@ -54,6 +55,7 @@ import sys
 import types
 from typing import (
     Any,
+    Callable,
     Dict,
     ForwardRef,
     Generic,
@@ -77,24 +79,23 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+import ansys.units
 
 from . import _docstrings
+from ..pyfluent_warnings import warning_for_fluent_dev_version
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
 
-
-def _ansys_units():
-
-    try:
-        import ansys.units
-
-        return ansys.units
-    except ImportError:
-        pass
-
-
 settings_logger = logging.getLogger("pyfluent.settings_api")
+
+
+_static_class_attributes = [
+    "_version",
+    "_deprecated_version",
+    "_python_name",
+    "fluent_name",
+]
 
 
 class InactiveObjectError(RuntimeError):
@@ -107,7 +108,6 @@ class InactiveObjectError(RuntimeError):
 
 class _InlineConstants:
     is_active = "active?"
-    is_stable = "webui-release-active?"
     is_read_only = "read-only?"
     default_value = "default"
     min = "min"
@@ -188,7 +188,7 @@ _ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation), "?'")
 def to_python_name(fluent_name: str) -> str:
     """Convert a scheme string to a Python variable name.
 
-    This function replaces symbols with _. Any ``?`` symbols are
+    This function replaces symbols with _. ``'`` and ``?`` symbols are
     ignored.
     """
     if not fluent_name:
@@ -199,13 +199,27 @@ def to_python_name(fluent_name: str) -> str:
     return name
 
 
-_to_field_name_str = naming_strategy().to_string if naming_strategy else lambda s: s
+def to_constant_name(fluent_name: str) -> str:
+    """Convert a scheme string to a Python constant name.
+
+    This function replaces symbols and spaces with _ and converts the name to uppercase.
+    ``'`` and ``?`` symbols are ignored.
+    """
+    fluent_name = fluent_name.replace(" ", "_")
+    name = fluent_name.translate(_ttable).upper()
+    if name[0].isdigit():
+        # If the first character is a digit, prepend "CASE_"
+        name = "CASE_" + name
+    return name
+
+
+_to_field_name_str = naming_strategy().to_string
 
 
 def _get_python_path_comps(obj):
     """Get python path components for traversing class hierarchy."""
     comps = []
-    while obj:
+    while obj is not None:
         python_name = obj.python_name
         obj = obj._parent
         if isinstance(obj, (NamedObject, ListObject)):
@@ -232,6 +246,23 @@ def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str])
         if issubclass(cls, (NamedObject, ListObject)):
             cls = cls.child_object_type
     return cls, full_path
+
+
+def _is_deprecated(obj) -> bool | None:
+    """Whether the object is deprecated in a specific Fluent version."""
+    if FluentVersion(obj._version) >= FluentVersion.v252:
+        # "_deprecated_version" is part of generated data since 25R2
+        deprecated_version = getattr(obj, "_deprecated_version", None)
+    else:
+        deprecated_version = obj.get_attrs(["deprecated-version"])
+        if deprecated_version:
+            deprecated_version = deprecated_version.get("attrs", deprecated_version)
+        deprecated_version = (
+            deprecated_version.get("deprecated-version") if deprecated_version else None
+        )
+    return deprecated_version and FluentVersion(obj._version) >= FluentVersion(
+        deprecated_version
+    )
 
 
 class Base:
@@ -296,12 +327,10 @@ class Base:
 
         Supports file upload and download.
         """
-        with warnings.catch_warnings():
-            warnings.filterwarnings(action="ignore", category=UnstableSettingWarning)
-            if self._file_transfer_service:
-                return self._file_transfer_service
-            elif self._parent:
-                return self._parent._file_transfer_handler
+        if self._file_transfer_service:
+            return self._file_transfer_service
+        elif self._parent:
+            return self._parent._file_transfer_handler
 
     _name = None
     fluent_name = None
@@ -413,37 +442,10 @@ class Base:
             return None
         return val
 
-    def _is_deprecated(self) -> bool:
-        """Whether the object is deprecated in a specific Fluent version.'"""
-        deprecated_version = self.get_attrs(["deprecated-version"])
-        if deprecated_version:
-            deprecated_version = deprecated_version.get("attrs", deprecated_version)
-        deprecated_version = (
-            deprecated_version.get("deprecated-version") if deprecated_version else None
-        )
-        return deprecated_version and (
-            float(deprecated_version) <= 22.2
-            or FluentVersion(self._version) >= FluentVersion(deprecated_version)
-        )
-
     def is_active(self) -> bool:
         """Whether the object is active."""
         attr = self.get_attr(_InlineConstants.is_active)
         return False if attr is False else True
-
-    def _check_stable(self) -> None:
-        """Whether the object is stable."""
-        if not self.is_active():
-            return
-        attr = self.get_attr(_InlineConstants.is_stable)
-        attr = True if attr is None else attr
-        if not attr:
-            warnings.warn(
-                f"The API feature at '{self.path}' is not stable. "
-                f"It is not guaranteed that it is fully validated and "
-                f"there is no commitment to its backwards compatibility.",
-                UnstableSettingWarning,
-            )
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -517,6 +519,39 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
+    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+        """Get completer info of all children.
+
+        Returns
+        -------
+        List[List[str]]
+            Name, type and docstring of all children.
+        """
+        excluded = excluded or []
+        ret = []
+        for k, v in inspect.getmembers(self):
+            if not k.startswith("_") and k not in excluded and k.startswith(prefix):
+                if isinstance(v, Base):
+                    if not _is_deprecated(v):
+                        ret.append(
+                            [
+                                k,
+                                _get_type_for_completer_info(v.__class__),
+                                v.__doc__,
+                            ]
+                        )
+                elif inspect.ismethod(v):
+                    ret.append(
+                        [
+                            k,
+                            "Method",
+                            v.__doc__ or "",
+                        ]
+                    )
+                else:
+                    ret.append([k, "Data", ""])
+        return ret
+
 
 StateT = TypeVar("StateT")
 
@@ -565,14 +600,12 @@ class RealNumerical(Numerical):
     def as_quantity(self) -> QuantityT | None:
         """Get the state of the object as an ansys.units.Quantity."""
         error = None
-        if not _ansys_units():
-            error = "Code not configured to support units."
         if not error:
             quantity = self.get_attr("units-quantity")
             units = get_si_unit_for_fluent_quantity(quantity)
             if units is not None:
                 try:
-                    return _ansys_units().Quantity(
+                    return ansys.units.Quantity(
                         value=self.get_state(),
                         units=units,
                     )
@@ -608,11 +641,9 @@ class RealNumerical(Numerical):
                     raise UnhandledQuantity(self.path, state)
                 return units
 
-            if _ansys_units() and isinstance(state, (_ansys_units().Quantity, tuple)):
+            if isinstance(state, (ansys.units.Quantity, tuple)):
                 state = (
-                    _ansys_units().Quantity(*state)
-                    if isinstance(state, tuple)
-                    else state
+                    ansys.units.Quantity(*state) if isinstance(state, tuple) else state
                 )
                 state = state.to(get_units()).value
             elif isinstance(state, tuple):
@@ -653,6 +684,7 @@ class DeprecatedSettingWarning(PyFluentDeprecationWarning):
     pass
 
 
+# TODO: Delete this after updating PyConsole code when next PyFluent version is pushed.
 class UnstableSettingWarning(PyFluentUserWarning):
     """Provides unstable settings warning."""
 
@@ -781,7 +813,7 @@ class SettingsBase(Base, Generic[StateT]):
     def set_state(self, state: StateT | None = None, **kwargs):
         """Set the state of the object."""
         with self._while_setting_state():
-            if isinstance(state, (tuple, _ansys_units().Quantity)) and hasattr(
+            if isinstance(state, (tuple, ansys.units.Quantity)) and hasattr(
                 self, "value"
             ):
                 self.value.set_state(state, **kwargs)
@@ -970,20 +1002,6 @@ class BooleanList(SettingsBase[BoolListType], Property):
     _state_type = BoolListType
 
 
-def _command_query_name_filter(
-    parent, list_attr: str, prefix: str, excluded: List[str]
-) -> List:
-    """Auto completer info of commands and queries."""
-    ret = []
-    names = getattr(parent, list_attr)
-    for name in names:
-        if name not in excluded and name.startswith(prefix):
-            child = getattr(parent, name)
-            if child.is_active() and not child._is_deprecated():
-                ret.append([name, child.__class__.__bases__[0].__name__, child.__doc__])
-    return ret
-
-
 def _get_type_for_completer_info(cls) -> str:
     if issubclass(cls, (FileName, _InputFile)):
         return "InputFilename"
@@ -1093,7 +1111,7 @@ class Group(SettingsBase[DictStateType]):
         ret = []
         for child_name in self.child_names:
             child = getattr(self, child_name)
-            if child.is_active() and not child._is_deprecated():
+            if child.is_active() and not _is_deprecated(child):
                 ret.append(child_name)
         return ret
 
@@ -1102,7 +1120,7 @@ class Group(SettingsBase[DictStateType]):
         ret = []
         for command_name in self.command_names:
             command = getattr(self, command_name)
-            if command.is_active() and not command._is_deprecated():
+            if command.is_active() and not _is_deprecated(command):
                 ret.append(command_name)
         return ret
 
@@ -1111,7 +1129,7 @@ class Group(SettingsBase[DictStateType]):
         ret = []
         for query_name in self.query_names:
             query = getattr(self, query_name)
-            if query.is_active() and not query._is_deprecated():
+            if query.is_active() and not _is_deprecated(query):
                 ret.append(query_name)
         return ret
 
@@ -1121,65 +1139,36 @@ class Group(SettingsBase[DictStateType]):
             [
                 child
                 for child in self.child_names + self.command_names + self.query_names
-                if getattr(self, child)._is_deprecated()
+                if _is_deprecated(getattr(self, child))
             ]
         )
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
-
-        Returns
-        -------
-        List[List[str]]
-            Name, type and docstring of all children.
-        """
-        excluded = excluded or []
-        ret = []
-        for child_name in self.child_names:
-            if child_name not in excluded and child_name.startswith(prefix):
-                child = getattr(self, child_name)
-                if child.is_active() and not child._is_deprecated():
-                    ret.append(
-                        [
-                            child_name,
-                            _get_type_for_completer_info(child.__class__),
-                            child.__doc__,
-                        ]
-                    )
-        command_info = _command_query_name_filter(
-            self, "command_names", prefix, excluded
-        )
-        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
-        for items in [command_info, query_info]:
-            ret.extend(items)
-        return ret
-
     def __getattribute__(self, name):
-        if name in super().__getattribute__("child_names"):
-            if self.is_active() is False:
-                raise InactiveObjectError(self.python_path)
-        alias = super().__getattribute__("_child_aliases").get(name)
-        if alias:
-            alias = alias[0]
-            alias_obj = self._child_alias_objs.get(name)
-            if alias_obj is None:
-                obj = self.find_object(alias)
-                alias_obj = self._child_alias_objs[name] = _create_child(
-                    obj.__class__, None, obj.parent, alias
-                )
-            return alias_obj
+        # Avoiding server queries for static attributes
+        if name in _static_class_attributes:
+            return super().__getattribute__(name)
+        if (
+            name in super().__getattribute__("child_names")
+            and self.is_active() is False
+        ):
+            raise InactiveObjectError(self.python_path)
         try:
-            attr = super().__getattribute__(name)
-            if name in super().__getattribute__("_child_classes"):
-                attr._check_stable()
-            return attr
+            return super().__getattribute__(name)
         except AttributeError as ex:
+            alias = self._child_aliases.get(name)
+            if alias is not None:
+                alias = alias[0]
+                alias_obj = self._child_alias_objs.get(name)
+                if alias_obj is None:
+                    obj = self.find_object(alias)
+                    alias_obj = self._child_alias_objs[name] = _create_child(
+                        obj.__class__, None, obj.parent, alias
+                    )
+                return alias_obj
             error_msg = allowed_name_error_message(
                 trial_name=name,
                 message=ex.args[0],
-                allowed_values=sorted(
-                    set(self.get_active_child_names() + self.command_names)
-                ),
+                allowed_values=sorted(set(self.child_names + self.command_names)),
             )
             ex.args = (error_msg,)
             raise
@@ -1426,24 +1415,6 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all children.
-
-        Returns
-        -------
-        List[List[str]]
-            Name, type and docstring of all children.
-        """
-        excluded = excluded or []
-        ret = []
-        command_info = _command_query_name_filter(
-            self, "command_names", prefix, excluded
-        )
-        query_info = _command_query_name_filter(self, "query_names", prefix, excluded)
-        for items in [command_info, query_info]:
-            ret.extend(items)
-        return ret
-
     def __getitem__(self, name: str) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
@@ -1499,7 +1470,54 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
                 )
             return alias_obj
         else:
-            return getattr(super(), name)
+            try:
+                return getattr(super(), name)
+            except AttributeError as ex:
+                raise AttributeError(
+                    f"'{self.__class__.__name__}' has no attribute '{name}'"
+                ) from ex
+
+    def __add__(self, other):
+        if not isinstance(other, NamedObject):
+            raise TypeError(
+                f"Can only add NamedObject to NamedObject, not {type(other).__name__}"
+            )
+        return CombinedNamedObject([self, other])
+
+
+class CombinedNamedObject:
+    """A ``CombinedNamedObject`` contains the concatenated named-objects."""
+
+    def __init__(self, objects: list[NamedObject]):
+        """__init__ of CombinedNamedObject."""
+        self.objects = []
+        self._items = []
+        for obj in objects:
+            if isinstance(obj, CombinedNamedObject):
+                self.objects.extend(obj.objects)
+            else:
+                self.objects.append(obj)
+        for obj in self.objects:
+            self._items.extend(obj.items())
+
+    def items(self):
+        """Return items like a dictionary."""
+        return self._items
+
+    def __iter__(self):
+        for obj in self.objects:
+            yield from obj
+
+    def __add__(self, other):
+        if not isinstance(other, NamedObject):
+            raise TypeError(f"Cannot add {type(self)} to NamedObject")
+        return CombinedNamedObject(self.objects + [other])
+
+    def __call__(self):
+        temp_dict = {}
+        for obj in self.objects:
+            temp_dict.update(obj())
+        return temp_dict
 
 
 def _rename(obj: NamedObject | _Alias, new: str, old: str):
@@ -1637,11 +1655,16 @@ def _get_new_keywords(obj, *args, **kwds):
             newkwds[argName] = arg
     if kwds:
         # Convert deprecated keywords through aliases
-        # We don't get arguments-aliases from static-info yet.
-        argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
-        argument_aliases = {}
-        for k, v in argument_aliases_scm.items():
-            argument_aliases[to_python_name(k)] = to_python_name(v.removeprefix("'"))
+        if FluentVersion(obj._version) >= FluentVersion.v252:
+            argument_aliases = {k: v[0] for k, v in obj._child_aliases.items()}
+        else:
+            # Arguments-aliases was not statically available before v252.
+            argument_aliases_scm = obj.get_attr("arguments-aliases") or {}
+            argument_aliases = {}
+            for k, v in argument_aliases_scm.items():
+                argument_aliases[to_python_name(k)] = to_python_name(
+                    v.removeprefix("'")
+                )
         for k, v in kwds.items():
             alias = argument_aliases.get(k)
             if alias:
@@ -1681,32 +1704,9 @@ class Action(Base):
             [
                 child
                 for child in self.argument_names
-                if getattr(self, child)._is_deprecated()
+                if _is_deprecated(getattr(self, child))
             ]
         )
-
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
-        """Get completer info of all arguments.
-
-        Returns
-        -------
-        List[List[str]]
-            Name, type and docstring of all arguments.
-        """
-        excluded = excluded or []
-        ret = []
-        for argument_name in self.argument_names:
-            if argument_name not in excluded and argument_name.startswith(prefix):
-                argument = getattr(self, argument_name)
-                if argument.is_active() and not argument._is_deprecated():
-                    ret.append(
-                        [
-                            argument_name,
-                            _get_type_for_completer_info(argument.__class__),
-                            argument.__doc__,
-                        ]
-                    )
-        return ret
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
@@ -1744,12 +1744,16 @@ class BaseCommand(Action):
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
-            if os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1":
-                if (self._parent.path, self.obj_name) in [
-                    ("parameters/input-parameters", "list"),
-                    ("parameters/output-parameters", "list"),
-                ]:
-                    ret = _fix_parameter_list_return(ret)
+            if (
+                os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1"
+                and FluentVersion(self._version) <= FluentVersion.v252
+                and self.path
+                in [
+                    "parameters/input-parameters/list",
+                    "parameters/output-parameters/list",
+                ]
+            ):
+                ret = _fix_parameter_list_return(ret)
             return ret
 
     def execute_command(self, *args, **kwds):
@@ -1787,13 +1791,6 @@ class BaseCommand(Action):
                 assert_type(ret, base_t._state_type)
             return ret
 
-    def __call__(self, *args, **kwds):
-        try:
-            return self.execute_command(*args, **kwds)
-        except KeyboardInterrupt:
-            self._root._on_interrupt(self)
-            raise KeyboardInterrupt
-
 
 # TODO: Remove this after parameter list() method is fixed from Fluent side
 def _fix_parameter_list_return(val):
@@ -1805,10 +1802,16 @@ def _fix_parameter_list_return(val):
                 # Symbols are not stripped in the command return in PyConsole.
                 # Following code will work in both PyConsole and PyFluent.
                 unit = units[0].lstrip("'")
-                unit_labels = _fix_parameter_list_return.scheme_eval(
-                    f"(units/inquire-available-label-strings-for-quantity '{unit})"
-                )
-                unit_label = unit_labels[0] if len(unit_labels) > 0 else ""
+                if unit != "*null*":
+                    try:
+                        unit_labels = _fix_parameter_list_return.scheme_eval(
+                            f"(units/inquire-available-label-strings-for-quantity '{unit})"
+                        )
+                    except RuntimeError:
+                        unit_labels = []
+                    unit_label = unit_labels[0] if len(unit_labels) > 0 else ""
+                else:
+                    unit_label = ""
             else:
                 unit_label = ""
             new_val[name] = [value, unit_label]
@@ -1824,6 +1827,8 @@ class Command(BaseCommand):
 
     def __call__(self, **kwds):
         """Call a command with the specified keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
@@ -1836,6 +1841,8 @@ class CommandWithPositionalArgs(BaseCommand):
 
     def __call__(self, *args, **kwds):
         """Call a command with the specified positional and keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
@@ -1848,6 +1855,8 @@ class Query(Action):
 
     def __call__(self, **kwds):
         """Call a query with the specified keyword arguments."""
+        if not self.is_active():
+            raise InactiveObjectError(self.python_path)
         kwds = _get_new_keywords(self, **kwds)
         scmKwds = {}
         for arg, value in kwds.items():
@@ -2044,6 +2053,33 @@ class AllowedValuesMixin:
             return []
 
 
+class _MaybeActiveString(str):
+    """A string class with an is_active() method."""
+
+    def __new__(cls, value, is_active: Callable[[], bool]):
+        return super().__new__(cls, value)
+
+    def __init__(self, value, is_active: Callable[[], bool]):
+        super().__init__()
+        self.is_active = is_active
+
+
+class _FlStringConstant:
+    """A descriptor class to hold a constant string value."""
+
+    def __init__(self, value):
+        self._value = value
+
+    def __get__(self, instance, owner):
+        def is_active():
+            return self._value in instance.allowed_values()
+
+        return _MaybeActiveString(self._value, is_active=is_active)
+
+    def __set__(self, instance, value):
+        raise AttributeError("Cannot set a constant value.")
+
+
 _bases_by_class = {}
 
 
@@ -2128,8 +2164,11 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         dct["_child_classes"] = {}
         cls = type(pname, bases, dct)
 
-        deprecated_version = info.get("deprecated_version", "")
-        cls._deprecated_version = deprecated_version
+        deprecated_version = info.get("deprecated_version", None)
+        if deprecated_version and float(deprecated_version) >= 22.2:
+            cls._deprecated_version = deprecated_version
+        else:
+            cls._deprecated_version = ""
 
         taboo = set(dir(cls))
         taboo |= set(
@@ -2173,7 +2212,6 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         commands = info.get("commands")
         if commands:
             commands.pop("exit", None)
-            commands.pop("switch-to-meshing-mode", None)
         if commands and not user_creatable:
             commands.pop("create", None)
         if commands:
@@ -2212,14 +2250,14 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         child_aliases = info.get("child-aliases") or info.get("child_aliases", {})
         command_aliases = info.get("command-aliases") or info.get("command_aliases", {})
         query_aliases = info.get("query-aliases") or info.get("query_aliases", {})
-        argument_aliases = info.get("arguments-aliases") or info.get(
+        arguments_aliases = info.get("arguments-aliases") or info.get(
             "arguments_aliases", {}
         )
-        if child_aliases or command_aliases or query_aliases or argument_aliases:
+        if child_aliases or command_aliases or query_aliases or arguments_aliases:
             cls._child_aliases = {}
             # No need to differentiate in the Python implementation
             for k, v in (
-                child_aliases | command_aliases | query_aliases | argument_aliases
+                child_aliases | command_aliases | query_aliases | arguments_aliases
             ).items():
                 # Storing the original name as we don't have any other way
                 # to recover it at runtime.
@@ -2229,6 +2267,16 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     ),
                     k,
                 )
+
+        allowed_values = info.get("allowed-values") or info.get("allowed_values", [])
+        if allowed_values:
+            for allowed_value in allowed_values:
+                setattr(
+                    cls,
+                    to_constant_name(allowed_value),
+                    _FlStringConstant(allowed_value),
+                )
+            cls._allowed_values = allowed_values
 
     except Exception:
         print(
@@ -2288,6 +2336,7 @@ def get_root(
                 CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
+            warning_for_fluent_dev_version(version)
         except FileNotFoundError:
             obj_info = flproxy.get_static_info()
             root_cls, _ = get_cls("", obj_info, version=version)

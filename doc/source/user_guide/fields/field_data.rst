@@ -17,12 +17,12 @@ You can do this either by loading both case and data files or by reading a case 
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> solver = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent()
   >>> case_path = download_file(file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system")
   >>> data_path = download_file(file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system")
-  >>> solver.settings.file.read_case_data(file_name=case_path)
+  >>> solver_session.settings.file.read_case_data(file_name=case_path)
 
-  >>> field_data = solver.fields.field_data  # This creates an instance of the FieldData class.
+  >>> field_data = solver_session.fields.field_data  # This creates an instance of the FieldData class.
 
 Simple requests
 ---------------
@@ -43,7 +43,7 @@ To obtain surface vertex coordinates for a given surface, create a
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import SurfaceDataType, SurfaceFieldDataRequest
+  >>> from ansys.fluent.core import SurfaceDataType, SurfaceFieldDataRequest
 
   >>> vertices_request = SurfaceFieldDataRequest(
   >>>     surfaces=["inlet"],
@@ -64,8 +64,10 @@ in the ``data_types`` list.
 
 .. code-block:: python
 
+  >>> from ansys.fluent.core.solver import VelocityInlet
+
   >>> faces_normal_and_centroid_request = SurfaceFieldDataRequest(
-  >>>     surfaces=["inlet"],
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
   >>>     data_types=[SurfaceDataType.FacesNormal, SurfaceDataType.FacesCentroid],
   >>> )
   >>> faces_normal_and_centroid_data = field_data.get_field_data(faces_normal_and_centroid_request)
@@ -78,19 +80,45 @@ in the ``data_types`` list.
   # Example: The centroid of the 16th face has coordinates [-0.3463, 0.0, -0.0328].
   array([-0.34634298,  0.        , -0.03276413], dtype=float32)
 
-To obtain face connectivity data, specify ``FacesConnectivity`` as the ``data_types`` parameter.
+To obtain face connectivity data, specify ``FacesConnectivity`` in the ``data_types`` parameter
+when constructing a ``SurfaceFieldDataRequest``. The returned data provides a flat, NumPy array
+of vertex indices that describe how each face is connected to the mesh's vertices.
+
+The data is stored in a compact "flattened" format. Each face is represented by a sequence of
+vertex indices, preceded by an integer specifying how many vertices the face contains. This means
+the array is structured as:
+
+::
+
+   [N₀, V₀₁, V₀₂, ..., V₀ₙ₀, N₁, V₁₁, V₁₂, ..., V₁ₙ₁, ...]
+
+Where:
+- ``Nᵢ`` is the number of vertices in the *i*-th face,
+- ``Vᵢⱼ`` are the vertex indices that make up that face.
+
+This format is compact and well-suited for custom post-processing, visualization, or exporting mesh
+data to third-party tools. It supports arbitrary polygonal faces, including triangles, quads, and
+NGons (with more than 4 vertices).
 
 .. code-block:: python
 
   >>> faces_connectivity_request = SurfaceFieldDataRequest(
-  >>>     surfaces=["inlet"], data_types=[SurfaceDataType.FacesConnectivity]
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
+  >>>     data_types=[SurfaceDataType.FacesConnectivity],
+  >>>     flatten_connectivity=True,
   >>> )
   >>> faces_connectivity_data = field_data.get_field_data(faces_connectivity_request)
 
-  # FacesConnectivity provides indices of vertices for each face. For example:
-  # Face 6 is connected to vertices 4, 5, 12, and 11.
-  >>> faces_connectivity_data["inlet"].connectivity[5]
-  array([ 4,  5, 12, 11])
+  >>> faces_connectivity_data["inlet"].connectivity
+  array([ 4,  3,  2,  1,  0,   3, 10, 11, 12, ...], dtype=int32)
+
+In this example, the first face has 4 vertices (a quad), connected to vertices [3, 2, 1, 0]. The second
+face has 3 vertices (a triangle), connected to [10, 11, 12], and so on.
+
+.. note::
+
+   This format is consistent with VTK-style unstructured mesh representations (for example, as used in pyvista).
+
 
 Get scalar field data
 ~~~~~~~~~~~~~~~~~~~~~
@@ -98,7 +126,7 @@ To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataR
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import ScalarFieldDataRequest
+  >>> from ansys.fluent.core import ScalarFieldDataRequest
   >>> absolute_pressure_request = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
   >>> absolute_pressure_data = field_data.get_field_data(absolute_pressure_request)
 
@@ -115,7 +143,7 @@ To obtain vector field data, such as velocity vectors, use ``VectorFieldDataRequ
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import VectorFieldDataRequest
+  >>> from ansys.fluent.core import VectorFieldDataRequest
   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
   >>> velocity_vector_data = field_data.get_field_data(velocity_request)
   # Shape: (262, 3) - Velocity vectors for 262 faces, each with components (vx, vy, vz) for 'inlet'.
@@ -131,8 +159,12 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
 
 .. code-block:: python
 
-  >>> from ansys.fluent.core.services.field_data import PathlinesFieldDataRequest
-  >>> velocity_pathlines_request = PathlinesFieldDataRequest(field_name="x-velocity", surfaces=["inlet"])
+  >>> from ansys.fluent.core import PathlinesFieldDataRequest
+  >>> velocity_pathlines_request = PathlinesFieldDataRequest(
+  >>>           field_name="x-velocity",
+  >>>           surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")]
+  >>>           flatten_connectivity=True,
+  >>>       )
   >>> velocity_path_lines_data = field_data.get_field_data(velocity_pathlines_request)
 
   # Vertices shape: (29565, 3) - 29565 pathline points, each with coordinates (x, y, z).
@@ -140,22 +172,22 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
   # Velocity shape: (29565,) - Scalar velocity values at each pathline point.
   >>> velocity_path_lines_data["inlet"].vertices.shape
   (29565, 3)
-  >>> len(velocity_path_lines_data["inlet"].lines)
-  29303
+  >>> velocity_path_lines_data["inlet"].lines.shape
+  (87909,)
   >>> velocity_path_lines_data["inlet"].scalar_field.shape
   (29565,)
-  >>> velocity_path_lines_data["inlet"].lines[100]
-  # Example: Pathline 101 connects vertices 100 and 101.
-  array([100, 101])
+  >>> velocity_path_lines_data["inlet"].lines[:6]
+  # Example: First line connects vertices 0 and 1. Following line connects vertices 1 and 2, and so on.
+  array([2, 0, 1, 2, 1, 2], dtype=int32)
 
-Making multiple requests in a single transaction
-------------------------------------------------
-To retrieve multiple field data types in a single transaction, create a transaction object:
+Making multiple requests in a single batch
+------------------------------------------
+To retrieve multiple field data types in a single batch, create a batch object:
 
 .. code-block:: python
 
-  >>> transaction = solver.fields.field_data.new_transaction()
-  # This creates a new transaction object for batching multiple requests.
+  >>> batch = solver_session.fields.field_data.new_batch()
+  # This creates a new batch object for batching multiple requests.
 
 Add multiple requests using ``add_requests`` and access the data with ``get_response``:
 
@@ -165,7 +197,7 @@ Add multiple requests using ``add_requests`` and access the data with ``get_resp
   >>> pressure_request = ScalarFieldDataRequest(surfaces=[1, 2], field_name="pressure", node_value=True, boundary_value=True)
   >>> velocity_request = VectorFieldDataRequest(surfaces=[1, 2], field_name="velocity")
 
-  >>> payload_data = transaction.add_requests(vertices_and_centroid_request, pressure_request, velocity_request).get_response()
+  >>> payload_data = batch.add_requests(vertices_and_centroid_request, pressure_request, velocity_request).get_response()
 
 Retrieve data using ``get_field_data``, either by reusing or modifying request objects:
 
@@ -180,7 +212,7 @@ Retrieve data using ``get_field_data``, either by reusing or modifying request o
   dict_keys([1])
 
 .. note::
-  ``PathlinesFieldDataRequest`` allows only one unique ``field_name`` per transaction.
+  ``PathlinesFieldDataRequest`` allows only one unique ``field_name`` per batch.
 
 Allowed values
 --------------
@@ -197,8 +229,8 @@ Some sample use cases are demonstrated below:
   'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
   'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
 
-  >>> transaction = field_data.new_transaction()
-  >>> transaction.add_scalar_fields_request.field_name.allowed_values()
+  >>> batch = field_data.new_batch()
+  >>> batch.add_scalar_fields_request.field_name.allowed_values()
   ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
   'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
   'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
@@ -238,7 +270,7 @@ using the field data streaming mechanism:
   >>> )
 
   >>> # Launch Fluent in Meshing mode
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
   >>> # Dictionary to store mesh data
   >>> mesh_data = {}
@@ -252,18 +284,18 @@ using the field data streaming mechanism:
   >>>             mesh_data[index] = {field_name: data}
 
   >>> # Register the callback function
-  >>> meshing.fields.field_data_streaming.register_callback(plot_mesh)
+  >>> meshing_session.fields.field_data_streaming.register_callback(plot_mesh)
 
   >>> # Start field data streaming with byte stream and chunk size
-  >>> meshing.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
+  >>> meshing_session.fields.field_data_streaming.start(provideBytesStream=True, chunkSize=1024)
 
   >>> # Initialize the Meshing workflow
-  >>> meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+  >>> meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
   >>> # Import the geometry into the workflow
-  >>> meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
   >>>    "FileName": import_file_name,
   >>>    "LengthUnit": "in",
   >>> }
 
-  >>> meshing.workflow.TaskObject["Import Geometry"].Execute()
+  >>> meshing_session.workflow.TaskObject["Import Geometry"].Execute()

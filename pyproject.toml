@@ -11,7 +11,6 @@ requires-python = ">=3.10,<3.14"
 license = {file = "LICENSE"}
 authors = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
 maintainers = [{ name = "ANSYS, Inc.", email = "pyansys.core@ansys.com" }]
-repository = "https://github.com/ansys/pyfluent"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
@@ -19,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.35",
+    "ansys-api-fluent>=0.3.36",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-filetransfer>=0.1,<0.3",
     "ansys-units>=0.6.dev1,<1.0",
@@ -31,7 +30,7 @@ dependencies = [
     "grpcio-status>=1.26.0",
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
-    "pandas>=1.1.0,<2.3",
+    "pandas>=1.1.0,<3.0.0",
     "pyansys-tools-report>=0.8.1",
     "pyyaml>=6.0",
 ]
@@ -41,20 +40,20 @@ dynamic = ["version"]
 include = ["src/ansys/fluent/core/generated/"]
 
 [project.optional-dependencies]
-reader = ["h5py==3.13.0"]
+reader = ["h5py==3.14.0"]
 tests = [
-    "pytest==8.3.5",
-    "pytest-cov==6.1.1",
-    "pytest-mock==3.14.0",
-    "pytest-xdist==3.6.1",
-    "pyfakefs==5.8.0"
+    "pytest==8.4.1",
+    "pytest-cov==6.2.1",
+    "pytest-mock==3.14.1",
+    "pytest-xdist==3.7.0",
+    "pyfakefs==5.9.1"
 ]
 docs = [
     "Sphinx==8.1.3",
     "jupyter_sphinx==0.5.3",
-    "numpydoc==1.8.0",
-    "matplotlib==3.10.1",
-    "ansys-sphinx-theme==1.4.2",
+    "numpydoc==1.9.0",
+    "matplotlib==3.10.3",
+    "ansys-sphinx-theme==1.5.2",
     "pypandoc==1.15",
     "pytest-sphinx==0.6.3",
     "sphinx-autobuild==2024.10.3",
@@ -70,19 +69,18 @@ docs = [
     "openpyxl>=3.1.5",
     "plotly>=5.22.0",
     "python-pptx>=0.6.23",
-    "quarto-cli==1.7.29",
+    "quarto-cli==1.7.32",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
-    "tensorflow>=2.17.0",
 ]
 
 [tool.flit.module]
 name = "ansys.fluent.core"
 
 [project.urls]
-"Documentation" = "https://fluent.docs.pyansys.com/"
-"Source" = "https://github.com/ansys/pyfluent"
-"Tracker" = "https://github.com/ansys/pyfluent/issues"
+Documentation = "https://fluent.docs.pyansys.com/"
+Source = "https://github.com/ansys/pyfluent"
+Tracker = "https://github.com/ansys/pyfluent/issues"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -210,3 +208,25 @@ showcontent = true
 directory = "test"
 name = "Test"
 showcontent = true
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = [
+    "B101",
+    "B105",
+    "B106",
+    "B110",
+    "B112",
+    "B301",
+    "B307",
+    "B310",
+    "B311",
+    "B314",
+    "B403",
+    "B404",
+    "B405",
+    "B602",
+    "B603",
+    "B604",
+    "B607",
+    ]

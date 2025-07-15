@@ -27,20 +27,15 @@ Tests for `PhysicalQuantity` objects.
 import pytest
 
 import ansys.fluent.core as pf  # noqa: F401
-from ansys.fluent.core import examples
-
-try:
-    from ansys.units.variable_descriptor import VariableCatalog
-except ModuleNotFoundError:
-    VariableCatalog = None
-
-from ansys.fluent.core.file_session import FileSession
-from ansys.fluent.core.services.field_data import (
+from ansys.fluent.core import (
     ScalarFieldDataRequest,
     SurfaceDataType,
     SurfaceFieldDataRequest,
     VectorFieldDataRequest,
+    examples,
 )
+from ansys.fluent.core.file_session import FileSession
+from ansys.units.variable_descriptor import VariableCatalog
 
 
 def round_off_list_elements(input_list):
@@ -59,9 +54,6 @@ def test_use_variable_catalog(new_solver_session) -> None:
     """
     A test of `PhysicalQuantity` objects.
     """
-    if VariableCatalog is None:
-        return
-
     solver = new_solver_session
     settings = solver.settings
 
@@ -88,7 +80,7 @@ def test_use_variable_catalog(new_solver_session) -> None:
     assert round(temperature_min) == 313
 
     temperature_solution_data = fields.solution_variable_data.get_data(
-        solution_variable_name=temperature, zone_names=locations
+        variable_name=temperature, zone_names=locations
     )
     assert round(temperature_solution_data[locations[0]][0]) == 313
 
@@ -108,8 +100,6 @@ def test_use_variable_catalog_offline():
     """
     A test of `PhysicalQuantity` objects for offline data.
     """
-    if VariableCatalog is None:
-        return
     case_file_name = examples.download_file(
         "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
@@ -154,11 +144,25 @@ def test_use_variable_catalog_offline():
     assert round(surface_data_wall[3][1500][2], 5) == 0.04216
 
     surface_data_symmetry_request = SurfaceFieldDataRequest(
-        data_types=[SurfaceDataType.FacesConnectivity], surfaces=["symmetry"]
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+        flatten_connectivity=True,
     )
     surface_data_symmetry = surface_data(surface_data_symmetry_request)
-    assert len(surface_data_symmetry["symmetry"]) == 2018
-    assert list(surface_data_symmetry["symmetry"][1000]) == [1259, 1260, 1227, 1226]
+    assert len(surface_data_symmetry["symmetry"]) == 10090
+    surface_data_symmetry_request_deprecated = SurfaceFieldDataRequest(
+        data_types=[SurfaceDataType.FacesConnectivity],
+        surfaces=["symmetry"],
+    )
+    surface_data_symmetry_deprecated = surface_data(
+        surface_data_symmetry_request_deprecated
+    )
+    assert list(surface_data_symmetry_deprecated["symmetry"][1000]) == [
+        1259,
+        1260,
+        1227,
+        1226,
+    ]
 
     vector_data = file_session.fields.field_data.get_field_data
     vector_data_request = VectorFieldDataRequest(

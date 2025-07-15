@@ -263,10 +263,11 @@ def launch_fluent(
         made by the user in the current Fluent solver session have been applied in the background Fluent
         solver session. This is all orchestrated by PyFluent and requires no special usage.
         This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-    mode : str, optional
-        Launch mode of Fluent to point to a specific session type.
-        The default value is ``None``. Options are ``"meshing"``,
-        ``"pure-meshing"`` and ``"solver"``.
+    mode : FluentMode or str or None, optional
+        Launch mode of Fluent to point to a specific session type. Can be a
+        ``FluentMode`` enum member or a string. The default value is ``None``.
+        Valid string options include ``"meshing"``, ``"pure-meshing"``, and
+        ``"solver"``.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
     gpu : bool or list, optional
@@ -321,6 +322,9 @@ def launch_fluent(
     if env is None:
         env = {}
 
+    if start_timeout is None:
+        start_timeout = int(os.getenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "60"))
+
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
             LaunchMode.CONTAINER: DockerLauncher,
@@ -359,6 +363,7 @@ def connect_to_fluent(
     server_info_file_name: str | None = None,
     password: str | None = None,
     start_watchdog: bool | None = None,
+    file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
@@ -393,6 +398,8 @@ def connect_to_fluent(
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -424,4 +431,5 @@ def connect_to_fluent(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
+        file_transfer_service=file_transfer_service,
     )

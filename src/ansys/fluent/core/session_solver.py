@@ -30,6 +30,7 @@ import weakref
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
@@ -117,6 +118,7 @@ class Solver(BaseSession):
             event_type=SolverEvent,
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
+        self._settings = None
         self._build_from_fluent_connection(fluent_connection, scheme_eval)
 
     def _build_from_fluent_connection(
@@ -132,15 +134,6 @@ class Solver(BaseSession):
         self._system_coupling = None
         self._fluent_version = None
         self._bg_session_threads = []
-
-        #: Root settings object.
-        self.settings = flobject.get_root(
-            flproxy=self._settings_service,
-            version=self._version,
-            interrupt=Solver._interrupt,
-            file_transfer_service=self._file_transfer_service,
-            scheme_eval=self.scheme.eval,
-        )
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
@@ -181,6 +174,20 @@ class Solver(BaseSession):
         return service_creator("svar_data").create(
             self._solution_variable_service, self.fields.solution_variable_info
         )
+
+    @property
+    def settings(self):
+        """Settings root handle."""
+        if self._settings is None:
+            #: Root settings object.
+            self._settings = flobject.get_root(
+                flproxy=self._settings_service,
+                version=self._version,
+                interrupt=Solver._interrupt,
+                file_transfer_service=self._file_transfer_service,
+                scheme_eval=self.scheme.eval,
+            )
+        return self._settings
 
     @property
     def svar_data(self):
@@ -347,16 +354,40 @@ class Solver(BaseSession):
                 raise ex
 
     def __dir__(self):
-        if self._fluent_connection is None:
-            return ["is_active"]
-        dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
+        dir_list = set(super().__dir__()) - {
             "svar_data",
             "svar_info",
             "reduction",
-            "field_data",
-            "field_info",
-            "field_data_streaming",
-            "start_journal",
-            "stop_journal",
         }
         return sorted(dir_list)
+
+    def switch_to_meshing(self):
+        """Switch to meshing mode and return a meshing session object. Deactivate this
+        object's public interface and streaming services.
+
+        Raises
+        ------
+        AttributeError
+            If beta features are not enabled in Fluent.
+
+        Returns
+        -------
+        Meshing
+        """
+        if not self._is_beta_enabled:
+            raise BetaFeaturesNotEnabled("switch_to_meshing")
+        from ansys.fluent.core.session_meshing import Meshing
+
+        self.settings.switch_to_meshing_mode()
+        for cb in self._fluent_connection.finalizer_cbs:
+            cb()
+        meshing_session = Meshing(
+            fluent_connection=self._fluent_connection,
+            scheme_eval=self.scheme,
+            file_transfer_service=self._file_transfer_service,
+        )
+        self._fluent_connection = None
+        self.__doc__ = (
+            "The solver session is no longer usable after switching to meshing mode."
+        )
+        return meshing_session

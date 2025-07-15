@@ -54,16 +54,12 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
+import os
 import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import Contour, GraphicsWindow, set_config
-
-#######################################################################################
-# Configure specific settings for this example
-# =====================================================================================
-set_config(blocking=True, set_view_on_display="isometric")
+from ansys.fluent.visualization import Contour, GraphicsWindow
 
 #######################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
@@ -89,6 +85,7 @@ filenames = {
 geometry_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/Ahmed-Body-Simulation",
+    save_path=os.getcwd(),
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
