@@ -381,6 +381,8 @@ class FluentConnection:
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
         container: ContainerT | None = None,
+        use_docker_compose: bool = False,
+        use_podman_compose: bool = False,
     ):
         """Initialize a Session.
 
@@ -420,6 +422,10 @@ class FluentConnection:
         container: ContainerT, optional
             The container instance if the Fluent session is running inside
             a container.
+        use_docker_compose: bool, optional
+            Whether to use Docker Compose for launching Fluent.
+        use_podman_compose: bool, optional
+            Whether to use Podman Compose for launching Fluent.
 
         Raises
         ------
@@ -465,6 +471,8 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
+        self._use_docker_compose = use_docker_compose
+        self._use_podman_compose = use_podman_compose
         self._container = container
         if (
             (inside_container is None or inside_container is True)
@@ -472,7 +480,7 @@ class FluentConnection:
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            if not is_compose():
+            if not is_compose(self._use_docker_compose, self._use_podman_compose):
                 inside_container = get_container(cortex_host)
                 logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is False:
@@ -549,7 +557,9 @@ class FluentConnection:
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container or is_compose():
+        if self.connection_properties.inside_container or is_compose(
+            self._use_docker_compose, self._use_podman_compose
+        ):
             self._force_exit_container()
         elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
@@ -601,7 +611,10 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        if is_compose() and self._container:
+        if (
+            is_compose(self._use_docker_compose, self._use_podman_compose)
+            and self._container
+        ):
             self._container.stop()
         else:
             container = self.connection_properties.inside_container
@@ -679,7 +692,9 @@ class FluentConnection:
         else:
             raise WaitTypeError()
 
-        if self.connection_properties.inside_container and not is_compose():
+        if self.connection_properties.inside_container and not is_compose(
+            self._use_docker_compose, self._use_podman_compose
+        ):
             _response = timeout_loop(
                 get_container,
                 wait,
