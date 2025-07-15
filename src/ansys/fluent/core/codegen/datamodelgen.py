@@ -188,6 +188,7 @@ datamodel_file_name_map = {
     "MeshingUtilities": "meshing_utilities",
     "flicing": "flicing",
     "solverworkflow": "solver_workflow",
+    "meshing_workflow": "meshing_workflow",
 }
 
 
@@ -204,6 +205,7 @@ class DataModelStaticInfo:
         version: str,
         rules_save_name: str = "",
     ):
+        print(f"DataModelStaticInfo for {rules}: enter")
         self.static_info_type = static_info_type
         self.rules = rules
         self.modes = modes
@@ -220,6 +222,7 @@ class DataModelStaticInfo:
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
+        print(f"DataModelStaticInfo for {rules}: return")
 
 
 class DataModelGenerator:
@@ -258,6 +261,23 @@ class DataModelGenerator:
                 ("meshing",),
                 self.version,
             )
+        print("check if mw in static_infos")
+        if StaticInfoType.DATAMODEL_MESHING_WORKFLOW in static_infos:
+            print("Instantiate DataModelStaticInfo and insert")
+            self._static_info["meshing_workflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
+                "meshing_workflow",
+                ("meshing",),
+                self.version,
+            )
+        # if StaticInfoType.DATAMODEL_MESHING_WORKFLOW_X in static_infos:
+        #     print("Instantiate DataModelStaticInfo and insert")
+        #     self._static_info["meshing_workflow_x"] = DataModelStaticInfo(
+        #         StaticInfoType.DATAMODEL_MESHING_WORKFLOW_X,
+        #         "meshing_workflow_x",
+        #         ("meshing",),
+        #         self.version,
+        #     )
         if StaticInfoType.DATAMODEL_FLICING in static_infos:
             self._static_info["flicing"] = DataModelStaticInfo(
                 StaticInfoType.DATAMODEL_FLICING,
@@ -605,6 +625,12 @@ if __name__ == "__main__":
         StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT: meshing._datamodel_service_se.get_static_info(
             "PMFileManagement"
         ),
+        StaticInfoType.DATAMODEL_MESHING_WORKFLOW: meshing._datamodel_service_se.get_static_info(
+            "meshing_workflow"
+        ),
+        # StaticInfoType.DATAMODEL_MESHING_WORKFLOW_X: meshing._datamodel_service_se.get_static_info(
+        #     "meshing_workflow_x"
+        # ),
         StaticInfoType.DATAMODEL_PREFERENCES: solver._datamodel_service_se.get_static_info(
             "preferences"
         ),

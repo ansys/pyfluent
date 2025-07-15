@@ -74,6 +74,8 @@ class BaseMeshing:
         self._old_workflow = None
         self._part_management = None
         self._pm_file_management = None
+        self._meshing_workflow = None
+        # self._meshing_workflow_x = None
         self._preferences = None
         self._session_execute_tui = session_execute_tui
         self._product_version = None
@@ -241,6 +243,22 @@ class BaseMeshing:
         if self._pm_file_management is None:
             self._pm_file_management = _make_datamodel_module(self, "PMFileManagement")
         return self._pm_file_management
+
+    @property
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        if self._meshing_workflow is None:
+            self._meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
+        return self._meshing_workflow
+
+    # @property
+    # def meshing_workflow_x(self):
+    #     """Full API to meshing and meshing_workflow."""
+    #     if self._meshing_workflow_x is None:
+    #         self._meshing_workflow_x = _make_datamodel_module(
+    #             self, "meshing_workflow_x"
+    #         )
+    #     return self._meshing_workflow_x
 
     @property
     def preferences(self):
