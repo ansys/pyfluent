@@ -81,6 +81,7 @@ import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
+from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
@@ -401,8 +402,10 @@ def configure_container_dict(
             image_tag = os.getenv(
                 "FLUENT_IMAGE_TAG", f"v{pyfluent.FLUENT_RELEASE_VERSION}"
             )
-        if not image_name:
-            image_name = os.getenv("FLUENT_IMAGE_NAME", "ghcr.io/ansys/pyfluent")
+        if not image_name and image_tag:
+            image_name = os.getenv(
+                "FLUENT_IMAGE_NAME", get_ghcr_fluent_image_name(image_tag)
+            )
         if not image_tag or not image_name:
             fluent_image = os.getenv("FLUENT_CONTAINER_IMAGE", None)
         elif image_tag and image_name:
