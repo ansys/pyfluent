@@ -337,7 +337,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._info if self._info else self._field_info.get_surfaces_info()
+        return self._info if self._info else self._field_info._get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names.
@@ -365,7 +365,7 @@ class _AllowedSurfaceIDs(_AllowedNames):
         try:
             return [
                 info["surface_id"][0]
-                for _, info in self._field_info.get_surfaces_info().items()
+                for _, info in self._field_info._get_surfaces_info().items()
             ]
         except (KeyError, IndexError):
             pass
@@ -383,7 +383,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         field_dict = (
-            self._info if self._info else self._field_info.get_scalar_fields_info()
+            self._info if self._info else self._field_info._get_scalar_fields_info()
         )
         return (
             field_dict
@@ -405,7 +405,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
             self._info
             if self._info
             else (
-                self._field_info.get_vector_fields_info()
+                self._field_info._get_vector_fields_info()
                 if (not respect_data_valid or self._is_data_valid())
                 else []
             )

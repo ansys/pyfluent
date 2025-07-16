@@ -239,6 +239,8 @@ Some sample use cases are demonstrated below:
   False
   >>> field_data.scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
   True
+  >>> field_data.scalar_fields.range("cell-weight")
+  [8.0, 24.0]
 
   >>> field_data.surfaces.allowed_values()
   ['in1', 'in2', 'in3', 'inlet', 'inlet1', 'inlet2', 'out1', 'outlet', 'solid_up:1', 'solid_up:1:830', 'solid_up:1:830-shadow']
