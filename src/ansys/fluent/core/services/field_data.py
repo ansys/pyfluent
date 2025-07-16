@@ -290,6 +290,68 @@ class FieldInfo(BaseFieldInfo):
             _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
 
 
+class _SurfaceNames:
+    def __init__(self, allowed_surface_names):
+        self._allowed_surface_names = allowed_surface_names
+
+    def allowed_values(self):
+        """Lists available surface names."""
+        return list(self._allowed_surface_names())
+
+    def __call__(self):
+        return self._allowed_surface_names()
+
+
+class _SurfaceIds:
+    def __init__(self, allowed_surface_ids):
+        self._allowed_surface_ids = allowed_surface_ids
+
+    def allowed_values(self):
+        """Lists available surface ids."""
+        return self._allowed_surface_ids()
+
+    def __call__(self):
+        return self._allowed_surface_ids()
+
+
+class _FieldName:
+    def __init__(self, allowed_names):
+        self._allowed_names = allowed_names
+
+    def allowed_values(self):
+        """Lists available scalar or vector field names."""
+        return list(self._allowed_names())
+
+
+class _Fields:
+    def __init__(self, available_field_names):
+        self._available_field_names = available_field_names
+
+    def is_active(self, field_name):
+        """Check whether a field is active in the given context."""
+        if _to_field_name_str(field_name) in self._available_field_names():
+            return True
+        return False
+
+    @property
+    def field_name(self):
+        """Name of the scalar or vector field."""
+        return _FieldName(self._available_field_names)
+
+    def __call__(self):
+        return self._available_field_names()
+
+
+class _ScalarFields(_Fields):
+    def __init__(self, available_field_names):
+        super().__init__(available_field_names)
+
+
+class _VectorFields(_Fields):
+    def __init__(self, available_field_names):
+        super().__init__(available_field_names)
+
+
 class _FieldMethod:
     class _Arg:
         def __init__(self, accessor):
@@ -1334,6 +1396,14 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 args_allowed_values_accessors=scalar_field_args,
             ),
             self.get_pathlines_field_data,
+        )
+        self.surfaces = _SurfaceNames(allowed_surface_names=self._allowed_surface_names)
+        self.surface_ids = _SurfaceIds(allowed_surface_ids=self._allowed_surface_ids)
+        self.scalar_fields = _ScalarFields(
+            available_field_names=self._allowed_scalar_field_names
+        )
+        self.vector_fields = _VectorFields(
+            available_field_names=self._allowed_vector_field_names
         )
         self._returned_data = _ReturnFieldData()
         self._fetched_data = _FetchFieldData()
