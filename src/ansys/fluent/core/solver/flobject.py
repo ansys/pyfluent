@@ -207,6 +207,8 @@ def to_constant_name(fluent_name: str) -> str:
     """
     fluent_name = fluent_name.replace(" ", "_")
     name = fluent_name.translate(_ttable).upper()
+    if not name:
+        return "EMPTY_STRING"
     if name[0].isdigit():
         # If the first character is a digit, prepend "CASE_"
         name = "CASE_" + name
