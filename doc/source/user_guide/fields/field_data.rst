@@ -224,12 +224,12 @@ Some sample use cases are demonstrated below:
 
 .. code-block:: python
 
-  >>> sorted(field_data.scalar_fields.field_name.allowed_values())
+  >>> sorted(field_data.scalar_fields.allowed_values())
   ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
   'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
   'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
 
-  >>> field_data.vector_fields.field_name.allowed_values()
+  >>> field_data.vector_fields.allowed_values()
   ['velocity', 'relative-velocity']
 
   >>> from ansys.units import VariableCatalog

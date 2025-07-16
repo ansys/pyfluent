@@ -314,15 +314,6 @@ class _SurfaceIds:
         return self._allowed_surface_ids()
 
 
-class _FieldName:
-    def __init__(self, allowed_names):
-        self._allowed_names = allowed_names
-
-    def allowed_values(self):
-        """Lists available scalar or vector field names."""
-        return list(self._allowed_names())
-
-
 class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
@@ -333,10 +324,9 @@ class _Fields:
             return True
         return False
 
-    @property
-    def field_name(self):
-        """Name of the scalar or vector field."""
-        return _FieldName(self._available_field_names)
+    def allowed_values(self):
+        """Lists available scalar or vector field names."""
+        return list(self._available_field_names())
 
     def __call__(self):
         return self._available_field_names()
@@ -359,6 +349,30 @@ class _FieldMethod:
 
         def allowed_values(self):
             """Returns set of allowed values."""
+            if self._accessor.__class__.__name__ == "_AllowedScalarFieldNames":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'scalar_fields.allowed_values' instead",
+                    PyFluentDeprecationWarning,
+                )
+            elif self._accessor.__class__.__name__ == "_AllowedVectorFieldNames":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'vector_fields.allowed_values' instead",
+                    PyFluentDeprecationWarning,
+                )
+            elif self._accessor.__class__.__name__ == "_AllowedSurfaceNames":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'field_data.surfaces.allowed_values' instead",
+                    PyFluentDeprecationWarning,
+                )
+            elif self._accessor.__class__.__name__ == "_AllowedSurfaceIDs":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'field_data.surface_ids.allowed_values' instead",
+                    PyFluentDeprecationWarning,
+                )
             return sorted(self._accessor())
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):

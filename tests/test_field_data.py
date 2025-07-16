@@ -324,11 +324,11 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     field_data = solver.fields.field_data
     field_info = solver.fields.field_info
 
-    assert [] == field_data.scalar_fields.field_name.allowed_values()
+    assert [] == field_data.scalar_fields.allowed_values()
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    allowed_args_no_init = field_data.scalar_fields.field_name.allowed_values()
+    allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
@@ -338,7 +338,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert field_data.is_data_valid()
 
     expected_allowed_args = sorted(field_info.get_scalar_fields_info())
-    allowed_args = sorted(field_data.scalar_fields.field_name.allowed_values())
+    allowed_args = sorted(field_data.scalar_fields.allowed_values())
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
     assert len(allowed_args) > len(allowed_args_no_init)
     assert expected_allowed_args == allowed_args
@@ -356,7 +356,7 @@ def test_field_data_allowed_values(new_solver_session) -> None:
     assert len(expected_allowed_args) == len(allowed_args)
 
     expected_allowed_args = sorted(field_info.get_vector_fields_info())
-    allowed_args = sorted(field_data.vector_fields.field_name.allowed_values())
+    allowed_args = sorted(field_data.vector_fields.allowed_values())
     assert expected_allowed_args and (expected_allowed_args == allowed_args)
 
 
@@ -369,11 +369,11 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
 
     field_data = solver.fields.field_data
 
-    assert [] == field_data.scalar_fields.field_name.allowed_values()
+    assert [] == field_data.scalar_fields.allowed_values()
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    allowed_args_no_init = field_data.scalar_fields.field_name.allowed_values()
+    allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
@@ -482,11 +482,11 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     field_data = solver.fields.field_data
 
-    assert [] == field_data.scalar_fields.field_name.allowed_values()
+    assert [] == field_data.scalar_fields.allowed_values()
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
-    allowed_args_no_init = field_data.scalar_fields.field_name.allowed_values()
+    allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
@@ -618,7 +618,7 @@ def test_field_data_objects_2d(disk_case_session) -> None:
 
     field_data = solver.fields.field_data
 
-    allowed_args_no_init = field_data.scalar_fields.field_name.allowed_values()
+    allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
