@@ -431,7 +431,7 @@ jobs:
         env:
           # FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           # Temporary until the stable image tag is update for the new image path
-          FLUENT_IMAGE_TAG: v26.1.0
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Run 26.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -439,7 +439,7 @@ jobs:
         env:
           # FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
           # Temporary until the stable image tag is update for the new image path
-          FLUENT_IMAGE_TAG: v26.1.0
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Print 26.1 Fluent version info
         run: |
@@ -490,7 +490,7 @@ jobs:
             version: 251
           - image-tag: v25.2.0
             version: 252
-          - image-tag: v26.1.0
+          - image-tag: v26.1.latest
             version: 261
     timeout-minutes: 60
     env:
