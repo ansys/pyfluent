@@ -17,7 +17,7 @@ Meshing Session
 
 In meshing mode, the **Topology-Based Meshing** workflow is available as a beta feature. While
 the associated method is visible on the session object, attempting to use it without enabling beta
-features will result in a ``BetaFeaturesNotEnabled`` exception.
+features results in a ``BetaFeaturesNotEnabled`` exception.
 
 Example usage:
 

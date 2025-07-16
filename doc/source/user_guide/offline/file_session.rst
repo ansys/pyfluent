@@ -15,7 +15,7 @@ Sample usage
 
 The following examples cover both single-phase and multiphase cases. After case and data files are
 loaded, field information is accessed and some field data is extracted. Here, the extraction uses two approaches:
-a transaction-based approach where multiple data requests are bundled into each transaction and a direct approach
+a batch-based approach where multiple data requests are bundled into each batch and a direct approach
 where a sequence of separate requests are made.
 
 Single-phase
@@ -67,7 +67,7 @@ Single-phase
    {'velocity': {'x-component': 'SV_U',
     'y-component': 'SV_V',
     'z-component': 'SV_W'}}
-   >>> transaction = file_session.fields.field_data.new_transaction()
+   >>> batch = file_session.fields.field_data.new_batch()
    >>> vertices_and_faces_connectivity_request = SurfaceFieldDataRequest(
    >>>      data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesConnectivity],
    >>>      surfaces=[3, 4],
@@ -75,8 +75,8 @@ Single-phase
    >>> )
    >>> solution_variable_temperature_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 4], node_value=False, boundary_value=False)
    >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=[3, 4])
-   >>> transaction.add_requests(vertices_and_faces_connectivity_request, solution_variable_temperature_request, velocity_request)
-   >>> data = transaction.get_response()
+   >>> batch.add_requests(vertices_and_faces_connectivity_request, solution_variable_temperature_request, velocity_request)
+   >>> data = batch.get_response()
    >>> data.get_field_data(vertices_and_faces_connectivity_request)[3].vertices
    array([[ 0.        , -0.1016    ,  0.        ],
        [-0.00635   , -0.1016    ,  0.        ],
@@ -153,11 +153,11 @@ Multiphase
     'phase-4:velocity': {'x-component': 'phase-4: SV_U',
     'y-component': 'phase-4: SV_V',
     'z-component': 'phase-4: SV_W'}}
-   >>> transaction = file_session.fields.field_data.new_transaction()
+   >>> batch = file_session.fields.field_data.new_batch()
    >>> ph1_density_request = ScalarFieldDataRequest(field_name="phase-1:SV_DENSITY", surfaces=[30], node_value=False, boundary_value=False)
    >>> ph1_velocity_request = VectorFieldDataRequest(field_name="phase-1:velocity", surfaces=[30])
-   >>> transaction.add_requests(ph1_density_request, ph1_velocity_request)
-   >>> data = transaction.get_response()
+   >>> batch.add_requests(ph1_density_request, ph1_velocity_request)
+   >>> data = batch.get_response()
    >>> data.get_field_data(ph1_density_request)[30]
    array([1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,
        1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225, 1.225,

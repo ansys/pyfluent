@@ -35,7 +35,7 @@ command line arguments and run this script to copy needed files from the Ansys i
 
 .. code:: python
 
-    python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
+    python copy_ansys_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
 
 * These files indicate the files that are excluded during the copying:
 
