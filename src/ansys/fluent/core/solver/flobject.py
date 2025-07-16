@@ -2084,6 +2084,9 @@ class _FlStringConstant:
 
 _bases_by_class = {}
 
+f = open("help_strings.txt", "w", encoding="utf-8")
+f_line_count = 0
+
 
 # pylint: disable=missing-raises-doc
 def get_cls(name, info, parent=None, version=None, parent_taboo=None):
@@ -2108,6 +2111,10 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
         helpinfo = info.get("help")
         if helpinfo:
             dct["__doc__"] = _fix_help_info(obj_type, _clean_helpinfo(helpinfo))
+            global f_line_count
+            if f_line_count <= 1000:
+                f.write(helpinfo + "\n")
+                f_line_count += 1
         else:
             if parent is None:
                 dct["__doc__"] = "'root' object."
