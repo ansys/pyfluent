@@ -224,21 +224,26 @@ Some sample use cases are demonstrated below:
 
 .. code-block:: python
 
-  >>> field_data.get_scalar_field_data.field_name.allowed_values()
+  >>> sorted(field_data.scalar_fields.allowed_values())
   ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
   'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
   'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
 
-  >>> batch = field_data.new_batch()
-  >>> batch.add_scalar_fields_request.field_name.allowed_values()
-  ['abs-angular-coordinate', 'absolute-pressure', 'angular-coordinate',
-  'anisotropic-adaption-cells', 'aspect-ratio', 'axial-coordinate', 'axial-velocity',
-  'boundary-cell-dist', 'boundary-layer-cells', 'boundary-normal-dist', ...]
+  >>> field_data.vector_fields.allowed_values()
+  ['velocity', 'relative-velocity']
 
-  >>> field_data.get_scalar_field_data.surface_name.allowed_values()
+  >>> from ansys.units import VariableCatalog
+  >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY)
+  True
+  >>> field_data.vector_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+  False
+  >>> field_data.scalar_fields.is_active(VariableCatalog.VELOCITY_MAGNITUDE)
+  True
+
+  >>> field_data.surfaces.allowed_values()
   ['in1', 'in2', 'in3', 'inlet', 'inlet1', 'inlet2', 'out1', 'outlet', 'solid_up:1', 'solid_up:1:830', 'solid_up:1:830-shadow']
 
-  >>> field_data.get_surface_data.surface_ids.allowed_values()
+  >>> field_data.surface_ids.allowed_values()
   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
