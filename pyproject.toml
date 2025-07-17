@@ -123,7 +123,8 @@ skip = """
     ./src/ansys/fluent/core/codegen/data/fluent_gui_help.xml,
     pyproject.toml,
     CODE_OF_CONDUCT.md,
-    devel/field_level_help/field_level_help.csv
+    devel/field_level_help/field_level_help.csv,
+    devel/field_level_help/generated_field_help_texts.json
     """
 ignore-words = ".github/styles/config/vocabularies/ANSYS/accept.txt"
 
