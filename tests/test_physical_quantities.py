@@ -115,10 +115,10 @@ def test_use_variable_catalog_offline():
     file_session.read_data(data_file_name)
 
     assert round_off_list_elements(
-        file_session.field_info.get_scalar_field_range(VariableCatalog.PRESSURE)
+        file_session.field_data.scalar_fields.range(VariableCatalog.PRESSURE)
     ) == [-339.203452, 339.417934]
-    assert len(file_session.field_info.get_scalar_fields_info()) == 29
-    assert list(file_session.field_info.get_surfaces_info().keys()) == [
+    assert len(file_session.field_data.scalar_fields()) == 29
+    assert list(file_session.field_data.surfaces()) == [
         "wall",
         "symmetry",
         "pressure-outlet-7",

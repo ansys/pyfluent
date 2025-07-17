@@ -53,7 +53,11 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedSurfaceNames,
     _AllowedVectorFieldNames,
     _ReturnFieldData,
+    _ScalarFields,
+    _SurfaceIds,
+    _SurfaceNames,
     _to_field_name_str,
+    _VectorFields,
     get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
@@ -348,120 +352,6 @@ class FieldInfo(_FieldInfo):
             PyFluentDeprecationWarning,
         )
         super().__init__(service, is_data_valid)
-
-
-class _SurfaceNames:
-    def __init__(self, allowed_surface_names):
-        self._allowed_surface_names = allowed_surface_names
-
-    def allowed_values(self):
-        """Lists available surface names."""
-        return list(self._allowed_surface_names())
-
-    def validate(self, surfaces: List[str]) -> bool:
-        """
-        Validate that the given surfaces are in the list of allowed surface names.
-
-        Parameters
-        ----------
-        surfaces : List[int]
-            A list of surface name strings to validate.
-
-        Returns
-        -------
-        bool
-            True if all surfaces are valid, False otherwise.
-            If any name is invalid, a warning is issued and validation stops early.
-        """
-        for surf in surfaces:
-            if surf not in self._allowed_surface_names():
-                warnings.warn(f"'{surf}' is not a valid surface name.")
-                return False
-        return True
-
-    def __call__(self):
-        return self._allowed_surface_names()
-
-
-class _SurfaceIds:
-    def __init__(self, allowed_surface_ids):
-        self._allowed_surface_ids = allowed_surface_ids
-
-    def allowed_values(self):
-        """Lists available surface ids."""
-        return self._allowed_surface_ids()
-
-    def validate(self, surface_ids: List[int]) -> bool:
-        """
-        Validate that the given surface IDs are in the list of allowed surface IDs.
-
-        Parameters
-        ----------
-        surface_ids : List[int]
-            A list of surface ID integers to validate.
-
-        Returns
-        -------
-        bool
-            True if all surface IDs are valid, False otherwise.
-            If any ID is invalid, a warning is issued and validation stops early.
-        """
-        for surf in surface_ids:
-            if surf not in self._allowed_surface_ids():
-                warnings.warn(f"'{surf}' is not a valid surface id.")
-                return False
-        return True
-
-    def __call__(self):
-        return self._allowed_surface_ids()
-
-
-class _Fields:
-    def __init__(self, available_field_names):
-        self._available_field_names = available_field_names
-
-    def is_active(self, field_name):
-        """Check whether a field is active in the given context."""
-        if _to_field_name_str(field_name) in self._available_field_names():
-            return True
-        return False
-
-    def allowed_values(self):
-        """Lists available scalar or vector field names."""
-        return list(self._available_field_names())
-
-    def __call__(self):
-        return self._available_field_names()
-
-
-class _ScalarFields(_Fields):
-    def __init__(self, available_field_names, field_info):
-        super().__init__(available_field_names)
-        self._field_info = field_info
-
-    def range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
-    ) -> list[float]:
-        """Get the range (minimum and maximum values) of the field.
-
-        Parameters
-        ----------
-        field: str
-            Field name
-        node_value: bool
-        surface_ids : List[int], optional
-            List of surface IDS for the surface data.
-
-        Returns
-        -------
-        List[float]
-        """
-        return self._field_info._get_scalar_field_range(field, node_value, surface_ids)
-
-
-class _VectorFields(_Fields):
-    def __init__(self, available_field_names):
-        super().__init__(available_field_names)
 
 
 class _FieldMethod:
