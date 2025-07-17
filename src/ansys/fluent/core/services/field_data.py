@@ -464,30 +464,6 @@ class _VectorFields(_Fields):
         super().__init__(available_field_names)
 
 
-class _SurfaceNames:
-    def __init__(self, allowed_surface_names):
-        self._allowed_surface_names = allowed_surface_names
-
-    def allowed_values(self):
-        """Lists available surface names."""
-        return list(self._allowed_surface_names())
-
-    def __call__(self):
-        return self._allowed_surface_names()
-
-
-class _SurfaceIds:
-    def __init__(self, allowed_surface_ids):
-        self._allowed_surface_ids = allowed_surface_ids
-
-    def allowed_values(self):
-        """Lists available surface ids."""
-        return self._allowed_surface_ids()
-
-    def __call__(self):
-        return self._allowed_surface_ids()
-
-
 class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
@@ -504,16 +480,6 @@ class _Fields:
 
     def __call__(self):
         return self._available_field_names()
-
-
-class _ScalarFields(_Fields):
-    def __init__(self, available_field_names):
-        super().__init__(available_field_names)
-
-
-class _VectorFields(_Fields):
-    def __init__(self, available_field_names):
-        super().__init__(available_field_names)
 
 
 class _FieldMethod:
