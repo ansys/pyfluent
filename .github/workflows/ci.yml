@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  API_CODE_CACHE: 4
+  API_CODE_CACHE: 5
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
@@ -429,13 +429,17 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          # FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          # Temporary until the stable image tag is update for the new image path
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Run 26.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          # FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          # Temporary until the stable image tag is update for the new image path
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Print 26.1 Fluent version info
         run: |
@@ -486,11 +490,13 @@ jobs:
             version: 251
           - image-tag: v25.2.0
             version: 252
-          - image-tag: v26.1.0
+          - image-tag: v26.1.latest
             version: 261
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      # FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      # Temporary until the stable image tag is update for the new image path
+      FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@v4
