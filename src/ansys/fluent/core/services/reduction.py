@@ -283,7 +283,7 @@ class Reduction:
         if all(
             loc not in names()
             for names in (
-                self.ctxt.fields.field_info.get_surfaces_info,
+                self.ctxt.fields.field_data.surfaces,
                 self.ctxt.settings.setup.cell_zone_conditions,
             )
         ):
