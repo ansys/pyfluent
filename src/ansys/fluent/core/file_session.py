@@ -42,7 +42,11 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,
     _ReturnFieldData,
+    _ScalarFields,
+    _SurfaceIds,
+    _SurfaceNames,
     _transform_faces_connectivity_data,
+    _VectorFields,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import (
@@ -611,6 +615,20 @@ class FileFieldData(FieldDataSource):
         """Initialize FileFieldData."""
         self._file_session = file_session
         self._field_info = field_info
+        self.scalar_fields = _ScalarFields(
+            self._field_info._get_scalar_fields_info, self._field_info
+        )
+        self.vector_fields = _VectorFields(self._field_info._get_vector_fields_info)
+        self.surfaces = _SurfaceNames(self._field_info._get_surfaces_info)
+
+    @property
+    def surface_ids(self):
+        """Get the surface ids."""
+        return _SurfaceIds(
+            _get_surface_ids(
+                self._field_info, list(self._field_info._get_surfaces_info())
+            )
+        )
 
     def new_batch(self):
         """Create a new field batch."""
@@ -966,11 +984,11 @@ class FileFieldData(FieldDataSource):
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class FileFieldInfo((BaseFieldInfo)):
+class _FileFieldInfo(BaseFieldInfo):
     """File field info."""
 
     def __init__(self, file_session):
-        """Initialize FileFieldInfo."""
+        """Initialize _FileFieldInfo."""
         self._file_session = file_session
 
     def get_scalar_field_range(
@@ -990,6 +1008,16 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         List[float]
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.scalar_fields.range({field}, {node_value}, {surface_ids})' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_field_range(field, node_value, surface_ids)
+
+    def _get_scalar_field_range(
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+    ) -> List[float]:
         minimum = None
         maximum = None
         if not surface_ids:
@@ -1012,6 +1040,14 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.scalar_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_fields_info()
+
+    def _get_scalar_fields_info(self):
         phases = self._file_session._data_file.get_phases()
 
         scalar_field_info = {}
@@ -1047,6 +1083,14 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.vector_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_vector_fields_info()
+
+    def _get_vector_fields_info(self):
         phases = self._file_session._data_file.get_phases()
 
         if len(phases) > 1:
@@ -1076,6 +1120,14 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.surfaces()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_surfaces_info()
+
+    def _get_surfaces_info(self):
         mesh = self._file_session._case_file.get_mesh()
         surface_names = mesh.get_surface_names()
         surface_ids = mesh.get_surface_ids()
@@ -1089,6 +1141,19 @@ class FileFieldInfo((BaseFieldInfo)):
             for name, surface_id in zip(surface_names, surface_ids)
         }
         return info
+
+
+class FileFieldInfo(_FileFieldInfo):
+    """File field info."""
+
+    def __init__(self, file_session):
+        """Initialize FileFieldInfo"""
+        warnings.warn(
+            "'FieldInfo' is deprecated and will be removed in a future release. "
+            "Please use relevant methods from 'FieldData' instead",
+            PyFluentDeprecationWarning,
+        )
+        super().__init__(file_session)
 
 
 class FileSession:

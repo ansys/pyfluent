@@ -36,9 +36,9 @@ Single-phase
   >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
   >>> file_session = FileSession(case_file_name, data_file_name)
 
-  >>> file_session.fields.field_info.get_scalar_field_range("SV_T")
+  >>> file_session.fields.field_data.scalar_fields.range("SV_T")
   [0.0, 313.1515948109515]
-  >>> file_session.fields.field_info.get_surfaces_info()
+  >>> file_session.fields.field_data.surfaces()
   {'wall': {'surface_id': [3],
    'zone_id': -1,
    'zone_type': 'wall',
@@ -52,7 +52,7 @@ Single-phase
    'zone_id': -1,
    'zone_type': 'wall',
    'type': 'plane'}}
-  >>> file_session.fields.field_info.get_scalar_fields_info()
+  >>> file_session.fields.field_data.scalar_fields()
   {'SV_ARTIFICIAL_WALL_FLAG': {'display_name': 'SV_ARTIFICIAL_WALL_FLAG',
    'section': 'field-data',
    'domain': 'phase-1'},
@@ -63,7 +63,7 @@ Single-phase
    'SV_WALL_YPLUS_UTAU': {'display_name': 'SV_WALL_YPLUS_UTAU',
    'section': 'field-data',
    'domain': 'phase-1'}}
-   >>> file_session.fields.field_info.get_vector_fields_info()
+   >>> file_session.fields.field_data.vector_fields()
    {'velocity': {'x-component': 'SV_U',
     'y-component': 'SV_V',
     'z-component': 'SV_W'}}
@@ -132,9 +132,9 @@ Multiphase
   >>> file_session.read_case(case_file_name)
   >>> file_session.read_data(data_file_name)
 
-  >>> file_session.fields.field_info.get_scalar_field_range("phase-2:SV_P")
+  >>> file_session.fields.field_data.scalar_fields.range("phase-2:SV_P")
   [0.0, 1.5435200335871788e-11]
-  >>> file_session.fields.field_info.get_scalar_fields_info()
+  >>> file_session.fields.field_data.scalar_fields()
   {'phase-1:SV_ARTIFICIAL_WALL_FLAG': {'display_name': 'SV_ARTIFICIAL_WALL_FLAG',
    'section': 'field-data',
    'domain': 'phase-1'},
@@ -145,7 +145,7 @@ Multiphase
    'phase-4:': {'display_name': '',
    'section': 'field-data',
    'domain': 'phase-4'}}
-   >>> file_session.fields.field_info.get_vector_fields_info()
+   >>> file_session.fields.field_data.vector_fields()
    {'phase-1:velocity': {'x-component': 'phase-1: SV_U',
     'y-component': 'phase-1: SV_V',
     'z-component': 'phase-1: SV_W'},

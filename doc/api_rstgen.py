@@ -107,6 +107,7 @@ hierarchy = {
     "other": [
         "exceptions",
         "file_session",
+        "field_data_interfaces",
         "fluent_connection",
         "journaling",
         "logger",
