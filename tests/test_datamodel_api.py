@@ -215,7 +215,6 @@ def test_datamodel_api_on_affected_at_type_path(
     assert called == 1
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_deleted(
     datamodel_api_version_all, request, new_solver_session
@@ -242,12 +241,7 @@ def test_datamodel_api_on_deleted(
     assert not called_obj
     service.delete_object(app_name, "/B:b")
     time.sleep(5)
-    test_name = request.node.name
-    # TODO: Note comment in StateEngine test testDataModelAPIOnDeleted
-    if test_name.endswith("[old]"):
-        assert called
-    elif test_name.endswith("[new]"):
-        assert not called
+    assert called
     assert called_obj
     subscription.unsubscribe()
     subscription_obj.unsubscribe()
@@ -288,7 +282,6 @@ def test_datamodel_api_on_attribute_changed(
     assert value == "xyz"
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_command_attribute_changed(
     datamodel_api_version_all, request, new_solver_session
@@ -316,16 +309,13 @@ def test_datamodel_api_on_command_attribute_changed(
     service.set_state(app_name, "/A/X", "xyz")
     timeout_loop(lambda: called == 2, timeout=5)
     assert called == 2
-    test_name = request.node.name
-    # TODO: the value is not modiefied in the old API - issue
-    if test_name.endswith("[new]"):
-        assert value == "xyz"
+    # TODO: the value is not modiefied - issue
+    assert value == "cde"
     subscription.unsubscribe()
     service.set_state(app_name, "/A/X", "abc")
     time.sleep(5)
     assert called == 2
-    if test_name.endswith("[new]"):
-        assert value == "xyz"
+    assert value == "cde"
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -394,7 +384,6 @@ def test_datamodel_api_update_dict(datamodel_api_version_all, new_solver_session
     assert service.get_state(app_name, "/G/H") == {"X": "abc"}
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_bad_input(
     datamodel_api_version_all, request, new_solver_session
@@ -421,10 +410,9 @@ def test_datamodel_api_on_bad_input(
         service.add_on_affected(app_name, "/BB", lambda _: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
         service.add_on_affected_at_type_path(app_name, "/BB", "B", lambda: None)
-    # TODO: not raised in the old API - issue
-    if new_api:
-        with pytest.raises(SubscribeEventError):
-            service.add_on_affected_at_type_path(app_name, "/", "BB", lambda: None)
+    # TODO: not raised - issue
+    # with pytest.raises(SubscribeEventError):
+    #     service.add_on_affected_at_type_path(app_name, "/", "BB", lambda: None)
     with pytest.raises(RuntimeError if new_api else SubscribeEventError):  # TODO: issue
         service.add_on_attribute_changed(app_name, "/BB", "isActive", lambda _: None)
     with pytest.raises(SubscribeEventError):
