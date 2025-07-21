@@ -381,7 +381,7 @@ class FluentConnection:
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
         container: ContainerT | None = None,
-        use_docker_compose: bool = False,
+        use_docker_compose: bool = True,
         use_podman_compose: bool = False,
     ):
         """Initialize a Session.
@@ -423,9 +423,9 @@ class FluentConnection:
             The container instance if the Fluent session is running inside
             a container.
         use_docker_compose: bool, optional
-            Whether to use Docker Compose for launching Fluent.
+            Whether to use Docker Compose for launching Fluent. Defaults to ``True``.
         use_podman_compose: bool, optional
-            Whether to use Podman Compose for launching Fluent.
+            Whether to use Podman Compose for launching Fluent. Defaults to ``False``.
 
         Raises
         ------

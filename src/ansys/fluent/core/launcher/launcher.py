@@ -174,7 +174,7 @@ def launch_fluent(
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
     file_transfer_service: Any | None = None,
-    use_docker_compose: bool = False,
+    use_docker_compose: bool = True,
     use_podman_compose: bool = False,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
@@ -302,7 +302,7 @@ def launch_fluent(
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     use_docker_compose: bool
-        Whether to use Docker Compose to launch Fluent. The default is ``False``.
+        Whether to use Docker Compose to launch Fluent. The default is ``True``.
     use_podman_compose: bool
         Whether to use Podman Compose to launch Fluent. The default is ``False``.
 
@@ -318,6 +318,8 @@ def launch_fluent(
     ------
     UnexpectedKeywordArgument
         If an unexpected keyword argument is provided.
+    ValueError
+        If both ``use_docker_compose`` and ``use_podman_compose`` are set to ``True``.
 
     Notes
     -----
@@ -327,6 +329,11 @@ def launch_fluent(
     """
     if env is None:
         env = {}
+
+    if use_docker_compose and use_podman_compose:
+        raise ValueError(
+            "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
+        )
 
     if start_timeout is None:
         start_timeout = int(os.getenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "60"))

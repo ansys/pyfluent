@@ -37,9 +37,16 @@ from ansys.fluent.core.utils.networking import find_remoting_ip
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def is_compose(use_docker_compose: bool, use_podman_compose) -> bool:
+def is_compose(
+    use_docker_compose: bool | None = None, use_podman_compose: bool | None = None
+) -> bool:
     """Check if the Fluent launch is through compose."""
-    return use_docker_compose or use_podman_compose
+    return (
+        os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        or use_docker_compose
+        or use_podman_compose
+    )
 
 
 def is_windows():
