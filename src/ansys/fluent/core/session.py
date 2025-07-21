@@ -357,13 +357,15 @@ class BaseSession:
         return FluentVersion(self.scheme.version)
 
     def _exit_compose_service(self):
-        if self._launcher_args:
-            use_docker_compose = self._launcher_args.get("use_docker_compose", False)
-            use_podman_compose = self._launcher_args.get("use_podman_compose", False)
-        if self._fluent_connection._container and is_compose(
+        args = self._launcher_args or {}
+        use_docker_compose = args.get("use_docker_compose", False)
+        use_podman_compose = args.get("use_podman_compose", False)
+
+        container = self._fluent_connection._container
+        if container and is_compose(
             use_docker_compose=use_docker_compose, use_podman_compose=use_podman_compose
         ):
-            self._fluent_connection._container.stop()
+            container.stop()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
