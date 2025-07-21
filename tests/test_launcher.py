@@ -51,6 +51,7 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
     _build_journal_argument,
+    is_compose,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -734,3 +735,20 @@ def test_no_warning_for_none_values(caplog):
     driver = _get_graphics_driver(graphics_driver=None, ui_mode=None)  # noqa: F841
     assert "PyFluentUserWarning" not in caplog.text
     caplog.clear()
+
+
+def test_error_for_selecting_both_compose_sources():
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(use_docker_compose=True, use_podman_compose=True)
+
+
+def test_warning_for_deprecated_compose_env_vars(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
+    monkeypatch.setenv("PYFLUENT_USE_PODMAN_COMPOSE", "0")
+    with pytest.warns(PyFluentDeprecationWarning):
+        is_compose()
+
+    monkeypatch.setenv("PYFLUENT_USE_PODMAN_COMPOSE", "1")
+    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "0")
+    with pytest.warns(PyFluentDeprecationWarning):
+        is_compose()

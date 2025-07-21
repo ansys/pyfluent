@@ -30,8 +30,10 @@ import socket
 import subprocess
 import time
 from typing import Any, Dict
+import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.utils.networking import find_remoting_ip
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -41,12 +43,21 @@ def is_compose(
     use_docker_compose: bool | None = None, use_podman_compose: bool | None = None
 ) -> bool:
     """Check if the Fluent launch is through compose."""
-    return (
-        os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
-        or os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
-        or use_docker_compose
-        or use_podman_compose
-    )
+    docker_compose = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+    podman_compose = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+    if docker_compose or podman_compose:
+        deprecation_msg = (
+            "The environment variables 'PYFLUENT_USE_DOCKER_COMPOSE' and "
+            "'PYFLUENT_USE_PODMAN_COMPOSE' are deprecated. "
+            "Use the 'use_docker_compose' and 'use_podman_compose' parameters instead."
+        )
+
+        warnings.warn(
+            deprecation_msg,
+            category=PyFluentDeprecationWarning,
+        )
+
+    return docker_compose or podman_compose or use_docker_compose or use_podman_compose
 
 
 def is_windows():
