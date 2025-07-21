@@ -65,11 +65,11 @@ Use this method when:
   container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
 
   meshing = pyfluent.Meshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
-  pure_meshing = pyfluent.PureMeshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
+  pure_meshing = pyfluent.PureMeshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_podman_compose=True)
   solver = pyfluent.Solver.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
-  solver_aero = pyfluent.SolverAero.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
+  solver_aero = pyfluent.SolverAero.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_podman_compose=True)
   solver_icing = pyfluent.SolverIcing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
-  pre_post = pyfluent.PrePost.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
+  pre_post = pyfluent.PrePost.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_podman_compose=True)
 
 
 Connect to an existing session
