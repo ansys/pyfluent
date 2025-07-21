@@ -151,6 +151,7 @@ class BaseSession:
             file_transfer_service,
             event_type,
             get_zones_info,
+            launcher_args,
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
@@ -161,10 +162,12 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
+        self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
         self.rp_vars = RPVars(self.scheme.string_eval)
@@ -355,8 +358,8 @@ class BaseSession:
 
     def _exit_compose_service(self):
         if self._fluent_connection._container and is_compose(
-            self._fluent_connection._use_docker_compose,
-            self._fluent_connection._use_podman_compose,
+            self._launcher_args["use_docker_compose"],
+            self._launcher_args["use_podman_compose"],
         ):
             self._fluent_connection._container.stop()
 
