@@ -85,6 +85,9 @@ import numpy as np
 from numpy import array
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.variable_strategies import (
+    FluentExprNamingStrategy as naming_strategy,
+)
 
 
 class BadReductionRequest(Exception):
@@ -194,7 +197,7 @@ def _eval_reduction(
         weight = "Weight=" + str(weight)
         locations = str(locations) + ", " + weight
 
-    expr_str = _expr_to_expr_str(expr)
+    expr_str = _expr_to_expr_str(naming_strategy().to_string(expr))
     if condition:
         expr_str = expr_str + ", " + condition
     return _eval_expr(
@@ -253,11 +256,23 @@ def _extent_moment_vector(f_string, expr, locations, ctxt):
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
-    return _extent_expression(f"{extent_name}Ave", extent_name, expr, locations, ctxt)
+    return _extent_expression(
+        f"{extent_name}Ave",
+        extent_name,
+        naming_strategy().to_string(expr),
+        locations,
+        ctxt,
+    )
 
 
 def _extent_integrated_average(extent_name, expr, locations, ctxt):
-    return _extent_expression(f"{extent_name}Int", extent_name, expr, locations, ctxt)
+    return _extent_expression(
+        f"{extent_name}Int",
+        extent_name,
+        naming_strategy().to_string(expr),
+        locations,
+        ctxt,
+    )
 
 
 def _extent(extent_name, locations, ctxt):
