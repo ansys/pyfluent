@@ -256,13 +256,7 @@ def _extent_moment_vector(f_string, expr, locations, ctxt):
 
 
 def _extent_average(extent_name, expr, locations, ctxt):
-    return _extent_expression(
-        f"{extent_name}Ave",
-        extent_name,
-        expr,
-        locations,
-        ctxt,
-    )
+    return _extent_expression(f"{extent_name}Ave", extent_name, expr, locations, ctxt)
 
 
 def _extent_integrated_average(extent_name, expr, locations, ctxt):
