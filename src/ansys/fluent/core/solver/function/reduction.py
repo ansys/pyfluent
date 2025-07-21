@@ -266,13 +266,7 @@ def _extent_average(extent_name, expr, locations, ctxt):
 
 
 def _extent_integrated_average(extent_name, expr, locations, ctxt):
-    return _extent_expression(
-        f"{extent_name}Int",
-        extent_name,
-        expr,
-        locations,
-        ctxt,
-    )
+    return _extent_expression(f"{extent_name}Int", extent_name, expr, locations, ctxt)
 
 
 def _extent(extent_name, locations, ctxt):
