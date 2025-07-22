@@ -283,6 +283,7 @@ class BaseSession:
         """Provides access to Fluent field information."""
         return self.scheme
 
+    @property
     @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
     def health_check(self):
         """Provides access to Health Check service."""
