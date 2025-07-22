@@ -108,7 +108,7 @@ class DockerLauncher:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
-        use_docker_compose: bool = False,
+        use_docker_compose: bool = True,
         use_podman_compose: bool = False,
     ):
         """
@@ -164,7 +164,7 @@ class DockerLauncher:
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
         use_docker_compose : bool, optional
-            If True, uses Docker Compose to start the Fluent container. Defaults to ``False``.
+            If True, uses Docker Compose to start the Fluent container. Defaults to ``True``.
         use_podman_compose : bool, optional
             If True, uses Podman Compose to start the Fluent container. Defaults to ``False``.
 
