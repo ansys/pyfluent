@@ -31,12 +31,13 @@ Single-phase
   >>>   SurfaceFieldDataRequest,
   >>>   VectorFieldDataRequest,
   >>> )
+  >>> from ansys.units import VariableCatalog
 
   >>> case_file_name = examples.download_file("elbow1.cas.h5", "pyfluent/file_session")
   >>> data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
   >>> file_session = FileSession(case_file_name, data_file_name)
 
-  >>> file_session.fields.field_data.scalar_fields.range("SV_T")
+  >>> file_session.fields.field_data.scalar_fields.range(VariableCatalog.TEMPERATURE)
   [0.0, 313.1515948109515]
   >>> file_session.fields.field_data.surfaces()
   {'wall': {'surface_id': [3],
@@ -73,8 +74,8 @@ Single-phase
    >>>      surfaces=[3, 4],
    >>>      flatten_connectivity=True,
    >>> )
-   >>> solution_variable_temperature_request = ScalarFieldDataRequest(field_name="SV_T", surfaces=[3, 4], node_value=False, boundary_value=False)
-   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=[3, 4])
+   >>> solution_variable_temperature_request = ScalarFieldDataRequest(field_name=VariableCatalog.TEMPERATURE, surfaces=[3, 4], node_value=False, boundary_value=False)
+   >>> velocity_request = VectorFieldDataRequest(field_name=VariableCatalog.VELOCITY, surfaces=[3, 4])
    >>> batch.add_requests(vertices_and_faces_connectivity_request, solution_variable_temperature_request, velocity_request)
    >>> data = batch.get_response()
    >>> data.get_field_data(vertices_and_faces_connectivity_request)[3].vertices
@@ -101,11 +102,11 @@ Single-phase
    (3810, 3)
    >>> file_session.fields.field_data.get_field_data(vertices_request)[3][1500][0]
    0.12405861914157867
-   >>> file_session.fields.field_data.get_field_data(ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"]))["wall"].shape
+   >>> file_session.fields.field_data.get_field_data(ScalarFieldDataRequest(field_name=VariableCatalog.TEMPERATURE, surfaces=["wall"]))["wall"].shape
    (3630,)
-   >>> file_session.fields.field_data.get_field_data(ScalarFieldDataRequest(field_name="SV_T", surfaces=["wall"]))["wall"][1500]
+   >>> file_session.fields.field_data.get_field_data(ScalarFieldDataRequest(field_name=VariableCatalog.TEMPERATURE, surfaces=["wall"]))["wall"][1500]
    293.18071329432047
-   >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=["symmetry"])
+   >>> velocity_request = VectorFieldDataRequest(field_name=VariableCatalog.VELOCITY, surfaces=["symmetry"])
    >>> file_session.fields.field_data.get_field_data(velocity_request)["symmetry"].shape
    (2018, 3)
    >>> file_session.fields.field_data.get_field_data(velocity_request)["symmetry"][1000][0]
