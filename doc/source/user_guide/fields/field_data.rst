@@ -44,9 +44,10 @@ To obtain surface vertex coordinates for a given surface, create a
 .. code-block:: python
 
   >>> from ansys.fluent.core import SurfaceDataType, SurfaceFieldDataRequest
+  >>> from ansys.fluent.core.solver import VelocityInlet
 
   >>> vertices_request = SurfaceFieldDataRequest(
-  >>>     surfaces=["inlet"],
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
   >>>     data_types=[SurfaceDataType.Vertices],
   >>> )
   >>> vertices_data = field_data.get_field_data(vertices_request)
@@ -63,8 +64,6 @@ To retrieve surface face normals and centroids, include ``FacesNormal`` and ``Fa
 in the ``data_types`` list.
 
 .. code-block:: python
-
-  >>> from ansys.fluent.core.solver import VelocityInlet
 
   >>> faces_normal_and_centroid_request = SurfaceFieldDataRequest(
   >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
@@ -127,7 +126,12 @@ To retrieve scalar field data, such as absolute pressure, use ``ScalarFieldDataR
 .. code-block:: python
 
   >>> from ansys.fluent.core import ScalarFieldDataRequest
-  >>> absolute_pressure_request = ScalarFieldDataRequest(field_name="absolute-pressure", surfaces=["inlet"])
+  >>> from ansys.units import VariableCatalog
+
+  >>> absolute_pressure_request = ScalarFieldDataRequest(
+  >>>     field_name=VariableCatalog.ABSOLUTE_PRESSURE,
+  >>>     surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")],
+  >>> )
   >>> absolute_pressure_data = field_data.get_field_data(absolute_pressure_request)
 
   # Shape: (389,) - A single scalar value (e.g., pressure) for each of the 389 vertices.
@@ -144,7 +148,12 @@ To obtain vector field data, such as velocity vectors, use ``VectorFieldDataRequ
 .. code-block:: python
 
   >>> from ansys.fluent.core import VectorFieldDataRequest
-  >>> velocity_request = VectorFieldDataRequest(field_name="velocity", surfaces=["inlet", "inlet1"])
+  >>> from ansys.fluent.core.solver import VelocityInlets
+
+  >>> velocity_request = VectorFieldDataRequest(
+  >>>     field_name=VariableCatalog.VELOCITY,
+  >>>     surfaces=VelocityInlets(settings_source=solver_session),
+  >>> )
   >>> velocity_vector_data = field_data.get_field_data(velocity_request)
   # Shape: (262, 3) - Velocity vectors for 262 faces, each with components (vx, vy, vz) for 'inlet'.
   >>> velocity_vector_data["inlet"].shape
@@ -161,7 +170,7 @@ To obtain pathlines field data, use ``PathlinesFieldDataRequest``:
 
   >>> from ansys.fluent.core import PathlinesFieldDataRequest
   >>> velocity_pathlines_request = PathlinesFieldDataRequest(
-  >>>           field_name="x-velocity",
+  >>>           field_name=VariableCatalog.VELOCITY_X,
   >>>           surfaces=[VelocityInlet(settings_source=solver_session, name="inlet")]
   >>>           flatten_connectivity=True,
   >>>       )
@@ -193,9 +202,17 @@ Add multiple requests using ``add_requests`` and access the data with ``get_resp
 
 .. code-block:: python
 
-  >>> vertices_and_centroid_request = SurfaceFieldDataRequest(surfaces=[1], data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid])
-  >>> pressure_request = ScalarFieldDataRequest(surfaces=[1, 2], field_name="pressure", node_value=True, boundary_value=True)
-  >>> velocity_request = VectorFieldDataRequest(surfaces=[1, 2], field_name="velocity")
+  >>> vertices_and_centroid_request = SurfaceFieldDataRequest(
+  >>>     surfaces=[1],
+  >>>     data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+  >>> )
+  >>> pressure_request = ScalarFieldDataRequest(
+  >>>     surfaces=[1, 2],
+  >>>     field_name=VariableCatalog.PRESSURE,
+  >>>     node_value=True,
+  >>>     boundary_value=True,
+  >>> )
+  >>> velocity_request = VectorFieldDataRequest(surfaces=[1, 2], field_name=VariableCatalog.VELOCITY)
 
   >>> payload_data = batch.add_requests(vertices_and_centroid_request, pressure_request, velocity_request).get_response()
 

@@ -29,6 +29,7 @@ from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
 from ansys.fluent.core.solver.function import reduction
+from ansys.units import VariableCatalog
 
 
 def _test_locn_extraction(solver1, solver2):
@@ -109,7 +110,7 @@ def _test_area_average(solver):
     expr_val = solver_named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0
     val = solver.fields.reduction.area_average(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver.setup.boundary_conditions.velocity_inlet,
     )
     assert val == expr_val
@@ -118,15 +119,15 @@ def _test_area_average(solver):
 
 def _test_min(solver1, solver2):
     s1_min = solver1.fields.reduction.minimum(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver1.setup.boundary_conditions.velocity_inlet,
     )
     s2_min = solver2.fields.reduction.minimum(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver2.setup.boundary_conditions.velocity_inlet,
     )
     result = reduction.minimum(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver1.setup.boundary_conditions.velocity_inlet
         + solver2.setup.boundary_conditions.velocity_inlet,
     )
@@ -235,15 +236,15 @@ def _test_area_integrated_average(solver1, solver2):
     assert expr_val_3 - (expr_val_1 + expr_val_2) <= 0.000000001
 
     red_val_1 = solver1.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=[solver1_boundary_conditions.velocity_inlet["inlet1"]],
     )
     red_val_2 = solver1.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=[solver1_boundary_conditions.velocity_inlet["inlet2"]],
     )
     red_val_3 = solver1.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver1_boundary_conditions.velocity_inlet,
     )
 
@@ -269,15 +270,15 @@ def _test_area_integrated_average(solver1, solver2):
     assert expr_val_6 - (expr_val_4 + expr_val_5) <= 0.000000001
 
     red_val_4 = solver2.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=[solver2_boundary_conditions.velocity_inlet["inlet1"]],
     )
     red_val_5 = solver2.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=[solver2_boundary_conditions.velocity_inlet["inlet2"]],
     )
     red_val_6 = solver2.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver2_boundary_conditions.velocity_inlet,
     )
 
@@ -286,7 +287,7 @@ def _test_area_integrated_average(solver1, solver2):
     assert red_val_6 == expr_val_6
 
     red_val_7 = solver2.fields.reduction.area_integral(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=solver1_boundary_conditions.velocity_inlet
         + solver2_boundary_conditions.velocity_inlet,
     )
@@ -374,7 +375,7 @@ def _test_sum(solver):
     assert isinstance(expr_val, float) and expr_val != 0.0
 
     val = solver.fields.reduction.sum(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
     )
@@ -393,10 +394,10 @@ def _test_sum_if(solver):
     assert isinstance(expr_val, float) and expr_val != 0.0
 
     val = solver.fields.reduction.sum_if(
-        expression="AbsolutePressure",
+        expression=VariableCatalog.ABSOLUTE_PRESSURE,
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight="Area",
+        weight=solver.fields.reduction.weight.AREA,
     )
 
     assert val == expr_val

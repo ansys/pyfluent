@@ -508,14 +508,14 @@ class Batch(FieldBatch):
                 )
             elif isinstance(req, ScalarFieldDataRequest):
                 self._add_scalar_fields_request(
-                    field_name=req.field_name,
+                    field_name=_to_scalar_field_name(req.field_name),
                     surfaces=req.surfaces,
                     node_value=req.node_value,
                     boundary_value=req.boundary_value,
                 )
             elif isinstance(req, VectorFieldDataRequest):
                 self._add_vector_fields_request(
-                    field_name=req.field_name,
+                    field_name=_to_vector_field_name(req.field_name),
                     surfaces=req.surfaces,
                 )
             elif isinstance(req, PathlinesFieldDataRequest):
@@ -1221,7 +1221,7 @@ def _get_surface_ids(
     surface_ids = []
     for surf in surfaces:
         if isinstance(surf, str):
-            surface_ids.extend(field_info.get_surfaces_info()[surf]["surface_id"])
+            surface_ids.extend(field_info._get_surfaces_info()[surf]["surface_id"])
         else:
             surface_ids.append(surf)
     return surface_ids
@@ -1232,5 +1232,5 @@ class Fields:
 
     def __init__(self, _session: FileSession):
         """Initialize Fields."""
-        self.field_info = FileFieldInfo(_session)
+        self.field_info = _FileFieldInfo(_session)
         self.field_data = FileFieldData(_session, self.field_info)
