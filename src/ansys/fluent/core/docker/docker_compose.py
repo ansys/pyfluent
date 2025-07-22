@@ -33,6 +33,8 @@ class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
     def __init__(self, use_docker_compose, use_podman_compose, container_dict):
+        self._user_docker_env = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        self._user_podman_env = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
         self._use_docker_compose = use_docker_compose
         self._use_podman_compose = use_podman_compose
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
@@ -48,9 +50,7 @@ class ComposeBasedLauncher:
         self._compose_file = self._get_compose_file(container_dict)
 
     def _is_podman_selected(self):
-        return (
-            os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1" or self._use_podman_compose
-        )
+        return self._user_podman_env or self._use_podman_compose
 
     def _get_compose_file(self, container_dict):
         """Generates compose file for the Docker Compose setup.
@@ -136,16 +136,14 @@ class ComposeBasedLauncher:
         """
 
         # Determine the compose command
-        if os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1" or self._use_podman_compose:
+        if self._user_podman_env or self._use_podman_compose:
             self._compose_cmds = (
                 ["sudo", "podman", "compose"]
                 if hasattr(self, "_container_source")
                 and "sudo" in self._container_source
                 else ["podman", "compose"]
             )
-        elif (
-            os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1" or self._use_docker_compose
-        ):
+        elif self._user_docker_env or self._use_docker_compose:
             self._compose_cmds = ["docker", "compose"]
         else:
             raise RuntimeError("Neither Docker nor Podman is specified.")
