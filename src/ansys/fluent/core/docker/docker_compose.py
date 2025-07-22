@@ -50,7 +50,7 @@ class ComposeBasedLauncher:
         self._compose_file = self._get_compose_file(container_dict)
 
     def _is_podman_selected(self):
-        return self._user_podman_env or self._use_podman_compose
+        return self._use_podman_compose or self._user_podman_env
 
     def _get_compose_file(self, container_dict):
         """Generates compose file for the Docker Compose setup.
@@ -136,14 +136,14 @@ class ComposeBasedLauncher:
         """
 
         # Determine the compose command
-        if self._user_podman_env or self._use_podman_compose:
+        if self._use_podman_compose or self._user_podman_env:
             self._compose_cmds = (
                 ["sudo", "podman", "compose"]
                 if hasattr(self, "_container_source")
                 and "sudo" in self._container_source
                 else ["podman", "compose"]
             )
-        elif self._user_docker_env or self._use_docker_compose:
+        elif self._use_docker_compose or self._user_docker_env:
             self._compose_cmds = ["docker", "compose"]
         else:
             raise RuntimeError("Neither Docker nor Podman is specified.")
