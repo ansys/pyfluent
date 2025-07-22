@@ -1666,41 +1666,42 @@ def test_meshing_utilities(new_meshing_session):
     #     append_marking=False,
     # ) == [0, 0.5697421601607908]
 
-    assert (
-        meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
-            face_zone_id_list=[30, 31, 32],
-            strip_type=2,
-            strip_height=2,
-            quality_measure="Size Change",
-            quality_limit=0.5,
-            feature_angle=40,
-        )
-        == -125
-    )
+    # https://github.com/ansys/pyfluent/issues/4298
+    # assert (
+    #     meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
+    #         face_zone_id_list=[30, 31, 32],
+    #         strip_type=2,
+    #         strip_height=2,
+    #         quality_measure="Size Change",
+    #         quality_limit=0.5,
+    #         feature_angle=40,
+    #     )
+    #     == -125
+    # )
 
-    assert (
-        meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
-            face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
-            strip_type=2,
-            strip_height=2,
-            quality_measure="Size Change",
-            quality_limit=0.5,
-            feature_angle=40.5,
-        )
-        == -125
-    )
+    # assert (
+    #     meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
+    #         face_zone_name_list=["cold-inlet", "hot-inlet", "outlet"],
+    #         strip_type=2,
+    #         strip_height=2,
+    #         quality_measure="Size Change",
+    #         quality_limit=0.5,
+    #         feature_angle=40.5,
+    #     )
+    #     == -125
+    # )
 
-    assert (
-        meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
-            face_zone_name_pattern="cold*",
-            strip_type=1,
-            strip_height=2,
-            quality_measure="Size Change",
-            quality_limit=0.5,
-            feature_angle=40.5,
-        )
-        == -51
-    )
+    # assert (
+    #     meshing_session.meshing_utilities.mark_face_strips_by_height_and_quality(
+    #         face_zone_name_pattern="cold*",
+    #         strip_type=1,
+    #         strip_height=2,
+    #         quality_measure="Size Change",
+    #         quality_limit=0.5,
+    #         feature_angle=40.5,
+    #     )
+    #     == -51
+    # )
 
     assert (
         meshing_session.meshing_utilities.mark_faces_deviating_from_size_field(

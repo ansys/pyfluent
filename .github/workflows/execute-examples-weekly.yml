@@ -34,6 +34,8 @@ jobs:
             version: 252
           - image-tag: v26.1.0
             version: 261
+    env:
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -66,8 +68,6 @@ jobs:
           else
             echo "Image already exists locally, skipping pull."
           fi
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Install Dependencies
         run: |
@@ -84,99 +84,71 @@ jobs:
         run: |
           echo "Executing examples"
           sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~1 minute
       - name: Execute mixing_elbow_settings_api.py
         run: |
           python examples/00-fluent/mixing_elbow_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~1 minute
       - name: Execute species_transport.py
         run: |
           python examples/00-fluent/species_transport.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~1 minute
       - name: Execute modeling_cavitation.py
         run: |
           python examples/00-fluent/modeling_cavitation.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~3 minutes
       - name: Execute ahmed_body_workflow.py
         run: |
           python examples/00-fluent/ahmed_body_workflow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~4 minutes
       - name: Execute exhaust_system_settings_api.py
         run: |
           python examples/00-fluent/exhaust_system_settings_api.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~4 minutes
       - name: Execute parametric_static_mixer_1.py
         run: |
           python examples/00-fluent/parametric_static_mixer_1.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~5 minutes
       - name: Execute brake.py
         run: |
           python examples/00-fluent/brake.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~5 minutes
       - name: Execute external_compressible_flow.py
         run: |
           python examples/00-fluent/external_compressible_flow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~15 minutes
       - name: Execute radiation_headlamp.py
         run: |
           python examples/00-fluent/radiation_headlamp.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~17 minutes
       - name: Execute DOE_ML.py
         run: |
           python examples/00-fluent/DOE_ML.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~17 minutes
       - name: Execute frozen_rotor_workflow.py
         run: |
           python examples/00-fluent/frozen_rotor_workflow.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # ~26 minutes, hangs for v26.1.0
       - name: Execute lunar_lander_thermal.py
         run: |
           python examples/00-fluent/lunar_lander_thermal.py
-        env:
-          FLUENT_IMAGE_TAG: v25.2.0
 
       # ~40 minutes
       - name: Execute tyler_sofrin_modes.py
         run: |
           python examples/00-fluent/tyler_sofrin_modes.py
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py

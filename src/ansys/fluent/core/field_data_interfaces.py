@@ -290,6 +290,120 @@ class FieldBatch(ABC):
         pass
 
 
+class _SurfaceNames:
+    def __init__(self, allowed_surface_names):
+        self._allowed_surface_names = allowed_surface_names
+
+    def allowed_values(self):
+        """Lists available surface names."""
+        return list(self._allowed_surface_names())
+
+    def validate(self, surfaces: List[str]) -> bool:
+        """
+        Validate that the given surfaces are in the list of allowed surface names.
+
+        Parameters
+        ----------
+        surfaces : List[int]
+            A list of surface name strings to validate.
+
+        Returns
+        -------
+        bool
+            True if all surfaces are valid, False otherwise.
+            If any name is invalid, a warning is issued and validation stops early.
+        """
+        for surf in surfaces:
+            if surf not in self._allowed_surface_names():
+                warnings.warn(f"'{surf}' is not a valid surface name.")
+                return False
+        return True
+
+    def __call__(self):
+        return self._allowed_surface_names()
+
+
+class _SurfaceIds:
+    def __init__(self, allowed_surface_ids):
+        self._allowed_surface_ids = allowed_surface_ids
+
+    def allowed_values(self):
+        """Lists available surface ids."""
+        return self._allowed_surface_ids()
+
+    def validate(self, surface_ids: List[int]) -> bool:
+        """
+        Validate that the given surface IDs are in the list of allowed surface IDs.
+
+        Parameters
+        ----------
+        surface_ids : List[int]
+            A list of surface ID integers to validate.
+
+        Returns
+        -------
+        bool
+            True if all surface IDs are valid, False otherwise.
+            If any ID is invalid, a warning is issued and validation stops early.
+        """
+        for surf in surface_ids:
+            if surf not in self._allowed_surface_ids():
+                warnings.warn(f"'{surf}' is not a valid surface id.")
+                return False
+        return True
+
+    def __call__(self):
+        return self._allowed_surface_ids()
+
+
+class _Fields:
+    def __init__(self, available_field_names):
+        self._available_field_names = available_field_names
+
+    def is_active(self, field_name):
+        """Check whether a field is active in the given context."""
+        if _to_field_name_str(field_name) in self._available_field_names():
+            return True
+        return False
+
+    def allowed_values(self):
+        """Lists available scalar or vector field names."""
+        return list(self._available_field_names())
+
+    def __call__(self):
+        return self._available_field_names()
+
+
+class _ScalarFields(_Fields):
+    def __init__(self, available_field_names, field_info):
+        super().__init__(available_field_names)
+        self._field_info = field_info
+
+    def range(
+        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+    ) -> list[float]:
+        """Get the range (minimum and maximum values) of the field.
+
+        Parameters
+        ----------
+        field: str
+            Field name
+        node_value: bool
+        surface_ids : List[int], optional
+            List of surface IDS for the surface data.
+
+        Returns
+        -------
+        List[float]
+        """
+        return self._field_info._get_scalar_field_range(field, node_value, surface_ids)
+
+
+class _VectorFields(_Fields):
+    def __init__(self, available_field_names):
+        super().__init__(available_field_names)
+
+
 class _AllowedNames:
     def __init__(
         self, field_info: BaseFieldInfo | None = None, info: dict | None = None
@@ -337,7 +451,7 @@ class _AllowedFieldNames(_AllowedNames):
 
 class _AllowedSurfaceNames(_AllowedNames):
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
-        return self._info if self._info else self._field_info.get_surfaces_info()
+        return self._info if self._info else self._field_info._get_surfaces_info()
 
     def valid_name(self, surface_name: str) -> str:
         """Returns valid names.
@@ -365,7 +479,7 @@ class _AllowedSurfaceIDs(_AllowedNames):
         try:
             return [
                 info["surface_id"][0]
-                for _, info in self._field_info.get_surfaces_info().items()
+                for _, info in self._field_info._get_surfaces_info().items()
             ]
         except (KeyError, IndexError):
             pass
@@ -383,7 +497,7 @@ class _AllowedScalarFieldNames(_AllowedFieldNames):
 
     def __call__(self, respect_data_valid: bool = True) -> List[str]:
         field_dict = (
-            self._info if self._info else self._field_info.get_scalar_fields_info()
+            self._info if self._info else self._field_info._get_scalar_fields_info()
         )
         return (
             field_dict
@@ -405,7 +519,7 @@ class _AllowedVectorFieldNames(_AllowedFieldNames):
             self._info
             if self._info
             else (
-                self._field_info.get_vector_fields_info()
+                self._field_info._get_vector_fields_info()
                 if (not respect_data_valid or self._is_data_valid())
                 else []
             )

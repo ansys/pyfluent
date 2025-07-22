@@ -42,6 +42,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     data_model_cache
     exceptions
     file_session
+    field_data_interfaces
     fluent_connection
     journaling
     logger

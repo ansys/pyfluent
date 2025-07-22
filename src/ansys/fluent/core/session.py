@@ -477,7 +477,7 @@ class Fields:
         self._is_solution_data_valid = (
             _session._app_utilities.is_solution_data_available
         )
-        self.field_info = service_creator("field_info").create(
+        self._field_info = service_creator("field_info").create(
             _session._field_data_service,
             self._is_solution_data_valid,
         )
@@ -497,3 +497,9 @@ class Fields:
             self._is_solution_data_valid,
             _session.scheme,
         )
+
+    @property
+    @deprecated(version="0.34.0", reason="Use relevant ``field_data`` methods..")
+    def field_info(self):
+        """Field Information."""
+        return self._field_info

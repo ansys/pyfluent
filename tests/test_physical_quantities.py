@@ -115,10 +115,10 @@ def test_use_variable_catalog_offline():
     file_session.read_data(data_file_name)
 
     assert round_off_list_elements(
-        file_session.field_info.get_scalar_field_range(VariableCatalog.PRESSURE)
+        file_session.field_data.scalar_fields.range(VariableCatalog.PRESSURE)
     ) == [-339.203452, 339.417934]
-    assert len(file_session.field_info.get_scalar_fields_info()) == 29
-    assert list(file_session.field_info.get_surfaces_info().keys()) == [
+    assert len(file_session.field_data.scalar_fields()) == 29
+    assert list(file_session.field_data.surfaces()) == [
         "wall",
         "symmetry",
         "pressure-outlet-7",
@@ -177,3 +177,12 @@ def test_use_variable_catalog_offline():
     assert vector_data_symmetry.shape == (2018, 3)
     assert round(vector_data_symmetry[1009][0], 5) == 0.0023
     assert round(vector_data_symmetry[1009][1], 5) == 1.22311
+
+
+def test_quantity_dimensions_subscription():
+    from ansys.units.variable_descriptor import VariableCatalog as vc
+
+    vel = vc.VELOCITY
+    assert vel.name == "velocity"
+    assert vel.dimension["TIME"] == -1.0
+    assert vel.dimension["LENGTH"] == 1.0
