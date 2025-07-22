@@ -522,7 +522,12 @@ def start_fluent_container(
     if container_dict is None:
         container_dict = {}
 
-    container_vars = configure_container_dict(args, **container_dict)
+    container_vars = configure_container_dict(
+        args,
+        use_docker_compose=use_docker_compose,
+        use_podman_compose=use_podman_compose,
+        **container_dict,
+    )
 
     (
         config_dict,
