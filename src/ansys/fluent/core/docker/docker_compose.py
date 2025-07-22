@@ -26,6 +26,8 @@ import os
 import subprocess
 import uuid
 
+from .utils import get_ghcr_fluent_image_name
+
 
 class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
@@ -35,9 +37,10 @@ class ComposeBasedLauncher:
         self._use_podman_compose = use_podman_compose
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
         self._container_dict = container_dict
+        image_tag = os.getenv("FLUENT_IMAGE_TAG")
         self._image_name = (
             container_dict.get("fluent_image")
-            or f"ghcr.io/ansys/pyfluent:{os.getenv('FLUENT_IMAGE_TAG')}"
+            or f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
         )
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")

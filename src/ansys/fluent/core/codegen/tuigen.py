@@ -52,6 +52,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
+from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
@@ -97,7 +98,7 @@ _XML_HELPSTRINGS = {}
 def _copy_tui_help_xml_file(version: str):
     if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
         image_tag = os.getenv("FLUENT_IMAGE_TAG", "v25.1.0")
-        image_name = f"ghcr.io/ansys/pyfluent:{image_tag}"
+        image_name = f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
         subprocess.run(
