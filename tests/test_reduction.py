@@ -397,7 +397,7 @@ def _test_sum_if(solver):
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
         condition="AbsolutePressure > 0[Pa]",
         locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
-        weight="Area",
+        weight=solver.fields.reduction.weight.AREA,
     )
 
     assert val == expr_val
