@@ -174,8 +174,8 @@ def launch_fluent(
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
     file_transfer_service: Any | None = None,
-    use_docker_compose: bool = False,
-    use_podman_compose: bool = False,
+    use_docker_compose: bool | None = None,
+    use_podman_compose: bool | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -302,9 +302,9 @@ def launch_fluent(
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
     use_docker_compose: bool
-        Whether to use Docker Compose to launch Fluent. The default is ``False``.
+        Whether to use Docker Compose to launch Fluent.
     use_podman_compose: bool
-        Whether to use Podman Compose to launch Fluent. The default is ``False``.
+        Whether to use Podman Compose to launch Fluent.
 
     Returns
     -------

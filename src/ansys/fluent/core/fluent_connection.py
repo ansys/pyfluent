@@ -42,7 +42,7 @@ from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -381,8 +381,8 @@ class FluentConnection:
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
         container: ContainerT | None = None,
-        use_docker_compose: bool = False,
-        use_podman_compose: bool = False,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
     ):
         """Initialize a Session.
 
@@ -423,15 +423,19 @@ class FluentConnection:
             The container instance if the Fluent session is running inside
             a container.
         use_docker_compose: bool, optional
-            Whether to use Docker Compose for launching Fluent. Defaults to ``False``.
+            Whether to use Docker Compose for launching Fluent.
         use_podman_compose: bool, optional
-            Whether to use Podman Compose for launching Fluent. Defaults to ``False``.
+            Whether to use Podman Compose for launching Fluent.
 
         Raises
         ------
         PortNotProvided
             If port is not provided.
         """
+        self._compose_config = ComposeConfig(
+            use_docker_compose=use_docker_compose,
+            use_podman_compose=use_podman_compose,
+        )
         self._error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
@@ -480,7 +484,7 @@ class FluentConnection:
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            if not is_compose(self._use_docker_compose, self._use_podman_compose):
+            if not self._compose_config.is_compose:
                 inside_container = get_container(cortex_host)
                 logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is False:
@@ -557,8 +561,9 @@ class FluentConnection:
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container or is_compose(
-            self._use_docker_compose, self._use_podman_compose
+        if (
+            self.connection_properties.inside_container
+            or self._compose_config.is_compose
         ):
             self._force_exit_container()
         elif self._remote_instance is not None:
@@ -611,10 +616,7 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        if (
-            is_compose(self._use_docker_compose, self._use_podman_compose)
-            and self._container
-        ):
+        if self._compose_config.is_compose and self._container:
             self._container.stop()
         else:
             container = self.connection_properties.inside_container
@@ -692,8 +694,9 @@ class FluentConnection:
         else:
             raise WaitTypeError()
 
-        if self.connection_properties.inside_container and not is_compose(
-            self._use_docker_compose, self._use_podman_compose
+        if (
+            self.connection_properties.inside_container
+            and not self._compose_config.is_compose
         ):
             _response = timeout_loop(
                 get_container,

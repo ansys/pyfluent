@@ -56,7 +56,7 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_argvals_and_session,
 )
-from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.launcher.process_launch_string import (
     _build_fluent_launch_args_string,
 )
@@ -108,8 +108,8 @@ class DockerLauncher:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
-        use_docker_compose: bool = False,
-        use_podman_compose: bool = False,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
     ):
         """
         Launch a Fluent session in container mode.
@@ -164,9 +164,9 @@ class DockerLauncher:
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
         use_docker_compose : bool, optional
-            If True, uses Docker Compose to start the Fluent container. Defaults to ``False``.
+            Whether to use Docker Compose for launching Fluent.
         use_podman_compose : bool, optional
-            If True, uses Podman Compose to start the Fluent container. Defaults to ``False``.
+            Whether to use Podman Compose for launching Fluent.
 
         Returns
         -------
@@ -189,6 +189,10 @@ class DockerLauncher:
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
+        self._compose_config = ComposeConfig(
+            use_docker_compose=self.argvals["use_docker_compose"],
+            use_podman_compose=self.argvals["use_podman_compose"],
+        )
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60
         self.file_transfer_service = file_transfer_service
@@ -223,9 +227,7 @@ class DockerLauncher:
         logger.debug(f"Fluent container launcher args: {self._args}")
         logger.debug(f"Fluent container launcher argvals:\n{dict_to_str(self.argvals)}")
 
-        if is_compose(
-            self.argvals["use_docker_compose"], self.argvals["use_podman_compose"]
-        ):
+        if self._compose_config.is_compose:
             port, config_dict, container = start_fluent_container(
                 self._args,
                 self.argvals["container_dict"],
@@ -264,9 +266,7 @@ class DockerLauncher:
 
         session._container = container
 
-        if not is_compose(
-            self.argvals["use_docker_compose"], self.argvals["use_podman_compose"]
-        ):
+        if not self._compose_config.is_compose:
             if (
                 self.argvals["start_watchdog"] is None
                 and self.argvals["cleanup_on_exit"]
