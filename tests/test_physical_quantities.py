@@ -177,3 +177,12 @@ def test_use_variable_catalog_offline():
     assert vector_data_symmetry.shape == (2018, 3)
     assert round(vector_data_symmetry[1009][0], 5) == 0.0023
     assert round(vector_data_symmetry[1009][1], 5) == 1.22311
+
+
+def test_quantity_dimensions_subscription():
+    from ansys.units.variable_descriptor import VariableCatalog as vc
+
+    vel = vc.VELOCITY
+    assert vel.name == "velocity"
+    assert vel.dimension["TIME"] == -1.0
+    assert vel.dimension["LENGTH"] == 1.0
