@@ -170,7 +170,7 @@ def configure_container_dict(
     image_name: str | None = None,
     image_tag: str | None = None,
     file_transfer_service: Any | None = None,
-    use_docker_compose: bool = True,
+    use_docker_compose: bool = False,
     use_podman_compose: bool = False,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
@@ -207,7 +207,7 @@ def configure_container_dict(
     file_transfer_service : optional
         Supports file upload and download.
     use_docker_compose : bool, optional
-        Whether to use Docker Compose for launching the Fluent container. Defaults to ``True``.
+        Whether to use Docker Compose for launching the Fluent container. Defaults to ``False``.
     use_podman_compose : bool, optional
         Whether to use Podman Compose for launching the Fluent container. Defaults to ``False``.
     **container_dict
@@ -483,7 +483,7 @@ def start_fluent_container(
     args: List[str],
     container_dict: dict | None = None,
     start_timeout: int = 60,
-    use_docker_compose: bool = True,
+    use_docker_compose: bool = False,
     use_podman_compose: bool = False,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
@@ -498,7 +498,7 @@ def start_fluent_container(
         Timeout in seconds for the container to start. If not specified, it defaults to 60
         seconds.
     use_docker_compose : bool, optional
-        Whether to use Docker Compose for launching the Fluent container. Defaults to ``True``.
+        Whether to use Docker Compose for launching the Fluent container. Defaults to ``False``.
     use_podman_compose : bool, optional
         Whether to use Podman Compose for launching the Fluent container. Defaults to ``False``.
 
