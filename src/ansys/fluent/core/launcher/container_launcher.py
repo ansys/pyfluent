@@ -215,8 +215,8 @@ class DockerLauncher:
             config_dict, *_ = configure_container_dict(
                 self._args,
                 **self.argvals["container_dict"],
-                use_docker_compose=self._compose_config.use_docker_compose,
-                use_podman_compose=self._compose_config.use_podman_compose,
+                use_docker_compose=self.argvals["use_docker_compose"],
+                use_podman_compose=self.argvals["use_podman_compose"],
             )
             dict_str = dict_to_str(config_dict)
             print("\nDocker container run configuration:\n")
@@ -232,8 +232,8 @@ class DockerLauncher:
                 self._args,
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
-                use_docker_compose=self._compose_config.use_docker_compose,
-                use_podman_compose=self._compose_config.use_podman_compose,
+                use_docker_compose=self.argvals["use_docker_compose"],
+                use_podman_compose=self.argvals["use_podman_compose"],
             )
 
             _, _, password = _get_server_info_from_container(config_dict=config_dict)

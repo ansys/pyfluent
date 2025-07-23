@@ -85,6 +85,7 @@ from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import all_deprecators
@@ -241,6 +242,10 @@ def configure_container_dict(
 
     See also :func:`start_fluent_container`.
     """
+    compose_config = ComposeConfig(
+        use_docker_compose=use_docker_compose,
+        use_podman_compose=use_podman_compose,
+    )
 
     if timeout is not None:
         warnings.warn(
@@ -457,7 +462,7 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
-    if use_docker_compose or use_podman_compose:
+    if compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
@@ -521,6 +526,11 @@ def start_fluent_container(
     :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
     """
 
+    compose_config = ComposeConfig(
+        use_docker_compose=use_docker_compose,
+        use_podman_compose=use_podman_compose,
+    )
+
     if container_dict is None:
         container_dict = {}
 
@@ -548,7 +558,7 @@ def start_fluent_container(
         del timeout
 
     try:
-        if use_docker_compose or use_podman_compose:
+        if compose_config.is_compose:
             config_dict["fluent_port"] = port
 
             compose_container = ComposeBasedLauncher(
