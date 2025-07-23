@@ -4,10 +4,12 @@ import os
 from pathlib import Path
 import shutil
 
+from ansys.fluent.core import FluentVersion
+
 api_contents_path = (
     Path(__file__).parents[0].resolve() / "source" / "api" / "api_contents.rst"
 )
-fluent_version = "25.2"
+fluent_version = FluentVersion.current_release()
 
 
 def _write_rst_file(output_path: str, version: str):
