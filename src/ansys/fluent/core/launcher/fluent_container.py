@@ -542,7 +542,7 @@ def start_fluent_container(
         del timeout
 
     try:
-        if compose_config.is_compose:
+        if compose_config and compose_config.is_compose:
             config_dict["fluent_port"] = port
 
             compose_container = ComposeBasedLauncher(
