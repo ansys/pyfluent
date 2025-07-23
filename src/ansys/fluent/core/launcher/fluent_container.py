@@ -455,7 +455,7 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
-    if compose_config.is_compose:
+    if compose_config and compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
