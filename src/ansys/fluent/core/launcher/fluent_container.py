@@ -85,7 +85,7 @@ from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import all_deprecators
@@ -170,8 +170,7 @@ def configure_container_dict(
     image_name: str | None = None,
     image_tag: str | None = None,
     file_transfer_service: Any | None = None,
-    use_docker_compose: bool = False,
-    use_podman_compose: bool = False,
+    compose_config: ComposeConfig | None = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -206,10 +205,8 @@ def configure_container_dict(
         Ignored if ``fluent_image`` has been specified.
     file_transfer_service : optional
         Supports file upload and download.
-    use_docker_compose : bool, optional
-        Whether to use Docker Compose for launching the Fluent container. Defaults to ``False``.
-    use_podman_compose : bool, optional
-        Whether to use Podman Compose for launching the Fluent container. Defaults to ``False``.
+    compose_config : ComposeConfig, optional
+        Configuration for Docker Compose, if using Docker Compose to launch the container.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
         to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
@@ -458,7 +455,7 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
-    if is_compose(use_docker_compose, use_podman_compose):
+    if compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
@@ -483,8 +480,7 @@ def start_fluent_container(
     args: List[str],
     container_dict: dict | None = None,
     start_timeout: int = 60,
-    use_docker_compose: bool = False,
-    use_podman_compose: bool = False,
+    compose_config: ComposeConfig | None = None,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
@@ -497,10 +493,8 @@ def start_fluent_container(
     start_timeout : int, optional
         Timeout in seconds for the container to start. If not specified, it defaults to 60
         seconds.
-    use_docker_compose : bool, optional
-        Whether to use Docker Compose for launching the Fluent container. Defaults to ``False``.
-    use_podman_compose : bool, optional
-        Whether to use Podman Compose for launching the Fluent container. Defaults to ``False``.
+    compose_config : ComposeConfig, optional
+        Configuration for Docker Compose, if using Docker Compose to launch the container.
 
     Returns
     -------
@@ -527,8 +521,7 @@ def start_fluent_container(
 
     container_vars = configure_container_dict(
         args,
-        use_docker_compose=use_docker_compose,
-        use_podman_compose=use_podman_compose,
+        compose_config=compose_config,
         **container_dict,
     )
 
@@ -549,12 +542,11 @@ def start_fluent_container(
         del timeout
 
     try:
-        if is_compose(use_docker_compose, use_podman_compose):
+        if compose_config.is_compose:
             config_dict["fluent_port"] = port
 
             compose_container = ComposeBasedLauncher(
-                use_docker_compose=use_docker_compose,
-                use_podman_compose=use_podman_compose,
+                compose_config=compose_config,
                 container_dict=config_dict,
             )
 

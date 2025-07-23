@@ -33,7 +33,6 @@ from deprecated.sphinx import deprecated
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
-from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -358,13 +357,10 @@ class BaseSession:
 
     def _exit_compose_service(self):
         args = self._launcher_args or {}
-        use_docker_compose = args.get("use_docker_compose", False)
-        use_podman_compose = args.get("use_podman_compose", False)
+        compose_config = args.get("compose_config", None)
 
         container = self._fluent_connection._container
-        if container and is_compose(
-            use_docker_compose=use_docker_compose, use_podman_compose=use_podman_compose
-        ):
+        if container and compose_config.is_compose:
             container.stop()
 
     def exit(self, **kwargs) -> None:

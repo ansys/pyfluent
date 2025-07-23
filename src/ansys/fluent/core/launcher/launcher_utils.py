@@ -39,25 +39,50 @@ from ansys.fluent.core.utils.networking import find_remoting_ip
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def is_compose(
-    use_docker_compose: bool | None = None, use_podman_compose: bool | None = None
-) -> bool:
-    """Check if the Fluent launch is through compose."""
-    docker_compose = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
-    podman_compose = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
-    if docker_compose or podman_compose:
-        deprecation_msg = (
-            "The environment variables 'PYFLUENT_USE_DOCKER_COMPOSE' and "
-            "'PYFLUENT_USE_PODMAN_COMPOSE' are deprecated. "
-            "Use the 'use_docker_compose' and 'use_podman_compose' parameters instead."
-        )
+class ComposeConfig:
+    """Configuration for Docker or Podman Compose usage in PyFluent."""
 
+    def __init__(
+        self,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
+    ):
+        self._env_docker = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        self._env_podman = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+
+        self._use_docker = use_docker_compose
+        self._use_podman = use_podman_compose
+
+        if use_docker_compose is None and self._env_docker:
+            self._warn_env_deprecated()
+        if use_podman_compose is None and self._env_podman:
+            self._warn_env_deprecated()
+
+    def _warn_env_deprecated(self):
         warnings.warn(
-            deprecation_msg,
+            (
+                "The environment variables 'PYFLUENT_USE_DOCKER_COMPOSE' and "
+                "'PYFLUENT_USE_PODMAN_COMPOSE' are deprecated. "
+                "Use the 'use_docker_compose' and 'use_podman_compose' parameters instead."
+            ),
             category=PyFluentDeprecationWarning,
+            stacklevel=3,
         )
 
-    return docker_compose or podman_compose or use_docker_compose or use_podman_compose
+    @property
+    def use_docker_compose(self) -> bool:
+        """Check if Docker Compose is configured to be used."""
+        return self._use_docker if self._use_docker is not None else self._env_docker
+
+    @property
+    def use_podman_compose(self) -> bool:
+        """Check if Podman Compose is configured to be used."""
+        return self._use_podman if self._use_podman is not None else self._env_podman
+
+    @property
+    def is_compose(self) -> bool:
+        """Check if either Docker Compose or Podman Compose is configured to be used."""
+        return self.use_docker_compose or self.use_podman_compose
 
 
 def is_windows():
