@@ -108,8 +108,8 @@ class DockerLauncher:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
-        use_docker_compose: bool = False,
-        use_podman_compose: bool = False,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
     ):
         """
         Launch a Fluent session in container mode.
