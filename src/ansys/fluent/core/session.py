@@ -33,7 +33,7 @@ from deprecated.sphinx import deprecated
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
-from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -142,10 +142,6 @@ class BaseSession:
         event_type : Enum, optional
             Event enumeration specific to the session type.
         """
-        self._compose_config = ComposeConfig(
-            use_docker_compose=launcher_args["use_docker_compose"],
-            use_podman_compose=launcher_args["use_podman_compose"],
-        )
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
         BaseSession._build_from_fluent_connection(
@@ -361,8 +357,14 @@ class BaseSession:
         return FluentVersion(self.scheme.version)
 
     def _exit_compose_service(self):
+        args = self._launcher_args or {}
+        use_docker_compose = args.get("use_docker_compose", False)
+        use_podman_compose = args.get("use_podman_compose", False)
+
         container = self._fluent_connection._container
-        if container and self._compose_config.is_compose:
+        if container and is_compose(
+            use_docker_compose=use_docker_compose, use_podman_compose=use_podman_compose
+        ):
             container.stop()
 
     def exit(self, **kwargs) -> None:

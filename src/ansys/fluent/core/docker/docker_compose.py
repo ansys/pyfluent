@@ -26,8 +26,6 @@ import os
 import subprocess
 import uuid
 
-from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
-
 from .utils import get_ghcr_fluent_image_name
 
 
@@ -35,49 +33,40 @@ class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
     def __init__(self, use_docker_compose, use_podman_compose, container_dict):
-        self._compose_config = ComposeConfig(
-            use_docker_compose=use_docker_compose,
-            use_podman_compose=use_podman_compose,
-        )
-
+        self._user_docker_env = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        self._user_podman_env = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        self._use_docker_compose = use_docker_compose
+        self._use_podman_compose = use_podman_compose
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
         self._container_dict = container_dict
-
         image_tag = os.getenv("FLUENT_IMAGE_TAG")
         self._image_name = (
             container_dict.get("fluent_image")
             or f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
         )
-
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
         self._compose_file = self._get_compose_file(container_dict)
 
     def _is_podman_selected(self):
-        return self._compose_config.use_podman_compose
-
-    def _set_compose_cmds(self):
-        """Determine compose commands (docker/podman) based on config."""
-        if self._compose_config.use_podman_compose:
-            self._compose_cmds = (
-                ["sudo", "podman", "compose"]
-                if hasattr(self, "_container_source")
-                and "sudo" in self._container_source
-                else ["podman", "compose"]
-            )
-        elif self._compose_config.use_docker_compose:
-            self._compose_cmds = ["docker", "compose"]
-        else:
-            raise RuntimeError("Neither Docker nor Podman is specified.")
-
-        return self._compose_cmds
+        return self._use_podman_compose or self._user_podman_env
 
     def _get_compose_file(self, container_dict):
+        """Generates compose file for the Docker Compose setup.
+
+        Parameters
+        ----------
+        container_dict: dict
+            A dictionary containing container configuration.
+        """
+
         indent = "  "
-        ports = list(container_dict.get("ports", {}).values()) or [
-            container_dict.get("fluent_port", "")
-        ]
+
+        if container_dict.get("ports"):
+            ports = list(container_dict.get("ports").values())
+        else:
+            ports = [container_dict.get("fluent_port", "")]
 
         compose_file = f"""
         services:
@@ -101,15 +90,34 @@ class ComposeBasedLauncher:
                 else:
                     compose_file += f"{indent * 7}- {port}:{port}\n"
 
-        compose_file_env = f"\n{indent * 2}environment:\n"
+        compose_file_env = f"""
+        {indent * 2}environment:
+        """
+
         for key, value in container_dict["environment"].items():
-            indent_level = 3 if key == "ANSYSLMD_LICENSE_FILE" else 7
-            compose_file_env += f"""{indent * indent_level}- {key}={value}\n"""
+            if key == "ANSYSLMD_LICENSE_FILE":
+                compose_file_env += f"""{indent * 3}- {key}={value}\n"""
+            else:
+                compose_file_env += f"""{indent * 7}- {key}={value}\n"""
 
         compose_file += compose_file_env
+
         return compose_file
 
     def _extract_ports(self, port_string):
+        """
+        Extracts ports from a string containing port mappings.
+
+        Parameters
+        ----------
+        port_string: str
+            A string containing port mappings.
+
+        Returns
+        -------
+        ports: list
+            A list of extracted ports.
+        """
         ports = []
         for line in port_string.split("\n"):
             if line:
@@ -118,31 +126,70 @@ class ComposeBasedLauncher:
                 ports.append(port)
         return [port for port in ports if port.isdigit()]
 
+    def _set_compose_cmds(self):
+        """Sets the compose commands based on available tools and permissions.
+
+        Raises
+        ------
+        RuntimeError
+            If neither Docker nor Podman is specified.
+        """
+
+        # Determine the compose command
+        if self._use_podman_compose or self._user_podman_env:
+            self._compose_cmds = (
+                ["sudo", "podman", "compose"]
+                if hasattr(self, "_container_source")
+                and "sudo" in self._container_source
+                else ["podman", "compose"]
+            )
+        elif self._use_docker_compose or self._user_docker_env:
+            self._compose_cmds = ["docker", "compose"]
+        else:
+            raise RuntimeError("Neither Docker nor Podman is specified.")
+
+        return self._compose_cmds
+
     def check_image_exists(self) -> bool:
-        """Check if the specified image exists in the container source."""
+        """Check if the image exists locally."""
         try:
             cmd = self._container_source + ["images", "-q", self._image_name]
+            # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
             if self._is_podman_selected():
                 sudo_cmd = ["sudo"] + cmd
                 output_1 = subprocess.check_output(cmd)
                 output_2 = subprocess.check_output(sudo_cmd)
-                result_1 = output_1.decode("utf-8").strip()
-                result_2 = output_2.decode("utf-8").strip()
-                if result_2 and not result_1:
+                output_1_result = output_1.decode("utf-8").strip() != ""
+                output_2_result = output_2.decode("utf-8").strip() != ""
+                if output_2_result and not output_1_result:
                     self._container_source.insert(0, "sudo")
-                return bool(result_1 or result_2)
+                return output_1_result or output_2_result
             else:
                 output = subprocess.check_output(cmd)
                 return output.decode("utf-8").strip() != ""
-        except subprocess.CalledProcessError:
+        except subprocess.CalledProcessError as e:  # noqa: F841
             return False
 
     def pull_image(self) -> None:
-        """Pull the specified image from the container source."""
+        """Pull a Docker image if it does not exist locally."""
+
         cmd = self._container_source + ["pull", self._image_name]
+
         subprocess.check_call(cmd)
 
-    def _start_stop_helper(self, compose_cmd, cmd, timeout):
+    def _start_stop_helper(
+        self, compose_cmd: list[str], cmd: list[str], timeout: float
+    ) -> None:
+        """Helper function to start or stop the services.
+        Parameters
+        ----------
+        compose_cmd: list[str]
+            The command to run.
+        cmd: list[str]
+            The command to run.
+        timeout: float
+            The timeout for the command.
+        """
         process = subprocess.Popen(
             compose_cmd + cmd,
             stdin=subprocess.PIPE,
@@ -152,11 +199,19 @@ class ComposeBasedLauncher:
         )
         process.communicate(input=self._compose_file, timeout=timeout)
         return_code = process.wait(timeout=timeout)
+
         if return_code != 0:
             raise subprocess.CalledProcessError(return_code, compose_cmd + cmd)
 
     def start(self) -> None:
-        """Start the Fluent container using Docker or Podman compose."""
+        """Start the services.
+
+        Raises
+        ------
+        subprocess.CalledProcessError
+            If the command fails.
+        """
+
         cmd = [
             "-f",
             "-",
@@ -165,10 +220,17 @@ class ComposeBasedLauncher:
             "up",
             "--detach",
         ]
+
         self._start_stop_helper(self._set_compose_cmds(), cmd, 60)
 
     def stop(self) -> None:
-        """Stop the Fluent container using Docker or Podman compose."""
+        """Stop the services.
+
+        Raises
+        ------
+        subprocess.CalledProcessError
+            If the command fails.
+        """
         cmd = [
             "-f",
             "-",
@@ -176,12 +238,13 @@ class ComposeBasedLauncher:
             self._compose_name,
             "down",
         ]
+
         self._start_stop_helper(self._set_compose_cmds(), cmd, 30)
 
     @property
     def ports(self) -> list[str]:
-        """Get the ports used by the Fluent container."""
+        """Return the ports of the launched services."""
         output = subprocess.check_output(
-            self._container_source + ["port", f"{self._compose_name}-fluent-1"]
+            self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )
         return self._extract_ports(output.decode("utf-8").strip())

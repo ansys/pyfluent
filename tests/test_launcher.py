@@ -50,8 +50,8 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
-    ComposeConfig,
     _build_journal_argument,
+    is_compose,
     is_windows,
 )
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -744,9 +744,11 @@ def test_error_for_selecting_both_compose_sources():
 
 def test_warning_for_deprecated_compose_env_vars(monkeypatch):
     monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
+    monkeypatch.setenv("PYFLUENT_USE_PODMAN_COMPOSE", "0")
     with pytest.warns(PyFluentDeprecationWarning):
-        ComposeConfig()
+        is_compose()
 
     monkeypatch.setenv("PYFLUENT_USE_PODMAN_COMPOSE", "1")
+    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "0")
     with pytest.warns(PyFluentDeprecationWarning):
-        ComposeConfig()
+        is_compose()
