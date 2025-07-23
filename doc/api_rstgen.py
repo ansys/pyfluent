@@ -18,7 +18,7 @@ def _write_rst_file(output_path: str, version: str):
 API reference
 =============
 
-This API reference corresponds to Ansys Fluent version {version}. PyFluent maintains strong backward compatibility guarantees, so scripts targeting older Ansys versions are expected to work without modification.
+This API reference corresponds to {version}. PyFluent maintains strong backward compatibility guarantees, so scripts targeting older Ansys versions are expected to work without modification.
 
 This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for
 full guidelines on their use.
