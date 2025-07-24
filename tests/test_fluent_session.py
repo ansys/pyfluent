@@ -276,8 +276,9 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
 
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
+    fl_connection1 = session1._fluent_connection
     session1.exit()
-    assert not session1.wait_process_finished(wait=0)
+    assert not fl_connection1.wait_process_finished(wait=0)
 
     session2 = pyfluent.launch_fluent()
     session2.exit(wait=60)
