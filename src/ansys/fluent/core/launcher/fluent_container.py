@@ -62,7 +62,7 @@ config_dict =
  'detach': True,
  'environment': {'ANSYSLMD_LICENSE_FILE': '2048@licenseserver.com',
                  'REMOTING_PORTS': '54000/portspan=2'},
- 'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
+ 'fluent_image': '<image registry>:v23.2.0',
  'labels': {'test_name': 'none'},
  'ports': {'54000': 54000},
  'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/mnt/pyfluent'],
