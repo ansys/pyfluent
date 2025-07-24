@@ -164,6 +164,8 @@ class BaseSession:
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
+        # Stores the backup once fluent connection is nullified.
+        self._fluent_connection_backup = None
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
@@ -357,12 +359,35 @@ class BaseSession:
         if self._fluent_connection._container and is_compose():
             self._fluent_connection._container.stop()
 
+    def wait_process_finished(self, wait: float | int | bool = 60):
+        """Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
+
+        Parameters
+        ----------
+        wait : float, int or bool, optional
+            How long to wait for processes to finish before returning, by default 60 seconds.
+            Can also be set to ``True``, which will result in waiting indefinitely.
+
+        Raises
+        ------
+        UnsupportedRemoteFluentInstance
+            If current Fluent instance is running remotely.
+        WaitTypeError
+            If ``wait`` is specified improperly.
+        """
+        if self._fluent_connection is None:
+            return self._fluent_connection_backup.wait_process_finished()
+        return self._fluent_connection.wait_process_finished()
+
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
         if self._fluent_connection:
             self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
+            self._fluent_connection_backup = self._fluent_connection
             self._fluent_connection = None
 
     def force_exit(self) -> None:
