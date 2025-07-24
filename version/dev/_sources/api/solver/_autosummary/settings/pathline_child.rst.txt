@@ -1,0 +1,91 @@
+:orphan:
+
+.. _pathline_child:
+
+pathline_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pathline_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ======================================================================================================
+
+Attribute                                                                                                                                             Summary
+
+====================================================   ======================================================================================================
+:ref:`name <name_27>`                                                                                                                   A name for an object.
+
+:ref:`velocity_domain <velocity_domain>`                                                                                                     Velocity domain.
+
+:ref:`field <field_5>`                                                                                                                    Path line color by.
+
+:ref:`release_from_surfaces <release_from_surfaces>`                                                                              Surface list from the list.
+
+:ref:`from_location <from_location_1>`                                                                                                 'from_location' child.
+
+:ref:`range <range_5>`                                                                                                       Range using the min max options.
+
+:ref:`range_options <range_options_1>`                                                                                       Range using the min max options.
+
+:ref:`style_attribute <style_attribute>`                                                                                                The style attributes.
+
+:ref:`style_attributes <style_attributes>`                                                                          Specifies Track Style for graphic object.
+
+:ref:`options <options_17>`                                                                                                        Check the control options.
+
+:ref:`accuracy_control <accuracy_control_1>`                                                                                            Control the accuracy.
+
+:ref:`option <option_58>`                                                                                                          Check the control options.
+
+:ref:`step <step>`                                                                                                             Number of steps for pathlines.
+
+:ref:`skip <skip_2>`                                                                                                        A number to skip pathline tracks.
+
+:ref:`coarsen <coarsen_2>`                                                                                                       Coarsen level for pathlines.
+
+:ref:`onzone <onzone>`                                                                                                           On zone from the given list.
+
+:ref:`on_location <on_location>`                                                                                                         'on_location' child.
+
+:ref:`plot <plot_5>`                                                                                                                  Enable the plot option.
+
+:ref:`color_map <color_map>`                                                                                               Coloring using the colormap panel.
+
+:ref:`annotations_list <annotations_list>`                                                        The annotation objects to be added to this graphics object.
+
+:ref:`draw_mesh <draw_mesh_1>`                                           Specifies whether you would like to display the mesh alongside your graphics object.
+
+:ref:`mesh_object <mesh_object>`                                                                                             Properties for your mesh object.
+
+:ref:`display_state_name <display_state_name>`                                                                      Display state settings selection by name.
+
+:ref:`axes <axes_1>`                                       Contains check buttons that allow you to set abscissa (-axis) or ordinate (-axis) characteristics.
+
+:ref:`curves <curves_1>`                                                                                             Line, marker style and color for Curves.
+
+====================================================   ======================================================================================================
+
+.. rubric:: Methods
+
+==========================   ======================
+
+Method                                      Summary
+
+==========================   ======================
+:ref:`display <display_7>`       'display' command.
+
+==========================   ======================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`pathline <pathline>`       'pathline' child.
+
+==========================   =====================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _isentropic:
+
+isentropic
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.isentropic
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ==================================================
+
+Argument                                                                              Summary
+
+========================================   ==================================================
+:ref:`inlets <inlets_1>`                        List of inlet surfaces to compute efficiency.
+
+:ref:`outlets <outlets_1>`                     List of outlet surfaces to compute efficiency.
+
+:ref:`process <process>`                                                        Process type.
+
+:ref:`ratio <ratio_1>`                                              Type of efficiency ratio.
+
+:ref:`add_expression <add_expression>`                       Define the new named expression.
+
+:ref:`expression_name <expression_name>`                         Name for the new expression.
+
+:ref:`compute <compute_14>`                           Enable computation of efficiency value.
+
+========================================   ==================================================
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

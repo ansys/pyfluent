@@ -1,0 +1,40 @@
+:orphan:
+
+.. _grpc:
+
+grpc
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.grpc
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================================   ==========================================
+
+Method                                                                                        Summary
+
+========================================================   ==========================================
+:ref:`start <start_1>`                                                             Start gRPC server.
+
+:ref:`stop <stop_1>`                                                            Shutdown gRPC server.
+
+:ref:`print_address <print_address>`                                       Print gRPC server address.
+
+:ref:`print_connected_clients <print_connected_clients>`       Print connected gRPC client addresses.
+
+:ref:`write_or_reset_info <write_or_reset_info>`                     Write or reset gRPC server file.
+
+========================================================   ==========================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`server <server>`       'server' child.
+
+======================   ===================
+

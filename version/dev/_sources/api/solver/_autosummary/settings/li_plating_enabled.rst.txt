@@ -1,0 +1,21 @@
+:orphan:
+
+.. _li_plating_enabled:
+
+li_plating_enabled
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.li_plating_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`aging_model <aging_model>`       Up physics-based aging model.
+
+================================   =================================
+

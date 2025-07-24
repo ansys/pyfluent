@@ -1,0 +1,62 @@
+:orphan:
+
+.. _particle_mixture_child:
+
+particle_mixture_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.particle_mixture_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===============================================
+
+Attribute                                                                                          Summary
+
+========================================================   ===============================================
+:ref:`name <name_10>`                                                                       Material name.
+
+:ref:`chemical_formula <chemical_formula>`                                      Material chemical formula.
+
+:ref:`species <species_5>`                                                       Particle mixture species.
+
+:ref:`density <density_8>`                                                     Material property: density.
+
+:ref:`viscosity <viscosity_2>`                                               Material property: viscosity.
+
+:ref:`specific_heat <specific_heat_4>`                                   Material property: specific-heat.
+
+:ref:`thermal_conductivity <thermal_conductivity_4>`              Material property: thermal-conductivity.
+
+:ref:`vp_equilib <vp_equilib>`                                              Material property: vp-equilib.
+
+:ref:`dpm_surften <dpm_surften>`                                           Material property: dpm-surften.
+
+:ref:`emissivity <emissivity_2>`                                            Material property: emissivity.
+
+:ref:`scattering_factor <scattering_factor_2>`                       Material property: scattering-factor.
+
+:ref:`vaporization_model <vaporization_model>`                      Material property: vaporization-model.
+
+:ref:`averaging_coefficient_t <averaging_coefficient_t>`       Material property: averaging-coefficient-t.
+
+:ref:`averaging_coefficient_y <averaging_coefficient_y>`       Material property: averaging-coefficient-y.
+
+:ref:`thermophoretic_co <thermophoretic_co>`                         Material property: thermophoretic-co.
+
+:ref:`reaction_model <reaction_model>`                                  Material property: reaction-model.
+
+========================================================   ===============================================
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`particle_mixture <particle_mixture>`       'particle_mixture' child.
+
+==========================================   =============================
+

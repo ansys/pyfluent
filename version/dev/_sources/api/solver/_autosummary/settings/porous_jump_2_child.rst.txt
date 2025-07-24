@@ -1,0 +1,53 @@
+:orphan:
+
+.. _porous_jump_2_child:
+
+porous_jump_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.porous_jump_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =============================================================
+
+Attribute                                                                                        Summary
+
+========================================   =============================================================
+:ref:`name <name_4>`                                                                 Name of the object.
+
+:ref:`phase <phase_42>`                                                                   'phase' child.
+
+:ref:`porous_jump <porous_jump_1>`             Allows to change porous-jump model variables or settings.
+
+:ref:`discrete_phase <discrete_phase_2>`                                        Discrete Phase settings.
+
+:ref:`geometry <geometry_6>`                      Allows to change geometry model variables or settings.
+
+========================================   =============================================================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+====================================   ===========================================
+
+Parent                                                                     Summary
+
+====================================   ===========================================
+:ref:`porous_jump_2 <porous_jump_2>`       Settings for boundary-condition object.
+
+====================================   ===========================================
+

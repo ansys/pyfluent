@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_20:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_20
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ===============================================
+
+Parent                                                                                                       Summary
+
+==================================================================   ===============================================
+:ref:`turbo_interface_health_check <turbo_interface_health_check>`       Check General Turbo Interface health check.
+
+==================================================================   ===============================================
+

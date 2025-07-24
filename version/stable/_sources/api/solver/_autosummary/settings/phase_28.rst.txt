@@ -1,0 +1,57 @@
+:orphan:
+
+.. _phase_28:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_28
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`phase_28_child <phase_28_child>`
+
+
+.. rubric:: Included in:
+
+============================================   =====================================
+
+Parent                                                                       Summary
+
+============================================   =====================================
+:ref:`axis_7_child <axis_7_child>`                      'child_object_type' of axis.
+
+:ref:`degassing_2_child <degassing_2_child>`       'child_object_type' of degassing.
+
+:ref:`geometry_9_child <geometry_9_child>`          'child_object_type' of geometry.
+
+:ref:`overset_2_child <overset_2_child>`             'child_object_type' of overset.
+
+:ref:`shadow_2_child <shadow_2_child>`                'child_object_type' of shadow.
+
+:ref:`symmetry_2_child <symmetry_2_child>`          'child_object_type' of symmetry.
+
+============================================   =====================================
+

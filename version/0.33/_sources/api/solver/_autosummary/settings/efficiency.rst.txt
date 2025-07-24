@@ -1,0 +1,63 @@
+:orphan:
+
+.. _efficiency:
+
+efficiency
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.efficiency
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ======================================================================================================
+
+Attribute                                                                                                                                         Summary
+
+================================================   ======================================================================================================
+:ref:`inlets <inlets>`                                                                                                                    Inlet surfaces.
+
+:ref:`outlets <outlets>`                                                                                                                 Outlet surfaces.
+
+:ref:`type <type_19>`                                                                                                                    Efficiency type.
+
+:ref:`process <process>`                                                                                                                    Process type.
+
+:ref:`ratio <ratio>`                                                                                                                    Efficiency ratio.
+
+:ref:`expression_name <expression_name>`                                                                                     Name for the new expression.
+
+:ref:`use_in_turbo_report <use_in_turbo_report>`       Use this general method instead of constant Cp-based to compute efficiency with Turbo Report tool.
+
+================================================   ======================================================================================================
+
+.. rubric:: Methods
+
+==============================   ====================================================
+
+Method                                                                        Summary
+
+==============================   ====================================================
+:ref:`compute <compute_13>`                                 Compute efficiency value.
+
+:ref:`define <define_1>`                      Define named expression for efficiency.
+
+:ref:`display <display_13>`          Display surfaces selected as inlets and outlets.
+
+:ref:`isentropic <isentropic>`                       Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`                       Calculate polytropic efficiency.
+
+==============================   ====================================================
+
+.. rubric:: Included in:
+
+==========================   ======================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                      Summary
+
+==========================   ======================================================================================================================================================================================
+:ref:`report_2 <report_2>`       Provides access to common settings to set up reports for your CFD simulation. Reports can be compiled for fluxes forces projected areas surface and volume integrals among others.
+
+==========================   ======================================================================================================================================================================================
+

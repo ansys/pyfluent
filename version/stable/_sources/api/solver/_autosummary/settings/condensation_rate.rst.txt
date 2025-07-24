@@ -1,0 +1,21 @@
+:orphan:
+
+.. _condensation_rate:
+
+condensation_rate
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.condensation_rate
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_3 <parameters_3>`       Model parameters.
+
+==================================   =====================
+

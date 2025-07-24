@@ -1,0 +1,81 @@
+:orphan:
+
+.. _create_surface:
+
+create_surface
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_surface
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ================================================
+
+Parent                                                                                                        Summary
+
+==================================================================   ================================================
+:ref:`fluid_1_child <fluid_1_child>`                                                    'child_object_type' of fluid.
+
+:ref:`solid_2_child <solid_2_child>`                                                    'child_object_type' of solid.
+
+:ref:`axis_7_child <axis_7_child>`                                                       'child_object_type' of axis.
+
+:ref:`degassing_2_child <degassing_2_child>`                                        'child_object_type' of degassing.
+
+:ref:`exhaust_fan_2_child <exhaust_fan_2_child>`                                  'child_object_type' of exhaust_fan.
+
+:ref:`fan_2_child <fan_2_child>`                                                          'child_object_type' of fan.
+
+:ref:`geometry_9_child <geometry_9_child>`                                           'child_object_type' of geometry.
+
+:ref:`inlet_vent_2_child <inlet_vent_2_child>`                                     'child_object_type' of inlet_vent.
+
+:ref:`intake_fan_2_child <intake_fan_2_child>`                                     'child_object_type' of intake_fan.
+
+:ref:`interface_3_child <interface_3_child>`                                        'child_object_type' of interface.
+
+:ref:`interior_3_child <interior_3_child>`                                           'child_object_type' of interior.
+
+:ref:`mass_flow_inlet_2_child <mass_flow_inlet_2_child>`                      'child_object_type' of mass_flow_inlet.
+
+:ref:`mass_flow_outlet_2_child <mass_flow_outlet_2_child>`                   'child_object_type' of mass_flow_outlet.
+
+:ref:`network_2_child <network_2_child>`                                              'child_object_type' of network.
+
+:ref:`network_end_3_child <network_end_3_child>`                                  'child_object_type' of network_end.
+
+:ref:`outflow_2_child <outflow_2_child>`                                              'child_object_type' of outflow.
+
+:ref:`outlet_vent_2_child <outlet_vent_2_child>`                                  'child_object_type' of outlet_vent.
+
+:ref:`overset_2_child <overset_2_child>`                                              'child_object_type' of overset.
+
+:ref:`periodic_3_child <periodic_3_child>`                                           'child_object_type' of periodic.
+
+:ref:`porous_jump_3_child <porous_jump_3_child>`                                  'child_object_type' of porous_jump.
+
+:ref:`pressure_far_field_2_child <pressure_far_field_2_child>`             'child_object_type' of pressure_far_field.
+
+:ref:`pressure_inlet_2_child <pressure_inlet_2_child>`                         'child_object_type' of pressure_inlet.
+
+:ref:`pressure_outlet_2_child <pressure_outlet_2_child>`                      'child_object_type' of pressure_outlet.
+
+:ref:`radiator_3_child <radiator_3_child>`                                           'child_object_type' of radiator.
+
+:ref:`rans_les_interface_2_child <rans_les_interface_2_child>`             'child_object_type' of rans_les_interface.
+
+:ref:`recirculation_inlet_3_child <recirculation_inlet_3_child>`          'child_object_type' of recirculation_inlet.
+
+:ref:`recirculation_outlet_3_child <recirculation_outlet_3_child>`       'child_object_type' of recirculation_outlet.
+
+:ref:`shadow_2_child <shadow_2_child>`                                                 'child_object_type' of shadow.
+
+:ref:`symmetry_2_child <symmetry_2_child>`                                           'child_object_type' of symmetry.
+
+:ref:`velocity_inlet_2_child <velocity_inlet_2_child>`                         'child_object_type' of velocity_inlet.
+
+:ref:`wall_2_child <wall_2_child>`                                                       'child_object_type' of wall.
+
+==================================================================   ================================================
+

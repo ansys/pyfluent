@@ -1,0 +1,69 @@
+:orphan:
+
+.. _plot_4:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.plot_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ====================================================================
+
+Attribute                                                                                                       Summary
+
+================================================   ====================================================================
+:ref:`xy_plot <xy_plot>`                                                                               'xy_plot' child.
+
+:ref:`histogram <histogram>`                           Provides access to create new and edit existing histogram plots.
+
+:ref:`cumulative_plot <cumulative_plot>`                                                              Cumulative plots.
+
+:ref:`solution_plot <solution_plot>`                                                            Plot the solution data.
+
+:ref:`plot <plot_6>`                                                                         Plot solution on surfaces.
+
+:ref:`plot_from_file <plot_from_file>`                                                             Plot data from file.
+
+:ref:`plot_from_file_list <plot_from_file_list>`                                         Plot data from multiple files.
+
+:ref:`profile_data <profile_data>`                                                                Display profile data.
+
+:ref:`interpolated_data <interpolated_data>`                                                 Display interpolated data.
+
+================================================   ====================================================================
+
+.. rubric:: Methods
+
+==================================================   ==============================================================================
+
+Method                                                                                                                      Summary
+
+==================================================   ==============================================================================
+:ref:`circum_avg_axial <circum_avg_axial>`               Compute iso-axial band surfaces and plot data vs axial coordinate on them.
+
+:ref:`circum_avg_radial <circum_avg_radial>`                      Compute iso-radial band surfaces and plot data vs radius on them.
+
+:ref:`plot_direction <plot_direction>`                                                              Set plot direction for xy plot.
+
+:ref:`label_alignment <label_alignment>`                          Set the alignment of xy plot label to horizontal or axis aligned.
+
+:ref:`set_boundary_val_off <set_boundary_val_off>`                Set boundary value off when node values off for XY/Solution Plot.
+
+:ref:`fft <fft>`                                                                                             Plot FFT of file data.
+
+==================================================   ==============================================================================
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`results <results>`       'results' child.
+
+========================   ====================
+

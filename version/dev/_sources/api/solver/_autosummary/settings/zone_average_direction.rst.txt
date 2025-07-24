@@ -1,0 +1,39 @@
+:orphan:
+
+.. _zone_average_direction:
+
+zone_average_direction
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zone_average_direction
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_1>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`zone_average_direction_child <zone_average_direction_child>`
+
+
+.. rubric:: Included in:
+
+================================================================   =========================================
+
+Parent                                                                                               Summary
+
+================================================================   =========================================
+:ref:`pressure_jump_specification <pressure_jump_specification>`       Pressure jump specification settings.
+
+================================================================   =========================================
+

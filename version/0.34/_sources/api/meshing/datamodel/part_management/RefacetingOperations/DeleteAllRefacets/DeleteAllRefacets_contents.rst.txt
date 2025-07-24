@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_RefacetingOperations_DeleteAllRefacets:
+
+DeleteAllRefacets
+=================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.RefacetingOperations.DeleteAllRefacets
+   :members: _DeleteAllRefacetsCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

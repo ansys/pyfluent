@@ -1,0 +1,36 @@
+:orphan:
+
+.. _options_13:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.options_13
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ===================================
+
+Attribute                                                                          Summary
+
+====================================================   ===================================
+:ref:`extrapolate_variables <extrapolate_variables>`             The extrapolation object.
+
+:ref:`extrapolate_eqn_vars <extrapolate_eqn_vars>`               The extrapolation object.
+
+:ref:`solid_time_step_size <solid_time_step_size>`         Time step size settings object.
+
+====================================================   ===================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

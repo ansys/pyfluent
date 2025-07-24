@@ -1,0 +1,42 @@
+:orphan:
+
+.. _dsmc:
+
+dsmc
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dsmc
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   ================================================================================
+
+Attribute                                                                                                                                                       Summary
+
+====================================================================================   ================================================================================
+:ref:`enabled <enabled_24>`                                                                                                                          Enable dsmc model.
+
+:ref:`time_step <time_step>`                                                                                                                            Dsmc time step.
+
+:ref:`sampling_begin_iteration <sampling_begin_iteration>`                                                                               Dsmc sampling begin iteration.
+
+:ref:`real_to_simulated_particle_ratio <real_to_simulated_particle_ratio>`                                                       Dsmc real-to-simulated particle ratio.
+
+:ref:`collision_pair_selection <collision_pair_selection>`                                                                               Collision pair selection type.
+
+:ref:`target_number_of_particle_per_subcell <target_number_of_particle_per_subcell>`       Target number of particle per subcell for transient adaptive subcell method.
+
+====================================================================================   ================================================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

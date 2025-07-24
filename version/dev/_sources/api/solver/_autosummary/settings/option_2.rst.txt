@@ -1,0 +1,39 @@
+:orphan:
+
+.. _option_2:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.option_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`type_1 <type_1>`                                                               'type' child.
+
+:ref:`primitive <primitive>`                                                    'primitive' child.
+
+:ref:`volume_3 <volume_3>`                                                         'volume' child.
+
+:ref:`automatic <automatic>`                                                    'automatic' child.
+
+:ref:`options_20 <options_20>`                                                    'options' child.
+
+:ref:`x_axis_data <x_axis_data>`                                      Options for X axis function.
+
+:ref:`y_axis_data <y_axis_data>`                                      Options for Y axis function.
+
+:ref:`plot_direction_1 <plot_direction_1>`                                 'plot_direction' child.
+
+:ref:`curve_length_1 <curve_length_1>`                                       'curve_length' child.
+
+:ref:`cumulative_plot_child <cumulative_plot_child>`       'child_object_type' of cumulative_plot.
+
+====================================================   ===========================================
+

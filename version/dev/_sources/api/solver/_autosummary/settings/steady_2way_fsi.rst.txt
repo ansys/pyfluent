@@ -1,0 +1,21 @@
+:orphan:
+
+.. _steady_2way_fsi:
+
+steady_2way_fsi
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.steady_2way_fsi
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`expert_5 <expert_5>`       The structure expert object.
+
+==========================   ================================
+

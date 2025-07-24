@@ -1,0 +1,21 @@
+:orphan:
+
+.. _subdivide:
+
+subdivide
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.subdivide
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`viewfactor_settings <viewfactor_settings>`       Viewfactor related settings.
+
+================================================   ================================
+

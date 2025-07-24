@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_merge_cell_zones__merge_cell_zonesCommandArguments:
+
+_merge_cell_zonesCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.merge_cell_zones._merge_cell_zonesCommandArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_16:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===============================================
+
+Parent                                                             Summary
+
+========================   ===============================================
+:ref:`split_1 <split_1>`       Input boundary and location names to split.
+
+========================   ===============================================
+

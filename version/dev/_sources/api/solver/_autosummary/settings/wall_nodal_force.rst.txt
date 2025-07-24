@@ -1,0 +1,21 @@
+:orphan:
+
+.. _wall_nodal_force:
+
+wall_nodal_force
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.wall_nodal_force
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

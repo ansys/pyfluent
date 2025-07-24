@@ -1,0 +1,32 @@
+:orphan:
+
+.. _phase_9_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.phase_9_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`interior <interior_1>`       Allows to change interior model variables or settings.
+
+============================   ==========================================================
+
+.. rubric:: Included in:
+
+========================   ======================================
+
+Parent                                                    Summary
+
+========================   ======================================
+:ref:`phase_9 <phase_9>`       Domain name to define settings on.
+
+========================   ======================================
+

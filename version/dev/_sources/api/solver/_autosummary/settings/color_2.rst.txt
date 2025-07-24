@@ -1,0 +1,23 @@
+:orphan:
+
+.. _color_2:
+
+color
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.color_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================================
+
+Parent                                                                   Summary
+
+======================================   =======================================
+:ref:`marker <marker>`                              Parameters for data markers.
+
+:ref:`marker_in_file <marker_in_file>`       Parameters for data markers (file).
+
+======================================   =======================================
+

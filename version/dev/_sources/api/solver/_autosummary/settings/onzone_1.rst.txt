@@ -1,0 +1,21 @@
+:orphan:
+
+.. _onzone_1:
+
+onzone
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.onzone_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`option_58 <option_58>`       Check the control options.
+
+============================   ==============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _z_center:
+
+z_center
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.z_center
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===========================================
+
+Parent                                                           Summary
+
+==========================   ===========================================
+:ref:`atomizer <atomizer>`       Lagrangian atomizer injection settings.
+
+==========================   ===========================================
+

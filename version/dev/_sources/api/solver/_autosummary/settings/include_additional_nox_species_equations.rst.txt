@@ -1,0 +1,21 @@
+:orphan:
+
+.. _include_additional_nox_species_equations:
+
+include_additional_nox_species_equations
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.include_additional_nox_species_equations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ====================
+
+Parent                                    Summary
+
+==========================   ====================
+:ref:`expert_2 <expert_2>`       NOx expert mode.
+
+==========================   ====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _type_15:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.type_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`transient_controls <transient_controls>`       Transient controls object.
+
+==============================================   ==============================
+

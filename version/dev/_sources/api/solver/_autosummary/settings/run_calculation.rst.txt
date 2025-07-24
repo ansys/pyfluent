@@ -1,0 +1,71 @@
+:orphan:
+
+.. _run_calculation:
+
+run_calculation
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.run_calculation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================   =============================================================
+
+Attribute                                                                                                                          Summary
+
+==========================================================================   =============================================================
+:ref:`pseudo_time_settings <pseudo_time_settings>`                                                          The pseudo time method object.
+
+:ref:`adaptive_time_stepping <adaptive_time_stepping>`                                                      Adaptive time stepping object.
+
+:ref:`cfl_based_adaptive_time_stepping <cfl_based_adaptive_time_stepping>`                        CFL-based adaptive time stepping object.
+
+:ref:`solution_steering <solution_steering>`                                            Enable solution steering for density-based solver.
+
+:ref:`time_step_count <time_step_count_1>`                                                                                  The time step.
+
+:ref:`transient_controls <transient_controls>`                                                                  Transient controls object.
+
+:ref:`parameters <parameters_8>`                                                                              Iteration parameters object.
+
+:ref:`options <options_13>`                                                      Options for time stepping and extrapolation of variables.
+
+:ref:`pollutants <pollutants>`                                                                                          Pollutants object.
+
+:ref:`data_sampling <data_sampling>`                                                                                 Data sampling object.
+
+:ref:`data_sampling_options <data_sampling_options>`                                   Zone-Specific Data sampling options for statistics.
+
+:ref:`residual_verbosity <residual_verbosity>`                                                              The residual report verbosity.
+
+==========================================================================   =============================================================
+
+.. rubric:: Methods
+
+============================================   =============================================
+
+Method                                                                               Summary
+
+============================================   =============================================
+:ref:`calculate <calculate>`                                          Start run calculation.
+
+:ref:`interrupt <interrupt>`                                       Interrupt the iterations.
+
+:ref:`dual_time_iterate <dual_time_iterate>`                    Perform unsteady iterations.
+
+:ref:`iterate <iterate>`                           Perform a specified number of iterations.
+
+============================================   =============================================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`solution <solution>`       'solution' child.
+
+==========================   =====================
+

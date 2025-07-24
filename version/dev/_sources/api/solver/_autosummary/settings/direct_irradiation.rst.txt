@@ -1,0 +1,49 @@
+:orphan:
+
+.. _direct_irradiation:
+
+direct_irradiation
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.direct_irradiation
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`direct_irradiation_child <direct_irradiation_child>`
+
+
+.. rubric:: Included in:
+
+====================================================================   ================================
+
+Parent                                                                                          Summary
+
+====================================================================   ================================
+:ref:`direct_irradiation_settings <direct_irradiation_settings>`           Direct irradiation settings.
+
+:ref:`direct_irradiation_settings_1 <direct_irradiation_settings_1>`       Direct irradiation settings.
+
+====================================================================   ================================
+

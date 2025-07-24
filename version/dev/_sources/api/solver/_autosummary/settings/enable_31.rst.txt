@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_31:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_31
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ======================================================
+
+Parent                                                                                        Summary
+
+============================================   ======================================================
+:ref:`solution_steering <solution_steering>`       Enable solution steering for density-based solver.
+
+============================================   ======================================================
+

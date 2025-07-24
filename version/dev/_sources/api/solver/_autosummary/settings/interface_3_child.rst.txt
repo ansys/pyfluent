@@ -1,0 +1,58 @@
+:orphan:
+
+.. _interface_3_child:
+
+interface_child
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interface_3_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   =====================================================================================
+
+Attribute                                                                                                                                                Summary
+
+========================================================================   =====================================================================================
+:ref:`name <name_17>`                                                                                                       The prefix for mesh interface names.
+
+:ref:`zone1 <zone1_1>`                                                                                                   First interface of this mesh-interface.
+
+:ref:`zone2 <zone2_1>`                                                                                                  Second interface of this mesh-interface.
+
+:ref:`zone1_list <zone1_list>`                                                                                     First interface defining this mesh-interface.
+
+:ref:`zone2_list <zone2_list>`                                                                                    Second interface defining this mesh-interface.
+
+:ref:`mapped <mapped>`                                                                                               Specifies whether mesh-interface is mapped.
+
+:ref:`enable_local_mapped_tolerance <enable_local_mapped_tolerance>`                                             Enable local tolerance for this mesh interface.
+
+:ref:`use_local_edge_length_factor <use_local_edge_length_factor>`             Enable tolerance based on local edge length factor instead of absolute tolerance.
+
+:ref:`local_relative_mapped_tolerance <local_relative_mapped_tolerance>`                                                                              Tolerance.
+
+:ref:`local_absolute_mapped_tolerance <local_absolute_mapped_tolerance>`                                                                              Tolerance.
+
+:ref:`periodic <periodic_3>`                                                                Specifies whether mesh-interface is adjacent to periodic boundaries.
+
+:ref:`coupled <coupled_1>`                                                                                          Specifies whether mesh-interface is coupled.
+
+:ref:`matching <matching>`                                                                                         Specifies whether mesh-interface is matching.
+
+:ref:`static <static_1>`                                                                                             Specifies whether mesh-interface is static.
+
+========================================================================   =====================================================================================
+
+.. rubric:: Included in:
+
+================================   ===========================
+
+Parent                                                 Summary
+
+================================   ===========================
+:ref:`interface_3 <interface_3>`       Create mesh interfaces.
+
+================================   ===========================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _material_8:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.material_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =============================================================
+
+Parent                                                                                           Summary
+
+========================================   =============================================================
+:ref:`type_name_child <type_name_child>`                               'child_object_type' of type_name.
+
+:ref:`surfaces_16 <surfaces_16>`               Select the surface(s) to specify colors and/or materials.
+
+========================================   =============================================================
+

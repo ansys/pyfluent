@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fft_y_func:
+
+fft_y_func
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.fft_y_func
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ==========================
+
+Parent                                Summary
+
+================   ==========================
+:ref:`fft <fft>`       Plot FFT of file data.
+
+================   ==========================
+

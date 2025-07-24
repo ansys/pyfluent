@@ -1,0 +1,40 @@
+:orphan:
+
+.. _one_dof_translation:
+
+one_dof_translation
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.one_dof_translation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =============================
+
+Attribute                                                          Summary
+
+==========================================   =============================
+:ref:`enabled <enabled_59>`                               'enabled' child.
+
+:ref:`direction <direction>`                            'direction' child.
+
+:ref:`preload <preload>`                                  'preload' child.
+
+:ref:`spring_stiffness <spring_stiffness>`       'spring_stiffness' child.
+
+:ref:`constraint <constraint>`                         'constraint' child.
+
+==========================================   =============================
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`sdof_properties_child <sdof_properties_child>`       'child_object_type' of sdof_properties.
+
+====================================================   ===========================================
+

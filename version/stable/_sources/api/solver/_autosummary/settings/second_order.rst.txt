@@ -1,0 +1,21 @@
+:orphan:
+
+.. _second_order:
+
+second_order
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.second_order
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`six_dof <six_dof>`       'six_dof' child.
+
+========================   ====================
+

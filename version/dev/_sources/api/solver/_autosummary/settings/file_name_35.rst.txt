@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_35:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_35
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================================================
+
+Parent                                                                                Summary
+
+==================================   ========================================================
+:ref:`export_model <export_model>`         Write the model setting and coefficient to a file.
+
+:ref:`import_model <import_model>`       Read the model setting and coefficients from a file.
+
+==================================   ========================================================
+

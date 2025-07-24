@@ -1,0 +1,48 @@
+:orphan:
+
+.. _mass_transfer_list_child:
+
+mass_transfer_list_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mass_transfer_list_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ============================================
+
+Attribute                                                                                   Summary
+
+====================================================   ============================================
+:ref:`mt_from_phase <mt_from_phase>`                                  Mass transfer from-ph object.
+
+:ref:`mt_from_phase_species <mt_from_phase_species>`                                  Species list.
+
+:ref:`mt_to_phase <mt_to_phase>`                                        Mass transfer to-ph object.
+
+:ref:`mt_to_phase_species <mt_to_phase_species>`                                      Species list.
+
+:ref:`mt_method <mt_method>`                                           Mass transfer method object.
+
+:ref:`mt_constant_rate <mt_constant_rate>`                                          Constant value.
+
+:ref:`mt_udf <mt_udf>`                                                           Mass transfer udf.
+
+:ref:`mt_cav_group <mt_cav_group>`                         Group all cavitation related parameters.
+
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`                      Evaporation condensation group.
+
+====================================================   ============================================
+
+.. rubric:: Included in:
+
+==============================================   =======================
+
+Parent                                                           Summary
+
+==============================================   =======================
+:ref:`mass_transfer_list <mass_transfer_list>`       Mass transfer list.
+
+==============================================   =======================
+

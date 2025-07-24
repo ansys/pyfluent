@@ -1,0 +1,77 @@
+:orphan:
+
+.. _velocity_inlet_child:
+
+velocity_inlet_child
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.velocity_inlet_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ============================================================
+
+Attribute                                                                                       Summary
+
+========================================   ============================================================
+:ref:`name <name_4>`                                                                Name of the object.
+
+:ref:`locations <locations_2>`                                                     Input location name.
+
+:ref:`momentum <momentum_10>`                    Allows to change momentum model variables or settings.
+
+:ref:`turbulence <turbulence_5>`               Allows to change turbulence model variables or settings.
+
+:ref:`thermal <thermal_5>`                        Allows to change thermal model variables or settings.
+
+:ref:`radiation <radiation_6>`                          Radiation settings for this boundary-condition.
+
+:ref:`species <species_8>`                        Allows to change species model variables or settings.
+
+:ref:`discrete_phase <discrete_phase_1>`              Allows to change DPM model variables or settings.
+
+:ref:`multiphase <multiphase_6>`               Allows to change multiphase model variables or settings.
+
+:ref:`potential <potential>`                    Allows to change potential model variables or settings.
+
+:ref:`structure <structure_1>`                  Allows to change structure model variables or settings.
+
+:ref:`uds <uds>`                                      Allows to change UDS model variables or settings.
+
+:ref:`icing <icing_1>`                              Allows to change icing model variables or settings.
+
+:ref:`geometry <geometry_6>`                     Allows to change geometry model variables or settings.
+
+:ref:`phase <phase_26>`                                              Domain name to define settings on.
+
+========================================   ============================================================
+
+.. rubric:: Methods
+
+==================================   ===============================================
+
+Method                                                                       Summary
+
+==================================   ===============================================
+:ref:`display <display_4>`                                   Display physics object.
+
+:ref:`split <split_1>`                   Input boundary and location names to split.
+
+:ref:`set_location <set_location>`                              Input location name.
+
+:ref:`set_type <set_type_3>`                      Change the type for this boundary.
+
+==================================   ===============================================
+
+.. rubric:: Included in:
+
+======================================   ================
+
+Parent                                            Summary
+
+======================================   ================
+:ref:`velocity_inlet <velocity_inlet>`       Thread-type.
+
+======================================   ================
+

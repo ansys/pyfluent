@@ -1,0 +1,21 @@
+:orphan:
+
+.. _physics:
+
+physics
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.physics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============
+
+Parent                                 Summary
+
+============================   ===============
+:ref:`locations <locations>`       The object.
+
+============================   ===============
+

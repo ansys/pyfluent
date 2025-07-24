@@ -1,0 +1,21 @@
+:orphan:
+
+.. _plot_17:
+
+plot
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.plot_17
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`options_22 <options_22>`       'options' child.
+
+==============================   ====================
+
