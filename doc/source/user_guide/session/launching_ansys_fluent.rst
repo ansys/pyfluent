@@ -480,7 +480,7 @@ Connect to a Fluent container running inside WSL from a Windows host
 
 .. code:: console
 
-    docker run -it -p 63084:63084 -v /mnt/d/testing:/testing -e "ANSYSLMD_LICENSE_FILE=<license file or server>" -e "REMOTING_PORTS=63084/portspan=2" ghcr.io/ansys/pyfluent:v25.2.0 3ddp -gu -sifile=/testing/server.txt
+    docker run -it -p 63084:63084 -v /mnt/d/testing:/testing -e "ANSYSLMD_LICENSE_FILE=<license file or server>" -e "REMOTING_PORTS=63084/portspan=2" <image registry>:v25.2.0 3ddp -gu -sifile=/testing/server.txt
     /ansys_inc/v252/fluent/fluent25.2.0/bin/fluent -r25.2.0 3ddp -gu -sifile=/testing/server.txt
 
 2. Connect from PyFluent running on a Windows host
