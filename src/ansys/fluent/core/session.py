@@ -164,7 +164,7 @@ class BaseSession:
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
-        # Stores the backup once fluent connection is nullified.
+        # Stores the backup of the fluent connection for later reference.
         self._fluent_connection_backup = self._fluent_connection
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
