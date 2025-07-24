@@ -360,7 +360,7 @@ class BaseSession:
         compose_config = args.get("compose_config", None)
 
         container = self._fluent_connection._container
-        if compose_config.is_compose:
+        if compose_config and compose_config.is_compose:
             container.stop()
 
     def exit(self, **kwargs) -> None:
