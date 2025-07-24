@@ -281,30 +281,14 @@ class SolutionInitializedEventInfo(
 class ReportDefinitionUpdatedEventInfo(
     EventInfoBase, event=SolverEvent.REPORT_DEFINITION_UPDATED
 ):
-    """Information about the event triggered when a report definition is updated.
-
-    Attributes
-    ----------
-    report_name : str
-        Report name.
-    """
-
-    report_name: str = field(metadata=dict(deprecated_name="reportdefinitionname"))
+    """Information about the event triggered when a report definition is updated."""
 
 
 @dataclass
 class ReportPlotSetUpdatedEventInfo(
     EventInfoBase, event=SolverEvent.REPORT_PLOT_SET_UPDATED
 ):
-    """Information about the event triggered when a report plot set is updated.
-
-    Attributes
-    ----------
-    plot_set_name : str
-        Plot set name.
-    """
-
-    plot_set_name: str = field(metadata=dict(deprecated_name="plotsetname"))
+    """Information about the event triggered when a report plot set is updated."""
 
 
 class ResidualPlotUpdatedEventInfo(
