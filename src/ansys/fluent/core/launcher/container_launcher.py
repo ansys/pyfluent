@@ -237,6 +237,7 @@ class DockerLauncher:
                 self._args,
                 self.argvals["container_dict"],
                 self.argvals["start_timeout"],
+                compose_config=self._compose_config,
             )
 
         fluent_connection = FluentConnection(

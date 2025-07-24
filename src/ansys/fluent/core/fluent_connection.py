@@ -429,7 +429,7 @@ class FluentConnection:
         PortNotProvided
             If port is not provided.
         """
-        self._compose_config = compose_config
+        self._compose_config = compose_config if compose_config else ComposeConfig()
         self._error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None

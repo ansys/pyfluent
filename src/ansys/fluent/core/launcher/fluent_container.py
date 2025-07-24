@@ -240,6 +240,8 @@ def configure_container_dict(
     See also :func:`start_fluent_container`.
     """
 
+    compose_config = compose_config if compose_config else ComposeConfig()
+
     if timeout is not None:
         warnings.warn(
             "configure_container_dict(timeout) is deprecated, use launch_fluent(start_timeout) instead.",
@@ -455,7 +457,7 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
-    if compose_config and compose_config.is_compose:
+    if compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
@@ -516,6 +518,8 @@ def start_fluent_container(
     :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
     """
 
+    compose_config = compose_config if compose_config else ComposeConfig()
+
     if container_dict is None:
         container_dict = {}
 
@@ -542,7 +546,7 @@ def start_fluent_container(
         del timeout
 
     try:
-        if compose_config and compose_config.is_compose:
+        if compose_config.is_compose:
             config_dict["fluent_port"] = port
 
             compose_container = ComposeBasedLauncher(
