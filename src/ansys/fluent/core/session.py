@@ -165,7 +165,7 @@ class BaseSession:
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
         # Stores the backup once fluent connection is nullified.
-        self._fluent_connection_backup = None
+        self._fluent_connection_backup = self._fluent_connection
         self._file_transfer_service = file_transfer_service
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
@@ -387,7 +387,6 @@ class BaseSession:
         if self._fluent_connection:
             self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
-            self._fluent_connection_backup = self._fluent_connection
             self._fluent_connection = None
 
     def force_exit(self) -> None:

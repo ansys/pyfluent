@@ -386,7 +386,6 @@ class Solver(BaseSession):
             scheme_eval=self.scheme,
             file_transfer_service=self._file_transfer_service,
         )
-        self._fluent_connection_backup = self._fluent_connection
         self._fluent_connection = None
         self.__doc__ = (
             "The solver session is no longer usable after switching to meshing mode."
