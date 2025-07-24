@@ -50,6 +50,7 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
+    ComposeConfig,
     _build_journal_argument,
     is_windows,
 )
@@ -644,7 +645,6 @@ def test_report():
 
 @pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
     from ansys.fluent.core.utils.networking import get_free_port
@@ -652,7 +652,9 @@ def test_docker_compose(monkeypatch):
     port_1 = get_free_port()
     port_2 = get_free_port()
     container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
-    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    solver = pyfluent.launch_fluent(
+        container_dict=container_dict, use_docker_compose=True
+    )
     assert len(solver._container.ports) == 2
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -733,3 +735,18 @@ def test_no_warning_for_none_values(caplog):
     driver = _get_graphics_driver(graphics_driver=None, ui_mode=None)  # noqa: F841
     assert "PyFluentUserWarning" not in caplog.text
     caplog.clear()
+
+
+def test_error_for_selecting_both_compose_sources():
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(use_docker_compose=True, use_podman_compose=True)
+
+
+def test_warning_for_deprecated_compose_env_vars(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
+    with pytest.warns(PyFluentDeprecationWarning):
+        ComposeConfig()
+
+    monkeypatch.setenv("PYFLUENT_USE_PODMAN_COMPOSE", "1")
+    with pytest.warns(PyFluentDeprecationWarning):
+        ComposeConfig()

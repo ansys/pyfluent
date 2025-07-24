@@ -33,7 +33,6 @@ from deprecated.sphinx import deprecated
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
-from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -151,6 +150,7 @@ class BaseSession:
             file_transfer_service,
             event_type,
             get_zones_info,
+            launcher_args,
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
@@ -161,10 +161,12 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
         self._file_transfer_service = file_transfer_service
+        self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
         self.rp_vars = RPVars(self.scheme.string_eval)
@@ -354,8 +356,12 @@ class BaseSession:
         return FluentVersion(self.scheme.version)
 
     def _exit_compose_service(self):
-        if self._fluent_connection._container and is_compose():
-            self._fluent_connection._container.stop()
+        args = self._launcher_args or {}
+        compose_config = args.get("compose_config", None)
+
+        container = self._fluent_connection._container
+        if compose_config and compose_config.is_compose:
+            container.stop()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
