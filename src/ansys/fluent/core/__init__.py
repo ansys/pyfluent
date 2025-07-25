@@ -32,6 +32,7 @@ from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
 
 # isort: on
 
+from ansys.fluent.core.config import Config as _Config
 from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
@@ -108,17 +109,24 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
+# Following variables should not be changed by users, hence they have not been added to the global config
+# FLUENT_RELEASE_VERSION
+# FLUENT_DEV_VERSION
+
 # Latest released Fluent version
 FLUENT_RELEASE_VERSION = "25.2.0"
 
 # Current dev Fluent version
 FLUENT_DEV_VERSION = "26.1.0"
 
+# Global configuration object for PyFluent
+config = _Config()
+
 # Path to the example input/data files are downloaded
-EXAMPLES_PATH = str(get_examples_download_dir())
+EXAMPLES_PATH = config.examples_path
 
 # Host path which is mounted to the container
-CONTAINER_MOUNT_SOURCE = None
+CONTAINER_MOUNT_SOURCE = config.container_mount_source
 
 # Path inside the container where the host path is mounted
 CONTAINER_MOUNT_TARGET = "/home/container/workdir"
