@@ -251,4 +251,15 @@ PYFLUENT_DEPRECATED_DATA = [
         "0.23.dev0",
         "`surfaces`",
     ),
+    # Environment variables
+    (
+        "The `PYFLUENT_USE_DOCKER_COMPOSE` environment variable",
+        "0.34.0",
+        "``use_docker_compose`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+    ),
+    (
+        "The `PYFLUENT_USE_PODMAN_COMPOSE` environment variable",
+        "0.34.0",
+        "``use_podman_compose`` argument of :py:func:`ansys.fluent.core.launcher.launcher.launch_fluent <ansys.fluent.core.launcher.launcher.launch_fluent>`",
+    ),
 ]
