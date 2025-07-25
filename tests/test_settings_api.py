@@ -632,7 +632,6 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     }
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -646,11 +645,12 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     )
     assert var2 is None
 
-    var3 = solver.settings.setup.materials.fluid.make_a_copy(
+    var3 = solver.settings.setup.materials.fluid.make_a_copy(  # noqa: F841
         from_="air-renamed", to="air-copied"
     )
-    assert var3 == solver.settings.setup.materials.fluid["air-copied"]
-    assert var3.obj_name == "air-copied"
+    # https://github.com/ansys/pyfluent/issues/4298
+    # assert var3 == solver.settings.setup.materials.fluid["air-copied"]
+    # assert var3.obj_name == "air-copied"
 
 
 @pytest.mark.fluent_version(">=25.1")
