@@ -165,6 +165,8 @@ class BaseSession:
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
+        # Stores the backup of the fluent connection for later reference.
+        self._fluent_connection_backup = self._fluent_connection
         self._file_transfer_service = file_transfer_service
         self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
@@ -362,6 +364,26 @@ class BaseSession:
         container = self._fluent_connection._container
         if compose_config and compose_config.is_compose:
             container.stop()
+
+    def wait_process_finished(self, wait: float | int | bool = 60):
+        """Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
+
+        Parameters
+        ----------
+        wait : float, int or bool, optional
+            How long to wait for processes to finish before returning, by default 60 seconds.
+            Can also be set to ``True``, which will result in waiting indefinitely.
+
+        Raises
+        ------
+        UnsupportedRemoteFluentInstance
+            If current Fluent instance is running remotely.
+        WaitTypeError
+            If ``wait`` is specified improperly.
+        """
+        return self._fluent_connection_backup.wait_process_finished()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
