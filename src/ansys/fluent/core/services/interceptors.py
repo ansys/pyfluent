@@ -24,7 +24,6 @@
 
 import builtins
 import logging
-import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
@@ -69,6 +68,8 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         client_call_details: grpc.ClientCallDetails,
         request: Any,
     ) -> Any:
+        from ansys.fluent.core import config
+
         network_logger.debug(
             f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
@@ -76,7 +77,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         if not response.exception():
             # call _truncate_grpc_str early to get the size warning even when hiding secrets
             response_str = _truncate_grpc_str(response.result())
-            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+            if not config.hide_log_secrets:
                 network_logger.debug(f"GRPC_TRACE: response = {response_str}")
         return response
 

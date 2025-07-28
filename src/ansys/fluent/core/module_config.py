@@ -183,6 +183,12 @@ class Config:
             self._env.get("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1"
         )
 
+        #: Whether to hide sensitive information in logs.
+        self.hide_log_secrets = self._env.get("PYFLUENT_HIDE_LOG_SECRETS") == "1"
+
+        #: The Fluent root directory to be used for PyFluent.
+        self.fluent_root = self._env.get("PYFLUENT_FLUENT_ROOT")
+
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""

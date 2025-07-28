@@ -131,7 +131,7 @@ def dict_to_str(dict: dict) -> str:
     This is useful for logging purposes, to avoid printing sensitive information such as license server details.
     """
 
-    if "environment" in dict and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+    if "environment" in dict and pyfluent.config.hide_log_secrets:
         modified_dict = dict.copy()
         modified_dict.pop("environment")
         return pformat(modified_dict)
@@ -421,11 +421,6 @@ def configure_container_dict(
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
-
-    if os.getenv("REMOTING_NEW_DM_API") == "1":
-        if "environment" not in container_dict:
-            container_dict["environment"] = {}
-        container_dict["environment"]["REMOTING_NEW_DM_API"] = "1"
 
     if pyfluent.config.launch_fluent_ip or os.getenv("REMOTING_SERVER_ADDRESS"):
         if "environment" not in container_dict:

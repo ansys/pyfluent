@@ -347,7 +347,7 @@ def generate(version, static_infos: dict, verbose: bool = False):
         api_tree["<solver_session>"] = TUIGenerator(
             "solver", version, static_infos, verbose
         ).generate()
-    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+    if not pyfluent.config.hide_log_secrets:
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
             len(_XML_HELPSTRINGS),
