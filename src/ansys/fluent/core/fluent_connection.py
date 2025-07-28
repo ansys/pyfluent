@@ -252,7 +252,7 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = pyfluent.config.launch_fluent_ip
+        ip = pyfluent.config.launch_fluent_ip or "127.0.0.1"
     if not port:
         port = pyfluent.config.launch_fluent_port
     if not port:

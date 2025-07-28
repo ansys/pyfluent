@@ -111,7 +111,7 @@ class Config:
         self.launch_fluent_stderr = None
 
         #: Set the IP address of the Fluent server while launching Fluent
-        self.launch_fluent_ip = self._env.get("PYFLUENT_FLUENT_IP", "127.0.0.1")
+        self.launch_fluent_ip = self._env.get("PYFLUENT_FLUENT_IP")
 
         #: Set the port of the Fluent server while launching Fluent
         self.launch_fluent_port = None

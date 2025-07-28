@@ -109,7 +109,7 @@ def _get_server_info(
     else:
         if server_info_file_name:
             ip, port, password = _parse_server_info_file(server_info_file_name)
-        ip = ip or config.launch_fluent_ip
+        ip = ip or config.launch_fluent_ip or "127.0.0.1"
         port = port or config.launch_fluent_port
 
     _check_ip_port(ip=ip, port=port)
