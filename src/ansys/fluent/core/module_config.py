@@ -63,11 +63,9 @@ class Config:
         self.use_file_transfer_service = False
 
         #: Directory where API files are written out during codegen
-        self.codegen_outdir = str(
-            self._env.get(
-                "PYFLUENT_CODEGEN_OUTDIR",
-                (Path(__file__) / ".." / "generated").resolve(),
-            )
+        self.codegen_outdir = self._env.get(
+            "PYFLUENT_CODEGEN_OUTDIR",
+            (Path(__file__) / ".." / "generated").resolve(),
         )
 
         #: Whether to show mesh in Fluent after case read
