@@ -22,7 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 import subprocess
 import uuid
 
@@ -33,10 +32,12 @@ class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
     def __init__(self, compose_config, container_dict):
+        from ansys.fluent.core import config
+
         self._compose_config = compose_config
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
         self._container_dict = container_dict
-        image_tag = os.getenv("FLUENT_IMAGE_TAG")
+        image_tag = config.fluent_image_tag
         self._image_name = (
             container_dict.get("fluent_image")
             or f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"

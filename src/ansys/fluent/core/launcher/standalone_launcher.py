@@ -193,7 +193,7 @@ class StandaloneLauncher:
         }
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
-        if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+        if pyfluent.config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(ui_mode)
         if self.argvals["start_timeout"] is None:

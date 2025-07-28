@@ -252,9 +252,9 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+        ip = pyfluent.config.launch_fluent_ip
     if not port:
-        port = os.getenv("PYFLUENT_FLUENT_PORT")
+        port = pyfluent.config.launch_fluent_port
     if not port:
         raise PortNotProvided()
     return ip, port
@@ -758,17 +758,15 @@ class FluentConnection:
             )
 
         if timeout is None:
-            env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
-            if env_timeout is not None:
-                logger.debug(
-                    f"Found PYFLUENT_TIMEOUT_FORCE_EXIT env var: '{env_timeout}'"
-                )
+            config_timeout = pyfluent.config.force_exit_timeout
+            if config_timeout is not None:
+                logger.debug(f"Found force_exit_timeout config: '{config_timeout}'")
                 try:
-                    timeout = float(env_timeout)
+                    timeout = float(config_timeout)
                     logger.debug(f"Setting TIMEOUT_FORCE_EXIT to {timeout}")
                 except ValueError:
                     logger.debug(
-                        "Invalid PYFLUENT_TIMEOUT_FORCE_EXIT. Must be a float or int. "
+                        "Invalid force_exit_timeout config. Must be a float or int. "
                         "Timeout forced exit is disabled."
                     )
 

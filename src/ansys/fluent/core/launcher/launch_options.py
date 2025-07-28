@@ -267,11 +267,12 @@ def _get_fluent_launch_mode(start_container, container_dict, scheduler_options):
     fluent_launch_mode: LaunchMode
         Fluent launch mode.
     """
+    from ansys.fluent.core import config
+
     if pypim.is_configured():
         fluent_launch_mode = LaunchMode.PIM
     elif start_container is True or (
-        start_container is None
-        and (container_dict or os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1")
+        start_container is None and (container_dict or config.launch_fluent_container)
     ):
         fluent_launch_mode = LaunchMode.CONTAINER
     # Currently, only Slurm scheduler is supported and within SlurmLauncher we check the value of the scheduler

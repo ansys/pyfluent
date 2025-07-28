@@ -103,7 +103,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        elif pyfluent.config.launch_fluent_container:
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -336,7 +336,7 @@ def launch_fluent(
         )
 
     if start_timeout is None:
-        start_timeout = int(os.getenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "60"))
+        start_timeout = pyfluent.config.launch_fluent_timeout
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {

@@ -35,17 +35,11 @@ class Config:
         # and reuse it throughout process lifetime.
         self._env = os.environ.copy()
 
-        # Variables which has some additional logic in getter/setter methods
-        # are implemented as properties. Rest of the variables are public attributes.
-        # All properties and public attributes returns a valid value.
-
-        # Backend variables of the properties
-        self._examples_path = None
-        self._codegen_outdir = None
-        self._fluent_automatic_transcript = None
+        #: The directory where API files are written out during codegen.
+        self.examples_path = str(get_examples_download_dir())
 
         #: Host path which is mounted to the container
-        self.container_mount_source = None
+        self.container_mount_source = self._env.get("PYFLUENT_CONTAINER_MOUNT_SOURCE")
 
         #: Path inside the container where the host path is mounted
         self.container_mount_target = "/home/container/workdir"
@@ -71,8 +65,21 @@ class Config:
         #: Whether to use remote gRPC file transfer service
         self.use_file_transfer_service = False
 
+        #: Directory where API files are written out during codegen
+        self.codegen_outdir = str(
+            self._env.get(
+                "PYFLUENT_CODEGEN_OUTDIR",
+                (Path(__file__) / ".." / "generated").resolve(),
+            )
+        )
+
         #: Whether to show mesh in Fluent after case read
         self.fluent_show_mesh_after_case_read = False
+
+        #: Whether to write the automatic transcript in Fluent.
+        self.fluent_automatic_transcript = (
+            self._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
+        )
 
         #: Whether to interrupt Fluent solver from PyFluent
         self.support_solver_interrupt = False
@@ -101,13 +108,49 @@ class Config:
         self.launch_fluent_stderr = None
 
         #: Set the IP address of the Fluent server while launching Fluent
-        self.launch_fluent_ip = None
+        self.launch_fluent_ip = self._env.get("PYFLUENT_FLUENT_IP", "127.0.0.1")
 
         #: Set the port of the Fluent server while launching Fluent
         self.launch_fluent_port = None
 
         #: Skip password check during RPC execution when Fluent is launched from PyFluent
         self.launch_fluent_skip_password_check = False
+
+        #: The timeout in seconds to wait for Fluent to exit.
+        self.force_exit_timeout = self._env.get("PYFLUENT_FORCE_EXIT_TIMEOUT")
+
+        #: Whether to skip code generation of built-in settings.
+        self.codegen_skip_builtin_settings = (
+            self._env.get("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS") == "1"
+        )
+
+        #: Whether to launch Fluent in a container.
+        self.launch_fluent_container = self._env.get("PYFLUENT_LAUNCH_CONTAINER") == "1"
+
+        #: The tag of the Fluent image to use when launching in a container.
+        self.fluent_image_tag = self._env.get(
+            "FLUENT_IMAGE_TAG", f"v{self.fluent_release_version}"
+        )
+
+        #: The name of the Fluent image to use when launching in a container.
+        self.fluent_image_name = self._env.get("FLUENT_IMAGE_NAME")
+
+        #: The name of the Fluent container to use when launching in a container.
+        self.fluent_container_name = self._env.get("FLUENT_CONTAINER_NAME")
+
+        #: Whether to use Docker Compose for launching Fluent in a container.
+        self.use_docker_compose = self._env.get("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+
+        #: Whether to use Podman Compose for launching Fluent in a container.
+        self.use_podman_compose = self._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+
+        #: The timeout in seconds to wait for Fluent to launch.
+        self.launch_fluent_timeout = int(
+            self._env.get("PYFLUENT_LAUNCH_FLUENT_TIMEOUT", 60)
+        )
+
+        #: Whether to show the Fluent GUI when launching the server.
+        self.show_fluent_gui = self._env.get("PYFLUENT_SHOW_SERVER_GUI") == "1"
 
     @property
     def fluent_release_version(self) -> str:
@@ -118,40 +161,3 @@ class Config:
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
         return "26.1.0"
-
-    @property
-    def examples_path(self) -> str:
-        """The path to the example input/data files are downloaded."""
-        if self._examples_path is None:
-            self._examples_path = str(get_examples_download_dir())
-        return self._examples_path
-
-    @examples_path.setter
-    def examples_path(self, val: str) -> None:
-        """Set the path to the example input/data files are downloaded."""
-        self._examples_path = val
-
-    @property
-    def codegen_outdir(self) -> str:
-        """The directory where API files are written out during codegen."""
-        if self._codegen_outdir is None:
-            self._codegen_outdir = self._env.get(
-                "PYFLUENT_CODEGEN_OUTDIR",
-                (Path(__file__) / ".." / "generated").resolve(),
-            )
-        return self._codegen_outdir
-
-    @codegen_outdir.setter
-    def codegen_outdir(self, val: str) -> None:
-        """Set the directory where API files are written out during codegen."""
-        self._codegen_outdir = val
-
-    @property
-    def fluent_automatic_transcript(self) -> bool:
-        """Whether to write the automatic transcript in Fluent."""
-        return self._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
-
-    @fluent_automatic_transcript.setter
-    def fluent_automatic_transcript(self, val: bool) -> None:
-        """Set whether to write the automatic transcript in Fluent."""
-        self._fluent_automatic_transcript = val

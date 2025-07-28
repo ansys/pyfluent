@@ -81,10 +81,7 @@ def _retrieve_file(
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        save_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-            pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
-        )
+        save_path = pyfluent.config.container_mount_source or os.getcwd()
     else:
         save_path = os.path.abspath(save_path)
     local_path = os.path.join(save_path, file_name)
@@ -180,7 +177,7 @@ def download_file(
     'bracket.iges'
     """
     if return_without_path is None:
-        if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        if pyfluent.config.launch_fluent_container:
             if pyfluent.USE_FILE_TRANSFER_SERVICE:
                 return_without_path = False
             else:

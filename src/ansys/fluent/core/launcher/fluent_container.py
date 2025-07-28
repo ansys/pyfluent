@@ -262,10 +262,7 @@ def configure_container_dict(
         if file_transfer_service:
             mount_source = file_transfer_service.mount_source
         else:
-            mount_source = os.getenv(
-                "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-                pyfluent.CONTAINER_MOUNT_SOURCE,
-            )
+            mount_source = pyfluent.config.container_mount_source
 
     if "volumes" in container_dict:
         if len(container_dict["volumes"]) != 1:
@@ -299,7 +296,7 @@ def configure_container_dict(
         if "working_dir" in container_dict:
             mount_target = container_dict["working_dir"]
         else:
-            mount_target = os.getenv("PYFLUENT_CONTAINER_MOUNT_TARGET")
+            mount_target = pyfluent.config.container_mount_target
 
     if "working_dir" in container_dict and mount_target:
         # working_dir will be set later to the final value of mount_target
@@ -404,15 +401,14 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = os.getenv(
-                "FLUENT_IMAGE_TAG", f"v{pyfluent.FLUENT_RELEASE_VERSION}"
-            )
+            image_tag = pyfluent.config.fluent_image_tag
         if not image_name and image_tag:
-            image_name = os.getenv(
-                "FLUENT_IMAGE_NAME", get_ghcr_fluent_image_name(image_tag)
+            image_name = (
+                pyfluent.config.fluent_image_name
+                or get_ghcr_fluent_image_name(image_tag)
             )
         if not image_tag or not image_name:
-            fluent_image = os.getenv("FLUENT_CONTAINER_IMAGE", None)
+            fluent_image = pyfluent.config.fluent_container_name
         elif image_tag and image_name:
             if image_tag.startswith("sha"):
                 fluent_image = f"{image_name}@{image_tag}"

@@ -47,8 +47,10 @@ class ComposeConfig:
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
     ):
-        self._env_docker = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
-        self._env_podman = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        from ansys.fluent.core import config
+
+        self._env_docker = config.use_docker_compose
+        self._env_podman = config.use_podman_compose
 
         self._use_docker = use_docker_compose
         self._use_podman = use_podman_compose

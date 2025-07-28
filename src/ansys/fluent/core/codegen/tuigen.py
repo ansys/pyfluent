@@ -96,8 +96,8 @@ _XML_HELPSTRINGS = {}
 
 
 def _copy_tui_help_xml_file(version: str):
-    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v25.1.0")
+    if pyfluent.config.launch_fluent_container:
+        image_tag = pyfluent.config.fluent_image_tag
         image_name = f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"

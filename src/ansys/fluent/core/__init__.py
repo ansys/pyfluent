@@ -31,7 +31,6 @@ from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
 
 # isort: on
 
-from ansys.fluent.core.config import Config as _Config
 from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
     PathlinesFieldDataRequest,
     ScalarFieldDataRequest,
@@ -55,6 +54,7 @@ from ansys.fluent.core.launcher.launcher import (  # noqa: F401
     connect_to_fluent,
     launch_fluent,
 )
+from ansys.fluent.core.module_config import Config as _Config
 from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
 from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
     PyFluentDeprecationWarning,
@@ -108,8 +108,14 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
+pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
+
+
 # Global configuration object for PyFluent
 config = _Config()
+
+
+# Following variables are all legacy variables.
 
 # Latest released Fluent version
 FLUENT_RELEASE_VERSION = config.fluent_release_version
@@ -131,8 +137,6 @@ INFER_REMOTING_IP = config.infer_remoting_ip
 
 # Time in second to wait for response for each ip while inferring remoting ip
 INFER_REMOTING_IP_TIMEOUT_PER_IP = config.infer_remoting_ip_timeout_per_ip
-
-pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
 
 # Whether to use datamodel state caching
 DATAMODEL_USE_STATE_CACHE = config.datamodel_use_state_cache
