@@ -342,7 +342,7 @@ def configure_container_dict(
 
     if "environment" not in container_dict:
         if not license_server:
-            license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
+            license_server = pyfluent.config.ansyslmd_license_file
 
         if not license_server:
             raise LicenseServerNotSpecified()
@@ -354,7 +354,7 @@ def configure_container_dict(
         )
 
     if "labels" not in container_dict:
-        test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
+        test_name = pyfluent.config.test_name
         container_dict.update(
             labels={"test_name": test_name},
         )
@@ -422,11 +422,11 @@ def configure_container_dict(
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
-    if pyfluent.config.launch_fluent_ip or os.getenv("REMOTING_SERVER_ADDRESS"):
+    if pyfluent.config.launch_fluent_ip or pyfluent.config.remoting_server_address:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
-            pyfluent.config.launch_fluent_ip or os.getenv("REMOTING_SERVER_ADDRESS")
+            pyfluent.config.launch_fluent_ip or pyfluent.config.remoting_server_address
         )
 
     if pyfluent.config.launch_fluent_skip_password_check:

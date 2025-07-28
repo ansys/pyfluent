@@ -189,6 +189,18 @@ class Config:
         #: The Fluent root directory to be used for PyFluent.
         self.fluent_root = self._env.get("PYFLUENT_FLUENT_ROOT")
 
+        #: The Ansys license path to be used in Fluent.
+        self.ansyslmd_license_file = self._env.get("ANSYSLMD_LICENSE_FILE")
+
+        #: The remoting server address to be used in Fluent.
+        self.remoting_server_address = self._env.get("REMOTING_SERVER_ADDRESS")
+
+        #: The directory where server info will be written from Fluent.
+        self.fluent_server_info_dir = self._env.get("SERVER_INFO_DIR")
+
+        #: Current unit test name, if any.
+        self.test_name = self._env.get("PYFLUENT_TEST_NAME")
+
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""

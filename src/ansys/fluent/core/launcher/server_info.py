@@ -53,7 +53,9 @@ def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
     temporary directory if ``use_tmpdir`` is True, otherwise it is created in the current working
     directory.
     """
-    server_info_dir = os.getenv("SERVER_INFO_DIR")
+    from ansys.fluent.core import config
+
+    server_info_dir = config.fluent_server_info_dir
     dir_ = (
         Path(server_info_dir)
         if server_info_dir
