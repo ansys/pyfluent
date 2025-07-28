@@ -132,7 +132,7 @@ def _generate_launch_string(
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
-    if not pyfluent.FLUENT_SHOW_MESH_AFTER_CASE_READ:
+    if not pyfluent.config.fluent_show_mesh_after_case_read:
         launch_string += " -nm"
     return launch_string
 

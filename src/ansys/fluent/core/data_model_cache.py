@@ -126,7 +126,7 @@ class _CacheImpl:
 
 def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str):
     """Check if a parameter is a dict type."""
-    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core import config
     from ansys.fluent.core.services.datamodel_se import (
         PyDictionary,
         PyNamedObjectContainer,
@@ -136,7 +136,7 @@ def _is_dict_parameter_type(version: FluentVersion, rules: str, rules_path: str)
 
     try:
         module = load_module(
-            rules, CODEGEN_OUTDIR / f"datamodel_{version.number}" / f"{rules}.py"
+            rules, config.codegen_outdir / f"datamodel_{version.number}" / f"{rules}.py"
         )
     except FileNotFoundError:  # no codegen or during codegen
         return False

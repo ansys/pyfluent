@@ -2328,7 +2328,7 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import CODEGEN_OUTDIR, config, utils
+    from ansys.fluent.core import config, utils
 
     if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
@@ -2337,7 +2337,7 @@ def get_root(
         try:
             settings = utils.load_module(
                 f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+                config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
             warning_for_fluent_dev_version(version)

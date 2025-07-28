@@ -234,7 +234,10 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR:
+            if (
+                pyfluent.config.launch_fluent_stdout
+                or pyfluent.config.launch_fluent_stderr
+            ):
                 self._launch_cmd = self._launch_string
             else:
                 # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.

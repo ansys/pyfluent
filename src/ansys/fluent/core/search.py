@@ -41,16 +41,16 @@ from ansys.fluent.core.utils.fluent_version import (
 
 def _get_api_tree_data_file_path():
     """Get API tree data file."""
-    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core import config
 
-    return (CODEGEN_OUTDIR / "api_tree" / "api_objects.json").resolve()
+    return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
 
 
 def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core import config
 
-    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
+    return (config.codegen_outdir / f"api_tree_{version}.pickle").resolve()
 
 
 def _remove_suffix(input: str, suffix):
@@ -127,9 +127,9 @@ def _generate_api_data(
         from nltk.corpus import wordnet as wn
 
         _download_nltk_data()
-        from ansys.fluent.core import CODEGEN_OUTDIR
+        from ansys.fluent.core import config
 
-        json_file_folder = Path(os.path.join(CODEGEN_OUTDIR, "api_tree"))
+        json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
         json_file_folder.mkdir(parents=True, exist_ok=True)
 
         all_api_object_name_synsets = dict()
@@ -235,7 +235,7 @@ def _print_search_results(
         )
 
     results = final_results or all_results
-    if pyfluent.PRINT_SEARCH_RESULTS:
+    if pyfluent.config.print_search_results:
         for result in results:
             print(result)
     elif results:

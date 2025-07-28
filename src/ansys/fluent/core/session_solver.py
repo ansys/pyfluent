@@ -271,7 +271,7 @@ class Solver(BaseSession):
             "solution/run-calculation/calculate",
             "solution/run-calculation/dual-time-iterate",
         ]
-        if pyfluent.SUPPORT_SOLVER_INTERRUPT:
+        if pyfluent.config.support_solver_interrupt:
             if command.path in interruptible_commands:
                 command._root.solution.run_calculation.interrupt()
 

@@ -69,7 +69,7 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (pyfluent.CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
+    return (pyfluent.config.codegen_outdir / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4

@@ -46,9 +46,9 @@ class FluentDevVersionWarning(PyFluentUserWarning):
 
 def warning_for_fluent_dev_version(version):
     """Provides warning if Fluent develop branch is used."""
-    from ansys.fluent.core import FLUENT_RELEASE_VERSION, FluentVersion
+    from ansys.fluent.core import FluentVersion, config
 
-    if FluentVersion(version) > FluentVersion(FLUENT_RELEASE_VERSION):
+    if FluentVersion(version) > FluentVersion(config.fluent_release_version):
         warnings.warn(
             "⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.\n"
             "Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released "

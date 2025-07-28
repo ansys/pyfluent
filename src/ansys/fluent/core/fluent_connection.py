@@ -451,7 +451,7 @@ class FluentConnection:
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        if pyfluent.CHECK_HEALTH:
+        if pyfluent.config.check_health:
             self._health_check.check_health()
 
         self._slurm_job_id = slurm_job_id

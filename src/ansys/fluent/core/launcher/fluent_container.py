@@ -253,10 +253,9 @@ def configure_container_dict(
     # Starting with 'mount_source' because it is not tied to the 'working_dir'.
     # The intended 'mount_source' logic is as follows, if it is not directly specified:
     # 1. If 'file_transfer_service' is provided, use its 'mount_source'.
-    # 2. Try to use the environment variable 'PYFLUENT_CONTAINER_MOUNT_SOURCE', if it is set.
-    # 3. Use the value from 'pyfluent.CONTAINER_MOUNT_SOURCE', if it is set.
-    # 4. If 'volumes' is specified in 'container_dict', try to infer the value from it.
-    # 5. Finally, use the current working directory, which is always available.
+    # 2. Use the value from 'pyfluent.config.container_mount_source', if it is set.
+    # 3. If 'volumes' is specified in 'container_dict', try to infer the value from it.
+    # 4. Finally, use the current working directory, which is always available.
 
     if not mount_source:
         if file_transfer_service:
@@ -288,9 +287,8 @@ def configure_container_dict(
 
     # The intended 'mount_target' logic is as follows, if it is not directly specified:
     # 1. If 'working_dir' is specified in 'container_dict', use it as 'mount_target'.
-    # 2. Use the environment variable 'PYFLUENT_CONTAINER_MOUNT_TARGET', if it is set.
-    # 3. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
-    # 4. Finally, use the value from 'pyfluent.CONTAINER_MOUNT_TARGET', which is always set.
+    # 2. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
+    # 3. Finally, use the value from 'pyfluent.config.container_mount_target', which is always set.
 
     if not mount_target:
         if "working_dir" in container_dict:
@@ -307,7 +305,7 @@ def configure_container_dict(
 
     if not mount_target:
         logger.debug("No container 'mount_target' specified, using default value.")
-        mount_target = pyfluent.CONTAINER_MOUNT_TARGET
+        mount_target = pyfluent.config.container_mount_target
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
@@ -328,8 +326,8 @@ def configure_container_dict(
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
         port_mapping = container_dict["ports"]
-    if not port_mapping and pyfluent.LAUNCH_FLUENT_PORT:
-        port = pyfluent.LAUNCH_FLUENT_PORT
+    if not port_mapping and pyfluent.config.launch_fluent_port:
+        port = pyfluent.config.launch_fluent_port
         port_mapping = {port: port}
     if not port_mapping:
         port = get_free_port()
@@ -419,7 +417,7 @@ def configure_container_dict(
 
     container_dict["fluent_image"] = fluent_image
 
-    if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
+    if not pyfluent.config.fluent_automatic_transcript:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
@@ -429,14 +427,14 @@ def configure_container_dict(
             container_dict["environment"] = {}
         container_dict["environment"]["REMOTING_NEW_DM_API"] = "1"
 
-    if pyfluent.LAUNCH_FLUENT_IP or os.getenv("REMOTING_SERVER_ADDRESS"):
+    if pyfluent.config.launch_fluent_ip or os.getenv("REMOTING_SERVER_ADDRESS"):
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
-            pyfluent.LAUNCH_FLUENT_IP or os.getenv("REMOTING_SERVER_ADDRESS")
+            pyfluent.config.launch_fluent_ip or os.getenv("REMOTING_SERVER_ADDRESS")
         )
 
-    if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
+    if pyfluent.config.launch_fluent_skip_password_check:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
