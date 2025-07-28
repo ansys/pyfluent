@@ -87,6 +87,14 @@ class Config:
         #: Whether to start watchdog
         self.start_watchdog = None
 
+        #: Whether to enable debug logging for the watchdog
+        self.watchdog_debug = self._env.get("PYFLUENT_WATCHDOG_DEBUG") == "1"
+
+        #: Whether to raise an exception when the watchdog encounters an error
+        self.watchdog_exeption_on_error = (
+            self._env.get("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1"
+        )
+
         #: Health check timeout in seconds
         self.check_health_timeout = 60
 
@@ -151,6 +159,29 @@ class Config:
 
         #: Whether to show the Fluent GUI when launching the server.
         self.show_fluent_gui = self._env.get("PYFLUENT_SHOW_SERVER_GUI") == "1"
+
+        #: Whether to launch Fluent in debug mode.
+        self.fluent_debug = self._env.get("PYFLUENT_FLUENT_DEBUG") == "1"
+
+        #: Whether to skip API upgrade advice.
+        self.skip_api_upgrade_advice = (
+            self._env.get("PYFLUENT_SKIP_API_UPGRADE_ADVICE") == "1"
+        )
+
+        #: The maximum number of bytes to log in gRPC logs.
+        self.grpc_log_bytes_limit = int(
+            self._env.get("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000)
+        )
+
+        #: Whether to disable the fix for returning parameter lists via settings API.
+        self.disable_parameter_list_return_fix = (
+            self._env.get("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") == "1"
+        )
+
+        #: Whether to use runtime Python classes for settings.
+        self.use_runtime_python_classes = (
+            self._env.get("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1"
+        )
 
     @property
     def fluent_release_version(self) -> str:

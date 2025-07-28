@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
         logger = pyfluent.logger.get_logger("pyfluent.watchdog")
 
-        if os.getenv("PYFLUENT_WATCHDOG_DEBUG") == "1":
+        if pyfluent.config.watchdog_debug:
             pyfluent.logger.enable(custom_config=log_config)
             logger.setLevel("DEBUG")
             logger.handlers = pyfluent.logger.get_logger(

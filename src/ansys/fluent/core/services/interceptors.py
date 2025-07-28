@@ -34,8 +34,6 @@ import grpc
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
-log_bytes_limit: int = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
-truncate_len: int = log_bytes_limit // 5
 
 
 def _upper_snake_case_to_camel_case(name: str) -> str:
@@ -43,14 +41,17 @@ def _upper_snake_case_to_camel_case(name: str) -> str:
 
 
 def _truncate_grpc_str(message: Message) -> str:
+    from ansys.fluent.core import config
+
+    truncate_len = config.grpc_log_bytes_limit // 5
     message_bytes = message.ByteSize()
     message_str = str(MessageToDict(message))
-    if not log_bytes_limit or message_bytes < log_bytes_limit:
+    if not config.grpc_log_bytes_limit or message_bytes < config.grpc_log_bytes_limit:
         return message_str
     else:
         network_logger.debug(
             f"GRPC_TRACE: message partially hidden, {message_bytes} bytes > "
-            f"{log_bytes_limit} bytes limit. To see the full message, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
+            f"{config.grpc_log_bytes_limit} bytes limit. To see the full message, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
         )
         return f"{message_str[:truncate_len]} < ... > {message_str[-truncate_len:]}"
 

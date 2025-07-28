@@ -211,7 +211,7 @@ class StandaloneLauncher:
         ):
             self.argvals["py"] = True
 
-        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+        if pyfluent.config.fluent_debug:
             self.argvals["fluent_debug"] = True
 
         server_info_file_name_for_server, server_info_file_name_for_client = (
