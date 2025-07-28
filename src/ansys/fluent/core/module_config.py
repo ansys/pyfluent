@@ -23,8 +23,6 @@
 import os
 from pathlib import Path
 
-from ansys.fluent.core.utils import get_examples_download_dir
-
 
 class Config:
     """Set the global configuration variables for PyFluent."""
@@ -35,8 +33,7 @@ class Config:
         # and reuse it throughout process lifetime.
         self._env = os.environ.copy()
 
-        #: The directory where API files are written out during codegen.
-        self.examples_path = str(get_examples_download_dir())
+        self._examples_path = None
 
         #: Host path which is mounted to the container
         self.container_mount_source = self._env.get("PYFLUENT_CONTAINER_MOUNT_SOURCE")
@@ -210,3 +207,24 @@ class Config:
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
         return "26.1.0"
+
+    @property
+    def examples_path(self) -> str:
+        """The directory where example input/data files are downloaded."""
+        parent_path = Path.home() / "Downloads"
+        parent_path.mkdir(exist_ok=True)
+        self._examples_path = str(parent_path / "ansys_fluent_core_examples")
+        return self._examples_path
+
+    @examples_path.setter
+    def examples_path(self, value: str):
+        self._examples_path = value
+
+    @property
+    def logging_level_default(self) -> str:
+        """The default logging level."""
+        return self._env.get("PYFLUENT_LOGGING")
+
+
+# Global configuration object for PyFluent
+config = Config()
