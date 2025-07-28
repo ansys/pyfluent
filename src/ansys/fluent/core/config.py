@@ -21,6 +21,7 @@
 # SOFTWARE.
 """Configuration variables for PyFluent."""
 import os
+from pathlib import Path
 
 from ansys.fluent.core.utils import get_examples_download_dir
 
@@ -40,6 +41,8 @@ class Config:
 
         # Backend variables of the properties
         self._examples_path = None
+        self._codegen_outdir = None
+        self._fluent_automatic_transcript = None
 
         #: Host path which is mounted to the container
         self.container_mount_source = None
@@ -47,9 +50,78 @@ class Config:
         #: Path inside the container where the host path is mounted
         self.container_mount_target = "/home/container/workdir"
 
+        #: Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
+        self.infer_remoting_ip = True
+
+        # Time in second to wait for response for each ip while inferring remoting ip
+        self.infer_remoting_ip_timeout_per_ip = 2
+
+        #: Whether to use datamodel state caching
+        self.datamodel_use_state_cache = True
+
+        #: Whether to use datamodel attribute caching
+        self.datamodel_use_attr_cache = True
+
+        #: Whether to stream and cache commands state
+        self.datamodel_use_nocommands_diff_state = True
+
+        #: Whether to return the state changes on mutating datamodel RPCs
+        self.datamodel_return_state_changes = True
+
+        #: Whether to use remote gRPC file transfer service
+        self.use_file_transfer_service = False
+
+        #: Whether to show mesh in Fluent after case read
+        self.fluent_show_mesh_after_case_read = False
+
+        #: Whether to interrupt Fluent solver from PyFluent
+        self.support_solver_interrupt = False
+
+        #: Whether to start watchdog
+        self.start_watchdog = None
+
+        #: Health check timeout in seconds
+        self.check_health_timeout = 60
+
+        #: Whether to skip health check
+        self.check_health = True
+
+        #: Whether to print search results
+        self.print_search_results = True
+
+        #: Whether to clear environment variables related to Fluent parallel mode
+        self.clear_fluent_para_envs = False
+
+        #: Set stdout of the launched Fluent process
+        #: Valid values are the same as subprocess.Popen's stdout argument
+        self.launch_fluent_stdout = None
+
+        #: Set stderr of the launched Fluent process
+        #: Valid values are the same as subprocess.Popen's stderr argument
+        self.launch_fluent_stderr = None
+
+        #: Set the IP address of the Fluent server while launching Fluent
+        self.launch_fluent_ip = None
+
+        #: Set the port of the Fluent server while launching Fluent
+        self.launch_fluent_port = None
+
+        #: Skip password check during RPC execution when Fluent is launched from PyFluent
+        self.launch_fluent_skip_password_check = False
+
+    @property
+    def fluent_release_version(self) -> str:
+        """The latest released version of Fluent."""
+        return "25.2.0"
+
+    @property
+    def fluent_dev_version(self) -> str:
+        """The latest development version of Fluent."""
+        return "26.1.0"
+
     @property
     def examples_path(self) -> str:
-        """Path to the example input/data files are downloaded."""
+        """The path to the example input/data files are downloaded."""
         if self._examples_path is None:
             self._examples_path = str(get_examples_download_dir())
         return self._examples_path
@@ -60,97 +132,26 @@ class Config:
         self._examples_path = val
 
     @property
-    def interactive(self) -> bool:
-        """Boolean flag to access mode (interactive or non-interactive)."""
-        return self._interactive
-
-    @interactive.setter
-    def interactive(self, val: bool) -> None:
-        """Set mode (interactive or non-interactive)."""
-        if self._single_window and val == False:
-            warnings.warn(
-                "Single window is only available for interactive mode."
-                "\nReverting 'interactive' to 'True'."
+    def codegen_outdir(self) -> str:
+        """The directory where API files are written out during codegen."""
+        if self._codegen_outdir is None:
+            self._codegen_outdir = self._env.get(
+                "PYFLUENT_CODEGEN_OUTDIR",
+                (Path(__file__) / ".." / "generated").resolve(),
             )
-        else:
-            self._interactive = bool(val)
+        return self._codegen_outdir
+
+    @codegen_outdir.setter
+    def codegen_outdir(self, val: str) -> None:
+        """Set the directory where API files are written out during codegen."""
+        self._codegen_outdir = val
 
     @property
-    def single_window(self) -> bool:
-        """Whether single Qt window is activated."""
-        return self._single_window
+    def fluent_automatic_transcript(self) -> bool:
+        """Whether to write the automatic transcript in Fluent."""
+        return self._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
 
-    @single_window.setter
-    def single_window(self, val: bool) -> None:
-        """Activate (or Deactivate) single Qt window."""
-        if val and not self._interactive:
-            warnings.warn(
-                "Single window is only available for interactive mode."
-                "\nReverting 'single_window' to 'False'."
-            )
-        else:
-            self._single_window = bool(val)
-
-    @property
-    def view(self) -> View:
-        """Returns the view set for displaying graphics."""
-        return self._view
-
-    @view.setter
-    def view(self, val: str | View) -> None:
-        """Sets the view for displaying graphics."""
-        self._view = View(val)
-
-    @property
-    def two_dimensional_renderer(self) -> str:
-        """Returns the default renderer name for displaying 2D plots."""
-        return self._two_dimensional_renderer
-
-    @two_dimensional_renderer.setter
-    def two_dimensional_renderer(self, val: str) -> None:
-        """Sets the default renderer for displaying 2D plots."""
-        if isinstance(val, str):
-            if val in _renderer:
-                self._two_dimensional_renderer = val
-            else:
-                raise ValueError(
-                    f"{val} is not a valid renderer. "
-                    f"Valid renderers are {list(_renderer)}."
-                )
-
-    @property
-    def three_dimensional_renderer(self) -> str:
-        """Returns the default renderer name for displaying 3D graphics."""
-        return self._three_dimensional_renderer
-
-    @three_dimensional_renderer.setter
-    def three_dimensional_renderer(self, val: str) -> None:
-        """Sets the default renderer for displaying 3D graphics."""
-        if isinstance(val, str):
-            if val in _renderer:
-                self._three_dimensional_renderer = val
-            else:
-                raise ValueError(
-                    f"{val} is not a valid renderer. "
-                    f"Valid renderers are {list(_renderer)}."
-                )
-
-
-config = Config()
-
-
-def set_config(blocking: bool = False, set_view_on_display: str = "isometric"):
-    """Set visualization configuration."""
-    warnings.warn(
-        "Please use the module level 'config' instead.", PyFluentDeprecationWarning
-    )
-    config.interactive = not blocking
-    config.view = set_view_on_display
-
-
-def get_config():
-    """Get visualization configuration."""
-    warnings.warn(
-        "Please use the module level 'config' instead.", PyFluentDeprecationWarning
-    )
-    return {"blocking": not config.interactive, "set_view_on_display": config.view}
+    @fluent_automatic_transcript.setter
+    def fluent_automatic_transcript(self, val: bool) -> None:
+        """Set whether to write the automatic transcript in Fluent."""
+        self._fluent_automatic_transcript = val
