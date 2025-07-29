@@ -36,7 +36,7 @@ class _ConfigDescriptor:
 
     def _get_config(self, instance):
         if not hasattr(instance, self._backing_field):
-            instance._backing_field = self._default_fn()
+            instance._backing_field = self._default_fn(instance)
         return instance._backing_field
 
     def _set_config(self, instance, value):
@@ -60,7 +60,7 @@ class _ConfigDescriptor:
         self._set_config(instance, value)
 
 
-def _get_default_examples_path() -> str:
+def _get_default_examples_path(instance) -> str:
     """Get the default examples path."""
     parent_path = Path.home() / "Downloads"
     parent_path.mkdir(exist_ok=True)
@@ -73,95 +73,141 @@ class Config:
     #: Directory where example files are downloaded
     examples_path = _ConfigDescriptor(_get_default_examples_path, "EXAMPLES_PATH")
 
+    #: Host path which is mounted to the container
+    container_mount_source = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_CONTAINER_MOUNT_SOURCE"),
+        "CONTAINER_MOUNT_SOURCE",
+    )
+
+    #: Path inside the container where the host path is mounted
+    container_mount_target = _ConfigDescriptor(
+        lambda instance: "/home/container/workdir", "CONTAINER_MOUNT_TARGET"
+    )
+
+    #: Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
+    infer_remoting_ip = _ConfigDescriptor(lambda instance: True, "INFER_REMOTING_IP")
+
+    # Time in second to wait for response for each ip while inferring remoting ip
+    infer_remoting_ip_timeout_per_ip = _ConfigDescriptor(
+        lambda instance: 2, "INFER_REMOTING_IP_TIMEOUT_PER_IP"
+    )
+
+    #: Whether to use datamodel state caching
+    datamodel_use_state_cache = _ConfigDescriptor(
+        lambda instance: True, "DATAMODEL_USE_STATE_CACHE"
+    )
+
+    #: Whether to use datamodel attribute caching
+    datamodel_use_attr_cache = _ConfigDescriptor(
+        lambda instance: True, "DATAMODEL_USE_ATTR_CACHE"
+    )
+
+    #: Whether to stream and cache commands state
+    datamodel_use_nocommands_diff_state = _ConfigDescriptor(
+        lambda instance: True, "DATAMODEL_USE_NOCOMMANDS_DIFF_STATE"
+    )
+
+    #: Whether to return the state changes on mutating datamodel RPCs
+    datamodel_return_state_changes = _ConfigDescriptor(
+        lambda instance: True, "DATAMODEL_RETURN_STATE_CHANGES"
+    )
+
+    #: Whether to use remote gRPC file transfer service
+    use_file_transfer_service = _ConfigDescriptor(
+        lambda instance: False, "USE_FILE_TRANSFER_SERVICE"
+    )
+
+    #: Directory where API files are written out during codegen
+    codegen_outdir = _ConfigDescriptor(
+        lambda instance: instance._env.get(
+            "PYFLUENT_CODEGEN_OUTDIR", (Path(__file__) / ".." / "generated").resolve()
+        ),
+        "CODEGEN_OUTDIR",
+    )
+
+    #: Whether to show mesh in Fluent after case read
+    fluent_show_mesh_after_case_read = _ConfigDescriptor(
+        lambda instance: False, "FLUENT_SHOW_MESH_AFTER_CASE_READ"
+    )
+
+    #: Whether to write the automatic transcript in Fluent.
+    fluent_automatic_transcript = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT")
+        == "1",
+        "FLUENT_AUTOMATIC_TRANSCRIPT",
+    )
+
+    #: Whether to interrupt Fluent solver from PyFluent
+    support_solver_interrupt = _ConfigDescriptor(
+        lambda instance: False, "SUPPORT_SOLVER_INTERRUPT"
+    )
+
+    #: Whether to start watchdog
+    start_watchdog = _ConfigDescriptor(lambda instance: None, "START_WATCHDOG")
+
+    #: Whether to enable debug logging for the watchdog
+    watchdog_debug = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_WATCHDOG_DEBUG") == "1",
+        "WATCHDOG_DEBUG",
+    )
+
+    #: Whether to raise an exception when the watchdog encounters an error
+    watchdog_exception_on_error = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR")
+        == "1",
+        "WATCHDOG_EXCEPTION_ON_ERROR",
+    )
+
+    #: Health check timeout in seconds
+    check_health_timeout = _ConfigDescriptor(
+        lambda instance: 60, "CHECK_HEALTH_TIMEOUT"
+    )
+
+    #: Whether to skip health check
+    check_health = _ConfigDescriptor(lambda instance: True, "CHECK_HEALTH")
+
+    #: Whether to print search results
+    print_search_results = _ConfigDescriptor(
+        lambda instance: True, "PRINT_SEARCH_RESULTS"
+    )
+
+    #: Whether to clear environment variables related to Fluent parallel mode
+    clear_fluent_para_envs = _ConfigDescriptor(
+        lambda instance: False, "CLEAR_FLUENT_PARA_ENVS"
+    )
+
+    #: Set stdout of the launched Fluent process
+    #: Valid values are the same as subprocess.Popen's stdout argument
+    launch_fluent_stdout = _ConfigDescriptor(
+        lambda instance: None, "LAUNCH_FLUENT_STDOUT"
+    )
+
+    #: Set stderr of the launched Fluent process
+    #: Valid values are the same as subprocess.Popen's stderr argument
+    launch_fluent_stderr = _ConfigDescriptor(
+        lambda instance: None, "LAUNCH_FLUENT_STDERR"
+    )
+
+    #: Set the IP address of the Fluent server while launching Fluent
+    launch_fluent_ip = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_IP"), "LAUNCH_FLUENT_IP"
+    )
+
+    #: Set the port of the Fluent server while launching Fluent
+    launch_fluent_port = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_PORT"), "LAUNCH_FLUENT_PORT"
+    )
+
+    #: Skip password check during RPC execution when Fluent is launched from PyFluent
+    launch_fluent_skip_password_check = _ConfigDescriptor(
+        lambda instance: False, "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK"
+    )
+
     def __init__(self):
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported
         # and reuse it throughout process lifetime.
         self._env = os.environ.copy()
-
-        #: Host path which is mounted to the container
-        self.container_mount_source = self._env.get("PYFLUENT_CONTAINER_MOUNT_SOURCE")
-
-        #: Path inside the container where the host path is mounted
-        self.container_mount_target = "/home/container/workdir"
-
-        #: Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
-        self.infer_remoting_ip = True
-
-        # Time in second to wait for response for each ip while inferring remoting ip
-        self.infer_remoting_ip_timeout_per_ip = 2
-
-        #: Whether to use datamodel state caching
-        self.datamodel_use_state_cache = True
-
-        #: Whether to use datamodel attribute caching
-        self.datamodel_use_attr_cache = True
-
-        #: Whether to stream and cache commands state
-        self.datamodel_use_nocommands_diff_state = True
-
-        #: Whether to return the state changes on mutating datamodel RPCs
-        self.datamodel_return_state_changes = True
-
-        #: Whether to use remote gRPC file transfer service
-        self.use_file_transfer_service = False
-
-        #: Directory where API files are written out during codegen
-        self.codegen_outdir = self._env.get(
-            "PYFLUENT_CODEGEN_OUTDIR",
-            (Path(__file__) / ".." / "generated").resolve(),
-        )
-
-        #: Whether to show mesh in Fluent after case read
-        self.fluent_show_mesh_after_case_read = False
-
-        #: Whether to write the automatic transcript in Fluent.
-        self.fluent_automatic_transcript = (
-            self._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
-        )
-
-        #: Whether to interrupt Fluent solver from PyFluent
-        self.support_solver_interrupt = False
-
-        #: Whether to start watchdog
-        self.start_watchdog = None
-
-        #: Whether to enable debug logging for the watchdog
-        self.watchdog_debug = self._env.get("PYFLUENT_WATCHDOG_DEBUG") == "1"
-
-        #: Whether to raise an exception when the watchdog encounters an error
-        self.watchdog_exception_on_error = (
-            self._env.get("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1"
-        )
-
-        #: Health check timeout in seconds
-        self.check_health_timeout = 60
-
-        #: Whether to skip health check
-        self.check_health = True
-
-        #: Whether to print search results
-        self.print_search_results = True
-
-        #: Whether to clear environment variables related to Fluent parallel mode
-        self.clear_fluent_para_envs = False
-
-        #: Set stdout of the launched Fluent process
-        #: Valid values are the same as subprocess.Popen's stdout argument
-        self.launch_fluent_stdout = None
-
-        #: Set stderr of the launched Fluent process
-        #: Valid values are the same as subprocess.Popen's stderr argument
-        self.launch_fluent_stderr = None
-
-        #: Set the IP address of the Fluent server while launching Fluent
-        self.launch_fluent_ip = self._env.get("PYFLUENT_FLUENT_IP")
-
-        #: Set the port of the Fluent server while launching Fluent
-        self.launch_fluent_port = self._env.get("PYFLUENT_FLUENT_PORT")
-
-        #: Skip password check during RPC execution when Fluent is launched from PyFluent
-        self.launch_fluent_skip_password_check = False
 
         #: The timeout in seconds to wait for Fluent to exit.
         self.force_exit_timeout = self._env.get("PYFLUENT_FORCE_EXIT_TIMEOUT")
