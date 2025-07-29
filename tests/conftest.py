@@ -176,7 +176,7 @@ def run_before_each_test(
 ):
     monkeypatch.setattr(pyfluent.config, "test_name", request.node.name)
     monkeypatch.setattr(pyfluent.config, "codegen_skip_builtin_settings", True)
-    pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
+    pyfluent.config.container_mount_source = pyfluent.config.examples_path
     original_cwd = os.getcwd()
     monkeypatch.chdir(tmp_path)
     yield
@@ -250,7 +250,7 @@ def exhaust_system_geometry_filename():
 
 
 def create_session(**kwargs):
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+    if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.mount_source}
         return pyfluent.launch_fluent(

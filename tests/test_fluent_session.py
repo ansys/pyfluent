@@ -254,10 +254,11 @@ def test_interrupt(static_mixer_case_session):
 
 
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
+    import ansys.fluent.core as pyfluent
+
     monkeypatch.setattr(pyfluent.config, "logging_level_default", False)
     monkeypatch.setattr(pyfluent.config, "watchdog_debug", False)
     inside_container = pyfluent.config.launch_fluent_container
-    import ansys.fluent.core as pyfluent
 
     solver = pyfluent.launch_fluent(start_watchdog=False)
     cortex = (

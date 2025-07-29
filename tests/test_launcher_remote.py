@@ -37,7 +37,7 @@ from test_session import MockHealthServicer, MockSchemeEvalServicer
 
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import EXAMPLES_PATH, examples
+from ansys.fluent.core import config, examples
 from ansys.fluent.core.fluent_connection import (
     FluentConnection,
     UnsupportedRemoteFluentInstance,
@@ -194,8 +194,8 @@ def rename_downloaded_file(file_path: str, suffix: str) -> str:
         orig_path.rename(new_path)
         return str(new_path)
     else:
-        orig_abs_path = Path(EXAMPLES_PATH) / orig_path
-        abs_path = Path(EXAMPLES_PATH) / file_path
+        orig_abs_path = Path(config.examples_path) / orig_path
+        abs_path = Path(config.examples_path) / file_path
         new_stem = f"{file_path.stem}{suffix}"
         new_path = abs_path.with_stem(new_stem)
         new_path = new_path.with_suffix(ext)
@@ -209,11 +209,11 @@ def rename_downloaded_file(file_path: str, suffix: str) -> str:
 )
 def test_rename_downloaded_file(ext, a, b, c, d):
     try:
-        file_path = Path(EXAMPLES_PATH) / f"{a}{ext}"
+        file_path = Path(config.examples_path) / f"{a}{ext}"
         file_path.touch()
         file_path = str(file_path)
         new_file_path = rename_downloaded_file(file_path, "_1")
-        assert new_file_path == str(Path(EXAMPLES_PATH) / f"{a}_1{ext}")
+        assert new_file_path == str(Path(config.examples_path) / f"{a}_1{ext}")
     except Exception:
         raise
     finally:
@@ -221,16 +221,16 @@ def test_rename_downloaded_file(ext, a, b, c, d):
 
     try:
         file_path = f"{b}{ext}"
-        (Path(EXAMPLES_PATH) / file_path).touch()
+        (Path(config.examples_path) / file_path).touch()
         new_file_path = rename_downloaded_file(file_path, "_1")
         assert new_file_path == f"{b}_1{ext}"
     except Exception:
         raise
     finally:
-        (Path(EXAMPLES_PATH) / new_file_path).unlink(missing_ok=True)
+        (Path(config.examples_path) / new_file_path).unlink(missing_ok=True)
 
     try:
-        dir_path = Path(EXAMPLES_PATH) / c
+        dir_path = Path(config.examples_path) / c
         dir_path.mkdir()
         file_path = dir_path / f"{d}{ext}"
         file_path.touch()

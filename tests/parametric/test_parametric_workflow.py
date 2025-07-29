@@ -37,9 +37,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.fluent_version("latest")
 def test_parametric_workflow():
     # parent path needs to exist for mkdtemp
-    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
-    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+    Path(pyfluent.config.examples_path).mkdir(parents=True, exist_ok=True)
+    tmp_save_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
+    if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy(
             mount_source=tmp_save_path
         )
@@ -50,7 +50,7 @@ def test_parametric_workflow():
         inside_container = True
         config_dict = {}
         config_dict.update(mount_source=tmp_save_path)
-        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        if pyfluent.config.use_file_transfer_service:
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,
@@ -61,7 +61,7 @@ def test_parametric_workflow():
                 processor_count=2,
                 container_dict=config_dict,
             )
-        container_workdir = PurePosixPath(pyfluent.CONTAINER_MOUNT_TARGET)
+        container_workdir = PurePosixPath(pyfluent.config.container_mount_target)
     else:
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
@@ -197,7 +197,7 @@ def test_parametric_workflow():
     solver_session.exit()
 
     if inside_container:
-        if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        if pyfluent.config.use_file_transfer_service:
             solver_session = pyfluent.launch_fluent(
                 processor_count=2,
                 container_dict=config_dict,

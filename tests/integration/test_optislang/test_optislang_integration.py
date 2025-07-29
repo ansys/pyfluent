@@ -56,7 +56,7 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     solver_session = mixing_elbow_param_case_data_session
     assert solver_session.is_server_healthy()
     if not solver_session.connection_properties.inside_container:
-        solver_session.chdir(pyfluent.EXAMPLES_PATH)
+        solver_session.chdir(pyfluent.config.examples_path)
     case_name = "elbow_param.cas.h5"
     solver_session.settings.file.read(file_type="case", file_name=case_name)
 
@@ -83,12 +83,12 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
         "inlet2_temp"
     ] = {"value": 600}
 
-    tmp_save_dir = Path(tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)).parts[-1]
+    tmp_save_dir = Path(tempfile.mkdtemp(dir=pyfluent.config.examples_path)).parts[-1]
     design_elbow_param_path = Path(tmp_save_dir) / "design_elbow_param.cas.h5"
 
     solver_session.settings.file.write_case(file_name=str(design_elbow_param_path))
 
-    assert (Path(pyfluent.EXAMPLES_PATH) / design_elbow_param_path).exists()
+    assert (Path(pyfluent.config.examples_path) / design_elbow_param_path).exists()
 
     # Step 4: Solve
     solver_session.settings.solution.initialization.standard_initialize()
@@ -227,9 +227,9 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     )
     assert meshing_session.is_server_healthy()
     if not meshing_session.connection_properties.inside_container:
-        meshing_session.chdir(pyfluent.EXAMPLES_PATH)
+        meshing_session.chdir(pyfluent.config.examples_path)
     temporary_resource_path = (
-        Path(pyfluent.EXAMPLES_PATH) / "test_generate_read_mesh_resources"
+        Path(pyfluent.config.examples_path) / "test_generate_read_mesh_resources"
     )
 
     if os.path.exists(temporary_resource_path):
@@ -341,23 +341,23 @@ def test_parameters(mixing_elbow_param_case_data_session):
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version("latest")
 def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_session):
-    Path(pyfluent.EXAMPLES_PATH).mkdir(parents=True, exist_ok=True)
-    tmp_save_dir = Path(tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)).parts[-1]
+    Path(pyfluent.config.examples_path).mkdir(parents=True, exist_ok=True)
+    tmp_save_dir = Path(tempfile.mkdtemp(dir=pyfluent.config.examples_path)).parts[-1]
     init_project = Path(tmp_save_dir) / "mixing_elbow_param_init.flprj"
     project_file = Path(tmp_save_dir) / "mixing_elbow_param.flprj"
 
     session1 = mixing_elbow_param_case_data_session
     if not session1.connection_properties.inside_container:
-        session1.chdir(pyfluent.EXAMPLES_PATH)
+        session1.chdir(pyfluent.config.examples_path)
     session1.settings.parametric_studies.initialize(project_filename=str(init_project))
     session1.settings.file.parametric_project.save_as(
         project_filename=str(project_file)
     )
-    assert (Path(pyfluent.EXAMPLES_PATH) / project_file).exists()
+    assert (Path(pyfluent.config.examples_path) / project_file).exists()
 
     session2 = new_solver_session
     if not session2.connection_properties.inside_container:
-        session2.chdir(pyfluent.EXAMPLES_PATH)
+        session2.chdir(pyfluent.config.examples_path)
     session2.settings.file.parametric_project.open(project_filename=str(project_file))
     current_pstudy_name = session2.settings.current_parametric_study()
     assert current_pstudy_name == "elbow_param-Solve"

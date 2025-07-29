@@ -314,7 +314,7 @@ def test_journal_creation(file_format, new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
-        dir=str(pyfluent.EXAMPLES_PATH),
+        dir=str(pyfluent.config.examples_path),
     )
     os.close(fd)
 
@@ -344,7 +344,7 @@ def test_start_transcript_file_write(new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
-        dir=str(pyfluent.EXAMPLES_PATH),
+        dir=str(pyfluent.config.examples_path),
     )
     os.close(fd)
 
@@ -384,7 +384,7 @@ def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+    if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
@@ -418,7 +418,7 @@ def test_read_case_using_lightweight_mode_exiting():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+    if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
@@ -658,7 +658,7 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     assert not solver._app_utilities.is_solution_data_available()
 
-    tmp_path = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    tmp_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
 
     # when running in a container, only the randomly generated folder name will be seen
     # the full paths will be different between host and container
