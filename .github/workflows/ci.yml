@@ -246,7 +246,6 @@ jobs:
   build:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-    needs: test-import
     runs-on: [self-hosted, pyfluent]
 
     steps:
