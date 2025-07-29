@@ -24,6 +24,7 @@
 
 import os
 import pydoc
+import warnings
 
 # isort: off
 
@@ -114,84 +115,43 @@ def version_info() -> str:
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
 
 
-# TODO: Warn when following legacy variables are used.
+_config_by_deprecated_name = {
+    "FLUENT_RELEASE_VERSION": "fluent_release_version",
+    "FLUENT_DEV_VERSION": "fluent_dev_version",
+    "EXAMPLES_PATH": "examples_path",
+    "CONTAINER_MOUNT_SOURCE": "container_mount_source",
+    "CONTAINER_MOUNT_TARGET": "container_mount_target",
+    "INFER_REMOTING_IP": "infer_remoting_ip",
+    "INFER_REMOTING_IP_TIMEOUT_PER_IP": "infer_remoting_ip_timeout_per_ip",
+    "DATAMODEL_USE_STATE_CACHE": "datamodel_use_state_cache",
+    "DATAMODEL_USE_ATTR_CACHE": "datamodel_use_attr_cache",
+    "DATAMODEL_USE_NOCOMMANDS_DIFF_STATE": "datamodel_use_nocommands_diff_state",
+    "DATAMODEL_RETURN_STATE_CHANGES": "datamodel_return_state_changes",
+    "USE_FILE_TRANSFER_SERVICE": "use_file_transfer_service",
+    "CODEGEN_OUTDIR": "codegen_outdir",
+    "FLUENT_SHOW_MESH_AFTER_CASE_READ": "fluent_show_mesh_after_case_read",
+    "FLUENT_AUTOMATIC_TRANSCRIPT": "fluent_automatic_transcript",
+    "SUPPORT_SOLVER_INTERRUPT": "support_solver_interrupt",
+    "START_WATCHDOG": "start_watchdog",
+    "CHECK_HEALTH_TIMEOUT": "check_health_timeout",
+    "CHECK_HEALTH": "check_health",
+    "PRINT_SEARCH_RESULTS": "print_search_results",
+    "CLEAR_FLUENT_PARA_ENVS": "clear_fluent_para_envs",
+    "LAUNCH_FLUENT_STDOUT": "launch_fluent_stdout",
+    "LAUNCH_FLUENT_STDERR": "launch_fluent_stderr",
+    "LAUNCH_FLUENT_IP": "launch_fluent_ip",
+    "LAUNCH_FLUENT_PORT": "launch_fluent_port",
+    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",
+}
 
-# Latest released Fluent version
-FLUENT_RELEASE_VERSION = config.fluent_release_version
 
-# Current dev Fluent version
-FLUENT_DEV_VERSION = config.fluent_dev_version
-
-# Path to the example input/data files are downloaded
-EXAMPLES_PATH = config.examples_path
-
-# Host path which is mounted to the container
-CONTAINER_MOUNT_SOURCE = config.container_mount_source
-
-# Path inside the container where the host path is mounted
-CONTAINER_MOUNT_TARGET = config.container_mount_target
-
-# Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
-INFER_REMOTING_IP = config.infer_remoting_ip
-
-# Time in second to wait for response for each ip while inferring remoting ip
-INFER_REMOTING_IP_TIMEOUT_PER_IP = config.infer_remoting_ip_timeout_per_ip
-
-# Whether to use datamodel state caching
-DATAMODEL_USE_STATE_CACHE = config.datamodel_use_state_cache
-
-# Whether to use datamodel attribute caching
-DATAMODEL_USE_ATTR_CACHE = config.datamodel_use_attr_cache
-
-# Whether to stream and cache commands state
-DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = config.datamodel_use_nocommands_diff_state
-
-# Whether to return the state changes on mutating datamodel rpcs
-DATAMODEL_RETURN_STATE_CHANGES = config.datamodel_return_state_changes
-
-# Whether to use remote gRPC file transfer service
-USE_FILE_TRANSFER_SERVICE = config.use_file_transfer_service
-
-# Directory where API files are written out during codegen
-CODEGEN_OUTDIR = config.codegen_outdir
-
-# Whether to show mesh in Fluent after case read
-FLUENT_SHOW_MESH_AFTER_CASE_READ = config.fluent_show_mesh_after_case_read
-
-# Whether to write the automatic transcript in Fluent
-FLUENT_AUTOMATIC_TRANSCRIPT = config.fluent_automatic_transcript
-
-# Whether to interrupt Fluent solver from PyFluent
-SUPPORT_SOLVER_INTERRUPT = config.support_solver_interrupt
-
-# Whether to start watchdog
-START_WATCHDOG = config.start_watchdog
-
-# Health check timeout in seconds
-CHECK_HEALTH_TIMEOUT = config.check_health_timeout
-
-# Whether to skip health check
-CHECK_HEALTH = config.check_health
-
-# Whether to print search results
-PRINT_SEARCH_RESULTS = config.print_search_results
-
-# Whether to clear environment variables related to Fluent parallel mode
-CLEAR_FLUENT_PARA_ENVS = config.clear_fluent_para_envs
-
-# Set stdout of the launched Fluent process
-# Valid values are same as subprocess.Popen's stdout argument
-LAUNCH_FLUENT_STDOUT = config.launch_fluent_stdout
-
-# Set stderr of the launched Fluent process
-# Valid values are same as subprocess.Popen's stderr argument
-LAUNCH_FLUENT_STDERR = config.launch_fluent_stderr
-
-# Set the IP address of the Fluent server while launching Fluent
-LAUNCH_FLUENT_IP = config.launch_fluent_ip
-
-# Set the port of the Fluent server while launching Fluent
-LAUNCH_FLUENT_PORT = config.launch_fluent_port
-
-# Skip password check during rpc execution when Fluent is launched from PyFluent
-LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = config.launch_fluent_skip_password_check
+def __getattr__(name: str) -> str:
+    """Get the value of a deprecated configuration variable."""
+    if name in _config_by_deprecated_name:
+        config_name = _config_by_deprecated_name[name]
+        warnings.warn(
+            f"{name} is deprecated, use config.{config_name} instead.",
+            category=PyFluentDeprecationWarning,
+        )
+        return getattr(config, config_name)
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
