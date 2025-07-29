@@ -37,7 +37,7 @@ def reset():
 
 
 def test_default(reset):
-    # Test default value
+    # Both deprecated var and config should have the same default value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
         assert "ansys_fluent_core_examples" in pyfluent.EXAMPLES_PATH
     assert "ansys_fluent_core_examples" in pyfluent.config.examples_path
@@ -48,7 +48,7 @@ def test_get_set_config(reset):
     new_path = "/new/path/to/examples"
     pyfluent.config.examples_path = new_path
 
-    # Verify the new value
+    # Both deprecated var and config should have the new value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
         assert pyfluent.EXAMPLES_PATH == new_path
     assert pyfluent.config.examples_path == new_path
@@ -59,7 +59,7 @@ def test_get_set_deprecated_var(reset):
     new_path = "/new/path/to/examples"
     pyfluent.EXAMPLES_PATH = new_path
 
-    # Verify the new value
+    # Both deprecated var and config should have the new value
     assert pyfluent.EXAMPLES_PATH == new_path
     assert pyfluent.config.examples_path == new_path
 
@@ -69,7 +69,7 @@ def test_set_config_after_deprecated_var(reset):
     new_path1 = "new_path1"
     pyfluent.EXAMPLES_PATH = new_path1
 
-    # Verify the new value
+    # Both deprecated var and config should have the new value
     assert pyfluent.EXAMPLES_PATH == new_path1
     assert pyfluent.config.examples_path == new_path1
 
@@ -78,7 +78,7 @@ def test_set_config_after_deprecated_var(reset):
     with pytest.warns():
         pyfluent.config.examples_path = new_path2
 
-    # Verify the new value
+    # Both deprecated var and config should have the latest value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
         assert pyfluent.EXAMPLES_PATH == new_path2
     assert pyfluent.config.examples_path == new_path2
@@ -89,7 +89,7 @@ def test_set_deprecated_var_after_config(reset):
     new_path1 = "new_path1"
     pyfluent.config.examples_path = new_path1
 
-    # Verify the new value
+    # Both deprecated var and config should have the new value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
         assert pyfluent.EXAMPLES_PATH == new_path1
     assert pyfluent.config.examples_path == new_path1
@@ -98,6 +98,6 @@ def test_set_deprecated_var_after_config(reset):
     new_path2 = "new_path2"
     pyfluent.EXAMPLES_PATH = new_path2
 
-    # Verify the new value
+    # Both deprecated var and config should have the latest value
     assert pyfluent.EXAMPLES_PATH == new_path2
     assert pyfluent.config.examples_path == new_path2
