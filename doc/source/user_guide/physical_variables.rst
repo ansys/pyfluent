@@ -1,4 +1,4 @@
-﻿.. _ref_user_guide_variables:
+﻿.. _user_guide_variables:
 
 ===============================
 Working with physical variables
