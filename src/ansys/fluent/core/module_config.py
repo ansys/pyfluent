@@ -54,7 +54,7 @@ class _ConfigDescriptor:
 
         if self._deprecated_var in vars(pyfluent):
             warnings.warn(
-                f"Deleting deprecated variable '{self._deprecated_var}' which was previously set."
+                f"Deleting deprecated module-level variable '{self._deprecated_var}' which was previously set."
             )
             delattr(pyfluent, self._deprecated_var)
         self._set_config(instance, value)
@@ -87,7 +87,7 @@ class Config:
     #: Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS, defaults to True.
     infer_remoting_ip = _ConfigDescriptor(lambda instance: True, "INFER_REMOTING_IP")
 
-    # Time in second to wait for response for each ip while inferring remoting ip, defaults to 2.
+    # Time in seconds to wait for response for each ip while inferring remoting ip, defaults to 2.
     infer_remoting_ip_timeout_per_ip = _ConfigDescriptor(
         lambda instance: 2, "INFER_REMOTING_IP_TIMEOUT_PER_IP"
     )
