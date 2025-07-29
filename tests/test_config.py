@@ -26,24 +26,24 @@ import ansys.fluent.core as pyfluent
 
 
 @pytest.fixture
-def reset():
+def reset_examples_path():
     """Reset both deprecated var and config after each test."""
     yield
     try:
         delattr(pyfluent, "EXAMPLES_PATH")
+        delattr(pyfluent.config, "_examples_path")
     except AttributeError:
         pass
-    pyfluent.config._examples_path = None
 
 
-def test_default(reset):
+def test_default(reset_examples_path):
     # Both deprecated var and config should have the same default value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
         assert "ansys_fluent_core_examples" in pyfluent.EXAMPLES_PATH
     assert "ansys_fluent_core_examples" in pyfluent.config.examples_path
 
 
-def test_get_set_config(reset):
+def test_get_set_config(reset_examples_path):
     # Set config
     new_path = "/new/path/to/examples"
     pyfluent.config.examples_path = new_path
@@ -54,7 +54,7 @@ def test_get_set_config(reset):
     assert pyfluent.config.examples_path == new_path
 
 
-def test_get_set_deprecated_var(reset):
+def test_get_set_deprecated_var(reset_examples_path):
     # Set deprecated var
     new_path = "/new/path/to/examples"
     pyfluent.EXAMPLES_PATH = new_path
@@ -64,7 +64,7 @@ def test_get_set_deprecated_var(reset):
     assert pyfluent.config.examples_path == new_path
 
 
-def test_set_config_after_deprecated_var(reset):
+def test_set_config_after_deprecated_var(reset_examples_path):
     # Set deprecated var
     new_path1 = "new_path1"
     pyfluent.EXAMPLES_PATH = new_path1
@@ -84,7 +84,7 @@ def test_set_config_after_deprecated_var(reset):
     assert pyfluent.config.examples_path == new_path2
 
 
-def test_set_deprecated_var_after_config(reset):
+def test_set_deprecated_var_after_config(reset_examples_path):
     # Set deprecated var
     new_path1 = "new_path1"
     pyfluent.config.examples_path = new_path1
