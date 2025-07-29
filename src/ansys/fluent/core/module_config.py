@@ -22,18 +22,62 @@
 """Configuration variables for PyFluent."""
 import os
 from pathlib import Path
+from typing import Any, Callable
+import warnings
+
+
+class _ConfigDescriptor:
+    """Descriptor for managing configuration attributes."""
+
+    def __init__(self, default_fn: Callable[[], Any], deprecated_var: str):
+        self._default_fn = default_fn
+        self._deprecated_var = deprecated_var
+        self._backing_field = f"_{self._deprecated_var.lower()}"
+
+    def _get_config(self, instance):
+        if not hasattr(instance, self._backing_field):
+            instance._backing_field = self._default_fn()
+        return instance._backing_field
+
+    def _set_config(self, instance, value):
+        instance._backing_field = value
+
+    def __get__(self, instance, owner):
+        import ansys.fluent.core as pyfluent
+
+        if self._deprecated_var in vars(pyfluent):
+            return getattr(pyfluent, self._deprecated_var)
+        return self._get_config(instance)
+
+    def __set__(self, instance, value):
+        import ansys.fluent.core as pyfluent
+
+        if self._deprecated_var in vars(pyfluent):
+            warnings.warn(
+                f"Deleting deprecated variable '{self._deprecated_var}' which was previously set."
+            )
+            delattr(pyfluent, self._deprecated_var)
+        self._set_config(instance, value)
+
+
+def _get_default_examples_path() -> str:
+    """Get the default examples path."""
+    parent_path = Path.home() / "Downloads"
+    parent_path.mkdir(exist_ok=True)
+    return str(parent_path / "ansys_fluent_core_examples")
 
 
 class Config:
     """Set the global configuration variables for PyFluent."""
+
+    #: Directory where example files are downloaded
+    examples_path = _ConfigDescriptor(_get_default_examples_path, "EXAMPLES_PATH")
 
     def __init__(self):
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported
         # and reuse it throughout process lifetime.
         self._env = os.environ.copy()
-
-        self._examples_path = None
 
         #: Host path which is mounted to the container
         self.container_mount_source = self._env.get("PYFLUENT_CONTAINER_MOUNT_SOURCE")
@@ -208,18 +252,6 @@ class Config:
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
         return "26.1.0"
-
-    @property
-    def examples_path(self) -> str:
-        """The directory where example input/data files are downloaded."""
-        parent_path = Path.home() / "Downloads"
-        parent_path.mkdir(exist_ok=True)
-        self._examples_path = str(parent_path / "ansys_fluent_core_examples")
-        return self._examples_path
-
-    @examples_path.setter
-    def examples_path(self, value: str):
-        self._examples_path = value
 
 
 # Global configuration object for PyFluent

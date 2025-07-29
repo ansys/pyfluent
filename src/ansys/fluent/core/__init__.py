@@ -150,7 +150,7 @@ def __getattr__(name: str) -> str:
     if name in _config_by_deprecated_name:
         config_name = _config_by_deprecated_name[name]
         warnings.warn(
-            f"{name} is deprecated, use config.{config_name} instead.",
+            f"'{name}' is deprecated, use 'config.{config_name}' instead.",
             category=PyFluentDeprecationWarning,
         )
         return getattr(config, config_name)
