@@ -47,6 +47,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     :hidden:
     :caption: ansys.fluent.core
 
+    module_config
     docker/docker_contents
     filereader/filereader_contents
     launcher/launcher_contents
