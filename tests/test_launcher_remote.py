@@ -55,7 +55,7 @@ import ansys.platform.instancemanagement as pypim
 
 @pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4055")
 def test_launch_remote_instance(monkeypatch, new_solver_session):
-    monkeypatch.setattr(pyfluent, "CHECK_HEALTH", False)
+    monkeypatch.setattr(pyfluent.config, "check_health", False)
     fluent = new_solver_session
     # Create a mock pypim pretending it is configured and returning a channel to an already running Fluent
     mock_instance = pypim.Instance(

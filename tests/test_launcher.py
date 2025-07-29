@@ -575,7 +575,7 @@ def test_container_mount_source_target(caplog):
 # runs only in container till cwd is supported for standalone launch
 def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
-        m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
+        m.setattr(pyfluent.config, "fluent_automatic_transcript", True)
         with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
             with pyfluent.launch_fluent(container_dict=dict(mount_source=tmp_dir)):
                 assert list(Path(tmp_dir).glob("*.trn"))

@@ -294,7 +294,7 @@ def test_japanese_semantic_search(capsys):
 
 
 def test_match_whole_word(monkeypatch):
-    monkeypatch.setattr(pyfluent, "PRINT_SEARCH_RESULTS", False)
+    monkeypatch.setattr(pyfluent.config, "print_search_results", False)
     api_tree_data = {
         "api_objects": [
             "<solver_session>.parent (Object)",
