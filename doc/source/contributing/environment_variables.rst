@@ -4,11 +4,7 @@
 Environment Variables
 =====================
 
-This page lists the environment variables that can be set to control various aspects of PyFluent.
-The values of these variables are frozen at the time of importing the PyFluent package and
-any later changes to these variables within the same Python process does not affect
-the behavior of PyFluent. PyFluent also provides a set of configuration variables that can be used to
-control the behavior of PyFluent within the same Python process. Please see the :ref:`ref_config_variables` page for more details.
+Following is a list of environment variables that can be set to control various aspects of PyFluent.
 
 .. vale off
 
