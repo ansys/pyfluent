@@ -79,51 +79,51 @@ class Config:
 
     #: Host path which is mounted to the container, defaults to the value of ``PYFLUENT_CONTAINER_MOUNT_SOURCE`` environment variable.
     container_mount_source = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_CONTAINER_MOUNT_SOURCE"),
+        lambda instance: instance._env.get("PYFLUENT_CONTAINER_MOUNT_SOURCE"),
         "CONTAINER_MOUNT_SOURCE",
     )
 
     #: Path inside the container where the host path is mounted, defaults to "/home/container/workdir".
     container_mount_target = _ConfigDescriptor(
-        lambda _: "/home/container/workdir", "CONTAINER_MOUNT_TARGET"
+        lambda instance: "/home/container/workdir", "CONTAINER_MOUNT_TARGET"
     )
 
     #: Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS, defaults to True.
-    infer_remoting_ip = _ConfigDescriptor(lambda _: True, "INFER_REMOTING_IP")
+    infer_remoting_ip = _ConfigDescriptor(lambda instance: True, "INFER_REMOTING_IP")
 
     # Time in seconds to wait for response for each ip while inferring remoting ip, defaults to 2.
     infer_remoting_ip_timeout_per_ip = _ConfigDescriptor(
-        lambda _: 2, "INFER_REMOTING_IP_TIMEOUT_PER_IP"
+        lambda instance: 2, "INFER_REMOTING_IP_TIMEOUT_PER_IP"
     )
 
     #: Whether to use datamodel state caching, defaults to True.
     datamodel_use_state_cache = _ConfigDescriptor(
-        lambda _: True, "DATAMODEL_USE_STATE_CACHE"
+        lambda instance: True, "DATAMODEL_USE_STATE_CACHE"
     )
 
     #: Whether to use datamodel attribute caching, defaults to True.
     datamodel_use_attr_cache = _ConfigDescriptor(
-        lambda _: True, "DATAMODEL_USE_ATTR_CACHE"
+        lambda instance: True, "DATAMODEL_USE_ATTR_CACHE"
     )
 
     #: Whether to stream and cache commands state, defaults to True.
     datamodel_use_nocommands_diff_state = _ConfigDescriptor(
-        lambda _: True, "DATAMODEL_USE_NOCOMMANDS_DIFF_STATE"
+        lambda instance: True, "DATAMODEL_USE_NOCOMMANDS_DIFF_STATE"
     )
 
     #: Whether to return the state changes on mutating datamodel RPCs, defaults to True.
     datamodel_return_state_changes = _ConfigDescriptor(
-        lambda _: True, "DATAMODEL_RETURN_STATE_CHANGES"
+        lambda instance: True, "DATAMODEL_RETURN_STATE_CHANGES"
     )
 
     #: Whether to use remote gRPC file transfer service, defaults to False.
     use_file_transfer_service = _ConfigDescriptor(
-        lambda _: False, "USE_FILE_TRANSFER_SERVICE"
+        lambda instance: False, "USE_FILE_TRANSFER_SERVICE"
     )
 
     #: Directory where API files are written out during codegen.
     codegen_outdir = _ConfigDescriptor(
-        lambda _: os.getenv(
+        lambda instance: instance._env.get(
             "PYFLUENT_CODEGEN_OUTDIR", (Path(__file__) / ".." / "generated").resolve()
         ),
         "CODEGEN_OUTDIR",
@@ -131,173 +131,201 @@ class Config:
 
     #: Whether to show mesh in Fluent after case read, defaults to False.
     fluent_show_mesh_after_case_read = _ConfigDescriptor(
-        lambda _: False, "FLUENT_SHOW_MESH_AFTER_CASE_READ"
+        lambda instance: False, "FLUENT_SHOW_MESH_AFTER_CASE_READ"
     )
 
     #: Whether to write the automatic transcript in Fluent, defaults to the value of ``PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT`` environment variable.
     fluent_automatic_transcript = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1",
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT")
+        == "1",
         "FLUENT_AUTOMATIC_TRANSCRIPT",
     )
 
     #: Whether to interrupt Fluent solver from PyFluent, defaults to False.
     support_solver_interrupt = _ConfigDescriptor(
-        lambda _: False, "SUPPORT_SOLVER_INTERRUPT"
+        lambda instance: False, "SUPPORT_SOLVER_INTERRUPT"
     )
 
     #: Whether to start watchdog.
-    start_watchdog = _ConfigDescriptor(lambda _: None, "START_WATCHDOG")
+    start_watchdog = _ConfigDescriptor(lambda instance: None, "START_WATCHDOG")
 
     #: Whether to enable debug logging for the watchdog, defaults to the value of ``PYFLUENT_WATCHDOG_DEBUG`` environment variable.
     watchdog_debug = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_WATCHDOG_DEBUG") == "1",
+        lambda instance: instance._env.get("PYFLUENT_WATCHDOG_DEBUG") == "1",
         "WATCHDOG_DEBUG",
     )
 
     #: Whether to raise an exception when the watchdog encounters an error, defaults to the value of ``PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR`` environment variable.
     watchdog_exception_on_error = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1",
+        lambda instance: instance._env.get("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR")
+        == "1",
         "WATCHDOG_EXCEPTION_ON_ERROR",
     )
 
     #: Health check timeout in seconds, defaults to 60 seconds.
-    check_health_timeout = _ConfigDescriptor(lambda _: 60, "CHECK_HEALTH_TIMEOUT")
+    check_health_timeout = _ConfigDescriptor(
+        lambda instance: 60, "CHECK_HEALTH_TIMEOUT"
+    )
 
     #: Whether to skip health check, defaults to True.
-    check_health = _ConfigDescriptor(lambda _: True, "CHECK_HEALTH")
+    check_health = _ConfigDescriptor(lambda instance: True, "CHECK_HEALTH")
 
     #: Whether to print search results, defaults to True.
-    print_search_results = _ConfigDescriptor(lambda _: True, "PRINT_SEARCH_RESULTS")
+    print_search_results = _ConfigDescriptor(
+        lambda instance: True, "PRINT_SEARCH_RESULTS"
+    )
 
     #: Whether to clear environment variables related to Fluent parallel mode, defaults to False.
     clear_fluent_para_envs = _ConfigDescriptor(
-        lambda _: False, "CLEAR_FLUENT_PARA_ENVS"
+        lambda instance: False, "CLEAR_FLUENT_PARA_ENVS"
     )
 
     #: Set stdout of the launched Fluent process.
     #: Valid values are the same as subprocess.Popen's stdout argument.
-    launch_fluent_stdout = _ConfigDescriptor(lambda _: None, "LAUNCH_FLUENT_STDOUT")
+    launch_fluent_stdout = _ConfigDescriptor(
+        lambda instance: None, "LAUNCH_FLUENT_STDOUT"
+    )
 
     #: Set stderr of the launched Fluent process.
     #: Valid values are the same as subprocess.Popen's stderr argument.
-    launch_fluent_stderr = _ConfigDescriptor(lambda _: None, "LAUNCH_FLUENT_STDERR")
+    launch_fluent_stderr = _ConfigDescriptor(
+        lambda instance: None, "LAUNCH_FLUENT_STDERR"
+    )
 
     #: Set the IP address of the Fluent server while launching Fluent, defaults to the value of ``PYFLUENT_FLUENT_IP`` environment variable.
     launch_fluent_ip = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_FLUENT_IP"), "LAUNCH_FLUENT_IP"
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_IP"), "LAUNCH_FLUENT_IP"
     )
 
     #: Set the port of the Fluent server while launching Fluent, defaults to the value of ``PYFLUENT_FLUENT_PORT`` environment variable.
     launch_fluent_port = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_FLUENT_PORT"), "LAUNCH_FLUENT_PORT"
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_PORT"), "LAUNCH_FLUENT_PORT"
     )
 
     #: Skip password check during RPC execution when Fluent is launched from PyFluent, defaults to False.
     launch_fluent_skip_password_check = _ConfigDescriptor(
-        lambda _: False, "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK"
+        lambda instance: False, "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK"
     )
 
     #: The timeout in seconds to wait for Fluent to exit, defaults to the value of ``PYFLUENT_FORCE_EXIT_TIMEOUT`` environment variable.
     force_exit_timeout = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_FORCE_EXIT_TIMEOUT")
+        lambda instance: instance._env.get("PYFLUENT_FORCE_EXIT_TIMEOUT")
     )
 
     #: Whether to skip code generation of built-in settings, defaults to the value of ``PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS`` environment variable.
     codegen_skip_builtin_settings = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS") == "1"
+        lambda instance: instance._env.get("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS")
+        == "1"
     )
 
     #: Whether to launch Fluent in a container, defaults to the value of ``PYFLUENT_LAUNCH_CONTAINER`` environment variable.
     launch_fluent_container = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+        lambda instance: instance._env.get("PYFLUENT_LAUNCH_CONTAINER") == "1"
     )
 
     #: The tag of the Fluent image to use when launching in a container, defaults to the value of ``FLUENT_IMAGE_TAG`` environment variable or the latest release version of Fluent.
     fluent_image_tag = _ConfigDescriptor(
-        lambda instance: os.getenv(
+        lambda instance: instance._env.get(
             "FLUENT_IMAGE_TAG", f"v{instance.fluent_release_version}"
         )
     )
 
     #: The name of the Fluent image to use when launching in a container, defaults to the value of ``FLUENT_IMAGE_NAME`` environment variable.
-    fluent_image_name = _ConfigDescriptor(lambda _: os.getenv("FLUENT_IMAGE_NAME"))
+    fluent_image_name = _ConfigDescriptor(
+        lambda instance: instance._env.get("FLUENT_IMAGE_NAME")
+    )
 
     #: The name of the Fluent container to use when launching in a container, defaults to the value of ``FLUENT_CONTAINER_NAME`` environment variable.
     fluent_container_name = _ConfigDescriptor(
-        lambda _: os.getenv("FLUENT_CONTAINER_NAME")
+        lambda instance: instance._env.get("FLUENT_CONTAINER_NAME")
     )
 
     #: Whether to use Docker Compose for launching Fluent in a container, defaults to the value of ``PYFLUENT_USE_DOCKER_COMPOSE`` environment variable.
     use_docker_compose = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
+        lambda instance: instance._env.get("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
     )
 
     #: Whether to use Podman Compose for launching Fluent in a container, defaults to the value of ``PYFLUENT_USE_PODMAN_COMPOSE`` environment variable.
     use_podman_compose = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        lambda instance: instance._env.get("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
     )
 
     #: The timeout in seconds to wait for Fluent to launch, defaults to the value of ``PYFLUENT_LAUNCH_FLUENT_TIMEOUT`` environment variable or 60 seconds.
     launch_fluent_timeout = _ConfigDescriptor(
-        lambda _: int(os.getenv("PYFLUENT_LAUNCH_FLUENT_TIMEOUT", 60))
+        lambda instance: int(instance._env.get("PYFLUENT_LAUNCH_FLUENT_TIMEOUT", 60))
     )
 
     #: Whether to show the Fluent GUI when launching the server, defaults to the value of ``PYFLUENT_SHOW_SERVER_GUI`` environment variable.
     show_fluent_gui = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1"
+        lambda instance: instance._env.get("PYFLUENT_SHOW_SERVER_GUI") == "1"
     )
 
     #: Whether to launch Fluent in debug mode, defaults to the value of ``PYFLUENT_FLUENT_DEBUG`` environment variable.
     fluent_debug = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_FLUENT_DEBUG") == "1"
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_DEBUG") == "1"
     )
 
     #: Whether to skip API upgrade advice, defaults to the value of ``PYFLUENT_SKIP_API_UPGRADE_ADVICE`` environment variable.
     skip_api_upgrade_advice = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_SKIP_API_UPGRADE_ADVICE") == "1"
+        lambda instance: instance._env.get("PYFLUENT_SKIP_API_UPGRADE_ADVICE") == "1"
     )
 
     #: The maximum number of bytes to log in gRPC logs, defaults to the value of ``PYFLUENT_GRPC_LOG_BYTES_LIMIT`` environment variable or 1000 bytes.
     grpc_log_bytes_limit = _ConfigDescriptor(
-        lambda _: int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
+        lambda instance: int(instance._env.get("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
     )
 
     #: Whether to disable the fix for returning parameter lists via settings API, defaults to the value of ``PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN`` environment variable.
     disable_parameter_list_return_fix = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") == "1"
+        lambda instance: instance._env.get("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN")
+        == "1"
     )
 
     #: Whether to use runtime Python classes for settings, defaults to the value of ``PYFLUENT_USE_RUNTIME_PYTHON_CLASSES`` environment variable.
     use_runtime_python_classes = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1"
+        lambda instance: instance._env.get("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1"
     )
 
     #: Whether to hide sensitive information in logs, defaults to the value of ``PYFLUENT_HIDE_LOG_SECRETS`` environment variable.
     hide_log_secrets = _ConfigDescriptor(
-        lambda _: os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1"
+        lambda instance: instance._env.get("PYFLUENT_HIDE_LOG_SECRETS") == "1"
     )
 
     #: The Fluent root directory to be used for PyFluent, defaults to the value of ``PYFLUENT_FLUENT_ROOT`` environment variable.
-    fluent_root = _ConfigDescriptor(lambda _: os.getenv("PYFLUENT_FLUENT_ROOT"))
+    fluent_root = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_FLUENT_ROOT")
+    )
 
     #: The Ansys license path to be used in Fluent, defaults to the value of ``ANSYSLMD_LICENSE_FILE`` environment variable.
     ansyslmd_license_file = _ConfigDescriptor(
-        lambda _: os.getenv("ANSYSLMD_LICENSE_FILE")
+        lambda instance: instance._env.get("ANSYSLMD_LICENSE_FILE")
     )
 
     #: The remoting server address to be used in Fluent, defaults to the value of ``REMOTING_SERVER_ADDRESS`` environment variable.
     remoting_server_address = _ConfigDescriptor(
-        lambda _: os.getenv("REMOTING_SERVER_ADDRESS")
+        lambda instance: instance._env.get("REMOTING_SERVER_ADDRESS")
     )
 
     #: The directory where server info will be written from Fluent, defaults to the value of ``SERVER_INFO_DIR`` environment variable.
-    fluent_server_info_dir = _ConfigDescriptor(lambda _: os.getenv("SERVER_INFO_DIR"))
+    fluent_server_info_dir = _ConfigDescriptor(
+        lambda instance: instance._env.get("SERVER_INFO_DIR")
+    )
 
     #: Current unit test name, defaults to the value of ``PYFLUENT_TEST_NAME`` environment variable.
-    test_name = _ConfigDescriptor(lambda _: os.getenv("PYFLUENT_TEST_NAME"))
+    test_name = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_TEST_NAME")
+    )
 
     #: The default logging level for PyFluent, defaults to the value of ``PYFLUENT_LOGGING`` environment variable.
-    logging_level_default = _ConfigDescriptor(lambda _: os.getenv("PYFLUENT_LOGGING"))
+    logging_level_default = _ConfigDescriptor(
+        lambda instance: instance._env.get("PYFLUENT_LOGGING")
+    )
+
+    def __init__(self):
+        """__init__ method of Config class."""
+        # Read the environment variable once when pyfluent is imported
+        # and reuse it throughout process lifetime.
+        self._env = os.environ.copy()
 
     @property
     def fluent_release_version(self) -> str:
