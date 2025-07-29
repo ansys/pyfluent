@@ -170,8 +170,8 @@ def test_create_mock_session_by_setting_ip_port_env_var(
         MockSchemeEvalServicer(), server
     )
     server.start()
-    monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
-    monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_ip", ip)
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_port", port)
     fluent_connection = FluentConnection(password="12345", cleanup_on_exit=False)
     session = BaseSession(
         fluent_connection=fluent_connection,
@@ -293,8 +293,8 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     server.start()
-    monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
-    monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_ip", ip)
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_port", port)
     session = connect_to_fluent(
         cleanup_on_exit=False, ip=ip, port=port, password="12345"
     )

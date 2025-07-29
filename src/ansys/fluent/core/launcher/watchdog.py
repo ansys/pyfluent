@@ -194,13 +194,13 @@ def launch(
                 err_content = "Watchdog - %s" % f.read().replace("\n", "")
             watchdog_err.unlink()
             logger.error(err_content)
-            if pyfluent.config.watchdog_exeption_on_error:
+            if pyfluent.config.watchdog_exception_on_error:
                 raise UnsuccessfulWatchdogLaunch(err_content)
 
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
-        if pyfluent.config.watchdog_exeption_on_error:
+        if pyfluent.config.watchdog_exception_on_error:
             raise UnsuccessfulWatchdogLaunch(
                 "PyFluent Watchdog did not initialize correctly."
             )

@@ -65,7 +65,7 @@ def pytest_addoption(parser):
 def pytest_runtest_setup(item):
     if (
         any(mark.name == "standalone" for mark in item.iter_markers())
-        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+        and pyfluent.config.launch_fluent_container
     ):
         pytest.skip()
 
@@ -174,8 +174,8 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch,
     request: pytest.FixtureRequest,
 ):
-    monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-    monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
+    monkeypatch.setattr(pyfluent.config, "test_name", request.node.name)
+    monkeypatch.setattr(pyfluent.config, "codegen_skip_builtin_settings", True)
     pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
     original_cwd = os.getcwd()
     monkeypatch.chdir(tmp_path)
@@ -196,7 +196,7 @@ class Helpers:
             version = FluentVersion.current_release()
         elif not isinstance(version, FluentVersion):
             version = FluentVersion(version)
-        self.monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+        self.monkeypatch.setattr(pyfluent.config, "fluent_root", None)
         for fv in FluentVersion:
             if fv <= version:
                 self.monkeypatch.setenv(fv.awp_var, f"ansys_inc/{fv.name}")

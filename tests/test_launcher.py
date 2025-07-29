@@ -371,7 +371,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     helpers.mock_awp_vars()
-    monkeypatch.setenv("PYFLUENT_FLUENT_ROOT", "dev/vNNN/fluent")
+    monkeypatch.setattr(pyfluent.config, "fluent_root", "dev/vNNN/fluent")
     if platform.system() == "Windows":
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
@@ -380,7 +380,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
 
 
 def test_watchdog_launch(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
+    monkeypatch.setattr(pyfluent.config, "watchdog_exception_on_error", True)
     pyfluent.launch_fluent(start_watchdog=True)
 
 
@@ -585,7 +585,7 @@ def test_fluent_automatic_transcript(monkeypatch):
 
 
 def test_standalone_launcher_dry_run(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     fluent_path = r"\x\y\z\fluent.exe"
     fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
@@ -598,9 +598,9 @@ def test_standalone_launcher_dry_run(monkeypatch):
 
 
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     with tempfile.TemporaryDirectory() as tmp_dir:
-        monkeypatch.setenv("SERVER_INFO_DIR", tmp_dir)
+        monkeypatch.setattr(pyfluent.config, "server_info_dir", tmp_dir)
         fluent_path = r"\x\y\z\fluent.exe"
         fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
             fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
@@ -743,10 +743,10 @@ def test_error_for_selecting_both_compose_sources():
 
 
 def test_warning_for_deprecated_compose_env_vars(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
+    monkeypatch.setattr(pyfluent.config, "use_docker_compose", True)
     with pytest.warns(PyFluentDeprecationWarning):
         ComposeConfig()
 
-    monkeypatch.setenv("PYFLUENT_USE_PODMAN_COMPOSE", "1")
+    monkeypatch.setattr(pyfluent.config, "use_podman_compose", True)
     with pytest.warns(PyFluentDeprecationWarning):
         ComposeConfig()

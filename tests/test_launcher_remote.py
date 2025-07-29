@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+﻿# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -87,7 +87,7 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
     monkeypatch.setattr(pypim, "connect", mock_connect)
     monkeypatch.setattr(pypim, "is_configured", mock_is_configured)
 
-    if os.getenv("FLUENT_IMAGE_TAG"):
+    if "FLUENT_IMAGE_TAG" in os.environ:
         monkeypatch.setattr(
             FluentVersion,
             "get_latest_installed",

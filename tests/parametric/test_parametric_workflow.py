@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 from pathlib import Path, PurePosixPath
 import tempfile
 
@@ -47,7 +46,7 @@ def test_parametric_workflow():
     import_file_name = examples.download_file(
         "Static_Mixer_main.cas.h5", "pyfluent/static_mixer", save_path=tmp_save_path
     )
-    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+    if pyfluent.config.launch_fluent_container:
         inside_container = True
         config_dict = {}
         config_dict.update(mount_source=tmp_save_path)

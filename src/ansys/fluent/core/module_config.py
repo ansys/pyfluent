@@ -86,7 +86,7 @@ class Config:
         self.watchdog_debug = self._env.get("PYFLUENT_WATCHDOG_DEBUG") == "1"
 
         #: Whether to raise an exception when the watchdog encounters an error
-        self.watchdog_exeption_on_error = (
+        self.watchdog_exception_on_error = (
             self._env.get("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1"
         )
 
@@ -114,7 +114,7 @@ class Config:
         self.launch_fluent_ip = self._env.get("PYFLUENT_FLUENT_IP")
 
         #: Set the port of the Fluent server while launching Fluent
-        self.launch_fluent_port = None
+        self.launch_fluent_port = self._env.get("PYFLUENT_FLUENT_PORT")
 
         #: Skip password check during RPC execution when Fluent is launched from PyFluent
         self.launch_fluent_skip_password_check = False
@@ -196,6 +196,9 @@ class Config:
         #: Current unit test name, if any.
         self.test_name = self._env.get("PYFLUENT_TEST_NAME")
 
+        #: The default logging level for PyFluent.
+        self.logging_level_default = self._env.get("PYFLUENT_LOGGING")
+
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""
@@ -217,11 +220,6 @@ class Config:
     @examples_path.setter
     def examples_path(self, value: str):
         self._examples_path = value
-
-    @property
-    def logging_level_default(self) -> str:
-        """The default logging level."""
-        return self._env.get("PYFLUENT_LOGGING")
 
 
 # Global configuration object for PyFluent
