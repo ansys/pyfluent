@@ -188,7 +188,7 @@ class FluentVersion(Enum):
     @property
     def docker_image_tag(self):
         """Get the Fluent version as a Docker image tag."""
-        return f"v{self.value}"
+        return f"v{self.value.rsplit('.', 1)[0]}.latest"
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):
