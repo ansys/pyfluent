@@ -47,6 +47,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
+    UIMode,
     _get_argvals_and_session,
 )
 from ansys.fluent.core.session_meshing import Meshing
@@ -68,6 +69,7 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode | str | None = None,
+        ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -90,6 +92,8 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent for targeting a specific session type.
+        ui_mode : UIMode
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
