@@ -338,5 +338,5 @@ class Config:
         return "26.1.0"
 
 
-# Global configuration object for PyFluent
+#: Global configuration object for PyFluent
 config = Config()
