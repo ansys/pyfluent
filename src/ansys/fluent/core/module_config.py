@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """Configuration variables for PyFluent."""
+import inspect
 import os
 from pathlib import Path
 from typing import Any, Callable, Generic, TypeVar
@@ -344,6 +345,18 @@ class Config:
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
         return "26.1.0"
+
+    def print_all(self):
+        """Print all configuration variables."""
+        config_dict = {}
+        for k, v in inspect.getmembers_static(self):
+            if isinstance(v, (_ConfigDescriptor, property)):
+                config_dict[k] = v.__get__(self, self.__class__)
+        max_key_length = max(len(k) for k in config_dict)
+        print("PyFluent Configuration:")
+        print("-" * (max_key_length + 20))
+        for k, v in config_dict.items():
+            print(f"{k.ljust(max_key_length)} : {v}")
 
 
 #: Global configuration object for PyFluent
