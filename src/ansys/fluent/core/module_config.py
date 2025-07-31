@@ -305,11 +305,6 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_FLUENT_ROOT")
     )
 
-    #: The Ansys license path to be used in Fluent, defaults to the value of ``ANSYSLMD_LICENSE_FILE`` environment variable.
-    ansyslmd_license_file = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("ANSYSLMD_LICENSE_FILE")
-    )
-
     #: The remoting server address to be used in Fluent, defaults to the value of ``REMOTING_SERVER_ADDRESS`` environment variable.
     remoting_server_address = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("REMOTING_SERVER_ADDRESS")
