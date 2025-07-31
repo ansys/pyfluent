@@ -174,7 +174,9 @@ class PIMLauncher:
                 FluentVersion(self.argvals["product_version"]).number
             )
         else:
-            fluent_product_version = None
+            fluent_product_version = str(
+                FluentVersion(FluentVersion.current_release()).number
+            )
 
         return launch_remote_fluent(
             session_cls=self.new_session,
