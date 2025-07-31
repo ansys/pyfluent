@@ -162,7 +162,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(pyfluent.FLUENT_RELEASE_VERSION)
+        return cls(pyfluent.config.fluent_release_version)
 
     @classmethod
     def current_dev(cls):
@@ -173,7 +173,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(pyfluent.FLUENT_DEV_VERSION)
+        return cls(pyfluent.config.fluent_dev_version)
 
     @property
     def awp_var(self):

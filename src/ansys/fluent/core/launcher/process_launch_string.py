@@ -132,7 +132,7 @@ def _generate_launch_string(
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
-    if not pyfluent.FLUENT_SHOW_MESH_AFTER_CASE_READ:
+    if not pyfluent.config.fluent_show_mesh_after_case_read:
         launch_string += " -nm"
     return launch_string
 
@@ -149,6 +149,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     Path
         Fluent executable path
     """
+    from ansys.fluent.core import config
 
     def get_exe_path(fluent_root: Path) -> Path:
         if launcher_utils.is_windows():
@@ -170,7 +171,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
         return FluentVersion(product_version).get_fluent_exe_path()
 
     # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
-    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    fluent_root = config.fluent_root
     if fluent_root:
         return get_exe_path(Path(fluent_root))
 

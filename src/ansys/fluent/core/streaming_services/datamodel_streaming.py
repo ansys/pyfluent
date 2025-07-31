@@ -57,7 +57,9 @@ class DatamodelStream(StreamingService):
         """Processes datamodel events."""
         data_model_request = datamodel_se_pb2.DataModelRequest(*args, **kwargs)
         data_model_request.rules = rules
-        data_model_request.returnstatechanges = pyfluent.DATAMODEL_RETURN_STATE_CHANGES
+        data_model_request.returnstatechanges = (
+            pyfluent.config.datamodel_return_state_changes
+        )
         if no_commands_diff_state:
             data_model_request.diffstate = datamodel_se_pb2.DIFFSTATE_NOCOMMANDS
         responses = self._streaming_service.begin_streaming(

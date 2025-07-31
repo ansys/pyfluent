@@ -22,21 +22,21 @@
 
 """Generate builtin setting classes."""
 
-from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
+from ansys.fluent.core import FluentVersion, config
 from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.fluent_version import all_versions
 
-_PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
-_PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
+_PY_FILE = config.codegen_outdir / "solver" / "settings_builtin.py"
+_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
 
 
 def _get_settings_root(version: str):
-    from ansys.fluent.core import CODEGEN_OUTDIR, utils
+    from ansys.fluent.core import config, utils
 
     settings = utils.load_module(
         f"settings_{version}",
-        CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+        config.codegen_outdir / "solver" / f"settings_{version}.py",
     )
     return settings.root
 
@@ -62,7 +62,7 @@ def _get_named_objects_in_path(root, path, kind):
 def generate(version: str):
     """Generate builtin setting classes."""
     print("Generating builtin settings...")
-    CODEGEN_OUTDIR.mkdir(exist_ok=True)
+    config.codegen_outdir.mkdir(exist_ok=True)
     root = _get_settings_root(version)
     version = FluentVersion(version)
     with open(_PY_FILE, "w") as f:

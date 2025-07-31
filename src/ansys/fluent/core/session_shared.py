@@ -47,11 +47,11 @@ tui_logger = logging.getLogger("pyfluent.tui")
 
 def _make_tui_module(session, module_name):
     try:
-        from ansys.fluent.core import CODEGEN_OUTDIR
+        from ansys.fluent.core import config
 
         tui_module = pyfluent.utils.load_module(
             f"{module_name}_tui_{session._version}",
-            CODEGEN_OUTDIR / module_name / f"tui_{session._version}.py",
+            config.codegen_outdir / module_name / f"tui_{session._version}.py",
         )
         warning_for_fluent_dev_version(session._version)
         return tui_module.main_menu(
@@ -64,13 +64,13 @@ def _make_tui_module(session, module_name):
 
 def _make_datamodel_module(session, module_name):
     try:
-        from ansys.fluent.core import CODEGEN_OUTDIR
+        from ansys.fluent.core import config
         from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
 
         file_name = datamodel_file_name_map[module_name]
         module = pyfluent.utils.load_module(
             f"{module_name}_{session._version}",
-            CODEGEN_OUTDIR / f"datamodel_{session._version}" / f"{file_name}.py",
+            config.codegen_outdir / f"datamodel_{session._version}" / f"{file_name}.py",
         )
         warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])

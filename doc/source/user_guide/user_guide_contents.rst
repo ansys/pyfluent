@@ -8,6 +8,7 @@ User guide
    :maxdepth: 1
    :hidden:
 
+   config_variables
    session/session_contents
    solver_settings/solver_settings_contents
    meshing/meshing_contents

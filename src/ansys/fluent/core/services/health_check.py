@@ -80,7 +80,9 @@ class HealthCheckService:
         """
         request = HealthCheckModule.HealthCheckRequest()
         response = self._stub.Check(
-            request, metadata=self._metadata, timeout=pyfluent.CHECK_HEALTH_TIMEOUT
+            request,
+            metadata=self._metadata,
+            timeout=pyfluent.config.check_health_timeout,
         )
         return HealthCheckService.Status(response.status)
 
