@@ -23,7 +23,11 @@
 """Generate builtin setting classes."""
 
 from ansys.fluent.core import FluentVersion, config
-from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
+from ansys.fluent.core.solver.flobject import (
+    CreatableNamedObjectMixin,
+    NamedObject,
+    _ChildNamedObjectAccessorMixin,
+)
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.fluent_version import all_versions
 
@@ -52,6 +56,8 @@ def _get_named_objects_in_path(root, path, kind):
             cls = cls.child_object_type
     final_type = ""
     if kind == "NamedObject":
+        if not issubclass(cls, (NamedObject, _ChildNamedObjectAccessorMixin)):
+            raise TypeError(f"{cls.__name__} is not NamedObject type.")
         if issubclass(cls, CreatableNamedObjectMixin):
             final_type = "Creatable"
         else:
