@@ -264,6 +264,7 @@ class SessionBase:
     @classmethod
     def from_pim(
         cls,
+        ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -284,6 +285,8 @@ class SessionBase:
 
         Parameters
         ----------
+        ui_mode : UIMode
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).

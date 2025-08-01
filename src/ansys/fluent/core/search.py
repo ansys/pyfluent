@@ -164,7 +164,10 @@ def _get_api_tree_data():
 
 
 def _print_search_results(
-    queries: list, api_tree_data: dict | None = None, api_path: str | None = None
+    queries: list,
+    api_tree_data: dict | None = None,
+    api_path: str | None = None,
+    match_whole_word: bool | None = None,
 ):
     """
     Print search results.
@@ -178,6 +181,9 @@ def _print_search_results(
         If None, it is retrieved using _get_api_tree_data().
     api_path : str, optional
         Specific path to restrict the search to. If None, searches the entire object hierarchy.
+    match_whole_word : bool, optional
+        If True, only exact matches are returned. If False, semantic search is performed.
+        The default is None, which means semantic search is performed.
     """
     api_tree_data = api_tree_data or _get_api_tree_data()
     api_sources = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
@@ -207,18 +213,22 @@ def _print_search_results(
             for query in queries:
                 if isinstance(query, tuple):
                     name, score = query
+                    if (
+                        name in first_token
+                        and has_query(name, substrings)
+                        and name in substrings[-1]
+                    ):
+                        if score is not None:
+                            results.add((api_object, round(score, 2)))
                 else:
                     name = query
                     score = None
 
-                if (
-                    name in first_token
-                    and has_query(name, substrings)
-                    and name in substrings[-1]
-                ):
-                    if score is not None:
-                        results.add((api_object, round(score, 2)))
-                    else:
+                    if match_whole_word and (
+                        first_token == name or first_token.endswith(f".{name}")
+                    ):
+                        results.add(api_object)
+                    elif not match_whole_word and name in first_token:
                         results.add(api_object)
 
         return sorted(results)
@@ -324,7 +334,7 @@ def _get_exact_match_for_word_from_names(
     -------
         List of exact match.
     """
-    return list({name for name in names if word == name or word in name})
+    return list({name for name in names if word == name})
 
 
 def _get_capitalize_match_for_word_from_names(
@@ -461,7 +471,10 @@ def _search_whole_word(
             )
     if queries:
         return _print_search_results(
-            queries, api_tree_data=api_tree_data, api_path=api_path
+            queries,
+            api_tree_data=api_tree_data,
+            api_path=api_path,
+            match_whole_word=match_whole_word,
         )
 
 
