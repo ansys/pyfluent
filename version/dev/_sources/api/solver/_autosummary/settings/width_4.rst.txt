@@ -1,0 +1,21 @@
+:orphan:
+
+.. _width_4:
+
+width
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.width_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================================
+
+Parent                                                                      Summary
+
+==================================   ==============================================
+:ref:`aspect_ratio <aspect_ratio>`       Set the aspect ratio of the active window.
+
+==================================   ==============================================
+

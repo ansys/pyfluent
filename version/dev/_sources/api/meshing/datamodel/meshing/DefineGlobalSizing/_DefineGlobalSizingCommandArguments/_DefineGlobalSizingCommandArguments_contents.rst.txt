@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_DefineGlobalSizing__DefineGlobalSizingCommandArguments:
+
+_DefineGlobalSizingCommandArguments
+===================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.DefineGlobalSizing._DefineGlobalSizingCommandArguments
+   :members: _CellsPerGap, _CurvatureNormalAngle, _EnableMultiThreading, _GrowthRate, _MaxSize, _Mesher, _MinSize, _NumberOfMultiThreads, _PrimeSizeControlIds, _ReverseEdgeZoneOrientationforPersistent, _ScopeProximityTo, _SizeFunctions
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

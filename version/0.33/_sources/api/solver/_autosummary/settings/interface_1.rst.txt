@@ -1,0 +1,40 @@
+:orphan:
+
+.. _interface_1:
+
+interface
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.interface_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =======================
+
+Attribute                                                              Summary
+
+====================================================   =======================
+:ref:`non_overlap_zone_name <non_overlap_zone_name>`       Help not available.
+
+====================================================   =======================
+
+.. rubric:: Included in:
+
+============================================   ======================================
+
+Parent                                                                        Summary
+
+============================================   ======================================
+:ref:`settings_6 <settings_6>`                     Domain name to define settings on.
+
+:ref:`phase_8_child <phase_8_child>`                    'child_object_type' of phase.
+
+:ref:`interface_2_child <interface_2_child>`        'child_object_type' of interface.
+
+:ref:`interface_3_child <interface_3_child>`        'child_object_type' of interface.
+
+:ref:`phase_33_child <phase_33_child>`                  'child_object_type' of phase.
+
+============================================   ======================================
+

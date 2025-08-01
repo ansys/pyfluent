@@ -1,0 +1,21 @@
+:orphan:
+
+.. _adjacent_cell_zone_1_1:
+
+adjacent_cell_zone_1
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.adjacent_cell_zone_1_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`turbo_create_child <turbo_create_child>`       'child_object_type' of turbo_create.
+
+==============================================   ========================================
+

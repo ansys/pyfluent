@@ -1,0 +1,38 @@
+:orphan:
+
+.. _options_16:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.options_16
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================================================================================================
+
+Attribute                                                                                                                         Summary
+
+==================================   ====================================================================================================
+:ref:`auto_scale <auto_scale>`           Specifies whether you would like Fluent to automatically set a scale factor for the vector size.
+
+:ref:`vector_style <vector_style>`                                                                   The shape for the displayed vectors.
+
+:ref:`scale <scale_5>`                                                                               A value for scaling the vector size.
+
+:ref:`skip <skip_1>`                                                       A multiple by which the no. of vectors drawn would be reduced.
+
+==================================   ====================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`vector_1_child <vector_1_child>`       'child_object_type' of vector.
+
+======================================   ==================================
+

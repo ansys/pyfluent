@@ -1,0 +1,23 @@
+.. _ref_solver_tui_solve_animate:
+
+animate
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solve.animate
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   define/define_contents
+   inverse_dft/inverse_dft_contents
+   keyframe_animation/keyframe_animation_contents
+   objects/objects_contents
+   playback/playback_contents
+   pulse/pulse_contents

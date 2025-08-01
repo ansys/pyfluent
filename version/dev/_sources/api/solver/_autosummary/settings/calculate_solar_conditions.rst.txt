@@ -1,0 +1,21 @@
+:orphan:
+
+.. _calculate_solar_conditions:
+
+calculate_solar_conditions
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.calculate_solar_conditions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==================================
+
+Parent                                                                          Summary
+
+==================================================   ==================================
+:ref:`solar_calculator_gui <solar_calculator_gui>`       Settings for solar calculator.
+
+==================================================   ==================================
+

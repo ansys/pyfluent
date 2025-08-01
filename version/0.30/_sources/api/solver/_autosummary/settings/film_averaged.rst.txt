@@ -1,0 +1,34 @@
+:orphan:
+
+.. _film_averaged:
+
+film_averaged
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.film_averaged
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==============================
+
+Attribute                                                                     Summary
+
+====================================================   ==============================
+:ref:`averaging_coefficient <averaging_coefficient>`           Averaging coefficient.
+
+:ref:`binary_diffusivity <binary_diffusivity_1>`           Binary diffusivity method.
+
+====================================================   ==============================
+
+.. rubric:: Included in:
+
+==============================================   ==========================================
+
+Parent                                                                              Summary
+
+==============================================   ==========================================
+:ref:`binary_diffusivity <binary_diffusivity>`       Material property: binary-diffusivity.
+
+==============================================   ==========================================
+

@@ -1,0 +1,53 @@
+:orphan:
+
+.. _automatic_case_modification:
+
+automatic_case_modification
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.automatic_case_modification
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+:ref:`enable <enable_30>`                             Enable a single defined case modification.
+
+:ref:`disable <disable_1>`                           Disable a single defined case modification.
+
+:ref:`add_edit <add_edit>`                                    Define a single case modification.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`automatic_case_modification_child <automatic_case_modification_child>`
+
+
+.. rubric:: Included in:
+
+============================================   =======================================================================
+
+Parent                                                                                                         Summary
+
+============================================   =======================================================================
+:ref:`case_modification <case_modification>`       The automatic initialization and case modification strategy object.
+
+============================================   =======================================================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _thermal_parameters:
+
+thermal_parameters
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.thermal_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==========================================================
+
+Attribute                                                                                                 Summary
+
+====================================================   ==========================================================
+:ref:`o_model <o_model>`                                                               [O] model for thermal NOx.
+
+:ref:`oh_model <oh_model>`                                                            [OH] model for thermal NOx.
+
+:ref:`replace_with_udf_rate <replace_with_udf_rate>`       Enable/disable replace thermal NOx rate with UDF rate.
+
+====================================================   ==========================================================
+
+.. rubric:: Included in:
+
+====================================   =====================
+
+Parent                                               Summary
+
+====================================   =====================
+:ref:`nox_chemistry <nox_chemistry>`       NOx model object.
+
+====================================   =====================
+

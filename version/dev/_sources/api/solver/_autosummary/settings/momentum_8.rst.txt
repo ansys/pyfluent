@@ -1,0 +1,66 @@
+:orphan:
+
+.. _momentum_8:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.momentum_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ====================================================
+
+Attribute                                                                                                                         Summary
+
+==================================================================================   ====================================================
+:ref:`reference_frame <reference_frame_4>`                                                                               Reference Frame.
+
+:ref:`gauge_total_pressure <gauge_total_pressure>`                                                                  Gauge Total Pressure.
+
+:ref:`supersonic_or_initial_gauge_pressure <supersonic_or_initial_gauge_pressure>`                     Supersonic/Initial Gauge Pressure.
+
+:ref:`direction_specification_method <direction_specification_method>`                                    Direction Specification Method.
+
+:ref:`coordinate_system <coordinate_system>`                                                                           Coordinate System.
+
+:ref:`flow_direction <flow_direction>`                                                                         Flow direction components.
+
+:ref:`direction_vector <direction_vector>`                                                                   Direction vector components.
+
+:ref:`axis_direction <axis_direction_2>`                                                                       Axis direction components.
+
+:ref:`axis_origin <axis_origin_2>`                                                                                Axis origin components.
+
+:ref:`prevent_reverse_flow <prevent_reverse_flow_1>`                                     Build artificial walls to prevent reverse flow?.
+
+:ref:`acoustic_wave_model <acoustic_wave_model>`                                                                     Acoustic wave model.
+
+:ref:`impedance_zero_order_term <impedance_zero_order_term>`                                                   Impedance zero order term.
+
+:ref:`real_pole_series <real_pole_series>`                                                                      List of Real Pole Series.
+
+:ref:`complex_pole_series <complex_pole_series>`                                                             List of Complex Pole Series.
+
+:ref:`incoming_wave <incoming_wave>`                                                                                       Incoming wave.
+
+==================================================================================   ====================================================
+
+.. rubric:: Included in:
+
+======================================================   ==========================================
+
+Parent                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`pressure_inlet_child <pressure_inlet_child>`           'child_object_type' of pressure_inlet.
+
+:ref:`phase_20_child <phase_20_child>`                                'child_object_type' of phase.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`       'child_object_type' of pressure_inlet.
+
+:ref:`phase_44_child <phase_44_child>`                                'child_object_type' of phase.
+
+======================================================   ==========================================
+

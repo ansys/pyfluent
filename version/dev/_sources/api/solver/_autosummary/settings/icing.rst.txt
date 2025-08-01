@@ -1,0 +1,62 @@
+:orphan:
+
+.. _icing:
+
+icing
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.icing
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   =======================
+
+Attribute                                                                                Summary
+
+======================================================================   =======================
+:ref:`fensapice_flow_bc_subtype <fensapice_flow_bc_subtype>`                 Help not available.
+
+:ref:`fensapice_dpm_outlet_condition <fensapice_dpm_outlet_condition>`       Help not available.
+
+:ref:`fensapice_dpm_rh_mode <fensapice_dpm_rh_mode>`                         Help not available.
+
+:ref:`fensapice_drop_vrh <fensapice_drop_vrh>`                               Help not available.
+
+:ref:`fensapice_drop_vc <fensapice_drop_vc>`                                 Help not available.
+
+======================================================================   =======================
+
+.. rubric:: Included in:
+
+========================================================   ===========================================
+
+Parent                                                                                         Summary
+
+========================================================   ===========================================
+:ref:`exhaust_fan_child <exhaust_fan_child>`                       'child_object_type' of exhaust_fan.
+
+:ref:`phase_5_child <phase_5_child>`                                     'child_object_type' of phase.
+
+:ref:`outlet_vent_child <outlet_vent_child>`                       'child_object_type' of outlet_vent.
+
+:ref:`phase_16_child <phase_16_child>`                                   'child_object_type' of phase.
+
+:ref:`pressure_outlet_child <pressure_outlet_child>`           'child_object_type' of pressure_outlet.
+
+:ref:`phase_21_child <phase_21_child>`                                   'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`                   'child_object_type' of exhaust_fan.
+
+:ref:`phase_29_child <phase_29_child>`                                   'child_object_type' of phase.
+
+:ref:`outlet_vent_1_child <outlet_vent_1_child>`                   'child_object_type' of outlet_vent.
+
+:ref:`phase_40_child <phase_40_child>`                                   'child_object_type' of phase.
+
+:ref:`pressure_outlet_1_child <pressure_outlet_1_child>`       'child_object_type' of pressure_outlet.
+
+:ref:`phase_45_child <phase_45_child>`                                   'child_object_type' of phase.
+
+========================================================   ===========================================
+

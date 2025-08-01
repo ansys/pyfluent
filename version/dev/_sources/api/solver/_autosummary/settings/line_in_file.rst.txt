@@ -1,0 +1,36 @@
+:orphan:
+
+.. _line_in_file:
+
+line_in_file
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.line_in_file
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ===========================
+
+Attribute                                      Summary
+
+========================   ===========================
+:ref:`pattern <pattern>`       Pattern for plot lines.
+
+:ref:`weight <weight_2>`        Weight for plot lines.
+
+:ref:`color <color_1>`           Color for plot lines.
+
+========================   ===========================
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`curves_child <curves_child>`       'child_object_type' of curves.
+
+==================================   ==================================
+

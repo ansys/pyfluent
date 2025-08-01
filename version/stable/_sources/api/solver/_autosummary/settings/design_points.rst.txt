@@ -1,0 +1,79 @@
+:orphan:
+
+.. _design_points:
+
+design_points
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.design_points
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================================================   ===========================================================
+
+Method                                                                                                                           Summary
+
+==========================================================================   ===========================================================
+:ref:`create <create_15>`                                                                                          Add new Design Point.
+
+:ref:`delete <delete_7>`                                                                                           Delete Design Points.
+
+:ref:`rename <rename>`                                                                                                Rename the object.
+
+:ref:`list <list>`                                                                                        List the names of the objects.
+
+:ref:`list_properties <list_properties>`                                                           List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                                                            Create a copy of the object.
+
+:ref:`duplicate <duplicate_1>`                                                                                   Duplicate Design Point.
+
+:ref:`load_case_data <load_case_data>`                                           Loads relevant case/data file for current design point.
+
+:ref:`set_as_current <set_as_current_1>`                                                                       Set current design point.
+
+:ref:`save_journals <save_journals>`                                                                                      Save Journals.
+
+:ref:`clear_generated_data <clear_generated_data>`                                                                 Clear Generated Data.
+
+:ref:`status_of_all_dps <status_of_all_dps>`                                                                Status of All Design Points.
+
+:ref:`update_current <update_current>`                                                                      Update Current Design Point.
+
+:ref:`update_all <update_all>`                                                                                  Update All Design Point.
+
+:ref:`update_selected <update_selected>`                                                                  Update Selected Design Points.
+
+:ref:`interrupt <interrupt_3>`                                                                                Interrupt Design Point(s).
+
+:ref:`abort <abort>`                                                                                              Abort Design Point(s).
+
+:ref:`connect_to_web_session <connect_to_web_session>`                                     Connect to Web Interface of the Design Point.
+
+:ref:`download_output_files <download_output_files>`                                                              Download Output Files.
+
+:ref:`interrupt_all_concurrent_dps <interrupt_all_concurrent_dps>`                               Interrupt All Concurrent Design Points.
+
+:ref:`abort_all_concurrent_dps <abort_all_concurrent_dps>`                                           Abort All Concurrent Design Points.
+
+:ref:`refresh_status_of_concurrent_dps <refresh_status_of_concurrent_dps>`                   Refresh Status of Concurrent Design Points.
+
+==========================================================================   ===========================================================
+
+.. rubric:: Named object type
+
+:ref:`design_points_child <design_points_child>`
+
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`parametric_studies_child <parametric_studies_child>`       'child_object_type' of parametric_studies.
+
+==========================================================   ==============================================
+

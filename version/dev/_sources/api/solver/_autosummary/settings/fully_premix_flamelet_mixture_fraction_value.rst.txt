@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fully_premix_flamelet_mixture_fraction_value:
+
+fully_premix_flamelet_mixture_fraction_value
+============================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fully_premix_flamelet_mixture_fraction_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`parameters_1 <parameters_1>`       PDF Flamelet Parameters.
+
+==================================   ============================
+

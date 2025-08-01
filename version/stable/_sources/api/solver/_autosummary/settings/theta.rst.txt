@@ -1,0 +1,21 @@
+:orphan:
+
+.. _theta:
+
+theta
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.theta
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`beam_width_1 <beam_width_1>`       Beam width settings.
+
+==================================   ========================
+

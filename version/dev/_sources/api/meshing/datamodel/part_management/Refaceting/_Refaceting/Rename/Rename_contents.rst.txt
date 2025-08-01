@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_part_management_Refaceting__Refaceting_Rename:
+
+Rename
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.Refaceting._Refaceting.Rename
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _RenameCommandArguments/_RenameCommandArguments_contents

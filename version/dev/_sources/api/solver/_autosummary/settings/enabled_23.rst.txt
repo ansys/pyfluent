@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_23:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enabled_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================================
+
+Parent                                                  Summary
+
+==========================   ==================================
+:ref:`ablation <ablation>`       Enable/disable ablation model.
+
+==========================   ==================================
+

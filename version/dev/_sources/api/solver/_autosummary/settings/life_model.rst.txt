@@ -1,0 +1,42 @@
+:orphan:
+
+.. _life_model:
+
+life_model
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.life_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =====================================================================
+
+Attribute                                                                                                            Summary
+
+====================================================   =====================================================================
+:ref:`enabled <enabled_34>`                                                             Enable empirical battery life model.
+
+:ref:`calendar_time <calendar_time>`                                          Calendar time in empirical battery life model.
+
+:ref:`cycle_number <cycle_number>`                                             Cycle number in empirical battery life model.
+
+:ref:`operation_temperature <operation_temperature>`                  Operation temperature in empirical battery life model.
+
+:ref:`calendar_life_params <calendar_life_params>`         Calendar life related parameters in empirical battery life model.
+
+:ref:`cycle_life_table <cycle_life_table>`                                     Cycle life table in the empirical life model.
+
+====================================================   =====================================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`advanced_models <advanced_models>`       Advanced model options.
+
+========================================   ===========================
+

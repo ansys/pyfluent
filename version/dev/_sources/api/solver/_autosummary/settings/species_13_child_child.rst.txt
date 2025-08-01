@@ -1,0 +1,21 @@
+:orphan:
+
+.. _species_13_child_child:
+
+species_child_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_13_child_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`species_13_child <species_13_child>`       'child_object_type' of species.
+
+==========================================   ===================================
+

@@ -1,0 +1,54 @@
+:orphan:
+
+.. _thermal_1:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.thermal_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ======================
+
+Attribute                                                     Summary
+
+============================================   ======================
+:ref:`total_temperature <total_temperature>`       Total temperature.
+
+============================================   ======================
+
+.. rubric:: Included in:
+
+======================================================   ==========================================
+
+Parent                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`inlet_vent_child <inlet_vent_child>`                       'child_object_type' of inlet_vent.
+
+:ref:`phase_7_child <phase_7_child>`                                  'child_object_type' of phase.
+
+:ref:`intake_fan_child <intake_fan_child>`                       'child_object_type' of intake_fan.
+
+:ref:`phase_8_child <phase_8_child>`                                  'child_object_type' of phase.
+
+:ref:`pressure_inlet_child <pressure_inlet_child>`           'child_object_type' of pressure_inlet.
+
+:ref:`phase_20_child <phase_20_child>`                                'child_object_type' of phase.
+
+:ref:`inlet_vent_1_child <inlet_vent_1_child>`                   'child_object_type' of inlet_vent.
+
+:ref:`phase_31_child <phase_31_child>`                                'child_object_type' of phase.
+
+:ref:`intake_fan_1_child <intake_fan_1_child>`                   'child_object_type' of intake_fan.
+
+:ref:`phase_32_child <phase_32_child>`                                'child_object_type' of phase.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`       'child_object_type' of pressure_inlet.
+
+:ref:`phase_44_child <phase_44_child>`                                'child_object_type' of phase.
+
+======================================================   ==========================================
+

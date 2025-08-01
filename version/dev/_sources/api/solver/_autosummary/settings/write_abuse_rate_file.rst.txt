@@ -1,0 +1,32 @@
+:orphan:
+
+.. _write_abuse_rate_file:
+
+write_abuse_rate_file
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_abuse_rate_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ===================================================================
+
+Argument                                                                                      Summary
+
+===============================   ===================================================================
+:ref:`file_name <file_name_10>`       Write abuse reaction rate into a file in the N-eqn abuse model.
+
+===============================   ===================================================================
+
+.. rubric:: Included in:
+
+==============================   ======================================
+
+Parent                                                          Summary
+
+==============================   ======================================
+:ref:`n_equation <n_equation>`       N-equation abuse model parameters.
+
+==============================   ======================================
+

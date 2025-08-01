@@ -1,0 +1,34 @@
+:orphan:
+
+.. _write_or_reset_info:
+
+write_or_reset_info
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_or_reset_info
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ==============================================================
+
+Argument                                                                                Summary
+
+==============================   ==============================================================
+:ref:`file_name <file_name_5>`       Name of the file which will store gRPC server information.
+
+:ref:`reset_info <reset_info>`                                               Reset server info.
+
+==============================   ==============================================================
+
+.. rubric:: Included in:
+
+==================   ========================================
+
+Parent                                                Summary
+
+==================   ========================================
+:ref:`grpc <grpc>`       Start, stop or manage a gRPC server.
+
+==================   ========================================
+

@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_part_management_Node__Node:
+
+_Node
+=====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.Node._Node
+   :members: Children, Context, KeyId, Name, ObjectSetting, Parent, RefacetOperation, Suppress, Transformations, Updated, _name_
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   Copy/Copy_contents
+   CreateChild/CreateChild_contents
+   Move/Move_contents
+   Rename/Rename_contents
+   WildcardCopy/WildcardCopy_contents

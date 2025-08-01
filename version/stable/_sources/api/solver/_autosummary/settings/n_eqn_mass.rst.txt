@@ -1,0 +1,21 @@
+:orphan:
+
+.. _n_eqn_mass:
+
+n_eqn_mass
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.n_eqn_mass
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===========================
+
+Parent                                                     Summary
+
+====================================   ===========================
+:ref:`venting_model <venting_model>`       Venting model settings.
+
+====================================   ===========================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cfl_start:
+
+cfl_start
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.cfl_start
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================
+
+Parent                                                     Summary
+
+================================   ===============================
+:ref:`settings_28 <settings_28>`       Solution Steering Settings.
+
+================================   ===============================
+

@@ -1,0 +1,49 @@
+:orphan:
+
+.. _raytracing_options:
+
+raytracing_options
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.raytracing_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =======================================================================================================
+
+Attribute                                                                                                                          Summary
+
+================================   =======================================================================================================
+:ref:`background <background_3>`       Ability to adjust various settings and effects for the realistic raytracing environment background.
+
+:ref:`rendering <rendering>`                                                                Ability to adjust raytracer rendering options.
+
+================================   =======================================================================================================
+
+.. rubric:: Methods
+
+==========================================================   ===========================================================
+
+Method                                                                                                           Summary
+
+==========================================================   ===========================================================
+:ref:`display_live_preview <display_live_preview>`               Display the raytracing rendering for the active window.
+
+:ref:`display_in_omniverse <display_in_omniverse>`                        Display the raytracing rendering in Omniverse.
+
+:ref:`usd_export_via_connector <usd_export_via_connector>`                          Export data for Omniverse rendering.
+
+==========================================================   ===========================================================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`graphics <graphics>`       'graphics' child.
+
+==========================   =====================
+

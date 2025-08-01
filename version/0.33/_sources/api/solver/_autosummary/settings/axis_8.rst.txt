@@ -1,0 +1,21 @@
+:orphan:
+
+.. _axis_8:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.axis_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ============================================
+
+Parent                                                            Summary
+
+==========================   ============================================
+:ref:`rotate_1 <rotate_1>`       Controls the orientation of the texture.
+
+==========================   ============================================
+
