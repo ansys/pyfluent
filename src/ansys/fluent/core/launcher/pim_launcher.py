@@ -40,7 +40,7 @@ import logging
 import os
 from typing import Any, Dict
 
-from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -174,7 +174,9 @@ class PIMLauncher:
                 FluentVersion(self.argvals["product_version"]).number
             )
         else:
-            fluent_product_version = None
+            fluent_product_version = str(
+                FluentVersion(FluentVersion.current_release()).number
+            )
 
         return launch_remote_fluent(
             session_cls=self.new_session,
@@ -240,7 +242,12 @@ def launch_remote_fluent(
 
     instance.wait_for_ready()
 
-    channel = instance.build_grpc_channel()
+    channel = instance.build_grpc_channel(
+        options=[
+            ("grpc.max_send_message_length", _get_max_c_int_limit()),
+            ("grpc.max_receive_message_length", _get_max_c_int_limit()),
+        ],
+    )
 
     fluent_connection = create_fluent_connection(
         channel=channel,
