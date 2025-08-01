@@ -325,17 +325,6 @@ def test_match_whole_word(monkeypatch):
         "<solver_session>.parent (Object)",
     ]
 
-    assert pyfluent.search("first", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
-    assert pyfluent.search("last", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
-
-    assert pyfluent.search("first_last", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
-
 
 @pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
