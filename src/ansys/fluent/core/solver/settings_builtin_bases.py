@@ -52,9 +52,9 @@ def _get_settings_root(settings_source: SettingsBase | Solver):
 
 
 def _get_settings_obj(settings_root, builtin_settings_obj):
-    builtin_cls_name = builtin_settings_obj.__class__.__name__
+    builtin_cls_db_name = builtin_settings_obj.__class__._db_name
     obj = settings_root
-    path = DATA[builtin_cls_name][1]
+    path = DATA[builtin_cls_db_name][1]
     found_path = None
     if isinstance(path, dict):
         version = FluentVersion(obj._version)
@@ -63,7 +63,7 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
                 found_path = p
                 break
         if found_path is None:
-            raise RuntimeError(f"{builtin_cls_name} is not supported in {version}.")
+            raise RuntimeError(f"{builtin_cls_db_name} is not supported in {version}.")
     elif isinstance(path, str):
         found_path = path
     comps = found_path.split(".")
