@@ -341,7 +341,7 @@ class Config:
         """The latest development version of Fluent."""
         return "26.1.0"
 
-    def print_all(self):
+    def print(self):
         """Print all configuration variables."""
         config_dict = {}
         for k, v in inspect.getmembers_static(self):
