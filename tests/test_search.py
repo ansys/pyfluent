@@ -245,7 +245,7 @@ def test_match_whole_word_and_case_search(capsys):
         "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
         not in lines
     )
-    assert "<meshing_session>.tui.display.set_grid.label_font (Command)" in lines
+    assert "<meshing_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
