@@ -342,7 +342,7 @@ def configure_container_dict(
 
     if "environment" not in container_dict:
         if not license_server:
-            license_server = pyfluent.config.ansyslmd_license_file
+            license_server = os.getenv("ANSYSLMD_LICENSE_FILE")
 
         if not license_server:
             raise LicenseServerNotSpecified()
