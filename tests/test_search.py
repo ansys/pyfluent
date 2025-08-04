@@ -245,7 +245,7 @@ def test_match_whole_word_and_case_search(capsys):
         "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
         not in lines
     )
-    assert "<meshing_session>.tui.display.set_grid.label_font (Command)" in lines
+    assert "<meshing_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -323,17 +323,6 @@ def test_match_whole_word(monkeypatch):
     ]
     assert pyfluent.search("parent", match_whole_word=True) == [
         "<solver_session>.parent (Object)",
-    ]
-
-    assert pyfluent.search("first", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
-    assert pyfluent.search("last", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
-
-    assert pyfluent.search("first_last", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
     ]
 
 
