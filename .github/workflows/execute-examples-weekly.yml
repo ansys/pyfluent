@@ -60,15 +60,6 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull Fluent docker image if not present
-        run: |
-          if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
-            echo "Image not found locally, pulling..."
-            make docker-pull
-          else
-            echo "Image already exists locally, skipping pull."
-          fi
-
       - name: Install Dependencies
         run: |
           sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
@@ -79,6 +70,15 @@ jobs:
           pip install ansys-fluent-core[reader]
           pip install ansys-fluent-visualization==0.21.dev1
           pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
+
+      - name: Pull Fluent docker image if not present
+        run: |
+          if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
+            echo "Image not found locally, pulling..."
+            make docker-pull
+          else
+            echo "Image already exists locally, skipping pull."
+          fi
 
       - name: Execute Examples
         run: |
