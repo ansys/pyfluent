@@ -1185,13 +1185,19 @@ class ChunkParser:
                     payload_tag_id = None
             field = None
             if payload_tag_id is not None:
-                field = _extract_field(
-                    _FieldDataConstants.proto_field_type_to_np_data_type[
-                        payload_info.fieldType
-                    ],
-                    payload_info.fieldSize,
-                    chunk_iterator,
-                )
+                if payload_info.fieldSize > 0:
+                    field = _extract_field(
+                        _FieldDataConstants.proto_field_type_to_np_data_type[
+                            payload_info.fieldType
+                        ],
+                        payload_info.fieldSize,
+                        chunk_iterator,
+                    )
+                else:
+                    warnings.warn(
+                        f"Field data is not available for surface: {surface_id}"
+                    )
+                    field = np.array([])
 
             if self._callbacks_provider is not None:
                 for callback_data in self._callbacks_provider.callbacks():
