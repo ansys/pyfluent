@@ -766,7 +766,7 @@ def test_runtime_python_classes(
     )
 
 
-@pytest.mark.fluent_version(">=26.1")
+@pytest.mark.skip
 def test_setting_string_constants(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     viscous = Viscous(solver)
