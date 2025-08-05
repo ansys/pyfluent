@@ -1,0 +1,51 @@
+:orphan:
+
+.. _periodic_2_child:
+
+periodic_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.periodic_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================
+
+Attribute                                      Summary
+
+============================   =======================
+:ref:`name <name_4>`               Name of the object.
+
+:ref:`phase <phase_41>`                 'phase' child.
+
+:ref:`periodic <periodic_1>`       Help not available.
+
+:ref:`geometry <geometry_7>`       Help not available.
+
+============================   =======================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===========================================
+
+Parent                                                               Summary
+
+==============================   ===========================================
+:ref:`periodic_2 <periodic_2>`       Settings for boundary-condition object.
+
+==============================   ===========================================
+

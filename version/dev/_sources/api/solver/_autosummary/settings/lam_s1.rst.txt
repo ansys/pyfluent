@@ -1,0 +1,21 @@
+:orphan:
+
+.. _lam_s1:
+
+lam_s1
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.lam_s1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+==================================   =====================
+

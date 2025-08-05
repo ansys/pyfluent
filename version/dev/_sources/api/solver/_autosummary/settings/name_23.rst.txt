@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_23:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =========================
+
+Parent                                             Summary
+
+==============================   =========================
+:ref:`hide_frame <hide_frame>`       Hide Reference Frame.
+
+==============================   =========================
+

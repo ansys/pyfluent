@@ -1,0 +1,49 @@
+:orphan:
+
+.. _volumes:
+
+volumes
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.volumes
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ================
+
+Attribute                         Summary
+
+======================   ================
+:ref:`fluid <fluid_2>`       Thread-type.
+
+:ref:`solid <solid_3>`       Thread-type.
+
+======================   ================
+
+.. rubric:: Methods
+
+==================================   ============================================
+
+Method                                                                    Summary
+
+==================================   ============================================
+:ref:`list_physics <list_physics>`                       List volume information.
+
+:ref:`create <create_3>`                                        Crate new volume.
+
+:ref:`set_type <set_type>`               Input volume name(s) to change its type.
+
+==================================   ============================================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`physics_1 <physics_1>`       UTL physics definitions.
+
+============================   ============================
+

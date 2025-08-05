@@ -1,0 +1,22 @@
+.. _ref_meshing_datamodel_meshing_CreateCollarMesh__CreateCollarMeshCommandArguments:
+
+_CreateCollarMeshCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateCollarMesh._CreateCollarMeshCommandArguments
+   :members: _BOIMaxSize, _BOISizeName, _CreationMethod, _CylinderLength, _CylinderMethod, _LabelSelectionList, _ObjectSelectionList, _ObjectSelectionSingle, _RefinementRegionsName, _SelectionType, _TopologyList, _VolumeFill, _ZoneLocation, _ZoneSelectionList, _ZoneSelectionSingle
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _Axis/_Axis_contents
+   _BoundingBoxObject/_BoundingBoxObject_contents
+   _CylinderObject/_CylinderObject_contents
+   _GeometryToolsProperties/_GeometryToolsProperties_contents
+   _OffsetObject/_OffsetObject_contents

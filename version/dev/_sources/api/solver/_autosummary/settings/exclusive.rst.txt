@@ -1,0 +1,21 @@
+:orphan:
+
+.. _exclusive:
+
+exclusive
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.exclusive
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

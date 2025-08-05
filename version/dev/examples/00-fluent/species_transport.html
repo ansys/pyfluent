@@ -1,0 +1,1274 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:site_name" content="PyAnsys" />
+    <title>Modeling Species Transport and Gaseous Combustion &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=936a716c"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/00-fluent/species_transport';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tyler-Sofrin Compressor Modes Post-Processing" href="tyler_sofrin_modes.html" />
+    <link rel="prev" title="Modeling Radiation in a Headlamp Using the Monte Carlo Method" href="radiation_headlamp.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.34.dev0" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/examples/00-fluent/species_transport.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DOE_ML.html">Design of Experiments and Machine Learning model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ahmed_body_workflow.html">Ahmed Body External Aerodynamics Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brake.html">Automotive Brake Thermal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjugate_heat_transfer.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exhaust_system_settings_api.html">Fault-tolerant meshing workflow using settings objects</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="external_compressible_flow.html">Modeling External Compressible Flow</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="frozen_rotor_workflow.html">Impeller-Volute simulation using the Frozen Rotor Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lunar_lander_thermal.html">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="mixing_elbow_settings_api.html">Fluent setup and solution using settings objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixing_tank_workflow.html">Mixing Tank Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_ablation.html">Modeling Ablation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_cavitation.html">Modeling Cavitation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="parametric_static_mixer_1.html">Parametric study workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="radiation_headlamp.html">Modeling Radiation in a Headlamp Using the Monte Carlo Method</a></li>
+
+
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Modeling Species Transport and Gaseous Combustion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tyler_sofrin_modes.html">Tyler-Sofrin Compressor Modes Post-Processing</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Simulation Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Modeling Species Transport and Gaseous Combustion</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-00-fluent-species-transport-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="modeling-species-transport-and-gaseous-combustion">
+<span id="species-transport"></span><span id="sphx-glr-examples-00-fluent-species-transport-py"></span><h1>Modeling Species Transport and Gaseous Combustion<a class="headerlink" href="#modeling-species-transport-and-gaseous-combustion" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This tutorial examines the mixing of chemical species and the combustion of a gaseous fuel.</p>
+<p>A cylindrical combustor burning methane (<span class="math notranslate nohighlight">\(CH_4\)</span>) in air is studied using the eddy-dissipation model in PyFluent.</p>
+<p>This tutorial demonstrates how to do the following:</p>
+<ul class="simple">
+<li><p>Enable physical models, select material properties, and define boundary conditions for a turbulent flow with chemical species mixing and reaction.</p></li>
+<li><p>Initiate and solve the combustion simulation using the pressure-based solver.</p></li>
+<li><p>Examine the reacting flow results using graphics.</p></li>
+</ul>
+</section>
+<section id="problem-description">
+<h2>Problem Description<a class="headerlink" href="#problem-description" title="Link to this heading">#</a></h2>
+<p>The cylindrical combustor considered in this tutorial is shown in the following figure.
+The flame considered is a turbulent diffusion flame.
+A small nozzle in the center of the combustor introduces methane at 80 m/s.
+Ambient air enters the combustor coaxially at 0.5 m/s.
+The overall equivalence ratio is approximately 0.76 (approximately 28% excess air).
+The high-speed methane jet initially expands with little interference from the outer wall, and entrains and mixes with the low-speed air.
+The Reynolds number based on the methane jet diameter is approximately <span class="math notranslate nohighlight">\(5.7 × 10^3\)</span>.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../../_images/setup.png"><img alt="../../_images/setup.png" src="../../_images/setup.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Combustion of Methane Gas in a Turbulent Diffusion Flame Furnace</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>In this tutorial, we will use the generalized eddy-dissipation model to analyze the methane-air combustion system.
+The combustion will be modeled using a global one-step reaction mechanism, assuming complete conversion of the fuel to <span class="math notranslate nohighlight">\(CO_2\)</span> and <span class="math notranslate nohighlight">\(H_2O\)</span>.
+The reaction equation is</p>
+<div class="math notranslate nohighlight">
+\[CH_4 + 2H_2O → CO_2 + 4H_2\]</div>
+<p>This reaction will be defined in terms of stoichiometric coefficients, formation enthalpies, and parameters that control the reaction rate.
+The reaction rate will be determined assuming that turbulent mixing is the rate-limiting process, with the turbulence-chemistry interaction modeled using the eddy-dissipation model.</p>
+</section>
+<section id="setup-and-solution">
+<h2>Setup and Solution<a class="headerlink" href="#setup-and-solution" title="Link to this heading">#</a></h2>
+<section id="preparation">
+<h3>Preparation<a class="headerlink" href="#preparation" title="Link to this heading">#</a></h3>
+<p>Launch Fluent 2D in solution mode and print Fluent version.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyfluent</span>
+
+<span class="n">solver_session</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span><span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">solver_session</span><span class="o">.</span><span class="n">get_fluent_version</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Import some direct settings classes which will be used in the following sections.
+These classes allow straightforward access to various settings without the need to navigate through the settings hierarchy.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">FluentVersion</span>  <span class="c1"># noqa: E402</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core.examples</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_file</span>  <span class="c1"># noqa: E402</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core.solver</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: E402</span>
+    <span class="n">Contour</span><span class="p">,</span>
+    <span class="n">Energy</span><span class="p">,</span>
+    <span class="n">Mesh</span><span class="p">,</span>
+    <span class="n">MixtureMaterial</span><span class="p">,</span>
+    <span class="n">PressureOutlet</span><span class="p">,</span>
+    <span class="n">Species</span><span class="p">,</span>
+    <span class="n">Vector</span><span class="p">,</span>
+    <span class="n">VelocityInlet</span><span class="p">,</span>
+    <span class="n">Viscous</span><span class="p">,</span>
+    <span class="n">WallBoundary</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="mesh">
+<h3>Mesh<a class="headerlink" href="#mesh" title="Link to this heading">#</a></h3>
+<p>Download the mesh file and read it into the Fluent session.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mesh_file</span> <span class="o">=</span> <span class="n">download_file</span><span class="p">(</span>
+    <span class="s2">&quot;gascomb.msh.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;pyfluent/tutorials/species_transport&quot;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">mesh_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="general-settings">
+<h3>General Settings<a class="headerlink" href="#general-settings" title="Link to this heading">#</a></h3>
+<p>Check the mesh.</p>
+<p>Fluent will perform various checks on the mesh and will report the progress in the console.
+Ensure that the reported minimum volume reported is a positive number.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Scale the mesh and check it again.</p>
+<p>Since this mesh was created in units of millimeters, we will need to scale the mesh into meters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We should check the mesh after we manipulate it (scale, convert to polyhedra, merge, separate, fuse, add zones, or smooth and swap).
+This will ensure that the quality of the mesh has not been compromised.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">x_scale</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">y_scale</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Display the mesh in Fluent and save the image to a file to examine locally.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;mesh&quot;</span><span class="p">)</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">graphics</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">use_window_resolution</span><span class="o">.</span><span class="n">is_active</span><span class="p">():</span>
+    <span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">use_window_resolution</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">x_resolution</span> <span class="o">=</span> <span class="mi">3840</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">y_resolution</span> <span class="o">=</span> <span class="mi">2880</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;mesh.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../../_images/mesh.png"><img alt="../../_images/mesh.png" src="../../_images/mesh.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The Quadrilateral Mesh for the Combustor Model</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Inspect the available options for the two-dimensional space setting and set it to axisymmetric.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">two_dim_space</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">two_dim_space</span> <span class="o">=</span> <span class="s2">&quot;axisymmetric&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="models">
+<h3>Models<a class="headerlink" href="#models" title="Link to this heading">#</a></h3>
+<p>Enable heat transfer by enabling the energy model.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">Energy</span><span class="p">(</span><span class="n">solver_session</span><span class="p">)</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Inspect the default settings for the k-ω SST viscous model.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">Viscous</span><span class="p">(</span><span class="n">solver_session</span><span class="p">)</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Inspect the available options for the species model and set it to species transport.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span> <span class="o">=</span> <span class="n">Species</span><span class="p">(</span><span class="n">solver_session</span><span class="p">)</span>
+<span class="n">species</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="s2">&quot;species-transport&quot;</span>
+</pre></div>
+</div>
+<p>Inspect the species model settings.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Enable volumetric reactions.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span><span class="o">.</span><span class="n">reactions</span><span class="o">.</span><span class="n">enable_volumetric_reactions</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Set the material to methane-air.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The available material list contains the set of chemical mixtures that exist in the Ansys Fluent database.
+We can select one of the predefined mixtures to access a complete description of the reacting system.
+The chemical species in the system and their physical and thermodynamic properties are defined by our selection of the mixture material.
+We can alter the mixture material selection or modify the mixture material properties using the material settings (see <a class="reference internal" href="#materials">Materials</a>).</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;methane-air&quot;</span>
+</pre></div>
+</div>
+<p>Set the turbulence-chemistry interaction model to eddy-dissipation.</p>
+<p><em>The eddy-dissipation model computes the rate of reaction under the assumption that chemical kinetics are fast compared to the rate at which reactants are mixed by turbulent fluctuations (eddies).</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span><span class="o">.</span><span class="n">turb_chem_interaction_model</span> <span class="o">=</span> <span class="s2">&quot;eddy-dissipation&quot;</span>
+</pre></div>
+</div>
+<p>Inspect the species model settings after the changes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">species</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="materials">
+<h3>Materials<a class="headerlink" href="#materials" title="Link to this heading">#</a></h3>
+<p>In this step, we will examine the default settings for the mixture material.
+This tutorial uses mixture properties copied from the Ansys Fluent database.
+In general, we can modify these or create our own mixture properties for our specific problem as necessary.</p>
+<p>Print some specific properties of the mixture material (methane-air).
+We avoid printing the entire state of the mixture material to keep the output concise.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mixture_material</span> <span class="o">=</span> <span class="n">MixtureMaterial</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;methane-air&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Species list: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">volumetric_species</span><span class="o">.</span><span class="n">get_object_names</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reactions option: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">reactions</span><span class="o">.</span><span class="n">option</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Density option: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">option</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cp (specific heat) option: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">specific_heat</span><span class="o">.</span><span class="n">option</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Thermal conductivity value: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="o">.</span><span class="n">value</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Viscosity value: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">viscosity</span><span class="o">.</span><span class="n">value</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">get_fluent_version</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">FluentVersion</span><span class="o">.</span><span class="n">v252</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mass diffusivity value: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">mass_diffusivity</span><span class="o">.</span><span class="n">value</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;Mass diffusivity value: </span><span class="si">{</span><span class="n">mixture_material</span><span class="o">.</span><span class="n">mass_diffusivity</span><span class="o">.</span><span class="n">constant_mass_diffusivity</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="boundary-conditions">
+<h3>Boundary Conditions<a class="headerlink" href="#boundary-conditions" title="Link to this heading">#</a></h3>
+<p>Convert the symmetry zone to the axis type.</p>
+<p><em>The symmetry zone must be converted to an axis to prevent numerical difficulties where the radius reduces to zero.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">set_zone_type</span><span class="p">(</span>
+    <span class="n">zone_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;symmetry-5&quot;</span><span class="p">],</span> <span class="n">new_type</span><span class="o">=</span><span class="s2">&quot;axis&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the boundary conditions for the air inlet (velocity-inlet-8).</p>
+<p>Set the zone name to air-inlet.</p>
+<p><em>This name is more descriptive for the zone than velocity-inlet-8.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">velocity_inlet</span><span class="p">[</span>
+    <span class="s2">&quot;velocity-inlet-8&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;air-inlet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the following boundary conditions for the air-inlet:</p>
+<ul class="simple">
+<li><p>Velocity magnitude: 0.5 m/s</p></li>
+<li><p>Turbulent intensity: 10%</p></li>
+<li><p>Hydraulic diameter: 0.44 m</p></li>
+<li><p>Temperature: 300 K</p></li>
+<li><p>Species mass fraction for o2: 0.23</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">air_inlet</span> <span class="o">=</span> <span class="n">VelocityInlet</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;air-inlet&quot;</span><span class="p">)</span>
+<span class="n">air_inlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">velocity_magnitude</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">air_inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">turbulence_specification</span> <span class="o">=</span> <span class="s2">&quot;Intensity and Hydraulic Diameter&quot;</span>
+<span class="n">air_inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">turbulent_intensity</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">air_inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">hydraulic_diameter</span> <span class="o">=</span> <span class="mf">0.44</span>
+<span class="n">air_inlet</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">air_inlet</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">species_mass_fraction</span><span class="p">[</span><span class="s2">&quot;o2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.23</span>
+</pre></div>
+</div>
+<p>Verify the state of the air-inlet boundary condition after the changes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">air_inlet</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set the boundary conditions for the fuel inlet (velocity-inlet-6).</p>
+<p>Set the zone name to fuel-inlet.</p>
+<p><em>This name is more descriptive for the zone than velocity-inlet-6.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">velocity_inlet</span><span class="p">[</span>
+    <span class="s2">&quot;velocity-inlet-6&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;fuel-inlet&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the following boundary conditions for the fuel-inlet:</p>
+<ul class="simple">
+<li><p>Velocity magnitude: 80 m/s</p></li>
+<li><p>Turbulent intensity: 10%</p></li>
+<li><p>Hydraulic diameter: 0.01 m</p></li>
+<li><p>Temperature: 300 K</p></li>
+<li><p>Species mass fraction for ch4: 1</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fuel_inlet</span> <span class="o">=</span> <span class="n">VelocityInlet</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fuel-inlet&quot;</span><span class="p">)</span>
+<span class="n">fuel_inlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">velocity_magnitude</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">fuel_inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">turbulence_specification</span> <span class="o">=</span> <span class="s2">&quot;Intensity and Hydraulic Diameter&quot;</span>
+<span class="n">fuel_inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">turbulent_intensity</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">fuel_inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">hydraulic_diameter</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">fuel_inlet</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">fuel_inlet</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">species_mass_fraction</span><span class="p">[</span><span class="s2">&quot;ch4&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Verify the state of the fuel-inlet boundary condition after the changes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fuel_inlet</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set the following boundary conditions for the exit boundary (pressure-outlet-9):</p>
+<ul class="simple">
+<li><p>Gauge pressure: 0 Pa</p></li>
+<li><p>Backflow turbulence intensity: 10%</p></li>
+<li><p>Backflow Hydraulic diameter: 0.45 m</p></li>
+<li><p>Backflow total temperature: 300 K</p></li>
+<li><p>Backflow species mass fraction for o2: 0.23</p></li>
+</ul>
+<p><em>The Backflow values in the pressure outlet boundary condition are utilized only when backflow occurs at the pressure outlet.
+Always assign reasonable values because backflow may occur during intermediate iterations and could affect the solution stability.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_outlet</span> <span class="o">=</span> <span class="n">PressureOutlet</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pressure-outlet-9&quot;</span><span class="p">)</span>
+<span class="n">pressure_outlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">gauge_pressure</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">pressure_outlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">turbulence_specification</span> <span class="o">=</span> <span class="s2">&quot;Intensity and Hydraulic Diameter&quot;</span>
+<span class="n">pressure_outlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">backflow_turbulent_intensity</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">pressure_outlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">backflow_hydraulic_diameter</span> <span class="o">=</span> <span class="mf">0.45</span>
+<span class="n">pressure_outlet</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">backflow_total_temperature</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">pressure_outlet</span><span class="o">.</span><span class="n">species</span><span class="o">.</span><span class="n">backflow_species_mass_fraction</span><span class="p">[</span><span class="s2">&quot;o2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.23</span>
+</pre></div>
+</div>
+<p>Verify the state of the pressure-outlet boundary condition after the changes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">pressure_outlet</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set the boundary conditions for the outer wall (wall-7).</p>
+<p>Set the zone name to outer-wall.</p>
+<p><em>This name is more descriptive for the zone than wall-7.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="s2">&quot;wall-7&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outer-wall&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the following boundary conditions for the outer-wall:</p>
+<ul class="simple">
+<li><p>Temperature: 300 K</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">outer_wall</span> <span class="o">=</span> <span class="n">WallBoundary</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;outer-wall&quot;</span><span class="p">)</span>
+<span class="n">outer_wall</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">thermal_condition</span> <span class="o">=</span> <span class="s2">&quot;Temperature&quot;</span>
+<span class="n">outer_wall</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">300</span>
+</pre></div>
+</div>
+<p>Verify the state of thermal properties of the outer-wall boundary condition after the changes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">outer_wall</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set the boundary conditions for the fuel inlet nozzle (wall-2).</p>
+<p>Set the zone name to nozzle.</p>
+<p><em>This name is more descriptive for the zone than wall-2.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="s2">&quot;wall-2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;nozzle&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set the following boundary conditions for the nozzle for adiabatic wall conditions:</p>
+<ul class="simple">
+<li><p>Heat flux: 0 <span class="math notranslate nohighlight">\(W/m^2\)</span></p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">nozzle</span> <span class="o">=</span> <span class="n">WallBoundary</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;nozzle&quot;</span><span class="p">)</span>
+<span class="n">nozzle</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">thermal_condition</span> <span class="o">=</span> <span class="s2">&quot;Heat Flux&quot;</span>
+<span class="n">nozzle</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">heat_flux</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Verify the state of thermal properties of the nozzle boundary condition after the changes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">nozzle</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="reaction-solution">
+<h3>Reaction Solution<a class="headerlink" href="#reaction-solution" title="Link to this heading">#</a></h3>
+<p><em>We will calculate a solution for the reacting flow.</em></p>
+<p>Inspect the solution methods settings.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">methods</span><span class="o">.</span><span class="n">print_state</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Ensure that plot is enabled in residual monitor options.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">residual</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Initialize the field variables.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initialization</span><span class="o">.</span><span class="n">hybrid_initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Save the case file (gascomb1.cas.h5).</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_case</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;gascomb1.cas.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the calculation for 200 iterations.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">iter_count</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set time scale factor to 5.</p>
+<p><em>The Time Scale Factor allows us to further manipulate the computed time step size calculated by Fluent.
+Larger time steps can lead to faster convergence. However, if the time step is too large it can lead to solution instability.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">pseudo_time_settings</span><span class="o">.</span><span class="n">time_step_method</span><span class="o">.</span><span class="n">time_step_size_scale_factor</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">5</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the calculation for 200 iterations.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">iter_count</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Save the case and data files (gascomb1.cas.h5 and gascomb1.dat.h5).</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_case_data</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;gascomb1.cas.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="postprocessing">
+<h3>Postprocessing<a class="headerlink" href="#postprocessing" title="Link to this heading">#</a></h3>
+<p><em>Review the solution by examining graphical displays of the results and performing surface integrations at the combustor exit.</em></p>
+<p>Report the total sensible heat flux.
+We shall use wildcards to specify all zones.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">fluxes</span><span class="o">.</span><span class="n">get_heat_transfer_sensible</span><span class="p">(</span><span class="n">zones</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Display filled contours of temperature and save the image to a file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">contour1</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;contour-temp&quot;</span><span class="p">)</span>
+<span class="n">contour1</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;temperature&quot;</span>
+<span class="n">contour1</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">contour1</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="n">contour1</span><span class="o">.</span><span class="n">colorings</span><span class="o">.</span><span class="n">banded</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">contour1</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="c1"># graphics.picture.save_picture(file_name=&quot;contour-temp.png&quot;)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../../_images/contour-temp.png"><img alt="../../_images/contour-temp.png" src="../../_images/contour-temp.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Contours of Temperature</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><em>The peak temperature is approximately 2300 K.</em></p>
+<p>Display velocity vectors and save the image to a file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">vector1</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;vector-vel&quot;</span><span class="p">)</span>
+<span class="n">vector1</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;interior-4&quot;</span><span class="p">]</span>
+<span class="n">vector1</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">vector1</span><span class="o">.</span><span class="n">vector_opt</span><span class="o">.</span><span class="n">fixed_length</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p><em>The fixed length option is useful when the vector magnitude varies dramatically.
+With fixed length vectors, the velocity magnitude is described only by color instead of by both vector length and color.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">vector1</span><span class="o">.</span><span class="n">vector_opt</span><span class="o">.</span><span class="n">scale_head</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">vector1</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;vector-vel.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../../_images/vector-vel.png"><img alt="../../_images/vector-vel.png" src="../../_images/vector-vel.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Velocity Vectors</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><em>The entrainment of air into the high-velocity methane jet is clearly visible.</em></p>
+<p>Display filled contours of mass fraction of <span class="math notranslate nohighlight">\(CH_4\)</span> and save the image to a file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">contour2</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;contour-ch4-mass-fraction&quot;</span><span class="p">)</span>
+<span class="n">contour2</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;ch4&quot;</span>
+<span class="n">contour2</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">contour2</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="n">contour2</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;contour-ch4-mass-fraction.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../../_images/contour-ch4-mass-fraction.png"><img alt="../../_images/contour-ch4-mass-fraction.png" src="../../_images/contour-ch4-mass-fraction.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Contours of <span class="math notranslate nohighlight">\(CH_4\)</span> Mass Fraction</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Display filled contours of mass fraction of <span class="math notranslate nohighlight">\(O_2\)</span> and save the image to a file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">contour3</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;contour-o2-mass-fraction&quot;</span><span class="p">)</span>
+<span class="n">contour3</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;o2&quot;</span>
+<span class="n">contour3</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">contour3</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="n">contour3</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;contour-o2-mass-fraction.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../../_images/contour-o2-mass-fraction.png"><img alt="../../_images/contour-o2-mass-fraction.png" src="../../_images/contour-o2-mass-fraction.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Contours of <span class="math notranslate nohighlight">\(O_2\)</span> Mass Fraction</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Display filled contours of mass fraction of <span class="math notranslate nohighlight">\(CO_2\)</span> and save the image to a file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">contour4</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;contour-co2-mass-fraction&quot;</span><span class="p">)</span>
+<span class="n">contour4</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;co2&quot;</span>
+<span class="n">contour4</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">contour4</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="n">contour4</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;contour-co2-mass-fraction.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../../_images/contour-co2-mass-fraction.png"><img alt="../../_images/contour-co2-mass-fraction.png" src="../../_images/contour-co2-mass-fraction.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Contours of <span class="math notranslate nohighlight">\(CO_2\)</span> Mass Fraction</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Display filled contours of mass fraction of <span class="math notranslate nohighlight">\(H_2O\)</span> and save the image to a file.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">contour5</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver_session</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;contour-h2o-mass-fraction&quot;</span><span class="p">)</span>
+<span class="n">contour5</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;h2o&quot;</span>
+<span class="n">contour5</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">contour5</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+<span class="n">contour5</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">auto_scale</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;contour-h2o-mass-fraction.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../../_images/contour-h2o-mass-fraction.png"><img alt="../../_images/contour-h2o-mass-fraction.png" src="../../_images/contour-h2o-mass-fraction.png" style="width: 500pt;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Contours of <span class="math notranslate nohighlight">\(H_2O\)</span> Mass Fraction</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Determine the average exit temperature.</p>
+<p>The mass-averaged temperature will be computed as:</p>
+<div class="math notranslate nohighlight">
+\[\bar{T}=\frac{\int T \rho \vec{v} \cdot d \vec{A}}{\int \rho \vec{v} \cdot d \vec{A}}\]</div>
+<p><em>The mass-averaged temperature at the exit is approximately 1840 K.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">surface_integrals</span><span class="o">.</span><span class="n">get_mass_weighted_avg</span><span class="p">(</span>
+    <span class="n">report_of</span><span class="o">=</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span> <span class="n">surface_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;pressure-outlet-9&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Determine the average exit velocity.</p>
+<p>The mass-averaged velocity will be computed as:</p>
+<div class="math notranslate nohighlight">
+\[v=\frac{1}{A} \int v d A\]</div>
+<p><em>The Area-Weighted Average field will show that the exit velocity is approximately 3.37 m/s.</em></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">report</span><span class="o">.</span><span class="n">surface_integrals</span><span class="o">.</span><span class="n">get_area_weighted_avg</span><span class="p">(</span>
+    <span class="n">report_of</span><span class="o">=</span><span class="s2">&quot;velocity-magnitude&quot;</span><span class="p">,</span> <span class="n">surface_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;pressure-outlet-9&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Save the case file (gascomb1.cas.h5).</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_case</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;gascomb1.cas.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="close-fluent">
+<h3>Close Fluent<a class="headerlink" href="#close-fluent" title="Link to this heading">#</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<p>In this tutorial we used PyFluent to model the transport, mixing, and reaction of chemical species.
+The reaction system was defined by using a mixture-material entry in the Ansys Fluent database.
+The procedures used here for simulation of hydrocarbon combustion can be applied to other reacting flow systems.</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-species-transport-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/3d44bec84d22dd30a5d9104d4384bccb/species_transport.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">species_transport.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/c0ee105b9d47a7efe48b5f13c7b95ba5/species_transport.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">species_transport.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/3ee50be13d71e7deff1fa9003afce9ce/species_transport.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">species_transport.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-description">Problem Description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-solution">Setup and Solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preparation">Preparation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh">Mesh</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-settings">General Settings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#models">Models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#materials">Materials</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-conditions">Boundary Conditions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reaction-solution">Reaction Solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#postprocessing">Postprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#close-fluent">Close Fluent</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/00-fluent/species_transport.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.5.2. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

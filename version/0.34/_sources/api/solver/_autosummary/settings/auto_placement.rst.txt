@@ -1,0 +1,23 @@
+:orphan:
+
+.. _auto_placement:
+
+auto_placement
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.auto_placement
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================
+
+Parent                                                                  Summary
+
+========================================   ====================================
+:ref:`major_gridlines <major_gridlines>`       Properties of gridlines on axis.
+
+:ref:`minor_gridlines <minor_gridlines>`       Properties of gridlines on axis.
+
+========================================   ====================================
+

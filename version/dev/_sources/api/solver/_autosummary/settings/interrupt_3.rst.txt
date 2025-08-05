@@ -1,0 +1,32 @@
+:orphan:
+
+.. _interrupt_3:
+
+interrupt
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interrupt_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =========================
+
+Argument                                                   Summary
+
+======================================   =========================
+:ref:`design_points <design_points_3>`       Design Point Name(s).
+
+======================================   =========================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

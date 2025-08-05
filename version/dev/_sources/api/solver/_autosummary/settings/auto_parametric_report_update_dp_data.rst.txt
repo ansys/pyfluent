@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_parametric_report_update_dp_data:
+
+auto_parametric_report_update_dp_data
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.auto_parametric_report_update_dp_data
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`parametric_studies_child <parametric_studies_child>`       'child_object_type' of parametric_studies.
+
+==========================================================   ==============================================
+

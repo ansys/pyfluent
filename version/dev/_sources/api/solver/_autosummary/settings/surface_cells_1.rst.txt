@@ -1,0 +1,32 @@
+:orphan:
+
+.. _surface_cells_1:
+
+surface_cells
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surface_cells_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================================   ==================================
+
+Argument                                                                            Summary
+
+======================================================   ==================================
+:ref:`surface_cell_names_ids <surface_cell_names_ids>`       The list of surface names/ids.
+
+======================================================   ==================================
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`display_10 <display_10>`       'display' child.
+
+==============================   ====================
+

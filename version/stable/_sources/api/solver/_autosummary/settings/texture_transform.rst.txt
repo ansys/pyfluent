@@ -1,0 +1,34 @@
+:orphan:
+
+.. _texture_transform:
+
+texture_transform
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.texture_transform
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ==============================================================================================================================
+
+Attribute                                                                                                                                         Summary
+
+========================   ==============================================================================================================================
+:ref:`scale <scale_10>`        Controls the scaling of the texture. A larger value increases the texture scaling, similarly to zooming in on the texture.
+
+:ref:`rotate <rotate_1>`                                                                                         Controls the orientation of the texture.
+
+========================   ==============================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`material_7_child <material_7_child>`       'child_object_type' of material.
+
+==========================================   ====================================
+

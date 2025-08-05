@@ -1,0 +1,47 @@
+:orphan:
+
+.. _mg_controls:
+
+mg_controls
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mg_controls
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`mg_controls_child <mg_controls_child>`
+
+
+.. rubric:: Included in:
+
+==================================================================   ===========================================================
+
+Parent                                                                                                                   Summary
+
+==================================================================   ===========================================================
+:ref:`zonal_pbns_solution_controls <zonal_pbns_solution_controls>`       Mom and pressure relaxation factors for coupled solver.
+
+==================================================================   ===========================================================
+

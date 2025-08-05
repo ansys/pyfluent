@@ -1,0 +1,50 @@
+:orphan:
+
+.. _write_in_cylinder_ouput:
+
+write_in_cylinder_ouput
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_in_cylinder_ouput
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ==================================
+
+Attribute                                                                           Summary
+
+======================================================   ==================================
+:ref:`enabled <enabled_59>`                                                'enabled' child.
+
+:ref:`write_freq <write_freq>`                                          'write_freq' child.
+
+:ref:`swirl_center_method <swirl_center_method>`               'swirl_center_method' child.
+
+:ref:`swirl_origin <swirl_origin>`                                    'swirl_origin' child.
+
+:ref:`user_defined_function <user_defined_function_1>`       'user_defined_function' child.
+
+:ref:`swirl_axis <swirl_axis>`                                          'swirl_axis' child.
+
+:ref:`tumble_x <tumble_x>`                                                'tumble_x' child.
+
+:ref:`tumble_y <tumble_y>`                                                'tumble_y' child.
+
+:ref:`threads <threads>`                                                   'threads' child.
+
+:ref:`file_name <file_name_15>`                                          'file_name' child.
+
+======================================================   ==================================
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`in_cylinder <in_cylinder>`       'in_cylinder' child.
+
+================================   ========================
+

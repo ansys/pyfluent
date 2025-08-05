@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_BasicMachineDescription__TWF_BasicMachineDescriptionCommandArguments:
+
+_TWF_BasicMachineDescriptionCommandArguments
+============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.solver_workflow.Root.TWF_BasicMachineDescription._TWF_BasicMachineDescriptionCommandArguments
+   :members: _CombustorType, _ComponentName, _ComponentType, _NewEnableTipGapList, _NewNumOfBladesList, _NewRowNameList, _NewRowTypeList, _NumRows, _OldEnableTipGapList, _OldNumOfBladesList, _OldRowNameList, _OldRowTypeList, _RowNumList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

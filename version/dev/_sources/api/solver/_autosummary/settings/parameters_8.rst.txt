@@ -1,0 +1,70 @@
+:orphan:
+
+.. _parameters_8:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parameters_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ===============================================================
+
+Attribute                                                                                                          Summary
+
+========================================================   ===============================================================
+:ref:`period <period>`                                                                          Fixed periodic type value.
+
+:ref:`frequency <frequency_6>`                                                                  Fixed periodic type value.
+
+:ref:`time_steps_per_period <time_steps_per_period>`                                      Number of time steps per period.
+
+:ref:`time_step_count <time_step_count_2>`                                                Inceremtal number of Time steps.
+
+:ref:`error_tolerance <error_tolerance_3>`                                                                Error Tolerance.
+
+:ref:`incremental_time <incremental_time>`                                                               Incremental Time.
+
+:ref:`total_time_step_count <total_time_step_count>`                                           Total number of Time steps.
+
+:ref:`total_time <total_time>`                                                                      Total Simulation Time.
+
+:ref:`time_step_size <time_step_size>`                                                        The physical time step size.
+
+:ref:`total_periods <total_periods>`                                                              Total number of periods.
+
+:ref:`global_courant_number <global_courant_number>`                                                Global Courant Number.
+
+:ref:`courant_number <courant_number_1>`                                                                   Courant Number.
+
+:ref:`fixed_time_step_size <fixed_time_step_size>`                                             Number of Fixed Time Steps.
+
+:ref:`initial_time_step_size <initial_time_step_size>`                                             Initial Time Step Size.
+
+:ref:`iter_count <iter_count_2>`                                                                     Number of iterations.
+
+:ref:`max_iter_per_time_step <max_iter_per_time_step>`                                           Max Iterations/Time Step.
+
+:ref:`reporting_interval <reporting_interval>`                     Number of solver iterations before returning to scheme.
+
+:ref:`profile_update_interval <profile_update_interval>`       Number of solver iterations after which profile is updated.
+
+:ref:`update_interval <update_interval_3>`                                                 Time Step Size Update Interval.
+
+:ref:`adaptive_time_stepping <adaptive_time_stepping_1>`                         Adaptive time stepping parameters object.
+
+========================================================   ===============================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

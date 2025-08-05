@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pulse_mode:
+
+pulse_mode
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.pulse_mode
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ===============================================
+
+Parent                                                         Summary
+
+====================   ===============================================
+:ref:`pulse <pulse>`       Save pathline/particle tracks pulse object.
+
+====================   ===============================================
+

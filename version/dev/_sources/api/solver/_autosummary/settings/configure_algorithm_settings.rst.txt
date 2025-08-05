@@ -1,0 +1,21 @@
+:orphan:
+
+.. _configure_algorithm_settings:
+
+configure_algorithm_settings
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.configure_algorithm_settings
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

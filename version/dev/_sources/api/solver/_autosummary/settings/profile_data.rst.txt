@@ -1,0 +1,51 @@
+:orphan:
+
+.. _profile_data:
+
+profile_data
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.profile_data
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ==============================
+
+Attribute                                                           Summary
+
+==========================================   ==============================
+:ref:`profile <profile_5>`                       Profile from profile list.
+
+:ref:`y_axis_function <y_axis_function_3>`                 Y axis function.
+
+:ref:`x_axis_function <x_axis_function_4>`                 X axis function.
+
+:ref:`axes <axes>`                                         Axes-properties.
+
+:ref:`curves <curves>`                               Parameters for curves.
+
+==========================================   ==============================
+
+.. rubric:: Methods
+
+=====================   ======================
+
+Method                                 Summary
+
+=====================   ======================
+:ref:`plot <plot_13>`       Plot profile data.
+
+=====================   ======================
+
+.. rubric:: Included in:
+
+======================   =======================================================================================================================
+
+Parent                                                                                                                                   Summary
+
+======================   =======================================================================================================================
+:ref:`plot_4 <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+======================   =======================================================================================================================
+

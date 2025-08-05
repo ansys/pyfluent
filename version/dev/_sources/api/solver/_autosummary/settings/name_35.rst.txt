@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_35:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_35
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`delete_6 <delete_6>`       Delete animation sequence.
+
+==========================   ==============================
+

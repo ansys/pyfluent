@@ -1,0 +1,21 @@
+:orphan:
+
+.. _wall_film_particles_1:
+
+wall_film_particles
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.wall_film_particles_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================================
+
+Parent                                                                Summary
+
+============================   ==============================================
+:ref:`option_61 <option_61>`       Check the Particle-tracks control options.
+
+============================   ==============================================
+

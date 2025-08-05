@@ -1,0 +1,57 @@
+:orphan:
+
+.. _parametric_studies:
+
+parametric_studies
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.parametric_studies
+    :show-inheritance:
+
+.. rubric:: Methods
+
+================================================   =====================================================
+
+Method                                                                                           Summary
+
+================================================   =====================================================
+:ref:`create <create>`                                 Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                          Delete selected objects.
+
+:ref:`rename <rename>`                                                                Rename the object.
+
+:ref:`list <list>`                                                        List the names of the objects.
+
+:ref:`list_properties <list_properties>`                           List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                            Create a copy of the object.
+
+:ref:`initialize <initialize_5>`                                                 Start Parametric Study.
+
+:ref:`duplicate <duplicate>`                                                 Duplicate Parametric Study.
+
+:ref:`set_as_current <set_as_current>`                                             Set As Current Study.
+
+:ref:`export_design_table <export_design_table>`                              Export Design Point Table.
+
+:ref:`import_design_table <import_design_table>`                              Import Design Point Table.
+
+================================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`parametric_studies_child <parametric_studies_child>`
+
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`       'root' object.
+
+======================   ==================
+

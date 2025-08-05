@@ -1,0 +1,47 @@
+:orphan:
+
+.. _table:
+
+table
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.table
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =============================
+
+Attribute                                                                  Summary
+
+==================================================   =============================
+:ref:`parameters <parameters_2>`                             PDF Table Parameters.
+
+:ref:`fgm_scalar_transport <fgm_scalar_transport>`       Use FGM Scalar Transport.
+
+==================================================   =============================
+
+.. rubric:: Methods
+
+====================================   =====================
+
+Method                                               Summary
+
+====================================   =====================
+:ref:`calc_pdf <calc_pdf>`                    Calculate PDF.
+
+:ref:`write_pdf_cmd <write_pdf_cmd>`       Write a PDF file.
+
+====================================   =====================
+
+.. rubric:: Included in:
+
+==========================================================================   =====================================
+
+Parent                                                                                                     Summary
+
+==========================================================================   =====================================
+:ref:`partially_premixed_model_options <partially_premixed_model_options>`       Partially Premixed Model Options.
+
+==========================================================================   =====================================
+

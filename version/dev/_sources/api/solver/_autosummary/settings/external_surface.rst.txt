@@ -1,0 +1,42 @@
+:orphan:
+
+.. _external_surface:
+
+external_surface
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.external_surface
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ============================================================
+
+Argument                                                                                      Summary
+
+======================================   ============================================================
+:ref:`auto_name <auto_name>`                         Specifies whether to do automatic naming or not.
+
+:ref:`surf_name <surf_name>`                                           The name for external surface.
+
+:ref:`stl_filename <stl_filename>`                                                      STL filename.
+
+:ref:`unit <unit>`                                                Unit in which the mesh was created.
+
+:ref:`split_surface <split_surface_1>`       Specifies whether to Split Surface at Boundaries or not.
+
+:ref:`zones <zones_7>`                           The zone(s) that will be used to define the surface.
+
+======================================   ============================================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================================================================
+
+Parent                                                                                                                   Summary
+
+==============================   ===============================================================================================
+:ref:`surfaces_9 <surfaces_9>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+==============================   ===============================================================================================
+

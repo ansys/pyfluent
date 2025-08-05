@@ -1,0 +1,21 @@
+:orphan:
+
+.. _expert_9:
+
+expert
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.expert_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`high_speed_numerics <high_speed_numerics>`       High-speed-numerics object.
+
+================================================   ===============================
+

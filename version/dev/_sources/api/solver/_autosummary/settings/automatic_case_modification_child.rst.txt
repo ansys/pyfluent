@@ -1,0 +1,44 @@
+:orphan:
+
+.. _automatic_case_modification_child:
+
+automatic_case_modification_child
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.automatic_case_modification_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =======================
+
+Attribute                                          Summary
+
+================================   =======================
+:ref:`active <active_1>`                   'active' child.
+
+:ref:`name <name_24>`                        'name' child.
+
+:ref:`python_cmd <python_cmd_1>`       'python_cmd' child.
+
+:ref:`command <command>`                  'command' child.
+
+:ref:`count <count>`                        'count' child.
+
+:ref:`ftselected <ftselected>`         'ftselected' child.
+
+:ref:`flowtime <flowtime>`               'flowtime' child.
+
+================================   =======================
+
+.. rubric:: Included in:
+
+================================================================   ================================
+
+Parent                                                                                      Summary
+
+================================================================   ================================
+:ref:`automatic_case_modification <automatic_case_modification>`       Automatic Case Modification.
+
+================================================================   ================================
+

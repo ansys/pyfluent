@@ -1,0 +1,36 @@
+:orphan:
+
+.. _options_22:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.options_22
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =========================================================================
+
+Attribute                                                                                          Summary
+
+==============================   =========================================================================
+:ref:`print <print_8>`               Specifies whether adjoint residuals will be printed during iteration.
+
+:ref:`plot <plot_17>`                Specifies whether adjoint residuals will be plotted during iteration.
+
+:ref:`n_display <n_display_1>`            The number of most recent adjoint residuals to display in plots.
+
+==============================   =========================================================================
+
+.. rubric:: Included in:
+
+==========================   =================================
+
+Parent                                                 Summary
+
+==========================   =================================
+:ref:`monitors <monitors>`       The residual monitors object.
+
+==========================   =================================
+

@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_DescribeGeometryAndFlow__DescribeGeometryAndFlowCommandArguments:
+
+_DescribeGeometryAndFlowCommandArguments
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.DescribeGeometryAndFlow._DescribeGeometryAndFlowCommandArguments
+   :members: _AddEnclosure, _AllTaskList, _CloseCaps, _FlowType, _GeometryOptions, _LocalRefinementRegions
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _DescribeGeometryAndFlowOptions/_DescribeGeometryAndFlowOptions_contents

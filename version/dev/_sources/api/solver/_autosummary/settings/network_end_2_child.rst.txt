@@ -1,0 +1,49 @@
+:orphan:
+
+.. _network_end_2_child:
+
+network_end_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.network_end_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =============================================================
+
+Attribute                                                                                  Summary
+
+==================================   =============================================================
+:ref:`name <name_4>`                                                           Name of the object.
+
+:ref:`phase <phase_38>`                                                             'phase' child.
+
+:ref:`network_end <network_end_1>`       Allows to change network-end model variables or settings.
+
+==================================   =============================================================
+
+.. rubric:: Methods
+
+======================================   ========================================================================================================================
+
+Method                                                                                                                                                    Summary
+
+======================================   ========================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone's surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                          Create surface for selected zone.
+
+======================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+====================================   ===========================================
+
+Parent                                                                     Summary
+
+====================================   ===========================================
+:ref:`network_end_2 <network_end_2>`       Settings for boundary-condition object.
+
+====================================   ===========================================
+

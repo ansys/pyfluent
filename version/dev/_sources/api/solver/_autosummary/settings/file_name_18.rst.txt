@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_18:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_18
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================================
+
+Parent                                                                Summary
+
+==========================   ================================================
+:ref:`export_2 <export_2>`       Export all case modifications to a tsv file.
+
+==========================   ================================================
+

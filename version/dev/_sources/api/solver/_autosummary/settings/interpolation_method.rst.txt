@@ -1,0 +1,21 @@
+:orphan:
+
+.. _interpolation_method:
+
+interpolation_method
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interpolation_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`overset_2 <overset_2>`       Overset solver options object.
+
+============================   ==================================
+

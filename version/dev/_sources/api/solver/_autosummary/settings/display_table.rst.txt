@@ -1,0 +1,32 @@
+:orphan:
+
+.. _display_table:
+
+display_table
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.display_table
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   =================
+
+Argument                               Summary
+
+==========================   =================
+:ref:`table_id <table_id>`       The table ID.
+
+==========================   =================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`table_file_manager <table_file_manager>`       The table file manager object.
+
+==============================================   ==================================
+

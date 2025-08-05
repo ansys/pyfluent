@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_PartManagement__PartManagementCommandArguments__Options:
+
+_Options
+========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.PartManagement._PartManagementCommandArguments._Options
+   :members: _Line, _Solid, _Surface
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

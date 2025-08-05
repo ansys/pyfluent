@@ -1,0 +1,57 @@
+:orphan:
+
+.. _phase_4:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phase_4
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`phase_4_child <phase_4_child>`
+
+
+.. rubric:: Included in:
+
+==========================================   =====================================
+
+Parent                                                                     Summary
+
+==========================================   =====================================
+:ref:`axis_5_child <axis_5_child>`                    'child_object_type' of axis.
+
+:ref:`degassing_child <degassing_child>`         'child_object_type' of degassing.
+
+:ref:`geometry_5_child <geometry_5_child>`        'child_object_type' of geometry.
+
+:ref:`overset_child <overset_child>`               'child_object_type' of overset.
+
+:ref:`shadow_child <shadow_child>`                  'child_object_type' of shadow.
+
+:ref:`symmetry_child <symmetry_child>`            'child_object_type' of symmetry.
+
+==========================================   =====================================
+

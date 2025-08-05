@@ -1,0 +1,21 @@
+:orphan:
+
+.. _axis_10:
+
+axis
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.axis_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`definition_3_child <definition_3_child>`       'child_object_type' of definition.
+
+==============================================   ======================================
+
