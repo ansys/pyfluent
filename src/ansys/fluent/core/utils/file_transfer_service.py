@@ -537,6 +537,9 @@ class PimFileTransferService:
                 )
             except ModuleNotFoundError:
                 pass
+        self.cwd = os.getcwd()
+        self.instance_name = self.pim_instance.name.replace("instances/", "")
+        self.instance_dir = os.path.join(self.cwd, self.instance_name)
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
@@ -604,16 +607,18 @@ class PimFileTransferService:
         if self.is_configured():
             for file in files:
                 if os.path.isfile(file):
-                    if not self.file_service.file_exist(os.path.basename(file)):
-                        self.upload_file(
-                            file_name=file, remote_file_name=remote_file_name
-                        )
-                        print(f"\n{os.path.basename(file_name)} uploaded.\n")
+                    if os.path.exists(self.instance_dir):
+                        shutil.copy2(file, self.instance_dir)
                     else:
-                        warnings.warn(
-                            f"\n{file} with the same name exists at the remote location.\n",
-                            PyFluentUserWarning,
-                        )
+                        if not self.file_service.file_exist(os.path.basename(file)):
+                            self.upload_file(
+                                file_name=file, remote_file_name=remote_file_name
+                            )
+                        else:
+                            warnings.warn(
+                                f"\n{file} with the same name exists at the remote location.\n",
+                                PyFluentUserWarning,
+                            )
                 elif not self.file_service.file_exist(os.path.basename(file)):
                     raise FileNotFoundError(f"{file} does not exist.")
 
@@ -655,17 +660,20 @@ class PimFileTransferService:
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
             for file in files:
+                download_file_name = os.path.join(self.instance_dir, file)
                 if os.path.isfile(file):
                     warnings.warn(
                         f"\nFile already exists. File path:\n{file}\n",
                         PyFluentUserWarning,
                     )
                 else:
-                    self.download_file(
-                        file_name=os.path.basename(file),
-                        local_directory=local_directory,
-                    )
-                    print(f"\n{os.path.basename(file_name)} downloaded.\n")
+                    if os.path.exists(download_file_name):
+                        shutil.copy2(download_file_name, self.cwd)
+                    else:
+                        self.download_file(
+                            file_name=os.path.basename(file),
+                            local_directory=local_directory,
+                        )
 
     def __call__(self, pim_instance: Any | None = None):
         self.pim_instance = pim_instance
