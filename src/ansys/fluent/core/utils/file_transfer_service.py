@@ -647,7 +647,7 @@ class PimFileTransferService:
             else:
                 raise FileNotFoundError("Remote file does not exist.")
 
-    def download(self, file_name: list[str] | str, local_directory: str | None = "."):
+    def download(self, file_name: list[str] | str, local_directory: str | None = None):
         """Download a file from the server.
 
         Parameters
@@ -657,22 +657,23 @@ class PimFileTransferService:
         local_directory : str, optional
             Local directory. The default is the current working directory.
         """
+        download_directory = local_directory if local_directory else self.cwd
         files = [file_name] if isinstance(file_name, str) else file_name
         if self.is_configured():
             for file in files:
-                download_file_name = os.path.join(self.instance_dir, file)
                 if os.path.isfile(file):
                     warnings.warn(
                         f"\nFile already exists. File path:\n{file}\n",
                         PyFluentUserWarning,
                     )
                 else:
+                    download_file_name = os.path.join(self.instance_dir, file)
                     if os.path.exists(download_file_name):
-                        shutil.copy2(download_file_name, self.cwd)
+                        shutil.copy2(download_file_name, download_directory)
                     else:
                         self.download_file(
                             file_name=os.path.basename(file),
-                            local_directory=local_directory,
+                            local_directory=download_directory,
                         )
 
     def __call__(self, pim_instance: Any | None = None):
