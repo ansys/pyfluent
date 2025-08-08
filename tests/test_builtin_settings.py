@@ -563,6 +563,31 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         )
         == solver.parametric_studies["mixing_elbow-Solve"].design_points["Base DP"]
     )
+    assert ReadCase(settings_source=solver) == solver.file.read_case
+    assert ReadData(settings_source=solver) == solver.file.read_data
+    assert ReadCaseData(settings_source=solver) == solver.file.read_case_data
+    if fluent_version >= FluentVersion.v241:
+        assert WriteCase(settings_source=solver) == solver.file.write_case
+        assert WriteData(settings_source=solver) == solver.file.write_data
+        assert WriteCaseData(settings_source=solver) == solver.file.write_case_data
+    else:
+        with pytest.raises(RuntimeError):
+            WriteCase(settings_source=solver)
+        with pytest.raises(RuntimeError):
+            WriteData(settings_source=solver)
+        with pytest.raises(RuntimeError):
+            WriteCaseData(settings_source=solver)
+    assert (
+        Initialize(settings_source=solver) == solver.solution.initialization.initialize
+    )
+    assert (
+        Calculate(settings_source=solver) == solver.solution.run_calculation.calculate
+    )
+    assert Iterate(settings_source=solver) == solver.solution.run_calculation.iterate
+    assert (
+        DualTimeIterate(settings_source=solver)
+        == solver.solution.run_calculation.dual_time_iterate
+    )
 
 
 @pytest.mark.codegen_required
@@ -706,5 +731,5 @@ def test_context_manager_2(new_solver_session):
     )
 
     with using(solver):
-        ReadCase(file_name=import_filename)
+        read_case(file_name=import_filename)
         assert Viscous().model() == "k-omega"
