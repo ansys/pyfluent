@@ -82,16 +82,8 @@ unit_battery_mesh = examples.download_file(
 
 solver.settings.file.read_case(file_name=unit_battery_mesh)  # Read the mesh file
 # List of surfaces to display
-surfaces = [
-    "internal-18",
-    "internal-18:20",
-    "tab_n",
-    "tab_p",
-    "wall_active",
-    "wall_n",
-    "wall_p",
-]
-
+surface_list = solver.settings.setup.boundary_conditions.wall.get_object_names()
+surfaces = surface_list
 mesh = solver.settings.results.graphics.mesh
 mesh.create("mesh-1")
 mesh["mesh-1"].surfaces_list = surfaces
