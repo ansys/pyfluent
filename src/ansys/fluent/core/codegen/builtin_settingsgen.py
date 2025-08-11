@@ -22,8 +22,14 @@
 
 """Generate builtin setting classes."""
 
+import re
+
 from ansys.fluent.core import FluentVersion, config
-from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
+from ansys.fluent.core.solver.flobject import (
+    CreatableNamedObjectMixin,
+    NamedObject,
+    _ChildNamedObjectAccessorMixin,
+)
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.fluent_version import all_versions
 
@@ -41,6 +47,13 @@ def _get_settings_root(version: str):
     return settings.root
 
 
+def _convert_camel_case_to_snake_case(name: str) -> str:
+    """Convert CamelCase to snake_case."""
+    # Replace uppercase letters with lowercase and prepend an underscore
+    name = re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+    return name
+
+
 def _get_named_objects_in_path(root, path, kind):
     named_objects = []
     cls = root
@@ -52,6 +65,8 @@ def _get_named_objects_in_path(root, path, kind):
             cls = cls.child_object_type
     final_type = ""
     if kind == "NamedObject":
+        if not issubclass(cls, (NamedObject, _ChildNamedObjectAccessorMixin)):
+            raise TypeError(f"{cls.__name__} is not NamedObject type.")
         if issubclass(cls, CreatableNamedObjectMixin):
             final_type = "Creatable"
         else:
@@ -72,8 +87,11 @@ def generate(version: str):
             "from ansys.fluent.core.solver.flobject import SettingsBase\n\n\n"
         )
         f.write("__all__ = [\n")
-        for name, _ in DATA.items():
+        for name, (kind, _) in DATA.items():
             f.write(f'    "{name}",\n')
+            if kind == "Command":
+                command_name = _convert_camel_case_to_snake_case(name)
+                f.write(f'    "{command_name}",\n')
         f.write("]\n\n")
         for name, v in DATA.items():
             kind, path = v
@@ -86,9 +104,31 @@ def generate(version: str):
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
-            doc_kind = "command" if kind == "Command" else "setting"
+            doc_kind = "command object" if kind == "Command" else "setting"
             f.write(f'    """{name} {doc_kind}."""\n\n')
+            f.write(f'    _db_name = "{name}"\n\n')
+            f.write("    def __init__(self")
+            for named_object in named_objects:
+                f.write(f", {named_object}: str")
+            f.write(", settings_source: SettingsBase | Solver | None = None")
+            if kind == "NonCreatableNamedObject":
+                f.write(", name: str = None")
+            elif kind == "CreatableNamedObject":
+                f.write(", name: str = None, new_instance_name: str = None")
+            f.write("):\n")
+            f.write("        super().__init__(settings_source=settings_source")
+            if kind == "NonCreatableNamedObject":
+                f.write(", name=name")
+            elif kind == "CreatableNamedObject":
+                f.write(", name=name, new_instance_name=new_instance_name")
+            for named_object in named_objects:
+                f.write(f", {named_object}={named_object}")
+            f.write(")\n\n")
             if kind == "Command":
+                command_name = _convert_camel_case_to_snake_case(name)
+                f.write(f"class {command_name}(_{kind}Setting):\n")
+                f.write(f'    """{command_name} command."""\n\n')
+                f.write(f'    _db_name = "{name}"\n\n')
                 f.write(
                     "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
                 )
@@ -96,25 +136,7 @@ def generate(version: str):
                 f.write(
                     "       instance.__init__(settings_source=settings_source, **kwargs)\n"
                 )
-                f.write("       return instance(**kwargs")
-            else:
-                f.write("    def __init__(self")
-                for named_object in named_objects:
-                    f.write(f", {named_object}: str")
-                f.write(", settings_source: SettingsBase | Solver | None = None")
-                if kind == "NonCreatableNamedObject":
-                    f.write(", name: str = None")
-                elif kind == "CreatableNamedObject":
-                    f.write(", name: str = None, new_instance_name: str = None")
-                f.write("):\n")
-                f.write("        super().__init__(settings_source=settings_source")
-                if kind == "NonCreatableNamedObject":
-                    f.write(", name=name")
-                elif kind == "CreatableNamedObject":
-                    f.write(", name=name, new_instance_name=new_instance_name")
-                for named_object in named_objects:
-                    f.write(f", {named_object}={named_object}")
-            f.write(")\n\n")
+                f.write("       return instance(**kwargs)\n\n")
 
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
