@@ -47,7 +47,6 @@ def test_fluent_fatal_error(error_code, raises, new_solver_session):
             time.sleep(0.1)
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_custom_python_error_via_grpc(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
