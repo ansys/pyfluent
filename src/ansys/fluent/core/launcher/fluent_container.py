@@ -338,6 +338,7 @@ def configure_container_dict(
             environment={
                 "ANSYSLMD_LICENSE_FILE": license_server,
                 "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
+                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
             }
         )
 
