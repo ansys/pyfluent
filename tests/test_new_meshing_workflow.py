@@ -1607,7 +1607,6 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     assert len(two_dimensional.task_names()) == len(set(two_dimensional.task_names()))
 
 
-@pytest.mark.skip("Failing in GitHub")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=25.1")
 def test_return_state_changes(new_meshing_session):
