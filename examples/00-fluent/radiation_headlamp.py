@@ -470,7 +470,9 @@ rad_input_bc = solver_session.settings.setup.boundary_conditions.wall["rad-input
 rad_input_bc.thermal.thermal_condition = "Temperature"
 rad_input_bc.thermal.temperature.value = 298.15
 rad_input_bc.radiation.boundary_source = True
-rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation = {"s-": 1200}
+rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation = {
+    "Full-spectrum": {"option": "value", "value": 1200}
+}
 rad_input_bc.radiation.direct_irradiation_settings.reference_direction = [
     -0.848,
     0,

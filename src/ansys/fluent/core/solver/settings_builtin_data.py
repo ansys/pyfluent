@@ -225,26 +225,14 @@ DATA = {
     "VelocityInlet": ("NamedObject", "setup.boundary_conditions.velocity_inlet"),
     "WallBoundaries": ("Singleton", "setup.boundary_conditions.wall"),
     "WallBoundary": ("NamedObject", "setup.boundary_conditions.wall"),
-    "NonReflectingBoundaries": (
-        "Singleton",
-        {
-            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
-        },
-    ),
     "NonReflectingBoundary": (
-        "NamedObject",
-        {
-            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
-        },
-    ),
-    "PerforatedWallBoundaries": (
         "Singleton",
         {
-            since(FluentVersion.v241): "setup.boundary_conditions.perforated_wall",
+            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
         },
     ),
     "PerforatedWallBoundary": (
-        "NamedObject",
+        "Singleton",
         {
             since(FluentVersion.v241): "setup.boundary_conditions.perforated_wall",
         },

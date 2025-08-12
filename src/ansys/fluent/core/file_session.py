@@ -186,7 +186,20 @@ class BatchFieldData:
             | PathlinesFieldDataRequest
         ),
     ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
         elif isinstance(obj, ScalarFieldDataRequest):
@@ -973,7 +986,20 @@ class FileFieldData(FieldDataSource):
             | PathlinesFieldDataRequest
         ),
     ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
         elif isinstance(obj, ScalarFieldDataRequest):
