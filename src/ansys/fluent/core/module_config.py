@@ -300,11 +300,6 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_HIDE_LOG_SECRETS") == "1"
     )
 
-    #: The Fluent root directory to be used for PyFluent, defaults to the value of ``PYFLUENT_FLUENT_ROOT`` environment variable.
-    fluent_root = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("PYFLUENT_FLUENT_ROOT")
-    )
-
     #: The remoting server address to be used in Fluent, defaults to the value of ``REMOTING_SERVER_ADDRESS`` environment variable.
     remoting_server_address = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("REMOTING_SERVER_ADDRESS")

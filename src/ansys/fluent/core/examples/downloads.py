@@ -137,7 +137,7 @@ def download_file(
     save_path : str, optional
         Path to download the specified file to.
     return_without_path : bool, optional
-        When unspecified, defaults to False, unless the PYFLUENT_LAUNCH_CONTAINER=1 environment variable is specified,
+        When unspecified, defaults to False, unless the launch_fluent_container config is set to True,
         in which case defaults to True.
         Relevant when using Fluent Docker container images, as the full path for the imported file from
         the host side is not necessarily going to be the same as the one for Fluent inside the container.

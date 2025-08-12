@@ -54,9 +54,6 @@ Use this method when:
 
 .. code-block:: python
 
-  import os
-  os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-
   import ansys.fluent.core as pyfluent
   from ansys.fluent.core.utils.networking import get_free_port
 
@@ -453,21 +450,13 @@ Pass ``use_docker_compose=True`` or ``use_podman_compose=True`` to use Docker Co
 
 Example:
 
-Set environment variables to select the container engine:
-
-.. code:: python
-
-  >>> import os
-  >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-
-
-Then launch:
+Launch Fluent in container mode via PyFluent:
 
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
-  >>> solver_session = pyfluent.launch_fluent(use_docker_compose=True)
+  >>> solver_session = pyfluent.launch_fluent(start_container=True, use_docker_compose=True)
   >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> solver_session.file.read(file_name=case_file_name, file_type="case")
   >>> solver_session.exit()
