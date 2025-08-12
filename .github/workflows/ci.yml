@@ -648,11 +648,10 @@ jobs:
         run: ls -R
 
       - name: Upload to Private PyPi
-        uses: pypa/gh-action-pypi-publish@v1.12.4
-        with:
-          packages-dir: dist
-          repository-url: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
-          skip-existing: true
+        run: |
+          pip install twine
+          python -m twine upload --skip-existing ./**/*.whl
+          python -m twine upload --skip-existing ./**/*.tar.gz
         env:
           TWINE_USERNAME: PAT
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
@@ -673,3 +672,4 @@ jobs:
           files: |
             ./**/*.whl
             ./**/*.tar.gz
+            ./**/*-wheelhouse-*.zip
