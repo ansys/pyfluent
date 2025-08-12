@@ -47,8 +47,10 @@ class ComposeConfig:
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
     ):
-        self._env_docker = os.getenv("PYFLUENT_USE_DOCKER_COMPOSE") == "1"
-        self._env_podman = os.getenv("PYFLUENT_USE_PODMAN_COMPOSE") == "1"
+        from ansys.fluent.core import config
+
+        self._env_docker = config.use_docker_compose
+        self._env_podman = config.use_podman_compose
 
         self._use_docker = use_docker_compose
         self._use_podman = use_podman_compose
@@ -100,7 +102,8 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
         kwargs.update(stdout=subprocess.PIPE)
     else:
         kwargs.update(
-            stdout=pyfluent.LAUNCH_FLUENT_STDOUT, stderr=pyfluent.LAUNCH_FLUENT_STDERR
+            stdout=pyfluent.config.launch_fluent_stdout,
+            stderr=pyfluent.config.launch_fluent_stderr,
         )
     if is_windows():
         kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
@@ -110,26 +113,31 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
     fluent_env["REMOTING_THROW_LAST_SETTINGS_ERROR"] = "1"
-    if pyfluent.CLEAR_FLUENT_PARA_ENVS:
+    if pyfluent.config.clear_fluent_para_envs:
         fluent_env.pop("PARA_NPROCS", None)
         fluent_env.pop("PARA_MESH_NPROCS", None)
 
-    if pyfluent.LAUNCH_FLUENT_IP:
-        fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.LAUNCH_FLUENT_IP
+    if pyfluent.config.launch_fluent_ip:
+        fluent_env["REMOTING_SERVER_ADDRESS"] = pyfluent.config.launch_fluent_ip
 
-    if pyfluent.LAUNCH_FLUENT_PORT:
-        fluent_env["REMOTING_PORTS"] = f"{pyfluent.LAUNCH_FLUENT_PORT}/portspan=2"
+    if pyfluent.config.launch_fluent_port:
+        fluent_env["REMOTING_PORTS"] = (
+            f"{pyfluent.config.launch_fluent_port}/portspan=2"
+        )
 
-    if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
+    if pyfluent.config.launch_fluent_skip_password_check:
         fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
     if not is_slurm:
-        if pyfluent.INFER_REMOTING_IP and "REMOTING_SERVER_ADDRESS" not in fluent_env:
+        if (
+            pyfluent.config.infer_remoting_ip
+            and "REMOTING_SERVER_ADDRESS" not in fluent_env
+        ):
             remoting_ip = find_remoting_ip()
             if remoting_ip:
                 fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
 
-    if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
+    if not pyfluent.config.fluent_automatic_transcript:
         fluent_env["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
     kwargs.update(env=fluent_env)

@@ -8,6 +8,7 @@ User guide
    :maxdepth: 1
    :hidden:
 
+   config_variables
    session/session_contents
    solver_settings/solver_settings_contents
    meshing/meshing_contents
@@ -81,6 +82,7 @@ Field data extraction
 Access and modify field data arrays for physical variables of interest at your chosen locations.
 Choose to apply reduction functions or create and compute expressions using Fluent's powerful
 expression language.
+Determine when to use ``field_data`` versus ``solution_variable_data``.
 
 Offline features
 ~~~~~~~~~~~~~~~~

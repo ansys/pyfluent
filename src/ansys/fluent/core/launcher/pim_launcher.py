@@ -40,13 +40,14 @@ import logging
 import os
 from typing import Any, Dict
 
-from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
+    UIMode,
     _get_argvals_and_session,
 )
 from ansys.fluent.core.session_meshing import Meshing
@@ -68,6 +69,7 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode | str | None = None,
+        ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -78,6 +80,7 @@ class PIMLauncher:
         start_timeout: int = 60,
         additional_arguments: str = "",
         cleanup_on_exit: bool = True,
+        dry_run: bool | None = None,
         start_transcript: bool = True,
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
@@ -90,6 +93,8 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent for targeting a specific session type.
+        ui_mode : UIMode
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -115,6 +120,8 @@ class PIMLauncher:
         cleanup_on_exit : bool
             Determines whether to shut down the connected Fluent session upon exit or when calling
             the session's `exit()` method. Defaults to True.
+        dry_run : bool, optional
+            If True, returns a configuration dictionary instead of starting a Fluent session.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
@@ -170,7 +177,9 @@ class PIMLauncher:
                 FluentVersion(self.argvals["product_version"]).number
             )
         else:
-            fluent_product_version = None
+            fluent_product_version = str(
+                FluentVersion(FluentVersion.current_release()).number
+            )
 
         return launch_remote_fluent(
             session_cls=self.new_session,
@@ -236,7 +245,12 @@ def launch_remote_fluent(
 
     instance.wait_for_ready()
 
-    channel = instance.build_grpc_channel()
+    channel = instance.build_grpc_channel(
+        options=[
+            ("grpc.max_send_message_length", _get_max_c_int_limit()),
+            ("grpc.max_receive_message_length", _get_max_c_int_limit()),
+        ],
+    )
 
     fluent_connection = create_fluent_connection(
         channel=channel,

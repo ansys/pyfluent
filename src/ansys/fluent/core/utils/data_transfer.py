@@ -114,7 +114,7 @@ def transfer_case(
     """
     inside_container = source_instance.connection_properties.inside_container
     if not workdir:
-        workdir = Path(pyfluent.EXAMPLES_PATH)
+        workdir = Path(pyfluent.config.examples_path)
     else:
         workdir = Path(workdir)
     if inside_container:
@@ -122,9 +122,9 @@ def transfer_case(
             network_logger.warning(
                 "Fluent is running inside a container, and no 'container_workdir' was specified for "
                 "'transfer_case'. Assuming that the default container mount path "
-                f"'{pyfluent.CONTAINER_MOUNT_TARGET}' is being used. "
+                f"'{pyfluent.config.container_mount_target}' is being used. "
             )
-            container_workdir = PurePosixPath(pyfluent.CONTAINER_MOUNT_TARGET)
+            container_workdir = PurePosixPath(pyfluent.config.container_mount_target)
             network_logger.debug(f"container_workdir: {container_workdir}")
         else:
             container_workdir = PurePosixPath(container_workdir)

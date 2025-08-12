@@ -69,7 +69,7 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (pyfluent.CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
+    return (pyfluent.config.codegen_outdir / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -96,8 +96,8 @@ _XML_HELPSTRINGS = {}
 
 
 def _copy_tui_help_xml_file(version: str):
-    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v25.1.0")
+    if pyfluent.config.launch_fluent_container:
+        image_tag = pyfluent.config.fluent_image_tag
         image_name = f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
@@ -347,7 +347,7 @@ def generate(version, static_infos: dict, verbose: bool = False):
         api_tree["<solver_session>"] = TUIGenerator(
             "solver", version, static_infos, verbose
         ).generate()
-    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+    if not pyfluent.config.hide_log_secrets:
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
             len(_XML_HELPSTRINGS),

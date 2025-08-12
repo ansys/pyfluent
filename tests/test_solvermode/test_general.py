@@ -34,7 +34,7 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
     assert solver_session.settings.is_active()
     assert solver_session.is_server_healthy()
-    file_name = Path(pyfluent.EXAMPLES_PATH) / "jou_test_general.py"
+    file_name = Path(pyfluent.config.examples_path) / "jou_test_general.py"
     solver_session.journal.start(file_name.as_posix())
     ###
     assert solver_session.setup.models.energy.enabled()

@@ -65,7 +65,7 @@ def pytest_addoption(parser):
 def pytest_runtest_setup(item):
     if (
         any(mark.name == "standalone" for mark in item.iter_markers())
-        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+        and pyfluent.config.launch_fluent_container
     ):
         pytest.skip()
 
@@ -174,9 +174,9 @@ def run_before_each_test(
     monkeypatch: pytest.MonkeyPatch,
     request: pytest.FixtureRequest,
 ):
-    monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-    monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
-    pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
+    monkeypatch.setattr(pyfluent.config, "test_name", request.node.name)
+    monkeypatch.setattr(pyfluent.config, "codegen_skip_builtin_settings", True)
+    pyfluent.config.container_mount_source = pyfluent.config.examples_path
     original_cwd = os.getcwd()
     monkeypatch.chdir(tmp_path)
     yield
@@ -196,7 +196,7 @@ class Helpers:
             version = FluentVersion.current_release()
         elif not isinstance(version, FluentVersion):
             version = FluentVersion(version)
-        self.monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+        self.monkeypatch.setattr(pyfluent.config, "fluent_root", None)
         for fv in FluentVersion:
             if fv <= version:
                 self.monkeypatch.setenv(fv.awp_var, f"ansys_inc/{fv.name}")
@@ -250,7 +250,7 @@ def exhaust_system_geometry_filename():
 
 
 def create_session(**kwargs):
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
+    if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.mount_source}
         return pyfluent.launch_fluent(
@@ -466,7 +466,7 @@ def periodic_rot_settings_session(new_solver_session):
 
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
+    monkeypatch.setattr(pyfluent.config, "datamodel_use_state_cache", False)
 
 
 @pytest.fixture(params=["old", "new"])

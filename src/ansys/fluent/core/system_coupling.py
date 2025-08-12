@@ -252,7 +252,9 @@ class SystemCoupling:
                 # the local Fluent container working directory will correspond to
                 # pyfluent.EXAMPLES_PATH in the host, so that is where the SCP file
                 # will be written.
-                examples_path_scp = os.path.join(pyfluent.EXAMPLES_PATH, scp_file_name)
+                examples_path_scp = os.path.join(
+                    pyfluent.config.examples_path, scp_file_name
+                )
                 if os.path.exists(examples_path_scp):
                     scp_file_name = examples_path_scp
 

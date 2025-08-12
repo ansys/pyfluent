@@ -48,7 +48,7 @@ def create_root_using_datamodelgen(service, app_name):
     static_info = service.get_static_info(app_name)
     with TemporaryDirectory() as temp_dir:
         with MonkeyPatch.context() as m:
-            m.setattr(pyfluent, "CODEGEN_OUTDIR", Path(temp_dir))
+            m.setattr(pyfluent.config, "codegen_outdir", Path(temp_dir))
             # TODO: Refactor datamdodelgen so we don't need to hardcode StaticInfoType
             datamodelgen.generate(
                 version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}

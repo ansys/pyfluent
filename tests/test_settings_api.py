@@ -25,6 +25,7 @@ import warnings
 import pytest
 from pytest import WarningsRecorder
 
+from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.solver import Viscous
@@ -746,7 +747,7 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
 
 @pytest.fixture
 def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES", "1")
+    monkeypatch.setattr(config, "use_runtime_python_classes", True)
 
 
 @pytest.mark.fluent_version(">=24.2")

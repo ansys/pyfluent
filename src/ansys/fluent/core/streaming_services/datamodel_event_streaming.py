@@ -23,7 +23,6 @@
 """Provides a module for datamodel event streaming."""
 
 import logging
-import os
 import threading
 from typing import Callable
 
@@ -62,6 +61,8 @@ class DatamodelEvents(StreamingService):
 
     def _process_streaming(self, id, stream_begin_method, started_evt, *args, **kwargs):
         """Processes datamodel events."""
+        from ansys.fluent.core import config
+
         request = DataModelProtoModule.EventRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
@@ -69,7 +70,7 @@ class DatamodelEvents(StreamingService):
         while True:
             try:
                 response: DataModelProtoModule.EventResponse = next(responses)
-                if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+                if not config.hide_log_secrets:
                     network_logger.debug(
                         f"GRPC_TRACE: RPC = /grpcRemoting.DataModel/BeginEventStreaming, response = {MessageToDict(response)}"
                     )

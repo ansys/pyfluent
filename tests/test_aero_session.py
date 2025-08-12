@@ -44,7 +44,7 @@ def test_sample_setup():
         "pyfluent/aero",
         return_without_path=False,
     )
-    solver_aero_path = str(Path(pyfluent.EXAMPLES_PATH) / "solver_aero")
+    solver_aero_path = str(Path(pyfluent.config.examples_path) / "solver_aero")
     if os.path.exists(solver_aero_path + ".cffdb"):
         shutil.rmtree(solver_aero_path + ".cffdb")
     solver = pyfluent.launch_fluent(mode="solver_aero")
