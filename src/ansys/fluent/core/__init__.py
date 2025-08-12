@@ -77,7 +77,7 @@ from ansys.fluent.core.utils import fldoc, get_examples_download_dir
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.33.0"
+__version__ = "0.33.1"
 
 _VERSION_INFO = None
 """
