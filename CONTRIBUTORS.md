@@ -31,6 +31,7 @@
 * [Mainak Kundu](https://github.com/mkundu1)
 * [Maxime Rey](https://github.com/MaxJPRey)
 * [mcgoldba](https://github.com/mcgoldba)
+* [Muhammed Adedigba](https://github.com/moe-ad)
 * [Oleg Chernukhin](https://github.com/ochernuk)
 * [Patrick Lagace](https://github.com/lagacep-ans)
 * [Pierre Lulé](https://github.com/plule-ansys)
