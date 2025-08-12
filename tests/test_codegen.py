@@ -532,7 +532,6 @@ class P3(Integer):
     _version = '251'
     fluent_name = 'P3'
     _python_name = 'P3'
-    _allowed_values = []
 
 class G2(Group):
     """
@@ -545,7 +544,6 @@ class G2(Group):
     _child_classes = dict(
         P3=P3,
     )
-    _allowed_values = []
 
 class P2(Real):
     """
@@ -554,7 +552,6 @@ class P2(Real):
     _version = '251'
     fluent_name = 'P2'
     _python_name = 'P2'
-    _allowed_values = []
 
 class A2(Real):
     """
@@ -563,7 +560,6 @@ class A2(Real):
     _version = '251'
     fluent_name = 'A2'
     _python_name = 'A2'
-    _allowed_values = []
 
 class C2(Command):
     """
@@ -581,7 +577,6 @@ class C2(Command):
     _child_classes = dict(
         A2=A2,
     )
-    _allowed_values = []
 
 class Q2(Query):
     """
@@ -599,7 +594,6 @@ class Q2(Query):
     _child_classes = dict(
         A2=A2,
     )
-    _allowed_values = []
 
 class G1(Group):
     """
@@ -617,7 +611,6 @@ class G1(Group):
         C2=C2,
         Q2=Q2,
     )
-    _allowed_values = []
 
 class P1(String):
     """
@@ -626,7 +619,6 @@ class P1(String):
     _version = '251'
     fluent_name = 'P1'
     _python_name = 'P1'
-    _allowed_values = []
 
 class P4(String):
     """
@@ -635,7 +627,6 @@ class P4(String):
     _version = '251'
     fluent_name = 'P4'
     _python_name = 'P4'
-    _allowed_values = []
 
 class N1_child(Group):
     """
@@ -644,7 +635,6 @@ class N1_child(Group):
     _version = '251'
     fluent_name = 'child-object-type'
     _python_name = 'N1_child'
-    _allowed_values = []
 
 class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     """
@@ -658,7 +648,6 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
         P4=P4,
     )
     child_object_type = N1_child
-    _allowed_values = []
 
 class A1(String):
     """
@@ -667,7 +656,6 @@ class A1(String):
     _version = '251'
     fluent_name = 'A1'
     _python_name = 'A1'
-    _allowed_values = []
 
 class C1(Command):
     """
@@ -685,7 +673,6 @@ class C1(Command):
     _child_classes = dict(
         A1=A1,
     )
-    _allowed_values = []
 
 class Q1(Query):
     """
@@ -703,7 +690,6 @@ class Q1(Query):
     _child_classes = dict(
         A1=A1,
     )
-    _allowed_values = []
 
 class root(Group):
     """
@@ -721,8 +707,7 @@ class root(Group):
         N1=N1,
         C1=C1,
         Q1=Q1,
-    )
-    _allowed_values = []'''  # noqa: W293
+    )'''  # noqa: W293
 
 
 def test_codegen_with_settings_static_info(monkeypatch):
