@@ -60,6 +60,17 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Dependencies
+        run: |
+          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo apt update
+          sudo apt install libegl1
+          pip install -e .
+          pip install -e .[reader]
+          pip install ansys-fluent-visualization>=0.21.1
+          pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
+
       - name: Pull Fluent docker image if not present
         run: |
           if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
@@ -73,17 +84,6 @@ jobs:
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Install Dependencies
-        run: |
-          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
-          sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
-          sudo apt update
-          sudo apt install libegl1
-          pip install -e .
-          pip install -e .[reader]
-          pip install ansys-fluent-visualization>=0.21.1
-          pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
 
       - name: Execute Examples
         run: |
