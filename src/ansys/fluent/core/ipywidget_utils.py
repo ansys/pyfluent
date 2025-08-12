@@ -65,6 +65,11 @@ def _param_ui(settings_obj):
 
     widget = _render_widgets(get_fn(), label)
     output = widgets.Output()
+    with output:
+        output.clear_output()
+        print(
+            f"<solver_session>.settings.{settings_obj.path.replace('/', '.').replace('-', '_')}"
+        )
 
     def on_change(change):
         if change["name"] == "value":
@@ -107,6 +112,11 @@ def _command_ui(func, label: str = None):
         description=label or f"Run {func.python_name}", button_style="success"
     )
     output = widgets.Output()
+    with output:
+        output.clear_output()
+        print(
+            f"<solver_session>.settings.{func.path.replace('/', '.')}".replace("-", "_")
+        )
 
     def on_click(_):
         kwargs = {name: w.value for name, w in arg_widgets.items()}
@@ -164,9 +174,7 @@ def settings_ui(obj, indent=0):
 
     else:
         if isinstance(obj, BaseCommand):
-            leaf_widget = (
-                _command_ui(obj) if obj.is_active() else widgets.HTML("")
-            )  # empty HTML widget
+            leaf_widget = _command_ui(obj) if obj.is_active() else widgets.HTML("")
         else:
             leaf_widget = _param_ui(obj)
         return widgets.VBox([leaf_widget])
