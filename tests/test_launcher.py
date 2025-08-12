@@ -760,3 +760,4 @@ def test_warning_for_deprecated_compose_env_vars(monkeypatch):
 def test_default_launch_mode_is_py():
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
     assert "-py" in fluent_launch_string
+
