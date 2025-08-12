@@ -754,7 +754,7 @@ def test_warning_for_deprecated_compose_env_vars(monkeypatch):
     with pytest.warns(PyFluentDeprecationWarning):
         ComposeConfig()
 
-
+@pytest.mark.standalone
 @pytest.mark.fluent_version(">=25.1")
 def test_default_launch_mode_is_py():
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
