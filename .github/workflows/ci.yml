@@ -657,15 +657,19 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
-      - name: Upload to Public PyPi using trusted publisher
+      - name: "Download the library artifacts from build-library step"
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: ${{ env.PACKAGE_NAME }}-artifacts
+          path: ${{ env.PACKAGE_NAME }}-artifacts
+
+      - name: "Upload artifacts to PyPI using trusted publisher"
         uses: pypa/gh-action-pypi-publish@v1.12.4
         with:
-          packages-dir: dist
+          repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
+          packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
           skip-existing: false
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
 
       - name: Release
         uses: softprops/action-gh-release@v2
