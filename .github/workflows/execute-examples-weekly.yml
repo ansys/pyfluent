@@ -45,13 +45,29 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
-          restore-keys: |
-            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+      - name: Install OS packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
+
+      - name: Install pyfluent
+        run: make install
+
+      - name: Install Dependencies
+        run: |
+          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
+          sudo apt update
+          sudo apt install libegl1
+          pip install -e .[reader]
+          pip install ansys-fluent-visualization>=0.21.1
+          pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
@@ -60,30 +76,20 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Dependencies
-        run: |
-          sudo mkdir -p /home/ansys/Downloads/ansys_fluent_core_examples
-          sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
-          sudo apt update
-          sudo apt install libegl1
-          pip install -e .
-          pip install -e .[reader]
-          pip install ansys-fluent-visualization>=0.21.1
-          pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
-
-      - name: Pull Fluent docker image if not present
-        run: |
-          if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
-            echo "Image not found locally, pulling..."
-            make docker-pull
-          else
-            echo "Image already exists locally, skipping pull."
-          fi
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Run API codegen
         run: make api-codegen
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
 
       - name: Execute Examples
         run: |
