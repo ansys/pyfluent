@@ -47,8 +47,6 @@ Depending on how Fluent is launched, different file transfer strategies are avai
 
    .. code-block:: python
 
-      >>> import os
-      >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
       >>> import ansys.fluent.core as pyfluent
       >>> from ansys.fluent.core import examples
       >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
