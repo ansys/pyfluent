@@ -59,7 +59,7 @@ jobs:
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
           sudo apt update
           sudo apt install libegl1
-          pip install -e .[reader]
+          pip install ansys-fluent-core[reader]
           pip install ansys-fluent-visualization>=0.21.1
           pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
 
