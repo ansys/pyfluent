@@ -490,7 +490,7 @@ jobs:
             version: 261
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: matrix.image-tag
+      FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -631,9 +631,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    # Temporarily disabled due to CI/image issue
-    # needs: [test, update-changelog, nightly-dev-test]
-    needs: [update-changelog]
+    needs: [test, update-changelog, nightly-dev-test]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
