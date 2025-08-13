@@ -30,6 +30,6 @@ def get_ghcr_fluent_image_name(image_tag: str):
     Get the Fluent image name from GitHub registry based on the image tag.
     """
     if image_tag >= "v26.1":
-        return "ghcr.io/ansys/fluent"
+        return "ghcr.io/ansys/pyfluent"
     else:
         return "ghcr.io/ansys/pyfluent"
