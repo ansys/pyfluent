@@ -44,11 +44,11 @@ def _render_widgets(settings_obj, label):
                     options=allowed_values, value=val, description=label
                 )
             else:
-                if settings_val == False:
+                if settings_val is False:
                     settings_val = ""
                 widget = widgets.Text(value=str(settings_val), description=label)
         else:
-            if settings_val == False:
+            if settings_val is False:
                 settings_val = ""
             widget = widgets.Text(value=str(settings_val), description=label)
     except ValueError:
@@ -60,8 +60,12 @@ def _param_ui(settings_obj):
     settings_obj_parent = settings_obj.parent
     attr = settings_obj.python_name
     label = attr.replace("_", " ").capitalize()
-    get_fn = lambda: getattr(settings_obj_parent, attr)
-    set_fn = lambda v: setattr(settings_obj_parent, attr, v)
+
+    def get_fn():
+        return getattr(settings_obj_parent, attr)
+
+    def set_fn(v):
+        return setattr(settings_obj_parent, attr, v)
 
     widget = _render_widgets(get_fn(), label)
     output = widgets.Output()
@@ -126,7 +130,7 @@ def _command_ui(func, label: str = None):
                 result = func(**kwargs)
                 kwargs_str = "("
                 for k, v in kwargs.items():
-                    if type(v) == str:
+                    if type(v) is str:
                         if v != "":
                             kwargs_str += f"{k}='{v}', "
                     else:
