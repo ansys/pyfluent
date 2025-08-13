@@ -633,7 +633,7 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     # Temporarily disabled due to issues with image
     # needs: [test, update-changelog, nightly-dev-test]
-    needs: [update-changelog]
+    needs: [build, update-changelog]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
