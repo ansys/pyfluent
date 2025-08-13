@@ -121,7 +121,11 @@ battery.zone_assignment.positive_tab = ["tab_p"]
 #
 # .. note::
 #   Chemical formula values are arbitrary identifiers for demonstration.
-
+#
+# Material definition for battery cell, positive tab and negative tab. User define
+# scalars are defined for e-material and positive material to specify the
+# electric conductivity with ``defined-per-uds`` and ``constant`` option respectively.
+#
 materials = [
     {
         "name": "e_material",
