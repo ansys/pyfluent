@@ -4,7 +4,7 @@ try:
     import ipywidgets as widgets
 except ModuleNotFoundError as exc:
     raise ModuleNotFoundError(
-        "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
+        "Missing dependencies, use 'pip install ansys-fluent-core[interactive-jupyter]' to install them."
     ) from exc
 
 from ansys.fluent.core.solver.flobject import (

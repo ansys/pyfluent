@@ -12,7 +12,10 @@ except ModuleNotFoundError as exc:
         "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
     ) from exc
 
-from ansys.fluent.core.ipywidget_utils import _parse_path, _safe_get_properties
+from ansys.fluent.core.interactive.ipywidget_utils import (
+    _parse_path,
+    _safe_get_properties,
+)
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
     Boolean,

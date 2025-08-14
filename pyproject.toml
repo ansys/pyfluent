@@ -41,7 +41,8 @@ include = ["src/ansys/fluent/core/generated/"]
 
 [project.optional-dependencies]
 reader = ["h5py==3.14.0"]
-interactive = ["ipywidgets", "panel"]
+interactive-jupyter = ["ipywidgets"]
+interactive = ["panel"]
 tests = [
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
