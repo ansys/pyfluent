@@ -355,7 +355,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
-    output_dir = (pyfluent.CODEGEN_OUTDIR / "solver").resolve()
+    output_dir = (pyfluent.config.codegen_outdir / "solver").resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / f"settings_{version}.py"
     output_stub_file = output_dir / f"settings_{version}.pyi"

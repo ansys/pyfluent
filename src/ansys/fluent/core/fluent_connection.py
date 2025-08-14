@@ -42,7 +42,7 @@ from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -252,9 +252,9 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+        ip = pyfluent.config.launch_fluent_ip or "127.0.0.1"
     if not port:
-        port = os.getenv("PYFLUENT_FLUENT_PORT")
+        port = pyfluent.config.launch_fluent_port
     if not port:
         raise PortNotProvided()
     return ip, port
@@ -381,6 +381,7 @@ class FluentConnection:
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
         container: ContainerT | None = None,
+        compose_config: ComposeConfig | None = None,
     ):
         """Initialize a Session.
 
@@ -420,12 +421,15 @@ class FluentConnection:
         container: ContainerT, optional
             The container instance if the Fluent session is running inside
             a container.
+        compose_config: ComposeConfig, optional
+            Configuration for Docker Compose or Podman Compose.
 
         Raises
         ------
         PortNotProvided
             If port is not provided.
         """
+        self._compose_config = compose_config if compose_config else ComposeConfig()
         self._error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
@@ -447,7 +451,7 @@ class FluentConnection:
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        if pyfluent.CHECK_HEALTH:
+        if pyfluent.config.check_health:
             self._health_check.check_health()
 
         self._slurm_job_id = slurm_job_id
@@ -472,7 +476,7 @@ class FluentConnection:
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            if not is_compose():
+            if not self._compose_config.is_compose:
                 inside_container = get_container(cortex_host)
                 logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is False:
@@ -549,7 +553,10 @@ class FluentConnection:
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container or is_compose():
+        if (
+            self.connection_properties.inside_container
+            or self._compose_config.is_compose
+        ):
             self._force_exit_container()
         elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
@@ -601,7 +608,7 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        if is_compose() and self._container:
+        if self._compose_config.is_compose and self._container:
             self._container.stop()
         else:
             container = self.connection_properties.inside_container
@@ -679,7 +686,10 @@ class FluentConnection:
         else:
             raise WaitTypeError()
 
-        if self.connection_properties.inside_container and not is_compose():
+        if (
+            self.connection_properties.inside_container
+            and not self._compose_config.is_compose
+        ):
             _response = timeout_loop(
                 get_container,
                 wait,
@@ -748,17 +758,15 @@ class FluentConnection:
             )
 
         if timeout is None:
-            env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
-            if env_timeout is not None:
-                logger.debug(
-                    f"Found PYFLUENT_TIMEOUT_FORCE_EXIT env var: '{env_timeout}'"
-                )
+            config_timeout = pyfluent.config.force_exit_timeout
+            if config_timeout is not None:
+                logger.debug(f"Found force_exit_timeout config: '{config_timeout}'")
                 try:
-                    timeout = float(env_timeout)
+                    timeout = float(config_timeout)
                     logger.debug(f"Setting TIMEOUT_FORCE_EXIT to {timeout}")
                 except ValueError:
                     logger.debug(
-                        "Invalid PYFLUENT_TIMEOUT_FORCE_EXIT. Must be a float or int. "
+                        "Invalid force_exit_timeout config. Must be a float or int. "
                         "Timeout forced exit is disabled."
                     )
 

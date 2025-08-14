@@ -37,6 +37,7 @@ from ansys.fluent.core.services.interceptors import (
     GrpcErrorInterceptor,
     TracingInterceptor,
 )
+from ansys.fluent.core.solver.function.reduction import Weight
 from ansys.fluent.core.variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
@@ -283,7 +284,7 @@ class Reduction:
         if all(
             loc not in names()
             for names in (
-                self.ctxt.fields.field_info.get_surfaces_info,
+                self.ctxt.fields.field_data.surfaces,
                 self.ctxt.settings.setup.cell_zone_conditions,
             )
         ):
@@ -315,11 +316,16 @@ class Reduction:
         if expression is not None:
             request.expression = self._to_str(expression)
         if weight is not None:
-            request.weight = weight
+            request.weight = Weight(weight).value
         if condition is not None:
             request.condition = condition
         request.locations.extend(self._get_location_string(locations, ctxt))
         return request
+
+    @property
+    def weight(self):
+        """Weight for calculating sum."""
+        return Weight
 
     def area(self, locations, ctxt=None) -> Any:
         """Get area."""
@@ -445,13 +451,15 @@ class Reduction:
         response = self.service.moment(request)
         return (response.value.x, response.value.y, response.value.z)
 
-    def sum(self, expression, locations, weight, ctxt=None) -> Any:
+    def sum(self, expression, locations, weight: str | Weight, ctxt=None) -> Any:
         """Get sum."""
         request = self._make_request("SumRequest", locations, ctxt, expression, weight)
         response = self.service.sum(request)
         return _convert_variant_to_value(response.value)
 
-    def sum_if(self, expression, condition, locations, weight, ctxt=None) -> Any:
+    def sum_if(
+        self, expression, condition, locations, weight: str | Weight, ctxt=None
+    ) -> Any:
         """Compute the weighted sum of the expression at locations where the given condition is satisfied."""
         request = self._make_request(
             "SumIfRequest", locations, ctxt, expression, weight, condition

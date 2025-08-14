@@ -50,6 +50,7 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher import create_launcher
 from ansys.fluent.core.launcher.launcher_utils import (
+    ComposeConfig,
     _build_journal_argument,
     is_windows,
 )
@@ -174,16 +175,18 @@ def test_container_launcher():
 
 
 def test_container_working_dir():
-    pyfluent.CONTAINER_MOUNT_SOURCE = None
+    pyfluent.config.container_mount_source = None
 
     container_dict = pyfluent.launch_fluent(start_container=True, dry_run=True)
     assert container_dict["volumes"][0].startswith(os.getcwd())
-    assert container_dict["volumes"][0].endswith(pyfluent.CONTAINER_MOUNT_TARGET)
-    assert container_dict["working_dir"] == pyfluent.CONTAINER_MOUNT_TARGET
+    assert container_dict["volumes"][0].endswith(pyfluent.config.container_mount_target)
+    assert container_dict["working_dir"] == pyfluent.config.container_mount_target
     server_info_matches = [
         arg
         for arg in container_dict["command"]
-        if arg.startswith(f"-sifile={pyfluent.CONTAINER_MOUNT_TARGET}/serverinfo")
+        if arg.startswith(
+            f"-sifile={pyfluent.config.container_mount_target}/serverinfo"
+        )
     ]
     assert len(server_info_matches) == 1, "Expected one server info file in command"
 
@@ -205,13 +208,14 @@ def test_container_working_dir():
 
     target_mount2 = "/mnt/test2"
     container_dict2.update(
-        volumes=[f"{pyfluent.EXAMPLES_PATH}:{target_mount2}"], working_dir=target_mount2
+        volumes=[f"{pyfluent.config.examples_path}:{target_mount2}"],
+        working_dir=target_mount2,
     )
     container_dict3 = pyfluent.launch_fluent(
         container_dict=container_dict2, dry_run=True
     )
     del container_dict2
-    assert container_dict3["volumes"][0].startswith(pyfluent.EXAMPLES_PATH)
+    assert container_dict3["volumes"][0].startswith(pyfluent.config.examples_path)
     assert container_dict3["volumes"][0].endswith(target_mount2)
     assert container_dict3["working_dir"] == target_mount2
     server_info_matches3 = [
@@ -370,7 +374,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     helpers.mock_awp_vars()
-    monkeypatch.setenv("PYFLUENT_FLUENT_ROOT", "dev/vNNN/fluent")
+    monkeypatch.setattr(pyfluent.config, "fluent_root", "dev/vNNN/fluent")
     if platform.system() == "Windows":
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
@@ -379,7 +383,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
 
 
 def test_watchdog_launch(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR", "1")
+    monkeypatch.setattr(pyfluent.config, "watchdog_exception_on_error", True)
     pyfluent.launch_fluent(start_watchdog=True)
 
 
@@ -574,17 +578,17 @@ def test_container_mount_source_target(caplog):
 # runs only in container till cwd is supported for standalone launch
 def test_fluent_automatic_transcript(monkeypatch):
     with monkeypatch.context() as m:
-        m.setattr(pyfluent, "FLUENT_AUTOMATIC_TRANSCRIPT", True)
-        with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
+        m.setattr(pyfluent.config, "fluent_automatic_transcript", True)
+        with TemporaryDirectory(dir=pyfluent.config.examples_path) as tmp_dir:
             with pyfluent.launch_fluent(container_dict=dict(mount_source=tmp_dir)):
                 assert list(Path(tmp_dir).glob("*.trn"))
-    with TemporaryDirectory(dir=pyfluent.EXAMPLES_PATH) as tmp_dir:
+    with TemporaryDirectory(dir=pyfluent.config.examples_path) as tmp_dir:
         with pyfluent.launch_fluent(container_dict=dict(mount_source=tmp_dir)):
             assert not list(Path(tmp_dir).glob("*.trn"))
 
 
 def test_standalone_launcher_dry_run(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     fluent_path = r"\x\y\z\fluent.exe"
     fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
         fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
@@ -597,9 +601,9 @@ def test_standalone_launcher_dry_run(monkeypatch):
 
 
 def test_standalone_launcher_dry_run_with_server_info_dir(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_LAUNCH_CONTAINER", "0")
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_container", False)
     with tempfile.TemporaryDirectory() as tmp_dir:
-        monkeypatch.setenv("SERVER_INFO_DIR", tmp_dir)
+        monkeypatch.setattr(pyfluent.config, "fluent_server_info_dir", tmp_dir)
         fluent_path = r"\x\y\z\fluent.exe"
         fluent_launch_string, server_info_file_name = pyfluent.launch_fluent(
             fluent_path=fluent_path, dry_run=True, ui_mode="no_gui"
@@ -644,7 +648,6 @@ def test_report():
 
 @pytest.mark.fluent_version(">=23.1")
 def test_docker_compose(monkeypatch):
-    monkeypatch.setenv("PYFLUENT_USE_DOCKER_COMPOSE", "1")
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
     from ansys.fluent.core.utils.networking import get_free_port
@@ -652,7 +655,9 @@ def test_docker_compose(monkeypatch):
     port_1 = get_free_port()
     port_2 = get_free_port()
     container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
-    solver = pyfluent.launch_fluent(container_dict=container_dict)
+    solver = pyfluent.launch_fluent(
+        container_dict=container_dict, use_docker_compose=True
+    )
     assert len(solver._container.ports) == 2
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -733,3 +738,18 @@ def test_no_warning_for_none_values(caplog):
     driver = _get_graphics_driver(graphics_driver=None, ui_mode=None)  # noqa: F841
     assert "PyFluentUserWarning" not in caplog.text
     caplog.clear()
+
+
+def test_error_for_selecting_both_compose_sources():
+    with pytest.raises(ValueError):
+        pyfluent.launch_fluent(use_docker_compose=True, use_podman_compose=True)
+
+
+def test_warning_for_deprecated_compose_env_vars(monkeypatch):
+    monkeypatch.setattr(pyfluent.config, "use_docker_compose", True)
+    with pytest.warns(PyFluentDeprecationWarning):
+        ComposeConfig()
+
+    monkeypatch.setattr(pyfluent.config, "use_podman_compose", True)
+    with pytest.warns(PyFluentDeprecationWarning):
+        ComposeConfig()

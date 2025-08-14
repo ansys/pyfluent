@@ -19,7 +19,7 @@ env:
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
   PYTHON_VERSION: "3.10"
-  FLUENT_IMAGE_TAG: v26.1.0
+  FLUENT_IMAGE_TAG: v26.1.latest
   FLUENT_VERSION: 261
 
 jobs:
@@ -99,7 +99,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
         if: github.ref == 'refs/heads/main'
         run: |
-          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/pyfluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${{ env.FLUENT_IMAGE_TAG }} | sed 's/.*@//')
           gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
       - name: Remove all docker images

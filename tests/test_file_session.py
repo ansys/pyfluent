@@ -46,7 +46,7 @@ def round_off_list_elements(input_list):
     return input_list
 
 
-def test_field_info_data_multi_phase():
+def test_field_data_multi_phase():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
@@ -107,7 +107,7 @@ def test_field_info_data_multi_phase():
     )
 
 
-def test_field_info_data_single_phase():
+def test_field_data_single_phase():
     case_file_name = examples.download_file(
         "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
@@ -123,10 +123,10 @@ def test_field_info_data_single_phase():
     file_session.read_data(data_file_name)
 
     assert round_off_list_elements(
-        file_session.field_info.get_scalar_field_range("SV_P")
+        file_session.field_data.scalar_fields.range("SV_P")
     ) == [-339.203452, 339.417934]
-    assert len(file_session.field_info.get_scalar_fields_info()) == 29
-    assert list(file_session.field_info.get_surfaces_info().keys()) == [
+    assert len(file_session.field_data.scalar_fields()) == 29
+    assert list(file_session.field_data.surfaces()) == [
         "wall",
         "symmetry",
         "pressure-outlet-7",
@@ -363,7 +363,7 @@ def test_error_handling_multi_phase():
 # USING DEPRECATED FORMAT
 
 
-def test_field_info_data_multi_phase_deprecated():
+def test_field_data_multi_phase_deprecated():
     case_file_name = examples.download_file(
         "mixing_elbow_mul_ph.cas.h5",
         "pyfluent/file_session",
@@ -409,7 +409,7 @@ def test_field_info_data_multi_phase_deprecated():
     )
 
 
-def test_field_info_data_single_phase_deprecated():
+def test_field_data_single_phase_deprecated():
     case_file_name = examples.download_file(
         "elbow1.cas.h5", "pyfluent/file_session", return_without_path=False
     )
@@ -425,10 +425,10 @@ def test_field_info_data_single_phase_deprecated():
     file_session.read_data(data_file_name)
 
     assert round_off_list_elements(
-        file_session.field_info.get_scalar_field_range("SV_P")
+        file_session.field_data.scalar_fields.range("SV_P")
     ) == [-339.203452, 339.417934]
-    assert len(file_session.field_info.get_scalar_fields_info()) == 29
-    assert list(file_session.field_info.get_surfaces_info().keys()) == [
+    assert len(file_session.field_data.scalar_fields()) == 29
+    assert list(file_session.field_data.surfaces()) == [
         "wall",
         "symmetry",
         "pressure-outlet-7",
@@ -601,7 +601,7 @@ def test_batch_request_single_phase_deprecated():
     assert len(scalar_data[5]["SV_T"]) == 100
     assert round(scalar_data[5]["SV_T"][50], 2) == 295.43
 
-    surf_id = file_session.field_info.get_surfaces_info()["symmetry"]["surface_id"][0]
+    surf_id = file_session.field_data.surfaces()["symmetry"]["surface_id"][0]
     assert round(scalar_data[surf_id]["SV_T"][50], 2) == 293.15
 
     # Vector Field Data

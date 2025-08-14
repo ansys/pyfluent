@@ -42,7 +42,11 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedScalarFieldNames,
     _AllowedSurfaceNames,
     _ReturnFieldData,
+    _ScalarFields,
+    _SurfaceIds,
+    _SurfaceNames,
     _transform_faces_connectivity_data,
+    _VectorFields,
 )
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.filereader.data_file import (
@@ -182,7 +186,20 @@ class BatchFieldData:
             | PathlinesFieldDataRequest
         ),
     ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
         elif isinstance(obj, ScalarFieldDataRequest):
@@ -504,14 +521,14 @@ class Batch(FieldBatch):
                 )
             elif isinstance(req, ScalarFieldDataRequest):
                 self._add_scalar_fields_request(
-                    field_name=req.field_name,
+                    field_name=_to_scalar_field_name(req.field_name),
                     surfaces=req.surfaces,
                     node_value=req.node_value,
                     boundary_value=req.boundary_value,
                 )
             elif isinstance(req, VectorFieldDataRequest):
                 self._add_vector_fields_request(
-                    field_name=req.field_name,
+                    field_name=_to_vector_field_name(req.field_name),
                     surfaces=req.surfaces,
                 )
             elif isinstance(req, PathlinesFieldDataRequest):
@@ -611,6 +628,20 @@ class FileFieldData(FieldDataSource):
         """Initialize FileFieldData."""
         self._file_session = file_session
         self._field_info = field_info
+        self.scalar_fields = _ScalarFields(
+            self._field_info._get_scalar_fields_info, self._field_info
+        )
+        self.vector_fields = _VectorFields(self._field_info._get_vector_fields_info)
+        self.surfaces = _SurfaceNames(self._field_info._get_surfaces_info)
+
+    @property
+    def surface_ids(self):
+        """Get the surface ids."""
+        return _SurfaceIds(
+            _get_surface_ids(
+                self._field_info, list(self._field_info._get_surfaces_info())
+            )
+        )
 
     def new_batch(self):
         """Create a new field batch."""
@@ -955,7 +986,20 @@ class FileFieldData(FieldDataSource):
             | PathlinesFieldDataRequest
         ),
     ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
         elif isinstance(obj, ScalarFieldDataRequest):
@@ -966,11 +1010,11 @@ class FileFieldData(FieldDataSource):
             return self._get_pathlines_field_data(**obj._asdict())
 
 
-class FileFieldInfo((BaseFieldInfo)):
+class _FileFieldInfo(BaseFieldInfo):
     """File field info."""
 
     def __init__(self, file_session):
-        """Initialize FileFieldInfo."""
+        """Initialize _FileFieldInfo."""
         self._file_session = file_session
 
     def get_scalar_field_range(
@@ -990,6 +1034,16 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         List[float]
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.scalar_fields.range({field}, {node_value}, {surface_ids})' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_field_range(field, node_value, surface_ids)
+
+    def _get_scalar_field_range(
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+    ) -> List[float]:
         minimum = None
         maximum = None
         if not surface_ids:
@@ -1012,6 +1066,14 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.scalar_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_fields_info()
+
+    def _get_scalar_fields_info(self):
         phases = self._file_session._data_file.get_phases()
 
         scalar_field_info = {}
@@ -1047,6 +1109,14 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.vector_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_vector_fields_info()
+
+    def _get_vector_fields_info(self):
         phases = self._file_session._data_file.get_phases()
 
         if len(phases) > 1:
@@ -1076,6 +1146,14 @@ class FileFieldInfo((BaseFieldInfo)):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.surfaces()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_surfaces_info()
+
+    def _get_surfaces_info(self):
         mesh = self._file_session._case_file.get_mesh()
         surface_names = mesh.get_surface_names()
         surface_ids = mesh.get_surface_ids()
@@ -1089,6 +1167,19 @@ class FileFieldInfo((BaseFieldInfo)):
             for name, surface_id in zip(surface_names, surface_ids)
         }
         return info
+
+
+class FileFieldInfo(_FileFieldInfo):
+    """File field info."""
+
+    def __init__(self, file_session):
+        """Initialize FileFieldInfo"""
+        warnings.warn(
+            "'FieldInfo' is deprecated and will be removed in a future release. "
+            "Please use relevant methods from 'FieldData' instead",
+            PyFluentDeprecationWarning,
+        )
+        super().__init__(file_session)
 
 
 class FileSession:
@@ -1156,7 +1247,7 @@ def _get_surface_ids(
     surface_ids = []
     for surf in surfaces:
         if isinstance(surf, str):
-            surface_ids.extend(field_info.get_surfaces_info()[surf]["surface_id"])
+            surface_ids.extend(field_info._get_surfaces_info()[surf]["surface_id"])
         else:
             surface_ids.append(surf)
     return surface_ids
@@ -1167,5 +1258,5 @@ class Fields:
 
     def __init__(self, _session: FileSession):
         """Initialize Fields."""
-        self.field_info = FileFieldInfo(_session)
+        self.field_info = _FileFieldInfo(_session)
         self.field_data = FileFieldData(_session, self.field_info)

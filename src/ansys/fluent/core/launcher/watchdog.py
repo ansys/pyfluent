@@ -76,7 +76,7 @@ def launch(
         )
     )
 
-    debug_watchdog = os.getenv("PYFLUENT_WATCHDOG_DEBUG") == "1"
+    debug_watchdog = pyfluent.config.watchdog_debug
     if debug_watchdog:
         logger.debug(
             f"PYFLUENT_WATCHDOG_DEBUG environment variable found, "
@@ -194,13 +194,13 @@ def launch(
                 err_content = "Watchdog - %s" % f.read().replace("\n", "")
             watchdog_err.unlink()
             logger.error(err_content)
-            if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1":
+            if pyfluent.config.watchdog_exception_on_error:
                 raise UnsuccessfulWatchdogLaunch(err_content)
 
         logger.warning(
             "PyFluent Watchdog did not initialize correctly, proceeding without it..."
         )
-        if os.getenv("PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR") == "1":
+        if pyfluent.config.watchdog_exception_on_error:
             raise UnsuccessfulWatchdogLaunch(
                 "PyFluent Watchdog did not initialize correctly."
             )

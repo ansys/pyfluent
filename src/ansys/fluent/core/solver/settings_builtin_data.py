@@ -225,26 +225,14 @@ DATA = {
     "VelocityInlet": ("NamedObject", "setup.boundary_conditions.velocity_inlet"),
     "WallBoundaries": ("Singleton", "setup.boundary_conditions.wall"),
     "WallBoundary": ("NamedObject", "setup.boundary_conditions.wall"),
-    "NonReflectingBoundaries": (
-        "Singleton",
-        {
-            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
-        },
-    ),
     "NonReflectingBoundary": (
-        "NamedObject",
-        {
-            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
-        },
-    ),
-    "PerforatedWallBoundaries": (
         "Singleton",
         {
-            since(FluentVersion.v241): "setup.boundary_conditions.perforated_wall",
+            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
         },
     ),
     "PerforatedWallBoundary": (
-        "NamedObject",
+        "Singleton",
         {
             since(FluentVersion.v241): "setup.boundary_conditions.perforated_wall",
         },
@@ -729,23 +717,25 @@ DATA = {
     "ReadData": ("Command", "file.read_data"),
     "ReadCaseData": ("Command", "file.read_case_data"),
     "WriteCase": (
-        "Singleton",
+        "Command",
         {
             since(FluentVersion.v241): "file.write_case",
         },
     ),
     "WriteData": (
-        "Singleton",
+        "Command",
         {
             since(FluentVersion.v241): "file.write_data",
         },
     ),
     "WriteCaseData": (
-        "Singleton",
+        "Command",
         {
             since(FluentVersion.v241): "file.write_case_data",
         },
     ),
     "Initialize": ("Command", "solution.initialization.initialize"),
     "Calculate": ("Command", "solution.run_calculation.calculate"),
+    "Iterate": ("Command", "solution.run_calculation.iterate"),
+    "DualTimeIterate": ("Command", "solution.run_calculation.dual_time_iterate"),
 }

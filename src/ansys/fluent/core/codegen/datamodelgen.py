@@ -212,7 +212,9 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
+        datamodel_dir = (
+            pyfluent.config.codegen_outdir / f"datamodel_{version}"
+        ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
         self.file_name = (
             datamodel_dir / f"{datamodel_file_name_map[rules_save_name]}.py"

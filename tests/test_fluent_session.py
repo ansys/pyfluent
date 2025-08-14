@@ -231,14 +231,13 @@ def test_fluent_freeze_kill(
     tmp_thread = threading.Thread(target=_freeze_fluent, args=(session,), daemon=True)
     tmp_thread.start()
     tmp_thread.join(5)
-    fl_connection = session._fluent_connection
     if tmp_thread.is_alive():
         session.exit(timeout=1, timeout_force=True)
         tmp_thread.join()
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    assert fl_connection.wait_process_finished(wait=5)
+    assert session.wait_process_finished(wait=5)
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -255,10 +254,11 @@ def test_interrupt(static_mixer_case_session):
 
 
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.delenv("PYFLUENT_LOGGING")
-    monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
-    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
     import ansys.fluent.core as pyfluent
+
+    monkeypatch.setattr(pyfluent.config, "logging_level_default", False)
+    monkeypatch.setattr(pyfluent.config, "watchdog_debug", False)
+    inside_container = pyfluent.config.launch_fluent_container
 
     solver = pyfluent.launch_fluent(start_watchdog=False)
     cortex = (
@@ -282,14 +282,12 @@ def test_fluent_exit_wait():
     assert not fl_connection1.wait_process_finished(wait=0)
 
     session2 = pyfluent.launch_fluent()
-    fl_connection2 = session2._fluent_connection
     session2.exit(wait=60)
-    assert fl_connection2.wait_process_finished(wait=0)
+    assert session2.wait_process_finished(wait=0)
 
     session3 = pyfluent.launch_fluent()
-    fl_connection3 = session3._fluent_connection
     session3.exit(wait=True)
-    assert fl_connection3.wait_process_finished(wait=0)
+    assert session3.wait_process_finished(wait=0)
 
     with pytest.raises(WaitTypeError):
         session4 = pyfluent.launch_fluent()

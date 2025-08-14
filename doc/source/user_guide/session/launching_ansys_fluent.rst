@@ -42,6 +42,7 @@ Launch in a container
 ---------------------
 
 The :meth:`from_container() <ansys.fluent.core.session_utilities.SessionBase.from_container>` method launches Fluent inside a Docker container.
+Pass ``use_docker_compose=True`` or ``use_podman_compose=True`` to use Docker Compose or Podman Compose, respectively.
 
 Use this method when:
 
@@ -55,7 +56,6 @@ Use this method when:
 
   import os
   os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-  os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1"  # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
 
   import ansys.fluent.core as pyfluent
   from ansys.fluent.core.utils.networking import get_free_port
@@ -64,12 +64,12 @@ Use this method when:
   port_2 = get_free_port()
   container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
 
-  meshing = pyfluent.Meshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
-  pure_meshing = pyfluent.PureMeshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
-  solver = pyfluent.Solver.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
-  solver_aero = pyfluent.SolverAero.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
-  solver_icing = pyfluent.SolverIcing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
-  pre_post = pyfluent.PrePost.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252)
+  meshing = pyfluent.Meshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
+  pure_meshing = pyfluent.PureMeshing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_podman_compose=True)
+  solver = pyfluent.Solver.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
+  solver_aero = pyfluent.SolverAero.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_podman_compose=True)
+  solver_icing = pyfluent.SolverIcing.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_docker_compose=True)
+  pre_post = pyfluent.PrePost.from_container(container_dict=container_dict, product_version=pyfluent.FluentVersion.v252, use_podman_compose=True)
 
 
 Connect to an existing session
@@ -433,6 +433,7 @@ Launching Fluent in container mode with Docker Compose or Podman Compose
 ------------------------------------------------------------------------
 
 Use PyFluent with Docker Compose or Podman Compose to run Fluent in a consistent, reproducible containerized environment.
+Pass ``use_docker_compose=True`` or ``use_podman_compose=True`` to use Docker Compose or Podman Compose, respectively.
 
 1. **Docker Compose**
 
@@ -458,7 +459,6 @@ Set environment variables to select the container engine:
 
   >>> import os
   >>> os.environ["PYFLUENT_LAUNCH_CONTAINER"] = "1"
-  >>> os.environ["PYFLUENT_USE_DOCKER_COMPOSE"] = "1" # or os.environ["PYFLUENT_USE_PODMAN_COMPOSE"] = "1"
 
 
 Then launch:
@@ -467,7 +467,7 @@ Then launch:
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core import examples
-  >>> solver_session = pyfluent.launch_fluent()
+  >>> solver_session = pyfluent.launch_fluent(use_docker_compose=True)
   >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> solver_session.file.read(file_name=case_file_name, file_type="case")
   >>> solver_session.exit()
@@ -480,7 +480,7 @@ Connect to a Fluent container running inside WSL from a Windows host
 
 .. code:: console
 
-    docker run -it -p 63084:63084 -v /mnt/d/testing:/testing -e "ANSYSLMD_LICENSE_FILE=<license file or server>" -e "REMOTING_PORTS=63084/portspan=2" ghcr.io/ansys/pyfluent:v25.2.0 3ddp -gu -sifile=/testing/server.txt
+    docker run -it -p 63084:63084 -v /mnt/d/testing:/testing -e "ANSYSLMD_LICENSE_FILE=<license file or server>" -e "REMOTING_PORTS=63084/portspan=2" <image registry>:v25.2.0 3ddp -gu -sifile=/testing/server.txt
     /ansys_inc/v252/fluent/fluent25.2.0/bin/fluent -r25.2.0 3ddp -gu -sifile=/testing/server.txt
 
 2. Connect from PyFluent running on a Windows host

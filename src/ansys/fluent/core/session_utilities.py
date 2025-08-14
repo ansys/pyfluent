@@ -264,6 +264,7 @@ class SessionBase:
     @classmethod
     def from_pim(
         cls,
+        ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -274,6 +275,7 @@ class SessionBase:
         start_timeout: int = 60,
         additional_arguments: str = "",
         cleanup_on_exit: bool = True,
+        dry_run: bool | None = None,
         start_transcript: bool = True,
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
@@ -284,6 +286,8 @@ class SessionBase:
 
         Parameters
         ----------
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -309,6 +313,9 @@ class SessionBase:
         cleanup_on_exit : bool
             Determines whether to shut down the connected Fluent session upon exit or when calling
             the session's `exit()` method. Defaults to True.
+        dry_run : bool, optional
+            If True, does not launch Fluent but prints configuration information instead. If dry running a
+            PIM start, this method will return a configuration dictionary. Defaults to False.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.

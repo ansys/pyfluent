@@ -9,6 +9,184 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.34.0 <https://github.com/ansys/pyfluent/releases/tag/v0.34.0>`_ - July 23, 2025
+==================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - beta features access
+          - `#4153 <https://github.com/ansys/pyfluent/pull/4153>`_
+
+        * - Set string settings with allowed values via string constants
+          - `#4190 <https://github.com/ansys/pyfluent/pull/4190>`_
+
+        * - Support passing objects to surfaces in field data.
+          - `#4228 <https://github.com/ansys/pyfluent/pull/4228>`_
+
+        * - add settings named objects
+          - `#4232 <https://github.com/ansys/pyfluent/pull/4232>`_
+
+        * - Get raw value for faces connectivity data.
+          - `#4244 <https://github.com/ansys/pyfluent/pull/4244>`_
+
+        * - Raise the attribute error with a correct message
+          - `#4256 <https://github.com/ansys/pyfluent/pull/4256>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - container timeout issue and new environment variables
+          - `#4171 <https://github.com/ansys/pyfluent/pull/4171>`_
+
+        * - parameters list() tests
+          - `#4215 <https://github.com/ansys/pyfluent/pull/4215>`_
+
+        * - interior zones are inactive in the latest Fluent image
+          - `#4217 <https://github.com/ansys/pyfluent/pull/4217>`_
+
+        * - Remove a runtime attribute query for argument-aliases
+          - `#4241 <https://github.com/ansys/pyfluent/pull/4241>`_
+
+        * - Remove redundant children from search results
+          - `#4258 <https://github.com/ansys/pyfluent/pull/4258>`_
+
+        * - Check localhost for grpc connection before other ips
+          - `#4274 <https://github.com/ansys/pyfluent/pull/4274>`_
+
+        * - Builtin commands should execute the command without any additional call.
+          - `#4285 <https://github.com/ansys/pyfluent/pull/4285>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - bump the dependencies group with 5 updates
+          - `#4230 <https://github.com/ansys/pyfluent/pull/4230>`_
+
+        * - Bump ansys/actions from 9.0 to 10.0 in the actions group
+          - `#4231 <https://github.com/ansys/pyfluent/pull/4231>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - get_completer_info implementation based on Python's inspect module
+          - `#4214 <https://github.com/ansys/pyfluent/pull/4214>`_
+
+        * - Transaction -> batch
+          - `#4270 <https://github.com/ansys/pyfluent/pull/4270>`_
+
+        * - Rename copy_docker_files.py
+          - `#4278 <https://github.com/ansys/pyfluent/pull/4278>`_
+
+        * - Update allowed_values interface for field_data.
+          - `#4286 <https://github.com/ansys/pyfluent/pull/4286>`_
+
+        * - Deprecate fieldinfo.
+          - `#4287 <https://github.com/ansys/pyfluent/pull/4287>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ``CONTRIBUTORS.md`` with the latest contributors
+          - `#4221 <https://github.com/ansys/pyfluent/pull/4221>`_
+
+        * - make homepage more appealing
+          - `#4223 <https://github.com/ansys/pyfluent/pull/4223>`_
+
+        * - Add podman usage examples and documentation improvements [skip tests]
+          - `#4224 <https://github.com/ansys/pyfluent/pull/4224>`_
+
+        * - Fix search box [skip tests]
+          - `#4226 <https://github.com/ansys/pyfluent/pull/4226>`_
+
+        * - Clarify usage of recent launch methods [skip tests]
+          - `#4248 <https://github.com/ansys/pyfluent/pull/4248>`_
+
+        * - Update user-facing beta feature docs [skip tests]
+          - `#4254 <https://github.com/ansys/pyfluent/pull/4254>`_
+
+        * - Update outdated field_info docs [skip tests]
+          - `#4257 <https://github.com/ansys/pyfluent/pull/4257>`_
+
+        * - Update search results [skip tests]
+          - `#4266 <https://github.com/ansys/pyfluent/pull/4266>`_
+
+        * - Improve meshing field help text [skip tests]
+          - `#4289 <https://github.com/ansys/pyfluent/pull/4289>`_
+
+        * - Update ``contributors.md`` with the latest contributors
+          - `#4294 <https://github.com/ansys/pyfluent/pull/4294>`_
+
+        * - Update to use objects.
+          - `#4295 <https://github.com/ansys/pyfluent/pull/4295>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - static class attributes
+          - `#4174 <https://github.com/ansys/pyfluent/pull/4174>`_
+
+        * - update CHANGELOG for v0.33.0
+          - `#4206 <https://github.com/ansys/pyfluent/pull/4206>`_
+
+        * - update CHANGELOG for v0.34.dev0
+          - `#4209 <https://github.com/ansys/pyfluent/pull/4209>`_
+
+        * - Add SECURITY.md file [skip tests]
+          - `#4227 <https://github.com/ansys/pyfluent/pull/4227>`_
+
+        * - Enable beta features
+          - `#4235 <https://github.com/ansys/pyfluent/pull/4235>`_
+
+        * - Add a new warning category for fluent development version usage.
+          - `#4255 <https://github.com/ansys/pyfluent/pull/4255>`_
+
+        * - Update 26.1 image tag to v26.1.latest
+          - `#4281 <https://github.com/ansys/pyfluent/pull/4281>`_
+
+        * - Use the new image name for version >=26.1
+          - `#4291 <https://github.com/ansys/pyfluent/pull/4291>`_
+
+        * - Use units release >= 0.7.0
+          - `#4296 <https://github.com/ansys/pyfluent/pull/4296>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Updates to optislang integration tests
+          - `#4269 <https://github.com/ansys/pyfluent/pull/4269>`_
+
+
 `0.34.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.34.dev0>`_ - June 24, 2025
 ========================================================================================
 

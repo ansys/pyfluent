@@ -207,6 +207,8 @@ def to_constant_name(fluent_name: str) -> str:
     """
     fluent_name = fluent_name.replace(" ", "_")
     name = fluent_name.translate(_ttable).upper()
+    if not name:
+        return "EMPTY_STRING"
     if name[0].isdigit():
         # If the first character is a digit, prepend "CASE_"
         name = "CASE_" + name
@@ -1728,6 +1730,8 @@ class BaseCommand(Action):
 
     def _execute_command(self, *args, **kwds):
         """Execute a command with the specified positional and keyword arguments."""
+        from ansys.fluent.core import config
+
         if self.flproxy.is_interactive_mode():
             prompt = self.flproxy.get_command_confirmation_prompt(
                 self._parent.path, self.obj_name, **kwds
@@ -1745,7 +1749,7 @@ class BaseCommand(Action):
         with self._while_executing_command():
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
             if (
-                os.getenv("PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN") != "1"
+                not config.disable_parameter_list_return_fix
                 and FluentVersion(self._version) <= FluentVersion.v252
                 and self.path
                 in [
@@ -2324,16 +2328,16 @@ def get_root(
     RuntimeError
         If hash values are inconsistent.
     """
-    from ansys.fluent.core import CODEGEN_OUTDIR, utils
+    from ansys.fluent.core import config, utils
 
-    if os.getenv("PYFLUENT_USE_RUNTIME_PYTHON_CLASSES") == "1":
+    if config.use_runtime_python_classes:
         obj_info = flproxy.get_static_info()
         root_cls, _ = get_cls("", obj_info, version=version)
     else:
         try:
             settings = utils.load_module(
                 f"settings_{version}",
-                CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+                config.codegen_outdir / "solver" / f"settings_{version}.py",
             )
             root_cls = settings.root
             warning_for_fluent_dev_version(version)

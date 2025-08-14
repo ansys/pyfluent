@@ -162,7 +162,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest release.
         """
-        return cls(pyfluent.FLUENT_RELEASE_VERSION)
+        return cls(pyfluent.config.fluent_release_version)
 
     @classmethod
     def current_dev(cls):
@@ -173,7 +173,7 @@ class FluentVersion(Enum):
         FluentVersion
             FluentVersion member corresponding to the latest development version.
         """
-        return cls(pyfluent.FLUENT_DEV_VERSION)
+        return cls(pyfluent.config.fluent_dev_version)
 
     @property
     def awp_var(self):
@@ -188,7 +188,7 @@ class FluentVersion(Enum):
     @property
     def docker_image_tag(self):
         """Get the Fluent version as a Docker image tag."""
-        return f"v{self.value}"
+        return f"v{self.value.rsplit('.', 1)[0]}.latest"
 
     def __lt__(self, other):
         if isinstance(other, FluentVersion):

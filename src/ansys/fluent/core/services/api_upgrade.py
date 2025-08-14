@@ -22,7 +22,6 @@
 
 """Provides a module for the API upgrade advisor."""
 
-import os
 from typing import TypeVar
 
 from ansys.fluent.core.services.app_utilities import AppUtilities
@@ -47,8 +46,10 @@ class ApiUpgradeAdvisor:
         self._id = None
 
     def _can_advise(self) -> bool:
+        from ansys.fluent.core import config
+
         return (
-            not os.getenv("PYFLUENT_SKIP_API_UPGRADE_ADVICE")
+            not config.skip_api_upgrade_advice
             and FluentVersion(self._version) >= FluentVersion.v231
             and self._mode == "solver"
         )

@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  API_CODE_CACHE: 4
+  API_CODE_CACHE: 5
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
@@ -246,7 +246,6 @@ jobs:
   build:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-    needs: test-import
     runs-on: [self-hosted, pyfluent]
 
     steps:
@@ -486,7 +485,7 @@ jobs:
             version: 251
           - image-tag: v25.2.0
             version: 252
-          - image-tag: v26.1.0
+          - image-tag: v26.1.latest
             version: 261
     timeout-minutes: 60
     env:
@@ -633,6 +632,10 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     needs: [test, update-changelog, nightly-dev-test]
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write       # required for trusted publishing
+      contents: write       # required for GitHub release upload
+
     steps:
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -654,14 +657,19 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
-      - name: Upload to Public PyPi
-        run: |
-          pip install twine
-          twine upload --skip-existing ./**/*.whl
-          python -m twine upload --skip-existing ./**/*.tar.gz
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.ANSYS_FLUENT_CORE_PYPI_TOKEN }}
+      - name: "Download the library artifacts from build-library step"
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: ${{ env.PACKAGE_NAME }}-artifacts
+          path: ${{ env.PACKAGE_NAME }}-artifacts
+
+      - name: "Upload artifacts to PyPI using trusted publisher"
+        uses: pypa/gh-action-pypi-publish@v1.12.4
+        with:
+          repository-url: "https://upload.pypi.org/legacy/"
+          print-hash: true
+          packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
+          skip-existing: false
 
       - name: Release
         uses: softprops/action-gh-release@v2

@@ -20,7 +20,7 @@ version-info:
 	@bash -c "git --no-pager log -n 1 --format='%h' | xargs -I hash sed -i 's/<id>/hash/g' src/ansys/fluent/core/__init__.py"
 
 docker-pull:
-	@bash .ci/pull_fluent_image.sh
+	@python .ci/pull_fluent_image.py
 
 docker-clean-images:
 	@docker system prune --volumes -a -f

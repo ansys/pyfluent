@@ -85,3 +85,5 @@ load_workflow
 codegen
 discoverability
 NGons
+config
+user_guide_variables

@@ -120,7 +120,7 @@ class PureMeshing(BaseSession):
                 self.datamodel_streams[rules] = stream
                 stream.start(
                     rules=rules,
-                    no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
+                    no_commands_diff_state=pyfluent.config.datamodel_use_nocommands_diff_state,
                 )
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 

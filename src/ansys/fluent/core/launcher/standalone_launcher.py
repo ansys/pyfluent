@@ -193,7 +193,7 @@ class StandaloneLauncher:
         }
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
-        if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+        if pyfluent.config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(ui_mode)
         if self.argvals["start_timeout"] is None:
@@ -211,7 +211,7 @@ class StandaloneLauncher:
         ):
             self.argvals["py"] = True
 
-        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+        if pyfluent.config.fluent_debug:
             self.argvals["fluent_debug"] = True
 
         server_info_file_name_for_server, server_info_file_name_for_client = (
@@ -234,7 +234,10 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR:
+            if (
+                pyfluent.config.launch_fluent_stdout
+                or pyfluent.config.launch_fluent_stderr
+            ):
                 self._launch_cmd = self._launch_string
             else:
                 # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.

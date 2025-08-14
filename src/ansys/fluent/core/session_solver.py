@@ -119,13 +119,16 @@ class Solver(BaseSession):
             get_zones_info=weakref.WeakMethod(self._get_zones_info),
         )
         self._settings = None
-        self._build_from_fluent_connection(fluent_connection, scheme_eval)
+        self._build_from_fluent_connection(
+            fluent_connection, scheme_eval, launcher_args=launcher_args
+        )
 
     def _build_from_fluent_connection(
         self,
         fluent_connection,
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
@@ -134,6 +137,7 @@ class Solver(BaseSession):
         self._system_coupling = None
         self._fluent_version = None
         self._bg_session_threads = []
+        self._launcher_args = launcher_args
         self._solution_variable_service = service_creator("svar").create(
             fluent_connection._channel, fluent_connection._metadata
         )
@@ -267,7 +271,7 @@ class Solver(BaseSession):
             "solution/run-calculation/calculate",
             "solution/run-calculation/dual-time-iterate",
         ]
-        if pyfluent.SUPPORT_SOLVER_INTERRUPT:
+        if pyfluent.config.support_solver_interrupt:
             if command.path in interruptible_commands:
                 command._root.solution.run_calculation.interrupt()
 
@@ -296,10 +300,12 @@ class Solver(BaseSession):
             bg_session._fluent_connection,
             bg_session._fluent_connection._connection_interface.scheme_eval,
             event_type=SolverEvent,
+            launcher_args=launcher_args,
         )
         self._build_from_fluent_connection(
             bg_session._fluent_connection,
             bg_session._fluent_connection._connection_interface.scheme_eval,
+            launcher_args=launcher_args,
         )
         # TODO temporary fix till set_state at settings root is fixed
         _set_state_safe(self.settings, state)

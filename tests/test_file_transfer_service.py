@@ -71,7 +71,7 @@ def test_remote_grpc_fts_container():
 def test_read_case_and_data(monkeypatch):
     import ansys.fluent.core as pyfluent
 
-    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
+    monkeypatch.setattr(pyfluent.config, "use_file_transfer_service", True)
 
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
@@ -144,7 +144,7 @@ def test_file_list_in_datamodel(fault_tolerant_workflow_session):
 def test_local_file_transfer_in_datamodel(monkeypatch):
     import ansys.fluent.core as pyfluent
 
-    monkeypatch.setattr(pyfluent, "USE_FILE_TRANSFER_SERVICE", True)
+    monkeypatch.setattr(pyfluent.config, "use_file_transfer_service", True)
 
     fmd_file = examples.download_file("exhaust_system.fmd", "pyfluent/exhaust_system")
 

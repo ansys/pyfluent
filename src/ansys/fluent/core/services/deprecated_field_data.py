@@ -31,12 +31,12 @@ from ansys.fluent.core.services.field_data import (
     Batch,
     ChunkParser,
     FieldDataService,
-    FieldInfo,
     SurfaceDataType,
     _AllowedScalarFieldNames,
     _AllowedSurfaceIDs,
     _AllowedSurfaceNames,
     _AllowedVectorFieldNames,
+    _FieldInfo,
     _FieldMethod,
     _get_surface_ids,
     get_fields_request,
@@ -223,7 +223,7 @@ class DeprecatedFieldData:
     def __init__(
         self,
         service: FieldDataService,
-        field_info: FieldInfo,
+        field_info: _FieldInfo,
         is_data_valid: Callable[[], bool],
         scheme_eval=None,
     ):

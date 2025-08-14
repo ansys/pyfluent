@@ -28,6 +28,7 @@ from pathlib import Path
 
 from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
 
+from ansys.fluent.core import config
 from ansys.fluent.core.search import search
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
@@ -285,9 +286,7 @@ if __name__ == "__main__":
     if not os.path.exists(rst_dir):
         os.makedirs(rst_dir)
 
-    image_tag = os.getenv(
-        "FLUENT_IMAGE_TAG", FluentVersion.current_dev().docker_image_tag
-    )
+    image_tag = config.fluent_image_tag
     version = get_version_for_file_name(image_tag.lstrip("v"))
     settings = importlib.import_module(
         f"ansys.fluent.core.generated.solver.settings_{version}"

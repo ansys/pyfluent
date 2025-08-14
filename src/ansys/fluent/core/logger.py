@@ -25,6 +25,8 @@
 import logging.config
 import os
 
+from ansys.fluent.core import config
+
 _logging_file_enabled = False
 
 
@@ -250,7 +252,7 @@ def configure_env_var() -> None:
     If logging debug output to file by default is desired, without having to use :func:`enable()` every time,
     set environment variable ``PYFLUENT_LOGGING`` to ``DEBUG``.
     """
-    env_logging_level = os.getenv("PYFLUENT_LOGGING")
+    env_logging_level = config.logging_level_default
     if env_logging_level:
         if env_logging_level.isdigit():
             env_logging_level = int(env_logging_level)

@@ -103,7 +103,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        elif pyfluent.config.launch_fluent_container:
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -174,6 +174,8 @@ def launch_fluent(
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
     file_transfer_service: Any | None = None,
+    use_docker_compose: bool | None = None,
+    use_podman_compose: bool | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -299,6 +301,10 @@ def launch_fluent(
         specified in a similar manner to Fluent's scheduler options.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
+    use_docker_compose: bool
+        Whether to use Docker Compose to launch Fluent.
+    use_podman_compose: bool
+        Whether to use Podman Compose to launch Fluent.
 
     Returns
     -------
@@ -312,6 +318,8 @@ def launch_fluent(
     ------
     UnexpectedKeywordArgument
         If an unexpected keyword argument is provided.
+    ValueError
+        If both ``use_docker_compose`` and ``use_podman_compose`` are set to ``True``.
 
     Notes
     -----
@@ -322,8 +330,13 @@ def launch_fluent(
     if env is None:
         env = {}
 
+    if use_docker_compose and use_podman_compose:
+        raise ValueError(
+            "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
+        )
+
     if start_timeout is None:
-        start_timeout = int(os.getenv("PYFLUENT_FLUENT_LAUNCH_TIMEOUT", "60"))
+        start_timeout = pyfluent.config.launch_fluent_timeout
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
@@ -349,7 +362,7 @@ def launch_fluent(
     )
     common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
-    if pyfluent.START_WATCHDOG is False:
+    if pyfluent.config.start_watchdog is False:
         launcher_argvals["start_watchdog"] = False
     launcher = launcher_type(**launcher_argvals)
     return launcher()

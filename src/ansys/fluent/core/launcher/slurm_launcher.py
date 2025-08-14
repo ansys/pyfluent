@@ -64,7 +64,6 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 from concurrent.futures import Future, ThreadPoolExecutor
 import inspect
 import logging
-import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -414,6 +413,8 @@ class SlurmLauncher:
         The allocated machines and core counts are queried from the scheduler environment and
         passed to Fluent.
         """
+        from ansys.fluent.core import config
+
         if not _SlurmWrapper.is_available():
             raise RuntimeError("Slurm is not available.")
         locals_ = locals().copy()
@@ -423,7 +424,7 @@ class SlurmLauncher:
         }
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
-        if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+        if config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self._argvals["ui_mode"] = UIMode(ui_mode)
         if self._argvals["start_timeout"] is None:
@@ -459,6 +460,7 @@ class SlurmLauncher:
         launch_cmd += _build_journal_argument(
             self._argvals["topy"], self._argvals["journal_file_names"]
         )
+        launch_cmd += ' --setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)

@@ -62,7 +62,7 @@ config_dict =
  'detach': True,
  'environment': {'ANSYSLMD_LICENSE_FILE': '2048@licenseserver.com',
                  'REMOTING_PORTS': '54000/portspan=2'},
- 'fluent_image': 'ghcr.io/ansys/pyfluent:v23.2.0',
+ 'fluent_image': '<image registry>:v23.2.0',
  'labels': {'test_name': 'none'},
  'ports': {'54000': 54000},
  'volumes': ['/home/user/.local/share/ansys_fluent_core/examples:/mnt/pyfluent'],
@@ -81,10 +81,11 @@ import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.docker_compose import ComposeBasedLauncher
+from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
-from ansys.fluent.core.launcher.launcher_utils import is_compose
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.deprecate import all_deprecators
@@ -130,7 +131,7 @@ def dict_to_str(dict: dict) -> str:
     This is useful for logging purposes, to avoid printing sensitive information such as license server details.
     """
 
-    if "environment" in dict and os.getenv("PYFLUENT_HIDE_LOG_SECRETS") == "1":
+    if "environment" in dict and pyfluent.config.hide_log_secrets:
         modified_dict = dict.copy()
         modified_dict.pop("environment")
         return pformat(modified_dict)
@@ -169,6 +170,7 @@ def configure_container_dict(
     image_name: str | None = None,
     image_tag: str | None = None,
     file_transfer_service: Any | None = None,
+    compose_config: ComposeConfig | None = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -203,6 +205,8 @@ def configure_container_dict(
         Ignored if ``fluent_image`` has been specified.
     file_transfer_service : optional
         Supports file upload and download.
+    compose_config : ComposeConfig, optional
+        Configuration for Docker Compose, if using Docker Compose to launch the container.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
         to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
@@ -236,6 +240,8 @@ def configure_container_dict(
     See also :func:`start_fluent_container`.
     """
 
+    compose_config = compose_config if compose_config else ComposeConfig()
+
     if timeout is not None:
         warnings.warn(
             "configure_container_dict(timeout) is deprecated, use launch_fluent(start_timeout) instead.",
@@ -247,19 +253,15 @@ def configure_container_dict(
     # Starting with 'mount_source' because it is not tied to the 'working_dir'.
     # The intended 'mount_source' logic is as follows, if it is not directly specified:
     # 1. If 'file_transfer_service' is provided, use its 'mount_source'.
-    # 2. Try to use the environment variable 'PYFLUENT_CONTAINER_MOUNT_SOURCE', if it is set.
-    # 3. Use the value from 'pyfluent.CONTAINER_MOUNT_SOURCE', if it is set.
-    # 4. If 'volumes' is specified in 'container_dict', try to infer the value from it.
-    # 5. Finally, use the current working directory, which is always available.
+    # 2. Use the value from 'pyfluent.config.container_mount_source', if it is set.
+    # 3. If 'volumes' is specified in 'container_dict', try to infer the value from it.
+    # 4. Finally, use the current working directory, which is always available.
 
     if not mount_source:
         if file_transfer_service:
             mount_source = file_transfer_service.mount_source
         else:
-            mount_source = os.getenv(
-                "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-                pyfluent.CONTAINER_MOUNT_SOURCE,
-            )
+            mount_source = pyfluent.config.container_mount_source
 
     if "volumes" in container_dict:
         if len(container_dict["volumes"]) != 1:
@@ -285,15 +287,14 @@ def configure_container_dict(
 
     # The intended 'mount_target' logic is as follows, if it is not directly specified:
     # 1. If 'working_dir' is specified in 'container_dict', use it as 'mount_target'.
-    # 2. Use the environment variable 'PYFLUENT_CONTAINER_MOUNT_TARGET', if it is set.
-    # 3. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
-    # 4. Finally, use the value from 'pyfluent.CONTAINER_MOUNT_TARGET', which is always set.
+    # 2. Try to infer the value from the 'volumes' keyword in 'container_dict', if available.
+    # 3. Finally, use the value from 'pyfluent.config.container_mount_target', which is always set.
 
     if not mount_target:
         if "working_dir" in container_dict:
             mount_target = container_dict["working_dir"]
         else:
-            mount_target = os.getenv("PYFLUENT_CONTAINER_MOUNT_TARGET")
+            mount_target = pyfluent.config.container_mount_target
 
     if "working_dir" in container_dict and mount_target:
         # working_dir will be set later to the final value of mount_target
@@ -304,7 +305,7 @@ def configure_container_dict(
 
     if not mount_target:
         logger.debug("No container 'mount_target' specified, using default value.")
-        mount_target = pyfluent.CONTAINER_MOUNT_TARGET
+        mount_target = pyfluent.config.container_mount_target
 
     if "volumes" not in container_dict:
         container_dict.update(volumes=[f"{mount_source}:{mount_target}"])
@@ -325,8 +326,8 @@ def configure_container_dict(
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
         port_mapping = container_dict["ports"]
-    if not port_mapping and pyfluent.LAUNCH_FLUENT_PORT:
-        port = pyfluent.LAUNCH_FLUENT_PORT
+    if not port_mapping and pyfluent.config.launch_fluent_port:
+        port = pyfluent.config.launch_fluent_port
         port_mapping = {port: port}
     if not port_mapping:
         port = get_free_port()
@@ -349,11 +350,12 @@ def configure_container_dict(
             environment={
                 "ANSYSLMD_LICENSE_FILE": license_server,
                 "REMOTING_PORTS": f"{container_grpc_port}/portspan=2",
+                "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
             }
         )
 
     if "labels" not in container_dict:
-        test_name = os.getenv("PYFLUENT_TEST_NAME", "none")
+        test_name = pyfluent.config.test_name
         container_dict.update(
             labels={"test_name": test_name},
         )
@@ -398,13 +400,14 @@ def configure_container_dict(
 
     if not fluent_image:
         if not image_tag:
-            image_tag = os.getenv(
-                "FLUENT_IMAGE_TAG", f"v{pyfluent.FLUENT_RELEASE_VERSION}"
+            image_tag = pyfluent.config.fluent_image_tag
+        if not image_name and image_tag:
+            image_name = (
+                pyfluent.config.fluent_image_name
+                or get_ghcr_fluent_image_name(image_tag)
             )
-        if not image_name:
-            image_name = os.getenv("FLUENT_IMAGE_NAME", "ghcr.io/ansys/pyfluent")
         if not image_tag or not image_name:
-            fluent_image = os.getenv("FLUENT_CONTAINER_IMAGE", None)
+            fluent_image = pyfluent.config.fluent_container_name
         elif image_tag and image_name:
             if image_tag.startswith("sha"):
                 fluent_image = f"{image_name}@{image_tag}"
@@ -415,24 +418,19 @@ def configure_container_dict(
 
     container_dict["fluent_image"] = fluent_image
 
-    if not pyfluent.FLUENT_AUTOMATIC_TRANSCRIPT:
+    if not pyfluent.config.fluent_automatic_transcript:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"
 
-    if os.getenv("REMOTING_NEW_DM_API") == "1":
-        if "environment" not in container_dict:
-            container_dict["environment"] = {}
-        container_dict["environment"]["REMOTING_NEW_DM_API"] = "1"
-
-    if pyfluent.LAUNCH_FLUENT_IP or os.getenv("REMOTING_SERVER_ADDRESS"):
+    if pyfluent.config.launch_fluent_ip or pyfluent.config.remoting_server_address:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["REMOTING_SERVER_ADDRESS"] = (
-            pyfluent.LAUNCH_FLUENT_IP or os.getenv("REMOTING_SERVER_ADDRESS")
+            pyfluent.config.launch_fluent_ip or pyfluent.config.remoting_server_address
         )
 
-    if pyfluent.LAUNCH_FLUENT_SKIP_PASSWORD_CHECK:
+    if pyfluent.config.launch_fluent_skip_password_check:
         if "environment" not in container_dict:
             container_dict["environment"] = {}
         container_dict["environment"]["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
@@ -449,7 +447,7 @@ def configure_container_dict(
 
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
-    if is_compose():
+    if compose_config.is_compose:
         container_dict["host_server_info_file"] = host_server_info_file
         container_dict["mount_source"] = mount_source
         container_dict["mount_target"] = mount_target
@@ -471,7 +469,10 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str], container_dict: dict | None = None, start_timeout: int = 60
+    args: List[str],
+    container_dict: dict | None = None,
+    start_timeout: int = 60,
+    compose_config: ComposeConfig | None = None,
 ) -> tuple[int, str, Any]:
     """Start a Fluent container.
 
@@ -484,6 +485,8 @@ def start_fluent_container(
     start_timeout : int, optional
         Timeout in seconds for the container to start. If not specified, it defaults to 60
         seconds.
+    compose_config : ComposeConfig, optional
+        Configuration for Docker Compose, if using Docker Compose to launch the container.
 
     Returns
     -------
@@ -505,10 +508,16 @@ def start_fluent_container(
     :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()`.
     """
 
+    compose_config = compose_config if compose_config else ComposeConfig()
+
     if container_dict is None:
         container_dict = {}
 
-    container_vars = configure_container_dict(args, **container_dict)
+    container_vars = configure_container_dict(
+        args,
+        compose_config=compose_config,
+        **container_dict,
+    )
 
     (
         config_dict,
@@ -527,10 +536,13 @@ def start_fluent_container(
         del timeout
 
     try:
-        if is_compose():
+        if compose_config.is_compose:
             config_dict["fluent_port"] = port
 
-            compose_container = ComposeBasedLauncher(container_dict=config_dict)
+            compose_container = ComposeBasedLauncher(
+                compose_config=compose_config,
+                container_dict=config_dict,
+            )
 
             if not compose_container.check_image_exists():
                 logger.debug(

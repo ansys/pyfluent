@@ -91,6 +91,8 @@ jobs:
             version: 252
           - image-tag: v26.1.0
             version: 261
+    env:
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -124,15 +126,11 @@ jobs:
 
       - name: Pull Fluent docker image
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Unit Testing
         run: |
           make install-test
           make unittest-all-${{ matrix.version }}-no-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous docker containers
         if: always()

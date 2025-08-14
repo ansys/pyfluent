@@ -33,7 +33,6 @@ from deprecated.sphinx import deprecated
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
-from ansys.fluent.core.launcher.launcher_utils import is_compose
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -151,6 +150,7 @@ class BaseSession:
             file_transfer_service,
             event_type,
             get_zones_info,
+            launcher_args,
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
@@ -161,10 +161,14 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
+        # Stores the backup of the fluent connection for later reference.
+        self._fluent_connection_backup = self._fluent_connection
         self._file_transfer_service = file_transfer_service
+        self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
         self.scheme = scheme_eval
         self.rp_vars = RPVars(self.scheme.string_eval)
@@ -354,8 +358,32 @@ class BaseSession:
         return FluentVersion(self.scheme.version)
 
     def _exit_compose_service(self):
-        if self._fluent_connection._container and is_compose():
-            self._fluent_connection._container.stop()
+        args = self._launcher_args or {}
+        compose_config = args.get("compose_config", None)
+
+        container = self._fluent_connection._container
+        if compose_config and compose_config.is_compose:
+            container.stop()
+
+    def wait_process_finished(self, wait: float | int | bool = 60):
+        """Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
+
+        Parameters
+        ----------
+        wait : float, int or bool, optional
+            How long to wait for processes to finish before returning, by default 60 seconds.
+            Can also be set to ``True``, which will result in waiting indefinitely.
+
+        Raises
+        ------
+        UnsupportedRemoteFluentInstance
+            If current Fluent instance is running remotely.
+        WaitTypeError
+            If ``wait`` is specified improperly.
+        """
+        return self._fluent_connection_backup.wait_process_finished()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
@@ -477,7 +505,7 @@ class Fields:
         self._is_solution_data_valid = (
             _session._app_utilities.is_solution_data_available
         )
-        self.field_info = service_creator("field_info").create(
+        self._field_info = service_creator("field_info").create(
             _session._field_data_service,
             self._is_solution_data_valid,
         )
@@ -497,3 +525,9 @@ class Fields:
             self._is_solution_data_valid,
             _session.scheme,
         )
+
+    @property
+    @deprecated(version="0.34.0", reason="Use relevant ``field_data`` methods..")
+    def field_info(self):
+        """Field Information."""
+        return self._field_info

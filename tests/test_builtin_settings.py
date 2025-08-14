@@ -583,6 +583,11 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert (
         Calculate(settings_source=solver) == solver.solution.run_calculation.calculate
     )
+    assert Iterate(settings_source=solver) == solver.solution.run_calculation.iterate
+    assert (
+        DualTimeIterate(settings_source=solver)
+        == solver.solution.run_calculation.dual_time_iterate
+    )
 
 
 @pytest.mark.codegen_required
@@ -726,5 +731,5 @@ def test_context_manager_2(new_solver_session):
     )
 
     with using(solver):
-        ReadCase(file_name=import_filename)
-        assert Viscous().model() == "laminar"
+        read_case(file_name=import_filename)
+        assert Viscous().model() == "k-omega"

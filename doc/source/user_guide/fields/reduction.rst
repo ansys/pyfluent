@@ -50,9 +50,10 @@ Here's how to set up a simple example:
 .. code-block:: python
 
   >>> from ansys.fluent.core.solver import VelocityInlets
+  >>> from ansys.units import VariableCatalog
   >>> # Compute the minimum of absolute pressure across multiple solvers
   >>> reduction.minimum(
-    ...     expression="AbsolutePressure",
+    ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
     ...     locations=VelocityInlets(settings_source=solver1) + VelocityInlets(settings_source=solver2),
     ... )
     101343.2241809384
@@ -69,7 +70,7 @@ To use reduction functions within a specific solver instance, initialize the sol
 .. code-block:: python
 
   >>> solver_session.fields.reduction.area_average(
-  ...     expression="AbsolutePressure",
+  ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
   ...     locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
@@ -78,7 +79,8 @@ For convenience, context-aware reductions are also supported:
 
 .. code-block:: python
 
-  >>> solver_session.fields.reduction.area(locations=["inlet1"])
+  >>> from ansys.fluent.core.solver import VelocityInlet
+  >>> solver_session.fields.reduction.area(locations=[VelocityInlet(settings_source=solver_session, name="inlet1")])
   0.002555675491754098
 
   >>> reduction.area(locations=["inlet1"], ctxt=solver_session)
@@ -248,7 +250,7 @@ Functional:
 .. code-block:: python
 
   >>> reduction.area_average(
-  ...     expression="AbsolutePressure",
+  ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
   ...     locations=solver_session.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
@@ -258,7 +260,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> solver_session.fields.reduction.area_average(
-  ...     expression="AbsolutePressure",
+  ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
   ...     locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
@@ -268,7 +270,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> reduction.minimum(
-  ...     expression="AbsolutePressure",
+  ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
   ...     locations=solver1.setup.boundary_conditions.pressure_outlet
   ...     + solver2.setup.boundary_conditions.pressure_outlet,
   ... )
@@ -279,7 +281,7 @@ Object-Oriented:
 .. code-block:: python
 
   >>> reduction.minimum(
-  ...     expression="AbsolutePressure",
+  ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
   ...     locations=VelocityInlets(solver1) + VelocityInlets(solver2),
   ... )
   101343.2241809384
@@ -310,9 +312,9 @@ Object-Oriented:
 .. code-block:: python
 
   >>> reduction.sum(
-  >>>   expression="AbsolutePressure",
+  >>>   expression=VariableCatalog.ABSOLUTE_PRESSURE,
   >>>   locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
-  >>>   weight="Area"
+  >>>   weight=reduction.weight.AREA
   >>> )
   80349034.56621933
 
@@ -321,10 +323,10 @@ Object-Oriented:
 .. code-block:: python
 
   >>> reduction.sum_if(
-  >>>   expression="AbsolutePressure",
+  >>>   expression=VariableCatalog.ABSOLUTE_PRESSURE,
   >>>   condition="AbsolutePressure > 0[Pa]",
   >>>   locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
-  >>>   weight="Area"
+  >>>   weight=reduction.weight.AREA
   >>> )
   80349034.56621933
 

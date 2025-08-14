@@ -53,7 +53,11 @@ from ansys.fluent.core.field_data_interfaces import (
     _AllowedSurfaceNames,
     _AllowedVectorFieldNames,
     _ReturnFieldData,
+    _ScalarFields,
+    _SurfaceIds,
+    _SurfaceNames,
     _to_field_name_str,
+    _VectorFields,
     get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
@@ -159,25 +163,7 @@ class FieldDataService(StreamingService):
         return elementss
 
 
-class FieldInfo(BaseFieldInfo):
-    """Provides access to Fluent field information.
-
-    Methods
-    -------
-    get_scalar_field_range(field: str, node_value: bool, surface_ids: List[int])
-    -> List[float]
-        Get the range (minimum and maximum values) of the field.
-
-    get_scalar_fields_info(self) -> dict
-        Get fields information (field name, domain, and section).
-
-    get_vector_fields_info(self) -> dict
-        Get vector fields information.
-
-    get_surfaces_info(self) -> dict
-        Get surfaces information (surface name, ID, and type).
-    """
-
+class _FieldInfo(BaseFieldInfo):
     def __init__(
         self,
         service: FieldDataService,
@@ -204,6 +190,16 @@ class FieldInfo(BaseFieldInfo):
         -------
         List[float]
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.scalar_fields.range({field}, {node_value}, {surface_ids})' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_field_range(field, node_value, surface_ids)
+
+    def _get_scalar_field_range(
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+    ) -> List[float]:
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
@@ -222,6 +218,14 @@ class FieldInfo(BaseFieldInfo):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.scalar_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_fields_info()
+
+    def _get_scalar_fields_info(self) -> Dict[str, Dict]:
         request = FieldDataProtoModule.GetFieldsInfoRequest()
         response = self._service.get_scalar_fields_info(request)
         return {
@@ -241,6 +245,14 @@ class FieldInfo(BaseFieldInfo):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.vector_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_vector_fields_info()
+
+    def _get_vector_fields_info(self) -> Dict[str, Dict]:
         request = FieldDataProtoModule.GetVectorFieldsInfoRequest()
         response = self._service.get_vector_fields_info(request)
         return {
@@ -259,6 +271,14 @@ class FieldInfo(BaseFieldInfo):
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.surfaces()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_surfaces_info()
+
+    def _get_surfaces_info(self) -> Dict[str, Dict]:
         request = FieldDataProtoModule.GetSurfacesInfoResponse()
         response = self._service.get_surfaces_info(request)
         info = {
@@ -274,20 +294,64 @@ class FieldInfo(BaseFieldInfo):
 
     def validate_scalar_fields(self, field_name: str):
         """Validate scalar fields."""
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.scalar_fields.is_active(field_name={field_name})' instead",
+            PyFluentDeprecationWarning,
+        )
         _AllowedScalarFieldNames(
-            self._is_data_valid, info=self.get_scalar_fields_info()
+            self._is_data_valid, info=self._get_scalar_fields_info()
         ).valid_name(field_name)
 
     def validate_vector_fields(self, field_name: str):
         """Validate vector fields."""
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.vector_fields.is_active(field_name={field_name})' instead",
+            PyFluentDeprecationWarning,
+        )
         _AllowedVectorFieldNames(
-            self._is_data_valid, info=self.get_vector_fields_info()
+            self._is_data_valid, info=self._get_vector_fields_info()
         ).valid_name(field_name)
 
     def validate_surfaces(self, surfaces: List[str]):
         """Validate surfaces."""
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.surfaces.validate(surfaces={surfaces})' instead",
+            PyFluentDeprecationWarning,
+        )
         for surface in surfaces:
-            _AllowedSurfaceNames(info=self.get_surfaces_info()).valid_name(surface)
+            _AllowedSurfaceNames(info=self._get_surfaces_info()).valid_name(surface)
+
+
+class FieldInfo(_FieldInfo):
+    """Provides access to Fluent field information.
+
+    Methods
+    -------
+    get_scalar_field_range(field: str, node_value: bool, surface_ids: List[int])
+    -> List[float]
+        Get the range (minimum and maximum values) of the field.
+
+    get_scalar_fields_info(self) -> dict
+        Get fields information (field name, domain, and section).
+
+    get_vector_fields_info(self) -> dict
+        Get vector fields information.
+
+    get_surfaces_info(self) -> dict
+        Get surfaces information (surface name, ID, and type).
+    """
+
+    def __init__(self, service: FieldDataService, is_data_valid: Callable[[], bool]):
+        """__init__ method of FieldInfo class."""
+        warnings.warn(
+            "'FieldInfo' is deprecated and will be removed in a future release. "
+            "Please use relevant methods from 'FieldData' instead",
+            PyFluentDeprecationWarning,
+        )
+        super().__init__(service, is_data_valid)
 
 
 class _FieldMethod:
@@ -297,6 +361,30 @@ class _FieldMethod:
 
         def allowed_values(self):
             """Returns set of allowed values."""
+            if self._accessor.__class__.__name__ == "_AllowedScalarFieldNames":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'scalar_fields.allowed_values()' instead",
+                    PyFluentDeprecationWarning,
+                )
+            elif self._accessor.__class__.__name__ == "_AllowedVectorFieldNames":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'vector_fields.allowed_values()' instead",
+                    PyFluentDeprecationWarning,
+                )
+            elif self._accessor.__class__.__name__ == "_AllowedSurfaceNames":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'field_data.surfaces.allowed_values()' instead",
+                    PyFluentDeprecationWarning,
+                )
+            elif self._accessor.__class__.__name__ == "_AllowedSurfaceIDs":
+                warnings.warn(
+                    "This usage is deprecated and will be removed in a future release. "
+                    "Please use 'field_data.surface_ids.allowed_values()' instead",
+                    PyFluentDeprecationWarning,
+                )
             return sorted(self._accessor())
 
     def __init__(self, field_data_accessor, args_allowed_values_accessors):
@@ -489,7 +577,20 @@ class BaseFieldData:
             | PathlinesFieldDataRequest
         ),
     ) -> Dict[int | str, Dict | np.array]:
-        """Get the surface, scalar, vector or path-lines field data on a surface."""
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
         if isinstance(obj, SurfaceFieldDataRequest):
             return self._get_surface_data(**obj._asdict())
         elif isinstance(obj, ScalarFieldDataRequest):
@@ -528,7 +629,7 @@ class Batch(FieldBatch):
     def __init__(
         self,
         service: FieldDataService,
-        field_info: FieldInfo,
+        field_info: _FieldInfo,
         allowed_surface_ids,
         allowed_surface_names,
         allowed_scalar_field_names,
@@ -937,7 +1038,7 @@ class _FieldDataConstants:
 
 
 def _get_surface_ids(
-    field_info: FieldInfo,
+    field_info: _FieldInfo,
     allowed_surface_names,
     surfaces: List[int | str | object],
 ) -> List[int]:
@@ -957,7 +1058,7 @@ def _get_surface_ids(
     for surf in updated_surfaces:
         if isinstance(surf, str):
             surface_ids.extend(
-                field_info.get_surfaces_info()[allowed_surface_names.valid_name(surf)][
+                field_info._get_surfaces_info()[allowed_surface_names.valid_name(surf)][
                     "surface_id"
                 ]
             )
@@ -1097,13 +1198,19 @@ class ChunkParser:
                     payload_tag_id = None
             field = None
             if payload_tag_id is not None:
-                field = _extract_field(
-                    _FieldDataConstants.proto_field_type_to_np_data_type[
-                        payload_info.fieldType
-                    ],
-                    payload_info.fieldSize,
-                    chunk_iterator,
-                )
+                if payload_info.fieldSize > 0:
+                    field = _extract_field(
+                        _FieldDataConstants.proto_field_type_to_np_data_type[
+                            payload_info.fieldType
+                        ],
+                        payload_info.fieldSize,
+                        chunk_iterator,
+                    )
+                else:
+                    warnings.warn(
+                        f"Field data is not available for surface: {surface_id}"
+                    )
+                    field = np.array([])
 
             if self._callbacks_provider is not None:
                 for callback_data in self._callbacks_provider.callbacks():
@@ -1265,7 +1372,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def __init__(
         self,
         service: FieldDataService,
-        field_info: FieldInfo,
+        field_info: _FieldInfo,
         is_data_valid: Callable[[], bool],
         scheme_eval=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
@@ -1334,6 +1441,15 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
                 args_allowed_values_accessors=scalar_field_args,
             ),
             self.get_pathlines_field_data,
+        )
+        self.surfaces = _SurfaceNames(allowed_surface_names=self._allowed_surface_names)
+        self.surface_ids = _SurfaceIds(allowed_surface_ids=self._allowed_surface_ids)
+        self.scalar_fields = _ScalarFields(
+            available_field_names=self._allowed_scalar_field_names,
+            field_info=self._field_info,
+        )
+        self.vector_fields = _VectorFields(
+            available_field_names=self._allowed_vector_field_names
         )
         self._returned_data = _ReturnFieldData()
         self._fetched_data = _FetchFieldData()

@@ -23,10 +23,14 @@
 """A package providing Fluent's Solver and Meshing capabilities in Python."""
 
 import os
-from pathlib import Path
 import pydoc
+import warnings
 
 # isort: off
+
+# config must be initialized before logging setup.
+from ansys.fluent.core.module_config import config
+
 # Logging has to be imported before importing other PyFluent modules
 from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
 
@@ -73,11 +77,11 @@ from ansys.fluent.core.session_utilities import (  # noqa: F401
     SolverIcing,
 )
 from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
-from ansys.fluent.core.utils import fldoc, get_examples_download_dir
+from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.34.dev0"
+__version__ = "0.35.dev0"
 
 _VERSION_INFO = None
 """
@@ -108,86 +112,46 @@ def version_info() -> str:
     return _VERSION_INFO if _VERSION_INFO is not None else __version__
 
 
-# Latest released Fluent version
-FLUENT_RELEASE_VERSION = "25.2.0"
-
-# Current dev Fluent version
-FLUENT_DEV_VERSION = "26.1.0"
-
-# Path to the example input/data files are downloaded
-EXAMPLES_PATH = str(get_examples_download_dir())
-
-# Host path which is mounted to the container
-CONTAINER_MOUNT_SOURCE = None
-
-# Path inside the container where the host path is mounted
-CONTAINER_MOUNT_TARGET = "/home/container/workdir"
-
-# Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS
-INFER_REMOTING_IP = True
-
-# Time in second to wait for response for each ip while inferring remoting ip
-INFER_REMOTING_IP_TIMEOUT_PER_IP = 2
-
 pydoc.text.docother = fldoc.docother.__get__(pydoc.text, pydoc.TextDoc)
 
-# Whether to use datamodel state caching
-DATAMODEL_USE_STATE_CACHE = True
 
-# Whether to use datamodel attribute caching
-DATAMODEL_USE_ATTR_CACHE = True
+_config_by_deprecated_name = {
+    "FLUENT_RELEASE_VERSION": "fluent_release_version",
+    "FLUENT_DEV_VERSION": "fluent_dev_version",
+    "EXAMPLES_PATH": "examples_path",
+    "CONTAINER_MOUNT_SOURCE": "container_mount_source",
+    "CONTAINER_MOUNT_TARGET": "container_mount_target",
+    "INFER_REMOTING_IP": "infer_remoting_ip",
+    "INFER_REMOTING_IP_TIMEOUT_PER_IP": "infer_remoting_ip_timeout_per_ip",
+    "DATAMODEL_USE_STATE_CACHE": "datamodel_use_state_cache",
+    "DATAMODEL_USE_ATTR_CACHE": "datamodel_use_attr_cache",
+    "DATAMODEL_USE_NOCOMMANDS_DIFF_STATE": "datamodel_use_nocommands_diff_state",
+    "DATAMODEL_RETURN_STATE_CHANGES": "datamodel_return_state_changes",
+    "USE_FILE_TRANSFER_SERVICE": "use_file_transfer_service",
+    "CODEGEN_OUTDIR": "codegen_outdir",
+    "FLUENT_SHOW_MESH_AFTER_CASE_READ": "fluent_show_mesh_after_case_read",
+    "FLUENT_AUTOMATIC_TRANSCRIPT": "fluent_automatic_transcript",
+    "SUPPORT_SOLVER_INTERRUPT": "support_solver_interrupt",
+    "START_WATCHDOG": "start_watchdog",
+    "CHECK_HEALTH_TIMEOUT": "check_health_timeout",
+    "CHECK_HEALTH": "check_health",
+    "PRINT_SEARCH_RESULTS": "print_search_results",
+    "CLEAR_FLUENT_PARA_ENVS": "clear_fluent_para_envs",
+    "LAUNCH_FLUENT_STDOUT": "launch_fluent_stdout",
+    "LAUNCH_FLUENT_STDERR": "launch_fluent_stderr",
+    "LAUNCH_FLUENT_IP": "launch_fluent_ip",
+    "LAUNCH_FLUENT_PORT": "launch_fluent_port",
+    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",
+}
 
-# Whether to stream and cache commands state
-DATAMODEL_USE_NOCOMMANDS_DIFF_STATE = True
 
-# Whether to return the state changes on mutating datamodel rpcs
-DATAMODEL_RETURN_STATE_CHANGES = True
-
-# Whether to use remote gRPC file transfer service
-USE_FILE_TRANSFER_SERVICE = False
-
-# Directory where API files are written out during codegen
-CODEGEN_OUTDIR = os.getenv(
-    "PYFLUENT_CODEGEN_OUTDIR", (Path(__file__) / ".." / "generated").resolve()
-)
-
-# Whether to show mesh in Fluent after case read
-FLUENT_SHOW_MESH_AFTER_CASE_READ = False
-
-# Whether to write the automatic transcript in Fluent
-FLUENT_AUTOMATIC_TRANSCRIPT = os.getenv("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT") == "1"
-
-# Whether to interrupt Fluent solver from PyFluent
-SUPPORT_SOLVER_INTERRUPT = False
-
-# Whether to start watchdog
-START_WATCHDOG = None
-
-# Health check timeout in seconds
-CHECK_HEALTH_TIMEOUT = 60
-
-# Whether to skip health check
-CHECK_HEALTH = True
-
-# Whether to print search results
-PRINT_SEARCH_RESULTS = True
-
-# Whether to clear environment variables related to Fluent parallel mode
-CLEAR_FLUENT_PARA_ENVS = False
-
-# Set stdout of the launched Fluent process
-# Valid values are same as subprocess.Popen's stdout argument
-LAUNCH_FLUENT_STDOUT = None
-
-# Set stderr of the launched Fluent process
-# Valid values are same as subprocess.Popen's stderr argument
-LAUNCH_FLUENT_STDERR = None
-
-# Set the IP address of the Fluent server while launching Fluent
-LAUNCH_FLUENT_IP = None
-
-# Set the port of the Fluent server while launching Fluent
-LAUNCH_FLUENT_PORT = None
-
-# Skip password check during rpc execution when Fluent is launched from PyFluent
-LAUNCH_FLUENT_SKIP_PASSWORD_CHECK = False
+def __getattr__(name: str) -> str:
+    """Get the value of a deprecated configuration variable."""
+    if name in _config_by_deprecated_name:
+        config_name = _config_by_deprecated_name[name]
+        warnings.warn(
+            f"'{name}' is deprecated, use 'config.{config_name}' instead.",
+            category=PyFluentDeprecationWarning,
+        )
+        return getattr(config, config_name)
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
