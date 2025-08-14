@@ -5,7 +5,12 @@ from __future__ import annotations
 
 from typing import Any, Callable, Dict, List
 
-import panel as pn
+try:
+    import panel as pn
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
+    ) from exc
 
 from ansys.fluent.core.ipywidget_utils import _parse_path, _safe_get_properties
 from ansys.fluent.core.solver.flobject import (

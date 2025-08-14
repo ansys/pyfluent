@@ -1,6 +1,11 @@
 """Render interactive UI in Jupyter notebook."""
 
-import ipywidgets as widgets
+try:
+    import ipywidgets as widgets
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
+    ) from exc
 
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
@@ -17,17 +22,24 @@ from ansys.fluent.core.solver.flobject import (
 
 
 def _parse_path(settings_obj):
+    """Convert a settings object path to a string representation
+    with proper indexing for NamedObject keys."""
     local_obj = settings_obj._root
     path_str = "<solver_session>.settings."
     for path in settings_obj.path.replace("/", ".").replace("?", "").split("."):
+        py_path = path.replace("-", "_")
         if not path:
             break
         if isinstance(local_obj, NamedObject):
-            local_obj = local_obj[path]
-            path_str = path_str[:-1] + f"[{path}]" + "."
+            try:
+                local_obj = local_obj[path]
+                path_str = path_str[:-1] + f"[{path}]" + "."
+            except KeyError:
+                local_obj = getattr(local_obj, py_path)
+                path_str += f"{py_path}."
         else:
-            local_obj = getattr(local_obj, path.replace("-", "_"))
-            path_str += path.replace("-", "_") + "."
+            local_obj = getattr(local_obj, py_path)
+            path_str += f"{py_path}."
 
     return path_str[:-1]
 
