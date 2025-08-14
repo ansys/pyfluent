@@ -34,9 +34,9 @@ def in_jupyter():
 
 
 if in_jupyter():
-    from ansys.fluent.core.interactive.ipywidget_utils import settings_ui
+    from ansys.fluent.core.interactive.jupyter_version import settings_ui
 else:
-    from ansys.fluent.core.interactive.pyfluent_panel_based_ui_sample_1 import (
+    from ansys.fluent.core.interactive.standalone_web_version import (
         build_settings_view,
     )
 

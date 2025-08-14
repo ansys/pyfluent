@@ -12,89 +12,27 @@ except ModuleNotFoundError as exc:
         "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
     ) from exc
 
-from ansys.fluent.core.interactive.ipywidget_utils import (
+from ansys.fluent.core.interactive.utils import (
     _parse_path,
+    _render_widget_from_props_generic,
     _safe_get_properties,
 )
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
-    Boolean,
     Group,
-    Integer,
-    IntegerList,
     NamedObject,
-    Real,
-    RealList,
-    String,
-    StringList,
 )
 
 pn.extension()
-
-
-# ---------------------------
-# Widget factory (maps Fluent types → Panel widgets)
-# ---------------------------
 
 
 def _render_widget_from_props(
     settings_obj, label: str, props: Dict[str, Any]
 ) -> pn.viewable.Viewable:
     """Produce a Panel widget from type+props. No backend mutation here."""
-    settings_val = props["value"]
-    allowed = props["allowed_values"]
-
-    try:
-        if isinstance(settings_obj, Boolean):
-            w = pn.widgets.Checkbox(name=label, value=bool(settings_val))
-        elif isinstance(settings_obj, Integer):
-            w = pn.widgets.IntInput(name=label, value=int(settings_val))
-        elif isinstance(settings_obj, Real):
-            w = pn.widgets.FloatInput(name=label, value=float(settings_val))
-        elif isinstance(settings_obj, String):
-            if allowed:
-                opts = [str(v) for v in allowed]
-                val = str(settings_val)
-                if val not in opts:
-                    val = opts[0]
-                w = pn.widgets.Select(name=label, options=opts, value=val)
-            else:
-                if settings_val is False:
-                    settings_val = ""
-                w = pn.widgets.TextInput(name=label, value=str(settings_val))
-        elif isinstance(settings_obj, StringList):
-            if allowed:
-                opts = [str(v) for v in allowed]
-                current = [str(v) for v in (settings_val or []) if str(v) in opts]
-                w = pn.widgets.MultiChoice(name=label, options=opts, value=current)
-                w._is_list_text = (str, False)
-            else:
-                w = pn.widgets.TextInput(
-                    name=label, value=",".join(map(str, settings_val or []))
-                )
-                w._is_list_text = (str, True)
-        elif isinstance(settings_obj, IntegerList):
-            w = pn.widgets.TextInput(
-                name=label, value=",".join(map(str, settings_val or []))
-            )
-            w._is_list_text = (int, True)
-        elif isinstance(settings_obj, RealList):
-            w = pn.widgets.TextInput(
-                name=label, value=",".join(map(str, settings_val or []))
-            )
-            w._is_list_text = (float, True)
-        else:
-            if settings_val is False:
-                settings_val = ""
-            w = pn.widgets.TextInput(name=label, value=str(settings_val))
-    except ValueError:
-        w = pn.widgets.TextInput(name=label, value=str(settings_val))
-    return w
-
-
-# ---------------------------
-# Parameter & Command UIs
-# ---------------------------
+    return _render_widget_from_props_generic(
+        settings_obj, label, props, pn.widgets, "panel"
+    )
 
 
 def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:

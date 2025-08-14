@@ -1,5 +1,11 @@
 """Render interactive UI in Jupyter notebook."""
 
+from ansys.fluent.core.interactive.utils import (
+    _parse_path,
+    _render_widget_from_props_generic,
+    _safe_get_properties,
+)
+
 try:
     import ipywidgets as widgets
 except ModuleNotFoundError as exc:
@@ -9,130 +15,16 @@ except ModuleNotFoundError as exc:
 
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
-    Boolean,
     Group,
-    Integer,
-    IntegerList,
     NamedObject,
-    Real,
-    RealList,
-    String,
-    StringList,
 )
-
-
-def _parse_path(settings_obj):
-    """Convert a settings object path to a string representation
-    with proper indexing for NamedObject keys."""
-    local_obj = settings_obj._root
-    path_str = "<solver_session>.settings."
-    for path in settings_obj.path.replace("/", ".").replace("?", "").split("."):
-        py_path = path.replace("-", "_")
-        if not path:
-            break
-        if isinstance(local_obj, NamedObject):
-            try:
-                local_obj = local_obj[path]
-                path_str = path_str[:-1] + f"[{path}]" + "."
-            except KeyError:
-                local_obj = getattr(local_obj, py_path)
-                path_str += f"{py_path}."
-        else:
-            local_obj = getattr(local_obj, py_path)
-            path_str += f"{py_path}."
-
-    return path_str[:-1]
-
-
-def _safe_get_properties(settings_obj):
-    """Fetch potentially expensive properties once."""
-    props = {}
-    try:
-        props["is_active"] = settings_obj.is_active()
-    except RuntimeError:
-        props["is_active"] = False
-
-    try:
-        if isinstance(settings_obj, BaseCommand):
-            props["value"] = ""
-        else:
-            props["value"] = settings_obj() if props["is_active"] else ""
-    except RuntimeError:
-        props["value"] = ""
-
-    props["allowed_values"] = None
-    if hasattr(settings_obj, "allowed_values"):
-        try:
-            av = settings_obj.allowed_values()
-            props["allowed_values"] = list(av) if av else None
-        except RuntimeError:
-            pass
-
-    props["path"] = getattr(settings_obj, "path", "")
-    props["python_name"] = getattr(settings_obj, "python_name", "")
-    props["obj_name"] = getattr(settings_obj, "obj_name", "")
-    props["parent"] = getattr(settings_obj, "parent", None)
-    return props
 
 
 def _render_widgets_from_props(settings_obj, label, props):
     """Render widget using pre-fetched props instead of repeated calls."""
-    settings_val = props["value"]
-    allowed_values = props["allowed_values"]
-    try:
-        if isinstance(settings_obj, Boolean):
-            widget = widgets.Checkbox(
-                value=bool(settings_val), description=label, indent=False
-            )
-        elif isinstance(settings_obj, Integer):
-            widget = widgets.IntText(value=int(settings_val), description=label)
-        elif isinstance(settings_obj, Real):
-            widget = widgets.FloatText(value=float(settings_val), description=label)
-        elif isinstance(settings_obj, String):
-            if allowed_values:
-                allowed_values = [str(v) for v in allowed_values]
-                val = str(settings_val)
-                if val not in allowed_values:
-                    # Exceptional case, might raise a warning here.....
-                    val = allowed_values[0]
-                widget = widgets.Dropdown(
-                    options=allowed_values, value=val, description=label
-                )
-            else:
-                if settings_val is False:
-                    settings_val = ""
-                widget = widgets.Text(value=str(settings_val), description=label)
-        elif isinstance(settings_obj, StringList):
-            if allowed_values:
-                allowed_values = [str(v) for v in allowed_values]
-                current_values = [
-                    str(v) for v in (settings_val or []) if str(v) in allowed_values
-                ]
-                widget = widgets.SelectMultiple(
-                    options=allowed_values, value=current_values, description=label
-                )
-            else:
-                widget = widgets.Text(
-                    value=",".join(map(str, settings_val or [])), description=label
-                )
-            widget._is_list_text = (str, allowed_values is None)
-        elif isinstance(settings_obj, IntegerList):
-            widget = widgets.Text(
-                value=",".join(map(str, settings_val or [])), description=label
-            )
-            widget._is_list_text = (int, True)
-        elif isinstance(settings_obj, RealList):
-            widget = widgets.Text(
-                value=",".join(map(str, settings_val or [])), description=label
-            )
-            widget._is_list_text = (float, True)
-        else:
-            if settings_val is False:
-                settings_val = ""
-            widget = widgets.Text(value=str(settings_val), description=label)
-    except ValueError:
-        widget = widgets.Text(value=str(settings_val), description=label)
-    return widget
+    return _render_widget_from_props_generic(
+        settings_obj, label, props, widgets, "ipywidgets"
+    )
 
 
 def _param_ui(settings_obj, props):
