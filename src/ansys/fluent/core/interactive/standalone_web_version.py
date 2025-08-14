@@ -30,9 +30,7 @@ def _render_widget_from_props(
     settings_obj, label: str, props: Dict[str, Any]
 ) -> pn.viewable.Viewable:
     """Produce a Panel widget from type+props. No backend mutation here."""
-    return _render_widget_from_props_generic(
-        settings_obj, label, props, pn.widgets, "panel"
-    )
+    return _render_widget_from_props_generic(settings_obj, label, props, pn.widgets)
 
 
 def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
@@ -180,9 +178,11 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
 
     if isinstance(obj, (Group, NamedObject)):
         if isinstance(obj, Group):
-            child_names = obj.get_active_child_names() + obj.get_active_command_names()
+            command_names = obj.get_active_command_names()
+            child_names = obj.get_active_child_names() + command_names
         else:
-            child_names = list(obj) + obj.command_names
+            command_names = obj.command_names
+            child_names = list(obj) + command_names
     else:
         if isinstance(obj, BaseCommand):
             return _command_view(obj, props) if props["is_active"] else pn.pane.HTML("")
@@ -201,7 +201,11 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
             return _settings_view(child_obj, lvl)
 
         # Each child gets its own one-item accordion (mirrors your ipywidgets UX)
-        sections.append(_lazy_section(child_name, _loader))
+        if child_name in command_names:
+            display_name = f"⚡ {child_name.upper()}"
+        else:
+            display_name = child_name
+        sections.append(_lazy_section(display_name, _loader))
 
     return pn.Column(*sections, sizing_mode="stretch_width")
 

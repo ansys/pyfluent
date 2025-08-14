@@ -22,9 +22,7 @@ from ansys.fluent.core.solver.flobject import (
 
 def _render_widgets_from_props(settings_obj, label, props):
     """Render widget using pre-fetched props instead of repeated calls."""
-    return _render_widget_from_props_generic(
-        settings_obj, label, props, widgets, "ipywidgets"
-    )
+    return _render_widget_from_props_generic(settings_obj, label, props, widgets)
 
 
 def _param_ui(settings_obj, props):
@@ -134,9 +132,11 @@ def settings_ui(obj, indent=0):
     props = _safe_get_properties(obj)
     if isinstance(obj, (Group, NamedObject)):
         if isinstance(obj, Group):
-            child_names = obj.get_active_child_names() + obj.get_active_command_names()
+            command_names = obj.get_active_command_names()
+            child_names = obj.get_active_child_names() + command_names
         else:
-            child_names = list(obj) + obj.command_names
+            command_names = obj.command_names
+            child_names = list(obj) + command_names
         accordions = []
         for child_name in child_names:
 
@@ -148,7 +148,10 @@ def settings_ui(obj, indent=0):
                 return settings_ui(child_obj, lvl)
 
             acc = widgets.Accordion(children=[widgets.HTML("Loading...")])
-            acc.set_title(0, child_name)
+            if child_name in command_names:
+                acc.set_title(0, f"⚡ {child_name.upper()}")
+            else:
+                acc.set_title(0, child_name)
 
             def on_selected(change, loader=lazy_loader, accordion=acc):
                 if change["name"] == "selected_index" and change["new"] == 0:
