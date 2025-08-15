@@ -589,9 +589,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    # Temporarily disabling due to issues with CI/image
-    # needs: [test, update-changelog]
-    needs: [build, update-changelog]
+    needs: [test, update-changelog]
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
