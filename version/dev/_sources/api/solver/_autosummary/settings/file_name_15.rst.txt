@@ -1,0 +1,25 @@
+:orphan:
+
+.. _file_name_15:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ====================================
+
+Parent                                                                                  Summary
+
+========================================================   ====================================
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`       'write_in_cylinder_ouput' child.
+
+:ref:`write_3 <write_3>`                                                       'write' command.
+
+:ref:`write_animation_1 <write_animation_1>`                     Write keyframe Animation file.
+
+========================================================   ====================================
+

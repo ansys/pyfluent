@@ -1,0 +1,114 @@
+:orphan:
+
+.. _multiphase_6:
+
+multiphase
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.multiphase_6
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================================================   ===============================================================================
+
+Attribute                                                                                                                                                                              Summary
+
+============================================================================================================   ===============================================================================
+:ref:`flow_velocity <flow_velocity>`                                                                                                                                 Wave velocity components.
+
+:ref:`primary_phase_reference_height_above_free_surface <primary_phase_reference_height_above_free_surface>`                               Primary Phase: Reference Height Above Free Surface.
+
+:ref:`primary_phase_power_law_coefficient <primary_phase_power_law_coefficient>`                                                                         Primary Phase: Power Law Coefficient.
+
+:ref:`primary_phase_reference_velocity <primary_phase_reference_velocity>`                                                                        Primary Phase: Reference Velocity Magnitude.
+
+:ref:`secondary_phase_for_inlet <secondary_phase_for_inlet>`                                                                                                        Secondary Phase for Inlet.
+
+:ref:`wave_option <wave_option>`                                                                                                                                              Wave BC Options.
+
+:ref:`free_surface_level <free_surface_level>`                                                                                                                             Free Surface Level.
+
+:ref:`bottom_level <bottom_level>`                                                                                                                                               Bottom Level.
+
+:ref:`reference_wave_direction <reference_wave_direction>`                                                                                                           Reference Wave Direction.
+
+:ref:`reference_direction <reference_direction>`                                                                                                               Reference direction components.
+
+:ref:`wave_modeling_option <wave_modeling_option>`                                                                                                                      Wave Modeling Options.
+
+:ref:`wave_group_inputs <wave_group_inputs>`                                                                                                                        List of Wave Group Inputs.
+
+:ref:`shallow_wave_inputs <shallow_wave_inputs>`                                                                                                                  List of Shallow Wave Inputs.
+
+:ref:`frequency_spectrum_method <frequency_spectrum_method>`                                                                                                       Frequency Spectrum Method .
+
+:ref:`peak_shape_parameter <peak_shape_parameter>`                                                                                                                       Peak Shape Parameter.
+
+:ref:`significant_wave_height <significant_wave_height>`                                                                                                              Significant Wave Height.
+
+:ref:`peak_frequency <peak_frequency>`                                                                                                                                         Peak Frequency.
+
+:ref:`minimum_frequency <minimum_frequency>`                                                                                                                                Minimum Frequency.
+
+:ref:`maximum_frequency <maximum_frequency>`                                                                                                                                Maximum Frequency.
+
+:ref:`number_of_frequency_components <number_of_frequency_components>`                                                                                         Number of frequency components.
+
+:ref:`directional_spreading_method <directional_spreading_method>`                                                                                              Directional Spreading Method .
+
+:ref:`frequency_independent_cosine_exponent <frequency_independent_cosine_exponent>`                                                                    Frequency Independent Cosine Exponent.
+
+:ref:`mean_wave_heading_angle <mean_wave_heading_angle>`                                                                                                              Mean Wave Heading Angle.
+
+:ref:`angular_deviation <angular_deviation>`                                                                                                                                Angular Deviation.
+
+:ref:`angular_components_count <angular_components_count>`                                                                                                       Number of Angular components.
+
+:ref:`granular_temperature <granular_temperature>`                                                                                                                       Granular temperature.
+
+:ref:`interfacial_area_concentration <interfacial_area_concentration>`                                                                                         Interfacial area concentration.
+
+:ref:`level_set_function_flux <level_set_function_flux>`                                                                                                              Level-set Function Flux.
+
+:ref:`volume_fraction <volume_fraction>`                                                                                                                                      Volume Fraction.
+
+:ref:`discrete_boundary_condition <discrete_boundary_condition>`                                                            List of boundary conditions for Discrete population balance model.
+
+:ref:`pb_disc <pb_disc>`                                                                                                                                                   Help not available.
+
+:ref:`quadrature_moment_boundary_condition <quadrature_moment_boundary_condition>`                                 List of boundary conditions for Quadrature Moment population balance model.
+
+:ref:`quadrature_moment_boundary_value <quadrature_moment_boundary_value>`                                             List of boundary values for Quadrature Moment population balance model.
+
+:ref:`qbmm_boundary_condition <qbmm_boundary_condition>`                                                                        List of boundary conditions for QBMM population balance model.
+
+:ref:`qbmm_boundary_value <qbmm_boundary_value>`                                                                                    List of boundary values for QBMM population balance model.
+
+:ref:`std_moment_boundary_condition <std_moment_boundary_condition>`                                                        List of boundary conditions for Standard population balance model.
+
+:ref:`std_moment_boundary_value <std_moment_boundary_value>`                                                                    List of boundary values for Standard population balance model.
+
+:ref:`dqmom_boundary_condition <dqmom_boundary_condition>`                                                                     List of boundary conditions for DQMOM population balance model.
+
+:ref:`dqmom_boundary_value <dqmom_boundary_value>`                                                                                 List of boundary values for DQMOM population balance model.
+
+============================================================================================================   ===============================================================================
+
+.. rubric:: Included in:
+
+======================================================   ==========================================
+
+Parent                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`velocity_inlet_child <velocity_inlet_child>`           'child_object_type' of velocity_inlet.
+
+:ref:`phase_26_child <phase_26_child>`                                'child_object_type' of phase.
+
+:ref:`velocity_inlet_1_child <velocity_inlet_1_child>`       'child_object_type' of velocity_inlet.
+
+:ref:`phase_50_child <phase_50_child>`                                'child_object_type' of phase.
+
+======================================================   ==========================================
+

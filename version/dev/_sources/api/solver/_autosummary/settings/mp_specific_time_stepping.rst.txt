@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mp_specific_time_stepping:
+
+mp_specific_time_stepping
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mp_specific_time_stepping
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ==============================================================
+
+Attribute                                                                                           Summary
+
+==========================================   ==============================================================
+:ref:`enabled <enabled_67>`                      Enable/disable multiphase-specific adaptive time stepping.
+
+:ref:`time_constraints <time_constraints>`                     Multiphase-specific time constraints object.
+
+==========================================   ==============================================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================
+
+Parent                                                                  Summary
+
+==============================================   ==============================
+:ref:`transient_controls <transient_controls>`       Transient controls object.
+
+==============================================   ==============================
+

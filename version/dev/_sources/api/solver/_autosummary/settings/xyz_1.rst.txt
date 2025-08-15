@@ -1,0 +1,21 @@
+:orphan:
+
+.. _xyz_1:
+
+xyz
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.xyz_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================================================
+
+Parent                                                                  Summary
+
+==========================   ==================================================
+:ref:`target_1 <target_1>`       Specifies the center point of the camera view.
+
+==========================   ==================================================
+

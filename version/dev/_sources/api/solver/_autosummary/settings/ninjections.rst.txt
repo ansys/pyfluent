@@ -1,0 +1,23 @@
+:orphan:
+
+.. _ninjections:
+
+ninjections
+===========
+
+.. deprecated:: Ansys Fluent 2026 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ninjections
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`model_setup <model_setup>`       'model_setup' child.
+
+================================   ========================
+

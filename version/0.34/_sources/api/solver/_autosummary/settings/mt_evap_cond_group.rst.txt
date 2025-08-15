@@ -1,0 +1,38 @@
+:orphan:
+
+.. _mt_evap_cond_group:
+
+mt_evap_cond_group
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mt_evap_cond_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ===================================
+
+Attribute                                                                                      Summary
+
+================================================================   ===================================
+:ref:`mt_evap_cond_model <mt_evap_cond_model>`                         Evaporation condensation model.
+
+:ref:`mt_evap_cond_wall_evap_cond <mt_evap_cond_wall_evap_cond>`       Turn on wall evap cond for H-K.
+
+:ref:`mt_evap_cond_model_coeff <mt_evap_cond_model_coeff>`                     Evap cond model coeffs.
+
+:ref:`mt_evap_cond_sat_prop <mt_evap_cond_sat_prop>`                              Evap cond sat props.
+
+================================================================   ===================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`mass_transfer_list_child <mass_transfer_list_child>`       'child_object_type' of mass_transfer_list.
+
+==========================================================   ==============================================
+

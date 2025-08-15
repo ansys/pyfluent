@@ -1,0 +1,77 @@
+:orphan:
+
+.. _concurrent_settings:
+
+concurrent_settings
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.concurrent_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   =================================================
+
+Attribute                                                                                                  Summary
+
+==============================================================   =================================================
+:ref:`mode <mode_2>`                                                                              Concurrent mode.
+
+:ref:`capability <capability>`                                                                         Capability.
+
+:ref:`number_of_concurrent_dps <number_of_concurrent_dps>`                     Number of Concurrent Design Points.
+
+:ref:`number_of_cores <number_of_cores>`                                                          Number of Cores.
+
+:ref:`use_gpu_solver <use_gpu_solver>`                                                             Use GPU Solver.
+
+:ref:`number_of_gpus_per_node <number_of_gpus_per_node>`                                  Number of GPUs Per Node.
+
+:ref:`launch_web_server <launch_web_server>`                                                    Launch Web Server.
+
+:ref:`web_server_token <web_server_token>`                                                       Web Server Token.
+
+:ref:`maximum_execution_time <maximum_execution_time>`                                     Maximum Execution Time.
+
+:ref:`exclusive <exclusive>`                                                                            Exclusive.
+
+:ref:`number_of_cpus_per_node <number_of_cpus_per_node>`                                  Number of CPUs per Node.
+
+:ref:`mpi_type <mpi_type>`                                                                               MPI Type.
+
+:ref:`interconnect_type <interconnect_type>`                                                    Interconnect Type.
+
+:ref:`current_queue <current_queue>`                                                                Current Queue.
+
+:ref:`current_endpoint <current_endpoint>`                                                       Current Endpoint.
+
+:ref:`keep_all_output_files <keep_all_output_files>`                      Keep all output files of completed jobs.
+
+:ref:`keep_specific_output_files <keep_specific_output_files>`       Keep specific output files of completed jobs.
+
+:ref:`licensing <licensing>`                                                                            Licensing.
+
+==============================================================   =================================================
+
+.. rubric:: Methods
+
+==============================================   ========================
+
+Method                                                            Summary
+
+==============================================   ========================
+:ref:`connect_to_cluster <connect_to_cluster>`       Set Cluster Details.
+
+==============================================   ========================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`parametric_studies_child <parametric_studies_child>`       'child_object_type' of parametric_studies.
+
+==========================================================   ==============================================
+

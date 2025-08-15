@@ -1,0 +1,61 @@
+:orphan:
+
+.. _histogram_1:
+
+histogram
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.histogram_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =====================================================================================================
+
+Attribute                                                                                                                                          Summary
+
+==================================================   =====================================================================================================
+:ref:`histogram_selections <histogram_selections>`                                            Make selections for the DPM sample histogram to be computed.
+
+:ref:`histogram_parameters <histogram_parameters>`                                                                                   The parameter object.
+
+:ref:`histogram_options <histogram_options>`                                                                                          The settings object.
+
+:ref:`plot_write_histogram <plot_write_histogram>`       Commands to plot (or write a data file from) a distribution histogram based on a DPM sample file.
+
+:ref:`reduction <reduction>`                                                                                                            'reduction' child.
+
+==================================================   =====================================================================================================
+
+.. rubric:: Methods
+
+==========================================================   =====================================================================================================================
+
+Method                                                                                                                                                                     Summary
+
+==========================================================   =====================================================================================================================
+:ref:`read_sample_file <read_sample_file>`                                                                                       Read a sample file and add it to the sample list.
+
+:ref:`compute_sample <compute_sample>`                                                                                               Compute minimum/maximum of a sample variable.
+
+:ref:`compute_range <compute_range>`                                                                                                 Compute minimum/maximum of a sample variable.
+
+:ref:`list_samples <list_samples>`                                                                                                   Print a list of all samples currently loaded.
+
+:ref:`delete_sample <delete_sample>`                                                                                                                      'delete_sample' command.
+
+:ref:`dpm_sample_contour_plots <dpm_sample_contour_plots>`       Prepare named expressions from data in a DPM sample file (collected at a cut plane surface) for contour plotting.
+
+==========================================================   =====================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===========================
+
+Parent                                                           Summary
+
+==========================================   ===========================
+:ref:`discrete_phase_6 <discrete_phase_6>`       'discrete_phase' child.
+
+==========================================   ===========================
+

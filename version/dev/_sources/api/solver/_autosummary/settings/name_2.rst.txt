@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_2:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`geometry_1_child <geometry_1_child>`       'child_object_type' of geometry.
+
+==========================================   ====================================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _translate:
+
+translate
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.translate
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ===================
+
+Argument                               Summary
+
+========================   ===================
+:ref:`offset <offset_1>`       'offset' child.
+
+========================   ===================
+
+.. rubric:: Included in:
+
+==================   =================
+
+Parent                         Summary
+
+==================   =================
+:ref:`mesh <mesh>`       'mesh' child.
+
+==================   =================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _current_queue:
+
+current_queue
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.current_queue
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

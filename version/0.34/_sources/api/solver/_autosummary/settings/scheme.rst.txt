@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scheme:
+
+scheme
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scheme
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =============================
+
+Parent                                           Summary
+
+========================   =============================
+:ref:`spatial <spatial>`       Flexible numerics object.
+
+========================   =============================
+

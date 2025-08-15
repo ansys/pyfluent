@@ -1,0 +1,21 @@
+:orphan:
+
+.. _oil_flow:
+
+oil_flow
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.oil_flow
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==============================
+
+Parent                                                  Summary
+
+==============================   ==============================
+:ref:`options_17 <options_17>`       Check the control options.
+
+==============================   ==============================
+

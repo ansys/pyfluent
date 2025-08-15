@@ -1,0 +1,32 @@
+:orphan:
+
+.. _display_17:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.display_17
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===========================   ===============================================
+
+Argument                                                              Summary
+
+===========================   ===============================================
+:ref:`display <display_18>`       Graphics object name for transient display.
+
+===========================   ===============================================
+
+.. rubric:: Included in:
+
+============================================================   ======================================================
+
+Parent                                                                                                        Summary
+
+============================================================   ======================================================
+:ref:`transient_post_processing <transient_post_processing>`       Commands associated with transient postprocessing.
+
+============================================================   ======================================================
+

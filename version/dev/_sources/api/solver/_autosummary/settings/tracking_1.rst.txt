@@ -1,0 +1,38 @@
+:orphan:
+
+.. _tracking_1:
+
+tracking
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.tracking_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==============================================================================
+
+Attribute                                                                                                             Summary
+
+============================================   ==============================================================================
+:ref:`accuracy_control <accuracy_control>`         Group containing settings related to the accuracy control tracking option.
+
+:ref:`option <option_24>`                                                                     A tracking scheme used for DPM.
+
+:ref:`low_order_scheme <low_order_scheme>`          A low-order tracking scheme used for automated tracking scheme selection.
+
+:ref:`high_order_scheme <high_order_scheme>`       A high-order tracking scheme used for automated tracking scheme selection.
+
+============================================   ==============================================================================
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`numerics <numerics>`       Main object.
+
+==========================   ================
+

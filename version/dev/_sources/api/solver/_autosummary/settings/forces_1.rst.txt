@@ -1,0 +1,54 @@
+:orphan:
+
+.. _forces_1:
+
+forces
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.forces_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   ================================================================
+
+Argument                                                                                                    Summary
+
+================================================   ================================================================
+:ref:`option <option_66>`                              The type of report (Forces, Moments, or Center of Pressure).
+
+:ref:`domain <domain_2>`                                                                                The domain.
+
+:ref:`locations <locations>`                                                                            The object.
+
+:ref:`wall_zones <wall_zones_1>`                                                               Wall zone name list.
+
+:ref:`direction_vector <direction_vector_2>`                            The XYZ components of the direction vector.
+
+:ref:`momentum_center <momentum_center>`                                  The XYZ coordinates of the moment center.
+
+:ref:`momentum_axis <momentum_axis>`                                         The XYZ components of the moment axis.
+
+:ref:`pressure_coordinate <pressure_coordinate>`       The line on which the center of pressure will be calculated.
+
+:ref:`coordinate_value <coordinate_value>`                                                    The coordinate value.
+
+:ref:`write_to_file <write_to_file_3>`                                        Specifies whether to write to a file.
+
+:ref:`file_name <file_name_17>`                                              The name you want the file saved with.
+
+:ref:`append_data <append_data>`                                 Specifies whether to append data to existing file.
+
+================================================   ================================================================
+
+.. rubric:: Included in:
+
+==========================   ======================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                      Summary
+
+==========================   ======================================================================================================================================================================================
+:ref:`report_2 <report_2>`       Provides access to common settings to set up reports for your CFD simulation. Reports can be compiled for fluxes forces projected areas surface and volume integrals among others.
+
+==========================   ======================================================================================================================================================================================
+

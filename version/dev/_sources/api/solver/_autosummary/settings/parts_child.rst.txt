@@ -1,0 +1,47 @@
+:orphan:
+
+.. _parts_child:
+
+parts_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parts_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ==========================
+
+Attribute                                   Summary
+
+======================   ==========================
+:ref:`name <name_11>`               Input new name.
+
+:ref:`bodies <bodies>`        Define topology body.
+
+:ref:`groups <groups>`       Define topology group.
+
+======================   ==========================
+
+.. rubric:: Methods
+
+==========================   ==================================
+
+Method                                                  Summary
+
+==========================   ==================================
+:ref:`display <display_3>`       Display topology part command.
+
+==========================   ==================================
+
+.. rubric:: Included in:
+
+====================   =========================
+
+Parent                                   Summary
+
+====================   =========================
+:ref:`parts <parts>`       Define topology Part.
+
+====================   =========================
+

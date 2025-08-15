@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_Results_Reports__Reports_GetReport__GetReportCommandArguments__TimestepSelection:
+
+_TimestepSelection
+==================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Results.Reports._Reports.GetReport._GetReportCommandArguments._TimestepSelection
+   :members: _Begin, _End, _Increment, _Option
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

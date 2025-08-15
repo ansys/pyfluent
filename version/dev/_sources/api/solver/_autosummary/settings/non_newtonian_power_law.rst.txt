@@ -1,0 +1,44 @@
+:orphan:
+
+.. _non_newtonian_power_law:
+
+non_newtonian_power_law
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.non_newtonian_power_law
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ====================================
+
+Attribute                                                                             Summary
+
+======================================================   ====================================
+:ref:`option <option_40>`                                    Non newtonian dependency method.
+
+:ref:`consistency_index <consistency_index>`                            Consistency index, k.
+
+:ref:`power_law_index <power_law_index_2>`                                Power-law index, n.
+
+:ref:`minimum_viscosity <minimum_viscosity>`                         Minimum viscosity limit.
+
+:ref:`maximum_viscosity <maximum_viscosity>`                         Maximum viscosity limit.
+
+:ref:`reference_temperature <reference_temperature_2>`        Reference temperature, T_alpha.
+
+:ref:`activation_energy <activation_energy_2>`                    Activation energy/R, alpha.
+
+======================================================   ====================================
+
+.. rubric:: Included in:
+
+============================   =================================
+
+Parent                                                   Summary
+
+============================   =================================
+:ref:`viscosity <viscosity>`       Material property: viscosity.
+
+============================   =================================
+

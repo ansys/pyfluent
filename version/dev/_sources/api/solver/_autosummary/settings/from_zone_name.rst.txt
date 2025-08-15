@@ -1,0 +1,21 @@
+:orphan:
+
+.. _from_zone_name:
+
+from_zone_name
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.from_zone_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`compute_1 <compute_1>`       'compute' command.
+
+============================   ======================
+

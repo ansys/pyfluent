@@ -1,0 +1,23 @@
+:orphan:
+
+.. _inlet_diffusion_1:
+
+inlet_diffusion
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.inlet_diffusion_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================================
+
+Parent                                                   Summary
+
+============================   =================================
+:ref:`options_2 <options_2>`       Species model options object.
+
+:ref:`nox <nox>`                               NOx model object.
+
+============================   =================================
+

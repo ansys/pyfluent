@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_Results_CreateMultiplePlanes__CreateMultiplePlanesCommandArguments__StartPoint:
+
+_StartPoint
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Results.CreateMultiplePlanes._CreateMultiplePlanesCommandArguments._StartPoint
+   :members: _X, _Y, _Z
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

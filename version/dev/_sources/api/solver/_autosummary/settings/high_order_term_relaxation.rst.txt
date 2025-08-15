@@ -1,0 +1,38 @@
+:orphan:
+
+.. _high_order_term_relaxation:
+
+high_order_term_relaxation
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.high_order_term_relaxation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ==============================================
+
+Attribute                                                                               Summary
+
+==============================================   ==============================================
+:ref:`enable <enable_22>`                            Enable/Disable High Order Term Relaxation.
+
+:ref:`relaxation_factor <relaxation_factor_3>`                               Relaxation factor.
+
+:ref:`select_variables <select_variables>`            Variables for high order term relaxation.
+
+:ref:`type <type_13>`                                               High order relaxation type.
+
+==============================================   ==============================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

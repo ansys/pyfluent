@@ -1,0 +1,38 @@
+:orphan:
+
+.. _parameters_5:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parameters_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ============================
+
+Attribute                                                       Summary
+
+========================================   ============================
+:ref:`global_settings <global_settings>`       'global_settings' child.
+
+:ref:`min_lscale <min_lscale>`                      'min_lscale' child.
+
+:ref:`max_lscale <max_lscale>`                      'max_lscale' child.
+
+:ref:`max_skewness <max_skewness>`                'max_skewness' child.
+
+========================================   ============================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`remeshing_1 <remeshing_1>`       'remeshing' child.
+
+================================   ======================
+

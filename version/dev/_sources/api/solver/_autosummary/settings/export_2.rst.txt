@@ -1,0 +1,34 @@
+:orphan:
+
+.. _export_2:
+
+export
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.export_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ======================================
+
+Argument                                                            Summary
+
+==================================   ======================================
+:ref:`command_list <command_list>`       Case modification names to export.
+
+:ref:`file_name <file_name_18>`                       The default filename.
+
+==================================   ======================================
+
+.. rubric:: Included in:
+
+============================================   =======================================================================
+
+Parent                                                                                                         Summary
+
+============================================   =======================================================================
+:ref:`case_modification <case_modification>`       The automatic initialization and case modification strategy object.
+
+============================================   =======================================================================
+

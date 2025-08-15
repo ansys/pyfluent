@@ -1,0 +1,60 @@
+:orphan:
+
+.. _setup:
+
+setup
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.setup
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =========================================================================================================
+
+Attribute                                                                                                                                              Summary
+
+==================================================   =========================================================================================================
+:ref:`general <general>`                                                                                                                      'general' child.
+
+:ref:`models <models>`                                                                                                                         'models' child.
+
+:ref:`materials <materials>`                                                                                                                'materials' child.
+
+:ref:`cell_zone_conditions <cell_zone_conditions>`                                                                            The cell zone conditions object.
+
+:ref:`model_topology <model_topology>`                                                                                                      List the topology.
+
+:ref:`physics <physics_1>`                                                                                                            UTL physics definitions.
+
+:ref:`boundary_conditions <boundary_conditions>`                                                                               The boundary conditions object.
+
+:ref:`mesh_interfaces <mesh_interfaces>`                                                                                           The mesh interfaces object.
+
+:ref:`dynamic_mesh <dynamic_mesh>`                                                                                                       'dynamic_mesh' child.
+
+:ref:`reference_values <reference_values>`                                                                                           'reference_values' child.
+
+:ref:`reference_frames <reference_frames>`               Create local coordinate systems with a given position and orientation, either with or without motion.
+
+:ref:`named_expressions <named_expressions>`                                                                                        'named_expressions' child.
+
+:ref:`turbomachinery <turbomachinery>`                                                                                              The turbomachinery models.
+
+:ref:`user_defined <user_defined_1>`                                                                                                   User-defined functions.
+
+:ref:`profiles <profiles>`                                                                                                             Profile display object.
+
+==================================================   =========================================================================================================
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`       'root' object.
+
+======================   ==================
+

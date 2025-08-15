@@ -1,0 +1,38 @@
+:orphan:
+
+.. _calculation_activity:
+
+calculation_activity
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.calculation_activity
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =======================================================================
+
+Attribute                                                                                                          Summary
+
+================================================   =======================================================================
+:ref:`execute_commands <execute_commands>`                                                               Execute commands.
+
+:ref:`solution_animations <solution_animations>`                                              'solution_animations' child.
+
+:ref:`case_modification <case_modification>`           The automatic initialization and case modification strategy object.
+
+:ref:`poor_mesh_numerics <poor_mesh_numerics_1>`                                               'poor_mesh_numerics' child.
+
+================================================   =======================================================================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`solution <solution>`       'solution' child.
+
+==========================   =====================
+

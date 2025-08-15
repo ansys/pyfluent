@@ -1,0 +1,32 @@
+:orphan:
+
+.. _view_simulation_report_in_browser:
+
+view_simulation_report_in_browser
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.view_simulation_report_in_browser
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ========================
+
+Argument                                            Summary
+
+================================   ========================
+:ref:`report_name <report_name>`       'report_name' child.
+
+================================   ========================
+
+.. rubric:: Included in:
+
+==============================================   ===============================
+
+Parent                                                                   Summary
+
+==============================================   ===============================
+:ref:`simulation_reports <simulation_reports>`       'simulation_reports' child.
+
+==============================================   ===============================
+

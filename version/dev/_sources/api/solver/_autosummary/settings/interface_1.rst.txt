@@ -1,0 +1,38 @@
+:orphan:
+
+.. _interface_1:
+
+interface
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interface_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =======================
+
+Attribute                                                              Summary
+
+====================================================   =======================
+:ref:`non_overlap_zone_name <non_overlap_zone_name>`       Help not available.
+
+====================================================   =======================
+
+.. rubric:: Included in:
+
+============================================   =====================================
+
+Parent                                                                       Summary
+
+============================================   =====================================
+:ref:`interface_child <interface_child>`           'child_object_type' of interface.
+
+:ref:`phase_9_child <phase_9_child>`                   'child_object_type' of phase.
+
+:ref:`interface_2_child <interface_2_child>`       'child_object_type' of interface.
+
+:ref:`phase_33_child <phase_33_child>`                 'child_object_type' of phase.
+
+============================================   =====================================
+

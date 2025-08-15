@@ -1,0 +1,65 @@
+:orphan:
+
+.. _volume_2_child:
+
+volume_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.volume_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ==============================================================================
+
+Attribute                                                                                                                                 Summary
+
+================================================================   ==============================================================================
+:ref:`name <name_4>`                                                                                                          Name of the object.
+
+:ref:`report_type <report_type>`                                       The report type; the list may vary on the selected report definition type.
+
+:ref:`field <field>`                                                                                                               'field' child.
+
+:ref:`cell_zones <cell_zones_9>`                                                            Cell zones and cell registers and expression volumes.
+
+:ref:`locations <locations_5>`                                                                                                 'locations' child.
+
+:ref:`per_selection <per_selection>`                                                                                       'per_selection' child.
+
+:ref:`average_over <average_over>`                                                                                          'average_over' child.
+
+:ref:`retain_instantaneous_values <retain_instantaneous_values>`                                             'retain_instantaneous_values' child.
+
+:ref:`phase <phase_52>`                                                                                                            'phase' child.
+
+:ref:`output_parameter <output_parameter_1>`                                   Option to make report definition available as an output parameter.
+
+:ref:`create_report_file <create_report_file>`                                                   Create a new file set for the report definition.
+
+:ref:`create_report_plot <create_report_plot>`                                                   Create a new plot set for the report definition.
+
+================================================================   ==============================================================================
+
+.. rubric:: Methods
+
+========================================================   ======================================================================
+
+Method                                                                                                                    Summary
+
+========================================================   ======================================================================
+:ref:`create_output_parameter <create_output_parameter>`       Option to make report definition available as an output parameter.
+
+========================================================   ======================================================================
+
+.. rubric:: Included in:
+
+==========================   ===============================
+
+Parent                                               Summary
+
+==========================   ===============================
+:ref:`volume_2 <volume_2>`       The report definition type.
+
+==========================   ===============================
+

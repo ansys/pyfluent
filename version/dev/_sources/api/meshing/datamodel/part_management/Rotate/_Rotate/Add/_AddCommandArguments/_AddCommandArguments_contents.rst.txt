@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_Rotate__Rotate_Add__AddCommandArguments:
+
+_AddCommandArguments
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.part_management.Root.Rotate._Rotate.Add._AddCommandArguments
+   :members: _Paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

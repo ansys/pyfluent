@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_56:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enabled_56
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`smoothing_1 <smoothing_1>`       'smoothing' child.
+
+================================   ======================
+

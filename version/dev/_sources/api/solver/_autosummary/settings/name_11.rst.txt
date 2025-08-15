@@ -1,0 +1,25 @@
+:orphan:
+
+.. _name_11:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_11
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`parts_child <parts_child>`          'child_object_type' of parts.
+
+:ref:`bodies_child <bodies_child>`       'child_object_type' of bodies.
+
+:ref:`faces_child <faces_child>`          'child_object_type' of faces.
+
+==================================   ==================================
+

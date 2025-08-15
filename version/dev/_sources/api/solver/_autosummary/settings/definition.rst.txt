@@ -1,0 +1,25 @@
+:orphan:
+
+.. _definition:
+
+definition
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.definition
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ====================================================
+
+Parent                                                                                                                Summary
+
+======================================================================   ====================================================
+:ref:`geometry_9 <geometry_9>`                                                                              'geometry' child.
+
+:ref:`named_expressions_child <named_expressions_child>`                            'child_object_type' of named_expressions.
+
+:ref:`single_valued_expression_child <single_valued_expression_child>`       'child_object_type' of single_valued_expression.
+
+======================================================================   ====================================================
+

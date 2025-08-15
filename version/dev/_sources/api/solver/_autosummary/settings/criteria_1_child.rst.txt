@@ -1,0 +1,40 @@
+:orphan:
+
+.. _criteria_1_child:
+
+criteria_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.criteria_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =========================
+
+Attribute                                            Summary
+
+================================   =========================
+:ref:`name <name_4>`                     Name of the object.
+
+:ref:`type <type_24>`                        Criterion Type.
+
+:ref:`expression <expression_8>`       Criterion Expression.
+
+:ref:`criteria <criteria_3>`                       Criteria.
+
+:ref:`limit <limit>`                        Criterion Limit.
+
+================================   =========================
+
+.. rubric:: Included in:
+
+==============================   ==================
+
+Parent                                      Summary
+
+==============================   ==================
+:ref:`criteria_1 <criteria_1>`       Criteria List.
+
+==============================   ==================
+

@@ -1,0 +1,27 @@
+:orphan:
+
+.. _specify_species_in_mole_fractions:
+
+specify_species_in_mole_fractions
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.specify_species_in_mole_fractions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =========================================================
+
+Parent                                                                             Summary
+
+==============================   =========================================================
+:ref:`species_6 <species_6>`         Allows to change species model variables or settings.
+
+:ref:`species_7 <species_7>`         Allows to change species model variables or settings.
+
+:ref:`species_8 <species_8>`         Allows to change species model variables or settings.
+
+:ref:`species_10 <species_10>`       Allows to change species model variables or settings.
+
+==============================   =========================================================
+

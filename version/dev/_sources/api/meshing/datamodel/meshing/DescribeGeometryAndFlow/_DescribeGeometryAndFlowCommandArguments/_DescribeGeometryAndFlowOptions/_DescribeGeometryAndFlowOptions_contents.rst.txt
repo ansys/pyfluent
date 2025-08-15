@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_DescribeGeometryAndFlow__DescribeGeometryAndFlowCommandArguments__DescribeGeometryAndFlowOptions:
+
+_DescribeGeometryAndFlowOptions
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.DescribeGeometryAndFlow._DescribeGeometryAndFlowCommandArguments._DescribeGeometryAndFlowOptions
+   :members: _AdvancedOptions, _CloseLeakages, _CloseLeakges, _EnableOverset, _EnablePrimeWrapper, _ExtractEdgeFeatures, _IdentifyRegions, _MovingObjects, _PorousRegions, _ZeroThickness
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

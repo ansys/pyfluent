@@ -1,0 +1,23 @@
+:orphan:
+
+.. _type_5:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.type_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================================
+
+Parent                                                          Summary
+
+==============================   ======================================
+:ref:`set_type_1 <set_type_1>`         Change the type for this volume.
+
+:ref:`set_type_3 <set_type_3>`       Change the type for this boundary.
+
+==============================   ======================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_18:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_18
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`turbo_create_child <turbo_create_child>`       'child_object_type' of turbo_create.
+
+==============================================   ========================================
+

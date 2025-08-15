@@ -1,0 +1,21 @@
+:orphan:
+
+.. _explicit_under_relaxation_value:
+
+explicit_under_relaxation_value
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.explicit_under_relaxation_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================
+
+Parent                                            Summary
+
+============================   ==========================
+:ref:`expert_11 <expert_11>`       Expert options object.
+
+============================   ==========================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _options_24:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.options_24
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ===================================
+
+Attribute                                                                                          Summary
+
+====================================================================   ===================================
+:ref:`enable_turbulence_source_term <enable_turbulence_source_term>`       Enable turbulence source term?.
+
+====================================================================   ===================================
+
+.. rubric:: Included in:
+
+==========================================   ===============================================
+
+Parent                                                                               Summary
+
+==========================================   ===============================================
+:ref:`design_variables <design_variables>`       Turbulence model design variables settings.
+
+==========================================   ===============================================
+

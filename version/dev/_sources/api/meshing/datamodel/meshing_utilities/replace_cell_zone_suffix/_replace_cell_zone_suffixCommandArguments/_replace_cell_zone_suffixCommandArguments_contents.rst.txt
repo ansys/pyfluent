@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_replace_cell_zone_suffix__replace_cell_zone_suffixCommandArguments:
+
+_replace_cell_zone_suffixCommandArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.replace_cell_zone_suffix._replace_cell_zone_suffixCommandArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _merge, _new_suffix, _old_suffix
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

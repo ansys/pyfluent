@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_rename_object__rename_objectCommandArguments:
+
+_rename_objectCommandArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.rename_object._rename_objectCommandArguments
+   :members: _new_object_name, _old_object_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

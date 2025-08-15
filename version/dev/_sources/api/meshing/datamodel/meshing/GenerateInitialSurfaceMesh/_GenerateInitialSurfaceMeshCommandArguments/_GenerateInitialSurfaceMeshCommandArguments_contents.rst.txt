@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_GenerateInitialSurfaceMesh__GenerateInitialSurfaceMeshCommandArguments:
+
+_GenerateInitialSurfaceMeshCommandArguments
+===========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.GenerateInitialSurfaceMesh._GenerateInitialSurfaceMeshCommandArguments
+   :members: _EnableMultiThreading, _GenerateQuads, _NumberOfMultiThreads, _ProjectOnGeometry
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _Prism2DPreferences/_Prism2DPreferences_contents
+   _Surface2DPreferences/_Surface2DPreferences_contents

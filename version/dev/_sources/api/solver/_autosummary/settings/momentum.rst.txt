@@ -1,0 +1,102 @@
+:orphan:
+
+.. _momentum:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.momentum
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================   ===========================================================================
+
+Attribute                                                                                                                                        Summary
+
+==========================================================================   ===========================================================================
+:ref:`system_coupling <system_coupling_1>`                                                                                             System Coupling?.
+
+:ref:`backflow_reference_frame <backflow_reference_frame>`                                                                     Backflow Reference Frame.
+
+:ref:`pressure_spec <pressure_spec>`                                                                                      Pressure specification method.
+
+:ref:`pressure_spec_method <pressure_spec_method>`                                                                        Pressure specification method.
+
+:ref:`gauge_pressure <gauge_pressure>`                                                                                                   Gauge Pressure.
+
+:ref:`pressure_profile_multiplier <pressure_profile_multiplier>`                                                            Pressure Profile Multiplier.
+
+:ref:`backflow_dir_spec_method <backflow_dir_spec_method>`                                                      Backflow Direction Specification Method.
+
+:ref:`coordinate_system <coordinate_system>`                                                                                          Coordinate System.
+
+:ref:`flow_direction <flow_direction>`                                                                                        Flow direction components.
+
+:ref:`backflow_pressure_spec <backflow_pressure_spec>`                                                                  Backflow Pressure Specification.
+
+:ref:`backflow_pressure_specification <backflow_pressure_specification>`                                                Backflow Pressure Specification.
+
+:ref:`axis_direction <axis_direction_2>`                                                                                      Axis direction components.
+
+:ref:`axis_origin <axis_origin_2>`                                                                                               Axis origin components.
+
+:ref:`prevent_reverse_flow <prevent_reverse_flow>`                                     Enable/disable to Build artificial walls to prevent reverse flow.
+
+:ref:`radial_equ_pressure_distribution <radial_equ_pressure_distribution>`                       Enable/disable Rdial Equilibrium Pressure Distribution.
+
+:ref:`radial_equ_reference_position <radial_equ_reference_position>`             Reference position option for radial equilibrium pressure distribution.
+
+:ref:`radial_equ_specified_radius <radial_equ_specified_radius>`                          Reference radius for radial equilibrium pressure distribution.
+
+:ref:`radial_equ_specified_span <radial_equ_specified_span>`                                Reference span for radial equilibrium pressure distribution.
+
+:ref:`avg_pressure_spec <avg_pressure_spec>`                                                                      Average Pressure Specification on/off.
+
+:ref:`avg_method <avg_method>`                                                                                                         Averaging Method.
+
+:ref:`target_mass_flow_rate <target_mass_flow_rate>`                                                                            Targeted mass flow rate.
+
+:ref:`target_mass_flow <target_mass_flow>`                                                                                             Target Mass Flow.
+
+:ref:`upper_limit_of_abs_pressure <upper_limit_of_abs_pressure>`                                                       Upper Limit of Absolute Pressure.
+
+:ref:`lower_limit_of_abs_pressure <lower_limit_of_abs_pressure>`                                                       Lower Limit of Absolute Pressure.
+
+:ref:`acoustic_wave_model <acoustic_wave_model>`                                                                                    Acoustic wave model.
+
+:ref:`exit_pressure_spec <exit_pressure_spec>`                                                                              Exit pressure specification.
+
+:ref:`impedance_zero_order_term <impedance_zero_order_term>`                                                                  Impedance zero order term.
+
+:ref:`real_pole_series <real_pole_series>`                                                                                     List of Real Pole Series.
+
+:ref:`complex_pole_series <complex_pole_series>`                                                                            List of Complex Pole Series.
+
+:ref:`incoming_wave <incoming_wave>`                                                                                                      Incoming wave.
+
+:ref:`pressure_jump <pressure_jump>`                                                                                                      Pressure Jump.
+
+:ref:`strength <strength>`                                                                                                                     Strength.
+
+:ref:`new_fan_definition <new_fan_definition>`                                                                                       New Fan Definition.
+
+==========================================================================   ===========================================================================
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`exhaust_fan_child <exhaust_fan_child>`           'child_object_type' of exhaust_fan.
+
+:ref:`phase_5_child <phase_5_child>`                         'child_object_type' of phase.
+
+:ref:`exhaust_fan_1_child <exhaust_fan_1_child>`       'child_object_type' of exhaust_fan.
+
+:ref:`phase_29_child <phase_29_child>`                       'child_object_type' of phase.
+
+================================================   =======================================
+

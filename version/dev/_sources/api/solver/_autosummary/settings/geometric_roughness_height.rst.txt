@@ -1,0 +1,36 @@
+:orphan:
+
+.. _geometric_roughness_height:
+
+geometric_roughness_height
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geometric_roughness_height
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================================   ===================================================
+
+Attribute                                                                           Summary
+
+=====================================   ===================================================
+:ref:`option <option_14>`                            Option for geometric roughness height.
+
+:ref:`value <value_7>`                                          Geometric Roughness Height.
+
+:ref:`user_defined <user_defined_12>`       The name of the geometric roughness height UDF.
+
+=====================================   ===================================================
+
+.. rubric:: Included in:
+
+====================================================   ===================================
+
+Parent                                                                             Summary
+
+====================================================   ===================================
+:ref:`roughness_correlation <roughness_correlation>`       Roughness correlation settings.
+
+====================================================   ===================================
+

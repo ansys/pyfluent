@@ -1,0 +1,32 @@
+:orphan:
+
+.. _import__2:
+
+import_
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.import__2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   =================
+
+Argument                                      Summary
+
+=================================   =================
+:ref:`file_name <file_name_1_22>`       TSV filename.
+
+=================================   =================
+
+.. rubric:: Included in:
+
+============================================   =======================================================================
+
+Parent                                                                                                         Summary
+
+============================================   =======================================================================
+:ref:`case_modification <case_modification>`       The automatic initialization and case modification strategy object.
+
+============================================   =======================================================================
+

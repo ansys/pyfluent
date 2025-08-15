@@ -1,0 +1,36 @@
+:orphan:
+
+.. _step_size_controls:
+
+step_size_controls
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.step_size_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =============================================================
+
+Attribute                                                                                              Summary
+
+==============================================   =============================================================
+:ref:`option <option_23>`                            The option to determine the initial tracking step length.
+
+:ref:`length_scale <length_scale>`                                             The tracking step length scale.
+
+:ref:`step_length_factor <step_length_factor>`                                The tracking step length factor.
+
+==============================================   =============================================================
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`tracking <tracking>`       Main object.
+
+==========================   ================
+

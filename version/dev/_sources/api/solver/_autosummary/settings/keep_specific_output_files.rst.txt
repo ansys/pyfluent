@@ -1,0 +1,21 @@
+:orphan:
+
+.. _keep_specific_output_files:
+
+keep_specific_output_files
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.keep_specific_output_files
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

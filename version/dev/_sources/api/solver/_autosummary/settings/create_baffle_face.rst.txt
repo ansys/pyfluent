@@ -1,0 +1,32 @@
+:orphan:
+
+.. _create_baffle_face:
+
+create_baffle_face
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_baffle_face
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   ==========================
+
+Argument                                   Summary
+
+=====================   ==========================
+:ref:`name <name_12>`       Input new baffle name.
+
+=====================   ==========================
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`bodies_child <bodies_child>`       'child_object_type' of bodies.
+
+==================================   ==================================
+

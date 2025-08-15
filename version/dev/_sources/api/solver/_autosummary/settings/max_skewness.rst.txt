@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_skewness:
+
+max_skewness
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.max_skewness
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`parameters_5 <parameters_5>`       'parameters' child.
+
+==================================   =======================
+

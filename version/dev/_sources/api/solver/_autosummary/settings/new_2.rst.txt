@@ -1,0 +1,34 @@
+:orphan:
+
+.. _new_2:
+
+new
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.new_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =========================================================================
+
+Argument                                                                                                 Summary
+
+====================================   =========================================================================
+:ref:`name <name_32>`                                                   Name of the material you want to create.
+
+:ref:`base_mat_name <base_mat_name>`       Name of the base material from which you want to create new material.
+
+====================================   =========================================================================
+
+.. rubric:: Included in:
+
+==============================   =============================================
+
+Parent                                                                 Summary
+
+==============================   =============================================
+:ref:`material_7 <material_7>`       Add, Edit, Remove materials in case file.
+
+==============================   =============================================
+

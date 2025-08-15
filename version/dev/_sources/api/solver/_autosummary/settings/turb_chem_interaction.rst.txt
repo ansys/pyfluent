@@ -1,0 +1,21 @@
+:orphan:
+
+.. _turb_chem_interaction:
+
+turb_chem_interaction
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.turb_chem_interaction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`species <species>`       Species model object.
+
+========================   =========================
+

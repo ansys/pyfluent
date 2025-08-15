@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AddShellBoundaryLayerControls__AddShellBoundaryLayerControlsCommandArguments__ShellBLAdvancedOptions:
+
+_ShellBLAdvancedOptions
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.AddShellBoundaryLayerControls._AddShellBoundaryLayerControlsCommandArguments._ShellBLAdvancedOptions
+   :members: _AdjacentAttachAngle, _ExposeSide, _GapFactor, _LastRatioNumLayers, _LastRatioPercentage, _MaxAspectRatio, _MinAspectRatio, _ShowShellBLAdvancedOptions
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

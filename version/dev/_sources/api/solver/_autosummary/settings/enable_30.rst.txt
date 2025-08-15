@@ -1,0 +1,32 @@
+:orphan:
+
+.. _enable_30:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_30
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   =========================
+
+Argument                                       Summary
+
+==========================   =========================
+:ref:`mod_name <mod_name>`       Name of Modification.
+
+==========================   =========================
+
+.. rubric:: Included in:
+
+================================================================   ================================
+
+Parent                                                                                      Summary
+
+================================================================   ================================
+:ref:`automatic_case_modification <automatic_case_modification>`       Automatic Case Modification.
+
+================================================================   ================================
+

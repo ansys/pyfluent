@@ -1,0 +1,36 @@
+:orphan:
+
+.. _autosave:
+
+autosave
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.autosave
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===============================   ==========================================
+
+Attribute                                                            Summary
+
+===============================   ==========================================
+:ref:`file_name <file_name_25>`       File name prefix for auto-saved files.
+
+:ref:`frequency <frequency_7>`         Autosave adjoint iteration frequency.
+
+:ref:`max_files <max_files_1>`             Maximum number of files retained.
+
+===============================   ==========================================
+
+.. rubric:: Included in:
+
+======================================================   ======================================
+
+Parent                                                                                  Summary
+
+======================================================   ======================================
+:ref:`calculation_activities <calculation_activities>`       The calculation activities object.
+
+======================================================   ======================================
+

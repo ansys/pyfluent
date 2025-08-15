@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_MapRegionInfo__TWF_MapRegionInfoCommandArguments:
+
+_TWF_MapRegionInfoCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.solver_workflow.Root.TWF_MapRegionInfo._TWF_MapRegionInfoCommandArguments
+   :members: _DefaultMRFaceZoneList, _DefaultMRRegionNameList, _MRChildName, _MRRegionNameList, _MRSelectCellZone, _NewMRFaceZoneList, _OldMRFaceZoneList, _UseWireframe
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

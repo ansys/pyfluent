@@ -1,0 +1,36 @@
+:orphan:
+
+.. _smoothing_2:
+
+smoothing
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.smoothing_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   =====================
+
+Attribute                                   Summary
+
+===========================   =====================
+:ref:`enabled <enabled_59>`        'enabled' child.
+
+:ref:`methods <methods_1>`         'methods' child.
+
+:ref:`elements <elements>`        'elements' child.
+
+===========================   =====================
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`meshing <meshing>`       'meshing' child.
+
+========================   ====================
+

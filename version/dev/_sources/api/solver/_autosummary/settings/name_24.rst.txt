@@ -1,0 +1,35 @@
+:orphan:
+
+.. _name_24:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_24
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   =======================================================
+
+Parent                                                                                                                         Summary
+
+============================================================================   =======================================================
+:ref:`named_expressions_child <named_expressions_child>`                                     'child_object_type' of named_expressions.
+
+:ref:`report_files_child <report_files_child>`                                                    'child_object_type' of report_files.
+
+:ref:`report_plots_child <report_plots_child>`                                                    'child_object_type' of report_plots.
+
+:ref:`convergence_reports_child <convergence_reports_child>`                               'child_object_type' of convergence_reports.
+
+:ref:`automatic_case_modification_child <automatic_case_modification_child>`       'child_object_type' of automatic_case_modification.
+
+:ref:`material_7_child <material_7_child>`                                                            'child_object_type' of material.
+
+:ref:`cumulative_plot_child <cumulative_plot_child>`                                           'child_object_type' of cumulative_plot.
+
+:ref:`graphics_objects_child <graphics_objects_child>`                                        'child_object_type' of graphics_objects.
+
+============================================================================   =======================================================
+

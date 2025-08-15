@@ -1,0 +1,28 @@
+.. _ref_solver_tui_solution_methods_multiphase_numerics:
+
+multiphase_numerics
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solution.methods.multiphase_numerics
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   advanced_stability_controls/advanced_stability_controls_contents
+   boiling_parameters/boiling_parameters_contents
+   compressible_flow/compressible_flow_contents
+   default_controls/default_controls_contents
+   energy/energy_contents
+   face_pressure_controls/face_pressure_controls_contents
+   heat_mass_transfer/heat_mass_transfer_contents
+   interphase_interactions/interphase_interactions_contents
+   porous_media/porous_media_contents
+   solution_stabilization/solution_stabilization_contents
+   viscous_flow/viscous_flow_contents

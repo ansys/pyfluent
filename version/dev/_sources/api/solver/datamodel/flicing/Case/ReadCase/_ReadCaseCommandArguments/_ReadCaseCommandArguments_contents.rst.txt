@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_ReadCase__ReadCaseCommandArguments:
+
+_ReadCaseCommandArguments
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.ReadCase._ReadCaseCommandArguments
+   :members: _FileName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

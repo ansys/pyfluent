@@ -1,0 +1,34 @@
+:orphan:
+
+.. _intf_area_child_child:
+
+intf_area_child_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.intf_area_child_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =============================
+
+Attribute                                                    Summary
+
+====================================   =============================
+:ref:`option <option_5>`                   Interfacial area options.
+
+:ref:`user_defined <user_defined_2>`                       Prop udf.
+
+====================================   =============================
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`intf_area_child <intf_area_child>`       'child_object_type' of intf_area.
+
+========================================   =====================================
+

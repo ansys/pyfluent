@@ -1,0 +1,21 @@
+:orphan:
+
+.. _display_13:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.display_13
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

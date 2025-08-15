@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_BladeRowAnalysisScope__TWF_BladeRowAnalysisScopeCommandArguments:
+
+_TWF_BladeRowAnalysisScopeCommandArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.solver_workflow.Root.TWF_BladeRowAnalysisScope._TWF_BladeRowAnalysisScopeCommandArguments
+   :members: _ASChildName, _ASRowNumList, _ASSelectComponent, _NewASIncludeRowList, _OldASIncludeRowList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

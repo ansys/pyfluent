@@ -1,0 +1,48 @@
+:orphan:
+
+.. _histogram_options:
+
+histogram_options
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.histogram_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ========================================================================================================================
+
+Attribute                                                                                                                                                           Summary
+
+================================================   ========================================================================================================================
+:ref:`auto_range <auto_range_5>`                                                          Automatically compute the range of the histogram variable for the histogram plot.
+
+:ref:`logarithmic <logarithmic>`                       Use logarithmic scaling of the widths of the individual bins? -- Will not work unless all values have the same sign.
+
+:ref:`weighting <weighting_1>`                                                                            Use weighting by another variable instead of simple event counts.
+
+:ref:`correlation <correlation>`                                                                   Compute the correlation of the histogram variable with another variable.
+
+:ref:`variable_cubed <variable_cubed>`                                               Use the cube of the correlation variable for the computation of the correlation curve.
+
+:ref:`percentage <percentage>`                                                                            Give the event counts or weight sums of every bin as percentages.
+
+:ref:`cumulative_curve <cumulative_curve>`                                                                              Compute a cumulative curve from the histogram data.
+
+:ref:`histogram_mode <histogram_mode>`                                                             Create a bar chart from the histogram data, or use simple XY plot style.
+
+:ref:`diameter_statistics <diameter_statistics>`                                                         Compute Rosin Rammler parameters, Sauter and other mean diameters.
+
+================================================   ========================================================================================================================
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`histogram_1 <histogram_1>`       'histogram' child.
+
+================================   ======================
+

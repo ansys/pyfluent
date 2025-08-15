@@ -1,0 +1,48 @@
+:orphan:
+
+.. _nox_chemistry:
+
+nox_chemistry
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nox_chemistry
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===============================
+
+Attribute                                                                Summary
+
+==============================================   ===============================
+:ref:`thermal_nox <thermal_nox>`                     Enable/disable thermal nox.
+
+:ref:`prompt_nox <prompt_nox>`                        Enable/disable prompt nox.
+
+:ref:`fuel_nox <fuel_nox>`                              Enable/disable fuel nox.
+
+:ref:`fuel_stream <fuel_stream>`                         Fuel stream parameters.
+
+:ref:`n2o_path <n2o_path>`                              Enable/disable n2o path.
+
+:ref:`thermal_parameters <thermal_parameters>`                Thermal NOx model.
+
+:ref:`n2o_parameters <n2o_parameters>`                           N2O Path model.
+
+:ref:`udf_nox <udf_nox>`                                       User-defined NOx.
+
+:ref:`option <option_19>`                                                   UDF.
+
+==============================================   ===============================
+
+.. rubric:: Included in:
+
+================   =====================
+
+Parent                           Summary
+
+================   =====================
+:ref:`nox <nox>`       NOx model object.
+
+================   =====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _moment_of_inertia:
+
+moment_of_inertia
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.moment_of_inertia
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`one_dof_rotation <one_dof_rotation>`       'one_dof_rotation' child.
+
+==========================================   =============================
+

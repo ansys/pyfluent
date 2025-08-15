@@ -1,0 +1,23 @@
+:orphan:
+
+.. _geom_disable:
+
+geom_disable
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geom_disable
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==========================================================
+
+Parent                                                                              Summary
+
+==============================   ==========================================================
+:ref:`geometry_6 <geometry_6>`       Allows to change geometry model variables or settings.
+
+:ref:`geometry_7 <geometry_7>`                                          Help not available.
+
+==============================   ==========================================================
+

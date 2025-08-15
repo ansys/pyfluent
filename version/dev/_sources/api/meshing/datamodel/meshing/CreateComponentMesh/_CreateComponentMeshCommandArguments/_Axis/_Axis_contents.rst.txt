@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateComponentMesh__CreateComponentMeshCommandArguments__Axis:
+
+_Axis
+=====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.CreateComponentMesh._CreateComponentMeshCommandArguments._Axis
+   :members: _X_Comp, _Y_Comp, _Z_Comp
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

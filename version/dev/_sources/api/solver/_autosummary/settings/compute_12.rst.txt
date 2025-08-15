@@ -1,0 +1,46 @@
+:orphan:
+
+.. _compute_12:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compute_12
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   =====================================================================================
+
+Argument                                                                                                                   Summary
+
+==========================================   =====================================================================================
+:ref:`injections <injections_1>`                                                                               'injections' child.
+
+:ref:`boundaries <boundaries_2>`                                                        Pick injections for DPM particle sampling.
+
+:ref:`lines <lines_1>`                                                               Pick line surfaces for DPM particle sampling.
+
+:ref:`planes <planes>`                                                              Pick plane surfaces for DPM particle sampling.
+
+:ref:`op_udf <op_udf>`                                                                                The DPM sampling output UDF.
+
+:ref:`append_sample <append_sample>`                                               Enable appending data to existing sample files.
+
+:ref:`accumulate_rates <accumulate_rates>`       Enable accumulation of erosion and accretion rates over multiple tracking passes.
+
+:ref:`sort_sample <sort_sample>`                                                               Enable writing sorted sample files.
+
+==========================================   =====================================================================================
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`sample_trajectories <sample_trajectories>`       'sample_trajectories' child.
+
+================================================   ================================
+

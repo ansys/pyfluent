@@ -1,0 +1,42 @@
+:orphan:
+
+.. _main:
+
+main
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.main
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================   =====================================================================
+
+Attribute                                                                                  Summary
+
+==========================   =====================================================================
+:ref:`border <border_1>`         Enable/disable drawing of borders around the main viewing window.
+
+:ref:`bottom <bottom_1>`                           The bottom boundary of the main viewing window.
+
+:ref:`left <left_1>`                                 The left boundary of the main viewing window.
+
+:ref:`right <right_4>`                              The right boundary of the main viewing window.
+
+:ref:`top <top_1>`                                    The top boundary of the main viewing window.
+
+:ref:`visible <visible_3>`                   Enable/disable visibility of the main viewing window.
+
+==========================   =====================================================================
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`windows <windows>`       'windows' child.
+
+========================   ====================
+

@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_ImportGeometry__ImportGeometryCommandArguments:
+
+_ImportGeometryCommandArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.ImportGeometry._ImportGeometryCommandArguments
+   :members: _AppendMesh, _Directory, _FileFormat, _FileName, _FileNames, _ImportType, _LengthUnit, _MeshFileName, _MeshUnit, _NumParts, _Pattern, _UseBodyLabels
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _CadImportOptions/_CadImportOptions_contents
+   _ImportCadPreferences/_ImportCadPreferences_contents

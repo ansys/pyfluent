@@ -1,0 +1,42 @@
+:orphan:
+
+.. _contact_detection:
+
+contact_detection
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.contact_detection
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===============================================
+
+Attribute                                                                                  Summary
+
+================================================   ===============================================
+:ref:`enabled <enabled_59>`                                                       'enabled' child.
+
+:ref:`face_zones <face_zones_2>`                                               'face_zones' child.
+
+:ref:`proximity_threshold <proximity_threshold>`         Threshold distance for contact detection.
+
+:ref:`contact_udf <contact_udf>`                       UDF to be invoked when contact is detected.
+
+:ref:`flow_control <flow_control>`                                           'flow_control' child.
+
+:ref:`verbosity <verbosity_13>`                               The verbosity for contact-detection.
+
+================================================   ===============================================
+
+.. rubric:: Included in:
+
+============================   ====================
+
+Parent                                      Summary
+
+============================   ====================
+:ref:`options_8 <options_8>`       'options' child.
+
+============================   ====================
+

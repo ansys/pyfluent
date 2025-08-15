@@ -1,0 +1,36 @@
+:orphan:
+
+.. _disk_origin:
+
+disk_origin
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.disk_origin
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ==================================
+
+Attribute                                                         Summary
+
+====================================   ==================================
+:ref:`disk_origin_x <disk_origin_x>`       The rotor origin x-coordinate.
+
+:ref:`disk_origin_y <disk_origin_y>`       The rotor origin y-coordinate.
+
+:ref:`disk_origin_z <disk_origin_z>`       The rotor origin z-coordinate.
+
+====================================   ==================================
+
+.. rubric:: Included in:
+
+============================   =================================================
+
+Parent                                                                   Summary
+
+============================   =================================================
+:ref:`general_1 <general_1>`       Menu to define the rotor general information.
+
+============================   =================================================
+

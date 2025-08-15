@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surface_tension_rgp:
+
+surface_tension_rgp
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surface_tension_rgp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   =============================================
+
+Parent                                                                                                   Summary
+
+================================================================   =============================================
+:ref:`surface_tension_child_child <surface_tension_child_child>`       'child_object_type' of child_object_type.
+
+================================================================   =============================================
+

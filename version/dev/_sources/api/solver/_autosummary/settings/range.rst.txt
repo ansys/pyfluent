@@ -1,0 +1,51 @@
+:orphan:
+
+.. _range:
+
+range
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.range
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_1>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`range_child <range_child>`
+
+
+.. rubric:: Included in:
+
+================================================================================================   ================================================
+
+Parent                                                                                                                                      Summary
+
+================================================================================================   ================================================
+:ref:`sf_piecewise_polynomial <sf_piecewise_polynomial>`                                                              Piecewise-polynomial sf f(T).
+
+:ref:`mt_cav_p_vap_piecewise_polynomial <mt_cav_p_vap_piecewise_polynomial>`                                            Piecewise-polynomial p-vap.
+
+:ref:`mt_evap_cond_sat_temp_piecewise_polynomial <mt_evap_cond_sat_temp_piecewise_polynomial>`             Piecewise-polynomial sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_press_piecewise_polynomial <mt_evap_cond_sat_press_piecewise_polynomial>`       Piecewise-polynomial sat-pressure evap-cond.
+
+:ref:`piecewise_polynomial <piecewise_polynomial>`                                                      Property piecewise-polynomial coefficients.
+
+:ref:`nasa_9_piecewise_polynomial <nasa_9_piecewise_polynomial>`                                        Property piecewise-polynomial coefficients.
+
+:ref:`piecewise_polynomial_1 <piecewise_polynomial_1>`                                                               Piecewise polynomial settings.
+
+================================================================================================   ================================================
+

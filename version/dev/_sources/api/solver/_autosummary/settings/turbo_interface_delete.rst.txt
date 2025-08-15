@@ -1,0 +1,34 @@
+:orphan:
+
+.. _turbo_interface_delete:
+
+turbo_interface_delete
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.turbo_interface_delete
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =======================================
+
+Argument                                                                   Summary
+
+========================================   =======================================
+:ref:`delete_all_intf <delete_all_intf>`               Delete all mesh interfaces.
+
+:ref:`name <name_21>`                          Mesh interface names to be deleted.
+
+========================================   =======================================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+========================================   ===============================
+

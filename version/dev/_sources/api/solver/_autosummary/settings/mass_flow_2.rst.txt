@@ -1,0 +1,42 @@
+:orphan:
+
+.. _mass_flow_2:
+
+mass_flow
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mass_flow_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ======================================================
+
+Argument                                                                                Summary
+
+======================================   ======================================================
+:ref:`domain <domain_2>`                                                            The domain.
+
+:ref:`zones <zones_9>`                                                               Zone name.
+
+:ref:`locations <locations>`                                                        The object.
+
+:ref:`write_to_file <write_to_file_3>`                    Specifies whether to write to a file.
+
+:ref:`file_name <file_name_17>`                          The name you want the file saved with.
+
+:ref:`append_data <append_data>`             Specifies whether to append data to existing file.
+
+======================================   ======================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`fluxes <fluxes>`       'fluxes' child.
+
+======================   ===================
+

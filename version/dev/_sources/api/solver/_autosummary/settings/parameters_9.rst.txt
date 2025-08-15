@@ -1,0 +1,21 @@
+:orphan:
+
+.. _parameters_9:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parameters_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`tolerances <tolerances>`       Motion tolerances object.
+
+==============================   =============================
+

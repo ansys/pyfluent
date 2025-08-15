@@ -1,0 +1,38 @@
+:orphan:
+
+.. _solver:
+
+solver
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solver
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==========================
+
+Attribute                                                               Summary
+
+==================================================   ==========================
+:ref:`type <type_3>`                                               Solver type.
+
+:ref:`two_dim_space <two_dim_space>`                     'two_dim_space' child.
+
+:ref:`velocity_formulation <velocity_formulation>`        Velocity formulation.
+
+:ref:`time <time>`                                                'time' child.
+
+==================================================   ==========================
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`general <general>`       'general' child.
+
+========================   ====================
+

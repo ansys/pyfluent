@@ -1,0 +1,70 @@
+:orphan:
+
+.. _droplet_breakup:
+
+droplet_breakup
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.droplet_breakup
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   =====================================================================================
+
+Attribute                                                                                                                                  Summary
+
+==========================================================   =====================================================================================
+:ref:`enabled <enabled_19>`                                      Specifies whether secondary breakup should be modelled for this injection or not.
+
+:ref:`option <option_31>`                                                                                                A droplet breakup model:.
+
+:ref:`y0 <y0>`                                                                                                The initial droplet deformation y0:.
+
+:ref:`number_of_child_droplets <number_of_child_droplets>`                                            The number of child droplets after breakup:.
+
+:ref:`b1 <b1>`                                                                                                                                B1:.
+
+:ref:`b0 <b0>`                                                                                                                                B0:.
+
+:ref:`cl <cl>`                                                                                                                                Cl:.
+
+:ref:`ctau <ctau>`                                                                                                                          Ctau:.
+
+:ref:`crt <crt>`                                                                                                                             Crt:.
+
+:ref:`critical_weber_number <critical_weber_number>`                                                                   The critical Weber number:.
+
+:ref:`core_b1 <core_b1>`                                                                                                                 Core B1:.
+
+:ref:`xi <xi>`                                                                                                                                Xi:.
+
+:ref:`target_number_in_parcel <target_number_in_parcel>`                                                             The target number in parcel:.
+
+:ref:`c0 <c0>`                                                                                                                                C0:.
+
+:ref:`column_drag_coeff <column_drag_coeff>`                                                                      The column breakup coefficient:.
+
+:ref:`ligament_factor <ligament_factor>`                                                                                     The ligament factor:.
+
+:ref:`jet_diameter <jet_diameter>`                                                                                      The initial jet diameter:.
+
+:ref:`k1 <k1>`                                                                                                                                K1:.
+
+:ref:`k2 <k2>`                                                                                                                                K2:.
+
+:ref:`tb <tb>`                                                                                                                                Tb:.
+
+==========================================================   =====================================================================================
+
+.. rubric:: Included in:
+
+============================================   ========================================
+
+Parent                                                                          Summary
+
+============================================   ========================================
+:ref:`physical_models_1 <physical_models_1>`       Lagrangian physical models settings.
+
+============================================   ========================================
+

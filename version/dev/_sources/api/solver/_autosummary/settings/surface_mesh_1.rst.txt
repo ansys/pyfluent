@@ -1,0 +1,34 @@
+:orphan:
+
+.. _surface_mesh_1:
+
+surface_mesh
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surface_mesh_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =======================================
+
+Attribute                                                        Summary
+
+==============================   =======================================
+:ref:`background <background>`       The surface mesh for this geometry.
+
+:ref:`manage <manage>`                                   'manage' child.
+
+==============================   =======================================
+
+.. rubric:: Included in:
+
+======================   ===============================
+
+Parent                                           Summary
+
+======================   ===============================
+:ref:`type_2 <type_2>`       The type for this geometry.
+
+======================   ===============================
+

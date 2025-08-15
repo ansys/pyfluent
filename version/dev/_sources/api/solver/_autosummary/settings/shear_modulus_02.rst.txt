@@ -1,0 +1,34 @@
+:orphan:
+
+.. _shear_modulus_02:
+
+shear_modulus_02
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.shear_modulus_02
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ==========================================
+
+Attribute                                                      Summary
+
+=========================   ==========================================
+:ref:`option <option_42>`                Orthotropic structure option.
+
+:ref:`value <value_16>`         Constant or expression property value.
+
+=========================   ==========================================
+
+.. rubric:: Included in:
+
+==========================================================   ==================================================
+
+Parent                                                                                                  Summary
+
+==========================================================   ==================================================
+:ref:`orthotropic_structure_ym <orthotropic_structure_ym>`       Orthotropic structure Youngs modulus settings.
+
+==========================================================   ==================================================
+
