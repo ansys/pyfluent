@@ -1,7 +1,89 @@
 """Provides a module for generating PyFluent API RST files."""
 
+import os
 from pathlib import Path
 import shutil
+
+from ansys.fluent.core import FluentVersion
+
+api_contents_path = (
+    Path(__file__).parents[0].resolve() / "source" / "api" / "api_contents.rst"
+)
+fluent_version = FluentVersion.current_release()
+
+
+def _write_rst_file(output_path: str, version: str):
+    content = f""".. _ref_api:
+
+API reference
+=============
+
+This API reference corresponds to {version}. PyFluent maintains strong backward compatibility guarantees, so scripts targeting older Ansys versions are expected to work without modification.
+
+This is PyFluent's class and function reference. Please refer to the :ref:`ref_user_guide` for
+full guidelines on their use.
+
+All the public APIs for PyFluent are listed in the left hand margin. Some key APIs are mentioned below:
+
+Meshing mode
+------------
+
+The following interfaces are specific to meshing mode.
+
+* :ref:`meshing <ref_meshing_datamodel_meshing>`
+* :ref:`PartManagement <ref_meshing_datamodel_part_management>`
+* :ref:`PMFileManagement <ref_meshing_datamodel_pm_file_management>`
+* :ref:`workflow <ref_meshing_datamodel_workflow>`
+* :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>`
+
+Solution mode
+-------------
+
+The solver :ref:`settings API <ref_root>` is the main interface for controlling and running the solver.
+
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: ansys.fluent.core
+
+    docker/docker_contents
+    filereader/filereader_contents
+    launcher/launcher_contents
+    meshing/meshing_contents
+    scheduler/scheduler_contents
+    services/services_contents
+    solver/solver_contents
+    streaming_services/streaming_services_contents
+    utils/utils_contents
+    data_model_cache
+    exceptions
+    file_session
+    field_data_interfaces
+    fluent_connection
+    journaling
+    logger
+    module_config
+    parametric
+    rpvars
+    search
+    session_base_meshing
+    session_meshing
+    session_pure_meshing
+    session_solver_icing
+    session_solver_lite
+    session_solver
+    session
+    session_utilities
+    system_coupling
+    pyfluent_warnings
+    workflow
+    deprecated_apis
+"""
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(content)
 
 
 def _get_folder_path(folder_name: str):
@@ -40,6 +122,7 @@ def _get_file_path(folder_name: str, file_name: str):
 
 
 hierarchy = {
+    "docker": ["docker_compose"],
     "filereader": ["case_file", "data_file", "lispy"],
     "launcher": [
         "container_launcher",
@@ -49,19 +132,12 @@ hierarchy = {
         "launcher",
         "pim_launcher",
         "process_launch_string",
-        "pyfluent_enums",
+        "launch_options",
         "slurm_launcher",
         "standalone_launcher",
         "watchdog",
     ],
-    "meshing": ["meshing_workflow", "datamodel/index", "tui/index"],
-    "post_objects": [
-        "check_in_notebook",
-        "post_helper",
-        "post_objects_container",
-        "singleton_meta",
-        "timing_decorator",
-    ],
+    "meshing": ["meshing_workflow", "datamodel/datamodel_contents", "tui/tui_contents"],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
         "api_upgrade",
@@ -83,9 +159,9 @@ hierarchy = {
     "solver": [
         "error_message",
         "flobject",
-        "datamodel/index",
+        "datamodel/datamodel_contents",
         "settings_root",
-        "tui/index",
+        "tui/tui_contents",
     ],
     "streaming_services": [
         "datamodel_event_streaming",
@@ -111,11 +187,13 @@ hierarchy = {
         "setup_for_fluent",
     ],
     "other": [
+        "module_config",
         "exceptions",
         "file_session",
+        "field_data_interfaces",
         "fluent_connection",
         "journaling",
-        "logging",
+        "logger",
         "parametric",
         "rpvars",
         "search",
@@ -125,9 +203,10 @@ hierarchy = {
         "session_solver_icing",
         "session_solver_lite",
         "session_solver",
+        "session_utilities",
         "session",
-        "systemcoupling",
-        "warnings",
+        "system_coupling",
+        "pyfluent_warnings",
         "workflow",
     ],
 }
@@ -144,7 +223,7 @@ def _write_common_rst_members(rst_file):
 
 def _generate_api_source_rst_files(folder: str, files: list):
     for file in files:
-        if "index" in file:
+        if file.endswith("_contents"):
             pass
         else:
             if folder:
@@ -185,8 +264,8 @@ def _generate_api_index_rst_files():
             _generate_api_source_rst_files(None, files)
         else:
             Path(_get_folder_path(folder)).mkdir(parents=True, exist_ok=True)
-            file = _get_file_path(folder, "index")
-            with open(file, "w", encoding="utf8") as index:
+            folder_index = _get_file_path(folder, f"{folder}_contents")
+            with open(folder_index, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
                 index.write(f"{folder}\n")
                 index.write(f'{"="*(len(f"{folder}"))}\n\n')
@@ -202,4 +281,5 @@ def _generate_api_index_rst_files():
 
 
 if __name__ == "__main__":
+    _write_rst_file(api_contents_path, fluent_version)
     _generate_api_index_rst_files()

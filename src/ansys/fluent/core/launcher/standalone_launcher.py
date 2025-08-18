@@ -26,7 +26,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> standalone_meshing_launcher = create_launcher(LaunchMode.STANDALONE, mode=FluentMode.MESHING)
 >>> standalone_meshing_session = standalone_meshing_launcher()
@@ -35,6 +35,7 @@ Examples
 >>> standalone_solver_session = standalone_solver_launcher()
 """
 
+import inspect
 import logging
 import os
 from pathlib import Path
@@ -45,15 +46,7 @@ from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,
 )
-from ansys.fluent.core.launcher.launcher_utils import (
-    _await_fluent_launch,
-    _build_journal_argument,
-    _confirm_watchdog_start,
-    _get_subprocess_kwargs_for_fluent,
-    is_windows,
-)
-from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -63,6 +56,14 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _await_fluent_launch,
+    _build_journal_argument,
+    _confirm_watchdog_start,
+    _get_subprocess_kwargs_for_fluent,
+    is_windows,
+)
+from ansys.fluent.core.launcher.process_launch_string import _generate_launch_string
 from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_names,
@@ -185,9 +186,14 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
-        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
-        if os.getenv("PYFLUENT_SHOW_SERVER_GUI") == "1":
+        if pyfluent.config.show_fluent_gui:
             ui_mode = UIMode.GUI
         self.argvals["ui_mode"] = UIMode(ui_mode)
         if self.argvals["start_timeout"] is None:
@@ -198,10 +204,14 @@ class StandaloneLauncher:
         if fluent_version:
             _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
-        if fluent_version and fluent_version >= FluentVersion.v251:
+        if (
+            fluent_version
+            and fluent_version >= FluentVersion.v251
+            and self.argvals["py"] is None
+        ):
             self.argvals["py"] = True
 
-        if os.getenv("PYFLUENT_FLUENT_DEBUG") == "1":
+        if pyfluent.config.fluent_debug:
             self.argvals["fluent_debug"] = True
 
         server_info_file_name_for_server, server_info_file_name_for_client = (
@@ -224,7 +234,10 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if pyfluent.LAUNCH_FLUENT_STDOUT or pyfluent.LAUNCH_FLUENT_STDERR:
+            if (
+                pyfluent.config.launch_fluent_stdout
+                or pyfluent.config.launch_fluent_stderr
+            ):
                 self._launch_cmd = self._launch_string
             else:
                 # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.

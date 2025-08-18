@@ -27,6 +27,7 @@ from io import FileIO, StringIO
 import os
 from pathlib import Path
 import shutil
+import string
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
@@ -35,6 +36,11 @@ from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
+from ansys.fluent.core.services.datamodel_se import (
+    PySingletonCommandArgumentsSubItem,
+    arg_class_by_type,
+)
+from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
@@ -89,6 +95,28 @@ _SOLVER_DM_DOC_DIR = os.path.normpath(
 )
 
 
+digits = {
+    0: "Zero",
+    1: "One",
+    2: "Two",
+    3: "Three",
+    4: "Four",
+    5: "Five",
+    6: "Six",
+    7: "Seven",
+    8: "Eight",
+    9: "Nine",
+}
+
+
+def _convert_to_py_name(name: str) -> str:
+    ttable = str.maketrans(string.punctuation, "_" * len(string.punctuation))
+    name = name.translate(ttable)
+    if name[0].isdigit():
+        name = f"{digits[int(name[0])]}{name[1:]}"
+    return name
+
+
 def _write_command_query_stub(name: str, info: Any, f: FileIO):
     signature = StringIO()
     indent = "        "
@@ -110,38 +138,57 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _build_command_query_docstring(name: str, info: Any, indent: str, is_command: bool):
-    if info.get("docstring"):
-        doc = ""
+def _build_command_query_docstring(
+    name: str, static_info: Any, indent: str, is_command: bool
+):
+    doc = StringIO()
+    info = static_info["commandinfo"] if is_command else static_info["queryinfo"]
+    if static_info.get("helpstring"):
+        for line in static_info["helpstring"].splitlines():
+            doc.write(f"{indent}{line}\n")
+    elif info.get("docstring"):
         for line in info["docstring"].split("."):
             if line and len(info["docstring"].split(".")) > 2:
-                doc += f"{indent}- {line.lstrip(' ')}.\n"
+                doc.write(f"{indent}- {line.lstrip(' ')}.\n")
             elif line:
-                doc += f"{indent}{line.lstrip(' ')}.\n"
-        if info.get("args"):
-            doc += "\n"
+                doc.write(f"{indent}{line.lstrip(' ')}.\n")
     else:
-        doc = (
+        doc.write(
             f"{indent}Command {name}.\n\n"
             if is_command
             else f"{indent}Query {name}.\n\n"
         )
     if info.get("args"):
-        doc += f"{indent}Parameters\n"
-        doc += f"{indent}{'-' * len('Parameters')}\n"
+        doc.write(f"{indent}Parameters\n")
+        doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
-            doc += f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n'
-            if arg.get("docstring"):
-                doc += f'{indent}    {arg["docstring"]}\n'
-    doc += f"\n{indent}Returns\n"
-    doc += f"{indent}{'-' * len('Returns')}\n"
-    doc += f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n'
+            doc.write(f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n')
+            if arg.get("helpstring"):
+                for line in arg["helpstring"].splitlines():
+                    doc.write(f"{indent}    {line}\n")
+            elif arg.get("docstring"):
+                doc.write(f'{indent}    {arg["docstring"]}\n')
+    doc.write(f"\n{indent}Returns\n")
+    doc.write(f"{indent}{'-' * len('Returns')}\n")
+    doc.write(f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n')
     if meshing_utility_examples.get(name):
-        doc += f"\n{indent}Examples\n"
-        doc += f"{indent}{'-' * len('Examples')}\n"
+        doc.write(f"\n{indent}Examples\n")
+        doc.write(f"{indent}{'-' * len('Examples')}\n")
         for example in meshing_utility_examples[name]:
-            doc += f"{indent}>>> {example}\n"
-    return doc
+            doc.write(f"{indent}>>> {example}\n")
+    return doc.getvalue()
+
+
+datamodel_file_name_map = {
+    "workflow": "workflow",
+    "meshing": "meshing",
+    "PartManagement": "part_management",
+    "PMFileManagement": "pm_file_management",
+    "preferences": "preferences",
+    "MeshingUtilities": "meshing_utilities",
+    "flicing": "flicing",
+    "solverworkflow": "solver_workflow",
+}
 
 
 class DataModelStaticInfo:
@@ -163,11 +210,15 @@ class DataModelStaticInfo:
         self.static_info = None
         if rules_save_name == "":
             rules_save_name = rules
-        datamodel_dir = (pyfluent.CODEGEN_OUTDIR / f"datamodel_{version}").resolve()
+        datamodel_dir = (
+            pyfluent.config.codegen_outdir / f"datamodel_{version}"
+        ).resolve()
         datamodel_dir.mkdir(exist_ok=True)
-        self.file_name = (datamodel_dir / f"{rules_save_name}.py").resolve()
+        self.file_name = (
+            datamodel_dir / f"{datamodel_file_name_map[rules_save_name]}.py"
+        ).resolve()
         if rules == "MeshingUtilities":
-            self.stub_file = (datamodel_dir / "MeshingUtilities.pyi").resolve()
+            self.stub_file = (datamodel_dir / "meshing_utilities.pyi").resolve()
         if len(modes) > 1:
             for mode in modes[1:]:
                 DataModelStaticInfo._noindices.append(f"{mode}.datamodel.{rules}")
@@ -298,6 +349,38 @@ class DataModelGenerator:
                         "Information: Problem accessing flserver datamodel for icing settings\n"
                     )
 
+    def _write_arg_class(self, f: FileIO, arg_info, indent: str):
+        arg_name = arg_info["name"]
+        arg_type = arg_info["type"]
+        arg_doc = arg_info.get("helpstring", f"Argument {arg_name}.")
+        arg_class = arg_class_by_type[arg_type]
+        py_name = _convert_to_py_name(arg_name)
+        f.write(f"{indent}class _{py_name}({arg_class.__name__}):\n")
+        f.write(f'{indent}    """\n')
+        for line in arg_doc.splitlines():
+            f.write(f"{indent}    {escape_wildcards(line)}\n")
+        f.write(f'{indent}    """\n\n')
+        if arg_class == PySingletonCommandArgumentsSubItem:
+            f.write(
+                f"{indent}    def __init__(self, parent, attr, service, rules, path):\n"
+            )
+            f.write(
+                f"{indent}        super().__init__(parent, attr, service, rules, path)\n"
+            )
+            info = arg_info.get("info")
+            if info:
+                parameters_info = info["parameters"]
+                for name, parameter_info in parameters_info.items():
+                    py_name = _convert_to_py_name(name)
+                    f.write(
+                        f'{indent}        self.{py_name} = self._{py_name}(self, "{name}", service, rules, path)\n'
+                    )
+                f.write("\n")
+                for name, parameter_info in parameters_info.items():
+                    self._write_arg_class(
+                        f, parameter_info | {"name": name}, f"{indent}    "
+                    )
+
     def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
         api_tree = {}
         # preferences contains a deprecated object Meshing Workflow (with a space)
@@ -306,9 +389,11 @@ class DataModelGenerator:
         if not name.isidentifier():
             return api_tree
         indent = " " * level * 4
+        singleton_doc = info.get("helpstring", _build_singleton_docstring(name))
         f.write(f"{indent}class {name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
-        f.write(f"{indent}    {_build_singleton_docstring(name)}\n")
+        for line in singleton_doc.splitlines():
+            f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n')
         f.write(f"{indent}    def __init__(self, service, rules, path):\n")
         named_objects = sorted(info.get("namedobjects", []))
@@ -364,25 +449,27 @@ class DataModelGenerator:
             else:
                 # print("\t\texcluded", k)
                 pass
-        for k in parameters:
-            k_type = info["parameters"][k]["type"]
-            if k_type in {"String", "String List", "ListString"}:
-                f.write(f"{indent}    class {k}(PyTextual):\n")
-            elif k_type in {"Integer", "Int", "Real"}:
-                f.write(f"{indent}    class {k}(PyNumerical):\n")
-            elif k_type in {"Dict", "ModelObject"}:
-                f.write(f"{indent}    class {k}(PyDictionary):\n")
+        for parameter_name in parameters:
+            parameter_info = info["parameters"][parameter_name]
+            parameter_type = parameter_info["type"]
+            if parameter_type in {"String", "String List", "ListString"}:
+                f.write(f"{indent}    class {parameter_name}(PyTextual):\n")
+            elif parameter_type in {"Integer", "Int", "Real"}:
+                f.write(f"{indent}    class {parameter_name}(PyNumerical):\n")
+            elif parameter_type in {"Dict", "ModelObject"}:
+                f.write(f"{indent}    class {parameter_name}(PyDictionary):\n")
             else:
-                f.write(f"{indent}    class {k}(PyParameter):\n")
-            f.write(f'{indent}        """\n')
-            f.write(
-                f"{indent}        "
-                f'{_build_parameter_docstring(k, info["parameters"][k]["type"])}\n'
+                f.write(f"{indent}    class {parameter_name}(PyParameter):\n")
+            parameter_doc = parameter_info.get(
+                "helpstring", _build_parameter_docstring(parameter_name, parameter_type)
             )
             f.write(f'{indent}        """\n')
+            for line in parameter_doc.splitlines():
+                f.write(f"{indent}        {escape_wildcards(line)}\n")
+            f.write(f'{indent}        """\n')
             f.write(f"{indent}        pass\n\n")
-            api_tree[k] = "Parameter"
-        if "MeshingUtilities" in f.name:
+            api_tree[parameter_name] = "Parameter"
+        if "meshing_utilities" in f.name:
             stub_file = self._static_info["MeshingUtilities"].stub_file
             stub_file.unlink(missing_ok=True)
             with open(stub_file, "w", encoding="utf8") as file:
@@ -411,20 +498,48 @@ class DataModelGenerator:
         for k in commands:
             f.write(f"{indent}    class {k}(PyCommand):\n")
             f.write(f'{indent}        """\n')
+            command_static_info = info["commands"][k]
             f.write(
                 _build_command_query_docstring(
-                    k, info["commands"][k]["commandinfo"], f"{indent}        ", True
+                    k, command_static_info, f"{indent}        ", True
                 )
             )
             f.write(f'{indent}        """\n')
-            f.write(f"{indent}        pass\n\n")
+            f.write(
+                f"{indent}        class _{k}CommandArguments(PyCommandArguments):\n"
+            )
+            f.write(
+                f"{indent}            def __init__(self, service, rules, command, path, id):\n"
+            )
+            f.write(
+                f"{indent}                super().__init__(service, rules, command, path, id)\n"
+            )
+            args_info = command_static_info["commandinfo"].get("args", [])
+            for arg_info in args_info:
+                arg_name = arg_info["name"]
+                py_name = _convert_to_py_name(arg_name)
+                f.write(
+                    f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
+                )
+            f.write("\n")
+            for arg_info in args_info:
+                self._write_arg_class(f, arg_info, f"{indent}            ")
+
+            f.write(
+                f"{indent}        def create_instance(self) -> _{k}CommandArguments:\n"
+            )
+            f.write(f"{indent}            args = self._get_create_instance_args()\n")
+            f.write(f"{indent}            if args is not None:\n")
+            f.write(
+                f"{indent}                return self._{k}CommandArguments(*args)\n\n"
+            )
             api_tree[k] = "Command"
         for k in queries:
             f.write(f"{indent}    class {k}(PyQuery):\n")
             f.write(f'{indent}        """\n')
             f.write(
                 _build_command_query_docstring(
-                    k, info["queries"][k]["queryinfo"], f"{indent}        ", False
+                    k, info["queries"][k], f"{indent}        ", False
                 )
             )
             f.write(f'{indent}        """\n')
@@ -453,7 +568,13 @@ class DataModelGenerator:
                 f.write("    PyDictionary,\n")
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
-                f.write("    PyQuery\n")
+                f.write("    PyQuery,\n")
+                f.write("    PyCommandArguments,\n")
+                f.write("    PyTextualCommandArgumentsSubItem,\n")
+                f.write("    PyNumericalCommandArgumentsSubItem,\n")
+                f.write("    PyDictionaryCommandArgumentsSubItem,\n")
+                f.write("    PyParameterCommandArgumentsSubItem,\n")
+                f.write("    PySingletonCommandArgumentsSubItem\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
@@ -482,7 +603,7 @@ def generate(version, static_infos: dict, verbose: bool = False):
 if __name__ == "__main__":
     solver = launch_fluent()
     meshing = launch_fluent(mode=FluentMode.MESHING)
-    version = get_version_for_file_name(session=solver)
+    version = get_version_for_file_name(session=meshing)
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "workflow"

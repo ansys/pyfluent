@@ -44,14 +44,14 @@ import os
 from os.path import dirname
 from pathlib import Path
 from typing import Dict, List
-import xml.etree.ElementTree as ET
 
-from lxml import etree
+import defusedxml.ElementTree as ET
 import numpy as np
 
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
+from .pre_processor import remove_unsupported_xml_chars
 
 try:
     import h5py
@@ -332,9 +332,9 @@ class Mesh:
         min_id, max_id = self.get_surface_locs(surface_id)
         nnodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nnodes"]
         nodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nodes"]
-        previous = sum(nnodes[0:min_id])
+        previous = np.sum(nnodes[0:min_id])
         nnodes = nnodes[min_id : max_id + 1]
-        nodes = nodes[previous : previous + sum(nnodes)]
+        nodes = nodes[previous : previous + np.sum(nnodes)]
         return [nodes, nnodes]
 
     def get_connectivity(self, surface_id) -> np.array:
@@ -732,16 +732,17 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_file_name_from_flprj(flprj_file):
-    parser = etree.XMLParser(recover=True)
-    tree = ET.parse(flprj_file, parser)
-    root = tree.getroot()
-    folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
-    # If the project file name begins with a digit then the node to find will be prepended
-    # with "_". Rather than making any assumptions that this is a hard rule, or what
-    # the scope of the rule is, simply retry with the name prepended:
-    folder_obj = (
-        root.find(folder_name)
-        if root.find(folder_name) and len(root.find(folder_name)) > 0
-        else root.find("_" + folder_name)
-    )
-    return folder_obj.find("Input").find("Case").find("Target").get("value")
+    with open(flprj_file, "r") as file:
+        content = file.read()
+        content = remove_unsupported_xml_chars(content)
+        root = ET.fromstring(content)
+        folder_name = root.find("Metadata").find("CurrentSimulation").get("value")[5:-1]
+        # If the project file name begins with a digit then the node to find will be prepended
+        # with "_". Rather than making any assumptions that this is a hard rule, or what
+        # the scope of the rule is, simply retry with the name prepended:
+        folder_obj = (
+            root.find(folder_name)
+            if root.find(folder_name) and len(root.find(folder_name)) > 0
+            else root.find("_" + folder_name)
+        )
+        return folder_obj.find("Input").find("Case").find("Target").get("value")

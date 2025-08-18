@@ -49,6 +49,7 @@ Design of Experiments and Machine Learning model building
 
 # flake8: noqa: E402
 
+import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -66,16 +67,11 @@ from ansys.fluent.core import examples
 ###########################################################################
 # Specifying save path
 # ====================
-# * save_path can be specified as Path("E:/", "pyfluent-examples-tests") or
-# * Path("E:/pyfluent-examples-tests") in a Windows machine for example,  or
-# * Path("~/pyfluent-examples-tests") in Linux.
-
-save_path = Path(pyfluent.EXAMPLES_PATH)
 
 import_filename = examples.download_file(
     "elbow.cas.h5",
     "pyfluent/examples/DOE-ML-Mixing-Elbow",
-    save_path=save_path,
+    save_path=os.getcwd(),
 )
 
 #######################
@@ -86,19 +82,19 @@ import_filename = examples.download_file(
 # Launch Fluent session with solver mode and print Fluent version
 # ===============================================================
 
-solver = pyfluent.launch_fluent(
+solver_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=2,
     version="3d",
 )
-print(solver.get_fluent_version())
+print(solver_session.get_fluent_version())
 
 
 #############################################################################
 # Read case
 # =========
 
-solver.settings.file.read_case(file_name=import_filename)
+solver_session.settings.file.read_case(file_name=import_filename)
 
 ##############################################################################################
 # Design of Experiments
@@ -113,21 +109,21 @@ resArr = np.zeros((coldVelArr.shape[0], hotVelArr.shape[0]))
 
 for idx1, coldVel in np.ndenumerate(coldVelArr):
     for idx2, hotVel in np.ndenumerate(hotVelArr):
-        cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet[
+        cold_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
             "cold-inlet"
         ]
         cold_inlet.momentum.velocity.value = coldVel
 
-        hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet[
+        hot_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ]
         hot_inlet.momentum.velocity.value = hotVel
 
-        solver.settings.solution.initialization.initialization_type = "standard"
-        solver.settings.solution.initialization.standard_initialize()
-        solver.settings.solution.run_calculation.iterate(iter_count=200)
+        solver_session.settings.solution.initialization.initialization_type = "standard"
+        solver_session.settings.solution.initialization.standard_initialize()
+        solver_session.settings.solution.run_calculation.iterate(iter_count=200)
 
-        res_tui = solver.scheme_eval.exec(
+        res_tui = solver_session.scheme.exec(
             (
                 "(ti-menu-load-string "
                 '"/report/surface-integrals/mass-weighted-avg outlet () '
@@ -141,7 +137,7 @@ for idx1, coldVel in np.ndenumerate(coldVelArr):
 # Close the session
 # =================
 
-solver.exit()
+solver_session.exit()
 
 ####################################
 # Plot Response Surface using Plotly
@@ -298,7 +294,9 @@ def fit_and_predict(model):
 
     df_combined = pd.concat([com_train_set, com_test_set])
 
-    df_combined.to_csv("PyFluent_Output.csv", header=True, index=False)
+    df_combined.to_csv(
+        os.path.join(os.getcwd(), "PyFluent_Output.csv"), header=True, index=False
+    )
 
     fig = plt.figure(figsize=(12, 5))
 

@@ -1,4 +1,3 @@
-
 name: Test Run Custom
 
 on:
@@ -9,16 +8,22 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
+
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
-  PYFLUENT_LOGGING: 'DEBUG'
-  PYFLUENT_WATCHDOG_DEBUG: 'OFF'
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYTHON_VERSION: "3.11"
 
 jobs:
-
   build_test:
     name: Build and Test
     runs-on: [self-hosted, pyfluent]
@@ -38,6 +43,12 @@ jobs:
             version: 242
           - image-tag: v25.1.0
             version: 251
+          - image-tag: v25.2.0
+            version: 252
+          - image-tag: v26.1.0
+            version: 261
+    env:
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -45,15 +56,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache pip
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
-            Python-${{ runner.os }}-${{ matrix.python-version }}
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
       - name: Add version information
         run: make version-info
@@ -68,28 +79,17 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
         with:
           registry: ghcr.io
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Fluent docker image
-        if: matrix.image-tag != 'v25.1.0'
         run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
-
-      - name: Pull Fluent docker image dev
-        if: matrix.image-tag == 'v25.1.0'
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Run API codegen
         run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Print Fluent version info
         run: |
@@ -102,13 +102,15 @@ jobs:
 
       - name: Unit Testing
         run: |
-            echo "Running custom unittest"
-            sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
-            make install-test
-            python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
-        env:
-          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          echo "Running custom unittest"
+          sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
+          make install-test
+          python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
 
       - name: Cleanup previous docker containers
         if: always()
         run: make cleanup-previous-docker-containers
+
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images

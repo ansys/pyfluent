@@ -7,7 +7,7 @@ Setting up and querying the model
 .. code:: python
 
     >>> import ansys.fluent.core as pyfluent
-    >>> radiation = pyfluent.solver.Radiation(settings_source=solver)
+    >>> radiation = pyfluent.solver.Radiation(settings_source=solver_session)
     >>> from pprint import pprint
     >>> pprint(radiation.get_state(), width=1)
     {'model': 'none',

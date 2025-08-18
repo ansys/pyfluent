@@ -23,10 +23,10 @@
 """Module to generate Fluent API classes."""
 
 import argparse
-import os
 from pathlib import Path
 import pickle
 
+from ansys.fluent.core import config
 from ansys.fluent.core.codegen import (  # noqa: F401
     builtin_settingsgen,
     datamodelgen,
@@ -51,7 +51,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False):
     Path(api_tree_file).parent.mkdir(parents=True, exist_ok=True)
     with open(api_tree_file, "wb") as f:
         pickle.dump(api_tree, f)
-    if os.getenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS") != "1":
+    if not config.codegen_skip_builtin_settings:
         builtin_settingsgen.generate(version)
 
 

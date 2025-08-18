@@ -45,19 +45,20 @@ import string
 import subprocess
 from typing import Any, Dict
 import uuid
-import xml.etree.ElementTree as ET
+
+from defusedxml.ElementTree import parse
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType
 from ansys.fluent.core.codegen.data.fluent_gui_help_patch import XML_HELP_PATCH
+from ansys.fluent.core.docker.utils import get_ghcr_fluent_image_name
 from ansys.fluent.core.services.datamodel_tui import (
     convert_path_to_grpc_path,
     convert_tui_menu_to_func_name,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
 from ansys.fluent.core.utils.fluent_version import (
-    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
@@ -68,7 +69,7 @@ _ROOT_DIR = Path(__file__) / ".." / ".." / ".." / ".." / ".." / ".."
 
 
 def _get_tui_filepath(mode: str, version: str):
-    return (pyfluent.CODEGEN_OUTDIR / mode / f"tui_{version}.py").resolve()
+    return (pyfluent.config.codegen_outdir / mode / f"tui_{version}.py").resolve()
 
 
 _INDENT_STEP = 4
@@ -95,9 +96,9 @@ _XML_HELPSTRINGS = {}
 
 
 def _copy_tui_help_xml_file(version: str):
-    if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-        image_tag = os.getenv("FLUENT_IMAGE_TAG", "v25.1.0")
-        image_name = f"ghcr.io/ansys/pyfluent:{image_tag}"
+    if pyfluent.config.launch_fluent_container:
+        image_tag = pyfluent.config.fluent_image_tag
+        image_name = f"{get_ghcr_fluent_image_name(image_tag)}:{image_tag}"
         container_name = uuid.uuid4().hex
         is_linux = platform.system() == "Linux"
         subprocess.run(
@@ -129,7 +130,7 @@ def _copy_tui_help_xml_file(version: str):
                 shutil.copy(str(xml_source), _XML_HELP_FILE)
             else:
                 logger.warning("fluent_gui_help.xml is not found.")
-        except AnsysVersionNotFound:
+        except FileNotFoundError:
             logger.warning("fluent_gui_help.xml is not found.")
 
 
@@ -137,7 +138,7 @@ def _populate_xml_helpstrings():
     if not Path(_XML_HELP_FILE).exists():
         return
 
-    tree = ET.parse(_XML_HELP_FILE)
+    tree = parse(_XML_HELP_FILE)
     root = tree.getroot()
     help_contents_node = root.find(".//*[@id='flu_tui_help_contents']")
     field_help_node = help_contents_node.find(".//*[@id='fluent_tui_field_help']")
@@ -346,7 +347,7 @@ def generate(version, static_infos: dict, verbose: bool = False):
         api_tree["<solver_session>"] = TUIGenerator(
             "solver", version, static_infos, verbose
         ).generate()
-    if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+    if not pyfluent.config.hide_log_secrets:
         logger.info(
             "XML help is available but not picked for the following %i paths: ",
             len(_XML_HELPSTRINGS),

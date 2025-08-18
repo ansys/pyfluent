@@ -4,7 +4,13 @@
 Environment Variables
 =====================
 
-Following is a list of environment variables that can be set to control various aspects of PyFluent.
+This page lists the environment variables that can be set to control various aspects of PyFluent.
+The values of these variables are frozen at the time of importing the PyFluent package and
+any later changes to these variables within the same Python process does not affect
+the behavior of PyFluent. PyFluent also provides a set of configuration variables that can be used to
+control the behavior of PyFluent within the same Python process. Please see the :ref:`ref_config_variables` page for more details.
+
+.. vale off
 
 .. list-table::
     :header-rows: 1
@@ -41,6 +47,10 @@ Following is a list of environment variables that can be set to control various 
       - Specifies the port of the Fluent server in :func:`connect_to_fluent() <ansys.fluent.core.launcher.launcher.connect_to_fluent>`.
     * - PYFLUENT_FLUENT_ROOT
       - Specifies the Fluent root directory while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_FLUENT_LAUNCH_TIMEOUT
+      - Specifies the timeout, in seconds, for launching Fluent through :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT
+      - Can be used to enable automatic writing of transcript .trn file by Fluent. By default, it is disabled.
     * - PYFLUENT_GRPC_LOG_BYTES_LIMIT
       - Specifies the length of gRPC logging messages. Set to 0 to disable the limit.
     * - PYFLUENT_LAUNCH_CONTAINER
@@ -55,6 +65,8 @@ Following is a list of environment variables that can be set to control various 
       - Disables printing of TUI to settings API upgrade advice.
     * - PYFLUENT_TIMEOUT_FORCE_EXIT
       - Enables force exit while exiting a Fluent session and specifies the timeout in seconds.
+    * - PYFLUENT_USE_RUNTIME_PYTHON_CLASSES
+      - Uses runtime Python classes for settings API.
     * - PYFLUENT_WATCHDOG_DEBUG
       - Enables debugging for the PyFluent watchdog process.
     * - PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR

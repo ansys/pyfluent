@@ -673,6 +673,30 @@ class TaskContainer(PyCallableStateObject):
         return self.get_state()
 
 
+def _getarg_recursive(obj, arg_name):
+    """Search for an argument within a command arguments object at any descendant level."""
+
+    def inner(obj, arg_name):
+        if hasattr(obj, arg_name):
+            return getattr(obj, arg_name)
+
+        for sub_attr_name in dir(obj):
+            if sub_attr_name.startswith("_"):
+                continue
+            sub_attr = getattr(obj, sub_attr_name)
+            if isinstance(sub_attr, PySingletonCommandArgumentsSubItem):
+                result = inner(sub_attr, arg_name)
+                if result is not None:
+                    return result
+
+    arg = inner(obj, arg_name)
+    if arg is None:
+        raise AttributeError(
+            f"'{obj.__class__.__name__}' object has no attribute '{arg_name}' at any descendant level."
+        )
+    return arg
+
+
 class ArgumentsWrapper(PyCallableStateObject):
     """Wrapper for a dictionary of task arguments."""
 
@@ -727,7 +751,9 @@ class ArgumentsWrapper(PyCallableStateObject):
         for key, val in input_dict.items():
             self._snake_to_camel_map[camel_to_snake_case(key)] = key
             if isinstance(
-                getattr(cmd_args, key),
+                # Key can be parameter name of a singleton-type command argument.
+                # Hence, we are searching for the key recursively within the command arguments.
+                _getarg_recursive(cmd_args, key),
                 PySingletonCommandArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
@@ -1219,7 +1245,8 @@ class CompoundTask(CommandTask):
         defer_update : bool, default: False
             Whether to defer the update.
         """
-        self._add_child(state)
+        if state is not None:
+            self._add_child(state)
         py_name = self.python_name()
         if py_name not in self._command_source._compound_child_map:
             self._command_source._compound_child_map[py_name] = 1
@@ -1243,6 +1270,8 @@ class CompoundTask(CommandTask):
                 self._task.AddChildAndUpdate()
         finally:
             self._command_source._compound_child = False
+        # Updates the workflow after the new task is inserted.
+        _call_refresh_task_accessors(self._command_source)
         return self.last_child()
 
     def last_child(self) -> BaseTask:
@@ -1365,8 +1394,10 @@ class Workflow:
                     "service",
                     "task_object",
                     "workflow",
+                    "rename",
                 },
                 _fluent_version=fluent_version,
+                _initialized=False,
             )
         )
 

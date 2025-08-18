@@ -64,7 +64,6 @@ class Meshing(PureMeshing):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        self.switched = False
         super(Meshing, self).__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
@@ -86,18 +85,25 @@ class Meshing(PureMeshing):
         self.tui.switch_to_solution_mode("yes")
         solver_session = Solver(
             fluent_connection=self._fluent_connection,
-            scheme_eval=self.scheme_eval,
+            scheme_eval=self.scheme,
             file_transfer_service=self._file_transfer_service,
         )
-        self.switched = True
+        self._fluent_connection = None
+        self.__doc__ = (
+            "The meshing session is no longer usable after switching to solution mode."
+        )
         return solver_session
 
     def __getattribute__(self, item: str):
-        if item == "switched":
-            return super(Meshing, self).__getattribute__(item)
-
-        if self.switched and item != "exit":
-            return None
+        if super(Meshing, self).__getattribute__(
+            "_fluent_connection"
+        ) is None and item not in [
+            "is_active",
+            "_fluent_connection",
+        ]:
+            raise AttributeError(
+                f"'{__class__.__name__}' object has no attribute '{item}'"
+            )
 
         return super(Meshing, self).__getattribute__(item)
 

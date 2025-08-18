@@ -34,12 +34,7 @@ from typing import Any, Dict
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.launcher_utils import (
-    _confirm_watchdog_start,
-    is_windows,
-)
-from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -50,16 +45,20 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     _get_fluent_launch_mode,
     _get_running_session_mode,
 )
+from ansys.fluent.core.launcher.launcher_utils import (
+    _confirm_watchdog_start,
+    is_windows,
+)
+from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate import deprecate_argument
+from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -104,7 +103,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
             return UIMode.NO_GUI
         elif container_dict:
             return UIMode.NO_GUI
-        elif os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+        elif pyfluent.config.launch_fluent_container:
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -127,17 +126,23 @@ def _version_to_dimension(old_arg_val):
 
 
 #   pylint: disable=unused-argument
-@deprecate_argument(
-    old_arg="show_gui",
-    new_arg="ui_mode",
-    converter=_show_gui_to_ui_mode,
-    warning_cls=PyFluentDeprecationWarning,
-)
-@deprecate_argument(
-    old_arg="version",
-    new_arg="dimension",
-    converter=_version_to_dimension,
-    warning_cls=PyFluentDeprecationWarning,
+@all_deprecators(
+    deprecate_arg_mappings=[
+        {
+            "old_arg": "show_gui",
+            "new_arg": "ui_mode",
+            "converter": _show_gui_to_ui_mode,
+        },
+        {
+            "old_arg": "version",
+            "new_arg": "dimension",
+            "converter": _version_to_dimension,
+        },
+    ],
+    data_type_converter=None,
+    deprecated_version="v0.22.dev0",
+    deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
+    warn_message="",
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
@@ -169,6 +174,8 @@ def launch_fluent(
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
     file_transfer_service: Any | None = None,
+    use_docker_compose: bool | None = None,
+    use_podman_compose: bool | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -179,6 +186,12 @@ def launch_fluent(
         Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
         any of  ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``or ``251``.
         The default is ``None``, in which case the newest installed version is used.
+        PyFluent uses the ``AWP_ROOT<ver>`` environment variable to locate the Fluent
+        installation, where ``<ver>`` is the Ansys release number such as ``251``.
+        The ``AWP_ROOT<ver>`` environment variable is automatically configured on Windows
+        system when Fluent is installed. On Linux systems, ``AWP_ROOT<ver>`` must be
+        configured to point to the absolute path of an Ansys installation such as
+        ``/apps/ansys_inc/v251``.
     dimension : Dimension or int, optional
         Geometric dimensionality of the Fluent simulation. The default is ``None``,
         in which case ``Dimension.THREE`` is used. Options are either the values of the
@@ -252,10 +265,11 @@ def launch_fluent(
         made by the user in the current Fluent solver session have been applied in the background Fluent
         solver session. This is all orchestrated by PyFluent and requires no special usage.
         This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-    mode : str, optional
-        Launch mode of Fluent to point to a specific session type.
-        The default value is ``None``. Options are ``"meshing"``,
-        ``"pure-meshing"`` and ``"solver"``.
+    mode : FluentMode or str or None, optional
+        Launch mode of Fluent to point to a specific session type. Can be a
+        ``FluentMode`` enum member or a string. The default value is ``None``.
+        Valid string options include ``"meshing"``, ``"pure-meshing"``, and
+        ``"solver"``.
     py : bool, optional
         If True, Fluent will run in Python mode. Default is None.
     gpu : bool or list, optional
@@ -287,6 +301,10 @@ def launch_fluent(
         specified in a similar manner to Fluent's scheduler options.
     file_transfer_service : optional
         File transfer service. Uploads/downloads files to/from the server.
+    use_docker_compose: bool
+        Whether to use Docker Compose to launch Fluent.
+    use_podman_compose: bool
+        Whether to use Podman Compose to launch Fluent.
 
     Returns
     -------
@@ -300,6 +318,8 @@ def launch_fluent(
     ------
     UnexpectedKeywordArgument
         If an unexpected keyword argument is provided.
+    ValueError
+        If both ``use_docker_compose`` and ``use_podman_compose`` are set to ``True``.
 
     Notes
     -----
@@ -310,7 +330,13 @@ def launch_fluent(
     if env is None:
         env = {}
 
-    pyfluent.FLUENT_PRECISION_MODE = precision
+    if use_docker_compose and use_podman_compose:
+        raise ValueError(
+            "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
+        )
+
+    if start_timeout is None:
+        start_timeout = pyfluent.config.launch_fluent_timeout
 
     def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
         launcher_mode_type = {
@@ -336,7 +362,7 @@ def launch_fluent(
     )
     common_args = launch_fluent_args.intersection(launcher_type_args)
     launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
-    if pyfluent.START_WATCHDOG is False:
+    if pyfluent.config.start_watchdog is False:
         launcher_argvals["start_watchdog"] = False
     launcher = launcher_type(**launcher_argvals)
     return launcher()
@@ -350,6 +376,7 @@ def connect_to_fluent(
     server_info_file_name: str | None = None,
     password: str | None = None,
     start_watchdog: bool | None = None,
+    file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Connect to an existing Fluent server instance.
 
@@ -384,6 +411,8 @@ def connect_to_fluent(
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
         that any local Fluent connections are properly closed (or terminated if frozen) when Python process ends.
+    file_transfer_service : optional
+        File transfer service. Uploads/downloads files to/from the server.
 
     Returns
     -------
@@ -415,4 +444,5 @@ def connect_to_fluent(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         start_transcript=start_transcript,
+        file_transfer_service=file_transfer_service,
     )

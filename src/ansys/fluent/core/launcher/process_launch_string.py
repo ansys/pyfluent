@@ -28,7 +28,7 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentMode,
     Precision,
@@ -125,12 +125,14 @@ def _generate_launch_string(
         launch_string += " -flicing -license=enterprise"
     if argvals["mode"] == FluentMode.SOLVER_AERO:
         launch_string += " -flaero_server -license=enterprise"
+    if argvals["mode"] == FluentMode.PRE_POST:
+        launch_string += " -post"
     if FluentMode.is_meshing(argvals["mode"]):
         launch_string += " -meshing"
     if " " in server_info_file_name:
         server_info_file_name = '"' + server_info_file_name + '"'
     launch_string += f" -sifile={server_info_file_name}"
-    if not pyfluent.FLUENT_SHOW_MESH_AFTER_CASE_READ:
+    if not pyfluent.config.fluent_show_mesh_after_case_read:
         launch_string += " -nm"
     return launch_string
 
@@ -147,10 +149,7 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     Path
         Fluent executable path
     """
-
-    def get_fluent_root(version: FluentVersion) -> Path:
-        awp_root = os.environ[version.awp_var]
-        return Path(awp_root) / "fluent"
+    from ansys.fluent.core import config
 
     def get_exe_path(fluent_root: Path) -> Path:
         if launcher_utils.is_windows():
@@ -169,12 +168,12 @@ def get_fluent_exe_path(**launch_argvals) -> Path:
     # 2. product_version parameter passed with launch_fluent
     product_version = launch_argvals.get("product_version")
     if product_version:
-        return get_exe_path(get_fluent_root(FluentVersion(product_version)))
+        return FluentVersion(product_version).get_fluent_exe_path()
 
     # (DEV) "PYFLUENT_FLUENT_ROOT" environment variable
-    fluent_root = os.getenv("PYFLUENT_FLUENT_ROOT")
+    fluent_root = config.fluent_root
     if fluent_root:
         return get_exe_path(Path(fluent_root))
 
     # 3. the latest ANSYS version from AWP_ROOT environment variables
-    return get_exe_path(get_fluent_root(FluentVersion.get_latest_installed()))
+    return FluentVersion.get_latest_installed().get_fluent_exe_path()

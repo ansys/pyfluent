@@ -20,13 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.generated.datamodel_242.preferences import (
+from ansys.fluent.core.generated.datamodel_252.preferences import (
     Root as preferences_root,
 )
-from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
-import ansys.fluent.core.generated.solver.settings_242 as settings_root
-from ansys.fluent.core.generated.solver.tui_242 import main_menu
-from ansys.fluent.core.systemcoupling import SystemCoupling
+from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
+import ansys.fluent.core.generated.solver.settings_252 as settings_root
+from ansys.fluent.core.generated.solver.tui_252 import main_menu
+from ansys.fluent.core.system_coupling import SystemCoupling
 
 class Solver:
     @property
@@ -44,3 +44,4 @@ class Solver:
     def write_case(self, file_name: str): ...
     @property
     def settings(self) -> settings_root.root: ...
+    def enable_beta_features(self): ...

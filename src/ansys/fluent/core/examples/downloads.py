@@ -49,16 +49,16 @@ def delete_downloads():
 
     Notes
     -----
-    The default examples path is given by ``pyfluent.EXAMPLES_PATH``.
+    The default examples path is given by ``pyfluent.config.examples_path``.
     """
-    shutil.rmtree(pyfluent.EXAMPLES_PATH)
-    os.makedirs(pyfluent.EXAMPLES_PATH)
+    shutil.rmtree(pyfluent.config.examples_path)
+    os.makedirs(pyfluent.config.examples_path)
 
 
 def _decompress(file_name: str) -> None:
     """Decompress zipped file."""
     zip_ref = zipfile.ZipFile(file_name, "r")
-    zip_ref.extractall(pyfluent.EXAMPLES_PATH)
+    zip_ref.extractall(pyfluent.config.examples_path)
     return zip_ref.close()
 
 
@@ -81,10 +81,7 @@ def _retrieve_file(
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        save_path = os.getenv(
-            "PYFLUENT_CONTAINER_MOUNT_SOURCE",
-            pyfluent.CONTAINER_MOUNT_SOURCE or os.getcwd(),
-        )
+        save_path = pyfluent.config.container_mount_source or os.getcwd()
     else:
         save_path = os.path.abspath(save_path)
     local_path = os.path.join(save_path, file_name)
@@ -180,8 +177,8 @@ def download_file(
     'bracket.iges'
     """
     if return_without_path is None:
-        if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
-            if pyfluent.USE_FILE_TRANSFER_SERVICE:
+        if pyfluent.config.launch_fluent_container:
+            if pyfluent.config.use_file_transfer_service:
                 return_without_path = False
             else:
                 return_without_path = True
@@ -212,7 +209,7 @@ def path(file_name: str):
     """
     if os.path.isabs(file_name):
         return file_name
-    file_path = Path(pyfluent.EXAMPLES_PATH) / file_name
+    file_path = Path(pyfluent.config.examples_path) / file_name
     if file_path.is_file():
         return str(file_path)
     else:

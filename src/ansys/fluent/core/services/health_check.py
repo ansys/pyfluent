@@ -30,6 +30,7 @@ import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule
 from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -52,10 +53,8 @@ class HealthCheckService:
     class Status(Enum):
         """Health check status."""
 
-        UNKNOWN: int = 0
         SERVING: int = 1
         NOT_SERVING: int = 2
-        SERVICE_UNKNOWN: int = 3
 
     def __init__(
         self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
@@ -72,17 +71,20 @@ class HealthCheckService:
         self._metadata = metadata
         self._channel = channel
 
-    def check_health(self) -> str:
+    def check_health(self) -> Status:
         """Check the health of the Fluent connection.
 
         Returns
         -------
-        str
-            "SERVING" or "NOT_SERVING"
+        Status
         """
         request = HealthCheckModule.HealthCheckRequest()
-        response = self._stub.Check(request, metadata=self._metadata)
-        return HealthCheckService.Status(response.status).name
+        response = self._stub.Check(
+            request,
+            metadata=self._metadata,
+            timeout=pyfluent.config.check_health_timeout,
+        )
+        return HealthCheckService.Status(response.status)
 
     def wait_for_server(self, timeout: int) -> None:
         """Keeps a watch on the health of the Fluent connection.
@@ -118,7 +120,7 @@ class HealthCheckService:
                     )
                 raise
 
-    def status(self) -> str:
+    def status(self) -> Status:
         """Check health of Fluent connection."""
         if self._channel:
             try:
@@ -128,11 +130,11 @@ class HealthCheckService:
                 logger.info(
                     f"HealthCheckService.status() caught {ex_type.__name__}: {ex_value}"
                 )
-                return self.Status.NOT_SERVING.name
+                return self.Status.NOT_SERVING
         else:
-            return self.Status.NOT_SERVING.name
+            return self.Status.NOT_SERVING
 
     @property
     def is_serving(self) -> bool:
         """Checks whether Fluent is serving."""
-        return True if self.status() == "SERVING" else False
+        return self.status() == self.Status.SERVING

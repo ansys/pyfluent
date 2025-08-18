@@ -35,12 +35,12 @@ command line arguments and run this script to copy needed files from the Ansys i
 
 .. code:: python
 
-    python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
+    python copy_ansys_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
 
 * These files indicate the files that are excluded during the copying:
 
-  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeCEIList.txt>`_
-  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent/excludeFluentList.txt>`_
+  * `excludeCEIList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent_252/excludeCEIList.txt>`_
+  * `excludeFluentList.txt <https://github.com/ansys/pyfluent/blob/main/docker/fluent_252/excludeFluentList.txt>`_
 
 1. Above excluded files are not needed to run typical Fluent workflows.
 
@@ -63,13 +63,13 @@ Run Docker container using the command line
 
 When you run the Docker container, you must specify the Ansys license file.
 
-Execute this command to run the Docker container in solver mode:
+To launch the container in solution mode, use:
 
 .. code:: console
 
     sudo docker run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu
 
-Execute this command to run the Docker container in meshing mode:
+To launch the container in meshing mode, use:
 
 .. code:: console
 
@@ -79,8 +79,8 @@ Execute this command to run the Docker container in meshing mode:
 Run Docker container using PyFluent
 -----------------------------------
 
-Install `PyFluent <https://github.com/ansys/pyfluent>`_ and execute this code
-to run the Docker container using PyFluent:
+1. Install `PyFluent <https://github.com/ansys/pyfluent>`_.
+2. Use the following Python code to run the container:
 
 .. code:: python
 
@@ -88,5 +88,54 @@ to run the Docker container using PyFluent:
     import ansys.fluent.core as pyfluent
     os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
     custom_config = {'fluent_image': 'ansys_inc:latest', 'mount_source': f"{os.getcwd()}", 'auto_remove': False}
-    solver = pyfluent.launch_fluent(container_dict=custom_config)
+    solver_session = pyfluent.launch_fluent(container_dict=custom_config, user_docker_compose=True)
+
+
+Run Podman container using the command line
+-------------------------------------------
+
+Follow these steps to pull and run a Fluent container using Podman.
+
+1. Pull the Docker image into Podman:
+
+.. code:: console
+
+    sudo podman pull docker-daemon:ansys-inc:latest
+
+
+2. Verify the image in the local Podman registry:
+
+.. code:: console
+
+    sudo podman images
+
+
+When you run the Podman container, you must specify the Ansys license file.
+
+To launch the container in solution mode, use:
+
+.. code:: console
+
+    sudo podman run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu
+
+To launch the container in meshing mode, use:
+
+.. code:: console
+
+    sudo podman run -it --name ansys-inc -e ANSYSLMD_LICENSE_FILE=<license file or server> ansys_inc 3ddp -gu -meshing
+
+
+Run Podman container using PyFluent
+-----------------------------------
+
+1. Install `PyFluent <https://github.com/ansys/pyfluent>`_. 
+2. Use the following Python code to run the container:
+
+.. code:: python
+
+    import os
+    import ansys.fluent.core as pyfluent
+    os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
+    custom_config = {'fluent_image': 'ansys_inc:latest', 'mount_source': f"{os.getcwd()}", 'auto_remove': False}
+    solver_session = pyfluent.launch_fluent(container_dict=custom_config, use_podman_compose=True)
 

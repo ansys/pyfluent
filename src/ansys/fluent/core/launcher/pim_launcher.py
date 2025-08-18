@@ -26,7 +26,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> pim_meshing_launcher = create_launcher(LaunchMode.PIM, mode=FluentMode.MESHING)
 >>> pim_meshing_session = pim_meshing_launcher()
@@ -35,17 +35,19 @@ Examples
 >>> pim_solver_session = pim_solver_launcher()
 """
 
+import inspect
 import logging
 import os
 from typing import Any, Dict
 
-from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
     Precision,
+    UIMode,
     _get_argvals_and_session,
 )
 from ansys.fluent.core.session_meshing import Meshing
@@ -67,6 +69,7 @@ class PIMLauncher:
     def __init__(
         self,
         mode: FluentMode | str | None = None,
+        ui_mode: UIMode | str | None = None,
         graphics_driver: (
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
@@ -77,6 +80,7 @@ class PIMLauncher:
         start_timeout: int = 60,
         additional_arguments: str = "",
         cleanup_on_exit: bool = True,
+        dry_run: bool | None = None,
         start_transcript: bool = True,
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
@@ -89,6 +93,8 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent for targeting a specific session type.
+        ui_mode : UIMode
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -114,6 +120,8 @@ class PIMLauncher:
         cleanup_on_exit : bool
             Determines whether to shut down the connected Fluent session upon exit or when calling
             the session's `exit()` method. Defaults to True.
+        dry_run : bool, optional
+            If True, returns a configuration dictionary instead of starting a Fluent session.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
@@ -152,7 +160,12 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
-        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60
@@ -164,7 +177,9 @@ class PIMLauncher:
                 FluentVersion(self.argvals["product_version"]).number
             )
         else:
-            fluent_product_version = None
+            fluent_product_version = str(
+                FluentVersion(FluentVersion.current_release()).number
+            )
 
         return launch_remote_fluent(
             session_cls=self.new_session,
@@ -230,7 +245,12 @@ def launch_remote_fluent(
 
     instance.wait_for_ready()
 
-    channel = instance.build_grpc_channel()
+    channel = instance.build_grpc_channel(
+        options=[
+            ("grpc.max_send_message_length", _get_max_c_int_limit()),
+            ("grpc.max_receive_message_length", _get_max_c_int_limit()),
+        ],
+    )
 
     fluent_connection = create_fluent_connection(
         channel=channel,

@@ -9,9 +9,9 @@ without making any adjustments. Here's how you can record a Fluent Python journa
 
 .. code-block:: python
 
-  >>> solver.journal.start(file_name="pyfluent-journal.py")
+  >>> solver_session.journal.start(file_name="pyfluent_journal.py")
   <Python code>
-  >>> solver.journal.stop()
+  >>> solver_session.journal.stop()
 
 
 The software creates or overwrites the file specified by

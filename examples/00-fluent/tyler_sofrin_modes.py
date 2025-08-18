@@ -106,6 +106,7 @@ Tyler-Sofrin Compressor Modes Post-Processing
 # Import required libraries/modules
 # =====================================================================================
 import math
+import os
 from pathlib import Path
 import random
 
@@ -116,36 +117,25 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 #######################################################################################
-# Specifying save path
-# =====================================================================================
-# save_path can be specified as:
-#
-#   +   Path("E:/", "pyfluent-examples-tests") or
-#   +   Path("E:/pyfluent-examples-tests") in a Windows machine for example, or
-#   +   Path("~/pyfluent-examples-tests") in Linux.
-
-save_path = Path(pyfluent.EXAMPLES_PATH)
-
-#######################################################################################
 # Downloading cas/dat file
 # =====================================================================================
 import_filename = examples.download_file(
     "axial_comp_fullWheel_DFT_23R2.cas.h5",
     "pyfluent/examples/Tyler-Sofrin-Modes-Compressor",
-    save_path=save_path,
+    save_path=os.getcwd(),
 )
 
 examples.download_file(
     "axial_comp_fullWheel_DFT_23R2.dat.h5",
     "pyfluent/examples/Tyler-Sofrin-Modes-Compressor",
-    save_path=save_path,
+    save_path=os.getcwd(),
 )
 
 #######################################################################################
 # Launch Fluent session and print Fluent version
 # =====================================================================================
 session = pyfluent.launch_fluent(
-    ui_mode="gui", processor_count=4, product_version="25.1.0"
+    processor_count=4,
 )
 print(session.get_fluent_version())
 
@@ -245,7 +235,7 @@ for angle_ind, angle in enumerate(range(0, 360, d_theta)):
 #   This step is only required if data is to be processed with other standalone
 #   tools. Update the path to the file accordingly.
 
-fourier_coefficients_file = Path(save_path, "FourierCoefficients.txt")
+fourier_coefficients_file = Path(os.getcwd(), "FourierCoefficients.txt")
 with open(fourier_coefficients_file, "w") as f:
     f.write("n theta An Bn \n")
 

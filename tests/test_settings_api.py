@@ -25,11 +25,12 @@ import warnings
 import pytest
 from pytest import WarningsRecorder
 
+from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
+from ansys.fluent.core.solver import Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
-    UnstableSettingWarning,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -462,31 +463,6 @@ def warning_record():
         yield wrec
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2712")
-@pytest.mark.fluent_version(">=24.2")
-def test_unstable_settings_warning(new_solver_session, warning_record):
-    solver = new_solver_session
-    solver.file.export
-    assert len(warning_record) == 1
-    assert warning_record.pop().category == UnstableSettingWarning
-    try:
-        solver.file.exp
-    except AttributeError:
-        pass
-    assert len(warning_record) == 0
-    solver.file.export
-    assert len(warning_record) == 1
-    assert warning_record.pop().category == UnstableSettingWarning
-
-    # Issue in running in CI (probably due to -gu mode)
-    # case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    # solver.file.read_case_data(file_name=case_path)
-    # img_path = "a.png"
-    # Path(img_path).unlink(missing_ok=True)
-    # solver.results.graphics.picture.save_picture(file_name=img_path)
-    # assert len(recwarn) == 0
-
-
 @pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
@@ -521,23 +497,22 @@ def test_generated_code_special_cases(new_solver_session):
 def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    # Disabled due to https://github.com/ansys/pyfluent/issues/3591
     # Following set_state should not throw InactiveObjectError
-    # solver.settings.setup.materials.fluid["air"] = {
-    #     "density": {"option": "ideal-gas"},
-    #     "specific_heat": {"value": 1006.43, "option": "constant"},
-    #     "thermal_conductivity": {"value": 0.0242, "option": "constant"},
-    #     "molecular_weight": {"value": 28.966, "option": "constant"},
-    # }
-    # assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
-    # assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
-    # assert (
-    #     solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
-    #     == 0.0242
-    # )
-    # assert (
-    #     solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
-    # )
+    solver.settings.setup.materials.fluid["air"] = {
+        "density": {"option": "ideal-gas"},
+        "specific_heat": {"value": 1006.43, "option": "constant"},
+        "thermal_conductivity": {"value": 0.0242, "option": "constant"},
+        "molecular_weight": {"value": 28.966, "option": "constant"},
+    }
+    assert solver.settings.setup.materials.fluid["air"].density.option() == "ideal-gas"
+    assert solver.settings.setup.materials.fluid["air"].specific_heat.value() == 1006.43
+    assert (
+        solver.settings.setup.materials.fluid["air"].thermal_conductivity.value()
+        == 0.0242
+    )
+    assert (
+        solver.settings.setup.materials.fluid["air"].molecular_weight.value() == 28.966
+    )
 
     solver.settings.solution.initialization.hybrid_initialize()
     assert (
@@ -565,42 +540,92 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
         == 0.5
     )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
-        0.6
-    )
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor = 0.6"
+        ),
+    ):
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
+            0.6
+        )
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
         == 0.6
     )
 
 
+@pytest.mark.fluent_version(">=25.2")
+def test_nested_alias(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.setup.models.viscous.model = "k-omega"
+    solver.settings.setup.models.viscous.k_omega_model = "standard"
+    # k_omega_options is alias of k_omega
+    # kw_low_re_correction is alias of k_omega_low_re_correction
+    # Testing all 4 combinations
+    solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
+        ),
+    ):
+        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction = (
+            False
+        )
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = True"
+        ),
+    ):
+        solver.settings.setup.models.viscous.k_omega_options.kw_low_re_correction = True
+    with pytest.warns(
+        DeprecatedSettingWarning,
+        match=(
+            "A newer syntax is available to perform the last operation:\n"
+            "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
+        ),
+    ):
+        solver.settings.setup.models.viscous.k_omega.kw_low_re_correction = False
+
+
 @pytest.mark.fluent_version(">=25.1")
 def test_commands_not_in_settings(new_solver_session):
     solver = new_solver_session
 
-    for command in ["exit", "switch_to_meshing_mode"]:
-        assert command not in dir(solver.settings)
-        with pytest.raises(AttributeError):
-            getattr(solver.settings, command)
+    assert "exit" not in dir(solver.settings)
+    with pytest.raises(AttributeError):
+        solver.settings.exit()
 
 
 @pytest.mark.fluent_version(">=25.1")
 def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     solver = mixing_elbow_case_data_session
-    with pytest.warns() as record:
-        # all_boundary_zones is an unknown/unsupported keyword
+    with pytest.warns(
+        PyFluentUserWarning,
+        match=(
+            "Unknown keyword 'all_boundary_zones' for command '<session>.settings.results.report.fluxes.mass_flow'. "
+            "It will be ignored."
+        ),
+    ):
         solver.settings.results.report.fluxes.mass_flow(
             all_boundary_zones=False, zones=["cold-inlet", "hot-inlet", "outlet"]
         )
-    assert len(record) == 1
-    assert record[0].category == PyFluentUserWarning
-    assert "all_boundary_zones" in str(record[0].message)
 
     solver.settings.results.graphics.mesh.create("m1")
     solver.settings.results.graphics.mesh.make_a_copy(from_="m1", to="m2")
-    solver.settings.results.graphics.mesh.copy(
-        from_name="m1", new_name="m3"
-    )  # deprecated
+    with pytest.warns(DeprecatedSettingWarning) as record:
+        solver.settings.results.graphics.mesh.copy(from_name="m1", new_name="m3")
+    first, second = str(record[0].message).splitlines()[0:2]
+    assert first == ("A newer syntax is available to perform the last operation:")
+    # It seems that the order of the arguments is not consistent (from Fluent)
+    assert second.startswith("solver.settings.results.graphics.mesh.make_a_copy(")
+    assert "from_ = " in second
+    assert "to = " in second
     assert set(solver.settings.results.graphics.mesh.get_object_names()) == {
         "m1",
         "m2",
@@ -608,6 +633,7 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     }
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -626,3 +652,141 @@ def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_sessi
     )
     assert var3 == solver.settings.setup.materials.fluid["air-copied"]
     assert var3.obj_name == "air-copied"
+
+
+@pytest.mark.fluent_version(">=25.1")
+def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.solution.initialization.hybrid_initialize()
+    graphics = solver.settings.results.graphics
+    graphics.contour["contour-velocity"] = {
+        "field": "velocity-magnitude",
+        "surfaces_list": ["wall-elbow"],
+    }
+    # In the line below, "range_option" and "coloring" are deprecated.
+    if solver.get_fluent_version() <= FluentVersion.v251:
+        # From v252 'get_state' behaviour is to be corrected in Fluent.
+        assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"]())
+        )
+    assert (
+        graphics.contour["contour-velocity"].range_option.get_attr("deprecated-version")
+        == "25.1"
+    )
+    assert (
+        graphics.contour["contour-velocity"].coloring.get_attr("deprecated-version")
+        == "25.1"
+    )
+
+    # User won't normally find deprecated objects in the settings API, so it is OK to leave them active.
+    assert graphics.contour["contour-velocity"].range_options.is_active()
+
+    # https://github.com/ansys/pyfluent/issues/3813
+    # in 'get_state'
+    # if solver.get_fluent_version() >= FluentVersion.v252:
+    #     # From v252 'get_state' behaviour is to be corrected in Fluent.
+    #     assert not {"range_option", "coloring"}.issubset(
+    #         set(graphics.contour["contour-velocity"].get_state())
+    #     )
+    #     assert {"range_options", "colorings"}.issubset(
+    #         set(graphics.contour["contour-velocity"].get_state())
+    #     )
+    # else:
+    #     assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+    #         set(graphics.contour["contour-velocity"].get_state())
+    #     )
+
+    # in 'child_names'
+    # 'child_names', 'command_names' and 'query_names' will remain unchanged.
+    assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+        set(graphics.contour["contour-velocity"].child_names)
+    )
+
+    # in 'get_active_child_names'
+    assert not {"range_option", "coloring"}.issubset(
+        set(graphics.contour["contour-velocity"].get_active_child_names())
+    )
+    assert {"range_options", "colorings"}.issubset(
+        set(graphics.contour["contour-velocity"].get_active_child_names())
+    )
+
+    # in 'dir'
+    assert not {"range_option", "coloring"}.issubset(
+        set(dir(graphics.contour["contour-velocity"]))
+    )
+    assert {"range_options", "colorings"}.issubset(
+        set(dir(graphics.contour["contour-velocity"]))
+    )
+
+    # This should be True, as attribute is present, just not exposed.
+    for item in ["range_option", "range_options", "coloring", "colorings"]:
+        assert hasattr(graphics.contour["contour-velocity"], item)
+
+    # Named-object
+    solver.settings.solution.report_definitions.surface["report-def-1"] = {}
+    solver.settings.solution.report_definitions.surface["report-def-1"].report_type = (
+        "surface-area"
+    )
+    solver.settings.solution.report_definitions.surface[
+        "report-def-1"
+    ].surface_names = ["cold-inlet", "hot-inlet"]
+    assert "create_output_parameter" not in dir(
+        solver.settings.solution.report_definitions.surface["report-def-1"]
+    )
+    assert hasattr(
+        solver.settings.solution.report_definitions.surface["report-def-1"],
+        "create_output_parameter",
+    )
+
+    v1 = solver.settings.results.graphics.vector.create()
+    assert v1.scale.scale_f() == 1.0
+    v1.scale.scale_f = 2.0
+    assert v1.scale.scale_f() == 2.0
+    assert "scale" not in dir(v1)
+
+
+@pytest.fixture
+def use_runtime_python_classes(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr(config, "use_runtime_python_classes", True)
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_runtime_python_classes(
+    use_runtime_python_classes, mixing_elbow_settings_session
+):
+    solver = mixing_elbow_settings_session
+    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
+    solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"] = {
+        "material": "water-liquid"
+    }
+    assert (
+        solver.settings.setup.cell_zone_conditions.fluid[
+            "elbow-fluid"
+        ].general.material()
+        == "water-liquid"
+    )
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_setting_string_constants(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    viscous = Viscous(solver)
+
+    # viscous.model.INVISCID is a string constant
+    assert viscous.model.INVISCID == "inviscid"
+    assert isinstance(viscous.model.INVISCID, str)
+    with pytest.raises(AttributeError):
+        viscous.model.INVISCID = "invalid"
+
+    # Setting using string constants
+    viscous.model = viscous.model.INVISCID
+    assert viscous.model() == "inviscid"
+    viscous.model = viscous.model.K_EPSILON
+    assert viscous.model() == "k-epsilon"
+    viscous.k_epsilon_model = viscous.k_epsilon_model.RNG
+    assert viscous.k_epsilon_model.RNG.is_active() is True
+    assert viscous.k_epsilon_model() == "rng"
+    assert viscous.k_epsilon_model.EASM.is_active() is False
+
+    with pytest.raises(ValueError):
+        viscous.k_epsilon_model = viscous.k_epsilon_model.EASM

@@ -22,16 +22,16 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
   >>> from ansys.fluent.core import examples
   >>> import pandas as pd
   >>> from tabulate import tabulate
-  >>> solver = pyfluent.launch_fluent(start_transcript=False)
+  >>> solver_session = pyfluent.launch_fluent(start_transcript=False)
   >>> import_case = examples.download_file(
   >>>     file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
   >>> )
   >>> import_data = examples.download_file(
   >>>     file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
   >>> )
-  >>> solver.file.read_case_data(file_name=import_case)
+  >>> solver_session.settings.file.read_case_data(file_name=import_case)
   >>> # check the active report plot monitors using the settings relevant object
-  >>> sorted(solver.settings.solution.monitor.report_plots())
+  >>> sorted(solver_session.settings.solution.monitor.report_plots())
   >>> [
   >>>     "mass-bal-rplot",
   >>>     "mass-in-rplot",
@@ -39,9 +39,9 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
   >>>     "point-vel-rplot",
   >>> ]
   >>> # initialize so that monitors object is usable
-  >>> solver.solution.initialization.hybrid_initialize()
+  >>> solver_session.settings.solution.initialization.hybrid_initialize()
   >>> # check which monitors are available
-  >>> sorted(solver.monitors.get_monitor_set_names())
+  >>> sorted(solver_session.monitors.get_monitor_set_names())
   >>> [
   >>>    "mass-bal-rplot",
   >>>    "mass-in-rplot",
@@ -52,7 +52,7 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
   >>> # create and register a callback function that will 
   >>> def display_monitor_table(monitor_set_name="mass-bal-rplot"):
   >>>     def display_table():
-  >>>         data = solver.monitors.get_monitor_set_data(monitor_set_name=monitor_set_name)
+  >>>         data = solver_session.monitors.get_monitor_set_data(monitor_set_name=monitor_set_name)
   >>>         # extract iteration numbers
   >>>         iterations = data[0]
   >>>         # filter out additional callbacks
@@ -67,10 +67,10 @@ callback mechanism to perform a simple tabulation of monitored values per iterat
   >>>             # The streamed data contains duplicates, so eliminate them
   >>>             df = df.drop_duplicates(subset='Iteration')
   >>>             print(tabulate(df, headers='keys', tablefmt='psql'))
-  >>>         display_table.iter_count = 0
+  >>>     display_table.iter_count = 0
   >>>     return display_table
   >>>
   >>>
-  >>> register_id = solver.monitors.register_callback(display_monitor_table())
+  >>> register_id = solver_session.monitors.register_callback(display_monitor_table())
   >>> # run the solver and see the full tabulated monitor data on each iteration
-  >>> solver.solution.run_calculation.iterate(iter_count=10)
+  >>> solver_session.solution.run_calculation.iterate(iter_count=10)

@@ -20,21 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.generated.datamodel_242.MeshingUtilities import (
+from ansys.fluent.core.generated.datamodel_252.meshing import Root as meshing_root
+from ansys.fluent.core.generated.datamodel_252.meshing_utilities import (
     Root as meshing_utilities_root,
 )
-from ansys.fluent.core.generated.datamodel_242.PMFileManagement import (
-    Root as pmfilemanagement_root,
-)
-from ansys.fluent.core.generated.datamodel_242.PartManagement import (
+from ansys.fluent.core.generated.datamodel_252.part_management import (
     Root as partmanagement_root,
 )
-from ansys.fluent.core.generated.datamodel_242.meshing import Root as meshing_root
-from ansys.fluent.core.generated.datamodel_242.preferences import (
+from ansys.fluent.core.generated.datamodel_252.pm_file_management import (
+    Root as pmfilemanagement_root,
+)
+from ansys.fluent.core.generated.datamodel_252.preferences import (
     Root as preferences_root,
 )
-from ansys.fluent.core.generated.datamodel_242.workflow import Root as workflow_root
-from ansys.fluent.core.generated.meshing.tui_242 import main_menu
+from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
+from ansys.fluent.core.generated.meshing.tui_252 import main_menu
 
 class Meshing:
     @property

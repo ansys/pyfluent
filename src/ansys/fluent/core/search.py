@@ -30,7 +30,6 @@ import os
 from pathlib import Path
 import pickle
 import re
-import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver.error_message import closest_allowed_names
@@ -42,26 +41,16 @@ from ansys.fluent.core.utils.fluent_version import (
 
 def _get_api_tree_data_file_path():
     """Get API tree data file."""
-    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core import config
 
-    return (CODEGEN_OUTDIR / "api_tree" / "api_objects.json").resolve()
+    return (config.codegen_outdir / "api_tree" / "api_objects.json").resolve()
 
 
 def get_api_tree_file_name(version: str) -> Path:
     """Get API tree file name."""
-    from ansys.fluent.core import CODEGEN_OUTDIR
+    from ansys.fluent.core import config
 
-    return (CODEGEN_OUTDIR / f"api_tree_{version}.pickle").resolve()
-
-
-def _match(source: str, word: str, match_whole_word: bool, match_case: bool):
-    if not match_case:
-        source = source.lower()
-        word = word.lower()
-    if match_whole_word:
-        return source == word
-    else:
-        return word in source
+    return (config.codegen_outdir / f"api_tree_{version}.pickle").resolve()
 
 
 def _remove_suffix(input: str, suffix):
@@ -71,9 +60,6 @@ def _remove_suffix(input: str, suffix):
         if suffix and input.endswith(suffix):
             return input[: -len(suffix)]
         return input
-
-
-_meshing_rules = ["workflow", "meshing", "PartManagement", "PMFileManagement"]
 
 
 def _generate_api_data(
@@ -118,6 +104,11 @@ def _generate_api_data(
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
                 api_object_names.add(k)
+                next_path = (
+                    next_path.replace("MeshingUtilities", "meshing_utilities")
+                    if "MeshingUtilities" in next_path
+                    else next_path
+                )
                 if "tui" in next_path:
                     api_tui_objects.add(f"{next_path} ({type_})")
                 else:
@@ -136,9 +127,9 @@ def _generate_api_data(
         from nltk.corpus import wordnet as wn
 
         _download_nltk_data()
-        from ansys.fluent.core import CODEGEN_OUTDIR
+        from ansys.fluent.core import config
 
-        json_file_folder = Path(os.path.join(CODEGEN_OUTDIR, "api_tree"))
+        json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
         json_file_folder.mkdir(parents=True, exist_ok=True)
 
         all_api_object_name_synsets = dict()
@@ -172,38 +163,89 @@ def _get_api_tree_data():
         return api_tree_data
 
 
-def _print_search_results(queries: list, api_tree_data: dict):
-    """Print search results.
+def _print_search_results(
+    queries: list,
+    api_tree_data: dict | None = None,
+    api_path: str | None = None,
+    match_whole_word: bool | None = None,
+):
+    """
+    Print search results.
 
     Parameters
     ----------
-    queries: list
-        List of search string to match API object names.
-    api_tree_data: dict
-        All API object data.
+    queries : list
+        List of search strings or (string, score) tuples to match against API object names.
+    api_tree_data : dict, optional
+        The full API tree data, containing 'api_objects' and 'api_tui_objects'.
+        If None, it is retrieved using _get_api_tree_data().
+    api_path : str, optional
+        Specific path to restrict the search to. If None, searches the entire object hierarchy.
+    match_whole_word : bool, optional
+        If True, only exact matches are returned. If False, semantic search is performed.
+        The default is None, which means semantic search is performed.
     """
-    results = []
-    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
-    api_tree_datas = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
+    api_tree_data = api_tree_data or _get_api_tree_data()
+    api_sources = [api_tree_data["api_objects"], api_tree_data["api_tui_objects"]]
 
-    def _get_results(api_tree_data):
-        results = []
-        for query in queries:
-            for api_object in api_tree_data:
-                if api_object.split()[0].endswith(query):
-                    results.append(api_object)
-        return results
+    def has_query(query, substrings):
+        """Check if query is present via dot or underscore notation."""
+        return any(
+            s.startswith(query)
+            or ("_" in s and (f"_{query}" in s or f"_{query}_" in s))
+            for s in substrings
+        )
 
-    settings_results = _get_results(api_tree_datas[0])
-    tui_results = _get_results(api_tree_datas[1])
+    def extract_results(api_data):
+        results = set()
 
-    settings_results.sort()
-    tui_results.sort()
+        for api_object in api_data:
+            target = api_object
+            if api_path:
+                start = api_object.find(api_path)
+                if start == -1:
+                    continue
+                target = api_object[start:]
 
-    results.extend(settings_results)
-    results.extend(tui_results)
+            first_token = target.split()[0]
+            substrings = first_token.split(".")
 
-    if pyfluent.PRINT_SEARCH_RESULTS:
+            for query in queries:
+                if isinstance(query, tuple):
+                    name, score = query
+                    if (
+                        name in first_token
+                        and has_query(name, substrings)
+                        and name in substrings[-1]
+                    ):
+                        if score is not None:
+                            results.add((api_object, round(score, 2)))
+                else:
+                    name = query
+                    score = None
+
+                    if match_whole_word and (
+                        first_token == name or first_token.endswith(f".{name}")
+                    ):
+                        results.add(api_object)
+                    elif not match_whole_word and name in first_token:
+                        results.add(api_object)
+
+        return sorted(results)
+
+    all_results = []
+    final_results = []
+    for source in api_sources:
+        all_results.extend(extract_results(source))
+
+    if all_results and isinstance(queries[0], tuple):
+        all_results = sorted(all_results, key=lambda item: item[1], reverse=True)
+        final_results.extend(
+            [f"{api_name} (similarity: {score}%)" for api_name, score in all_results]
+        )
+
+    results = final_results or all_results
+    if pyfluent.config.print_search_results:
         for result in results:
             print(result)
     elif results:
@@ -230,26 +272,49 @@ def _get_wildcard_matches_for_word_from_names(word: str, names: list):
     return [name for name in names if regex.match(name)]
 
 
-def _search_wildcard(search_string: str, api_tree_data: dict):
+def _search_wildcard(
+    search_string: str | list[tuple[str, float]],
+    api_tree_data: dict,
+    api_path: str | None = None,
+):
     """Perform wildcard search for a word through the Fluent's object hierarchy.
 
     Parameters
     ----------
-    search_string: str
+    search_string: str | list[(str, float)]
         Word to search for. Semantic search is default.
     api_tree_data: dict
         All API object data.
+    api_path: str, optional
+        The API path to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
 
     Returns
     -------
         List of search string matches.
     """
-    api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
-    queries = _get_wildcard_matches_for_word_from_names(
-        search_string, names=api_tree_data["all_api_object_names"]
-    )
+    api_tree_data = api_tree_data or _get_api_tree_data()
+    all_names = api_tree_data["all_api_object_names"]
+    queries = []
+
+    def add_matches(word: str, score: float | None = None):
+        matches = _get_wildcard_matches_for_word_from_names(word, names=all_names)
+        if matches:
+            if score is not None:
+                queries.extend((match, score) for match in matches)
+            else:
+                queries.extend(matches)
+
+    if isinstance(search_string, str):
+        add_matches(search_string)
+    elif isinstance(search_string, list):
+        for word, score in search_string:
+            add_matches(word, score)
+
     if queries:
-        return _print_search_results(queries, api_tree_data=api_tree_data)
+        return _print_search_results(
+            queries, api_tree_data=api_tree_data, api_path=api_path
+        )
 
 
 def _get_exact_match_for_word_from_names(
@@ -269,7 +334,7 @@ def _get_exact_match_for_word_from_names(
     -------
         List of exact match.
     """
-    return list({name for name in names if word == name or word in name})
+    return list({name for name in names if word == name})
 
 
 def _get_capitalize_match_for_word_from_names(
@@ -343,6 +408,7 @@ def _search_whole_word(
     match_case: bool = False,
     match_whole_word: bool = True,
     api_tree_data: dict = None,
+    api_path: str | None = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.
 
@@ -358,6 +424,9 @@ def _search_whole_word(
         If ``True``, it matches the given word, and it's capitalize case.
     api_tree_data: dict
         All API object data.
+    api_path: str, optional
+        The API path to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
 
     Returns
     -------
@@ -401,7 +470,12 @@ def _search_whole_word(
                 )
             )
     if queries:
-        return _print_search_results(queries, api_tree_data=api_tree_data)
+        return _print_search_results(
+            queries,
+            api_tree_data=api_tree_data,
+            api_path=api_path,
+            match_whole_word=match_whole_word,
+        )
 
 
 def _download_nltk_data():
@@ -426,7 +500,41 @@ def _download_nltk_data():
         )
 
 
-def _search_semantic(search_string: str, language: str, api_tree_data: dict):
+def _are_words_semantically_close(query, api_name, language="eng"):
+    from nltk.corpus import wordnet as wn
+
+    similarity_threshold = (
+        3.2 if language == "eng" else 0.8
+    )  # Max values are 3.7 and 1.0 respectively
+    max_similarity = 0.0
+
+    synsets1 = wn.synsets(query, lang=language)
+    synsets2 = wn.synsets(api_name, lang="eng")
+
+    for syn1 in synsets1:
+        for syn2 in synsets2:
+            if syn1.pos() == syn2.pos():
+                similarity = (
+                    syn1.lch_similarity(syn2)  # Leacock–Chodorow similarity
+                    if language == "eng"
+                    else syn1.wup_similarity(syn2)  # Wu–Palmer similarity
+                )
+                if similarity is not None:
+                    max_similarity = max(max_similarity, similarity)
+                    if similarity >= similarity_threshold:
+                        score = (
+                            (similarity / 3.7) * 100
+                            if language == "eng"
+                            else similarity * 100
+                        )
+                        return True, score
+
+    return False, 0
+
+
+def _search_semantic(
+    search_string: str, language: str, api_tree_data: dict, api_path: str | None = None
+):
     """Perform semantic search for a word through the Fluent's object hierarchy.
 
     Parameters
@@ -445,26 +553,26 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
     queries: list
         List of search string matches.
     """
-    from nltk.corpus import wordnet as wn
-
     api_tree_data = api_tree_data if api_tree_data else _get_api_tree_data()
     similar_keys = set()
-    search_string_synsets = set(wn.synsets(search_string, lang=language))
-    for api_object_name, api_object_synset_names in list(
-        api_tree_data["all_api_object_name_synsets"].items()
-    ):
-        api_object_synsets = {
-            wn.synset(api_object_synset_name)
-            for api_object_synset_name in api_object_synset_names
-        }
-        if search_string_synsets & api_object_synsets:
-            similar_keys.add(api_object_name + "*")
+    api_object_names = api_tree_data["all_api_object_names"]
+    for api_object_name in api_object_names:
+        api_obj_name = (
+            api_object_name.replace("_", " ")
+            if "_" in api_object_name
+            else api_object_name
+        )
+        is_similar, score = _are_words_semantically_close(
+            search_string, api_obj_name, language=language
+        )
+        if is_similar:
+            similar_keys.add((api_object_name + "*", score))
     if similar_keys:
+        sorted_similar_keys = sorted(similar_keys)
         results = []
-        for key in similar_keys:
-            result = _search_wildcard(key, api_tree_data)
-            if result:
-                results.extend(result)
+        result = _search_wildcard(sorted_similar_keys, api_tree_data, api_path=api_path)
+        if result:
+            results.extend(result)
         if results:
             return results
     else:
@@ -473,15 +581,17 @@ def _search_semantic(search_string: str, language: str, api_tree_data: dict):
             names=api_tree_data["all_api_object_names"],
         )
         if queries:
-            return _print_search_results(queries, api_tree_data=api_tree_data)
+            return _print_search_results(
+                queries, api_tree_data=api_tree_data, api_path=api_path
+            )
 
 
 def search(
     search_string: str,
     language: str | None = "eng",
-    wildcard: bool | None = False,
     match_whole_word: bool = False,
     match_case: bool | None = True,
+    api_path: str | None = None,
 ):
     """Search for a word through the Fluent's object hierarchy.
 
@@ -493,52 +603,49 @@ def search(
         ISO 639-3 code for the language to use for the semantic search.
         The default is ``eng`` for English. For the list of supported languages,
         see `OMW Version 1 <https://omwn.org/omw1.html>`_.
-    wildcard: bool, optional
-        Whether to use the wildcard pattern. The default is ``False``. If ``True``, the
-        wildcard pattern is based on the ``fnmatch`` module and semantic matching
-        is turned off.
     match_whole_word: bool, optional
         Whether to find only exact matches. The default is ``False``. If ``True``,
         only exact matches are found and semantic matching is turned off.
     match_case: bool, optional
         Whether to match case. The default is ``True``. If ``False``, the search is case-insensitive.
+    api_path: str, optional
+        The API path to search in. The default is ``None``. If ``None``, it searches in the whole
+        Fluent's object hierarchy.
 
     Examples
     --------
     >>> import ansys.fluent.core as pyfluent
     >>> pyfluent.search("font", match_whole_word=True)
     >>> pyfluent.search("Font")
-    >>> pyfluent.search("iter*", wildcard=True)
+    >>> pyfluent.search("local*", api_path="<solver_session>.setup")
+    <solver_session>.setup.dynamic_mesh.methods.smoothing.radial_settings.local_smoothing (Parameter)
+    <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
+    <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
     >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
-    The most similar API objects are:
     <solver_session>.file.read (Command)
     <solver_session>.file.import_.read (Command)
     <solver_session>.mesh.surface_mesh.read (Command)
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
     """
-    if (wildcard and match_whole_word) or (wildcard and match_case):
-        warnings.warn(
-            "``wildcard=True`` matches wildcard pattern.",
-            UserWarning,
-        )
-    elif language and wildcard:
-        warnings.warn(
-            "``wildcard=True`` matches wildcard pattern.",
-            UserWarning,
-        )
 
     api_tree_data = _get_api_tree_data()
 
-    if wildcard:
+    wildcard_pattern = re.compile(r"[*?\[\]]")
+
+    if bool(wildcard_pattern.search(search_string)):
         return _search_wildcard(
             search_string,
             api_tree_data=api_tree_data,
+            api_path=api_path,
         )
     elif match_whole_word:
         if not match_case:
             return _search_whole_word(
-                search_string, match_whole_word=True, api_tree_data=api_tree_data
+                search_string,
+                match_whole_word=True,
+                api_tree_data=api_tree_data,
+                api_path=api_path,
             )
         else:
             return _search_whole_word(
@@ -546,16 +653,17 @@ def search(
                 match_case=True,
                 match_whole_word=True,
                 api_tree_data=api_tree_data,
+                api_path=api_path,
             )
     else:
         try:
             return _search_semantic(
-                search_string, language, api_tree_data=api_tree_data
+                search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
         except ModuleNotFoundError:
             pass
         except LookupError:
             _download_nltk_data()
             return _search_semantic(
-                search_string, language, api_tree_data=api_tree_data
+                search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )

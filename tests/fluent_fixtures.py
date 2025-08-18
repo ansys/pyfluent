@@ -193,7 +193,7 @@ monkeypatch = pytest.MonkeyPatch()
 
 
 def disable_datamodel_cache(globals):
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
+    monkeypatch.setattr(pyfluent.config, "datamodel_use_state_cache", False)
 
 
 def display_names_as_keys_in_cache(globals):

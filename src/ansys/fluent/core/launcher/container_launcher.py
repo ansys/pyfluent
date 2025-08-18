@@ -26,7 +26,7 @@ Examples
 --------
 
 >>> from ansys.fluent.core.launcher.launcher import create_launcher
->>> from ansys.fluent.core.launcher.pyfluent_enums import LaunchMode, FluentMode
+>>> from ansys.fluent.core.launcher.launch_options import LaunchMode, FluentMode
 
 >>> container_meshing_launcher = create_launcher(LaunchMode.CONTAINER, mode=FluentMode.MESHING)
 >>> container_meshing_session = container_meshing_launcher()
@@ -35,19 +35,19 @@ Examples
 >>> container_solver_session = container_solver_launcher()
 """
 
+import inspect
 import logging
 import os
+import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
+    dict_to_str,
     start_fluent_container,
 )
-from ansys.fluent.core.launcher.process_launch_string import (
-    _build_fluent_launch_args_string,
-)
-from ansys.fluent.core.launcher.pyfluent_enums import (
+from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
     FluentMode,
@@ -56,12 +56,32 @@ from ansys.fluent.core.launcher.pyfluent_enums import (
     UIMode,
     _get_argvals_and_session,
 )
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.launcher.process_launch_string import (
+    _build_fluent_launch_args_string,
+)
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
+
+
+def _get_server_info_from_container(config_dict):
+    """Retrieve the server info from a specified file in a container."""
+
+    host_server_info_file = config_dict["host_server_info_file"]
+
+    time_limit = 0
+    while not host_server_info_file.exists():
+        time.sleep(2)
+        time_limit += 2
+        if time_limit > 60:
+            raise FileNotFoundError(f"{host_server_info_file} not found.")
+
+    return _parse_server_info_file(str(host_server_info_file))
 
 
 class DockerLauncher:
@@ -88,6 +108,8 @@ class DockerLauncher:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
     ):
         """
         Launch a Fluent session in container mode.
@@ -141,6 +163,10 @@ class DockerLauncher:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
+        use_docker_compose: bool
+            Whether to use Docker Compose to launch Fluent.
+        use_podman_compose: bool
+            Whether to use Podman Compose to launch Fluent.
 
         Returns
         -------
@@ -157,7 +183,12 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        self.argvals, self.new_session = _get_argvals_and_session(locals().copy())
+        locals_ = locals().copy()
+        argvals = {
+            arg: locals_.get(arg)
+            for arg in inspect.getargvalues(inspect.currentframe()).args
+        }
+        self.argvals, self.new_session = _get_argvals_and_session(argvals)
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60
         self.file_transfer_service = file_transfer_service
@@ -173,28 +204,41 @@ class DockerLauncher:
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
+        self._compose_config = ComposeConfig(use_docker_compose, use_podman_compose)
 
     def __call__(self):
+
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
-                self._args, **self.argvals["container_dict"]
+                self._args,
+                compose_config=self._compose_config,
+                **self.argvals["container_dict"],
             )
-            from pprint import pprint
-
+            dict_str = dict_to_str(config_dict)
             print("\nDocker container run configuration:\n")
             print("config_dict = ")
-            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
-                pprint(config_dict)
-            else:
-                config_dict_h = config_dict.copy()
-                config_dict_h.pop("environment")
-                pprint(config_dict_h)
-                del config_dict_h
+            print(dict_str)
             return config_dict
 
-        port, password, container = start_fluent_container(
-            self._args, self.argvals["container_dict"]
-        )
+        logger.debug(f"Fluent container launcher args: {self._args}")
+        logger.debug(f"Fluent container launcher argvals:\n{dict_to_str(self.argvals)}")
+
+        if self._compose_config.is_compose:
+            port, config_dict, container = start_fluent_container(
+                self._args,
+                self.argvals["container_dict"],
+                self.argvals["start_timeout"],
+                compose_config=self._compose_config,
+            )
+
+            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+        else:
+            port, password, container = start_fluent_container(
+                self._args,
+                self.argvals["container_dict"],
+                self.argvals["start_timeout"],
+                compose_config=self._compose_config,
+            )
 
         fluent_connection = FluentConnection(
             port=port,
@@ -203,20 +247,30 @@ class DockerLauncher:
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),
             inside_container=True,
+            container=container,
+            compose_config=self._compose_config,
         )
+
+        self.argvals["compose_config"] = self._compose_config
 
         session = self.new_session(
             fluent_connection=fluent_connection,
             scheme_eval=fluent_connection._connection_interface.scheme_eval,
             file_transfer_service=self.file_transfer_service,
             start_transcript=self.argvals["start_transcript"],
+            launcher_args=self.argvals,
         )
+
         session._container = container
 
-        if self.argvals["start_watchdog"] is None and self.argvals["cleanup_on_exit"]:
-            self.argvals["start_watchdog"] = True
-        if self.argvals["start_watchdog"]:
-            logger.debug("Launching Watchdog for Fluent container...")
-            watchdog.launch(os.getpid(), port, password)
+        if not self._compose_config.is_compose:
+            if (
+                self.argvals["start_watchdog"] is None
+                and self.argvals["cleanup_on_exit"]
+            ):
+                self.argvals["start_watchdog"] = True
+            if self.argvals["start_watchdog"]:
+                logger.debug("Launching Watchdog for Fluent container...")
+                watchdog.launch(os.getpid(), port, password)
 
         return session

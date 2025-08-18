@@ -2,8 +2,8 @@
 
 .. vale Google.Spacing = NO
 
-Use TUI commands
-================
+Using TUI commands
+==================
 
 TUI commands refer to a programming interface that mirrors the Fluent TUI (text
 user interface). There is a TUI command hierarchy defined for each of the two
@@ -32,7 +32,7 @@ by :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>` f
 
 .. code-block:: python
 
-   >>> dir(solver.tui.define.models.viscous)
+   >>> dir(solver_session.tui.define.models.viscous)
    ['add_intermittency_transition_model', 'add_transition_model',
    'corner_flow_correction', 'curvature_correction',
    'detached_eddy_simulation', 'inviscid', 'k_kl_w', 'ke_realizable', 'ke_rng',
@@ -45,7 +45,7 @@ To see the documentation for the viscous model menu options, you can run:
 
 .. code-block:: python
 
-   >>> help(solver.tui.define.models.viscous)
+   >>> help(solver_session.tui.define.models.viscous)
    Help on viscous in module ansys.fluent.core.generated.solver.tui_241 object:
 
    class viscous(ansys.fluent.core.services.datamodel_tui.TUIMenu)
@@ -109,7 +109,7 @@ PyFluent, where :obj:`~ansys.fluent.core.session_solver.Solver` is the session i
 
 .. code:: python
 
-   solver.settings.setup.boundary_conditions.velocity_inlet['inlet1'] = {"t" : 293.15}
+   solver_session.settings.setup.boundary_conditions.velocity_inlet['inlet1'] = {"t" : 293.15}
 
 In the above example, the settings API command is recorded as that exists for the TUI
 command. An example where settings API doesn't exist is setting the pressure unit:
@@ -122,7 +122,7 @@ The corresponding Python command recorded in the Python journal is:
 
 .. code:: python
 
-   solver.tui.define.units('pressure', '"Pa"')
+   solver_session.tui.define.units('pressure', '"Pa"')
 
 Note, the string ``"Pa"`` is wrapped in single quotation marks
 to preserve the double quotation marks around the TUI argument.

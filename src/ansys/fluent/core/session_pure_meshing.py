@@ -27,6 +27,7 @@ from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.session import BaseSession
@@ -120,7 +121,7 @@ class PureMeshing(BaseSession):
                 self.datamodel_streams[rules] = stream
                 stream.start(
                     rules=rules,
-                    no_commands_diff_state=pyfluent.DATAMODEL_USE_NOCOMMANDS_DIFF_STATE,
+                    no_commands_diff_state=pyfluent.config.datamodel_use_nocommands_diff_state,
                 )
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 
@@ -181,13 +182,12 @@ class PureMeshing(BaseSession):
 
         Raises
         ------
-        RuntimeError
+        AttributeError
             If beta features are not enabled in Fluent.
         """
-        if not self._app_utilities.is_beta_enabled():
-            raise RuntimeError("Topology-based Meshing is a beta feature in Fluent.")
-        self._base_meshing.topology_based_meshing_workflow.initialize()
-        return self._base_meshing.topology_based_meshing_workflow
+        if not self._is_beta_enabled:
+            raise BetaFeaturesNotEnabled("Topology-based meshing")
+        return self._base_meshing.topology_based_meshing_workflow()
 
     @property
     def PartManagement(self):

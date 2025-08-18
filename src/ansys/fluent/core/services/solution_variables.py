@@ -42,6 +42,11 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
+from ansys.fluent.core.variable_strategies import (
+    FluentSVarNamingStrategy as naming_strategy,
+)
+
+_to_field_name_str = naming_strategy().to_string
 
 
 class SolutionVariableService:
@@ -87,7 +92,7 @@ class SolutionVariableInfo:
     >>> print(solution_variable_info_centroid)
     >>> name:SV_CENTROID dimension:3 field_type:<class 'numpy.float64'>
     >>> zones_info = solution_variable_info.get_zones_info()
-    >>> print(zones_info.zones)
+    >>> print(zones_info.zone_names)
     >>> ['fluid', 'wall', 'symmetry', 'pressure-outlet-7', 'velocity-inlet-6', 'velocity-inlet-5', 'default-interior']
     >>> zone_info = zones_info['wall']
     >>> print(zone_info)
@@ -203,7 +208,16 @@ class SolutionVariableInfo:
             return self._zones_info.get(name, None)
 
         @property
-        def zones(self) -> List[str]:
+        def zones(self):
+            """Get zone names."""
+            warnings.warn(
+                "'zones' is deprecated, use 'zone_names' instead",
+                PyFluentDeprecationWarning,
+            )
+            return self.zone_names
+
+        @property
+        def zone_names(self) -> List[str]:
             """Get zone names."""
             return list(self._zones_info.keys())
 
@@ -285,16 +299,15 @@ class SolutionVariableInfo:
         return SolutionVariableInfo.ZonesInfo(response.zonesInfo, response.domainsInfo)
 
 
-class SvarError(ValueError):
+class InvalidSolutionVariableNameError(ValueError):
     """Exception class for errors in solution variable name."""
 
-    def __init__(self, solution_variable_name: str, allowed_values: List[str]):
-        """Initialize SvarError."""
-        self.solution_variable_name = solution_variable_name
+    def __init__(self, variable_name: str, allowed_values: List[str]):
+        """Initialize InvalidSolutionVariableNameError."""
         super().__init__(
             allowed_name_error_message(
                 context="solution variable",
-                trial_name=solution_variable_name,
+                trial_name=variable_name,
                 allowed_values=allowed_values,
             )
         )
@@ -332,18 +345,16 @@ class _AllowedSvarNames:
 
     def is_valid(
         self,
-        solution_variable_name,
+        variable_name,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ):
         """Check whether solution variable name is valid or not."""
-        return solution_variable_name in self(
-            zone_names=zone_names, domain_name=domain_name
-        )
+        return variable_name in self(zone_names=zone_names, domain_name=domain_name)
 
     def valid_name(
         self,
-        solution_variable_name,
+        variable_name,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ):
@@ -351,17 +362,18 @@ class _AllowedSvarNames:
 
         Raises
         ------
-        SvarError
+        InvalidSolutionVariableNameError
             If the given solution variable name is invalid.
         """
+        variable_name = _to_field_name_str(variable_name)
         if not self.is_valid(
-            solution_variable_name, zone_names=zone_names, domain_name=domain_name
+            variable_name, zone_names=zone_names, domain_name=domain_name
         ):
-            raise SvarError(
-                solution_variable_name=solution_variable_name,
+            raise InvalidSolutionVariableNameError(
+                variable_name=variable_name,
                 allowed_values=self(zone_names=zone_names, domain_name=domain_name),
             )
-        return solution_variable_name
+        return variable_name
 
 
 class _AllowedZoneNames(_AllowedNames):
@@ -369,7 +381,7 @@ class _AllowedZoneNames(_AllowedNames):
         self._zones_info = solution_variable_info.get_zones_info()
 
     def __call__(self) -> List[str]:
-        return self._zones_info.zones
+        return self._zones_info.zone_names
 
     def valid_name(self, zone_name):
         """Get a valid zone name.
@@ -485,10 +497,10 @@ class SolutionVariableData:
     Examples
     --------
     >>> solution_variable_data = solver_session.fields.solution_variable_data
-    >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(solution_variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
+    >>> sv_t_wall_fluid=solver_session.fields.solution_variable_data.get_data(variable_name="SV_T", domain_name="mixture", zone_names=["fluid", "wall"])
     >>> print(sv_t_wall_fluid.domain)
     >>> 'mixture'
-    >>> print(sv_t_wall_fluid.zones)
+    >>> print(sv_t_wall_fluid.zone_names)
     >>> ['fluid', 'wall']
     >>> fluid_temp = sv_t_wall_fluid['fluid']
     >>> print(fluid_temp.size)
@@ -501,8 +513,8 @@ class SolutionVariableData:
     >>> fluid_temp_array =solution_variable_data.create_empty_array("SV_T", "fluid")
     >>> wall_temp_array[:]= 500
     >>> fluid_temp_array[:]= 600
-    >>> zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
-    >>> solution_variable_data.set_data(solution_variable_name="SV_T", domain_name="mixture", zone_names_to_solution_variable_data=zone_names_to_solution_variable_data)
+    >>> zone_names_to_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
+    >>> solution_variable_data.set_data(variable_name="SV_T", domain_name="mixture", zone_names_to_data=zone_names_to_data)
     """
 
     class Data:
@@ -523,7 +535,16 @@ class SolutionVariableData:
 
         @property
         def zones(self):
-            """Zone name."""
+            """Zone names."""
+            warnings.warn(
+                "'zones' is deprecated, use 'zone_names' instead",
+                PyFluentDeprecationWarning,
+            )
+            return self.zone_names
+
+        @property
+        def zone_names(self):
+            """Zone names."""
             return list(self._data.keys())
 
         @property
@@ -562,7 +583,7 @@ class SolutionVariableData:
 
     def create_empty_array(
         self,
-        solution_variable_name: str,
+        variable_name: str,
         zone_name: str,
         domain_name: str | None = "mixture",
     ) -> np.zeros:
@@ -573,20 +594,20 @@ class SolutionVariableData:
         self._update_solution_variable_info()
 
         zones_info = self._solution_variable_info.get_zones_info()
-        if zone_name in zones_info.zones:
+        if zone_name in zones_info.zone_names:
             solution_variables_info = self._solution_variable_info.get_variables_info(
                 zone_names=[zone_name], domain_name=domain_name
             )
-            if solution_variable_name in solution_variables_info.solution_variables:
+            if variable_name in solution_variables_info.solution_variables:
                 return np.zeros(
                     zones_info[zone_name].count
-                    * solution_variables_info[solution_variable_name].dimension,
-                    dtype=solution_variables_info[solution_variable_name].field_type,
+                    * solution_variables_info[variable_name].dimension,
+                    dtype=solution_variables_info[variable_name].field_type,
                 )
 
     def get_data(
         self,
-        solution_variable_name: str,
+        variable_name: str,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ) -> Data:
@@ -594,10 +615,10 @@ class SolutionVariableData:
 
         Parameters
         ----------
-        solution_variable_name : str
-            Name of the SVAR.
+        variable_name : str
+            Name of the solution variable.
         zone_names: List[str]
-            Zone names list for SVAR data.
+            Zone names list for solution variable data.
         domain_name : str, optional
             Domain name. The default is ``mixture``.
 
@@ -613,7 +634,9 @@ class SolutionVariableData:
         )
         svars_request.domainId = self._allowed_domain_names.valid_name(domain_name)
         svars_request.name = self._allowed_solution_variable_names.valid_name(
-            solution_variable_name, zone_names, domain_name
+            variable_name,
+            zone_names,
+            domain_name,
         )
         zone_id_name_map = {}
         for zone_name in zone_names:
@@ -629,7 +652,7 @@ class SolutionVariableData:
 
     def get_svar_data(
         self,
-        svar_name: str,
+        variable_name: str,
         zone_names: List[str],
         domain_name: str | None = "mixture",
     ) -> Data:
@@ -639,25 +662,25 @@ class SolutionVariableData:
             PyFluentDeprecationWarning,
         )
         return self.get_data(
-            solution_variable_name=svar_name,
+            variable_name=variable_name,
             zone_names=zone_names,
             domain_name=domain_name,
         )
 
     def set_data(
         self,
-        solution_variable_name: str,
-        zone_names_to_solution_variable_data: Dict[str, np.array],
+        variable_name: str,
+        zone_names_to_data: Dict[str, np.array],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set SVAR data on zones.
 
         Parameters
         ----------
-        solution_variable_name : str
-            Name of the SVAR.
-        zone_names_to_solution_variable_data: Dict[str, np.array]
-            Dictionary containing zone names for SVAR data.
+        variable_name : str
+            Name of the solution variable.
+        zone_names_to_data: Dict[str, np.array]
+            Dictionary containing zone names for solution variable data.
         domain_name : str, optional
             Domain name. The default is ``mixture``.
 
@@ -669,7 +692,7 @@ class SolutionVariableData:
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
             self._allowed_zone_names.valid_name(zone_name): solution_variable_data
-            for zone_name, solution_variable_data in zone_names_to_solution_variable_data.items()
+            for zone_name, solution_variable_data in zone_names_to_data.items()
         }
 
         def generate_set_data_requests():
@@ -678,7 +701,7 @@ class SolutionVariableData:
             set_data_requests.append(
                 SvarProtoModule.SetSvarDataRequest(
                     header=SvarProtoModule.SvarHeader(
-                        name=solution_variable_name, domainId=domain_id
+                        name=variable_name, domainId=domain_id
                     )
                 )
             )
@@ -746,17 +769,17 @@ class SolutionVariableData:
 
     def set_svar_data(
         self,
-        svar_name: str,
-        zone_names_to_svar_data: List[str],
+        variable_name: str,
+        zone_names_to_svar_data: Dict[str, np.array],
         domain_name: str | None = "mixture",
-    ) -> Data:
+    ) -> None:
         """Set solution variable data."""
         warnings.warn(
             "set_svar_data is deprecated, use set_data instead",
             PyFluentDeprecationWarning,
         )
         return self.set_data(
-            solution_variable_name=svar_name,
-            zone_names_to_solution_variable_data=zone_names_to_svar_data,
+            variable_name=variable_name,
+            zone_names_to_data=zone_names_to_svar_data,
             domain_name=domain_name,
         )

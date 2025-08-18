@@ -1,0 +1,9 @@
+# Description of columns in field_level_help.csv
+# Format: Rules, Path, Type, Exposure level, XML key, Help content
+
+Rules - String - Name of the rules, e.g. "meshing", "workflow" etc.
+Path - String - Datamodel path to the field, e.g. "/ImportGeometry/FileFormat"
+Type - String - Type of the field, e.g. "Real", "String", "Struct" etc.
+Exposure level - String - Exposure level of the field, can be "User" or "Developer"
+XML key - String - The XML key of the field in Fluent's fluent_gui_help.xml, "__missing__" if the field is not present in the XML file.
+Help content - String - The help content for the field, extracted from Fluent's fluent_gui_help.xml, "__missing__" if the field is not present in the XML file.

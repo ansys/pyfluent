@@ -54,15 +54,12 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
+import os
+import platform
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.visualization import set_config
-import ansys.fluent.visualization.pyvista as pv
-
-#######################################################################################
-# Configure specific settings for this example
-# =====================================================================================
-set_config(blocking=True, set_view_on_display="isometric")
+from ansys.fluent.visualization import Contour, GraphicsWindow
 
 #######################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
@@ -79,14 +76,21 @@ print(session.get_fluent_version())
 # =====================================================================================
 
 workflow = session.workflow
+
+filenames = {
+    "Windows": "ahmed_body_20_0degree_boi_half.scdoc",
+    "Other": "ahmed_body_20_0degree_boi_half.scdoc.pmdb",
+}
+
 geometry_filename = examples.download_file(
-    "ahmed_body_20_0degree_boi_half.scdoc",
+    filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/Ahmed-Body-Simulation",
+    save_path=os.getcwd(),
 )
+
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
 workflow.TaskObject["Import Geometry"].Execute()
-
 
 #######################################################################################
 # Add Local Face Sizing
@@ -322,17 +326,17 @@ session.results.surfaces.iso_surface.create(name="xmid")
 session.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
 session.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
-graphics_session1 = pv.Graphics(session)
-contour1 = graphics_session1.Contours["contour-1"]
-contour1.field = "velocity-magnitude"
-contour1.surfaces_list = ["xmid"]
-contour1.display("window-1")
+contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])
+disp1 = GraphicsWindow()
+disp1.add_graphics(contour1)
+disp1.show()
 
-contour2 = graphics_session1.Contours["contour-2"]
+contour2 = Contour(solver=session, surfaces=["xmid"])
 contour2.field.allowed_values
 contour2.field = "pressure-coefficient"
-contour2.surfaces_list = ["xmid"]
-contour2.display("window-2")
+disp2 = GraphicsWindow()
+disp2.add_graphics(contour2)
+disp2.show()
 
 #######################################################################################
 # Simulation Results Visualization

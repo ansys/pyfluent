@@ -36,21 +36,22 @@ import socket
 import subprocess
 import threading
 from typing import Any, Callable, List, Tuple, TypeVar
-import warnings
 import weakref
 
+from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
     AppUtilitiesService,
+    AppUtilitiesV252,
 )
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
@@ -150,7 +151,12 @@ def get_container(container_id_or_name: str) -> bool | ContainerT | None:
         container = docker_client.containers.get(container_id_or_name)
     except _docker().errors.NotFound:  # NotFound is a child from DockerException
         return False
-    except _docker().errors.DockerException as exc:
+    # DockerException is the most common exception we can get here.
+    # However, in some system setup, we get ReadTimeoutError from urllib3 library
+    # (https://github.com/ansys/pyfluent/issues/3425).
+    # As urllib3 is not a direct dependency of PyFluent, we don't want to import it here,
+    # hence we catch the generic Exception.
+    except Exception as exc:
         logger.info(f"{type(exc).__name__}: {exc}")
         return None
     return container
@@ -246,9 +252,9 @@ class FluentConnectionProperties:
 
 def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, int):
     if not ip:
-        ip = os.getenv("PYFLUENT_FLUENT_IP", "127.0.0.1")
+        ip = pyfluent.config.launch_fluent_ip or "127.0.0.1"
     if not port:
-        port = os.getenv("PYFLUENT_FLUENT_PORT")
+        port = pyfluent.config.launch_fluent_port
     if not port:
         raise PortNotProvided()
     return ip, port
@@ -272,24 +278,28 @@ class _ConnectionInterface:
         self.scheme_eval = service_creator("scheme_eval").create(
             self._scheme_eval_service
         )
-        if (
-            pyfluent.FluentVersion(self.scheme_eval.version)
-            < pyfluent.FluentVersion.v252
-        ):
-            self._app_utilities = AppUtilitiesOld(self.scheme_eval)
-        else:
-            self._app_utilities_service = create_grpc_service(
-                AppUtilitiesService, error_state
-            )
-            self._app_utilities = service_creator("app_utilities").create(
-                self._app_utilities_service
-            )
+        self._app_utilities_service = create_grpc_service(
+            AppUtilitiesService, error_state
+        )
+        match pyfluent.FluentVersion(self.scheme_eval.version):
+            case v if v < pyfluent.FluentVersion.v252:
+                self._app_utilities = AppUtilitiesOld(self.scheme_eval)
+
+            case pyfluent.FluentVersion.v252:
+                self._app_utilities = AppUtilitiesV252(
+                    self._app_utilities_service, self.scheme_eval
+                )
+
+            case _:
+                self._app_utilities = service_creator("app_utilities").create(
+                    self._app_utilities_service
+                )
 
     @property
     def product_build_info(self) -> str:
         """Get Fluent build information."""
         build_info = self._app_utilities.get_build_info()
-        return f'Build Time: {build_info["build_time"]}  Build Id: {build_info["build_id"]}  Revision: {build_info["vcs_revision"]}  Branch: {build_info["vcs_branch"]}'
+        return f"Build Time: {build_info.build_time}  Build Id: {build_info.build_id}  Revision: {build_info.vcs_revision}  Branch: {build_info.vcs_branch}"
 
     def get_cortex_connection_properties(self):
         """Get connection properties of Fluent."""
@@ -300,10 +310,10 @@ class _ConnectionInterface:
             logger.debug("Obtaining Cortex connection properties...")
             cortex_info = self._app_utilities.get_controller_process_info()
             solver_info = self._app_utilities.get_solver_process_info()
-            fluent_host_pid = solver_info["process_id"]
-            cortex_host = cortex_info["hostname"]
-            cortex_pid = cortex_info["process_id"]
-            cortex_pwd = cortex_info["working_directory"]
+            fluent_host_pid = solver_info.process_id
+            cortex_host = cortex_info.hostname
+            cortex_pid = cortex_info.process_id
+            cortex_pwd = cortex_info.working_directory
             logger.debug("Cortex connection properties successfully obtained.")
         except _InactiveRpcError:
             logger.warning(
@@ -351,8 +361,6 @@ class FluentConnection:
 
     Methods
     -------
-    check_health()
-        Check health of Fluent connection.
     exit()
         Close the Fluent connection and exit Fluent.
     """
@@ -372,6 +380,8 @@ class FluentConnection:
         file_transfer_service: Any | None = None,
         slurm_job_id: str | None = None,
         inside_container: bool | None = None,
+        container: ContainerT | None = None,
+        compose_config: ComposeConfig | None = None,
     ):
         """Initialize a Session.
 
@@ -408,12 +418,18 @@ class FluentConnection:
         inside_container: bool, optional
             Whether the Fluent session that is being connected to
             is running inside a Docker container.
+        container: ContainerT, optional
+            The container instance if the Fluent session is running inside
+            a container.
+        compose_config: ComposeConfig, optional
+            Configuration for Docker Compose or Podman Compose.
 
         Raises
         ------
         PortNotProvided
             If port is not provided.
         """
+        self._compose_config = compose_config if compose_config else ComposeConfig()
         self._error_state = ErrorState()
         self._data_valid = False
         self._channel_str = None
@@ -429,14 +445,14 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self.health_check = service_creator("health_check").create(
+        self._health_check = service_creator("health_check").create(
             self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
-        if pyfluent.CHECK_HEALTH:
-            self.health_check.check_health()
+        if pyfluent.config.check_health:
+            self._health_check.check_health()
 
         self._slurm_job_id = slurm_job_id
 
@@ -453,15 +469,16 @@ class FluentConnection:
             self._connection_interface.get_cortex_connection_properties()
         )
         self._cleanup_on_exit = cleanup_on_exit
-
+        self._container = container
         if (
             (inside_container is None or inside_container is True)
             and not remote_instance
             and cortex_host is not None
         ):
             logger.info("Checking if Fluent is running inside a container.")
-            inside_container = get_container(cortex_host)
-            logger.debug(f"get_container({cortex_host}): {inside_container}")
+            if not self._compose_config.is_compose:
+                inside_container = get_container(cortex_host)
+                logger.debug(f"get_container({cortex_host}): {inside_container}")
             if inside_container is False:
                 logger.info("Fluent is not running inside a container.")
             elif inside_container is None:
@@ -509,6 +526,12 @@ class FluentConnection:
         )
         FluentConnection._monitor_thread.cbs.append(self._finalizer)
 
+    @property
+    @deprecated(version="0.32", reason="No longer required at this level.")
+    def health_check(self):
+        """Provides access to Health Check service."""
+        return self._health_check
+
     def _close_slurm(self):
         subprocess.run(["scancel", f"{self._slurm_job_id}"])
 
@@ -519,13 +542,21 @@ class FluentConnection:
         -----
         If the Fluent session is responsive, prefer using :func:`exit()` instead.
 
+        Raises
+        ------
+        subprocess.CalledProcessError
+            If the cleanup script fails to execute.
+
         Examples
         --------
         >>> import ansys.fluent.core as pyfluent
         >>> session = pyfluent.launch_fluent()
         >>> session.force_exit()
         """
-        if self.connection_properties.inside_container:
+        if (
+            self.connection_properties.inside_container
+            or self._compose_config.is_compose
+        ):
             self._force_exit_container()
         elif self._remote_instance is not None:
             logger.error("Cannot execute cleanup script, Fluent running remotely.")
@@ -559,11 +590,15 @@ class FluentConnection:
                 )
                 cmd_list.append(cleanup_file_name)
                 logger.debug(f"Cleanup command list = {cmd_list}")
-                subprocess.Popen(
+                result = subprocess.run(
                     cmd_list,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
+                    timeout=120,
+                    check=True,
                 )
+                if result.returncode != 0:
+                    raise subprocess.CalledProcessError(result.returncode, cmd_list)
             elif self._slurm_job_id:
                 logger.debug("Fluent running inside Slurm, closing Slurm session...")
                 self._close_slurm()
@@ -573,25 +608,35 @@ class FluentConnection:
     def _force_exit_container(self):
         """Immediately terminates the Fluent client running inside a container, losing
         unsaved progress and data."""
-        container = self.connection_properties.inside_container
-        container_id = self.connection_properties.cortex_host
-        pid = self.connection_properties.fluent_host_pid
-        cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
-        logger.debug(f"Executing Fluent container cleanup script: {cleanup_file_name}")
-        if get_container(container_id):
-            try:
-                container.exec_run(["bash", cleanup_file_name], detach=True)
-            except _docker().errors.APIError as e:
-                logger.info(f"{type(e).__name__}: {e}")
-                logger.debug(
-                    "Caught Docker APIError, Docker container probably not running anymore."
-                )
+        if self._compose_config.is_compose and self._container:
+            self._container.stop()
         else:
-            logger.debug("Container not found, cancelling cleanup script execution.")
+            container = self.connection_properties.inside_container
+            container_id = self.connection_properties.cortex_host
+            pid = self.connection_properties.fluent_host_pid
+            cleanup_file_name = f"cleanup-fluent-{container_id}-{pid}.sh"
+            logger.debug(
+                f"Executing Fluent container cleanup script: {cleanup_file_name}"
+            )
+            if get_container(container_id):
+                try:
+                    container.exec_run(["bash", cleanup_file_name], detach=True)
+                except _docker().errors.APIError as e:
+                    logger.info(f"{type(e).__name__}: {e}")
+                    logger.debug(
+                        "Caught Docker APIError, Docker container probably not running anymore."
+                    )
+            else:
+                logger.debug(
+                    "Container not found, cancelling cleanup script execution."
+                )
 
-    def register_finalizer_cb(self, cb):
+    def register_finalizer_cb(self, cb, at_start=False):
         """Register a callback to run with the finalizer."""
-        self.finalizer_cbs.append(cb)
+        if at_start:
+            self.finalizer_cbs.insert(0, cb)
+        else:
+            self.finalizer_cbs.append(cb)
 
     def create_grpc_service(self, service, *args):
         """Create a gRPC service.
@@ -609,11 +654,6 @@ class FluentConnection:
             service object
         """
         return service(self._channel, self._metadata, *args)
-
-    def check_health(self) -> str:
-        """Check health of Fluent connection."""
-        warnings.warn("Use -> health_check.status()", PyFluentDeprecationWarning)
-        return self.health_check.status()
 
     def wait_process_finished(self, wait: float | int | bool = 60):
         """Returns ``True`` if local Fluent processes have finished, ``False`` if they
@@ -645,7 +685,11 @@ class FluentConnection:
             logger.info(f"Waiting {wait} seconds for Fluent processes to finish...")
         else:
             raise WaitTypeError()
-        if self.connection_properties.inside_container:
+
+        if (
+            self.connection_properties.inside_container
+            and not self._compose_config.is_compose
+        ):
             _response = timeout_loop(
                 get_container,
                 wait,
@@ -714,16 +758,16 @@ class FluentConnection:
             )
 
         if timeout is None:
-            env_timeout = os.getenv("PYFLUENT_TIMEOUT_FORCE_EXIT")
-
-            if env_timeout:
-                logger.debug("Found PYFLUENT_TIMEOUT_FORCE_EXIT env var")
+            config_timeout = pyfluent.config.force_exit_timeout
+            if config_timeout is not None:
+                logger.debug(f"Found force_exit_timeout config: '{config_timeout}'")
                 try:
-                    timeout = float(env_timeout)
+                    timeout = float(config_timeout)
                     logger.debug(f"Setting TIMEOUT_FORCE_EXIT to {timeout}")
                 except ValueError:
                     logger.debug(
-                        "Off or unrecognized PYFLUENT_TIMEOUT_FORCE_EXIT value, not enabling timeout force exit"
+                        "Invalid force_exit_timeout config. Must be a float or int. "
+                        "Timeout forced exit is disabled."
                     )
 
         if timeout is None:
@@ -732,7 +776,7 @@ class FluentConnection:
             if wait is not False:
                 self.wait_process_finished(wait=wait)
         else:
-            if not timeout_exec(lambda: self.health_check.is_serving, 5):
+            if not timeout_exec(lambda: self._health_check.is_serving, 5):
                 logger.debug("gRPC service not working, cancelling soft exit call.")
             else:
                 logger.info("Attempting to send exit request to Fluent...")
@@ -791,7 +835,7 @@ class FluentConnection:
             remote_instance.delete()
 
         if file_transfer_service and isinstance(
-            file_transfer_service, RemoteFileTransferStrategy
+            file_transfer_service, ContainerFileTransferStrategy
         ):
             file_transfer_service.container.kill()
 

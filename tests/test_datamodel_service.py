@@ -32,7 +32,11 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyCommand,
     PyMenuGeneric,
+    PyNumerical,
+    PySingletonCommandArgumentsSubItem,
+    PyTextualCommandArgumentsSubItem,
     ReadOnlyObjectError,
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -409,7 +413,7 @@ def test_task_object_keys_are_display_names(new_meshing_session):
 
 def test_generic_datamodel(new_solver_session):
     solver = new_solver_session
-    solver.scheme_eval.scheme_eval("(init-flserver)")
+    solver.scheme.eval("(init-flserver)")
     flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
 
@@ -768,7 +772,7 @@ def test_on_affected_lifetime_with_delete_child_objects(new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logging.enable()
+    pyfluent.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -789,7 +793,7 @@ def test_on_affected_lifetime_with_delete_all_child_objects(new_solver_session):
     app_name = "test"
     create_datamodel_root_in_server(solver, test_rules, app_name)
     root = create_root_using_datamodelgen(solver._se_service, app_name)
-    pyfluent.logging.enable()
+    pyfluent.logger.enable()
     root.A["A1"] = {}
     data = []
     _ = root.A["A1"].add_on_affected(lambda _: data.append(1))
@@ -833,3 +837,35 @@ def test_dynamic_dependency(new_meshing_session):
     d = ic.Refaceting.Deviation.get_state()
     cd = ic.Refaceting.CustomDeviation.get_state()
     assert d == cd
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_field_level_help(new_meshing_session):
+    meshing = new_meshing_session
+    meshing.PartManagement.AssemblyNode["node-1"] = {}
+    deviation = meshing.PartManagement.AssemblyNode["node-1"].Refaceting.Deviation
+    assert isinstance(deviation, PyNumerical)
+    # Field-level help at parameter level
+    assert deviation.__doc__.strip().startswith(
+        "Specify the distance between facet edges and the geometry edges. Decreasing this value"
+    )
+    # TODO Test Field-level help at singleton level when we have that in the datamodel
+    assert meshing.meshing.ImportGeometry, PyCommand
+    # Field-level help at command level
+    assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+        "Specify the CAD geometry that you want to work with. Choose from"
+    )
+    import_geometry = meshing.meshing.ImportGeometry.create_instance()
+    assert isinstance(import_geometry.FileFormat, PyTextualCommandArgumentsSubItem)
+    # Field-level help at parameter-type command argument level
+    assert import_geometry.FileFormat.__doc__.strip().startswith(
+        "Indicate whether the imported geometry is a CAD File or"
+    )
+    linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
+    assert isinstance(
+        linear_mesh_pattern.PatternVector, PySingletonCommandArgumentsSubItem
+    )
+    # Field-level help at singleton-type command argument level
+    assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+        "Specify a name for the mesh pattern or use the default value."
+    )

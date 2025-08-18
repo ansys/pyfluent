@@ -136,12 +136,9 @@ wt.update_regions()
 
 ```{python}
 wt.add_boundary_layer.add_child_to_task()
+wt.add_boundary_layer.bl_control_name.set_state("smooth-transition_1")
 wt.add_boundary_layer.insert_compound_child_task()
-wt.task("smooth-transition_1"
-    ).bl_control_name.set_state(
-    "smooth-transition_1")
-wt.add_boundary_layer.arguments = {}
-wt.task("smooth-transition_1")()
+wt.add_boundary_layer_child_1()
 ```
 
 ### Generate volume mesh
@@ -620,8 +617,7 @@ field_info = solver.fields.field_info
 
 ```{python}
 field_info.get_scalar_fields_info()
-field_info.get_range("velocity")
-field_info.get_range("cell-weight")
+field_info.get_scalar_field_range("cell-weight")
 ```
 
 ### Get vector fields and surfaces info
@@ -785,7 +781,7 @@ solution_variable_info_centroid.field_type
 
 ```{python}
 sv_t_wall_fluid= solution_variable_data.get_data(
-    solution_variable_name="SV_T", 
+    variable_name="SV_T",
     zone_names=["fluid", "wall"], 
     domain_name="mixture")
 sv_t_wall_fluid.domain
@@ -807,9 +803,8 @@ wall_temp_array[:] = 500
 fluid_temp_array[:] = 600
 zone_names_to_solution_variable_data = {'wall':wall_temp_array, 'fluid':fluid_temp_array}
 solution_variable_data.set_data(
-    solution_variable_name="SV_T", 
-    zone_names_to_solution_variable_data=
-    zone_names_to_solution_variable_data, 
+    variable_name="SV_T",
+    zone_names_to_data=zone_names_to_solution_variable_data,
     domain_name="mixture")
 ```
 
@@ -971,7 +966,7 @@ hyd_dia.as_quantity()
 ```{python}
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import LocalFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
 
 mesh_file_name = examples.download_file(
     "mixing_elbow.msh.h5", 
@@ -979,7 +974,7 @@ mesh_file_name = examples.download_file(
 meshing_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.MESHING, 
     file_transfer_service=
-    LocalFileTransferStrategy())
+    StandaloneFileTransferStrategy())
 meshing_session.upload(
     file_name=mesh_file_name, 
     remote_file_name="elbow.msh.h5")
@@ -997,7 +992,7 @@ meshing_session.download(
 ```{python}
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 
 case_file_name = examples.download_file(
     "mixing_elbow.cas.h5", 
@@ -1005,7 +1000,7 @@ case_file_name = examples.download_file(
 solver_session = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER, 
     file_transfer_service=
-    RemoteFileTransferStrategy())
+    ContainerFileTransferStrategy())
 solver_session.upload(
     file_name=case_file_name, 
     remote_file_name="elbow.cas.h5")
@@ -1030,15 +1025,15 @@ solver.journal.stop()
 
 ```{python}
 import ansys.fluent.core as pyfluent
-config_dict = pyfluent.logging.get_default_config()
+config_dict = pyfluent.logger.get_default_config()
 config_dict['handlers']['pyfluent_file'][
     'filename'] = 'test.log'
-pyfluent.logging.enable(custom_config=config_dict)
-pyfluent.logging.list_loggers()
-logger = pyfluent.logging.get_logger(
+pyfluent.logger.enable(custom_config=config_dict)
+pyfluent.logger.list_loggers()
+logger = pyfluent.logger.get_logger(
     'pyfluent.networking')
 logger.setLevel('ERROR')
-pyfluent.logging.set_global_level('DEBUG')
+pyfluent.logger.set_global_level('DEBUG')
 ```
 
 ### API search
@@ -1063,7 +1058,7 @@ pyfluent.search("local*", wildcard=True)
 cd pyfluent/docker
 
 # Copy needed files
-python copy_docker_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
+python copy_ansys_files.py <path to 'ansys_inc' directory> <path to 'docker/fluent_<version>' directory>
 
 # Build the Docker image
 sudo docker build -t ansys_inc <path to 'docker/fluent_<version>' directory>
@@ -1098,13 +1093,8 @@ solver = pyfluent.launch_fluent(
 
 ```{python}
 import ansys.fluent.core as pyfluent
-S = pyfluent.services.scheme_eval.Symbol
-session.scheme_eval.eval([S('+'), 2, 3])
-session.scheme_eval.eval([S('rpgetvar'), [S('string->symbol'), "mom/relax"]])
-session.scheme_eval.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
+session.scheme.exec(('(ti-menu-load-string "/report/system/proc-stats")',))
 # Returns TUI output string
-session.scheme_eval.string_eval("(+ 2 3)")
-session.scheme_eval.string_eval("(rpgetvar 'mom/relax)")
-session.scheme_eval.scheme_eval("(+ 2 3)")
-session.scheme_eval.scheme_eval("(rpgetvar 'mom/relax)")
+session.scheme.eval("(+ 2 3)")
+session.scheme.eval("(rpgetvar 'mom/relax)")
 ```

@@ -24,7 +24,6 @@
 
 import logging
 
-import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
@@ -32,9 +31,7 @@ from ansys.fluent.core.meshing.meshing_workflow import (
     WorkflowMode,
     name_to_identifier_map,
 )
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.session_shared import (
-    _CODEGEN_MSG_DATAMODEL,
     _make_datamodel_module,
     _make_tui_module,
 )
@@ -114,26 +111,8 @@ class BaseMeshing:
     @property
     def _meshing_utilities_root(self):
         """Datamodel root of meshing_utilities."""
-        try:
-            if self.get_fluent_version() >= FluentVersion.v242:
-                from ansys.fluent.core import CODEGEN_OUTDIR
-
-                meshing_utilities_module = pyfluent.utils.load_module(
-                    f"MeshingUtilities_{self._version}",
-                    CODEGEN_OUTDIR
-                    / f"datamodel_{self._version}"
-                    / "MeshingUtilities.py",
-                )
-                meshing_utilities_root = meshing_utilities_module.Root(
-                    self._se_service, "MeshingUtilities", []
-                )
-        except (ImportError, FileNotFoundError):
-            datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
-            if self.get_fluent_version() >= FluentVersion.v242:
-                meshing_utilities_root = PyMenuGeneric(
-                    self._se_service, "meshing_utilities"
-                )
-        return meshing_utilities_root
+        if self.get_fluent_version() >= FluentVersion.v242:
+            return _make_datamodel_module(self, "MeshingUtilities")
 
     @property
     def meshing_utilities(self):

@@ -64,13 +64,13 @@ def create_datamodel_root_in_server(solver) -> None:
         "END\n"
     )
     rules_file_name = f"{uuid.uuid4()}.fdl"
-    solver.scheme_eval.scheme_eval(
+    solver.scheme.eval(
         f'(with-output-to-file "{rules_file_name}" (lambda () (format "~a" "{rules_str}")))',
     )
-    solver.scheme_eval.scheme_eval(
+    solver.scheme.eval(
         f'(state/register-new-state-engine "{app_name}" "{rules_file_name}")'
     )
-    solver.scheme_eval.scheme_eval(f'(remove-file "{rules_file_name}")')
+    solver.scheme.eval(f'(remove-file "{rules_file_name}")')
 
 
 def test_datamodel_api_on_child_created(solver):

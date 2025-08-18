@@ -94,7 +94,7 @@ def test_solution_variables(new_solver_session):
     assert solution_variable_info_centroid.field_type == np.float64
 
     sv_p_wall_fluid = solution_variable_data.get_data(
-        solution_variable_name="SV_P",
+        variable_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
     )
@@ -119,13 +119,13 @@ def test_solution_variables(new_solver_session):
         "elbow-fluid": fluid_press_array,
     }
     solution_variable_data.set_data(
-        solution_variable_name="SV_P",
-        zone_names_to_solution_variable_data=zone_names_to_solution_variable_data,
+        variable_name="SV_P",
+        zone_names_to_data=zone_names_to_solution_variable_data,
         domain_name="mixture",
     )
 
     updated_sv_p_data = solution_variable_data.get_data(
-        solution_variable_name="SV_P",
+        variable_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
     )
@@ -207,7 +207,7 @@ def test_solution_variables_single_precision(new_solver_session_sp):
     assert solution_variable_info_centroid.field_type == np.float32
 
     sv_p_wall_fluid = solution_variable_data.get_data(
-        solution_variable_name="SV_P",
+        variable_name="SV_P",
         zone_names=["wall-elbow", "elbow-fluid"],
         domain_name="mixture",
     )
@@ -226,14 +226,14 @@ def test_solution_variable_does_not_modify_case(new_solver_session):
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.file.read_case_data(file_name=case_path)
-    solver.scheme_eval.scheme_eval("(%save-case-id)")
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    solver.scheme.eval("(%save-case-id)")
+    assert not solver.scheme.eval("(case-modified?)")
     solver.fields.solution_variable_data.get_data(
-        solution_variable_name="SV_P",
+        variable_name="SV_P",
         zone_names=["elbow-fluid", "wall-elbow"],
         domain_name="mixture",
     )
-    assert not solver.scheme_eval.scheme_eval("(case-modified?)")
+    assert not solver.scheme.eval("(case-modified?)")
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -243,7 +243,7 @@ def test_solution_variable_udm_data(mixing_elbow_case_session_t4):
     solver.settings.solution.initialization.hybrid_initialize()
     solver.settings.solution.run_calculation.iterate(iter_count=1)
     udm_data = solver.fields.solution_variable_data.get_data(
-        solution_variable_name="SV_UDM_I",
+        variable_name="SV_UDM_I",
         domain_name="mixture",
         zone_names=["wall-elbow"],
     )["wall-elbow"]
@@ -251,12 +251,12 @@ def test_solution_variable_udm_data(mixing_elbow_case_session_t4):
     udm_data[:2168] = 5
     udm_data[2168:] = 10
     solver.fields.solution_variable_data.set_data(
-        solution_variable_name="SV_UDM_I",
+        variable_name="SV_UDM_I",
         domain_name="mixture",
-        zone_names_to_solution_variable_data={"wall-elbow": udm_data},
+        zone_names_to_data={"wall-elbow": udm_data},
     )
     new_array = solver.fields.solution_variable_data.get_data(
-        solution_variable_name="SV_UDM_I",
+        variable_name="SV_UDM_I",
         domain_name="mixture",
         zone_names=["wall-elbow"],
     )["wall-elbow"]

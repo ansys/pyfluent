@@ -80,10 +80,12 @@ class MeshingWorkflow(Workflow):
             self._new_workflow(name=self._name)
         else:
             self._activate_dynamic_interface(dynamic_interface=True)
+        self._initialized = True
 
     def __getattribute__(self, item: str):
         if (
             not item.startswith("_")
+            and super().__getattribute__("_initialized")
             and not getattr(self._meshing.GlobalSettings, self._identifier)()
         ):
             raise RuntimeError(

@@ -22,6 +22,10 @@
 
 """ansys-tools-report."""
 
+from importlib.metadata import requires
+
+from packaging.requirements import Requirement
+
 import ansys.tools.report as pyansys_report
 
 ANSYS_ENV_VARS = [
@@ -40,6 +44,8 @@ ANSYS_ENV_VARS = [
     "PYFLUENT_FLUENT_IP",
     "PYFLUENT_FLUENT_PORT",
     "PYFLUENT_FLUENT_ROOT",
+    "PYFLUENT_FLUENT_LAUNCH_TIMEOUT",
+    "PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT",
     "PYFLUENT_GRPC_LOG_BYTES_LIMIT",
     "PYFLUENT_LAUNCH_CONTAINER",
     "PYFLUENT_LOGGING",
@@ -54,23 +60,19 @@ ANSYS_ENV_VARS = [
     "SERVER_INFO_DIR",
 ]
 
-dependencies = {
-    "ansys-api-fluent": "0.3.34",
-    "ansys-platform-instancemanagement": "1.1",
-    "ansys-tools-filetransfer": "0.1,<0.3",
-    "ansys-units": "0.3.3,<0.5",
-    "docker": "7.1.0",
-    "grpcio": "1.30.0",
-    "grpcio-health-checking": "1.30.0",
-    "grpcio-status": "1.30.0",
-    "h5py": "3.12.1",
-    "lxml": "4.9.2",
-    "nltk": "3.9.1",
-    "numpy": "1.14.0,<3.0.0",
-    "pandas": "1.1.0,<2.3",
-    "pyansys-tools-report": "0.8.1",
-    "pyyaml": "6.0",
-}
+
+dependency_versions = {}
+for requirement in requires("ansys-fluent-core"):
+    split_extra = requirement.split(" ; ")
+    if len(split_extra) == 1 or (
+        len(split_extra) == 2 and split_extra[1].split(" == ")[1] == '"reader"'
+    ):
+        req = Requirement(split_extra[0])
+        dependency_versions[req.name] = str(req.specifier)
+
+
+# Generate dependencies dictionary dynamically
+dependencies = dependency_versions
 
 if __name__ == "__main__":
     rep = pyansys_report.Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)

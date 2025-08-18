@@ -15,26 +15,26 @@ You can obtain a PyFluent session object by calling either of the functions, :fu
   >>> from ansys.fluent.core.examples import download_file
   >>> case_file_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> data_file_name = download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-  >>> solver = pyfluent.launch_fluent(case_data_file_name=case_file_name)
+  >>> solver_session = pyfluent.launch_fluent(case_data_file_name=case_file_name)
 
 
 Solution mode sessions
 ----------------------
 
 The above :obj:`~ansys.fluent.core.session_solver.Solver` session object exposes a variety of Python child objects that provide access to the data
-and functions of the connected Fluent solver. A consistent interface style is maintained across those Python objects
+and functions of the connected Fluent solver_session. A consistent interface style is maintained across those Python objects
 and each object adopts a specific responsibility that is reflected in its particular interface. For instance,
 the :obj:`~ansys.fluent.core.session_solver.Solver` session provides child objects for solver settings and field data access respectively.
 You can see these ``fields`` and ``settings`` children by executing ``dir(solver)``. You can discover the
-children of ``fields`` and ``settings`` by calling ``dir(solver.fields)`` and ``dir(solver.settings)`` respectively,
+children of ``fields`` and ``settings`` by calling ``dir(solver_session.fields)`` and ``dir(solver_session.settings)`` respectively,
 and so on:
 
 .. code:: python
 
-  >>> solver_children = dir(solver)
-  >>> settings = solver.settings
+  >>> solver_children = dir(solver_session)
+  >>> settings = solver_session.settings
   >>> settings_children = dir(settings)
-  >>> fields = solver.fields
+  >>> fields = solver_session.fields
   >>> fields_children = dir(fields)
 
 
@@ -42,7 +42,7 @@ You can call the Python ``help()`` function to find out more about each item in 
 
 .. code:: python
 
-  >>> help(solver.settings.file.read_case)
+  >>> help(solver_session.settings.file.read_case)
 
 
 You can create additional PyFluent sessions. The following code creates a :obj:`~ansys.fluent.core.session_meshing.Meshing` mode
@@ -51,7 +51,7 @@ session that starts a second Fluent instance and is independent of your PyFluent
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+  >>> meshing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
 
 
 A uniform interface exists across solver settings objects. For instance,
@@ -96,7 +96,7 @@ action in Fluent:
 
 .. code:: python
 
-  >>> solver.settings.solution.run_calculation.iterate(iter_count=100)
+  >>> solver_session.settings.solution.run_calculation.iterate(iter_count=100)
 
 
 Note: You can find out more about solver settings objects here:
@@ -121,7 +121,7 @@ that of the ``settings`` objects:
   ['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet']
   >>> add_scalar_fields(field_name='absolute-pressure', surfaces=['cold-inlet', 'hot-inlet', 'outlet', 'symmetry-xyplane', 'wall-elbow', 'wall-inlet'])
   >>> pressure_fields = transaction.get_fields()
-  >>> solver.fields.reduction.sum_if(
+  >>> solver_session.fields.reduction.sum_if(
   >>>     expression="AbsolutePressure",
   >>>     condition="AbsolutePressure > 0[Pa]",
   >>>     locations=[settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]],
@@ -138,7 +138,7 @@ task-based meshing workflow code:
 
 .. code:: python
 
-  >>> watertight = meshing.watertight()
+  >>> watertight = meshing_session.watertight()
   >>> from ansys.fluent.core.examples import download_file
   >>> import_file_name = examples.download_file('mixing_elbow.pmdb', 'pyfluent/mixing_elbow')
   >>> import_geometry = watertight.import_geometry
@@ -181,7 +181,7 @@ You switch between meshing and solution modes by calling the :obj:`switch_to_sol
 
 .. code:: python
 
-  >>> switched_solver = meshing.switch_to_solver()
+  >>> switched_solver = meshing_session.switch_to_solver()
 
 
 The ``switched_solver`` session uses the same Fluent instance that was previously used by the
@@ -220,7 +220,7 @@ each session can be ended independently of the others. Calling the ``exit()`` me
 
 .. code:: python
 
-  >>> solver.exit()
+  >>> solver_session.exit()
   >>> pure_meshing.exit()
 
 
@@ -238,7 +238,7 @@ being garbage collected:
 .. code:: python
 
   >>> def run_solver():
-  >>>     solver = pyfluent.launch_fluent()
+  >>>     solver_session = pyfluent.launch_fluent()
   >>>     # <insert some PyFluent solver actions>
   >>>     # solver is exited at the end of the function
 

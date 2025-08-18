@@ -50,8 +50,10 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-def test_mixing_elbow(watertight_workflow_session, mixing_elbow_geometry_filename):
-    meshing_session = watertight_workflow_session
+def test_mixing_elbow(
+    watertight_workflow_session_wo_exit, mixing_elbow_geometry_filename
+):
+    meshing_session = watertight_workflow_session_wo_exit
     workflow = meshing_session.workflow
 
     assign_task_args = partial(
@@ -270,3 +272,4 @@ def test_mixing_elbow(watertight_workflow_session, mixing_elbow_geometry_filenam
         )
 
         ###############################################################################
+    solver_session.exit()

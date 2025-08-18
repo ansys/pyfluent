@@ -35,7 +35,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples.downloads import download_file
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 sys.path.append(Path(__file__).parent / "util")
@@ -65,7 +65,7 @@ def pytest_addoption(parser):
 def pytest_runtest_setup(item):
     if (
         any(mark.name == "standalone" for mark in item.iter_markers())
-        and os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1"
+        and pyfluent.config.launch_fluent_container
     ):
         pytest.skip()
 
@@ -170,12 +170,17 @@ def pytest_collection_finish(session):
 
 @pytest.fixture(autouse=True)
 def run_before_each_test(
-    monkeypatch: pytest.MonkeyPatch, request: pytest.FixtureRequest
-) -> None:
-    monkeypatch.setenv("PYFLUENT_TEST_NAME", request.node.name)
-    monkeypatch.setenv("PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS", "1")
-    pyfluent.CONTAINER_MOUNT_SOURCE = pyfluent.EXAMPLES_PATH
-    pyfluent.CONTAINER_MOUNT_TARGET = pyfluent.EXAMPLES_PATH
+    tmp_path,
+    monkeypatch: pytest.MonkeyPatch,
+    request: pytest.FixtureRequest,
+):
+    monkeypatch.setattr(pyfluent.config, "test_name", request.node.name)
+    monkeypatch.setattr(pyfluent.config, "codegen_skip_builtin_settings", True)
+    pyfluent.config.container_mount_source = pyfluent.config.examples_path
+    original_cwd = os.getcwd()
+    monkeypatch.chdir(tmp_path)
+    yield
+    os.chdir(original_cwd)
 
 
 class Helpers:
@@ -191,7 +196,7 @@ class Helpers:
             version = FluentVersion.current_release()
         elif not isinstance(version, FluentVersion):
             version = FluentVersion(version)
-        self.monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
+        self.monkeypatch.setattr(pyfluent.config, "fluent_root", None)
         for fv in FluentVersion:
             if fv <= version:
                 self.monkeypatch.setenv(fv.awp_var, f"ansys_inc/{fv.name}")
@@ -245,9 +250,9 @@ def exhaust_system_geometry_filename():
 
 
 def create_session(**kwargs):
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+    if pyfluent.config.use_file_transfer_service:
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         return pyfluent.launch_fluent(
             container_dict=container_dict,
             file_transfer_service=file_transfer_service,
@@ -255,6 +260,13 @@ def create_session(**kwargs):
         )
     else:
         return pyfluent.launch_fluent(**kwargs)
+
+
+@pytest.fixture
+def new_meshing_session_wo_exit():
+    meshing = create_session(mode=pyfluent.FluentMode.MESHING)
+    yield meshing
+    # Exit is intentionally avoided here. Please exit from the method using this.
 
 
 @pytest.fixture
@@ -278,11 +290,27 @@ def watertight_workflow_session(new_meshing_session):
 
 
 @pytest.fixture
+def watertight_workflow_session_wo_exit(new_meshing_session_wo_exit):
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Watertight Geometry"
+    )
+    return new_meshing_session_wo_exit
+
+
+@pytest.fixture
 def fault_tolerant_workflow_session(new_meshing_session):
     new_meshing_session.workflow.InitializeWorkflow(
         WorkflowType="Fault-tolerant Meshing"
     )
     return new_meshing_session
+
+
+@pytest.fixture
+def fault_tolerant_workflow_session_wo_exit(new_meshing_session_wo_exit):
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(
+        WorkflowType="Fault-tolerant Meshing"
+    )
+    return new_meshing_session_wo_exit
 
 
 @pytest.fixture
@@ -303,6 +331,13 @@ def new_solver_session():
     solver = create_session()
     yield solver
     solver.exit()
+
+
+@pytest.fixture
+def new_solver_session_wo_exit():
+    solver = create_session()
+    yield solver
+    # Exit is intentionally avoided here. Please exit from the method using this.
 
 
 @pytest.fixture
@@ -343,6 +378,16 @@ def static_mixer_case_session(new_solver_session):
     solver = new_solver_session
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
+def static_mixer_params_unitless_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file(
+        "Static_Mixer_Parameters_unitless.cas.h5", "pyfluent/static_mixer"
+    )
+    solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
 
@@ -421,7 +466,7 @@ def periodic_rot_settings_session(new_solver_session):
 
 @pytest.fixture
 def disable_datamodel_cache(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(pyfluent, "DATAMODEL_USE_STATE_CACHE", False)
+    monkeypatch.setattr(pyfluent.config, "datamodel_use_state_cache", False)
 
 
 @pytest.fixture(params=["old", "new"])

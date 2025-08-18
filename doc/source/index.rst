@@ -5,66 +5,64 @@ PyFluent documentation |version|
    :hidden:
    :maxdepth: 2
 
-   getting_started/index
-   user_guide/index
-   api/index
+   getting_started/getting_started_contents
+   user_guide/user_guide_contents
+   api/api_contents
    examples/index
-   contributing/index
+   contributing/contributing_contents
    changelog
 
 
-Welcome to PyFluent documentation
----------------------------------
-Welcome to the official documentation for PyFluent, your gateway to harnessing
-the power of Ansys Fluent through Python.
+Welcome to PyFluent
+-------------------
+PyFluent is your gateway to harnessing the power of Ansys Fluent through
+Python. It enables engineers and developers to automate, customize, and
+streamline CFD workflows using the flexibility of Python.
 
 
-Overview of PyFluent
---------------------
-PyFluent is a Python library that enables users to interact with Ansys Fluent,
-a powerful computational fluid dynamics (CFD) tool, programmatically. PyFluent
-allows you to automate, customize, and streamline your CFD workflows using the
-flexibility and power of Python.
+Why Use PyFluent?
+-----------------
+
+- **Automation**: Eliminate repetitive tasks and accelerate simulation workflows.
+- **Customization**: Control Fluent behavior with Python for tailored solutions.
+- **Efficiency**: Reduce manual steps and improve reproducibility.
+- **Integration**: Seamlessly integrate with other Python libraries and tools.
 
 
-Integration with Fluent
------------------------
-
-While Ansys Fluent provides a comprehensive graphical interface for CFD simulations,
-PyFluent extends its capabilities by offering a programmatic approach. This integration
-allows for enhanced automation, scripting, and the development of custom applications.
-
-
-Key features
+How It Works
 ------------
 
-- **Automation**: Automate repetitive tasks and complex workflows.
-- **Customization**: Tailor Fluent operations to specific needs with Python scripts.
-- **Efficiency**: Improve productivity by reducing manual intervention.
-- **Flexibility**: Seamlessly integrate with other Python libraries and tools.
+PyFluent connects to Ansys Fluent and allows programmatic interaction using a
+modern Python API. It supports simulation setup, execution, monitoring, and results
+extraction.
+
+
+Compatibility
+-------------
+PyFluent supports **Ansys Fluent 2022 R2 and later**.
 
 
 Getting started
 ---------------
 
-To get started with PyFluent, follow the steps on the :ref:`getting_started` page.
+Get started with PyFluent by following the steps in the :ref:`getting_started` guide.
 
-Useful links
-------------
+
+Resources
+---------
 
 - `PyFluent GitHub repository <https://github.com/ansys/pyfluent>`_
 - `Fluent documentation <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/prod_page.html?pn=Fluent>`_
 - `Ansys customer portal <https://support.ansys.com>`_
 
 
-Community and support
----------------------
+Need Help?
+----------
 
-Join the community to get help and share your experiences with other users:
+Visit the community or support resources:
 
 - `PyAnsys community forum <https://forum.pyansys.com>`_
 - `Submit a bug report <https://github.com/ansys/pyfluent/issues>`_
 - `Contact support <https://support.ansys.com>`_
 
-See :ref:`ref_contributing` for guidance on how you can contribute to PyFluent
-by reporting issues, suggesting features, or submitting pull requests on GitHub.
+See :ref:`ref_contributing` for how to report issues or contribute via GitHub.

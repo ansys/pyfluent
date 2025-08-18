@@ -23,12 +23,58 @@
 """Module that provides a method to handle deprecated arguments."""
 
 import functools
+from functools import wraps
 import logging
 import warnings
+
+from deprecated.sphinx import deprecated
 
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 logger = logging.getLogger("pyfluent.general")
+
+
+def all_deprecators(
+    deprecate_arg_mappings,
+    data_type_converter,
+    deprecated_version,
+    deprecated_reason,
+    warn_message,
+):
+    """Decorator that applies multiple deprecators to a function."""
+
+    def decorator(func):
+        decorated = func
+        for mapping in deprecate_arg_mappings:
+            decorated = deprecate_argument(
+                old_arg=mapping["old_arg"],
+                new_arg=mapping["new_arg"],
+                converter=mapping.get("converter", lambda x: x),
+                warning_cls=PyFluentDeprecationWarning,
+            )(decorated)
+        if data_type_converter:
+            decorated = deprecate_arguments(
+                converter=data_type_converter,
+                warning_cls=PyFluentDeprecationWarning,
+            )(decorated)
+        decorated = deprecated(
+            version=deprecated_version,
+            reason=deprecated_reason,
+        )(decorated)
+
+        @wraps(decorated)
+        def wrapper(*args, **kwargs):
+            if warn_message:
+                warnings.warn(
+                    warn_message,
+                    PyFluentDeprecationWarning,
+                    stacklevel=2,
+                )
+            return decorated(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def deprecate_argument(

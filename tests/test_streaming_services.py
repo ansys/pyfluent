@@ -42,7 +42,7 @@ def run_transcript(i, ip, port, password):
 
     if i % 5 == 0:
         time.sleep(0.5)
-        session.scheme_eval.scheme_eval("(pp 'test)")
+        session.scheme.eval("(pp 'test)")
         time.sleep(0.5)
         if not transcript.data:
             assert transcript.data == ""

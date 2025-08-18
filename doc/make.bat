@@ -46,8 +46,8 @@ goto end
 
 :clean
 echo Cleaning build directories...
-rmdir /s /q %BUILDBIR% > NUL 2>&1
-del /q %SOURCEDIR%\examples\* > NUL 2>&1
+rmdir /s /q %BUILDDIR% > NUL 2>&1
+rmdir /s /q %SOURCEDIR%\examples > NUL 2>&1
 rmdir /s /q %SOURCEDIR%\api\meshing\datamodel > NUL 2>&1
 rmdir /s /q %SOURCEDIR%\api\meshing\tui > NUL 2>&1
 rmdir /s /q %SOURCEDIR%\api\solver\datamodel > NUL 2>&1

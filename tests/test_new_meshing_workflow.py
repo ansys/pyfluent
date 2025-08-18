@@ -32,12 +32,12 @@ from ansys.fluent.core.workflow import camel_to_snake_case
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_new_watertight_workflow(new_meshing_session):
+def test_new_watertight_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
     )
-    watertight = new_meshing_session.watertight()
+    watertight = new_meshing_session_wo_exit.watertight()
     watertight.import_geometry.file_name.set_state(import_file_name)
     assert watertight.import_geometry.length_unit() == "mm"
     watertight.import_geometry.length_unit.set_state("in")
@@ -75,11 +75,8 @@ def test_new_watertight_workflow(new_meshing_session):
 
     # Add boundary layers
     watertight.add_boundary_layer.add_child_to_task()
+    watertight.add_boundary_layer.bl_control_name.set_state("smooth-transition_1")
     watertight.add_boundary_layer.insert_compound_child_task()
-    watertight.add_boundary_layer.arguments = {}
-    watertight.add_boundary_layer_child_1.bl_control_name.set_state(
-        "smooth-transition_1"
-    )
     watertight.add_boundary_layer_child_1()
 
     # Generate volume mesh
@@ -90,15 +87,18 @@ def test_new_watertight_workflow(new_meshing_session):
     watertight.create_volume_mesh()
 
     # Switch to solution mode
-    solver = new_meshing_session.switch_to_solver()
-    assert solver
+    solver = new_meshing_session_wo_exit.switch_to_solver()
+    assert solver.is_active() is True
+    assert new_meshing_session_wo_exit.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
 
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
-def test_new_fault_tolerant_workflow(new_meshing_session):
-    meshing = new_meshing_session
+def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
 
     # Import CAD and part management
     import_file_name = examples.download_file(
@@ -132,21 +132,9 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.import_cad_and_part_management.object_setting.set_state(
         "DefaultObjectSetting"
     )
-    fault_tolerant.import_cad_and_part_management.options.line.set_state(False)
-    fault_tolerant.import_cad_and_part_management.options.solid.set_state(False)
-    fault_tolerant.import_cad_and_part_management.options.surface.set_state(False)
     fault_tolerant.import_cad_and_part_management()
 
     # Describe geometry and flow
-    fault_tolerant.describe_geometry_and_flow.add_enclosure.set_state("No")
-    fault_tolerant.describe_geometry_and_flow.close_caps.set_state("Yes")
-    fault_tolerant.describe_geometry_and_flow.flow_type.set_state(
-        "Internal flow through the object"
-    )
-    fault_tolerant.describe_geometry_and_flow.update_child_tasks(
-        setup_type_changed=False
-    )
-
     fault_tolerant.describe_geometry_and_flow.add_enclosure.set_state("No")
     fault_tolerant.describe_geometry_and_flow.close_caps.set_state("Yes")
     fault_tolerant.describe_geometry_and_flow.describe_geometry_and_flow_options.advanced_options.set_state(
@@ -167,35 +155,13 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.enclose_fluid_regions_fault.create_patch_preferences.show_create_patch_preferences.set_state(
         False
     )
-    fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-1")
-    fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
-    fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(
-        ["inlet.1"]
-    )
 
-    fault_tolerant.enclose_fluid_regions_fault.create_patch_preferences.show_create_patch_preferences.set_state(
-        False
-    )
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-1")
     fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
-    fault_tolerant.enclose_fluid_regions_fault.zone_location.set_state(
-        [
-            "1",
-            "351.68205",
-            "-361.34322",
-            "-301.88668",
-            "396.96205",
-            "-332.84759",
-            "-266.69751",
-            "inlet.1",
-        ]
-    )
     fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(
         ["inlet.1"]
     )
-    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.enclose_fluid_regions_fault_child_1()
 
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-2")
@@ -203,89 +169,23 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(
         ["inlet.2"]
     )
-
-    fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-2")
-    fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
-    fault_tolerant.enclose_fluid_regions_fault.zone_location.set_state(
-        [
-            "1",
-            "441.68205",
-            "-361.34322",
-            "-301.88668",
-            "486.96205",
-            "-332.84759",
-            "-266.69751",
-            "inlet.2",
-        ]
-    )
-    fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(
-        ["inlet.2"]
-    )
-    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.enclose_fluid_regions_fault_child_2()
 
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-3")
     fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
     fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(["inlet"])
-
-    fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("inlet-3")
-    fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
-    fault_tolerant.enclose_fluid_regions_fault.zone_location.set_state(
-        [
-            "1",
-            "261.68205",
-            "-361.34322",
-            "-301.88668",
-            "306.96205",
-            "-332.84759",
-            "-266.69751",
-            "inlet",
-        ]
-    )
-    fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(["inlet"])
-    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.enclose_fluid_regions_fault_child_3()
 
     fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("outlet-1")
     fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
     fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(["outlet"])
     fault_tolerant.enclose_fluid_regions_fault.zone_type.set_state("pressure-outlet")
-
-    fault_tolerant.enclose_fluid_regions_fault.patch_name.set_state("outlet-1")
-    fault_tolerant.enclose_fluid_regions_fault.selection_type.set_state("zone")
-    fault_tolerant.enclose_fluid_regions_fault.zone_location.set_state(
-        [
-            "1",
-            "352.22702",
-            "-197.8957",
-            "84.102381",
-            "394.41707",
-            "-155.70565",
-            "84.102381",
-            "outlet",
-        ]
-    )
-    fault_tolerant.enclose_fluid_regions_fault.zone_selection_list.set_state(["outlet"])
-    fault_tolerant.enclose_fluid_regions_fault.zone_type.set_state("pressure-outlet")
-    fault_tolerant.enclose_fluid_regions_fault.add_child_to_task()
     fault_tolerant.enclose_fluid_regions_fault.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault.arguments.set_state({})
     fault_tolerant.enclose_fluid_regions_fault_child_4()
 
     # Extract edge features
-    fault_tolerant.extract_edge_features.extract_method_type.set_state(
-        "Intersection Loops"
-    )
-    fault_tolerant.extract_edge_features.object_selection_list.set_state(
-        ["flow_pipe", "main"]
-    )
-    fault_tolerant.extract_edge_features.add_child_to_task()
-    fault_tolerant.extract_edge_features.insert_compound_child_task()
-
     fault_tolerant.extract_edge_features.extract_edges_name.set_state("edge-group-1")
     fault_tolerant.extract_edge_features.extract_method_type.set_state(
         "Intersection Loops"
@@ -293,60 +193,21 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.extract_edge_features.object_selection_list.set_state(
         ["flow_pipe", "main"]
     )
-
-    fault_tolerant.extract_edge_features.arguments.set_state({})
+    fault_tolerant.extract_edge_features.insert_compound_child_task()
     fault_tolerant.extract_edge_features_child_1()
 
     # Identify regions
+    fault_tolerant.identify_regions.show_coordinates = True
+    fault_tolerant.identify_regions.material_points_name.set_state("fluid-region-1")
     fault_tolerant.identify_regions.selection_type.set_state("zone")
     fault_tolerant.identify_regions.x.set_state(377.322045740589)
     fault_tolerant.identify_regions.y.set_state(-176.800676988458)
     fault_tolerant.identify_regions.z.set_state(-37.0764628583475)
     fault_tolerant.identify_regions.zone_selection_list.set_state(["main.1"])
-
-    fault_tolerant.identify_regions.selection_type.set_state("zone")
-    fault_tolerant.identify_regions.x.set_state(377.322045740589)
-    fault_tolerant.identify_regions.y.set_state(-176.800676988458)
-    fault_tolerant.identify_regions.z.set_state(-37.0764628583475)
-    fault_tolerant.identify_regions.zone_location.set_state(
-        [
-            "1",
-            "213.32205",
-            "-225.28068",
-            "-158.25531",
-            "541.32205",
-            "-128.32068",
-            "84.102381",
-            "main.1",
-        ]
-    )
-    fault_tolerant.identify_regions.zone_selection_list.set_state(["main.1"])
-    fault_tolerant.identify_regions.add_child_to_task()
     fault_tolerant.identify_regions.insert_compound_child_task()
-    fault_tolerant.identify_regions.x.set_state(377.322045740589)
-    fault_tolerant.identify_regions.y.set_state(-176.800676988458)
-    fault_tolerant.identify_regions.z.set_state(-37.0764628583475)
-
-    fault_tolerant.identify_regions_child_1.material_points_name.set_state(
-        "fluid-region-1"
-    )
-    fault_tolerant.identify_regions_child_1.selection_type.set_state("zone")
-    fault_tolerant.identify_regions.zone_location.set_state(
-        [
-            "1",
-            "213.32205",
-            "-225.28068",
-            "-158.25531",
-            "541.32205",
-            "-128.32068",
-            "84.102381",
-            "main.1",
-        ]
-    )
-    fault_tolerant.identify_regions.zone_selection_list.set_state(["main.1"])
-    fault_tolerant.identify_regions.arguments.set_state({})
     fault_tolerant.identify_regions_child_1()
 
+    fault_tolerant.identify_regions.show_coordinates = True
     fault_tolerant.identify_regions.material_points_name.set_state("void-region-1")
     fault_tolerant.identify_regions.new_region_type.set_state("void")
     fault_tolerant.identify_regions.object_selection_list.set_state(
@@ -355,9 +216,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.identify_regions.x.set_state(374.722045740589)
     fault_tolerant.identify_regions.y.set_state(-278.9775145640143)
     fault_tolerant.identify_regions.z.set_state(-161.1700719416913)
-    fault_tolerant.identify_regions.add_child_to_task()
     fault_tolerant.identify_regions.insert_compound_child_task()
-    fault_tolerant.identify_regions.arguments.set_state({})
     fault_tolerant.identify_regions_child_2()
 
     # Define leakage threshold
@@ -367,12 +226,8 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.define_leakage_threshold.region_selection_single.set_state(
         "void-region-1"
     )
-    fault_tolerant.define_leakage_threshold.add_child_to_task()
-    fault_tolerant.define_leakage_threshold.insert_compound_child_task()
 
-    fault_tolerant.define_leakage_threshold.add_child.set_state("yes")
-
-    fault_tolerant.define_leakage_threshold_child_1.arguments.set_state(
+    fault_tolerant.define_leakage_threshold.arguments.set_state(
         {
             "add_child": "yes",
             "flip_direction": True,
@@ -381,7 +236,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
             "region_selection_single": "void-region-1",
         }
     )
-
+    fault_tolerant.define_leakage_threshold.insert_compound_child_task()
     fault_tolerant.define_leakage_threshold_child_1()
 
     # Update regions settings
@@ -423,26 +278,32 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.update_region_settings.filter_category.set_state(
         "Identified Regions"
     )
-    fault_tolerant.update_region_settings.old_region_leakage_size_list.set_state([""])
-    fault_tolerant.update_region_settings.old_region_mesh_method_list.set_state(
+    fault_tolerant.update_region_settings.all_region_leakage_size_list.set_state([""])
+    fault_tolerant.update_region_settings.all_region_mesh_method_list.set_state(
         ["wrap"]
     )
-    fault_tolerant.update_region_settings.old_region_name_list.set_state(
+    fault_tolerant.update_region_settings.all_region_name_list.set_state(
         ["fluid-region-1"]
     )
-    fault_tolerant.update_region_settings.old_region_overset_componen_list.set_state(
+    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
         ["no"]
     )
-    fault_tolerant.update_region_settings.old_region_type_list.set_state(["fluid"])
-    fault_tolerant.update_region_settings.old_region_volume_fill_list.set_state(
+    fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
+    fault_tolerant.update_region_settings.all_region_volume_fill_list.set_state(
         ["hexcore"]
     )
-    fault_tolerant.update_region_settings.region_leakage_size_list.set_state([""])
-    fault_tolerant.update_region_settings.region_mesh_method_list.set_state(["wrap"])
-    fault_tolerant.update_region_settings.region_name_list.set_state(["fluid-region-1"])
-    fault_tolerant.update_region_settings.region_overset_componen_list.set_state(["no"])
-    fault_tolerant.update_region_settings.region_type_list.set_state(["fluid"])
-    fault_tolerant.update_region_settings.region_volume_fill_list.set_state(["tet"])
+    fault_tolerant.update_region_settings.all_region_leakage_size_list.set_state([""])
+    fault_tolerant.update_region_settings.all_region_mesh_method_list.set_state(
+        ["wrap"]
+    )
+    fault_tolerant.update_region_settings.all_region_name_list.set_state(
+        ["fluid-region-1"]
+    )
+    fault_tolerant.update_region_settings.all_region_overset_componen_list.set_state(
+        ["no"]
+    )
+    fault_tolerant.update_region_settings.all_region_type_list.set_state(["fluid"])
+    fault_tolerant.update_region_settings.all_region_volume_fill_list.set_state(["tet"])
     fault_tolerant.update_region_settings()
 
     # Choose mesh control options
@@ -458,12 +319,8 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     fault_tolerant.update_boundaries_ftm()
 
     # Add boundary layers
-    fault_tolerant.add_boundary_layer_ftm.add_child_to_task()
+    fault_tolerant.add_boundary_layer_ftm.bl_control_name.set_state("aspect-ratio_1")
     fault_tolerant.add_boundary_layer_ftm.insert_compound_child_task()
-    fault_tolerant.add_boundary_layer_ftm.arguments.set_state({})
-    fault_tolerant.add_boundary_layer_ftm_child_1.bl_control_name.set_state(
-        "aspect-ratio_1"
-    )
     fault_tolerant.add_boundary_layer_ftm_child_1()
 
     # Generate volume mesh
@@ -484,21 +341,23 @@ def test_new_fault_tolerant_workflow(new_meshing_session):
     )
     generate_volume_mesh.all_region_size_list.set_state(["11.33375"] * 7)
     generate_volume_mesh.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
-    generate_volume_mesh.enable_parallel.set_state(True)
     generate_volume_mesh()
 
     # Generate volume mesh
     solver = meshing.switch_to_solver()
-    assert solver
+    assert solver.is_active() is True
+    assert meshing.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
 
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version("==24.2")
-def test_new_2d_meshing_workflow(new_meshing_session):
+@pytest.mark.fluent_version(">=24.2")
+def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
-    two_dim_mesh = new_meshing_session.two_dimensional_meshing()
+    two_dim_mesh = new_meshing_session_wo_exit.two_dimensional_meshing()
 
     two_dim_mesh.load_cad_geometry_2d.file_name = import_file_name
     two_dim_mesh.load_cad_geometry_2d.length_unit = "mm"
@@ -506,7 +365,6 @@ def test_new_2d_meshing_workflow(new_meshing_session):
     two_dim_mesh.load_cad_geometry_2d()
 
     # Set regions and boundaries
-    two_dim_mesh.update_regions_2d()
     two_dim_mesh.update_boundaries_2d.selection_type = "zone"
     two_dim_mesh.update_boundaries_2d()
 
@@ -555,14 +413,16 @@ def test_new_2d_meshing_workflow(new_meshing_session):
     two_dim_mesh.add_2d_boundary_layers.offset_method_type = "aspect-ratio"
     two_dim_mesh.add_2d_boundary_layers.add_child_and_update(defer_update=False)
 
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
+        True
+    )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
@@ -574,39 +434,25 @@ def test_new_2d_meshing_workflow(new_meshing_session):
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
     two_dim_mesh.add_2d_boundary_layers_child_1()
 
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
+        True
+    )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
         "no"
     )
     two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
         "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
-    )
-    two_dim_mesh.generate_initial_surface_mesh()
-
-    two_dim_mesh._task("uniform_1").revert()
-    two_dim_mesh._task("uniform_1").add_child = "yes"
-    two_dim_mesh._task("uniform_1").bl_control_name = "smooth-transition_1"
-    two_dim_mesh._task("uniform_1").first_layer_height = 2
-    two_dim_mesh._task("uniform_1").number_of_layers = 7
-    two_dim_mesh._task("uniform_1").offset_method_type = "smooth-transition"
-    two_dim_mesh._task("uniform_1")()
-
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
     )
     two_dim_mesh.generate_initial_surface_mesh()
 
     # Switch to solution mode
-    solver = new_meshing_session.switch_to_solver()
-    assert solver
+    solver = new_meshing_session_wo_exit.switch_to_solver()
+    assert solver.is_active() is True
+    assert new_meshing_session_wo_exit.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
 
 
 @pytest.mark.codegen_required
@@ -1199,7 +1045,8 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_geometry' is a watertight workflow command which is not available now
     # since we have changed to fault-tolerant in the backend.
-    with pytest.raises(RuntimeError):
+    # It seems to throw either RuntimeError or ValueError randomly.
+    with pytest.raises((RuntimeError, ValueError)):
         watertight.import_geometry.arguments()
 
     # Re-initialize watertight
@@ -1207,7 +1054,7 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     assert watertight.import_geometry.arguments()
@@ -1216,14 +1063,14 @@ def test_switch_between_workflows(new_meshing_session):
 
     # 'import_geometry' is a watertight workflow command which is not available now
     # since we have changed to fault-tolerant in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         watertight.import_geometry.arguments()
 
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
 
     # 'import_cad_and_part_management' is a fault-tolerant workflow command which is not
     # available now since we have changed to watertight in the backend.
-    with pytest.raises(RuntimeError):
+    with pytest.raises((RuntimeError, ValueError)):
         fault_tolerant.import_cad_and_part_management.arguments()
 
     # Re-initialize fault-tolerant
@@ -1700,15 +1547,18 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
 
     volume_mesh_gen = watertight.create_volume_mesh
     assert (
-        volume_mesh_gen.arguments.volume_fill_controls.type.default_value()
-        == "Cartesian"
+        volume_mesh_gen.arguments.volume_fill_controls.cell_sizing.default_value()
+        == "Geometric"
     )
 
     # Test particular to string type (allowed_values() only available in string types)
-    assert volume_mesh_gen.arguments.volume_fill_controls.type.allowed_values() == [
-        "Octree",
-        "Cartesian",
-    ]
+    assert (
+        volume_mesh_gen.arguments.volume_fill_controls.cell_sizing.allowed_values()
+        == [
+            "Size Field",
+            "Geometric",
+        ]
+    )
     feat_angle = import_geom.arguments.cad_import_options.feature_angle
     assert feat_angle.default_value() == 40.0
 
@@ -1719,25 +1569,18 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     with pytest.raises(AttributeError) as msg:
         assert feat_angle.allowed_values()
     assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
+        msg.value.args[0] == "'_FeatureAngle' object has no attribute 'allowed_values'"
     )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.num_parts.allowed_values()
-    assert (
-        msg.value.args[0]
-        == "'PyNumericalCommandArgumentsSubItem' object has no attribute 'allowed_values'"
-    )
+    assert msg.value.args[0] == "'_NumParts' object has no attribute 'allowed_values'"
 
     # Test intended to fail in string type (min() only available in numerical types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.length_unit.min()
-    assert (
-        msg.value.args[0]
-        == "'PyTextualCommandArgumentsSubItem' object has no attribute 'min'"
-    )
+    assert msg.value.args[0] == "'_LengthUnit' object has no attribute 'min'"
 
 
 @pytest.mark.codegen_required

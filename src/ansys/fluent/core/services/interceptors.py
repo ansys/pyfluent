@@ -24,7 +24,6 @@
 
 import builtins
 import logging
-import os
 from typing import Any
 
 from google.protobuf.json_format import MessageToDict
@@ -34,8 +33,6 @@ import grpc
 from ansys.fluent.core.services.batch_ops import BatchOps
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
-log_bytes_limit: int = int(os.getenv("PYFLUENT_GRPC_LOG_BYTES_LIMIT", 1000))
-truncate_len: int = log_bytes_limit // 5
 
 
 def _upper_snake_case_to_camel_case(name: str) -> str:
@@ -43,14 +40,17 @@ def _upper_snake_case_to_camel_case(name: str) -> str:
 
 
 def _truncate_grpc_str(message: Message) -> str:
+    from ansys.fluent.core import config
+
+    truncate_len = config.grpc_log_bytes_limit // 5
     message_bytes = message.ByteSize()
     message_str = str(MessageToDict(message))
-    if not log_bytes_limit or message_bytes < log_bytes_limit:
+    if not config.grpc_log_bytes_limit or message_bytes < config.grpc_log_bytes_limit:
         return message_str
     else:
         network_logger.debug(
             f"GRPC_TRACE: message partially hidden, {message_bytes} bytes > "
-            f"{log_bytes_limit} bytes limit. To see the full message, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
+            f"{config.grpc_log_bytes_limit} bytes limit. To see the full message, set PYFLUENT_GRPC_LOG_BYTES_LIMIT to 0."
         )
         return f"{message_str[:truncate_len]} < ... > {message_str[-truncate_len:]}"
 
@@ -68,6 +68,8 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         client_call_details: grpc.ClientCallDetails,
         request: Any,
     ) -> Any:
+        from ansys.fluent.core import config
+
         network_logger.debug(
             f"GRPC_TRACE: RPC = {client_call_details.method}, request = {_truncate_grpc_str(request)}"
         )
@@ -75,7 +77,7 @@ class TracingInterceptor(grpc.UnaryUnaryClientInterceptor):
         if not response.exception():
             # call _truncate_grpc_str early to get the size warning even when hiding secrets
             response_str = _truncate_grpc_str(response.result())
-            if os.getenv("PYFLUENT_HIDE_LOG_SECRETS") != "1":
+            if not config.hide_log_secrets:
                 network_logger.debug(f"GRPC_TRACE: response = {response_str}")
         return response
 
@@ -133,13 +135,12 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
     ) -> Any:
         response = continuation(client_call_details, request)
         if response.exception() is not None and response.code() != grpc.StatusCode.OK:
-            ex = response.exception()
             new_ex_cls = RuntimeError
             try:
                 from google.rpc import error_details_pb2
                 from grpc_status import rpc_status
 
-                status = rpc_status.from_call(ex)
+                status = rpc_status.from_call(response)
                 if status:
                     for detail in status.details:
                         if detail.Is(error_details_pb2.ErrorInfo.DESCRIPTOR):
@@ -155,6 +156,7 @@ class GrpcErrorInterceptor(grpc.UnaryUnaryClientInterceptor):
                                         break
             except DecodeError:
                 pass
+            ex = response.exception()
             new_ex = new_ex_cls(
                 ex.details() if isinstance(ex, grpc.RpcError) else str(ex)
             )

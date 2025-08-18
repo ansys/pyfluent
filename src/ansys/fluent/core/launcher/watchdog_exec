@@ -27,17 +27,17 @@ if __name__ == "__main__":
         launcher_pid = int(sys.argv[1])
 
         # Configure logger for Watchdog process
-        log_config = pyfluent.logging.get_default_config()
+        log_config = pyfluent.logger.get_default_config()
         log_config["handlers"]["pyfluent_file"][
             "filename"
         ] = f"pyfluent_watchdog_{watchdog_id}.log"
 
-        logger = pyfluent.logging.get_logger("pyfluent.watchdog")
+        logger = pyfluent.logger.get_logger("pyfluent.watchdog")
 
-        if os.getenv("PYFLUENT_WATCHDOG_DEBUG", "OFF").upper() in ("1", "ON"):
-            pyfluent.logging.enable(custom_config=log_config)
+        if pyfluent.config.watchdog_debug:
+            pyfluent.logger.enable(custom_config=log_config)
             logger.setLevel("DEBUG")
-            logger.handlers = pyfluent.logging.get_logger(
+            logger.handlers = pyfluent.logger.get_logger(
                 "pyfluent.general"
             ).handlers  # using same handlers as already defined
 
@@ -131,7 +131,7 @@ if __name__ == "__main__":
                 "Fluent processes remain. Checking if Fluent gRPC service is healthy..."
             )
             is_serving = timeout_exec(
-                lambda: fluent.health_check.is_serving, timeout=IDLE_PERIOD * 3
+                lambda: fluent._health_check.is_serving, timeout=IDLE_PERIOD * 3
             )
 
             if is_serving:

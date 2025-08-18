@@ -22,17 +22,39 @@
 
 """Provides a module for file session."""
 
-from typing import List
+from typing import Dict, List
 import warnings
 
+from deprecated.sphinx import deprecated
 import numpy as np
 
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
 from ansys.fluent.core import PyFluentDeprecationWarning
+from ansys.fluent.core.field_data_interfaces import (
+    BaseFieldInfo,
+    FieldBatch,
+    FieldDataSource,
+    PathlinesFieldDataRequest,
+    ScalarFieldDataRequest,
+    SurfaceDataType,
+    SurfaceFieldDataRequest,
+    VectorFieldDataRequest,
+    _AllowedScalarFieldNames,
+    _AllowedSurfaceNames,
+    _ReturnFieldData,
+    _ScalarFields,
+    _SurfaceIds,
+    _SurfaceNames,
+    _transform_faces_connectivity_data,
+    _VectorFields,
+)
 from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.data_file import DataFile
-from ansys.fluent.core.services.field_data import SurfaceDataType
-from ansys.fluent.core.utils.deprecate import deprecate_argument, deprecate_arguments
+from ansys.fluent.core.filereader.data_file import (
+    DataFile,
+    _to_scalar_field_name,
+    _to_vector_field_name,
+)
+from ansys.fluent.core.utils.deprecate import all_deprecators
 
 
 class InvalidMultiPhaseFieldName(ValueError):
@@ -65,7 +87,136 @@ def _data_type_convertor(args_dict):
     return args_dict
 
 
-class Transaction:
+class BatchFieldData:
+    """Provides access to Fluent field data on surfaces collected via batches."""
+
+    def __init__(
+        self,
+        data: Dict,
+        field_info,
+        allowed_surface_names,
+        allowed_scalar_field_names,
+    ):
+        """__init__ method of BatchFieldData class."""
+        self.data = data
+        self._field_info = field_info
+        self._allowed_surface_names = allowed_surface_names
+        self._allowed_scalar_field_names = allowed_scalar_field_names
+        self._returned_data = _ReturnFieldData()
+
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
+
+    def _get_scalar_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        scalar_field_data = self.data[
+            (
+                ("type", "scalar-field"),
+                ("dataLocation", 0 if kwargs.get("node_value") else 1),
+                ("boundaryValues", kwargs.get("boundary_value")),
+            )
+        ]
+        return self._returned_data._scalar_data(
+            _to_scalar_field_name(kwargs.get("field_name")),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            scalar_field_data,
+        )
+
+    def _get_surface_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
+        surface_data = self.data[(("type", "surface-data"),)]
+        return self._returned_data._surface_data(
+            kwargs.get("data_types"),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            surface_data,
+            flatten_connectivity=kwargs.get("flatten_connectivity"),
+        )
+
+    def _get_vector_field_data(
+        self,
+        **kwargs,
+    ) -> Dict[int | str, np.array]:
+        vector_field_data = self.data[(("type", "vector-field"),)]
+        return self._returned_data._vector_data(
+            _to_vector_field_name(kwargs.get("field_name")),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            vector_field_data,
+        )
+
+    def _get_pathlines_field_data(
+        self,
+        **kwargs,
+    ) -> Dict:
+        if kwargs.get("zones") is None:
+            zones = []
+        del zones
+        pathlines_data = self.data[
+            (
+                ("type", "pathlines-field"),
+                (
+                    "field",
+                    _to_scalar_field_name(kwargs.get("field_name")),
+                ),
+            )
+        ]
+        return self._returned_data._pathlines_data(
+            _to_scalar_field_name(kwargs.get("field_name")),
+            kwargs.get("surfaces"),
+            self.get_surface_ids(kwargs.get("surfaces")),
+            pathlines_data,
+        )
+
+    def get_field_data(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
+        if isinstance(obj, SurfaceFieldDataRequest):
+            return self._get_surface_data(**obj._asdict())
+        elif isinstance(obj, ScalarFieldDataRequest):
+            return self._get_scalar_field_data(**obj._asdict())
+        elif isinstance(obj, VectorFieldDataRequest):
+            return self._get_vector_field_data(**obj._asdict())
+        elif isinstance(obj, PathlinesFieldDataRequest):
+            return self._get_pathlines_field_data(**obj._asdict())
+
+    def __len__(self):
+        return len(self.data)
+
+    def __call__(self):
+        return self.data
+
+
+class Batch(FieldBatch):
     """Populates field data on surfaces."""
 
     class _SurfaceTransaction:
@@ -87,28 +238,38 @@ class Transaction:
             self.surface_ids = surface_ids
 
     def __init__(self, file_session, field_info):
-        """__init__ method of Transaction class."""
-        self._surface_transactions = []
-        self._scalar_field_transactions = []
-        self._vector_field_transactions = []
+        """__init__ method of Batch class."""
+        self._surface_batches = []
+        self._scalar_field_batches = []
+        self._vector_field_batches = []
         self._file_session = file_session
         self._field_info = field_info
+        self._cache_requests = []
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_arguments(
-        converter=_data_type_convertor,
-        warning_cls=PyFluentDeprecationWarning,
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
+
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=_data_type_convertor,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_surfaces_request' is deprecated, use 'add_requests' instead.",
     )
     def add_surfaces_request(
         self,
@@ -129,6 +290,13 @@ class Transaction:
         -------
         None
         """
+        self._add_surfaces_request(data_types=data_types, surfaces=surfaces)
+
+    def _add_surfaces_request(
+        self,
+        data_types: List[SurfaceDataType] | List[str],
+        surfaces: List[int | str],
+    ) -> None:
         updated_types = []
         for d_type in data_types:
             if isinstance(d_type, str):
@@ -138,28 +306,28 @@ class Transaction:
         data_types = updated_types
         provide_vertices = SurfaceDataType.Vertices in data_types
         provide_faces = SurfaceDataType.FacesConnectivity in data_types
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surfaces=surfaces,
-        )
-        for surface_id in surface_ids:
-            self._surface_transactions.append(
-                Transaction._SurfaceTransaction(
-                    surface_id, provide_vertices, provide_faces
-                )
+        for surface_id in self.get_surface_ids(surfaces):
+            self._surface_batches.append(
+                Batch._SurfaceTransaction(surface_id, provide_vertices, provide_faces)
             )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead.",
     )
     def add_scalar_fields_request(
         self,
@@ -192,35 +360,51 @@ class Transaction:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
+        self._add_scalar_fields_request(
+            field_name=field_name,
             surfaces=surfaces,
+            node_value=node_value,
+            boundary_value=boundary_value,
         )
 
+    def _add_scalar_fields_request(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
+    ) -> None:
+        surface_ids = self.get_surface_ids(surfaces)
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            self._scalar_field_transactions.append(
-                Transaction._ScalarFieldTransaction(
+            self._scalar_field_batches.append(
+                Batch._ScalarFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
-            self._scalar_field_transactions.append(
-                Transaction._ScalarFieldTransaction(field_name, surface_ids)
+            self._scalar_field_batches.append(
+                Batch._ScalarFieldTransaction(field_name, surface_ids)
             )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead.",
     )
     def add_vector_fields_request(
         self,
@@ -245,35 +429,44 @@ class Transaction:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surfaces=surfaces,
-        )
+        self._add_vector_fields_request(field_name=field_name, surfaces=surfaces)
 
+    def _add_vector_fields_request(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+    ) -> None:
+        surface_ids = self.get_surface_ids(surfaces)
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
-            self._vector_field_transactions.append(
-                Transaction._VectorFieldTransaction(
+            self._vector_field_batches.append(
+                Batch._VectorFieldTransaction(
                     field_name, surface_ids, field_name.split(":")[0]
                 )
             )
         else:
-            self._vector_field_transactions.append(
-                Transaction._VectorFieldTransaction(field_name, surface_ids)
+            self._vector_field_batches.append(
+                Batch._VectorFieldTransaction(field_name, surface_ids)
             )
 
-    @deprecate_argument(
-        old_arg="surface_names",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="Pathlines are not supported.",
     )
     def add_pathlines_fields_request(
         self,
@@ -295,8 +488,67 @@ class Transaction:
         """
         raise NotImplementedError("Pathlines are not supported.")
 
+    def _add_pathlines_fields_request(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+    ):
+        raise NotImplementedError("Pathlines are not supported.")
+
+    def add_requests(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+        *args: SurfaceFieldDataRequest
+        | ScalarFieldDataRequest
+        | VectorFieldDataRequest
+        | PathlinesFieldDataRequest,
+    ):
+        """Add request to get surface, scalar, vector or path-lines field on surfaces."""
+        for req in (obj,) + args:
+            req = req._replace(surfaces=self.get_surface_ids(req.surfaces))
+            if req in self._cache_requests:
+                warnings.warn(f"{req._asdict()} is duplicate and being ignored.")
+                continue
+            elif isinstance(req, SurfaceFieldDataRequest):
+                self._add_surfaces_request(
+                    data_types=req.data_types,
+                    surfaces=req.surfaces,
+                )
+            elif isinstance(req, ScalarFieldDataRequest):
+                self._add_scalar_fields_request(
+                    field_name=_to_scalar_field_name(req.field_name),
+                    surfaces=req.surfaces,
+                    node_value=req.node_value,
+                    boundary_value=req.boundary_value,
+                )
+            elif isinstance(req, VectorFieldDataRequest):
+                self._add_vector_fields_request(
+                    field_name=_to_vector_field_name(req.field_name),
+                    surfaces=req.surfaces,
+                )
+            elif isinstance(req, PathlinesFieldDataRequest):
+                self._add_pathlines_fields_request(
+                    field_name=req.field_name,
+                    surfaces=req.surfaces,
+                )
+            self._cache_requests.append(req)
+        return self
+
     def get_fields(self):
-        """Get data for previously added requests and then clear all requests.
+        """Get data for previously added requests."""
+        warnings.warn(
+            "'get_fields' is deprecated, use 'get_response' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self.get_response()
+
+    def get_response(self):
+        """Get data for previously added requests.
 
         Returns
         -------
@@ -321,84 +573,121 @@ class Transaction:
             ("boundaryValues", False),
         )
 
-        for transaction in self._scalar_field_transactions:
+        for batch in self._scalar_field_batches:
             if scalar_field_tag not in field_data:
                 field_data[scalar_field_tag] = {}
             field_data_surface = field_data[scalar_field_tag]
-            for surface_id in transaction.surface_ids:
+            for surface_id in batch.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][transaction.field_name] = (
+                field_data_surface[surface_id][batch.field_name] = (
                     self._file_session._data_file.get_face_scalar_field_data(
-                        transaction.phase_name, transaction.field_name, surface_id
+                        batch.phase_name, batch.field_name, surface_id
                     )
                 )
 
         vector_field_tag = (("type", "vector-field"),)
 
-        for transaction in self._vector_field_transactions:
-            if "velocity" not in transaction.field_name:
+        for batch in self._vector_field_batches:
+            if "velocity" not in batch.field_name:
                 raise InvalidFieldName()
             if vector_field_tag not in field_data:
                 field_data[vector_field_tag] = {}
             field_data_surface = field_data[vector_field_tag]
-            for surface_id in transaction.surface_ids:
+            for surface_id in batch.surface_ids:
                 field_data_surface[surface_id] = {}
-                field_data_surface[surface_id][transaction.field_name] = (
+                field_data_surface[surface_id][batch.field_name] = (
                     self._file_session._data_file.get_face_vector_field_data(
-                        transaction.phase_name, surface_id
+                        batch.phase_name, surface_id
                     )
                 )
                 field_data_surface[surface_id]["vector-scale"] = np.array([0.1])
 
-        for transaction in self._surface_transactions:
+        for batch in self._surface_batches:
             if (("type", "surface-data"),) not in field_data:
                 field_data[(("type", "surface-data"),)] = {}
             field_data_surface = field_data[(("type", "surface-data"),)]
-            field_data_surface[transaction.surface_id] = {}
-            field_data_surface[transaction.surface_id]["faces"] = mesh.get_connectivity(
-                transaction.surface_id
+            field_data_surface[batch.surface_id] = {}
+            field_data_surface[batch.surface_id]["faces"] = mesh.get_connectivity(
+                batch.surface_id
             )
-            field_data_surface[transaction.surface_id]["vertices"] = mesh.get_vertices(
-                transaction.surface_id
+            field_data_surface[batch.surface_id]["vertices"] = mesh.get_vertices(
+                batch.surface_id
             )
-        return field_data
+        return BatchFieldData(
+            field_data,
+            self._field_info,
+            _AllowedSurfaceNames(self._field_info),
+            _AllowedScalarFieldNames(True, self._field_info),
+        )
 
 
-class FileFieldData:
+class FileFieldData(FieldDataSource):
     """File field data."""
 
     def __init__(self, file_session, field_info):
         """Initialize FileFieldData."""
         self._file_session = file_session
         self._field_info = field_info
+        self.scalar_fields = _ScalarFields(
+            self._field_info._get_scalar_fields_info, self._field_info
+        )
+        self.vector_fields = _VectorFields(self._field_info._get_vector_fields_info)
+        self.surfaces = _SurfaceNames(self._field_info._get_surfaces_info)
 
+    @property
+    def surface_ids(self):
+        """Get the surface ids."""
+        return _SurfaceIds(
+            _get_surface_ids(
+                self._field_info, list(self._field_info._get_surfaces_info())
+            )
+        )
+
+    def new_batch(self):
+        """Create a new field batch."""
+        return Batch(self._file_session, self._field_info)
+
+    @deprecated(version="0.34", reason="Use `new_batch` instead.")
     def new_transaction(self):
         """Create a new field transaction."""
-        return Transaction(self._file_session, self._field_info)
+        return self.new_batch()
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="data_type",
-        new_arg="data_types",
-        converter=lambda old_arg_val: [old_arg_val] if old_arg_val else None,
-        warning_cls=PyFluentDeprecationWarning,
+    def get_surface_ids(self, surfaces: List[str | int]) -> List[int]:
+        """Get a list of surface ids based on surfaces provided as inputs."""
+        return _get_surface_ids(
+            field_info=self._field_info,
+            surfaces=surfaces,
+        )
+
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+            {
+                "old_arg": "data_type",
+                "new_arg": "data_types",
+                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else None,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids', 'surface_names' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
+        warn_message="'get_surface_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_surface_data(
         self,
         data_types: List[SurfaceDataType] | List[str],
         surfaces: List[int | str],
         overset_mesh: bool | None = False,
+        flatten_connectivity: bool = False,
     ):
         """Get surface data (vertices and faces connectivity).
 
@@ -410,6 +699,8 @@ class FileFieldData:
             List of surface IDS or surface names for the surface data.
         overset_mesh : bool, optional
             Whether to provide the overset method. The default is ``False``.
+        flatten_connectivity: bool, optional
+            Whether to provide faces connectivity data in flattened format.
 
         Returns
         -------
@@ -418,16 +709,26 @@ class FileFieldData:
              If surface IDs are provided as input, a dictionary containing a map of surface IDs to face
              vertices, connectivity data, and normal or centroid data is returned.
         """
+        return self._get_surface_data(
+            data_types=data_types,
+            surfaces=surfaces,
+            overset_mesh=overset_mesh,
+            flatten_connectivity=flatten_connectivity,
+        )
 
+    def _get_surface_data(
+        self,
+        data_types: List[SurfaceDataType] | List[str],
+        surfaces: List[int | str],
+        overset_mesh: bool | None = False,
+        flatten_connectivity: bool = False,
+    ):
         for d_type in data_types:
             if isinstance(d_type, str):
                 data_types.remove(d_type)
                 data_types.append(SurfaceDataType(d_type))
 
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
-            surfaces=surfaces,
-        )
+        surface_ids = self.get_surface_ids(surfaces=surfaces)
 
         if SurfaceDataType.Vertices in data_types:
             return {
@@ -438,36 +739,46 @@ class FileFieldData:
             }
 
         if SurfaceDataType.FacesConnectivity in data_types:
-            return {
-                surface: self._get_faces_connectivity_data(
-                    self._file_session._case_file.get_mesh().get_connectivity(
+            if flatten_connectivity:
+                return {
+                    surface: self._file_session._case_file.get_mesh().get_connectivity(
                         surface_ids[count]
                     )
+                    for count, surface in enumerate(surfaces)
+                }
+            else:
+                warnings.warn(
+                    "Structured face connectivity output is deprecated and will be replaced by the flat format "
+                    "in a future release. In the current release, pass 'flatten_connectivity=True' argument while creating the "
+                    "'SurfaceFieldDataRequest' to request data in the flat format.",
+                    PyFluentDeprecationWarning,
                 )
-                for count, surface in enumerate(surfaces)
-            }
+                return {
+                    surface: _transform_faces_connectivity_data(
+                        self._file_session._case_file.get_mesh().get_connectivity(
+                            surface_ids[count]
+                        )
+                    )
+                    for count, surface in enumerate(surfaces)
+                }
 
-    @staticmethod
-    def _get_faces_connectivity_data(data):
-        faces_data = []
-        i = 0
-        while i < len(data):
-            end = i + 1 + data[i]
-            faces_data.append(data[i + 1 : end])
-            i = end
-        return faces_data
-
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'get_scalar_field_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_scalar_field_data(
         self,
@@ -503,10 +814,21 @@ class FileFieldData:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
+        return self._get_scalar_field_data(
+            field_name=field_name,
             surfaces=surfaces,
+            node_value=node_value,
+            boundary_value=boundary_value,
         )
+
+    def _get_scalar_field_data(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+        node_value: bool | None = True,
+        boundary_value: bool | None = True,
+    ):
+        surface_ids = self.get_surface_ids(surfaces=surfaces)
         if len(self._file_session._data_file.get_phases()) > 1:
             if not field_name.startswith("phase-"):
                 raise InvalidMultiPhaseFieldName()
@@ -526,17 +848,23 @@ class FileFieldData:
                 for count, surface in enumerate(surfaces)
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="'get_vector_field_data' is deprecated, use 'get_field_data' instead.",
     )
     def get_vector_field_data(
         self,
@@ -566,10 +894,18 @@ class FileFieldData:
         InvalidMultiPhaseFieldName
             If field name does not have prefix ``phase-`` for multi-phase cases.
         """
-        surface_ids = _get_surface_ids(
-            field_info=self._field_info,
+        return self._get_vector_field_data(
+            field_name=field_name,
             surfaces=surfaces,
         )
+
+    def _get_vector_field_data(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+    ):
+        field_name = _to_vector_field_name(field_name)
+        surface_ids = self.get_surface_ids(surfaces=surfaces)
         if (
             field_name.lower() != "velocity"
             and field_name.split(":")[1].lower() != "velocity"
@@ -593,17 +929,23 @@ class FileFieldData:
                 for count, surface in enumerate(surfaces)
             }
 
-    @deprecate_argument(
-        old_arg="surface_name",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: [old_arg_val],
-        warning_cls=PyFluentDeprecationWarning,
-    )
-    @deprecate_argument(
-        old_arg="surface_ids",
-        new_arg="surfaces",
-        converter=lambda old_arg_val: old_arg_val,
-        warning_cls=PyFluentDeprecationWarning,
+    @all_deprecators(
+        deprecate_arg_mappings=[
+            {
+                "old_arg": "surface_names",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: [old_arg_val],
+            },
+            {
+                "old_arg": "surface_ids",
+                "new_arg": "surfaces",
+                "converter": lambda old_arg_val: old_arg_val,
+            },
+        ],
+        data_type_converter=None,
+        deprecated_version="v0.25.0",
+        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
+        warn_message="Pathlines are not supported.",
     )
     def get_pathlines_field_data(
         self,
@@ -627,12 +969,52 @@ class FileFieldData:
         """
         raise NotImplementedError("Pathlines are not supported.")
 
+    def _get_pathlines_field_data(
+        self,
+        field_name: str,
+        surfaces: List[int | str],
+        **kwargs,
+    ):
+        raise NotImplementedError("Pathlines are not supported.")
 
-class FileFieldInfo:
+    def get_field_data(
+        self,
+        obj: (
+            SurfaceFieldDataRequest
+            | ScalarFieldDataRequest
+            | VectorFieldDataRequest
+            | PathlinesFieldDataRequest
+        ),
+    ) -> Dict[int | str, Dict | np.array]:
+        """Get the surface, scalar, vector or path-lines field data on a surface.
+
+        Returns
+        -------
+        Dict[int | str, Dict | np.array]
+            Field data for the requested surface. If field data is unavailable for the surface,
+            an empty array is returned and a warning is issued. Users should always check
+            the array size before using the data.
+
+            Example:
+                data = get_field_data(field_data_request)[surface_id]
+                if data.size == 0:
+                    # Handle missing data
+        """
+        if isinstance(obj, SurfaceFieldDataRequest):
+            return self._get_surface_data(**obj._asdict())
+        elif isinstance(obj, ScalarFieldDataRequest):
+            return self._get_scalar_field_data(**obj._asdict())
+        elif isinstance(obj, VectorFieldDataRequest):
+            return self._get_vector_field_data(**obj._asdict())
+        elif isinstance(obj, PathlinesFieldDataRequest):
+            return self._get_pathlines_field_data(**obj._asdict())
+
+
+class _FileFieldInfo(BaseFieldInfo):
     """File field info."""
 
     def __init__(self, file_session):
-        """Initialize FileFieldInfo."""
+        """Initialize _FileFieldInfo."""
         self._file_session = file_session
 
     def get_scalar_field_range(
@@ -652,6 +1034,16 @@ class FileFieldInfo:
         -------
         List[float]
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            f"Please use 'field_data.scalar_fields.range({field}, {node_value}, {surface_ids})' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_field_range(field, node_value, surface_ids)
+
+    def _get_scalar_field_range(
+        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+    ) -> List[float]:
         minimum = None
         maximum = None
         if not surface_ids:
@@ -674,6 +1066,14 @@ class FileFieldInfo:
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.scalar_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_scalar_fields_info()
+
+    def _get_scalar_fields_info(self):
         phases = self._file_session._data_file.get_phases()
 
         scalar_field_info = {}
@@ -709,6 +1109,14 @@ class FileFieldInfo:
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.vector_fields()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_vector_fields_info()
+
+    def _get_vector_fields_info(self):
         phases = self._file_session._data_file.get_phases()
 
         if len(phases) > 1:
@@ -738,6 +1146,14 @@ class FileFieldInfo:
         -------
         Dict
         """
+        warnings.warn(
+            "This usage is deprecated and will be removed in a future release. "
+            "Please use 'field_data.surfaces()' instead",
+            PyFluentDeprecationWarning,
+        )
+        return self._get_surfaces_info()
+
+    def _get_surfaces_info(self):
         mesh = self._file_session._case_file.get_mesh()
         surface_names = mesh.get_surface_names()
         surface_ids = mesh.get_surface_ids()
@@ -753,32 +1169,45 @@ class FileFieldInfo:
         return info
 
 
+class FileFieldInfo(_FileFieldInfo):
+    """File field info."""
+
+    def __init__(self, file_session):
+        """Initialize FileFieldInfo"""
+        warnings.warn(
+            "'FieldInfo' is deprecated and will be removed in a future release. "
+            "Please use relevant methods from 'FieldData' instead",
+            PyFluentDeprecationWarning,
+        )
+        super().__init__(file_session)
+
+
 class FileSession:
     """File session to read case and data file."""
 
-    def __init__(self):
+    def __init__(self, case_file_name=None, data_file_name=None):
         """__init__ method of FileSession class."""
-        self._case_file = None
-        self._data_file = None
+        self._case_file = CaseFile(case_file_name) if case_file_name else None
+        self._data_file = (
+            DataFile(data_file_name, case_file_handle=self._case_file)
+            if case_file_name and data_file_name
+            else None
+        )
+
         self.monitors = None
         self.session_id = 1
-
-        class Fields:
-            """Container for field and solution variables."""
-
-            def __init__(self, _session):
-                """Initialize Fields."""
-                self.field_info = FileFieldInfo(_session)
-                self.field_data = FileFieldData(_session, self.field_info)
-
         self.fields = Fields(self)
 
     def read_case(self, case_file_name):
         """Read Case file."""
+        if self._case_file:
+            warnings.warn("Case already read during initialization. Over-writing...")
         self._case_file = CaseFile(case_file_name)
 
     def read_data(self, data_file_name):
         """Read Data file."""
+        if self._data_file:
+            warnings.warn("Data already read during initialization. Over-writing...")
         self._data_file = DataFile(data_file_name, case_file_handle=self._case_file)
 
     @property
@@ -818,7 +1247,16 @@ def _get_surface_ids(
     surface_ids = []
     for surf in surfaces:
         if isinstance(surf, str):
-            surface_ids.extend(field_info.get_surfaces_info()[surf]["surface_id"])
+            surface_ids.extend(field_info._get_surfaces_info()[surf]["surface_id"])
         else:
             surface_ids.append(surf)
     return surface_ids
+
+
+class Fields:
+    """Container for field and solution variables."""
+
+    def __init__(self, _session: FileSession):
+        """Initialize Fields."""
+        self.field_info = _FileFieldInfo(_session)
+        self.field_data = FileFieldData(_session, self.field_info)

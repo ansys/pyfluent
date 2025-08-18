@@ -42,16 +42,18 @@ This example demonstrates:
 # ==================================================================================
 
 import csv
+import os
 
 import matplotlib.pyplot as plt
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-import ansys.fluent.visualization.pyvista as pv
+from ansys.fluent.visualization import Contour, GraphicsWindow
 
 import_filename = examples.download_file(
     "brake.msh.h5",
     "pyfluent/examples/Brake-Thermal-PyVista-Matplotlib",
+    save_path=os.getcwd(),
 )
 
 ####################################################################################
@@ -195,6 +197,7 @@ session.settings.solution.monitor.report_files["max-temperature"].report_defs = 
 
 session.settings.results.graphics.contour.create(name="contour-1")
 session.settings.results.graphics.contour["contour-1"] = {
+    "surfaces_list": "wall*",
     "boundary_values": True,
     "range_option": {"auto_range_on": {"global_range": True}},
     "field": "temperature",
@@ -290,27 +293,16 @@ session.settings.file.write(file_type="case-data", file_name="brake-final.cas.h5
 # ===============================================
 
 ###############################################
-# Create a graphics session
-# -------------------------
-graphics_session1 = pv.Graphics(session)
-
-###############################################
 # Temperature contour object
 # --------------------------
-contour1 = graphics_session1.Contours["temperature"]
-
-###############################################
-# Check available options for contour object
-# -------------------------------------------
-
-contour1()
+contour1 = Contour(solver=session)
 
 ###############################################
 # Set contour properties
 # ----------------------
 
 contour1.field = "temperature"
-contour1.surfaces_list = [
+contour1.surfaces = [
     "wall-disc1",
     "wall-disc2",
     "wall-pad-disc2",
@@ -321,7 +313,6 @@ contour1.surfaces_list = [
     "wall-geom-1-outerpad",
 ]
 contour1.range.option = "auto-range-off"
-contour1()
 contour1.range.auto_range_off.minimum = 300
 contour1.range.auto_range_off.maximum = 400
 
@@ -329,7 +320,9 @@ contour1.range.auto_range_off.maximum = 400
 # Display contour
 # ---------------
 
-contour1.display()
+window = GraphicsWindow()
+window.add_graphics(contour1)
+window.show()
 
 # %%
 # .. image:: ../../_static/brake_surface_temperature.png
@@ -351,7 +344,7 @@ X = []
 Y = []
 Z = []
 i = -1
-with open("max-temperature.out", "r") as datafile:
+with open(os.path.join(os.getcwd(), "max-temperature.out"), "r") as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1

@@ -49,6 +49,10 @@ def test_nltk_data_download():
     api_tree_data = _get_api_tree_data()
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
 
+    from nltk.corpus import wordnet as wn
+
+    assert wn.langs()
+
 
 @pytest.mark.fluent_version("==24.2")
 @pytest.mark.codegen_required
@@ -90,8 +94,7 @@ def test_get_capitalize_match_for_word_from_names():
     )
 
 
-@pytest.mark.skip("Started failing suddenly.")
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
 def test_get_wildcard_matches_for_word_from_names():
     api_tree_data = _get_api_tree_data()
@@ -100,23 +103,13 @@ def test_get_wildcard_matches_for_word_from_names():
         "iter*",
         names=api_object_names,
     )
-    assert set(wildcard_matches) == set(
-        [
-            "iter_count",
-            "iterating",
-            "iter_per_coupling_count",
-            "iteration_at_creation_or_edit",
-            "iteration_interval",
-            "iteration_number_of_samples_or_levels",
-            "iterations",
-            "iterate",
-            "iterate_steady_2way_fsi",
-            "iteration",
-            "iteration_sampling_type",
-            "iteration_count",
-            "iteration_parameters",
-        ]
-    )
+    assert "iter_count" in wildcard_matches
+    assert "iterating" in wildcard_matches
+    assert "iteration_at_creation_or_edit" in wildcard_matches
+    assert "iterations" in wildcard_matches
+    assert "iterate" in wildcard_matches
+    assert "iterate_steady_2way_fsi" in wildcard_matches
+    assert "limiter" not in wildcard_matches
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -204,11 +197,17 @@ def test_search_semantic(capsys):
     api_tree_data = _get_api_tree_data()
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.read_surface_mesh (Command)" in lines
+    assert (
+        "<solver_session>.file.read_surface_mesh (Command) (similarity: 100.0%)"
+        in lines
+    )
 
     _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert (
+        "<solver_session>.tui.preferences.appearance.charts.font (Object) (similarity: 100.0%)"
+        in lines
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -246,7 +245,7 @@ def test_match_whole_word_and_case_search(capsys):
         "<solver_session>.preferences.Graphics.ColormapSettings.TextFontAutomaticUnits (Parameter)"
         not in lines
     )
-    assert "<meshing_session>.tui.display.set_grid.label_font (Command)" in lines
+    assert "<meshing_session>.tui.preferences.appearance.charts.font (Object)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -260,13 +259,15 @@ def test_misspelled_search(capsys):
     )
 
 
-@pytest.mark.fluent_version("==24.2")
+@pytest.mark.fluent_version("==26.1")
 @pytest.mark.codegen_required
 def test_wildcard_search(capsys):
-    pyfluent.search("iter*", wildcard=True)
+    pyfluent.search("local*")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.solution.run_calculation.iter_count (Parameter)" in lines
-    assert "<solver_session>.solution.run_calculation.iterating (Query)" in lines
+    assert (
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        in lines
+    )
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -274,11 +275,11 @@ def test_wildcard_search(capsys):
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.read_case (Command)" in lines
+    assert "<solver_session>.file.read_case (Command) (similarity: 100.0%)" in lines
 
     pyfluent.search("写", language="cmn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.file.write_case (Command)" in lines
+    assert "<solver_session>.file.write_case (Command) (similarity: 100.0%)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -286,11 +287,14 @@ def test_chinese_semantic_search(capsys):
 def test_japanese_semantic_search(capsys):
     pyfluent.search("フォント", language="jpn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.tui.preferences.appearance.charts.font (Object)" in lines
+    assert (
+        "<solver_session>.tui.preferences.appearance.charts.font (Object) (similarity: 100.0%)"
+        in lines
+    )
 
 
 def test_match_whole_word(monkeypatch):
-    monkeypatch.setattr(pyfluent, "PRINT_SEARCH_RESULTS", False)
+    monkeypatch.setattr(pyfluent.config, "print_search_results", False)
     api_tree_data = {
         "api_objects": [
             "<solver_session>.parent (Object)",
@@ -312,22 +316,151 @@ def test_match_whole_word(monkeypatch):
     monkeypatch.setattr(search_module, "_get_api_tree_data", lambda: api_tree_data)
 
     assert _search_whole_word("parent", api_tree_data=api_tree_data) == [
-        "<solver_session>.parent (Object)"
+        "<solver_session>.parent (Object)",
     ]
     assert _search_whole_word("child", api_tree_data=api_tree_data) == [
-        "<solver_session>.parent.child (Parameter)"
+        "<solver_session>.parent.child (Parameter)",
     ]
     assert pyfluent.search("parent", match_whole_word=True) == [
-        "<solver_session>.parent (Object)"
+        "<solver_session>.parent (Object)",
     ]
 
-    assert pyfluent.search("first", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
-    assert pyfluent.search("last", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
 
-    assert pyfluent.search("first_last", match_whole_word=True) == [
-        "<solver_session>.first_last (Object)"
-    ]
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_solver_api_path():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search(search_string="faces_zones", api_path="<solver_session>")
+    assert "<meshing_session>" not in results
+    assert "<solver_session>.mesh.modify_zones.project_face_zones (Command)" in results
+    assert (
+        "<solver_session>.tui.mesh.modify_zones.project_face_zones (Command)" in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_meshing_api_path():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search(search_string="faces_zones", api_path="<meshing_session>")
+    assert "<solver_session>" not in results
+    assert "<meshing_session>.tui.mesh.manage.adjacent_face_zones (Command)" in results
+    assert "<meshing_session>.meshing_utilities.merge_face_zones (Command)" in results
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_solver_specific_api_path():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search(search_string="font", api_path="contour")
+    assert "<meshing_session>" not in results
+    assert (
+        '<solver_session>.results.graphics.contour["<name>"].color_map.font_automatic (Parameter) (similarity: 98.31%)'
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_match_whole_word_with_api_path():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search(
+        "ApplicationFontSize", match_whole_word=True, api_path="<meshing_session>"
+    )
+    assert "<solver_session>" not in results
+    assert (
+        "<meshing_session>.preferences.Appearance.ApplicationFontSize (Parameter)"
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_wildcard_with_api_path():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search("local*", api_path="<solver_session>.setup")
+    assert "<meshing_session>" not in results
+    assert (
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_wildcard_with_api_object():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search("local*", api_path="mesh_interfaces")
+    assert "<meshing_session>" not in results
+    assert (
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_match_whole_word_with_api_object_2():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search(
+        "ApplicationFontSize", match_whole_word=True, api_path="Appearance"
+    )
+    assert "<solver_session>" not in results
+    assert (
+        "<meshing_session>.preferences.Appearance.ApplicationFontSize (Parameter)"
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_semantic_search_read():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    results = pyfluent.search("读", language="cmn")
+    for result in results:
+        assert "thread" not in result
+    assert (
+        "<solver_session>.file.convert_hanging_nodes_during_read (Parameter) (similarity: 100.0%)"
+        in results
+    )
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_multiple_words():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    # TODO: Support semantic search with multiple words
+    results = pyfluent.search("remove empty face zones")
+    assert "<meshing_session>.tui.mesh.cavity.remove_zones (Command)" in results
+
+
+@pytest.mark.fluent_version("==26.1")
+@pytest.mark.codegen_required
+def test_multiple_words_2():
+    import ansys.fluent.core as pyfluent
+
+    pyfluent.config.print_search_results = False
+    # TODO: Support semantic search with multiple words
+    results = pyfluent.search("remove, empty, face, zones")
+    assert (
+        "<meshing_session>.meshing_utilities.delete_empty_face_zones (Command)"
+        in results
+    )

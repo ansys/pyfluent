@@ -1,0 +1,112 @@
+name: Test Podman Compose
+
+on:
+  schedule: # UTC at 0600
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: read
+  pull-requests: write
+  issues: write
+
+env:
+  ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
+  PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYFLUENT_LAUNCH_CONTAINER: 1
+  PYFLUENT_LOGGING: "DEBUG"
+  PYFLUENT_WATCHDOG_DEBUG: "OFF"
+  PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  install-podman:
+    runs-on: [public-ubuntu-latest-8-cores]
+    steps:
+      - uses: gacts/install-podman@96e73075ee4b6669429c80458d063924472fb04d # v1.1.1
+      - run: podman compose version
+
+  build_test:
+    name: Build and Test
+    needs: install-podman
+    runs-on: [public-ubuntu-latest-8-cores]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image-tag: v25.2.0
+            version: 252
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+
+      - name: Add version information
+        run: make version-info
+
+      - name: Install pyfluent
+        run: |
+          pip install packaging
+          make install
+
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Fluent docker image
+        run: |
+          docker pull ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          docker images
+
+      - name: Transport docker image to podman
+        run: |
+          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${{ matrix.image-tag }}
+          sudo podman images
+
+      - name: Run API codegen
+        run: make api-codegen
+
+      - name: Print Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
+
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
+
+      - name: Run Fluent test script
+        run: |
+          python tests/podman_compose.py
+
+      - name: Cleanup previous containers
+        if: always()
+        run: |
+          docker system prune -af
+          sudo podman system prune -af

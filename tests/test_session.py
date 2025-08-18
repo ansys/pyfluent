@@ -39,12 +39,14 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
+from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.execution import timeout_loop
-from ansys.fluent.core.utils.file_transfer_service import RemoteFileTransferStrategy
+from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -150,10 +152,10 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_by_setting_ip_port_env_var(
@@ -168,17 +170,17 @@ def test_create_mock_session_by_setting_ip_port_env_var(
         MockSchemeEvalServicer(), server
     )
     server.start()
-    monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
-    monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_ip", ip)
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_port", port)
     fluent_connection = FluentConnection(password="12345", cleanup_on_exit=False)
     session = BaseSession(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_by_passing_grpc_channel() -> None:
@@ -199,10 +201,10 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
@@ -220,10 +222,10 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_from_server_info_file_with_wrong_password(
@@ -245,7 +247,7 @@ def test_create_mock_session_from_server_info_file_with_wrong_password(
             server_info_file_name=str(server_info_file),
             cleanup_on_exit=False,
         )
-        session.scheme_eval.scheme_eval("")
+        session.scheme.eval("")
         server.stop(None)
         session.exit()
     assert ex.value.__context__.code() == grpc.StatusCode.UNAUTHENTICATED
@@ -272,10 +274,10 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -291,8 +293,8 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     )
     settings_pb2_grpc.add_SettingsServicer_to_server(MockSettingsServicer(), server)
     server.start()
-    monkeypatch.setenv("PYFLUENT_FLUENT_IP", ip)
-    monkeypatch.setenv("PYFLUENT_FLUENT_PORT", str(port))
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_ip", ip)
+    monkeypatch.setattr(pyfluent.config, "launch_fluent_port", port)
     session = connect_to_fluent(
         cleanup_on_exit=False, ip=ip, port=port, password="12345"
     )
@@ -300,19 +302,19 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.health_check.is_serving
+    assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.health_check.is_serving
+    assert not session.is_server_healthy()
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
 @pytest.mark.fluent_version(">=23.2")
-def test_journal_creation(file_format, new_meshing_session):
+def test_journal_creation(file_format, new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.{file_format}",
         prefix="pyfluent-",
-        dir=str(pyfluent.EXAMPLES_PATH),
+        dir=str(pyfluent.config.examples_path),
     )
     os.close(fd)
 
@@ -324,7 +326,7 @@ def test_journal_creation(file_format, new_meshing_session):
     prev_size = prev_stat.st_size
     print(f"prev_stat: {prev_stat}")
 
-    session = new_meshing_session
+    session = new_meshing_session_wo_exit
     if session.connection_properties.inside_container:
         session.journal.start(file_name.name)
     else:
@@ -334,14 +336,15 @@ def test_journal_creation(file_format, new_meshing_session):
     new_stat = file_name.stat()
     print(f"new_stat: {new_stat}")
     assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
+    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.2")
-def test_start_transcript_file_write(new_meshing_session):
+def test_start_transcript_file_write(new_meshing_session_wo_exit):
     fd, file_name = tempfile.mkstemp(
         suffix=f"-{os.getpid()}.trn",
         prefix="pyfluent-",
-        dir=str(pyfluent.EXAMPLES_PATH),
+        dir=str(pyfluent.config.examples_path),
     )
     os.close(fd)
 
@@ -352,7 +355,7 @@ def test_start_transcript_file_write(new_meshing_session):
     # prev_mtime = prev_stat.st_mtime
     # prev_size = prev_stat.st_size
 
-    session = new_meshing_session
+    session = new_meshing_session_wo_exit
     session.transcript.start(file_name)
     session = session.switch_to_solver()
     session.transcript.stop()
@@ -360,6 +363,7 @@ def test_start_transcript_file_write(new_meshing_session):
     # new_stat = file_name.stat()
     # this assertion is invalid.
     # assert new_stat.st_mtime > prev_mtime or new_stat.st_size > prev_size
+    session.exit()
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -380,9 +384,9 @@ def test_read_case_using_lightweight_mode():
     import_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    if pyfluent.USE_FILE_TRANSFER_SERVICE:
-        file_transfer_service = RemoteFileTransferStrategy()
-        container_dict = {"mount_source": file_transfer_service.MOUNT_SOURCE}
+    if pyfluent.config.use_file_transfer_service:
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name,
             lightweight_mode=True,
@@ -408,6 +412,29 @@ def test_read_case_using_lightweight_mode():
     solver.exit()
 
 
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=23.2")
+def test_read_case_using_lightweight_mode_exiting():
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    if pyfluent.config.use_file_transfer_service:
+        file_transfer_service = ContainerFileTransferStrategy()
+        container_dict = {"mount_source": file_transfer_service.mount_source}
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name,
+            lightweight_mode=True,
+            container_dict=container_dict,
+            file_transfer_service=file_transfer_service,
+        )
+    else:
+        solver = pyfluent.launch_fluent(
+            case_file_name=import_file_name, lightweight_mode=True
+        )
+    solver.exit()
+    assert True
+
+
 def test_help_does_not_throw(new_solver_session):
     help(new_solver_session.file.read)
 
@@ -420,9 +447,9 @@ def new_solver_session2(new_solver_session):
 def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     solver1 = new_solver_session
     solver2 = new_solver_session2
-    assert solver1.health_check.is_serving
-    assert solver2.health_check.is_serving
-    health_check_service1 = solver1.health_check
+    assert solver1.is_server_healthy()
+    assert solver2.is_server_healthy()
+    health_check_service1 = solver1._health_check
     cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
     # The below hack is performed to check the base class method
     # (child class has a method with same name)
@@ -431,8 +458,8 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
         fluent_connection=solver2._fluent_connection,
         scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
     )
-    assert solver1.health_check.is_serving
-    assert solver2.health_check.is_serving
+    assert solver1.is_server_healthy()
+    assert solver2.is_server_healthy()
     timeout_loop(
         not health_check_service1.is_serving,
         timeout=60,
@@ -469,8 +496,7 @@ def test_solver_methods(new_solver_session):
             "parametric_studies",
             "current_parametric_study",
         }
-        assert api_keys.issubset(set(dir(solver)))
-    if solver.get_fluent_version() == FluentVersion.v232:
+    if solver.get_fluent_version() in (FluentVersion.v232, FluentVersion.v231):
         api_keys = {
             "file",
             "mesh",
@@ -483,7 +509,6 @@ def test_solver_methods(new_solver_session):
             "parallel",
             "report",
         }
-        assert api_keys.issubset(set(dir(solver)))
     if solver.get_fluent_version() >= FluentVersion.v241:
         api_keys = {
             "file",
@@ -496,10 +521,7 @@ def test_solver_methods(new_solver_session):
             "current_parametric_study",
             "parallel",
         }
-        if solver.get_fluent_version() >= FluentVersion.v251:
-            assert api_keys.issubset(set(dir(solver.settings)))
-        else:
-            assert api_keys.issubset(set(dir(solver)))
+    assert api_keys.issubset(set(dir(solver.settings)))
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -512,7 +534,7 @@ def test_get_set_state_on_solver(new_solver_session):
 
 def test_solver_structure(new_solver_session):
     solver = new_solver_session
-    with pytest.warns(PyFluentDeprecationWarning):
+    with pytest.warns(DeprecationWarning):
         solver.field_data
     with pytest.warns(PyFluentDeprecationWarning):
         solver.svar_data
@@ -532,34 +554,47 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     solver = new_solver_session
 
     # Read case with non-existent path
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="File .* not found") as exec_info:
         # File not found
         solver.settings.file.read(
             file_type="case", file_name=r"incorrect_path\incorrect_file.cas.h5"
         )
+    # Assert that exception is propagated from the Fluent server
+    assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     # Iterate with no case
-    with pytest.raises(RuntimeError):
+    with pytest.raises(
+        InactiveObjectError,
+        match="solution.run_calculation.iterate' is currently inactive.",
+    ) as exec_info:
         # The object is not active
         solver.solution.run_calculation.iterate(iter_count=5)
+    # Assert that exception is not propagated from the Fluent server
+    assert not isinstance(exec_info.value.__context__, grpc.RpcError)
 
     # Write case without any case loaded or created
-    with pytest.raises(RuntimeError):
+    with pytest.raises(
+        InactiveObjectError,
+        match="file.write' is currently inactive.",
+    ) as exec_info:
         # Uninitialized case
         solver.file.write(file_name="sample.cas.h5", file_type="case")
+    # Assert that exception is not propagated from the Fluent server
+    assert not isinstance(exec_info.value.__context__, grpc.RpcError)
 
     graphics = solver.results.graphics
 
-    # # Post-process without case
-    # with pytest.raises(RuntimeError):
-    #     # Does not exist. #1197711
-    #     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
-    #     graphics.mesh["mesh-1"].display()
+    fluent_version = solver.get_fluent_version()
+
+    if fluent_version >= FluentVersion.v251:
+        with pytest.raises(RuntimeError, match="object is not active") as exec_info:
+            graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
+            graphics.mesh["mesh-1"].display()
+        assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     case_file = examples.download_file(
         "mixing_elbow.cas.h5",
         "pyfluent/mixing_elbow",
-        return_without_path=False,
     )
     solver.settings.file.read(file_type="case", file_name=case_file)
     solver.file.write(file_name="sample.cas.h5", file_type="case")
@@ -568,13 +603,15 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"].display()
 
     # Post-process without data
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError) as exec_info:
         # Invalid result.
         graphics.contour["contour-velocity"] = {
             "field": "velocity-magnitude",
             "surfaces_list": ["wall-elbow"],
         }
         graphics.contour["contour-velocity"].display()
+    # Assert that exception is propagated from the Fluent server
+    assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     solver.solution.run_calculation.iterate(iter_count=5)
     graphics.contour["contour-velocity"] = {
@@ -583,17 +620,23 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     }
     graphics.contour["contour-velocity"].display()
 
-    mesh_file_2d = examples.download_file(
-        "sample_2d_mesh.msh.h5",
-        "pyfluent/surface_mesh",
-        return_without_path=False,
-    )
+    # Following code does not work in GitHub only.
 
-    # Error in server:
-    # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
-    # with pytest.raises(RuntimeError):
-    #     solver.settings.file.read(file_type='case', file_name=mesh_file_2d)
-    del mesh_file_2d  # Remove this line after the above code snippet is operational
+    # mesh_file_2d = examples.download_file(
+    #     "sample_2d_mesh.msh.h5",
+    #     "pyfluent/surface_mesh",
+    #     return_without_path=False,
+    # )
+
+    # if fluent_version >= FluentVersion.v252:
+    #     # Error in server:
+    #     # This appears to be a surface mesh.\nSurface meshes cannot be read under the /file/read-case functionality.
+    #     with pytest.raises(
+    #         RuntimeError, match="Surface meshes cannot be read"
+    #     ) as exec_info:
+    #         solver.settings.file.read(file_type="case", file_name=mesh_file_2d)
+    #     # Assert that exception is propagated from the Fluent server
+    #     assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -610,14 +653,200 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
     assert not solver._app_utilities.is_solution_data_available()
 
-    tmp_dir = tempfile.mkdtemp(dir=pyfluent.EXAMPLES_PATH)
+    tmp_path = tempfile.mkdtemp(dir=pyfluent.config.examples_path)
 
-    solver.chdir(tmp_dir)
+    # when running in a container, only the randomly generated folder name will be seen
+    # the full paths will be different between host and container
+    tmp_folder = Path(tmp_path).parts[-1]
 
-    assert Path(
-        solver._app_utilities.get_controller_process_info()["working_directory"]
-    ) == Path(tmp_dir)
+    solver.chdir(tmp_folder)
 
-    assert Path(
-        solver._app_utilities.get_solver_process_info()["working_directory"]
-    ) == Path(tmp_dir)
+    cortex_info = solver._app_utilities.get_controller_process_info()
+    solver_info = solver._app_utilities.get_solver_process_info()
+
+    assert Path(cortex_info.working_directory).parts[-1] == tmp_folder
+
+    assert Path(solver_info.working_directory).parts[-1] == tmp_folder
+
+
+@pytest.mark.standalone
+def test_new_launch_fluent_api():
+    import ansys.fluent.core as pyfluent
+
+    solver = pyfluent.Solver.from_install()
+    assert solver._health_check.check_health() == solver._health_check.Status.SERVING
+    assert solver.is_server_healthy()
+
+    ip = solver.connection_properties.ip
+    password = solver.connection_properties.password
+    port = solver.connection_properties.port
+
+    solver_connected = pyfluent.Solver.from_connection(
+        ip=ip, password=password, port=port
+    )
+    assert (
+        solver_connected._health_check.check_health()
+        == solver._health_check.Status.SERVING
+    )
+    assert solver.is_server_healthy()
+
+    solver.exit()
+    solver_connected.exit()
+
+
+def test_new_launch_fluent_api_from_container():
+    import ansys.fluent.core as pyfluent
+    from ansys.fluent.core.utils.networking import get_free_port
+
+    port_1 = get_free_port()
+    port_2 = get_free_port()
+    container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
+    solver = pyfluent.Solver.from_container(container_dict=container_dict)
+    assert solver._health_check.check_health() == solver._health_check.Status.SERVING
+    assert solver.is_server_healthy()
+    solver.exit()
+
+
+def test_new_launch_fluent_api_from_connection():
+    import ansys.fluent.core as pyfluent
+
+    solver = pyfluent.Solver.from_container()
+    assert solver._health_check.check_health() == solver._health_check.Status.SERVING
+    assert solver.is_server_healthy()
+    ip = solver.connection_properties.ip
+    port = solver.connection_properties.port
+    password = solver.connection_properties.password
+    with pytest.raises(TypeError):
+        pyfluent.Meshing.from_connection(ip=ip, port=port, password=password)
+    solver.exit()
+
+
+@pytest.mark.standalone
+@pytest.mark.fluent_version(">=25.1")
+def test_launch_in_pyconsole_mode():
+    with pyfluent.launch_fluent() as session:
+        assert session.scheme.eval("(%cx-pyconsole-activated?)") is True
+    with pyfluent.launch_fluent(py=True) as session:
+        assert session.scheme.eval("(%cx-pyconsole-activated?)") is True
+    with pyfluent.launch_fluent(py=False) as session:
+        assert session.scheme.eval("(%cx-pyconsole-activated?)") is False
+
+
+def test_solver_attr_lookup(new_solver_session):
+    solver = new_solver_session
+    with pytest.warns(PyFluentDeprecationWarning):
+        solver.file
+    assert solver.settings.file
+    with pytest.raises(AttributeError):
+        solver.get_completer_info
+    assert solver.settings.get_completer_info
+    with pytest.raises(AttributeError):
+        solver.xyz
+    with pytest.raises(AttributeError):
+        solver.settings.xyz
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_beta_meshing_session(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+    assert "topology_based" in dir(meshing)
+    assert hasattr(meshing, "topology_based")
+    with pytest.raises(BetaFeaturesNotEnabled):
+        tp = meshing.topology_based()
+    meshing.enable_beta_features()
+    assert "topology_based" in dir(meshing)
+    assert hasattr(meshing, "topology_based")
+    tp = meshing.topology_based()
+    assert tp
+
+    assert meshing.is_active() is True
+    solver = meshing.switch_to_solver()
+    assert meshing.is_active() is False
+    assert solver.is_active() is True
+    solver.exit()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_beta_solver_session(new_solver_session_wo_exit):
+    solver = new_solver_session_wo_exit
+    assert solver.is_active() is True
+    assert "switch_to_meshing" in dir(solver)
+    assert hasattr(solver, "switch_to_meshing")
+    with pytest.raises(BetaFeaturesNotEnabled):
+        meshing = solver.switch_to_meshing()
+    solver.enable_beta_features()
+    assert "switch_to_meshing" in dir(solver)
+    assert hasattr(solver, "switch_to_meshing")
+    meshing = solver.switch_to_meshing()
+
+    assert solver.is_active() is False
+    assert meshing.is_active() is True
+    meshing.exit()
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_error_raised_for_beta_feature_access_for_older_versions(
+    new_meshing_session, new_solver_session
+):
+    meshing = new_meshing_session
+    solver = new_solver_session
+
+    if meshing.get_fluent_version() >= FluentVersion.v252:
+        meshing.enable_beta_features()
+        assert "topology_based" in dir(meshing)
+    else:
+        with pytest.raises(RuntimeError):
+            meshing.enable_beta_features()
+
+    if solver.get_fluent_version() >= FluentVersion.v252:
+        solver.enable_beta_features()
+        assert "switch_to_meshing" in dir(solver)
+    else:
+        with pytest.raises(RuntimeError):
+            solver.enable_beta_features()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_dir_for_session(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+
+    for attr in [
+        "watertight",
+        "fault_tolerant",
+        "two_dimensional_meshing",
+        "fields",
+        "scheme",
+    ]:
+        assert getattr(meshing, attr)
+        assert attr in dir(meshing)
+
+    for attr in ["field_data", "field_info", "scheme_eval"]:
+        # Deprecated methods are accessible but hidden in dir()
+        assert getattr(meshing, attr)
+        assert attr not in dir(meshing)
+
+    solver = meshing.switch_to_solver()
+
+    assert dir(meshing) == ["is_active"]
+
+    for attr in ["read_case_lightweight", "settings"]:
+        assert getattr(solver, attr)
+        assert attr in dir(solver)
+
+    for attr in [
+        "field_data",
+        "field_info",
+        "scheme_eval",
+        "svar_data",
+        "svar_info",
+        "reduction",
+    ]:
+        # Deprecated methods are accessible but hidden in dir()
+        assert getattr(solver, attr)
+        assert attr not in dir(solver)
+
+    solver.enable_beta_features()
+    meshing_new = solver.switch_to_meshing()
+
+    assert dir(solver) == ["is_active"]
+    assert len(dir(meshing_new)) > 1

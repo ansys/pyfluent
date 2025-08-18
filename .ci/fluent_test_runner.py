@@ -46,7 +46,7 @@ def _run_single_test(
     logging.debug(f"journal_file: {journal_file}")
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
     verion_for_file_name = FluentVersion.current_dev().number
-    dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/python/lib/python3.10/site-packages/ansys/fluent/core"
+    dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core"
     src_gen_dir = (
         Path(pyfluent.__file__).parent / "ansys" / "fluent" / "core" / "generated"
     )
@@ -71,7 +71,7 @@ def _run_single_test(
 
     docker_client = docker.from_env()
     version_for_image_tag = FluentVersion.current_dev().docker_image_tag
-    image_name = f"ghcr.io/ansys/pyfluent:{version_for_image_tag}"
+    image_name = f"ghcr.io/ansys/fluent:{version_for_image_tag}"
     container = docker_client.containers.run(
         image=image_name,
         volumes=[

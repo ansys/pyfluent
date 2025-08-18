@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import string
 import time
 
 import pytest
@@ -34,7 +35,7 @@ import pytest
     ],
 )
 def test_fluent_fatal_error(error_code, raises, new_solver_session):
-    scheme_eval = new_solver_session.scheme_eval.scheme_eval
+    scheme_eval = new_solver_session.scheme.eval
     with raises:
         scheme_eval(
             "(events/transmit 'error-event "
@@ -46,11 +47,17 @@ def test_fluent_fatal_error(error_code, raises, new_solver_session):
             time.sleep(0.1)
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
 @pytest.mark.fluent_version(">=25.2")
 def test_custom_python_error_via_grpc(datamodel_api_version_new, new_solver_session):
     solver = new_solver_session
     # This may need to be updated if the error type changes in the server
     with pytest.raises(RuntimeError, match="prefereces not found!"):
         solver._se_service.get_state("prefereces", "General")
-    with pytest.raises(ValueError, match="Datamodel rules for prefereces not found!"):
+    translator = str.maketrans("", "", string.punctuation)
+    with pytest.raises(ValueError) as ex:
         solver._se_service.get_specs("prefereces", "General")
+    assert (
+        ex.value.args[0].translate(translator)
+        == "Datamodel rules for prefereces not found"
+    )

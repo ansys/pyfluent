@@ -70,7 +70,7 @@ class LaunchFluentError(Exception):
 
     def __init__(self, launch_string):
         """__init__ method of LaunchFluentError class."""
-        details = "\n" + "Fluent Launch string: " + launch_string
+        details = "\n" + "Fluent Launch command: " + launch_string
         super().__init__(details)
 
 
@@ -79,7 +79,7 @@ def _raise_non_gui_exception_in_windows(
 ) -> None:
     """Fluent user interface mode lower than ``UIMode.HIDDEN_GUI`` is not supported in
     Windows in Fluent versions earlier than 2024 R1."""
-    from ansys.fluent.core.launcher.pyfluent_enums import UIMode
+    from ansys.fluent.core.launcher.launch_options import UIMode
 
     if (
         launcher_utils.is_windows()

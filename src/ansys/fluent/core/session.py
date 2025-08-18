@@ -29,6 +29,8 @@ from typing import Any, Callable, Dict
 import warnings
 import weakref
 
+from deprecated.sphinx import deprecated
+
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -96,7 +98,7 @@ class BaseSession:
 
     Attributes
     ----------
-    scheme_eval: SchemeEval
+    scheme: SchemeEval
         Instance of ``SchemeEval`` to execute Fluent's scheme code on.
 
     Methods
@@ -148,7 +150,9 @@ class BaseSession:
             file_transfer_service,
             event_type,
             get_zones_info,
+            launcher_args,
         )
+        self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
     def _build_from_fluent_connection(
         self,
@@ -157,13 +161,17 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+        launcher_args: Dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
+        # Stores the backup of the fluent connection for later reference.
+        self._fluent_connection_backup = self._fluent_connection
         self._file_transfer_service = file_transfer_service
+        self._launcher_args = launcher_args
         self._error_state = fluent_connection._error_state
-        self.scheme_eval = scheme_eval
-        self.rp_vars = RPVars(self.scheme_eval.string_eval)
+        self.scheme = scheme_eval
+        self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
         self._transcript_service = service_creator("transcript").create(
@@ -174,7 +182,7 @@ class BaseSession:
             self.transcript.start()
 
         self._app_utilities = _AppUtilitiesFactory._create_app_utilities(
-            self.scheme_eval, self._fluent_connection
+            self.scheme, self._fluent_connection
         )
 
         self.journal = Journal(self._app_utilities)
@@ -184,7 +192,7 @@ class BaseSession:
             fluent_connection._metadata,
             self._error_state,
             self._app_utilities,
-            self.scheme_eval,
+            self.scheme,
         )
 
         self._datamodel_service_se = service_creator("datamodel").create(
@@ -217,46 +225,17 @@ class BaseSession:
             FieldDataService, self._error_state
         )
 
-        class Fields:
-            """Container for field and solution variables."""
-
-            def __init__(self, _session):
-                """Initialize Fields."""
-                self._is_solution_data_valid = (
-                    _session._app_utilities.is_solution_data_available
-                )
-                self.field_info = service_creator("field_info").create(
-                    _session._field_data_service,
-                    self._is_solution_data_valid,
-                )
-                self.field_data = service_creator("field_data").create(
-                    _session._field_data_service,
-                    self.field_info,
-                    self._is_solution_data_valid,
-                    _session.scheme_eval,
-                    get_zones_info,
-                )
-                self.field_data_streaming = FieldDataStreaming(
-                    _session._fluent_connection._id, _session._field_data_service
-                )
-                self.field_data_old = service_creator("field_data_old").create(
-                    _session._field_data_service,
-                    self.field_info,
-                    self._is_solution_data_valid,
-                    _session.scheme_eval,
-                )
-
-        self.fields = Fields(self)
+        self.fields = Fields(self, get_zones_info)
 
         self._settings_service = service_creator("settings").create(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
-            self.scheme_eval,
+            self.scheme,
             self._error_state,
         )
 
-        self.health_check = fluent_connection.health_check
+        self._health_check = fluent_connection._health_check
         self.connection_properties = fluent_connection.connection_properties
 
         self._fluent_connection.register_finalizer_cb(
@@ -265,31 +244,44 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
+    def is_server_healthy(self) -> bool:
+        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        return self._health_check.is_serving
+
+    def is_active(self) -> bool:
+        """Whether the current session is active."""
+        return True if self._fluent_connection else False
+
     @property
+    @deprecated(version="0.32", reason="Use ``session.scheme``.")
+    def scheme_eval(self):
+        """Provides access to Fluent field information."""
+        return self.scheme
+
+    @property
+    @deprecated(version="0.32", reason="Use ``session.is_server_healthy``.")
+    def health_check(self):
+        """Provides access to Health Check service."""
+        return self._health_check
+
+    @property
+    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_info``.")
     def field_info(self):
         """Provides access to Fluent field information."""
-        warnings.warn(
-            "field_info is deprecated. Use fields.field_info instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_info
 
     @property
+    @deprecated(version="0.20.dev9", reason="Use ``session.fields.field_data``.")
     def field_data(self):
         """Fluent field data on surfaces."""
-        warnings.warn(
-            "field_data is deprecated. Use fields.field_data instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_data
 
     @property
+    @deprecated(
+        version="0.20.dev9", reason="Use ``session.fields.field_data_streaming``."
+    )
     def field_data_streaming(self):
         """Field gRPC streaming service of Fluent."""
-        warnings.warn(
-            "field_data_streaming is deprecated. Use fields.field_data_streaming instead.",
-            PyFluentDeprecationWarning,
-        )
         return self.fields.field_data_streaming
 
     @property
@@ -359,20 +351,51 @@ class BaseSession:
 
     def execute_tui(self, command: str) -> None:
         """Executes a tui command."""
-        self.scheme_eval.scheme_eval(f"(ti-menu-load-string {json.dumps(command)})")
+        self.scheme.eval(f"(ti-menu-load-string {json.dumps(command)})")
 
     def get_fluent_version(self) -> FluentVersion:
         """Gets and returns the fluent version."""
-        return FluentVersion(self.scheme_eval.version)
+        return FluentVersion(self.scheme.version)
+
+    def _exit_compose_service(self):
+        args = self._launcher_args or {}
+        compose_config = args.get("compose_config", None)
+
+        container = self._fluent_connection._container
+        if compose_config and compose_config.is_compose:
+            container.stop()
+
+    def wait_process_finished(self, wait: float | int | bool = 60):
+        """Returns ``True`` if local Fluent processes have finished, ``False`` if they
+        are still running when wait limit (default 60 seconds) is reached. Immediately
+        cancels and returns ``None`` if ``wait`` is set to ``False``.
+
+        Parameters
+        ----------
+        wait : float, int or bool, optional
+            How long to wait for processes to finish before returning, by default 60 seconds.
+            Can also be set to ``True``, which will result in waiting indefinitely.
+
+        Raises
+        ------
+        UnsupportedRemoteFluentInstance
+            If current Fluent instance is running remotely.
+        WaitTypeError
+            If ``wait`` is specified improperly.
+        """
+        return self._fluent_connection_backup.wait_process_finished()
 
     def exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
         if self._fluent_connection:
+            self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
+            self._fluent_connection = None
 
     def force_exit(self) -> None:
         """Forces the Fluent session to exit, losing unsaved progress and data."""
+        self._exit_compose_service()
         self._fluent_connection.force_exit()
 
     def file_exists_on_remote(self, file_name: str) -> bool:
@@ -414,7 +437,7 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
-    def download(self, file_name: str, local_directory: str | None = "."):
+    def download(self, file_name: str, local_directory: str | None = None):
         """Download a file from the server.
 
         Parameters
@@ -449,11 +472,62 @@ class BaseSession:
         self.exit()
 
     def __dir__(self):
+        if self._fluent_connection is None:
+            return ["is_active"]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
             "field_data_streaming",
             "start_journal",
             "stop_journal",
+            "scheme_eval",
         }
         return sorted(dir_list)
+
+    def enable_beta_features(self):
+        """Enable access to Fluent beta-features"""
+        self._app_utilities.enable_beta()
+
+    @property
+    def _is_beta_enabled(self):
+        return self._app_utilities.is_beta_enabled()
+
+
+class Fields:
+    """Container for field and solution variables."""
+
+    def __init__(
+        self,
+        _session: BaseSession,
+        get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
+    ):
+        """Initialize Fields."""
+        self._is_solution_data_valid = (
+            _session._app_utilities.is_solution_data_available
+        )
+        self._field_info = service_creator("field_info").create(
+            _session._field_data_service,
+            self._is_solution_data_valid,
+        )
+        self.field_data = service_creator("field_data").create(
+            _session._field_data_service,
+            self.field_info,
+            self._is_solution_data_valid,
+            _session.scheme,
+            get_zones_info,
+        )
+        self.field_data_streaming = FieldDataStreaming(
+            _session._fluent_connection._id, _session._field_data_service
+        )
+        self.field_data_old = service_creator("field_data_old").create(
+            _session._field_data_service,
+            self.field_info,
+            self._is_solution_data_valid,
+            _session.scheme,
+        )
+
+    @property
+    @deprecated(version="0.34.0", reason="Use relevant ``field_data`` methods..")
+    def field_info(self):
+        """Field Information."""
+        return self._field_info

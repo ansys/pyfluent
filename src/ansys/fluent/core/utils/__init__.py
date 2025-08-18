@@ -42,13 +42,6 @@ def load_module(module_name, file_path):
     return module
 
 
-def get_examples_download_dir():
-    """Return the path to the examples download directory."""
-    parent_path = Path.home() / "Downloads"
-    parent_path.mkdir(exist_ok=True)
-    return parent_path / "ansys_fluent_core_examples"
-
-
 def get_user_data_dir():
     """Return the path to the user data directory."""
     if sys.platform == "win32":

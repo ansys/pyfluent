@@ -31,6 +31,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
+from ansys.fluent.core.codegen.datamodelgen import datamodel_file_name_map
 from ansys.fluent.core.search import get_api_tree_file_name
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
@@ -47,18 +48,18 @@ def test_allapigen_files(new_solver_session):
         f"ansys.fluent.core.generated.datamodel_{version}.preferences"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.PartManagement"
+        f"ansys.fluent.core.generated.datamodel_{version}.part_management"
     )
     importlib.import_module(
-        f"ansys.fluent.core.generated.datamodel_{version}.PMFileManagement"
+        f"ansys.fluent.core.generated.datamodel_{version}.pm_file_management"
     )
     importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
 
 
 def test_codegen_with_no_static_info(monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
-    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
-    version = "251"
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
+    version = "252"
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
@@ -136,8 +137,8 @@ class main_menu(TUIMenu):
 @pytest.mark.parametrize("mode", ["solver", "meshing"])
 def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
-    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
-    version = "251"
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
+    version = "252"
     static_infos = {}
     static_info_type = (
         StaticInfoType.TUI_SOLVER if mode == "solver" else StaticInfoType.TUI_MESHING
@@ -216,7 +217,13 @@ from ansys.fluent.core.services.datamodel_se import (
     PyDictionary,
     PyNamedObjectContainer,
     PyCommand,
-    PyQuery
+    PyQuery,
+    PyCommandArguments,
+    PyTextualCommandArgumentsSubItem,
+    PyNumericalCommandArgumentsSubItem,
+    PyDictionaryCommandArgumentsSubItem,
+    PyParameterCommandArgumentsSubItem,
+    PySingletonCommandArgumentsSubItem
 )
 
 
@@ -288,7 +295,20 @@ class Root(PyMenu):
             -------
             bool
             """
-            pass
+            class _C2CommandArguments(PyCommandArguments):
+                def __init__(self, service, rules, command, path, id):
+                    super().__init__(service, rules, command, path, id)
+                    self.A2 = self._A2(self, "A2", service, rules, path)
+
+                class _A2(PyNumericalCommandArgumentsSubItem):
+                    """
+                    Argument A2.
+                    """
+
+            def create_instance(self) -> _C2CommandArguments:
+                args = self._get_create_instance_args()
+                if args is not None:
+                    return self._C2CommandArguments(*args)
 
     class P1(PyTextual):
         """
@@ -308,7 +328,20 @@ class Root(PyMenu):
         -------
         bool
         """
-        pass'''
+        class _C1CommandArguments(PyCommandArguments):
+            def __init__(self, service, rules, command, path, id):
+                super().__init__(service, rules, command, path, id)
+                self.A1 = self._A1(self, "A1", service, rules, path)
+
+            class _A1(PyTextualCommandArgumentsSubItem):
+                """
+                Argument A1.
+                """
+
+        def create_instance(self) -> _C1CommandArguments:
+            args = self._get_create_instance_args()
+            if args is not None:
+                return self._C1CommandArguments(*args)'''
 
 
 @pytest.mark.parametrize(
@@ -325,7 +358,7 @@ class Root(PyMenu):
 )
 def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     codegen_outdir = Path(tempfile.mkdtemp())
-    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
     version = "251"
     static_infos = {}
     static_info_type = _static_info_type_by_rules[rules]
@@ -355,8 +388,15 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     }
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
     assert len(datamodel_paths) == 1 or 2
-    assert set(p.name for p in datamodel_paths) == {f"{rules}.py"} or {f"{rules}.pyi"}
-    with open(codegen_outdir / f"datamodel_{version}" / f"{rules}.py", "r") as f:
+    assert set(p.name for p in datamodel_paths) == {
+        f"{datamodel_file_name_map[rules]}.py"
+    } or {f"{datamodel_file_name_map[rules]}.pyi"}
+    with open(
+        codegen_outdir
+        / f"datamodel_{version}"
+        / f"{datamodel_file_name_map[rules]}.py",
+        "r",
+    ) as f:
         assert f.read().strip() == _expected_datamodel_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -466,6 +506,7 @@ from ansys.fluent.core.solver.flobject import (
     _InputFile,
     _OutputFile,
     _InOutFile,
+    _FlStringConstant,
 )
 
 SHASH = "3e6d76a4601701388ea8258912d145b7b7c436699a50b6c7fe9a29f41eeff194"
@@ -474,7 +515,7 @@ class P3(Integer):
     """
     P3 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'P3'
     _python_name = 'P3'
 
@@ -482,7 +523,7 @@ class G2(Group):
     """
     G2 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'G2'
     _python_name = 'G2'
     child_names = ['P3']
@@ -494,7 +535,7 @@ class P2(Real):
     """
     P2 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'P2'
     _python_name = 'P2'
 
@@ -502,7 +543,7 @@ class A2(Real):
     """
     A2 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'A2'
     _python_name = 'A2'
 
@@ -515,7 +556,7 @@ class C2(Command):
         A2 : real
             A2 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'C2'
     _python_name = 'C2'
     argument_names = ['A2']
@@ -532,7 +573,7 @@ class Q2(Query):
         A2 : real
             A2 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'Q2'
     _python_name = 'Q2'
     argument_names = ['A2']
@@ -544,7 +585,7 @@ class G1(Group):
     """
     G1 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'G1'
     _python_name = 'G1'
     child_names = ['G2', 'P2']
@@ -561,7 +602,7 @@ class P1(String):
     """
     P1 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'P1'
     _python_name = 'P1'
 
@@ -569,7 +610,7 @@ class P4(String):
     """
     P4 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'P4'
     _python_name = 'P4'
 
@@ -577,7 +618,7 @@ class N1_child(Group):
     """
     'child_object_type' of N1.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'child-object-type'
     _python_name = 'N1_child'
 
@@ -585,7 +626,7 @@ class N1(NamedObject[N1_child], _NonCreatableNamedObjectMixin[N1_child]):
     """
     N1 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'N1'
     _python_name = 'N1'
     child_names = ['P4']
@@ -598,7 +639,7 @@ class A1(String):
     """
     A1 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'A1'
     _python_name = 'A1'
 
@@ -611,7 +652,7 @@ class C1(Command):
         A1 : str
             A1 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'C1'
     _python_name = 'C1'
     argument_names = ['A1']
@@ -628,7 +669,7 @@ class Q1(Query):
         A1 : str
             A1 help.
     """
-    version = '251'
+    _version = '251'
     fluent_name = 'Q1'
     _python_name = 'Q1'
     argument_names = ['A1']
@@ -640,7 +681,7 @@ class root(Group):
     """
     'root' object.
     """
-    version = '251'
+    _version = '251'
     fluent_name = ''
     _python_name = 'root'
     child_names = ['G1', 'P1', 'N1']
@@ -657,7 +698,7 @@ class root(Group):
 
 def test_codegen_with_settings_static_info(monkeypatch):
     codegen_outdir = Path(tempfile.mkdtemp())
-    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
     version = "251"
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = _settings_static_info
@@ -668,9 +709,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
         f"api_tree_{version}.pickle",
         "solver",
     }
-    solver_paths = list((codegen_outdir / "solver").iterdir())
-    assert len(solver_paths) == 2
-    assert set(p.name for p in solver_paths) == {
+    assert {p.name for p in (codegen_outdir / "solver").glob("*.py*")} == {
         f"settings_{version}.py",
         f"settings_{version}.pyi",
     }
@@ -792,7 +831,7 @@ def test_codegen_with_settings_static_info_edge_cases(
 ):
 
     codegen_outdir = Path(tempfile.mkdtemp())
-    monkeypatch.setattr(pyfluent, "CODEGEN_OUTDIR", codegen_outdir)
+    monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
     version = "251"
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = settings_static_info

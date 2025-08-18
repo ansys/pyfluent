@@ -32,11 +32,13 @@ from typing import IO
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import launch_fluent
-from ansys.fluent.core.codegen import StaticInfoType
+from ansys.fluent.core.codegen import StaticInfoType, walk_api
+from ansys.fluent.core.solver import _docstrings
 from ansys.fluent.core.solver.flobject import (
     ListObject,
     NamedObject,
     get_cls,
+    to_constant_name,
     to_python_name,
 )
 from ansys.fluent.core.utils.fix_doc import fix_settings_doc
@@ -106,10 +108,11 @@ def strip_parameters(docstring: str) -> str:
 
 
 def _populate_data(cls, api_tree: dict, version: str) -> dict:
-    data = {}
-    data["version"] = version
-    data["name"] = cls.__name__
-    data["bases"] = [base.__name__ for base in cls.__bases__]
+    data = {
+        "version": version,
+        "name": cls.__name__,
+        "bases": [base.__name__ for base in cls.__bases__],
+    }
     if "command" in cls.__doc__:
         data["doc"] = strip_parameters(cls.__doc__)
     else:
@@ -123,6 +126,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     data["argument_names"] = getattr(cls, "argument_names", [])
     data["child_aliases"] = getattr(cls, "_child_aliases", {})
     data["return_type"] = getattr(cls, "return_type", None)
+    data["deprecated_version"] = getattr(cls, "_deprecated_version", None)
     child_classes = data.setdefault("child_classes", {})
     for k, v in cls._child_classes.items():
         if k in command_names:
@@ -148,6 +152,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
         data["child_object_type"]["doc"] = f"'child_object_type' of {cls.__name__}."
     else:
         data["child_object_type"] = None
+    data["allowed_values"] = getattr(cls, "_allowed_values", [])
     return data
 
 
@@ -185,7 +190,7 @@ _arg_type_strings = {
     "Filename": "str",
     "BooleanList": "list[bool]",
     "IntegerList": "list[int]",
-    "RealVector": "tuple[float | str, float | str, float | str",
+    "RealVector": "tuple[float | str, float | str, float | str]",
     "RealList": "list[float | str]",
     "StringList": "list[str]",
     "FilenameList": "list[str]",
@@ -195,8 +200,9 @@ _arg_type_strings = {
 def _write_function_stub(name, data, s_stub):
     s_stub.write(f"    def {name}(self")
     for arg_name in data["argument_names"]:
-        arg_type = _arg_type_strings[data["child_classes"][arg_name]["bases"][0]]
-        s_stub.write(f", {arg_name}: {arg_type}")
+        arg_type = data["child_classes"][arg_name]["bases"][0]
+        py_arg_type = _arg_type_strings.get(arg_type, "Any")
+        s_stub.write(f", {arg_name}: {py_arg_type}")
     s_stub.write("):\n")
     # TODO: add return type
     doc = data["doc"]
@@ -224,11 +230,15 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     s.write('    """\n')
     s.write(f"    {doc}\n")
     s.write('    """\n')
-    s.write(f"    version = {data['version']!r}\n")
+    s.write(f"    _version = {data['version']!r}\n")
+    deprecated = data["deprecated_version"]
+    if deprecated:
+        s.write(f"    _deprecated_version = {deprecated!r}\n")
+        s_stub.write("    _deprecated_version: str\n")
     s.write(f"    fluent_name = {data['fluent_name']!r}\n")
     # _python_name preserves the original non-suffixed name of the class.
     s.write(f"    _python_name = {python_name!r}\n")
-    s_stub.write("    version: str\n")
+    s_stub.write("    _version: str\n")
     s_stub.write("    fluent_name: str\n")
     s_stub.write("    _python_name: str\n")
     child_names = data["child_names"]
@@ -299,7 +309,15 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if return_type:
         s.write(f"    return_type = {return_type!r}\n")
         s_stub.write("    return_type: str\n")
+    for allowed_value in data["allowed_values"]:
+        s.write(
+            f"    {to_constant_name(allowed_value)} = _FlStringConstant({allowed_value!r})\n"
+        )
+        s_stub.write(
+            f"    {to_constant_name(allowed_value)}: Final[str] = {allowed_value!r}\n"
+        )
     s.write("\n")
+    s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
         if name not in _CLASS_WRITTEN:
             _write_data(
@@ -311,6 +329,24 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         f_stub.write(s_stub.getvalue())
 
 
+def _check_written_docstrings(version, output_file, verbose):
+    settings = pyfluent.utils.load_module(
+        f"settings_{version}",
+        output_file,
+    )
+    analysis = _docstrings._DocStringAnalysis()
+    walk_api.walk_api(getattr(settings, "root"), analysis.analyse, "")
+    dubious = analysis.dubious
+    if dubious:
+        print(
+            f"Some docstrings appear to be dubious in the solver settings generated classes: {dubious}."
+        )
+    elif verbose:
+        print(
+            "The solver settings generated classes contain no reported docstring issues."
+        )
+
+
 def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     """Generate the classes corresponding to the Fluent settings API."""
     start_time = time.time()
@@ -319,7 +355,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     shash = _gethash(sinfo)
     if not sinfo:
         return {"<solver_session>": api_tree}
-    output_dir = (pyfluent.CODEGEN_OUTDIR / "solver").resolve()
+    output_dir = (pyfluent.config.codegen_outdir / "solver").resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / f"settings_{version}.py"
     output_stub_file = output_dir / f"settings_{version}.pyi"
@@ -345,9 +381,11 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("    _InputFile,\n")
         header.write("    _OutputFile,\n")
         header.write("    _InOutFile,\n")
+        header.write("    _FlStringConstant,\n")
         header.write(")\n\n")
         f.write(header.getvalue())
         f_stub.write(header.getvalue())
+        f_stub.write("from typing import Any, Final\n\n")
         f.write(f'SHASH = "{shash}"\n\n')
         name = data["name"]
         _NAME_BY_HASH[_gethash(data)] = name
@@ -359,6 +397,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     )
     print(f"{output_file.name} size: {file_size:.2f} MB")
     print(f"{output_stub_file.name} size: {file_size_stub:.2f} MB")
+    _check_written_docstrings(version, output_file, verbose)
     return {"<solver_session>": api_tree}
 
 

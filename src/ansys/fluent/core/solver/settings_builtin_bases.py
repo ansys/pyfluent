@@ -26,6 +26,7 @@ from typing import Protocol, runtime_checkable
 
 from ansys.fluent.core.solver.flobject import NamedObject, SettingsBase
 from ansys.fluent.core.solver.settings_builtin_data import DATA
+from ansys.fluent.core.utils.context_managers import _get_active_session
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -51,17 +52,21 @@ def _get_settings_root(settings_source: SettingsBase | Solver):
 
 
 def _get_settings_obj(settings_root, builtin_settings_obj):
-    builtin_cls_name = builtin_settings_obj.__class__.__name__
+    builtin_cls_db_name = builtin_settings_obj.__class__._db_name
     obj = settings_root
-    path = DATA[builtin_cls_name][1]
+    path = DATA[builtin_cls_db_name][1]
+    found_path = None
     if isinstance(path, dict):
-        version = FluentVersion(obj.version)
-        path = path.get(version)
-        if path is None:
-            raise RuntimeError(
-                f"{builtin_cls_name} is not supported in Fluent version {version}."
-            )
-    comps = path.split(".")
+        version = FluentVersion(obj._version)
+        for version_set, p in path.items():
+            if version in version_set:
+                found_path = p
+                break
+        if found_path is None:
+            raise RuntimeError(f"{builtin_cls_db_name} is not supported in {version}.")
+    elif isinstance(path, str):
+        found_path = path
+    comps = found_path.split(".")
     for i, comp in enumerate(comps):
         obj = SettingsBase.__getattribute__(obj, comp)  # bypass InactiveObjectError
         if i < len(comps) - 1 and isinstance(obj, NamedObject):
@@ -70,12 +75,19 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     return obj
 
 
+def _initialize_settings(instance, defaults: dict, settings_source=None, **kwargs):
+    active_session = _get_active_session()
+    instance.__dict__.update(defaults | kwargs)
+    if settings_source is not None:
+        instance.settings_source = settings_source
+    elif active_session:
+        instance.settings_source = active_session
+
+
 class _SingletonSetting:
-    # Covers both groups and named-object containers
+    # Covers groups, named-object containers and commands.
     def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
-        self.__dict__.update(dict(settings_source=None) | kwargs)
-        if settings_source is not None:
-            self.settings_source = settings_source
+        _initialize_settings(self, {"settings_source": None}, settings_source, **kwargs)
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -92,9 +104,9 @@ class _NonCreatableNamedObjectSetting:
     def __init__(
         self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
     ):
-        self.__dict__.update(dict(settings_source=None, name=name) | kwargs)
-        if settings_source is not None:
-            self.settings_source = settings_source
+        _initialize_settings(
+            self, {"settings_source": None, "name": name}, settings_source, **kwargs
+        )
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -118,12 +130,16 @@ class _CreatableNamedObjectSetting:
     ):
         if name and new_instance_name:
             raise ValueError("Cannot specify both name and new_instance_name.")
-        self.__dict__.update(
-            dict(settings_source=None, name=name, new_instance_name=new_instance_name)
-            | kwargs
+        _initialize_settings(
+            self,
+            {
+                "settings_source": None,
+                "name": name,
+                "new_instance_name": new_instance_name,
+            },
+            settings_source,
+            **kwargs,
         )
-        if settings_source is not None:
-            self.settings_source = settings_source
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -140,3 +156,6 @@ class _CreatableNamedObjectSetting:
             self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
         else:
             super().__setattr__(name, value)
+
+
+_CommandSetting = _SingletonSetting

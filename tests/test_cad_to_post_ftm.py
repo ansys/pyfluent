@@ -49,9 +49,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 def test_exhaust_system(
-    fault_tolerant_workflow_session, exhaust_system_geometry_filename
+    fault_tolerant_workflow_session_wo_exit, exhaust_system_geometry_filename
 ):
-    meshing_session = fault_tolerant_workflow_session
+    meshing_session = fault_tolerant_workflow_session_wo_exit
     workflow = meshing_session.workflow
 
     _ = partial(assign_task_arguments, workflow=workflow, check_state=True)
@@ -545,3 +545,5 @@ def test_exhaust_system(
         )
 
         ###############################################################################
+
+    solver_session.exit()

@@ -167,16 +167,16 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
-    assert session2.health_check.is_serving
+    assert session2.is_server_healthy()
     session2.exit()
 
     timeout_loop(
-        session1.health_check.is_serving,
+        session1.is_server_healthy(),
         5.0,
         expected="truthy",
     )
 
-    assert session1.health_check.is_serving
+    assert session1.is_server_healthy()
     session1.exit()
 
 
@@ -193,12 +193,12 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.health_check.is_serving,
+        session1.is_server_healthy(),
         5.0,
         expected="falsy",
     )
 
-    assert not session1.health_check.is_serving
+    assert not session1.is_server_healthy()
 
 
 def test_fluent_connection_properties(
@@ -237,7 +237,7 @@ def test_fluent_freeze_kill(
     else:
         raise Exception("Test should have temporarily frozen Fluent, but did not.")
 
-    assert session._fluent_connection.wait_process_finished(wait=5)
+    assert session.wait_process_finished(wait=5)
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -250,14 +250,15 @@ def test_interrupt(static_mixer_case_session):
     )
     time.sleep(5)
     solver.solution.run_calculation.interrupt()
-    assert solver.scheme_eval.scheme_eval("(rpgetvar 'time-step)") < 100
+    assert solver.scheme.eval("(rpgetvar 'time-step)") < 100
 
 
 def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.delenv("PYFLUENT_LOGGING")
-    monkeypatch.delenv("PYFLUENT_WATCHDOG_DEBUG")
-    inside_container = os.getenv("PYFLUENT_LAUNCH_CONTAINER")
     import ansys.fluent.core as pyfluent
+
+    monkeypatch.setattr(pyfluent.config, "logging_level_default", False)
+    monkeypatch.setattr(pyfluent.config, "watchdog_debug", False)
+    inside_container = pyfluent.config.launch_fluent_container
 
     solver = pyfluent.launch_fluent(start_watchdog=False)
     cortex = (
@@ -276,16 +277,17 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
 
 def test_fluent_exit_wait():
     session1 = pyfluent.launch_fluent()
+    fl_connection1 = session1._fluent_connection
     session1.exit()
-    assert not session1._fluent_connection.wait_process_finished(wait=0)
+    assert not fl_connection1.wait_process_finished(wait=0)
 
     session2 = pyfluent.launch_fluent()
     session2.exit(wait=60)
-    assert session2._fluent_connection.wait_process_finished(wait=0)
+    assert session2.wait_process_finished(wait=0)
 
     session3 = pyfluent.launch_fluent()
     session3.exit(wait=True)
-    assert session3._fluent_connection.wait_process_finished(wait=0)
+    assert session3.wait_process_finished(wait=0)
 
     with pytest.raises(WaitTypeError):
         session4 = pyfluent.launch_fluent()

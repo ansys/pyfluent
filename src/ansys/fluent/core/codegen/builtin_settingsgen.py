@@ -22,22 +22,36 @@
 
 """Generate builtin setting classes."""
 
-from ansys.fluent.core import CODEGEN_OUTDIR, FluentVersion
-from ansys.fluent.core.solver.flobject import CreatableNamedObjectMixin, NamedObject
-from ansys.fluent.core.solver.settings_builtin_data import DATA
+import re
 
-_PY_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.py"
-_PYI_FILE = CODEGEN_OUTDIR / "solver" / "settings_builtin.pyi"
+from ansys.fluent.core import FluentVersion, config
+from ansys.fluent.core.solver.flobject import (
+    CreatableNamedObjectMixin,
+    NamedObject,
+    _ChildNamedObjectAccessorMixin,
+)
+from ansys.fluent.core.solver.settings_builtin_data import DATA
+from ansys.fluent.core.utils.fluent_version import all_versions
+
+_PY_FILE = config.codegen_outdir / "solver" / "settings_builtin.py"
+_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
 
 
 def _get_settings_root(version: str):
-    from ansys.fluent.core import CODEGEN_OUTDIR, utils
+    from ansys.fluent.core import config, utils
 
     settings = utils.load_module(
         f"settings_{version}",
-        CODEGEN_OUTDIR / "solver" / f"settings_{version}.py",
+        config.codegen_outdir / "solver" / f"settings_{version}.py",
     )
     return settings.root
+
+
+def _convert_camel_case_to_snake_case(name: str) -> str:
+    """Convert CamelCase to snake_case."""
+    # Replace uppercase letters with lowercase and prepend an underscore
+    name = re.sub(r"(?<!^)(?=[A-Z])", "_", name).lower()
+    return name
 
 
 def _get_named_objects_in_path(root, path, kind):
@@ -51,6 +65,8 @@ def _get_named_objects_in_path(root, path, kind):
             cls = cls.child_object_type
     final_type = ""
     if kind == "NamedObject":
+        if not issubclass(cls, (NamedObject, _ChildNamedObjectAccessorMixin)):
+            raise TypeError(f"{cls.__name__} is not NamedObject type.")
         if issubclass(cls, CreatableNamedObjectMixin):
             final_type = "Creatable"
         else:
@@ -61,30 +77,36 @@ def _get_named_objects_in_path(root, path, kind):
 def generate(version: str):
     """Generate builtin setting classes."""
     print("Generating builtin settings...")
-    CODEGEN_OUTDIR.mkdir(exist_ok=True)
+    config.codegen_outdir.mkdir(exist_ok=True)
     root = _get_settings_root(version)
     version = FluentVersion(version)
     with open(_PY_FILE, "w") as f:
         f.write('"""Solver settings."""\n\n')
         f.write(
-            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, Solver\n"
+            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting, Solver\n"
             "from ansys.fluent.core.solver.flobject import SettingsBase\n\n\n"
         )
         f.write("__all__ = [\n")
-        for name, _ in DATA.items():
+        for name, (kind, _) in DATA.items():
             f.write(f'    "{name}",\n')
+            if kind == "Command":
+                command_name = _convert_camel_case_to_snake_case(name)
+                f.write(f'    "{command_name}",\n')
         f.write("]\n\n")
         for name, v in DATA.items():
             kind, path = v
             if isinstance(path, dict):
-                if version not in path:
-                    continue
-                path = path[version]
+                for version_set, p in path.items():
+                    if version in version_set:
+                        path = p
+                        break
             named_objects, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
             f.write(f"class {name}(_{kind}Setting):\n")
-            f.write(f'    """{name} setting."""\n\n')
+            doc_kind = "command object" if kind == "Command" else "setting"
+            f.write(f'    """{name} {doc_kind}."""\n\n')
+            f.write(f'    _db_name = "{name}"\n\n')
             f.write("    def __init__(self")
             for named_object in named_objects:
                 f.write(f", {named_object}: str")
@@ -102,6 +124,19 @@ def generate(version: str):
             for named_object in named_objects:
                 f.write(f", {named_object}={named_object}")
             f.write(")\n\n")
+            if kind == "Command":
+                command_name = _convert_camel_case_to_snake_case(name)
+                f.write(f"class {command_name}(_{kind}Setting):\n")
+                f.write(f'    """{command_name} command."""\n\n')
+                f.write(f'    _db_name = "{name}"\n\n')
+                f.write(
+                    "    def __new__(cls, settings_source: SettingsBase | Solver | None = None, **kwargs):\n"
+                )
+                f.write("       instance = super().__new__(cls)\n")
+                f.write(
+                    "       instance.__init__(settings_source=settings_source, **kwargs)\n"
+                )
+                f.write("       return instance(**kwargs)\n\n")
 
     with open(_PYI_FILE, "w") as f:
         for version in FluentVersion:
@@ -113,14 +148,15 @@ def generate(version: str):
             kind, path = v
             f.write(f"class {name}(\n")
             if isinstance(path, str):
-                path = {v: path for v in FluentVersion}
-            for v, p in path.items():
+                path = {all_versions(): path}
+            for version_set, p in path.items():
                 if kind == "NamedObject":
                     p = f"{p}.child_object_type"
-                f.write(f"    type(settings_root_{v.number}.{p}),\n")
+                for v in reversed(list(version_set)):
+                    f.write(f"    type(settings_root_{v.number}.{p}),\n")
             f.write("): ...\n\n")
 
 
 if __name__ == "__main__":
-    version = "251"  # for development
+    version = "261"  # for development
     generate(version)
