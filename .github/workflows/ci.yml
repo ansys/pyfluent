@@ -511,7 +511,7 @@ jobs:
             version: 252
     timeout-minutes: 120
     env:
-        FLUENT_IMAGE_TAG: ${{ matrix.version == 252 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+        FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
     steps:
 
