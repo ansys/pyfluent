@@ -1,0 +1,61 @@
+:orphan:
+
+.. _solid_motion:
+
+solid_motion
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solid_motion
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   ====================================================
+
+Attribute                                                                                                                   Summary
+
+============================================================================   ====================================================
+:ref:`enable <enable_17>`                                                                              Enable/disable solid motion.
+
+:ref:`solid_relative_to_thread <solid_relative_to_thread>`                                                   Relative To Cell Zone.
+
+:ref:`solid_omega <solid_omega>`                                                                         Solid Body Rotation Speed.
+
+:ref:`solid_motion_velocity <solid_motion_velocity>`                                              Solid motion velocity components.
+
+:ref:`solid_motion_axis_origin <solid_motion_axis_origin>`                                     Solid motion axis origin components.
+
+:ref:`solid_motion_axis_direction <solid_motion_axis_direction>`                            Solid motion axis direction components.
+
+:ref:`solid_motion_zone_motion_function <solid_motion_zone_motion_function>`       Solid Motion User Defined Solid Motion Function.
+
+============================================================================   ====================================================
+
+.. rubric:: Methods
+
+============================================================   ========================
+
+Method                                                                          Summary
+
+============================================================   ========================
+:ref:`solid_toggle_mrf_mgrid_ui <solid_toggle_mrf_mgrid_ui>`       Copy to Mesh Motion.
+
+============================================================   ========================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`solid_2_child <solid_2_child>`       'child_object_type' of solid.
+
+:ref:`phase_1_child <phase_1_child>`       'child_object_type' of phase.
+
+:ref:`solid_3_child <solid_3_child>`       'child_object_type' of solid.
+
+:ref:`phase_3_child <phase_3_child>`       'child_object_type' of phase.
+
+====================================   =================================
+

@@ -1,0 +1,42 @@
+:orphan:
+
+.. _auto_dt_advanced_controls:
+
+auto_dt_advanced_controls
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.auto_dt_advanced_controls
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ==============================================================================
+
+Attribute                                                                                                               Summary
+
+==============================================   ==============================================================================
+:ref:`enable <enable_23>`                                         Enable advanced automatic time stepping for better stability.
+
+:ref:`dt_init_limit <dt_init_limit>`                            Maximum value for pseudo time step size during first iteration.
+
+:ref:`dt_max <dt_max_1>`                                                                         Maximum pseudo time step size.
+
+:ref:`dt_factor_min <dt_factor_min>`                                      Minimum limit for reduction in pseudo time step size.
+
+:ref:`dt_factor_max <dt_factor_max>`                                       Maximum limit for increase in pseudo time step size.
+
+:ref:`max_velocity_ratio <max_velocity_ratio>`       Velocity ratio to freeze the time step size for better solution stability.
+
+==============================================   ==============================================================================
+
+.. rubric:: Included in:
+
+==========================================   =======================================================
+
+Parent                                                                                       Summary
+
+==========================================   =======================================================
+:ref:`pseudo_transient <pseudo_transient>`       Pseudo-Time stability controls for multiphase flow.
+
+==========================================   =======================================================
+

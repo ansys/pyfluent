@@ -1,0 +1,52 @@
+:orphan:
+
+.. _y_axis_2:
+
+y_axis
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.y_axis_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==================================================================================
+
+Attribute                                                                                                                         Summary
+
+====================================================   ==================================================================================
+:ref:`draw_major_rules <draw_major_rules>`                                                                            Help not available.
+
+:ref:`major_rule_weight <major_rule_weight>`                                                                          Help not available.
+
+:ref:`major_rule_line_color <major_rule_line_color>`                                                                  Help not available.
+
+:ref:`automatic_major_rules <automatic_major_rules>`       Specifies whether you want major rules to be placed automatically on the axis.
+
+:ref:`major_rule_distance <major_rule_distance>`                                                    How to place major lines on the axis.
+
+:ref:`major_rule_divisions <major_rule_divisions>`                                                  How to place major lines on the axis.
+
+:ref:`draw_minor_rules <draw_minor_rules>`                                                                            Help not available.
+
+:ref:`minor_rule_weight <minor_rule_weight>`                                                                          Help not available.
+
+:ref:`minor_rule_line_color <minor_rule_line_color>`                                                                  Help not available.
+
+:ref:`automatic_minor_rules <automatic_minor_rules>`       Specifies whether you want minor rules to be placed automatically on the axis.
+
+:ref:`minor_rule_distance <minor_rule_distance>`                                               No. of divisions made by minor grid lines.
+
+====================================================   ==================================================================================
+
+.. rubric:: Included in:
+
+====================   ==========================================
+
+Parent                                                    Summary
+
+====================   ==========================================
+:ref:`rules <rules>`       Major and minor rule for the X Y Axis.
+
+====================   ==========================================
+

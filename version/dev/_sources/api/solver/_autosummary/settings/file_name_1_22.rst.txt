@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_22:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_1_22
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ========================================================
+
+Parent                                                                          Summary
+
+============================   ========================================================
+:ref:`import__2 <import__2>`       Import a list of case modifications from a tsv file.
+
+============================   ========================================================
+

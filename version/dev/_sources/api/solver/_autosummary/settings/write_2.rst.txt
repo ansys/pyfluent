@@ -1,0 +1,34 @@
+:orphan:
+
+.. _write_2:
+
+write
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.write_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =========================================
+
+Argument                                                             Summary
+
+================================   =========================================
+:ref:`file_name <file_name_20>`        File name to write display states to.
+
+:ref:`state_name <state_name_3>`       Display state names to write to file.
+
+================================   =========================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`display_states <display_states>`       Display state options.
+
+======================================   ==========================
+

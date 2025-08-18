@@ -1,0 +1,53 @@
+:orphan:
+
+.. _methods_4:
+
+methods
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.methods_4
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   ================================================================
+
+Method                                                                                              Summary
+
+========================================   ================================================================
+:ref:`create <create>`                                    Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                             Delete selected objects.
+
+:ref:`rename <rename>`                                                                   Rename the object.
+
+:ref:`list <list>`                                                           List the names of the objects.
+
+:ref:`list_properties <list_properties>`                              List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                               Create a copy of the object.
+
+:ref:`default <default_1>`                                                        Reset methods to default.
+
+:ref:`balanced <balanced>`                           Set methods to balance accuracy, stability, and speed.
+
+:ref:`best_match <best_match>`                 Set methods to best match flow solver settings for accuracy.
+
+========================================   ================================================================
+
+.. rubric:: Named object type
+
+:ref:`methods_4_child <methods_4_child>`
+
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`gradient_based <gradient_based>`       Gradient-based design object.
+
+======================================   =================================
+

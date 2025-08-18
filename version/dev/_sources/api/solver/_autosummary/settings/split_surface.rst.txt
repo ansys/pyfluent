@@ -1,0 +1,36 @@
+:orphan:
+
+.. _split_surface:
+
+split_surface
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.split_surface
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ====================================================
+
+Argument                                                                                  Summary
+
+==========================================   ====================================================
+:ref:`surface <surface_7>`                                                  The surface to split.
+
+:ref:`auto_name <auto_name>`                     Specifies whether to do automatic naming or not.
+
+:ref:`surf_name_prefix <surf_name_prefix>`                       The prefix for splited surfaces.
+
+==========================================   ====================================================
+
+.. rubric:: Included in:
+
+==============================   ===============================================================================================
+
+Parent                                                                                                                   Summary
+
+==============================   ===============================================================================================
+:ref:`surfaces_9 <surfaces_9>`       Provides access to creating multiple zone surfaces and to grouping and ungrouping surfaces.
+
+==============================   ===============================================================================================
+

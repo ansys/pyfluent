@@ -1,0 +1,49 @@
+:orphan:
+
+.. _turbo_create:
+
+turbo_create
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.turbo_create
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =========================================
+
+Method                                                                       Summary
+
+========================================   =========================================
+:ref:`create <create_9>`                                Create turbo mesh interface.
+
+:ref:`delete <delete>`                                      Delete selected objects.
+
+:ref:`rename <rename>`                                            Rename the object.
+
+:ref:`list <list>`                                    List the names of the objects.
+
+:ref:`list_properties <list_properties>`       List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                        Create a copy of the object.
+
+:ref:`interface_check <interface_check>`              Perform turbo interface check.
+
+========================================   =========================================
+
+.. rubric:: Named object type
+
+:ref:`turbo_create_child <turbo_create_child>`
+
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+========================================   ===============================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _user_defined:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_defined
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   =====================================================
+
+Attribute                                                                            Summary
+
+====================================   =====================================================
+:ref:`function_name <function_name>`       The user-defined function name for this geometry.
+
+====================================   =====================================================
+
+.. rubric:: Included in:
+
+======================   ===============================
+
+Parent                                           Summary
+
+======================   ===============================
+:ref:`type_2 <type_2>`       The type for this geometry.
+
+======================   ===============================
+

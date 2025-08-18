@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flame_area_density_1:
+
+flame_area_density
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.flame_area_density_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

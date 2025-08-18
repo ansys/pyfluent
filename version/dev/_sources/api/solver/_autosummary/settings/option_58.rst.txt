@@ -1,0 +1,52 @@
+:orphan:
+
+.. _option_58:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.option_58
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   =============================================
+
+Attribute                                                                            Summary
+
+============================================   =============================================
+:ref:`oil_flow <oil_flow_1>`                          Enable/Disable Oil Flow for pathlines.
+
+:ref:`onzone <onzone_1>`                                        On zone from the given list.
+
+:ref:`reverse <reverse_1>`                             Enable/Disable Reverse for pathlines.
+
+:ref:`node_values <node_values_3>`                 Enable/Disable Node Values for pathlines.
+
+:ref:`accuracy_controls <accuracy_controls>`        Use tolerance or step-size for accuracy.
+
+:ref:`step_size <step_size_1>`                                                    Step size.
+
+:ref:`tolerance <tolerance_5>`                                                    Tolerance.
+
+:ref:`relative <relative_2>`                          Enable/Disable Relative for pathlines.
+
+:ref:`step <step_1>`                                          Number of steps for pathlines.
+
+:ref:`skip <skip_3>`                                       A number to skip pathline tracks.
+
+:ref:`coarsen <coarsen_3>`                                      Coarsen level for pathlines.
+
+============================================   =============================================
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`pathline_child <pathline_child>`       'child_object_type' of pathline.
+
+======================================   ====================================
+

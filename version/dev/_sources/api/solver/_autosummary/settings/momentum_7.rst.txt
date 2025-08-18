@@ -1,0 +1,50 @@
+:orphan:
+
+.. _momentum_7:
+
+momentum
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.momentum_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===========================================
+
+Attribute                                                                            Summary
+
+==============================================   ===========================================
+:ref:`gauge_pressure <gauge_pressure>`                                       Gauge Pressure.
+
+:ref:`mach_number <mach_number>`                                                Mach Number.
+
+:ref:`non_equil_boundary <non_equil_boundary>`       Thermodynamic Non-Equilibrium Boundary.
+
+:ref:`coordinate_system <coordinate_system>`                              Coordinate System.
+
+:ref:`flow_direction <flow_direction>`                            Flow direction components.
+
+:ref:`axis_direction <axis_direction_2>`                          Axis direction components.
+
+:ref:`axis_origin <axis_origin_2>`                                   Axis origin components.
+
+==============================================   ===========================================
+
+.. rubric:: Included in:
+
+==============================================================   ==============================================
+
+Parent                                                                                                  Summary
+
+==============================================================   ==============================================
+:ref:`pressure_far_field_child <pressure_far_field_child>`           'child_object_type' of pressure_far_field.
+
+:ref:`phase_19_child <phase_19_child>`                                            'child_object_type' of phase.
+
+:ref:`pressure_far_field_1_child <pressure_far_field_1_child>`       'child_object_type' of pressure_far_field.
+
+:ref:`phase_43_child <phase_43_child>`                                            'child_object_type' of phase.
+
+==============================================================   ==============================================
+

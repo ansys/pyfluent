@@ -1,0 +1,21 @@
+:orphan:
+
+.. _create_10:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================================================================================
+
+Parent                                                                                                            Summary
+
+====================================   ==================================================================================
+:ref:`auto_create_1 <auto_create_1>`       Automatically pair and create mesh interfaces for some or all interface zones.
+
+====================================   ==================================================================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _method_7:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.method_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ========================
+
+Parent                                              Summary
+
+================================   ========================
+:ref:`holes_setup <holes_setup>`       'holes_setup' child.
+
+:ref:`auto <auto>`                              The object.
+
+================================   ========================
+

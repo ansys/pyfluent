@@ -1,0 +1,47 @@
+:orphan:
+
+.. _adjoint_equations_1:
+
+adjoint_equations
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.adjoint_equations_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`adjoint_equations_1_child <adjoint_equations_1_child>`
+
+
+.. rubric:: Included in:
+
+==========================   =================================
+
+Parent                                                 Summary
+
+==========================   =================================
+:ref:`monitors <monitors>`       The residual monitors object.
+
+==========================   =================================
+

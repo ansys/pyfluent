@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_ChooseMeshControlOptions__ChooseMeshControlOptionsCommandArguments:
+
+_ChooseMeshControlOptionsCommandArguments
+=========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.ChooseMeshControlOptions._ChooseMeshControlOptionsCommandArguments
+   :members: _CreationMethod, _GlobalGrowthRate, _GlobalMax, _GlobalMin, _ReadOrCreate, _SizeControlFileName, _ViewOption, _WrapSizeControlFileName
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _MeshControlOptions/_MeshControlOptions_contents

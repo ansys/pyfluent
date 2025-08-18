@@ -1,0 +1,21 @@
+:orphan:
+
+.. _history_file_name:
+
+history_file_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.history_file_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`particle_tracks <particle_tracks>`       'particle_tracks' child.
+
+========================================   ============================
+

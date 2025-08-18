@@ -1,0 +1,21 @@
+:orphan:
+
+.. _geom_udf:
+
+geom_udf
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geom_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`geometry_9 <geometry_9>`       'geometry' child.
+
+==============================   =====================
+

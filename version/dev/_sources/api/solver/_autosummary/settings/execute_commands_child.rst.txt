@@ -1,0 +1,44 @@
+:orphan:
+
+.. _execute_commands_child:
+
+execute_commands_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.execute_commands_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ======================================
+
+Attribute                                                                     Summary
+
+============================================   ======================================
+:ref:`name <name_4>`                                              Name of the object.
+
+:ref:`enable <enable_29>`                          Enable or Disable Execute Command.
+
+:ref:`execution_type <execution_type>`                        Command Execution Type.
+
+:ref:`execution_command <execution_command>`                       Execution Command.
+
+:ref:`when_to_execute <when_to_execute>`                    When To Execute Commands.
+
+:ref:`frequency_cmd <frequency_cmd>`                   Frequency To Execute Commands.
+
+:ref:`python_cmd <python_cmd>`                               Execute python command?.
+
+============================================   ======================================
+
+.. rubric:: Included in:
+
+==========================================   =====================
+
+Parent                                                     Summary
+
+==========================================   =====================
+:ref:`execute_commands <execute_commands>`       Execute commands.
+
+==========================================   =====================
+

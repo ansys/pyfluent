@@ -1,0 +1,38 @@
+:orphan:
+
+.. _rotor_child:
+
+rotor_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.rotor_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================================
+
+Attribute                                                                Summary
+
+============================   =================================================
+:ref:`name <name_5>`                                          The name of rotor.
+
+:ref:`general <general_1>`         Menu to define the rotor general information.
+
+:ref:`geometry <geometry_4>`                                        Main object.
+
+:ref:`trimming <trimming>`                 Menu to define rotor trimming set-up.
+
+============================   =================================================
+
+.. rubric:: Included in:
+
+====================   ================
+
+Parent                          Summary
+
+====================   ================
+:ref:`rotor <rotor>`       Main object.
+
+====================   ================
+

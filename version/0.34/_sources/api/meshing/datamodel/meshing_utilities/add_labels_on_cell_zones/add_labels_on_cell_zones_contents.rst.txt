@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_add_labels_on_cell_zones:
+
+add_labels_on_cell_zones
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.add_labels_on_cell_zones
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _add_labels_on_cell_zonesCommandArguments/_add_labels_on_cell_zonesCommandArguments_contents

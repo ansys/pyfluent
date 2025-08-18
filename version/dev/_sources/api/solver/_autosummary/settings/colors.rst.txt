@@ -1,0 +1,103 @@
+:orphan:
+
+.. _colors:
+
+colors
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.colors
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   =========================================================================
+
+Attribute                                                                                                                          Summary
+
+==============================================================   =========================================================================
+:ref:`background <background_1>`                                                                            The background (window) color.
+
+:ref:`color_by_type <color_by_type>`                                         Determine whether to color meshes by type or by surface (ID).
+
+:ref:`color_by <color_by>`                                                                                     The type to color the mesh.
+
+:ref:`foreground <foreground>`                                                               The foreground (text and window frame) color.
+
+:ref:`by_type <by_type>`                                                                                                  'by_type' child.
+
+:ref:`by_surface <by_surface>`                                                                                         'by_surface' child.
+
+:ref:`far_field_faces <far_field_faces>`                                                                     The color of far field faces.
+
+:ref:`inlet_faces <inlet_faces>`                                                                                 The color of inlet faces.
+
+:ref:`interior_faces <interior_faces>`                                                                        The color of interior faces.
+
+:ref:`internal_faces <internal_faces>`                                                              The color of internal interface faces.
+
+:ref:`outlet_faces <outlet_faces>`                                                                              The color of outlet faces.
+
+:ref:`overset_faces <overset_faces>`                                                                           The color of overset faces.
+
+:ref:`periodic_faces <periodic_faces>`                                                                        The color of periodic faces.
+
+:ref:`rans_les_interface_faces <rans_les_interface_faces>`                                          The color of RANS/LES interface faces.
+
+:ref:`symmetry_faces <symmetry_faces>`                                                                       The color of symmetric faces.
+
+:ref:`axis_faces <axis_faces>`                                                                            The color of axisymmetric faces.
+
+:ref:`free_surface_faces <free_surface_faces>`                                                            The color of free-surface faces.
+
+:ref:`traction_faces <traction_faces>`                                                                        The color of traction faces.
+
+:ref:`wall_faces <wall_faces>`                                                                                    The color of wall faces.
+
+:ref:`interface_faces <interface_faces>`                                                                     The color of mesh interfaces.
+
+:ref:`surface <surface_8>`                                                                                          The color of surfaces.
+
+:ref:`skip_label <skip_label>`                                                   The number of labels to be skipped in the colopmap scale.
+
+:ref:`automatic_skip <automatic_skip>`                               Determine whether to skip labels in the colopmap scale automatically.
+
+:ref:`colormap <colormap>`                                                                               A colormap from the defined ones.
+
+:ref:`graphics_color_theme <graphics_color_theme>`                                                               The graphics color theme.
+
+:ref:`mesh_display_configuration <mesh_display_configuration>`                                                   The graphics color theme.
+
+:ref:`titles <titles>`                                                                                         Settings related to titles.
+
+:ref:`overlays <overlays>`                                                                                           Turn on/off overlays.
+
+:ref:`render_mesh <render_mesh_1>`                                                                          Turn on/off rendering of mesh.
+
+==============================================================   =========================================================================
+
+.. rubric:: Methods
+
+======================================   =========================================================
+
+Method                                                                                     Summary
+
+======================================   =========================================================
+:ref:`reset_colors <reset_colors>`           Reset individual mesh surface colors to the defaults.
+
+:ref:`list_colors <list_colors>`                                            List available colors.
+
+:ref:`reset_graphics <reset_graphics>`                                  Reset the graphics system.
+
+======================================   =========================================================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`graphics <graphics>`       'graphics' child.
+
+==========================   =====================
+

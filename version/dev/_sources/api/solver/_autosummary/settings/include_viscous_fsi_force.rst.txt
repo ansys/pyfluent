@@ -1,0 +1,21 @@
+:orphan:
+
+.. _include_viscous_fsi_force:
+
+include_viscous_fsi_force
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.include_viscous_fsi_force
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`expert_5 <expert_5>`       The structure expert object.
+
+==========================   ================================
+

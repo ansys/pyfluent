@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_LinearMeshPattern__LinearMeshPatternCommandArguments__BatteryModelingOptions:
+
+_BatteryModelingOptions
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.LinearMeshPattern._LinearMeshPatternCommandArguments._BatteryModelingOptions
+   :members: _CustomPatternString, _FirstNumber, _InvokeBatteryModelingOptions, _NbCellsPerUnit, _UseCustomPattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

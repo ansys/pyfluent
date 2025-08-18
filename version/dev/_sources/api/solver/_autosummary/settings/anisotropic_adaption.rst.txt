@@ -1,0 +1,57 @@
+:orphan:
+
+.. _anisotropic_adaption:
+
+anisotropic_adaption
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.anisotropic_adaption
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ===================================================================
+
+Attribute                                                                                                                  Summary
+
+============================================================   ===================================================================
+:ref:`operations <operations>`                                                         The anisotropic adaption operations object.
+
+:ref:`iterations <iterations>`                                                                  The number of adaption iterations.
+
+:ref:`fixed_zones <fixed_zones>`                                   The boundary zones to remain fixed during anisotropic adaption.
+
+:ref:`indicator <indicator>`                                          The indicator type and variable(s) for anisotropic adaption.
+
+:ref:`target <target>`                                                         The target type and value for anisotropic adaption.
+
+:ref:`maximum_anisotropic_ratio <maximum_anisotropic_ratio>`                      The maximum anisotropic ratio for adapted cells.
+
+:ref:`minimum_edge_length <minimum_edge_length_1>`                                                The target minimum length scale.
+
+:ref:`minimum_cell_quality <minimum_cell_quality_1>`                       The minimum orthogonal quality bound for adapted cells.
+
+============================================================   ===================================================================
+
+.. rubric:: Methods
+
+================================   =================================================================
+
+Method                                                                                       Summary
+
+================================   =================================================================
+:ref:`adapt_mesh <adapt_mesh_1>`       Adapt the mesh based on specified anisotropic adaption setup.
+
+================================   =================================================================
+
+.. rubric:: Included in:
+
+==================   =================
+
+Parent                         Summary
+
+==================   =================
+:ref:`mesh <mesh>`       'mesh' child.
+
+==================   =================
+

@@ -1,0 +1,29 @@
+:orphan:
+
+.. _minimum_5:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ================================================================================================
+
+Parent                                                                                                                              Summary
+
+========================================   ================================================================================================
+:ref:`auto_range_off <auto_range_off>`         Custom provide the minimum and maximum values of the scalar field will be the limits of that
+
+:ref:`range_options <range_options>`                                                                       Range using the min max options.
+
+:ref:`range_options_1 <range_options_1>`                                                                   Range using the min max options.
+
+:ref:`range_options_2 <range_options_2>`                                                                              Min max of the range.
+
+:ref:`range_options_3 <range_options_3>`       Specifies whether you want the range to be Global, Local to the selected zone(s), or Custom.
+
+========================================   ================================================================================================
+

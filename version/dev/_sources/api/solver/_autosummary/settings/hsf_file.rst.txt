@@ -1,0 +1,32 @@
+:orphan:
+
+.. _hsf_file:
+
+hsf_file
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.hsf_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=================================   ==================
+
+Argument                                       Summary
+
+=================================   ==================
+:ref:`file_name <file_name_1_26>`       HSF file name.
+
+=================================   ==================
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`display_10 <display_10>`       'display' child.
+
+==============================   ====================
+

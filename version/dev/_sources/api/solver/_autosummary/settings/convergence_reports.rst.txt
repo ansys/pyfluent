@@ -1,0 +1,47 @@
+:orphan:
+
+.. _convergence_reports:
+
+convergence_reports
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.convergence_reports
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`convergence_reports_child <convergence_reports_child>`
+
+
+.. rubric:: Included in:
+
+======================================================   ====================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                Summary
+
+======================================================   ====================================================================================================================================================================================
+:ref:`convergence_conditions <convergence_conditions>`       Available options that allow you to set convergence conditions on the solution based on the values from report definitions. For example, surface, volume, lift, drag, and so on.
+
+======================================================   ====================================================================================================================================================================================
+

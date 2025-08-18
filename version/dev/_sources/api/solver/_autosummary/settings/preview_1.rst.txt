@@ -1,0 +1,55 @@
+:orphan:
+
+.. _preview_1:
+
+preview
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.preview_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ==================================================
+
+Attribute                                                                               Summary
+
+==========================================   ==================================================
+:ref:`surfaces <surfaces_23>`                    Surfaces to display or to export as .stl file.
+
+:ref:`scale <scale_12>`                                             Deformation scaling factor.
+
+:ref:`transparency <transparency_3>`                      Transparency of the previewed meshes.
+
+:ref:`displayed_meshes <displayed_meshes>`                                Preview mesh options.
+
+==========================================   ==================================================
+
+.. rubric:: Methods
+
+==============================   ===================================================
+
+Method                                                                       Summary
+
+==============================   ===================================================
+:ref:`outline <outline_1>`                                 Select boundary surfaces.
+
+:ref:`interior <interior_3>`                               Select interior surfaces.
+
+:ref:`display <display_16>`                                Select interior surfaces.
+
+:ref:`export_stl <export_stl>`       Export specified surfaces from as an .stl file.
+
+==============================   ===================================================
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`design_change <design_change>`       Design change object.
+
+====================================   =========================
+

@@ -1,0 +1,59 @@
+:orphan:
+
+.. _porous_jump_child:
+
+porous_jump_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.porous_jump_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =============================================================
+
+Attribute                                                                                        Summary
+
+========================================   =============================================================
+:ref:`name <name_4>`                                                                 Name of the object.
+
+:ref:`locations <locations_2>`                                                      Input location name.
+
+:ref:`porous_jump <porous_jump_1>`             Allows to change porous-jump model variables or settings.
+
+:ref:`discrete_phase <discrete_phase_2>`                                        Discrete Phase settings.
+
+:ref:`geometry <geometry_6>`                      Allows to change geometry model variables or settings.
+
+:ref:`phase <phase_18>`                                               Domain name to define settings on.
+
+========================================   =============================================================
+
+.. rubric:: Methods
+
+==================================   ===============================================
+
+Method                                                                       Summary
+
+==================================   ===============================================
+:ref:`display <display_4>`                                   Display physics object.
+
+:ref:`split <split_1>`                   Input boundary and location names to split.
+
+:ref:`set_location <set_location>`                              Input location name.
+
+:ref:`set_type <set_type_3>`                      Change the type for this boundary.
+
+==================================   ===============================================
+
+.. rubric:: Included in:
+
+================================   ================
+
+Parent                                      Summary
+
+================================   ================
+:ref:`porous_jump <porous_jump>`       Thread-type.
+
+================================   ================
+

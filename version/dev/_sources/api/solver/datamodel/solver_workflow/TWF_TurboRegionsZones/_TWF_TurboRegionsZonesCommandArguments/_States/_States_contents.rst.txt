@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_TurboRegionsZones__TWF_TurboRegionsZonesCommandArguments__States:
+
+_States
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.solver_workflow.Root.TWF_TurboRegionsZones._TWF_TurboRegionsZonesCommandArguments._States
+   :members: _UndoOperationsLog, _UseUndo
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

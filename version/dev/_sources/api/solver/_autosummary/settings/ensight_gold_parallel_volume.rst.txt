@@ -1,0 +1,40 @@
+:orphan:
+
+.. _ensight_gold_parallel_volume:
+
+ensight_gold_parallel_volume
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ensight_gold_parallel_volume
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =========================================================
+
+Argument                                                                                 Summary
+
+====================================   =========================================================
+:ref:`file_name <file_name_1>`                                  The desired file name to export.
+
+:ref:`binary_format <binary_format>`               Specifies whether to export in binary format.
+
+:ref:`cellzones <cellzones_1>`                                              Cell zone name list.
+
+:ref:`cell_centered <cell_centered>`       Specifies whether export the cell center data values.
+
+:ref:`cell_function <cell_function>`                           The list of quantities to export.
+
+====================================   =========================================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _electrical_tab:
+
+electrical_tab
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.electrical_tab
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ===============================
+
+Attribute                                                  Summary
+
+================================   ===============================
+:ref:`anode_tab <anode_tab>`             Up anode electrical tabs.
+
+:ref:`cathode_tab <cathode_tab>`       Up cathode electrical tabs.
+
+================================   ===============================
+
+.. rubric:: Included in:
+
+==================================   =========================================
+
+Parent                                                                 Summary
+
+==================================   =========================================
+:ref:`electrolysis <electrolysis>`       The Electrochemical Devices settings.
+
+:ref:`pemfc <pemfc>`                                     PEMFC model settings.
+
+==================================   =========================================
+

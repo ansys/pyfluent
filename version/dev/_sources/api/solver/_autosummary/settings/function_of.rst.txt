@@ -1,0 +1,47 @@
+:orphan:
+
+.. _function_of:
+
+function_of
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.function_of
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================================================   ================================================
+
+Parent                                                                                                                                      Summary
+
+================================================================================================   ================================================
+:ref:`polynomial <polynomial>`                                                                                                     Polynomial f(T).
+
+:ref:`sf_piecewise_polynomial <sf_piecewise_polynomial>`                                                              Piecewise-polynomial sf f(T).
+
+:ref:`mt_cav_p_vap_polynomial <mt_cav_p_vap_polynomial>`                                                                          Polynomial p-vap.
+
+:ref:`mt_cav_p_vap_piecewise_polynomial <mt_cav_p_vap_piecewise_polynomial>`                                            Piecewise-polynomial p-vap.
+
+:ref:`mt_evap_cond_sat_temp_polynomial <mt_evap_cond_sat_temp_polynomial>`                                           Polynomial sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_temp_piecewise_polynomial <mt_evap_cond_sat_temp_piecewise_polynomial>`             Piecewise-polynomial sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_press_polynomial <mt_evap_cond_sat_press_polynomial>`                                     Polynomial sat pressure evap-cond.
+
+:ref:`mt_evap_cond_sat_press_piecewise_polynomial <mt_evap_cond_sat_press_piecewise_polynomial>`       Piecewise-polynomial sat-pressure evap-cond.
+
+:ref:`polynomial_1 <polynomial_1>`                                                                       Coefficients for interpolation polynomial.
+
+:ref:`piecewise_polynomial <piecewise_polynomial>`                                                      Property piecewise-polynomial coefficients.
+
+:ref:`polynomial_2 <polynomial_2>`                                                                                Property polynomial coefficients.
+
+:ref:`nasa_9_piecewise_polynomial <nasa_9_piecewise_polynomial>`                                        Property piecewise-polynomial coefficients.
+
+:ref:`piecewise_polynomial_1 <piecewise_polynomial_1>`                                                               Piecewise polynomial settings.
+
+:ref:`polynomial_3 <polynomial_3>`                                                                                             Polynomial settings.
+
+================================================================================================   ================================================
+

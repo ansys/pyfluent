@@ -1,0 +1,33 @@
+:orphan:
+
+.. _function_of_1:
+
+function_of
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.function_of_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================================   ====================================================
+
+Parent                                                                                                                                  Summary
+
+========================================================================================   ====================================================
+:ref:`sf_piecewise_linear <sf_piecewise_linear>`                                                                      Piecewise-linear sf f(T).
+
+:ref:`mt_cav_p_vap_piecewise_linear <mt_cav_p_vap_piecewise_linear>`                                                    Piecewise-linear p-vap.
+
+:ref:`mt_evap_cond_sat_temp_piecewise_linear <mt_evap_cond_sat_temp_piecewise_linear>`                     Piecewise-linear sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_press_piecewise_linear <mt_evap_cond_sat_press_piecewise_linear>`               Piecewise-linear sat-pressure evap-cond.
+
+:ref:`piecewise_linear <piecewise_linear>`                                                      Data-points for piecewise linear interpolation.
+
+:ref:`piecewise_linear_1 <piecewise_linear_1>`                                                                Property piecewise-linear values.
+
+:ref:`piecewise_linear_2 <piecewise_linear_2>`                                                 Ranges and values for piecewise-linear property.
+
+========================================================================================   ====================================================
+

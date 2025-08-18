@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_16:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================================================
+
+Parent                                                                                      Summary
+
+==================================   ==============================================================
+:ref:`fixed_values <fixed_values>`       Allows to change fixed-values model variables or settings.
+
+==================================   ==============================================================
+

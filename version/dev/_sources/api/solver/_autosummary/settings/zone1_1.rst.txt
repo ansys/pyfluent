@@ -1,0 +1,23 @@
+:orphan:
+
+.. _zone1_1:
+
+zone1
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zone1_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`interface_3_child <interface_3_child>`            'child_object_type' of interface.
+
+:ref:`turbo_create_child <turbo_create_child>`       'child_object_type' of turbo_create.
+
+==============================================   ========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _starting_t_re_initialization:
+
+starting_t_re_initialization
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.starting_t_re_initialization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================
+
+Parent                                                Summary
+
+==========================   ================================
+:ref:`expert_5 <expert_5>`       The structure expert object.
+
+==========================   ================================
+

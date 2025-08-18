@@ -1,0 +1,14 @@
+.. _ref_solver_tui_define_models_dsmc:
+
+dsmc
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.define.models.dsmc
+   :members: collision_pair_selection, enabled, real_to_simulated_particle_ratio, sampling_begin_iteration, target_number_of_particle_per_subcell, time_step
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

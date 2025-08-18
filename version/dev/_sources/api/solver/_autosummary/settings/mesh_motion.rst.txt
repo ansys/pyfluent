@@ -1,0 +1,63 @@
+:orphan:
+
+.. _mesh_motion:
+
+mesh_motion
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mesh_motion
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================   ==================================================
+
+Attribute                                                                                                               Summary
+
+==========================================================================   ==================================================
+:ref:`enable <enable_14>`                                                                           Enable/disable mesh motion.
+
+:ref:`mgrid_enable_transient <mgrid_enable_transient>`                                                      Help not available.
+
+:ref:`mgrid_relative_to_thread <mgrid_relative_to_thread>`                                               Relative To Cell Zone.
+
+:ref:`mgrid_omega <mgrid_omega>`                                                                    Moving Mesh Rotation Speed.
+
+:ref:`moving_mesh_velocity <moving_mesh_velocity>`                                             Moving mesh velocity components.
+
+:ref:`moving_mesh_axis_origin <moving_mesh_axis_origin>`                                    Moving mesh axis origin components.
+
+:ref:`moving_mesh_axis_direction <moving_mesh_axis_direction>`                           Moving mesh axis direction components.
+
+:ref:`moving_mesh_zone_motion_function <moving_mesh_zone_motion_function>`       Moving Mesh User Defined Zone Motion Function.
+
+==========================================================================   ==================================================
+
+.. rubric:: Methods
+
+============================================================   =========================
+
+Method                                                                           Summary
+
+============================================================   =========================
+:ref:`mgrid_toggle_mrf_mgrid_ui <mgrid_toggle_mrf_mgrid_ui>`       Copy to Frame Motion.
+
+============================================================   =========================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`fluid_1_child <fluid_1_child>`       'child_object_type' of fluid.
+
+:ref:`phase_child <phase_child>`           'child_object_type' of phase.
+
+:ref:`fluid_2_child <fluid_2_child>`       'child_object_type' of fluid.
+
+:ref:`phase_2_child <phase_2_child>`       'child_object_type' of phase.
+
+====================================   =================================
+

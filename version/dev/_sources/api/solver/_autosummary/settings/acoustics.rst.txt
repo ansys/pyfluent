@@ -1,0 +1,47 @@
+:orphan:
+
+.. _acoustics:
+
+acoustics
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.acoustics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   =======================================
+
+Attribute                                                                        Summary
+
+==============================================   =======================================
+:ref:`model <model_3>`                                               An acoustics model.
+
+:ref:`export_source_data <export_source_data>`       Entering source data export object.
+
+:ref:`fwh_options <fwh_options>`                                        Entering object.
+
+==============================================   =======================================
+
+.. rubric:: Methods
+
+========================   ===========================================================
+
+Method                                                                         Summary
+
+========================   ===========================================================
+:ref:`sources <sources>`       Specify source zones for FW-H model or for data export.
+
+========================   ===========================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`models <models>`       'models' child.
+
+======================   ===================
+

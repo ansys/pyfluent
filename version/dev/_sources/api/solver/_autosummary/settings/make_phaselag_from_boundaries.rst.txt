@@ -1,0 +1,38 @@
+:orphan:
+
+.. _make_phaselag_from_boundaries:
+
+make_phaselag_from_boundaries
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.make_phaselag_from_boundaries
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ===================================================
+
+Argument                                                                               Summary
+
+========================================   ===================================================
+:ref:`side_1 <side_1>`                         Id/name of zone to convert to phase lag side 1.
+
+:ref:`side_2 <side_2>`                         Id/name of zone to convert to phase lag side 2.
+
+:ref:`angle <angle_3>`                                                         Rotation angle.
+
+:ref:`interface_name <interface_name_1>`                 The name for this phaselag interface.
+
+========================================   ===================================================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+========================================   ===============================
+

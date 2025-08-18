@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_5:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ====================================
+
+Parent                                                                          Summary
+
+================================================   ====================================
+:ref:`start_1 <start_1>`                                             Start gRPC server.
+
+:ref:`write_or_reset_info <write_or_reset_info>`       Write or reset gRPC server file.
+
+================================================   ====================================
+

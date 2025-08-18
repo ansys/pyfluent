@@ -1,0 +1,34 @@
+:orphan:
+
+.. _t0:
+
+t0
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.t0
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===================
+
+Attribute                            Summary
+
+======================   ===================
+:ref:`type <type_12>`         Layering type.
+
+:ref:`height <height>`       'height' child.
+
+======================   ===================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`adjacent_zones <adjacent_zones>`       'adjacent_zones' child.
+
+======================================   ===========================
+

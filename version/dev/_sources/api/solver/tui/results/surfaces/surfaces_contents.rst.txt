@@ -1,0 +1,33 @@
+.. _ref_solver_tui_results_surfaces:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.results.surfaces
+   :members: create_group_surfaces, create_multiple_iso_surfaces, create_multiple_plane_surfaces, create_multiple_zone_surfaces, external_surface, reset_zone_surfaces, set_rendering_priority, split_surface, ungroup_surfaces
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   expression_volume/expression_volume_contents
+   group_surface/group_surface_contents
+   imprint_surface/imprint_surface_contents
+   iso_clip/iso_clip_contents
+   iso_surface/iso_surface_contents
+   line_surface/line_surface_contents
+   partition_surface/partition_surface_contents
+   plane_slice/plane_slice_contents
+   plane_surface/plane_surface_contents
+   point_surface/point_surface_contents
+   quadric_surface/quadric_surface_contents
+   rake_surface/rake_surface_contents
+   sphere_slice/sphere_slice_contents
+   surface_cells/surface_cells_contents
+   transform_surface/transform_surface_contents
+   zone_surface/zone_surface_contents

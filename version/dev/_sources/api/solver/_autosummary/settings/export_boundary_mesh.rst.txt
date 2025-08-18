@@ -1,0 +1,36 @@
+:orphan:
+
+.. _export_boundary_mesh:
+
+export_boundary_mesh
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.export_boundary_mesh
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ================================================
+
+Argument                                                                          Summary
+
+======================================   ================================================
+:ref:`file_name <file_name_16>`                                         Output file name.
+
+:ref:`boundary_list <boundary_list_1>`                 Boundary zones for exporting mesh.
+
+:ref:`global_ <global_>`                     Enable/disable output of mesh global number.
+
+======================================   ================================================
+
+.. rubric:: Included in:
+
+==========================   ==============================
+
+Parent                                              Summary
+
+==========================   ==============================
+:ref:`models_1 <models_1>`       The turbo-models settings.
+
+==========================   ==============================
+

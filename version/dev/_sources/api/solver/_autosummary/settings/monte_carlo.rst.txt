@@ -1,0 +1,36 @@
+:orphan:
+
+.. _monte_carlo:
+
+monte_carlo
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.monte_carlo
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =============================================
+
+Attribute                                                                                Summary
+
+================================================   =============================================
+:ref:`number_of_histories <number_of_histories>`                 The target number of histories.
+
+:ref:`under_relaxation <under_relaxation>`             Under-relaxation factor for the MC model.
+
+:ref:`mesh_options <mesh_options>`                                             The mesh options.
+
+================================================   =============================================
+
+.. rubric:: Included in:
+
+============================   ======================================
+
+Parent                                                        Summary
+
+============================   ======================================
+:ref:`radiation <radiation>`       Model for radiative heat-transfer.
+
+============================   ======================================
+

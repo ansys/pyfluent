@@ -1,0 +1,21 @@
+:orphan:
+
+.. _alternate_diffusion_for_porous_region_solids:
+
+alternate_diffusion_for_porous_region_solids
+============================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.alternate_diffusion_for_porous_region_solids
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================
+
+Parent                                  Summary
+
+==========================   ==================
+:ref:`expert_7 <expert_7>`       Expert object.
+
+==========================   ==================
+

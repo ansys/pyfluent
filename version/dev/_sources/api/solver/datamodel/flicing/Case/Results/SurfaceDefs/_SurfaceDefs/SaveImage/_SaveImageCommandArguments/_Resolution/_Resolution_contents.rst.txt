@@ -1,0 +1,14 @@
+.. _ref_solver_datamodel_flicing_Case_Results_SurfaceDefs__SurfaceDefs_SaveImage__SaveImageCommandArguments__Resolution:
+
+_Resolution
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.flicing.Root.Case.Results.SurfaceDefs._SurfaceDefs.SaveImage._SaveImageCommandArguments._Resolution
+   :members: _DPI, _Height, _Option, _UseWindowResolution, _Width
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,46 @@
+:orphan:
+
+.. _orthotropic_k:
+
+orthotropic_k
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.orthotropic_k
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==========================================================================================
+
+Attribute                                                                                                                               Summary
+
+==================================================   ==========================================================================================
+:ref:`enabled <enabled_30>`                                                                            Enable orthotropic thermal conductivity.
+
+:ref:`cell_type <cell_type>`                                                                  Battery type in orthotropic thermal conductivity.
+
+:ref:`cyl_axis_vec <cyl_axis_vec>`                                        Define cyl-axis direction vector in orthotropic thermal conductivity.
+
+:ref:`prism_axis_vec <prism_axis_vec>`                                  Define prism-axis direction vector in orthotropic thermal conductivity.
+
+:ref:`prism_vec2 <prism_vec2>`                           Define a vector passing through two axis' origins in orthotropic thermal conductivity.
+
+:ref:`pouch_normal_vec <pouch_normal_vec>`                         Define normal direction of a pouch cell in orthotropic thermal conductivity.
+
+:ref:`thermal_conductivity <thermal_conductivity>`                             Define orthotropic thermal conductivity in different directions.
+
+:ref:`udf_name <udf_name_2>`                                                 Layer normal vector udf file for orthotropic thermal conductivity.
+
+==================================================   ==========================================================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`advanced_models <advanced_models>`       Advanced model options.
+
+========================================   ===========================
+

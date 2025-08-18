@@ -1,0 +1,33 @@
+:orphan:
+
+.. _coefficients:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.coefficients
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ==============================================
+
+Parent                                                                                                                Summary
+
+============================================================================   ==============================================
+:ref:`polynomial <polynomial>`                                                                               Polynomial f(T).
+
+:ref:`mt_cav_p_vap_polynomial <mt_cav_p_vap_polynomial>`                                                    Polynomial p-vap.
+
+:ref:`mt_evap_cond_sat_temp_polynomial <mt_evap_cond_sat_temp_polynomial>`                     Polynomial sat temp evap-cond.
+
+:ref:`mt_evap_cond_sat_press_polynomial <mt_evap_cond_sat_press_polynomial>`               Polynomial sat pressure evap-cond.
+
+:ref:`polynomial_1 <polynomial_1>`                                                 Coefficients for interpolation polynomial.
+
+:ref:`polynomial_2 <polynomial_2>`                                                          Property polynomial coefficients.
+
+:ref:`polynomial_3 <polynomial_3>`                                                                       Polynomial settings.
+
+============================================================================   ==============================================
+

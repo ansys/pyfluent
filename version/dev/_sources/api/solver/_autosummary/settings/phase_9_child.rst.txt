@@ -1,0 +1,34 @@
+:orphan:
+
+.. _phase_9_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phase_9_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ===========================================================
+
+Attribute                                                                            Summary
+
+==============================   ===========================================================
+:ref:`interface <interface_1>`       Allows to change interface model variables or settings.
+
+:ref:`geometry <geometry_6>`          Allows to change geometry model variables or settings.
+
+==============================   ===========================================================
+
+.. rubric:: Included in:
+
+========================   ======================================
+
+Parent                                                    Summary
+
+========================   ======================================
+:ref:`phase_9 <phase_9>`       Domain name to define settings on.
+
+========================   ======================================
+

@@ -1,0 +1,38 @@
+:orphan:
+
+.. _new_unit:
+
+new_unit
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.new_unit
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ================================
+
+Argument                                                        Summary
+
+====================================   ================================
+:ref:`quantity <quantity>`                                   Quanitity.
+
+:ref:`units_name <units_name>`             New Unit value for Quantity.
+
+:ref:`scale_factor <scale_factor_1>`               Update Scale Factor.
+
+:ref:`offset <offset_4>`                          Update Offset Factor.
+
+====================================   ================================
+
+.. rubric:: Included in:
+
+======================================   ==================
+
+Parent                                              Summary
+
+======================================   ==================
+:ref:`units_settings <units_settings>`       Units options.
+
+======================================   ==================
+

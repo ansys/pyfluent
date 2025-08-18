@@ -1,0 +1,21 @@
+:orphan:
+
+.. _hybrid_mode_selection:
+
+hybrid_mode_selection
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.hybrid_mode_selection
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =========================================
+
+Parent                                                         Summary
+
+==========================   =========================================
+:ref:`expert_8 <expert_8>`       Overset expert solver options object.
+
+==========================   =========================================
+

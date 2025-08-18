@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_LinearMeshPattern__LinearMeshPatternCommandArguments:
+
+_LinearMeshPatternCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.LinearMeshPattern._LinearMeshPatternCommandArguments
+   :members: _AutoPopulateVector, _CheckOverlappingFaces, _ChildName, _NumberOfUnits, _ObjectList, _Pitch
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _BatteryModelingOptions/_BatteryModelingOptions_contents
+   _PatternVector/_PatternVector_contents

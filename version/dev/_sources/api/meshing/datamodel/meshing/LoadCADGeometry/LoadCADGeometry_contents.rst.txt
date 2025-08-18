@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_LoadCADGeometry:
+
+LoadCADGeometry
+===============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.LoadCADGeometry
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _LoadCADGeometryCommandArguments/_LoadCADGeometryCommandArguments_contents

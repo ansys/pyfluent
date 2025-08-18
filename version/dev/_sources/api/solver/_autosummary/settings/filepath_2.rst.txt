@@ -1,0 +1,21 @@
+:orphan:
+
+.. _filepath_2:
+
+filepath
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.filepath_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================
+
+Parent                                               Summary
+
+======================================   ===================
+:ref:`export_designs <export_designs>`       Export Designs.
+
+======================================   ===================
+

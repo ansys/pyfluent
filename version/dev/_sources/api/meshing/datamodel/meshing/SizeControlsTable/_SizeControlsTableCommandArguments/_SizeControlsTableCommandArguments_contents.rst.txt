@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_SizeControlsTable__SizeControlsTableCommandArguments:
+
+_SizeControlsTableCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.SizeControlsTable._SizeControlsTableCommandArguments
+   :members: _DrawSizeControl, _GlobalMax, _GlobalMin, _InitialSizeControl, _SizeControlInterval, _TargetGrowthRate, _TargetSizeControl
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _SizeControlParameters/_SizeControlParameters_contents

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _connect_to_cluster:
+
+connect_to_cluster
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.connect_to_cluster
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================   =============
+
+Argument                           Summary
+
+==========================   =============
+:ref:`url <url>`                      URL.
+
+:ref:`username <username>`       Username.
+
+:ref:`password <password>`       Password.
+
+==========================   =============
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

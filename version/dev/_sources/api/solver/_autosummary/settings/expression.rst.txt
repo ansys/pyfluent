@@ -1,0 +1,34 @@
+:orphan:
+
+.. _expression:
+
+expression
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.expression
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ====================================================================================================
+
+Attribute                                                                                                                                           Summary
+
+====================================================   ====================================================================================================
+:ref:`refinement_expression <refinement_expression>`       The expression, named-expression, or cell register as part of this automatic adaption criterion.
+
+:ref:`coarsening_expression <coarsening_expression>`       The expression, named-expression, or cell register as part of this automatic adaption criterion.
+
+====================================================   ====================================================================================================
+
+.. rubric:: Included in:
+
+==================   ===================================================
+
+Parent                                                           Summary
+
+==================   ===================================================
+:ref:`type <type>`       The type for this automatic adaption criterion.
+
+==================   ===================================================
+

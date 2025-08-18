@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_14:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.value_14
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================================
+
+Parent                                                                                            Summary
+
+==============================================   ========================================================
+:ref:`tab_elec_current_1 <tab_elec_current_1>`       Electric current at terminal in FMU coupling method.
+
+==============================================   ========================================================
+

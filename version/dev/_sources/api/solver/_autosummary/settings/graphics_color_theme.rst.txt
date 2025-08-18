@@ -1,0 +1,21 @@
+:orphan:
+
+.. _graphics_color_theme:
+
+graphics_color_theme
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.graphics_color_theme
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`colors <colors>`       'colors' child.
+
+======================   ===================
+

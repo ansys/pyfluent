@@ -1,0 +1,21 @@
+:orphan:
+
+.. _disable_rhie_chow_flux:
+
+disable_rhie_chow_flux
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.disable_rhie_chow_flux
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================
+
+Parent                                  Summary
+
+==========================   ==================
+:ref:`expert_7 <expert_7>`       Expert object.
+
+==========================   ==================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _implicit_bodyforce_treatment:
+
+implicit_bodyforce_treatment
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.implicit_bodyforce_treatment
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ==================
+
+Parent                                  Summary
+
+==========================   ==================
+:ref:`expert_7 <expert_7>`       Expert object.
+
+==========================   ==================
+

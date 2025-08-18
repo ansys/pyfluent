@@ -1,0 +1,40 @@
+:orphan:
+
+.. _titles:
+
+titles
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.titles
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =====================================================
+
+Attribute                                                                          Summary
+
+==================================   =====================================================
+:ref:`left_top <left_top>`                   The title text for left top in title segment.
+
+:ref:`left_bottom <left_bottom>`          The title text for left bottom in title segment.
+
+:ref:`right_top <right_top>`                The title text for right top in title segment.
+
+:ref:`right_middle <right_middle>`       The title text for right middle in title segment.
+
+:ref:`right_bottom <right_bottom>`       The title text for right bottom in title segment.
+
+==================================   =====================================================
+
+.. rubric:: Included in:
+
+======================   ===================
+
+Parent                               Summary
+
+======================   ===================
+:ref:`colors <colors>`       'colors' child.
+
+======================   ===================
+

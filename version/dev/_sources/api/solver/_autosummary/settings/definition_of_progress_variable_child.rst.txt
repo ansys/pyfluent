@@ -1,0 +1,32 @@
+:orphan:
+
+.. _definition_of_progress_variable_child:
+
+definition_of_progress_variable_child
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.definition_of_progress_variable_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ===================
+
+Attribute                            Summary
+
+======================   ===================
+:ref:`weight <weight>`       Species Weight.
+
+======================   ===================
+
+.. rubric:: Included in:
+
+========================================================================   ==========================================================
+
+Parent                                                                                                                        Summary
+
+========================================================================   ==========================================================
+:ref:`definition_of_progress_variable <definition_of_progress_variable>`       Species Coefficients for Reaction Progress Definition.
+
+========================================================================   ==========================================================
+

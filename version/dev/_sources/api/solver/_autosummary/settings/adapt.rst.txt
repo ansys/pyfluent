@@ -1,0 +1,65 @@
+:orphan:
+
+.. _adapt:
+
+adapt
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.adapt
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================================   ==================================================
+
+Attribute                                                                                                   Summary
+
+==============================================================   ==================================================
+:ref:`refinement_criteria <refinement_criteria>`                               Expression for refinement criterion.
+
+:ref:`coarsening_criteria <coarsening_criteria>`                               Expression for coarsening criterion.
+
+:ref:`manual_refinement_criteria <manual_refinement_criteria>`          Expression for manual refinement criterion.
+
+:ref:`manual_coarsening_criteria <manual_coarsening_criteria>`          Expression for manual coarsening criterion.
+
+:ref:`set <set>`                                                                           The adaption set object.
+
+:ref:`profile <profile>`                                                               The adaption profile object.
+
+:ref:`free_hierarchy <free_hierarchy>`                                               Delete the adaption hierarchy.
+
+:ref:`manage_criteria <manage_criteria>`                                   The adaption criteria management object.
+
+:ref:`multi_layer_refinement <multi_layer_refinement>`               The multiple boundary layer refinement object.
+
+:ref:`geometry <geometry_2>`                                                          The adaption geometry object.
+
+==============================================================   ==================================================
+
+.. rubric:: Methods
+
+======================================================   ================================================================
+
+Method                                                                                                            Summary
+
+======================================================   ================================================================
+:ref:`adapt_mesh <adapt_mesh>`                               Adapt the mesh based on set refinement/coarsening criterion.
+
+:ref:`display_adaption_cells <display_adaption_cells>`                    Display cells marked for refinement/coarsening.
+
+:ref:`list_adaption_cells <list_adaption_cells>`               List the number of cells marked for refinement/coarsening.
+
+======================================================   ================================================================
+
+.. rubric:: Included in:
+
+==================   =================
+
+Parent                         Summary
+
+==================   =================
+:ref:`mesh <mesh>`       'mesh' child.
+
+==================   =================
+

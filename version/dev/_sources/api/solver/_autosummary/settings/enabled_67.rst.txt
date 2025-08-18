@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_67:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enabled_67
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ==========================================================
+
+Parent                                                                                                            Summary
+
+============================================================   ==========================================================
+:ref:`mp_specific_time_stepping <mp_specific_time_stepping>`       Multiphase-specific adaptive time stepping parameters.
+
+============================================================   ==========================================================
+

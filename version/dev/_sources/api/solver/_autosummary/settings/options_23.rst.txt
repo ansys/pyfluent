@@ -1,0 +1,34 @@
+:orphan:
+
+.. _options_23:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.options_23
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================   ======================================================
+
+Attribute                                                                                                                   Summary
+
+==========================================================================   ======================================================
+:ref:`list_surfaces_inside_region_only <list_surfaces_inside_region_only>`       List the surfaces inside the morphing region only.
+
+:ref:`display_settings <display_settings>`                                                                  Display options object.
+
+==========================================================================   ======================================================
+
+.. rubric:: Included in:
+
+============================================   =============================
+
+Parent                                                               Summary
+
+============================================   =============================
+:ref:`design_conditions <design_conditions>`       Design conditions object.
+
+============================================   =============================
+

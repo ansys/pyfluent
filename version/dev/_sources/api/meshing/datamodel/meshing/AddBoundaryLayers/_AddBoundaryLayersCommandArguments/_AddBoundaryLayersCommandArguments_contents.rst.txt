@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_AddBoundaryLayers__AddBoundaryLayersCommandArguments:
+
+_AddBoundaryLayersCommandArguments
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.AddBoundaryLayers._AddBoundaryLayersCommandArguments
+   :members: _AddChild, _BLControlName, _BLRegionList, _BLZoneList, _BlLabelList, _CompleteBLRegionList, _CompleteBLZoneList, _CompleteBlLabelList, _CompleteLabelSelectionList, _CompleteRegionScope, _CompleteZoneSelectionList, _FirstAspectRatio, _FirstHeight, _InvalidAdded, _MaxLayerHeight, _NumberOfLayers, _OffsetMethodType, _Rate, _ReadPrismControlFile, _RegionScope, _TransitionRatio, _ZoneLocation, _ZoneSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _FaceScope/_FaceScope_contents
+   _LocalPrismPreferences/_LocalPrismPreferences_contents

@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_TurboTopology:
+
+TWF_TurboTopology
+=================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.solver_workflow.Root.TWF_TurboTopology
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _TWF_TurboTopologyCommandArguments/_TWF_TurboTopologyCommandArguments_contents

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _n_display_1:
+
+n_display
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.n_display_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`options_22 <options_22>`       'options' child.
+
+==============================   ====================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _parameters_6:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parameters_6
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ========================================
+
+Attribute                                                    Summary
+
+=========================   ========================================
+:ref:`method <method_12>`             Solution stabilization method.
+
+:ref:`scale <scale_2>`          Solution stabilization scale factor.
+
+=========================   ========================================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`stabilization <stabilization>`       'stabilization' child.
+
+====================================   ==========================
+

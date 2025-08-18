@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surfaces_4:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.surfaces_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============
+
+Parent                                 Summary
+
+============================   ===============
+:ref:`locations <locations>`       The object.
+
+============================   ===============
+

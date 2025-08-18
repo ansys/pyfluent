@@ -1,0 +1,36 @@
+:orphan:
+
+.. _heat_exchange:
+
+heat_exchange
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.heat_exchange
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ===================================
+
+Attribute                                                  Summary
+
+============================   ===================================
+:ref:`option <option_30>`          The heat transfer coefficient:.
+
+:ref:`const_htc <const_htc>`       The heat transfer coefficient:.
+
+:ref:`const_nu <const_nu>`                     The Nusselt number.
+
+============================   ===================================
+
+.. rubric:: Included in:
+
+============================================   ========================================
+
+Parent                                                                          Summary
+
+============================================   ========================================
+:ref:`physical_models_1 <physical_models_1>`       Lagrangian physical models settings.
+
+============================================   ========================================
+

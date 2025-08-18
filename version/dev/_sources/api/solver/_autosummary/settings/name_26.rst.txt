@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_26:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.name_26
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================================
+
+Parent                                                           Summary
+
+============================   =========================================
+:ref:`create_11 <create_11>`       Create New solution animation Object.
+
+============================   =========================================
+

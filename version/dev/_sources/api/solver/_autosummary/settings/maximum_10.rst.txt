@@ -1,0 +1,21 @@
+:orphan:
+
+.. _maximum_10:
+
+maximum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.maximum_10
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================================
+
+Parent                                                                        Summary
+
+==============================   ====================================================
+:ref:`save_files <save_files>`       File saving settings for optimization reporting.
+
+==============================   ====================================================
+

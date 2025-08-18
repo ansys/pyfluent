@@ -1,0 +1,40 @@
+:orphan:
+
+.. _interpreted_functions:
+
+interpreted_functions
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interpreted_functions
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   ====================================================================
+
+Argument                                                                                                        Summary
+
+================================================   ====================================================================
+:ref:`file_name <file_name_1_21>`                                                      The name of the UDF source file.
+
+:ref:`cpp_cmd_name <cpp_cmd_name>`                                                                The CPP command name.
+
+:ref:`stack_size <stack_size>`                                                   The stack size of the virtual machine.
+
+:ref:`listing <listing>`                               Specifies whether the assembly code listing should be displayed.
+
+:ref:`use_contributed_cpp <use_contributed_cpp>`       Enable/disable use of cpp from the Fluent.Inc/contrib directory.
+
+================================================   ====================================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

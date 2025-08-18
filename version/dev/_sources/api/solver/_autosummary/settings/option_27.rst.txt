@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_27:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.option_27
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================================================
+
+Parent                                                                               Summary
+
+====================================   =====================================================
+:ref:`particle_size <particle_size>`       Lagrangian particle size (distribution) settings.
+
+====================================   =====================================================
+

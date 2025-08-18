@@ -1,0 +1,50 @@
+:orphan:
+
+.. _integration_parameters:
+
+integration_parameters
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.integration_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================   ==================================================
+
+Attribute                                                                                                                     Summary
+
+================================================================================   ==================================================
+:ref:`method <method_3>`                                                                                      The integration method.
+
+:ref:`integration_options <integration_options>`                                                                      ODE parameters.
+
+:ref:`isat_options <isat_options>`                                                                                      ISAT options.
+
+:ref:`chemistry_agglomeration <chemistry_agglomeration>`                                      Enable/disable chemistry agglomeration.
+
+:ref:`chemistry_agglomeration_options <chemistry_agglomeration_options>`                          Chemistry agglomeration parameters.
+
+:ref:`relax_to_equilibrium_options <relax_to_equilibrium_options>`                            Relax to equilibrium parameters option.
+
+:ref:`dynamic_mechanism_reduction <dynamic_mechanism_reduction>`                          Enable/disable dynamic mechanism reduction.
+
+:ref:`dynamic_mechanism_reduction_options <dynamic_mechanism_reduction_options>`       Dynamic mechanism reduction parameters option.
+
+:ref:`dimension_reduction <dimension_reduction>`                                                  Enable/disable dimension reduction.
+
+:ref:`dimension_reduction_mixture_options <dimension_reduction_mixture_options>`                      Dimension reduction parameters.
+
+================================================================================   ==================================================
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`species <species>`       Species model object.
+
+========================   =========================
+

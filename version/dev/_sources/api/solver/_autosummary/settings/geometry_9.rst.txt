@@ -1,0 +1,40 @@
+:orphan:
+
+.. _geometry_9:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.geometry_9
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ==============================
+
+Attribute                                                             Summary
+
+============================================   ==============================
+:ref:`definition <definition>`                            'definition' child.
+
+:ref:`plane_def <plane_def>`                               'plane_def' child.
+
+:ref:`cylinder_def <cylinder_def>`                      'cylinder_def' child.
+
+:ref:`geom_udf <geom_udf>`                                  'geom_udf' child.
+
+:ref:`feature_detection <feature_detection>`       'feature_detection' child.
+
+============================================   ==============================
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`dynamic_zones_child <dynamic_zones_child>`       'child_object_type' of dynamic_zones.
+
+================================================   =========================================
+

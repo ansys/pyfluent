@@ -1,0 +1,42 @@
+:orphan:
+
+.. _from_location:
+
+from_location
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.from_location
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ===============================================================
+
+Attribute                                                                              Summary
+
+============================   ===============================================================
+:ref:`physics <physics_2>`             The boundary(s) that will be used to define the object.
+
+:ref:`geometry <geometry_3>`           The geometry(s) that will be used to define the object.
+
+:ref:`surfaces <surfaces_6>`       The user-surface(s) that will be used to define the object.
+
+============================   ===============================================================
+
+.. rubric:: Included in:
+
+========================================================   ====================================================
+
+Parent                                                                                                  Summary
+
+========================================================   ====================================================
+:ref:`location_1 <location_1>`                                 Lagrangian particle injection location settings.
+
+:ref:`iso_surface_child <iso_surface_child>`                                'child_object_type' of iso_surface.
+
+:ref:`iso_clip_child <iso_clip_child>`                                         'child_object_type' of iso_clip.
+
+:ref:`transform_surface_child <transform_surface_child>`              'child_object_type' of transform_surface.
+
+========================================================   ====================================================
+

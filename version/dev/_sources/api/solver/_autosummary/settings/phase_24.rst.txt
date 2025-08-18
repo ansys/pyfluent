@@ -1,0 +1,47 @@
+:orphan:
+
+.. _phase_24:
+
+phase
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phase_24
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                  Delete selected objects.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`phase_24_child <phase_24_child>`
+
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`recirculation_inlet_child <recirculation_inlet_child>`       'child_object_type' of recirculation_inlet.
+
+============================================================   ===============================================
+

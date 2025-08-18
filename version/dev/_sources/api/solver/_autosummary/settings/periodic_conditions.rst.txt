@@ -1,0 +1,44 @@
+:orphan:
+
+.. _periodic_conditions:
+
+periodic_conditions
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.periodic_conditions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ======================================================
+
+Attribute                                                                                     Summary
+
+============================================   ======================================================
+:ref:`type <type_10>`                                                                  Periodic type.
+
+:ref:`mass_flow <mass_flow_1>`                                               Periodic mass flow rate.
+
+:ref:`pressure_gradient <pressure_gradient>`                              Periodic pressure gradient.
+
+:ref:`bulk_temperature <bulk_temperature>`         Bulk temperature for periodic boundary conditions.
+
+:ref:`relax <relax_1>`                                                             Relaxation factor.
+
+:ref:`niter <niter>`                                                            Number of iterations.
+
+:ref:`flow_direction <flow_direction_2>`                                   Periodic direction vector.
+
+============================================   ======================================================
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`settings_1 <settings_1>`       'settings' child.
+
+==============================   =====================
+

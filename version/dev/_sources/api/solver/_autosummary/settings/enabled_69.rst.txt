@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_69:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enabled_69
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =========================
+
+Parent                                                   Summary
+
+====================================   =========================
+:ref:`data_sampling <data_sampling>`       Data sampling object.
+
+====================================   =========================
+

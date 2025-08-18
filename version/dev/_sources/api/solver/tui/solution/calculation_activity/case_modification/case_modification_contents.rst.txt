@@ -1,0 +1,18 @@
+.. _ref_solver_tui_solution_calculation_activity_case_modification:
+
+case_modification
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solution.calculation_activity.case_modification
+   :members: automatic_initialization, continue_strategy_execution, execute_strategy, export, import_, strategy_enable
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   automatic_case_modification/automatic_case_modification_contents

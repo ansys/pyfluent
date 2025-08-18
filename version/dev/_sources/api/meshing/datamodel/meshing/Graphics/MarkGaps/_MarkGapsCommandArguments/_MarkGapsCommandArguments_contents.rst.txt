@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_Graphics_MarkGaps__MarkGapsCommandArguments:
+
+_MarkGapsCommandArguments
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.Graphics.MarkGaps._MarkGapsCommandArguments
+   :members: _GapDistance, _GapDistanceConnect, _STMinSize
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _ShareTopologyPreferences/_ShareTopologyPreferences_contents

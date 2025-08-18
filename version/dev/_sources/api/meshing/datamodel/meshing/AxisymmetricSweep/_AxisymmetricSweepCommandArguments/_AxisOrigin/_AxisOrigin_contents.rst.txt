@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_AxisymmetricSweep__AxisymmetricSweepCommandArguments__AxisOrigin:
+
+_AxisOrigin
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.AxisymmetricSweep._AxisymmetricSweepCommandArguments._AxisOrigin
+   :members: _X, _Y, _Z
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

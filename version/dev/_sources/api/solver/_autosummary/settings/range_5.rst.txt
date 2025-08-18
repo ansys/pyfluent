@@ -1,0 +1,42 @@
+:orphan:
+
+.. _range_5:
+
+range
+=====
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.range_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   ====================================
+
+Attribute                                                             Summary
+
+======================================   ====================================
+:ref:`option <option_59>`                    Range using the min max options.
+
+:ref:`auto_range <auto_range_2>`                          'auto_range' child.
+
+:ref:`clip_to_range <clip_to_range_2>`                 'clip_to_range' child.
+
+======================================   ====================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`pathline_child <pathline_child>`                         'child_object_type' of pathline.
+
+:ref:`particle_track_child <particle_track_child>`       'child_object_type' of particle_track.
+
+:ref:`variable_1 <variable_1>`                                                'variable' child.
+
+==================================================   ==========================================
+

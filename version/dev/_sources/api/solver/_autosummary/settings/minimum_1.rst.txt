@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_1:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`range_1 <range_1>`       Range of the volume.
+
+========================   ========================
+

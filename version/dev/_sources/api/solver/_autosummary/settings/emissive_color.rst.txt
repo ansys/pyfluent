@@ -1,0 +1,21 @@
+:orphan:
+
+.. _emissive_color:
+
+emissive_color
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.emissive_color
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`material_7_child <material_7_child>`       'child_object_type' of material.
+
+==========================================   ====================================
+

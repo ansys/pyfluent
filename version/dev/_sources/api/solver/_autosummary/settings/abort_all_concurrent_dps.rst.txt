@@ -1,0 +1,21 @@
+:orphan:
+
+.. _abort_all_concurrent_dps:
+
+abort_all_concurrent_dps
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.abort_all_concurrent_dps
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

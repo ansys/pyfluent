@@ -1,0 +1,21 @@
+:orphan:
+
+.. _maximum_2:
+
+maximum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.maximum_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==================
+
+Parent                                Summary
+
+========================   ==================
+:ref:`range_2 <range_2>`       'range' child.
+
+========================   ==================
+

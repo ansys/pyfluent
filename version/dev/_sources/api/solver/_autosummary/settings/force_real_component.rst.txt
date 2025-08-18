@@ -1,0 +1,39 @@
+:orphan:
+
+.. _force_real_component:
+
+force_real_component
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.force_real_component
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_1>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`force_real_component_child <force_real_component_child>`
+
+
+.. rubric:: Included in:
+
+================================   ==========================================================
+
+Parent                                                                                Summary
+
+================================   ==========================================================
+:ref:`momentum_11 <momentum_11>`       Allows to change momentum model variables or settings.
+
+================================   ==========================================================
+
