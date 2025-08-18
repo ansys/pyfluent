@@ -32,7 +32,7 @@ class StaticInfoType(Enum):
     TUI_SOLVER = auto()
     TUI_MESHING = auto()
     DATAMODEL_WORKFLOW = auto()
-    DATAMODEL_WORKFLOW_API = auto()
+    DATAMODEL_MESHING_WORKFLOW = auto()
     DATAMODEL_MESHING = auto()
     DATAMODEL_PART_MANAGEMENT = auto()
     DATAMODEL_PM_FILE_MANAGEMENT = auto()

@@ -72,7 +72,7 @@ class BaseMeshing:
         self._fluent_version = fluent_version
         self._meshing_utilities = None
         self._old_workflow = None
-        self._workflow_api = None
+        self._meshing_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -129,23 +129,21 @@ class BaseMeshing:
         return self._old_workflow
 
     @property
-    def workflow_api(self):
-        if self._workflow_api is None:
-            self._workflow_api = _make_datamodel_module(self, "workflow_api")
-        return self._workflow_api
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        if self._meshing_workflow is None:
+            self._meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
+        return self._meshing_workflow
 
     def watertight_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
-        self._current_workflow = WorkflowWrapper(_make_datamodel_module(self, "workflow_api"))
-        self._current_workflow.initialize_workflow(workflow_type="Watertight Geometry")
+        self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
+            _make_datamodel_module(self, "workflow"),
+            self.meshing,
+            self.get_fluent_version(),
+            initialize,
+        )
         return self._current_workflow
-        # self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-        #     _make_datamodel_module(self, "workflow"),
-        #     self.meshing,
-        #     self.get_fluent_version(),
-        #     initialize,
-        # )
-        # return self._current_workflow
 
     def fault_tolerant_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
@@ -260,73 +258,73 @@ class BaseMeshing:
         return self._preferences
 
 
-class WorkflowWrapper:
-    def __init__(self, workflow):
-        self.workflow = workflow
-
-    def __getattr__(self, name):
-        try:
-            return getattr(self.workflow, name)
-        except AttributeError as ex:
-            _task_object= self.workflow.task_object.get(name)
-            if _task_object:
-                return TaskWrapper(_task_object)
-            else:
-                raise ex
-
-class TaskWrapper:
-    def __init__(self, task):
-        self.task = task
-
-    def __getattr__(self, name):
-        try:
-            return getattr(self.task, name)
-        except AttributeError as ex:
-            if name in self.task.arguments():
-                return ArgumentWrapper(self.task, name, self.task.arguments().get(name))
-            else:
-                raise ex
-
-    def __call__(self, *args, **kwargs):
-        self.task.execute()
-
-
-class ArgumentWrapper:
-    def __init__(self, task, arg_name, arg_state):
-        self.__dict__.update(
-            dict(
-                tash=task,
-                arg_name=arg_name,
-                arg_state=arg_state,
-            )
-        )
-
-    def __getattr__(self, name):
-        # try:
-        #     return getattr(self.task.arguments()[self.arg_name], name)
-        # except AttributeError as ex:
-        try:
-            if type(self.arg_state) is dict:
-                return ArgumentWrapper(self.task, name, self.arg_state[name])
-            else:
-                return self.arg_state[name]
-        except KeyError:
-            raise AttributeError(f"{self.arg_name} has no object named {name}.")
-
-    # def __setattr__(self, name, value):
-    #     try:
-    #         # if type(self.arg_state) is dict:
-    #         #     ArgumentWrapper(self.task, self.arg_state[name])
-    #         # else:
-    #         self.task.arguments.update_dict(dict(name=value))
-    #     except KeyError as ex:
-    #         raise AttributeError(f"No object named {name}.") from ex
-
-
-    def __call__(self, *args, **kwargs):
-        return self.arg_state
-
-
+# class WorkflowWrapper:
+#     def __init__(self, workflow):
+#         self.workflow = workflow
+#
+#     def __getattr__(self, name):
+#         try:
+#             return getattr(self.workflow, name)
+#         except AttributeError as ex:
+#             _task_object = self.workflow.task_object.get(name)
+#             if _task_object:
+#                 return TaskWrapper(_task_object)
+#             else:
+#                 raise ex
+#
+#
+# class TaskWrapper:
+#     def __init__(self, task):
+#         self.task = task
+#
+#     def __getattr__(self, name):
+#         try:
+#             return getattr(self.task, name)
+#         except AttributeError as ex:
+#             if name in self.task.arguments():
+#                 return ArgumentWrapper(self.task, name, self.task.arguments().get(name))
+#             else:
+#                 raise ex
+#
+#     def __call__(self, *args, **kwargs):
+#         self.task.execute()
+#
+#
+# class ArgumentWrapper:
+#     def __init__(self, task, arg_name, arg_state):
+#         self.__dict__.update(
+#             dict(
+#                 tash=task,
+#                 arg_name=arg_name,
+#                 arg_state=arg_state,
+#             )
+#         )
+#
+#     def __getattr__(self, name):
+#         # try:
+#         #     return getattr(self.task.arguments()[self.arg_name], name)
+#         # except AttributeError as ex:
+#         try:
+#             if type(self.arg_state) is dict:
+#                 return ArgumentWrapper(self.task, name, self.arg_state[name])
+#             else:
+#                 return self.arg_state[name]
+#         except KeyError:
+#             raise AttributeError(f"{self.arg_name} has no object named {name}.")
+#
+#     def __setattr__(self, name, value):
+#         try:
+#             # if type(self.arg_state) is dict:
+#             #     ArgumentWrapper(self.task, self.arg_state[name])
+#             # else:
+#             self.task.arguments.update_dict(dict(name=value))
+#         except KeyError as ex:
+#             raise AttributeError(f"No object named {name}.") from ex
+#
+#     def __call__(self, *args, **kwargs):
+#         return self.arg_state
+#
+#
 # class SubArgumentWrapper:
 #     def __init__(self, arg_state):
 #         self.arg_state = arg_state
@@ -336,5 +334,3 @@ class ArgumentWrapper:
 #             return SubArgumentWrapper(self.arg_state[name])
 #         else:
 #             return self.arg_state[name]
-
-

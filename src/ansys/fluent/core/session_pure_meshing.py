@@ -148,9 +148,9 @@ class PureMeshing(BaseSession):
         return self._base_meshing.workflow
 
     @property
-    def workflow_api(self):
-        """Datamodel root of workflow."""
-        return self._base_meshing.workflow_api
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        return self._base_meshing.meshing_workflow
 
     def watertight(self):
         """Get a new watertight workflow."""

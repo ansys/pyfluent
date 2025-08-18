@@ -188,6 +188,7 @@ datamodel_file_name_map = {
     "MeshingUtilities": "meshing_utilities",
     "flicing": "flicing",
     "solverworkflow": "solver_workflow",
+    "meshing_workflow": "meshing_workflow",
 }
 
 
@@ -242,14 +243,11 @@ class DataModelGenerator:
                 ),
                 self.version,
             )
-        if StaticInfoType.DATAMODEL_WORKFLOW_API in static_infos:
-            self._static_info["workflow_api"] = DataModelStaticInfo(
-                StaticInfoType.DATAMODEL_WORKFLOW_API,
-                "workflow_api",
-                (
-                    "meshing",
-                    "solver",
-                ),
+        if StaticInfoType.DATAMODEL_MESHING_WORKFLOW in static_infos:
+            self._static_info["meshing_workflow"] = DataModelStaticInfo(
+                StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
+                "meshing_workflow",
+                ("meshing",),
                 self.version,
             )
         if StaticInfoType.DATAMODEL_MESHING in static_infos:
@@ -608,9 +606,6 @@ if __name__ == "__main__":
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
             "workflow"
         ),
-        StaticInfoType.DATAMODEL_WORKFLOW_API: meshing._datamodel_service_se.get_static_info(
-            "workflow_api"
-        ),
         StaticInfoType.DATAMODEL_MESHING: meshing._datamodel_service_se.get_static_info(
             "meshing"
         ),
@@ -635,6 +630,10 @@ if __name__ == "__main__":
     if FluentVersion(version) >= FluentVersion.v242:
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+        )
+    if FluentVersion(version) >= FluentVersion.v261:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
+            meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."
