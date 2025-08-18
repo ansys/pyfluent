@@ -50,7 +50,7 @@ class PureMeshing(BaseSession):
 
     _rules = [
         "workflow",
-        "workflow_api",
+        "meshing_workflow",
         "meshing",
         "MeshingUtilities",
         "PartManagement",
