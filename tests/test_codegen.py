@@ -412,7 +412,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     api_tree_expected = {"<meshing_session>": {}, "<solver_session>": {}}
     if rules in [
         "workflow",
-        "workflow_api",
+        "meshing_workflow",
         "meshing",
         "PartManagement",
         "PMFileManagement",
