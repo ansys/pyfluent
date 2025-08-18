@@ -202,7 +202,7 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
 
         # Each child gets its own one-item accordion (mirrors your ipywidgets UX)
         if child_name in command_names:
-            display_name = f"⚡ {child_name.upper()}"
+            display_name = f"⚡ {child_name}"
         else:
             display_name = child_name
         sections.append(_lazy_section(display_name, _loader))

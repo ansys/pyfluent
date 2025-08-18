@@ -149,7 +149,7 @@ def settings_ui(obj, indent=0):
 
             acc = widgets.Accordion(children=[widgets.HTML("Loading...")])
             if child_name in command_names:
-                acc.set_title(0, f"⚡ {child_name.upper()}")
+                acc.set_title(0, f"⚡ {child_name}")
             else:
                 acc.set_title(0, child_name)
 
