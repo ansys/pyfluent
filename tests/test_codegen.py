@@ -175,7 +175,7 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
 
 _static_info_type_by_rules = {
     "workflow": StaticInfoType.DATAMODEL_WORKFLOW,
-    "workflow_api": StaticInfoType.DATAMODEL_WORKFLOW_API,
+    "meshing_workflow": StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
     "meshing": StaticInfoType.DATAMODEL_MESHING,
     "PartManagement": StaticInfoType.DATAMODEL_PART_MANAGEMENT,
     "PMFileManagement": StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
