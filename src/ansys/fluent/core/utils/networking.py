@@ -131,11 +131,8 @@ def check_url_exists(url: str) -> bool:
     bool
         True if the URL exists, False otherwise
     """
-    try:
-        with urllib.request.urlopen(url) as response:
-            return response.status == 200
-    except Exception:
-        return False
+    with urllib.request.urlopen(url) as response:
+        return response.status == 200
 
 
 def get_url_content(url: str) -> str:
