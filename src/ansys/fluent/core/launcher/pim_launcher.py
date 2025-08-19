@@ -166,6 +166,7 @@ class PIMLauncher:
             arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
+        argvals["launch_mode"] = LaunchMode.PIM
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if self.argvals["start_timeout"] is None:
@@ -264,14 +265,12 @@ def launch_remote_fluent(
         file_transfer_service, fluent_connection
     )
 
-    session = session_cls(
+    return session_cls(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_transfer_service,
         start_transcript=start_transcript,
     )
-    session.launch_mode = LaunchMode.PIM
-    return session
 
 
 def create_fluent_instance(

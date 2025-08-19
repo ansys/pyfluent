@@ -192,6 +192,7 @@ class StandaloneLauncher:
             arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
+        argvals["launch_mode"] = LaunchMode.STANDALONE
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if pyfluent.config.show_fluent_gui:
@@ -290,7 +291,6 @@ class StandaloneLauncher:
                 launcher_args=self.argvals,
                 inside_container=False,
             )
-            session.launch_mode = LaunchMode.STANDALONE
             session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals["start_watchdog"],

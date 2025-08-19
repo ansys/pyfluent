@@ -423,6 +423,7 @@ class SlurmLauncher:
             arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
+        argvals["launch_mode"] = LaunchMode.SLURM
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if config.show_fluent_gui:
@@ -483,7 +484,6 @@ class SlurmLauncher:
             start_transcript=self._argvals["start_transcript"],
             inside_container=False,
         )
-        session.launch_mode = LaunchMode.SLURM
         return session
 
     def __call__(self) -> SlurmFuture:

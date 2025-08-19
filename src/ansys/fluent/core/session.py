@@ -143,6 +143,7 @@ class BaseSession:
         """
         self._start_transcript = start_transcript
         self._launcher_args = launcher_args
+        self.launch_mode = self._launcher_args.get("launch_mode")
         BaseSession._build_from_fluent_connection(
             self,
             fluent_connection,
