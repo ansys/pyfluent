@@ -56,6 +56,7 @@ def test_allapigen_files(new_solver_session):
     importlib.import_module(f"ansys.fluent.core.generated.solver.settings_{version}")
 
 
+@pytest.mark.fluent_version(">=26.1")
 @pytest.mark.codegen_required
 def test_settings_allowed_values(new_solver_session):
     version = get_version_for_file_name(session=new_solver_session)
