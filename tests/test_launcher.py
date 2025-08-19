@@ -82,6 +82,12 @@ def test_gpu_version_error():
         )
 
 
+def test_fluent_launch_mode():
+    session = pyfluent.launch_fluent()
+    assert session.launch_mode == LaunchMode.CONTAINER
+    session.exit()
+
+
 def test_mode():
     with pytest.raises(DisallowedValuesError):
         pyfluent.launch_fluent(
