@@ -83,7 +83,9 @@ def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
 
         w.param.watch(_commit, "value", onlychanged=True)
 
-    return pn.Column(w, console, sizing_mode="stretch_width")
+    return pn.Column(
+        w, console, sizing_mode="stretch_width", margin=(10, 20), align="start"
+    )
 
 
 def _command_view(func, props: Dict[str, Any]) -> pn.viewable.Viewable:
@@ -111,7 +113,7 @@ def _command_view(func, props: Dict[str, Any]) -> pn.viewable.Viewable:
     def _run(_):
         kwargs = {n: w.value for n, w in arg_widgets.items()}
         try:
-            result = func(**kwargs)  # Executes ONLY here
+            func(**kwargs)  # Executes ONLY here
             # Render kwargs similarly to your ipywidgets formatter
             parts = []
             for k, v in kwargs.items():
@@ -121,15 +123,19 @@ def _command_view(func, props: Dict[str, Any]) -> pn.viewable.Viewable:
                 else:
                     parts.append(f"{k}={v}")
             call = f"{_parse_path(func)}({', '.join(parts)})"
-            if result is not None:
-                console.object = f"```\n{call}\nResult: {result}\n```"
-            else:
-                console.object = f"```\n{call}\n```"
+            console.object = f"```\n{call}\n```"
         except Exception as e:
             console.object = f"```\nError: {e}\n```"
 
     btn.on_click(_run)
-    return pn.Column(*controls, btn, console, sizing_mode="stretch_width")
+    return pn.Column(
+        *controls,
+        btn,
+        console,
+        sizing_mode="stretch_width",
+        margin=(10, 20),
+        align="start",
+    )
 
 
 # ---------------------------
@@ -207,7 +213,13 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
             display_name = child_name
         sections.append(_lazy_section(display_name, _loader))
 
-    return pn.Column(*sections, sizing_mode="stretch_width")
+    return pn.Column(
+        *(pn.Column(sec, margin=(5, 0)) for sec in sections),
+        sizing_mode="fixed",
+        margin=(10, 20),
+        align="start",
+        css_classes=["rounded-box"],
+    )
 
 
 def build_settings_view(settings_obj) -> pn.viewable.Viewable:

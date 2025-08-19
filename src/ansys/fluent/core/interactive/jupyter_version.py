@@ -109,7 +109,7 @@ def _command_ui(func, props):
         with output:
             output.clear_output()
             try:
-                result = func(**kwargs)
+                func(**kwargs)
                 kwargs_str = "("
                 for k, v in kwargs.items():
                     if type(v) is str:
@@ -118,8 +118,6 @@ def _command_ui(func, props):
                     else:
                         kwargs_str += f"{k}={v}, "
                 print(f"{_parse_path(func)}" + kwargs_str.strip()[:-1] + ")")
-                if result is not None:
-                    print("Result:", result)
             except Exception as e:
                 print("Error:", e)
 

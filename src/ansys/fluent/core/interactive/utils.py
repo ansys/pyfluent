@@ -48,7 +48,7 @@ def _parse_path(settings_obj):
         if isinstance(local_obj, NamedObject):
             try:
                 local_obj = local_obj[path]
-                path_str = path_str[:-1] + f"[{path}]" + "."
+                path_str = path_str[:-1] + f"['{path}']" + "."
             except KeyError:
                 local_obj = getattr(local_obj, py_path)
                 path_str += f"{py_path}."
