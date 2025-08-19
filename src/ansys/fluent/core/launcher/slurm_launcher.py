@@ -76,6 +76,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     Precision,
     UIMode,
     _get_argvals_and_session,
@@ -482,6 +483,7 @@ class SlurmLauncher:
             start_transcript=self._argvals["start_transcript"],
             inside_container=False,
         )
+        session.launch_mode = LaunchMode.SLURM
         return session
 
     def __call__(self) -> SlurmFuture:

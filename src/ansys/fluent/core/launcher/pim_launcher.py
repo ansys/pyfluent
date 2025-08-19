@@ -46,6 +46,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     Precision,
     UIMode,
     _get_argvals_and_session,
@@ -263,12 +264,14 @@ def launch_remote_fluent(
         file_transfer_service, fluent_connection
     )
 
-    return session_cls(
+    session = session_cls(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
         file_transfer_service=file_transfer_service,
         start_transcript=start_transcript,
     )
+    session.launch_mode = LaunchMode.PIM
+    return session
 
 
 def create_fluent_instance(

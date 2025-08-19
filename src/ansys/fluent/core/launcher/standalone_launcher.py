@@ -51,6 +51,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     Precision,
     UIMode,
     _get_argvals_and_session,
@@ -289,6 +290,7 @@ class StandaloneLauncher:
                 launcher_args=self.argvals,
                 inside_container=False,
             )
+            session.launch_mode = LaunchMode.STANDALONE
             session._process = process
             start_watchdog = _confirm_watchdog_start(
                 self.argvals["start_watchdog"],
@@ -319,7 +321,6 @@ class StandaloneLauncher:
                     raise RuntimeError(
                         "Case and data file cannot be read in meshing mode."
                     )
-
             return session
         except Exception as ex:
             logger.error(f"Exception caught - {type(ex).__name__}: {ex}")

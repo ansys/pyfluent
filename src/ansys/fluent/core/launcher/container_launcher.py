@@ -52,6 +52,7 @@ from ansys.fluent.core.launcher.launch_options import (
     FluentLinuxGraphicsDriver,
     FluentMode,
     FluentWindowsGraphicsDriver,
+    LaunchMode,
     Precision,
     UIMode,
     _get_argvals_and_session,
@@ -261,6 +262,7 @@ class DockerLauncher:
             launcher_args=self.argvals,
         )
 
+        session.launch_mode = LaunchMode.CONTAINER
         session._container = container
 
         if not self._compose_config.is_compose:
