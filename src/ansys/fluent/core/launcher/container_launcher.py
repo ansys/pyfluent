@@ -189,7 +189,6 @@ class DockerLauncher:
             arg: locals_.get(arg)
             for arg in inspect.getargvalues(inspect.currentframe()).args
         }
-        argvals["launch_mode"] = LaunchMode.CONTAINER
         self.argvals, self.new_session = _get_argvals_and_session(argvals)
         if self.argvals["start_timeout"] is None:
             self.argvals["start_timeout"] = 60
@@ -263,6 +262,7 @@ class DockerLauncher:
             launcher_args=self.argvals,
         )
 
+        session.launch_mode = LaunchMode.CONTAINER
         session._container = container
 
         if not self._compose_config.is_compose:
