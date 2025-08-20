@@ -132,6 +132,7 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.fluent_version(">=26.1")
 def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
 
@@ -483,6 +484,204 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.fluent_version(">=26.1")
+def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
+    # Import geometry
+    import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
+    new_meshing_session_wo_exit.workflow.InitializeWorkflow(WorkflowType="2D Meshing")
+
+    two_dim_mesh = new_meshing_session_wo_exit.meshing_workflow
+
+    two_dim_mesh.task_object.load_cad_geometry[
+        "Load CAD Geometry"
+    ].arguments.file_name = import_file_name
+    two_dim_mesh.task_object.load_cad_geometry[
+        "Load CAD Geometry"
+    ].arguments.length_unit = "mm"
+    two_dim_mesh.task_object.load_cad_geometry[
+        "Load CAD Geometry"
+    ].arguments.refaceting.refacet = False
+    two_dim_mesh.task_object.load_cad_geometry["Load CAD Geometry"].execute()
+
+    # Set regions and boundaries
+    two_dim_mesh.task_object.update_boundaries[
+        "Update Boundaries"
+    ].arguments.selection_type = "zone"
+    two_dim_mesh.task_object.update_boundaries["Update Boundaries"].execute()
+
+    # Define global sizing
+    two_dim_mesh.task_object.define_global_sizing[
+        "Define Global Sizing"
+    ].arguments.curvature_normal_angle = 20
+    two_dim_mesh.task_object.define_global_sizing[
+        "Define Global Sizing"
+    ].arguments.max_size = 2000.0
+    two_dim_mesh.task_object.define_global_sizing[
+        "Define Global Sizing"
+    ].arguments.min_size = 5.0
+    two_dim_mesh.task_object.define_global_sizing[
+        "Define Global Sizing"
+    ].arguments.size_functions = "Curvature"
+    two_dim_mesh.task_object.define_global_sizing["Define Global Sizing"].execute()
+
+    # Add local sizing
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.add_child = True
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_control_name = "boi_1"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_execution = "Body Of Influence"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_face_label_list = ["boi"]
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_size = 50.0
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_zoneor_label = "label"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.draw_size_control = True
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].add_child_and_update(defer_update=False)
+
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.add_child = True
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_control_name = "edgesize_1"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_execution = "Edge Size"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_size = 5.0
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_zoneor_label = "label"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.draw_size_control = True
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.edge_label_list = ["airfoil-te"]
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.add_child_and_update(defer_update=False)
+
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.add_child = True
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_control_name = "curvature_1"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_curvature_normal_angle = 10
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_execution = "Curvature"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_max_size = 2
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_min_size = 1.5
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_scope_to = "edges"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.boi_zoneor_label = "label"
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.draw_size_control = True
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].arguments.edge_label_list = ["airfoil"]
+    two_dim_mesh.task_object.add_local_sizing_wtm[
+        "Add Local Sizing"
+    ].add_child_and_update(defer_update=False)
+
+    # Add boundary layer
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.add_child = True
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.control_name = "aspect-ratio_1"
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.number_of_layers = 4
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.offset_method_type = "aspect-ratio"
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].add_child_and_update(defer_update=False)
+
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].arguments.surface_2d_preferences.show_advanced_options = True
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].arguments.surface_2d_preferences.merge_edge_zones_based_on_labels = False
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].arguments.surface_2d_preferences.merge_face_zones_based_on_labels = False
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].execute()
+
+    two_dim_mesh.task_object.add_2d_boundary_layers["Add 2D Boundary Layers"].revert()
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.add_child = "yes"
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.control_name = "uniform_1"
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.first_layer_height = 2
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.number_of_layers = 4
+    two_dim_mesh.task_object.add_2d_boundary_layers[
+        "Add 2D Boundary Layers"
+    ].arguments.offset_method_type = "uniform"
+    two_dim_mesh.task_object.add_2d_boundary_layers["Add 2D Boundary Layers"].execute()
+
+    # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
+    # This dependency may be removed in a future release as the API evolves.
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].arguments.surface_2d_preferences.show_advanced_options = True
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].arguments.surface_2d_preferences.merge_edge_zones_based_on_labels = False
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].arguments.surface_2d_preferences.merge_face_zones_based_on_labels = False
+    two_dim_mesh.task_object.generate_initial_surface_mesh[
+        "Generate the Surface Mesh"
+    ].execute()
+
+    # Switch to solution mode
+    solver = new_meshing_session_wo_exit.switch_to_solver()
+    assert solver.is_active() is True
+    assert new_meshing_session_wo_exit.is_active() is False
+    solver.exit()
+    assert solver.is_active() is False
+
+
+@pytest.mark.fluent_version(">=26.1")
 def test_updating_state_in_new_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file(
@@ -499,7 +698,7 @@ def test_updating_state_in_new_meshing_workflow(new_meshing_session):
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
-        ].cad_import_options.feature_angle()
+        ].arguments.cad_import_options.feature_angle()
         == 40.0
     )
     assert watertight.task_object.import_geometry[
