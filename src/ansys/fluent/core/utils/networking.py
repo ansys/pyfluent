@@ -25,6 +25,7 @@
 from concurrent import futures
 import logging
 import socket
+import ssl
 from typing import Any
 import urllib.request
 
@@ -130,12 +131,20 @@ def check_url_exists(url: str) -> bool:
     -------
     bool
         True if the URL exists, False otherwise
+
+    Raises
+    ------
+    ssl.SSLError
+        If there is an SSL error while checking the URL
     """
     try:
         with urllib.request.urlopen(url) as response:
             return response.status == 200
-    except Exception:
-        return False
+    except urllib.error.URLError as ex:
+        if ex.__context__ and isinstance(ex.__context__, ssl.SSLError):
+            raise ex.__context__
+        else:
+            return False
 
 
 def get_url_content(url: str) -> str:
