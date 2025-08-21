@@ -793,3 +793,11 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
     with pytest.raises(ValueError):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
+
+
+def test_named_object_commands(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.setup.boundary_conditions.velocity_inlet.list()
+    solver.settings.setup.boundary_conditions.velocity_inlet.list_properties(
+        object_name="hot-inlet"
+    )
