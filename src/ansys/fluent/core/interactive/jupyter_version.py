@@ -20,6 +20,11 @@ from ansys.fluent.core.solver.flobject import (
 )
 
 
+def set_auto_refresh():
+    """Refreshes the UI w.r.t. server state for each command execution or parameter invocation."""
+    raise NotImplementedError("This is yet to be implemented in jupyter environment.")
+
+
 def _render_widgets_from_props(settings_obj, label, props):
     """Render widget using pre-fetched props instead of repeated calls."""
     return _render_widget_from_props_generic(settings_obj, label, props, widgets)

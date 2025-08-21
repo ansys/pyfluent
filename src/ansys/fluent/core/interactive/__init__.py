@@ -34,10 +34,14 @@ def in_jupyter():
 
 
 if in_jupyter():
-    from ansys.fluent.core.interactive.jupyter_version import settings_ui
+    from ansys.fluent.core.interactive.jupyter_version import (
+        set_auto_refresh,
+        settings_ui,
+    )
 else:
-    from ansys.fluent.core.interactive.standalone_web_version import (
+    from ansys.fluent.core.interactive.standalone_web_version import (  # noqa: F401
         build_settings_view,
+        set_auto_refresh,
     )
 
 

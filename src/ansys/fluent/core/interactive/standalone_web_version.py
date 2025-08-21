@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict, List
 
 try:
     import panel as pn
+    import param
 except ModuleNotFoundError as exc:
     raise ModuleNotFoundError(
         "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
@@ -23,7 +24,30 @@ from ansys.fluent.core.solver.flobject import (
     NamedObject,
 )
 
+_path_backup_dict = {}
+
+AUTO_REFRESH = False
+
+
+def set_auto_refresh():
+    """Refreshes the UI w.r.t. server state for each command execution or parameter invocation."""
+    global AUTO_REFRESH
+    AUTO_REFRESH = True
+
+
 pn.extension()
+
+# global trigger for refresh (Panel Param depends on it)
+_refresh = pn.state.cache.get("fluent_refresh", None)
+if _refresh is None:
+
+    class Refresh(param.Parameterized):
+        """Refresh."""
+
+        bump = param.Event()
+
+    _refresh = Refresh()
+    pn.state.cache["fluent_refresh"] = _refresh
 
 
 def _render_widget_from_props(
@@ -46,9 +70,14 @@ def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
         return setattr(settings_obj.parent, props["python_name"], v)
 
     w = _render_widget_from_props(get_fn(), label, props)
-    console = pn.pane.Markdown(
-        f"```\n{_parse_path(settings_obj)}\n```", sizing_mode="stretch_width"
-    )
+    obj_apth = _parse_path(settings_obj)
+    if obj_apth in _path_backup_dict:
+        console = pn.pane.Markdown(
+            f"```\n{obj_apth} = {_path_backup_dict[obj_apth]}\n```",
+            sizing_mode="stretch_width",
+        )
+    else:
+        console = pn.pane.Markdown(f"```\n{obj_apth}\n```", sizing_mode="stretch_width")
 
     # Change handlers
     if hasattr(w, "_is_list_text"):
@@ -66,6 +95,9 @@ def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
             try:
                 set_fn(vals)
                 console.object = f"```\n{_parse_path(settings_obj)} = {vals}\n```"
+                _path_backup_dict[_parse_path(settings_obj)] = vals
+                if AUTO_REFRESH:
+                    _refresh.bump = True
             except Exception as e:
                 console.object = f"```\nError setting {label}: {e}\n```"
 
@@ -78,6 +110,9 @@ def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
             try:
                 set_fn(event.new)
                 console.object = f"```\n{_parse_path(settings_obj)} = {event.new}\n```"
+                _path_backup_dict[_parse_path(settings_obj)] = event.new
+                if AUTO_REFRESH:
+                    _refresh.bump = True
             except Exception as e:
                 console.object = f"```\nError setting {label}: {e}\n```"
 
@@ -106,9 +141,13 @@ def _command_view(func, props: Dict[str, Any]) -> pn.viewable.Viewable:
         controls.append(widget)
 
     btn = pn.widgets.Button(name=f"Run {props['python_name']}", button_type="success")
-    console = pn.pane.Markdown(
-        f"```\n{_parse_path(func)}\n```", sizing_mode="stretch_width"
-    )
+    obj_path = _parse_path(func)
+    if obj_path in _path_backup_dict:
+        console = pn.pane.Markdown(
+            f"```\n{_path_backup_dict[obj_path]}\n```", sizing_mode="stretch_width"
+        )
+    else:
+        console = pn.pane.Markdown(f"```\n{obj_path}\n```", sizing_mode="stretch_width")
 
     def _run(_):
         kwargs = {n: w.value for n, w in arg_widgets.items()}
@@ -124,6 +163,9 @@ def _command_view(func, props: Dict[str, Any]) -> pn.viewable.Viewable:
                     parts.append(f"{k}={v}")
             call = f"{_parse_path(func)}({', '.join(parts)})"
             console.object = f"```\n{call}\n```"
+            _path_backup_dict[_parse_path(func)] = call
+            if AUTO_REFRESH:
+                _refresh.bump = True
         except Exception as e:
             console.object = f"```\nError: {e}\n```"
 
@@ -153,23 +195,26 @@ def _lazy_section(
     placeholder = pn.pane.Markdown("*(loading…)*")
     acc = pn.Accordion((title, placeholder), sizing_mode="stretch_width")
 
-    # 'active' is a list of indices; when [0], first (and only) section is open
-    loaded = {"done": False}
+    def _load_content():
+        try:
+            return loader()
+        except Exception as e:
+            return pn.pane.Markdown(f"**Error loading section**: {e}")
 
-    def _maybe_load(event):
-        if loaded["done"]:
-            return
-        active = event.new
-        if active and 0 in active:
-            try:
-                content = loader()
-            except Exception as e:
-                content = pn.pane.Markdown(f"**Error loading section**: {e}")
+    def _maybe_load(event=None):
+        if acc.active and 0 in acc.active:
+            content = _load_content()
             acc[0] = (title, content)
-            loaded["done"] = True
 
     # Trigger when first opened
     acc.param.watch(_maybe_load, "active", onlychanged=True)
+
+    def _on_refresh(event):
+        if acc.active and 0 in acc.active:
+            _maybe_load()
+
+    _refresh.param.watch(_on_refresh, "bump")
+
     return acc
 
 
