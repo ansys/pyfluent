@@ -2282,7 +2282,7 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                 )
             cls._allowed_values = allowed_values
 
-        has_migration_adapter = info.get("has_migration_adapter", False)
+        has_migration_adapter = info.get("has-migration-adapter?", False)
         if has_migration_adapter:
             cls._has_migration_adapter = True
 
