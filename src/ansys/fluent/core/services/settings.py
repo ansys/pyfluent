@@ -335,7 +335,7 @@ class SettingsService:
         """
         request = SettingsModule.GetStaticInfoRequest()
         request.root = "fluent"
-        request.optional_attrs.append("allowed-values")
+        request.optional_attrs.append("has-migration-adapter?")
         response = self._service_impl.get_static_info(request)
         # The RPC calls no longer raise an exception. Force an exception if
         # type is empty
