@@ -1511,9 +1511,8 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         object_name : str
             Name of the object whose properties are to be listed.
         """
-        return self._root.list_properties(
-            object_path=self.path, object_name=object_name
-        )
+        # The generated parameter name is path_1 as the name path clashes with existing property.
+        return self._root.list_properties(path_1=self.path, name=object_name)
 
 
 class CombinedNamedObject:
@@ -1776,6 +1775,8 @@ class BaseCommand(Action):
                     else:
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
+            if "path" in kwds:
+                kwds["path_1"] = kwds.pop("path")
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
             if (
                 not config.disable_parameter_list_return_fix
