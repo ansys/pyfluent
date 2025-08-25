@@ -515,8 +515,9 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     )
 
     solver.settings.solution.initialization.hybrid_initialize()
-    solver.settings.setup.models.multiphase.model = "eulerian"
-    solver.tui.define.models.multiphase.hybrid_models.ddpm("yes")
+    if solver.get_fluent_version() >= FluentVersion.v261:
+        solver.settings.setup.models.multiphase.model = "eulerian"
+        solver.tui.define.models.multiphase.hybrid_models.ddpm("yes")
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
         == {
