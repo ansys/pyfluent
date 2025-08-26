@@ -677,7 +677,11 @@ class Textual(Property):
         kwargs : Any
             Keyword arguments.
         """
-        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
+        if not type(state) == str:
+            warnings.warn("TypeWarning: State is not string.")
+        return self.base_set_state(
+            state=_to_field_name_str(state) if type(state) is str else state, **kwargs
+        )
 
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
