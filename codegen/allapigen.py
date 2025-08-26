@@ -11,6 +11,7 @@ from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
     t0 = time()
+    config.fluent_automatic_transcript = True
     meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=meshing)
     gt_222 = FluentVersion(version) > FluentVersion.v222
