@@ -154,6 +154,11 @@ jobs:
         run: |
           python examples/00-fluent/single_battery_cell_workflow.py
 
+      - name: Execute fsi_1way_workflow.py
+        run: |
+          python examples/00-fluent/fsi_1way_workflow.py
+
+
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
       #   run: |
