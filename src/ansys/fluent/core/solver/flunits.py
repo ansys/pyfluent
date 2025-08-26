@@ -298,6 +298,8 @@ def get_si_unit_for_fluent_quantity(
     # attribute only for dimensionless variables
     if quantity is None:
         return ""
+    if isinstance(quantity, list):  # real vector
+        quantity = quantity[0]
     if not isinstance(quantity, str):
         raise InvalidQuantityType(quantity)
     try:
