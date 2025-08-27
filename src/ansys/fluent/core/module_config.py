@@ -325,6 +325,11 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_LOGGING")
     )
 
+    #: Whether to disable monitor refresh on solution initialization, defaults to False.
+    disable_monitor_refresh_on_init = _ConfigDescriptor["Config"](
+        lambda instance: False
+    )
+
     def __init__(self):
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported
