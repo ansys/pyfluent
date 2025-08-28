@@ -316,6 +316,9 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
         s_stub.write(
             f"    {to_constant_name(allowed_value)}: Final[str] = {allowed_value!r}\n"
         )
+    if data["allowed_values"]:
+        s.write(f"    _allowed_values = {data['allowed_values']!r}\n")
+        s_stub.write("    _allowed_values: list[str]\n")
     s.write("\n")
     s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():

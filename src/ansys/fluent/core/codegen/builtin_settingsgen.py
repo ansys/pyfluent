@@ -96,10 +96,14 @@ def generate(version: str):
         for name, v in DATA.items():
             kind, path = v
             if isinstance(path, dict):
+                version_supported = False
                 for version_set, p in path.items():
                     if version in version_set:
                         path = p
+                        version_supported = True
                         break
+                if not version_supported:
+                    continue
             named_objects, final_type = _get_named_objects_in_path(root, path, kind)
             if kind == "NamedObject":
                 kind = f"{final_type}NamedObject"
