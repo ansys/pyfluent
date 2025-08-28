@@ -9,6 +9,73 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.35.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.35.dev1>`_ - August 28, 2025
+==========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Turn on automatic transcript while running codegen
+          - `#4390 <https://github.com/ansys/pyfluent/pull/4390>`_
+
+        * - Raise the underlying urlerror while downloading example file
+          - `#4396 <https://github.com/ansys/pyfluent/pull/4396>`_
+
+        * - Fix test_docker_compose
+          - `#4399 <https://github.com/ansys/pyfluent/pull/4399>`_
+
+        * - Skip paths which are not supported in the current Fluent version in builtin_settingsgen
+          - `#4404 <https://github.com/ansys/pyfluent/pull/4404>`_
+
+        * - Add config to disable monitor refresh on solution initialization
+          - `#4411 <https://github.com/ansys/pyfluent/pull/4411>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update release CI to use trusted publishers.
+          - `#4332 <https://github.com/ansys/pyfluent/pull/4332>`_
+
+        * - Bump the dependencies group with 4 updates
+          - `#4336 <https://github.com/ansys/pyfluent/pull/4336>`_
+
+        * - Fix release CI to use nightly dev tests again.
+          - `#4373 <https://github.com/ansys/pyfluent/pull/4373>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Added example on the battery cell simulation.
+          - `#4361 <https://github.com/ansys/pyfluent/pull/4361>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Extract allowed values
+          - `#4342 <https://github.com/ansys/pyfluent/pull/4342>`_
+
+        * - Update CHANGELOG for v0.35.dev0 [skip tests]
+          - `#4372 <https://github.com/ansys/pyfluent/pull/4372>`_
+
+
 `0.35.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.35.dev0>`_ - August 12, 2025
 ==========================================================================================
 
