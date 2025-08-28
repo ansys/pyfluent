@@ -251,6 +251,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Skip if only docs changed
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -qv '^doc/'; then
+            echo "Continue"
+          else
+            echo "Only docs changed, skipping tests"
+            exit 0
+          fi
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -493,6 +502,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Skip if only docs changed
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -qv '^doc/'; then
+            echo "Continue"
+          else
+            echo "Only docs changed, skipping tests"
+            exit 0
+          fi
 
       - name: Setup Python
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
