@@ -795,6 +795,7 @@ def test_setting_string_constants(mixing_elbow_settings_session):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
 
 
+@pytest.mark.fluent_version(">=24.2")
 def test_named_object_commands(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.setup.boundary_conditions.velocity_inlet.list()
