@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  API_CODE_CACHE: 5
+  API_CODE_CACHE: 6
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
