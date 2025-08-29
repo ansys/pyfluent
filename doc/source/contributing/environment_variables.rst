@@ -49,8 +49,8 @@ control the behavior of PyFluent within the same Python process. Please see the 
       - Specifies the Fluent root directory while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - PYFLUENT_FLUENT_LAUNCH_TIMEOUT
       - Specifies the timeout, in seconds, for launching Fluent through :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
-    * - PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT
-      - Can be used to enable automatic writing of transcript .trn file by Fluent. By default, it is disabled.
+    * - PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT
+      - Can be used to skip automatic writing of transcript .trn file by Fluent.
     * - PYFLUENT_GRPC_LOG_BYTES_LIMIT
       - Specifies the length of gRPC logging messages. Set to 0 to disable the limit.
     * - PYFLUENT_LAUNCH_CONTAINER
