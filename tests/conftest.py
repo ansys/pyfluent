@@ -196,7 +196,7 @@ class Helpers:
             version = FluentVersion.current_release()
         elif not isinstance(version, FluentVersion):
             version = FluentVersion(version)
-        self.monkeypatch.setattr(pyfluent.config, "fluent_root", None)
+        self.monkeypatch.delenv("PYFLUENT_FLUENT_ROOT", raising=False)
         for fv in FluentVersion:
             if fv <= version:
                 self.monkeypatch.setenv(fv.awp_var, f"ansys_inc/{fv.name}")
