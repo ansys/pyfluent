@@ -374,7 +374,7 @@ def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     helpers.mock_awp_vars()
-    monkeypatch.setattr(pyfluent.config, "fluent_root", "dev/vNNN/fluent")
+    monkeypatch.setenv("PYFLUENT_FLUENT_ROOT", "dev/vNNN/fluent")
     if platform.system() == "Windows":
         expected_path = Path("dev/vNNN/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
