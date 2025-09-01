@@ -9,6 +9,205 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.35.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.35.dev1>`_ - August 28, 2025
+==========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Save API object names based on session type
+          - `#4417 <https://github.com/ansys/pyfluent/pull/4417>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Turn on automatic transcript while running codegen
+          - `#4390 <https://github.com/ansys/pyfluent/pull/4390>`_
+
+        * - Raise the underlying urlerror while downloading example file
+          - `#4396 <https://github.com/ansys/pyfluent/pull/4396>`_
+
+        * - Fix test_docker_compose
+          - `#4399 <https://github.com/ansys/pyfluent/pull/4399>`_
+
+        * - Skip paths which are not supported in the current Fluent version in builtin_settingsgen
+          - `#4404 <https://github.com/ansys/pyfluent/pull/4404>`_
+
+        * - Add config to disable monitor refresh on solution initialization
+          - `#4411 <https://github.com/ansys/pyfluent/pull/4411>`_
+
+        * - Create parent directory for server-info file
+          - `#4415 <https://github.com/ansys/pyfluent/pull/4415>`_
+
+        * - Release CI [skip tests]
+          - `#4423 <https://github.com/ansys/pyfluent/pull/4423>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update release CI to use trusted publishers.
+          - `#4332 <https://github.com/ansys/pyfluent/pull/4332>`_
+
+        * - Bump the dependencies group with 4 updates
+          - `#4336 <https://github.com/ansys/pyfluent/pull/4336>`_
+
+        * - Fix release CI to use nightly dev tests again.
+          - `#4373 <https://github.com/ansys/pyfluent/pull/4373>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Added example on the battery cell simulation.
+          - `#4361 <https://github.com/ansys/pyfluent/pull/4361>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Extract allowed values
+          - `#4342 <https://github.com/ansys/pyfluent/pull/4342>`_
+
+        * - Update CHANGELOG for v0.35.dev0 [skip tests]
+          - `#4372 <https://github.com/ansys/pyfluent/pull/4372>`_
+
+        * - Show action status badge from the main branch [skip tests]
+          - `#4408 <https://github.com/ansys/pyfluent/pull/4408>`_
+
+
+`0.35.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.35.dev0>`_ - August 12, 2025
+==========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Replace compose env vars with parameters
+          - `#4284 <https://github.com/ansys/pyfluent/pull/4284>`_
+
+        * - Config
+          - `#4313 <https://github.com/ansys/pyfluent/pull/4313>`_
+
+        * - Added a method to print all configs and added typehints
+          - `#4329 <https://github.com/ansys/pyfluent/pull/4329>`_
+
+        * - Expose both object and method classes for builtin commands
+          - `#4340 <https://github.com/ansys/pyfluent/pull/4340>`_
+
+        * - File handling for Ansys Notebook
+          - `#4349 <https://github.com/ansys/pyfluent/pull/4349>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Issue with 'wait_process_finished'
+          - `#4309 <https://github.com/ansys/pyfluent/pull/4309>`_
+
+        * - Remove 'plot_set_name' and 'report_name' from event streaming.
+          - `#4310 <https://github.com/ansys/pyfluent/pull/4310>`_
+
+        * - Ui_mode key error in Ansys lab
+          - `#4319 <https://github.com/ansys/pyfluent/pull/4319>`_
+
+        * - Unavailable field data for some surfaces.
+          - `#4345 <https://github.com/ansys/pyfluent/pull/4345>`_
+
+        * - Remove string check of error message.
+          - `#4355 <https://github.com/ansys/pyfluent/pull/4355>`_
+
+        * - Respect user-provided directory in Ansys Notebook
+          - `#4358 <https://github.com/ansys/pyfluent/pull/4358>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Set default version to latest release and use max grpc limit
+          - `#4327 <https://github.com/ansys/pyfluent/pull/4327>`_
+
+        * - Update search API results handling
+          - `#4333 <https://github.com/ansys/pyfluent/pull/4333>`_
+
+        * - Add ui_mode and dry_run for PIM launcher
+          - `#4338 <https://github.com/ansys/pyfluent/pull/4338>`_
+
+        * - Fix codespell issue causing action failures
+          - `#4348 <https://github.com/ansys/pyfluent/pull/4348>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Api reference and docker image name update [skip tests]
+          - `#4307 <https://github.com/ansys/pyfluent/pull/4307>`_
+
+        * - Update a setting radiation headlamp [skip tests]
+          - `#4334 <https://github.com/ansys/pyfluent/pull/4334>`_
+
+        * - Overview and Decision Guide for Field Data vs Solution Variable Data APIs [skip tests]
+          - `#4352 <https://github.com/ansys/pyfluent/pull/4352>`_
+
+        * - Fix scheme_eval docs [skip tests]
+          - `#4362 <https://github.com/ansys/pyfluent/pull/4362>`_
+
+        * - Update ``CONTRIBUTORS.md`` with the latest contributors
+          - `#4365 <https://github.com/ansys/pyfluent/pull/4365>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Use the stable image id in pr ci
+          - `#4305 <https://github.com/ansys/pyfluent/pull/4305>`_
+
+        * - Update changelog for v0.34.0
+          - `#4308 <https://github.com/ansys/pyfluent/pull/4308>`_
+
+        * - Fix Fluent journal run CI for the latest image path change
+          - `#4323 <https://github.com/ansys/pyfluent/pull/4323>`_
+
+        * - Minor update to Makefile to clean the example directory.
+          - `#4354 <https://github.com/ansys/pyfluent/pull/4354>`_
+
+
 `0.34.0 <https://github.com/ansys/pyfluent/releases/tag/v0.34.0>`_ - July 23, 2025
 ==================================================================================
 
