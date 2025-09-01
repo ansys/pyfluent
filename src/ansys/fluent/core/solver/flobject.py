@@ -676,8 +676,17 @@ class Textual(Property):
             Either str or VariableDescriptor.
         kwargs : Any
             Keyword arguments.
+
+        Raises
+        ------
+        TypeError
+            If state is not a string.
         """
-        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
+        if not isinstance(state, str):
+            raise TypeError(f"Expected state to be str, got {type(state).__name__}.")
+        return self.base_set_state(
+            state=_to_field_name_str(state) if type(state) is str else state, **kwargs
+        )
 
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
