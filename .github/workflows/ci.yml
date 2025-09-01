@@ -40,7 +40,7 @@ jobs:
     name: "Add license headers"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -137,7 +137,7 @@ jobs:
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -194,7 +194,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -249,7 +249,7 @@ jobs:
     runs-on: [self-hosted, pyfluent]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -277,7 +277,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -492,7 +492,7 @@ jobs:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
@@ -502,7 +502,7 @@ jobs:
 
       - name: Download package
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: PyFluent-packages
           path: dist
@@ -520,7 +520,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -558,7 +558,7 @@ jobs:
     timeout-minutes: 120
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -586,7 +586,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -642,7 +642,7 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
 
       - name: Display package file list
         run: ls -R
@@ -658,7 +658,7 @@ jobs:
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
 
       - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v5
         with:
           name: PyFluent-packages
           path: PyFluent-packages
