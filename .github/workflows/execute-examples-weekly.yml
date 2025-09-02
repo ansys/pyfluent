@@ -63,7 +63,7 @@ jobs:
       - name: Install pyfluent
         run: |
           make install
-          install-test
+          make install-test
 
       - name: Pull Fluent docker image if not present
         run: |
