@@ -45,7 +45,7 @@ Single Battery Cell Using MSMD Battery Model Simulation
 import os
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import FluentMode, Precision, examples
+from ansys.fluent.core import FluentMode, Precision, UIMode, examples
 
 #######################################################################################
 # Launch Fluent session
@@ -55,6 +55,7 @@ solver = pyfluent.launch_fluent(
     precision=Precision.DOUBLE,
     processor_count=4,
     mode=FluentMode.SOLVER,
+    ui_mode=UIMode.GUI,
 )
 
 #######################################################################################
