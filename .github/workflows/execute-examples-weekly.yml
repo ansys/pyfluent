@@ -60,6 +60,9 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install pyfluent
+        run: make install
+
       - name: Pull Fluent docker image if not present
         run: |
           if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
