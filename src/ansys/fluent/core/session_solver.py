@@ -160,10 +160,11 @@ class Solver(BaseSession):
         )
         #: Manage Fluent's solution monitors.
         self.monitors = MonitorsManager(fluent_connection._id, monitors_service)
-        self.events.register_callback(
-            (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
-            self.monitors.refresh,
-        )
+        if not pyfluent.config.disable_monitor_refresh_on_init:
+            self.events.register_callback(
+                (SolverEvent.SOLUTION_INITIALIZED, SolverEvent.DATA_LOADED),
+                self.monitors.refresh,
+            )
 
         fluent_connection.register_finalizer_cb(self.monitors.stop)
 

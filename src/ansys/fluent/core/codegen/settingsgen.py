@@ -153,6 +153,7 @@ def _populate_data(cls, api_tree: dict, version: str) -> dict:
     else:
         data["child_object_type"] = None
     data["allowed_values"] = getattr(cls, "_allowed_values", [])
+    data["has_migration_adapter"] = getattr(cls, "_has_migration_adapter", False)
     return data
 
 
@@ -319,6 +320,9 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
     if data["allowed_values"]:
         s.write(f"    _allowed_values = {data['allowed_values']!r}\n")
         s_stub.write("    _allowed_values: list[str]\n")
+    if data["has_migration_adapter"]:
+        s.write("    _has_migration_adapter = True\n")
+        s_stub.write("    _has_migration_adapter: bool\n")
     s.write("\n")
     s_stub.write("\n")
     for name, (python_name, data, hash_, should_write_stub) in classes_to_write.items():
