@@ -194,7 +194,7 @@ displacement_contour.field = "total-displacement"
 displacement_contour.surfaces_list = ["fsisurface-solid"]
 displacement_contour.range_options.compute()
 
-graphics_object.views.restore_view(view_name="front")
+graphics_object.views.restore_view(view_name="isometric")
 displacement_contour.display()
 graphics_object.picture.save_picture(file_name="fsi_1way_3.png")
 
