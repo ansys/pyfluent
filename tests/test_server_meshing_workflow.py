@@ -116,13 +116,13 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     watertight.task_object.add_boundary_layers["Add Boundary Layers"].execute()
 
     # Generate volume mesh
-    watertight.task_object.create_volume_mesh[
+    watertight.task_object.create_volume_mesh_wtm[
         "Generate the Volume Mesh"
     ].arguments.volume_fill.set_state("poly-hexcore")
-    watertight.task_object.create_volume_mesh[
+    watertight.task_object.create_volume_mesh_wtm[
         "Generate the Volume Mesh"
-    ].arguments.hex_max_cell_length = 0.3
-    watertight.task_object.create_volume_mesh["Generate the Volume Mesh"].execute()
+    ].arguments.volume_fill_controls.hex_max_cell_length = 0.3
+    watertight.task_object.create_volume_mesh_wtm["Generate the Volume Mesh"].execute()
 
     # Switch to solution mode
     solver = new_meshing_session_wo_exit.switch_to_solver()
@@ -460,20 +460,28 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     fault_tolerant.task_object.add_boundary_layers["aspect-ratio_1"].execute()
 
     # Generate volume mesh
-    # fault_tolerant.task_object.create_volume_mesh["Generate the Volume Mesh"].arguments.all_region_name_list.set_state(
-    #     [
-    #         "main",
-    #         "flow_pipe",
-    #         "outpipe3",
-    #         "object2",
-    #         "object1",
-    #         "void-region-1",
-    #         "fluid-region-1",
-    #     ]
-    # )
-    # fault_tolerant.task_object.create_volume_mesh["Generate the Volume Mesh"].arguments.all_region_size_list.set_state(["11.33375"] * 7)
-    # fault_tolerant.task_object.create_volume_mesh["Generate the Volume Mesh"].arguments.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
-    fault_tolerant.task_object.create_volume_mesh["Generate the Volume Mesh"].execute()
+    fault_tolerant.task_object.create_volume_mesh_ftm[
+        "Generate the Volume Mesh"
+    ].arguments.all_region_name_list.set_state(
+        [
+            "main",
+            "flow_pipe",
+            "outpipe3",
+            "object2",
+            "object1",
+            "void-region-1",
+            "fluid-region-1",
+        ]
+    )
+    fault_tolerant.task_object.create_volume_mesh_ftm[
+        "Generate the Volume Mesh"
+    ].arguments.all_region_size_list.set_state(["11.33375"] * 7)
+    fault_tolerant.task_object.create_volume_mesh_ftm[
+        "Generate the Volume Mesh"
+    ].arguments.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
+    fault_tolerant.task_object.create_volume_mesh_ftm[
+        "Generate the Volume Mesh"
+    ].execute()
 
     # Generate volume mesh
     solver = meshing.switch_to_solver()
