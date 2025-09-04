@@ -642,8 +642,6 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
-      - uses: actions/download-artifact@v4
-
       - name: Display package file list
         run: ls -R
 
