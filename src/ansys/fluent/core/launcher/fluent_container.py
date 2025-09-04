@@ -353,8 +353,6 @@ def configure_container_dict(
                 "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
             }
         )
-        if compose_config.is_compose:
-            container_dict["environment"]["FLUENT_SERVER_INFO_PERMISSION_SYSTEM"] = "1"
 
     if "labels" not in container_dict:
         test_name = pyfluent.config.test_name
