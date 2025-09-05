@@ -45,7 +45,6 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
-from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -516,7 +515,7 @@ class Fields:
             _session.scheme,
             get_zones_info,
         )
-        self.field_data_streaming = FieldDataStreaming(
+        self.field_data_streaming = service_creator("field_data_streaming").create(
             _session._fluent_connection._id, _session._field_data_service
         )
         self.field_data_old = service_creator("field_data_old").create(
