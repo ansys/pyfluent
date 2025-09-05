@@ -31,7 +31,7 @@ jobs:
     name: tag-iteration-ends
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Get last date of iteration
         id: date
         run: echo "date=$(date -u --date yesterday +'%m%d')" >> $GITHUB_OUTPUT
