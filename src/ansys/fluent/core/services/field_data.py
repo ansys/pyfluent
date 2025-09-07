@@ -623,6 +623,18 @@ class BatchFieldData(BaseFieldData, BaseFieldDataSource):
         return self.data
 
 
+class TransactionFieldData(BatchFieldData):
+    """TransactionFieldData class - deprecated."""
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "'TransactionFieldData' is deprecated, use 'BatchFieldData' instead.",
+            PyFluentDeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
+
+
 class Batch(FieldBatch):
     """Populates Fluent field data on surfaces."""
 
@@ -1009,6 +1021,18 @@ class Batch(FieldBatch):
 
     def __call__(self):
         self.get_response()
+
+
+class Transaction(Batch):
+    """Transaction class - deprecated."""
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "'Transaction' is deprecated, use 'Batch' instead.",
+            PyFluentDeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
 
 
 class _FieldDataConstants:

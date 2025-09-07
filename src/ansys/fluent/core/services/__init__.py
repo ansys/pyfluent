@@ -43,6 +43,7 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableService,
 )
 from ansys.fluent.core.services.transcript import TranscriptService
+from ansys.fluent.core.streaming_services.field_data_streaming import FieldDataStreaming
 
 _service_cls_by_name = {
     "app_utilities": AppUtilities,
@@ -61,6 +62,7 @@ _service_cls_by_name = {
     "svar_data": SolutionVariableData,
     "transcript": TranscriptService,
     "batch_ops": BatchOpsService,
+    "field_data_streaming": FieldDataStreaming,
 }
 
 
