@@ -683,8 +683,13 @@ class Textual(Property):
         TypeError
             If state is not a string.
         """
-        if not isinstance(state, (str, VariableDescriptor)):
-            raise TypeError(f"Expected state to be str, got {type(state).__name__}.")
+        allowed_types = (str, VariableDescriptor)
+
+        if not isinstance(state, allowed_types):
+            expected = " or ".join(t.__name__ for t in allowed_types)
+            raise TypeError(
+                f"Expected state to be {expected}, got {type(state).__name__}."
+            )
         return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
