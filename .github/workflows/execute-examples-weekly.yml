@@ -154,6 +154,11 @@ jobs:
         run: |
           python examples/00-fluent/single_battery_cell_workflow.py
 
+      - name: Execute steady_vortex.py
+        run: |
+          python examples/00-fluent/steady_vortex.py
+
+
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
       #   run: |
