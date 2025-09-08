@@ -171,6 +171,7 @@ def configure_container_dict(
     image_tag: str | None = None,
     file_transfer_service: Any | None = None,
     compose_config: ComposeConfig | None = None,
+    certificates_folder: str | None = None,
     **container_dict,
 ) -> (dict, int, int, Path, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
@@ -207,6 +208,8 @@ def configure_container_dict(
         Supports file upload and download.
     compose_config : ComposeConfig, optional
         Configuration for Docker Compose, if using Docker Compose to launch the container.
+    certificates_folder : str, optional
+        Path to the folder containing TLS certificates for Fluent's gRPC server.
     **container_dict
         Additional keyword arguments can be specified, they will be treated as Docker container run options
         to be passed directly to the Docker run execution. See examples below and `Docker run`_ documentation.
@@ -322,6 +325,8 @@ def configure_container_dict(
             working_dir=mount_target,
         )
 
+    if certificates_folder is not None:
+        container_dict["volumes"].append(f"{certificates_folder}:/tmp/certs:ro")
     port_mapping = {port: port} if port else {}
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use

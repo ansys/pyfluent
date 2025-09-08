@@ -6,13 +6,16 @@ from time import time
 from ansys.fluent.core import FluentMode, FluentVersion, config, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
 from ansys.fluent.core.codegen.print_fluent_version import print_fluent_version
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.search import _generate_api_data
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
     t0 = time()
     config.fluent_automatic_transcript = True
-    meshing = launch_fluent(mode=FluentMode.MESHING)
+    kwds = {"mode": FluentMode.MESHING}
+    kwds.update(get_grpc_launcher_args_for_gh_runs())
+    meshing = launch_fluent(**kwds)
     version = get_version_for_file_name(session=meshing)
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
@@ -42,9 +45,9 @@ if __name__ == "__main__":
         )
     meshing.exit()
 
-    solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
-    )
+    kwds = {"mode": FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER}
+    kwds.update(get_grpc_launcher_args_for_gh_runs())
+    solver = launch_fluent(**kwds)
     static_infos[StaticInfoType.DATAMODEL_PREFERENCES] = (
         solver._datamodel_service_se.get_static_info("preferences")
     )

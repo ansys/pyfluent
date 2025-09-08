@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  API_CODE_CACHE: 6
+  API_CODE_CACHE: 7
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
@@ -34,6 +34,7 @@ env:
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYFLUENT_LAUNCH_FLUENT_TIMEOUT: 180
 
 jobs:
   add-license-headers:
@@ -133,7 +134,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.3
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
@@ -290,7 +291,7 @@ jobs:
           path: src/ansys/fluent/core/generated
           # Combined cache key for all versions:
           # API-Code-<Cache version>-<PyFluent version>-<First Fluent release version>-<Last Fluent release version>-<Fluent dev version>-<Hash of codegen files>
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.0-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.3-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
 
       - name: Pull 23.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -362,13 +363,13 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v24.2.5
 
       - name: Run 24.2 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v24.2.5
           PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.2 Fluent version info
@@ -384,13 +385,13 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: v25.1.4
 
       - name: Run 25.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: v25.1.4
           PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 25.1 Fluent version info
@@ -406,13 +407,13 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.2.0
+          FLUENT_IMAGE_TAG: v25.2.3
 
       - name: Run 25.2 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.2.0
+          FLUENT_IMAGE_TAG: v25.2.3
           PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 25.2 Fluent version info
@@ -468,7 +469,7 @@ jobs:
     name: Unit Testing
     if: ${{ always() }}
     needs: build
-    runs-on: [public-ubuntu-latest-8-cores]
+    runs-on: [ubuntu-latest-8-cores]
     strategy:
       fail-fast: false
       matrix:
@@ -479,11 +480,11 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
-          - image-tag: v24.2.0
+          - image-tag: v24.2.5
             version: 242
-          - image-tag: v25.1.0
+          - image-tag: v25.1.4
             version: 251
-          - image-tag: v25.2.0
+          - image-tag: v25.2.3
             version: 252
           - image-tag: v26.1.latest
             version: 261
@@ -541,7 +542,7 @@ jobs:
         run: make cleanup-previous-docker-containers
 
       - name: Upload 25.2 Coverage Artifacts
-        if: matrix.image-tag == 'v25.2.0'
+        if: matrix.image-tag == 'v25.2.3'
         uses: actions/upload-artifact@v4
         with:
           name: coverage_report

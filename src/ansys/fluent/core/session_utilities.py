@@ -84,6 +84,8 @@ class SessionBase:
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in standalone mode.
@@ -150,6 +152,12 @@ class SessionBase:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
@@ -188,6 +196,8 @@ class SessionBase:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in container mode.
@@ -239,6 +249,12 @@ class SessionBase:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -355,6 +371,9 @@ class SessionBase:
         port: int | None = None,
         server_info_file_name: str | None = None,
         password: str | None = None,
+        allow_remote_host: bool = False,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Connect to an existing Fluent server instance.
 
@@ -376,6 +395,14 @@ class SessionBase:
             connect to a running Fluent session.
         password : str, optional
             Password to connect to existing Fluent instance.
+        allow_remote_host : bool, optional
+            Whether to allow connecting to a remote Fluent instance.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------

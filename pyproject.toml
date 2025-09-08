@@ -46,7 +46,7 @@ tests = [
     "pytest-cov==6.2.1",
     "pytest-mock==3.14.1",
     "pytest-xdist==3.8.0",
-    "pyfakefs==5.9.2"
+    "pyfakefs==5.9.2",
 ]
 docs = [
     "Sphinx==8.1.3",
