@@ -96,7 +96,8 @@ def _get_server_info(
     port: int | None = None,
     password: str | None = None,
 ):
-    """Get server connection information of an already running session."""
+    """Get server connection information of an already running session.
+    Returns (ip, port, password) or (unix_socket, password)"""
     from ansys.fluent.core import config
 
     if not (ip and port) and not server_info_file_name:
@@ -108,7 +109,11 @@ def _get_server_info(
         )
     else:
         if server_info_file_name:
-            ip, port, password = _parse_server_info_file(server_info_file_name)
+            values = _parse_server_info_file(server_info_file_name)
+            if len(values) == 2:
+                return values
+            else:
+                ip, port, password = values
         ip = ip or config.launch_fluent_ip or "127.0.0.1"
         port = port or config.launch_fluent_port
 
