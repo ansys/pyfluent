@@ -1,46 +1,17 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
-# SPDX-License-Identifier: MIT
-#
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 """Functions to download sample datasets from the Ansys example data repository."""
-
 import logging
 import os
 from pathlib import Path
 import re
 import shutil
+from typing import Optional
 import zipfile
 
+import requests
+
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
 
 logger = logging.getLogger("pyfluent.networking")
-
-
-class RemoteFileNotFoundError(FileNotFoundError):
-    """Raised on an attempt to download a non-existent remote file."""
-
-    def __init__(self, url):
-        """Initializes RemoteFileNotFoundError."""
-        super().__init__(f"{url} does not exist.")
 
 
 def delete_downloads():
@@ -49,39 +20,39 @@ def delete_downloads():
 
     Notes
     -----
-    The default examples path is given by ``pyfluent.config.examples_path``.
+    The default examples path is given by ``pyfluent.EXAMPLES_PATH``.
     """
-    shutil.rmtree(pyfluent.config.examples_path)
-    os.makedirs(pyfluent.config.examples_path)
+    shutil.rmtree(pyfluent.EXAMPLES_PATH)
+    os.makedirs(pyfluent.EXAMPLES_PATH)
 
 
 def _decompress(file_name: str) -> None:
     """Decompress zipped file."""
     zip_ref = zipfile.ZipFile(file_name, "r")
-    zip_ref.extractall(pyfluent.config.examples_path)
+    zip_ref.extractall(pyfluent.EXAMPLES_PATH)
     return zip_ref.close()
 
 
-def _get_file_url(file_name: str, directory: str | None = None) -> str:
+def _get_file_url(file_name: str, directory: Optional[str] = None) -> str:
     """Get file URL."""
     if directory:
         return (
-            "https://github.com/ansys/example-data/raw/master/"
+            "https://github.com/ansys/example-data/raw/main/"
             f"{directory}/{file_name}"
         )
-    return f"https://github.com/ansys/example-data/raw/master/{file_name}"
+    return f"https://github.com/ansys/example-data/raw/main/{file_name}"
 
 
 def _retrieve_file(
     url: str,
     file_name: str,
-    save_path: str | None = None,
-    return_without_path: bool | None = False,
+    save_path: Optional[str] = None,
+    return_without_path: Optional[bool] = False,
 ) -> str:
     """Download specified file from specified URL."""
     file_name = os.path.basename(file_name)
     if save_path is None:
-        save_path = pyfluent.config.container_mount_source or os.getcwd()
+        save_path = pyfluent.EXAMPLES_PATH
     else:
         save_path = os.path.abspath(save_path)
     local_path = os.path.join(save_path, file_name)
@@ -90,6 +61,7 @@ def _retrieve_file(
     # First check if file has already been downloaded
     logger.info(f"Checking if {local_path_no_zip} already exists...")
     if os.path.isfile(local_path_no_zip) or os.path.isdir(local_path_no_zip):
+        print(f"File already exists. File path:\n{local_path_no_zip}")
         logger.info("File already exists.")
         if return_without_path:
             return file_name_no_zip
@@ -104,7 +76,7 @@ def _retrieve_file(
 
     # Download file
     logger.info(f'Downloading URL: "{url}"')
-    content = get_url_content(url)
+    content = requests.get(url).content
     with open(local_path, "wb") as f:
         f.write(content)
 
@@ -112,6 +84,7 @@ def _retrieve_file(
         _decompress(local_path)
         local_path = local_path_no_zip
         file_name = file_name_no_zip
+    print(f"Download successful. File path:\n{local_path}")
     logger.info("Download successful.")
     if return_without_path:
         return file_name
@@ -121,9 +94,9 @@ def _retrieve_file(
 
 def download_file(
     file_name: str,
-    directory: str | None = None,
-    save_path: str | None = None,
-    return_without_path: bool | None = None,
+    directory: Optional[str] = None,
+    save_path: Optional[str] = None,
+    return_without_path: Optional[bool] = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
 
@@ -137,18 +110,13 @@ def download_file(
     save_path : str, optional
         Path to download the specified file to.
     return_without_path : bool, optional
-        When unspecified, defaults to False, unless the launch_fluent_container config is set to True,
+        When unspecified, defaults to False, unless the PYFLUENT_LAUNCH_CONTAINER=1 environment variable is specified,
         in which case defaults to True.
         Relevant when using Fluent Docker container images, as the full path for the imported file from
         the host side is not necessarily going to be the same as the one for Fluent inside the container.
         Assuming the Fluent inside the container has its working directory set to the path that was mounted from
         the host, and that the example files are being made available by the host through this same path,
         only the file name is required for Fluent to find and open the file.
-
-    Raises
-    ------
-    RemoteFileNotFoundError
-        If remote file does not exist.
 
     Returns
     -------
@@ -177,39 +145,19 @@ def download_file(
     'bracket.iges'
     """
     if return_without_path is None:
-        if pyfluent.config.launch_fluent_container:
-            if pyfluent.config.use_file_transfer_service:
-                return_without_path = False
-            else:
-                return_without_path = True
+        if os.getenv("PYFLUENT_LAUNCH_CONTAINER") == "1":
+            return_without_path = True
+        else:
+            return_without_path = False
 
     url = _get_file_url(file_name, directory)
-    if not check_url_exists(url):
-        raise RemoteFileNotFoundError(url)
     return _retrieve_file(url, file_name, save_path, return_without_path)
 
 
 def path(file_name: str):
-    """Return path of given file name.
-
-    Parameters
-    ----------
-    file_name : str
-        Name of the file.
-
-    Raises
-    ------
-    FileNotFoundError
-        If file does not exist.
-
-    Returns
-    -------
-    file_path: str
-        File path.
-    """
     if os.path.isabs(file_name):
         return file_name
-    file_path = Path(pyfluent.config.examples_path) / file_name
+    file_path = Path(pyfluent.EXAMPLES_PATH) / file_name
     if file_path.is_file():
         return str(file_path)
     else:
