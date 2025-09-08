@@ -141,10 +141,10 @@ class Config:
         lambda instance: False, "FLUENT_SHOW_MESH_AFTER_CASE_READ"
     )
 
-    #: Whether to write the automatic transcript in Fluent, defaults to the value of ``PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT`` environment variable.
+    #: Whether to write the automatic transcript in Fluent, defaults to True if ``PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT`` environment variable is not set to "1".
     fluent_automatic_transcript = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT")
-        == "1",
+        lambda instance: instance._env.get("PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT")
+        != "1",
         "FLUENT_AUTOMATIC_TRANSCRIPT",
     )
 
