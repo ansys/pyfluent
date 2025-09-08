@@ -80,6 +80,7 @@ from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
 import ansys.units
+from ansys.units import VariableDescriptor
 
 from . import _docstrings
 from ..pyfluent_warnings import warning_for_fluent_dev_version
@@ -682,11 +683,9 @@ class Textual(Property):
         TypeError
             If state is not a string.
         """
-        if not isinstance(state, str):
+        if not isinstance(state, (str, VariableDescriptor)):
             raise TypeError(f"Expected state to be str, got {type(state).__name__}.")
-        return self.base_set_state(
-            state=_to_field_name_str(state) if type(state) is str else state, **kwargs
-        )
+        return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
 class DeprecatedSettingWarning(PyFluentDeprecationWarning):
