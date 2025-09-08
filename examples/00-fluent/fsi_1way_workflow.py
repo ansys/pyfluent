@@ -26,18 +26,23 @@ Modeling One-Way Fluid-Structure Interaction
 -------------------------------------------------------------
 """
 
-#######################################################################################
+# %%
 # Objective
-# =====================================================================================
+# ---------
 #
-# The Simulation focuses on simulating turbulent airflow through a cylindrical test chamber
-# containing a steel probe, and analyzing the deformation of the probe due to
-# aerodynamic forces. The deformation is assumed to be small enough that it
-# does not influence the fluid flow, allowing for a one-way coupling approach.
+# This tutorial simulates turbulent airflow through a
+# cylindrical test chamber containing a steel probe and to analyze the resulting
+# structural deformation of the probe due to aerodynamic forces. Since the expected
+# deformation is small and does not significantly influence the overall flow field,
+# a one-way fluid–structure interaction (FSI) approach is used. In this intrinsic FSI
+# setup, the fluid flow is solved first, and the resulting pressure and
+# shear forces are transferred to an internal structural solver to compute the probe's
+# deformation. This one-way coupling improves computational efficiency while
+# remaining accurate for cases where structural feedback on the flow is negligible.
 
-#######################################################################################
-# Problem Description:
-# =====================================================================================
+# %%
+# Problem Description
+# -------------------
 #
 # The cylindrical test chamber is 20 cm long, with a diameter of 10 cm.
 # Turbulent air enters the chamber at 100 m/s, flows around and through
@@ -48,93 +53,127 @@ Modeling One-Way Fluid-Structure Interaction
 #    :align: center
 #    :alt: One-Way Fluid-Structure Interaction Model
 
-#######################################################################################
+# %%
 # Import modules
-# =====================================================================================
+# --------------
+#
+# .. note::
+#   Importing the following classes offer streamlined access to key solver settings,
+#   eliminating the need to manually browse through the full settings structure.
 
 import os
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, Precision, examples
+from ansys.fluent.core.solver import (
+    BoundaryConditions,
+    Contour,
+    Graphics,
+    Initialization,
+    RunCalculation,
+    Setup,
+    Solution,
+    VelocityInlet,
+)
 
-#######################################################################################
+# %%
 # Launch Fluent session in solver mode
-# =====================================================================================
+# ------------------------------------
 
 solver = pyfluent.launch_fluent(
     precision=Precision.DOUBLE,
     mode=FluentMode.SOLVER,
 )
 
-#######################################################################################
-# Download and Read the journal file
-# =====================================================================================
-#
-# .. note::
-#   Mesh file is required as input for the journal file.
-#
-# Journal file serves as a script that instructs Ansys Fluent on sequential operations
+# %%
+# Download and read the mesh file
+# -------------------------------
 
-journal_file = examples.download_file(
-    "fsi_1way.jou",
-    "pyfluent/fsi_1way",
-    save_path=os.getcwd(),
-)
-
-examples.download_file(
+mesh_file = examples.download_file(
     "fsi_1way.msh.h5",
     "pyfluent/fsi_1way",
     save_path=os.getcwd(),
 )
+solver.settings.file.read_case(file_name=mesh_file)
 
-solver.tui.file.read_journal(journal_file)  # Read the journal file
+# %%
+# Configure solver settings for fluid flow
+# ----------------------------------------
 
-graphics_object = solver.settings.results.graphics
-graphics_object.picture.x_resolution = 650
-graphics_object.picture.y_resolution = 450
-graphics_object.views.restore_view(view_name="front")
+velocity_inlet = VelocityInlet(solver, name="velocity_inlet")
+velocity_inlet.momentum.velocity_magnitude = 100.0  # High-speed inlet flow (m/s)
+velocity_inlet.turbulence.turbulent_viscosity_ratio = (
+    5  # Dimensionless, typically 1-10 for moderate turbulence
+)
 
-solver.settings.results.graphics.contour["contour-vel"].display()
-graphics_object.picture.save_picture(file_name="fsi_1way_2.png")
+# %%
+# Initialize and run fluid flow simulation
+# ----------------------------------------
+
+initialize = Initialization(solver)
+initialize.hybrid_initialize()
+
+calculation = RunCalculation(solver)
+calculation.iterate(iter_count=100)
+
+# %%
+# Post-processing
+# ---------------
+
+graphics = Graphics(solver)
+graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
+graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
+
+graphics.contour["contour-vel"] = {
+    "field": "velocity-magnitude",
+    "surfaces_list": ["fluid-symmetry"],
+    "coloring": {"option": "banded"},
+}
+
+graphics.contour["contour-vel"].display()
+graphics.views.restore_view(view_name="front")
+
+graphics.picture.save_picture(file_name="fsi_1way_2.png")
+
 
 # %%
 # .. image:: ../../_static/fsi_1way_2.png
 #    :align: center
 #    :alt: Velocity Contour
 
-#######################################################################################
-# Structural model and Material
-# =====================================================================================
+# %%
+# Structural model and material setup
+# -----------------------------------
 # To analyze the deformation of a steel probe under fluid flow,
 # Linear Elasticity Structural model is chosen
 
+setup = Setup(solver)
+setup.models.structure.model = "linear-elasticity"
 solver.settings.setup.models.structure.model = "linear-elasticity"
 
 # Copy materials from the database and assign to solid zone
 
-solver.settings.setup.materials.database.copy_by_name(type="solid", name="steel")
-solver.settings.setup.cell_zone_conditions.solid["solid"] = {
-    "general": {"material": "steel"}
-}
+setup.materials.database.copy_by_name(type="solid", name="steel")
+setup.cell_zone_conditions.solid["solid"] = {"general": {"material": "steel"}}
 
-#######################################################################################
-# Defining the boundary conditions
-# =====================================================================================
+# %%
+# Structural boundary conditions
+# ------------------------------
 # configure Fluent to define the steel probe's support and movement using
 # structural boundary conditions
 
-wall = solver.settings.setup.boundary_conditions.wall
+wall_boundary = BoundaryConditions(solver)
 
 # Configure solid-symmetry boundary
-wall["solid-symmetry"] = {
+wall_boundary.wall["solid-symmetry"] = {
     "structure": {
         "z_disp_boundary_value": 0,
         "z_disp_boundary_condition": "Node Z-Displacement",
     }
 }
 
-# Set solid-top boundary
-wall["solid-top"] = {
+# Set solid-top boundary (fully fixed)
+wall_boundary.wall["solid-top"] = {
     "structure": {
         "z_disp_boundary_value": 0,
         "z_disp_boundary_condition": "Node Z-Displacement",
@@ -146,57 +185,54 @@ wall["solid-top"] = {
 }
 
 # Copy boundary conditions from solid-symmetry to solid-symmetry:011
-solver.settings.setup.boundary_conditions.copy(
-    from_="solid-symmetry", to=["solid-symmetry:011"]
-)
+wall_boundary.copy(from_="solid-symmetry", to=["solid-symmetry:011"])
 
 # Configure FSI surface
-wall["fsisurface-solid"] = {
+wall_boundary.wall["fsisurface-solid"] = {
     "structure": {
-        "z_disp_boundary_condition": "Intrinsic FSI",
-        "y_disp_boundary_condition": "Intrinsic FSI",
         "x_disp_boundary_condition": "Intrinsic FSI",
+        "y_disp_boundary_condition": "Intrinsic FSI",
+        "z_disp_boundary_condition": "Intrinsic FSI",
     }
 }
 
-#######################################################################################
+# %%
 # Inclusion of Operating Pressure in Fluid-Structure Interaction Forces
-# =====================================================================================
+# ---------------------------------------------------------------------
 # Fluent uses gauge pressure for fluid-structure interaction force calculations.
 # By setting  ``include_pop_in_fsi_force`` to  ``True``, Fluent uses absolute pressure.
 
-solver.settings.setup.models.structure.expert.include_pop_in_fsi_force = True
+setup.models.structure.expert.include_pop_in_fsi_force = True
 
-#######################################################################################
+# %%
 # Configure flow settings
-# =====================================================================================
+# -----------------------
+# Disable flow equations for structural simulation
 
-solver.settings.solution.controls.equations["flow"] = False
-solver.settings.solution.controls.equations["kw"] = False
+solution = Solution(solver)
+solution.controls.equations["flow"] = False
+solution.controls.equations["kw"] = False
 
-#######################################################################################
-# Run the simulation
-# =====================================================================================
+# %%
+# Run FSI simulation
+# ------------------
 
-solver.settings.file.write_case(file_name="probe_fsi_1way.cas.h5")  # save the case file
+solver.settings.file.write_case(file_name="probe_fsi_1way.cas.h5")
 
-solver.settings.solution.run_calculation.iter_count = 2
-solver.settings.solution.run_calculation.calculate()
+calculation.iterate(iter_count=2)
 
-#######################################################################################
-# Post-Processing
-# =====================================================================================
+# %%
+# Structural Postprocessing
+# -------------------------
 
-displacement_contour = solver.settings.results.graphics.contour.create(
-    "displacement_contour"
-)
+displacement_contour = Contour(solver, new_instance_name="displacement_contour")
+
 displacement_contour.field = "total-displacement"
 displacement_contour.surfaces_list = ["fsisurface-solid"]
-displacement_contour.range_options.compute()
 
-graphics_object.views.restore_view(view_name="isometric")
 displacement_contour.display()
-graphics_object.picture.save_picture(file_name="fsi_1way_3.png")
+graphics.views.restore_view(view_name="isometric")
+graphics.picture.save_picture(file_name="fsi_1way_3.png")
 
 # save the case and data file
 solver.settings.file.write_case_data(file_name="probe_fsi_1way")
@@ -206,9 +242,9 @@ solver.settings.file.write_case_data(file_name="probe_fsi_1way")
 #    :align: center
 #    :alt: Structural Displacement Contour
 
-#######################################################################################
-# Close the solver
-# =====================================================================================
+# %%
+# Close Fluent
+# ------------
 solver.exit()
 
 #######################################################################################
