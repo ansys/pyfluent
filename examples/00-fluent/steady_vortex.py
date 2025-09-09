@@ -215,7 +215,6 @@ stirring_speed.input_parameter = True
 #
 # Define MRF zone parameters for the mrf cell zone.
 
-# fluid_cell_zone = solver_session.settings.setup.cell_zone_conditions.fluid["mrf"]
 fluid_cell_zone = CellZoneCondition(solver_session, name="mrf")
 fluid_cell_zone.reference_frame.frame_motion = True
 fluid_cell_zone.reference_frame.reference_frame_axis_origin = [0, 0, 0]
@@ -228,7 +227,6 @@ fluid_cell_zone.reference_frame.mrf_omega.value = "stirring_speed"
 #
 # Define the rotating wall boundary condition for the shaft.
 
-# wall_boundary = solver_session.settings.setup.boundary_conditions.wall["shaft_tank"]
 wall_boundary = WallBoundary(solver_session, name="shaft_tank")
 wall_boundary.momentum.wall_motion = "Moving Wall"
 wall_boundary.momentum.relative = False
@@ -322,7 +320,6 @@ freesurface.field = "water-vof"
 freesurface.iso_values = [0.5]
 
 # Wetted wall and dry wall iso-clips
-
 solver_session.settings.results.surfaces.iso_clip.create(name="wet_wall")
 wet_wall = IsoClip(solver_session, name="wet_wall")
 wet_wall.field = "water-vof"
