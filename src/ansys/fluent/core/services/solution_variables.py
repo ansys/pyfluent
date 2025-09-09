@@ -372,7 +372,6 @@ class _AllowedSvarNames:
             {
                 "old_arg": "solution_variable_name",
                 "new_arg": "variable_name",
-                "converter": lambda old_arg_val: old_arg_val,
             },
         ],
         data_type_converter=None,
