@@ -297,7 +297,8 @@ solution_initialization.initialize()
 
 # Patch the water volume fraction in the defined cell register to set the initial
 # liquid region in the tank.
-
+# "mp" refers to the volume fraction of the primary phase (here water). 
+# Setting value=1 fills the patch region entirely with water.
 solution_initialization.patch.calculate_patch(
     domain="water",
     cell_zones=[],
