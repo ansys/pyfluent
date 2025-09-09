@@ -196,8 +196,8 @@ general_settings.operating_conditions.gravity.components = [0.0, 0.0, -g]
 #
 # Copy water liquid materials from the Fluent database.
 
-copy_material_from_database = Materials(solver_session)
-copy_material_from_database.database.copy_by_name(type="fluid", name="water-liquid")
+materials = Materials(solver_session)
+materials.database.copy_by_name(type="fluid", name="water-liquid")
 
 # %%
 # Define Named Expression for Agitation Speed
