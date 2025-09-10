@@ -77,6 +77,7 @@ def _generate_api_data(
     """
     api_objects = set()
     api_tui_objects = set()
+    api_object_name_map = {"meshing_session": set(), "solver_session": set()}
     api_object_names = set()
     if version:
         version = get_version_for_file_name(version)
@@ -104,6 +105,10 @@ def _generate_api_data(
                     next_path = f"{path}.{k}"
                 type_ = "Object" if isinstance(v, Mapping) else v
                 api_object_names.add(k)
+                if "meshing_session" in next_path:
+                    api_object_name_map["meshing_session"].add(k)
+                if "solver_session" in next_path:
+                    api_object_name_map["solver_session"].add(k)
                 next_path = (
                     next_path.replace("MeshingUtilities", "meshing_utilities")
                     if "MeshingUtilities" in next_path
@@ -122,6 +127,13 @@ def _generate_api_data(
     api_tree_data["api_objects"] = sorted(list(api_objects))
     api_tree_data["api_tui_objects"] = sorted(list(api_tui_objects))
     api_tree_data["all_api_object_names"] = sorted(list(api_object_names))
+    api_object_name_map["meshing_session"] = sorted(
+        list(api_object_name_map["meshing_session"])
+    )
+    api_object_name_map["solver_session"] = sorted(
+        list(api_object_name_map["solver_session"])
+    )
+    api_tree_data["api_object_name_map"] = api_object_name_map
 
     def _write_api_tree_file(api_tree_data: dict, api_object_names: list):
         from nltk.corpus import wordnet as wn

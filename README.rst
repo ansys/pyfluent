@@ -14,7 +14,7 @@ PyFluent
    :target: https://pypi.org/project/ansys-fluent-core
    :alt: PyPI
 
-.. |GH-CI| image:: https://github.com/ansys/pyfluent/actions/workflows/ci.yml/badge.svg
+.. |GH-CI| image:: https://github.com/ansys/pyfluent/actions/workflows/ci.yml/badge.svg?branch=main
    :target: https://github.com/ansys/pyfluent/actions/workflows/ci.yml
    :alt: GH-CI
 

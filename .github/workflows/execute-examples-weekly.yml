@@ -60,6 +60,11 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install pyfluent
+        run: |
+          make install
+          make install-test
+
       - name: Pull Fluent docker image if not present
         run: |
           if ! docker image inspect fluent:${{ matrix.image-tag }} > /dev/null 2>&1; then
@@ -75,9 +80,7 @@ jobs:
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
           sudo apt update
           sudo apt install libegl1
-          pip install ansys-fluent-core>=0.32.1
-          pip install ansys-fluent-core[reader]
-          pip install ansys-fluent-visualization==0.21.dev1
+          pip install ansys-fluent-visualization
           pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
 
       - name: Execute Examples
@@ -149,6 +152,10 @@ jobs:
       - name: Execute tyler_sofrin_modes.py
         run: |
           python examples/00-fluent/tyler_sofrin_modes.py
+
+      - name: Execute single_battery_cell_workflow.py
+        run: |
+          python examples/00-fluent/single_battery_cell_workflow.py
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py

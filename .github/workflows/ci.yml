@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  API_CODE_CACHE: 5
+  API_CODE_CACHE: 6
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
@@ -633,8 +633,8 @@ jobs:
     needs: [test, update-changelog, nightly-dev-test]
     runs-on: ubuntu-latest
     permissions:
-      id-token: write       # required for trusted publishing
-      contents: write       # required for GitHub release upload
+      id-token: write # required for trusted publishing
+      contents: write # required for GitHub release upload
 
     steps:
       - name: Set up Python
@@ -649,7 +649,7 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install twine
+          pip install 'twine<6.2.0'
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
@@ -660,15 +660,15 @@ jobs:
       - name: "Download the library artifacts from build-library step"
         uses: actions/download-artifact@v4.3.0
         with:
-          name: ${{ env.PACKAGE_NAME }}-artifacts
-          path: ${{ env.PACKAGE_NAME }}-artifacts
+          name: PyFluent-packages
+          path: PyFluent-packages
 
       - name: "Upload artifacts to PyPI using trusted publisher"
         uses: pypa/gh-action-pypi-publish@v1.12.4
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
-          packages-dir: ${{ env.PACKAGE_NAME }}-artifacts
+          packages-dir: PyFluent-packages
           skip-existing: false
 
       - name: Release
