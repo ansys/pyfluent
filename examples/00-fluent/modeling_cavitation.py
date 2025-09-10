@@ -81,33 +81,33 @@ solver_session = pyfluent.launch_fluent(
     precision="double",
     processor_count=4,
     mode="solver",
-    version="2d",
+    dimension=2,
 )
 print(solver_session.get_fluent_version())
 
 ###############################################################################
 # Read the mesh that was downloaded.
 
-solver_session.file.read_mesh(file_name=cav_file)
+solver_session.settings.file.read_mesh(file_name=cav_file)
 
-solver_session.mesh.check()
+solver_session.settings.mesh.check()
 
 ###############################################################################
 # Specify an axisymmetric model.
 
-solver_session.setup.general.solver.two_dim_space = "axisymmetric"
+solver_session.settings.setup.general.solver.two_dim_space = "axisymmetric"
 
 ###############################################################################
 # Enable the multiphase mixture model.
 
-solver_session.setup.models.multiphase.models = "mixture"
+solver_session.settings.setup.models.multiphase.models = "mixture"
 
 solver_session.tui.define.models.multiphase.mixture_parameters("no", "implicit")
 
 ###############################################################################
 # Enable the k-ω SST turbulence model.
 
-solver_session.setup.models.viscous = {
+solver_session.settings.setup.models.viscous = {
     "model": "k-omega",
     "k_omega_model": "sst",
 }
@@ -120,7 +120,7 @@ solver_session.setup.models.viscous = {
 # the copy by changing the density to 0.02558 kg/m3 and the viscosity to
 # 1.26e-06 kg/m–s.
 
-solver_session.setup.materials.fluid["water"] = {
+solver_session.settings.setup.materials.fluid["water"] = {
     "density": {
         "option": "constant",
         "value": 1000,
@@ -131,9 +131,11 @@ solver_session.setup.materials.fluid["water"] = {
     },
 }
 
-solver_session.setup.materials.database.copy_by_name(type="fluid", name="water-vapor")
+solver_session.settings.setup.materials.database.copy_by_name(
+    type="fluid", name="water-vapor"
+)
 
-solver_session.setup.materials.fluid["water-vapor"] = {
+solver_session.settings.setup.materials.fluid["water-vapor"] = {
     "density": {"value": 0.02558},
     "viscosity": {"value": 1.26e-06},
 }
@@ -173,7 +175,9 @@ solver_session.tui.define.phases.set_domain_properties.interaction_domain.heat_m
 # turbulent specification. Set turbulent intensity and turbulent viscosity
 # ratio to 0.05 and 10 respectively.
 
-inlet_1 = solver_session.setup.boundary_conditions.pressure_inlet["inlet_1"].phase
+inlet_1 = solver_session.settings.setup.boundary_conditions.pressure_inlet[
+    "inlet_1"
+].phase
 
 inlet_1["mixture"] = {
     "momentum": {
@@ -198,13 +202,15 @@ inlet_1["vapor"] = {
     },
 }
 
-solver_session.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
+solver_session.settings.setup.boundary_conditions.copy(from_="inlet_1", to="inlet_2")
 
 ###############################################################################
 # For the outlet boundary conditions, set the gauge pressure as 95 kPa. Use
 # the same turbulence and volume fraction settings as the inlets.
 
-outlet = solver_session.setup.boundary_conditions.pressure_outlet["outlet"].phase
+outlet = solver_session.settings.setup.boundary_conditions.pressure_outlet[
+    "outlet"
+].phase
 
 outlet["mixture"] = {
     "momentum": {
@@ -228,7 +234,7 @@ outlet["vapor"] = {
 # ~~~~~~~~~~~~~~~~~~~~
 # Set the operating pressure to 0.
 
-solver_session.setup.general.operating_conditions.operating_pressure = 0
+solver_session.settings.setup.general.operating_conditions.operating_pressure = 0
 
 ###############################################################################
 # Solution
@@ -237,7 +243,7 @@ solver_session.setup.general.operating_conditions.operating_pressure = 0
 # upwind' method for turbulent kinetic energy and turbulent dissipation rate, 'quick'
 # for the momentum and volume fraction, and 'presto!' for pressure.
 
-methods = solver_session.solution.methods
+methods = solver_session.settings.solution.methods
 
 methods.discretization_scheme = {
     "k": "first-order-upwind",
@@ -259,7 +265,7 @@ methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
 
 methods.high_order_term_relaxation.enable = True
 
-solver_session.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo_relax[
+solver_session.settings.solution.controls.pseudo_time_explicit_relaxation_factor.global_dt_pseudo_relax[
     "mp"
 ] = 0.3
 
@@ -268,7 +274,7 @@ solver_session.solution.controls.pseudo_time_explicit_relaxation_factor.global_d
 # 1e-05 for x-velocity, y-velocity, k, omega, and vf-vapor. Enable the specified
 # initial pressure then initialize the solution with hybrid initialization.
 
-resid_eqns = solver_session.solution.monitor.residual.equations
+resid_eqns = solver_session.settings.solution.monitor.residual.equations
 
 resid_eqns["continuity"].absolute_criteria = 1e-5
 resid_eqns["x-velocity"].absolute_criteria = 1e-5
@@ -277,7 +283,7 @@ resid_eqns["k"].absolute_criteria = 1e-5
 resid_eqns["omega"].absolute_criteria = 1e-5
 resid_eqns["vf-vapor"].absolute_criteria = 1e-5
 
-initialization = solver_session.solution.initialization
+initialization = solver_session.settings.solution.initialization
 
 initialization.initialization_type = "hybrid"
 initialization.hybrid_init_options.general_settings.initial_pressure = True
@@ -289,11 +295,11 @@ initialization.hybrid_initialize()
 # Save the case file 'cav.cas.h5'. Then, start the calculation by requesting
 # 500 iterations. Save the final case file and the data.
 
-solver_session.file.write_case(file_name="cav.cas.h5")
+solver_session.settings.file.write_case(file_name="cav.cas.h5")
 
-solver_session.solution.run_calculation.iterate(iter_count=500)
+solver_session.settings.solution.run_calculation.iterate(iter_count=500)
 
-solver_session.file.write_case_data(file_name="cav.cas.h5")
+solver_session.settings.file.write_case_data(file_name="cav.cas.h5")
 
 ###############################################################################
 # Post Processing
@@ -302,7 +308,7 @@ solver_session.file.write_case_data(file_name="cav.cas.h5")
 # picture files. Edit the picture settings to use a custom resolution so that
 # the images are large enough.
 
-graphics = solver_session.results.graphics
+graphics = solver_session.settings.results.graphics
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
@@ -317,7 +323,7 @@ graphics.picture.y_resolution = 1440
 # volume fraction of water vapor. For each plot enable banded coloring and
 # filled option.
 
-graphics = solver_session.results.graphics
+graphics = solver_session.settings.results.graphics
 
 graphics.contour["contour_static_pressure"] = {
     "coloring": {
