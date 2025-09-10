@@ -1499,6 +1499,21 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
+    def list(self):
+        """Print the object names."""
+        return self._root.list(object_path=self.path)
+
+    def list_properties(self, object_name):
+        """Print the properties of the given object name.
+
+        Parameters
+        ----------
+        object_name : str
+            Name of the object whose properties are to be listed.
+        """
+        # The generated parameter name is path_1 as the name path clashes with existing property.
+        return self._root.list_properties(path_1=self.path, name=object_name)
+
 
 class CombinedNamedObject:
     """A ``CombinedNamedObject`` contains the concatenated named-objects."""
@@ -1760,6 +1775,8 @@ class BaseCommand(Action):
                     else:
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
+            if "path" in kwds:
+                kwds["path_1"] = kwds.pop("path")
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
             if (
                 not config.disable_parameter_list_return_fix
@@ -2231,6 +2248,11 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             commands.pop("exit", None)
         if commands and not user_creatable:
             commands.pop("create", None)
+        # Temporary code for testing
+        if commands and parent is not None and version == "261":
+            for cmd in ["list", "list-properties"]:
+                if cmd in commands:
+                    commands.pop(cmd, None)
         if commands:
             cls.command_names = []
             _process_cls_names(commands, cls.command_names)
