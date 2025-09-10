@@ -460,7 +460,7 @@ class SlurmLauncher:
         launch_cmd += _build_journal_argument(
             self._argvals["topy"], self._argvals["journal_file_names"]
         )
-        launch_cmd += ' --setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
+        launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
