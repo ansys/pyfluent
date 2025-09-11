@@ -44,14 +44,14 @@ You can also launch the UI for a specific subset of settings:
 Features
 --------
 
-* **Expandable sections** – Browse the hierarchy of settings
+* **Expandable sections**: Browse the hierarchy of settings
   objects by expanding and collapsing sections.
-* **Path display** – Each expanded section shows its fully qualified path
+* **Path display**: Each expanded section shows its fully qualified path
   for easy reuse in scripts.
-* **Interactive fields** – Parameters can be edited directly from the UI.
-* **Flexible scope** – Start at the root (``solver.settings``) or
+* **Interactive fields**: Parameters can be edited directly from the UI.
+* **Flexible scope**: Start at the root (``solver.settings``) or
   any branch of the settings tree.
-* **Multiple environments** –
+* **Multiple environments**:
   - Web mode for standalone Python scripts.
   - Inline mode inside Jupyter Notebooks.
 
