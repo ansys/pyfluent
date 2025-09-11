@@ -580,7 +580,7 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     ].arguments.edge_label_list = ["airfoil-te"]
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
-    ].arguments.add_child_and_update(defer_update=False)
+    ].add_child_and_update(defer_update=False)
 
     two_dim_mesh.task_object.add_local_sizing_wtm[
         "Add Local Sizing"
