@@ -1,4 +1,4 @@
-.. _ref_interactive_ui:
+.. _ref_ui:
 
 Interactive Settings UI
 =======================
@@ -24,7 +24,7 @@ Import the ``ui`` function and pass in a settings object:
 .. code-block:: python
 
    import ansys.fluent.core as pyfluent
-   from ansys.fluent.core.interactive import ui
+   from ansys.fluent.core.ui import ui
 
    solver = pyfluent.launch_fluent()
 
