@@ -31,18 +31,18 @@ try:
     import param
 except ModuleNotFoundError as exc:
     raise ModuleNotFoundError(
-        "Missing dependencies, use 'pip install ansys-fluent-core[interactive]' to install them."
+        "Missing dependencies, use 'pip install ansys-fluent-core[ui]' to install them."
     ) from exc
 
-from ansys.fluent.core.interactive.utils import (
-    _parse_path,
-    _render_widget_from_props_generic,
-    _safe_get_properties,
-)
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
     Group,
     NamedObject,
+)
+from ansys.fluent.core.ui.utils import (
+    _parse_path,
+    _render_widget_from_props_generic,
+    _safe_get_properties,
 )
 
 _path_backup_dict = {}

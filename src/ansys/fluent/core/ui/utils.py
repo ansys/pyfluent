@@ -22,7 +22,6 @@
 
 """Utilities methods for ui rendering."""
 
-from ansys.fluent.core.interactive import in_jupyter
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
     Boolean,
@@ -34,6 +33,7 @@ from ansys.fluent.core.solver.flobject import (
     String,
     StringList,
 )
+from ansys.fluent.core.ui import in_jupyter
 
 
 def _parse_path(settings_obj):

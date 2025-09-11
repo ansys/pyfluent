@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Public exposure of interactive UI for PyFluent."""
+"""Public exposure of ui UI for PyFluent."""
 
 
 def in_jupyter():
@@ -34,19 +34,19 @@ def in_jupyter():
 
 
 if in_jupyter():
-    from ansys.fluent.core.interactive.jupyter_version import (
+    from ansys.fluent.core.ui.jupyter_ui import (
         set_auto_refresh,
         settings_ui,
     )
 else:
-    from ansys.fluent.core.interactive.standalone_web_version import (  # noqa: F401
+    from ansys.fluent.core.ui.standalone_web_ui import (  # noqa: F401
         build_settings_view,
         set_auto_refresh,
     )
 
 
 def ui(settings_obj):
-    """PyFluent interactive UI wrapper."""
+    """PyFluent ui UI wrapper."""
     if in_jupyter():
         import IPython
         from IPython.display import display

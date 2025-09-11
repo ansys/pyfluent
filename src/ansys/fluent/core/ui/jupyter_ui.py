@@ -20,9 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Render interactive UI in Jupyter notebook."""
+"""Render ui UI in Jupyter notebook."""
 
-from ansys.fluent.core.interactive.utils import (
+from ansys.fluent.core.ui.utils import (
     _parse_path,
     _render_widget_from_props_generic,
     _safe_get_properties,
@@ -32,7 +32,7 @@ try:
     import ipywidgets as widgets
 except ModuleNotFoundError as exc:
     raise ModuleNotFoundError(
-        "Missing dependencies, use 'pip install ansys-fluent-core[interactive-jupyter]' to install them."
+        "Missing dependencies, use 'pip install ansys-fluent-core[ui-jupyter]' to install them."
     ) from exc
 
 from ansys.fluent.core.solver.flobject import (
@@ -153,7 +153,7 @@ def _command_ui(func, props):
 
 
 def settings_ui(obj, indent=0):
-    """Render settings objects into interactive graphics."""
+    """Render settings objects into ui graphics."""
     props = _safe_get_properties(obj)
     if isinstance(obj, (Group, NamedObject)):
         if isinstance(obj, Group):
