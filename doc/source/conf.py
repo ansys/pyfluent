@@ -302,3 +302,8 @@ def skip(app, what, name, obj, would_skip, options):
 def setup(app):
     """Setup function for Sphinx builder."""
     app.connect("autodoc-skip-member", skip)
+
+# PyAnsys tags configuration
+html_context = {
+    "pyansys_tags": ['Fluids']
+}
