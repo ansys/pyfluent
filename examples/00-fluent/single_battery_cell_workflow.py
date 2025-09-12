@@ -45,17 +45,14 @@ Single Battery Cell Using MSMD Battery Model Simulation
 import os
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import FluentMode, Precision, UIMode, examples
+from ansys.fluent.core import FluentMode, Precision, examples
 
 #######################################################################################
 # Launch Fluent session
 # =====================================================================================
 # Launch a Fluent solver session with required parameters
 solver = pyfluent.launch_fluent(
-    precision=Precision.DOUBLE,
-    processor_count=4,
-    mode=FluentMode.SOLVER,
-    ui_mode=UIMode.GUI,
+    precision=Precision.DOUBLE, processor_count=4, mode=FluentMode.SOLVER
 )
 
 #######################################################################################
@@ -335,7 +332,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_5.png")
 # Save case file for ROM simulation
 solver.settings.file.write_case(file_name="unit_battery.cas.h5")
 # Save case and data for short circuit simulation
-solver.settings.file.write_case_data(file_name=" ntgk")  # Save case data
+solver.settings.file.write_case_data(file_name="ntgk")  # Save case data
 
 # %%
 # .. image:: ../../_static/Single_Battery_Cell_1.png
@@ -535,7 +532,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_9.png")
 #    :alt: Negative Current Vector Plot
 # Negative current vector plot after short circuit.
 
-vector_positive = vectors.create("vector_positive_current")
+vector_positive = vector.create("vector_positive_current")
 vector_positive.vector_field = "current-density-jp"
 vector_positive.field = "current-magnitude"
 vector_positive.surfaces_list = [

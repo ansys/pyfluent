@@ -80,6 +80,7 @@ from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
 import ansys.units
+from ansys.units import VariableDescriptor
 
 from . import _docstrings
 from ..pyfluent_warnings import warning_for_fluent_dev_version
@@ -676,7 +677,19 @@ class Textual(Property):
             Either str or VariableDescriptor.
         kwargs : Any
             Keyword arguments.
+
+        Raises
+        ------
+        TypeError
+            If state is not a string.
         """
+        allowed_types = (str, VariableDescriptor)
+
+        if not isinstance(state, allowed_types):
+            expected = " or ".join(t.__name__ for t in allowed_types)
+            raise TypeError(
+                f"Expected state to be {expected}, got {type(state).__name__}."
+            )
         return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 

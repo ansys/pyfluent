@@ -34,6 +34,7 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 logger = logging.getLogger("pyfluent.general")
 
 
+# TODO: Refactor 'all_deprecators' to remove boilerplate code from implementation
 def all_deprecators(
     deprecate_arg_mappings,
     data_type_converter,

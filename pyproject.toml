@@ -41,6 +41,8 @@ include = ["src/ansys/fluent/core/generated/"]
 
 [project.optional-dependencies]
 reader = ["h5py==3.14.0"]
+ui-jupyter = ["ipywidgets"]
+ui = ["panel"]
 tests = [
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
@@ -62,6 +64,7 @@ docs = [
     "sphinx-gallery==0.19.0",
     "sphinx-notfound-page==1.1.0",
     "sphinxcontrib-websupport==2.0.0",
+    "sphinx_design==0.6.1",
     "sphinxemoji==0.3.1",
     "sphinx-toggleprompt==0.6.0",
     "autodocsumm==0.2.14",
