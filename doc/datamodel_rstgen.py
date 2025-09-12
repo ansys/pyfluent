@@ -16,6 +16,7 @@ def generate_meshing_datamodels():
         "pm_file_management",
         "preferences",
         "workflow",
+        "meshing_workflow",
     ]
     for meshing_datamodel in meshing_datamodels:
         try:
