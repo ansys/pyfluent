@@ -38,7 +38,7 @@ jobs:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -54,7 +54,7 @@ jobs:
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -156,6 +156,11 @@ jobs:
       - name: Execute single_battery_cell_workflow.py
         run: |
           python examples/00-fluent/single_battery_cell_workflow.py
+
+      - name: Execute steady_vortex.py
+        run: |
+          python examples/00-fluent/steady_vortex.py
+
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
