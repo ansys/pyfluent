@@ -303,7 +303,6 @@ def setup(app):
     """Setup function for Sphinx builder."""
     app.connect("autodoc-skip-member", skip)
 
+
 # PyAnsys tags configuration
-html_context = {
-    "pyansys_tags": ['Fluids']
-}
+html_context = {"pyansys_tags": ["Fluids"]}
