@@ -34,6 +34,11 @@ except ModuleNotFoundError as exc:
         "Missing dependencies, use 'pip install ansys-fluent-core[ui]' to install them."
     ) from exc
 
+from ansys.fluent.core.services.datamodel_se import (
+    PyCommand,
+    PyMenu,
+    PyNamedObjectContainer,
+)
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
     Group,
@@ -255,8 +260,14 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
         else:
             command_names = obj.command_names
             child_names = list(obj) + command_names
+    elif isinstance(obj, (PyMenu, PyNamedObjectContainer)):
+        child_names = list(obj())
+        command_names = []
+        # for item in child_names:
+        #     if isinstance(getattr(obj, item), PyCommand):
+        #         command_names.append(item)
     else:
-        if isinstance(obj, BaseCommand):
+        if isinstance(obj, (BaseCommand, PyCommand)):
             return _command_view(obj, props) if props["is_active"] else pn.pane.HTML("")
         else:
             return _param_view(obj, props) if props["is_active"] else pn.pane.HTML("")
@@ -269,7 +280,10 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
             try:
                 child_obj = getattr(parent, name)
             except AttributeError:
-                child_obj = parent[name]
+                try:
+                    child_obj = parent[name]
+                except TypeError:
+                    child_obj = getattr(parent, name.split(":")[0])[name.split(":")[-1]]
             return _settings_view(child_obj, lvl)
 
         # Each child gets its own one-item accordion (mirrors your ipywidgets UX)

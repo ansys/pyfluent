@@ -22,6 +22,7 @@
 
 """Utilities methods for ui rendering."""
 
+from ansys.fluent.core.services.datamodel_se import PyNumerical, PyTextual
 from ansys.fluent.core.solver.flobject import (
     BaseCommand,
     Boolean,
@@ -133,9 +134,9 @@ def _render_widget_from_props_generic(
             return widget_map["bool"](bool(settings_val))
         elif isinstance(settings_obj, Integer):
             return widget_map["int"](int(settings_val))
-        elif isinstance(settings_obj, Real):
+        elif isinstance(settings_obj, (Real, PyNumerical)):
             return widget_map["float"](float(settings_val))
-        elif isinstance(settings_obj, String):
+        elif isinstance(settings_obj, (String, PyTextual)):
             if allowed:
                 options = [str(v) for v in allowed]
                 val = str(settings_val)
