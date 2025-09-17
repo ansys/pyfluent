@@ -66,10 +66,9 @@ def _get_file_url(file_name: str, directory: str | None = None) -> str:
     """Get file URL."""
     if directory:
         return (
-            "https://github.com/ansys/example-data/raw/master/"
-            f"{directory}/{file_name}"
+            "https://github.com/ansys/example-data/raw/main/" f"{directory}/{file_name}"
         )
-    return f"https://github.com/ansys/example-data/raw/master/{file_name}"
+    return f"https://github.com/ansys/example-data/raw/main/{file_name}"
 
 
 def _retrieve_file(
