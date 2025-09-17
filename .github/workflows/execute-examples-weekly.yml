@@ -157,6 +157,10 @@ jobs:
         run: |
           python examples/00-fluent/single_battery_cell_workflow.py
 
+      - name: Execute steady_vortex.py
+        run: |
+          python examples/00-fluent/steady_vortex.py
+
       - name: Execute fsi_1way_workflow.py
         run: |
           python examples/00-fluent/fsi_1way_workflow.py

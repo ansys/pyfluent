@@ -30,15 +30,21 @@ Modeling One-Way Fluid-Structure Interaction
 # Objective
 # ---------
 #
-# This tutorial simulates turbulent airflow through a
-# cylindrical test chamber containing a steel probe and to analyze the resulting
-# structural deformation of the probe due to aerodynamic forces. Since the expected
-# deformation is small and does not significantly influence the overall flow field,
-# a one-way fluid–structure interaction (FSI) approach is used. In this intrinsic FSI
-# setup, the fluid flow is solved first, and the resulting pressure and
-# shear forces are transferred to an internal structural solver to compute the probe's
-# deformation. This one-way coupling improves computational efficiency while
-# remaining accurate for cases where structural feedback on the flow is negligible.
+# This example models turbulent airflow through a cylindrical test chamber
+# that contains a steel probe. The airflow generates aerodynamic forces on
+# the probe, causing it to deform. In this case, the deformation is expected
+# to be small compared with the overall flow field. Because the probe’s motion
+# does not significantly alter the airflow, we can treat the problem using
+# a one-way fluid–structure interaction (FSI) approach.
+#
+# In a one-way FSI analysis, the fluid flow is solved first and the
+# resulting forces are transferred to the structural model. The
+# structural response is then computed independently, without feeding
+# back into the fluid solution. This contrasts with a two-way FSI
+# analysis, where structural deformation and fluid flow are solved
+# in a fully coupled manner. The one-way approach is computationally
+# more efficient and appropriate when structural feedback on the flow
+# can be neglected.
 
 # %%
 # Problem Description
