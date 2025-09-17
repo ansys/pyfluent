@@ -125,21 +125,21 @@ To launch Fluent from Python, use the ``launch_fluent`` function:
 
 Basic usage
 ~~~~~~~~~~~
-You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
+The ``solver_session`` interface provides a convenient way to interact with Fluent:
 
 .. code:: python
 
-  solver_session.tui.file.read_case('elbow.cas.h5')
-  solver_session.tui.define.models.unsteady_2nd_order("yes")
-  solver_session.tui.solve.initialize.initialize_flow()
-  solver_session.tui.solve.dual_time_iterate(2, 3)
+  solver_session.settings.file.read_case(file_name="elbow.cas.h5")
+  solver_session.settings.setup.general.solver.time = "unsteady-2nd-order"
+  solver_session.settings.solution.initialization.hybrid_initialize()
+  solver_session.settings.solution.run_calculation.dual_time_iterate(
+      time_step_count=2, max_iter_per_step=3
+  )
 
-You can also install and use these PyFluent libraries:
+For postprocessing and visualization, you can also install:
 
-- `PyFluent Parametric <https://parametric.fluent.docs.pyansys.com/>`_, which provides
-  access to Fluent's parametric workflows.
 - `PyFluent Visualization <https://visualization.fluent.docs.pyansys.com/>`_, which
-  provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
+  enables analysis and plotting through the `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.
 
 License and acknowledgments
