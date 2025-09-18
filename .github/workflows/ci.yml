@@ -647,7 +647,7 @@ jobs:
 
       - name: Upload to Private PyPi
         run: |
-          pip install twine
+          pip install 'twine<6.2.0'
           python -m twine upload --skip-existing ./**/*.whl
           python -m twine upload --skip-existing ./**/*.tar.gz
         env:
