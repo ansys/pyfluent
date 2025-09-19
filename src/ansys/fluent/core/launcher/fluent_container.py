@@ -172,7 +172,7 @@ def configure_container_dict(
     file_transfer_service: Any | None = None,
     compose_config: ComposeConfig | None = None,
     **container_dict,
-) -> (dict, int, int, Path, bool):
+) -> (dict, int, int, Path, str, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
@@ -218,6 +218,7 @@ def configure_container_dict(
     timeout : int
     port : int
     host_server_info_file : Path
+    container_server_info_file: str
     remove_server_info_file: bool
 
     Raises
@@ -387,7 +388,6 @@ def configure_container_dict(
     logger.debug(
         f"Using server info file '{container_server_info_file}' for Fluent container."
     )
-    container_dict["container_server_info_file"] = container_server_info_file
 
     # If the 'command' had already been specified in the 'container_dict',
     # maintain other 'command' arguments but update the '-sifile' argument,
@@ -467,6 +467,7 @@ def configure_container_dict(
         timeout,
         container_grpc_port,
         host_server_info_file,
+        container_server_info_file,
         remove_server_info_file,
     )
 
@@ -527,6 +528,7 @@ def start_fluent_container(
         timeout,
         port,
         host_server_info_file,
+        container_server_info_file,
         remove_server_info_file,
     ) = container_vars
     launch_string = " ".join(config_dict["command"])
@@ -545,6 +547,7 @@ def start_fluent_container(
             compose_container = ComposeBasedLauncher(
                 compose_config=compose_config,
                 container_dict=config_dict,
+                container_server_info_file=container_server_info_file,
             )
 
             if not compose_container.check_image_exists():
