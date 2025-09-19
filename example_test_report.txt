@@ -1,0 +1,1286 @@
+PyFluent Examples Deprecation Warning Test Report
+============================================================
+
+Example: exhaust_system_settings_api.py
+Status: FAIL
+Duration: 1210.31s
+Warnings: 12
+Log file: /home/jhilton-/pyfluent/example_logs/exhaust_system_settings_api.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  Mesh is now scaled to meters.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  Checking non-positive or too small area.
+'mesh' is deprecated. Use 'settings.mesh' instead.
+
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t2 -gu -driver null -meshing -sifile=/tmp/serverinfo-svx6b7it.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -meshing -sifile=/tmp/serverinfo-svx6b7it.txt -nm (fluent "3ddp -peth  -host -r26.1.0 -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmpgc4_aa9x/fluent-20251002-112152-126332.trn".
+Auto-Transcript Start Time:  11:21:52, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -peth -host -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:34487:45421
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:34487:45421 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t2 -peth -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "2") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t2 -peth -mpi=intel -ssh -meshing -mport 127.0.1.1:127.0.1.1:46161:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131256 -genv I_MPI_OFI_PROVIDER tcp -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 2 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic ethernet -mport 127.0.1.1:127.0.1.1:46161:0 -meshing
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-1  cdcvdu24a07  2/12  Linux-64  131763-131764  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  128399         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: ethernet
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmpgc4_aa9x/cleanup-fluent-cdcvdu24a07-128399.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>>     loading data from '/tmp/tmpgc4_aa9x/exhaust_system.fmd' ...
+    classifying 115 edge occurrences ...
+    classified 67 feature edge edges by feature angle
+    classified 0 single-connected edges as feature edge(s)
+    classified 0 multi-connected edges as fea
+... (output truncated)
+------------------------------------------------------------
+
+Example: mixing_elbow_settings_api.py
+Status: PASS
+Duration: 252.61s
+Warnings: 9
+Log file: /home/jhilton-/pyfluent/example_logs/mixing_elbow_settings_api.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 22 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t2 -gu -driver null -sifile=/tmp/serverinfo-pjpgy8ta.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-pjpgy8ta.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmph9vlpfnw/fluent-20251002-114206-141344.trn".
+Auto-Transcript Start Time:  11:42:06, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:40799:41571
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:40799:41571 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t2 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "2") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+
+*********************************************
+Info: Your license enables 4-way parallel execution.
+For faster simulations, please start the application with the appropriate parallel options.
+*********************************************
+
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t2 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:35547:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.142102 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 2 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:35547:0
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-1  cdcvdu24a07  2/12  Linux-64  142173-142174  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  141767         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmph9vlpfnw/cleanup-fluent-cdcvdu24a07-141767.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 22 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent
+... (output truncated)
+------------------------------------------------------------
+
+Example: brake.py
+Status: FAIL
+Duration: 1800.06s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/brake.py.log
+
+Full output:
+Example timed out after 1800 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t2 -gu -driver null -sifile=/tmp/serverinfo-9xa5aww3.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-9xa5aww3.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmpk7adyg03/fluent-20251002-112152-127061.trn".\nAuto-Transcript Start Time:  11:21:52, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:38335:41531\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:38335:41531 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t2 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "2") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\n\n*********************************************\nInfo: Your license enables 4-way parallel execution.\nFor faster simulations, please start the application with the appropriate parallel options.\n*********************************************\n\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t2 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:33829:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131231 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 2 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:33829:0\n\nNode 0 connecting to the Host ... connection established.\n\n-------------------------------------------------------------------------------\nID    Hostname     Core  O.S.      PID     CPU Model Name                 \n-------------------------------------------------------------------------------\nn1    cdcvdu24a07  2/12  Linux-64  131742  Intel(R) Xeon(R) Platinum 8358 \nn0*   cdcvdu24a07  1/12  Linux-64  131739  Intel(R) Xeon(R) Platinum 8358 \nhost  cdcvdu24a07        Linux-64  128477  Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\nSelected system interconnect: shared-memory\n-------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmpk7adyg03/cleanup-fluent-cdcvdu24a07-128477.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info
+... (output truncated)
+------------------------------------------------------------
+
+Example: ahmed_body_workflow.py
+Status: FAIL
+Duration: 1800.18s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/ahmed_body_workflow.py.log
+
+Full output:
+Example timed out after 1800 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -gu -driver null -meshing -sifile=/tmp/serverinfo-xfmrpvvk.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -meshing -sifile=/tmp/serverinfo-xfmrpvvk.txt -nm (fluent "3ddp -peth  -host -r26.1.0 -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmpmpt4kdhv/fluent-20251002-112152-126334.trn".\nAuto-Transcript Start Time:  11:21:52, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -peth -host -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:33767:42975\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:33767:42975 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t1 -peth -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "1") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t1 -peth -mpi=intel -ssh -meshing -mport 127.0.1.1:127.0.1.1:38003:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131246 -genv I_MPI_OFI_PROVIDER tcp -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 1 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic ethernet -mport 127.0.1.1:127.0.1.1:38003:0 -meshing\n\nNode 0 connecting to the Host ... connection established.\n\n-------------------------------------------------------------------------------\nID    Hostname     Core  O.S.      PID     CPU Model Name                 \n-------------------------------------------------------------------------------\nn0    cdcvdu24a07  1/12  Linux-64  131738  Intel(R) Xeon(R) Platinum 8358 \nhost  cdcvdu24a07        Linux-64  128397  Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\n-------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmpmpt4kdhv/cleanup-fluent-cdcvdu24a07-128397.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n>>> \nWarning: PMDB file will not be saved as the same is being imported.\n\nImporting one geom object per program-controlled and one zone per body ...\nInitializing ANSYS component system ...\nrunning Ansys.Meshing.FieldMesher.exe ...\ncreati
+... (output truncated)
+------------------------------------------------------------
+
+Example: lunar_lander_thermal.py
+Status: FAIL
+Duration: 1800.18s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/lunar_lander_thermal.py.log
+
+Full output:
+Example timed out after 1800 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t12 -gu -driver null -sifile=/tmp/serverinfo-006_gcre.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-006_gcre.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t12 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmpet6jiqdy/fluent-20251002-112152-126750.trn".\nAuto-Transcript Start Time:  11:21:52, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t12 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:45915:35523\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:45915:35523 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t12 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "12") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t12 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:33825:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131135 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 12 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:33825:0\n\nNode 0 connecting to the Host ... connection established.\n\n------------------------------------------------------------------------------------\nID     Hostname     Core   O.S.      PID            CPU Model Name                 \n------------------------------------------------------------------------------------\nn0-11  cdcvdu24a07  12/12  Linux-64  131751-131762  Intel(R) Xeon(R) Platinum 8358 \nhost   cdcvdu24a07         Linux-64  128395         Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\nSelected system interconnect: shared-memory\n------------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmpet6jiqdy/cleanup-fluent-cdcvdu24a07-128395.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 59 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"\nDone.\n\nReading from cdcvdu24a07:"/tmp/tmpet6jiqdy/lander_mesh.msh.h5" in NODE0 mode ..
+... (output truncated)
+------------------------------------------------------------
+
+Example: modeling_ablation.py
+Status: FAIL
+Duration: 103.01s
+Warnings: 8
+Log file: /home/jhilton-/pyfluent/example_logs/modeling_ablation.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -sifile=/tmp/serverinfo-rmodnp5y.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-rmodnp5y.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmp_jmcitvk/fluent-20251002-115203-149984.trn".
+Auto-Transcript Start Time:  11:52:03, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:43673:44567
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:43673:44567 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:46805:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.152021 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:46805:0
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-3  cdcvdu24a07  4/12  Linux-64  152092-152095  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  151394         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmp_jmcitvk/cleanup-fluent-cdcvdu24a07-151394.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"
+Done.
+
+Reading from cdcvdu24a07:"/tmp/tmp_jmcitvk/ablation.msh.h5" in NODE0 mode ...
+  Reading mesh ...
+Warning: reading 2 partition grid onto 4 compute node machine.
+         will auto partition.
+       48
+... (output truncated)
+------------------------------------------------------------
+
+Example: external_compressible_flow.py
+Status: PASS
+Duration: 2040.00s
+Warnings: 20
+Log file: /home/jhilton-/pyfluent/example_logs/external_compressible_flow.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  argv[6] = /tmp/tmp2ki_nmm4/FM_cdcvdu24a07_126477/options1759400532.688602126477.xml
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+  argv[6] = /tmp/tmp2ki_nmm4/FM_cdcvdu24a07_126477/options1759400583.885848126477.xml
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+    Solver cannot proceed until this is fixed.
+	/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    Solver cannot proceed until this is fixed.
+	/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+    help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -meshing -sifile=/tmp/serverinfo-tdsfas6n.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -meshing -sifile=/tmp/serverinfo-tdsfas6n.txt -nm (fluent "3ddp -peth  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmp2ki_nmm4/fluent-20251002-112152-126477.trn".
+Auto-Transcript Start Time:  11:21:52, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -peth -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:34469:33653
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:34469:33653 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -peth -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -peth -mpi=intel -ssh -meshing -mport 127.0.1.1:127.0.1.1:41453:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131239 -genv I_MPI_OFI_PROVIDER tcp -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic ethernet -mport 127.0.1.1:127.0.1.1:41453:0 -meshing
+
+Node 0 connecting to the Host ... connection established.
+
+-------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID     CPU Model Name                 
+-------------------------------------------------------------------------------
+n3    cdcvdu24a07  4/12  Linux-64  131749  Intel(R) Xeon(R) Platinum 8358 
+n2    cdcvdu24a07  3/12  Linux-64  131746  Intel(R) Xeon(R) Platinum 8358 
+n1    cdcvdu24a07  2/12  Linux-64  131743  Intel(R) Xeon(R) Platinum 8358 
+n0*   cdcvdu24a07  1/12  Linux-64  131736  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  128394  Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: ethernet
+-------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmp2ki_nmm4/cleanup-fluent-cdcvdu24a07-128394.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> 
+Warning: PMDB file will not be saved as the same is being imported.
+... (output truncated)
+------------------------------------------------------------
+
+Example: modeling_cavitation.py
+Status: PASS
+Duration: 405.85s
+Warnings: 9
+Log file: /home/jhilton-/pyfluent/example_logs/modeling_cavitation.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 2ddp -py -t4 -gu -driver null -sifile=/tmp/serverinfo-e8b8ywgj.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-e8b8ywgj.txt -nm (fluent "2ddp -pdefault  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmpc4qci_eg/fluent-20251002-115158-149705.trn".
+Auto-Transcript Start Time:  11:51:58, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 2ddp -pdefault -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:46257:45371
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/2ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:46257:45371 "(list (rpsetvar (QUOTE parallel/function) "fluent 2ddp -flux -node -r26.1.0 -t4 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:25:02 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 2ddp -flux -node -t4 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:40651:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.151583 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/2ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:40651:0
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-3  cdcvdu24a07  4/12  Linux-64  151654-151657  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  150627         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmpc4qci_eg/cleanup-fluent-cdcvdu24a07-150627.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> 
+Reading "\"| gunzip -cd \\\"/tmp/tmpc4qci_eg/cav.msh.gz\\\"\""...
+
+Buffering for file scan...
+
+    3716 nodes.
+     170 mixed wall faces, zone  3.
+Warning: Reversing 25 faces, zone  3.
+      20 mixed pressure-outlet faces, zone  4.
+Warning: Reversing 20 faces, zone  4.
+     120 mixed 
+... (output truncated)
+------------------------------------------------------------
+
+Example: species_transport.py
+Status: PASS
+Duration: 123.22s
+Warnings: 9
+Log file: /home/jhilton-/pyfluent/example_logs/species_transport.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 2ddp -py -gu -driver null -sifile=/tmp/serverinfo-xcj7bbxi.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-xcj7bbxi.txt -nm (fluent "2ddp -pdefault  -host -r26.1.0 -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmpef_sipv1/fluent-20251002-115841-157168.trn".
+Auto-Transcript Start Time:  11:58:41, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 2ddp -pdefault -host -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:43309:35871
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/2ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:43309:35871 "(list (rpsetvar (QUOTE parallel/function) "fluent 2ddp -flux -node -r26.1.0 -t1 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "1") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:25:02 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+
+*********************************************
+Info: Your license enables 4-way parallel execution.
+For faster simulations, please start the application with the appropriate parallel options.
+*********************************************
+
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 2ddp -flux -node -t1 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:45391:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.158236 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 1 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/2ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:45391:0
+
+Node 0 connecting to the Host ... connection established.
+
+-------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID     CPU Model Name                 
+-------------------------------------------------------------------------------
+n0    cdcvdu24a07  1/12  Linux-64  158307  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  157585  Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+-------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmpef_sipv1/cleanup-fluent-cdcvdu24a07-157585.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> 
+Reading "\"| gunzip -cd \\\"/tmp/tmpef_sipv1/gascomb.msh.gz\\\"\""...
+
+Buffering for file scan...
+
+    1705 nodes.
+    1615 
+... (output truncated)
+------------------------------------------------------------
+
+Example: frozen_rotor_workflow.py
+Status: FAIL
+Duration: 2400.06s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/frozen_rotor_workflow.py.log
+
+Full output:
+Example timed out after 2400 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -sifile=/tmp/serverinfo-39cah8t2.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-39cah8t2.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmp4bistyjo/fluent-20251002-112152-127267.trn".\nAuto-Transcript Start Time:  11:21:52, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:41107:34055\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:41107:34055 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:43597:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131288 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:43597:0\n\nNode 0 connecting to the Host ... connection established.\n\n-------------------------------------------------------------------------------\nID    Hostname     Core  O.S.      PID     CPU Model Name                 \n-------------------------------------------------------------------------------\nn3    cdcvdu24a07  4/12  Linux-64  131747  Intel(R) Xeon(R) Platinum 8358 \nn2    cdcvdu24a07  3/12  Linux-64  131745  Intel(R) Xeon(R) Platinum 8358 \nn1    cdcvdu24a07  2/12  Linux-64  131741  Intel(R) Xeon(R) Platinum 8358 \nn0*   cdcvdu24a07  1/12  Linux-64  131737  Intel(R) Xeon(R) Platinum 8358 \nhost  cdcvdu24a07        Linux-64  128669  Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\nSelected system interconnect: shared-memory\n-------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmp4bistyjo/cleanup-fluent-cdcvdu24a07-128669.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_i
+... (output truncated)
+------------------------------------------------------------
+
+Example: DOE_ML.py
+Status: FAIL
+Duration: 2400.15s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/DOE_ML.py.log
+
+Full output:
+Example timed out after 2400 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -sifile=/tmp/serverinfo-avod01b9.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-avod01b9.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmpw_fd5kwc/fluent-20251002-112158-128963.trn".\nAuto-Transcript Start Time:  11:21:58, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:34409:43411\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:34409:43411 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:43545:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.132442 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:43545:0\n\nNode 0 connecting to the Host ... connection established.\n\n----------------------------------------------------------------------------------\nID    Hostname     Core  O.S.      PID            CPU Model Name                 \n----------------------------------------------------------------------------------\nn0-3  cdcvdu24a07  4/12  Linux-64  132513-132516  Intel(R) Xeon(R) Platinum 8358 \nhost  cdcvdu24a07        Linux-64  132060         Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\nSelected system interconnect: shared-memory\n----------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmpw_fd5kwc/cleanup-fluent-cdcvdu24a07-132060.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 59 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"\nDone.\n\nReading from cdcvdu24a07:"/tmp/tmpw_fd5kwc/elbow.cas.h5" in NODE0 mode ...\n  Reading mesh ...\n  
+... (output truncated)
+------------------------------------------------------------
+
+Example: conjugate_heat_transfer.py
+Status: FAIL
+Duration: 2400.19s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/conjugate_heat_transfer.py.log
+
+Full output:
+Example timed out after 2400 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -meshing -sifile=/tmp/serverinfo-z6fvg8gz.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -meshing -sifile=/tmp/serverinfo-z6fvg8gz.txt -nm (fluent "3ddp -peth  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmphiy0gs16/fluent-20251002-112152-126864.trn".\nAuto-Transcript Start Time:  11:21:52, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -peth -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:39769:34497\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:39769:34497 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -peth -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -peth -mpi=intel -ssh -meshing -mport 127.0.1.1:127.0.1.1:34119:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.131223 -genv I_MPI_OFI_PROVIDER tcp -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic ethernet -mport 127.0.1.1:127.0.1.1:34119:0 -meshing\n\nNode 0 connecting to the Host ... connection established.\n\n-------------------------------------------------------------------------------\nID    Hostname     Core  O.S.      PID     CPU Model Name                 \n-------------------------------------------------------------------------------\nn3    cdcvdu24a07  4/12  Linux-64  131750  Intel(R) Xeon(R) Platinum 8358 \nn2    cdcvdu24a07  3/12  Linux-64  131748  Intel(R) Xeon(R) Platinum 8358 \nn1    cdcvdu24a07  2/12  Linux-64  131744  Intel(R) Xeon(R) Platinum 8358 \nn0*   cdcvdu24a07  1/12  Linux-64  131740  Intel(R) Xeon(R) Platinum 8358 \nhost  cdcvdu24a07        Linux-64  128396  Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\nSelected system interconnect: ethernet\n-------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmphiy0gs16/cleanup-fluent-cdcvdu24a07-128396.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 60 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 
+... (output truncated)
+------------------------------------------------------------
+
+Example: steady_vortex.py
+Status: FAIL
+Duration: 110.62s
+Warnings: 8
+Log file: /home/jhilton-/pyfluent/example_logs/steady_vortex.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -gu -driver null -sifile=/tmp/serverinfo-cbysfdo0.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-cbysfdo0.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmpkqbrx1gb/fluent-20251002-120042-159015.trn".
+Auto-Transcript Start Time:  12:00:42, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:32851:39889
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:32851:39889 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t1 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "1") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+
+*********************************************
+Info: Your license enables 4-way parallel execution.
+For faster simulations, please start the application with the appropriate parallel options.
+*********************************************
+
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t1 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:45469:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.159677 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 1 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:45469:0
+
+Node 0 connecting to the Host ... connection established.
+
+-------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID     CPU Model Name                 
+-------------------------------------------------------------------------------
+n0    cdcvdu24a07  1/12  Linux-64  159748  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  159294  Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+-------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmpkqbrx1gb/cleanup-fluent-cdcvdu24a07-159294.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"
+Done.
+
+Reading from cdcvdu24a07:"/tmp/tmpkqbr
+... (output truncated)
+------------------------------------------------------------
+
+Example: parametric_static_mixer_1.py
+Status: PASS
+Duration: 740.27s
+Warnings: 9
+Log file: /home/jhilton-/pyfluent/example_logs/parametric_static_mixer_1.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t2 -gu -driver null -sifile=/tmp/serverinfo-womtdwf8.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-womtdwf8.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmpl9rt_hz7/fluent-20251002-115157-149422.trn".
+Auto-Transcript Start Time:  11:51:57, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t2 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:33799:39749
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:33799:39749 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t2 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "2") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+
+*********************************************
+Info: Your license enables 4-way parallel execution.
+For faster simulations, please start the application with the appropriate parallel options.
+*********************************************
+
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t2 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:42347:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.151001 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 2 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:42347:0
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-1  cdcvdu24a07  2/12  Linux-64  151193-151194  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  150422         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmpl9rt_hz7/cleanup-fluent-cdcvdu24a07-150422.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent
+... (output truncated)
+------------------------------------------------------------
+
+Example: tyler_sofrin_modes.py
+Status: PASS
+Duration: 303.33s
+Warnings: 10
+Log file: /home/jhilton-/pyfluent/example_logs/tyler_sofrin_modes.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  Done.
+'solution' is deprecated. Use 'settings.solution' instead.
+
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+    warnings.warn(
+/home/jhilton-/pyfluent/examples/00-fluent/tyler_sofrin_modes.py:317: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -sifile=/tmp/serverinfo-vw7rdwy_.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-vw7rdwy_.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmp5j0dw0n6/fluent-20251002-120159-160359.trn".
+Auto-Transcript Start Time:  12:01:59, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:38677:43051
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:38677:43051 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:42649:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.161352 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:42649:0
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-3  cdcvdu24a07  4/12  Linux-64  161435-161438  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  160885         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmp5j0dw0n6/cleanup-fluent-cdcvdu24a07-160885.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"
+Done.
+
+Reading from cdcvdu24a07:"/tmp/tmp5j0dw0n6/axial_comp_fullWheel_DFT_23R2.cas.h5" in NODE0 mode ...
+  Reading mesh ...
+Warning: reading 14 partition grid onto 4 compute node machine.
+         will aut
+... (output truncated)
+------------------------------------------------------------
+
+Example: single_battery_cell_workflow.py
+Status: PASS
+Duration: 1153.65s
+Warnings: 9
+Log file: /home/jhilton-/pyfluent/example_logs/single_battery_cell_workflow.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+A newer syntax is available to perform the last operation:
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -t4 -gu -driver null -sifile=/tmp/serverinfo-lgainq4g.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -sifile=/tmp/serverinfo-lgainq4g.txt -nm (fluent "3ddp -pdefault  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmpvzplu68j/fluent-20251002-115555-155404.trn".
+Auto-Transcript Start Time:  11:55:55, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -pdefault -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:38873:39351
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:38873:39351 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t4 -pdefault -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t4 -pdefault -mpi=intel -ssh -mport 127.0.1.1:127.0.1.1:43469:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.156027 -genv I_MPI_FABRICS shm -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic shmem -mport 127.0.1.1:127.0.1.1:43469:0
+
+Node 0 connecting to the Host ... connection established.
+
+----------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID            CPU Model Name                 
+----------------------------------------------------------------------------------
+n0-3  cdcvdu24a07  4/12  Linux-64  156098-156101  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  155694         Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+Selected system interconnect: shared-memory
+----------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmpvzplu68j/cleanup-fluent-cdcvdu24a07-155694.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"
+Done.
+
+Reading from cdcvdu24a07:"/tmp/tmpvzplu68j/unit_battery.msh.h5" in NODE0 mode ...
+  Reading mesh ...
+        1032 cells,     3 cell zones ...
+            912 hexahedral cells,  zone id: 2
+           
+... (output truncated)
+------------------------------------------------------------
+
+Example: mixing_tank_workflow.py
+Status: FAIL
+Duration: 1972.51s
+Warnings: 21
+Log file: /home/jhilton-/pyfluent/example_logs/mixing_tank_workflow.py.log
+
+Warnings detected:
+  WARNING: Rank:0 Machine cdcvdu24a07 has 23 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+  Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  argv[6] = /tmp/tmp4ya1et1x/FM_cdcvdu24a07_146603/options1759402004.561779146603.xml
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+  argv[6] = /tmp/tmp4ya1et1x/FM_cdcvdu24a07_146603/options1759402014.966314146603.xml
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+  Mesh is now scaled to meters.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  Mesh is now scaled to meters.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  >>> import warnings
+>>> warnings.filterwarnings("ignore", category=DeprecatedSettingWarning)
+Fast-loading "/home/ANSYSDev/v261/fluent/fluent26.1.0/addons/afd/lib/hdfio.bin"
+  STDERR:
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/utils/deprecate.py:73: DeprecationWarning: Call to deprecated function (or staticmethod) launch_fluent. ('show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.) -- Deprecated since version v0.22.dev0.
+  return decorated(*args, **kwargs)
+    return decorated(*args, **kwargs)
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+    self.field_info,
+/home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+  /home/jhilton-/pyfluent/.venv/lib/python3.12/site-packages/ansys/fluent/core/pyfluent_warnings.py:52: FluentDevVersionWarning: ⚠️ Warning: You are using PyFluent with an unreleased or development version of Fluent.
+Compatibility is not guaranteed, and unexpected behavior may occur. Please use a released version of Fluent that is officially supported by this version of PyFluent.
+  warnings.warn(
+    warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+    help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:207: DeprecationWarning: invalid escape sequence '\['
+  """
+    """
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/python/../Ansys/TGrid/CADReaders.py:2580: DeprecationWarning: invalid escape sequence '\.'
+  help="the filename regular expression to be applied, e.g. '.*\.(stl|STL|CATProduct)'", metavar="REGEX")
+
+Full output:
+STDOUT:
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -py -gu -driver null -meshing -sifile=/tmp/serverinfo-b077vhmu.txt -nm
+/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -meshing -sifile=/tmp/serverinfo-b077vhmu.txt -nm (fluent "3ddp -peth  -host -r26.1.0 -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")
+
+Opening input/output transcript to file "/tmp/tmp4ya1et1x/fluent-20251002-114620-146603.trn".
+Auto-Transcript Start Time:  11:46:20, 02 Oct 2025 
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -peth -host -t1 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:42505:35937
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:42505:35937 "(list (rpsetvar (QUOTE parallel/function) "fluent 3ddp -flux -node -r26.1.0 -t1 -peth -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "1") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+
+              Welcome to ANSYS Fluent 2026 R1
+
+              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Sep 30 2025 00:24:59 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop
+ 
+Connected License Server List:	1055@cdc5winlicense1.win.ansys.com
+Host spawning Node 0 on machine "cdcvdu24a07" (unix).
+/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3ddp -flux -node -t1 -peth -mpi=intel -ssh -meshing -mport 127.0.1.1:127.0.1.1:33331:0
+Starting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.147439 -genv I_MPI_OFI_PROVIDER tcp -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 1 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3ddp_node/fluent_mpi.26.1.0 node -mpiw intel -pic ethernet -mport 127.0.1.1:127.0.1.1:33331:0 -meshing
+
+Node 0 connecting to the Host ... connection established.
+
+-------------------------------------------------------------------------------
+ID    Hostname     Core  O.S.      PID     CPU Model Name                 
+-------------------------------------------------------------------------------
+n0    cdcvdu24a07  1/12  Linux-64  147511  Intel(R) Xeon(R) Platinum 8358 
+host  cdcvdu24a07        Linux-64  147089  Intel(R) Xeon(R) Platinum 8358 
+
+MPI Option Selected: intel
+-------------------------------------------------------------------------------
+
+Cleanup script file is /tmp/tmp4ya1et1x/cleanup-fluent-cdcvdu24a07-147089.sh
+WARNING: Rank:0 Machine cdcvdu24a07 has 23 % of RAM filled with file buffer caches.
+This can cause potential performance issues. Please use -cflush flag to flush the cache. 
+
+
+WARNING:
+This is a prototype version that has not yet been tested and validated.
+ANSYS, Inc. makes no commitment to resolve defects reported against this
+prototype version.  However, your feedback will help us improve the overall
+quality of the product.
+
+Graphics driver currently in use: null
+Information: The server has started and is running.
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: 'DATAMODEL_USE_STATE_CACHE' is deprecated, use 'config.datamodel_use_state_cache' instead.
+  warnings.warn(
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.
+  self.field_info,
+>>> 
+Warning: PMDB file will not be saved as the same is being imported.
+
+Importing one geom object per program-controlled and one zone per body ...
+Initializing ANSYS component system ...
+running Ansys.Meshing.FieldMesher.exe ...
+creating FMComponent instance ...
+querying IFieldMesher interface ...
+AnsysFieldMesher build date: Sep 30 202
+... (output truncated)
+------------------------------------------------------------
+
+Example: radiation_headlamp.py
+Status: FAIL
+Duration: 2400.11s
+Warnings: 0
+Log file: /home/jhilton-/pyfluent/example_logs/radiation_headlamp.py.log
+
+Full output:
+Example timed out after 2400 seconds
+
+STDOUT:
+b'/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3d -py -t4 -gu -driver null -meshing -sifile=/tmp/serverinfo-z2b6y0_o.txt -nm\n/home/ANSYSDev/v261/fluent/fluent26.1.0/cortex/lnamd64/cortex.26.1.0 -f fluent -py -gu -meshing -sifile=/tmp/serverinfo-z2b6y0_o.txt -nm (fluent "3d -peth  -host -r26.1.0 -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh")\n\nOpening input/output transcript to file "/tmp/tmpjnajpzc_/fluent-20251002-115339-152826.trn".\nAuto-Transcript Start Time:  11:53:39, 02 Oct 2025 \n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3d -peth -host -t4 -mpi=intel -path/home/ANSYSDev/v261/fluent -ssh -cx cdcvdu24a07.ansys.com:37435:38995\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3d_host/fluent.26.1.0 host -cx cdcvdu24a07.ansys.com:37435:38995 "(list (rpsetvar (QUOTE parallel/function) "fluent 3d -flux -node -r26.1.0 -t4 -peth -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "4") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/home/ANSYSDev/v261/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"\n\n              Welcome to ANSYS Fluent 2026 R1\n\n              Copyright 1987-2026 ANSYS, Inc. All Rights Reserved.\n              Unauthorized use, distribution or duplication is prohibited.\n              This product is subject to U.S. laws governing export and re-export.\n              For full Legal Notice, see documentation.\n\nBuild Time: Sep 30 2025 00:25:01 EDT  Build Id: 158  Revision: 2a2d623d67  Branch: develop\n \nConnected License Server List:\t1055@cdc5winlicense1.win.ansys.com\nHost spawning Node 0 on machine "cdcvdu24a07" (unix).\n/home/ANSYSDev/v261/fluent/fluent26.1.0/bin/fluent -r26.1.0 3d -flux -node -t4 -peth -mpi=intel -ssh -meshing -mport 127.0.1.1:127.0.1.1:39123:0\nStarting /home/ANSYSDev/v261/fluent/fluent26.1.0/multiport/mpi/lnamd64/intel/bin/mpirun -f /tmp/fluent-appfile.jhilton-.153370 -genv I_MPI_OFI_PROVIDER tcp -genv FLUENT_ARCH lnamd64 -genv I_MPI_DEBUG 0 -genv I_MPI_ADJUST_GATHERV 3 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_PLATFORM auto -genv PYTHONHOME /home/ANSYSDev/v261/fluent/fluent26.1.0/../../commonfiles/CPython/3_10/linx64/Release/python -genv FLUENT_PROD_DIR /home/ANSYSDev/v261/fluent/fluent26.1.0 -genv FLUENT_AFFINITY 0 -genv I_MPI_PIN enable -genv KMP_AFFINITY disabled -n 4 /home/ANSYSDev/v261/fluent/fluent26.1.0/lnamd64/3d_node/fluent_mpi.26.1.0 node -mpiw intel -pic ethernet -mport 127.0.1.1:127.0.1.1:39123:0 -meshing\n\nNode 0 connecting to the Host ... connection established.\n\n----------------------------------------------------------------------------------\nID    Hostname     Core  O.S.      PID            CPU Model Name                 \n----------------------------------------------------------------------------------\nn0-3  cdcvdu24a07  4/12  Linux-64  153441-153444  Intel(R) Xeon(R) Platinum 8358 \nhost  cdcvdu24a07        Linux-64  153023         Intel(R) Xeon(R) Platinum 8358 \n\nMPI Option Selected: intel\nSelected system interconnect: ethernet\n----------------------------------------------------------------------------------\n\nCleanup script file is /tmp/tmpjnajpzc_/cleanup-fluent-cdcvdu24a07-153023.sh\nWARNING: Rank:0 Machine cdcvdu24a07 has 20 % of RAM filled with file buffer caches.\nThis can cause potential performance issues. Please use -cflush flag to flush the cache. \n\n\nWARNING:\nThis is a prototype version that has not yet been tested and validated.\nANSYS, Inc. makes no commitment to resolve defects reported against this\nprototype version.  However, your feedback will help us improve the overall\nquality of the product.\n\nGraphics driver currently in use: null\nInformation: The server has started and is running.\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/__init__.py:152: PyFluentDeprecationWarning: \'DATAMODEL_USE_STATE_CACHE\' is deprecated, use \'config.datamodel_use_state_cache\' instead.\n  warnings.warn(\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:513: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n/home/ANSYSDev/v261/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core/session.py:523: DeprecationWarning: Call to deprecated function (or staticmethod) field_info. (Use relevant ``field_data`` methods..) -- Deprecated since version 0.34.0.\n  self.field_info,\n>>> \nWarning: PMDB file will not be saved as the same is being imported.\n\nImporting one geom object per program-controlled and one zone per body ...\nInitializing ANSYS component s
+... (output truncated)
+------------------------------------------------------------
+
