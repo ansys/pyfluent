@@ -28,6 +28,7 @@ from pathlib import Path
 import re
 import shutil
 import zipfile
+from typing import TypeAlias
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
@@ -71,10 +72,12 @@ def _get_file_url(file_name: str, directory: str | None = None) -> str:
     return f"https://github.com/ansys/example-data/raw/main/{file_name}"
 
 
+PathType: TypeAlias = "os.PathLike[str | bytes] | str | bytes"
+
 def _retrieve_file(
     url: str,
     file_name: str,
-    save_path: str | None = None,
+    save_path: PathType | None = None,
     return_without_path: bool | None = False,
 ) -> str:
     """Download specified file from specified URL."""
@@ -121,7 +124,7 @@ def _retrieve_file(
 def download_file(
     file_name: str,
     directory: str | None = None,
-    save_path: str | None = None,
+    save_path: PathType | None = None,
     return_without_path: bool | None = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
