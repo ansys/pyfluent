@@ -353,8 +353,6 @@ def configure_container_dict(
                 "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
             }
         )
-        if compose_config.is_compose:
-            container_dict["environment"]["FLUENT_SERVER_INFO_PERMISSION_SYSTEM"] = "1"
 
     if "labels" not in container_dict:
         test_name = pyfluent.config.test_name
@@ -389,6 +387,7 @@ def configure_container_dict(
     logger.debug(
         f"Using server info file '{container_server_info_file}' for Fluent container."
     )
+    container_dict["container_server_info_file"] = container_server_info_file
 
     # If the 'command' had already been specified in the 'container_dict',
     # maintain other 'command' arguments but update the '-sifile' argument,

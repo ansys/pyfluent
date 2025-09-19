@@ -59,13 +59,24 @@ logger = logging.getLogger("pyfluent.general")
 
 
 def _parse_server_info_file(file_name: str):
-    with open(file_name, encoding="utf-8") as f:
-        lines = f.readlines()
-    ip_and_port = lines[0].strip().split(":")
-    ip = ip_and_port[0]
-    port = int(ip_and_port[1])
-    password = lines[1].strip()
-    return ip, port, password
+    max_retries = 5
+    retry_delay = 1  # seconds
+
+    for attempt in range(max_retries):
+        try:
+            with open(file_name, encoding="utf-8") as f:
+                lines = f.readlines()
+            ip_and_port = lines[0].strip().split(":")
+            ip = ip_and_port[0]
+            port = int(ip_and_port[1])
+            password = lines[1].strip()
+            return ip, port, password
+        except PermissionError as e:
+            if attempt < max_retries - 1:
+                time.sleep(retry_delay)
+                continue
+            else:
+                raise RuntimeError(f"Failed to parse server info file: {e}") from e
 
 
 class _IsDataValid:
