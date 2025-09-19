@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 import time
 from typing import Iterable
 
@@ -27,6 +28,8 @@ import pytest
 
 from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.workflow import camel_to_snake_case
+
+os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 @pytest.mark.nightly
@@ -1095,7 +1098,10 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.add_local_sizing.add_child_to_task()
     watertight.add_local_sizing()
 
-    watertight.create_volume_mesh()
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        watertight.create_volume_mesh()
+    else:
+        watertight.create_volume_mesh_wtm()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
     time.sleep(2)
@@ -1594,7 +1600,10 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     assert len(fault_tolerant.task_names()) == len(set(fault_tolerant.task_names()))
 
     # APIName from fdl file
-    assert "create_volume_mesh" in fault_tolerant.task_names()
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        assert "create_volume_mesh" in fault_tolerant.task_names()
+    else:
+        assert "create_volume_mesh_ftm" in fault_tolerant.task_names()
     assert "generate_volume_mesh" in fault_tolerant.task_names()
     assert "generate_surface_mesh" in fault_tolerant.task_names()
 
