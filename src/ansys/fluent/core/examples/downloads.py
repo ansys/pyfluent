@@ -27,8 +27,8 @@ import os
 from pathlib import Path
 import re
 import shutil
-import zipfile
 from typing import TypeAlias
+import zipfile
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
