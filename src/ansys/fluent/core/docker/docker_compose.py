@@ -32,7 +32,7 @@ from .utils import get_ghcr_fluent_image_name
 class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
-    def __init__(self, compose_config, container_dict):
+    def __init__(self, compose_config, container_dict, container_server_info_file):
         from ansys.fluent.core import config
 
         self._compose_config = compose_config
@@ -47,7 +47,7 @@ class ComposeBasedLauncher:
         self._container_source.remove("compose")
 
         container_dict["command"].append(
-            f"""-command="(system \\\"chown {os.getuid()}:{os.getgid()} {container_dict["container_server_info_file"]}\\\")" """
+            f"""-command="(system \\\"chown {os.getuid()}:{os.getgid()} {container_server_info_file}\\\")" """
         )
 
         self._compose_file = self._get_compose_file(container_dict)
