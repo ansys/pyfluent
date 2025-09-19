@@ -20,7 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
 import time
 from typing import Iterable
 
@@ -28,8 +27,6 @@ import pytest
 
 from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.workflow import camel_to_snake_case
-
-os.environ["PYFLUENT_FLUENT_ROOT"] = r"C:\ANSYSDev\ANSYSDev\vNNN\fluent"
 
 
 @pytest.mark.nightly
@@ -1242,6 +1239,10 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        _entry = "create_volume_mesh"
+    else:
+        _entry = "create_volume_mesh_wtm"
     assert set(watertight.task_names()) == {
         "import_geometry",
         "create_surface_mesh",
@@ -1252,7 +1253,7 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
         "create_regions",
         "update_regions",
         "add_boundary_layer",
-        "create_volume_mesh",
+        _entry,
         "add_local_sizing",
         "import_boi_geometry",
         "import_boi_geometry_1",
