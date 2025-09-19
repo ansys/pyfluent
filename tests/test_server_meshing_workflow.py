@@ -690,77 +690,99 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
 
 
 @pytest.mark.fluent_version(">=26.1")
-def test_updating_state_in_new_meshing_workflow(new_meshing_session):
-    # Import geometry
-    import_file_name = examples.download_file(
-        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-    )
+def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
     new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     watertight = new_meshing_session.meshing_workflow
+
+    # arguments
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
         ].arguments.length_unit()
         == "mm"
     )
-    assert (
-        watertight.task_object.import_geometry[
-            "Import Geometry"
-        ].arguments.cad_import_options.feature_angle()
-        == 40.0
-    )
     assert watertight.task_object.import_geometry[
         "Import Geometry"
-    ].arguments.cad_import_options.one_zone_per.allowed_values() == [
-        "body",
-        "face",
-        "object",
+    ].arguments.length_unit.allowed_values() == [
+        "m",
+        "cm",
+        "mm",
+        "in",
+        "ft",
+        "um",
+        "nm",
     ]
-    assert (
-        watertight.task_object.import_geometry[
-            "Import Geometry"
-        ].arguments.cad_import_options.one_zone_per()
-        == "body"
-    )
-    watertight.task_object.import_geometry["Import Geometry"].arguments = {
-        "file_name": import_file_name,
-        "length_unit": "in",
-        "cad_import_options": {"feature_angle": 35, "one_zone_per": "object"},
-    }
-    assert (
-        watertight.task_object.import_geometry[
-            "Import Geometry"
-        ].arguments.cad_import_options.feature_angle()
-        == 35.0
-    )
-    assert (
-        watertight.task_object.import_geometry[
-            "Import Geometry"
-        ].arguments.cad_import_options.one_zone_per.get_state()
-        == "object"
+    watertight.task_object.import_geometry["Import Geometry"].arguments.length_unit = (
+        "m"
     )
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
         ].arguments.length_unit.get_state()
+        == "m"
+    )
+    watertight.task_object.import_geometry["Import Geometry"].arguments.set_state(
+        {"length_unit": "in"}
+    )
+    assert (
+        watertight.task_object.import_geometry[
+            "Import Geometry"
+        ].arguments.length_unit()
         == "in"
     )
-    watertight.task_object.import_geometry[
-        "Import Geometry"
-    ].arguments.cad_import_options.feature_angle = 25.0
+    watertight.task_object.import_geometry["Import Geometry"].set_state(
+        {"arguments": {"length_unit": "ft"}}
+    )
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
-        ].arguments.cad_import_options.feature_angle()
-        == 25.0
+        ].arguments.length_unit()
+        == "ft"
     )
-    watertight.task_object.import_geometry[
+
+    # parameters
+    assert (
+        watertight.task_object.import_geometry["Import Geometry"].state()
+        == "Out-of-date"
+    )
+    assert watertight.task_object.import_geometry[
         "Import Geometry"
-    ].arguments.cad_import_options.one_zone_per = "face"
+    ].state.allowed_values() == [
+        "Out-of-date",
+        "Attention-required",
+        "Up-to-date",
+        "Forced-up-to-date",
+    ]
+    watertight.task_object.import_geometry["Import Geometry"].state = "Up-to-date"
+    assert (
+        watertight.task_object.import_geometry["Import Geometry"].get_state()
+        == "Up-to-date"
+    )
+    watertight.task_object.import_geometry["Import Geometry"].set_state(
+        {"state": "Out-of-date"}
+    )
+    assert (
+        watertight.task_object.import_geometry["Import Geometry"].state()
+        == "Out-of-date"
+    )
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
-        ].arguments.cad_import_options.one_zone_per()
-        == "face"
+        ].check_point.default_value()
+        == "default-off"
     )
-    watertight.task_object.import_geometry["Import Geometry"].execute()
+
+    # Both in a single set_state operation
+    watertight.task_object.import_geometry["Import Geometry"].set_state(
+        {"arguments": {"length_unit": "cm"}, "state": "Forced-up-to-date"}
+    )
+    assert (
+        watertight.task_object.import_geometry[
+            "Import Geometry"
+        ].arguments.length_unit()
+        == "cm"
+    )
+    assert (
+        watertight.task_object.import_geometry["Import Geometry"].state()
+        == "Forced-up-to-date"
+    )
