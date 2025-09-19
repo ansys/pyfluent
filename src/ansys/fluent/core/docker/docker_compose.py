@@ -46,7 +46,9 @@ class ComposeBasedLauncher:
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
-        container_dict["command"].append(f"""-command="(system \\\"chown {os.getuid()}:{os.getgid()} {container_dict["container_server_info_file"]}\\\")" """)
+        container_dict["command"].append(
+            f"""-command="(system \\\"chown {os.getuid()}:{os.getgid()} {container_dict["container_server_info_file"]}\\\")" """
+        )
 
         self._compose_file = self._get_compose_file(container_dict)
 
