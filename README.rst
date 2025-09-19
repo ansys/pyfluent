@@ -125,16 +125,17 @@ To launch Fluent from Python, use the ``launch_fluent`` function:
 
 Basic usage
 ~~~~~~~~~~~
-The ``solver_session`` interface provides a convenient way to interact with Fluent:
+The ``solver_session`` interface provides a convenient way to launch and
+interact with Fluent.
 
 .. code:: python
 
-  solver_session.settings.file.read_case(file_name="elbow.cas.h5")
-  solver_session.settings.setup.general.solver.time = "unsteady-2nd-order"
-  solver_session.settings.solution.initialization.hybrid_initialize()
-  solver_session.settings.solution.run_calculation.dual_time_iterate(
-      time_step_count=2, max_iter_per_step=3
-  )
+  import ansys.fluent.core as pyfluent
+
+  solver_session = pyfluent.launch_fluent()
+
+For more information on using the ``solver_session`` interface, see the
+`PyFluent documentation <https://fluent.docs.pyansys.com/version/stable/>`_.
 
 For postprocessing and visualization, you can also install:
 
