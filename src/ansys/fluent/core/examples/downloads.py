@@ -74,6 +74,7 @@ def _get_file_url(file_name: str, directory: str | None = None) -> str:
 
 PathType: TypeAlias = "os.PathLike[str | bytes] | str | bytes"
 
+
 def _retrieve_file(
     url: str,
     file_name: str,
