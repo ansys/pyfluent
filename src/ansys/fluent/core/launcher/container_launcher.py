@@ -237,8 +237,9 @@ class DockerLauncher:
                 )
             except PermissionError:
                 container.chown_server_info_file()
-
-            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+                _, _, password = _get_server_info_from_container(
+                    config_dict=config_dict
+                )
         else:
             port, password, container = start_fluent_container(
                 self._args,
