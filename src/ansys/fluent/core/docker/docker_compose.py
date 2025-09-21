@@ -46,9 +46,7 @@ class ComposeBasedLauncher:
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
 
-        container_dict["command"].append(
-            f"""-command="(system \\\"chown {os.getuid()}:{os.getgid()} {container_server_info_file}\\\")" """
-        )
+        self._container_server_info_file = container_server_info_file
 
         self._compose_file = self._get_compose_file(container_dict)
 
@@ -248,3 +246,29 @@ class ComposeBasedLauncher:
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )
         return self._extract_ports(output.decode("utf-8").strip())
+
+    def chown_server_info_file(self) -> None:
+        """Change ownership of the server info file inside the container.
+
+        Raises
+        ------
+        RuntimeError
+            If the command fails.
+        """
+        result = subprocess.run(
+            self._container_source
+            + [
+                "exec",
+                f"{self._compose_name}-fluent-1",
+                "chown",
+                f"{os.getuid()}:{os.getgid()}",
+                self._container_server_info_file,
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"Failed to change ownership of the server info file. "
+                f"Error: {result.stderr.strip()}"
+            )
