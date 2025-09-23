@@ -40,7 +40,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict
+from typing import Any, TypedDict, Unpack
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
@@ -57,6 +57,7 @@ from ansys.fluent.core.launcher.launch_options import (
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
+from ansys.fluent.core.launcher.launcher import LaunchFluentArgs
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
@@ -70,7 +71,42 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+
+class StandaloneArgsWithoutDryRun(TypedDict, total=False):
+    """TypedDict for standalone launcher arguments without dry_run."""
+
+    product_version: FluentVersion | str | float | int | None
+    dimension: Dimension | int
+    precision: Precision | str
+    processor_count: int | None
+    journal_file_names: None | str | list[str]
+    start_timeout: int
+    additional_arguments: str
+    env: dict[str, Any] | None
+    cleanup_on_exit: bool
+    start_transcript: bool
+    ui_mode: UIMode | str | None
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    )
+    case_file_name: str | None
+    case_data_file_name: str | None
+    lightweight_mode: bool | None
+    py: bool | None
+    gpu: bool | list[int] | None
+    cwd: str | None
+    fluent_path: str | None
+    topy: str | list[Any] | None
+    start_watchdog: bool | None
+    file_transfer_service: Any | None
+
+
+class StandaloneArgs(StandaloneArgsWithoutDryRun, total=False):
+    dry_run: bool | None
+
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -80,32 +116,10 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        journal_file_names: None | str | list[str] = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
-        cleanup_on_exit: bool = True,
+        *,
+        mode: FluentMode,
         dry_run: bool = False,
-        start_transcript: bool = True,
-        case_file_name: "PathType | None" = None,
-        case_data_file_name: "PathType | None" = None,
-        lightweight_mode: bool | None = None,
-        py: bool | None = None,
-        gpu: bool | None = None,
-        cwd: "PathType | None" = None,
-        fluent_path: "PathType | None" = None,
-        topy: str | list | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
+        **kwargs: Unpack[LaunchFluentArgs],
     ):
         """
         Launch a Fluent session in standalone mode.
@@ -187,20 +201,14 @@ class StandaloneLauncher:
         and core counts are queried from these environments before being passed to Fluent.
         """
         import ansys.fluent.core as pyfluent
-
-        locals_ = locals().copy()
-        argvals = {
-            arg: locals_.get(arg)
-            for arg in inspect.getargvalues(inspect.currentframe()).args
-        }
-        self.argvals, self.new_session = _get_argvals_and_session(argvals)
-        self.file_transfer_service = file_transfer_service
+        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
+        self.file_transfer_service = kwargs.get("file_transfer_service")
         if pyfluent.config.show_fluent_gui:
-            ui_mode = UIMode.GUI
-        self.argvals["ui_mode"] = UIMode(ui_mode)
-        if self.argvals["start_timeout"] is None:
+            kwargs["ui_mode"] = UIMode.GUI
+        self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
+        if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
-        if self.argvals["lightweight_mode"] is None:
+        if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
         if fluent_version:
@@ -209,7 +217,7 @@ class StandaloneLauncher:
         if (
             fluent_version
             and fluent_version >= FluentVersion.v251
-            and self.argvals["py"] is None
+            and self.argvals.get("py") is None
         ):
             self.argvals["py"] = True
 
@@ -227,12 +235,12 @@ class StandaloneLauncher:
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         self._kwargs = _get_subprocess_kwargs_for_fluent(
-            self.argvals["env"], self.argvals
+            self.argvals.get("env", {}), self.argvals
         )
-        if self.argvals["cwd"]:
-            self._kwargs.update(cwd=self.argvals["cwd"])
+        if "cwd" in self.argvals:
+            self._kwargs.update(cwd=self.argvals.get("cwd"))
         self._launch_string += _build_journal_argument(
-            self.argvals["topy"], self.argvals["journal_file_names"]
+            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
         )
 
         if is_windows():
@@ -245,14 +253,14 @@ class StandaloneLauncher:
                 # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
                 self._launch_cmd = 'start "" ' + self._launch_string
         else:
-            if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
+            if self.argvals.get("ui_mode") not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
 
-    def __call__(self):
-        if self.argvals["dry_run"]:
+    def __call__(self) -> tuple[str, str] | BaseSession:
+        if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
         try:
@@ -263,7 +271,7 @@ class StandaloneLauncher:
             try:
                 _await_fluent_launch(
                     self._server_info_file_name,
-                    self.argvals["start_timeout"],
+                    self.argvals.get("start_timeout", 60),
                     self._sifile_last_mtime,
                 )
             except TimeoutError as ex:
@@ -277,7 +285,7 @@ class StandaloneLauncher:
                     process = subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
-                        self.argvals["start_timeout"],
+                        self.argvals.get("start_timeout", 60),
                         self._sifile_last_mtime,
                     )
                 else:
@@ -286,36 +294,36 @@ class StandaloneLauncher:
             session = self.new_session._create_from_server_info_file(
                 server_info_file_name=self._server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
-                start_transcript=self.argvals["start_transcript"],
+                cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
+                start_transcript=self.argvals.get("start_transcript"),
                 launcher_args=self.argvals,
                 inside_container=False,
             )
             session._process = process
             start_watchdog = _confirm_watchdog_start(
-                self.argvals["start_watchdog"],
-                self.argvals["cleanup_on_exit"],
+                self.argvals.get("start_watchdog"),
+                self.argvals.get("cleanup_on_exit"),
                 session._fluent_connection,
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
                 ip, port, password = _get_server_info(self._server_info_file_name)
                 watchdog.launch(os.getpid(), port, password, ip)
-            if self.argvals["case_file_name"]:
-                if FluentMode.is_meshing(self.argvals["mode"]):
-                    session.tui.file.read_case(self.argvals["case_file_name"])
-                elif self.argvals["lightweight_mode"]:
-                    session.read_case_lightweight(self.argvals["case_file_name"])
+            if self.argvals.get("case_file_name"):
+                if FluentMode.is_meshing(self.argvals.get("mode")):
+                    session.tui.file.read_case(self.argvals.get("case_file_name"))
+                elif self.argvals.get("lightweight_mode"):
+                    session.read_case_lightweight(self.argvals.get("case_file_name"))
                 else:
                     session.file.read(
                         file_type="case",
-                        file_name=self.argvals["case_file_name"],
+                        file_name=self.argvals.get("case_file_name"),
                     )
-            if self.argvals["case_data_file_name"]:
-                if not FluentMode.is_meshing(self.argvals["mode"]):
+            if self.argvals.get("case_data_file_name"):
+                if not FluentMode.is_meshing(self.argvals.get("mode")):
                     session.file.read(
                         file_type="case-data",
-                        file_name=self.argvals["case_data_file_name"],
+                        file_name=self.argvals.get("case_data_file_name"),
                     )
                 else:
                     raise RuntimeError(

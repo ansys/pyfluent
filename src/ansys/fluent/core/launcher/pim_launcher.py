@@ -40,7 +40,7 @@ import logging
 import os
 import tempfile
 import time
-from typing import Any, Dict
+from typing import Any, Dict, TypedDict, Unpack
 
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
@@ -61,6 +61,33 @@ from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
+
+class PIMArgsWithoutDryRun(TypedDict, total=False):
+    ui_mode: UIMode | str | None
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    )
+    product_version: FluentVersion | str | float | int | None
+    dimension: Dimension | int | None
+    precision: Precision | str | None
+    processor_count: int | None
+    start_timeout: int
+    additional_arguments: str
+    cleanup_on_exit: bool
+    start_transcript: bool
+    gpu: bool | None
+    start_watchdog: bool | None
+    file_transfer_service: Any | None
+
+
+class PIMArgs(PIMArgsWithoutDryRun, total=False):
+    dry_run: bool
+
+
+class PIMArgsWithMode(PIMArgs, total=False):
+    mode: FluentMode | str | None
+
+
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
@@ -71,23 +98,7 @@ class PIMLauncher:
 
     def __init__(
         self,
-        mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        cleanup_on_exit: bool = True,
-        dry_run: bool | None = None,
-        start_transcript: bool = True,
-        gpu: bool | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
+        **kwargs: Unpack[PIMArgsWithMode],
     ):
         """
         Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
@@ -152,6 +163,9 @@ class PIMLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        additional_arguments = kwargs.get("additional_arguments", "")
+        start_watchdog = kwargs.get("start_watchdog")
+        file_transfer_service = kwargs.get("file_transfer_service")
 
         if additional_arguments:
             logger.warning(
@@ -164,14 +178,9 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
-        locals_ = locals().copy()
-        argvals = {
-            arg: locals_.get(arg)
-            for arg in inspect.getargvalues(inspect.currentframe()).args
-        }
-        self.argvals, self.new_session = _get_argvals_and_session(argvals)
+        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = file_transfer_service
-        if self.argvals["start_timeout"] is None:
+        if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
 
     def __call__(self):
