@@ -255,7 +255,7 @@ def display_scores(scores):
 
 
 def fit_and_predict(model):
-    """Fit abd predict."""
+    """Fit and predict."""
     cv = RepeatedKFold(n_splits=5, n_repeats=3, random_state=42)
     cv_scores = cross_val_score(
         model, X_train, y_train, scoring="neg_mean_squared_error", cv=cv
