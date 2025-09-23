@@ -813,15 +813,17 @@ def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
     ig = meshing.meshing.ImportGeometry.create_instance()
 
+    ig.FileFormat = "Mesh"
+
     # Command Arguments
     assert ig.MeshUnit() == "m"
     ig.MeshUnit = "mm"
     assert ig.MeshUnit() == "mm"
 
     # Command Arguments SubItem
-    assert ig.CadImportOptions.OneZonePer() == "body"
-    ig.CadImportOptions.OneZonePer = "face"
-    assert ig.CadImportOptions.OneZonePer() == "face"
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is False
+    ig.ImportCadPreferences.ShowImportCadPreferences = True
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is True
 
 
 @pytest.mark.fluent_version(">=24.1")

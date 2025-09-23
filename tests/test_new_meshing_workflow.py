@@ -617,10 +617,13 @@ def test_watertight_workflow_dynamic_interface(
     watertight = new_meshing_session.watertight()
     watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
-    create_volume_mesh = watertight.create_volume_mesh
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        create_volume_mesh = watertight.create_volume_mesh
+    else:
+        create_volume_mesh = watertight.create_volume_mesh_wtm
     assert create_volume_mesh is not None
-    watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
-    assert "create_volume_mesh" not in watertight.task_names()
+    watertight.delete_tasks(list_of_tasks=["create_volume_mesh_wtm"])
+    assert "create_volume_mesh_wtm" not in watertight.task_names()
 
     assert sorted(
         [repr(x) for x in watertight.add_boundary_layer.insertable_tasks()]
@@ -631,15 +634,15 @@ def test_watertight_workflow_dynamic_interface(
             "<Insertable 'set_up_rotational_periodic_boundaries' task>",
             "<Insertable 'modify_mesh_refinement' task>",
             "<Insertable 'improve_surface_mesh' task>",
-            "<Insertable 'create_volume_mesh' task>",
+            "<Insertable 'create_volume_mesh_wtm' task>",
             "<Insertable 'manage_zones_ftm' task>",
             "<Insertable 'update_regions' task>",
             "<Insertable 'custom_journal_task' task>",
         ]
     )
-    watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
-    assert "create_volume_mesh" in watertight.task_names()
-    create_volume_mesh = watertight.create_volume_mesh
+    watertight.add_boundary_layer.insertable_tasks.create_volume_mesh_wtm.insert()
+    assert "create_volume_mesh_wtm" in watertight.task_names()
+    create_volume_mesh = watertight.create_volume_mesh_wtm
     assert create_volume_mesh is not None
 
     assert (
@@ -653,8 +656,8 @@ def test_watertight_workflow_dynamic_interface(
     assert watertight.describe_geometry.enclose_fluid_regions
     watertight.describe_geometry.enclose_fluid_regions.delete()
     assert "enclose_fluid_regions" not in watertight.task_names()
-    watertight.create_volume_mesh.delete()
-    assert "create_volume_mesh" not in watertight.task_names()
+    watertight.create_volume_mesh_wtm.delete()
+    assert "create_volume_mesh_wtm" not in watertight.task_names()
 
 
 @pytest.mark.fluent_version("==23.2")
