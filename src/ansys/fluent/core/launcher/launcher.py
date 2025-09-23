@@ -67,7 +67,7 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+def create_launcher(fluent_launch_mode: LaunchMode, **kwargs):
     """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
@@ -83,7 +83,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         Session launcher.
     Raises
     ------
-    DisallowedValuesError
+    ValueError
         If an unknown Fluent launch mode is passed.
     """
     if fluent_launch_mode == LaunchMode.STANDALONE:
@@ -94,6 +94,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
+    raise ValueError(f"launch mode invalid: {fluent_launch_mode!r}")
 
 
 def _show_gui_to_ui_mode(old_arg_val, **kwds):
