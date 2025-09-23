@@ -1024,6 +1024,7 @@ def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     assert not fault_tolerant.import_cad_and_part_management.fmd_file_name()
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")
 def test_switch_between_workflows(new_meshing_session):
