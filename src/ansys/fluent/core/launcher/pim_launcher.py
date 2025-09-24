@@ -35,7 +35,6 @@ Examples
 >>> pim_solver_session = pim_solver_launcher()
 """
 
-import inspect
 import logging
 import os
 import tempfile
@@ -64,7 +63,9 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
-class PIMArgsWithoutDryRun(TypedDict, total=False):
+class PIMArgsWithoutDryRun(
+    TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
     ui_mode: UIMode | str | None
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
@@ -82,11 +83,13 @@ class PIMArgsWithoutDryRun(TypedDict, total=False):
     file_transfer_service: Any | None
 
 
-class PIMArgs(PIMArgsWithoutDryRun, total=False):
+class PIMArgs(
+    PIMArgsWithoutDryRun, total=False
+):  # pylint: disable=missing-class-docstring
     dry_run: bool
 
 
-class PIMArgsWithMode(PIMArgs, total=False):
+class PIMArgsWithMode(PIMArgs, total=False):  # pylint: disable=missing-class-docstring
     mode: FluentMode | str | None
 
 

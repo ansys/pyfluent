@@ -35,7 +35,6 @@ Examples
 >>> standalone_solver_session = standalone_solver_launcher()
 """
 
-import inspect
 import logging
 import os
 from pathlib import Path
@@ -77,9 +76,9 @@ from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-class StandaloneArgsWithoutDryRun(TypedDict, total=False):
-    """TypedDict for standalone launcher arguments without dry_run."""
-
+class StandaloneArgsWithoutDryRun(
+    TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
     product_version: FluentVersion | str | float | int | None
     dimension: Dimension | int
     precision: Precision | str
@@ -106,7 +105,9 @@ class StandaloneArgsWithoutDryRun(TypedDict, total=False):
     file_transfer_service: Any | None
 
 
-class StandaloneArgs(StandaloneArgsWithoutDryRun, total=False):
+class StandaloneArgs(
+    StandaloneArgsWithoutDryRun, total=False
+):  # pylint: disable=missing-class-docstring
     dry_run: bool | None
 
 
