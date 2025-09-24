@@ -39,7 +39,9 @@ import inspect
 import logging
 import os
 import time
-from typing import Any, TypedDict, Unpack
+from typing import Any, TypedDict
+
+from typing_extensions import Unpack
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.fluent_container import (
@@ -192,7 +194,9 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        self.argvals, self.new_session = _get_argvals_and_session({**kwargs, mode: mode})
+        self.argvals, self.new_session = _get_argvals_and_session(
+            {**kwargs, mode: mode}
+        )
         if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
         self.file_transfer_service = kwargs.get("file_transfer_service")

@@ -40,7 +40,9 @@ import logging
 import os
 import tempfile
 import time
-from typing import Any, Dict, TypedDict, Unpack
+from typing import Any, Dict, TypedDict
+
+from typing_extensions import Unpack
 
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (

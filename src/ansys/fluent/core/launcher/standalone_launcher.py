@@ -40,7 +40,9 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, TypedDict, Unpack
+from typing import Any, TypedDict
+
+from typing_extensions import Unpack
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
@@ -201,6 +203,7 @@ class StandaloneLauncher:
         and core counts are queried from these environments before being passed to Fluent.
         """
         import ansys.fluent.core as pyfluent
+
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = kwargs.get("file_transfer_service")
         if pyfluent.config.show_fluent_gui:

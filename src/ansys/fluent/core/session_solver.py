@@ -24,14 +24,12 @@
 
 import logging
 import threading
+from typing import TYPE_CHECKING, Any, Dict, cast
 import warnings
 import weakref
-from typing import TYPE_CHECKING, Any, Dict, cast
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
-
 import ansys.fluent.core as pyfluent
-import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval, service_creator
@@ -52,6 +50,7 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
+import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
@@ -62,12 +61,11 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 if TYPE_CHECKING:
-    import ansys.fluent.core.generated.solver.settings_252 as settings_root
-    from ansys.fluent.core.generated.solver.tui_252 import main_menu
-
     from ansys.fluent.core.generated.datamodel_252.preferences import (
         Root as preferences_root,
     )
+    import ansys.fluent.core.generated.solver.settings_252 as settings_root
+    from ansys.fluent.core.generated.solver.tui_252 import main_menu
 
 
 tui_logger = logging.getLogger("pyfluent.tui")

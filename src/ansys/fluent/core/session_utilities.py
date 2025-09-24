@@ -22,7 +22,9 @@
 
 """Session utilities."""
 
-from typing import TYPE_CHECKING, Any, Literal, Unpack, overload
+from typing import TYPE_CHECKING, Any, Literal, overload
+
+from typing_extensions import Unpack
 
 from ansys.fluent.core import (
     session_meshing,
