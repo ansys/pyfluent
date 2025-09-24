@@ -24,7 +24,7 @@
 
 import logging
 import threading
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, Dict, cast
 import warnings
 import weakref
 
@@ -59,6 +59,14 @@ from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
 from ansys.fluent.core.workflow import ClassicWorkflow
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.generated.datamodel_252.preferences import (
+        Root as preferences_root,
+    )
+    import ansys.fluent.core.generated.solver.settings_252 as settings_root
+    from ansys.fluent.core.generated.solver.tui_252 import main_menu
+
 
 tui_logger = logging.getLogger("pyfluent.tui")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -181,7 +189,7 @@ class Solver(BaseSession):
         )
 
     @property
-    def settings(self):
+    def settings(self) -> "settings_root.root":
         """Settings root handle."""
         if self._settings is None:
             #: Root settings object.
@@ -192,7 +200,7 @@ class Solver(BaseSession):
                 file_transfer_service=self._file_transfer_service,
                 scheme_eval=self.scheme.eval,
             )
-        return self._settings
+        return cast("settings_root.root", self._settings)
 
     @property
     def svar_data(self):
@@ -246,16 +254,16 @@ class Solver(BaseSession):
         return self._fluent_version
 
     @property
-    def tui(self):
+    def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "solver")
 
-        return self._tui
+        return cast("main_menu", self._tui)
 
     @property
-    def workflow(self):
+    def workflow(self) -> ClassicWorkflow:
         """Datamodel root for workflow."""
         if not self._workflow:
             self._workflow = ClassicWorkflow(
@@ -277,18 +285,18 @@ class Solver(BaseSession):
                 command._root.solution.run_calculation.interrupt()
 
     @property
-    def system_coupling(self):
+    def system_coupling(self) -> SystemCoupling:
         """System coupling object."""
         if self._system_coupling is None:
             self._system_coupling = SystemCoupling(self)
         return self._system_coupling
 
     @property
-    def preferences(self):
+    def preferences(self) -> "preferences_root":
         """Datamodel root of preferences."""
         if self._preferences is None:
             self._preferences = _make_datamodel_module(self, "preferences")
-        return self._preferences
+        return cast("preferences_root", self._preferences)
 
     def _start_bg_session_and_sync(self, launcher_args):
         """Start a background session and sync it with the current session."""

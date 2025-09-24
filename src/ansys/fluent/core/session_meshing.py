@@ -95,49 +95,12 @@ class Meshing(PureMeshing):
         return solver_session
 
     def __getattribute__(self, item: str):
-        if super(Meshing, self).__getattribute__(
-            "_fluent_connection"
-        ) is None and item not in [
+        if super().__getattribute__("_fluent_connection") is None and item not in [
             "is_active",
             "_fluent_connection",
         ]:
             raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{item}'"
+                f"'{self.__class__.__name__}' object has no attribute '{item}'"
             )
 
-        return super(Meshing, self).__getattribute__(item)
-
-    @property
-    def tui(self):
-        """Meshing TUI root."""
-        return super(Meshing, self).tui
-
-    @property
-    def meshing(self):
-        """Meshing datamodel root."""
-        return super(Meshing, self).meshing
-
-    @property
-    def meshing_utilities(self):
-        """Meshing utilities datamodel root."""
-        return super(Meshing, self).meshing_utilities
-
-    @property
-    def workflow(self):
-        """Workflow datamodel root."""
-        return super(Meshing, self).workflow
-
-    @property
-    def PartManagement(self):
-        """Part management datamodel root."""
-        return super(Meshing, self).PartManagement
-
-    @property
-    def PMFileManagement(self):
-        """Part management file management datamodel root."""
-        return super(Meshing, self).PMFileManagement
-
-    @property
-    def preferences(self):
-        """Preferences datamodel root."""
-        return super(Meshing, self).preferences
+        return super().__getattribute__(item)

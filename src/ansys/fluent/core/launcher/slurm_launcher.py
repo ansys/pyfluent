@@ -68,7 +68,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Generic
+
+from typing_extensions import TypeVar
 
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launch_options import (
@@ -161,7 +163,14 @@ class _SlurmWrapper:
         subprocess.run(["scancel", f"{job_id}"])
 
 
-class SlurmFuture:
+SessionT = TypeVar(
+    "SessionT",
+    bound="Meshing | PureMeshing | Solver | SolverIcing",
+    default="Meshing | PureMeshing | Solver | SolverIcing",
+)
+
+
+class SlurmFuture(Generic[SessionT]):
     """Encapsulates asynchronous launch of Fluent within a Slurm environment.
 
     The interface is similar to Python's
@@ -221,9 +230,7 @@ class SlurmFuture:
         finished running, otherwise ``False``."""
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
-    def result(
-        self, timeout: int = None
-    ) -> Meshing | PureMeshing | Solver | SolverIcing:
+    def result(self, timeout: int | None = None) -> SessionT:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
         hasn't launched in timeout seconds, then a TimeoutError will be raised. If
@@ -246,7 +253,7 @@ class SlurmFuture:
         """
         return self._future.result(timeout)
 
-    def exception(self, timeout: int = None) -> Exception:
+    def exception(self, timeout: int | None = None) -> Exception:
         """Return the exception raised by the Fluent launch. If Fluent hasn't yet
         launched, then this method will wait up to timeout seconds. If Fluent hasn't
         launched in timeout seconds, then a TimeoutError will be raised. If timeout is

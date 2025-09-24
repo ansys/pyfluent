@@ -33,6 +33,7 @@ dependencies = [
     "pandas>=1.1.0,<3.0.0",
     "pyansys-tools-report>=0.8.1",
     "pyyaml>=6.0",
+    "typing-extensions>=4.12"
 ]
 dynamic = ["version"]
 
@@ -233,3 +234,8 @@ skips = [
     "B604",
     "B607",
     ]
+
+[tool.basedpyright]
+reportUnknownMemberType = false
+reportExplicitAny = false
+reportPrivateUsage = false

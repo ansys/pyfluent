@@ -29,7 +29,9 @@ with gRPC.
 import inspect
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Literal, TypedDict, overload
+
+from typing_extensions import Required, Unpack
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -57,6 +59,7 @@ import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -66,7 +69,7 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+def create_launcher(fluent_launch_mode: LaunchMode, **kwargs):
     """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
@@ -82,7 +85,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         Session launcher.
     Raises
     ------
-    DisallowedValuesError
+    ValueError
         If an unknown Fluent launch mode is passed.
     """
     if fluent_launch_mode == LaunchMode.STANDALONE:
@@ -93,6 +96,7 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
+    raise ValueError(f"launch mode invalid: {fluent_launch_mode!r}")
 
 
 def _show_gui_to_ui_mode(old_arg_val, **kwds):
@@ -125,6 +129,111 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
+class LaunchFluentArgs(
+    TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    product_version: FluentVersion | str | float | int | None
+    dimension: Dimension | int
+    precision: Precision | str
+    processor_count: int | None
+    journal_file_names: None | str | list[str]
+    start_timeout: int
+    additional_arguments: str
+    env: dict[str, Any] | None
+    start_container: bool | None
+    container_dict: dict[str, Any] | None
+    cleanup_on_exit: bool
+    start_transcript: bool
+    ui_mode: UIMode | str | None
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    )
+    case_file_name: str | None
+    case_data_file_name: str | None
+    lightweight_mode: bool | None
+    py: bool | None
+    gpu: bool | list[int] | None
+    cwd: str | None
+    fluent_path: str | None
+    topy: str | list | None
+    start_watchdog: bool | None
+    file_transfer_service: Any | None
+    use_docker_compose: bool
+    use_podman_compose: bool
+
+
+class SlurmSchedulerOptions(
+    TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    scheduler: Required[Literal["slurm"]]
+    scheduler_headnode: str
+    scheduler_queue: str
+    scheduler_account: str
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.MESHING, "meshing"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> Meshing: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.PURE_MESHING, "pure_meshing"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> PureMeshing: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.SOLVER, "solver"] = FluentMode.SOLVER,
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> Solver: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.SOLVER_ICING, "solver_icing"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> SolverIcing: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.SOLVER_AERO, "solver_aero"] = ...,
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> SolverAero: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    scheduler_options: SlurmSchedulerOptions,
+    mode: FluentMode | str = FluentMode.SOLVER,
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> SlurmFuture: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[True],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> dict[str, Any]: ...
+
+
 #   pylint: disable=unused-argument
 @all_deprecators(
     deprecate_arg_mappings=[
@@ -145,14 +254,15 @@ def _version_to_dimension(old_arg_val):
     warn_message="",
 )
 def launch_fluent(
+    *,
     product_version: FluentVersion | str | float | int | None = None,
-    dimension: Dimension | int | None = None,
-    precision: Precision | str | None = None,
+    dimension: Dimension | int = Dimension.THREE,
+    precision: Precision | str = Precision.DOUBLE,
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
-    start_timeout: int = None,
+    start_timeout: int | None = None,
     additional_arguments: str = "",
-    env: Dict[str, Any] | None = None,
+    env: dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict | None = None,
     dry_run: bool = False,
@@ -165,18 +275,26 @@ def launch_fluent(
     case_file_name: str | None = None,
     case_data_file_name: str | None = None,
     lightweight_mode: bool | None = None,
-    mode: FluentMode | str | None = None,
+    mode: FluentMode | str = FluentMode.SOLVER,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
     cwd: str | None = None,
     fluent_path: str | None = None,
     topy: str | list | None = None,
     start_watchdog: bool | None = None,
-    scheduler_options: dict | None = None,
+    scheduler_options: SlurmSchedulerOptions | None = None,
     file_transfer_service: Any | None = None,
-    use_docker_compose: bool | None = None,
-    use_podman_compose: bool | None = None,
-) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
+    use_docker_compose: bool = False,
+    use_podman_compose: bool = False,
+) -> (
+    Meshing
+    | PureMeshing
+    | Solver
+    | SolverIcing
+    | SolverAero
+    | SlurmFuture
+    | dict[Any, Any]
+):
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
 
@@ -197,8 +315,7 @@ def launch_fluent(
         in which case ``Dimension.THREE`` is used. Options are either the values of the
         ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
     precision : Precision or str, optional
-        Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
-        is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
+        Floating point precision. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
         or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
     processor_count : int, optional
         Number of processors. The default is ``None``, in which case ``1``
@@ -267,7 +384,7 @@ def launch_fluent(
         This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
     mode : FluentMode or str or None, optional
         Launch mode of Fluent to point to a specific session type. Can be a
-        ``FluentMode`` enum member or a string. The default value is ``None``.
+        ``FluentMode`` enum member or a string. The default value is ``SOLVER``.
         Valid string options include ``"meshing"``, ``"pure-meshing"``, and
         ``"solver"``.
     py : bool, optional
@@ -369,6 +486,7 @@ def launch_fluent(
 
 
 def connect_to_fluent(
+    *,
     ip: str | None = None,
     port: int | None = None,
     cleanup_on_exit: bool = False,
@@ -377,7 +495,7 @@ def connect_to_fluent(
     password: str | None = None,
     start_watchdog: bool | None = None,
     file_transfer_service: Any | None = None,
-) -> Meshing | PureMeshing | Solver | SolverIcing:
+) -> Meshing | PureMeshing | Solver | SolverIcing | SolverAero:
     """Connect to an existing Fluent server instance.
 
     Parameters

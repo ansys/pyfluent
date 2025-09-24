@@ -23,7 +23,7 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, Dict, cast
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
@@ -36,6 +36,23 @@ from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelSt
 from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.generated.datamodel_252.meshing import Root as meshing_root
+    from ansys.fluent.core.generated.datamodel_252.meshing_utilities import (
+        Root as meshing_utilities_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.part_management import (
+        Root as partmanagement_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.pm_file_management import (
+        Root as pmfilemanagement_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.preferences import (
+        Root as preferences_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
+    from ansys.fluent.core.generated.meshing.tui_252 import main_menu
 
 
 class PureMeshing(BaseSession):
@@ -125,26 +142,27 @@ class PureMeshing(BaseSession):
                 self._fluent_connection.register_finalizer_cb(stream.stop)
 
     @property
-    def tui(self):
+    def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
-        return self._base_meshing.tui
+        return cast("main_menu", self._base_meshing.tui)
 
     @property
-    def meshing(self):
+    def meshing(self) -> "meshing_root":
         """Datamodel root of meshing."""
-        return self._base_meshing.meshing
+        return cast("meshing_root", self._base_meshing.meshing)
 
     @property
-    def meshing_utilities(self):
+    def meshing_utilities(self) -> "meshing_utilities_root | None":
         """Datamodel root of meshing_utilities."""
         if self.get_fluent_version() >= FluentVersion.v242:
-            return self._base_meshing.meshing_utilities
+            return cast("meshing_utilities_root", self._base_meshing.meshing_utilities)
+        return None
 
     @property
-    def workflow(self):
+    def workflow(self) -> "workflow_root":
         """Datamodel root of workflow."""
-        return self._base_meshing.workflow
+        return cast("workflow_root", self._base_meshing.workflow)
 
     def watertight(self):
         """Get a new watertight workflow."""
@@ -184,19 +202,19 @@ class PureMeshing(BaseSession):
         return self._base_meshing.topology_based_meshing_workflow()
 
     @property
-    def PartManagement(self):
+    def PartManagement(self) -> "partmanagement_root":
         """Datamodel root of PartManagement."""
-        return self._base_meshing.PartManagement
+        return cast("partmanagement_root", self._base_meshing.PartManagement)
 
     @property
-    def PMFileManagement(self):
+    def PMFileManagement(self) -> "pmfilemanagement_root":
         """Datamodel root of PMFileManagement."""
-        return self._base_meshing.PMFileManagement
+        return cast("pmfilemanagement_root", self._base_meshing.PMFileManagement)
 
     @property
-    def preferences(self):
+    def preferences(self) -> "preferences_root":
         """Datamodel root of preferences."""
-        return self._base_meshing.preferences
+        return cast("preferences_root", self._base_meshing.preferences)
 
     def transfer_mesh_to_solvers(
         self,
