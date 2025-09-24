@@ -292,6 +292,11 @@ jobs:
           # API-Code-<Cache version>-<PyFluent version>-<First Fluent release version>-<Last Fluent release version>-<Fluent dev version>-<Hash of codegen files>
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.0-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
 
+      - name: Show versions
+        run: |
+          python -c "import numpy; print('numpy', numpy.__version__)"
+          python -c "import matplotlib; print('matplotlib', matplotlib.__version__)"
+
       - name: Pull 23.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
@@ -525,11 +530,6 @@ jobs:
           registry: ghcr.io
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Show versions
-        run: |
-          python -c "import numpy; print('numpy', numpy.__version__)"
-          python -c "import matplotlib; print('matplotlib', matplotlib.__version__)"
 
       - name: Pull Fluent docker image
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
