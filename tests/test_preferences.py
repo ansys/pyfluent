@@ -52,9 +52,9 @@ def test_solver_preferences(new_solver_session):
     ansys_logo.Visible = True
     assert ansys_logo.Visible() is True
 
-    perfered_graphics = solver.preferences.Graphics
-    perfered_graphics.AnimationOption = "wireframe"
-    assert perfered_graphics.AnimationOption() == "wireframe"
+    preferred_graphics = solver.preferences.Graphics
+    preferred_graphics.AnimationOption = "wireframe"
+    assert preferred_graphics.AnimationOption() == "wireframe"
 
     solver.exit()
 

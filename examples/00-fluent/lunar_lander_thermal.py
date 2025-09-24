@@ -665,13 +665,13 @@ for i in range(n_steps):
     )
 
     # Simulate closing louvers below 273 K by changing emissivity
-    rad_emiss = solver_session.setup.boundary_conditions.wall[
+    rad_emission = solver_session.setup.boundary_conditions.wall[
         "sc-radiator"
     ].radiation.internal_emissivity_band["thermal-ir"]
     if rad_mean_temp < 273:
-        rad_emiss.value = 0.09
+        rad_emission.value = 0.09
     else:
-        rad_emiss.value = 0.70
+        rad_emission.value = 0.70
 
     # Run simulation for 1 timestep
     solver_session.solution.run_calculation.calculate()
