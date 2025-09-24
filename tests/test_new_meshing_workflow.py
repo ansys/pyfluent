@@ -622,7 +622,10 @@ def test_watertight_workflow_dynamic_interface(
     else:
         create_volume_mesh = watertight.create_volume_mesh_wtm
     assert create_volume_mesh is not None
-    watertight.delete_tasks(list_of_tasks=["create_volume_mesh_wtm"])
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
+    else:
+        watertight.delete_tasks(list_of_tasks=["create_volume_mesh_wtm"])
     assert "create_volume_mesh_wtm" not in watertight.task_names()
 
     assert sorted(
