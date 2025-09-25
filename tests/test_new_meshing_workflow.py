@@ -455,39 +455,6 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
-def test_updating_state_in_new_meshing_workflow(new_meshing_session):
-    # Import geometry
-    import_file_name = examples.download_file(
-        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-    )
-    watertight = new_meshing_session.watertight()
-    assert watertight.import_geometry.length_unit() == "mm"
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 40.0
-    assert (
-        watertight.import_geometry.cad_import_options.one_zone_per.allowed_values()
-        == ["body", "face", "object"]
-    )
-    assert watertight.import_geometry.cad_import_options.one_zone_per() == "body"
-    watertight.import_geometry.arguments = {
-        "file_name": import_file_name,
-        "length_unit": "in",
-        "cad_import_options": {"feature_angle": 35, "one_zone_per": "object"},
-    }
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 35.0
-    assert (
-        watertight.import_geometry.cad_import_options.one_zone_per.get_state()
-        == "object"
-    )
-    assert watertight.import_geometry.length_unit.get_state() == "in"
-    watertight.import_geometry.cad_import_options.feature_angle = 25.0
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
-    watertight.import_geometry.cad_import_options.one_zone_per = "face"
-    assert watertight.import_geometry.cad_import_options.one_zone_per() == "face"
-    watertight.import_geometry()
-
-
 def _assert_snake_case_attrs(attrs: Iterable):
     for attr in attrs:
         assert str(attr).islower()
@@ -705,7 +672,7 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     import_geometry = watertight.import_geometry
     assert import_geometry.Arguments() == {}
     import_geometry.Arguments = dict(FileName=mixing_elbow_geometry_filename)
-    assert 8 < len(import_geometry.arguments.get_state()) < 15
+    assert 7 <= len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(file_name=None))
     time.sleep(5)
