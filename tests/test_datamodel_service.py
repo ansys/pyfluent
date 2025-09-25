@@ -387,11 +387,11 @@ def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
 
     assert x.LengthUnit.get_state() == "ft"
 
-    assert x.CadImportOptions.ExtractFeatures()
+    assert not x.ImportCadPreferences.ShowImportCadPreferences()
 
-    x.CadImportOptions.ExtractFeatures.set_state(False)
+    x.ImportCadPreferences.ShowImportCadPreferences.set_state(True)
 
-    assert not x.CadImportOptions.ExtractFeatures()
+    assert x.ImportCadPreferences.ShowImportCadPreferences()
 
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
