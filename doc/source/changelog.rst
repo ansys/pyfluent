@@ -9,6 +9,95 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.36.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev0>`_ - September 17, 2025
+=============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Interactive settings UI.
+          - `#4374 <https://github.com/ansys/pyfluent/pull/4374>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Textual type in flobject.
+          - `#4382 <https://github.com/ansys/pyfluent/pull/4382>`_
+
+        * - Filename argument handling in single battery cell workflow
+          - `#4441 <https://github.com/ansys/pyfluent/pull/4441>`_
+
+        * - Add `sphinx_design` to fix changelog rendering
+          - `#4468 <https://github.com/ansys/pyfluent/pull/4468>`_
+
+        * - Flake8 change needed for release [skip tests]
+          - `#4470 <https://github.com/ansys/pyfluent/pull/4470>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update nightly dev doc ci.
+          - `#4381 <https://github.com/ansys/pyfluent/pull/4381>`_
+
+        * - Remove multiple download jobs during release jobs.
+          - `#4428 <https://github.com/ansys/pyfluent/pull/4428>`_
+
+        * - Bump the dependencies group with 5 updates
+          - `#4431 <https://github.com/ansys/pyfluent/pull/4431>`_
+
+        * - Bump the actions group with 3 updates
+          - `#4432 <https://github.com/ansys/pyfluent/pull/4432>`_
+
+        * - Bump pypa/gh-action-pypi-publish from 1.12.4 to 1.13.0 in /.github/workflows
+          - `#4443 <https://github.com/ansys/pyfluent/pull/4443>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ``html_context`` with PyAnsys tags
+          - `#4412 <https://github.com/ansys/pyfluent/pull/4412>`_
+
+        * - Example on the steady vortex dynamics
+          - `#4452 <https://github.com/ansys/pyfluent/pull/4452>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update example data branch name to main
+          - `#4455 <https://github.com/ansys/pyfluent/pull/4455>`_
+
+        * - Added backwards compatibility for solution_variable_name.
+          - `#4456 <https://github.com/ansys/pyfluent/pull/4456>`_
+
+        * - Update CHANGELOG for v0.35.0
+          - `#4459 <https://github.com/ansys/pyfluent/pull/4459>`_
+
+        * - Do not run release testing for dev release [skip tests]
+          - `#4473 <https://github.com/ansys/pyfluent/pull/4473>`_
+
+
 `0.35.0 <https://github.com/ansys/pyfluent/releases/tag/v0.35.0>`_ - September 09, 2025
 =======================================================================================
 
