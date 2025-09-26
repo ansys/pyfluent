@@ -38,7 +38,9 @@ Examples
 import inspect
 import logging
 import os
+import time
 from typing import Any, Dict
+import uuid
 
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
@@ -50,6 +52,7 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_argvals_and_session,
 )
+from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
@@ -245,6 +248,16 @@ def launch_remote_fluent(
 
     instance.wait_for_ready()
 
+    file_service = PimFileTransferService(pim_instance=instance)
+
+    local_sifile = f"sifile_{uuid.uuid4().hex}"
+
+    file_service.download_file("sifile.txt", os.path.join(os.getcwd(), local_sifile))
+
+    time.sleep(10)
+
+    ip, port, password = _parse_server_info_file(f"{local_sifile}/sifile.txt")
+
     channel = instance.build_grpc_channel(
         options=[
             ("grpc.max_send_message_length", _get_max_c_int_limit()),
@@ -253,6 +266,9 @@ def launch_remote_fluent(
     )
 
     fluent_connection = create_fluent_connection(
+        ip=ip,
+        port=port,
+        password=password,
         channel=channel,
         cleanup_on_exit=cleanup_on_exit,
         instance=instance,
@@ -288,11 +304,20 @@ def create_fluent_instance(
 
 
 def create_fluent_connection(
-    channel, cleanup_on_exit: bool, instance, launcher_args: Dict[str, Any] | None
+    ip: str,
+    port: int,
+    password: str,
+    channel,
+    cleanup_on_exit: bool,
+    instance,
+    launcher_args: Dict[str, Any] | None,
 ):
     """Create a Fluent connection."""
 
     return FluentConnection(
+        ip=ip,
+        port=port,
+        password=password,
         channel=channel,
         cleanup_on_exit=cleanup_on_exit,
         remote_instance=instance,
