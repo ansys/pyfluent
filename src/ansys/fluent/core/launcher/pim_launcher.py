@@ -235,6 +235,11 @@ def launch_remote_fluent(
     -------
     Meshing | PureMeshing | Solver | SolverIcing
         Session object.
+
+    Raises
+    ------
+    TimeoutError
+        If unable to download the server info file after multiple retries.
     """
 
     pim = pypim.connect()
@@ -252,11 +257,23 @@ def launch_remote_fluent(
 
     local_directory = os.path.join(os.getcwd(), f"sifile_{uuid.uuid4().hex}")
 
-    file_service.download_file("sifile.txt", local_directory)
+    max_retries = 20
+    wait_time_between_retries = 1  # seconds
 
-    time.sleep(10)
+    for i in range(max_retries):
+        try:
+            file_service.download_file("sifile.txt", local_directory)
+            break
+        except Exception as ex:
+            if i == max_retries - 1:
+                raise TimeoutError(
+                    "Failed to download file after multiple retries."
+                ) from ex
+            time.sleep(wait_time_between_retries)
 
-    ip, port, password = _parse_server_info_file(os.path.join(local_directory, "sifile.txt"))
+    ip, port, password = _parse_server_info_file(
+        os.path.join(local_directory, "sifile.txt")
+    )
 
     channel = instance.build_grpc_channel(
         options=[
