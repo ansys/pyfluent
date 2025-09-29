@@ -24,6 +24,7 @@
 
 from dataclasses import dataclass
 from enum import Enum
+import os
 from typing import List, Tuple
 
 import grpc
@@ -37,6 +38,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
+from ansys.fluent.core.types import PathType
 
 
 class AppUtilitiesService:
@@ -328,9 +330,9 @@ class AppUtilitiesOld:
         """Exit."""
         self.scheme.exec(("(exit-server)",))
 
-    def set_working_directory(self, path: str) -> None:
+    def set_working_directory(self, path: PathType) -> None:
         """Change client cortex dir."""
-        self.scheme.eval(f'(syncdir "{path}")')
+        self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
 
 
 class AppUtilities:
@@ -474,10 +476,10 @@ class AppUtilities:
         request = AppUtilitiesProtoModule.ExitRequest()
         self.service.exit(request)
 
-    def set_working_directory(self, path: str) -> None:
+    def set_working_directory(self, path: PathType) -> None:
         """Change client cortex dir."""
         request = AppUtilitiesProtoModule.SetWorkingDirectoryRequest()
-        request.path = path
+        request.path = os.fspath(path)
         self.service.set_working_directory(request)
 
 
