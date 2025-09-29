@@ -58,6 +58,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.deprecate import all_deprecators
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -162,14 +163,14 @@ def launch_fluent(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
-    case_file_name: str | None = None,
-    case_data_file_name: str | None = None,
+    case_file_name: "PathType | None" = None,
+    case_data_file_name: "PathType | None" = None,
     lightweight_mode: bool | None = None,
     mode: FluentMode | str | None = None,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
-    cwd: str | None = None,
-    fluent_path: str | None = None,
+    cwd: "PathType | None" = None,
+    fluent_path: "PathType | None" = None,
     topy: str | list | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
@@ -254,9 +255,9 @@ def launch_fluent(
        ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
        ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
        ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
-    case_file_name : str, optional
+    case_file_name : :class:`os.PathLike` or str, optional
         If provided, the case file at ``case_file_name`` is read into the Fluent session.
-    case_data_file_name : str, optional
+    case_data_file_name : :class:`os.PathLike` or str, optional
         If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
     lightweight_mode : bool, optional
         Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
@@ -278,9 +279,9 @@ def launch_fluent(
         clamped to the value of ``processor_count``. Please refer to
         *Starting the Fluent GPU Solver* section in *Fluent's User Guide* for more
         information like how to determine the GPU IDs.
-    cwd : str, Optional
+    cwd : :class:`os.PathLike` or str, optional
         Working directory for the Fluent client.
-    fluent_path: str, Optional
+    fluent_path: :class:`os.PathLike` or str, optional
         User provided Fluent installation path.
     topy : bool or str, optional
         A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.

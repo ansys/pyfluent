@@ -27,10 +27,10 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import TypeAlias
 import zipfile
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
 
 logger = logging.getLogger("pyfluent.networking")
@@ -70,9 +70,6 @@ def _get_file_url(file_name: str, directory: str | None = None) -> str:
             "https://github.com/ansys/example-data/raw/main/" f"{directory}/{file_name}"
         )
     return f"https://github.com/ansys/example-data/raw/main/{file_name}"
-
-
-PathType: TypeAlias = "os.PathLike[str | bytes] | str | bytes"
 
 
 def _retrieve_file(
