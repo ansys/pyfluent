@@ -38,6 +38,7 @@ Examples
 import inspect
 import logging
 import os
+import shutil
 import time
 from typing import Any, Dict
 import uuid
@@ -274,6 +275,8 @@ def launch_remote_fluent(
     ip, port, password = _parse_server_info_file(
         os.path.join(local_directory, "sifile.txt")
     )
+
+    shutil.rmtree(local_directory)
 
     channel = instance.build_grpc_channel(
         options=[
