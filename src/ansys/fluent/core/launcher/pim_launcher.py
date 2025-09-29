@@ -250,13 +250,13 @@ def launch_remote_fluent(
 
     file_service = PimFileTransferService(pim_instance=instance)
 
-    local_sifile = f"sifile_{uuid.uuid4().hex}"
+    local_directory = os.path.join(os.getcwd(), f"sifile_{uuid.uuid4().hex}")
 
-    file_service.download_file("sifile.txt", os.path.join(os.getcwd(), local_sifile))
+    file_service.download_file("sifile.txt", local_directory)
 
     time.sleep(10)
 
-    ip, port, password = _parse_server_info_file(f"{local_sifile}/sifile.txt")
+    ip, port, password = _parse_server_info_file(os.path.join(local_directory, "sifile.txt"))
 
     channel = instance.build_grpc_channel(
         options=[
