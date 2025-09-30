@@ -152,7 +152,7 @@ sphinx_gallery_conf = {
     # path where to save gallery generated examples
     "gallery_dirs": ["examples"],
     # Pattern to search for example files
-    "filename_pattern": r"exhaust_system_settings_api\.py|external_compressible_flow\.py|mixing_elbow_settings_api\.py|modeling_cavitation\.py|species_transport\.py|ahmed_body_workflow\.py|brake\.py|DOE_ML\.py|radiation_headlamp\.py|parametric_static_mixer_1\.py|conjugate_heat_transfer\.py|tyler_sofrin_modes\.py|lunar_lander_thermal\.py|modeling_ablation\.py|frozen_rotor_workflow\.py|mixing_tank_workflow\.py|single_battery_cell_workflow\.py|steady_vortex\.py",
+    "filename_pattern": r"exhaust_system_settings_api\.py|external_compressible_flow\.py|mixing_elbow_settings_api\.py|modeling_cavitation\.py|species_transport\.py|ahmed_body_workflow\.py|brake\.py|DOE_ML\.py|radiation_headlamp\.py|parametric_static_mixer_1\.py|conjugate_heat_transfer\.py|tyler_sofrin_modes\.py|lunar_lander_thermal\.py|modeling_ablation\.py|frozen_rotor_workflow\.py|mixing_tank_workflow\.py|single_battery_cell_workflow\.py|steady_vortex\.py|catalytic_converter_workflow\.py",
     # Do not execute examples
     "plot_gallery": False,
     # Remove the "Download all examples" button from the top level gallery
