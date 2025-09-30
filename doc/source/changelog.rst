@@ -9,6 +9,73 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.35.0 <https://github.com/ansys/pyfluent/releases/tag/v0.35.0>`_ - September 09, 2025
+=======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add _has_migration_adapter bool to flobject classes
+          - `#4397 <https://github.com/ansys/pyfluent/pull/4397>`_
+
+        * - Enable Fluent's automatic transcript
+          - `#4426 <https://github.com/ansys/pyfluent/pull/4426>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Some config and env var cleanup
+          - `#4380 <https://github.com/ansys/pyfluent/pull/4380>`_
+
+        * - Resolve examples workflow issues [skip tests]
+          - `#4433 <https://github.com/ansys/pyfluent/pull/4433>`_
+
+        * - Disabled single battery cell simulation ui option
+          - `#4436 <https://github.com/ansys/pyfluent/pull/4436>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ``CONTRIBUTORS.md`` with the latest contributors [skip tests]
+          - `#4403 <https://github.com/ansys/pyfluent/pull/4403>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update CHANGELOG for v0.35.dev1
+          - `#4424 <https://github.com/ansys/pyfluent/pull/4424>`_
+
+        * - Add deprecation warning for Transaction.
+          - `#4427 <https://github.com/ansys/pyfluent/pull/4427>`_
+
+        * - Update modelling cavitation example to get rid of deprecated code.
+          - `#4429 <https://github.com/ansys/pyfluent/pull/4429>`_
+
+        * - Move Field data streaming to service creator.
+          - `#4447 <https://github.com/ansys/pyfluent/pull/4447>`_
+
+        * - Fix release [skip tests]
+          - `#4457 <https://github.com/ansys/pyfluent/pull/4457>`_
+
+
 `0.35.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.35.dev1>`_ - August 28, 2025
 ==========================================================================================
 
