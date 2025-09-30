@@ -38,10 +38,9 @@ Examples
 import inspect
 import logging
 import os
-import shutil
+import tempfile
 import time
 from typing import Any, Dict
-import uuid
 
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
@@ -197,6 +196,54 @@ class PIMLauncher:
         )
 
 
+def get_ip_port_password(
+    file_service,
+    filename="sifile.txt",
+    max_retries=20,
+    wait_time_between_retries=1,  # seconds
+):
+    """
+    Downloads the file with retries and parses server info.
+
+    Parameters
+    ----------
+    file_service: PimFileTransferService
+        Service object with method download_file(filename, target_dir).
+    filename: str
+        Name of the file to download.
+    max_retries: int
+        Maximum number of attempts.
+    wait_time_between_retries: int
+        Seconds to wait between retries.
+
+    Returns
+    -------
+        Tuple (ip, port, password) parsed from the downloaded file.
+
+    Raises
+    ------
+    TimeoutError
+        If unable to download the server info file after multiple retries.
+    """
+    with tempfile.TemporaryDirectory(prefix="fluent_sifile_") as tmpdir:
+        for attempt in range(1, max_retries + 1):
+            try:
+                file_service.download_file(filename, tmpdir)
+                break
+            except Exception as ex:
+                logger.warning(
+                    f"Attempt {attempt} of {max_retries} failed to download {filename}: {ex}"
+                )
+                if attempt == max_retries:
+                    raise TimeoutError(
+                        f"Failed to download file '{filename}' after {max_retries} attempts "
+                        f"with {wait_time_between_retries}s between retries."
+                    ) from ex
+                time.sleep(wait_time_between_retries)
+
+        return _parse_server_info_file(os.path.join(tmpdir, filename))
+
+
 def launch_remote_fluent(
     session_cls,
     start_transcript: bool,
@@ -254,29 +301,9 @@ def launch_remote_fluent(
 
     instance.wait_for_ready()
 
-    file_service = PimFileTransferService(pim_instance=instance)
-
-    local_directory = os.path.join(os.getcwd(), f"sifile_{uuid.uuid4().hex}")
-
-    max_retries = 20
-    wait_time_between_retries = 1  # seconds
-
-    for i in range(max_retries):
-        try:
-            file_service.download_file("sifile.txt", local_directory)
-            break
-        except Exception as ex:
-            if i == max_retries - 1:
-                raise TimeoutError(
-                    "Failed to download file after multiple retries."
-                ) from ex
-            time.sleep(wait_time_between_retries)
-
-    ip, port, password = _parse_server_info_file(
-        os.path.join(local_directory, "sifile.txt")
+    ip, port, password = get_ip_port_password(
+        file_service=PimFileTransferService(pim_instance=instance)
     )
-
-    shutil.rmtree(local_directory)
 
     channel = instance.build_grpc_channel(
         options=[
