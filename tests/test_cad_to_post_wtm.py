@@ -238,7 +238,7 @@ def test_mixing_elbow(
 
         ###############################################################################
         # Assert the returned mass flow rate report definition value
-        flux = solver_session.solution.report_definitions.flux
+        flux = solver_session.settings.solution.report_definitions.flux
         flux["mass_flow_rate"] = {}
         flux["mass_flow_rate"].zone_names = [
             "cold-inlet",
@@ -248,7 +248,7 @@ def test_mixing_elbow(
 
         check_report_definition = partial(
             check_report_definition_result,
-            report_definitions=solver_session.solution.report_definitions,
+            report_definitions=solver_session.settings.solution.report_definitions,
         )
 
         check_report_definition(
@@ -258,8 +258,10 @@ def test_mixing_elbow(
 
         ###############################################################################
         # Assert the returned temperature report definition value on the outlet surface
-        solver_session.solution.report_definitions.surface["temperature_outlet"] = {}
-        temp_outlet = solver_session.solution.report_definitions.surface[
+        solver_session.settings.solution.report_definitions.surface[
+            "temperature_outlet"
+        ] = {}
+        temp_outlet = solver_session.settings.solution.report_definitions.surface[
             "temperature_outlet"
         ]
         temp_outlet.report_type = "surface-massavg"

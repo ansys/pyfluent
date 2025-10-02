@@ -1,3 +1,16 @@
+# /// script
+# dependencies = [
+#   "pyfluent",
+#   "matplotlib",
+#   "numpy",
+#   "pandas",
+#   "plotly",
+#   "scikit-learn",
+#   "seaborn",
+#   "tensorflow",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -84,8 +97,7 @@ import_filename = examples.download_file(
 
 solver_session = pyfluent.launch_fluent(
     precision="double",
-    processor_count=2,
-    version="3d",
+    processor_count=4,
 )
 print(solver_session.get_fluent_version())
 

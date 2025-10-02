@@ -35,9 +35,11 @@ from util.solver import get_name_info
 @pytest.mark.codegen_required
 def test_boundaries_elbow(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
-    solver_session.setup.models.energy.enabled = True
+    solver_session.settings.setup.models.energy.enabled = True
 
-    cold_inlet = solver_session.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    cold_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
+        "cold-inlet"
+    ]
     assert D(1) == cold_inlet.momentum.velocity()
     assign_dict_val(cold_inlet.momentum.velocity, 0.4)
     assert D(0.4) == cold_inlet.momentum.velocity()
@@ -63,7 +65,9 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
         "thermal": {"t": {"option": "value", "value": 293.15}},
     } == cold_inlet()
 
-    hot_inlet = solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ]
     assign_dict_val(hot_inlet.momentum.velocity, 1.2)
     hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
@@ -85,11 +89,11 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
         "thermal": {"t": {"option": "value", "value": 313.15}},
     } == hot_inlet()
 
-    solver_session.setup.boundary_conditions.pressure_outlet[
+    solver_session.settings.setup.boundary_conditions.pressure_outlet[
         "outlet"
     ].turbulence.turbulent_viscosity_ratio = 4
     assert (
-        solver_session.setup.boundary_conditions.pressure_outlet[
+        solver_session.settings.setup.boundary_conditions.pressure_outlet[
             "outlet"
         ].turbulence.turbulent_viscosity_ratio()
         == 4
@@ -106,7 +110,7 @@ def test_boundaries_periodic(periodic_rot_settings_session):
     boundary_exp = json.load(open(_DATA_FILE))
     boundary_test = dict()
     boundary_tested = dict()
-    for name, boundary in solver_session.setup.boundary_conditions.items():
+    for name, boundary in solver_session.settings.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_1"] = boundary_test
 
@@ -115,11 +119,11 @@ def test_boundaries_periodic(periodic_rot_settings_session):
     boundary_test = dict()
     for (
         boundary_type
-    ) in solver_session.setup.boundary_conditions.get_active_child_names():
+    ) in solver_session.settings.setup.boundary_conditions.get_active_child_names():
         if boundary_type in ["non_reflecting_bc", "perforated_wall", "settings"]:
             continue
         for name, boundary in getattr(
-            solver_session.setup.boundary_conditions, boundary_type
+            solver_session.settings.setup.boundary_conditions, boundary_type
         ).items():
             boundary_test[name] = boundary()
     boundary_tested["val_2"] = boundary_test
@@ -129,15 +133,19 @@ def test_boundaries_periodic(periodic_rot_settings_session):
     selected_bou_test = get_name_info(boundary_tested["val_1"], boundaries_check)
     selected_bou_exp = get_name_info(boundary_exp["val_1"], boundaries_check)
     TestCase().assertDictEqual(selected_bou_test, selected_bou_exp)
-    solver_session.setup.boundary_conditions.wall["pipe_2_wall"].rename("pipe2_wall")
-    solver_session.setup.boundary_conditions.pressure_outlet["outlet"].rename("out")
-    solver_session.setup.boundary_conditions.velocity_inlet[
+    solver_session.settings.setup.boundary_conditions.wall["pipe_2_wall"].rename(
+        "pipe2_wall"
+    )
+    solver_session.settings.setup.boundary_conditions.pressure_outlet["outlet"].rename(
+        "out"
+    )
+    solver_session.settings.setup.boundary_conditions.velocity_inlet[
         "inlet"
     ].momentum.velocity = 5.0
-    solver_session.setup.boundary_conditions["inlet"].momentum.velocity = 10.0
+    solver_session.settings.setup.boundary_conditions["inlet"].momentum.velocity = 10.0
     boundaries_check = ["inlet", "out", "pipe2_wall"]
     boundary_test = dict()
-    for name, boundary in solver_session.setup.boundary_conditions.items():
+    for name, boundary in solver_session.settings.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_3"] = boundary_test
     TestCase().assertDictEqual(boundary_tested["val_3"], boundary_exp["val_3"])

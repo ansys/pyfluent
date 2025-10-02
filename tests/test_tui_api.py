@@ -66,12 +66,9 @@ def test_api_upgrade_message(new_solver_session):
         solver.tui.file.read_case(case_name)
     s = f.getvalue()
     if solver.get_fluent_version() >= FluentVersion.v251:
-        assert (
-            s.split("\n")[-2].split("(")[0]
-            == r"<solver_session>.settings.file.read_case"
-        )
+        assert s.split("\n")[-2].split("(")[0] == r"<solver_session>.fileread_case"
     else:
-        assert s.split("\n")[-2].split("(")[0] == r"<solver_session>.file.read_case"
+        assert s.split("\n")[-2].split("(")[0] == r"<solver_session>.fileread_case"
 
 
 def test_exit_not_in_meshing_tui(new_meshing_session):

@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "pyfluent",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -105,7 +111,6 @@ meshing_session.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing
 # Import the CAD geometry file (``exhaust_system.fmd``) and selectively manage some
 # parts.
 
-meshing_session.upload(import_file_name)
 meshing_session.PartManagement.InputFileChanged(
     FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
 )
@@ -505,12 +510,6 @@ meshing_session.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
 meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
-###############################################################################
-# Confirm and update boundaries
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Confirm and update the boundaries.
-
-meshing_session.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
 # Add boundary layers
@@ -559,6 +558,13 @@ volume_mesh_gen.Arguments.set_state(
 volume_mesh_gen.Execute()
 
 ###############################################################################
+# Confirm and update boundaries
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Confirm and update the boundaries.
+
+meshing_session.workflow.TaskObject["Update Boundaries"].Execute()
+
+###############################################################################
 # Check mesh
 # ~~~~~~~~~~
 # Check the mesh.
@@ -577,14 +583,14 @@ meshing_session.tui.mesh.check_mesh()
 
 solver_session = meshing_session.switch_to_solver()
 
-solver_session.mesh.check()
+solver_session.settings.mesh.check()
 
 ###############################################################################
 # Select turbulence model
 # ~~~~~~~~~~~~~~~~~~~~~~~
 # Select the kw sst turbulence model.
 
-viscous = solver_session.setup.models.viscous
+viscous = solver_session.settings.setup.models.viscous
 
 viscous.model = "k-omega"
 viscous.k_omega_model = "sst"
@@ -595,7 +601,7 @@ viscous.k_omega_model = "sst"
 # Set the velocity and turbulence boundary conditions for the first inlet
 # (``inlet-1``).
 
-boundary_conditions = solver_session.setup.boundary_conditions
+boundary_conditions = solver_session.settings.setup.boundary_conditions
 
 boundary_conditions.velocity_inlet["inlet-1"] = {
     "momentum": {
@@ -623,13 +629,16 @@ boundary_conditions.copy(
 # Set the boundary conditions at the outlet (``outlet-1``).
 
 boundary_conditions.pressure_outlet["outlet-1"].turbulence.turbulent_intensity = 0.05
+boundary_conditions.pressure_outlet[
+    "outlet-1"
+].turbulence.backflow_turbulent_intensity = 0.05
 
 ###############################################################################
 # Initialize flow field
 # ~~~~~~~~~~~~~~~~~~~~~
 # Initialize the flow field using hybrid initialization.
 
-solver_session.solution.initialization.hybrid_initialize()
+solver_session.settings.solution.initialization.hybrid_initialize()
 
 ###############################################################################
 # Start calculation
@@ -641,13 +650,13 @@ solver_session.solution.initialization.hybrid_initialize()
 #   :width: 500pt
 #   :align: center
 
-solver_session.solution.run_calculation.iterate(iter_count=100)
+solver_session.settings.solution.run_calculation.iterate(iter_count=100)
 
 ###############################################################################
 # Write the case and data files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-solver_session.file.write(
+solver_session.settings.file.write(
     file_type="case-data",
     file_name="exhaust_system.cas.h5",
 )
@@ -659,7 +668,7 @@ solver_session.file.write(
 # picture files. Edit the picture settings to use a custom resolution so that
 # the images are large enough.
 
-graphics = solver_session.results.graphics
+graphics = solver_session.settings.results.graphics
 # use_window_resolution option not active inside containers or Ansys Lab environment
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
@@ -697,7 +706,7 @@ graphics.picture.save_picture(file_name="pathlines-1.png")
 # ~~~~~~~~~~~~~~~~~~
 # Create an iso-surface through the manifold geometry.
 
-solver_session.results.surfaces.iso_surface["surf-x-coordinate"] = {
+solver_session.settings.results.surfaces.iso_surface["surf-x-coordinate"] = {
     "field": "x-coordinate",
     "zones": ["fluid-region-1"],
     "iso_values": [0.38],
@@ -745,8 +754,8 @@ graphics.picture.save_picture(file_name="contour-velocity.png")
 #   :width: 500pt
 #   :align: center
 
-solver_session.results.scene["scene-1"] = {}
-scene1 = solver_session.results.scene["scene-1"]
+solver_session.settings.results.scene["scene-1"] = {}
+scene1 = solver_session.settings.results.scene["scene-1"]
 scene1.graphics_objects.add(name="mesh-1")
 scene1.graphics_objects["mesh-1"].transparency = 90
 scene1.graphics_objects.add(name="contour-velocity")

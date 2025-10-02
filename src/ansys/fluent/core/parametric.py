@@ -60,7 +60,7 @@ BASE_DP_NAME = "Base DP"
 
 
 def convert_design_point_parameter_units(
-    value: Dict[str, float | int | str]
+    value: Dict[str, float | int | str],
 ) -> Dict[str, float | int]:
     """Convert design point parameter units."""
 

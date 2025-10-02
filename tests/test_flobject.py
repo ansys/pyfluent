@@ -693,16 +693,16 @@ class root(Group):
 def test_accessor_methods_on_settings_object(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
-    existing = solver.file.read.file_type.get_attr("allowed-values")
-    modified = solver.file.read.file_type.allowed_values()
+    existing = solver.settings.file.read.file_type.get_attr("allowed-values")
+    modified = solver.settings.file.read.file_type.allowed_values()
     assert existing == modified
 
-    existing = solver.file.read.file_type.get_attr("read-only?", bool)
-    modified = solver.file.read.file_type.is_read_only()
+    existing = solver.settings.file.read.file_type.get_attr("read-only?", bool)
+    modified = solver.settings.file.read.file_type.is_read_only()
 
     assert existing == modified
 
-    velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
+    velocity_inlet = solver.settings.setup.boundary_conditions.velocity_inlet
     existing = velocity_inlet.get_attr("user-creatable?", bool)
     modified = velocity_inlet.user_creatable()
     assert existing == modified
@@ -721,7 +721,7 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
         ].turbulence.turbulent_viscosity_ratio
 
         if solver.get_fluent_version() >= FluentVersion.v251:
-            path = '<session>.settings.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+            path = '<session>.setupboundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
         else:
             path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
         name = "turbulent_viscosity_ratio"
@@ -735,37 +735,37 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
     assert turbulent_viscosity_ratio.get_attr("max") is False
     assert turbulent_viscosity_ratio.max() is None
 
-    default_attrs = solver.setup.boundary_conditions.velocity_inlet["inlet1"].get_attrs(
-        ["default"], recursive=True
-    )
+    default_attrs = solver.settings.setup.boundary_conditions.velocity_inlet[
+        "inlet1"
+    ].get_attrs(["default"], recursive=True)
     assert count_key_recursive(default_attrs, "default") > 5
 
-    mesh = solver.results.graphics.mesh.create("mesh-1")
+    mesh = solver.settings.results.graphics.mesh.create("mesh-1")
     if solver.get_fluent_version() < FluentVersion.v242:
         assert mesh.name.is_read_only()
     else:
         assert not mesh.name.is_read_only()
 
-    assert solver.results.graphics.mesh.get_object_names() == ["mesh-1"]
+    assert solver.settings.results.graphics.mesh.get_object_names() == ["mesh-1"]
 
-    solver.results.graphics.mesh["mesh-1"].rename("mesh_new")
-    assert solver.results.graphics.mesh.get_object_names() == ["mesh_new"]
+    solver.settings.results.graphics.mesh["mesh-1"].rename("mesh_new")
+    assert solver.settings.results.graphics.mesh.get_object_names() == ["mesh_new"]
 
-    solver.results.graphics.mesh.rename(new="mesh_242", old="mesh_new")
-    assert solver.results.graphics.mesh.get_object_names() == ["mesh_242"]
+    solver.settings.results.graphics.mesh.rename(new="mesh_242", old="mesh_new")
+    assert solver.settings.results.graphics.mesh.get_object_names() == ["mesh_242"]
 
 
 @pytest.mark.fluent_version("latest")
 def test_accessor_methods_on_settings_object_types(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
-    assert solver.setup.general.solver.type.allowed_values() == [
+    assert solver.settings.setup.general.solver.type.allowed_values() == [
         "pressure-based",
         "density-based-implicit",
         "density-based-explicit",
     ]
     accuracy_control = (
-        solver.setup.models.discrete_phase.numerics.tracking.accuracy_control
+        solver.settings.setup.models.discrete_phase.numerics.tracking.accuracy_control
     )
     if solver.get_fluent_version() < FluentVersion.v241:
         max_refinements = accuracy_control.max_number_of_refinements
@@ -843,41 +843,41 @@ def test_settings_wild_card_access(new_solver_session) -> None:
     solver = new_solver_session
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.file.read_case(file_name=case_path)
+    solver.settings.file.read_case(file_name=case_path)
 
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     if solver.get_fluent_version() >= FluentVersion.v251:
         assert (
-            solver.setup.boundary_conditions.velocity_inlet[
+            solver.settings.setup.boundary_conditions.velocity_inlet[
                 "*1"
             ].momentum.velocity_magnitude.value()["inlet1"]["momentum"][
                 "velocity_magnitude"
             ][
                 "value"
             ]
-            == solver.setup.boundary_conditions.velocity_inlet[
+            == solver.settings.setup.boundary_conditions.velocity_inlet[
                 "inlet1"
             ].momentum.velocity.value()
         )
     else:
         assert (
-            solver.setup.boundary_conditions.velocity_inlet[
+            solver.settings.setup.boundary_conditions.velocity_inlet[
                 "*1"
             ].momentum.velocity.value()["inlet1"]["momentum"]["velocity"]["value"]
-            == solver.setup.boundary_conditions.velocity_inlet[
+            == solver.settings.setup.boundary_conditions.velocity_inlet[
                 "inlet1"
             ].momentum.velocity.value()
         )
 
-    assert solver.setup.boundary_conditions.wall["*"]()
+    assert solver.settings.setup.boundary_conditions.wall["*"]()
 
     with pytest.raises(AttributeError) as msg:
-        solver.setup.boundary_conditions.velocity_inlet["*1"].inlet1()
+        solver.settings.setup.boundary_conditions.velocity_inlet["*1"].inlet1()
     assert msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet1'.\n"
 
     with pytest.raises(KeyError) as msg:
-        solver.setup.boundary_conditions.velocity_inlet["inlet-1"]
+        solver.settings.setup.boundary_conditions.velocity_inlet["inlet-1"]
     assert (
         msg.value.args[0] == "'velocity_inlet' has no attribute 'inlet-1'.\n"
         "The most similar names are: inlet1, inlet2"
@@ -889,17 +889,17 @@ def test_settings_matching_names(new_solver_session) -> None:
     solver = new_solver_session
 
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.file.read_case(file_name=case_path)
+    solver.settings.file.read_case(file_name=case_path)
 
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     with pytest.raises(AttributeError) as msg:
-        solver.setup.mod
+        solver.settings.setup.mod
 
     assert msg.value.args[0].startswith("'setup' object has no attribute 'mod'.")
 
     with pytest.raises(ValueError) as msg:
-        solver.setup.models.viscous.model = "k_epsilon"
+        solver.settings.setup.models.viscous.model = "k_epsilon"
 
     assert (
         msg.value.args[0] == "'model' has no attribute 'k_epsilon'.\n"
@@ -913,10 +913,10 @@ def test_settings_api_names_exception(new_solver_session):
     solver = new_solver_session
 
     case_path = download_file("mixing_elbow.msh.h5", "pyfluent/mixing_elbow")
-    solver.file.read_case(file_name=case_path)
+    solver.settings.file.read_case(file_name=case_path)
 
     with pytest.raises(RuntimeError):
-        solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
+        solver.settings.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -1003,10 +1003,12 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     with pytest.raises(AttributeError) as e:
-        solver.file.auto_save.root_name.allowed_values()
+        solver.settings.file.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
-    string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
+    string_with_allowed_values = (
+        solver.settings.setup.general.solver.type.allowed_values()
+    )
     assert string_with_allowed_values == [
         "pressure-based",
         "density-based-implicit",
@@ -1017,9 +1019,9 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
 @pytest.mark.fluent_version(">=24.2")
 def test_parent_class_attributes(static_mixer_settings_session):
     solver = static_mixer_settings_session
-    assert solver.setup.models.energy.enabled
+    assert solver.settings.setup.models.energy.enabled
     with pytest.raises(AttributeError):
-        solver.setup.models.energy.__class__.enabled
+        solver.settings.setup.models.energy.__class__.enabled
 
 
 def _check_vector_units(obj, units):
@@ -1037,7 +1039,7 @@ def _check_vector_units(obj, units):
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     assert isinstance(solver.settings.state_with_units(), dict)
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     turbulence = hot_inlet.turbulence
     turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     hydraulic_diameter = turbulence.hydraulic_diameter
@@ -1078,7 +1080,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
         "value": (12.0, "m s^-1"),
     }
     # https://github.com/ansys/pyfluent/issues/3738
-    # clip_factor = solver.setup.models.viscous.options.production_limiter.clip_factor
+    # clip_factor = solver.settings.setup.models.viscous.options.production_limiter.clip_factor
     # clip_factor.set_state(1.2)
     # assert clip_factor() == 1.2
     # assert clip_factor.as_quantity() == ansys.units.Quantity(1.2, "")
@@ -1090,10 +1092,11 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     # assert clip_factor.units() == ""
 
     _check_vector_units(
-        solver.setup.general.operating_conditions.reference_pressure_location, "m"
+        solver.settings.setup.general.operating_conditions.reference_pressure_location,
+        "m",
     )
     _check_vector_units(
-        solver.setup.reference_frames[
+        solver.settings.setup.reference_frames[
             "global"
         ].initial_state.orientation.first_axis.axis_to.vector,
         "",
@@ -1104,7 +1107,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
 def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
 
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
 
     assert hot_inlet.state_with_units() == {
         "momentum": {
@@ -1139,20 +1142,20 @@ def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
 def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     speed = ansys.units.Quantity(100, "m s^-1")
     solver = mixing_elbow_settings_session
-    solver.setup.boundary_conditions.velocity_inlet[
+    solver.settings.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
     ].momentum.velocity.value = speed.value
     assert (
-        solver.setup.boundary_conditions.velocity_inlet[
+        solver.settings.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].momentum.velocity.value()
         == speed.value
     )
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = (
-        speed
-    )
+    solver.settings.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity = speed
     assert (
-        solver.setup.boundary_conditions.velocity_inlet[
+        solver.settings.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].momentum.velocity.value()
         == speed.value
@@ -1222,7 +1225,7 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     if solver.get_fluent_version() >= FluentVersion.v251:
-        assert set(solver.results.graphics.contour.command_names) == {
+        assert set(solver.settings.results.graphics.contour.command_names) == {
             "create",
             "delete",
             "rename",
@@ -1234,7 +1237,7 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
             "clear_history",
         }
     else:
-        assert set(solver.results.graphics.contour.command_names) == {
+        assert set(solver.settings.results.graphics.contour.command_names) == {
             "delete",
             "rename",
             "list",
@@ -1246,10 +1249,15 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
             "clear_history",
         }
 
-    assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
-    assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    assert solver.settings.results.graphics.contour.rename.argument_names == [
+        "new",
+        "old",
+    ]
+    assert solver.settings.results.graphics.contour.delete.argument_names == [
+        "name_list"
+    ]
     # The following is the default behavior when no arguments are associated with the command.
-    assert solver.results.graphics.contour.list.argument_names == []
+    assert solver.settings.results.graphics.contour.list.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")
@@ -1260,7 +1268,7 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
 
     with monkeypatch.context() as m:
         m.setattr(TracingInterceptor, "_intercept_call", mock_interceptor)
-        solver.setup.boundary_conditions.velocity_inlet["inlet1"] = {
+        solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"] = {
             "momentum": {"velocity_magnitude": 11.0}
         }
 
@@ -1281,7 +1289,7 @@ def test_bc_set_state_performance(static_mixer_settings_session, monkeypatch):
     )
 
     assert (
-        solver.setup.boundary_conditions.velocity_inlet[
+        solver.settings.setup.boundary_conditions.velocity_inlet[
             "inlet1"
         ].momentum.velocity_magnitude.value()
         == 11.0

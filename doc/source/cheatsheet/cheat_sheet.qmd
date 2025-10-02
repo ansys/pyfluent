@@ -65,8 +65,8 @@ solver = pyfluent.launch_fluent(
 
 ```{python}
 fluent = pyfluent.connect_to_fluent(
-    ip="127.0.0.1", 
-    port=50000, 
+    ip="127.0.0.1",
+    port=50000,
     password="abcdefg")
 ```
 
@@ -392,7 +392,7 @@ solution.run_calculation.iterate(iter_count=100)
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader.case_file import CaseFile
 case_file_name = examples.download_file(
-    "Static_Mixer_Parameters.cas.h5", 
+    "Static_Mixer_Parameters.cas.h5",
     "pyfluent/static_mixer")
 reader = CaseFile(case_file_name=case_file_name)
 reader.precision()
@@ -432,7 +432,7 @@ from ansys.fluent.core.filereader.data_file import DataFile
 from ansys.fluent.core.filereader.case_file import CaseFile
 data_file_name = examples.download_file("elbow1.dat.h5", "pyfluent/file_session")
 reader = DataFile(
-    data_file_name=data_file_name, 
+    data_file_name=data_file_name,
     case_file_handle=CaseFile(case_file_name))
 reader.case_file
 reader.variables()
@@ -461,10 +461,10 @@ fs.fields.field_info.get_scalar_fields_info()
 from ansys.fluent.core import examples
 from ansys.fluent.core.file_session import FileSession
 case_file_name = examples.download_file(
-    "mixing_elbow_mul_ph.cas.h5", 
+    "mixing_elbow_mul_ph.cas.h5",
     "pyfluent/file_session")
 data_file_name = examples.download_file(
-    "mixing_elbow_mul_ph.dat.h5", 
+    "mixing_elbow_mul_ph.dat.h5",
     "pyfluent/file_session")
 fs = FileSession()
 fs.read_case(case_file_name)
@@ -525,11 +525,11 @@ velocity_vector.display("w3")
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 case_path = examples.download_file(
-    file_name="exhaust_system.cas.h5", 
+    file_name="exhaust_system.cas.h5",
     directory="pyfluent/exhaust_system"
 )
 data_path = examples.download_file(
-    file_name="exhaust_system.dat.h5", 
+    file_name="exhaust_system.dat.h5",
     directory="pyfluent/exhaust_system"
 )
 solver = pyfluent.launch_fluent(
@@ -545,13 +545,13 @@ field_data = solver.fields.field_data
 ```{python}
 from ansys.fluent.core.services.field_data import SurfaceDataType
 data = field_data.get_surface_data(
-    surfaces=["inlet"], 
+    surfaces=["inlet"],
     data_types=[SurfaceDataType.Vertices]
 )
 data["inlet"][SurfaceDataType.Vertices].shape
 data["inlet"][SurfaceDataType.Vertices][5]
 faces_normal_and_centroid_data = field_data.get_surface_data(
-    data_types=[SurfaceDataType.FacesNormal, 
+    data_types=[SurfaceDataType.FacesNormal,
     SurfaceDataType.FacesCentroid],
     surfaces=["inlet"]
 )
@@ -559,7 +559,7 @@ inlet = faces_normal_and_centroid_data["inlet"]
 inlet[SurfaceDataType.FacesNormal].shape
 inlet[SurfaceDataType.FacesCentroid][15]
 faces_connectivity_data = field_data.get_surface_data(
-    data_types=[SurfaceDataType.FacesConnectivity], 
+    data_types=[SurfaceDataType.FacesConnectivity],
     surfaces=["inlet"]
 )
 inlet = faces_connectivity_data["inlet"]
@@ -570,7 +570,7 @@ inlet[SurfaceDataType.FacesConnectivity][5]
 
 ```{python}
 abs_press_data = field_data.get_scalar_field_data(
-    field_name="absolute-pressure", 
+    field_name="absolute-pressure",
     surfaces=["inlet"]
 )
 abs_press_data["inlet"].shape
@@ -581,7 +581,7 @@ abs_press_data["inlet"][120]
 
 ```{python}
 velocity_vector_data = field_data.get_vector_field_data(
-    field_name="velocity", 
+    field_name="velocity",
     surfaces=["inlet", "inlet1"]
 )
 velocity_vector_data["inlet"].shape
@@ -592,7 +592,7 @@ velocity_vector_data["inlet1"].shape
 
 ```{python}
 path_lines_data = field_data.get_pathlines_field_data(
-    field_name="velocity", 
+    field_name="velocity",
     surfaces=["inlet"]
 )
 path_lines_data["inlet"]["vertices"].shape
@@ -638,10 +638,10 @@ solver1 = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER
 )
 case_path = download_file(
-    file_name="exhaust_system.cas.h5", 
+    file_name="exhaust_system.cas.h5",
     directory="pyfluent/exhaust_system")
 data_path = download_file(
-    file_name="exhaust_system.dat.h5", 
+    file_name="exhaust_system.dat.h5",
     directory="pyfluent/exhaust_system")
 solver1.settings.file.read_case_data(
     file_name=case_path
@@ -651,11 +651,11 @@ solver2 = pyfluent.launch_fluent(
     mode=pyfluent.FluentMode.SOLVER
 )
 case_path = download_file(
-    "elbow1.cas.h5", 
+    "elbow1.cas.h5",
     "pyfluent/file_session"
 )
 data_path = download_file(
-    "elbow1.dat.h5", 
+    "elbow1.dat.h5",
     "pyfluent/file_session"
 )
 solver2.settings.file.read_case_data(
@@ -676,7 +676,7 @@ solver.fields.reduction.area(
   locations=[inlet["inlet1"]]
 )
 solver.fields.reduction.area(
-    locations=["inlet1"], 
+    locations=["inlet1"],
     ctxt=solver)
 ```
 
@@ -767,7 +767,7 @@ zone_info.zone_type
 
 ```{python}
 wall_fluid_info = solution_variable_info.get_variables_info(
-    zone_names=['wall' , "fluid"], 
+    zone_names=['wall' , "fluid"],
     domain_name="mixture")
 wall_fluid_info.solution_variables
 solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
@@ -782,7 +782,7 @@ solution_variable_info_centroid.field_type
 ```{python}
 sv_t_wall_fluid= solution_variable_data.get_data(
     variable_name="SV_T",
-    zone_names=["fluid", "wall"], 
+    zone_names=["fluid", "wall"],
     domain_name="mixture")
 sv_t_wall_fluid.domain
 sv_t_wall_fluid.zones
@@ -814,14 +814,14 @@ solution_variable_data.set_data(
 transaction = solver.fields.field_data.new_transaction()
 
 transaction.add_surfaces_request(
-    surfaces=[1], 
-    data_types=[SurfaceDataType.Vertices, 
+    surfaces=[1],
+    data_types=[SurfaceDataType.Vertices,
     SurfaceDataType.FacesCentroid]
 )
 transaction.add_scalar_fields_request(
-    surfaces=[1, 2], 
-    field_name="pressure", 
-    node_value=True, 
+    surfaces=[1, 2],
+    field_name="pressure",
+    node_value=True,
     boundary_value=True
 )
 transaction.add_vector_fields_request(
@@ -862,11 +862,11 @@ import_case = examples.download_file(
 import_data = examples.download_file(
     file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
 )
-solver.file.read_case_data(file_name=import_case)
+solver.settings.file.read_case_data(file_name=import_case)
 # check the active report plot monitors using the settings relevant object
 solver.settings.solution.monitor.report_plots()
 # initialize so that monitors object is usable
-solver.solution.initialization.hybrid_initialize()
+solver.settings.solution.initialization.hybrid_initialize()
 # check which monitors are available
 sorted(solver.monitors.get_monitor_set_names())
 # create and register a callback function that will
@@ -896,7 +896,7 @@ def display_monitor_table(
 register_id = solver.monitors.register_callback(
     display_monitor_table())
 # run the solver and see the full tabulated monitor data on each iteration
-solver.solution.run_calculation.iterate(
+solver.settings.solution.run_calculation.iterate(
     iter_count=10)
 ```
 
@@ -969,21 +969,21 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import StandaloneFileTransferStrategy
 
 mesh_file_name = examples.download_file(
-    "mixing_elbow.msh.h5", 
+    "mixing_elbow.msh.h5",
     "pyfluent/mixing_elbow")
 meshing_session = pyfluent.launch_fluent(
-    mode=pyfluent.FluentMode.MESHING, 
+    mode=pyfluent.FluentMode.MESHING,
     file_transfer_service=
     StandaloneFileTransferStrategy())
 meshing_session.upload(
-    file_name=mesh_file_name, 
+    file_name=mesh_file_name,
     remote_file_name="elbow.msh.h5")
 meshing_session.meshing.File.ReadMesh(
     FileName="elbow.msh.h5")
 meshing_session.meshing.File.WriteMesh(
     FileName="write_elbow.msh.h5")
 meshing_session.download(
-    file_name="write_elbow.msh.h5", 
+    file_name="write_elbow.msh.h5",
     local_directory="<local_directory_path>")
 ```
 
@@ -995,21 +995,21 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 
 case_file_name = examples.download_file(
-    "mixing_elbow.cas.h5", 
+    "mixing_elbow.cas.h5",
     "pyfluent/mixing_elbow")
 solver_session = pyfluent.launch_fluent(
-    mode=pyfluent.FluentMode.SOLVER, 
+    mode=pyfluent.FluentMode.SOLVER,
     file_transfer_service=
     ContainerFileTransferStrategy())
 solver_session.upload(
-    file_name=case_file_name, 
+    file_name=case_file_name,
     remote_file_name="elbow.cas.h5")
-solver_session.file.read_case(
+solver_session.settings.file.read_case(
     file_name="elbow.cas.h5")
-solver_session.file.write_case(
+solver_session.settings.file.write_case(
     file_name="write_elbow.cas.h5")
 solver_session.download(
-    file_name="write_elbow.cas.h5", 
+    file_name="write_elbow.cas.h5",
     local_directory="<local_directory_path>")
 ```
 
@@ -1044,7 +1044,7 @@ import ansys.fluent.core as pyfluent
 pyfluent.search("font")
 
 # Whole word search
-pyfluent.search("ApplicationFontSize", 
+pyfluent.search("ApplicationFontSize",
     match_whole_word=True)
 
 # Wildcard pattern search
@@ -1081,8 +1081,8 @@ import ansys.fluent.core as pyfluent
 os.environ["ANSYSLMD_LICENSE_FILE"] = "<license file or server>"
 
 custom_config = {
-    'fluent_image': 'ansys_inc:latest', 
-    'mount_source': f"{os.getcwd()}", 
+    'fluent_image': 'ansys_inc:latest',
+    'mount_source': f"{os.getcwd()}",
     'auto_remove': False}
 
 solver = pyfluent.launch_fluent(

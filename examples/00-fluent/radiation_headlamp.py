@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "pyfluent",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -484,7 +490,7 @@ rad_input_bc.radiation.direct_irradiation_settings.reference_direction = [
 # ~~~~~~~~~~~~~~~~~~~~~~~~
 # Enable residual plots and set the convergence criteria to 'none'.
 
-solver_session.solution.monitor.residual.options.criterion_type = "none"
+solver_session.settings.solution.monitor.residual.options.criterion_type = "none"
 
 ###########################################################################################################
 # Define surface reports
