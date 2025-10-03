@@ -265,6 +265,7 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")

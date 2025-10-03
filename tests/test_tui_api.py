@@ -83,6 +83,7 @@ def test_exit_not_in_meshing_tui(new_meshing_session):
         meshing.tui.exit()
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 def test_commands_not_in_solver_tui(new_solver_session):
     solver = new_solver_session
 
