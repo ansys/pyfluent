@@ -424,9 +424,9 @@ def test_named_object_specific_methods_using_flserver(new_solver_session):
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
     solver = new_solver_session
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.solution.initialization.hybrid_initialize()
-    solver.solution.run_calculation.iterate(iter_count=10)
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.solution.initialization.hybrid_initialize()
+    solver.settings.solution.run_calculation.iterate(iter_count=10)
     solver.tui.display.objects.create(
         "contour",
         "contour-z1",

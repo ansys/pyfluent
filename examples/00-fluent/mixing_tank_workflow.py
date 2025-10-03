@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "pyfluent",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -264,7 +270,7 @@ liquid_level_bc.momentum.wall_motion = "Stationary Wall"
 liquid_level_bc.momentum.shear_condition = "Specified Shear"
 
 # Change the Zone type for internal walls to interior
-solver_session.setup.boundary_conditions.set_zone_type(
+solver_session.settings.setup.boundary_conditions.set_zone_type(
     zone_list=["fluid_mrf_1-fluid_tank"], new_type="interior"
 )
 

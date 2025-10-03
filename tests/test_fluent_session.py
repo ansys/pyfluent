@@ -44,9 +44,9 @@ def _read_case(session, lightweight_setup=True):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
     if session.get_fluent_version() < FluentVersion.v231:
-        session.file.read(file_name=case_path, file_type="case")
+        session.settings.file.read(file_name=case_path, file_type="case")
     else:
-        session.file.read(
+        session.settings.file.read(
             file_name=case_path, file_type="case", lightweight_setup=lightweight_setup
         )
 
@@ -243,13 +243,13 @@ def test_fluent_freeze_kill(
 @pytest.mark.fluent_version(">=23.1")
 def test_interrupt(static_mixer_case_session):
     solver = static_mixer_case_session
-    solver.setup.general.solver.time = "unsteady-2nd-order"
-    solver.solution.initialization.standard_initialize()
-    asynchronous(solver.solution.run_calculation.dual_time_iterate)(
+    solver.settings.setup.general.solver.time = "unsteady-2nd-order"
+    solver.settings.solution.initialization.standard_initialize()
+    asynchronous(solver.settings.solution.run_calculation.dual_time_iterate)(
         time_step_count=100, max_iter_per_step=20
     )
     time.sleep(5)
-    solver.solution.run_calculation.interrupt()
+    solver.settings.solution.run_calculation.interrupt()
     assert solver.scheme.eval("(rpgetvar 'time-step)") < 100
 
 

@@ -28,14 +28,13 @@ from ansys.fluent.core.utils.execution import timeout_loop
 
 @pytest.mark.fluent_version(">=23.2")
 def test_solver_monitors(new_solver_session):
-
     solver = new_solver_session
 
     import_case = examples.download_file(
         file_name="exhaust_system.cas.h5", directory="pyfluent/exhaust_system"
     )
 
-    solver.file.read_case(file_name=import_case)
+    solver.settings.file.read_case(file_name=import_case)
 
     ordered_report_plot_names = [
         "mass-bal-rplot",
@@ -57,13 +56,13 @@ def test_solver_monitors(new_solver_session):
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
 
-    solver.file.read_data(file_name=import_data)
+    solver.settings.file.read_data(file_name=import_data)
 
     # monitor set names remains unavailable after loading data
     assert timeout_loop(lambda: len(solver.monitors.get_monitor_set_names()) == 0, 5)
 
     # monitor set names becomes available after initializing
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     monitor_set_names = ordered_report_plot_names + ["residual"]
     assert timeout_loop(
@@ -85,7 +84,7 @@ def test_solver_monitors(new_solver_session):
         ), f"Monitor set '{name}' contains non-empty elements."
 
     # run the solver...
-    solver.solution.run_calculation.iterate(iter_count=1)
+    solver.settings.solution.run_calculation.iterate(iter_count=1)
 
     # ...data is in monitors
     def all_elements_non_empty(name):
@@ -111,6 +110,6 @@ def test_solver_monitors(new_solver_session):
 
     # trigger callback by running the solver
     assert not monitor_callback.called
-    solver.solution.run_calculation.iterate(iter_count=1)
+    solver.settings.solution.run_calculation.iterate(iter_count=1)
     assert timeout_loop(lambda: monitor_callback.called, 5)
     assert monitor_callback.called

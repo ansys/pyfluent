@@ -1,3 +1,11 @@
+# /// script
+# dependencies = [
+#   "matplotlib",
+#   "numpy",
+#   "pyfluent",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -101,7 +109,6 @@ Tyler-Sofrin Compressor Modes Post-Processing
 # Post-Processing Implementation
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 #######################################################################################
 # Import required libraries/modules
 # =====================================================================================
@@ -146,7 +153,7 @@ print(session.get_fluent_version())
 # .. note::
 #   The dat file should correspond to the already completed DFT simulation.
 
-session.file.read(file_type="case-data", file_name=import_filename)
+session.settings.file.read(file_type="case-data", file_name=import_filename)
 
 #######################################################################################
 # Define User constant/variables
@@ -181,8 +188,8 @@ for angle in range(0, 360, d_theta):
     x = math.cos(math.radians(angle)) * r
     y = math.sin(math.radians(angle)) * r
     pt_name = "point-" + str(angle)
-    session.results.surfaces.point_surface[pt_name] = {}
-    session.results.surfaces.point_surface[pt_name].point = [x, y, z]
+    session.settings.results.surfaces.point_surface[pt_name] = {}
+    session.settings.results.surfaces.point_surface[pt_name].point.set_state([x, y, z])
 
 #######################################################################################
 # Compute Fourier coefficients at each monitor point (An, Bn)
@@ -193,33 +200,33 @@ Bn = np.zeros((len(varname), int(360 / d_theta)))
 for angle_ind, angle in enumerate(range(0, 360, d_theta)):
     for n_ind, variable in enumerate(varname):
         if len(variable) >= 4 and variable[:4] == "mean":
-            session.solution.report_definitions.surface["mag-report"] = {
+            session.settings.solution.report_definitions.surface["mag-report"] = {
                 "report_type": "surface-vertexavg",
                 "surface_names": ["point-" + str(angle)],
                 "field": str(variable),
             }
-            mag = session.solution.report_definitions.compute(
+            mag = session.settings.solution.report_definitions.compute(
                 report_defs=["mag-report"]
             )
             mag = mag[0]["mag-report"][0]
             An[n_ind][angle_ind] = mag
             Bn[n_ind][angle_ind] = 0
         else:
-            session.solution.report_definitions.surface["mag-report"] = {
+            session.settings.solution.report_definitions.surface["mag-report"] = {
                 "report_type": "surface-vertexavg",
                 "surface_names": ["point-" + str(angle)],
                 "field": str(variable) + "-mag",
             }
-            mag = session.solution.report_definitions.compute(
+            mag = session.settings.solution.report_definitions.compute(
                 report_defs=["mag-report"]
             )
             mag = mag[0]["mag-report"][0]
-            session.solution.report_definitions.surface["phase-report"] = {
+            session.settings.solution.report_definitions.surface["phase-report"] = {
                 "report_type": "surface-vertexavg",
                 "surface_names": ["point-" + str(angle)],
                 "field": str(variable) + "-phase",
             }
-            phase = session.solution.report_definitions.compute(
+            phase = session.settings.solution.report_definitions.compute(
                 report_defs=["phase-report"]
             )
             phase = phase[0]["phase-report"][0]

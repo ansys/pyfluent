@@ -62,23 +62,24 @@ Examples
 >>> # condition surfaces of the given solver
 >>> reduction.area_average(
 ...     expr = "AbsolutePressure",
-...     locations = solver.setup.boundary_conditions.velocity_inlet
+...     locations = solver.settings.setup.boundary_conditions.velocity_inlet
 ... )
 10623.0
 
 >>> from ansys.fluent.core.solver.function import reduction
 >>> # Compute the minimum of the square of velocity magnitude
 >>> # for all pressure outlets across two solvers
->>> named_exprs = solver1.setup.named_expressions
+>>> named_exprs = solver1.settings.setup.named_expressions
 >>> vsquared = named_exprs["vsquared"] = {}
 >>> vsquared.definition = "VelocityMagnitude ** 2"
 >>> reduction.minimum(
 ...     expr = vsquared,
-...     locations = solver1.setup.boundary_conditions.pressure_outlet
-...     + solver2.setup.boundary_conditions.pressure_outlet
+...     locations = solver1.settings.setup.boundary_conditions.pressure_outlet
+...     + solver2.settings.setup.boundary_conditions.pressure_outlet
 ...     )
 19.28151
 """
+
 from collections.abc import Iterable
 from enum import Enum
 
@@ -189,7 +190,7 @@ def _locns(locns, ctxt):
 
 
 def _eval_expr(solver, expr_str):
-    named_exprs = solver.setup.named_expressions
+    named_exprs = solver.settings.setup.named_expressions
     expr_name = "temp_expr_1"
     named_exprs[expr_name] = {}
     # request feature: anonymous name object creation

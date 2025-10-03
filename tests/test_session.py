@@ -397,7 +397,7 @@ def test_read_case_using_lightweight_mode():
         solver = pyfluent.launch_fluent(
             case_file_name=import_file_name, lightweight_mode=True
         )
-    solver.setup.models.energy.enabled = False
+    solver.settings.setup.models.energy.enabled = False
     old_fluent_connection_id = id(solver._fluent_connection)
     timeout_loop(
         id(solver._fluent_connection) != old_fluent_connection_id,
@@ -405,7 +405,7 @@ def test_read_case_using_lightweight_mode():
         idle_period=1,
     )
     timeout_loop(
-        not solver.setup.models.energy.enabled(),
+        not solver.settings.setup.models.energy.enabled(),
         timeout=60,
         idle_period=1,
     )
@@ -436,7 +436,7 @@ def test_read_case_using_lightweight_mode_exiting():
 
 
 def test_help_does_not_throw(new_solver_session):
-    help(new_solver_session.file.read)
+    help(new_solver_session.settings.file.read)
 
 
 @pytest.fixture
@@ -568,7 +568,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
         match="solution.run_calculation.iterate' is currently inactive.",
     ) as exec_info:
         # The object is not active
-        solver.solution.run_calculation.iterate(iter_count=5)
+        solver.settings.solution.run_calculation.iterate(iter_count=5)
     # Assert that exception is not propagated from the Fluent server
     assert not isinstance(exec_info.value.__context__, grpc.RpcError)
 
@@ -578,11 +578,11 @@ def test_general_exception_behaviour_in_session(new_solver_session):
         match="file.write' is currently inactive.",
     ) as exec_info:
         # Uninitialized case
-        solver.file.write(file_name="sample.cas.h5", file_type="case")
+        solver.settings.file.write(file_name="sample.cas.h5", file_type="case")
     # Assert that exception is not propagated from the Fluent server
     assert not isinstance(exec_info.value.__context__, grpc.RpcError)
 
-    graphics = solver.results.graphics
+    graphics = solver.settings.results.graphics
 
     fluent_version = solver.get_fluent_version()
 
@@ -597,7 +597,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
         "pyfluent/mixing_elbow",
     )
     solver.settings.file.read(file_type="case", file_name=case_file)
-    solver.file.write(file_name="sample.cas.h5", file_type="case")
+    solver.settings.file.write(file_name="sample.cas.h5", file_type="case")
 
     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
     graphics.mesh["mesh-1"].display()
@@ -613,7 +613,7 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     # Assert that exception is propagated from the Fluent server
     assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
-    solver.solution.run_calculation.iterate(iter_count=5)
+    solver.settings.solution.run_calculation.iterate(iter_count=5)
     graphics.contour["contour-velocity"] = {
         "field": "velocity-magnitude",
         "surfaces_list": ["wall-elbow"],

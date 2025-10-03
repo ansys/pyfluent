@@ -1,3 +1,10 @@
+# /// script
+# dependencies = [
+#   "pyfluent",
+#   "ansys-fluent-visualization",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -59,6 +66,7 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.visualization import Contour, GraphicsWindow
 
 #######################################################################################
@@ -213,7 +221,7 @@ generate_volume_mesh.Execute()
 #######################################################################################
 # Switch to the Solver Mode
 # =====================================================================================
-session = session.switch_to_solver()
+session: Solver = session.switch_to_solver()
 
 #######################################################################################
 # Mesh Visualization
@@ -302,8 +310,10 @@ session.settings.solution.report_definitions.drag["cd-mon1"] = {
     "zones": ["wall_ahmed_body_main", "wall_ahmed_body_front", "wall_ahmed_body_rear"],
     "force_vector": [0, 0, 1],
 }
-session.parameters.output_parameters.report_definitions.create(name="parameter-1")
-session.parameters.output_parameters.report_definitions["parameter-1"] = {
+session.settings.parameters.output_parameters.report_definitions.create(
+    name="parameter-1"
+)
+session.settings.parameters.output_parameters.report_definitions["parameter-1"] = {
     "report_definition": "cd-mon1"
 }
 
@@ -322,9 +332,9 @@ session.settings.solution.run_calculation.iterate(iter_count=5)
 #######################################################################################
 # Post-Processing Workflow
 # =====================================================================================
-session.results.surfaces.iso_surface.create(name="xmid")
-session.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
-session.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
+session.settings.results.surfaces.iso_surface.create(name="xmid")
+session.settings.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
+session.settings.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
 contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])
 disp1 = GraphicsWindow()
