@@ -686,9 +686,11 @@ class Textual(Property):
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):
-            expected = " or ".join(t.__name__ for t in allowed_types)
+            if self._has_migration_adapter:
+                return self.base_set_state(state=state, **kwargs)
             raise TypeError(
-                f"Expected state to be {expected}, got {type(state).__name__}."
+                f"Expected state to be {' or '.join(t.__name__ for t in allowed_types)}, "
+                f"got {type(state).__name__}."
             )
         return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
