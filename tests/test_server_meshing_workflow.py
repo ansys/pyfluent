@@ -755,7 +755,7 @@ def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
     ]
     watertight.task_object.import_geometry["Import Geometry"].state = "Up-to-date"
     assert (
-        watertight.task_object.import_geometry["Import Geometry"].get_state()
+        watertight.task_object.import_geometry["Import Geometry"].state.get_state()
         == "Up-to-date"
     )
     watertight.task_object.import_geometry["Import Geometry"].set_state(
