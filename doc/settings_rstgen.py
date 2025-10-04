@@ -9,7 +9,7 @@ Process
     -- Populate a parents dictionary with current class file name (not class name) as key and list of parents file names (not class names) as value.
     - Recursively Generate the rst files for classes starting with settings.root.
     -- Add target reference as the file name for the given class. This is used by other classes to generate hyperlinks
-    -- Add properties like members, undoc-memebers, show-inheritence to the autoclass directive.
+    -- Add properties like members, undoc-members, show-inheritance to the autoclass directive.
     -- Generate the tables of children, commands, arguments, and parents.
     --- Get access to the respective properties and members on the class with get_attr.
     --- Use the file name of the child class to generate the hyperlink to that class.

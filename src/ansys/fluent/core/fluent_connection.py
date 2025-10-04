@@ -104,7 +104,7 @@ class MonitorThread(threading.Thread):
     """A class used for monitoring a Fluent session.
 
     Daemon thread which will ensure cleanup of session objects, shutdown of
-    non-deamon threads etc.
+    non-daemon threads etc.
 
     Attributes
     ----------

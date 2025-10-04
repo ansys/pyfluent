@@ -387,11 +387,11 @@ def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
 
     assert x.LengthUnit.get_state() == "ft"
 
-    assert x.CadImportOptions.ExtractFeatures()
+    assert not x.ImportCadPreferences.ShowImportCadPreferences()
 
-    x.CadImportOptions.ExtractFeatures.set_state(False)
+    x.ImportCadPreferences.ShowImportCadPreferences.set_state(True)
 
-    assert not x.CadImportOptions.ExtractFeatures()
+    assert x.ImportCadPreferences.ShowImportCadPreferences()
 
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
@@ -813,15 +813,17 @@ def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
     ig = meshing.meshing.ImportGeometry.create_instance()
 
+    ig.FileFormat = "Mesh"
+
     # Command Arguments
     assert ig.MeshUnit() == "m"
     ig.MeshUnit = "mm"
     assert ig.MeshUnit() == "mm"
 
     # Command Arguments SubItem
-    assert ig.CadImportOptions.OneZonePer() == "body"
-    ig.CadImportOptions.OneZonePer = "face"
-    assert ig.CadImportOptions.OneZonePer() == "face"
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is False
+    ig.ImportCadPreferences.ShowImportCadPreferences = True
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is True
 
 
 @pytest.mark.fluent_version(">=24.1")

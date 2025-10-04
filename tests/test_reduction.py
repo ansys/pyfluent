@@ -463,7 +463,7 @@ def test_reductions(
 def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
-    # After reading the static-mixer case in Fluent, case-modifed? flag is somehow True
+    # After reading the static-mixer case in Fluent, case-modified? flag is somehow True
     solver.scheme.eval("(%save-case-id)")
     assert not solver.scheme.eval("(case-modified?)")
     solver.reduction.area_average(
