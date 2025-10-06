@@ -241,7 +241,7 @@ def test_api_upgrade(new_solver_session, capsys):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
     timeout_loop(
-        lambda: "<solver_session>.fileread_case" in capsys.readouterr().out,
+        lambda: "<solver_session>.file.read_case" in capsys.readouterr().out,
         timeout=5,
     )
 
@@ -642,7 +642,7 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     with pytest.warns(
         PyFluentUserWarning,
         match=(
-            "Unknown keyword 'all_boundary_zones' for command '<session>.resultsreport.fluxes.mass_flow'. "
+            "Unknown keyword 'all_boundary_zones' for command '<session>.results.report.fluxes.mass_flow'. "
             "It will be ignored."
         ),
     ):

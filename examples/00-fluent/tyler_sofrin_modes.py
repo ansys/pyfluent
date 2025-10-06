@@ -2,7 +2,7 @@
 # dependencies = [
 #   "matplotlib",
 #   "numpy",
-#   "pyfluent",
+#   "ansys-fluent-core",
 # ]
 # ///
 
@@ -212,7 +212,7 @@ for angle_ind, angle in enumerate(range(0, 360, d_theta)):
             An[n_ind][angle_ind] = mag
             Bn[n_ind][angle_ind] = 0
         else:
-            session.settings.solution.report_definitions.surface["mag-report"] = {
+            session.solution.report_definitions.surface["mag-report"] = {
                 "report_type": "surface-vertexavg",
                 "surface_names": ["point-" + str(angle)],
                 "field": str(variable) + "-mag",

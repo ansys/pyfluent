@@ -152,7 +152,7 @@ def test_search_wildcard(capsys):
     )
     lines = capsys.readouterr().out.splitlines()
     assert (
-        "<solver_session>.solutionrun_calculation.cfl_based_adaptive_time_stepping.max_fixed_time_step (Parameter)"
+        "<solver_session>.solution.run_calculation.cfl_based_adaptive_time_stepping.max_fixed_time_step (Parameter)"
         in lines
     )
 
@@ -161,7 +161,7 @@ def test_search_wildcard(capsys):
         api_tree_data=api_tree_data,
     )
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.solutioncontrols.limits.min_des_tke (Parameter)" in lines
+    assert "<solver_session>.solution.controls.limits.min_des_tke (Parameter)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -186,7 +186,7 @@ def test_search_whole_word(capsys):
     )
     lines = capsys.readouterr().out.splitlines()
     assert (
-        "<solver_session>.setupmodels.battery.tool_kits.standalone_echem_model.k0_sei (Parameter)"
+        "<solver_session>.setup.models.battery.tool_kits.standalone_echem_model.k0_sei (Parameter)"
         in lines
     )
 
@@ -198,7 +198,8 @@ def test_search_semantic(capsys):
     _search_semantic("读", language="cmn", api_tree_data=api_tree_data)
     lines = capsys.readouterr().out.splitlines()
     assert (
-        "<solver_session>.fileread_surface_mesh (Command) (similarity: 100.0%)" in lines
+        "<solver_session>.file.read_surface_mesh (Command) (similarity: 100.0%)"
+        in lines
     )
 
     _search_semantic("フォント", language="jpn", api_tree_data=api_tree_data)
@@ -264,7 +265,7 @@ def test_wildcard_search(capsys):
     pyfluent.search("local*")
     lines = capsys.readouterr().out.splitlines()
     assert (
-        '<solver_session>.setupmesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
         in lines
     )
 
@@ -274,11 +275,11 @@ def test_wildcard_search(capsys):
 def test_chinese_semantic_search(capsys):
     pyfluent.search("读", language="cmn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.fileread_case (Command) (similarity: 100.0%)" in lines
+    assert "<solver_session>.file.read_case (Command) (similarity: 100.0%)" in lines
 
     pyfluent.search("写", language="cmn")
     lines = capsys.readouterr().out.splitlines()
-    assert "<solver_session>.filewrite_case (Command) (similarity: 100.0%)" in lines
+    assert "<solver_session>.file.write_case (Command) (similarity: 100.0%)" in lines
 
 
 @pytest.mark.fluent_version("==24.2")
@@ -333,7 +334,7 @@ def test_solver_api_path():
     pyfluent.config.print_search_results = False
     results = pyfluent.search(search_string="faces_zones", api_path="<solver_session>")
     assert "<meshing_session>" not in results
-    assert "<solver_session>.meshmodify_zones.project_face_zones (Command)" in results
+    assert "<solver_session>.mesh.modify_zones.project_face_zones (Command)" in results
     assert (
         "<solver_session>.tui.mesh.modify_zones.project_face_zones (Command)" in results
     )
@@ -360,7 +361,7 @@ def test_solver_specific_api_path():
     results = pyfluent.search(search_string="font", api_path="contour")
     assert "<meshing_session>" not in results
     assert (
-        '<solver_session>.resultsgraphics.contour["<name>"].color_map.font_automatic (Parameter) (similarity: 98.31%)'
+        '<solver_session>.results.graphics.contour["<name>"].color_map.font_automatic (Parameter) (similarity: 98.31%)'
         in results
     )
 
@@ -387,10 +388,10 @@ def test_wildcard_with_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.config.print_search_results = False
-    results = pyfluent.search("local*", api_path="<solver_session>.setup")
+    results = pyfluent.search("local*", api_path="<solver_session>.setup.")
     assert "<meshing_session>" not in results
     assert (
-        '<solver_session>.setupmesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
         in results
     )
 
@@ -404,7 +405,7 @@ def test_wildcard_with_api_object():
     results = pyfluent.search("local*", api_path="mesh_interfaces")
     assert "<meshing_session>" not in results
     assert (
-        '<solver_session>.setupmesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
+        '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'
         in results
     )
 
@@ -435,7 +436,7 @@ def test_semantic_search_read():
     for result in results:
         assert "thread" not in result
     assert (
-        "<solver_session>.fileconvert_hanging_nodes_during_read (Parameter) (similarity: 100.0%)"
+        "<solver_session>.file.convert_hanging_nodes_during_read (Parameter) (similarity: 100.0%)"
         in results
     )
 

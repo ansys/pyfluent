@@ -1,6 +1,6 @@
 # /// script
 # dependencies = [
-#   "pyfluent",
+#   "ansys-fluent-core",
 #   "ansys-fluent-visualization",
 # ]
 # ///
@@ -66,7 +66,6 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.visualization import Contour, GraphicsWindow
 
 #######################################################################################
@@ -221,7 +220,7 @@ generate_volume_mesh.Execute()
 #######################################################################################
 # Switch to the Solver Mode
 # =====================================================================================
-session: Solver = session.switch_to_solver()
+session = session.switch_to_solver()
 
 #######################################################################################
 # Mesh Visualization

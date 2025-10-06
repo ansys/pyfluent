@@ -1,7 +1,7 @@
 # /// script
 # dependencies = [
 #   "imageio",
-#   "pyfluent",
+#   "ansys-fluent-core",
 # ]
 # ///
 

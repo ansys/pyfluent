@@ -1,6 +1,6 @@
 # /// script
 # dependencies = [
-#   "pyfluent",
+#   "ansys-fluent-core",
 #   "matplotlib",
 #   "numpy",
 #   "pandas",
