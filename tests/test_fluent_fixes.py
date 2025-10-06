@@ -114,6 +114,7 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
     )
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=24.2")
 def test_empty_vector_field_data_2339(new_solver_session):
     solver = new_solver_session
