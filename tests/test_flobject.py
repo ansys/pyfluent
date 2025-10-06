@@ -1219,6 +1219,7 @@ def test_no_hash_mismatch(new_solver_session, caplog):
     assert all(["Mismatch" not in record.message for record in caplog.records])
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=24.2")
 def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session

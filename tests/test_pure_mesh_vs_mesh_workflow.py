@@ -65,6 +65,7 @@ def test_meshing_mode(new_meshing_session_wo_exit):
     solver.exit()
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.1")
 def test_meshing_and_solver_mode_exit(new_meshing_session_wo_exit):

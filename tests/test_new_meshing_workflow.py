@@ -1435,6 +1435,7 @@ def test_duplicate_children_of_compound_task(
     )
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_current_workflow(new_meshing_session):
