@@ -1100,6 +1100,7 @@ def test_ansys_units_integration(mixing_elbow_settings_session):
     )
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=24.2")
 def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
