@@ -125,6 +125,7 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
     solver.exit()
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
 def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):

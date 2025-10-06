@@ -1352,6 +1352,7 @@ def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2)
     assert fault_tolerant.import_cad_and_part_management.arguments()
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_independent_meshing_sessions_without_dm_caching(
