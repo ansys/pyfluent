@@ -25,6 +25,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=23.1")
 def test_icing_session():
     icing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER_ICING)

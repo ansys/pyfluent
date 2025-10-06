@@ -1136,6 +1136,7 @@ def test_ansys_units_integration_nested_state(mixing_elbow_settings_session):
     }
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=24.2")
 def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
     speed = ansys.units.Quantity(100, "m s^-1")
