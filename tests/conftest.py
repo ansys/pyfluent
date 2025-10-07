@@ -67,7 +67,7 @@ failing_tests = []
 with open(Path(__file__).parent / "failing_tests.txt") as f:
     for line in f:
         line = line.strip()
-        if line:
+        if line and not line.startswith("#"):
             failing_tests.append(line)
 
 
