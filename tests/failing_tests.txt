@@ -1,4 +1,4 @@
-# Failed tests
+# Failing tests
 tests/test_datamodel_service.py::test_get_and_set_state_for_command_arg_instance
 tests/test_datamodel_service.py::test_generic_datamodel
 tests/test_datamodel_service.py::test_set_command_args_and_sub_args
@@ -15,6 +15,6 @@ tests/test_new_meshing_workflow.py::test_duplicate_tasks_in_workflow
 tests/test_new_meshing_workflow.py::test_accessors_for_argument_sub_items
 tests/test_new_meshing_workflow.py::test_scenario_with_common_python_names_from_fdl
 tests/test_preferences.py::test_solver_preferences
-# Hung tests
+# Hanging tests
 tests/test_meshing_workflow.py::test_new_2d_meshing_workflow
 tests/test_tui_api.py::test_commands_not_in_solver_tui
