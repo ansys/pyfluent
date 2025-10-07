@@ -510,6 +510,12 @@ meshing_session.workflow.TaskObject["Choose Mesh Control Options"].Execute()
 
 meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
+###############################################################################
+# Confirm and update boundaries
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Confirm and update the boundaries.
+
+meshing_session.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
 # Add boundary layers
@@ -556,13 +562,6 @@ volume_mesh_gen.Arguments.set_state(
     }
 )
 volume_mesh_gen.Execute()
-
-###############################################################################
-# Confirm and update boundaries
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Confirm and update the boundaries.
-
-meshing_session.workflow.TaskObject["Update Boundaries"].Execute()
 
 ###############################################################################
 # Check mesh
