@@ -27,6 +27,7 @@ import operator
 import os
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 
 from packaging.specifiers import SpecifierSet
@@ -181,6 +182,13 @@ def run_before_each_test(
     monkeypatch.chdir(tmp_path)
     yield
     os.chdir(original_cwd)
+
+
+@pytest.fixture(autouse=True)
+def run_after_each_test():
+    subprocess.run(
+        "docker stop $(docker ps -aq) && docker rm $(docker ps -aq)", shell=True
+    )
 
 
 class Helpers:
