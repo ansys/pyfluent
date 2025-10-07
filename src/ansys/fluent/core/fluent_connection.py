@@ -303,7 +303,6 @@ class _ConnectionInterface:
 
     def get_cortex_connection_properties(self):
         """Get connection properties of Fluent."""
-        from grpc._channel import _InactiveRpcError
 
         try:
             logger.info(self.product_build_info)
@@ -315,7 +314,7 @@ class _ConnectionInterface:
             cortex_pid = cortex_info.process_id
             cortex_pwd = cortex_info.working_directory
             logger.debug("Cortex connection properties successfully obtained.")
-        except _InactiveRpcError:
+        except RuntimeError:
             logger.warning(
                 "Fluent Cortex properties unobtainable. 'force exit()' and other "
                 "methods are not going to work properly. Proceeding..."
