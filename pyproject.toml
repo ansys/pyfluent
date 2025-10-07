@@ -29,7 +29,8 @@ dependencies = [
     "grpcio-health-checking>=1.30.0",
     "grpcio-status>=1.26.0",
     "nltk>=3.9.1",
-    "numpy>=1.14.0,<2.0.0",
+    "numpy==2.2.6; python_version >'3.10'",  # TODO: Limit to be removed once Python 3.10 support is dropped
+    "numpy==1.26.4; python_version <= '3.10'",  # TODO: Dependency to be removed once Python 3.10 support is dropped
     "pandas>=1.1.0,<3.0.0",
     "pyansys-tools-report>=0.8.1",
     "pyyaml>=6.0",
