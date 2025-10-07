@@ -314,7 +314,7 @@ class _ConnectionInterface:
             cortex_pid = cortex_info.process_id
             cortex_pwd = cortex_info.working_directory
             logger.debug("Cortex connection properties successfully obtained.")
-        except RuntimeError:
+        except RuntimeError:  # GrpcErrorInterceptor raises RuntimeError on failure
             logger.warning(
                 "Fluent Cortex properties unobtainable. 'force exit()' and other "
                 "methods are not going to work properly. Proceeding..."
