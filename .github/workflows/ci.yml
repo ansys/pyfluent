@@ -30,6 +30,7 @@ env:
   MAIN_PYTHON_VERSION: "3.10"
   PYTHON_VERSION: "3.12"
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYTEST_XDIST_AUTO_NUM_WORKERS: 4
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
@@ -43,7 +44,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -63,7 +64,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v10.0
+      - uses: ansys/actions/doc-deploy-changelog@v10.1
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
@@ -74,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running Vale
-        uses: ansys/actions/doc-style@v10.0
+        uses: ansys/actions/doc-style@v10.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -83,13 +84,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v10.0
+        uses: ansys/actions/code-style@v10.1
 
   commit-style:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-pr-title@v10.0
+      - uses: ansys/actions/check-pr-title@v10.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -108,7 +109,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@v10.0
+        uses: ansys/actions/build-wheelhouse@v10.1
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -140,7 +141,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -194,7 +195,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -252,7 +253,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -277,7 +278,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -496,7 +497,7 @@ jobs:
 
       - name: Setup Python
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -520,7 +521,7 @@ jobs:
 
       - name: Login to GitHub Container Registry
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -555,13 +556,14 @@ jobs:
     name: Release Testing
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
     runs-on: [self-hosted, pyfluent]
-    timeout-minutes: 120
+    env:
+      PYTEST_XDIST_AUTO_NUM_WORKERS: 1
 
     steps:
       - uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -586,7 +588,7 @@ jobs:
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -638,7 +640,7 @@ jobs:
 
     steps:
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
