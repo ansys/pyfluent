@@ -576,7 +576,7 @@ def test_named_expression_as_input(static_mixer_case_session):
     assert val == expr_val
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_named_expression_as_input_for_multiple_solvers(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ):
