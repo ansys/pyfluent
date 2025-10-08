@@ -806,6 +806,7 @@ def test_named_object_commands(mixing_elbow_settings_session):
         NamedObject.list(inlets)
         NamedObject.list_properties(inlets, object_name="hot-inlet")
 
+
 @pytest.mark.fluent_version(">=26.1")
 def test_migration_adapter_for_strings(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session

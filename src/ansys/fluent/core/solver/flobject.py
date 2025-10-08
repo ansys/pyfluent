@@ -2250,11 +2250,6 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             commands.pop("exit", None)
         if commands and not user_creatable:
             commands.pop("create", None)
-        # Temporary code for testing
-        if commands and parent is not None and version == "261":
-            for cmd in ["list", "list-properties"]:
-                if cmd in commands:
-                    commands.pop(cmd, None)
         if commands:
             cls.command_names = []
             _process_cls_names(commands, cls.command_names)
