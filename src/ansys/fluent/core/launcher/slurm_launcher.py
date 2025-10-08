@@ -317,7 +317,7 @@ class SlurmLauncher:
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
         ui_mode : UIMode
-            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
