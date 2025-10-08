@@ -27,7 +27,6 @@ jobs:
   test:
     name: Unit Testing
     runs-on: [self-hosted, pyfluent]
-    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v5
