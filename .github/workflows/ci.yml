@@ -30,6 +30,7 @@ env:
   MAIN_PYTHON_VERSION: "3.10"
   PYTHON_VERSION: "3.12"
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYTEST_XDIST_AUTO_NUM_WORKERS: 4
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
@@ -555,7 +556,8 @@ jobs:
     name: Release Testing
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'dev')
     runs-on: [self-hosted, pyfluent]
-    timeout-minutes: 120
+    env:
+      PYTEST_XDIST_AUTO_NUM_WORKERS: 1
 
     steps:
       - uses: actions/checkout@v5
