@@ -239,8 +239,9 @@ def launch_fluent(
         default is ``True``. You can stop and start the streaming of the
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
-    ui_mode : UIMode
-        Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+    ui_mode : UIMode or str, optional
+        Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+        or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
         Graphics driver of Fluent. In Windows, options are either the values of the
         ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,
