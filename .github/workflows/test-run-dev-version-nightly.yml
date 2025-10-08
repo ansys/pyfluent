@@ -14,6 +14,7 @@ permissions:
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
+  PYTEST_XDIST_AUTO_NUM_WORKERS: 1
   PYFLUENT_LAUNCH_CONTAINER: 1
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
@@ -26,7 +27,6 @@ jobs:
   test:
     name: Unit Testing
     runs-on: [self-hosted, pyfluent]
-    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v5
