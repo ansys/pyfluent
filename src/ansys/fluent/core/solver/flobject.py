@@ -80,6 +80,7 @@ from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
 import ansys.units
+from ansys.units import VariableDescriptor
 
 from . import _docstrings
 from ..pyfluent_warnings import warning_for_fluent_dev_version
@@ -676,7 +677,21 @@ class Textual(Property):
             Either str or VariableDescriptor.
         kwargs : Any
             Keyword arguments.
+
+        Raises
+        ------
+        TypeError
+            If state is not a string.
         """
+        allowed_types = (str, VariableDescriptor)
+
+        if not isinstance(state, allowed_types):
+            if self._has_migration_adapter:
+                return self.base_set_state(state=state, **kwargs)
+            raise TypeError(
+                f"Expected state to be {' or '.join(t.__name__ for t in allowed_types)}, "
+                f"got {type(state).__name__}."
+            )
         return self.base_set_state(state=_to_field_name_str(state), **kwargs)
 
 
@@ -2281,6 +2296,10 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
                     _FlStringConstant(allowed_value),
                 )
             cls._allowed_values = allowed_values
+
+        has_migration_adapter = info.get("has-migration-adapter?", False)
+        if has_migration_adapter:
+            cls._has_migration_adapter = True
 
     except Exception:
         print(

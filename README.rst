@@ -14,7 +14,7 @@ PyFluent
    :target: https://pypi.org/project/ansys-fluent-core
    :alt: PyPI
 
-.. |GH-CI| image:: https://github.com/ansys/pyfluent/actions/workflows/ci.yml/badge.svg
+.. |GH-CI| image:: https://github.com/ansys/pyfluent/actions/workflows/ci.yml/badge.svg?branch=main
    :target: https://github.com/ansys/pyfluent/actions/workflows/ci.yml
    :alt: GH-CI
 
@@ -125,21 +125,22 @@ To launch Fluent from Python, use the ``launch_fluent`` function:
 
 Basic usage
 ~~~~~~~~~~~
-You can use the ``solver_session.tui`` interface to run all Fluent TUI commands:
+The ``solver_session`` interface provides a convenient way to launch and
+interact with Fluent.
 
 .. code:: python
 
-  solver_session.tui.file.read_case('elbow.cas.h5')
-  solver_session.tui.define.models.unsteady_2nd_order("yes")
-  solver_session.tui.solve.initialize.initialize_flow()
-  solver_session.tui.solve.dual_time_iterate(2, 3)
+  import ansys.fluent.core as pyfluent
 
-You can also install and use these PyFluent libraries:
+  solver_session = pyfluent.launch_fluent()
 
-- `PyFluent Parametric <https://parametric.fluent.docs.pyansys.com/>`_, which provides
-  access to Fluent's parametric workflows.
+For more information on using the ``solver_session`` interface, see the
+`PyFluent documentation <https://fluent.docs.pyansys.com/version/stable/>`_.
+
+For postprocessing and visualization, you can also install:
+
 - `PyFluent Visualization <https://visualization.fluent.docs.pyansys.com/>`_, which
-  provides postprocessing and visualization capabilities using the `pyvista <https://docs.pyvista.org/>`_
+  enables analysis and plotting through the `pyvista <https://docs.pyvista.org/>`_
   and `matplotlib <https://matplotlib.org/>`_ packages.
 
 License and acknowledgments

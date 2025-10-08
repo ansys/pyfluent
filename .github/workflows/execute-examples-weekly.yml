@@ -38,10 +38,10 @@ jobs:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -54,11 +54,16 @@ jobs:
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           registry: ghcr.io
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install pyfluent
+        run: |
+          make install
+          make install-test
 
       - name: Pull Fluent docker image if not present
         run: |
@@ -75,9 +80,7 @@ jobs:
           sudo chmod a+rwx /home/ansys/Downloads/ansys_fluent_core_examples
           sudo apt update
           sudo apt install libegl1
-          pip install ansys-fluent-core>=0.32.1
-          pip install ansys-fluent-core[reader]
-          pip install ansys-fluent-visualization==0.21.dev1
+          pip install ansys-fluent-visualization
           pip install xgboost scikit-learn tensorflow seaborn plotly numpy pandas
 
       - name: Execute Examples
@@ -149,6 +152,15 @@ jobs:
       - name: Execute tyler_sofrin_modes.py
         run: |
           python examples/00-fluent/tyler_sofrin_modes.py
+
+      - name: Execute single_battery_cell_workflow.py
+        run: |
+          python examples/00-fluent/single_battery_cell_workflow.py
+
+      - name: Execute steady_vortex.py
+        run: |
+          python examples/00-fluent/steady_vortex.py
+
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py

@@ -515,6 +515,9 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
     )
 
     solver.settings.solution.initialization.hybrid_initialize()
+    if solver.get_fluent_version() >= FluentVersion.v261:
+        solver.settings.setup.models.multiphase.model = "eulerian"
+        solver.tui.define.models.multiphase.hybrid_models.ddpm("yes")
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel._child_aliases
         == {
@@ -790,3 +793,39 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
     with pytest.raises(ValueError):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_migration_adapter_for_strings(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.setup.general.solver.time = "unsteady-2nd-order"
+    solver.settings.setup.models.discrete_phase.general_settings.interaction.enabled = (
+        True
+    )
+
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.enabled = (
+        True
+    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.option = (
+        "particle-time-step"
+    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.dpm_time_step_size = (
+        0.0002
+    )
+
+    # Migration adapter is set on the 'create_particles_at' to accept boolean values as well besides string
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
+        False
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
+        == "fluid-flow-time-step"
+    )
+
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
+        True
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
+        == "particle-time-step"
+    )

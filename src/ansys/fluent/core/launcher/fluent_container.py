@@ -172,7 +172,7 @@ def configure_container_dict(
     file_transfer_service: Any | None = None,
     compose_config: ComposeConfig | None = None,
     **container_dict,
-) -> (dict, int, int, Path, bool):
+) -> (dict, int, int, Path, str, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
@@ -218,6 +218,7 @@ def configure_container_dict(
     timeout : int
     port : int
     host_server_info_file : Path
+    container_server_info_file: str
     remove_server_info_file: bool
 
     Raises
@@ -445,6 +446,8 @@ def configure_container_dict(
         if k not in container_dict:
             container_dict[k] = v
 
+    if not Path(mount_source).exists():
+        Path(mount_source).mkdir(parents=True, exist_ok=True)
     host_server_info_file = Path(mount_source) / container_server_info_file.name
 
     if compose_config.is_compose:
@@ -464,6 +467,7 @@ def configure_container_dict(
         timeout,
         container_grpc_port,
         host_server_info_file,
+        container_server_info_file,
         remove_server_info_file,
     )
 
@@ -524,6 +528,7 @@ def start_fluent_container(
         timeout,
         port,
         host_server_info_file,
+        container_server_info_file,
         remove_server_info_file,
     ) = container_vars
     launch_string = " ".join(config_dict["command"])
@@ -542,6 +547,7 @@ def start_fluent_container(
             compose_container = ComposeBasedLauncher(
                 compose_config=compose_config,
                 container_dict=config_dict,
+                container_server_info_file=container_server_info_file,
             )
 
             if not compose_container.check_image_exists():

@@ -141,10 +141,10 @@ class Config:
         lambda instance: False, "FLUENT_SHOW_MESH_AFTER_CASE_READ"
     )
 
-    #: Whether to write the automatic transcript in Fluent, defaults to the value of ``PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT`` environment variable.
+    #: Whether to write the automatic transcript in Fluent, defaults to True if ``PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT`` environment variable is not set to "1".
     fluent_automatic_transcript = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("PYFLUENT_FLUENT_AUTOMATIC_TRANSCRIPT")
-        == "1",
+        lambda instance: instance._env.get("PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT")
+        != "1",
         "FLUENT_AUTOMATIC_TRANSCRIPT",
     )
 
@@ -216,9 +216,9 @@ class Config:
         lambda instance: False, "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK"
     )
 
-    #: The timeout in seconds to wait for Fluent to exit, defaults to the value of ``PYFLUENT_FORCE_EXIT_TIMEOUT`` environment variable.
+    #: The timeout in seconds to wait for Fluent to exit, defaults to the value of ``PYFLUENT_TIMEOUT_FORCE_EXIT`` environment variable.
     force_exit_timeout = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("PYFLUENT_FORCE_EXIT_TIMEOUT")
+        lambda instance: instance._env.get("PYFLUENT_TIMEOUT_FORCE_EXIT")
     )
 
     #: Whether to skip code generation of built-in settings, defaults to the value of ``PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS`` environment variable.
@@ -300,11 +300,6 @@ class Config:
         lambda instance: instance._env.get("PYFLUENT_HIDE_LOG_SECRETS") == "1"
     )
 
-    #: The Fluent root directory to be used for PyFluent, defaults to the value of ``PYFLUENT_FLUENT_ROOT`` environment variable.
-    fluent_root = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("PYFLUENT_FLUENT_ROOT")
-    )
-
     #: The remoting server address to be used in Fluent, defaults to the value of ``REMOTING_SERVER_ADDRESS`` environment variable.
     remoting_server_address = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("REMOTING_SERVER_ADDRESS")
@@ -323,6 +318,11 @@ class Config:
     #: The default logging level for PyFluent, defaults to the value of ``PYFLUENT_LOGGING`` environment variable.
     logging_level_default = _ConfigDescriptor["Config"](
         lambda instance: instance._env.get("PYFLUENT_LOGGING")
+    )
+
+    #: Whether to disable monitor refresh on solution initialization, defaults to False.
+    disable_monitor_refresh_on_init = _ConfigDescriptor["Config"](
+        lambda instance: False
     )
 
     def __init__(self):

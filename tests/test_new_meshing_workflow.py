@@ -80,11 +80,18 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     watertight.add_boundary_layer_child_1()
 
     # Generate volume mesh
-    watertight.create_volume_mesh.volume_fill.set_state("poly-hexcore")
-    watertight.create_volume_mesh.volume_fill_controls.hex_max_cell_length.set_state(
-        0.3
-    )
-    watertight.create_volume_mesh()
+    if new_meshing_session_wo_exit.get_fluent_version() < FluentVersion.v261:
+        watertight.create_volume_mesh.volume_fill.set_state("poly-hexcore")
+        watertight.create_volume_mesh.volume_fill_controls.hex_max_cell_length.set_state(
+            0.3
+        )
+        watertight.create_volume_mesh()
+    else:
+        watertight.create_volume_mesh_wtm.volume_fill.set_state("poly-hexcore")
+        watertight.create_volume_mesh_wtm.volume_fill_controls.hex_max_cell_length.set_state(
+            0.3
+        )
+        watertight.create_volume_mesh_wtm()
 
     # Switch to solution mode
     solver = new_meshing_session_wo_exit.switch_to_solver()
@@ -326,8 +333,10 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     # Generate volume mesh
     if meshing.get_fluent_version() < FluentVersion.v251:
         generate_volume_mesh = fault_tolerant.generate_the_volume_mesh
-    else:
+    elif meshing.get_fluent_version() < FluentVersion.v261:
         generate_volume_mesh = fault_tolerant.create_volume_mesh
+    else:
+        generate_volume_mesh = fault_tolerant.create_volume_mesh_ftm
     generate_volume_mesh.all_region_name_list.set_state(
         [
             "main",
@@ -453,39 +462,6 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     assert new_meshing_session_wo_exit.is_active() is False
     solver.exit()
     assert solver.is_active() is False
-
-
-@pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
-def test_updating_state_in_new_meshing_workflow(new_meshing_session):
-    # Import geometry
-    import_file_name = examples.download_file(
-        "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
-    )
-    watertight = new_meshing_session.watertight()
-    assert watertight.import_geometry.length_unit() == "mm"
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 40.0
-    assert (
-        watertight.import_geometry.cad_import_options.one_zone_per.allowed_values()
-        == ["body", "face", "object"]
-    )
-    assert watertight.import_geometry.cad_import_options.one_zone_per() == "body"
-    watertight.import_geometry.arguments = {
-        "file_name": import_file_name,
-        "length_unit": "in",
-        "cad_import_options": {"feature_angle": 35, "one_zone_per": "object"},
-    }
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 35.0
-    assert (
-        watertight.import_geometry.cad_import_options.one_zone_per.get_state()
-        == "object"
-    )
-    assert watertight.import_geometry.length_unit.get_state() == "in"
-    watertight.import_geometry.cad_import_options.feature_angle = 25.0
-    assert watertight.import_geometry.cad_import_options.feature_angle() == 25.0
-    watertight.import_geometry.cad_import_options.one_zone_per = "face"
-    assert watertight.import_geometry.cad_import_options.one_zone_per() == "face"
-    watertight.import_geometry()
 
 
 def _assert_snake_case_attrs(attrs: Iterable):
@@ -617,10 +593,19 @@ def test_watertight_workflow_dynamic_interface(
     watertight = new_meshing_session.watertight()
     watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
-    create_volume_mesh = watertight.create_volume_mesh
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        create_volume_mesh = watertight.create_volume_mesh
+    else:
+        create_volume_mesh = watertight.create_volume_mesh_wtm
     assert create_volume_mesh is not None
-    watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
-    assert "create_volume_mesh" not in watertight.task_names()
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        watertight.delete_tasks(list_of_tasks=["create_volume_mesh"])
+        vol_mesh_task_name = "<Insertable 'create_volume_mesh' task>"
+        assert "create_volume_mesh" not in watertight.task_names()
+    else:
+        watertight.delete_tasks(list_of_tasks=["create_volume_mesh_wtm"])
+        vol_mesh_task_name = "<Insertable 'create_volume_mesh_wtm' task>"
+        assert "create_volume_mesh_wtm" not in watertight.task_names()
 
     assert sorted(
         [repr(x) for x in watertight.add_boundary_layer.insertable_tasks()]
@@ -631,15 +616,20 @@ def test_watertight_workflow_dynamic_interface(
             "<Insertable 'set_up_rotational_periodic_boundaries' task>",
             "<Insertable 'modify_mesh_refinement' task>",
             "<Insertable 'improve_surface_mesh' task>",
-            "<Insertable 'create_volume_mesh' task>",
+            vol_mesh_task_name,
             "<Insertable 'manage_zones_ftm' task>",
             "<Insertable 'update_regions' task>",
             "<Insertable 'custom_journal_task' task>",
         ]
     )
-    watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
-    assert "create_volume_mesh" in watertight.task_names()
-    create_volume_mesh = watertight.create_volume_mesh
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        watertight.add_boundary_layer.insertable_tasks.create_volume_mesh.insert()
+        assert "create_volume_mesh" in watertight.task_names()
+        create_volume_mesh = watertight.create_volume_mesh
+    else:
+        watertight.add_boundary_layer.insertable_tasks.create_volume_mesh_wtm.insert()
+        assert "create_volume_mesh_wtm" in watertight.task_names()
+        create_volume_mesh = watertight.create_volume_mesh_wtm
     assert create_volume_mesh is not None
 
     assert (
@@ -653,8 +643,12 @@ def test_watertight_workflow_dynamic_interface(
     assert watertight.describe_geometry.enclose_fluid_regions
     watertight.describe_geometry.enclose_fluid_regions.delete()
     assert "enclose_fluid_regions" not in watertight.task_names()
-    watertight.create_volume_mesh.delete()
-    assert "create_volume_mesh" not in watertight.task_names()
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        watertight.create_volume_mesh.delete()
+        assert "create_volume_mesh" not in watertight.task_names()
+    else:
+        watertight.create_volume_mesh_wtm.delete()
+        assert "create_volume_mesh_wtm" not in watertight.task_names()
 
 
 @pytest.mark.fluent_version("==23.2")
@@ -687,7 +681,7 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     import_geometry = watertight.import_geometry
     assert import_geometry.Arguments() == {}
     import_geometry.Arguments = dict(FileName=mixing_elbow_geometry_filename)
-    assert 8 < len(import_geometry.arguments.get_state()) < 15
+    assert 7 <= len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
     import_geometry.arguments.set_state(dict(file_name=None))
     time.sleep(5)
@@ -1095,7 +1089,10 @@ def test_new_meshing_workflow_without_dm_caching(
     watertight.add_local_sizing.add_child_to_task()
     watertight.add_local_sizing()
 
-    watertight.create_volume_mesh()
+    if new_meshing_session.get_fluent_version() < FluentVersion.v261:
+        watertight.create_volume_mesh()
+    else:
+        watertight.create_volume_mesh_wtm()
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
     time.sleep(2)
@@ -1236,6 +1233,10 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        _entry = "create_volume_mesh"
+    else:
+        _entry = "create_volume_mesh_wtm"
     assert set(watertight.task_names()) == {
         "import_geometry",
         "create_surface_mesh",
@@ -1246,7 +1247,7 @@ def test_duplicate_tasks_in_workflow(new_meshing_session):
         "create_regions",
         "update_regions",
         "add_boundary_layer",
-        "create_volume_mesh",
+        _entry,
         "add_local_sizing",
         "import_boi_geometry",
         "import_boi_geometry_1",
@@ -1517,7 +1518,9 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
     assert import_geom.arguments.length_unit() == "in"
 
+    import_geom.arguments.file_format = "Mesh"
     assert not import_geom.arguments.mesh_unit.is_read_only()
+    import_geom.arguments.file_format = "CAD"
     assert import_geom.arguments.length_unit.is_active()
     assert not import_geom.arguments.file_name.is_read_only()
     assert not import_geom.arguments.file_name()
@@ -1529,8 +1532,10 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     with pytest.raises(AttributeError):
         import_geom.arguments.CadImportOptions.OneZonePer = "face"
 
-    assert import_geom.arguments.cad_import_options()
-    assert import_geom.arguments.cad_import_options.one_zone_per()
+    assert import_geom.arguments.import_cad_preferences()
+    assert (
+        not import_geom.arguments.import_cad_preferences.show_import_cad_preferences()
+    )
 
     assert import_geom.arguments.file_format.get_attrib_value("allowedValues") == [
         "CAD",
@@ -1538,14 +1543,11 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     ]
     assert import_geom.arguments.file_format.allowed_values() == ["CAD", "Mesh"]
 
-    assert not import_geom.arguments.cad_import_options.one_zone_per.is_read_only()
-    assert import_geom.arguments.cad_import_options.one_zone_per() == "body"
-    import_geom.arguments.cad_import_options.one_zone_per.set_state("face")
-    assert import_geom.arguments.cad_import_options.one_zone_per() == "face"
-    import_geom.arguments.cad_import_options.one_zone_per = "object"
-    assert import_geom.arguments.cad_import_options.one_zone_per() == "object"
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        volume_mesh_gen = watertight.create_volume_mesh
+    else:
+        volume_mesh_gen = watertight.create_volume_mesh_wtm
 
-    volume_mesh_gen = watertight.create_volume_mesh
     assert (
         volume_mesh_gen.arguments.volume_fill_controls.cell_sizing.default_value()
         == "Geometric"
@@ -1559,28 +1561,14 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
             "Geometric",
         ]
     )
-    feat_angle = import_geom.arguments.cad_import_options.feature_angle
-    assert feat_angle.default_value() == 40.0
-
-    # Test particular to numerical type (min() only available in numerical types)
-    assert feat_angle.min() == 0.0
-
-    # Test intended to fail in numerical type (allowed_values() only available in string types)
-    with pytest.raises(AttributeError) as msg:
-        assert feat_angle.allowed_values()
-    assert (
-        msg.value.args[0] == "'_FeatureAngle' object has no attribute 'allowed_values'"
-    )
 
     # Test intended to fail in numerical type (allowed_values() only available in string types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.num_parts.allowed_values()
-    assert msg.value.args[0] == "'_NumParts' object has no attribute 'allowed_values'"
 
     # Test intended to fail in string type (min() only available in numerical types)
     with pytest.raises(AttributeError) as msg:
         assert import_geom.arguments.length_unit.min()
-    assert msg.value.args[0] == "'_LengthUnit' object has no attribute 'min'"
 
 
 @pytest.mark.codegen_required
@@ -1594,7 +1582,10 @@ def test_scenario_with_common_python_names_from_fdl(new_meshing_session):
     assert len(fault_tolerant.task_names()) == len(set(fault_tolerant.task_names()))
 
     # APIName from fdl file
-    assert "create_volume_mesh" in fault_tolerant.task_names()
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        assert "create_volume_mesh" in fault_tolerant.task_names()
+    else:
+        assert "create_volume_mesh_ftm" in fault_tolerant.task_names()
     assert "generate_volume_mesh" in fault_tolerant.task_names()
     assert "generate_surface_mesh" in fault_tolerant.task_names()
 

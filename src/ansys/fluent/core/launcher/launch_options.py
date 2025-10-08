@@ -23,6 +23,7 @@
 """Provides a module for enums used in the PyFluent."""
 
 from enum import Enum
+import os
 import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
@@ -344,7 +345,6 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     FluentVersion, optional
         Fluent version or ``None``
     """
-    from ansys.fluent.core import config
 
     # Look for Fluent version in the following order:
     # 1. product_version parameter passed with launch_fluent
@@ -358,7 +358,7 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
 
     # (DEV) if "PYFLUENT_FLUENT_ROOT" environment variable is defined, we cannot
     # determine the Fluent version, so returning None.
-    if config.fluent_root:
+    if "PYFLUENT_FLUENT_ROOT" in os.environ:
         return None
 
     # 2. the latest ANSYS version from AWP_ROOT environment variables
