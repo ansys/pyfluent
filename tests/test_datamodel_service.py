@@ -413,6 +413,12 @@ def test_task_object_keys_are_display_names(new_meshing_session):
 
 def test_generic_datamodel(new_solver_session):
     solver = new_solver_session
+    import_file_name = examples.download_file(
+        "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
+    )
+    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.setup.general.solver.time = "unsteady-2nd-order"
+    solver.solution.initialization.hybrid_initialize()
     solver.scheme.eval("(init-flserver)")
     flserver = PyMenuGeneric(solver._datamodel_service_se, "flserver")
     assert flserver.Case.Solution.Calculation.TimeStepSize() == 1.0
