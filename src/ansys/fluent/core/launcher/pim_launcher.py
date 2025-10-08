@@ -213,8 +213,8 @@ def get_ip_port_password(
         Name of the file to download.
     max_retries: int
         Maximum number of attempts.
-    wait_time_between_retries: int
-        Seconds to wait between retries.
+    wait_time_between_retries: float
+        Seconds to wait between retries (can be fractional, e.g., 0.5 for half a second).
 
     Returns
     -------
