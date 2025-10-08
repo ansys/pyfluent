@@ -596,7 +596,6 @@ def test_named_expression_as_input_for_multiple_solvers(
 
     solver_named_expressions = solver1.setup.named_expressions
 
-    # Area average
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = "AbsolutePressure"
 
