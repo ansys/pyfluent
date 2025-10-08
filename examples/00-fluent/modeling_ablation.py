@@ -34,7 +34,7 @@ Modeling Ablation
 # the damaging effects of external high temperatures caused by shock wave and viscous
 # heating. The ablative material is chipped away due to surface reactions that remove a
 # significant amount of heat and keep the vehicle surface temperature below the melting
-# point. In this tutorial, Fluent ablation model is demonstrated for a reendtry vehicle
+# point. In this tutorial, Fluent ablation model is demonstrated for a reentry vehicle
 # geometry simplified as a 3D wedge.
 #
 # This tutorial demonstrates how to do the following:
