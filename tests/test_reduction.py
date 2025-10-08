@@ -614,3 +614,4 @@ def test_named_expression_as_input_for_multiple_solvers(
         + solver2.setup.boundary_conditions.velocity_inlet,
     )
     assert result == min(s1_min, s2_min)
+    solver_named_expressions.pop(key="test_expr_1")
