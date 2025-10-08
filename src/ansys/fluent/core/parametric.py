@@ -303,7 +303,7 @@ class LocalParametricStudy:
 
         self.case_filepath = os.fspath(case_filepath)
         base_design_point = LocalDesignPoint(base_design_point_name)
-        case_reader = CaseReader(case_file_name=case_filepath)
+        case_reader = CaseReader(case_file_name=self.case_filepath)
 
         base_design_point.input_parameters = {
             p.name: p.value for p in case_reader.input_parameters()
