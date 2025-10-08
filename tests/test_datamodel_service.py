@@ -387,11 +387,11 @@ def test_get_and_set_state_for_command_arg_instance(new_meshing_session):
 
     assert x.LengthUnit.get_state() == "ft"
 
-    assert x.CadImportOptions.ExtractFeatures()
+    assert not x.ImportCadPreferences.ShowImportCadPreferences()
 
-    x.CadImportOptions.ExtractFeatures.set_state(False)
+    x.ImportCadPreferences.ShowImportCadPreferences.set_state(True)
 
-    assert not x.CadImportOptions.ExtractFeatures()
+    assert x.ImportCadPreferences.ShowImportCadPreferences()
 
     x.set_state({"FileName": "dummy_file_name.dummy_extn"})
 
@@ -813,30 +813,29 @@ def test_set_command_args_and_sub_args(new_meshing_session):
     meshing = new_meshing_session
     ig = meshing.meshing.ImportGeometry.create_instance()
 
+    ig.FileFormat = "Mesh"
+
     # Command Arguments
     assert ig.MeshUnit() == "m"
     ig.MeshUnit = "mm"
     assert ig.MeshUnit() == "mm"
 
     # Command Arguments SubItem
-    assert ig.CadImportOptions.OneZonePer() == "body"
-    ig.CadImportOptions.OneZonePer = "face"
-    assert ig.CadImportOptions.OneZonePer() == "face"
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is False
+    ig.ImportCadPreferences.ShowImportCadPreferences = True
+    assert ig.ImportCadPreferences.ShowImportCadPreferences() is True
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=26.1")
 def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
     ic = meshing.meshing.LoadCADGeometry.create_instance()
 
-    d = ic.Refaceting.Deviation.get_state()
-    cd = ic.Refaceting.CustomDeviation.get_state()
-    assert d == cd
+    assert ic.Refaceting.FacetResolution() == "Medium"
+    assert ic.Refaceting.NormalAngle() == 8.0
 
-    ic.Refaceting.Deviation.set_state(1.2)
-    d = ic.Refaceting.Deviation.get_state()
-    cd = ic.Refaceting.CustomDeviation.get_state()
-    assert d == cd
+    ic.Refaceting.FacetResolution = "Coarse"
+    assert ic.Refaceting.NormalAngle() == 16.0
 
 
 @pytest.mark.fluent_version(">=25.2")
