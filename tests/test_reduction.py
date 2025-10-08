@@ -538,7 +538,7 @@ def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
         assert solver.fields.reduction.centroid(locations=[])
 
 
-@pytest.mark.fluent_version(">=24.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_named_expression_as_input(static_mixer_case_session):
     solver = static_mixer_case_session
     solver.solution.initialization.hybrid_initialize()
