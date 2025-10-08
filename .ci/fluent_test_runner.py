@@ -45,12 +45,12 @@ def _run_single_test(
     """
     logging.debug(f"journal_file: {journal_file}")
     src_pyfluent_dir = str(Path(pyfluent.__file__).parent)
-    verion_for_file_name = FluentVersion.current_dev().number
-    dst_pyfluent_dir = f"/ansys_inc/v{verion_for_file_name}/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core"
+    version_for_file_name = FluentVersion.current_dev().number
+    dst_pyfluent_dir = f"/ansys_inc/v{version_for_file_name}/commonfiles/CPython/3_10/linx64/Release/Ansys/PyFluentCore/ansys/fluent/core"
     src_gen_dir = (
         Path(pyfluent.__file__).parent / "ansys" / "fluent" / "core" / "generated"
     )
-    dst_gen_dir = f"/ansys_inc/v{verion_for_file_name}/fluent/fluent{FluentVersion.current_dev()!r}/cortex/pylib/flapi/generated"
+    dst_gen_dir = f"/ansys_inc/v{version_for_file_name}/fluent/fluent{FluentVersion.current_dev()!r}/cortex/pylib/flapi/generated"
     dst_test_dir = "/testing"
     working_dir = Path(dst_test_dir)
     parent = journal_file.parent
