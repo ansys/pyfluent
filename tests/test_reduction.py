@@ -536,3 +536,81 @@ def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
 
     with pytest.raises(RuntimeError):
         assert solver.fields.reduction.centroid(locations=[])
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_named_expression_as_input(static_mixer_case_session):
+    solver = static_mixer_case_session
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
+
+    # Area average
+    solver_named_expressions["test_expr_1"] = {}
+    solver_named_expressions["test_expr_1"].definition = (
+        "AreaAve(AbsolutePressure, ['inlet1'])"
+    )
+    expr_val = solver_named_expressions["test_expr_1"].get_value()
+    assert isinstance(expr_val, float) and expr_val != 0.0
+
+    solver_named_expressions["test_expr_2"] = {}
+    solver_named_expressions["test_expr_2"].definition = "AbsolutePressure"
+
+    val = solver.fields.reduction.area_average(
+        expression=solver_named_expressions["test_expr_2"],
+        locations=solver.setup.boundary_conditions.velocity_inlet,
+    )
+    assert val == expr_val
+    solver_named_expressions.pop(key="test_expr_1")
+    solver_named_expressions.pop(key="test_expr_2")
+
+    # Sum if
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions["test_expr_1"].definition = (
+        "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
+    )
+    expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
+    assert isinstance(expr_val, float) and expr_val != 0.0
+
+    solver.setup.named_expressions["test_expr_2"] = {}
+    solver.setup.named_expressions["test_expr_2"].definition = "AbsolutePressure"
+
+    val = solver.fields.reduction.sum_if(
+        expression=solver.setup.named_expressions["test_expr_2"],
+        condition="AbsolutePressure > 0[Pa]",
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
+        weight=solver.fields.reduction.weight.AREA,
+    )
+    assert val == expr_val
+    solver_named_expressions.pop(key="test_expr_1")
+    solver_named_expressions.pop(key="test_expr_2")
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_named_expression_as_input_for_multiple_solvers(
+    static_mixer_case_session: Any, static_mixer_case_session2: Any
+):
+    solver1 = static_mixer_case_session
+    solver2 = static_mixer_case_session2
+    solver1.solution.initialization.hybrid_initialize()
+    solver2.solution.initialization.hybrid_initialize()
+
+    solver_named_expressions = solver1.setup.named_expressions
+
+    # Area average
+    solver_named_expressions["test_expr_1"] = {}
+    solver_named_expressions["test_expr_1"].definition = "AbsolutePressure"
+
+    s1_min = solver1.fields.reduction.minimum(
+        expression=solver_named_expressions["test_expr_1"],
+        locations=solver1.setup.boundary_conditions.velocity_inlet,
+    )
+    s2_min = solver2.fields.reduction.minimum(
+        expression=solver_named_expressions["test_expr_1"],
+        locations=solver2.setup.boundary_conditions.velocity_inlet,
+    )
+    result = reduction.minimum(
+        expression=solver_named_expressions["test_expr_1"],
+        locations=solver1.setup.boundary_conditions.velocity_inlet
+        + solver2.setup.boundary_conditions.velocity_inlet,
+    )
+    assert result == min(s1_min, s2_min)

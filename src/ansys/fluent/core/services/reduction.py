@@ -314,6 +314,8 @@ class Reduction:
     ) -> Any:
         request = getattr(ReductionProtoModule, requestName)()
         if expression is not None:
+            if hasattr(expression, "definition"):
+                expression = expression.definition()
             request.expression = self._to_str(expression)
         if weight is not None:
             request.weight = Weight(weight).value
