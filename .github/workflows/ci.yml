@@ -165,12 +165,13 @@ jobs:
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Cache pip
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+          lookup-only: false  # zizmor: ignore[cache-poisoning]
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@9e48da27e184aa238fcb49f5db75469626d43adb # v2.1.9
@@ -684,7 +685,7 @@ jobs:
           path: PyFluent-packages
 
       - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@106e0b0b7c337fa67ed433972f777c6357f78598 # v1.13.0
+        uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
         with:
           repository-url: "https://upload.pypi.org/legacy/"
           print-hash: true
