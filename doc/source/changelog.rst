@@ -9,6 +9,170 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.36.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev0>`_ - October 09, 2025
+===========================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Interactive settings UI.
+          - `#4374 <https://github.com/ansys/pyfluent/pull/4374>`_
+
+        * - Support named expressions as input to reductions functions.
+          - `#4536 <https://github.com/ansys/pyfluent/pull/4536>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Textual type in flobject.
+          - `#4382 <https://github.com/ansys/pyfluent/pull/4382>`_
+
+        * - Filename argument handling in single battery cell workflow
+          - `#4441 <https://github.com/ansys/pyfluent/pull/4441>`_
+
+        * - Add `sphinx_design` to fix changelog rendering
+          - `#4468 <https://github.com/ansys/pyfluent/pull/4468>`_
+
+        * - Flake8 change needed for release [skip tests]
+          - `#4470 <https://github.com/ansys/pyfluent/pull/4470>`_
+
+        * - Chown server-info file by client user in compose mode
+          - `#4483 <https://github.com/ansys/pyfluent/pull/4483>`_
+
+        * - Chown server-info file by client user in compose mode - alt fix
+          - `#4484 <https://github.com/ansys/pyfluent/pull/4484>`_
+
+        * - Ansys Lab authentication
+          - `#4503 <https://github.com/ansys/pyfluent/pull/4503>`_
+
+        * - Implement migration adapter check for textual settings parameters.
+          - `#4515 <https://github.com/ansys/pyfluent/pull/4515>`_
+
+        * - Update exception type for scheme call
+          - `#4518 <https://github.com/ansys/pyfluent/pull/4518>`_
+
+        * - Fix env var name and run nightly in serial
+          - `#4529 <https://github.com/ansys/pyfluent/pull/4529>`_
+
+        * - Meshing tests.
+          - `#4530 <https://github.com/ansys/pyfluent/pull/4530>`_
+
+        * - Update datamodel triplet mapping
+          - `#4534 <https://github.com/ansys/pyfluent/pull/4534>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update nightly dev doc ci.
+          - `#4381 <https://github.com/ansys/pyfluent/pull/4381>`_
+
+        * - Remove multiple download jobs during release jobs.
+          - `#4428 <https://github.com/ansys/pyfluent/pull/4428>`_
+
+        * - Bump the dependencies group with 5 updates
+          - `#4431 <https://github.com/ansys/pyfluent/pull/4431>`_, `#4509 <https://github.com/ansys/pyfluent/pull/4509>`_
+
+        * - Bump the actions group with 3 updates
+          - `#4432 <https://github.com/ansys/pyfluent/pull/4432>`_
+
+        * - Bump pypa/gh-action-pypi-publish from 1.12.4 to 1.13.0 in /.github/workflows
+          - `#4443 <https://github.com/ansys/pyfluent/pull/4443>`_
+
+        * - Bump the actions group with 4 updates
+          - `#4508 <https://github.com/ansys/pyfluent/pull/4508>`_
+
+        * - Bump pytest-cov from 6.2.1 to 7.0.0
+          - `#4510 <https://github.com/ansys/pyfluent/pull/4510>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update ``html_context`` with PyAnsys tags
+          - `#4412 <https://github.com/ansys/pyfluent/pull/4412>`_
+
+        * - Example on the steady vortex dynamics
+          - `#4452 <https://github.com/ansys/pyfluent/pull/4452>`_
+
+        * - Update ReadME
+          - `#4477 <https://github.com/ansys/pyfluent/pull/4477>`_
+
+        * - Update Field data queries [skip tests]
+          - `#4478 <https://github.com/ansys/pyfluent/pull/4478>`_
+
+        * - Fixed a typo in example [skip tests]
+          - `#4486 <https://github.com/ansys/pyfluent/pull/4486>`_
+
+        * - Corrected a typo in Ablation example [skip tests]
+          - `#4494 <https://github.com/ansys/pyfluent/pull/4494>`_
+
+        * - Document a known limitation [skip tests]
+          - `#4520 <https://github.com/ansys/pyfluent/pull/4520>`_
+
+        * - Update new style settings docs [skip tests]
+          - `#4531 <https://github.com/ansys/pyfluent/pull/4531>`_
+
+        * - Update ui_mode doc [skip tests]
+          - `#4533 <https://github.com/ansys/pyfluent/pull/4533>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update example data branch name to main
+          - `#4455 <https://github.com/ansys/pyfluent/pull/4455>`_
+
+        * - Added backwards compatibility for solution_variable_name.
+          - `#4456 <https://github.com/ansys/pyfluent/pull/4456>`_
+
+        * - Update CHANGELOG for v0.35.0
+          - `#4459 <https://github.com/ansys/pyfluent/pull/4459>`_
+
+        * - Do not run release testing for dev release [skip tests]
+          - `#4473 <https://github.com/ansys/pyfluent/pull/4473>`_
+
+        * - Update CODEOWNERS [skip tests]
+          - `#4479 <https://github.com/ansys/pyfluent/pull/4479>`_
+
+        * - Update ansys-units version
+          - `#4514 <https://github.com/ansys/pyfluent/pull/4514>`_
+
+        * - Upgrade ansys-units version to fix numpy version issue.
+          - `#4517 <https://github.com/ansys/pyfluent/pull/4517>`_
+
+        * - Add a PR template [skip tests]
+          - `#4523 <https://github.com/ansys/pyfluent/pull/4523>`_
+
+        * - Correct some typos in repo.
+          - `#4535 <https://github.com/ansys/pyfluent/pull/4535>`_
+
+        * - Add security action in CI [skip tests]
+          - `#4537 <https://github.com/ansys/pyfluent/pull/4537>`_
+
+        * - Update release job [skip tests]
+          - `#4545 <https://github.com/ansys/pyfluent/pull/4545>`_
+
+
 `0.35.0 <https://github.com/ansys/pyfluent/releases/tag/v0.35.0>`_ - September 09, 2025
 =======================================================================================
 
