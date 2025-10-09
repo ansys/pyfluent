@@ -826,3 +826,39 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
     with pytest.raises(ValueError):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_migration_adapter_for_strings(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.setup.general.solver.time = "unsteady-2nd-order"
+    solver.settings.setup.models.discrete_phase.general_settings.interaction.enabled = (
+        True
+    )
+
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.enabled = (
+        True
+    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.option = (
+        "particle-time-step"
+    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.dpm_time_step_size = (
+        0.0002
+    )
+
+    # Migration adapter is set on the 'create_particles_at' to accept boolean values as well besides string
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
+        False
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
+        == "fluid-flow-time-step"
+    )
+
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
+        True
+    )
+    assert (
+        solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
+        == "particle-time-step"
+    )
