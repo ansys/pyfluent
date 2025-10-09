@@ -96,8 +96,9 @@ class PIMLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent for targeting a specific session type.
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
