@@ -242,7 +242,7 @@ jobs:
         run: |
           sudo apt install zip -y
           pushd doc/_build/html
-          zip -r "../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip" .
+          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
           popd
 
       - name: Upload HTML Documentation
@@ -551,10 +551,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
           make install-test
-          version="${{ matrix.version }}"
-          # Sanitize: allow only alphanumerics, dots, underscores, and hyphens
-          safe_version=$(echo "$version" | tr -cd 'A-Za-z0-9._-')
-          make "unittest-dev-$safe_version"
+          make unittest-dev-${{ matrix.version }}
 
       - name: Cleanup previous docker containers
         if: always()
