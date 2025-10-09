@@ -32,10 +32,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
       - name: Get last date of iteration
         id: date
         run: echo "date=$(date -u --date yesterday +'%m%d')" >> $GITHUB_OUTPUT
       - name: Create tag
+        env:
+          VAR: ${{ format('date-{0}', steps.date.outputs.date) }}
         run: |
-          git tag ${{ format('date-{0}', steps.date.outputs.date) }}
-          git push origin ${{ format('date-{0}', steps.date.outputs.date) }}
+          git tag ${VAR}
+          git push origin ${VAR}
