@@ -207,6 +207,7 @@ jobs:
           path: |
             src/ansys/fluent/core/generated
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          lookup-only: false  # zizmor: ignore[cache-poisoning]
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -241,6 +242,7 @@ jobs:
         env:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
+      # zizmor: ignore[template-injection] - env.DOC_DEPLOYMENT_IMAGE_TAG is set internally in workflow and not user-controlled
       - name: Zip HTML Documentation before upload
         run: |
           sudo apt install zip -y
@@ -552,6 +554,7 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: make docker-pull
 
+      # zizmor: ignore[template-injection] - matrix.version is defined in workflow and not user input
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
@@ -597,6 +600,7 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
+          lookup-only: false  # zizmor: ignore[cache-poisoning]
 
       - name: Add version information
         run: make version-info
