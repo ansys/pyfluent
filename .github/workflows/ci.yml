@@ -139,7 +139,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           auditing-level: 'high'
 
-
   docs_build:
     name: Build Documentation
     needs: [docs-style]
