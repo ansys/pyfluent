@@ -281,6 +281,7 @@ jobs:
           key: Python-${{ runner.os }}-${{ env.MAIN_PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ env.MAIN_PYTHON_VERSION }}
+          lookup-only: false  # zizmor: ignore[cache-poisoning]
 
       - name: Add version information
         run: make version-info
@@ -309,6 +310,7 @@ jobs:
           # Combined cache key for all versions:
           # API-Code-<Cache version>-<PyFluent version>-<First Fluent release version>-<Last Fluent release version>-<Fluent dev version>-<Hash of codegen files>
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.0-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          lookup-only: false  # zizmor: ignore[cache-poisoning]
 
       - name: Pull 23.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
