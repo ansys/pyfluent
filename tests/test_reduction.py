@@ -497,9 +497,7 @@ def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
 
     with pytest.raises(DisallowedValuesError):
         solver.fields.reduction.area(
-            locations=[
-                solver.settings.setup.gs.setup.boundary_conditions.velocity_inlet
-            ]
+            locations=[solver.settings.setup.boundary_conditions.velocity_inlet]
         )
 
     with pytest.raises(DisallowedValuesError):

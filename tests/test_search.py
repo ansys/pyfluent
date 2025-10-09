@@ -388,7 +388,7 @@ def test_wildcard_with_api_path():
     import ansys.fluent.core as pyfluent
 
     pyfluent.config.print_search_results = False
-    results = pyfluent.search("local*", api_path="<solver_session>.setup.")
+    results = pyfluent.search("local*", api_path="<solver_session>.setup")
     assert "<meshing_session>" not in results
     assert (
         '<solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)'

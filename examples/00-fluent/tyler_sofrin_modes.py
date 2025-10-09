@@ -189,7 +189,7 @@ for angle in range(0, 360, d_theta):
     y = math.sin(math.radians(angle)) * r
     pt_name = "point-" + str(angle)
     session.settings.results.surfaces.point_surface[pt_name] = {}
-    session.settings.results.surfaces.point_surface[pt_name].point.set_state([x, y, z])
+    session.settings.results.surfaces.point_surface[pt_name].point = [x, y, z]
 
 #######################################################################################
 # Compute Fourier coefficients at each monitor point (An, Bn)

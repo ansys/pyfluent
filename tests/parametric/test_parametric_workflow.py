@@ -263,7 +263,7 @@ def test_parametric_workflow():
 @pytest.mark.fluent_version(">=24.2")
 def test_parameters_list_function(static_mixer_settings_session):
     solver = static_mixer_settings_session
-    solver.tui.define.settings.parameters.enable_in_TUI("yes")
+    solver.tui.define.parameters.enable_in_TUI("yes")
 
     velocity_inlet = solver.tui.define.boundary_conditions.set.velocity_inlet
     velocity_inlet("inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit")
@@ -287,7 +287,7 @@ def test_parameters_list_function(static_mixer_settings_session):
     outlet_vel_avg.field = "velocity-magnitude"
     outlet_vel_avg.surface_names = ["outlet"]
 
-    create_output_param = solver.tui.define.settings.parameters.output_parameters.create
+    create_output_param = solver.tui.define.parameters.output_parameters.create
     create_output_param("report-definition", "outlet-temp-avg")
     create_output_param("report-definition", "outlet-vel-avg")
 
