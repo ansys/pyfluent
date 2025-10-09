@@ -94,8 +94,10 @@ jobs:
         run: make api-codegen
 
       - name: Print Fluent version info
+        env:
+          VERSION: ${{ matrix.version }}
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
+          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
 
       - name: Install again after codegen
         run: |

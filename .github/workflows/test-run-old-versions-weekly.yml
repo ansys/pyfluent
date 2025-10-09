@@ -235,9 +235,10 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-${{ matrix.version }}
+          make unittest-all-${VERSION}
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          VERSION: ${{ matrix.version }}
 
       - name: Cleanup previous docker containers
         if: always()
