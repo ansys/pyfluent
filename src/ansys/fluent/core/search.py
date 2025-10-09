@@ -634,8 +634,8 @@ def search(
     <solver_session>.setup.mesh_interfaces.interface["<name>"].local_absolute_mapped_tolerance (Parameter)
     <solver_session>.setup.mesh_interfaces.interface["<name>"].local_relative_mapped_tolerance (Parameter)
     >>> pyfluent.search("读", language="cmn")   # search 'read' in Chinese
-    <solver_session>.file.ead (Command)
-    <solver_session>.file.mport_.read (Command)
+    <solver_session>.file.read (Command)
+    <solver_session>.file.import_.read (Command)
     <solver_session>.mesh.surface_mesh.read (Command)
     <solver_session>.tui.display.display_states.read (Command)
     <meshing_session>.tui.display.display_states.read (Command)
