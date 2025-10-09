@@ -41,9 +41,7 @@ jobs:
     name: "Add license headers"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-        with:
-          persist-credentials: false
+      - uses: actions/checkout@3df4d9e95b7f52c2b7a1a5e6e0d792b43a7c3d0f # v5.1.0
 
       - name: Set up Python
         uses: actions/setup-python@v6
