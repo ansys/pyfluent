@@ -139,7 +139,7 @@ jobs:
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
-          auditing-level: 'high'
+          auditing-level: "high"
 
   docs_build:
     name: Build Documentation
@@ -171,7 +171,7 @@ jobs:
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
-          lookup-only: false  # zizmor: ignore[cache-poisoning]
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Install Quarto
         uses: quarto-dev/quarto-actions/setup@9e48da27e184aa238fcb49f5db75469626d43adb # v2.1.9
@@ -207,7 +207,7 @@ jobs:
           path: |
             src/ansys/fluent/core/generated
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          lookup-only: false  # zizmor: ignore[cache-poisoning]
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Login to GitHub Container Registry
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -284,7 +284,7 @@ jobs:
           key: Python-${{ runner.os }}-${{ env.MAIN_PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ env.MAIN_PYTHON_VERSION }}
-          lookup-only: false  # zizmor: ignore[cache-poisoning]
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Add version information
         run: make version-info
@@ -313,7 +313,7 @@ jobs:
           # Combined cache key for all versions:
           # API-Code-<Cache version>-<PyFluent version>-<First Fluent release version>-<Last Fluent release version>-<Fluent dev version>-<Hash of codegen files>
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.0-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
-          lookup-only: false  # zizmor: ignore[cache-poisoning]
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Pull 23.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -602,7 +602,7 @@ jobs:
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
           restore-keys: |
             Python-${{ runner.os }}-${{ matrix.python-version }}
-          lookup-only: false  # zizmor: ignore[cache-poisoning]
+          lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Add version information
         run: make version-info
@@ -661,7 +661,7 @@ jobs:
   release:
     name: Release
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [test, update-changelog, nightly-dev-test]
+    needs: [test, update-changelog]
     runs-on: ubuntu-latest
     permissions:
       id-token: write # required for trusted publishing
