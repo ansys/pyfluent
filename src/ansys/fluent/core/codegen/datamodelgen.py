@@ -62,11 +62,10 @@ _PY_TYPE_BY_DM_TYPE = {
             "ListReal",
             "Real Triplet",
             "RealTriplet",
-            "Real Triplet List",
-            "ListRealTriplet",
         ],
         "list[float]",
     ),
+    **dict.fromkeys(["Real Triplet List", "ListRealTriplet"], "list[list[float]]"),
     **dict.fromkeys(["Dict", "ModelObject"], "dict[str, Any]"),
     "None": "None",
 }
