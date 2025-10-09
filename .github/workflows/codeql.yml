@@ -2,7 +2,7 @@ name: "CodeQL"
 
 permissions:
   contents: read
-  security-events: write
+  security-events: read
   actions: read
 
 on:
@@ -27,7 +27,7 @@ jobs:
     permissions:
       actions: read
       contents: read
-      security-events: write
+      security-events: read
 
     strategy:
       fail-fast: false

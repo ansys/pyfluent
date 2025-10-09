@@ -103,6 +103,7 @@ jobs:
           labels: CI/CD
 
   commenter:
+    name: "Label"
     runs-on: ubuntu-latest
     needs: [labeler]
     permissions:

@@ -26,6 +26,7 @@ env:
 
 jobs:
   install-podman:
+    name: "Install Podman"
     runs-on: [public-ubuntu-latest-8-cores]
     steps:
       - uses: gacts/install-podman@96e73075ee4b6669429c80458d063924472fb04d # v1.1.1
