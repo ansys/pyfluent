@@ -1,5 +1,10 @@
 name: "CodeQL"
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 on:
   push:
     branches: [ "main", "release/*" ]
@@ -41,7 +46,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@ea9e4c1d93a06a9b6cf022b073c355d2b9b45f78 # v3.27.5
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -68,6 +73,6 @@ jobs:
     #     ./location_of_script_within_repo/buildscript.sh
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@ea9e4c1d93a06a9b6cf022b073c355d2b9b45f78 # v3.27.5
       with:
         category: "/language:${{matrix.language}}"
