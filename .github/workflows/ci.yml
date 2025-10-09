@@ -16,10 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
   packages: read
-  pull-requests: write
-  issues: write
+  pull-requests: read
+  issues: read
 
 env:
   API_CODE_CACHE: 6
@@ -42,6 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -149,6 +151,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -240,7 +244,7 @@ jobs:
         run: |
           sudo apt install zip -y
           pushd doc/_build/html
-          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+          zip -r "../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip" .
           popd
 
       - name: Upload HTML Documentation
@@ -261,6 +265,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -504,6 +510,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
@@ -545,7 +553,10 @@ jobs:
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
         run: |
           make install-test
-          make unittest-dev-${{ matrix.version }}
+          version="${{ matrix.version }}"
+          # Sanitize: allow only alphanumerics, dots, underscores, and hyphens
+          safe_version=$(echo "$version" | tr -cd 'A-Za-z0-9._-')
+          make "unittest-dev-$safe_version"
 
       - name: Cleanup previous docker containers
         if: always()
@@ -571,6 +582,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v6
