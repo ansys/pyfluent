@@ -243,10 +243,12 @@ jobs:
           FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
 
       - name: Zip HTML Documentation before upload
-        run: |  # zizmor: ignore[template-injection] - env.DOC_DEPLOYMENT_IMAGE_TAG is set internally in workflow and not user-controlled
+        env:
+          DOC_DEPLOYMENT_IMG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+        run: |
           sudo apt install zip -y
           pushd doc/_build/html
-          zip -r ../../../HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip .
+          zip -r ../../../HTML-Documentation-tag-${DOC_DEPLOYMENT_IMG}.zip .
           popd
 
       - name: Upload HTML Documentation
@@ -555,9 +557,11 @@ jobs:
 
       - name: Unit Testing
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        run: |  # zizmor: ignore[template-injection] - matrix.version is defined in workflow and not user input
+        env:
+          MATRIX_VERSION: ${{ matrix.version }}
+        run: |
           make install-test
-          make unittest-dev-${{ matrix.version }}
+          make unittest-dev-${MATRIX_VERSION}
 
       - name: Cleanup previous docker containers
         if: always()
