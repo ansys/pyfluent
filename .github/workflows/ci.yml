@@ -673,6 +673,12 @@ jobs:
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
+      - name: "Download the library artifacts from build-library step"
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: PyFluent-packages
+          path: PyFluent-packages
+
       - name: Display package file list
         run: ls -R
 
@@ -685,12 +691,6 @@ jobs:
           TWINE_USERNAME: PAT
           TWINE_PASSWORD: ${{ secrets.PYANSYS_PYPI_PRIVATE_PAT }}
           TWINE_REPOSITORY_URL: https://pkgs.dev.azure.com/pyansys/_packaging/pyansys/pypi/upload
-
-      - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
-        with:
-          name: PyFluent-packages
-          path: PyFluent-packages
 
       - name: "Upload artifacts to PyPI using trusted publisher"
         uses: pypa/gh-action-pypi-publish@ed0c53931b1dc9bd32cbe73a98c7f6766f8a527e # v1.13.0
