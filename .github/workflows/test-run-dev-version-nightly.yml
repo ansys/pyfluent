@@ -141,7 +141,7 @@ jobs:
                         "type": "TextBlock",
                         "weight": "Bolder",
                         "size": "Medium",
-                        "text": "GitHub Actions Notification"
+                        "text": "${{ github.workflow }}"
                       },
                       {
                         "type": "TextBlock",
