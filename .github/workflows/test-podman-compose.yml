@@ -119,3 +119,32 @@ jobs:
         run: |
           docker system prune -af
           sudo podman system prune -af
+
+      - name: Notify Microsoft Teams (Rich Card)
+        if: always()
+        run: |
+          STATUS="Success"
+          COLOR="00FF00"  # Green
+          if [ "${{ job.status }}" != "success" ]; then
+            STATUS="Failure"
+            COLOR="FF0000"  # Red
+          fi
+
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+
+          PAYLOAD=$(jq -n \
+            --arg summary "GitHub Actions: $STATUS" \
+            --arg themeColor "$COLOR" \
+            --arg title "${{ github.workflow }} - $STATUS" \
+            --arg text "Branch: **${{ github.ref_name }}**\nCommit: [\`${{ github.sha }}`]($COMMIT_URL)\nStatus: **$STATUS**\n\n[🔗 View Workflow Run]($RUN_URL)" \
+            '{
+              "@type": "MessageCard",
+              "@context": "http://schema.org/extensions",
+              "summary": $summary,
+              "themeColor": $themeColor,
+              "title": $title,
+              "text": $text
+            }')
+
+          curl -H "Content-Type: application/json" -d "$PAYLOAD" ${{ secrets.TEAMS_WEBHOOK_URL }}
