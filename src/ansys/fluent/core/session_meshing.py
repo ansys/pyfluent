@@ -128,6 +128,11 @@ class Meshing(PureMeshing):
         return super(Meshing, self).workflow
 
     @property
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        return super(Meshing, self).meshing_workflow
+
+    @property
     def PartManagement(self):
         """Part management datamodel root."""
         return super(Meshing, self).PartManagement

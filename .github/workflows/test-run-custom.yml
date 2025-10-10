@@ -9,10 +9,10 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
   packages: read
-  pull-requests: write
-  issues: write
+  pull-requests: read
+  issues: read
 
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
@@ -51,15 +51,17 @@ jobs:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache pip
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -92,8 +94,10 @@ jobs:
         run: make api-codegen
 
       - name: Print Fluent version info
+        env:
+          VERSION: ${{ matrix.version }}
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_${{ matrix.version }}.py
+          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
 
       - name: Install again after codegen
         run: |

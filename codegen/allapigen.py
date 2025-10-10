@@ -17,6 +17,7 @@ if __name__ == "__main__":
     gt_222 = FluentVersion(version) > FluentVersion.v222
     ge_231 = FluentVersion(version) >= FluentVersion.v231
     ge_242 = FluentVersion(version) >= FluentVersion.v242
+    ge_261 = FluentVersion(version) >= FluentVersion.v261
 
     static_infos = {
         StaticInfoType.DATAMODEL_WORKFLOW: meshing._datamodel_service_se.get_static_info(
@@ -39,6 +40,10 @@ if __name__ == "__main__":
     if ge_242:
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+        )
+    if ge_261:
+        static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
+            meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
     meshing.exit()
 

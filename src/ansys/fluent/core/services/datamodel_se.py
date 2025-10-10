@@ -1098,7 +1098,10 @@ class PyStateContainer(PyCallableStateObject):
         Any
             Value of the attribute.
         """
-        if pyfluent.config.datamodel_use_attr_cache:
+        if (
+            pyfluent.config.datamodel_use_attr_cache
+            and self.rules != "meshing_workflow"
+        ):
             return self._get_cached_attr(attrib)
         return self._get_remote_attr(attrib)
 
