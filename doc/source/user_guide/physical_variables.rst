@@ -32,7 +32,7 @@ Here’s how to use ``VariableCatalog`` to read and reduce field data using unit
 
     solver_session = launch_fluent()
     case_path = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-    solver_session.file.read(file_type="case", file_name=case_path)
+    solver_session.settings.file.read(file_type="case", file_name=case_path)
 
     solver_session.settings.solution.initialization.hybrid_initialize()
 
@@ -67,7 +67,7 @@ You can also use physical quantities in report definitions to improve clarity an
     surface_report.field = temperature  # Note: using VariableCatalog, not a string
     surface_report.surface_names = locations
 
-    result = solver_session.solution.report_definitions.compute(report_defs=["avg_temp"])
+    result = solver_session.settings.solution.report_definitions.compute(report_defs=["avg_temp"])
     print(result[0]["avg_temp"][0])
 
 Notes
