@@ -171,4 +171,4 @@ jobs:
           )
 
           echo "Sending notification to Power Automate..."
-          curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.NIGHTLY_DEV_TEST_RUN }}"
+          curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
