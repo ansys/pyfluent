@@ -53,72 +53,72 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # - name: Cache pip
-      #   uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-      #   with:
-      #     path: ~/.cache/pip
-      #     key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
-      #     restore-keys: |
-      #       Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+      - name: Cache pip
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
-      # - name: Add version information
-      #   run: make version-info
+      - name: Add version information
+        run: make version-info
 
-      # - name: Install pyfluent
-      #   run: |
-      #     pip install packaging
-      #     make install
+      - name: Install pyfluent
+        run: |
+          pip install packaging
+          make install
 
-      # - name: Retrieve PyFluent version
-      #   run: |
-      #     echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-      #     echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-      #   id: version
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
 
-      # - name: Login to GitHub Container Registry
-      #   uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-      #   with:
-      #     registry: ghcr.io
-      #     username: ansys-bot
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Pull Fluent docker image
-      #   env:
-      #     IMAGE_TAG: ${{ matrix.image-tag }}
-      #   run: |
-      #     docker pull ghcr.io/ansys/pyfluent:${IMAGE_TAG}
-      #     docker images
+      - name: Pull Fluent docker image
+        env:
+          IMAGE_TAG: ${{ matrix.image-tag }}
+        run: |
+          docker pull ghcr.io/ansys/pyfluent:${IMAGE_TAG}
+          docker images
 
-      # - name: Transport docker image to podman
-      #   env:
-      #     IMAGE_TAG: ${{ matrix.image-tag }}
-      #   run: |
-      #     sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${IMAGE_TAG}
-      #     sudo podman images
+      - name: Transport docker image to podman
+        env:
+          IMAGE_TAG: ${{ matrix.image-tag }}
+        run: |
+          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${IMAGE_TAG}
+          sudo podman images
 
-      # - name: Run API codegen
-      #   run: make api-codegen
+      - name: Run API codegen
+        run: make api-codegen
 
-      # - name: Print Fluent version info
-      #   env:
-      #     VERSION: ${{ matrix.image-tag }}
-      #   run: |
-      #     cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
+      - name: Print Fluent version info
+        env:
+          VERSION: ${{ matrix.image-tag }}
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
 
-      # - name: Install again after codegen
-      #   run: |
-      #     rm -rf dist
-      #     make install > /dev/null
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
 
-      # - name: Run Fluent test script
-      #   run: |
-      #     python tests/podman_compose.py
+      - name: Run Fluent test script
+        run: |
+          python tests/podman_compose.py
 
-      # - name: Cleanup previous containers
-      #   if: always()
-      #   run: |
-      #     docker system prune -af
-      #     sudo podman system prune -af
+      - name: Cleanup previous containers
+        if: always()
+        run: |
+          docker system prune -af
+          sudo podman system prune -af
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
         if: always()

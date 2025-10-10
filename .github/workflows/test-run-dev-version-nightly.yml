@@ -38,79 +38,79 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # - name: Cache pip
-      #   uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-      #   with:
-      #     path: ~/.cache/pip
-      #     key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
-      #     restore-keys: |
-      #       Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
+      - name: Cache pip
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.cache/pip
+          key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}
 
-      # - name: Add version information
-      #   run: make version-info
+      - name: Add version information
+        run: make version-info
 
-      # - name: Install pyfluent
-      #   run: make install
+      - name: Install pyfluent
+        run: make install
 
-      # - name: Retrieve PyFluent version
-      #   run: |
-      #     echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-      #     echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
-      #   id: version
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
 
-      # - name: Login to GitHub Container Registry
-      #   uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
-      #   with:
-      #     registry: ghcr.io
-      #     username: ansys-bot
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Pull Fluent docker image
-      #   run: make docker-pull
-      #   env:
-      #     FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+      - name: Pull Fluent docker image
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      # - name: Run API codegen
-      #   run: make api-codegen
-      #   env:
-      #     FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+      - name: Run API codegen
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      # - name: Print Fluent version info
-      #   env:
-      #     VERSION: ${{ env.FLUENT_VERSION }}
-      #   run: |
-      #     cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
-      #     python -c "from ansys.fluent.core.generated.solver.settings_${VERSION} import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+      - name: Print Fluent version info
+        env:
+          VERSION: ${{ env.FLUENT_VERSION }}
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
+          python -c "from ansys.fluent.core.generated.solver.settings_${VERSION} import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
-      # - name: Install again after codegen
-      #   run: |
-      #     rm -rf dist
-      #     make install > /dev/null
+      - name: Install again after codegen
+        run: |
+          rm -rf dist
+          make install > /dev/null
 
-      # - name: Unit Testing
-      #   run: |
-      #     make install-test
-      #     make unittest-all-${VERSION}
-      #   env:
-      #     VERSION: ${{ env.FLUENT_VERSION }}
-      #     FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+      - name: Unit Testing
+        run: |
+          make install-test
+          make unittest-all-${VERSION}
+        env:
+          VERSION: ${{ env.FLUENT_VERSION }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
 
-      # - name: Cleanup previous docker containers
-      #   if: always()
-      #   run: make cleanup-previous-docker-containers
+      - name: Cleanup previous docker containers
+        if: always()
+        run: make cleanup-previous-docker-containers
 
-      # - name: Update Fluent image
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
-      #     IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
-      #   if: github.ref == 'refs/heads/main'
-      #   run: |
-      #     DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${IMAGE_TAG} | sed 's/.*@//')
-      #     gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
+      - name: Update Fluent image
+        env:
+          GITHUB_TOKEN: ${{ secrets.ADMIN_ACCESS_TOKEN }}
+          IMAGE_TAG: ${{ env.FLUENT_IMAGE_TAG }}
+        if: github.ref == 'refs/heads/main'
+        run: |
+          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/ansys/fluent:${IMAGE_TAG} | sed 's/.*@//')
+          gh variable set FLUENT_STABLE_IMAGE_DEV --body $DIGEST
 
-      # - name: Remove all docker images
-      #   if: always()
-      #   run: make docker-clean-images
+      - name: Remove all docker images
+        if: always()
+        run: make docker-clean-images
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
         if: always()
