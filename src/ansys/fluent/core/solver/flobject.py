@@ -819,9 +819,14 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return value
 
-    def __call__(self) -> StateT:
-        """Alias for self.get_state."""
-        return self.get_state()
+    def __call__(self, *args, **kwargs):
+        """Get or set the state of the object."""
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
@@ -1064,14 +1069,6 @@ class Group(SettingsBase[DictStateType]):
         for query in self.query_names:
             cls = self.__class__._child_classes[query]
             self._setattr(query, _create_child(cls, None, self))
-
-    def __call__(self, *args, **kwargs):
-        if kwargs:
-            self.set_state(kwargs)
-        elif args:
-            self.set_state(args)
-        else:
-            return self.get_state()
 
     @classmethod
     def to_scheme_keys(cls, value, root_cls, path: list[str]):
