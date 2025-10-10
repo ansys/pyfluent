@@ -28,9 +28,10 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.solver import Viscous
+from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
+    NamedObject,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -793,6 +794,17 @@ def test_setting_string_constants(mixing_elbow_settings_session):
 
     with pytest.raises(ValueError):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
+
+
+@pytest.mark.fluent_version(">=24.2")
+def test_named_object_commands(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    inlets = VelocityInlets(solver)
+    inlets.list()
+    inlets.list_properties(object_name="hot-inlet")
+    if solver.get_fluent_version() >= FluentVersion.v261:
+        NamedObject.list(inlets)
+        NamedObject.list_properties(inlets, object_name="hot-inlet")
 
 
 @pytest.mark.fluent_version(">=26.1")
