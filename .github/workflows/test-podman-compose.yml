@@ -121,7 +121,7 @@ jobs:
           sudo podman system prune -af
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
-        if: always()
+        if: github.event_name == 'schedule' && job.status != 'success'
         run: |
           STATUS="Success"
           if [ "${{ job.status }}" != "success" ]; then
