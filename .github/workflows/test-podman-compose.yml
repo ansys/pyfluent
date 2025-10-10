@@ -141,10 +141,10 @@ jobs:
             '{
               "@type": "MessageCard",
               "@context": "http://schema.org/extensions",
-              summary: $summary,
-              themeColor: $themeColor,
-              title: $title,
-              text: $text
+              "summary": $summary,
+              "themeColor": $themeColor,
+              "title": $title,
+              "text": $text
             }')
 
           echo "$PAYLOAD"
