@@ -32,6 +32,7 @@
 * [Mainak Kundu](https://github.com/mainakk)
 * [Mainak Kundu](https://github.com/mkundu1)
 * [Maxime Rey](https://github.com/MaxJPRey)
+* [mayankansys](https://github.com/mayankansys)
 * [mcgoldba](https://github.com/mcgoldba)
 * [Mohammed Abdul Razzaq](https://github.com/MohammedAnsys)
 * [Muhammed Adedigba](https://github.com/moe-ad)
