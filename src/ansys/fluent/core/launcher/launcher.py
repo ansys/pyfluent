@@ -129,7 +129,10 @@ def _custom_converter(kwargs, old_arg_list, new_arg_list):
     for old_group, new_group in zip(old_arg_list, new_arg_list):
         if old_group == ["show_gui"] and new_group == ["ui_mode"]:
             old_val = kwargs.pop("show_gui", None)
-            kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
+            if old_val is not None:
+                kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
+            else:
+                kwargs["ui_mode"] = None
         elif old_group == ["version"] and new_group == ["dimension"]:
             old_val = kwargs.pop("version", None)
             kwargs["dimension"] = _version_to_dimension(old_val)
