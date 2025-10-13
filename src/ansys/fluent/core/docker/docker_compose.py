@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import os
 import subprocess
 import uuid
 
@@ -31,7 +32,7 @@ from .utils import get_ghcr_fluent_image_name
 class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
-    def __init__(self, compose_config, container_dict):
+    def __init__(self, compose_config, container_dict, container_server_info_file):
         from ansys.fluent.core import config
 
         self._compose_config = compose_config
@@ -44,6 +45,8 @@ class ComposeBasedLauncher:
         )
         self._container_source = self._set_compose_cmds()
         self._container_source.remove("compose")
+
+        self._container_server_info_file = container_server_info_file
 
         self._compose_file = self._get_compose_file(container_dict)
 
@@ -243,3 +246,29 @@ class ComposeBasedLauncher:
             self._container_source + ["port", f"{self._compose_name}-fluent-1"],
         )
         return self._extract_ports(output.decode("utf-8").strip())
+
+    def chown_server_info_file(self) -> None:
+        """Change ownership of the server info file inside the container.
+
+        Raises
+        ------
+        RuntimeError
+            If the command fails.
+        """
+        result = subprocess.run(
+            self._container_source
+            + [
+                "exec",
+                f"{self._compose_name}-fluent-1",
+                "chown",
+                f"{os.getuid()}:{os.getgid()}",
+                self._container_server_info_file,
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"Failed to change ownership of the server info file. "
+                f"Error: {result.stderr.strip()}"
+            )

@@ -72,6 +72,7 @@ class BaseMeshing:
         self._fluent_version = fluent_version
         self._meshing_utilities = None
         self._old_workflow = None
+        self._meshing_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -126,6 +127,13 @@ class BaseMeshing:
         if self._old_workflow is None:
             self._old_workflow = _make_datamodel_module(self, "workflow")
         return self._old_workflow
+
+    @property
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        if self._meshing_workflow is None:
+            self._meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
+        return self._meshing_workflow
 
     def watertight_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""

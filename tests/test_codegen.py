@@ -192,6 +192,7 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
 
 _static_info_type_by_rules = {
     "workflow": StaticInfoType.DATAMODEL_WORKFLOW,
+    "meshing_workflow": StaticInfoType.DATAMODEL_MESHING_WORKFLOW,
     "meshing": StaticInfoType.DATAMODEL_MESHING,
     "PartManagement": StaticInfoType.DATAMODEL_PART_MANAGEMENT,
     "PMFileManagement": StaticInfoType.DATAMODEL_PM_FILE_MANAGEMENT,
@@ -428,6 +429,7 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     api_tree_expected = {"<meshing_session>": {}, "<solver_session>": {}}
     if rules in [
         "workflow",
+        "meshing_workflow",
         "meshing",
         "PartManagement",
         "PMFileManagement",

@@ -211,6 +211,8 @@ def _eval_reduction(
         weight = "Weight=" + str(weight)
         locations = str(locations) + ", " + weight
 
+    if hasattr(expr, "definition"):
+        expr = expr.definition()
     expr_str = _expr_to_expr_str(naming_strategy().to_string(expr))
     if condition:
         expr_str = expr_str + ", " + condition
