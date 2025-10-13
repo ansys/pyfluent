@@ -68,7 +68,9 @@ def deprecate_arguments(
                     if target_arg in kwargs:
                         warnings.warn(
                             f"Both deprecated argument '{old_arg}' and new argument '{target_arg}' were provided. "
-                            f"Ignoring {old_arg}."
+                            f"Ignoring {old_arg}.",
+                            PyFluentDeprecationWarning,
+                            stacklevel=2,
                         )
                     else:
                         kwargs[target_arg] = old_val
