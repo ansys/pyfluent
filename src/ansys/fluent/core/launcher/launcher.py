@@ -240,12 +240,8 @@ def launch_fluent(
         Fluent transcript subsequently via the method calls, ``transcript.start()``
         and ``transcript.stop()`` on the session object.
     ui_mode : UIMode or str, optional
-        Fluent user interface mode. Options are either the values of the ``UIMode``
-        enum or any of ``"no_gui_or_graphics"``, ``"no_gui"``, ``"hidden_gui"``,
-        ``"no_graphics"`` or ``"gui"``. The default is ``UIMode.HIDDEN_GUI`` in
-        Windows and ``UIMode.NO_GUI`` in Linux. ``"no_gui_or_graphics"`` and
-        ``"no_gui"`` user interface modes are supported in Windows starting from Fluent
-        version 2024 R1.
+        Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+        or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
     graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
         Graphics driver of Fluent. In Windows, options are either the values of the
         ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,

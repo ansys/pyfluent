@@ -118,8 +118,9 @@ class DockerLauncher:
         ----------
         mode : FluentMode
             Specifies the launch mode of Fluent to target a specific session type.
-        ui_mode : UIMode
-            Defines the user interface mode for Fluent. Options correspond to values in the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Specifies the graphics driver for Fluent. Options are from the ``FluentWindowsGraphicsDriver`` enum
             (for Windows) or the ``FluentLinuxGraphicsDriver`` enum (for Linux).
@@ -231,7 +232,15 @@ class DockerLauncher:
                 compose_config=self._compose_config,
             )
 
-            _, _, password = _get_server_info_from_container(config_dict=config_dict)
+            try:
+                _, _, password = _get_server_info_from_container(
+                    config_dict=config_dict
+                )
+            except PermissionError:
+                container.chown_server_info_file()
+                _, _, password = _get_server_info_from_container(
+                    config_dict=config_dict
+                )
         else:
             port, password, container = start_fluent_container(
                 self._args,
