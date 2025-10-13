@@ -14,7 +14,7 @@ def deprecate_arguments(
     new_arg_list: list[list[str]],
     version: str,
     converter: Callable | None = None,
-    warning_cls: type = PyFluentDeprecationWarning,
+    warning_cls: warnings = PyFluentDeprecationWarning,
 ) -> Callable:
     """
     Deprecate multiple arguments (possibly grouped) and automatically replace them with new ones.
@@ -31,7 +31,7 @@ def deprecate_arguments(
         Custom converter function that takes (kwargs, old_arg_list, new_arg_list)
         and returns modified kwargs.
         If not provided, a default converter is used.
-    warning_cls : type, optional
+    warning_cls : warnings, optional
         The warning class to use for deprecation warnings.
 
     Raises
@@ -61,24 +61,33 @@ def deprecate_arguments(
                     "too many old args. Provide a custom converter."
                 )
 
-            # map values from old args to new args (1-to-1 or many-to-one)
             for i, old_arg in enumerate(old_group):
                 if old_arg in kwargs:
                     old_val = kwargs.pop(old_arg)
-                    target_arg = new_group[min(i, len(new_group) - 1)]
-                    kwargs.setdefault(target_arg, old_val)
+                    target_arg = new_group[i]
+                    if target_arg in kwargs:
+                        warnings.warn(
+                            f"Both deprecated argument '{old_arg}' and new argument '{target_arg}' were provided. "
+                            f"Ignoring {old_arg}."
+                        )
+                    else:
+                        kwargs[target_arg] = old_val
         return kwargs
 
     converter = converter or _default_converter
+
+    def _message(old: str, new: str) -> str:
+        if "," in old:
+            return f"Arguments {old} are deprecated; use {new} instead."
+        else:
+            return f"Argument {old} is deprecated; use {new} instead."
 
     def build_warning_messages() -> list[str]:
         messages = []
         for old_group, new_group in zip(old_arg_list, new_arg_list):
             old_str = ", ".join(f"'{o}'" for o in old_group)
             new_str = ", ".join(f"'{n}'" for n in new_group)
-            messages.append(
-                f"Arguments {old_str} are deprecated; use {new_str} instead."
-            )
+            messages.append(_message(old_str, new_str))
         return messages
 
     reason = " ".join(build_warning_messages())
@@ -95,7 +104,7 @@ def deprecate_arguments(
                     old_str = ", ".join(f"'{o}'" for o in old_group)
                     new_str = ", ".join(f"'{n}'" for n in new_group)
                     warnings.warn(
-                        f"Arguments {old_str} are deprecated; use {new_str} instead.",
+                        _message(old_str, new_str),
                         warning_cls,
                         stacklevel=2,
                     )

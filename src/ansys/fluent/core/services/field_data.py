@@ -69,6 +69,7 @@ from ansys.fluent.core.services.interceptors import (
 )
 from ansys.fluent.core.services.streaming import StreamingService
 from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
 
 logger = logging.getLogger("pyfluent.field_data")
 
@@ -411,6 +412,24 @@ def _data_type_convertor(args_dict):
     if args_dict.get("data_types") is None:
         args_dict["data_types"] = d_type_list
     return args_dict
+
+
+def _custom_converter(kwargs, old_arg_list, new_arg_list):
+    for old_group, new_group in zip(old_arg_list, new_arg_list):
+        if old_group == ["surface_names"] and new_group == ["surfaces"]:
+            if "surface_names" in kwargs:
+                kwargs["surfaces"] = kwargs.pop("surface_names")
+        elif old_group == ["surface_ids"] and new_group == ["surfaces"]:
+            if "surface_ids" in kwargs:
+                kwargs["surfaces"] = kwargs.pop("surface_ids")
+        elif old_group == [
+            "provide_vertices",
+            "provide_faces",
+            "provide_faces_centroid",
+            "provide_faces_normal",
+        ] and new_group == ["data_types"]:
+            kwargs = _data_type_convertor(kwargs)
+    return kwargs
 
 
 class _FetchFieldData:
@@ -783,23 +802,20 @@ class Batch(FieldBatch):
             )
         )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
+    @deprecate_arguments(
+        old_arg_list=[
+            ["surface_names"],
+            ["surface_ids"],
+            [
+                "provide_vertices",
+                "provide_faces",
+                "provide_faces_centroid",
+                "provide_faces_normal",
+            ],
         ],
-        data_type_converter=_data_type_convertor,
-        deprecated_version="v0.23.dev0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'add_surfaces_request' is deprecated, use 'add_requests' instead",
+        new_arg_list=[["surfaces"], ["surfaces"], ["data_types"]],
+        version="v0.23.0",
+        converter=_custom_converter,
     )
     def add_surfaces_request(
         self,

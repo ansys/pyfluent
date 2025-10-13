@@ -58,7 +58,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -125,24 +125,22 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
-#   pylint: disable=unused-argument
-@all_deprecators(
-    deprecate_arg_mappings=[
-        {
-            "old_arg": "show_gui",
-            "new_arg": "ui_mode",
-            "converter": _show_gui_to_ui_mode,
-        },
-        {
-            "old_arg": "version",
-            "new_arg": "dimension",
-            "converter": _version_to_dimension,
-        },
-    ],
-    data_type_converter=None,
-    deprecated_version="v0.22.dev0",
-    deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
-    warn_message="",
+def _custom_converter(kwargs, old_arg_list, new_arg_list):
+    for old_group, new_group in zip(old_arg_list, new_arg_list):
+        if old_group == ["show_gui"] and new_group == ["ui_mode"]:
+            old_val = kwargs.pop("show_gui", None)
+            kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
+        elif old_group == ["version"] and new_group == ["dimension"]:
+            old_val = kwargs.pop("version", None)
+            kwargs["dimension"] = _version_to_dimension(old_val)
+    return kwargs
+
+
+@deprecate_arguments(
+    old_arg_list=[["show_gui"], ["version"]],
+    new_arg_list=[["ui_mode"], ["dimension"]],
+    version="v0.22.0",
+    converter=_custom_converter,
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
