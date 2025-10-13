@@ -14,7 +14,7 @@ def deprecate_arguments(
     new_arg_list: list[list[str]],
     version: str,
     converter: Callable | None = None,
-    warning_cls: warnings = PyFluentDeprecationWarning,
+    warning_cls: type[Warning] = PyFluentDeprecationWarning,
 ) -> Callable:
     """
     Deprecate multiple arguments (possibly grouped) and automatically replace them with new ones.
