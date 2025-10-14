@@ -114,7 +114,7 @@ jobs:
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
         if: always()
-        run: |
+        run: | # zizmor: ignore[template-injection]
           STATUS="Success"
           if [ "${{ job.status }}" != "success" ]; then
             STATUS="Failure"
