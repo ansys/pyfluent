@@ -46,7 +46,6 @@ if __name__ == "__main__":
             meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
     meshing.exit()
-
     solver = launch_fluent(
         mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
     )
