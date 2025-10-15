@@ -146,7 +146,7 @@ workflow.InitializeWorkflow(WorkflowType=r"Watertight Geometry")
 
 filenames = {
     "Windows": "catalytic_converter.dsco",
-    "Other": "catalytic_converter.pmdb",
+    "Other": "catalytic_converter.dsco.pmdb",
 }
 
 geometry_filename = examples.download_file(
