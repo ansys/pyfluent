@@ -58,7 +58,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)

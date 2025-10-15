@@ -42,7 +42,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
-from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as naming_strategy,
 )

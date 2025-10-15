@@ -31,7 +31,7 @@ import warnings
 
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils import get_user_data_dir
-from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 import ansys.platform.instancemanagement as pypim
 
 # Host path which is mounted to the file-transfer-service container

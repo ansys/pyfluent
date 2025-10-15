@@ -67,7 +67,7 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.deprecate_new import (
+from ansys.fluent.core.utils.deprecate import (
     deprecate_arguments,
     deprecate_function,
 )

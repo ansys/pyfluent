@@ -42,7 +42,7 @@ from ansys.fluent.core.services.field_data import (
     get_fields_request,
     override_help_text,
 )
-from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 
 DEPRECATION_MSG = "'field_data_old' is deprecated. Use 'field_data' instead."
 

@@ -1,153 +1,159 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
-# SPDX-License-Identifier: MIT
-#
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-"""Module that provides a method to handle deprecated arguments."""
+"""Deprecate Arguments."""
 
 import functools
-from functools import wraps
-import logging
+from typing import Any, Callable
 import warnings
 
 from deprecated.sphinx import deprecated
 
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
-logger = logging.getLogger("pyfluent.general")
-
-
-# TODO: Refactor 'all_deprecators' to remove boilerplate code from implementation
-def all_deprecators(
-    deprecate_arg_mappings,
-    data_type_converter,
-    deprecated_version,
-    deprecated_reason,
-    warn_message,
-):
-    """Decorator that applies multiple deprecators to a function."""
-
-    def decorator(func):
-        decorated = func
-        for mapping in deprecate_arg_mappings:
-            decorated = deprecate_argument(
-                old_arg=mapping["old_arg"],
-                new_arg=mapping["new_arg"],
-                converter=mapping.get("converter", lambda x: x),
-                warning_cls=PyFluentDeprecationWarning,
-            )(decorated)
-        if data_type_converter:
-            decorated = deprecate_arguments(
-                converter=data_type_converter,
-                warning_cls=PyFluentDeprecationWarning,
-            )(decorated)
-        decorated = deprecated(
-            version=deprecated_version,
-            reason=deprecated_reason,
-        )(decorated)
-
-        @wraps(decorated)
-        def wrapper(*args, **kwargs):
-            if warn_message:
-                warnings.warn(
-                    warn_message,
-                    PyFluentDeprecationWarning,
-                    stacklevel=2,
-                )
-            return decorated(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
-
-def deprecate_argument(
-    old_arg,
-    new_arg,
-    converter=lambda x: x,
-    warning_cls=PyFluentDeprecationWarning,
-    **kwds,
-):
-    """Warns that the argument provided is deprecated and automatically replaces the
-    deprecated argument with the appropriate new argument."""
-
-    def decorator(func):
-        """Holds the original method to perform operations on it."""
-
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            """Warns about the deprecated argument and replaces it with the new
-            argument."""
-            if old_arg in kwargs:
-                warnings.warn(
-                    f"'{old_arg}' is deprecated. Use '{new_arg}' instead.",
-                    warning_cls,
-                    stacklevel=2,
-                )
-                old_value = kwargs[old_arg]
-                new_value = kwargs.get(new_arg)
-                if new_value is None:
-                    new_value = converter(kwargs[old_arg], **kwds)
-                    kwargs[new_arg] = new_value
-                    logger.warning(
-                        f"Using '{new_arg} = {new_value}' for '{func.__name__}()'"
-                        f" instead of '{old_arg} = {old_value}'."
-                    )
-                else:
-                    logger.warning(
-                        f"Ignoring '{old_arg} = {old_value}' specification for '{func.__name__}()',"
-                        f" only '{new_arg} = {new_value}' applies."
-                    )
-                kwargs.pop(old_arg)
-            return func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
-
 
 def deprecate_arguments(
-    converter,
-    warning_cls=PyFluentDeprecationWarning,
-):
-    """Warns that the arguments provided are deprecated and automatically replaces the
-    deprecated arguments with the appropriate new arguments."""
+    old_args: str | list[str],
+    new_args: str | list[str],
+    version: str,
+    converter: Callable | None = None,
+    warning_cls: type[Warning] = PyFluentDeprecationWarning,
+) -> Callable:
+    """
+    Deprecate multiple arguments (possibly grouped) and automatically replace them with new ones.
 
-    def decorator(func):
-        """Holds the original method to perform operations on it."""
+    Parameters
+    ----------
+    old_args : str | list[str]
+        Old argument name(s) to deprecate.
+    new_args : str | list[str]
+        New argument name(s) to use instead.
+    version : str
+        The version in which the arguments were deprecated.
+    converter : callable, optional
+        Custom converter function taking (kwargs, old_args, new_args) and returning modified kwargs.
+        If not provided, a default converter is used.
+    warning_cls : warnings, optional
+        The warning class to use for deprecation warnings.
 
-        @functools.wraps(func)
+    Raises
+    ------
+    ValueError
+        For arguments mismatch.
+
+    Returns
+    -------
+    Callable
+        The decorated function.
+    """
+    if isinstance(old_args, str):
+        old_args = [old_args]
+
+    if isinstance(new_args, str):
+        new_args = [new_args]
+
+    # Validation
+    if len(old_args) != len(new_args) and converter is None:
+        raise ValueError(
+            f"Cannot automatically convert {old_args} → {new_args}: too many old args. "
+            f"Provide a custom converter."
+        )
+
+    # Default converter
+    def _default_converter(
+        kwargs: dict[str, Any],
+        old_params: list[str],
+        new_params: list[str],
+    ) -> dict[str, Any]:
+        """Default converter that maps all old args to new args one-to-one."""
+        for i, old_arg in enumerate(old_params):
+            if old_arg in kwargs:
+                old_val = kwargs.pop(old_arg)
+                target_arg = new_params[i]
+                if target_arg in kwargs:
+                    warnings.warn(
+                        f"Both deprecated argument '{old_arg}' and new argument '{target_arg}' were provided. "
+                        f"Ignoring {old_arg}.",
+                        PyFluentDeprecationWarning,
+                        stacklevel=2,
+                    )
+                else:
+                    kwargs[target_arg] = old_val
+        return kwargs
+
+    converter = converter or _default_converter
+
+    # Build reason message for @deprecated
+    old_str = ", ".join(f"'{o}'" for o in old_args)
+    new_str = ", ".join(f"'{n}'" for n in new_args)
+    if len(old_args) > 1:
+        reason = f"Arguments {old_str} are deprecated; use {new_str} instead."
+    else:
+        reason = f"Argument {old_str} is deprecated; use {new_str} instead."
+
+    def decorator(func: Callable):
+        # Documentation
+        deprecated_func = deprecated(version=version, reason=reason)(func)
+
+        @functools.wraps(deprecated_func)
         def wrapper(*args, **kwargs):
-            """Warns about the deprecated arguments and replaces them with the new
-            arguments."""
-            input_kwargs = kwargs.copy()
-            kwargs = converter(kwargs)
-            new_args = set(kwargs) - set(input_kwargs)
-            old_args = set(input_kwargs) - set(kwargs)
-            if old_args and new_args:
+            # Warn only if any old arg(s) present
+            if any(arg in kwargs for arg in old_args):
                 warnings.warn(
-                    f"The arguments: {', '.join(old_args)} are deprecated. Use {', '.join(new_args)} instead.",
+                    reason,
                     warning_cls,
                     stacklevel=2,
                 )
-            return func(*args, **kwargs)
+
+            # Perform conversion (default or custom)
+            try:
+                kwargs = converter(kwargs, old_args, new_args)
+            except TypeError:
+                # If the custom converter takes only kwargs
+                kwargs = converter(kwargs)
+            return deprecated_func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def deprecate_function(
+    version: str,
+    new_func: str | None = None,
+    warning_cls: type[Warning] = PyFluentDeprecationWarning,
+) -> Callable:
+    """
+    Decorator to mark a function as deprecated.
+
+    Parameters
+    ----------
+    version : str
+        Version in which this function was deprecated.
+    new_func : str, optional
+        Name of the new/replacement function to use.
+    warning_cls : type[Warning], optional
+        Warning class to use for the deprecation warning.
+
+    Returns
+    -------
+    Callable
+        The decorated function.
+    """
+
+    def decorator(func):
+        func_name = func.__name__
+
+        # Build reason message for @deprecated
+        if new_func:
+            reason = f"Function '{func_name}' is deprecated since version {version}. Use '{new_func}' instead."
+        else:
+            reason = f"Function '{func_name}' is deprecated since version {version}."
+
+        # Documentation
+        decorated = deprecated(version=version, reason=reason)(func)
+
+        @functools.wraps(decorated)
+        def wrapper(*args, **kwargs):
+            warnings.warn(reason, warning_cls, stacklevel=2)
+            return decorated(*args, **kwargs)
 
         return wrapper
 

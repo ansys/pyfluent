@@ -54,7 +54,7 @@ from ansys.fluent.core.filereader.data_file import (
     _to_scalar_field_name,
     _to_vector_field_name,
 )
-from ansys.fluent.core.utils.deprecate_new import (
+from ansys.fluent.core.utils.deprecate import (
     deprecate_arguments,
     deprecate_function,
 )
