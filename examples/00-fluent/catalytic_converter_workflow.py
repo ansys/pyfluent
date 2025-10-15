@@ -689,6 +689,8 @@ solver_session.settings.results.scene["scene-2"] = {
 }
 static_pressure_scene.display()
 graphics.views.auto_scale()
+# Ensure "out/" directory exists before saving files
+os.makedirs("out", exist_ok=True)
 graphics.picture.save_picture(file_name="out/static_pressure.png")
 
 # %%
