@@ -578,7 +578,7 @@ surfaces_data = [
 for surf_name, field_name, iso_values in surfaces_data:
     results.surfaces.iso_surface.create(name=surf_name)
     results.surfaces.iso_surface[surf_name].field = field_name
-    results.surfaces.iso_surface[surf_name] = {"iso_values": iso_values}
+    results.surfaces.iso_surface[surf_name].iso_values = iso_values
 
 # %%
 # Velocity Analysis
