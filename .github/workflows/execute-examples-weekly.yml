@@ -165,9 +165,9 @@ jobs:
         run: |
           python examples/00-fluent/steady_vortex.py
 
-      - name: Execute catalytic_convertor_workflow.py
+      - name: Execute catalytic_converter_workflow.py
         run: |
-          python examples/00-fluent/catalytic_convertor_workflow.py
+          python examples/00-fluent/catalytic_converter_workflow.py
 
 
       # https://github.com/ansys/pyfluent/issues/4157
