@@ -505,6 +505,7 @@ monitor = Monitor(solver_session)
 surface_monitor = monitor.report_files.create(name="surf-mon-1")
 surface_monitor.print = True
 surface_monitor.report_defs = ["surf-mon-1"]
+os.makedirs("out", exist_ok=True)
 surface_monitor.file_name = "out/surf-mon-1.out"
 
 # Create report plot monitor
