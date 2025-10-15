@@ -1,6 +1,7 @@
 """Deprecate Arguments."""
 
 import functools
+import inspect
 from typing import Any, Callable
 import warnings
 
@@ -102,12 +103,18 @@ def deprecate_arguments(
                     stacklevel=2,
                 )
 
-            # Perform conversion (default or custom)
-            try:
-                kwargs = converter(kwargs, old_args, new_args)
-            except TypeError:
-                # If the custom converter takes only kwargs
+            sig = inspect.signature(converter)
+            params = sig.parameters
+            n_params = len(params)
+            if n_params == 1:
                 kwargs = converter(kwargs)
+            elif n_params == 3:
+                kwargs = converter(kwargs, old_args, new_args)
+            else:
+                raise TypeError(
+                    f"Converter must accept either (kwargs) or (kwargs, old_args, new_args), "
+                    f"but got {n_params} parameter(s): {list(params)}"
+                )
             return deprecated_func(*args, **kwargs)
 
         return wrapper
