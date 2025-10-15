@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""".. _catalytic_convertor_workflow:
+""".. _catalytic_converter_workflow:
 
 Modeling Flow Through Porous Media - Catalytic Converter
 ========================================================
@@ -250,7 +250,6 @@ workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = dict(
 )
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-# workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 workflow.TaskObject["inlet"].Execute()
 
 # Create outlet boundary as pressure outlet
@@ -541,7 +540,7 @@ solution_initialization.standard_initialize()
 # Set iteration count and run calculation
 
 run_calculation = RunCalculation(solver_session)
-run_calculation.iter_count = 150  # Iteration count keep it 150 for demo only purpose
+run_calculation.iter_count = 150  # Iteration count, keep it at 150 for demo purposes only
 run_calculation.calculate()
 
 
@@ -578,7 +577,7 @@ surfaces_data = [
 for surf_name, field_name, iso_values in surfaces_data:
     results.surfaces.iso_surface.create(name=surf_name)
     results.surfaces.iso_surface[surf_name].field = field_name
-    results.surfaces.iso_surface[surf_name] = {"iso_values": iso_values}
+    results.surfaces.iso_surface[surf_name].iso_values = iso_values
 
 # %%
 # Velocity Analysis
