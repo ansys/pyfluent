@@ -250,7 +250,6 @@ workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = dict(
 )
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
-# workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments.setState({})
 workflow.TaskObject["inlet"].Execute()
 
 # Create outlet boundary as pressure outlet
