@@ -375,6 +375,7 @@ mesh = Mesh(solver_session, new_instance_name="mesh-1")
 mesh.surfaces_list = all_walls
 mesh.options.edges = True
 mesh.display()
+os.makedirs("out", exist_ok=True)
 graphics.picture.save_picture(file_name="out/catalytic_converter_mesh.png")
 mesh.options.edges = False  # Turn off edges after saving the picture
 
