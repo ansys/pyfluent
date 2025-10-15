@@ -37,6 +37,11 @@ def deprecate_arguments(
     ------
     ValueError
         For arguments mismatch.
+
+    Returns
+    -------
+    Callable
+        The decorated function.
     """
     if isinstance(old_args, str):
         old_args = [old_args]
@@ -104,6 +109,51 @@ def deprecate_arguments(
                 # If the custom converter takes only kwargs
                 kwargs = converter(kwargs)
             return deprecated_func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def deprecate_function(
+    version: str,
+    new_func: str | None = None,
+    warning_cls: type[Warning] = PyFluentDeprecationWarning,
+) -> Callable:
+    """
+    Decorator to mark a function as deprecated.
+
+    Parameters
+    ----------
+    version : str
+        Version in which this function was deprecated.
+    new_func : str, optional
+        Name of the new/replacement function to use.
+    warning_cls : type[Warning], optional
+        Warning class to use for the deprecation warning.
+
+    Returns
+    -------
+    Callable
+        The decorated function.
+    """
+
+    def decorator(func):
+        func_name = func.__name__
+
+        # Build reason message for @deprecated
+        if new_func:
+            reason = f"Function '{func_name}' is deprecated since version {version}. Use '{new_func}' instead."
+        else:
+            reason = f"Function '{func_name}' is deprecated since version {version}."
+
+        # Documentation
+        decorated = deprecated(version=version, reason=reason)(func)
+
+        @functools.wraps(decorated)
+        def wrapper(*args, **kwargs):
+            warnings.warn(reason, warning_cls, stacklevel=2)
+            return decorated(*args, **kwargs)
 
         return wrapper
 

@@ -31,7 +31,6 @@ from typing import Callable, Dict, List, Tuple
 import warnings
 import weakref
 
-from deprecated.sphinx import deprecated
 import grpc
 import numpy as np
 
@@ -68,8 +67,10 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.services.streaming import StreamingService
-from ansys.fluent.core.utils.deprecate import all_deprecators
-from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
+from ansys.fluent.core.utils.deprecate_new import (
+    deprecate_arguments,
+    deprecate_function,
+)
 
 logger = logging.getLogger("pyfluent.field_data")
 
@@ -805,6 +806,7 @@ class Batch(FieldBatch):
         version="v0.23.0",
         converter=_data_type_convertor,
     )
+    @deprecate_function(version="v0.23.0", new_func="add_requests")
     def add_surfaces_request(
         self,
         data_types: List[SurfaceDataType] | List[str],
@@ -819,24 +821,17 @@ class Batch(FieldBatch):
             overset_mesh=overset_mesh,
         )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.23.dev0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.23.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.23.0",
+    )
+    @deprecate_function(version="v0.23.0", new_func="add_requests")
     def add_scalar_fields_request(
         self,
         field_name: str,
@@ -852,24 +847,17 @@ class Batch(FieldBatch):
             boundary_value=boundary_value,
         )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.23.dev0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.23.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.23.0",
+    )
+    @deprecate_function(version="v0.23.0", new_func="add_requests")
     def add_vector_fields_request(
         self,
         field_name: str,
@@ -880,24 +868,17 @@ class Batch(FieldBatch):
             field_name=field_name, surfaces=self.get_surface_ids(surfaces)
         )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val or [],
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.23.dev0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'add_pathlines_fields_request' is deprecated, use 'add_requests' instead",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.23.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.23.0",
+    )
+    @deprecate_function(version="v0.23.0", new_func="add_requests")
     def add_pathlines_fields_request(
         self,
         field_name: str,
@@ -1493,7 +1474,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             self._allowed_vector_field_names,
         )
 
-    @deprecated(version="0.34", reason="Use `new_batch` instead.")
+    @deprecate_function(version="v0.34.0", new_func="new_batch")
     def new_transaction(self):
         """Create a new field transaction."""
         return self.new_batch()
@@ -1640,6 +1621,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             flatten_connectivity=kwargs.get("flatten_connectivity"),
         )
 
+    @deprecate_function(version="v0.34.0", new_func="get_field_data")
     def get_scalar_field_data(
         self,
         field_name: str,
@@ -1648,10 +1630,6 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         boundary_value: bool | None = True,
     ) -> Dict[int | str, np.array]:
         """Get scalar field data on a surface."""
-        warnings.warn(
-            "'get_scalar_field_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         return self._get_scalar_field_data(
             field_name=field_name,
             surfaces=surfaces,
@@ -1659,6 +1637,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
             boundary_value=boundary_value,
         )
 
+    @deprecate_function(version="v0.34.0", new_func="get_field_data")
     def get_surface_data(
         self,
         data_types: List[SurfaceDataType],
@@ -1666,30 +1645,24 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         overset_mesh: bool | None = False,
     ) -> Dict[int | str, Dict[SurfaceDataType, np.array | List[np.array]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
-        warnings.warn(
-            "'get_surface_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         self._deprecated_flag = True
         return self._get_surface_data(
             data_types=data_types, surfaces=surfaces, overset_mesh=overset_mesh
         )
 
+    @deprecate_function(version="v0.34.0", new_func="get_field_data")
     def get_vector_field_data(
         self,
         field_name: str,
         surfaces: List[int | str],
     ) -> Dict[int | str, np.array]:
         """Get vector field data on a surface."""
-        warnings.warn(
-            "'get_vector_field_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         return self._get_vector_field_data(
             field_name=field_name,
             surfaces=surfaces,
         )
 
+    @deprecate_function(version="v0.34.0", new_func="get_field_data")
     def get_pathlines_field_data(
         self,
         field_name: str,
@@ -1708,10 +1681,6 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         zones: list | None = None,
     ) -> Dict:
         """Get the pathlines field data on a surface."""
-        warnings.warn(
-            "'get_pathlines_field_data' is deprecated, use 'get_field_data' instead",
-            PyFluentDeprecationWarning,
-        )
         self._deprecated_flag = True
         return self._get_pathlines_field_data(
             field_name=field_name,

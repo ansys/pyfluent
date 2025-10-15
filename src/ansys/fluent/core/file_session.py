@@ -54,8 +54,10 @@ from ansys.fluent.core.filereader.data_file import (
     _to_scalar_field_name,
     _to_vector_field_name,
 )
-from ansys.fluent.core.utils.deprecate import all_deprecators
-from ansys.fluent.core.utils.deprecate_new import deprecate_arguments
+from ansys.fluent.core.utils.deprecate_new import (
+    deprecate_arguments,
+    deprecate_function,
+)
 
 
 class InvalidMultiPhaseFieldName(ValueError):
@@ -270,6 +272,7 @@ class Batch(FieldBatch):
         version="v0.25.0",
         converter=_data_type_convertor,
     )
+    @deprecate_function(version="v0.25.0", new_func="add_requests")
     def add_surfaces_request(
         self,
         data_types: List[SurfaceDataType] | List[str],
@@ -310,24 +313,17 @@ class Batch(FieldBatch):
                 Batch._SurfaceTransaction(surface_id, provide_vertices, provide_faces)
             )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'add_scalar_fields_request' is deprecated, use 'add_requests' instead.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="add_requests")
     def add_scalar_fields_request(
         self,
         field_name: str,
@@ -387,24 +383,17 @@ class Batch(FieldBatch):
                 Batch._ScalarFieldTransaction(field_name, surface_ids)
             )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'add_vector_fields_request' is deprecated, use 'add_requests' instead.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="add_requests")
     def add_vector_fields_request(
         self,
         field_name: str,
@@ -449,24 +438,17 @@ class Batch(FieldBatch):
                 Batch._VectorFieldTransaction(field_name, surface_ids)
             )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="Pathlines are not supported.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="add_requests")
     def add_pathlines_fields_request(
         self,
         field_name: str,
@@ -658,29 +640,17 @@ class FileFieldData(FieldDataSource):
             surfaces=surfaces,
         )
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: [old_arg_val],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-            {
-                "old_arg": "data_type",
-                "new_arg": "data_types",
-                "converter": lambda old_arg_val: [old_arg_val] if old_arg_val else None,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids', 'surface_names' and 'data_type' are deprecated. Use 'surfaces' and 'data_types' instead.",
-        warn_message="'get_surface_data' is deprecated, use 'get_field_data' instead.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="get_field_data")
     def get_surface_data(
         self,
         data_types: List[SurfaceDataType] | List[str],
@@ -761,24 +731,17 @@ class FileFieldData(FieldDataSource):
                     for count, surface in enumerate(surfaces)
                 }
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: [old_arg_val],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'get_scalar_field_data' is deprecated, use 'get_field_data' instead.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="get_field_data")
     def get_scalar_field_data(
         self,
         field_name: str,
@@ -847,24 +810,17 @@ class FileFieldData(FieldDataSource):
                 for count, surface in enumerate(surfaces)
             }
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: [old_arg_val],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="'get_vector_field_data' is deprecated, use 'get_field_data' instead.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="get_field_data")
     def get_vector_field_data(
         self,
         field_name: str,
@@ -928,24 +884,17 @@ class FileFieldData(FieldDataSource):
                 for count, surface in enumerate(surfaces)
             }
 
-    @all_deprecators(
-        deprecate_arg_mappings=[
-            {
-                "old_arg": "surface_names",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: [old_arg_val],
-            },
-            {
-                "old_arg": "surface_ids",
-                "new_arg": "surfaces",
-                "converter": lambda old_arg_val: old_arg_val,
-            },
-        ],
-        data_type_converter=None,
-        deprecated_version="v0.25.0",
-        deprecated_reason="Old arguments 'surface_ids' and 'surface_names' are deprecated. Use 'surfaces' instead.",
-        warn_message="Pathlines are not supported.",
+    @deprecate_arguments(
+        old_args="surface_names",
+        new_args="surfaces",
+        version="v0.25.0",
     )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.25.0",
+    )
+    @deprecate_function(version="v0.25.0", new_func="get_field_data")
     def get_pathlines_field_data(
         self,
         field_name: str,
