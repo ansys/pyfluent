@@ -662,6 +662,7 @@ solver_session.settings.results.scene["scene-1"] = {
 }
 velocity_vectors_scene.display()
 graphics.views.auto_scale()
+os.makedirs("out", exist_ok=True)
 graphics.picture.save_picture(file_name="out/velocity_vectors.png")
 
 # %%
