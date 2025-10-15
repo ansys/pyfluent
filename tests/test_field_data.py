@@ -52,33 +52,37 @@ def test_field_data_batches_deprecated_interface(new_solver_session) -> None:
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.mesh.check()
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.mesh.check()
 
-    solver.setup.models.energy.enabled = True
-    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+    solver.settings.setup.models.energy.enabled = True
+    solver.settings.setup.materials.database.copy_by_name(
+        type="fluid", name="water-liquid"
+    )
+    solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"].material = (
+        "water-liquid"
+    )
 
     # Set up boundary conditions for CFD analysis
-    cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     cold_inlet.momentum.velocity = 0.4
     cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     cold_inlet.turbulence.turbulent_intensity = 0.05
     cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
     cold_inlet.thermal.t = 293.15
 
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     hot_inlet.momentum.velocity = 1.2
     hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
     hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
-    solver.solution.monitor.residual.options.plot = False
+    solver.settings.solution.monitor.residual.options.plot = False
 
     # Initialize flow field
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
-    iterate = solver.solution.run_calculation.iterate
+    iterate = solver.settings.solution.run_calculation.iterate
     iterate.get_attr("arguments")
     iterate(iter_count=10)
 
@@ -133,33 +137,37 @@ def test_field_data_batches(new_solver_session) -> None:
     import_file_name = examples.download_file(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.mesh.check()
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.mesh.check()
 
-    solver.setup.models.energy.enabled = True
-    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
-    solver.setup.cell_zone_conditions.fluid["elbow-fluid"].material = "water-liquid"
+    solver.settings.setup.models.energy.enabled = True
+    solver.settings.setup.materials.database.copy_by_name(
+        type="fluid", name="water-liquid"
+    )
+    solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"].material = (
+        "water-liquid"
+    )
 
     # Set up boundary conditions for CFD analysis
-    cold_inlet = solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]
+    cold_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]
     cold_inlet.momentum.velocity = 0.4
     cold_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     cold_inlet.turbulence.turbulent_intensity = 0.05
     cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
     cold_inlet.thermal.t = 293.15
 
-    hot_inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    hot_inlet = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     hot_inlet.momentum.velocity = 1.2
     hot_inlet.turbulence.turbulent_specification = "Intensity and Hydraulic Diameter"
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
     hot_inlet.thermal.t = HOT_INLET_TEMPERATURE
 
-    solver.solution.monitor.residual.options.plot = False
+    solver.settings.solution.monitor.residual.options.plot = False
 
     # Initialize flow field
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
-    iterate = solver.solution.run_calculation.iterate
+    iterate = solver.settings.solution.run_calculation.iterate
     iterate.get_attr("arguments")
     iterate(iter_count=10)
 
@@ -217,7 +225,12 @@ def test_field_data_batches(new_solver_session) -> None:
         surface_request_with_faces_connectivity_deprecated,
     )
     data = batch.add_requests(
-        su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
+        su2,
+        sux,
+        sc1,
+        sc2,
+        vc1,
+        pt1,  # 'sux' is duplicate and will be ignored
     ).get_response()  # adding multiple requests.
 
     with pytest.raises(ValueError):
@@ -325,14 +338,14 @@ def test_field_data_attributes(new_solver_session) -> None:
 
     assert [] == field_data.scalar_fields.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
 
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     assert field_data.is_data_valid()
 
@@ -356,14 +369,14 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
 
     assert [] == field_data.scalar_fields.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
 
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     assert field_data.is_data_valid()
 
@@ -469,14 +482,14 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     assert [] == field_data.scalar_fields.allowed_values()
 
-    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
 
     allowed_args_no_init = field_data.scalar_fields.allowed_values()
     assert len(allowed_args_no_init) != 0
 
     assert not field_data.is_data_valid()
 
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     assert field_data.is_data_valid()
 
@@ -608,7 +621,7 @@ def test_field_data_objects_2d(disk_case_session) -> None:
 
     assert not field_data.is_data_valid()
 
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     assert field_data.is_data_valid()
 
@@ -678,7 +691,7 @@ def test_field_data_errors(new_solver_session) -> None:
             field_name="partition-neighbors", surfaces=[0]
         )
 
-    solver.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
 
     with pytest.raises(FieldUnavailable):
         solver.fields.field_data.get_scalar_field_data(
@@ -696,7 +709,7 @@ def test_field_data_errors(new_solver_session) -> None:
     assert partition_neighbors and isinstance(partition_neighbors, dict)
 
     # Initialize flow field
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.solution.initialization.hybrid_initialize()
 
     # Get field data object
     assert solver.fields.field_data
@@ -718,7 +731,7 @@ def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.file.read_case_data(file_name=case_path)
+    solver.settings.file.read_case_data(file_name=case_path)
     solver.scheme.eval("(%save-case-id)")
     assert not solver.scheme.eval("(case-modified?)")
     solver.fields.field_data.get_scalar_field_data(
@@ -817,8 +830,8 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
     field_data = solver.fields.field_data
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.solution.initialization.hybrid_initialize()
     assert field_data.is_data_valid()
 
     # Check different iterations with location objects
@@ -834,7 +847,7 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
 
     scalar_object_from_surface_objects = ScalarFieldDataRequest(
         field_name="absolute-pressure",
-        surfaces=solver.setup.boundary_conditions.velocity_inlet,
+        surfaces=solver.settings.setup.boundary_conditions.velocity_inlet,
     )
     abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
     assert list(abs_press_data) == ["hot-inlet", "cold-inlet"]
@@ -845,8 +858,8 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
     scalar_object_from_surface_objects = ScalarFieldDataRequest(
         field_name="absolute-pressure",
         surfaces=[
-            solver.setup.boundary_conditions.velocity_inlet["hot-inlet"],
-            solver.setup.boundary_conditions.velocity_inlet["cold-inlet"],
+            solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"],
+            solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"],
         ],
     )
     abs_press_data = field_data.get_field_data(scalar_object_from_surface_objects)
@@ -884,8 +897,8 @@ def test_field_data_objects_3d_with_location_objects_overall(
         "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
     )
     field_data = solver.fields.field_data
-    solver.file.read(file_type="case", file_name=import_file_name)
-    solver.solution.initialization.hybrid_initialize()
+    solver.settings.file.read(file_type="case", file_name=import_file_name)
+    solver.settings.solution.initialization.hybrid_initialize()
     assert field_data.is_data_valid()
 
     su1 = SurfaceFieldDataRequest(

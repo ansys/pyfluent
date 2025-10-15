@@ -264,13 +264,13 @@ def test_file_purpose_on_remote_instance(
     suffix = uuid.uuid4().hex
     import_file_name = rename_downloaded_file(import_file_name, f"_{suffix}")
 
-    solver_session.file.read_case(file_name=import_file_name)
+    solver_session.settings.file.read_case(file_name=import_file_name)
     assert file_service.is_configured()
     assert file_service.uploads()
     assert len(file_service.uploads()) == 1
     assert file_service.uploads()[0] == import_file_name
 
-    solver_session.file.write_case(file_name=import_file_name)
+    solver_session.settings.file.write_case(file_name=import_file_name)
     assert file_service.downloads()
     assert len(file_service.downloads()) == 1
     assert file_service.downloads()[0] == import_file_name
