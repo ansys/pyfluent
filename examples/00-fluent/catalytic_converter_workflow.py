@@ -719,6 +719,8 @@ solver_session.settings.results.scene["scene-3"] = {
 }
 velocity_magnitude_scene.display()
 graphics.views.auto_scale()
+# Ensure the 'out/' directory exists before saving files
+os.makedirs("out", exist_ok=True)
 graphics.picture.save_picture(file_name="out/velocity_magnitude.png")
 
 # %%
