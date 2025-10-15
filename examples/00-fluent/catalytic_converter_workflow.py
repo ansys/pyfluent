@@ -554,6 +554,8 @@ run_calculation.calculate()
 # ~~~~~~~~~~~~~~~~~~
 # Calculate mass flow rate at outlet.
 
+# Ensure the 'out/' directory exists before writing files to it
+os.makedirs("out", exist_ok=True)
 results = Results(solver_session)
 results.report.fluxes.mass_flow(
     zones=["outlet"], write_to_file=True, file_name="out/mass_flow_rate.flp"
