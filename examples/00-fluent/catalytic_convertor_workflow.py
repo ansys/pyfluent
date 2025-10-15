@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""".. _catalytic_convertor_workflow:
+""".. _catalytic_converter_workflow:
 
 Modeling Flow Through Porous Media - Catalytic Converter
 ========================================================
