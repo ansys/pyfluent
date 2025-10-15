@@ -125,22 +125,29 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
-def _custom_converter(kwargs, old_arg_list, new_arg_list):
-    for old_group, new_group in zip(old_arg_list, new_arg_list):
-        if old_group == ["show_gui"] and new_group == ["ui_mode"]:
-            old_val = kwargs.pop("show_gui", None)
-            kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
-        elif old_group == ["version"] and new_group == ["dimension"]:
-            old_val = kwargs.pop("version", None)
-            kwargs["dimension"] = _version_to_dimension(old_val)
+def _custom_converter_gui(kwargs):
+    old_val = kwargs.pop("show_gui", None)
+    kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
+    return kwargs
+
+
+def _custom_converter_dimension(kwargs):
+    old_val = kwargs.pop("version", None)
+    kwargs["dimension"] = _version_to_dimension(old_val)
     return kwargs
 
 
 @deprecate_arguments(
-    old_arg_list=[["show_gui"], ["version"]],
-    new_arg_list=[["ui_mode"], ["dimension"]],
+    old_args="show_gui",
+    new_args="ui_mode",
     version="v0.22.0",
-    converter=_custom_converter,
+    converter=_custom_converter_gui,
+)
+@deprecate_arguments(
+    old_args="version",
+    new_args="dimension",
+    version="v0.22.0",
+    converter=_custom_converter_dimension,
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,

@@ -10,8 +10,8 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
 def deprecate_arguments(
-    old_arg_list: list[list[str]],
-    new_arg_list: list[list[str]],
+    old_args: str | list[str],
+    new_args: str | list[str],
     version: str,
     converter: Callable | None = None,
     warning_cls: type[Warning] = PyFluentDeprecationWarning,
@@ -21,15 +21,14 @@ def deprecate_arguments(
 
     Parameters
     ----------
-    old_arg_list : list[list[str]]
-        Each inner list represents a group of old argument names being deprecated.
-    new_arg_list : list[list[str]]
-        Each inner list represents a corresponding group of new argument names.
+    old_args : str | list[str]
+        Old argument name(s) to deprecate.
+    new_args : str | list[str]
+        New argument name(s) to use instead.
     version : str
         The version in which the arguments were deprecated.
     converter : callable, optional
-        Custom converter function that takes (kwargs, old_arg_list, new_arg_list)
-        and returns modified kwargs.
+        Custom converter function taking (kwargs, old_args, new_args) and returning modified kwargs.
         If not provided, a default converter is used.
     warning_cls : warnings, optional
         The warning class to use for deprecation warnings.
@@ -39,60 +38,50 @@ def deprecate_arguments(
     ValueError
         For arguments mismatch.
     """
+    if isinstance(old_args, str):
+        old_args = [old_args]
+
+    if isinstance(new_args, str):
+        new_args = [new_args]
 
     # Validation
-    if len(old_arg_list) != len(new_arg_list):
+    if len(old_args) != len(new_args) and converter is None:
         raise ValueError(
-            f"old_arg_list and new_arg_list must have the same number of groups. "
-            f"Got {len(old_arg_list)} vs {len(new_arg_list)}."
+            f"Cannot automatically convert {old_args} → {new_args}: too many old args. "
+            f"Provide a custom converter."
         )
 
     # Default converter
     def _default_converter(
         kwargs: dict[str, Any],
-        old_param_list: list[list[str]],
-        new_param_list: list[list[str]],
+        old_params: list[str],
+        new_params: list[str],
     ) -> dict[str, Any]:
-        """Default converter that maps all old args to new args one-to-one across groups."""
-        for old_group, new_group in zip(old_param_list, new_param_list):
-            if len(old_group) > len(new_group):
-                raise ValueError(
-                    f"Cannot automatically convert {old_group} → {new_group}: "
-                    "too many old args. Provide a custom converter."
-                )
-
-            for i, old_arg in enumerate(old_group):
-                if old_arg in kwargs:
-                    old_val = kwargs.pop(old_arg)
-                    target_arg = new_group[i]
-                    if target_arg in kwargs:
-                        warnings.warn(
-                            f"Both deprecated argument '{old_arg}' and new argument '{target_arg}' were provided. "
-                            f"Ignoring {old_arg}.",
-                            PyFluentDeprecationWarning,
-                            stacklevel=2,
-                        )
-                    else:
-                        kwargs[target_arg] = old_val
+        """Default converter that maps all old args to new args one-to-one."""
+        for i, old_arg in enumerate(old_params):
+            if old_arg in kwargs:
+                old_val = kwargs.pop(old_arg)
+                target_arg = new_params[i]
+                if target_arg in kwargs:
+                    warnings.warn(
+                        f"Both deprecated argument '{old_arg}' and new argument '{target_arg}' were provided. "
+                        f"Ignoring {old_arg}.",
+                        PyFluentDeprecationWarning,
+                        stacklevel=2,
+                    )
+                else:
+                    kwargs[target_arg] = old_val
         return kwargs
 
     converter = converter or _default_converter
 
-    def _message(old: str, new: str) -> str:
-        if "," in old:
-            return f"Arguments {old} are deprecated; use {new} instead."
-        else:
-            return f"Argument {old} is deprecated; use {new} instead."
-
-    def build_warning_messages() -> list[str]:
-        messages = []
-        for old_group, new_group in zip(old_arg_list, new_arg_list):
-            old_str = ", ".join(f"'{o}'" for o in old_group)
-            new_str = ", ".join(f"'{n}'" for n in new_group)
-            messages.append(_message(old_str, new_str))
-        return messages
-
-    reason = " ".join(build_warning_messages())
+    # Build reason message for @deprecated
+    old_str = ", ".join(f"'{o}'" for o in old_args)
+    new_str = ", ".join(f"'{n}'" for n in new_args)
+    if len(old_args) > 1:
+        reason = f"Arguments {old_str} are deprecated; use {new_str} instead."
+    else:
+        reason = f"Argument {old_str} is deprecated; use {new_str} instead."
 
     def decorator(func: Callable):
         # Documentation
@@ -100,19 +89,20 @@ def deprecate_arguments(
 
         @functools.wraps(deprecated_func)
         def wrapper(*args, **kwargs):
-            # Issue warnings for all relevant mappings
-            for old_group, new_group in zip(old_arg_list, new_arg_list):
-                if any(arg in kwargs for arg in old_group):
-                    old_str = ", ".join(f"'{o}'" for o in old_group)
-                    new_str = ", ".join(f"'{n}'" for n in new_group)
-                    warnings.warn(
-                        _message(old_str, new_str),
-                        warning_cls,
-                        stacklevel=2,
-                    )
+            # Warn only if any old arg(s) present
+            if any(arg in kwargs for arg in old_args):
+                warnings.warn(
+                    reason,
+                    warning_cls,
+                    stacklevel=2,
+                )
 
             # Perform conversion (default or custom)
-            kwargs = converter(kwargs, old_arg_list, new_arg_list)
+            try:
+                kwargs = converter(kwargs, old_args, new_args)
+            except TypeError:
+                # If the custom converter takes only kwargs
+                kwargs = converter(kwargs)
             return deprecated_func(*args, **kwargs)
 
         return wrapper

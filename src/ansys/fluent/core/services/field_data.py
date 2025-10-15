@@ -414,24 +414,6 @@ def _data_type_convertor(args_dict):
     return args_dict
 
 
-def _custom_converter(kwargs, old_arg_list, new_arg_list):
-    for old_group, new_group in zip(old_arg_list, new_arg_list):
-        if old_group == ["surface_names"] and new_group == ["surfaces"]:
-            if "surface_names" in kwargs:
-                kwargs["surfaces"] = kwargs.pop("surface_names")
-        elif old_group == ["surface_ids"] and new_group == ["surfaces"]:
-            if "surface_ids" in kwargs:
-                kwargs["surfaces"] = kwargs.pop("surface_ids")
-        elif old_group == [
-            "provide_vertices",
-            "provide_faces",
-            "provide_faces_centroid",
-            "provide_faces_normal",
-        ] and new_group == ["data_types"]:
-            kwargs = _data_type_convertor(kwargs)
-    return kwargs
-
-
 class _FetchFieldData:
 
     @staticmethod
@@ -803,19 +785,25 @@ class Batch(FieldBatch):
         )
 
     @deprecate_arguments(
-        old_arg_list=[
-            ["surface_names"],
-            ["surface_ids"],
-            [
-                "provide_vertices",
-                "provide_faces",
-                "provide_faces_centroid",
-                "provide_faces_normal",
-            ],
-        ],
-        new_arg_list=[["surfaces"], ["surfaces"], ["data_types"]],
+        old_args="surface_names",
+        new_args="surfaces",
         version="v0.23.0",
-        converter=_custom_converter,
+    )
+    @deprecate_arguments(
+        old_args="surface_ids",
+        new_args="surfaces",
+        version="v0.23.0",
+    )
+    @deprecate_arguments(
+        old_args=[
+            "provide_vertices",
+            "provide_faces",
+            "provide_faces_centroid",
+            "provide_faces_normal",
+        ],
+        new_args="data_types",
+        version="v0.23.0",
+        converter=_data_type_convertor,
     )
     def add_surfaces_request(
         self,
