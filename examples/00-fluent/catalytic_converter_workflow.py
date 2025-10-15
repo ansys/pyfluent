@@ -341,7 +341,7 @@ meshing.tui.mesh.check_mesh()
 
 # Write mesh files
 
-meshing.tui.file.write_mesh('"out/catalytic_converter.msh.h5"')
+meshing.tui.file.write_mesh('out/catalytic_converter.msh.h5')
 # %%
 # Switch to Solver
 # ^^^^^^^^^^^^^^^^
