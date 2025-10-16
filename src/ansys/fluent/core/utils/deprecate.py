@@ -50,24 +50,22 @@ def deprecate_arguments(
     if isinstance(new_args, str):
         new_args = [new_args]
 
-    # Validation
     if len(old_args) != len(new_args) and converter is None:
         raise ValueError(
             f"Cannot automatically convert {old_args} → {new_args}: too many old args. "
             f"Provide a custom converter."
         )
 
-    # Default converter
     def _default_converter(
         kwargs: dict[str, Any],
         old_params: list[str],
         new_params: list[str],
     ) -> dict[str, Any]:
         """Default converter that maps all old args to new args one-to-one."""
-        for i, old_arg in enumerate(old_params):
+        for old_arg, new_arg in zip(old_params, new_params):
             if old_arg in kwargs:
                 old_val = kwargs.pop(old_arg)
-                target_arg = new_params[i]
+                target_arg = new_arg
                 if target_arg in kwargs:
                     warnings.warn(
                         f"Both deprecated argument '{old_arg}' and new argument '{target_arg}' were provided. "
@@ -81,7 +79,6 @@ def deprecate_arguments(
 
     converter = converter or _default_converter
 
-    # Build reason message for @deprecated
     old_str = ", ".join(f"'{o}'" for o in old_args)
     new_str = ", ".join(f"'{n}'" for n in new_args)
     if len(old_args) > 1:
@@ -90,7 +87,6 @@ def deprecate_arguments(
         reason = f"Argument {old_str} is deprecated; use {new_str} instead."
 
     def decorator(func: Callable):
-        # Documentation
         deprecated_func = deprecated(version=version, reason=reason)(func)
 
         @functools.wraps(deprecated_func)
@@ -148,13 +144,11 @@ def deprecate_function(
     def decorator(func):
         func_name = func.__name__
 
-        # Build reason message for @deprecated
         if new_func:
             reason = f"Function '{func_name}' is deprecated since version {version}. Use '{new_func}' instead."
         else:
             reason = f"Function '{func_name}' is deprecated since version {version}."
 
-        # Documentation
         decorated = deprecated(version=version, reason=reason)(func)
 
         @functools.wraps(decorated)

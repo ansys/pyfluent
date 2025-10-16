@@ -76,7 +76,7 @@ class InvalidFieldName(ValueError):
         super().__init__("The only allowed field is 'velocity'.")
 
 
-def _data_type_convertor(args_dict):
+def _data_type_converter(args_dict):
     d_type_list = []
     d_type_map = {
         "provide_vertices": SurfaceDataType.Vertices,
@@ -270,7 +270,7 @@ class Batch(FieldBatch):
         old_args=["provide_vertices", "provide_faces"],
         new_args="data_types",
         version="v0.25.0",
-        converter=_data_type_convertor,
+        converter=_data_type_converter,
     )
     @deprecate_function(version="v0.25.0", new_func="add_requests")
     def add_surfaces_request(

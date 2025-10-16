@@ -398,7 +398,7 @@ class _FieldMethod:
         return self._field_data_accessor(*args, **kwargs)
 
 
-def _data_type_convertor(args_dict):
+def _data_type_converter(args_dict):
     d_type_list = []
     d_type_map = {
         "provide_vertices": SurfaceDataType.Vertices,
@@ -804,7 +804,7 @@ class Batch(FieldBatch):
         ],
         new_args="data_types",
         version="v0.23.0",
-        converter=_data_type_convertor,
+        converter=_data_type_converter,
     )
     @deprecate_function(version="v0.23.0", new_func="add_requests")
     def add_surfaces_request(
