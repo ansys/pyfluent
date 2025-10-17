@@ -25,6 +25,7 @@
 from enum import Enum
 import json
 import logging
+import os
 from typing import Any, Callable, Dict
 import warnings
 import weakref
@@ -46,6 +47,7 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 )
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
+from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
@@ -452,15 +454,15 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 
-    def chdir(self, path: str) -> None:
+    def chdir(self, path: PathType) -> None:
         """Change Fluent working directory.
 
         Parameters
         ----------
-        path : str
+        path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._app_utilities.set_working_directory(path)
+        self._app_utilities.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self

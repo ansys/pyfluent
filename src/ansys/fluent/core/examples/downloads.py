@@ -30,6 +30,7 @@ import shutil
 import zipfile
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
 
 logger = logging.getLogger("pyfluent.networking")
@@ -74,7 +75,7 @@ def _get_file_url(file_name: str, directory: str | None = None) -> str:
 def _retrieve_file(
     url: str,
     file_name: str,
-    save_path: str | None = None,
+    save_path: "PathType | None" = None,
     return_without_path: bool | None = False,
 ) -> str:
     """Download specified file from specified URL."""
@@ -121,7 +122,7 @@ def _retrieve_file(
 def download_file(
     file_name: str,
     directory: str | None = None,
-    save_path: str | None = None,
+    save_path: "PathType | None" = None,
     return_without_path: bool | None = None,
 ) -> str:
     """Download specified example file from the Ansys example data repository.
