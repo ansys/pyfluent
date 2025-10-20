@@ -760,8 +760,8 @@ scene1.graphics_objects["mesh-1"].transparency = 90
 scene1.graphics_objects.add(name="contour-velocity")
 scene1.display()
 
-graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
-graphics.views.camera.up_vector(xyz=[-0.66, 0.72, -0.20])
+graphics.views.camera.position = [1.70, 1.14, 0.29]
+graphics.views.camera.up_vector = [-0.66, 0.72, -0.20]
 graphics.picture.save_picture(file_name="scene-1.png")
 
 #########################################################################
