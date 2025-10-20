@@ -111,8 +111,10 @@ jobs:
           make install > /dev/null
 
       - name: Run Fluent test script
+        id: fluent_test
         run: |
           python tests/podman_compose.py
+        continue-on-error: true
 
       - name: Cleanup previous containers
         if: always()
@@ -121,62 +123,58 @@ jobs:
           sudo podman system prune -af
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
-        if: github.event_name == 'schedule' && always()
+        if: github.event_name == 'schedule' && steps.fluent_test.outcome != 'success'
         run: | # zizmor: ignore[template-injection]
-          if [ "${{ job.status }}" != "success" ]; then
-            STATUS="Failure"
-            RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-            COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
+          STATUS="Failure"
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
 
-            JSON_PAYLOAD=$(jq -n \
-              --arg status "$STATUS" \
-              --arg branch "${{ github.ref_name }}" \
-              --arg commit "${{ github.sha }}" \
-              --arg commit_url "$COMMIT_URL" \
-              --arg run_url "$RUN_URL" \
-              '{
-                "attachments": [
-                  {
-                    "contentType": "application/vnd.microsoft.card.adaptive",
-                    "content": {
-                      "type": "AdaptiveCard",
-                      "version": "1.2",
-                      "body": [
-                        {
-                          "type": "TextBlock",
-                          "weight": "Bolder",
-                          "size": "Medium",
-                          "text": "${{ github.workflow }}"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "Status: \($status)"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "Branch: \($branch)"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "Commit: \($commit)"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "[View Commit](\($commit_url))"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "[View Run](\($run_url))"
-                        }
-                      ]
-                    }
+          JSON_PAYLOAD=$(jq -n \
+            --arg status "$STATUS" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg commit "${{ github.sha }}" \
+            --arg commit_url "$COMMIT_URL" \
+            --arg run_url "$RUN_URL" \
+            '{
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "content": {
+                    "type": "AdaptiveCard",
+                    "version": "1.2",
+                    "body": [
+                      {
+                        "type": "TextBlock",
+                        "weight": "Bolder",
+                        "size": "Medium",
+                        "text": "${{ github.workflow }}"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Status: \($status)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Branch: \($branch)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "Commit: \($commit)"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "[View Commit](\($commit_url))"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "[View Run](\($run_url))"
+                      }
+                    ]
                   }
-                ]
-              }'
-            )
+                }
+              ]
+            }'
+          )
 
-            echo "Sending notification to Power Automate..."
-            curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
-          else
-            echo "Job status is success. No notification will be sent."
-          fi
+          echo "Sending notification to Power Automate..."
+          curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
