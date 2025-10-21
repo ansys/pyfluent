@@ -1517,7 +1517,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             # The generated parameter name is path_1 as the name path clashes with existing property.
             return self._root.list_properties(path_1=self.path, name=object_name)
         else:
-            return self.list_properties_1(object_name)
+            return self.list_properties_1(object_name=object_name)
 
 
 class CombinedNamedObject:
