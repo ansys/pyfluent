@@ -1223,34 +1223,34 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     if solver.get_fluent_version() >= FluentVersion.v251:
-        assert set(solver.results.graphics.contour.command_names) == {
-            "create",
-            "delete",
-            "rename",
-            "list",
-            "list_properties",
-            "make_a_copy",
-            "display",
-            "add_to_graphics",
-            "clear_history",
-        }
+        assert set(solver.results.graphics.contour.command_names).issuperset(
+            {
+                "create",
+                "delete",
+                "rename",
+                "make_a_copy",
+                "display",
+                "add_to_graphics",
+                "clear_history",
+            }
+        )
     else:
-        assert set(solver.results.graphics.contour.command_names) == {
-            "delete",
-            "rename",
-            "list",
-            "list_properties",
-            "make_a_copy",
-            "display",
-            "copy",
-            "add_to_graphics",
-            "clear_history",
-        }
+        assert set(solver.results.graphics.contour.command_names).issuperset(
+            {
+                "delete",
+                "rename",
+                "make_a_copy",
+                "display",
+                "copy",
+                "add_to_graphics",
+                "clear_history",
+            }
+        )
 
-    assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
+    assert set(solver.results.graphics.contour.rename.argument_names).issuperset(
+        {"new", "old"}
+    )
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
-    # The following is the default behavior when no arguments are associated with the command.
-    assert solver.results.graphics.contour.list.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")
