@@ -1247,10 +1247,11 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
             }
         )
 
-    assert set(solver.results.graphics.contour.rename.argument_names).issuperset(
-        {"new", "old"}
-    )
+    assert set(solver.results.graphics.contour.rename.argument_names) == {"new", "old"}
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
+    if solver.get_fluent_version() < FluentVersion.v261:
+        # The following is the default behavior when no arguments are associated with the command.
+        assert solver.results.graphics.contour.list_1.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")

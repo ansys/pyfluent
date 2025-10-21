@@ -1500,7 +1500,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
     def list(self):
         """Print the object names."""
-        return self._root.list(object_path=self.path)
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list(object_path=self.path)
+        else:
+            return self.list_1()
 
     def list_properties(self, object_name):
         """Print the properties of the given object name.
@@ -1510,8 +1513,11 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         object_name : str
             Name of the object whose properties are to be listed.
         """
-        # The generated parameter name is path_1 as the name path clashes with existing property.
-        return self._root.list_properties(path_1=self.path, name=object_name)
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            # The generated parameter name is path_1 as the name path clashes with existing property.
+            return self._root.list_properties(path_1=self.path, name=object_name)
+        else:
+            return self.list_properties_1(object_name)
 
 
 class CombinedNamedObject:
