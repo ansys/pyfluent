@@ -823,6 +823,11 @@ class SettingsBase(Base, Generic[StateT]):
         """Get or set the state of the object."""
         if kwargs:
             # Send value of the first key only
+            if len(kwargs) > 1:
+                warnings.warn(
+                    f"Only the first keyword argument is used when setting state at {self.python_path}.",
+                    PyFluentUserWarning,
+                )
             self.set_state(next(iter(kwargs.values())))
         elif args:
             self.set_state(args)
