@@ -112,6 +112,7 @@ Tyler-Sofrin Compressor Modes Post-Processing
 #######################################################################################
 # Import required libraries/modules
 # =====================================================================================
+import csv
 import math
 import os
 from pathlib import Path
@@ -199,7 +200,7 @@ Bn = np.zeros((len(varname), int(360 / d_theta)))
 
 for angle_ind, angle in enumerate(range(0, 360, d_theta)):
     for n_ind, variable in enumerate(varname):
-        if len(variable) >= 4 and variable[:4] == "mean":
+        if variable.startswith("mean"):
             session.settings.solution.report_definitions.surface["mag-report"] = {
                 "report_type": "surface-vertexavg",
                 "surface_names": ["point-" + str(angle)],
@@ -212,7 +213,7 @@ for angle_ind, angle in enumerate(range(0, 360, d_theta)):
             An[n_ind][angle_ind] = mag
             Bn[n_ind][angle_ind] = 0
         else:
-            session.solution.report_definitions.surface["mag-report"] = {
+            session.settings.solution.report_definitions.surface["mag-report"] = {
                 "report_type": "surface-vertexavg",
                 "surface_names": ["point-" + str(angle)],
                 "field": str(variable) + "-mag",
@@ -242,23 +243,15 @@ for angle_ind, angle in enumerate(range(0, 360, d_theta)):
 #   This step is only required if data is to be processed with other standalone
 #   tools. Update the path to the file accordingly.
 
-fourier_coefficients_file = Path(os.getcwd(), "FourierCoefficients.txt")
-with open(fourier_coefficients_file, "w") as f:
-    f.write("n theta An Bn \n")
+with (Path.cwd() / "FourierCoefficients.csv").open("w") as f:
+    writer = csv.writer(f)
+    writer.writerow(["n", "theta", "An", "Bn"])
 
     for n_ind, variable in enumerate(varname):
-        for ind, x in enumerate(An[n_ind, :]):
-            f.write(
-                str(n_mode[n_ind])
-                + ","
-                + str(ind * d_theta)
-                + ","
-                + str(An[n_ind, ind])
-                + ","
-                + str(Bn[n_ind, ind])
-                + "\n"
+        for ind, _ in enumerate(An[n_ind, :]):
+            writer.writerow(
+                [n_mode[n_ind], ind * d_theta, An[n_ind, ind], Bn[n_ind, ind]]
             )
-
 
 #######################################################################################
 # Calculate Resultant Pressure Field
