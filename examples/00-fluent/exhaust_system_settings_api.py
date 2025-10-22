@@ -641,7 +641,7 @@ solver_session.solution.initialization.hybrid_initialize()
 #   :width: 500pt
 #   :align: center
 
-solver_session.solution.run_calculation.iterate(iter_count=100)
+solver_session.solution.run_calculation.iterate(iter_count=10)
 
 ###############################################################################
 # Write the case and data files

@@ -841,3 +841,8 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
         == "particle-time-step"
     )
+
+
+def test_set_state_via_call(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
