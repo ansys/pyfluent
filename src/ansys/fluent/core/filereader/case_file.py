@@ -48,8 +48,8 @@ from typing import Dict, List
 import defusedxml.ElementTree as ET
 import numpy as np
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
-from ansys.fluent.core.types import PathType
 
 from . import lispy
 from .pre_processor import remove_unsupported_xml_chars

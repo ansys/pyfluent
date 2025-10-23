@@ -32,6 +32,7 @@ import weakref
 
 from deprecated.sphinx import deprecated
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -47,7 +48,6 @@ from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
 )
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
-from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars

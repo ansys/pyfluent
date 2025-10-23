@@ -28,8 +28,8 @@ from __future__ import annotations
 from enum import Enum
 import os
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow import Workflow
 

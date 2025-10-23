@@ -25,6 +25,7 @@
 import logging
 import os
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
@@ -36,7 +37,6 @@ from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
     _make_tui_module,
 )
-from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,

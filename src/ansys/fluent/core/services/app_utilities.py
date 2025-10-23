@@ -31,6 +31,7 @@ import grpc
 
 from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
 from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -38,7 +39,6 @@ from ansys.fluent.core.services.interceptors import (
     TracingInterceptor,
 )
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
-from ansys.fluent.core.types import PathType
 
 
 class AppUtilitiesService:
@@ -308,7 +308,7 @@ class AppUtilitiesOld:
                             )
                         ()
                         )
-                    {'#t' if solution_event == SolverEvent.TIMESTEP_ENDED else '#f'}
+                    {"#t" if solution_event == SolverEvent.TIMESTEP_ENDED else "#f"}
                     )
                 (car ids)
                 )

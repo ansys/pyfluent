@@ -25,6 +25,7 @@
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -36,7 +37,6 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
-from ansys.fluent.core.types import PathType
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 

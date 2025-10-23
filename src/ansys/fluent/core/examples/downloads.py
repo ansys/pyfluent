@@ -30,7 +30,7 @@ import shutil
 import zipfile
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.types import PathType
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
 
 logger = logging.getLogger("pyfluent.networking")
@@ -66,9 +66,7 @@ def _decompress(file_name: str) -> None:
 def _get_file_url(file_name: str, directory: str | None = None) -> str:
     """Get file URL."""
     if directory:
-        return (
-            "https://github.com/ansys/example-data/raw/main/" f"{directory}/{file_name}"
-        )
+        return f"https://github.com/ansys/example-data/raw/main/{directory}/{file_name}"
     return f"https://github.com/ansys/example-data/raw/main/{file_name}"
 
 
