@@ -819,9 +819,14 @@ class SettingsBase(Base, Generic[StateT]):
         """
         return value
 
-    def __call__(self) -> StateT:
-        """Alias for self.get_state."""
-        return self.get_state()
+    def __call__(self, *args, **kwargs):
+        """Get or set the state of the object."""
+        if kwargs:
+            self.set_state(kwargs)
+        elif args:
+            self.set_state(args)
+        else:
+            return self.get_state()
 
     def get_state(self) -> StateT:
         """Get the state of the object."""
@@ -1064,14 +1069,6 @@ class Group(SettingsBase[DictStateType]):
         for query in self.query_names:
             cls = self.__class__._child_classes[query]
             self._setattr(query, _create_child(cls, None, self))
-
-    def __call__(self, *args, **kwargs):
-        if kwargs:
-            self.set_state(kwargs)
-        elif args:
-            self.set_state(args)
-        else:
-            return self.get_state()
 
     @classmethod
     def to_scheme_keys(cls, value, root_cls, path: list[str]):
@@ -1501,6 +1498,27 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             )
         return CombinedNamedObject([self, other])
 
+    def list(self):
+        """Print the object names."""
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            return self._root.list(object_path=self.path)
+        else:
+            return self.list_1()
+
+    def list_properties(self, object_name):
+        """Print the properties of the given object name.
+
+        Parameters
+        ----------
+        object_name : str
+            Name of the object whose properties are to be listed.
+        """
+        if FluentVersion(self._version) >= FluentVersion.v261:
+            # The generated parameter name is path_1 as the name path clashes with existing property.
+            return self._root.list_properties(path_1=self.path, name=object_name)
+        else:
+            return self.list_properties_1(object_name=object_name)
+
 
 class CombinedNamedObject:
     """A ``CombinedNamedObject`` contains the concatenated named-objects."""
@@ -1762,6 +1780,8 @@ class BaseCommand(Action):
                     else:
                         print("Please enter 'y[es]' or 'n[o]'.")
         with self._while_executing_command():
+            if "path" in kwds:
+                kwds["path_1"] = kwds.pop("path")
             ret = self.flproxy.execute_cmd(self._parent.path, self.obj_name, **kwds)
             if (
                 not config.disable_parameter_list_return_fix
