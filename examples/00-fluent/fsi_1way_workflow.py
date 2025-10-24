@@ -155,7 +155,6 @@ graphics.picture.save_picture(file_name="fsi_1way_2.png")
 
 setup = Setup(solver)
 setup.models.structure.model = "linear-elasticity"
-solver.settings.setup.models.structure.model = "linear-elasticity"
 
 # Copy materials from the database and assign to solid zone
 
