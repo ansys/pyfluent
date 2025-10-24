@@ -58,7 +58,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -125,24 +125,29 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
-#   pylint: disable=unused-argument
-@all_deprecators(
-    deprecate_arg_mappings=[
-        {
-            "old_arg": "show_gui",
-            "new_arg": "ui_mode",
-            "converter": _show_gui_to_ui_mode,
-        },
-        {
-            "old_arg": "version",
-            "new_arg": "dimension",
-            "converter": _version_to_dimension,
-        },
-    ],
-    data_type_converter=None,
-    deprecated_version="v0.22.dev0",
-    deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
-    warn_message="",
+def _custom_converter_gui(kwargs):
+    old_val = kwargs.pop("show_gui", None)
+    kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
+    return kwargs
+
+
+def _custom_converter_dimension(kwargs):
+    old_val = kwargs.pop("version", None)
+    kwargs["dimension"] = _version_to_dimension(old_val)
+    return kwargs
+
+
+@deprecate_arguments(
+    old_args="show_gui",
+    new_args="ui_mode",
+    version="v0.22.0",
+    converter=_custom_converter_gui,
+)
+@deprecate_arguments(
+    old_args="version",
+    new_args="dimension",
+    version="v0.22.0",
+    converter=_custom_converter_dimension,
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,

@@ -88,7 +88,7 @@ from ansys.fluent.core.launcher.error_handler import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -139,23 +139,15 @@ def dict_to_str(dict: dict) -> str:
         return pformat(dict)
 
 
-@all_deprecators(
-    deprecate_arg_mappings=[
-        {
-            "old_arg": "container_mount_path",
-            "new_arg": "mount_target",
-            "converter": lambda old_arg_val: old_arg_val,
-        },
-        {
-            "old_arg": "host_mount_path",
-            "new_arg": "mount_source",
-            "converter": lambda old_arg_val: old_arg_val,
-        },
-    ],
-    data_type_converter=None,
-    deprecated_version="v0.23.dev1",
-    deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
-    warn_message="",
+@deprecate_arguments(
+    old_args="container_mount_path",
+    new_args="mount_target",
+    version="v0.23.0",
+)
+@deprecate_arguments(
+    old_args="host_mount_path",
+    new_args="mount_source",
+    version="v0.23.0",
 )
 def configure_container_dict(
     args: List[str],

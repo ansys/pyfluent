@@ -602,16 +602,18 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
     graphics.mesh["mesh-1"].display()
 
-    # Post-process without data
-    with pytest.raises(RuntimeError) as exec_info:
-        # Invalid result.
-        graphics.contour["contour-velocity"] = {
-            "field": "velocity-magnitude",
-            "surfaces_list": ["wall-elbow"],
-        }
-        graphics.contour["contour-velocity"].display()
-    # Assert that exception is propagated from the Fluent server
-    assert isinstance(exec_info.value.__context__, grpc.RpcError)
+    # Doesn't throw exception in 26.1 - Fluent bug 1354052
+    if fluent_version < FluentVersion.v261:
+        # Post-process without data
+        with pytest.raises(RuntimeError) as exec_info:
+            # Invalid result.
+            graphics.contour["contour-velocity"] = {
+                "field": "velocity-magnitude",
+                "surfaces_list": ["wall-elbow"],
+            }
+            graphics.contour["contour-velocity"].display()
+        # Assert that exception is propagated from the Fluent server
+        assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     solver.solution.run_calculation.iterate(iter_count=5)
     graphics.contour["contour-velocity"] = {
