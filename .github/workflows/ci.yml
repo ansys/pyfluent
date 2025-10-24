@@ -664,8 +664,8 @@ jobs:
     needs: [test, update-changelog]
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # required for trusted publishing
-      contents: write # required for GitHub release upload
+      id-token: write       # required for trusted publishing
+      contents: write       # required for GitHub release upload
 
     steps:
       - name: Set up Python
