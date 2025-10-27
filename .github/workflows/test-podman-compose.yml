@@ -178,3 +178,10 @@ jobs:
 
           echo "Sending notification to Power Automate..."
           curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
+
+
+      - name: Check test run status and fail the whole job if tests failed
+        if: steps.fluent_test.outcome != 'success'
+        run: |
+          echo "One or more tests failed. Failing the job."
+          exit 1
