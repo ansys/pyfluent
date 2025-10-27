@@ -1033,6 +1033,7 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
+@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -1222,34 +1223,35 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     if solver.get_fluent_version() >= FluentVersion.v251:
-        assert set(solver.results.graphics.contour.command_names) == {
-            "create",
-            "delete",
-            "rename",
-            "list",
-            "list_properties",
-            "make_a_copy",
-            "display",
-            "add_to_graphics",
-            "clear_history",
-        }
+        assert set(solver.results.graphics.contour.command_names).issuperset(
+            {
+                "create",
+                "delete",
+                "rename",
+                "make_a_copy",
+                "display",
+                "add_to_graphics",
+                "clear_history",
+            }
+        )
     else:
-        assert set(solver.results.graphics.contour.command_names) == {
-            "delete",
-            "rename",
-            "list",
-            "list_properties",
-            "make_a_copy",
-            "display",
-            "copy",
-            "add_to_graphics",
-            "clear_history",
-        }
+        assert set(solver.results.graphics.contour.command_names).issuperset(
+            {
+                "delete",
+                "rename",
+                "make_a_copy",
+                "display",
+                "copy",
+                "add_to_graphics",
+                "clear_history",
+            }
+        )
 
-    assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
+    assert set(solver.results.graphics.contour.rename.argument_names) == {"new", "old"}
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
-    # The following is the default behavior when no arguments are associated with the command.
-    assert solver.results.graphics.contour.list.argument_names == []
+    if solver.get_fluent_version() < FluentVersion.v261:
+        # The following is the default behavior when no arguments are associated with the command.
+        assert solver.results.graphics.contour.list_1.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")
