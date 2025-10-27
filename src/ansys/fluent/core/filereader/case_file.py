@@ -48,6 +48,7 @@ from typing import Dict, List
 import defusedxml.ElementTree as ET
 import numpy as np
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
 
 from . import lispy
@@ -616,17 +617,17 @@ class CaseFile(RPVarProcessor):
 
     def __init__(
         self,
-        case_file_name: str | None = None,
-        project_file_name: str | None = None,
+        case_file_name: "PathType | None" = None,
+        project_file_name: "PathType | None" = None,
     ) -> None:
         """Initialize a CaseFile object. Exactly one file path argument must be
         specified.
 
         Parameters
         ----------
-        case_file_name : str
+        case_file_name : :class:`os.PathLike` | str | None
             The path of a case file.
-        project_file_name : str
+        project_file_name : :class:`os.PathLike` | str | None
             The path of a project file from which the case file is selected.
         """
         self._is_case_file = False
