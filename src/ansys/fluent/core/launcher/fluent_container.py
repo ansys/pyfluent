@@ -326,7 +326,9 @@ def configure_container_dict(
         )
 
     if certificates_folder is not None:
-        container_dict["volumes"].append(f"{certificates_folder}:/tmp/certs:ro")
+        certs_mount = f"{certificates_folder}:/tmp/certs:ro"
+        if certs_mount not in container_dict["volumes"]:
+            container_dict["volumes"].append(certs_mount)
     port_mapping = {port: port} if port else {}
     if not port_mapping and "ports" in container_dict:
         # take the specified 'port', OR the first port value from the specified 'ports', for Fluent to use
