@@ -100,6 +100,8 @@ class Meshing(PureMeshing):
         ) is None and item not in [
             "is_active",
             "_fluent_connection",
+            "_fluent_connection_backup",
+            "wait_process_finished",
         ]:
             raise AttributeError(
                 f"'{__class__.__name__}' object has no attribute '{item}'"

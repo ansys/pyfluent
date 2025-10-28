@@ -348,6 +348,17 @@ class Solver(BaseSession):
         return self.get_state()
 
     def __getattr__(self, name):
+        if super(Solver, self).__getattribute__(
+            "_fluent_connection"
+        ) is None and name not in [
+            "is_active",
+            "_fluent_connection",
+            "_fluent_connection_backup",
+            "wait_process_finished",
+        ]:
+            raise AttributeError(
+                f"'{__class__.__name__}' object has no attribute '{name}'"
+            )
         try:
             return super().__getattribute__(name)
         except AttributeError as ex:
