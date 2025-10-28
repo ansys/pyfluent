@@ -829,7 +829,7 @@ def test_dir_for_session(new_meshing_session_wo_exit):
 
     solver = meshing.switch_to_solver()
 
-    assert dir(meshing) == ["is_active"]
+    assert dir(meshing) == ["is_active", "wait_process_finished"]
 
     for attr in ["read_case_lightweight", "settings"]:
         assert getattr(solver, attr)
@@ -850,5 +850,5 @@ def test_dir_for_session(new_meshing_session_wo_exit):
     solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
-    assert dir(solver) == ["is_active"]
+    assert dir(solver) == ["is_active", "wait_process_finished"]
     assert len(dir(meshing_new)) > 1
