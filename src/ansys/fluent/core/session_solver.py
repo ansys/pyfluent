@@ -347,29 +347,31 @@ class Solver(BaseSession):
     def __call__(self):
         return self.get_state()
 
-    def __getattr__(self, name):
-        if super(Solver, self).__getattribute__(
-            "_fluent_connection"
-        ) is None and name not in [
+    def __getattribute__(self, item: str):
+        try:
+            _connection = super(Solver, self).__getattribute__("_fluent_connection")
+        except AttributeError:
+            _connection = False
+        if _connection is None and item not in [
             "is_active",
             "_fluent_connection",
             "_fluent_connection_backup",
             "wait_process_finished",
         ]:
             raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{name}'"
+                f"'{__class__.__name__}' object has no attribute '{item}'"
             )
         try:
-            return super().__getattribute__(name)
-        except AttributeError as ex:
-            if name in self.settings.child_names:
+            return super(Solver, self).__getattribute__(item)
+        except AttributeError:
+            settings = super(Solver, self).__getattribute__("settings")
+            if item in settings.child_names:
                 warnings.warn(
-                    f"'{name}' is deprecated. Use 'settings.{name}' instead.",
+                    f"'{item}' is deprecated. Use 'settings.{item}' instead.",
                     DeprecatedSettingWarning,
                 )
-                return getattr(self.settings, name)
-            else:
-                raise ex
+                return getattr(settings, item)
+            raise
 
     def __dir__(self):
         dir_list = set(super().__dir__()) - {
