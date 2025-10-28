@@ -314,5 +314,5 @@ def test_wait_process_finished():
     assert dir(solver_session) == ["is_active", "wait_process_finished"]
     assert not solver_session.is_active()
     with pytest.raises(AttributeError):
-        meshing_session.settings
+        solver_session.settings
     assert solver_session.wait_process_finished(wait=5)
