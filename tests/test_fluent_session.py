@@ -216,9 +216,9 @@ def test_fluent_connection_properties(
 
 
 def test_fluent_freeze_kill(
-    new_solver_session,
+    new_solver_session_wo_exit,
 ) -> None:
-    session = new_solver_session
+    session = new_solver_session_wo_exit
     _read_case(session=session, lightweight_setup=False)
 
     def _freeze_fluent(s):

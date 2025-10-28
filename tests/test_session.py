@@ -277,7 +277,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -305,7 +305,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
