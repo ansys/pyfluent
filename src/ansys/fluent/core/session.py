@@ -25,12 +25,14 @@
 from enum import Enum
 import json
 import logging
+import os
 from typing import Any, Callable, Dict
 import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -452,15 +454,15 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 
-    def chdir(self, path: str) -> None:
+    def chdir(self, path: PathType) -> None:
         """Change Fluent working directory.
 
         Parameters
         ----------
-        path : str
+        path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._app_utilities.set_working_directory(path)
+        self._app_utilities.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self
