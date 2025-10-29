@@ -190,6 +190,8 @@ class SessionBase:
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
+        use_docker_compose: bool | None = None,
+        use_podman_compose: bool | None = None,
     ):
         """
         Launch a Fluent session in container mode.
@@ -242,6 +244,10 @@ class SessionBase:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
+        use_docker_compose: bool
+            Whether to use Docker Compose to launch Fluent.
+        use_podman_compose: bool
+            Whether to use Podman Compose to launch Fluent.
 
         Returns
         -------
