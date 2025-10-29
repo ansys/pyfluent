@@ -296,12 +296,10 @@ def get_si_unit_for_fluent_quantity(
     """
     # The settings API should return None for the units-quantity
     # attribute only for dimensionless variables
-    if isinstance(quantity, list):
-        if not quantity:
-            return ""
-        quantity = quantity[0]
     if not quantity:
         return ""
+    if isinstance(quantity, list):
+        quantity = quantity[0]
     if not isinstance(quantity, str):
         raise InvalidQuantityType(quantity)
     try:
