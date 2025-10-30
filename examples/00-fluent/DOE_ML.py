@@ -1,3 +1,16 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "matplotlib",
+#   "numpy",
+#   "pandas",
+#   "plotly",
+#   "scikit-learn",
+#   "seaborn",
+#   "tensorflow",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -32,7 +45,7 @@ Design of Experiments and Machine Learning model building
 #
 # Water enters a Mixing Elbow from two Inlets; Hot (313 K) and Cold (293 K) and exits
 # from Outlet. Using PyFluent in the background, this example runs Design of Experiments
-# with Cold Inlet Velocity and Hot Inlet Velocity as Input Parameters and Outlet
+# (DOE) with Cold Inlet Velocity and Hot Inlet Velocity as Input Parameters and Outlet
 # Temperature as an Output Parameter.
 #
 # Results can be visualized using a Response Surface. Finally, Supervised Machine
@@ -84,8 +97,7 @@ import_filename = examples.download_file(
 
 solver_session = pyfluent.launch_fluent(
     precision="double",
-    processor_count=2,
-    version="3d",
+    processor_count=4,
 )
 print(solver_session.get_fluent_version())
 

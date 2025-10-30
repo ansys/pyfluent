@@ -29,14 +29,14 @@ def test_change_create_mixture(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
 
     # Test turning on species transport model
-    species_mdl = solver_session.setup.models.species.model
+    species_mdl = solver_session.settings.setup.models.species.model
 
     assert species_mdl.option() == "off"
     species_mdl.option = "species-transport"
     assert species_mdl.option() == "species-transport"
 
     # Test command names list
-    materials = solver_session.setup.materials
+    materials = solver_session.settings.setup.materials
     assert sorted(materials.mixture.command_names) == sorted(
         ["delete", "list", "list_properties", "make_a_copy", "rename"]
     )
@@ -65,7 +65,7 @@ def test_change_create_mixture(mixing_elbow_settings_session):
     assert "mixture-template" not in materials.mixture.keys()
 
     # Test that mixture contains correct species
-    mix_species = solver_session.setup.materials.mixture[
+    mix_species = solver_session.settings.setup.materials.mixture[
         "custom-mixture"
     ].species.volumetric_species.keys()
     assert "custom-species-1" in mix_species
@@ -79,7 +79,7 @@ def test_change_create_mixture(mixing_elbow_settings_session):
     assert "custom-mixture-copy" in materials.mixture.keys()
 
     # Test changing cellzone mixture
-    elbow_zone = solver_session.setup.cell_zone_conditions.fluid["elbow-fluid"]
+    elbow_zone = solver_session.settings.setup.cell_zone_conditions.fluid["elbow-fluid"]
     assert elbow_zone.material() == "custom-mixture"
     elbow_zone.material = "custom-mixture-copy"
     assert elbow_zone.material() == "custom-mixture-copy"
