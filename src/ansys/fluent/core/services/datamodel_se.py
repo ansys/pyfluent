@@ -21,9 +21,9 @@
 # SOFTWARE.
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-
 from enum import Enum
 import functools
+import inspect
 import itertools
 import logging
 import os
@@ -1949,13 +1949,31 @@ class PyCommand:
 
     def help(self) -> None:
         """Prints help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "common", "helpstring"]
-        )
-        print(help_string)
+        command_instance = self.create_instance()
+        help_lines = [
+            f"Command: {command_instance.command}",
+            "  Supported keyword arguments:",
+        ]
+        ex_parts = [f"  {command_instance.command}("]
+
+        for name, obj in inspect.getmembers_static(command_instance):
+            _populated_help_lines = _populate_py_command_args_help_string(obj)
+            if _populated_help_lines:
+                help_lines.extend([f"  {line}" for line in _populated_help_lines])
+            if (
+                isinstance(obj, PyParameterCommandArgumentsSubItem)
+                and hasattr(obj, "default_value")
+                and obj.default_value is not None
+            ):
+                ex_parts.append(f"{obj.name}={obj.default_value()}, ")
+
+        ret_type = command_instance.getAttribValue("returnType")
+        if ret_type:
+            help_lines.append(f"  Return type: {ret_type}")
+        example = "".join(ex_parts).rstrip(", ") + ")"
+        help_lines.append("\nExample usage:")
+        help_lines.append(example)
+        print("\n".join(help_lines))
 
     def _create_command_arguments(self) -> str:
         commandid = self.service.create_command_arguments(
@@ -1988,6 +2006,44 @@ class PyCommand:
         args = self._get_create_instance_args()
         if args is not None:
             return PyCommandArguments(*args)
+
+
+def _populate_py_command_args_help_string(com_obj):
+    type_map = {
+        PyTextualCommandArgumentsSubItem: "String",
+        PyNumericalCommandArgumentsSubItem: "Real",
+        PyDictionaryCommandArgumentsSubItem: "Dict",
+        PyParameterCommandArgumentsSubItem: "Bool",
+    }
+    help_lines = None
+
+    if isinstance(com_obj, PyParameterCommandArgumentsSubItem):
+        for cls, label in type_map.items():
+            if isinstance(com_obj, cls):
+                break
+        help_lines = [
+            f"{label}: {com_obj.name}",
+            f"  Currently active: {com_obj.is_active()}",
+        ]
+
+        default_val = getattr(com_obj, "default_value", lambda: None)()
+        if default_val is not None:
+            help_lines.append(f"  Default value: {default_val}")
+
+        allowed_vals = getattr(com_obj, "allowed_values", lambda: [])()
+        if allowed_vals:
+            help_lines.append(f"  Allowed values: {', '.join(map(str, allowed_vals))}")
+
+        for bound_name in ("min", "max"):
+            bound_val = getattr(com_obj, bound_name, lambda: None)()
+            if bound_val is not None:
+                help_lines.append(f"  {bound_name.capitalize()}: {bound_val}")
+    elif isinstance(com_obj, PySingletonCommandArgumentsSubItem):
+        help_lines = [
+            f"Singleton: {com_obj.name}",
+            f"  Currently active: {com_obj.is_active()}",
+        ]
+    return help_lines
 
 
 class _InputFile:
@@ -2072,7 +2128,8 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     def help(self) -> None:
         """Get help."""
-        print(self.__doc__.strip())
+        help_lines = _populate_py_command_args_help_string(self)
+        print("\n".join(help_lines))
 
     def __setattr__(self, key, value):
         if isinstance(value, PyCommandArgumentsSubItem):
