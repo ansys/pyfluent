@@ -474,7 +474,7 @@ class BaseSession:
 
     def __dir__(self):
         if self._fluent_connection is None:
-            return ["is_active"]
+            return ["is_active", "wait_process_finished"]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
