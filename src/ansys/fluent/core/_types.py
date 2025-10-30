@@ -20,24 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""This module contains the code generation logic for Fluent's Python API."""
 
-from enum import Enum, auto
+"""Common type aliases for PyFluent.
 
+This module centralizes reusable typing constructs
+"""
 
-class StaticInfoType(Enum):
-    """An enumeration over the different types of static info that can be fetched from
-    Fluent."""
+from __future__ import annotations
 
-    TUI_SOLVER = auto()
-    TUI_MESHING = auto()
-    DATAMODEL_WORKFLOW = auto()
-    DATAMODEL_MESHING_WORKFLOW = auto()
-    DATAMODEL_MESHING = auto()
-    DATAMODEL_PART_MANAGEMENT = auto()
-    DATAMODEL_PM_FILE_MANAGEMENT = auto()
-    DATAMODEL_FLICING = auto()
-    DATAMODEL_PREFERENCES = auto()
-    DATAMODEL_SOLVER_WORKFLOW = auto()
-    DATAMODEL_MESHING_UTILITIES = auto()
-    SETTINGS = auto()
+import os
+from typing import TypeAlias
+
+PathType: TypeAlias = "os.PathLike[str] | os.PathLike[bytes] | str | bytes"
+"""Type alias for file system paths."""

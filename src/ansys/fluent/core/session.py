@@ -25,12 +25,14 @@
 from enum import Enum
 import json
 import logging
+import os
 from typing import Any, Callable, Dict
 import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.journaling import Journal
 from ansys.fluent.core.pyfluent_warnings import (
@@ -452,15 +454,15 @@ class BaseSession:
         if self._file_transfer_service:
             return self._file_transfer_service.download(file_name, local_directory)
 
-    def chdir(self, path: str) -> None:
+    def chdir(self, path: PathType) -> None:
         """Change Fluent working directory.
 
         Parameters
         ----------
-        path : str
+        path : os.PathLike[str | bytes] | str | bytes
             Path of the directory to change.
         """
-        self._app_utilities.set_working_directory(path)
+        self._app_utilities.set_working_directory(os.fspath(path))
 
     def __enter__(self):
         return self
@@ -472,7 +474,7 @@ class BaseSession:
 
     def __dir__(self):
         if self._fluent_connection is None:
-            return ["is_active"]
+            return ["is_active", "wait_process_finished"]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
@@ -510,7 +512,7 @@ class Fields:
         )
         self.field_data = service_creator("field_data").create(
             _session._field_data_service,
-            self.field_info,
+            self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
             get_zones_info,
@@ -520,7 +522,7 @@ class Fields:
         )
         self.field_data_old = service_creator("field_data_old").create(
             _session._field_data_service,
-            self.field_info,
+            self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
         )

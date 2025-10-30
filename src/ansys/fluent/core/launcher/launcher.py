@@ -32,6 +32,7 @@ import os
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launch_options import (
@@ -58,7 +59,7 @@ from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -125,24 +126,29 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
-#   pylint: disable=unused-argument
-@all_deprecators(
-    deprecate_arg_mappings=[
-        {
-            "old_arg": "show_gui",
-            "new_arg": "ui_mode",
-            "converter": _show_gui_to_ui_mode,
-        },
-        {
-            "old_arg": "version",
-            "new_arg": "dimension",
-            "converter": _version_to_dimension,
-        },
-    ],
-    data_type_converter=None,
-    deprecated_version="v0.22.dev0",
-    deprecated_reason="'show_gui' and 'version' are deprecated. Use 'ui_mode' and 'dimension' instead.",
-    warn_message="",
+def _custom_converter_gui(kwargs):
+    old_val = kwargs.pop("show_gui", None)
+    kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
+    return kwargs
+
+
+def _custom_converter_dimension(kwargs):
+    old_val = kwargs.pop("version", None)
+    kwargs["dimension"] = _version_to_dimension(old_val)
+    return kwargs
+
+
+@deprecate_arguments(
+    old_args="show_gui",
+    new_args="ui_mode",
+    version="v0.22.0",
+    converter=_custom_converter_gui,
+)
+@deprecate_arguments(
+    old_args="version",
+    new_args="dimension",
+    version="v0.22.0",
+    converter=_custom_converter_dimension,
 )
 def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
@@ -162,14 +168,14 @@ def launch_fluent(
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
     ) = None,
-    case_file_name: str | None = None,
-    case_data_file_name: str | None = None,
+    case_file_name: "PathType | None" = None,
+    case_data_file_name: "PathType | None" = None,
     lightweight_mode: bool | None = None,
     mode: FluentMode | str | None = None,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
-    cwd: str | None = None,
-    fluent_path: str | None = None,
+    cwd: "PathType | None" = None,
+    fluent_path: "PathType | None" = None,
     topy: str | list | None = None,
     start_watchdog: bool | None = None,
     scheduler_options: dict | None = None,
@@ -250,9 +256,9 @@ def launch_fluent(
        ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
        ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
        ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
-    case_file_name : str, optional
+    case_file_name : :class:`os.PathLike` or str, optional
         If provided, the case file at ``case_file_name`` is read into the Fluent session.
-    case_data_file_name : str, optional
+    case_data_file_name : :class:`os.PathLike` or str, optional
         If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
     lightweight_mode : bool, optional
         Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
@@ -274,9 +280,9 @@ def launch_fluent(
         clamped to the value of ``processor_count``. Please refer to
         *Starting the Fluent GPU Solver* section in *Fluent's User Guide* for more
         information like how to determine the GPU IDs.
-    cwd : str, Optional
+    cwd : :class:`os.PathLike` or str, optional
         Working directory for the Fluent client.
-    fluent_path: str, Optional
+    fluent_path: :class:`os.PathLike` or str, optional
         User provided Fluent installation path.
     topy : bool or str, optional
         A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.

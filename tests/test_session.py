@@ -277,7 +277,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -305,7 +305,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
@@ -602,16 +602,18 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
     graphics.mesh["mesh-1"].display()
 
-    # Post-process without data
-    with pytest.raises(RuntimeError) as exec_info:
-        # Invalid result.
-        graphics.contour["contour-velocity"] = {
-            "field": "velocity-magnitude",
-            "surfaces_list": ["wall-elbow"],
-        }
-        graphics.contour["contour-velocity"].display()
-    # Assert that exception is propagated from the Fluent server
-    assert isinstance(exec_info.value.__context__, grpc.RpcError)
+    # Doesn't throw exception in 26.1 - Fluent bug 1354052
+    if fluent_version < FluentVersion.v261:
+        # Post-process without data
+        with pytest.raises(RuntimeError) as exec_info:
+            # Invalid result.
+            graphics.contour["contour-velocity"] = {
+                "field": "velocity-magnitude",
+                "surfaces_list": ["wall-elbow"],
+            }
+            graphics.contour["contour-velocity"].display()
+        # Assert that exception is propagated from the Fluent server
+        assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     solver.settings.solution.run_calculation.iterate(iter_count=5)
     graphics.contour["contour-velocity"] = {
@@ -827,7 +829,7 @@ def test_dir_for_session(new_meshing_session_wo_exit):
 
     solver = meshing.switch_to_solver()
 
-    assert dir(meshing) == ["is_active"]
+    assert dir(meshing) == ["is_active", "wait_process_finished"]
 
     for attr in ["read_case_lightweight", "settings"]:
         assert getattr(solver, attr)
@@ -848,5 +850,5 @@ def test_dir_for_session(new_meshing_session_wo_exit):
     solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
-    assert dir(solver) == ["is_active"]
+    assert dir(solver) == ["is_active", "wait_process_finished"]
     assert len(dir(meshing_new)) > 1

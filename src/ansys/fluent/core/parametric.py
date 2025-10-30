@@ -51,8 +51,10 @@ Display results
 """
 
 from math import ceil
+import os
 from typing import Any, Dict
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.utils.execution import asynchronous
 
@@ -293,13 +295,15 @@ class LocalParametricStudy:
         If the design point is not found.
     """
 
-    def __init__(self, case_filepath: str, base_design_point_name: str = "Base DP"):
+    def __init__(
+        self, case_filepath: PathType, base_design_point_name: str = "Base DP"
+    ):
         """Initialize LocalParametricStudy."""
         from ansys.fluent.core.filereader.casereader import CaseReader
 
-        self.case_filepath = case_filepath
+        self.case_filepath = os.fspath(case_filepath)
         base_design_point = LocalDesignPoint(base_design_point_name)
-        case_reader = CaseReader(case_file_name=case_filepath)
+        case_reader = CaseReader(case_file_name=self.case_filepath)
 
         base_design_point.input_parameters = {
             p.name: p.value for p in case_reader.input_parameters()
