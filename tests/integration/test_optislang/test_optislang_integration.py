@@ -140,8 +140,6 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
     # A bug has been submitted to address this
     assert output_unit == "K"
 
-    solver_session.exit()
-
 
 @pytest.mark.nightly
 @pytest.mark.codegen_required
