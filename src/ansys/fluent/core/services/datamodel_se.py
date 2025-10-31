@@ -1115,15 +1115,68 @@ class PyStateContainer(PyCallableStateObject):
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
+    def _get_help_string(self) -> str:
+        help_string = ""
+        if self.__class__.__name__ == "_TaskObject":
+            from ansys.fluent.core.session_shared import _make_datamodel_module_base
+
+            temp_meshing_instance = _make_datamodel_module_base(
+                self.service, self.__class__.__module__.split("_")[-1], "meshing"
+            )
+            help_string = f"NamedObject: TaskObject ({self._name_()})\n"
+            help_string += f"  Currently active: {self.is_active()}\n"
+            help_string += "  Members:\n"
+            param_list = [
+                item
+                for item in inspect.getmembers_static(self)
+                if isinstance(item[1], PyParameter)
+            ]
+            for item in param_list:
+                help_string += (
+                    "  "
+                    + "  "
+                    + item[1]._get_help_string().replace("\n", "\n  ")
+                    + "\n"
+                )
+        elif isinstance(self, PyParameter):
+            name = str(self).split()[0].split(".")[-1]
+            if isinstance(self, PyTextual):
+                if (
+                    hasattr(self, "default_value")
+                    and type(self.default_value()) == list
+                ):
+                    help_string = f"ListString: {name}"
+                else:
+                    help_string = f"String: {name}"
+            elif isinstance(self, PyNumerical):
+                if (
+                    hasattr(self, "default_value")
+                    and type(self.default_value()) == list
+                ):
+                    help_string = f"ListReal: {name}"
+                else:
+                    help_string = f"Real: {name}"
+            elif isinstance(self, PyDictionary):
+                help_string = f"Dict: {name}"
+            else:
+                if hasattr(self, "default_value"):
+                    help_string = f"Bool: {name}"
+                else:
+                    help_string = f"Struct: {name}"
+            help_string += f"\n  Currently active: {self.is_active()}\n"
+            if hasattr(self, "allowed_values") and self.allowed_values() is not None:
+                help_string += f"  Allowed values: {self.allowed_values()}\n"
+            if hasattr(self, "default_value") and self.default_value() is not None:
+                help_string += f"  Default value: {self.default_value()}\n"
+            if hasattr(self, "min") and self.min() is not None:
+                help_string += f"  Min: {self.min()}\n"
+            if hasattr(self, "max") and self.max() is not None:
+                help_string += f"  Max: {self.max()}\n"
+        return help_string
+
     def help(self) -> None:
         """Print help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "common", "helpstring"]
-        )
-        print(help_string)
+        print(self._get_help_string())
 
     def __call__(self, *args, **kwargs) -> Any:
         if kwargs:
