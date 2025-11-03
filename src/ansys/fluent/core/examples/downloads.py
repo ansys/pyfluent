@@ -27,7 +27,6 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import TypeAlias
 import zipfile
 
 import ansys.fluent.core as pyfluent
@@ -69,9 +68,6 @@ def _get_file_url(file_name: str, directory: str | None = None) -> str:
     if directory:
         return f"https://github.com/ansys/example-data/raw/main/{directory}/{file_name}"
     return f"https://github.com/ansys/example-data/raw/main/{file_name}"
-
-
-PathType: TypeAlias = "os.PathLike[str | bytes] | str | bytes"
 
 
 def _retrieve_file(
