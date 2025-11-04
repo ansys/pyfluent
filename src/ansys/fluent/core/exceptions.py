@@ -56,9 +56,13 @@ class BetaFeaturesNotEnabled(RuntimeError):
     """Raised when a beta feature is accessed without enabling beta features."""
 
     def __init__(self, feature_name: str | None = None) -> None:
+        base_message = (
+            " is a Fluent beta feature. To enable them from Python "
+            "call '<session>.enable_beta_features()' "
+        )
         message = (
-            f"The feature '{feature_name}' is not available until 'enable_beta_features()' has been called."
+            f"'{feature_name}'" + base_message
             if feature_name
-            else "This feature is not available until 'enable_beta_features()' has been called."
+            else "This " + base_message
         )
         super().__init__(message)
