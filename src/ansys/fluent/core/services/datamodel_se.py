@@ -1116,63 +1116,70 @@ class PyStateContainer(PyCallableStateObject):
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
     def _get_help_string(self) -> str:
-        help_string = ""
-        if self.__class__.__name__ == "_TaskObject":
-            from ansys.fluent.core.session_shared import _make_datamodel_module_base
+        help_lines = []
 
-            temp_meshing_instance = _make_datamodel_module_base(
-                self.service, self.__class__.__module__.split("_")[-1], "meshing"
-            )
-            help_string = f"NamedObject: TaskObject ({self._name_()})\n"
-            help_string += f"  Currently active: {self.is_active()}\n"
-            help_string += "  Members:\n"
+        cls_name = self.__class__.__name__
+        is_task_object = cls_name == "_TaskObject"
+
+        if is_task_object:
+            help_lines = [
+                f"NamedObject: TaskObject ({self._name_()})",
+                f"  Currently active: {self.is_active()}",
+                "  Members:",
+            ]
             param_list = [
                 item
                 for item in inspect.getmembers_static(self)
                 if isinstance(item[1], PyParameter)
             ]
-            for item in param_list:
-                help_string += (
-                    "  "
-                    + "  "
-                    + item[1]._get_help_string().replace("\n", "\n  ")
-                    + "\n"
+            for _, param in param_list:
+                help_lines.extend(
+                    ["  " + line for line in param._get_help_string().splitlines()]
                 )
         elif isinstance(self, PyParameter):
             name = str(self).split()[0].split(".")[-1]
+            default_val = getattr(self, "default_value", None)
+            default = default_val() if callable(default_val) else None
             if isinstance(self, PyTextual):
-                if (
-                    hasattr(self, "default_value")
-                    and type(self.default_value()) == list
-                ):
-                    help_string = f"ListString: {name}"
-                else:
-                    help_string = f"String: {name}"
+                label = "ListString" if isinstance(default, list) else "String"
             elif isinstance(self, PyNumerical):
-                if (
-                    hasattr(self, "default_value")
-                    and type(self.default_value()) == list
-                ):
-                    help_string = f"ListReal: {name}"
-                else:
-                    help_string = f"Real: {name}"
+                label = "ListReal" if isinstance(default, list) else "Real"
             elif isinstance(self, PyDictionary):
-                help_string = f"Dict: {name}"
+                label = "Dict"
             else:
-                if hasattr(self, "default_value"):
-                    help_string = f"Bool: {name}"
-                else:
-                    help_string = f"Struct: {name}"
-            help_string += f"\n  Currently active: {self.is_active()}\n"
-            if hasattr(self, "allowed_values") and self.allowed_values() is not None:
-                help_string += f"  Allowed values: {self.allowed_values()}\n"
-            if hasattr(self, "default_value") and self.default_value() is not None:
-                help_string += f"  Default value: {self.default_value()}\n"
-            if hasattr(self, "min") and self.min() is not None:
-                help_string += f"  Min: {self.min()}\n"
-            if hasattr(self, "max") and self.max() is not None:
-                help_string += f"  Max: {self.max()}\n"
-        return help_string
+                label = "Bool" if hasattr(self, "default_value") else "Struct"
+            help_lines.append(f"{label}: {name}")
+            if isinstance(self, PyDictionary):
+                from ansys.fluent.core.session_shared import _make_datamodel_module_base
+
+                command = self.service.get_state(
+                    self.rules, convert_path_to_se_path([self.path[0]])
+                )["CommandName"]
+                temp_meshing_instance = _make_datamodel_module_base(
+                    self.service, self.__class__.__module__.split("_")[-1], "meshing"
+                )
+                help_lines.extend(
+                    [
+                        "  " + line
+                        for line in getattr(temp_meshing_instance, command)
+                        ._get_help_string()
+                        .splitlines()
+                    ]
+                )
+            help_lines.append(f"  Currently active: {self.is_active()}")
+
+            for attr, label in [
+                ("allowed_values", "Allowed values"),
+                ("default_value", "Default value"),
+                ("min", "Min"),
+                ("max", "Max"),
+            ]:
+                if hasattr(self, attr):
+                    value = getattr(self, attr)()
+                    if value is not None:
+                        help_lines.append(f"  {label}: {value}")
+
+        return "\n".join(help_lines)
 
     def help(self) -> None:
         """Print help string."""
@@ -2000,33 +2007,55 @@ class PyCommand:
                 self.after_execute(value)
         return command
 
-    def help(self) -> None:
-        """Prints help string."""
+    def _get_help_string(self) -> str:
         command_instance = self.create_instance()
+        command_name = command_instance.command
         help_lines = [
-            f"Command: {command_instance.command}",
+            f"Command: {command_name}",
             "  Supported keyword arguments:",
         ]
-        ex_parts = [f"  {command_instance.command}("]
+        ex_parts = ["{"]
+
+        def _append_example_arg(obj_name: str, value, is_textual: bool = False):
+            val = f"'{value}'" if is_textual else value
+            ex_parts.append(f"'{obj_name}'={val}, ")
+
+        def _process_sub_args(com_obj):
+            if (
+                isinstance(com_obj, PyCommandArgumentsSubItem)
+                and hasattr(com_obj, "default_value")
+                and com_obj.default_value() is not None
+            ):
+                is_textual = isinstance(com_obj, PyTextualCommandArgumentsSubItem)
+                _append_example_arg(com_obj.name, com_obj.default_value(), is_textual)
 
         for name, obj in inspect.getmembers_static(command_instance):
             _populated_help_lines = _populate_py_command_args_help_string(obj)
             if _populated_help_lines:
                 help_lines.extend([f"  {line}" for line in _populated_help_lines])
-            if (
-                isinstance(obj, PyParameterCommandArgumentsSubItem)
-                and hasattr(obj, "default_value")
-                and obj.default_value is not None
-            ):
-                ex_parts.append(f"{obj.name}={obj.default_value()}, ")
+            _process_sub_args(obj)
+
+            if isinstance(obj, PySingletonCommandArgumentsSubItem):
+                ex_parts.append(f"'{obj.name}'=" + "{")
+                for _, sub_obj in inspect.getmembers_static(obj):
+                    _process_sub_args(sub_obj)
+                if not ex_parts[-1].endswith("{"):
+                    ex_parts[-1] = ex_parts[-1].rstrip(", ") + "}, "
+                else:
+                    ex_parts[-1] = ex_parts[-1] + "}, "
 
         ret_type = command_instance.getAttribValue("returnType")
         if ret_type:
             help_lines.append(f"  Return type: {ret_type}")
-        example = "".join(ex_parts).rstrip(", ") + ")"
-        help_lines.append("\nExample usage:")
-        help_lines.append(example)
-        print("\n".join(help_lines))
+        example = "".join(ex_parts).rstrip(", ") + "}"
+        ex_header = f"\nA valid state template, derived from the corresponding {command_instance.command} command:\n"
+        help_lines.append(ex_header)
+        help_lines.append(f"  {example}\n\n")
+        return "\n".join(help_lines)
+
+    def help(self):
+        """Prints help string."""
+        print(self._get_help_string())
 
     def _create_command_arguments(self) -> str:
         commandid = self.service.create_command_arguments(
@@ -2066,11 +2095,12 @@ def _populate_py_command_args_help_string(com_obj):
         PyTextualCommandArgumentsSubItem: "String",
         PyNumericalCommandArgumentsSubItem: "Real",
         PyDictionaryCommandArgumentsSubItem: "Dict",
+        PySingletonCommandArgumentsSubItem: "Struct",
         PyParameterCommandArgumentsSubItem: "Bool",
     }
     help_lines = None
 
-    if isinstance(com_obj, PyParameterCommandArgumentsSubItem):
+    if isinstance(com_obj, PyCommandArgumentsSubItem):
         for cls, label in type_map.items():
             if isinstance(com_obj, cls):
                 break
@@ -2078,6 +2108,12 @@ def _populate_py_command_args_help_string(com_obj):
             f"{label}: {com_obj.name}",
             f"  Currently active: {com_obj.is_active()}",
         ]
+        if isinstance(com_obj, PySingletonCommandArgumentsSubItem):
+            for name, obj in inspect.getmembers_static(com_obj):
+                if isinstance(obj, PyCommandArgumentsSubItem):
+                    help_lines.extend(
+                        ["  " + line for line in obj._get_help_string().splitlines()]
+                    )
 
         default_val = getattr(com_obj, "default_value", lambda: None)()
         if default_val is not None:
@@ -2091,11 +2127,6 @@ def _populate_py_command_args_help_string(com_obj):
             bound_val = getattr(com_obj, bound_name, lambda: None)()
             if bound_val is not None:
                 help_lines.append(f"  {bound_name.capitalize()}: {bound_val}")
-    elif isinstance(com_obj, PySingletonCommandArgumentsSubItem):
-        help_lines = [
-            f"Singleton: {com_obj.name}",
-            f"  Currently active: {com_obj.is_active()}",
-        ]
     return help_lines
 
 
@@ -2126,7 +2157,7 @@ class _InOutFile(_InputFile, _OutputFile):
     pass
 
 
-class PyCommandArgumentsSubItem(PyCallableStateObject):
+class PyCommandArgumentsSubItem(PyStateContainer):
     """Class representing command argument in datamodel."""
 
     def __init__(
@@ -2179,10 +2210,13 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
 
     getAttribValue = get_attr
 
+    def _get_help_string(self):
+        help_lines = _populate_py_command_args_help_string(self)
+        return "\n".join(help_lines)
+
     def help(self) -> None:
         """Get help."""
-        help_lines = _populate_py_command_args_help_string(self)
-        print("\n".join(help_lines))
+        print(self._get_help_string())
 
     def __setattr__(self, key, value):
         if isinstance(value, PyCommandArgumentsSubItem):
