@@ -57,7 +57,7 @@ class BetaFeaturesNotEnabled(RuntimeError):
 
     def __init__(self, feature_name: str | None = None) -> None:
         base_message = (
-            " is a Fluent beta feature. To enable them from Python "
+            " is a Fluent beta feature. To enable it from Python "
             "call '<session>.enable_beta_features()'."
         )
         message = (
