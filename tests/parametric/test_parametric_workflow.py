@@ -65,8 +65,8 @@ def test_parametric_workflow():
     else:
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
-    solver_session.file.read_case(file_name=import_file_name)
-    solver_session.solution.run_calculation.iter_count = 100
+    solver_session.settings.file.read_case(file_name=import_file_name)
+    solver_session.settings.solution.run_calculation.parameters.iter_count = 100
     solver_session.tui.define.parameters.enable_in_TUI("yes")
 
     velocity_inlet = solver_session.tui.define.boundary_conditions.set.velocity_inlet
@@ -75,16 +75,16 @@ def test_parametric_workflow():
     velocity_inlet("inlet2", (), "vmag", "yes", "no", "inlet2_vel", 1, "quit")
     velocity_inlet("inlet2", (), "temperature", "yes", "no", "inlet2_temp", 350, "quit")
 
-    solver_session.solution.report_definitions.surface["outlet-temp-avg"] = {}
-    outlet_temp_avg = solver_session.solution.report_definitions.surface[
+    solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"] = {}
+    outlet_temp_avg = solver_session.settings.solution.report_definitions.surface[
         "outlet-temp-avg"
     ]
     outlet_temp_avg.report_type = "surface-areaavg"
     outlet_temp_avg.field = "temperature"
     outlet_temp_avg.surface_names = ["outlet"]
 
-    solver_session.solution.report_definitions.surface["outlet-vel-avg"] = {}
-    outlet_vel_avg = solver_session.solution.report_definitions.surface[
+    solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"] = {}
+    outlet_vel_avg = solver_session.settings.solution.report_definitions.surface[
         "outlet-vel-avg"
     ]
     outlet_vel_avg.report_type = "surface-areaavg"
@@ -102,15 +102,15 @@ def test_parametric_workflow():
         write_case_path = str(container_workdir / "Static_Mixer_Parameters.cas.h5")
     else:
         write_case_path = str(case_path)
-    solver_session.file.write(file_type="case", file_name=write_case_path)
+    solver_session.settings.file.write(file_type="case", file_name=write_case_path)
 
     assert case_path.exists()
-    assert len(solver_session.parametric_studies) == 0
-    solver_session.parametric_studies.initialize()
-    assert len(solver_session.parametric_studies) == 1
+    assert len(solver_session.settings.parametric_studies) == 0
+    solver_session.settings.parametric_studies.initialize()
+    assert len(solver_session.settings.parametric_studies) == 1
     study1_name = "Static_Mixer_main-Solve"
-    assert study1_name in solver_session.parametric_studies
-    study1 = solver_session.parametric_studies[study1_name]
+    assert study1_name in solver_session.settings.parametric_studies
+    study1 = solver_session.settings.parametric_studies[study1_name]
     assert len(study1.design_points) == 1
     base_dp_name = "Base DP"
     assert "Base DP" in study1.design_points
@@ -190,7 +190,7 @@ def test_parametric_workflow():
     else:
         write_project_file_name = str(project_file_name)
 
-    solver_session.file.parametric_project.save_as(
+    solver_session.settings.file.parametric_project.save_as(
         project_filename=write_project_file_name
     )
     assert project_file_name.exists()
@@ -211,10 +211,10 @@ def test_parametric_workflow():
     else:
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
 
-    solver_session.file.parametric_project.open(
+    solver_session.settings.file.parametric_project.open(
         project_filename=write_project_file_name
     )
-    solver_session.file.parametric_project.save()
+    solver_session.settings.file.parametric_project.save()
     project_save_as_name = Path(tmp_save_path) / "static_mixer_study_save_as.flprj"
     if inside_container:
         write_project_save_as_name = str(
@@ -223,7 +223,7 @@ def test_parametric_workflow():
     else:
         write_project_save_as_name = str(project_save_as_name)
 
-    solver_session.file.parametric_project.save_as(
+    solver_session.settings.file.parametric_project.save_as(
         project_filename=write_project_save_as_name
     )
     assert project_save_as_name.exists()
@@ -237,7 +237,7 @@ def test_parametric_workflow():
         )
     else:
         write_project_save_as_copy_name = str(project_save_as_copy_name)
-    solver_session.file.parametric_project.save_as_copy(
+    solver_session.settings.file.parametric_project.save_as_copy(
         project_filename=write_project_save_as_copy_name
     )
     assert project_save_as_copy_name.exists()
@@ -247,7 +247,9 @@ def test_parametric_workflow():
         write_archive_name = str(container_workdir / "static_mixer_study.flprz")
     else:
         write_archive_name = str(archive_name)
-    solver_session.file.parametric_project.archive(archive_name=write_archive_name)
+    solver_session.settings.file.parametric_project.archive(
+        archive_name=write_archive_name
+    )
     assert archive_name.exists()
     solver_session.exit()
 
