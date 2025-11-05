@@ -66,8 +66,8 @@ def test_parametric_workflow():
         inside_container = False
         solver_session = pyfluent.launch_fluent(processor_count=2, cwd=tmp_save_path)
     solver_session.settings.file.read_case(file_name=import_file_name)
-    solver_session.settings.solution.run_calculation.iter_count = 100
-    solver_session.tui.define.settings.parameters.enable_in_TUI("yes")
+    solver_session.settings.solution.run_calculation.parameters.iter_count = 100
+    solver_session.tui.define.parameters.enable_in_TUI("yes")
 
     velocity_inlet = solver_session.tui.define.boundary_conditions.set.velocity_inlet
     velocity_inlet("inlet1", (), "vmag", "yes", "inlet1_vel", 1, "quit")
@@ -107,12 +107,12 @@ def test_parametric_workflow():
     solver_session.settings.file.write(file_type="case", file_name=write_case_path)
 
     assert case_path.exists()
-    assert len(solver_session.parametric_studies) == 0
+    assert len(solver_session.settings.parametric_studies) == 0
     solver_session.settings.parametric_studies.initialize()
-    assert len(solver_session.parametric_studies) == 1
+    assert len(solver_session.settings.parametric_studies) == 1
     study1_name = "Static_Mixer_main-Solve"
-    assert study1_name in solver_session.parametric_studies
-    study1 = solver_session.parametric_studies[study1_name]
+    assert study1_name in solver_session.settings.parametric_studies
+    study1 = solver_session.settings.parametric_studies[study1_name]
     assert len(study1.design_points) == 1
     base_dp_name = "Base DP"
     assert "Base DP" in study1.design_points
