@@ -534,13 +534,39 @@ class DataModelGenerator:
         for k in queries:
             f.write(f"{indent}    class {k}(PyQuery):\n")
             f.write(f'{indent}        """\n')
+            queries_static_info = info["queries"][k]
             f.write(
                 _build_command_query_docstring(
-                    k, info["queries"][k], f"{indent}        ", False
+                    k, queries_static_info, f"{indent}        ", False
                 )
             )
             f.write(f'{indent}        """\n')
-            f.write(f"{indent}        pass\n\n")
+            f.write(f"{indent}        class _{k}QueryArguments(PyQueryArguments):\n")
+            f.write(
+                f"{indent}            def __init__(self, service, rules, query, path, id):\n"
+            )
+            f.write(
+                f"{indent}                super().__init__(service, rules, query, path, id)\n"
+            )
+            args_info = queries_static_info["queryinfo"].get("args", [])
+            for arg_info in args_info:
+                arg_name = arg_info["name"]
+                py_name = _convert_to_py_name(arg_name)
+                f.write(
+                    f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
+                )
+            f.write("\n")
+            for arg_info in args_info:
+                self._write_arg_class(f, arg_info, f"{indent}            ")
+
+            f.write(
+                f"{indent}        def create_instance(self) -> _{k}QueryArguments:\n"
+            )
+            f.write(f"{indent}            args = self._get_create_instance_args()\n")
+            f.write(f"{indent}            if args is not None:\n")
+            f.write(
+                f"{indent}                return self._{k}QueryArguments(*args)\n\n"
+            )
             api_tree[k] = "Query"
         return api_tree
 
@@ -567,6 +593,7 @@ class DataModelGenerator:
                 f.write("    PyCommand,\n")
                 f.write("    PyQuery,\n")
                 f.write("    PyCommandArguments,\n")
+                f.write("    PyQueryArguments,\n")
                 f.write("    PyTextualCommandArgumentsSubItem,\n")
                 f.write("    PyNumericalCommandArgumentsSubItem,\n")
                 f.write("    PyDictionaryCommandArgumentsSubItem,\n")

@@ -1825,7 +1825,7 @@ class PyQuery:
         service: DatamodelService,
         rules: str,
         query: str,
-        path: Path = None,
+        path: Path | None = None,
     ):
         """__init__ method of PyQuery class."""
         self.service = service
@@ -1857,6 +1857,37 @@ class PyQuery:
             response, [member_specs_oneof_fields, "query", "helpstring"]
         )
         print(help_string)
+
+    def _create_query_arguments(self) -> str:
+        query_id = self.service.create_command_arguments(
+            self.rules, convert_path_to_se_path(self.path), self.query
+        )
+        return query_id
+
+    def _get_create_instance_args(self):
+        """Create a query instance."""
+        try:
+            query_id = self._create_query_arguments()
+            return [
+                self.service,
+                self.rules,
+                self.query,
+                self.path.copy(),
+                query_id,
+            ]
+        except (RuntimeError, ValueError) as e:
+            logger.warning(
+                "datamodels_se.PyQuery was unable to construct query arguments. "
+                "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
+                "Error details: %s",
+                e,
+            )
+
+    def create_instance(self):
+        """Create a query instance."""
+        args = self._get_create_instance_args()
+        if args is not None:
+            return PyQueryArguments(*args)
 
 
 class PyCommand:
@@ -2081,26 +2112,26 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
             getattr(self, key).set_state(value)
 
 
-class PyCommandArguments(PyStateContainer):
-    """Class representing command arguments in datamodel."""
+class _PyCommandQueryArguments(PyStateContainer):
+    """Base class representing command or query arguments in datamodel."""
 
     def __init__(
         self,
         service: DatamodelService,
         rules: str,
-        command: str,
+        command_or_query: str,
         path: Path,
         id: str,
     ) -> None:
-        """__init__ method of PyCommandArguments class."""
+        """__init__ method of _PyCommandQueryArguments class."""
         super().__init__(service, rules, path)
         self.__dict__.update(
             dict(
-                command=command,
+                command_or_query=command_or_query,
                 id=id,
             )
         )
-        self.path.append((command, id))
+        self.path.append((command_or_query, id))
 
     def __del__(self) -> None:
         try:
@@ -2133,6 +2164,48 @@ class PyCommandArguments(PyStateContainer):
             super().__setattr__(key, value)
         else:
             getattr(self, key).set_state(value)
+
+
+class PyCommandArguments(_PyCommandQueryArguments):
+    """Class representing command arguments in datamodel."""
+
+    def __init__(
+        self,
+        service: DatamodelService,
+        rules: str,
+        command: str,
+        path: Path,
+        id: str,
+    ) -> None:
+        """__init__ method of PyCommandArguments class."""
+        super().__init__(service, rules, command, path, id)
+        self.__dict__.update(
+            dict(
+                command=command,
+                id=id,
+            )
+        )
+
+
+class PyQueryArguments(_PyCommandQueryArguments):
+    """Class representing query arguments in datamodel."""
+
+    def __init__(
+        self,
+        service: DatamodelService,
+        rules: str,
+        query: str,
+        path: Path,
+        id: str,
+    ) -> None:
+        """__init__ method of PyQueryArguments class."""
+        super().__init__(service, rules, query, path, id)
+        self.__dict__.update(
+            dict(
+                query=query,
+                id=id,
+            )
+        )
 
 
 class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
