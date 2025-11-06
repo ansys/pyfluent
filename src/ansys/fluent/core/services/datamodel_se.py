@@ -1115,16 +1115,6 @@ class PyStateContainer(PyCallableStateObject):
         """Checks whether the object is read only."""
         return false_if_none(self.get_attr(Attribute.IS_READ_ONLY.value))
 
-    def help(self) -> None:
-        """Print help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "common", "helpstring"]
-        )
-        print(help_string)
-
     def __call__(self, *args, **kwargs) -> Any:
         if kwargs:
             self.set_state(kwargs)
@@ -1848,15 +1838,37 @@ class PyQuery:
             self.rules, convert_path_to_se_path(self.path), self.query, kwds
         )
 
-    def help(self) -> None:
-        """Prints help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
+    def _create_arguments(self) -> str:
+        commandid = self.service.create_command_arguments(
+            self.rules, convert_path_to_se_path(self.path), self.query
         )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "query", "helpstring"]
-        )
-        print(help_string)
+        return commandid
+
+    def _get_create_instance_args(self):
+        """Create a argument instance."""
+        try:
+            id = self._create_arguments()
+            return [
+                self.service,
+                self.rules,
+                self.query,
+                self.path.copy(),
+                id,
+            ]
+        # Possible error thrown from the grpc layer
+        except (RuntimeError, ValueError) as e:
+            logger.warning(
+                "datamodels_se.PyCommand was unable to construct query arguments. "
+                "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
+                "Error details: %s",
+                e,
+            )
+
+    def create_instance(self) -> "PyArguments":
+        """Create a command instance."""
+        args = self._get_create_instance_args()
+        if args is not None:
+            return PyArguments(*args)
 
 
 class PyCommand:
@@ -1946,16 +1958,6 @@ class PyCommand:
             if self._get_file_purpose(arg):
                 self.after_execute(value)
         return command
-
-    def help(self) -> None:
-        """Prints help string."""
-        response = self.service.get_specs(
-            self.rules, convert_path_to_se_path(self.path)
-        )
-        help_string = _get_value_from_message_dict(
-            response, [member_specs_oneof_fields, "common", "helpstring"]
-        )
-        print(help_string)
 
     def _create_command_arguments(self) -> str:
         commandid = self.service.create_command_arguments(
@@ -2069,10 +2071,6 @@ class PyArgumentsSubItem(PyCallableStateObject):
         return self.parent.get_attr(attrib_path)
 
     getAttribValue = get_attr
-
-    def help(self) -> None:
-        """Get help."""
-        print(self.__doc__.strip())
 
     def __setattr__(self, key, value):
         if isinstance(value, PyArgumentsSubItem):
