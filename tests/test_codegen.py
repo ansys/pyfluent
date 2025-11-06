@@ -235,12 +235,12 @@ from ansys.fluent.core.services.datamodel_se import (
     PyNamedObjectContainer,
     PyCommand,
     PyQuery,
-    PyCommandArguments,
-    PyTextualCommandArgumentsSubItem,
-    PyNumericalCommandArgumentsSubItem,
-    PyDictionaryCommandArgumentsSubItem,
-    PyParameterCommandArgumentsSubItem,
-    PySingletonCommandArgumentsSubItem
+    PyArguments,
+    PyTextualArgumentsSubItem,
+    PyNumericalArgumentsSubItem,
+    PyDictionaryArgumentsSubItem,
+    PyParameterArgumentsSubItem,
+    PySingletonArgumentsSubItem
 )
 
 
@@ -312,12 +312,12 @@ class Root(PyMenu):
             -------
             bool
             """
-            class _C2CommandArguments(PyCommandArguments):
+            class _C2CommandArguments(PyArguments):
                 def __init__(self, service, rules, command, path, id):
                     super().__init__(service, rules, command, path, id)
                     self.A2 = self._A2(self, "A2", service, rules, path)
 
-                class _A2(PyNumericalCommandArgumentsSubItem):
+                class _A2(PyNumericalArgumentsSubItem):
                     """
                     Argument A2.
                     """
@@ -345,12 +345,12 @@ class Root(PyMenu):
         -------
         bool
         """
-        class _C1CommandArguments(PyCommandArguments):
+        class _C1CommandArguments(PyArguments):
             def __init__(self, service, rules, command, path, id):
                 super().__init__(service, rules, command, path, id)
                 self.A1 = self._A1(self, "A1", service, rules, path)
 
-            class _A1(PyTextualCommandArgumentsSubItem):
+            class _A1(PyTextualArgumentsSubItem):
                 """
                 Argument A1.
                 """

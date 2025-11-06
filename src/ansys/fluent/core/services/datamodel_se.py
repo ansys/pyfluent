@@ -1983,11 +1983,11 @@ class PyCommand:
                 e,
             )
 
-    def create_instance(self) -> "PyCommandArguments":
+    def create_instance(self) -> "PyArguments":
         """Create a command instance."""
         args = self._get_create_instance_args()
         if args is not None:
-            return PyCommandArguments(*args)
+            return PyArguments(*args)
 
 
 class _InputFile:
@@ -2017,7 +2017,7 @@ class _InOutFile(_InputFile, _OutputFile):
     pass
 
 
-class PyCommandArgumentsSubItem(PyCallableStateObject):
+class PyArgumentsSubItem(PyCallableStateObject):
     """Class representing command argument in datamodel."""
 
     def __init__(
@@ -2028,7 +2028,7 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyCommandArgumentsSubItem class."""
+        """__init__ method of PyArgumentsSubItem class."""
         self.__dict__.update(
             dict(
                 parent=parent,
@@ -2075,13 +2075,13 @@ class PyCommandArgumentsSubItem(PyCallableStateObject):
         print(self.__doc__.strip())
 
     def __setattr__(self, key, value):
-        if isinstance(value, PyCommandArgumentsSubItem):
+        if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
             getattr(self, key).set_state(value)
 
 
-class PyCommandArguments(PyStateContainer):
+class PyArguments(PyStateContainer):
     """Class representing command arguments in datamodel."""
 
     def __init__(
@@ -2092,7 +2092,7 @@ class PyCommandArguments(PyStateContainer):
         path: Path,
         id: str,
     ) -> None:
-        """__init__ method of PyCommandArguments class."""
+        """__init__ method of PyArguments class."""
         super().__init__(service, rules, path)
         self.__dict__.update(
             dict(
@@ -2129,13 +2129,13 @@ class PyCommandArguments(PyStateContainer):
         return self._get_remote_attr(attrib)
 
     def __setattr__(self, key, value):
-        if isinstance(value, PyCommandArgumentsSubItem):
+        if isinstance(value, PyArgumentsSubItem):
             super().__setattr__(key, value)
         else:
             getattr(self, key).set_state(value)
 
 
-class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
+class PyTextualArgumentsSubItem(PyArgumentsSubItem, PyTextual):
     """Class representing textual command argument in datamodel."""
 
     def __init__(
@@ -2146,12 +2146,12 @@ class PyTextualCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyTextual):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyTextualCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
+        """__init__ method of PyTextualArgumentsSubItem class."""
+        PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyTextual.__init__(self, service, rules, path)
 
 
-class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical):
+class PyNumericalArgumentsSubItem(PyArgumentsSubItem, PyNumerical):
     """Class representing numerical command argument in datamodel."""
 
     def __init__(
@@ -2162,12 +2162,12 @@ class PyNumericalCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyNumerical)
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyNumericalCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
+        """__init__ method of PyNumericalArgumentsSubItem class."""
+        PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyNumerical.__init__(self, service, rules, path)
 
 
-class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionary):
+class PyDictionaryArgumentsSubItem(PyArgumentsSubItem, PyDictionary):
     """Class representing dictionary-like command argument in datamodel."""
 
     def __init__(
@@ -2178,12 +2178,12 @@ class PyDictionaryCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyDictionar
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyDictionaryCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
+        """__init__ method of PyDictionaryArgumentsSubItem class."""
+        PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyDictionary.__init__(self, service, rules, path)
 
 
-class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter):
+class PyParameterArgumentsSubItem(PyArgumentsSubItem, PyParameter):
     """Class representing generic parameter-like command argument in datamodel."""
 
     def __init__(
@@ -2194,8 +2194,8 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyParameterCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
+        """__init__ method of PyParameterArgumentsSubItem class."""
+        PyArgumentsSubItem.__init__(
             self,
             parent,
             attr,
@@ -2206,7 +2206,7 @@ class PyParameterCommandArgumentsSubItem(PyCommandArgumentsSubItem, PyParameter)
         PyParameter.__init__(self, service, rules, path)
 
 
-class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
+class PySingletonArgumentsSubItem(PyArgumentsSubItem):
     """Class representing singleton-like command argument in datamodel."""
 
     def __init__(
@@ -2217,8 +2217,8 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PySingletonCommandArgumentsSubItem class."""
-        PyCommandArgumentsSubItem.__init__(
+        """__init__ method of PySingletonArgumentsSubItem class."""
+        PyArgumentsSubItem.__init__(
             self,
             parent,
             attr,
@@ -2229,18 +2229,14 @@ class PySingletonCommandArgumentsSubItem(PyCommandArgumentsSubItem):
 
 
 arg_class_by_type = {
-    **dict.fromkeys(
-        ["String", "ListString", "String List"], PyTextualCommandArgumentsSubItem
-    ),
+    **dict.fromkeys(["String", "ListString", "String List"], PyTextualArgumentsSubItem),
     **dict.fromkeys(
         ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt", "Integer List"],
-        PyNumericalCommandArgumentsSubItem,
+        PyNumericalArgumentsSubItem,
     ),
-    "Dict": PyDictionaryCommandArgumentsSubItem,
-    **dict.fromkeys(
-        ["Bool", "Logical", "Logical List"], PyParameterCommandArgumentsSubItem
-    ),
-    "ModelObject": PySingletonCommandArgumentsSubItem,
+    "Dict": PyDictionaryArgumentsSubItem,
+    **dict.fromkeys(["Bool", "Logical", "Logical List"], PyParameterArgumentsSubItem),
+    "ModelObject": PySingletonArgumentsSubItem,
 }
 
 

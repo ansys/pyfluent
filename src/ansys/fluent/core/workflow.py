@@ -39,7 +39,7 @@ from ansys.fluent.core.services.datamodel_se import (
     PyCommand,
     PyMenu,
     PyMenuGeneric,
-    PySingletonCommandArgumentsSubItem,
+    PySingletonArgumentsSubItem,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -684,7 +684,7 @@ def _getarg_recursive(obj, arg_name):
             if sub_attr_name.startswith("_"):
                 continue
             sub_attr = getattr(obj, sub_attr_name)
-            if isinstance(sub_attr, PySingletonCommandArgumentsSubItem):
+            if isinstance(sub_attr, PySingletonArgumentsSubItem):
                 result = inner(sub_attr, arg_name)
                 if result is not None:
                     return result
@@ -754,7 +754,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 # Key can be parameter name of a singleton-type command argument.
                 # Hence, we are searching for the key recursively within the command arguments.
                 _getarg_recursive(cmd_args, key),
-                PySingletonCommandArgumentsSubItem,
+                PySingletonArgumentsSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
                     self._camel_snake_arguments_map(val)
@@ -807,9 +807,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         for key, val in args.items():
             camel_arg = self._snake_to_camel_map[key] if key.islower() else key
             # TODO: Implement enhanced meshing workflow to hide away internal info.
-            if isinstance(
-                getattr(cmd_args, camel_arg), PySingletonCommandArgumentsSubItem
-            ):
+            if isinstance(getattr(cmd_args, camel_arg), PySingletonArgumentsSubItem):
                 updated_dict = {}
                 for attr, attr_val in val.items():
                     camel_attr = snake_to_camel_case(
@@ -918,7 +916,7 @@ class ArgumentWrapper(PyCallableStateObject):
             self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
         )
 
-        if isinstance(self._arg, PySingletonCommandArgumentsSubItem):
+        if isinstance(self._arg, PySingletonArgumentsSubItem):
             snake_case_state_dict = {}
             for key, val in state_dict.items():
                 self._snake_to_camel_map[camel_to_snake_case(key)] = key

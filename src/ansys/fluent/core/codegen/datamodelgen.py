@@ -37,7 +37,7 @@ from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
 from ansys.fluent.core.services.datamodel_se import (
-    PySingletonCommandArgumentsSubItem,
+    PySingletonArgumentsSubItem,
     arg_class_by_type,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
@@ -357,7 +357,7 @@ class DataModelGenerator:
         for line in arg_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n\n')
-        if arg_class == PySingletonCommandArgumentsSubItem:
+        if arg_class == PySingletonArgumentsSubItem:
             f.write(
                 f"{indent}    def __init__(self, parent, attr, service, rules, path):\n"
             )
@@ -502,9 +502,7 @@ class DataModelGenerator:
                 )
             )
             f.write(f'{indent}        """\n')
-            f.write(
-                f"{indent}        class _{k}CommandArguments(PyCommandArguments):\n"
-            )
+            f.write(f"{indent}        class _{k}CommandArguments(PyArguments):\n")
             f.write(
                 f"{indent}            def __init__(self, service, rules, command, path, id):\n"
             )
@@ -566,12 +564,12 @@ class DataModelGenerator:
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
                 f.write("    PyQuery,\n")
-                f.write("    PyCommandArguments,\n")
-                f.write("    PyTextualCommandArgumentsSubItem,\n")
-                f.write("    PyNumericalCommandArgumentsSubItem,\n")
-                f.write("    PyDictionaryCommandArgumentsSubItem,\n")
-                f.write("    PyParameterCommandArgumentsSubItem,\n")
-                f.write("    PySingletonCommandArgumentsSubItem\n")
+                f.write("    PyArguments,\n")
+                f.write("    PyTextualArgumentsSubItem,\n")
+                f.write("    PyNumericalArgumentsSubItem,\n")
+                f.write("    PyDictionaryArgumentsSubItem,\n")
+                f.write("    PyParameterArgumentsSubItem,\n")
+                f.write("    PySingletonArgumentsSubItem\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)
