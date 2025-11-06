@@ -167,7 +167,6 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
         solver.events.unregister_callback(cb_id)
     solver.settings.solution.run_calculation.iterate(iter_count=5)
     assert len(event_index) == len(iteration_index)
-    solver.exit()
 
 
 @pytest.mark.fluent_version(">=23.1")

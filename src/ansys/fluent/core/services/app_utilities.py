@@ -24,12 +24,14 @@
 
 from dataclasses import dataclass
 from enum import Enum
+import os
 from typing import List, Tuple
 
 import grpc
 
 from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
 from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -306,7 +308,7 @@ class AppUtilitiesOld:
                             )
                         ()
                         )
-                    {'#t' if solution_event == SolverEvent.TIMESTEP_ENDED else '#f'}
+                    {"#t" if solution_event == SolverEvent.TIMESTEP_ENDED else "#f"}
                     )
                 (car ids)
                 )
@@ -328,9 +330,9 @@ class AppUtilitiesOld:
         """Exit."""
         self.scheme.exec(("(exit-server)",))
 
-    def set_working_directory(self, path: str) -> None:
+    def set_working_directory(self, path: PathType) -> None:
         """Change client cortex dir."""
-        self.scheme.eval(f'(syncdir "{path}")')
+        self.scheme.eval(f'(syncdir "{os.fspath(path)}")')
 
 
 class AppUtilities:
@@ -474,10 +476,10 @@ class AppUtilities:
         request = AppUtilitiesProtoModule.ExitRequest()
         self.service.exit(request)
 
-    def set_working_directory(self, path: str) -> None:
+    def set_working_directory(self, path: PathType) -> None:
         """Change client cortex dir."""
         request = AppUtilitiesProtoModule.SetWorkingDirectoryRequest()
-        request.path = path
+        request.path = os.fspath(path)
         self.service.set_working_directory(request)
 
 

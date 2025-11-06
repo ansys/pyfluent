@@ -165,6 +165,10 @@ jobs:
         run: |
           python examples/00-fluent/steady_vortex.py
 
+      - name: Execute transient_compressible_nozzle_workflow.py
+        run: |
+          python examples/00-fluent/transient_compressible_nozzle_workflow.py
+
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
