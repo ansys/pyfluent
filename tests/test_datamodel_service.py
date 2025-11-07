@@ -907,7 +907,14 @@ def test_py_query(new_meshing_session):
 
     get_labels_on_face_zones_instance.face_zone_name_list = ["wall-inlet", "wall-elbow"]
 
-    assert get_labels_on_face_zones_instance() == {
-        "face_zone_name_list": ["wall-inlet", "wall-elbow"],
-        "face_zone_name_pattern": "",
-    }
+    if meshing_session.get_fluent_version() >= FluentVersion.v261:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": ["wall-inlet", "wall-elbow"],
+            "face_zone_name_pattern": "",
+        }
+    else:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": ["wall-inlet", "wall-elbow"],
+            "face_zone_id_list": [],
+            "face_zone_name_pattern": "",
+        }
