@@ -1798,90 +1798,81 @@ class PyNamedObjectContainer:
     getState = __call__ = get_state
 
 
-class PyQuery:
-    """Query class using the StateEngine-based DatamodelService as the backend. Use this
-    class instead of directly calling the DatamodelService's method.
+class _PyAction:
+    """Base class for command/query objects using Datamodel Service."""
 
-    Methods
-    -------
-    __call__()
-        Execute the query.
-    help()
-        Print the query help string.
-    """
+    _operation: str = ""  # "command" or "query"
 
     def __init__(
         self,
         service: DatamodelService,
         rules: str,
-        query: str,
-        path: Path = None,
-    ):
-        """__init__ method of PyQuery class."""
+        name: str,
+        path: Path | None = None,
+    ) -> None:
+        """__init__ method of _PyAction class."""
         self.service = service
         self.rules = rules
-        self.query = query
-        if path is None:
-            self.path = []
-        else:
-            self.path = path
+        setattr(self, self._operation, name)
+        self.path = [] if path is None else path
 
     def __call__(self, *args, **kwds) -> Any:
-        """Execute the query.
-
-        Returns
-        -------
-        Any
-            Return value.
-        """
-        return self.service.execute_query(
-            self.rules, convert_path_to_se_path(self.path), self.query, kwds
+        """Execute the operation (command or query)."""
+        execute_method = getattr(self.service, f"execute_{self._operation}")
+        return execute_method(
+            self.rules,
+            convert_path_to_se_path(self.path),
+            getattr(self, self._operation),
+            kwds,
         )
 
     def _create_arguments(self) -> str:
-        commandid = self.service.create_command_arguments(
-            self.rules, convert_path_to_se_path(self.path), self.query
+        """Create arguments for this operation."""
+        return self.service.create_command_arguments(
+            self.rules,
+            convert_path_to_se_path(self.path),
+            getattr(self, self._operation),
         )
-        return commandid
 
     def _get_create_instance_args(self):
-        """Create a argument instance."""
+        """Prepare arguments for PyArguments constructor."""
         try:
             id = self._create_arguments()
             return [
                 self.service,
                 self.rules,
-                self.query,
+                getattr(self, self._operation),
                 self.path.copy(),
                 id,
             ]
-        # Possible error thrown from the grpc layer
         except (RuntimeError, ValueError) as e:
             logger.warning(
-                "datamodels_se.PyCommand was unable to construct query arguments. "
-                "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
-                "Error details: %s",
+                f"datamodels_se.{self.__class__.__name__} "
+                f"was unable to construct {self._operation} arguments. "
+                "This may be due to gRPC issues or unsupported Fluent version "
+                "(23.1+ required). Error details: %s",
                 e,
             )
 
     def create_instance(self) -> "PyArguments":
-        """Create a command instance."""
+        """Create an operation instance."""
         args = self._get_create_instance_args()
         if args is not None:
             return PyArguments(*args)
 
 
-class PyCommand:
-    """Command class using the StateEngine-based DatamodelService as the backend. Use
-    this class instead of directly calling the DatamodelService's method.
+class PyQuery(_PyAction):
+    """Query class using the StateEngine-based DatamodelService as the backend. Use this
+    class instead of directly calling the DatamodelService's method."""
 
-    Methods
-    -------
-    __call__()
-        Execute the command.
-    help()
-        Print the command help string.
-    """
+    _operation = "query"
+
+
+class PyCommand(_PyAction):
+    """Command class using the StateEngine-based DatamodelService as the backend. Use
+    this class instead of directly calling the DatamodelService's method."""
+
+    _operation = "command"
 
     def __init__(
         self,
@@ -1889,15 +1880,9 @@ class PyCommand:
         rules: str,
         command: str,
         path: Path | None = None,
-    ) -> None:
+    ):
         """__init__ method of PyCommand class."""
-        self.service = service
-        self.rules = rules
-        self.command = command
-        if path is None:
-            self.path = []
-        else:
-            self.path = path
+        super().__init__(service, rules, command, path)
         self.file_behavior = None
 
     def _update_file_behavior(self, file_purpose):
@@ -1951,45 +1936,11 @@ class PyCommand:
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 kwds[arg] = self.before_execute(value)
-        command = self.service.execute_command(
-            self.rules, convert_path_to_se_path(self.path), self.command, kwds
-        )
+        result = super().__call__(*args, **kwds)
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 self.after_execute(value)
-        return command
-
-    def _create_command_arguments(self) -> str:
-        commandid = self.service.create_command_arguments(
-            self.rules, convert_path_to_se_path(self.path), self.command
-        )
-        return commandid
-
-    def _get_create_instance_args(self):
-        """Create a command instance."""
-        try:
-            id = self._create_command_arguments()
-            return [
-                self.service,
-                self.rules,
-                self.command,
-                self.path.copy(),
-                id,
-            ]
-        # Possible error thrown from the grpc layer
-        except (RuntimeError, ValueError) as e:
-            logger.warning(
-                "datamodels_se.PyCommand was unable to construct command arguments. "
-                "This may be due to gRPC issues or unsupported Fluent version (23.1+ required). "
-                "Error details: %s",
-                e,
-            )
-
-    def create_instance(self) -> "PyArguments":
-        """Create a command instance."""
-        args = self._get_create_instance_args()
-        if args is not None:
-            return PyArguments(*args)
+        return result
 
 
 class _InputFile:
