@@ -1859,13 +1859,13 @@ class PyAction:
 
 
 class PyQuery(PyAction):
-    """Class representing query in datamodel."""
+    """Enables querying Fluent’s data model through a simple Python interface."""
 
     _operation = "query"
 
 
 class PyCommand(PyAction):
-    """Class representing command in datamodel."""
+    """Enables commanding Fluent’s data model through a simple Python interface."""
 
     _operation = "command"
 
