@@ -1798,7 +1798,7 @@ class PyNamedObjectContainer:
     getState = __call__ = get_state
 
 
-class _PyAction:
+class PyAction:
     """Base class for command/query objects using Datamodel Service."""
 
     _operation: str = ""  # "command" or "query"
@@ -1810,11 +1810,11 @@ class _PyAction:
         name: str,
         path: Path | None = None,
     ) -> None:
-        """__init__ method of _PyAction class."""
+        """__init__ method of PyAction class."""
         self.service = service
         self.rules = rules
         setattr(self, self._operation, name)
-        self.path = [] if path is None else path
+        self.path = path or []
 
     def __call__(self, *args, **kwds) -> Any:
         """Execute the operation (command or query)."""
@@ -1847,10 +1847,10 @@ class _PyAction:
             ]
         except (RuntimeError, ValueError) as e:
             logger.warning(
-                f"datamodels_se.{self.__class__.__name__} "
-                f"was unable to construct {self._operation} arguments. "
-                "This may be due to gRPC issues or unsupported Fluent version "
-                "(23.1+ required). Error details: %s",
+                f"datamodels_se.{self.__class__.__name__} could not create {self._operation} arguments. "
+                f"The underlying DatamodelService reported an error: {e}",
+                self.__class__.__name__,
+                self._operation,
                 e,
             )
 
@@ -1861,16 +1861,14 @@ class _PyAction:
             return PyArguments(*args)
 
 
-class PyQuery(_PyAction):
-    """Query class using the StateEngine-based DatamodelService as the backend. Use this
-    class instead of directly calling the DatamodelService's method."""
+class PyQuery(PyAction):
+    """Class representing query in datamodel."""
 
     _operation = "query"
 
 
-class PyCommand(_PyAction):
-    """Command class using the StateEngine-based DatamodelService as the backend. Use
-    this class instead of directly calling the DatamodelService's method."""
+class PyCommand(PyAction):
+    """Class representing command in datamodel."""
 
     _operation = "command"
 
