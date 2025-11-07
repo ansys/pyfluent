@@ -1848,10 +1848,7 @@ class PyAction:
         except (RuntimeError, ValueError) as e:
             logger.warning(
                 f"datamodels_se.{self.__class__.__name__} could not create {self._operation} arguments. "
-                f"The underlying DatamodelService reported an error: {e}",
-                self.__class__.__name__,
-                self._operation,
-                e,
+                f"The underlying DatamodelService reported an error: {e}."
             )
 
     def create_instance(self) -> "PyArguments":
