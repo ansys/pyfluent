@@ -95,7 +95,7 @@ from ansys.fluent.core.solver import (
 # ------------------------------------
 solver = pyfluent.launch_fluent(
     precision=pyfluent.Precision.DOUBLE,
-    mode="solver",
+    mode=pyfluent.FluentMode.SOLVER,
 )
 
 # %%
