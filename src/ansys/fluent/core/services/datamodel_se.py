@@ -2082,7 +2082,7 @@ class PyArguments(PyStateContainer):
             getattr(self, key).set_state(value)
 
 
-class PyTextualArgumentsSubItem(PyArgumentsSubItem, PyTextual):
+class PyArgumentsTextualSubItem(PyArgumentsSubItem, PyTextual):
     """Class representing textual command argument in datamodel."""
 
     def __init__(
@@ -2093,12 +2093,12 @@ class PyTextualArgumentsSubItem(PyArgumentsSubItem, PyTextual):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyTextualArgumentsSubItem class."""
+        """__init__ method of PyArgumentsTextualSubItem class."""
         PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyTextual.__init__(self, service, rules, path)
 
 
-class PyNumericalArgumentsSubItem(PyArgumentsSubItem, PyNumerical):
+class PyArgumentsNumericalSubItem(PyArgumentsSubItem, PyNumerical):
     """Class representing numerical command argument in datamodel."""
 
     def __init__(
@@ -2109,12 +2109,12 @@ class PyNumericalArgumentsSubItem(PyArgumentsSubItem, PyNumerical):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyNumericalArgumentsSubItem class."""
+        """__init__ method of PyArgumentsNumericalSubItem class."""
         PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyNumerical.__init__(self, service, rules, path)
 
 
-class PyDictionaryArgumentsSubItem(PyArgumentsSubItem, PyDictionary):
+class PyArgumentsDictionarySubItem(PyArgumentsSubItem, PyDictionary):
     """Class representing dictionary-like command argument in datamodel."""
 
     def __init__(
@@ -2125,12 +2125,12 @@ class PyDictionaryArgumentsSubItem(PyArgumentsSubItem, PyDictionary):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyDictionaryArgumentsSubItem class."""
+        """__init__ method of PyArgumentsDictionarySubItem class."""
         PyArgumentsSubItem.__init__(self, parent, attr, service, rules, path)
         PyDictionary.__init__(self, service, rules, path)
 
 
-class PyParameterArgumentsSubItem(PyArgumentsSubItem, PyParameter):
+class PyArgumentsParameterSubItem(PyArgumentsSubItem, PyParameter):
     """Class representing generic parameter-like command argument in datamodel."""
 
     def __init__(
@@ -2141,7 +2141,7 @@ class PyParameterArgumentsSubItem(PyArgumentsSubItem, PyParameter):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PyParameterArgumentsSubItem class."""
+        """__init__ method of PyArgumentsParameterSubItem class."""
         PyArgumentsSubItem.__init__(
             self,
             parent,
@@ -2153,7 +2153,7 @@ class PyParameterArgumentsSubItem(PyArgumentsSubItem, PyParameter):
         PyParameter.__init__(self, service, rules, path)
 
 
-class PySingletonArgumentsSubItem(PyArgumentsSubItem):
+class PyArgumentsSingletonSubItem(PyArgumentsSubItem):
     """Class representing singleton-like command argument in datamodel."""
 
     def __init__(
@@ -2164,7 +2164,7 @@ class PySingletonArgumentsSubItem(PyArgumentsSubItem):
         rules: str,
         path: Path,
     ) -> None:
-        """__init__ method of PySingletonArgumentsSubItem class."""
+        """__init__ method of PyArgumentsSingletonSubItem class."""
         PyArgumentsSubItem.__init__(
             self,
             parent,
@@ -2176,14 +2176,14 @@ class PySingletonArgumentsSubItem(PyArgumentsSubItem):
 
 
 arg_class_by_type = {
-    **dict.fromkeys(["String", "ListString", "String List"], PyTextualArgumentsSubItem),
+    **dict.fromkeys(["String", "ListString", "String List"], PyArgumentsTextualSubItem),
     **dict.fromkeys(
         ["Real", "Int", "ListReal", "Real List", "Integer", "ListInt", "Integer List"],
-        PyNumericalArgumentsSubItem,
+        PyArgumentsNumericalSubItem,
     ),
-    "Dict": PyDictionaryArgumentsSubItem,
-    **dict.fromkeys(["Bool", "Logical", "Logical List"], PyParameterArgumentsSubItem),
-    "ModelObject": PySingletonArgumentsSubItem,
+    "Dict": PyArgumentsDictionarySubItem,
+    **dict.fromkeys(["Bool", "Logical", "Logical List"], PyArgumentsParameterSubItem),
+    "ModelObject": PyArgumentsSingletonSubItem,
 }
 
 

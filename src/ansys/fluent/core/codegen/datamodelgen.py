@@ -37,7 +37,7 @@ from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
 from ansys.fluent.core.services.datamodel_se import (
-    PySingletonArgumentsSubItem,
+    PyArgumentsSingletonSubItem,
     arg_class_by_type,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
@@ -357,7 +357,7 @@ class DataModelGenerator:
         for line in arg_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n\n')
-        if arg_class == PySingletonArgumentsSubItem:
+        if arg_class == PyArgumentsSingletonSubItem:
             f.write(
                 f"{indent}    def __init__(self, parent, attr, service, rules, path):\n"
             )
@@ -566,11 +566,11 @@ class DataModelGenerator:
                 f.write("    PyCommand,\n")
                 f.write("    PyQuery,\n")
                 f.write("    PyArguments,\n")
-                f.write("    PyTextualArgumentsSubItem,\n")
-                f.write("    PyNumericalArgumentsSubItem,\n")
-                f.write("    PyDictionaryArgumentsSubItem,\n")
-                f.write("    PyParameterArgumentsSubItem,\n")
-                f.write("    PySingletonArgumentsSubItem\n")
+                f.write("    PyArgumentsTextualSubItem,\n")
+                f.write("    PyArgumentsNumericalSubItem,\n")
+                f.write("    PyArgumentsDictionarySubItem,\n")
+                f.write("    PyArgumentsParameterSubItem,\n")
+                f.write("    PyArgumentsSingletonSubItem\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)

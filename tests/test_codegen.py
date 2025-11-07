@@ -236,11 +236,11 @@ from ansys.fluent.core.services.datamodel_se import (
     PyCommand,
     PyQuery,
     PyArguments,
-    PyTextualArgumentsSubItem,
-    PyNumericalArgumentsSubItem,
-    PyDictionaryArgumentsSubItem,
-    PyParameterArgumentsSubItem,
-    PySingletonArgumentsSubItem
+    PyArgumentsTextualSubItem,
+    PyArgumentsNumericalSubItem,
+    PyArgumentsDictionarySubItem,
+    PyArgumentsParameterSubItem,
+    PyArgumentsSingletonSubItem
 )
 
 
@@ -317,7 +317,7 @@ class Root(PyMenu):
                     super().__init__(service, rules, command, path, id)
                     self.A2 = self._A2(self, "A2", service, rules, path)
 
-                class _A2(PyNumericalArgumentsSubItem):
+                class _A2(PyArgumentsNumericalSubItem):
                     """
                     Argument A2.
                     """
@@ -350,7 +350,7 @@ class Root(PyMenu):
                 super().__init__(service, rules, command, path, id)
                 self.A1 = self._A1(self, "A1", service, rules, path)
 
-            class _A1(PyTextualArgumentsSubItem):
+            class _A1(PyArgumentsTextualSubItem):
                 """
                 Argument A1.
                 """

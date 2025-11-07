@@ -33,12 +33,12 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
     PyArguments,
+    PyArgumentsSingletonSubItem,
+    PyArgumentsTextualSubItem,
     PyCommand,
     PyMenuGeneric,
     PyNumerical,
     PyQuery,
-    PySingletonArgumentsSubItem,
-    PyTextualArgumentsSubItem,
     ReadOnlyObjectError,
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -863,13 +863,13 @@ def test_field_level_help(new_meshing_session):
         "Specify the CAD geometry that you want to work with. Choose from"
     )
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
-    assert isinstance(import_geometry.FileFormat, PyTextualArgumentsSubItem)
+    assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
     assert import_geometry.FileFormat.__doc__.strip().startswith(
         "Indicate whether the imported geometry is a CAD File or"
     )
     linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
-    assert isinstance(linear_mesh_pattern.PatternVector, PySingletonArgumentsSubItem)
+    assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
     assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
         "Specify a name for the mesh pattern or use the default value."
