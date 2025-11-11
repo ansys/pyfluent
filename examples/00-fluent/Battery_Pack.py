@@ -429,7 +429,7 @@ solver.settings.file.write_case_data(file_name="1P3S_Battery_Pack")
 
 # %%
 # Close Fluent
-# ^^^^^^^^^^^^
+# -------------
 
 solver.exit()
 
