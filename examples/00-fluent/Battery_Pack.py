@@ -420,7 +420,7 @@ plot_window.show()
 # %%
 # .. image:: ../../_static/battery_pack_7.png
 #    :align: center
-#    :alt: Voltage Monitor Plot
+#    :alt: Temperature Monitor Plot
 
 # %%
 # Save final case and data
