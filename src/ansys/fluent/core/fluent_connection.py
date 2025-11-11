@@ -456,7 +456,7 @@ class FluentConnection:
             except Exception as ex:
                 if inside_container:
                     logger.error("Error reported from Fluent:")
-                    logger.error(container.logs(stdout=False).decode())
+                    logger.error(container.logs(stdout=False).decode('utf-8', errors='replace'))
                 raise ex
 
         self._slurm_job_id = slurm_job_id
