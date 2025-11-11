@@ -265,7 +265,7 @@ conditions.copy(
 # ---------------------------------------
 controls = Controls(solver)
 
-controls.equations = {"flow": False, "kw": False}  # No fluid flow  # No turbulence
+controls.equations = {"flow": False, "kw": False}  # Disable flow and turbulence equations
 
 solution = Solution(solver)
 
