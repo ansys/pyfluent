@@ -451,7 +451,13 @@ class FluentConnection:
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
         if pyfluent.config.check_health:
-            self._health_check.check_health()
+            try:
+                self._health_check.check_health()
+            except Exception as ex:
+                if inside_container:
+                    logger.error("Error reported from Fluent:")
+                    logger.error(container.logs(stdout=False).decode())
+                raise ex
 
         self._slurm_job_id = slurm_job_id
 
