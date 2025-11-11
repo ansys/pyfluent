@@ -453,10 +453,12 @@ class FluentConnection:
         if pyfluent.config.check_health:
             try:
                 self._health_check.check_health()
-            except Exception as ex:
+            except RuntimeError as ex:
                 if inside_container:
                     logger.error("Error reported from Fluent:")
-                    logger.error(container.logs(stdout=False).decode('utf-8', errors='replace'))
+                    logger.error(
+                        container.logs(stdout=False).decode("utf-8", errors="replace")
+                    )
                 raise ex
 
         self._slurm_job_id = slurm_job_id
