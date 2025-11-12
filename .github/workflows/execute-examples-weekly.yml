@@ -169,6 +169,10 @@ jobs:
         run: |
           python examples/00-fluent/Modeling_solidification_workflow.py
           
+      - name: Execute catalytic_converter_workflow.py
+        run: |
+          python examples/00-fluent/catalytic_converter_workflow.py
+          
       - name: Execute fsi_1way_workflow.py
         run: |
           python examples/00-fluent/fsi_1way_workflow.py
