@@ -88,7 +88,7 @@ from ansys.fluent.core.launcher.error_handler import (
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import _parse_server_info_file
-from ansys.fluent.core.utils.deprecate import all_deprecators
+from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.networking import get_free_port
 
@@ -139,23 +139,15 @@ def dict_to_str(dict: dict) -> str:
         return pformat(dict)
 
 
-@all_deprecators(
-    deprecate_arg_mappings=[
-        {
-            "old_arg": "container_mount_path",
-            "new_arg": "mount_target",
-            "converter": lambda old_arg_val: old_arg_val,
-        },
-        {
-            "old_arg": "host_mount_path",
-            "new_arg": "mount_source",
-            "converter": lambda old_arg_val: old_arg_val,
-        },
-    ],
-    data_type_converter=None,
-    deprecated_version="v0.23.dev1",
-    deprecated_reason="'container_mount_path' and 'host_mount_path' are deprecated. Use 'mount_target' and 'mount_source' instead.",
-    warn_message="",
+@deprecate_arguments(
+    old_args="container_mount_path",
+    new_args="mount_target",
+    version="v0.23.0",
+)
+@deprecate_arguments(
+    old_args="host_mount_path",
+    new_args="mount_source",
+    version="v0.23.0",
 )
 def configure_container_dict(
     args: List[str],
@@ -172,7 +164,7 @@ def configure_container_dict(
     file_transfer_service: Any | None = None,
     compose_config: ComposeConfig | None = None,
     **container_dict,
-) -> (dict, int, int, Path, bool):
+) -> (dict, int, int, Path, str, bool):
     """Parses the parameters listed below, and sets up the container configuration file.
 
     Parameters
@@ -218,6 +210,7 @@ def configure_container_dict(
     timeout : int
     port : int
     host_server_info_file : Path
+    container_server_info_file: str
     remove_server_info_file: bool
 
     Raises
@@ -353,8 +346,6 @@ def configure_container_dict(
                 "FLUENT_ALLOW_REMOTE_GRPC_CONNECTION": "1",
             }
         )
-        if compose_config.is_compose:
-            container_dict["environment"]["FLUENT_SERVER_INFO_PERMISSION_SYSTEM"] = "1"
 
     if "labels" not in container_dict:
         test_name = pyfluent.config.test_name
@@ -468,6 +459,7 @@ def configure_container_dict(
         timeout,
         container_grpc_port,
         host_server_info_file,
+        container_server_info_file,
         remove_server_info_file,
     )
 
@@ -528,6 +520,7 @@ def start_fluent_container(
         timeout,
         port,
         host_server_info_file,
+        container_server_info_file,
         remove_server_info_file,
     ) = container_vars
     launch_string = " ".join(config_dict["command"])
@@ -546,6 +539,7 @@ def start_fluent_container(
             compose_container = ComposeBasedLauncher(
                 compose_config=compose_config,
                 container_dict=config_dict,
+                container_server_info_file=container_server_info_file,
             )
 
             if not compose_container.check_image_exists():

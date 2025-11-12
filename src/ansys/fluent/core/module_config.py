@@ -216,9 +216,9 @@ class Config:
         lambda instance: False, "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK"
     )
 
-    #: The timeout in seconds to wait for Fluent to exit, defaults to the value of ``PYFLUENT_FORCE_EXIT_TIMEOUT`` environment variable.
+    #: The timeout in seconds to wait for Fluent to exit, defaults to the value of ``PYFLUENT_TIMEOUT_FORCE_EXIT`` environment variable.
     force_exit_timeout = _ConfigDescriptor["Config"](
-        lambda instance: instance._env.get("PYFLUENT_FORCE_EXIT_TIMEOUT")
+        lambda instance: instance._env.get("PYFLUENT_TIMEOUT_FORCE_EXIT")
     )
 
     #: Whether to skip code generation of built-in settings, defaults to the value of ``PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS`` environment variable.

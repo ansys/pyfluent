@@ -43,6 +43,7 @@ def test_solver_preferences(new_solver_session):
     assert preferred_drawing.FaceZoneLimit() == 15000
 
     ansys_logo = solver.preferences.Appearance.AnsysLogo
+    ansys_logo.Visible = True
     ansys_logo.Color = "white"
     assert ansys_logo.Color() == "white"
 
@@ -55,8 +56,6 @@ def test_solver_preferences(new_solver_session):
     perfered_graphics = solver.preferences.Graphics
     perfered_graphics.AnimationOption = "wireframe"
     assert perfered_graphics.AnimationOption() == "wireframe"
-
-    solver.exit()
 
 
 @pytest.mark.codegen_required

@@ -70,6 +70,7 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -298,13 +299,13 @@ class SlurmLauncher:
         env: Dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
-        case_file_name: str | None = None,
-        case_data_file_name: str | None = None,
+        case_file_name: "PathType | None" = None,
+        case_data_file_name: "PathType | None" = None,
         lightweight_mode: bool | None = None,
         py: bool | None = None,
         gpu: bool | None = None,
-        cwd: str | None = None,
-        fluent_path: str | None = None,
+        cwd: "PathType | None" = None,
+        fluent_path: "PathType | None" = None,
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         scheduler_options: dict | None = None,
@@ -316,8 +317,9 @@ class SlurmLauncher:
         ----------
         mode : FluentMode
             Launch mode of Fluent to point to a specific session type.
-        ui_mode : UIMode
-            Fluent user interface mode. Options are the values of the ``UIMode`` enum.
+        ui_mode : UIMode or str, optional
+            Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
+            or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
         graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver
             Graphics driver of Fluent. Options are the values of the
             ``FluentWindowsGraphicsDriver`` enum in Windows or the values of the
@@ -359,10 +361,10 @@ class SlurmLauncher:
             default is ``True``. You can stop and start the streaming of the
             Fluent transcript subsequently via the method calls, ``transcript.start()``
             and ``transcript.stop()`` on the session object.
-        case_file_name : str, optional
+        case_file_name : :class:`os.PathLike` or str, optional
             Name of the case file to read into the
             Fluent session. The default is ``None``.
-        case_data_file_name : str, optional
+        case_data_file_name : :class:`os.PathLike` or str, optional
             Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session.
         lightweight_mode : bool, optional
             Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
@@ -375,9 +377,9 @@ class SlurmLauncher:
             If True, Fluent will run in Python mode. Default is None.
         gpu : bool, optional
             If True, Fluent will start with GPU Solver.
-        cwd : str, Optional
+        cwd : :class:`os.PathLike` or str, optional
             Working directory for the Fluent client.
-        fluent_path: str, Optional
+        fluent_path: :class:`os.PathLike` or str, optional
             User provided Fluent installation path.
         topy : bool or str, optional
             A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.

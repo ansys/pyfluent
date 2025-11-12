@@ -23,9 +23,11 @@
 """Module containing class encapsulating Fluent connection."""
 
 import functools
+import os
 from typing import Any, Dict
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -50,6 +52,7 @@ class PureMeshing(BaseSession):
 
     _rules = [
         "workflow",
+        "meshing_workflow",
         "meshing",
         "MeshingUtilities",
         "PartManagement",
@@ -146,6 +149,11 @@ class PureMeshing(BaseSession):
         """Datamodel root of workflow."""
         return self._base_meshing.workflow
 
+    @property
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        return self._base_meshing.meshing_workflow
+
     def watertight(self):
         """Get a new watertight workflow."""
         return self._base_meshing.watertight_workflow()
@@ -158,9 +166,9 @@ class PureMeshing(BaseSession):
         """Get a new 2D meshing workflow."""
         return self._base_meshing.two_dimensional_meshing_workflow()
 
-    def load_workflow(self, file_path: str):
+    def load_workflow(self, file_path: PathType):
         """Load a saved workflow."""
-        return self._base_meshing.load_workflow(file_path=file_path)
+        return self._base_meshing.load_workflow(file_path=os.fspath(file_path))
 
     def create_workflow(self):
         """Create a meshing workflow."""

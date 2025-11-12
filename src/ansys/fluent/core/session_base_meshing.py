@@ -23,7 +23,9 @@
 """Provides a module to get base Meshing session."""
 
 import logging
+import os
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
@@ -72,6 +74,7 @@ class BaseMeshing:
         self._fluent_version = fluent_version
         self._meshing_utilities = None
         self._old_workflow = None
+        self._meshing_workflow = None
         self._part_management = None
         self._pm_file_management = None
         self._preferences = None
@@ -127,6 +130,13 @@ class BaseMeshing:
             self._old_workflow = _make_datamodel_module(self, "workflow")
         return self._old_workflow
 
+    @property
+    def meshing_workflow(self):
+        """Full API to meshing and meshing_workflow."""
+        if self._meshing_workflow is None:
+            self._meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
+        return self._meshing_workflow
+
     def watertight_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
@@ -169,12 +179,12 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def load_workflow(self, file_path: str):
+    def load_workflow(self, file_path: PathType):
         """Datamodel root of workflow."""
         self._current_workflow = LoadWorkflow(
             _make_datamodel_module(self, "workflow"),
             self.meshing,
-            file_path,
+            os.fspath(file_path),
             self.get_fluent_version(),
         )
         return self._current_workflow
