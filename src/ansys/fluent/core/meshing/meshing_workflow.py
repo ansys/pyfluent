@@ -26,7 +26,9 @@ core functionality."""
 from __future__ import annotations
 
 from enum import Enum
+import os
 
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow import Workflow
@@ -272,7 +274,7 @@ class LoadWorkflow(Workflow):
         self,
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
-        file_path: str,
+        file_path: PathType,
         fluent_version: FluentVersion,
     ) -> None:
         """Initialize a ``LoadWorkflow`` instance.
@@ -283,8 +285,8 @@ class LoadWorkflow(Workflow):
             Underlying workflow object.
         meshing : PyMenuGeneric
             Meshing object.
-        file_path: str
-            Path to the saved workflow.
+        file_path: os.PathLike[str | bytes] | str | bytes
+            Path to the saved workflow file.
         fluent_version: FluentVersion
             Version of Fluent in this session.
         """
@@ -293,7 +295,7 @@ class LoadWorkflow(Workflow):
         )
         self._meshing = meshing
         self._unsubscribe_root_affected_callback()
-        self._load_workflow(file_path=file_path)
+        self._load_workflow(file_path=os.fspath(file_path))
 
 
 class CreateWorkflow(Workflow):
