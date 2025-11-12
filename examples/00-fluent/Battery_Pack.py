@@ -32,7 +32,7 @@ Simulating a 1P3S Battery Pack Using the Battery Model
 #
 # This example demonstrates a complete 1P3S battery pack simulation workflow comprising
 # one parallel string and three cells in series using the NTGK
-# (Newman-Tiedemann-Gu-Kim) electrochemical model utlizing PyFluent APIs.
+# (Newman-Tiedemann-Gu-Kim) electrochemical model utilizing PyFluent APIs.
 # The goal is modeling and analyzing battery pack behavior under a constant
 # 200 W discharge condition. This includes setting up active and passive zones,
 # defining dual-path electrical conductivity using User-Defined Scalars (UDS),
@@ -151,19 +151,23 @@ all_cell_zones = solver.settings.setup.cell_zone_conditions.solid.get_object_nam
 all_wall_names = solver.settings.setup.boundary_conditions.wall.get_object_names()
 
 # CELLS
-cell_zones = [z for z in all_cell_zones if "cell_" in z]
+cell_zones = [zone for zone in all_cell_zones if "cell_" in zone]
 cell_walls = [
-    w for w in all_wall_names if "cell" in w.lower() and "tab" not in w.lower()
+    wall
+    for wall in all_wall_names
+    if "cell" in wall.lower() and "tab" not in wall.lower()
 ]
 
 # TABS
-tab_zones = [z for z in all_cell_zones if "tabzone" in z]
-tab_walls = [w for w in all_wall_names if "tabzone" in w.lower()]
+tab_zones = [zone for zone in all_cell_zones if "tabzone" in zone]
+tab_walls = [wall for wall in all_wall_names if "tabzone" in wall.lower()]
 
 # BUSBARS
-busbar_zones = [z for z in all_cell_zones if "bar" in z and "tab" not in z]
+busbar_zones = [zone for zone in all_cell_zones if "bar" in zone and "tab" not in zone]
 busbar_walls = [
-    w for w in all_wall_names if "bar" in w.lower() and "tab" not in w.lower()
+    wall
+    for wall in all_wall_names
+    if "bar" in wall.lower() and "tab" not in wall.lower()
 ]
 
 # %%
@@ -282,7 +286,7 @@ solution.monitor.residual.options.criterion_type = (
 definitions = ReportDefinitions(solver)
 
 # Surface report: voltage at positive tab (area-weighted average)
-definitions.surface["surf-mon-1"] = {
+definitions.surface["voltage_surface_areaavg"] = {
     "report_type": "surface-areaavg",
     "field": "passive-zone-potential",
     "surface_names": ["tab_p"],
@@ -291,12 +295,14 @@ definitions.surface["surf-mon-1"] = {
 }
 
 # Format plot axes
-report_plot = solver.settings.solution.monitor.report_plots["surf-mon-1-rplot"]
+report_plot = solver.settings.solution.monitor.report_plots[
+    "voltage_surface_areaavg-rplot"
+]
 report_plot.axes.x.number_format.precision = 0  # Integer time steps
 report_plot.axes.y.number_format.precision = 2  # 2 decimal places for voltage
 
 # Volume report: maximum temperature in all cell zones
-definitions.volume["vol-mon-1"] = {
+definitions.volume["volume_max_temp"] = {
     "report_type": "volume-max",
     "field": "temperature",
     "cell_zones": all_cell_zones,
@@ -305,7 +311,7 @@ definitions.volume["vol-mon-1"] = {
 }
 
 # Format plot axes
-report_plot_1 = solver.settings.solution.monitor.report_plots["vol-mon-1-rplot"]
+report_plot_1 = solver.settings.solution.monitor.report_plots["volume_max_temp-rplot"]
 report_plot_1.axes.x.number_format.precision = 0
 report_plot_1.axes.y.number_format.precision = 2
 
