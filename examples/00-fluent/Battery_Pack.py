@@ -265,7 +265,10 @@ conditions.copy(
 # ---------------------------------------
 controls = Controls(solver)
 
-controls.equations = {"flow": False, "kw": False}  # Disable flow and turbulence equations
+controls.equations = {
+    "flow": False,
+    "kw": False,
+}  # Disable flow and turbulence equations
 
 solution = Solution(solver)
 
@@ -395,32 +398,24 @@ graphics.picture.save_picture(file_name="battery_pack_5.png")
 #    :alt: Total heat source contour
 
 # %%
-# Display voltage monitor plot
-# ---------------------------
-mass_bal_rplot = Monitor(solver)
-plot_window = GraphicsWindow()
-mass_bal_rplot.monitor_set_name = "surf-mon-1-rplot"
-plot_window.add_plot(mass_bal_rplot)
+# Display monitor plots
+# ---------------------
+
+plot_window = GraphicsWindow(solver)
+
+voltage_rplot = Monitor(solver, monitor_set_name="surf-mon-1-rplot")
+plot_window.add_plot(voltage_rplot, position=(0, 0))
+
+temp_rplot = Monitor(solver, monitor_set_name="vol-mon-1-rplot")
+plot_window.add_plot(temp_rplot, position=(1, 1))
+
+plot_window.renderer = "matplotlib"
 plot_window.show()
 
 # %%
-# .. image:: ../../_static/battery_pack_6.png
+# .. image:: ../../_static/battery_pack_8.png
 #    :align: center
-#    :alt: Voltage Monitor Plot
-
-# %%
-# Display temperature monitor plot
-# -------------------------------
-mass_bal_rplot = Monitor(solver)
-plot_window = GraphicsWindow()
-mass_bal_rplot.monitor_set_name = "vol-mon-1-rplot"
-plot_window.add_plot(mass_bal_rplot)
-plot_window.show()
-
-# %%
-# .. image:: ../../_static/battery_pack_7.png
-#    :align: center
-#    :alt: Temperature Monitor Plot
+#    :alt: Temperature and voltage Monitor Plot
 
 # %%
 # Save final case and data
