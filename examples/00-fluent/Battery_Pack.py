@@ -261,7 +261,7 @@ conditions.copy(
 )
 
 # %%
-# Describe solution controls and monitors
+# Define solution controls and monitors
 # ---------------------------------------
 controls = Controls(solver)
 
