@@ -830,3 +830,56 @@ def test_get_task_by_id(new_meshing_session):
         "state": "Out-of-date",
         "check_point": "default-off",
     }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_insert_delete_and_rename_task(new_meshing_session):
+    meshing_session = new_meshing_session
+    meshing_session.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+
+    # Insert new task
+    assert len(meshing_session.meshing_workflow.task_object()) == 11
+    meshing_session.meshing_workflow.task_object.import_geometry[
+        "Import Geometry"
+    ].insert_next_task(command_name="ImportBodyOfInfluenceGeometry")
+    assert len(meshing_session.meshing_workflow.task_object()) == 12
+    assert meshing_session.meshing_workflow.task_object.import_boi_geometry[
+        "Import Body of Influence Geometry"
+    ].arguments() == {
+        "type": "CAD",
+        "geometry_file_name": None,
+        "cad_import_options": {},
+    }
+
+    # Delete
+    assert len(meshing_session.meshing_workflow.task_object()) == 12
+    assert (
+        "create_volume_mesh_wtm:Generate the Volume Mesh"
+        in meshing_session.meshing_workflow.task_object()
+    )
+    meshing_session.meshing_workflow.general.delete_tasks(
+        list_of_tasks=["Generate the Volume Mesh"]
+    )
+    assert len(meshing_session.meshing_workflow.task_object()) == 11
+    assert (
+        "create_volume_mesh_wtm:Generate the Volume Mesh"
+        not in meshing_session.meshing_workflow.task_object()
+    )
+
+    # Rename
+    assert (
+        "add_boundary_layers:Add Boundary Layers"
+        in meshing_session.meshing_workflow.task_object()
+    )
+    meshing_session.meshing_workflow.task_object.add_boundary_layers[
+        "Add Boundary Layers"
+    ].rename(new_name="Add BL")
+    assert (
+        "add_boundary_layers:Add Boundary Layers"
+        not in meshing_session.meshing_workflow.task_object()
+    )
+    assert (
+        "add_boundary_layers:Add BL" in meshing_session.meshing_workflow.task_object()
+    )
