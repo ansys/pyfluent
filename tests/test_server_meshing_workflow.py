@@ -23,6 +23,7 @@
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
 @pytest.mark.fluent_version(">=26.1")
@@ -786,3 +787,46 @@ def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
         watertight.task_object.import_geometry["Import Geometry"].state()
         == "Forced-up-to-date"
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_get_task_by_id(new_meshing_session):
+    # This test is only intended for developer level testing
+    meshing_session = new_meshing_session
+    meshing_session.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+    service = meshing_session.meshing_workflow.service
+    rules = meshing_session.meshing_workflow.rules
+
+    path = [("task_object", "TaskObject1"), ("_name_", "")]
+    assert (
+        PyMenu(service=service, rules=rules, path=path).get_remote_state()
+        == "Import Geometry"
+    )
+
+    path = [("task_object", "TaskObject1"), ("CommandName", "")]
+    assert (
+        PyMenu(service=service, rules=rules, path=path).get_remote_state()
+        == "ImportGeometry"
+    )
+
+    path = [("task_object", "TaskObject5"), ("_name_", "")]
+    assert (
+        PyMenu(service=service, rules=rules, path=path).get_remote_state()
+        == "Apply Share Topology"
+    )
+
+    path = [("task_object", "TaskObject1")]
+    assert PyMenu(service=service, rules=rules, path=path).get_remote_state() == {
+        "_name_": "Import Geometry",
+        "arguments": {},
+        "warnings": None,
+        "command_name": "ImportGeometry",
+        "errors": None,
+        "task_type": "Simple",
+        "object_path": "",
+        "state": "Out-of-date",
+        "check_point": "default-off",
+    }
