@@ -572,7 +572,7 @@ def test_batch_request_single_phase_deprecated():
 
     batch_1 = field_data.new_batch()
 
-    batch_1.add_surfaces_request(surfaces=[3, 5])
+    batch_1.add_surfaces_request(provide_vertices=True, surfaces=[3, 5])
 
     batch_1.add_scalar_fields_request("SV_T", surfaces=[3, 5])
     batch_1.add_scalar_fields_request("SV_T", surfaces=["wall", "symmetry"])

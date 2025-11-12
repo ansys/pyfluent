@@ -86,7 +86,7 @@ Use this method when:
    import ansys.fluent.core as pyfluent
 
    # Launch to retrieve credentials
-   solver = pyfluent.Solver.from_local_install()
+   solver = pyfluent.Solver.from_install()
    print(solver.health_check.check_health())
 
    ip = solver.connection_properties.ip

@@ -345,11 +345,17 @@ class SettingsService:
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute a given command with the provided keyword arguments."""
+        """Execute a given command with the provided keyword arguments.
+
+        If `path` is in kwds, rename it to `path_1` to avoid conflict with
+        the `path` argument.
+        """
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteCommandRequest, path
         )
         request.command = command
+        if "path_1" in kwds:
+            kwds["path"] = kwds.pop("path_1")
         self._set_state_from_value(request.args, kwds)
 
         response = self._service_impl.execute_cmd(request)

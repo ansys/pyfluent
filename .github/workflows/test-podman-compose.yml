@@ -111,8 +111,10 @@ jobs:
           make install > /dev/null
 
       - name: Run Fluent test script
+        id: fluent_test
         run: |
           python tests/podman_compose.py
+        continue-on-error: true
 
       - name: Cleanup previous containers
         if: always()
@@ -121,13 +123,9 @@ jobs:
           sudo podman system prune -af
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
-        if: github.event_name == 'schedule' && job.status != 'success'
+        if: github.event_name == 'schedule' && steps.fluent_test.outcome != 'success'
         run: | # zizmor: ignore[template-injection]
-          STATUS="Success"
-          if [ "${{ job.status }}" != "success" ]; then
-            STATUS="Failure"
-          fi
-
+          STATUS="Failure"
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           COMMIT_URL="https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
 
@@ -180,3 +178,10 @@ jobs:
 
           echo "Sending notification to Power Automate..."
           curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
+
+
+      - name: Check test run status and fail the whole job if tests failed
+        if: steps.fluent_test.outcome != 'success'
+        run: |
+          echo "One or more tests failed. Failing the job."
+          exit 1
