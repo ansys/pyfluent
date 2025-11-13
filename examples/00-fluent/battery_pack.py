@@ -419,7 +419,7 @@ solver.exit()
 # -------
 #
 # This example provides a complete and reproducible PyFluent workflow
-# for simulating a multi-cell battery pack using the MSMD model with
+# for simulating a multi-cell battery pack using the Battery Model with
 # the NTGK sub-model. It demonstrates how to set up active and passive
 # zones, apply constant power discharge, use UDS-based dual-path
 # conductivity, and monitor voltage and temperature behavior during
