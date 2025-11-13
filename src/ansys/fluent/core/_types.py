@@ -31,5 +31,5 @@ from __future__ import annotations
 import os
 from typing import TypeAlias
 
-PathType: TypeAlias = "os.PathLike[str] | os.PathLike[bytes] | str | bytes"
+PathType: TypeAlias = "os.PathLike[str] | str"
 """Type alias for file system paths."""
