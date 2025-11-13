@@ -20,10 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""".. _Battery_Pack_Simulation:
+""".. _battery_pack:
 
 Simulating a 1P3S Battery Pack Using the Battery Model
--------------------------------------------------------------
+------------------------------------------------------
 """
 
 # %%
@@ -48,11 +48,10 @@ Simulating a 1P3S Battery Pack Using the Battery Model
 #
 # Simulation of a 1P3S lithium-ion battery pack, consisting of three cells
 # connected in series and no parallel branches, undergoing a constant 200 W
-# discharge to represent a high-load condition typical in electric vehicle
-# operations such as acceleration or regenerative braking. Each cell has a
+# discharge to represent a high-load condition. Each cell has a
 # nominal capacity of 14.6 Ah, resulting in a total pack capacity of 14.6 Ah
 # and a nominal voltage range of 10.8–12.6 V, corresponding to an average cell
-# voltage of approximately 3.9 V. The discharge rate equates to about 1.17 C,
+# voltage of approximately 3.9 V. The discharge C-rate equates to about 1.17C,
 # and the total energy of roughly 171 Wh means the discharge would last around
 # 51 minutes (3060 seconds). The simulation model includes active zones for the
 # electrochemical cells and passive zones representing conductive components
@@ -71,7 +70,7 @@ Simulating a 1P3S Battery Pack Using the Battery Model
 #
 # .. note::
 #   Importing the following classes offers streamlined access to key solver settings,
-#   eliminating the need to manually browse through the full settings structure.
+#   eliminating the need to manually browse through the full hierarchy of settings APIs structure.
 
 import os
 
@@ -122,7 +121,6 @@ solver.settings.file.read_mesh(file_name=mesh_file)
 
 graphics = Graphics(solver)
 mesh = Mesh(solver, new_instance_name="mesh-1")
-boundary_conditions = BoundaryConditions(solver)
 
 all_walls = mesh.surfaces_list.allowed_values()
 
@@ -141,36 +139,6 @@ graphics.picture.save_picture(file_name="battery_pack_1.png")
 #    :alt: Battery Pack Mesh
 
 # %%
-# Get all cell zones and boundary names
-# -------------------------------------
-
-# Get all solid cell zones
-all_cell_zones = solver.settings.setup.cell_zone_conditions.solid.get_object_names()
-
-# Get all wall boundaries
-all_wall_names = solver.settings.setup.boundary_conditions.wall.get_object_names()
-
-# CELLS
-cell_zones = [zone for zone in all_cell_zones if "cell_" in zone]
-cell_walls = [
-    wall
-    for wall in all_wall_names
-    if "cell" in wall.lower() and "tab" not in wall.lower()
-]
-
-# TABS
-tab_zones = [zone for zone in all_cell_zones if "tabzone" in zone]
-tab_walls = [wall for wall in all_wall_names if "tabzone" in wall.lower()]
-
-# BUSBARS
-busbar_zones = [zone for zone in all_cell_zones if "bar" in zone and "tab" not in zone]
-busbar_walls = [
-    wall
-    for wall in all_wall_names
-    if "bar" in wall.lower() and "tab" not in wall.lower()
-]
-
-# %%
 # Solver settings
 # ---------------
 
@@ -181,6 +149,13 @@ solver_general_settings.solver.time = "unsteady-1st-order"
 # %%
 # Enable Battery Model (NTGK/DCIR)
 # --------------------------------
+#
+# .. note::
+#   Using wildcards (`*`, `?`, `|`, etc.) instead of explicit zone lists makes the setup
+#   more flexible and scalable. For example:
+#
+#   - ``cell_*`` → selects all zones starting with ``cell_`` (e.g., ``cell_1``, ``cell_2``, ...)
+#   - ``*bar*|*tabzone*`` → selects zones containing either ``bar`` or ``tabzone`` (e.g., ``bar1``, ``n_tabzone_1``,...)
 
 battery_model = Battery(solver)
 
@@ -190,8 +165,8 @@ battery_model.eload_condition.eload_settings.eload_type = "specified-system-powe
 battery_model.eload_condition.eload_settings.power_value = 200  # W  (Total pack power)
 
 # Conductive zones
-battery_model.zone_assignment.active_zone = cell_zones  # Active cells
-battery_model.zone_assignment.passive_zone = tab_zones + busbar_zones
+battery_model.zone_assignment.active_zone = "cell_*"  # Active cells
+battery_model.zone_assignment.passive_zone = "*bar*|*tabzone*"  # Bars zones + tab zones
 
 # External electrical contacts
 battery_model.zone_assignment.negative_tab = ["tab_n"]  # Negative terminal
@@ -237,13 +212,19 @@ cell_zone_conditions = CellZoneConditions(solver)
 
 # Assign e_material to cell_1
 cell_zone_conditions.solid["cell_1"] = {"general": {"material": "e_material"}}
+
 # Copy to cell_2 and cell_3
-cell_zone_conditions.copy(from_="cell_1", to=["cell_2", "cell_3"])
+cell_zone_conditions.copy(
+    from_="cell_1", to="cell_*"
+)  # 'cell_*' matches all zones starting with 'cell_'
 
 # Assign busbar_material to bar1
 cell_zone_conditions.solid["bar1"] = {"general": {"material": "busbar_material"}}
+
 # Copy to all passive zones
-cell_zone_conditions.copy(from_="bar1", to=["bar2"] + tab_zones)
+cell_zone_conditions.copy(from_="bar1", to="*bar*|*tabzone*")
+# '*bar*' matches any zone containing 'bar',
+# '|*tabzone*' matches any zone containing 'tabzone' → OR logic
 
 # %%
 # Boundary conditions
@@ -260,19 +241,18 @@ conditions.wall["wall-cell_1"] = {
 }
 
 # Copy to all other walls (tabs, busbars, cells)
-conditions.copy(
-    from_="wall-cell_1", to=["wall-cell_2", "wall-cell_3"] + tab_walls + busbar_walls
-)
+conditions.copy(from_="wall-cell_1", to="wall*")
 
 # %%
 # Define solution controls and monitors
 # ---------------------------------------
 controls = Controls(solver)
 
+# Disable flow and turbulence equations
 controls.equations = {
     "flow": False,
     "kw": False,
-}  # Disable flow and turbulence equations
+}
 
 solution = Solution(solver)
 
@@ -305,7 +285,7 @@ report_plot.axes.y.number_format.precision = 2  # 2 decimal places for voltage
 definitions.volume["volume_max_temp"] = {
     "report_type": "volume-max",
     "field": "temperature",
-    "cell_zones": all_cell_zones,
+    "cell_zones": "*cell|*bar*|*tabzone*",
     "create_report_file": True,
     "create_report_plot": True,
 }
@@ -341,7 +321,7 @@ vector = Vector(solver, new_instance_name="current-magnitude-vector")
 
 vector.vector_field = "current-density-j"  # A/m²  (Current density vector)
 vector.field = "current-magnitude"  # A/m²  (Magnitude for coloring)
-vector.surfaces_list = ["tab_n", "tab_p"] + all_wall_names
+vector.surfaces_list = ["tab_n", "tab_p", "wall*"]
 vector.options.vector_style = "arrow"
 vector.options.scale = 0.03  # Scale factor for visibility
 vector.vector_opt.fixed_length = True  # Uniform arrow length
@@ -359,7 +339,7 @@ graphics.picture.save_picture(file_name="battery_pack_2.png")
 temp_contour = Contour(solver, new_instance_name="temp_contour")
 
 temp_contour.field = "temperature"  # K
-temp_contour.surfaces_list = ["tab_n", "tab_p"] + all_wall_names
+temp_contour.surfaces_list = ["tab_n", "tab_p", "wall*"]
 temp_contour.colorings.banded = True
 temp_contour.display()
 
@@ -375,7 +355,7 @@ graphics.picture.save_picture(file_name="battery_pack_3.png")
 joule_contour = Contour(solver, new_instance_name="joule_heating_contour")
 
 joule_contour.field = "battery-joule-heat-source"  # W/m³
-joule_contour.surfaces_list = ["tab_n", "tab_p"] + all_wall_names
+joule_contour.surfaces_list = ["tab_n", "tab_p", "wall*"]
 joule_contour.colorings.banded = True
 joule_contour.display()
 
@@ -391,7 +371,7 @@ graphics.picture.save_picture(file_name="battery_pack_4.png")
 total_heat_contour = Contour(solver, new_instance_name="total_heating_contour")
 
 total_heat_contour.field = "total-heat-source"  # W/m³  (Joule + reaction heat)
-total_heat_contour.surfaces_list = ["tab_n", "tab_p"] + all_wall_names
+total_heat_contour.surfaces_list = ["tab_n", "tab_p", "wall*"]
 total_heat_contour.colorings.banded = True
 total_heat_contour.display()
 
@@ -409,10 +389,10 @@ graphics.picture.save_picture(file_name="battery_pack_5.png")
 
 plot_window = GraphicsWindow(solver)
 
-voltage_rplot = Monitor(solver, monitor_set_name="surf-mon-1-rplot")
+voltage_rplot = Monitor(solver, monitor_set_name="voltage_surface_areaavg-rplot")
 plot_window.add_plot(voltage_rplot, position=(0, 0))
 
-temp_rplot = Monitor(solver, monitor_set_name="vol-mon-1-rplot")
+temp_rplot = Monitor(solver, monitor_set_name="volume_max_temp-rplot")
 plot_window.add_plot(temp_rplot, position=(1, 1))
 
 plot_window.renderer = "matplotlib"
@@ -424,7 +404,7 @@ plot_window.show()
 #    :alt: Temperature and voltage Monitor Plot
 
 # %%
-# Save final case and data
+# Save case and data
 # ------------------------
 solver.settings.file.write_case_data(file_name="1P3S_Battery_Pack")
 
