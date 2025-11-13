@@ -216,7 +216,7 @@ cell_zone_conditions.solid["cell_1"] = {"general": {"material": "e_material"}}
 # Copy to cell_2 and cell_3
 cell_zone_conditions.copy(
     from_="cell_1", to="cell_*"
-)  # 'cell_*' matches all zones starting with 'cell_'
+)
 
 # Assign busbar_material to bar1
 cell_zone_conditions.solid["bar1"] = {"general": {"material": "busbar_material"}}
