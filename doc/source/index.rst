@@ -63,7 +63,7 @@ Need Help?
 
 Visit the community or support resources:
 
-- `PyAnsys community forum <https://forum.pyansys.com>`_
+- `Ansys developer forum <https://discuss.ansys.com>`_
 - `Submit a bug report <https://github.com/ansys/pyfluent/issues>`_
 - `Contact support <https://support.ansys.com>`_
 
