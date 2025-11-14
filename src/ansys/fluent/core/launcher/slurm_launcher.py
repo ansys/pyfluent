@@ -70,6 +70,7 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
+from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launch_options import (
@@ -93,7 +94,6 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core import config
 
 logger = logging.getLogger("pyfluent.launcher")
 
