@@ -93,6 +93,7 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+from ansys.fluent.core import config
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -102,6 +103,10 @@ def _get_slurm_job_id(proc: subprocess.Popen):
     for line in proc.stdout:
         if line.startswith(prefix.encode()):
             line = line.decode().removeprefix(prefix).strip()
+            # if the proc.stdout is configured to None, close it after reading the slurm job id
+            # to avoid hang in some systems
+            if config.launch_fluent_stdout is None:
+                proc.stdout.close()
             return int(line)
 
 
