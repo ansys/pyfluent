@@ -77,7 +77,7 @@ class PIMLauncher:
             FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
         product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
+        dimension: Dimension | int = Dimension.THREE,
         precision: Precision | str | None = None,
         processor_count: int | None = None,
         start_timeout: int = 60,
@@ -251,7 +251,7 @@ def launch_remote_fluent(
     product_version: str | None = None,
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
-    dimensionality: str | None = None,
+    dimensionality: Dimension | int = Dimension.THREE,
     launcher_args: Dict[str, Any] | None = None,
     file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
@@ -336,7 +336,7 @@ def launch_remote_fluent(
 
 
 def create_fluent_instance(
-    pim, mode: FluentMode, dimensionality: str | None, product_version: str | None
+    pim, mode: FluentMode, dimensionality: Dimension | int, product_version: str | None
 ):
     """Create a Fluent instance based on mode and dimensionality."""
 

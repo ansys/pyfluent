@@ -474,6 +474,12 @@ def test_fluent_launchers():
         pim_solver_session.exit()
 
 
+        pim_meshing_launcher = create_launcher(
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2, dry_run=True
+        )
+        args = pim_meshing_launcher()
+        assert args[0] == "fluent-2ddp"
+
 @pytest.mark.parametrize(
     "topy,journal_file_names,result,raises",
     [
