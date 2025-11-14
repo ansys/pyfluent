@@ -103,9 +103,9 @@ def _get_slurm_job_id(proc: subprocess.Popen):
     for line in proc.stdout:
         if line.startswith(prefix.encode()):
             line = line.decode().removeprefix(prefix).strip()
-            # if the proc.stdout is configured to None, close it after reading the slurm job id
-            # to avoid hang in some systems
-            if config.launch_fluent_stdout is None:
+            # if the configuration setting 'launch_fluent_stdout' is None,
+            # close proc.stdout after reading the slurm job id to avoid hang in some systems
+            if config.launch_fluent_stdout is None and proc.stdout is not None:
                 proc.stdout.close()
             return int(line)
 
