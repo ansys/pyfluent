@@ -542,9 +542,8 @@ solution_initialization.standard_initialize()
 # Set iteration count and run calculation
 
 run_calculation = RunCalculation(solver_session)
-run_calculation.iter_count = (
-    150  # Iteration count, keep it at 150 for demo purposes only
-)
+# Iteration count, keep it at 150 for demo purposes only
+run_calculation.iter_count = 150
 run_calculation.calculate()
 
 
