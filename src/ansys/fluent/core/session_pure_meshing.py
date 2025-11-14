@@ -24,7 +24,7 @@
 
 import functools
 import os
-from typing import TYPE_CHECKING, Any, Dict, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
@@ -44,6 +44,9 @@ if TYPE_CHECKING:
     from ansys.fluent.core.generated.datamodel_252.meshing_utilities import (
         Root as meshing_utilities_root,
     )
+    from ansys.fluent.core.generated.datamodel_252.meshing_workflow import (
+        Root as meshing_workflow_root,
+    )
     from ansys.fluent.core.generated.datamodel_252.part_management import (
         Root as partmanagement_root,
     )
@@ -54,7 +57,6 @@ if TYPE_CHECKING:
         Root as preferences_root,
     )
     from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
-    from ansys.fluent.core.generated.datamodel_252.meshing_workflow import Root as meshing_workflow_root
     from ansys.fluent.core.generated.meshing.tui_252 import main_menu
 
 
@@ -83,7 +85,7 @@ class PureMeshing(BaseSession):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """PureMeshing session.
 
@@ -101,7 +103,7 @@ class PureMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(PureMeshing, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,

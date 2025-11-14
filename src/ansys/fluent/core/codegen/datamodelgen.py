@@ -28,7 +28,7 @@ import os
 from pathlib import Path
 import shutil
 import string
-from typing import Any, Dict
+from typing import Any
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
@@ -230,7 +230,7 @@ class DataModelGenerator:
     def __init__(self, version, static_infos: dict, verbose: bool = False):
         self.version = version
         self._server_static_infos = static_infos
-        self._static_info: Dict[str, DataModelStaticInfo] = {}
+        self._static_info: dict[str, DataModelStaticInfo] = {}
         self._verbose = verbose
         if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
             self._static_info["workflow"] = DataModelStaticInfo(

@@ -24,7 +24,7 @@
 
 import logging
 import threading
-from typing import TYPE_CHECKING, Any, Dict, cast
+from typing import TYPE_CHECKING, Any, cast
 import warnings
 import weakref
 
@@ -99,7 +99,7 @@ class Solver(BaseSession):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Solver session.
 
@@ -117,7 +117,7 @@ class Solver(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(Solver, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
@@ -136,7 +136,7 @@ class Solver(BaseSession):
         fluent_connection,
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         self._tui_service = self._datamodel_service_tui
         self._se_service = self._datamodel_service_se
@@ -305,7 +305,7 @@ class Solver(BaseSession):
         except Exception as ex:
             raise RuntimeError("Unable to read mesh") from ex
         state = self.settings.get_state()
-        super(Solver, self)._build_from_fluent_connection(
+        super()._build_from_fluent_connection(
             bg_session._fluent_connection,
             bg_session._fluent_connection._connection_interface.scheme_eval,
             event_type=SolverEvent,
@@ -357,7 +357,7 @@ class Solver(BaseSession):
 
     def __getattribute__(self, item: str):
         try:
-            _connection = super(Solver, self).__getattribute__("_fluent_connection")
+            _connection = super().__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
         if _connection is None and item not in [
@@ -370,9 +370,9 @@ class Solver(BaseSession):
                 f"'{__class__.__name__}' object has no attribute '{item}'"
             )
         try:
-            return super(Solver, self).__getattribute__(item)
+            return super().__getattribute__(item)
         except AttributeError:
-            settings = super(Solver, self).__getattribute__("settings")
+            settings = super().__getattribute__("settings")
             if item in settings.child_names:
                 warnings.warn(
                     f"'{item}' is deprecated. Use 'settings.{item}' instead.",

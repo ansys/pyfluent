@@ -105,7 +105,7 @@ def get_default_config() -> dict:
     file_name = os.path.abspath(__file__)
     file_dir = os.path.dirname(file_name)
     yaml_path = os.path.join(file_dir, "logging_config.yaml")
-    with open(yaml_path, "rt") as f:
+    with open(yaml_path) as f:
         config = yaml.safe_load(f)
     return config
 

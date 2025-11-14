@@ -52,7 +52,7 @@ Display results
 
 from math import ceil
 import os
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.launcher import launch_fluent
@@ -62,8 +62,8 @@ BASE_DP_NAME = "Base DP"
 
 
 def convert_design_point_parameter_units(
-    value: Dict[str, float | int | str],
-) -> Dict[str, float | int]:
+    value: dict[str, float | int | str],
+) -> dict[str, float | int]:
     """Convert design point parameter units."""
 
     def conv(val):

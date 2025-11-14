@@ -22,7 +22,7 @@
 
 """Wrapper over the streaming gRPC services of Fluent."""
 
-from typing import Generator, List, Tuple
+from collections.abc import Generator
 
 
 class _StreamingServiceHelper:
@@ -36,7 +36,7 @@ class _StreamingServiceHelper:
         End streaming
     """
 
-    def __init__(self, stub, metadata: List[Tuple[str, str]], stream_begin_method):
+    def __init__(self, stub, metadata: list[tuple[str, str]], stream_begin_method):
         """__init__ method of StreamingService class."""
         self._stub = stub
         self._metadata = metadata
@@ -72,7 +72,7 @@ class StreamingService:
         End streaming
     """
 
-    def __init__(self, stub, metadata: List[Tuple[str, str]]):
+    def __init__(self, stub, metadata: list[tuple[str, str]]):
         """__init__ method of StreamingService class."""
         self._stub = stub
         self._metadata = metadata

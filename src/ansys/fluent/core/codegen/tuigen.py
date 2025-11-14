@@ -43,7 +43,7 @@ import platform
 import shutil
 import string
 import subprocess
-from typing import Any, Dict
+from typing import Any
 import uuid
 
 from defusedxml.ElementTree import parse
@@ -194,7 +194,7 @@ class _RenameModuleUnpickler(pickle.Unpickler):
         if module == "tuigen":
             renamed_module = "ansys.fluent.core.codegen.tuigen"
 
-        return super(_RenameModuleUnpickler, self).find_class(renamed_module, name)
+        return super().find_class(renamed_module, name)
 
 
 class TUIGenerator:
@@ -217,7 +217,7 @@ class TUIGenerator:
         self._static_infos = static_infos
         self._verbose = verbose
 
-    def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
+    def _populate_menu(self, menu: _TUIMenu, info: dict[str, Any]):
         for child_menu_name, child_menu_info in sorted(info["menus"].items()):
             if _is_valid_tui_menu_name(child_menu_name):
                 child_menu = _TUIMenu(

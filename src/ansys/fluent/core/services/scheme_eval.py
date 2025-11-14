@@ -32,7 +32,8 @@ Example
 0.7
 """
 
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 from deprecated.sphinx import deprecated
 import grpc

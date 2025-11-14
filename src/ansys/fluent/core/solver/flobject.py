@@ -41,6 +41,7 @@ Example
 from __future__ import annotations
 
 import collections
+from collections.abc import Callable
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
@@ -55,13 +56,9 @@ import sys
 import types
 from typing import (
     Any,
-    Callable,
-    Dict,
     ForwardRef,
     Generic,
-    List,
     NewType,
-    Tuple,
     TypeVar,
     Union,
     _eval_type,
@@ -119,12 +116,12 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
-RealListType = List[RealType]
-RealVectorType = Tuple[RealType, RealType, RealType]
-IntListType = List[int]
-StringListType = List[str]
-BoolListType = List[bool]
+RealType = NewType("real", float | str)  # constant or expression
+RealListType = list[RealType]
+RealVectorType = tuple[RealType, RealType, RealType]
+IntListType = list[int]
+StringListType = list[str]
+BoolListType = list[bool]
 PrimitiveStateType = Union[
     str,
     RealType,
@@ -135,8 +132,8 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = Dict[str, "StateType"]
-ListStateType = List["StateType"]
+DictStateType = dict[str, "StateType"]
+ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
@@ -403,7 +400,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: type | Tuple[type] | None = None,
+        attr_type_or_types: type | tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -522,7 +519,7 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+    def get_completer_info(self, prefix="", excluded=None) -> list[list[str]]:
         """Get completer info of all children.
 
         Returns
@@ -2006,8 +2003,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Iterator for child named objects."""
         for cname in self.child_names:
             try:
-                for item in getattr(self, cname):
-                    yield item
+                yield from getattr(self, cname)
             except Exception:
                 continue
 

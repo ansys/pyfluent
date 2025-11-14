@@ -27,7 +27,7 @@ variables like rpvars but instead through the high-level object-based
 interfaces: solver settings objects and task-based meshing workflow.
 """
 
-from typing import Any, List
+from typing import Any
 
 import ansys.fluent.core.filereader.lispy as lispy
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -83,7 +83,7 @@ class RPVars:
             else (self._get_var(var) if var is not None else self._get_vars())
         )
 
-    def allowed_values(self) -> List[str]:
+    def allowed_values(self) -> list[str]:
         """Returns list with the allowed rpvars names.
 
         Returns

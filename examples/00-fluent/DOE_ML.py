@@ -50,7 +50,6 @@ Design of Experiments and Machine Learning model building
 # flake8: noqa: E402
 
 import os
-from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -250,8 +249,8 @@ np.set_printoptions(precision=2)
 def display_scores(scores):
     """Display scores."""
     print("\nCross-Validation Scores:", scores)
-    print("Mean:%0.2f" % (scores.mean()))
-    print("Std. Dev.:%0.2f" % (scores.std()))
+    print(f"Mean:{scores.mean():0.2f}")
+    print(f"Std. Dev.:{scores.std():0.2f}")
 
 
 def fit_and_predict(model):
@@ -268,8 +267,8 @@ def fit_and_predict(model):
     test_predictions = model.predict(X_test)
     print(train_predictions.shape[0])
     print("\n\nCoefficient Of Determination")
-    print("Train Data R2 Score: %0.3f" % (r2_score(train_predictions, y_train)))
-    print("Test Data R2 Score: %0.3f" % (r2_score(test_predictions, y_test)))
+    print(f"Train Data R2 Score: {r2_score(train_predictions, y_train):0.3f}")
+    print(f"Test Data R2 Score: {r2_score(test_predictions, y_test):0.3f}")
     print(
         "\n\nPredictions - Ground Truth (Kelvin): ", (test_predictions - y_test), "\n"
     )
@@ -439,8 +438,8 @@ train_predictions = np.ravel(train_predictions.T)
 test_predictions = np.ravel(test_predictions.T)
 print(test_predictions.shape)
 
-print("\n\nTrain R2: %0.3f" % (r2_score(train_predictions, y_train)))
-print("Test R2: %0.3f" % (r2_score(test_predictions, y_test)))
+print(f"\n\nTrain R2: {r2_score(train_predictions, y_train):0.3f}")
+print(f"Test R2: {r2_score(test_predictions, y_test):0.3f}")
 print("Predictions - Ground Truth (Kelvin): ", (test_predictions - y_test))
 
 fig = plt.figure(figsize=(12, 5))

@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
@@ -35,7 +36,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import Any, TypeVar
 import weakref
 
 from deprecated.sphinx import deprecated
@@ -115,7 +116,7 @@ class MonitorThread(threading.Thread):
     def __init__(self):
         """Initialize MonitorThread."""
         super().__init__(daemon=True)
-        self.cbs: List[Callable] = []
+        self.cbs: list[Callable] = []
 
     def run(self) -> None:
         """Run monitor thread."""
@@ -364,7 +365,7 @@ class FluentConnection:
         Close the Fluent connection and exit Fluent.
     """
 
-    _on_exit_cbs: List[Callable] = []
+    _on_exit_cbs: list[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: MonitorThread | None = None
 
@@ -440,7 +441,7 @@ class FluentConnection:
             ip, port = _get_ip_and_port(ip, port)
             self._channel = _get_channel(ip, port)
             self._channel_str = f"{ip}:{port}"
-        self._metadata: List[Tuple[str, str]] = (
+        self._metadata: list[tuple[str, str]] = (
             [("password", password)] if password else []
         )
 

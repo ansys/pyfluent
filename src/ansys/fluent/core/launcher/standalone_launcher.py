@@ -43,7 +43,6 @@ from typing import Any, TypedDict
 
 from typing_extensions import Unpack
 
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
     _raise_non_gui_exception_in_windows,

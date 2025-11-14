@@ -22,13 +22,14 @@
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 
+from collections.abc import Callable, Iterator, Sequence
 from enum import Enum
 import functools
 import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
+from typing import Any, NoReturn, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
@@ -2111,7 +2112,7 @@ class PyCommandArguments(PyStateContainer):
                 self.path[-1][1],
             )
         except Exception as exc:
-            logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
+            logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.

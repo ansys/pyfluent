@@ -234,6 +234,7 @@ def launch_fluent(
     **kwargs: Unpack[LaunchFluentArgs],
 ) -> dict[str, Any]: ...
 
+
 def _custom_converter_gui(kwargs):
     old_val = kwargs.pop("show_gui", None)
     kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)

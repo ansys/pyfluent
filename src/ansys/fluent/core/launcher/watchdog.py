@@ -191,7 +191,7 @@ def launch(
     else:
         if watchdog_err.is_file():
             with open(watchdog_err) as f:
-                err_content = "Watchdog - %s" % f.read().replace("\n", "")
+                err_content = "Watchdog - {}".format(f.read().replace("\n", ""))
             watchdog_err.unlink()
             logger.error(err_content)
             if pyfluent.config.watchdog_exception_on_error:

@@ -61,6 +61,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm_solver_session = slurm_solver_launcher()
 """
 
+from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor
 import inspect
 import logging
@@ -68,7 +69,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Callable, Dict, Generic
+from typing import Any, Generic
 
 from typing_extensions import TypeVar
 
@@ -303,7 +304,7 @@ class SlurmLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
         additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         case_file_name: "PathType | None" = None,

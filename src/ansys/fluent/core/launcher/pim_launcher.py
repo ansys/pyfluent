@@ -39,7 +39,7 @@ import logging
 import os
 import tempfile
 import time
-from typing import Any, Dict, TypedDict
+from typing import Any, TypedDict
 
 from typing_extensions import Unpack
 
@@ -266,7 +266,7 @@ def launch_remote_fluent(
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: str | None = None,
-    launcher_args: Dict[str, Any] | None = None,
+    launcher_args: dict[str, Any] | None = None,
     file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
@@ -372,7 +372,7 @@ def create_fluent_connection(
     channel,
     cleanup_on_exit: bool,
     instance,
-    launcher_args: Dict[str, Any] | None,
+    launcher_args: dict[str, Any] | None,
 ):
     """Create a Fluent connection."""
 

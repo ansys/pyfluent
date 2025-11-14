@@ -33,7 +33,6 @@ from ansys.fluent.core import (
     session_solver_aero,
     session_solver_icing,
 )
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.container_launcher import (
     ContainerArgsWithoutDryRun,
     DockerLauncher,

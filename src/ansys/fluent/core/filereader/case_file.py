@@ -43,7 +43,6 @@ import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Dict, List
 
 import defusedxml.ElementTree as ET
 import numpy as np
@@ -73,7 +72,7 @@ class InputParameterOld:
         a string, qualified by units
     """
 
-    def __init__(self, raw_data: List) -> None:
+    def __init__(self, raw_data: list) -> None:
         """Initialize InputParameter.
 
         Parameters
@@ -118,7 +117,7 @@ class InputParameter:
         a string, qualified by units
     """
 
-    def __init__(self, raw_data: Dict[str, str]) -> None:
+    def __init__(self, raw_data: dict[str, str]) -> None:
         """Initialize InputParameter.
 
         Parameters
@@ -420,7 +419,7 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> List[InputParameter] | List[InputParameterOld]:
+    def input_parameters(self) -> list[InputParameter] | list[InputParameterOld]:
         """Get the input parameters.
 
         Returns
@@ -443,7 +442,7 @@ class RPVarProcessor:
         except ValueError:
             return [InputParameterOld(param) for param in rp_var_params]
 
-    def output_parameters(self) -> List[OutputParameter]:
+    def output_parameters(self) -> list[OutputParameter]:
         """Get the output parameters.
 
         Returns
@@ -573,7 +572,7 @@ class SettingsFile(RPVarProcessor):
         """
         if settings_file_name:
             try:
-                with open(settings_file_name, "r") as file:
+                with open(settings_file_name) as file:
                     rp_vars_str = file.read()
                 if not rp_vars_str.startswith("(rp ("):
                     raise RuntimeError("Not a valid settings file.")
@@ -733,7 +732,7 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_file_name_from_flprj(flprj_file):
-    with open(flprj_file, "r") as file:
+    with open(flprj_file) as file:
         content = file.read()
         content = remove_unsupported_xml_chars(content)
         root = ET.fromstring(content)

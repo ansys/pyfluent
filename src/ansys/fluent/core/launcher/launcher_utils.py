@@ -29,7 +29,7 @@ import platform
 import socket
 import subprocess
 import time
-from typing import Any, Dict
+from typing import Any
 import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument
@@ -92,12 +92,12 @@ def is_windows():
     return platform.system() == "Windows"
 
 
-def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
     import ansys.fluent.core as pyfluent
 
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
-    kwargs: Dict[str, Any] = {}
+    kwargs: dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
     else:

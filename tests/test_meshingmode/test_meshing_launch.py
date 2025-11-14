@@ -182,12 +182,12 @@ def test_fake_session():
 
         def __getattribute__(self, item: str):
             if item == "_switched":
-                return super(fake_session, self).__getattribute__(item)
+                return super().__getattribute__(item)
 
             if self._switched:
                 return None
 
-            return super(fake_session, self).__getattribute__(item)
+            return super().__getattribute__(item)
 
         def foo(self):
             return 42

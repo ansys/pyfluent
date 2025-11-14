@@ -76,7 +76,7 @@ import os
 from pathlib import Path, PurePosixPath
 from pprint import pformat
 import tempfile
-from typing import Any, List
+from typing import Any
 import warnings
 
 import ansys.fluent.core as pyfluent
@@ -150,7 +150,7 @@ def dict_to_str(dict: dict) -> str:
     version="v0.23.0",
 )
 def configure_container_dict(
-    args: List[str],
+    args: list[str],
     mount_source: str | Path | None = None,
     mount_target: str | Path | None = None,
     timeout: int | None = None,
@@ -465,7 +465,7 @@ def configure_container_dict(
 
 
 def start_fluent_container(
-    args: List[str],
+    args: list[str],
     container_dict: dict | None = None,
     start_timeout: int = 60,
     compose_config: ComposeConfig | None = None,

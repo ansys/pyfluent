@@ -35,13 +35,12 @@ Example
 """
 
 from inspect import signature
-from typing import List
 
 import ansys.fluent.core.solver.flobject as flobject
 
 
 def walk_api(
-    api_cls, on_each_path, current_path: str | List[str] = "", api_item_type: str = ""
+    api_cls, on_each_path, current_path: str | list[str] = "", api_item_type: str = ""
 ):
     """
     Recursively traverse the API hierarchy, calling `on_each_path` for each item.
