@@ -37,14 +37,14 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     file_name = Path(pyfluent.config.examples_path) / "jou_test_general.py"
     solver_session.journal.start(file_name.as_posix())
     ###
-    assert solver_session.setup.models.energy.enabled()
+    assert solver_session.settings.setup.models.energy.enabled()
     scheme_eval = solver_session.scheme.eval
     assert scheme_eval("(case-valid?)")
     ###
     solver_session.tui.mesh.check()
     solver_session.tui.define.units("length", "in")
     assert scheme_eval('(units/quantity-info "length")')[-1] == "in"
-    general_solver = solver_session.setup.general.solver
+    general_solver = solver_session.settings.setup.general.solver
     general_solver.time.allowed_values()
     assert general_solver.time.allowed_values() == [
         "steady",
@@ -58,8 +58,8 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     general_solver.time = "unsteady-2nd-order-bounded"
     general_solver.time = "steady"
 
-    # solver.setup.general.gravity = {"gravity": True, "y_component": -9.81}
-    # solver.mesh.scale(x_scale=0.001, y_scale=0.001, z_scale=0.001)
+    # solver.settings.setup.general.gravity = {"gravity": True, "y_component": -9.81}
+    # solver.settings.mesh.scale(x_scale=0.001, y_scale=0.001, z_scale=0.001)
 
     assert general_solver.type.get_attr("allowed-values") == [
         "pressure-based",
@@ -72,7 +72,7 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
         "density-based-explicit",
     ]
     # Below line is commented due to TFS Bug 714494
-    # assert solver_session.setup.general.solver.type.default_value() == "pressure-based"
+    # assert solver_session.settings.setup.general.solver.type.default_value() == "pressure-based"
     assert general_solver.type.is_active()
     assert not general_solver.type.is_read_only()
     general_solver.type = "density-based-implicit"
@@ -82,7 +82,7 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     general_solver.type = "pressure-based"
     assert general_solver.type() == "pressure-based"
 
-    auto_save = solver_session.file.auto_save
+    auto_save = solver_session.settings.file.auto_save
     auto_save.data_frequency = 10
     assert auto_save.data_frequency.default_value() == 0
     assert auto_save.data_frequency() == 10
@@ -90,7 +90,7 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     assert auto_save.case_frequency() == "each-time"
     auto_save.root_name = "file_auto_save"
     assert auto_save.root_name() == "file_auto_save"
-    solver_session.setup.reference_values.compute(
+    solver_session.settings.setup.reference_values.compute(
         from_zone_name="outlet", from_zone_type="pressure-outlet"
     )
     solver_session.journal.stop()
@@ -110,11 +110,11 @@ def test_disk_2d_setup(disk_settings_session):
     assert session.settings.is_active()
     assert session.is_server_healthy()
     ###
-    assert not session.setup.models.energy.enabled()
+    assert not session.settings.setup.models.energy.enabled()
     assert session.scheme.eval("(case-valid?)")
     session.tui.mesh.check()
 
-    session_solver = session.setup.general.solver
+    session_solver = session.settings.setup.general.solver
     assert session_solver.two_dim_space.get_attr("allowed-values") == [
         "swirl",
         "axisymmetric",
@@ -128,4 +128,4 @@ def test_disk_2d_setup(disk_settings_session):
     session_solver.two_dim_space = "planar"
     assert session_solver.two_dim_space() == "planar"
     # Bug 682773
-    # session.setup.general.gravity = {"gravity": True, "x_component": -9.81}
+    # session.settings.setup.general.gravity = {"gravity": True, "x_component": -9.81}
