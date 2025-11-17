@@ -107,6 +107,14 @@ class InactiveObjectError(RuntimeError):
         super().__init__(f"'{python_path}' is currently inactive.")
 
 
+class ReadOnlyActionError(RuntimeError):
+    """Read-only action execution."""
+
+    def __init__(self, python_path):
+        """Initialize ReadOnlyObjectError."""
+        super().__init__(f"'{python_path}' is read-only and cannot be executed.")
+
+
 class _InlineConstants:
     is_active = "active?"
     is_read_only = "read-only?"
@@ -1882,6 +1890,8 @@ class Command(BaseCommand):
         """Call a command with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
+        if self.is_read_only():
+            raise ReadOnlyActionError(self.python_path)
         try:
             return self.execute_command(**kwds)
         except KeyboardInterrupt:
@@ -1896,6 +1906,8 @@ class CommandWithPositionalArgs(BaseCommand):
         """Call a command with the specified positional and keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
+        if self.is_read_only():
+            raise ReadOnlyActionError(self.python_path)
         try:
             return self.execute_command(*args, **kwds)
         except KeyboardInterrupt:
@@ -1910,6 +1922,8 @@ class Query(Action):
         """Call a query with the specified keyword arguments."""
         if not self.is_active():
             raise InactiveObjectError(self.python_path)
+        if self.is_read_only():
+            raise ReadOnlyActionError(self.python_path)
         kwds = _get_new_keywords(self, **kwds)
         scmKwds = {}
         for arg, value in kwds.items():
