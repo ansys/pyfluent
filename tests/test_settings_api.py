@@ -850,6 +850,7 @@ def test_set_state_via_call(mixing_elbow_settings_session):
     solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
 
 
+@pytest.mark.fluent_version(">=26.1")
 def test_read_only_command_execution(mixing_elbow_case_session):
     solver = mixing_elbow_case_session
     contour = solver.settings.results.graphics.contour.create()
