@@ -111,7 +111,7 @@ class ReadOnlyActionError(RuntimeError):
     """Read-only action execution."""
 
     def __init__(self, python_path):
-        """Initialize ReadOnlyObjectError."""
+        """Initialize ReadOnlyActionError."""
         super().__init__(f"'{python_path}' is read-only and cannot be executed.")
 
 
