@@ -70,6 +70,7 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
+from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launch_options import (
@@ -102,6 +103,10 @@ def _get_slurm_job_id(proc: subprocess.Popen):
     for line in proc.stdout:
         if line.startswith(prefix.encode()):
             line = line.decode().removeprefix(prefix).strip()
+            # if the configuration setting 'launch_fluent_stdout' is None,
+            # close proc.stdout after reading the slurm job id to avoid hang in some systems
+            if config.launch_fluent_stdout is None and proc.stdout is not None:
+                proc.stdout.close()
             return int(line)
 
 
