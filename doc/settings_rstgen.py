@@ -288,6 +288,8 @@ if __name__ == "__main__":
 
     image_tag = config.fluent_image_tag
     version = get_version_for_file_name(image_tag.lstrip("v"))
+    print("Selecting Fluent version:", version)
+    print("Set the environment variable FLUENT_IMAGE_TAG to change the version.")
     settings = importlib.import_module(
         f"ansys.fluent.core.generated.solver.settings_{version}"
     )
