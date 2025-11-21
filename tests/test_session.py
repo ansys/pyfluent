@@ -695,6 +695,41 @@ def test_new_launch_fluent_api():
     solver.exit()
     solver_connected.exit()
 
+    solver_aero = pyfluent.SolverAero.from_install()
+    assert solver_aero.is_server_healthy()
+
+    ip = solver_aero.connection_properties.ip
+    port = solver_aero.connection_properties.port
+    password = solver_aero.connection_properties.password
+
+    solver_aero_connected = pyfluent.SolverAero.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert solver_aero_connected.is_server_healthy()
+
+    solver_aero.exit()
+    solver_aero_connected.exit()
+
+    meshing = pyfluent.Meshing.from_install()
+    assert meshing.is_server_healthy()
+
+    ip = meshing.connection_properties.ip
+    port = meshing.connection_properties.port
+    password = meshing.connection_properties.password
+
+    meshing_connected = pyfluent.Meshing.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert meshing_connected.is_server_healthy()
+
+    with pytest.raises(RuntimeError):
+        meshing_connected = pyfluent.PureMeshing.from_connection(
+            ip=ip, port=port, password=password
+        )
+
+    meshing.exit()
+    meshing_connected.exit()
+
 
 def test_new_launch_fluent_api_from_container():
     import ansys.fluent.core as pyfluent
