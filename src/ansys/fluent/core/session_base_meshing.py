@@ -140,7 +140,7 @@ class BaseMeshing:
     def watertight_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, "meshing_workflow"),
             self.meshing,
             self.get_fluent_version(),
             initialize,
@@ -150,7 +150,7 @@ class BaseMeshing:
     def fault_tolerant_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, "meshing_workflow"),
             self.meshing,
             self.PartManagement,
             self.PMFileManagement,
@@ -162,7 +162,7 @@ class BaseMeshing:
     def two_dimensional_meshing_workflow(self, initialize: bool = True):
         """Data model root of the workflow."""
         self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, "meshing_workflow"),
             self.meshing,
             self.get_fluent_version(),
             initialize,
@@ -172,7 +172,7 @@ class BaseMeshing:
     def topology_based_meshing_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, "meshing_workflow"),
             self.meshing,
             self.get_fluent_version(),
             initialize,
@@ -182,7 +182,7 @@ class BaseMeshing:
     def load_workflow(self, file_path: PathType):
         """Datamodel root of workflow."""
         self._current_workflow = LoadWorkflow(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, "meshing_workflow"),
             self.meshing,
             os.fspath(file_path),
             self.get_fluent_version(),
@@ -192,7 +192,7 @@ class BaseMeshing:
     def create_workflow(self, initialize: bool = True):
         """Datamodel root of the workflow."""
         self._current_workflow = CreateWorkflow(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, "meshing_workflow"),
             self.meshing,
             self.get_fluent_version(),
             initialize,

@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 
+from collections import OrderedDict
 import re
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
@@ -150,6 +151,55 @@ class Workflow:
             names.append(name.split(":")[0])
         return names
 
+    def children(self):
+        ordered_names = _convert_task_list_to_display_names(
+            self._workflow,
+            self._workflow.general.workflow.task_list(),
+        )
+        name_to_task = {
+            task_obj.name(): TaskObject(
+                task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+            )
+            for task_obj in self.tasks()
+        }
+
+        sorted_dict = OrderedDict()
+
+        for name in ordered_names:
+            if name not in name_to_task:
+                continue
+            task_obj = name_to_task[name]
+            sorted_dict[name] = task_obj
+
+        return sorted_dict
+
+    def ordered_tasks(self):
+        ordered_names = _convert_task_list_to_display_names(
+            self._workflow,
+            self._workflow.general.workflow.task_list(),
+        )
+        name_to_task = {
+            task_obj.name(): TaskObject(
+                task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+            )
+            for task_obj in self.tasks()
+        }
+
+        sorted_dict = OrderedDict()
+
+        for name in ordered_names:
+            if name not in name_to_task:
+                continue
+            task_obj = name_to_task[name]
+            sorted_dict[name] = task_obj
+
+            sub_task_names = task_obj.task_list()
+            if sub_task_names:
+                for sub_task_name in sub_task_names:
+                    sorted_dict[sub_task_name] = name_to_task[sub_task_name]
+
+        return sorted_dict
+
     def delete_tasks(self, list_of_tasks: list[str]):
         """Delete the provided list of tasks.
 
@@ -185,7 +235,7 @@ class Workflow:
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
-            return TaskObject(self._task_dict[item], item, self._workflow)
+            return TaskObject(self._task_dict[item], item, self._workflow, self)
         return getattr(self._workflow, item)
 
     def __call__(self):
@@ -204,11 +254,12 @@ class Workflow:
 class TaskObject:
     """TaskObject"""
 
-    def __init__(self, task_object, base_name, workflow):
+    def __init__(self, task_object, base_name, workflow, parent):
         """__init__ method of TaskObject class."""
         super().__setattr__("_task_object", task_object)
         super().__setattr__("_name", base_name)
         super().__setattr__("_workflow", workflow)
+        super().__setattr__("_parent", parent)
         self._cache = {}
 
     def get_next_possible_tasks(self):
@@ -236,6 +287,7 @@ class TaskObject:
         return self._NextTask(self)
 
     class _NextTask:
+        # Comment the code for better explanation.
         def __init__(self, base_task):
             """Initialize an ``_NextTask`` instance."""
             self._base_task = base_task
@@ -286,16 +338,28 @@ class TaskObject:
         task_obj = super().__getattribute__("_task_object")
         name = super().__getattribute__("_name")
         workflow = super().__getattribute__("_workflow")
+        parent = super().__getattribute__("_parent")
         name_1 = name
         name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
         try:
-            return TaskObject(
-                getattr(workflow.task_object, name_1)[name_2], name_1, workflow
-            )
+            task_obj = getattr(workflow.task_object, name_1)[name_2]
+            if task_obj.task_type == "Compound Child":
+                temp_parent = self
+            else:
+                temp_parent = parent
+            return TaskObject(task_obj, name_1, workflow, temp_parent)
         except LookupError:
+            task_obj = getattr(workflow.task_object, name_1)[key]
+            if task_obj.task_type == "Compound Child":
+                temp_parent = self
+            else:
+                temp_parent = parent
             try:
                 return TaskObject(
-                    getattr(workflow.task_object, name_1)[key], name_1, workflow
+                    getattr(workflow.task_object, name_1)[key],
+                    name_1,
+                    workflow,
+                    temp_parent,
                 )
             except LookupError as ex2:
                 raise LookupError(
@@ -317,7 +381,142 @@ class TaskObject:
         else:
             return []
 
+    def children(self):
+        sorted_dict = OrderedDict()
+        if not self.task_list():
+            return sorted_dict
+
+        workflow = super().__getattribute__("_workflow")
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+        name_to_task = {
+            val: TaskObject(
+                getattr(workflow.task_object, key)[val], key, workflow, self
+            )
+            for key, val in type_to_name.items()
+        }
+        for name in self.task_list():
+            if name not in name_to_task:
+                continue
+            task_obj = name_to_task[name]
+            sorted_dict[name] = task_obj
+        return sorted_dict
+
+    @staticmethod
+    def _get_next_key(input_dict, current_key):
+        keys = list(input_dict)
+        idx = keys.index(current_key)
+        if idx == len(keys) - 1:
+            return
+        return keys[idx + 1]
+
+    @staticmethod
+    def _get_previous_key(input_dict, current_key):
+        keys = list(input_dict)
+        idx = keys.index(current_key)
+        if idx == 0:
+            return
+        return keys[idx - 1]
+
+    def parent(self):
+        parent = super().__getattribute__("_parent")
+        return parent
+
+    def next(self):
+        parent = super().__getattribute__("_parent")
+        task_dict = parent.children()
+        next_key = self._get_next_key(task_dict, self.name())
+        if next_key is None:
+            return
+        return task_dict[next_key]
+
+    def previous(self):
+        parent = super().__getattribute__("_parent")
+        task_dict = parent.children()
+        previous_key = self._get_previous_key(task_dict, self.name())
+        if previous_key is None:
+            return
+        return parent.children()[previous_key]
+
+    def ordered_tasks(self):
+        sorted_dict = OrderedDict()
+        if not self.task_list():
+            return sorted_dict
+        workflow = super().__getattribute__("_workflow")
+
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+
+        name_to_task = {
+            val: TaskObject(
+                getattr(workflow.task_object, key)[val], key, workflow, self
+            )
+            for key, val in type_to_name.items()
+        }
+
+        for name in self.task_list():
+            if name not in name_to_task:
+                continue
+            task_obj = name_to_task[name]
+            sorted_dict[name] = task_obj
+
+        return sorted_dict
+
+    def get_sorted_tasks(self):
+        workflow = super().__getattribute__("_workflow")
+        sorted_dict = OrderedDict()
+        ordered_names = _convert_task_list_to_display_names(
+            workflow,
+            workflow.general.workflow.task_list(),
+        )
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+
+        name_to_task = {
+            val: TaskObject(
+                getattr(workflow.task_object, key)[val], key, workflow, self
+            )
+            for key, val in type_to_name.items()
+        }
+
+        for name in ordered_names:
+            if name not in name_to_task:
+                continue
+            task_obj = name_to_task[name]
+            sorted_dict[name] = task_obj
+
+            sub_task_names = task_obj.task_list()
+            if sub_task_names:
+                for sub_task_name in sub_task_names:
+                    sorted_dict[sub_task_name] = name_to_task[sub_task_name]
+
+        return sorted_dict
+
+    def get_upstream_tasks(self):
+        upstream_tasks = OrderedDict()
+        for name, task_obj in self.get_sorted_tasks().items():
+            if name == self.name():
+                break
+            upstream_tasks[name] = task_obj
+        return upstream_tasks
+
+    def get_downstream_tasks(self):
+        name_found = False
+        downstream_tasks = OrderedDict()
+        for name, task_obj in self.get_sorted_tasks().items():
+            if name_found:
+                downstream_tasks[name] = task_obj
+            if name == self.name():
+                name_found = True
+        return downstream_tasks
+
     def delete(self):
         """."""
         workflow = super().__getattribute__("_workflow")
         workflow.general.delete_tasks(list_of_tasks=[self.name()])
+
+    def __repr__(self):
+        return self.name()
