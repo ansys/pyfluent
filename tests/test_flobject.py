@@ -295,6 +295,7 @@ class Command(Setting):
     def __init__(self, parent):
         self.attrs = super().attrs.copy()
         self.attrs["arguments-aliases"] = lambda self: {}
+        self.attrs["read-only?"] = lambda self: False
         super().__init__(parent)
 
     def __call__(self, **kwds):
