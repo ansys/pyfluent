@@ -130,7 +130,30 @@ def _write_common(initial_param, r, cls, attr):
     _generate_table_for_rst(r, data_dict)
 
 
+parent_name = "design"
+
+
+def _has_parent(cls_name, parent_cls_name):
+    if cls_name == "root":
+        return True
+    if cls_name == parent_cls_name:
+        return True
+    parent_names = [cls_name]
+    while "root" not in parent_names:
+        new_parent_names = []
+        for name in parent_names:
+            parents = parents_dict.get(name, [])
+            for parent in parents:
+                if parent.__name__ == parent_cls_name:
+                    return True
+                new_parent_names.append(parent.__name__)
+        parent_names = new_parent_names
+    return False
+
+
 def _populate_rst_from_settings(rst_dir, cls, version):
+    if not _has_parent(cls.__name__, parent_name):
+        return
     istr1 = _get_indent_str(1)
     cls_name = cls.__name__
     cls_orig_name = cls._python_name
