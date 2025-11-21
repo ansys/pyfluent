@@ -19,9 +19,9 @@ help:
 	@if [ -z "$$BUILD_ALL_DOCS" ]; then \
 		echo "BUILD_ALL_DOCS is not set. Skipping RST file generation."; \
 	else \
-		python api_rstgen.py; \
-		python datamodel_rstgen.py; \
-		python tui_rstgen.py; \
+# 		python api_rstgen.py; \
+# 		python datamodel_rstgen.py; \
+# 		python tui_rstgen.py; \
 		python settings_rstgen.py; \
 	fi
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
