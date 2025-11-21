@@ -139,11 +139,13 @@ def _has_parent(cls_name, parent_cls_name):
     if cls_name == parent_cls_name:
         return True
     parent_names = [cls_name]
-    while "root" not in parent_names:
+    while parent_names:
         new_parent_names = []
         for name in parent_names:
             parents = parents_dict.get(name, [])
             for parent in parents:
+                if parent.__name__ == "root":
+                    continue
                 if parent.__name__ == parent_cls_name:
                     return True
                 new_parent_names.append(parent.__name__)
