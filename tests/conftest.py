@@ -404,6 +404,14 @@ def mixing_elbow_settings_session(new_solver_session):
 
 
 @pytest.fixture
+def mixing_elbow_case_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@pytest.fixture
 def mixing_elbow_case_session_t4(new_solver_session_t4):
     solver = new_solver_session_t4
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
