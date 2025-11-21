@@ -9,6 +9,157 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.36.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev1>`_ - November 18, 2025
+============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Implement named-object commands using root-level commands
+          - `#4398 <https://github.com/ansys/pyfluent/pull/4398>`_
+
+        * - PathLike support throughout
+          - `#4558 <https://github.com/ansys/pyfluent/pull/4558>`_
+
+        * - Log from container when health-check fails
+          - `#4599 <https://github.com/ansys/pyfluent/pull/4599>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - SettingsBase.__call__ should also set state if any argument is passed.
+          - `#4551 <https://github.com/ansys/pyfluent/pull/4551>`_
+
+        * - Updated field_info to handle deprecated warnings.
+          - `#4559 <https://github.com/ansys/pyfluent/pull/4559>`_
+
+        * - Set-state via call
+          - `#4567 <https://github.com/ansys/pyfluent/pull/4567>`_
+
+        * - 'wait_process_finished' in sessions.
+          - `#4572 <https://github.com/ansys/pyfluent/pull/4572>`_
+
+        * - Update get_si_unit_for_fluent_quantity and from_container
+          - `#4573 <https://github.com/ansys/pyfluent/pull/4573>`_
+
+        * - Nightly dev test due to updates in 'wait_for_process_finished'.
+          - `#4575 <https://github.com/ansys/pyfluent/pull/4575>`_
+
+        * - Fixed link to non-existent forum with link to actual forum [skip tests]
+          - `#4585 <https://github.com/ansys/pyfluent/pull/4585>`_
+
+        * - From_pim ignoring non-Dimension dimensions
+          - `#4610 <https://github.com/ansys/pyfluent/pull/4610>`_
+
+        * - Fix the slurm-launcher hang by closing stdout after reading
+          - `#4611 <https://github.com/ansys/pyfluent/pull/4611>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump the actions group with 5 updates
+          - `#4576 <https://github.com/ansys/pyfluent/pull/4576>`_
+
+
+  .. tab-item:: Miscellaneous
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update deprecate arguments.
+          - `#4553 <https://github.com/ansys/pyfluent/pull/4553>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Added example on one way fsi [skip tests]
+          - `#4407 <https://github.com/ansys/pyfluent/pull/4407>`_
+
+        * - Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#4485 <https://github.com/ansys/pyfluent/pull/4485>`_
+
+        * - Added example on transient compressible flow
+          - `#4504 <https://github.com/ansys/pyfluent/pull/4504>`_
+
+        * - Example on Flow Through Porous Media - Catalytic Converter [skip tests]
+          - `#4506 <https://github.com/ansys/pyfluent/pull/4506>`_
+
+        * - Update \`\`CONTRIBUTORS.md\`\` with the latest contributors [skip tests]
+          - `#4578 <https://github.com/ansys/pyfluent/pull/4578>`_
+
+        * - Correct a typo from_local_install [skip tests]
+          - `#4583 <https://github.com/ansys/pyfluent/pull/4583>`_
+
+        * - Example on modeling solidification  [skip tests]
+          - `#4584 <https://github.com/ansys/pyfluent/pull/4584>`_
+
+        * - Example on Electrolysis Modeling of Proton Exchange Membrane El…  [skip tests]
+          - `#4587 <https://github.com/ansys/pyfluent/pull/4587>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Teams notifications [skip tests]
+          - `#4547 <https://github.com/ansys/pyfluent/pull/4547>`_
+
+        * - Update CHANGELOG for v0.36.dev0
+          - `#4549 <https://github.com/ansys/pyfluent/pull/4549>`_
+
+        * - Fix notifications [skip tests]
+          - `#4560 <https://github.com/ansys/pyfluent/pull/4560>`_
+
+        * - Notify only when job fails
+          - `#4561 <https://github.com/ansys/pyfluent/pull/4561>`_, `#4562 <https://github.com/ansys/pyfluent/pull/4562>`_
+
+        * - Fail the whole nightly job at the end if the testing step has failed [skip tests]
+          - `#4564 <https://github.com/ansys/pyfluent/pull/4564>`_
+
+        * - Update 2d field data test.
+          - `#4568 <https://github.com/ansys/pyfluent/pull/4568>`_
+
+        * - Update text for 'BetaFeaturesNotEnabled' exception.
+          - `#4581 <https://github.com/ansys/pyfluent/pull/4581>`_
+
+        * - Rename and clean up internal datamodel service classes.
+          - `#4590 <https://github.com/ansys/pyfluent/pull/4590>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Add test to check PyFluent launched PyConsole by default.
+          - `#4371 <https://github.com/ansys/pyfluent/pull/4371>`_
+
+        * - Fix tests which are failing in the latest nightly [skip tests]
+          - `#4565 <https://github.com/ansys/pyfluent/pull/4565>`_
+
+
 `0.36.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev0>`_ - October 10, 2025
 ===========================================================================================
 
