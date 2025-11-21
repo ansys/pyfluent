@@ -389,24 +389,17 @@ class SessionBase:
 
         Raises
         ------
-        RuntimeError
-            If trying to connect to a 'PureMeshing' session as it cannot
-            be separated from a 'Meshing' session.
         TypeError
             If the session type does not match the expected session type.
         """
-        expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__
-        if expected == "PureMeshing":
-            raise RuntimeError(
-                "PureMeshing cannot be created using 'from_connection'. "
-                "Please use Meshing instead."
-            )
         session = pyfluent.connect_to_fluent(
             ip=ip,
             port=port,
             server_info_file_name=server_info_file_name,
             password=password,
         )
+
+        expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__
         actual = session.__class__.__name__
 
         if actual != expected:

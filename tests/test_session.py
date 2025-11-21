@@ -722,11 +722,6 @@ def test_new_launch_fluent_api():
     )
     assert meshing_connected.is_server_healthy()
 
-    with pytest.raises(RuntimeError):
-        meshing_connected = pyfluent.PureMeshing.from_connection(
-            ip=ip, port=port, password=password
-        )
-
     meshing.exit()
     meshing_connected.exit()
 
