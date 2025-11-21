@@ -24,6 +24,7 @@
 * [H. Krishnan](https://github.com/h-krishnan)
 * [Harshal Pohekar](https://github.com/hpohekar)
 * [henchmenskis](https://github.com/henchmenskis)
+* [James Derrick](https://github.com/jgd10)
 * [James Hilton-Balfe](https://github.com/Gobot1234)
 * [Jess Sia](https://github.com/ansjsia)
 * [Jonathan Miller](https://github.com/millerj97)
