@@ -49,9 +49,11 @@ def _read_case_into(solver, file_type, file_name, full_file_name_container=None)
     except AttributeError:
         pass
     if full_file_name_container:
-        solver.file.read(file_name=full_file_name_container, file_type=file_type)
+        solver.settings.file.read(
+            file_name=full_file_name_container, file_type=file_type
+        )
     else:
-        solver.file.read(file_name=file_name, file_type=file_type)
+        solver.settings.file.read(file_name=file_name, file_type=file_type)
     network_logger.info(f"Have read case: {file_name}")
 
 
