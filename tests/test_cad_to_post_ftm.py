@@ -502,7 +502,7 @@ def test_exhaust_system(
 
         ###############################################################################
         # Assert the returned mass flow rate report definition value
-        flux = solver_session.solution.report_definitions.flux
+        flux = solver_session.settings.solution.report_definitions.flux
         flux["mass_flow_rate"] = {}
         flux["mass_flow_rate"].zone_names = [
             "inlet-1",
@@ -513,7 +513,7 @@ def test_exhaust_system(
 
         check_report_definition = partial(
             check_report_definition_result,
-            report_definitions=solver_session.solution.report_definitions,
+            report_definitions=solver_session.settings.solution.report_definitions,
         )
 
         check_report_definition(
@@ -524,10 +524,10 @@ def test_exhaust_system(
         ###############################################################################
         # Assert the returned velocity-magnitude report definition value on the outlet
         # surface
-        solver_session.solution.report_definitions.surface[
+        solver_session.settings.solution.report_definitions.surface[
             "velocity_magnitude_outlet"
         ] = {}
-        vmag_outlet = solver_session.solution.report_definitions.surface[
+        vmag_outlet = solver_session.settings.solution.report_definitions.surface[
             "velocity_magnitude_outlet"
         ]
         vmag_outlet.report_type = "surface-areaavg"
@@ -536,7 +536,7 @@ def test_exhaust_system(
 
         check_report_definition = partial(
             check_report_definition_result,
-            report_definitions=solver_session.solution.report_definitions,
+            report_definitions=solver_session.settings.solution.report_definitions,
         )
 
         check_report_definition(
