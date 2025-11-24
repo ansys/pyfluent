@@ -100,6 +100,45 @@ Use this method when:
    solver.exit()
    solver_connected.exit()
 
+.. note::
+
+    PyFluent provides both Meshing and PureMeshing session types.
+    When connecting to an existing Fluent process using
+    :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`,
+    the client API does not distinguish automatically between these session variants.
+    For this reason, it is helpful for users to connect using the interface that best matches the
+    capabilities of the session they launched.
+
+    Valid one-to-one connection patterns include:
+
+    .. code-block::
+
+        Meshing.from_install()      → Meshing.from_connection()
+        PureMeshing.from_install()  → PureMeshing.from_connection()
+
+
+    Cross-connections are also possible, with a few important considerations:
+
+    .. code-block::
+
+        Meshing.from_install() → PureMeshing.from_connection()
+
+
+    This is supported because a PureMeshing interface aligns with a subset of Meshing capabilities.
+
+    .. code-block::
+
+        PureMeshing.from_install() → Meshing.from_connection()
+
+
+    This pattern is not recommended. A PureMeshing session does not provide certain features
+    expected by the Meshing interface (such as solver mode switching), which may lead to
+    inconsistent behavior.
+
+    The PureMeshing interface remains available because it is valuable in modular and
+    containerized workflows where meshing and solving are intentionally isolated into separate
+    processes or lightweight environments. This separation supports clean, scalable, and
+    resource-efficient deployment patterns.
 
 Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
 ----------------------------------------------------------------------
