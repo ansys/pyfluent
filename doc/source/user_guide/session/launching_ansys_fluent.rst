@@ -135,11 +135,6 @@ Use this method when:
     expected by the Meshing interface (such as solver mode switching), which may lead to
     inconsistent behavior.
 
-    The PureMeshing interface remains available because it is valuable in modular and
-    containerized workflows where meshing and solving are intentionally isolated into separate
-    processes or lightweight environments. This separation supports clean, scalable, and
-    resource-efficient deployment patterns.
-
 Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
 ----------------------------------------------------------------------
 
