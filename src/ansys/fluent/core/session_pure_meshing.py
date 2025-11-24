@@ -43,11 +43,16 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 class PureMeshing(BaseSession):
     """Encapsulates a Fluent meshing session.
 
-    A ``tui`` object
-    for meshing TUI commanding, and ``meshing`` and ``workflow``
-    objects for access to task-based meshing workflows are all
-    exposed here. No ``switch_to_solver`` method is available
-    in this mode.
+    ``PureMeshing`` is useful in modular or containerized workflows
+    where meshing and solving are run in separate processes. It provides a
+    clear, restricted interface that matches the capabilities of a meshing-only
+    session, even if that session happens to run inside a Fluent build that
+    includes solver components.
+
+    It has a ``tui`` object for meshing TUI commanding, and ``meshing``
+    and ``workflow`` objects for access to task-based meshing workflows.
+
+    No ``switch_to_solver`` method is available in this mode.
     """
 
     _rules = [

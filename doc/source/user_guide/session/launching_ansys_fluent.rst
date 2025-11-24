@@ -102,38 +102,24 @@ Use this method when:
 
 .. note::
 
-    PyFluent provides both Meshing and PureMeshing session types.
-    When connecting to an existing Fluent process using
-    :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`,
-    the client API does not distinguish automatically between these session variants.
-    For this reason, it is helpful for users to connect using the interface that best matches the
-    capabilities of the session they launched.
+    PyFluent offers two Python interfaces for meshing:
 
-    Valid one-to-one connection patterns include:
+    - ``Meshing`` – meshing interface with an additional method to switch to solver mode.
+    - ``PureMeshing`` – meshing interface without any solver switching features.
 
-    .. code-block::
+    The two interfaces expose the **same meshing functionality**. The only difference is that
+    ``Meshing`` includes ``switch_to_solver()``.
 
-        Meshing.from_install()      → Meshing.from_connection()
-        PureMeshing.from_install()  → PureMeshing.from_connection()
+    When connecting to an existing Fluent session
+    via :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`:
 
+    - Use ``PureMeshing.from_connection()`` if the session was launched for **meshing only**.
+    - Use ``Meshing.from_connection()`` if the session supports **meshing and solving**.
+    - You may also use ``PureMeshing.from_connection()`` with a session that supports solving,
+    if you intentionally want access **only to meshing features**.
 
-    Cross-connections are also possible, with a few important considerations:
-
-    .. code-block::
-
-        Meshing.from_install() → PureMeshing.from_connection()
-
-
-    This is supported because a PureMeshing interface aligns with a subset of Meshing capabilities.
-
-    .. code-block::
-
-        PureMeshing.from_install() → Meshing.from_connection()
-
-
-    This pattern is not recommended. A PureMeshing session does not provide certain features
-    expected by the Meshing interface (such as solver mode switching), which may lead to
-    inconsistent behavior.
+    A ``Meshing`` interface is not recommended for a **meshing-only** session, because
+    ``switch_to_solver()`` would raise an error in that case.
 
 Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
 ----------------------------------------------------------------------
