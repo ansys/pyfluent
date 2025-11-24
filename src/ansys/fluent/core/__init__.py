@@ -81,7 +81,7 @@ from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.36.dev1"
+__version__ = "0.37.dev0"
 
 _VERSION_INFO = None
 """
