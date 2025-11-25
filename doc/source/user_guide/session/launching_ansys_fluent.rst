@@ -100,6 +100,26 @@ Use this method when:
    solver.exit()
    solver_connected.exit()
 
+.. note::
+
+    PyFluent offers two Python interfaces for meshing:
+
+    - ``Meshing``: meshing interface with an additional method to switch to solver mode.
+    - ``PureMeshing``: meshing interface without any solver switching features.
+
+    The two interfaces expose the **same meshing functionality**. The only difference is that
+    ``Meshing`` includes ``switch_to_solver()``.
+
+    When connecting to an existing Fluent session
+    via :meth:`from_connection() <ansys.fluent.core.session_utilities.SessionBase.from_connection>`:
+
+    - Use ``PureMeshing.from_connection()`` if the session was launched for **meshing only**.
+    - Use ``Meshing.from_connection()`` if the session supports **meshing and solving**.
+    - You may also use ``PureMeshing.from_connection()`` with a session that supports solving,
+    if you intentionally want access **only to meshing features**.
+
+    A ``Meshing`` interface is not recommended for a **meshing-only** session, because
+    ``switch_to_solver()`` would raise an error in that case.
 
 Launch in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode
 ----------------------------------------------------------------------
