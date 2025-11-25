@@ -104,8 +104,8 @@ Use this method when:
 
     PyFluent offers two Python interfaces for meshing:
 
-    - ``Meshing`` – meshing interface with an additional method to switch to solver mode.
-    - ``PureMeshing`` – meshing interface without any solver switching features.
+    - ``Meshing``: meshing interface with an additional method to switch to solver mode.
+    - ``PureMeshing``: meshing interface without any solver switching features.
 
     The two interfaces expose the **same meshing functionality**. The only difference is that
     ``Meshing`` includes ``switch_to_solver()``.
