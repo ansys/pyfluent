@@ -1004,8 +1004,13 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     with pytest.raises(AttributeError) as e:
-        solver.file.auto_save.root_name.allowed_values()
+        solver.solution.calculation_activity.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
+
+    assert (
+        solver.solution.calculation_activity.auto_save.case_frequency.allowed_values()
+        == ["if-case-is-modified", "each-time", "if-mesh-is-modified"]
+    )
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
     assert string_with_allowed_values == [
