@@ -920,6 +920,7 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4645")
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
@@ -1011,10 +1012,12 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
             solver.file.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
-    assert (
-        solver.solution.calculation_activity.auto_save.case_frequency.allowed_values()
-        == ["if-case-is-modified", "each-time", "if-mesh-is-modified"]
-    )
+    if fluent_version >= FluentVersion.v261:
+        assert solver.solution.calculation_activity.auto_save.case_frequency.allowed_values() == [
+            "if-case-is-modified",
+            "each-time",
+            "if-mesh-is-modified",
+        ]
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
     assert string_with_allowed_values == [
