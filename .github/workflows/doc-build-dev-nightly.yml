@@ -14,7 +14,6 @@ permissions:
 env:
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   FLUENT_STABLE_IMAGE: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
-  DOC_DEPLOYMENT_IMAGE_TAG: v26.1.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -61,7 +60,7 @@ jobs:
       - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Install again after codegen
         run: |
@@ -72,31 +71,31 @@ jobs:
         run: |
           python examples/00-fluent/exhaust_system_settings_api.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Execute external_compressible_flow.py
         run: |
           python examples/00-fluent/external_compressible_flow.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Execute mixing_elbow_settings_api.py
         run: |
           python examples/00-fluent/mixing_elbow_settings_api.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Execute modeling_cavitation.py
         run: |
           python examples/00-fluent/modeling_cavitation.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Execute species_transport.py
         run: |
           python examples/00-fluent/species_transport.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Build All Documentation
         run: |
@@ -104,12 +103,12 @@ jobs:
           pip install ansys-fluent-core[docs,reader,tests]
           make build-all-docs
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
           BUILD_ALL_DOCS: 1
 
       - name: Zip HTML Documentation before upload
         env:
-          DOC_DEPLOYMENT_IMG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          DOC_DEPLOYMENT_IMG: ${{ env.FLUENT_STABLE_IMAGE }}
         run: |
           sudo apt install zip -y
           pushd doc/_build/html
@@ -119,8 +118,8 @@ jobs:
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
-          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
+          name: HTML-Documentation-tag-${{ env.FLUENT_STABLE_IMAGE }}
+          path: HTML-Documentation-tag-${{ env.FLUENT_STABLE_IMAGE }}.zip
           retention-days: 7
 
       - name: Remove all docker images
@@ -136,7 +135,7 @@ jobs:
       - name: "Deploy development documentation"
         uses: ansys/actions/doc-deploy-dev@v10.1
         with:
-          doc-artifact-name: "HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}"
+          doc-artifact-name: "HTML-Documentation-tag-${{ env.FLUENT_STABLE_IMAGE }}"
           decompress-artifact: true
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
