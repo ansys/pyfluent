@@ -14,6 +14,7 @@ permissions:
 env:
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   FLUENT_STABLE_IMAGE: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+  DOC_DEPLOYMENT_IMAGE_TAG: v26.1.0
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -103,12 +104,12 @@ jobs:
           pip install ansys-fluent-core[docs,reader,tests]
           make build-all-docs
         env:
-          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           BUILD_ALL_DOCS: 1
 
       - name: Zip HTML Documentation before upload
         env:
-          DOC_DEPLOYMENT_IMG: ${{ env.FLUENT_STABLE_IMAGE }}
+          DOC_DEPLOYMENT_IMG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
         run: |
           sudo apt install zip -y
           pushd doc/_build/html
@@ -118,8 +119,8 @@ jobs:
       - name: Upload HTML Documentation
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: HTML-Documentation-tag-${{ env.FLUENT_STABLE_IMAGE }}
-          path: HTML-Documentation-tag-${{ env.FLUENT_STABLE_IMAGE }}.zip
+          name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
       - name: Remove all docker images
@@ -135,7 +136,7 @@ jobs:
       - name: "Deploy development documentation"
         uses: ansys/actions/doc-deploy-dev@v10.1
         with:
-          doc-artifact-name: "HTML-Documentation-tag-${{ env.FLUENT_STABLE_IMAGE }}"
+          doc-artifact-name: "HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}"
           decompress-artifact: true
           cname: ${{ env.DOCUMENTATION_CNAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
