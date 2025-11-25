@@ -1002,9 +1002,13 @@ def get_child_nodes(node, nodes, type_list):
 @pytest.mark.fluent_version("latest")
 def test_strings_with_allowed_values(static_mixer_settings_session):
     solver = static_mixer_settings_session
+    fluent_version = solver.get_fluent_version()
 
     with pytest.raises(AttributeError) as e:
-        solver.solution.calculation_activity.auto_save.root_name.allowed_values()
+        if fluent_version >= FluentVersion.v261:
+            solver.solution.calculation_activity.auto_save.root_name.allowed_values()
+        else:
+            solver.file.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
     assert (
