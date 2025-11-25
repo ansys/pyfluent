@@ -302,7 +302,8 @@ def test_fluent_exit_wait():
 
 
 def test_wait_process_finished():
-    meshing_session = pyfluent.launch_fluent(mode="meshing")
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    meshing_session = pyfluent.launch_fluent(mode="meshing", **grpc_kwds)
     assert len(dir(meshing_session)) > 2
     assert meshing_session.is_active()
     assert meshing_session.tui
@@ -313,7 +314,7 @@ def test_wait_process_finished():
         meshing_session.tui
     assert meshing_session.wait_process_finished(wait=5)
 
-    solver_session = pyfluent.launch_fluent()
+    solver_session = pyfluent.launch_fluent(**grpc_kwds)
     assert len(dir(solver_session)) > 2
     assert solver_session.is_active()
     assert solver_session.settings
