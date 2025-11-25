@@ -42,7 +42,7 @@ import ansys.fluent.core as pyfluent
 # Solver mode
 solver = pyfluent.Solver.from_install()
 # Meshing mode
-meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
+meshing = pyfluent.Meshing.from_install()
 
 # Connect to existing session
 solver = pyfluent.Solver.from_connection(
