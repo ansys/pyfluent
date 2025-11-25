@@ -492,7 +492,7 @@ jobs:
     name: Unit Testing
     if: ${{ always() }}
     needs: build
-    runs-on: [ubuntu-latest-8-cores]
+    runs-on: [public-ubuntu-latest-8-cores]
     strategy:
       fail-fast: false
       matrix:
