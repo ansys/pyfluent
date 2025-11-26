@@ -417,8 +417,12 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.server_ip = server_ip
         self.server_port = server_port
 
-        self._client = ft.Client.from_server_address(
-            f"{self.server_ip}:{self.server_port}"
+        self._client = ft.Client.from_transport_options(
+            transport_options=ft.InsecureOptions(
+                server_ip=self.server_ip,
+                server_port=self.server_port,
+                allow_remote_host=True,
+            )
         )
 
     def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
