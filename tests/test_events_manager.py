@@ -26,6 +26,7 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentVersion, MeshingEvent, SolverEvent, examples
+from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
@@ -170,9 +171,11 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
 
 
 @pytest.mark.fluent_version(">=23.1")
-def test_iteration_ended_sync_event_multiple_connections(static_mixer_case_session):
-    solver1 = static_mixer_case_session
-    solver2 = pyfluent.connect_to_fluent(
+def test_iteration_ended_sync_event_multiple_connections():
+    solver1 = pyfluent.Solver.from_container(insecure_mode=True)
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver1.file.read(file_type="case", file_name=case_name)
+    solver2 = pyfluent.Solver.from_connection(
         ip=solver1.connection_properties.ip,
         port=solver1.connection_properties.port,
         password=solver1.connection_properties.password,
