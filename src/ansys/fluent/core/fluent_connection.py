@@ -338,7 +338,7 @@ def _get_channel(
             return _get_tls_channel(address, certificates_folder, options=options)
     else:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if not (_is_localhost(address) or insecure_mode_env):
+        if not (_is_localhost(address) or (inside_container and insecure_mode_env)):
             raise ValueError(
                 "Connecting to remote Fluent instances is not allowed. "
                 "Set 'allow_remote_host=True' to connect to remote hosts."

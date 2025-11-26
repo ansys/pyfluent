@@ -224,7 +224,6 @@ class DockerLauncher:
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
         self._compose_config = ComposeConfig(use_docker_compose, use_podman_compose)
-        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
         fluent_image_tag = os.getenv("FLUENT_IMAGE_TAG")
         # There is an issue in passing gRPC arguments to Fluent image version 24.1.0 during github runs.
         if (
