@@ -220,8 +220,9 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     - Session health
     """
     # Step 1: Launch fluent session in meshing mode
+    grpc_kwds = pyfluent.get_grpc_launcher_args_for_gh_runs()
     meshing_session = pyfluent.launch_fluent(
-        mode="meshing", precision="double", processor_count=2
+        mode="meshing", precision="double", processor_count=2, **grpc_kwds
     )
     assert meshing_session.is_server_healthy()
     if not meshing_session.connection_properties.inside_container:
