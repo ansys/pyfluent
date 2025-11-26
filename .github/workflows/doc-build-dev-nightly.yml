@@ -73,30 +73,35 @@ jobs:
           python examples/00-fluent/exhaust_system_settings_api.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute external_compressible_flow.py
         run: |
           python examples/00-fluent/external_compressible_flow.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute mixing_elbow_settings_api.py
         run: |
           python examples/00-fluent/mixing_elbow_settings_api.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute modeling_cavitation.py
         run: |
           python examples/00-fluent/modeling_cavitation.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute species_transport.py
         run: |
           python examples/00-fluent/species_transport.py
         env:
           FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Build All Documentation
         run: |
