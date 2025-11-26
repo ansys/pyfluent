@@ -291,7 +291,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
             )
         import ansys.tools.filetransfer as ft
 
-        self._client = ft.Client.from_transport_options(
+        self.client = ft.Client.from_transport_options(
             transport_options=ft.InsecureOptions(
                 server_ip="localhost",
                 server_port=self.host_port,
