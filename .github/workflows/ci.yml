@@ -22,7 +22,7 @@ permissions:
   issues: read
 
 env:
-  API_CODE_CACHE: 6
+  API_CODE_CACHE: 7
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
   PACKAGE_NAME: "ansys-fluent-core"
   PACKAGE_NAMESPACE: "ansys.fluent.core"
@@ -35,6 +35,7 @@ env:
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
+  PYFLUENT_LAUNCH_FLUENT_TIMEOUT: 180
 
 jobs:
   add-license-headers:
@@ -146,7 +147,7 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.0
+      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.3
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
 
     steps:
@@ -252,7 +253,7 @@ jobs:
           popd
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
@@ -312,7 +313,7 @@ jobs:
           path: src/ansys/fluent/core/generated
           # Combined cache key for all versions:
           # API-Code-<Cache version>-<PyFluent version>-<First Fluent release version>-<Last Fluent release version>-<Fluent dev version>-<Hash of codegen files>
-          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.0-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v23.1.0-v25.2.3-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Pull 23.1 Fluent docker image
@@ -385,13 +386,13 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v24.2.5
 
       - name: Run 24.2 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v24.2.0
+          FLUENT_IMAGE_TAG: v24.2.5
           PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 24.2 Fluent version info
@@ -407,13 +408,13 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: v25.1.4
 
       - name: Run 25.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.1.0
+          FLUENT_IMAGE_TAG: v25.1.4
           PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 25.1 Fluent version info
@@ -429,13 +430,13 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: v25.2.0
+          FLUENT_IMAGE_TAG: v25.2.3
 
       - name: Run 25.2 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: v25.2.0
+          FLUENT_IMAGE_TAG: v25.2.3
           PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
       - name: Print 25.2 Fluent version info
@@ -475,7 +476,7 @@ jobs:
           twine check dist/*
 
       - name: Upload package
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: PyFluent-packages
           path: |
@@ -502,11 +503,11 @@ jobs:
             version: 232
           - image-tag: v24.1.0
             version: 241
-          - image-tag: v24.2.0
+          - image-tag: v24.2.5
             version: 242
-          - image-tag: v25.1.0
+          - image-tag: v25.1.4
             version: 251
-          - image-tag: v25.2.0
+          - image-tag: v25.2.3
             version: 252
           - image-tag: v26.1.latest
             version: 261
@@ -527,7 +528,7 @@ jobs:
 
       - name: Download package
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: PyFluent-packages
           path: dist
@@ -568,8 +569,8 @@ jobs:
         run: make cleanup-previous-docker-containers
 
       - name: Upload 25.2 Coverage Artifacts
-        if: matrix.image-tag == 'v25.2.0'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: matrix.image-tag == 'v25.2.3'
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: coverage_report
           path: ./htmlcov
@@ -674,7 +675,7 @@ jobs:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           name: PyFluent-packages
           path: PyFluent-packages
@@ -701,7 +702,7 @@ jobs:
           skip-existing: false
 
       - name: Release
-        uses: softprops/action-gh-release@aec2ec56f94eb8180ceec724245f64ef008b89f5 # v2.4.0
+        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # v2.4.1
         with:
           files: |
             ./**/*.whl
