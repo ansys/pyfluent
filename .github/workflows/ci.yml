@@ -683,6 +683,14 @@ jobs:
       - name: Display package file list
         run: ls -R
 
+      - name: Release
+        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # v2.4.1
+        with:
+          files: |
+            ./**/*.whl
+            ./**/*.tar.gz
+            ./**/*-wheelhouse-*.zip
+
       - name: Upload to Private PyPi
         run: |
           pip install 'twine<6.2.0'
@@ -700,11 +708,3 @@ jobs:
           print-hash: true
           packages-dir: PyFluent-packages
           skip-existing: false
-
-      - name: Release
-        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # v2.4.1
-        with:
-          files: |
-            ./**/*.whl
-            ./**/*.tar.gz
-            ./**/*-wheelhouse-*.zip
