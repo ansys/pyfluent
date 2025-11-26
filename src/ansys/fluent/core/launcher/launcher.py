@@ -396,6 +396,7 @@ def launch_fluent(
 def connect_to_fluent(
     ip: str | None = None,
     port: int | None = None,
+    address: str | None = None,
     cleanup_on_exit: bool = False,
     start_transcript: bool = True,
     server_info_file_name: str | None = None,
@@ -420,6 +421,10 @@ def connect_to_fluent(
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
         value. The explicit value of ``port`` takes precedence over
         ``PYFLUENT_FLUENT_PORT=<port>``.
+    address : str, optional
+        Address for connecting to an existing Fluent instance. The address
+        can be a TCP address of the form ``<ip>:<port>`` or a Unix domain
+        socket of the form ``unix:/<path>``. The default is ``None``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
@@ -483,13 +488,14 @@ def connect_to_fluent(
                 "To set `insecure_mode`, `allow_remote_host` must be True."
             )
 
-    values = _get_server_info(server_info_file_name, ip, port, password)
-    if len(values) == 2:
-        address, password = values
-        ip, port = None, None
-    else:
-        ip, port, password = values
-        address = None
+    if address is None:
+        values = _get_server_info(server_info_file_name, ip, port, password)
+        if len(values) == 2:
+            address, password = values
+            ip, port = None, None
+        else:
+            ip, port, password = values
+
     fluent_connection = FluentConnection(
         ip=ip,
         port=port,
@@ -508,9 +514,7 @@ def connect_to_fluent(
 
     if start_watchdog:
         logger.info("Launching Watchdog for existing Fluent session...")
-        values = _get_server_info(server_info_file_name, ip, port, password)
-        if len(values) == 3:
-            ip, port, password = values
+        if ip is not None and port is not None and password is not None:
             watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(
