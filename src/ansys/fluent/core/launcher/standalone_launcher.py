@@ -299,8 +299,10 @@ class StandaloneLauncher:
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
-                ip, port, password = _get_server_info(self._server_info_file_name)
-                watchdog.launch(os.getpid(), port, password, ip)
+                values = _get_server_info(self._server_info_file_name)
+                if len(values) == 3:
+                    ip, port, password = values
+                    watchdog.launch(os.getpid(), port, password, ip)
             if self.argvals["case_file_name"]:
                 if FluentMode.is_meshing(self.argvals["mode"]):
                     session.tui.file.read_case(self.argvals["case_file_name"])

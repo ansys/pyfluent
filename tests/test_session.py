@@ -39,6 +39,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
@@ -695,6 +696,36 @@ def test_new_launch_fluent_api():
     solver.exit()
     solver_connected.exit()
 
+    solver_aero = pyfluent.SolverAero.from_install()
+    assert solver_aero.is_server_healthy()
+
+    ip = solver_aero.connection_properties.ip
+    port = solver_aero.connection_properties.port
+    password = solver_aero.connection_properties.password
+
+    solver_aero_connected = pyfluent.SolverAero.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert solver_aero_connected.is_server_healthy()
+
+    solver_aero.exit()
+    solver_aero_connected.exit()
+
+    meshing = pyfluent.Meshing.from_install()
+    assert meshing.is_server_healthy()
+
+    ip = meshing.connection_properties.ip
+    port = meshing.connection_properties.port
+    password = meshing.connection_properties.password
+
+    meshing_connected = pyfluent.Meshing.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert meshing_connected.is_server_healthy()
+
+    meshing.exit()
+    meshing_connected.exit()
+
 
 def test_new_launch_fluent_api_from_container():
     import ansys.fluent.core as pyfluent
@@ -703,7 +734,8 @@ def test_new_launch_fluent_api_from_container():
     port_1 = get_free_port()
     port_2 = get_free_port()
     container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
-    solver = pyfluent.Solver.from_container(container_dict=container_dict)
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    solver = pyfluent.Solver.from_container(container_dict=container_dict, **grpc_kwds)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
     assert solver.is_server_healthy()
     solver.exit()
@@ -712,7 +744,7 @@ def test_new_launch_fluent_api_from_container():
 def test_new_launch_fluent_api_from_connection():
     import ansys.fluent.core as pyfluent
 
-    solver = pyfluent.Solver.from_container()
+    solver = pyfluent.Solver.from_container(insecure_mode=True)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
     assert solver.is_server_healthy()
     ip = solver.connection_properties.ip

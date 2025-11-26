@@ -345,7 +345,7 @@ def test_field_data_attributes(new_solver_session) -> None:
     assert not field_data.surfaces.validate(["hot-inlet", "inlet"])
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -458,7 +458,7 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"]["lines"][100]) == [100, 101]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d(new_solver_session) -> None:
     solver = new_solver_session
     import_file_name = examples.download_file(
@@ -597,7 +597,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
     assert list(path_lines_data["cold-inlet"].lines[:3]) == [2, 0, 1]
 
 
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_2d(disk_case_session) -> None:
     solver = disk_case_session
 
@@ -732,7 +732,7 @@ def test_field_data_does_not_modify_case(new_solver_session):
     assert not solver.scheme.eval("(case-modified?)")
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=24.1, <26.1")
 def test_field_data_streaming_in_meshing_mode(new_meshing_session):
     meshing = new_meshing_session
     import_file_name = examples.download_file(
@@ -880,7 +880,7 @@ def test_field_data_objects_3d_with_location_objects(new_solver_session) -> None
 
 
 @pytest.mark.codegen_required
-@pytest.mark.fluent_version(">=23.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_field_data_objects_3d_with_location_objects_overall(
     new_solver_session,
 ) -> None:
