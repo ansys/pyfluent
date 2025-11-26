@@ -293,8 +293,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
 
         self.client = ft.Client.from_transport_options(
             transport_options=ft.InsecureOptions(
-                server_ip="localhost",
-                server_port=self.host_port,
+                host="localhost",
+                port=self.host_port,
                 allow_remote_host=True,
             )
         )
@@ -425,8 +425,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
 
         self._client = ft.Client.from_transport_options(
             transport_options=ft.InsecureOptions(
-                server_ip=self.server_ip,
-                server_port=self.server_port,
+                host=self.server_ip,
+                port=self.server_port,
                 allow_remote_host=True,
             )
         )
