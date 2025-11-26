@@ -192,7 +192,8 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        if certificates_folder is None and not insecure_mode:
+        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
+        if certificates_folder is None and not insecure_mode and not insecure_mode_env:
             raise ValueError(
                 "To launch Fluent in secure gRPC mode, set `certificates_folder`."
             )
