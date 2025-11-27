@@ -98,6 +98,9 @@ jobs:
     name: "Deploy Release Documentation"
     runs-on: [public-ubuntu-latest-8-cores]
     needs: [build_release_docs]
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Deploy release documentation"
         uses: ansys/actions/doc-deploy-stable@v10.1
