@@ -31,6 +31,7 @@ from test_utils import pytest_approx
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.filereader.case_file import CaseFile
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -220,7 +221,7 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     - Session health
     """
     # Step 1: Launch fluent session in meshing mode
-    grpc_kwds = pyfluent.get_grpc_launcher_args_for_gh_runs()
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     meshing_session = pyfluent.launch_fluent(
         mode="meshing", precision="double", processor_count=2, **grpc_kwds
     )
