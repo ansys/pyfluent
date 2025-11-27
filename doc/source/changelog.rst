@@ -9,6 +9,42 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.36.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev1>`_ - November 27, 2025
+============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Secure gRPC options
+          - `#24 <https://github.com/ansys/pyfluent/pull/24>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Support insecure mode while launching container
+          - `#14 <https://github.com/ansys/pyfluent/pull/14>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version 0.35.1
+          - `#16 <https://github.com/ansys/pyfluent/pull/16>`_
+
+
 `0.36.0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.0>`_ - November 25, 2025
 ======================================================================================
 
