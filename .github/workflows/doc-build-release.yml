@@ -96,7 +96,7 @@ jobs:
 
   deploy_release_docs:
     name: "Deploy Release Documentation"
-    runs-on: [self-hosted, pyfluent]
+    runs-on: public-ubuntu-latest-8-cores
     needs: [build_release_docs]
     steps:
       - name: "Deploy release documentation"
