@@ -27,6 +27,7 @@ from __future__ import annotations
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
+import ipaddress
 import itertools
 import logging
 import os
@@ -36,6 +37,7 @@ import socket
 import subprocess
 import threading
 from typing import Any, Callable, List, Tuple, TypeVar
+import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
@@ -260,16 +262,87 @@ def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, in
     return ip, port
 
 
-def _get_channel(ip: str, port: int):
+def _get_tls_channel(
+    address: str,
+    certificates_folder: str | None,
+    options: list[tuple[str, int]] | None = None,
+):
+    cert_file = f"{certificates_folder}/client.crt"
+    key_file = f"{certificates_folder}/client.key"
+    ca_file = f"{certificates_folder}/ca.crt"
+
+    missing = [f for f in (cert_file, key_file, ca_file) if not os.path.exists(f)]
+    if missing:
+        raise RuntimeError(
+            f"Missing required TLS file(s) for mutual TLS: {', '.join(missing)}"
+        )
+
+    certificate_chain, private_key, root_certificates = (
+        open(path, "rb").read() for path in (cert_file, key_file, ca_file)
+    )
+
+    creds = grpc.ssl_channel_credentials(
+        root_certificates=root_certificates,
+        private_key=private_key,
+        certificate_chain=certificate_chain,
+    )
+    return grpc.secure_channel(target=address, credentials=creds, options=options)
+
+
+def _is_localhost(address: str) -> bool:
+    # Unix domain sockets
+    if address.startswith("unix:/"):
+        return True
+
+    # Strip off port (if present) and brackets for IPv6
+    host = address.split(":", 1)[0].strip("[]")
+
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        # Not an IP, fall back to hostname
+        return host.lower() == "localhost"
+
+
+def _get_channel(
+    address: str,
+    allow_remote_host: bool,
+    certificates_folder: str | None,
+    insecure_mode: bool,
+    inside_container: bool,
+):
     # Same maximum message length is used in the server
     max_message_length = _get_max_c_int_limit()
-    return grpc.insecure_channel(
-        f"{ip}:{port}",
-        options=[
-            ("grpc.max_send_message_length", max_message_length),
-            ("grpc.max_receive_message_length", max_message_length),
-        ],
-    )
+    options = [
+        ("grpc.max_send_message_length", max_message_length),
+        ("grpc.max_receive_message_length", max_message_length),
+    ]
+    if allow_remote_host:
+        if insecure_mode:
+            if _is_localhost(address) and not inside_container:
+                raise RuntimeError(
+                    "Insecure gRPC mode is not allowed when connecting to localhost."
+                )
+            warnings.warn(
+                "The Fluent session will be connected in insecure gRPC mode. "
+                "This mode is not recommended. For more details on the implications "
+                "and usage of insecure mode, refer to the Fluent documentation.",
+                UserWarning,
+            )
+            return grpc.insecure_channel(address, options=options)
+        else:
+            if certificates_folder is None:
+                raise ValueError(
+                    "Specify 'certificates_folder' containing TLS certificates to connect to remote host."
+                )
+            return _get_tls_channel(address, certificates_folder, options=options)
+    else:
+        if not _is_localhost(address):
+            raise ValueError(
+                "Connecting to remote Fluent instances is not allowed. "
+                "Set 'allow_remote_host=True' to connect to remote hosts."
+            )
+        return grpc.insecure_channel(address, options=options)
 
 
 class _ConnectionInterface:
@@ -373,7 +446,11 @@ class FluentConnection:
         ip: str | None = None,
         port: int | None = None,
         password: str | None = None,
+        address: str | None = None,
         channel: grpc.Channel | None = None,
+        allow_remote_host: bool = False,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
         cleanup_on_exit: bool = True,
         remote_instance: Instance | None = None,
         file_transfer_service: Any | None = None,
@@ -397,6 +474,8 @@ class FluentConnection:
             the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
         password : str, optional
             Password to connect to existing Fluent instance.
+        address : str, optional
+            Address to connect to existing Fluent instance.
         channel : grpc.Channel, optional
             Grpc channel to use to connect to existing Fluent instance.
             ip and port arguments will be ignored when channel is
@@ -422,6 +501,14 @@ class FluentConnection:
             a container.
         compose_config: ComposeConfig, optional
             Configuration for Docker Compose or Podman Compose.
+        allow_remote_host : bool, optional
+            Whether to allow connecting to a remote Fluent instance.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
@@ -437,9 +524,18 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
-            ip, port = _get_ip_and_port(ip, port)
-            self._channel = _get_channel(ip, port)
-            self._channel_str = f"{ip}:{port}"
+            if address is not None:
+                self._channel_str = address
+            else:
+                ip, port = _get_ip_and_port(ip, port)
+                self._channel_str = f"{ip}:{port}"
+            self._channel = _get_channel(
+                self._channel_str,
+                allow_remote_host,
+                certificates_folder,
+                insecure_mode,
+                inside_container,
+            )
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
         )
