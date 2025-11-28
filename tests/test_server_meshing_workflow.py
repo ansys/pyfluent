@@ -23,6 +23,7 @@
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
 @pytest.mark.fluent_version(">=26.1")
@@ -785,4 +786,100 @@ def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
     assert (
         watertight.task_object.import_geometry["Import Geometry"].state()
         == "Forced-up-to-date"
+    )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_get_task_by_id(new_meshing_session):
+    # This test is only intended for developer level testing
+    meshing_session = new_meshing_session
+    meshing_session.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+    service = meshing_session.meshing_workflow.service
+    rules = meshing_session.meshing_workflow.rules
+
+    path = [("task_object", "TaskObject1"), ("_name_", "")]
+    assert (
+        PyMenu(service=service, rules=rules, path=path).get_remote_state()
+        == "Import Geometry"
+    )
+
+    path = [("task_object", "TaskObject1"), ("CommandName", "")]
+    assert (
+        PyMenu(service=service, rules=rules, path=path).get_remote_state()
+        == "ImportGeometry"
+    )
+
+    path = [("task_object", "TaskObject5"), ("_name_", "")]
+    assert (
+        PyMenu(service=service, rules=rules, path=path).get_remote_state()
+        == "Apply Share Topology"
+    )
+
+    path = [("task_object", "TaskObject1")]
+    assert PyMenu(service=service, rules=rules, path=path).get_remote_state() == {
+        "_name_": "Import Geometry",
+        "arguments": {},
+        "warnings": None,
+        "command_name": "ImportGeometry",
+        "errors": None,
+        "task_type": "Simple",
+        "object_path": "",
+        "state": "Out-of-date",
+        "check_point": "default-off",
+    }
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_insert_delete_and_rename_task(new_meshing_session):
+    meshing_session = new_meshing_session
+    meshing_session.meshing_workflow.general.initialize_workflow(
+        workflow_type="Watertight Geometry"
+    )
+
+    # Insert new task
+    assert len(meshing_session.meshing_workflow.task_object()) == 11
+    meshing_session.meshing_workflow.task_object.import_geometry[
+        "Import Geometry"
+    ].insert_next_task(command_name="ImportBodyOfInfluenceGeometry")
+    assert len(meshing_session.meshing_workflow.task_object()) == 12
+    assert meshing_session.meshing_workflow.task_object.import_boi_geometry[
+        "Import Body of Influence Geometry"
+    ].arguments() == {
+        "type": "CAD",
+        "geometry_file_name": None,
+        "cad_import_options": {},
+    }
+
+    # Delete
+    assert len(meshing_session.meshing_workflow.task_object()) == 12
+    assert (
+        "create_volume_mesh_wtm:Generate the Volume Mesh"
+        in meshing_session.meshing_workflow.task_object()
+    )
+    meshing_session.meshing_workflow.general.delete_tasks(
+        list_of_tasks=["Generate the Volume Mesh"]
+    )
+    assert len(meshing_session.meshing_workflow.task_object()) == 11
+    assert (
+        "create_volume_mesh_wtm:Generate the Volume Mesh"
+        not in meshing_session.meshing_workflow.task_object()
+    )
+
+    # Rename
+    assert (
+        "add_boundary_layers:Add Boundary Layers"
+        in meshing_session.meshing_workflow.task_object()
+    )
+    meshing_session.meshing_workflow.task_object.add_boundary_layers[
+        "Add Boundary Layers"
+    ].rename(new_name="Add BL")
+    assert (
+        "add_boundary_layers:Add Boundary Layers"
+        not in meshing_session.meshing_workflow.task_object()
+    )
+    assert (
+        "add_boundary_layers:Add BL" in meshing_session.meshing_workflow.task_object()
     )
