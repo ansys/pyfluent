@@ -236,14 +236,7 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if (
-                pyfluent.config.launch_fluent_stdout
-                or pyfluent.config.launch_fluent_stderr
-            ):
-                self._launch_cmd = self._launch_string
-            else:
-                # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
-                self._launch_cmd = 'start "" ' + self._launch_string
+            self._launch_cmd = self._launch_string
         else:
             if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
@@ -257,7 +250,6 @@ class StandaloneLauncher:
             return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
