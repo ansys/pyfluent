@@ -192,7 +192,8 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        if certificates_folder is None and not insecure_mode:
+        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
+        if certificates_folder is None and not insecure_mode and not insecure_mode_env:
             raise ValueError(
                 "To launch Fluent in secure gRPC mode, set `certificates_folder`."
             )
@@ -225,7 +226,9 @@ class DockerLauncher:
         self._compose_config = ComposeConfig(use_docker_compose, use_podman_compose)
         fluent_image_tag = os.getenv("FLUENT_IMAGE_TAG")
         # There is an issue in passing gRPC arguments to Fluent image version 24.1.0 during github runs.
-        if self.argvals["insecure_mode"] and fluent_image_tag != "v24.1.0":
+        if (
+            self.argvals["insecure_mode"] or insecure_mode_env
+        ) and fluent_image_tag != "v24.1.0":
             self._args.append(" -grpc-allow-remote-host")
             self._args.append(" -grpc-insecure-mode")
         elif self.argvals["certificates_folder"]:
