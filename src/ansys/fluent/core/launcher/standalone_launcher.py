@@ -257,7 +257,11 @@ class StandaloneLauncher:
             return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-
+            if isinstance(self._launch_cmd, str) and self._launch_cmd.startswith(
+                "start "
+            ):
+                parts = self._launch_cmd.split()
+                self._launch_cmd = parts[2:]  # Remove: start ""
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:

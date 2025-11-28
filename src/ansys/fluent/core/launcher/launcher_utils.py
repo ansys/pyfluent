@@ -106,9 +106,12 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
             stderr=pyfluent.config.launch_fluent_stderr,
         )
     if is_windows():
-        kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+        kwargs.update(
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.CREATE_NO_WINDOW
+        )
     else:
-        kwargs.update(shell=True, start_new_session=True)
+        kwargs.update(start_new_session=True)
     fluent_env = os.environ.copy()
     fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
