@@ -261,7 +261,9 @@ class StandaloneLauncher:
                 "start "
             ):
                 parts = self._launch_cmd.split()
-                self._launch_cmd = parts[2:]  # Remove: start ""
+                self._launch_cmd = (
+                    parts[2:] if len(parts) > 2 else parts[:]
+                )  # Remove: start ""
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
