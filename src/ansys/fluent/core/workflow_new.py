@@ -163,15 +163,22 @@ class Workflow:
             for task_obj in self.tasks()
         }
 
-        sorted_dict = OrderedDict()
-
+        sorted_list = []
         for name in ordered_names:
             if name not in name_to_task:
                 continue
-            task_obj = name_to_task[name]
-            sorted_dict[name] = task_obj
+            sorted_list.append(name_to_task[name])
+        return sorted_list
 
-        return sorted_dict
+    def first_child(self):
+        children = self.children()
+        if children:
+            return children[0]
+
+    def last_child(self):
+        children = self.children()
+        if children:
+            return children[-1]
 
     def ordered_tasks(self):
         ordered_names = _convert_task_list_to_display_names(
@@ -192,11 +199,6 @@ class Workflow:
                 continue
             task_obj = name_to_task[name]
             sorted_dict[name] = task_obj
-
-            sub_task_names = task_obj.task_list()
-            if sub_task_names:
-                for sub_task_name in sub_task_names:
-                    sorted_dict[sub_task_name] = name_to_task[sub_task_name]
 
         return sorted_dict
 
@@ -382,9 +384,8 @@ class TaskObject:
             return []
 
     def children(self):
-        sorted_dict = OrderedDict()
         if not self.task_list():
-            return sorted_dict
+            return []
 
         workflow = super().__getattribute__("_workflow")
         type_to_name = {
@@ -396,19 +397,37 @@ class TaskObject:
             )
             for key, val in type_to_name.items()
         }
+        sorted_list = []
         for name in self.task_list():
             if name not in name_to_task:
                 continue
-            task_obj = name_to_task[name]
-            sorted_dict[name] = task_obj
-        return sorted_dict
+            sorted_list.append(name_to_task[name])
+        return sorted_list
+
+    def _get_child_task_by_task_id(self, task_id):
+        ordered_names = _convert_task_list_to_display_names(
+            workflow,
+            workflow.general.workflow.task_list(),
+        )
+
+    def first_child(self):
+        workflow = super().__getattribute__("_workflow")
+        workflow.general.workflow.task_list()[0]
+        children = self.children()
+        if children:
+            return children[0]
+
+    def last_child(self):
+        children = self.children()
+        if children:
+            return children[-1]
 
     @staticmethod
     def _get_next_key(input_dict, current_key):
         keys = list(input_dict)
         idx = keys.index(current_key)
         if idx == len(keys) - 1:
-            return
+            raise IndexError("Reached the end.")
         return keys[idx + 1]
 
     @staticmethod
@@ -416,28 +435,49 @@ class TaskObject:
         keys = list(input_dict)
         idx = keys.index(current_key)
         if idx == 0:
-            return
+            raise IndexError("In the beginning.")
         return keys[idx - 1]
+
+    def has_parent(self):
+        try:
+            super().__getattribute__("_parent")
+            return True
+        except AttributeError:
+            return False
 
     def parent(self):
         parent = super().__getattribute__("_parent")
         return parent
 
+    def has_next(self) -> bool:
+        parent = super().__getattribute__("_parent")
+        task_dict = parent.ordered_tasks()
+        try:
+            self._get_next_key(task_dict, self.name())
+            return True
+        except IndexError:
+            return False
+
     def next(self):
         parent = super().__getattribute__("_parent")
-        task_dict = parent.children()
+        task_dict = parent.ordered_tasks()
         next_key = self._get_next_key(task_dict, self.name())
-        if next_key is None:
-            return
         return task_dict[next_key]
+
+    def has_previous(self) -> bool:
+        parent = super().__getattribute__("_parent")
+        task_dict = parent.ordered_tasks()
+        try:
+            self._get_previous_key(task_dict, self.name())
+            return True
+        except IndexError:
+            return False
 
     def previous(self):
         parent = super().__getattribute__("_parent")
-        task_dict = parent.children()
+        task_dict = parent.ordered_tasks()
         previous_key = self._get_previous_key(task_dict, self.name())
-        if previous_key is None:
-            return
-        return parent.children()[previous_key]
+        return task_dict[previous_key]
 
     def ordered_tasks(self):
         sorted_dict = OrderedDict()
