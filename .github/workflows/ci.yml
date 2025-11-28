@@ -664,14 +664,6 @@ jobs:
           name: PyFluent-packages
           path: PyFluent-packages
 
-      - name: "Upload artifacts to PyPI using trusted publisher"
-        uses: pypa/gh-action-pypi-publish@v1.12.4
-        with:
-          repository-url: "https://upload.pypi.org/legacy/"
-          print-hash: true
-          packages-dir: PyFluent-packages
-          skip-existing: false
-
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
@@ -679,3 +671,11 @@ jobs:
             ./**/*.whl
             ./**/*.tar.gz
             ./**/*-wheelhouse-*.zip
+
+      - name: "Upload artifacts to PyPI using trusted publisher"
+        uses: pypa/gh-action-pypi-publish@v1.12.4
+        with:
+          repository-url: "https://upload.pypi.org/legacy/"
+          print-hash: true
+          packages-dir: PyFluent-packages
+          skip-existing: false
