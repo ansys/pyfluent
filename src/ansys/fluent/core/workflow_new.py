@@ -43,6 +43,14 @@ def _convert_task_list_to_display_names(workflow_root, task_list):
     return _display_names
 
 
+def _get_child_task_by_task_id(workflow_root, task_id):
+    return PyMenu(
+        service=workflow_root.service,
+        rules=workflow_root.rules,
+        path=[("task_object", task_id), ("_name_", "")],
+    ).get_remote_state()
+
+
 def camel_to_snake_case(camel_case_str: str) -> str:
     """Convert camel case input string to snake case output string."""
     if not camel_case_str.islower():
@@ -171,14 +179,34 @@ class Workflow:
         return sorted_list
 
     def first_child(self):
-        children = self.children()
-        if children:
-            return children[0]
+        task_list = self._workflow.general.workflow.task_list()
+        if task_list:
+            first_name = _get_child_task_by_task_id(self._workflow, task_list[0])
+        else:
+            return None
+        for task_obj in self.tasks():
+            if task_obj.name() == first_name:
+                return TaskObject(
+                    task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+                )
 
     def last_child(self):
-        children = self.children()
-        if children:
-            return children[-1]
+        task_list = self._workflow.general.workflow.task_list()
+        if task_list:
+            last_name = _get_child_task_by_task_id(self._workflow, task_list[1])
+        else:
+            return None
+        for task_obj in self.tasks():
+            if task_obj.name() == last_name:
+                return TaskObject(
+                    task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+                )
+
+    def task_list(self):
+        """."""
+        return _convert_task_list_to_display_names(
+            self._workflow, self._workflow.general.workflow.task_list()
+        )
 
     def ordered_tasks(self):
         ordered_names = _convert_task_list_to_display_names(
@@ -404,23 +432,39 @@ class TaskObject:
             sorted_list.append(name_to_task[name])
         return sorted_list
 
-    def _get_child_task_by_task_id(self, task_id):
-        ordered_names = _convert_task_list_to_display_names(
-            workflow,
-            workflow.general.workflow.task_list(),
-        )
-
     def first_child(self):
+        task_list = self.task_list()
+        if task_list:
+            first_name = task_list[0]
+        else:
+            return None
         workflow = super().__getattribute__("_workflow")
-        workflow.general.workflow.task_list()[0]
-        children = self.children()
-        if children:
-            return children[0]
+
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+        for key, val in type_to_name.items():
+            if val == first_name:
+                return TaskObject(
+                    getattr(workflow.task_object, key)[val], key, workflow, self
+                )
 
     def last_child(self):
-        children = self.children()
-        if children:
-            return children[-1]
+        task_list = self.task_list()
+        if task_list:
+            last_name = task_list[-1]
+        else:
+            return None
+        workflow = super().__getattribute__("_workflow")
+
+        type_to_name = {
+            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
+        }
+        for key, val in type_to_name.items():
+            if val == last_name:
+                return TaskObject(
+                    getattr(workflow.task_object, key)[val], key, workflow, self
+                )
 
     @staticmethod
     def _get_next_key(input_dict, current_key):
