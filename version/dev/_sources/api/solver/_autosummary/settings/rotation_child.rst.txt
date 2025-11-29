@@ -1,0 +1,55 @@
+:orphan:
+
+.. _rotation_child:
+
+rotation_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.rotation_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==============================
+
+Attribute                                             Summary
+
+============================   ==============================
+:ref:`name <name_5>`                      Name of the object.
+
+:ref:`surfaces <surfaces_1>`                         Surface.
+
+:ref:`location <location_7>`                      The object.
+
+:ref:`angle <angle_8>`             Prescribed rotation angle.
+
+:ref:`origin <origin_12>`             Rotation origin vector.
+
+:ref:`axis <axis_12>`                   Rotation axis vector.
+
+============================   ==============================
+
+.. rubric:: Methods
+
+==============================   ====================================================================================
+
+Method                                                                                                        Summary
+
+==============================   ====================================================================================
+:ref:`display <display_16>`                                                                 Display design condition.
+
+:ref:`get_center <get_center>`       Set the origin fields to the coordinates of the center of the selected surfaces.
+
+==============================   ====================================================================================
+
+.. rubric:: Included in:
+
+==========================   ===================================
+
+Parent                                                   Summary
+
+==========================   ===================================
+:ref:`rotation <rotation>`       Rotation constraint definition.
+
+==========================   ===================================
+

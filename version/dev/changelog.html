@@ -1,0 +1,2644 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Release notes &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="_static/documentation_options.js?v=560d63c2"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=49e1bf35"></script>
+    <script src="_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changelog';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Environment Variables" href="contributing/environment_variables.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.38.dev0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/changelog.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Release notes</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="release-notes">
+<span id="ref-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
+<p>This document contains the release notes for the project.</p>
+<p><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.37.dev0">0.37.dev0</a> - November 24, 2025
+<a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.36.0">0.36.0</a> - November 25, 2025</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-0">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Raise exception on read-only command execution</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4619">#4619</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-1">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Use latest units package</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4624">#4624</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-2">
+Dependencies</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Bump the dependencies group with 4 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4577">#4577</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bump version to v0.37.dev0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4631">#4631</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bump version to v0.36.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4630">#4630</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-3" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-3">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Example on battery pack [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4596">#4596</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update ``CONTRIBUTORS.md`` with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4612">#4612</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-4">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update CHANGELOG for v0.36.dev1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4623">#4623</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<section id="dev1-november-18-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.36.dev1">0.36.dev1</a> - November 18, 2025<a class="headerlink" href="#dev1-november-18-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-5">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Implement named-object commands using root-level commands</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4398">#4398</a></p></td>
+</tr>
+<tr class="row-even"><td><p>PathLike support throughout</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4558">#4558</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Log from container when health-check fails</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4599">#4599</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-6" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-6">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>SettingsBase.__call__ should also set state if any argument is passed.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4551">#4551</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Updated field_info to handle deprecated warnings.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4559">#4559</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Set-state via call</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4567">#4567</a></p></td>
+</tr>
+<tr class="row-even"><td><p>‘wait_process_finished’ in sessions.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4572">#4572</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update get_si_unit_for_fluent_quantity and from_container</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4573">#4573</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Nightly dev test due to updates in ‘wait_for_process_finished’.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4575">#4575</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fixed link to non-existent forum with link to actual forum [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4585">#4585</a></p></td>
+</tr>
+<tr class="row-even"><td><p>From_pim ignoring non-Dimension dimensions</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4610">#4610</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix the slurm-launcher hang by closing stdout after reading</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4611">#4611</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-7" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-7">
+Dependencies</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Bump the actions group with 5 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4576">#4576</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-8" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-8">
+Miscellaneous</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update deprecate arguments.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4553">#4553</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-9" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-9">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Added example on one way fsi [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4407">#4407</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update ``CONTRIBUTORS.md`` with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4485">#4485</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Added example on transient compressible flow</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4504">#4504</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Example on Flow Through Porous Media - Catalytic Converter [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4506">#4506</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update ``CONTRIBUTORS.md`` with the latest contributors [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4578">#4578</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Correct a typo from_local_install [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4583">#4583</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Example on modeling solidification  [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4584">#4584</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Example on Electrolysis Modeling of Proton Exchange Membrane El…  [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4587">#4587</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-10" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-10">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Teams notifications [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4547">#4547</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update CHANGELOG for v0.36.dev0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4549">#4549</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix notifications [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4560">#4560</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Notify only when job fails</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4561">#4561</a>, <a class="reference external" href="https://github.com/ansys/pyfluent/pull/4562">#4562</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fail the whole nightly job at the end if the testing step has failed [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4564">#4564</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update 2d field data test.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4568">#4568</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update text for ‘BetaFeaturesNotEnabled’ exception.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4581">#4581</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Rename and clean up internal datamodel service classes.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4590">#4590</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-11" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-11">
+Test</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Add test to check PyFluent launched PyConsole by default.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4371">#4371</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix tests which are failing in the latest nightly [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4565">#4565</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev0-october-10-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.36.dev0">0.36.dev0</a> - October 10, 2025<a class="headerlink" href="#dev0-october-10-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-12" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-12">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Updates for the client side dm-api.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3748">#3748</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Interactive settings UI.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4374">#4374</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Support named expressions as input to reductions functions.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4536">#4536</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-13" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-13">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Textual type in flobject.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4382">#4382</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Filename argument handling in single battery cell workflow</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4441">#4441</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add <cite>sphinx_design</cite> to fix changelog rendering</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4468">#4468</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Flake8 change needed for release [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4470">#4470</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Chown server-info file by client user in compose mode</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4483">#4483</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Chown server-info file by client user in compose mode - alt fix</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4484">#4484</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Ansys Lab authentication</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4503">#4503</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Implement migration adapter check for textual settings parameters.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4515">#4515</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update exception type for scheme call</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4518">#4518</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix env var name and run nightly in serial</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4529">#4529</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Meshing tests.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4530">#4530</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update datamodel triplet mapping</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4534">#4534</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-14" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-14">
+Dependencies</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update nightly dev doc ci.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4381">#4381</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Remove multiple download jobs during release jobs.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4428">#4428</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bump the dependencies group with 5 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4431">#4431</a>, <a class="reference external" href="https://github.com/ansys/pyfluent/pull/4509">#4509</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bump the actions group with 3 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4432">#4432</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bump pypa/gh-action-pypi-publish from 1.12.4 to 1.13.0 in /.github/workflows</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4443">#4443</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bump the actions group with 4 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4508">#4508</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bump pytest-cov from 6.2.1 to 7.0.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4510">#4510</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-15" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-15">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">html_context</span></code> with PyAnsys tags</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4412">#4412</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Example on the steady vortex dynamics</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4452">#4452</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update ReadME</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4477">#4477</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update Field data queries [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4478">#4478</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fixed a typo in example [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4486">#4486</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Corrected a typo in Ablation example [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4494">#4494</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Document a known limitation [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4520">#4520</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update new style settings docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4531">#4531</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update ui_mode doc [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4533">#4533</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-16" name="sd-tab-set-2" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-16">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update example data branch name to main</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4455">#4455</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Added backwards compatibility for solution_variable_name.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4456">#4456</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update CHANGELOG for v0.35.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4459">#4459</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Do not run release testing for dev release [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4473">#4473</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update CODEOWNERS [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4479">#4479</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update ansys-units version</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4514">#4514</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Upgrade ansys-units version to fix numpy version issue.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4517">#4517</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add a PR template [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4523">#4523</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Correct some typos in repo.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4535">#4535</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add security action in CI [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4537">#4537</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update release job [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4545">#4545</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update release step [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4548">#4548</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="september-09-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.35.0">0.35.0</a> - September 09, 2025<a class="headerlink" href="#september-09-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-17" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-17">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Add _has_migration_adapter bool to flobject classes</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4397">#4397</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Enable Fluent’s automatic transcript</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4426">#4426</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-18" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-18">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Some config and env var cleanup</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4380">#4380</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Resolve examples workflow issues [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4433">#4433</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Disabled single battery cell simulation ui option</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4436">#4436</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-19" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-19">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4403">#4403</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-20" name="sd-tab-set-3" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-20">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update CHANGELOG for v0.35.dev1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4424">#4424</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add deprecation warning for Transaction.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4427">#4427</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update modelling cavitation example to get rid of deprecated code.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4429">#4429</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Move Field data streaming to service creator.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4447">#4447</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix release [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4457">#4457</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev1-august-28-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.35.dev1">0.35.dev1</a> - August 28, 2025<a class="headerlink" href="#dev1-august-28-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-21" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-21">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Save API object names based on session type</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4417">#4417</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-22" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-22">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Turn on automatic transcript while running codegen</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4390">#4390</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Raise the underlying urlerror while downloading example file</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4396">#4396</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix test_docker_compose</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4399">#4399</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Skip paths which are not supported in the current Fluent version in builtin_settingsgen</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4404">#4404</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add config to disable monitor refresh on solution initialization</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4411">#4411</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Create parent directory for server-info file</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4415">#4415</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Release CI [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4423">#4423</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-23" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-23">
+Dependencies</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update release CI to use trusted publishers.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4332">#4332</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bump the dependencies group with 4 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4336">#4336</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix release CI to use nightly dev tests again.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4373">#4373</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-24" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-24">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Added example on the battery cell simulation.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4361">#4361</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-25" name="sd-tab-set-4" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-25">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Extract allowed values</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4342">#4342</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update CHANGELOG for v0.35.dev0 [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4372">#4372</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Show action status badge from the main branch [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4408">#4408</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev0-august-12-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.35.dev0">0.35.dev0</a> - August 12, 2025<a class="headerlink" href="#dev0-august-12-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-26" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-26">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Replace compose env vars with parameters</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4284">#4284</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Config</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4313">#4313</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Added a method to print all configs and added typehints</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4329">#4329</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Expose both object and method classes for builtin commands</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4340">#4340</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>File handling for Ansys Notebook</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4349">#4349</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-27" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-27">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Issue with ‘wait_process_finished’</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4309">#4309</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Remove ‘plot_set_name’ and ‘report_name’ from event streaming.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4310">#4310</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Ui_mode key error in Ansys lab</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4319">#4319</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Unavailable field data for some surfaces.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4345">#4345</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Remove string check of error message.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4355">#4355</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Respect user-provided directory in Ansys Notebook</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4358">#4358</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-28" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-28">
+Miscellaneous</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Set default version to latest release and use max grpc limit</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4327">#4327</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update search API results handling</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4333">#4333</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add ui_mode and dry_run for PIM launcher</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4338">#4338</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix codespell issue causing action failures</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4348">#4348</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-29" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-29">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Api reference and docker image name update [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4307">#4307</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update a setting radiation headlamp [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4334">#4334</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Overview and Decision Guide for Field Data vs Solution Variable Data APIs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4352">#4352</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix scheme_eval docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4362">#4362</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4365">#4365</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-30" name="sd-tab-set-5" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-30">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Use the stable image id in pr ci</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4305">#4305</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update changelog for v0.34.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4308">#4308</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix Fluent journal run CI for the latest image path change</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4323">#4323</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Minor update to Makefile to clean the example directory.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4354">#4354</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="july-23-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.34.0">0.34.0</a> - July 23, 2025<a class="headerlink" href="#july-23-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-31" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-31">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>beta features access</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4153">#4153</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Set string settings with allowed values via string constants</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4190">#4190</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Support passing objects to surfaces in field data.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4228">#4228</a></p></td>
+</tr>
+<tr class="row-even"><td><p>add settings named objects</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4232">#4232</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Get raw value for faces connectivity data.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4244">#4244</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Raise the attribute error with a correct message</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4256">#4256</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-32" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-32">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>container timeout issue and new environment variables</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4171">#4171</a></p></td>
+</tr>
+<tr class="row-even"><td><p>parameters list() tests</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4215">#4215</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>interior zones are inactive in the latest Fluent image</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4217">#4217</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Remove a runtime attribute query for argument-aliases</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4241">#4241</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Remove redundant children from search results</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4258">#4258</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Check localhost for grpc connection before other ips</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4274">#4274</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Builtin commands should execute the command without any additional call.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4285">#4285</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-33" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-33">
+Dependencies</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>bump the dependencies group with 5 updates</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4230">#4230</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bump ansys/actions from 9.0 to 10.0 in the actions group</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4231">#4231</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-34" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-34">
+Miscellaneous</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>get_completer_info implementation based on Python’s inspect module</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4214">#4214</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Transaction -&gt; batch</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4270">#4270</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Rename copy_docker_files.py</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4278">#4278</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update allowed_values interface for field_data.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4286">#4286</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Deprecate fieldinfo.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4287">#4287</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-35" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-35">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4221">#4221</a></p></td>
+</tr>
+<tr class="row-even"><td><p>make homepage more appealing</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4223">#4223</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add podman usage examples and documentation improvements [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4224">#4224</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix search box [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4226">#4226</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Clarify usage of recent launch methods [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4248">#4248</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update user-facing beta feature docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4254">#4254</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update outdated field_info docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4257">#4257</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update search results [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4266">#4266</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Improve meshing field help text [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4289">#4289</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update <code class="docutils literal notranslate"><span class="pre">contributors.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4294">#4294</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update to use objects.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4295">#4295</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-36" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-36">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>static class attributes</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4174">#4174</a></p></td>
+</tr>
+<tr class="row-even"><td><p>update CHANGELOG for v0.33.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4206">#4206</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.34.dev0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4209">#4209</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add SECURITY.md file [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4227">#4227</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Enable beta features</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4235">#4235</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add a new warning category for fluent development version usage.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4255">#4255</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update 26.1 image tag to v26.1.latest</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4281">#4281</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Use the new image name for version &gt;=26.1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4291">#4291</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Use units release &gt;= 0.7.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4296">#4296</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-37" name="sd-tab-set-6" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-37">
+Test</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Updates to optislang integration tests</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4269">#4269</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev0-june-24-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.34.dev0">0.34.dev0</a> - June 24, 2025<a class="headerlink" href="#dev0-june-24-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-38" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-38">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Make graphics driver null except in gui / hidden_gui modes</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4149">#4149</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add builtin commands</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4164">#4164</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add helper methods to specify a set of Fluent versions</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4172">#4172</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-39" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-39">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Backward compatibility of health_check</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4146">#4146</a></p></td>
+</tr>
+<tr class="row-even"><td><p>removing invalid pyproject.toml entry</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4148">#4148</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>container launch issues</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4163">#4163</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix an issue with API code cache restore</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4167">#4167</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix an issue in returning parameter units</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4177">#4177</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Relax error message comparison in test</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4180">#4180</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix an issue when settings child is also an alias.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4188">#4188</a></p></td>
+</tr>
+<tr class="row-even"><td><p>nightly optislang integration tests</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4189">#4189</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>No warning for None values and remove a doc dependency</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4197">#4197</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-40" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-40">
+Miscellaneous</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Semantic search enhancements</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4098">#4098</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Move Fields class to module level.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4102">#4102</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Rename meshing_rule_file_names [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4112">#4112</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Run each test in its own directory</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4115">#4115</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update app utilities dict interface</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4116">#4116</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-41" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-41">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4086">#4086</a>, <a class="reference external" href="https://github.com/ansys/pyfluent/pull/4168">#4168</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add newline after block statements in examples code for copy-pasting to Python interpreter [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4090">#4090</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>minor changes.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4109">#4109</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update solver and meshing in examples [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4110">#4110</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update event docs. [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4118">#4118</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Address inconsistencies in naming svars.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4119">#4119</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Correct a typo [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4123">#4123</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Rename solver and meshing in user docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4142">#4142</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add section for jupyterlab code-completion in FAQ [skip-tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4196">#4196</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-42" name="sd-tab-set-7" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-42">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.32.dev1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4080">#4080</a></p></td>
+</tr>
+<tr class="row-even"><td><p>update CHANGELOG for v0.32.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4084">#4084</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.33.dev0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4085">#4085</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Remove post_objects from core repo.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4089">#4089</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>skip test_search</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4104">#4104</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update examples wrt viz</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4106">#4106</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update the warning throw from ‘_get_create_instance_args’</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4120">#4120</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Expose field data request objects from core module.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4138">#4138</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add warning while using Fluent develop branch.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4140">#4140</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix examples workflow [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4141">#4141</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Set permissions for CI [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4144">#4144</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Resolve unpinned tag security warnings [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4152">#4152</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix github caching for codegen</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4158">#4158</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Perform deprecation call from generated data.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4162">#4162</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.32.2</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4173">#4173</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Disable codacy [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4176">#4176</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Delete remove docker image step [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4200">#4200</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix nightly dev test run workflow</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4201">#4201</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix nightly dev docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4203">#4203</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="june-17-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.32.2">0.32.2</a> - June 17, 2025<a class="headerlink" href="#june-17-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-43" name="sd-tab-set-8" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-43">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Fix performance issues while settings boundary condition</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4166">#4166</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="may-29-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.32.0">0.32.0</a> - May 29, 2025<a class="headerlink" href="#may-29-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-44" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-44">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Remote file transfer strategy</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4062">#4062</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Context managers</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4073">#4073</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-45" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-45">
+Miscellaneous</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>scheme_eval.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4042">#4042</a></p></td>
+</tr>
+<tr class="row-even"><td><p>health_check</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4048">#4048</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>pyfluent_enums -&gt; launch_options</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4054">#4054</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-46" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-46">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4030">#4030</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update automotive brake thermal analysis [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4049">#4049</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-47" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-47">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.31.0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4044">#4044</a></p></td>
+</tr>
+<tr class="row-even"><td><p>update CHANGELOG for v0.32.dev0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4047">#4047</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>skip tests for nightly tests to pass [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4056">#4056</a></p></td>
+</tr>
+<tr class="row-even"><td><p>clean up units business</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4057">#4057</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update 2d Meshing test.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4072">#4072</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-48" name="sd-tab-set-9" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-48">
+Test</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Activate 2d meshing tests for 25 R1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3281">#3281</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.31.0">0.31.0</a> - May 21, 2025</p>
+<p><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.32.dev0">0.32.dev0</a> - May 22, 2025</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-49" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-49">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Docker compose support</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3872">#3872</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update launch function API design</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3919">#3919</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>physical quantities baseline code</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3988">#3988</a></p></td>
+</tr>
+<tr class="row-even"><td><p>physical quantities 2</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4015">#4015</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Check if fluent exe exists in AWP_ROOT path while determining the Fluent version to launch</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4024">#4024</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Extend use of VariableCatalog</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4033">#4033</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-50" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-50">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>manual stage for add-license-header [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3944">#3944</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Handle exceptions from third-party libraries during docker call</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3994">#3994</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix server-side error in builtin settings objects</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3996">#3996</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Improve subprocess.Popen handling</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4003">#4003</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Decorator warning message</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4021">#4021</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-51" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-51">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update meshing doc after switching to solver</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3962">#3962</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3964">#3964</a>, <a class="reference external" href="https://github.com/ansys/pyfluent/pull/4013">#4013</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Adding Mixing Tank Example [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3966">#3966</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add Docker and Podman compose docs [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4001">#4001</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Show deprecated APIs</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4007">#4007</a></p></td>
+</tr>
+<tr class="row-even"><td><p>use variable catalog</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4025">#4025</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-52" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-52">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.31.dev1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3974">#3974</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix code style [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3977">#3977</a>, <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3978">#3978</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.30.5</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3981">#3981</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update error message for attribute errors from Solver.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3982">#3982</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Search for undocumented fields in codebase</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3984">#3984</a></p></td>
+</tr>
+<tr class="row-even"><td><p>v0.30.5 changelog [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3986">#3986</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add a file describing the columns of field_level_help.csv</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3995">#3995</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Refactor settings_root</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4016">#4016</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Minor improvements.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4018">#4018</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix datatype in field_level_help.csv [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4029">#4029</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-53" name="sd-tab-set-10" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-53">
+Test</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update test w.r.t. recent exposure flag changes in data-model.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/4031">#4031</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev1-april-29-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.31.dev1">0.31.dev1</a> - April 29, 2025<a class="headerlink" href="#dev1-april-29-2025" title="Link to this heading">#</a></h2>
+</section>
+<section id="april-29-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.5">0.30.5</a> - April 29, 2025<a class="headerlink" href="#april-29-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-54" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-54">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Enhanced error handling in Settings API</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3825">#3825</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Object based field data access (unifying the interface).</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3827">#3827</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Support PRE_POST mode</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3853">#3853</a></p></td>
+</tr>
+<tr class="row-even"><td><p>codegen for datamodel command arguments</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3865">#3865</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Register multiple event types in register_callback()</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3924">#3924</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Support unsuppressing prompts in scheme_eval</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3963">#3963</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-55" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-55">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>deprecated flag for flobject.py</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3953">#3953</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Make version attr private to avoid conflict with child setting with same name.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3830">#3830</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Get dependency version [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3842">#3842</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Updates for linux support &amp; visualization minor changes</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3843">#3843</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>field-level-help at runtime for datamodel_se objects</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3859">#3859</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Avoid file name as native Python package</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3861">#3861</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Minor issue in task.add_child_and_update</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3875">#3875</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix missing field-level help at various levels</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3879">#3879</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Remove license header hook [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3925">#3925</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix for the exit scenario while launching in lightweight mode</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3935">#3935</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Create directory within the current user’s home</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3937">#3937</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update mount_source for container FTS [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3941">#3941</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Nightly meshing tests.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3943">#3943</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Nightly dev doc CI run.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3945">#3945</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix deprecated behaviour</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3948">#3948</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Raise AttributeError for non-existing meshing objects after switch_to solver.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3949">#3949</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>deprecated flag for flobject.py</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3953">#3953</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update reduction test and re-implement it.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3958">#3958</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Enable Scheme mode when py=False is set</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3961">#3961</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-56" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-56">
+Dependencies</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update ansys-units version</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3826">#3826</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-57" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-57">
+Miscellaneous</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>field data transaction</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3819">#3819</a></p></td>
+</tr>
+<tr class="row-even"><td><p>internal interface of field data</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3858">#3858</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update test_remote_grpc_fts_container</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3915">#3915</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add timeout_loop for health check</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3917">#3917</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update enhanced meshing wf tests w.r.t. docs.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3930">#3930</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update field data output.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3934">#3934</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-58" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-58">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update <code class="docutils literal notranslate"><span class="pre">CONTRIBUTORS.md</span></code> with the latest contributors</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3902">#3902</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Direct users to use virtual env if Ansys Python is used.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3904">#3904</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update file transfer docs</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3916">#3916</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Added an end-to-end example focused on Turbomachinery [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3947">#3947</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-59" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-59">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.31.dev0</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3821">#3821</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Replace FLUENT_PRECISION_MODE global with runtime check</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3829">#3829</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.30.1</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3838">#3838</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Do not sync labels [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3840">#3840</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.30.2</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3849">#3849</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Reduce timeout for unittests</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3851">#3851</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Update nightly doc build workflow [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3854">#3854</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Workflow to use latest Fluent image in CI [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3867">#3867</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Add script to write field-level help info from server [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3921">#3921</a></p></td>
+</tr>
+<tr class="row-even"><td><p>update CHANGELOG for v0.30.3</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3928">#3928</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.30.4</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3955">#3955</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update 2d meshing test and doc.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3965">#3965</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-60" name="sd-tab-set-11" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-60">
+Test</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Test that Fluent error message is recovered in PyFluent</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3824">#3824</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Update test.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3881">#3881</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Enable the tests which are now passing in nightly</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3893">#3893</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="april-24-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.4">0.30.4</a> - April 24, 2025<a class="headerlink" href="#april-24-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-61" name="sd-tab-set-12" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-61">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Skip test_reduction_does_not_modify_case [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3939">#3939</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Preprocess xml content before sending it to ElementTree parser</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3951">#3951</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="april-11-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.3">0.30.3</a> - April 11, 2025<a class="headerlink" href="#april-11-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-62" name="sd-tab-set-13" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-62">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Update enhanced meshing workflow docs.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3874">#3874</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="march-18-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.2">0.30.2</a> - March 18, 2025<a class="headerlink" href="#march-18-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-63" name="sd-tab-set-14" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-63">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Use defusedxml</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3841">#3841</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="id339">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.1">0.30.1</a> - March 18, 2025<a class="headerlink" href="#id339" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-64" name="sd-tab-set-15" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-64">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Remove lxml</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3832">#3832</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev4-march-11-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev4">0.30.dev4</a> - March 11, 2025<a class="headerlink" href="#dev4-march-11-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-65" name="sd-tab-set-16" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-65">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.30.dev4</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3815">#3815</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev4-march-10-2025">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev4">0.30.dev4</a> - March 10, 2025<a class="headerlink" href="#dev4-march-10-2025" title="Link to this heading">#</a></h2>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-66" name="sd-tab-set-17" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-66">
+Added</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Utility to test viability of grpc connection</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3766">#3766</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Use ‘deprecated-version’ flag for settings-api classes</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3802">#3802</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-67" name="sd-tab-set-17" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-67">
+Fixed</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>Keep switch-to-meshing as hidden to fix Fluent journal replay.</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3792">#3792</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Fix python_name issue in runtime python classes</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3797">#3797</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-68" name="sd-tab-set-17" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-68">
+Documentation</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>add solver to example usage command</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3788">#3788</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Add doc for journal conversion [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3791">#3791</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Fix built in settings doc [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3807">#3807</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<input id="sd-tab-item-69" name="sd-tab-set-17" type="radio">
+<label class="sd-tab-label" for="sd-tab-item-69">
+Maintenance</label><div class="sd-tab-content docutils">
+<div class="pst-scrollable-table-container"><table class="table">
+<tbody>
+<tr class="row-odd"><td><p>update CHANGELOG for v0.30.dev3</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3790">#3790</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Remove compare_flobject.py [skip tests]</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3793">#3793</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Resolve dependency conflict</p></td>
+<td><p><a class="reference external" href="https://github.com/ansys/pyfluent/pull/3800">#3800</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="dev3-2025-02-28">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev3">0.30.dev3</a> - 2025-02-28<a class="headerlink" href="#dev3-2025-02-28" title="Link to this heading">#</a></h2>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Better way to copy the current function argument values <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3751">#3751</a></p></li>
+<li><p>Minor issues in PyConsole. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3770">#3770</a></p></li>
+<li><p>Invalid surface_ids check for field_data. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3773">#3773</a></p></li>
+<li><p>Resolve MRO for _InputFile <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3774">#3774</a></p></li>
+<li><p>Support Group type argument during codegen <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3777">#3777</a></p></li>
+<li><p>update pyi files to match release <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3778">#3778</a></p></li>
+<li><p>Fix for nested alias <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3780">#3780</a></p></li>
+<li><p>input/output types for completer icons <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3781">#3781</a></p></li>
+</ul>
+</section>
+<section id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Remove vulnerabilities check <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3768">#3768</a></p></li>
+<li><p>Remove ‘rename’ from Enhanced Meshing Workflow top level. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3776">#3776</a></p></li>
+</ul>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update local doc build instructions [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3756">#3756</a></p></li>
+<li><p>search engine optimization <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3761">#3761</a></p></li>
+<li><p>clean doc strs <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3762">#3762</a></p></li>
+<li><p>Update cheat sheet link [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3772">#3772</a></p></li>
+<li><p>Update meshing docs [skip-tests]. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3779">#3779</a></p></li>
+</ul>
+</section>
+<section id="maintenance">
+<h3>Maintenance<a class="headerlink" href="#maintenance" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>update CHANGELOG for v0.30.dev2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3759">#3759</a></p></li>
+<li><p>Reduce min grpcio-status version <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3764">#3764</a></p></li>
+<li><p>Specify PyFluent package version at a single location <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3767">#3767</a></p></li>
+</ul>
+</section>
+</section>
+<section id="dev2-2025-02-20">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev2">0.30.dev2</a> - 2025-02-20<a class="headerlink" href="#dev2-2025-02-20" title="Link to this heading">#</a></h2>
+<section id="id371">
+<h3>Miscellaneous<a class="headerlink" href="#id371" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update PyLocalContainer to update _collection. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3757">#3757</a></p></li>
+</ul>
+</section>
+<section id="id373">
+<h3>Maintenance<a class="headerlink" href="#id373" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>update CHANGELOG for v0.30.dev1 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3753">#3753</a></p></li>
+</ul>
+</section>
+</section>
+<section id="dev1-2025-02-19">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev1">0.30.dev1</a> - 2025-02-19<a class="headerlink" href="#dev1-2025-02-19" title="Link to this heading">#</a></h2>
+<section id="added">
+<h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Use new data-model api. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3728">#3728</a></p></li>
+</ul>
+</section>
+<section id="id377">
+<h3>Fixed<a class="headerlink" href="#id377" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Enable app_utilities test for 25R2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3702">#3702</a></p></li>
+<li><p>Safely delete para env vars <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3745">#3745</a></p></li>
+</ul>
+</section>
+<section id="id380">
+<h3>Miscellaneous<a class="headerlink" href="#id380" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update docstring and check file extension in Mesh class <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3727">#3727</a></p></li>
+<li><p>Rename warnings.py to fix examples workflow <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3734">#3734</a></p></li>
+<li><p>Revert the new dm api as default. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3742">#3742</a></p></li>
+<li><p>__collection -&gt; _collection for MutableMappings. <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3749">#3749</a></p></li>
+</ul>
+</section>
+<section id="id385">
+<h3>Documentation<a class="headerlink" href="#id385" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update launch_fluent snippets [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3726">#3726</a></p></li>
+<li><p>Build nightly dev docs with Fluent 25.2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3736">#3736</a></p></li>
+</ul>
+</section>
+<section id="id388">
+<h3>Maintenance<a class="headerlink" href="#id388" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>update CHANGELOG for v0.30.dev0 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3724">#3724</a></p></li>
+<li><p>Add workflow for examples [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3730">#3730</a></p></li>
+<li><p>Fix examples workflow [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3732">#3732</a></p></li>
+<li><p>Fix labels [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3741">#3741</a></p></li>
+</ul>
+</section>
+</section>
+<section id="dev0-2025-02-07">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.30.dev0">0.30.dev0</a> - 2025-02-07<a class="headerlink" href="#dev0-2025-02-07" title="Link to this heading">#</a></h2>
+<section id="id394">
+<h3>Added<a class="headerlink" href="#id394" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>remove application of mapped metadata <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3713">#3713</a></p></li>
+</ul>
+</section>
+<section id="id396">
+<h3>Fixed<a class="headerlink" href="#id396" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update dependencies [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3710">#3710</a></p></li>
+<li><p>Update token and contributing doc [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3718">#3718</a></p></li>
+</ul>
+</section>
+<section id="id399">
+<h3>Miscellaneous<a class="headerlink" href="#id399" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>some minor test improvements <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3711">#3711</a></p></li>
+</ul>
+</section>
+<section id="id401">
+<h3>Documentation<a class="headerlink" href="#id401" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update built-in settings doc and fix doc warnings [skip-tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3708">#3708</a></p></li>
+<li><p>Fix warnings in field data and reduction docs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3712">#3712</a></p></li>
+<li><p>Update docs to connect Fluent launched on Linux [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3721">#3721</a></p></li>
+</ul>
+</section>
+<section id="id405">
+<h3>Maintenance<a class="headerlink" href="#id405" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Get hanging test names by parsing the GitHub logs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3714">#3714</a></p></li>
+<li><p>update CHANGELOG for v0.29.0 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3719">#3719</a></p></li>
+</ul>
+</section>
+</section>
+<section id="id409">
+<h2><a class="reference external" href="https://github.com/ansys/pyfluent/releases/tag/v0.29.0">0.29.0</a> - 2025-02-06<a class="headerlink" href="#id409" title="Link to this heading">#</a></h2>
+<section id="id410">
+<h3>Added<a class="headerlink" href="#id410" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Implement automatic changelog <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3667">#3667</a></p></li>
+<li><p>Change working directory <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3691">#3691</a></p></li>
+</ul>
+</section>
+<section id="id413">
+<h3>Fixed<a class="headerlink" href="#id413" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Dimensionality correction in PIM launcher <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3673">#3673</a></p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update local doc build instructions <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3671">#3671</a></p></li>
+<li><p>bump sphinx from 7.4.7 to 8.1.3 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3696">#3696</a></p></li>
+<li><p>bump sphinx-autodoc-typehints from 2.3.0 to 3.0.1 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3697">#3697</a></p></li>
+<li><p>bump the dependencies group across 1 directory with 4 updates <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3700">#3700</a></p></li>
+<li><p>Bump version to v0.29.0 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3705">#3705</a></p></li>
+</ul>
+</section>
+<section id="id420">
+<h3>Miscellaneous<a class="headerlink" href="#id420" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Update type of parameter <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3681">#3681</a></p></li>
+<li><p>Use consistent file save format in the example scripts <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3682">#3682</a></p></li>
+<li><p>Raise an exception for Python journaling in 22R2 <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3684">#3684</a></p></li>
+<li><p>Update mesh file format <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3686">#3686</a></p></li>
+<li><p>Add verbose option for allapigen.py <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3690">#3690</a></p></li>
+<li><p>Update launchers <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3694">#3694</a></p></li>
+</ul>
+</section>
+<section id="id427">
+<h3>Documentation<a class="headerlink" href="#id427" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Document how to launch a PIM session <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3679">#3679</a></p></li>
+<li><p>Update file transfer docs for PIM [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3689">#3689</a></p></li>
+<li><p>Update launcher docs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3698">#3698</a></p></li>
+<li><p>Fix examples gallery [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3699">#3699</a></p></li>
+<li><p>Hyperlink to key APIs [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3701">#3701</a></p></li>
+<li><p>Remove parameters section for settings commands [skip tests] <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3703">#3703</a></p></li>
+</ul>
+</section>
+<section id="id434">
+<h3>Maintenance<a class="headerlink" href="#id434" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Integrate ansys-tools-report <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3675">#3675</a></p></li>
+<li><p>Unpin twine version <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3683">#3683</a></p></li>
+<li><p>Update license file <a class="reference external" href="https://github.com/ansys/pyfluent/pull/3687">#3687</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev1-november-18-2025">0.36.dev1 - November 18, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev0-october-10-2025">0.36.dev0 - October 10, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#september-09-2025">0.35.0 - September 09, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev1-august-28-2025">0.35.dev1 - August 28, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev0-august-12-2025">0.35.dev0 - August 12, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#july-23-2025">0.34.0 - July 23, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev0-june-24-2025">0.34.dev0 - June 24, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#june-17-2025">0.32.2 - June 17, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#may-29-2025">0.32.0 - May 29, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev1-april-29-2025">0.31.dev1 - April 29, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#april-29-2025">0.30.5 - April 29, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#april-24-2025">0.30.4 - April 24, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#april-11-2025">0.30.3 - April 11, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#march-18-2025">0.30.2 - March 18, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id339">0.30.1 - March 18, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev4-march-11-2025">0.30.dev4 - March 11, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev4-march-10-2025">0.30.dev4 - March 10, 2025</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev3-2025-02-28">0.30.dev3 - 2025-02-28</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#miscellaneous">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maintenance">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev2-2025-02-20">0.30.dev2 - 2025-02-20</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id371">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id373">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev1-2025-02-19">0.30.dev1 - 2025-02-19</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id377">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id380">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id385">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id388">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dev0-2025-02-07">0.30.dev0 - 2025-02-07</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id394">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id396">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id399">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id401">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id405">Maintenance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id409">0.29.0 - 2025-02-06</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id410">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id413">Fixed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencies">Dependencies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id420">Miscellaneous</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id427">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id434">Maintenance</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "_static/search.json";
+const ADVANCE_SEARCH_PATH = "search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.3. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

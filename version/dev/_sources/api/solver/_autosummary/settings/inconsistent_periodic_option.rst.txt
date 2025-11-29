@@ -1,0 +1,21 @@
+:orphan:
+
+.. _inconsistent_periodic_option:
+
+inconsistent_periodic_option
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.inconsistent_periodic_option
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =============================================
+
+Parent                                                                         Summary
+
+======================================   =============================================
+:ref:`convert_domain <convert_domain>`       Convert entire domain to polyhedra cells.
+
+======================================   =============================================
+

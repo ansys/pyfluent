@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_import_geometry__import_geometryArguments:
+
+_import_geometryArguments
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.import_geometry._import_geometryArguments
+   :members: _append_mesh, _directory, _file_format, _file_name, _file_names, _import_type, _length_unit, _mesh_file_name, _mesh_unit, _num_parts, _pattern, _use_body_labels
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _cad_import_options/_cad_import_options_contents
+   _import_cad_preferences/_import_cad_preferences_contents

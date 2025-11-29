@@ -1,0 +1,21 @@
+:orphan:
+
+.. _alternative_wall_discretization:
+
+alternative_wall_discretization
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.alternative_wall_discretization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_4 <advanced_4>`       Solution method advanced object.
+
+==============================   ====================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _view_name_2:
+
+view_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.view_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================================
+
+Parent                                                             Summary
+
+============================   ===========================================
+:ref:`save_view <save_view>`       Save the current view to the view list.
+
+============================   ===========================================
+

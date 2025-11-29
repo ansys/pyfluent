@@ -1,0 +1,36 @@
+:orphan:
+
+.. _parameters_1:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.parameters_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ========================================================
+
+Attribute                                                                         Summary
+
+==============================   ========================================================
+:ref:`resolution <resolution>`                    Resolution for view-factor calculation.
+
+:ref:`subdivide <subdivide>`                 Number of subdivisions for hemi-cube method.
+
+:ref:`separation <separation>`       Normalized separation distance for hemi-cube method.
+
+==============================   ========================================================
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`viewfactor_settings <viewfactor_settings>`       Viewfactor related settings.
+
+================================================   ================================
+

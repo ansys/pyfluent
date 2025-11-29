@@ -1,0 +1,21 @@
+:orphan:
+
+.. _quantities_1:
+
+quantities
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.quantities_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================
+
+Parent                                         Summary
+
+==================================   =================
+:ref:`add_datasets <add_datasets>`       Add datasets.
+
+==================================   =================
+

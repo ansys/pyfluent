@@ -1,0 +1,1272 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:site_name" content="PyAnsys" />
+    <title>module_config &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../_static/documentation_options.js?v=b17fcdc8"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/module_config';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.35';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="parametric" href="parametric.html" />
+    <link rel="prev" title="logger" href="logger.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.35.0" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/api/module_config.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">ansys.fluent.core</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="docker/docker_contents.html">docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filereader/filereader_contents.html">filereader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launcher/launcher_contents.html">launcher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshing/meshing_contents.html">meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler/scheduler_contents.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/services_contents.html">services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver/solver_contents.html">solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="streaming_services/streaming_services_contents.html">streaming_services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/utils_contents.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_session.html">file_session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="field_data_interfaces.html">field_data_interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fluent_connection.html">fluent_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journaling.html">journaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logger.html">logger</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">module_config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric.html">parametric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rpvars.html">rpvars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search.html">search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_base_meshing.html">session_base_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_meshing.html">session_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_pure_meshing.html">session_pure_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_solver_icing.html">session_solver_icing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_solver_lite.html">session_solver_lite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_solver.html">session_solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session.html">session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_utilities.html">session_utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_coupling.html">system_coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyfluent_warnings.html">pyfluent_warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow.html">workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deprecated_apis.html">Deprecated APIs</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="api_contents.html" class="nav-link">API reference</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">module_config</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-ansys.fluent.core.module_config">
+<span id="module-config"></span><span id="ref-module-config"></span><h1>module_config<a class="headerlink" href="#module-ansys.fluent.core.module_config" title="Link to this heading">#</a></h1>
+<p>Configuration variables for PyFluent.</p>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config" title="ansys.fluent.core.module_config.Config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Config</span></code></a>()</p></td>
+<td><p>Set the global configuration variables for PyFluent.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Data:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.config" title="ansys.fluent.core.module_config.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code></a></p></td>
+<td><p>Global configuration object for PyFluent</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.module_config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Set the global configuration variables for PyFluent.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.__init__" title="ansys.fluent.core.module_config.Config.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p>__init__ method of Config class.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.print" title="ansys.fluent.core.module_config.Config.print"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print</span></code></a>()</p></td>
+<td><p>Print all configuration variables.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.check_health" title="ansys.fluent.core.module_config.Config.check_health"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_health</span></code></a></p></td>
+<td><p>Whether to skip health check, defaults to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.check_health_timeout" title="ansys.fluent.core.module_config.Config.check_health_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_health_timeout</span></code></a></p></td>
+<td><p>Health check timeout in seconds, defaults to 60 seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.clear_fluent_para_envs" title="ansys.fluent.core.module_config.Config.clear_fluent_para_envs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_fluent_para_envs</span></code></a></p></td>
+<td><p>Whether to clear environment variables related to Fluent parallel mode, defaults to False.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.codegen_outdir" title="ansys.fluent.core.module_config.Config.codegen_outdir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">codegen_outdir</span></code></a></p></td>
+<td><p>Directory where API files are written out during codegen.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.codegen_skip_builtin_settings" title="ansys.fluent.core.module_config.Config.codegen_skip_builtin_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">codegen_skip_builtin_settings</span></code></a></p></td>
+<td><p>Whether to skip code generation of built-in settings, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.container_mount_source" title="ansys.fluent.core.module_config.Config.container_mount_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">container_mount_source</span></code></a></p></td>
+<td><p>Host path which is mounted to the container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_CONTAINER_MOUNT_SOURCE</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.container_mount_target" title="ansys.fluent.core.module_config.Config.container_mount_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">container_mount_target</span></code></a></p></td>
+<td><p>Path inside the container where the host path is mounted, defaults to &quot;/home/container/workdir&quot;.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.datamodel_return_state_changes" title="ansys.fluent.core.module_config.Config.datamodel_return_state_changes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datamodel_return_state_changes</span></code></a></p></td>
+<td><p>Whether to return the state changes on mutating datamodel RPCs, defaults to True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.datamodel_use_attr_cache" title="ansys.fluent.core.module_config.Config.datamodel_use_attr_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datamodel_use_attr_cache</span></code></a></p></td>
+<td><p>Whether to use datamodel attribute caching, defaults to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.datamodel_use_nocommands_diff_state" title="ansys.fluent.core.module_config.Config.datamodel_use_nocommands_diff_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datamodel_use_nocommands_diff_state</span></code></a></p></td>
+<td><p>Whether to stream and cache commands state, defaults to True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.datamodel_use_state_cache" title="ansys.fluent.core.module_config.Config.datamodel_use_state_cache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datamodel_use_state_cache</span></code></a></p></td>
+<td><p>Whether to use datamodel state caching, defaults to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.disable_monitor_refresh_on_init" title="ansys.fluent.core.module_config.Config.disable_monitor_refresh_on_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_monitor_refresh_on_init</span></code></a></p></td>
+<td><p>Whether to disable monitor refresh on solution initialization, defaults to False.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.disable_parameter_list_return_fix" title="ansys.fluent.core.module_config.Config.disable_parameter_list_return_fix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disable_parameter_list_return_fix</span></code></a></p></td>
+<td><p>Whether to disable the fix for returning parameter lists via settings API, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.examples_path" title="ansys.fluent.core.module_config.Config.examples_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">examples_path</span></code></a></p></td>
+<td><p>Directory where example files are downloaded.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_automatic_transcript" title="ansys.fluent.core.module_config.Config.fluent_automatic_transcript"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_automatic_transcript</span></code></a></p></td>
+<td><p>Whether to write the automatic transcript in Fluent, defaults to True if <code class="docutils literal notranslate"><span class="pre">PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT</span></code> environment variable is not set to &quot;1&quot;.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_container_name" title="ansys.fluent.core.module_config.Config.fluent_container_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_container_name</span></code></a></p></td>
+<td><p>The name of the Fluent container to use when launching in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">FLUENT_CONTAINER_NAME</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_debug" title="ansys.fluent.core.module_config.Config.fluent_debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_debug</span></code></a></p></td>
+<td><p>Whether to launch Fluent in debug mode, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_DEBUG</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_dev_version" title="ansys.fluent.core.module_config.Config.fluent_dev_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_dev_version</span></code></a></p></td>
+<td><p>The latest development version of Fluent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_image_name" title="ansys.fluent.core.module_config.Config.fluent_image_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_image_name</span></code></a></p></td>
+<td><p>The name of the Fluent image to use when launching in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">FLUENT_IMAGE_NAME</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_image_tag" title="ansys.fluent.core.module_config.Config.fluent_image_tag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_image_tag</span></code></a></p></td>
+<td><p>The tag of the Fluent image to use when launching in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">FLUENT_IMAGE_TAG</span></code> environment variable or the latest release version of Fluent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_release_version" title="ansys.fluent.core.module_config.Config.fluent_release_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_release_version</span></code></a></p></td>
+<td><p>The latest released version of Fluent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_server_info_dir" title="ansys.fluent.core.module_config.Config.fluent_server_info_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_server_info_dir</span></code></a></p></td>
+<td><p>The directory where server info will be written from Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">SERVER_INFO_DIR</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.fluent_show_mesh_after_case_read" title="ansys.fluent.core.module_config.Config.fluent_show_mesh_after_case_read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluent_show_mesh_after_case_read</span></code></a></p></td>
+<td><p>Whether to show mesh in Fluent after case read, defaults to False.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.force_exit_timeout" title="ansys.fluent.core.module_config.Config.force_exit_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">force_exit_timeout</span></code></a></p></td>
+<td><p>The timeout in seconds to wait for Fluent to exit, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FORCE_EXIT_TIMEOUT</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.grpc_log_bytes_limit" title="ansys.fluent.core.module_config.Config.grpc_log_bytes_limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grpc_log_bytes_limit</span></code></a></p></td>
+<td><p>The maximum number of bytes to log in gRPC logs, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_GRPC_LOG_BYTES_LIMIT</span></code> environment variable or 1000 bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.hide_log_secrets" title="ansys.fluent.core.module_config.Config.hide_log_secrets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide_log_secrets</span></code></a></p></td>
+<td><p>Whether to hide sensitive information in logs, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_HIDE_LOG_SECRETS</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.infer_remoting_ip" title="ansys.fluent.core.module_config.Config.infer_remoting_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">infer_remoting_ip</span></code></a></p></td>
+<td><p>Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS, defaults to True.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_container" title="ansys.fluent.core.module_config.Config.launch_fluent_container"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_container</span></code></a></p></td>
+<td><p>Whether to launch Fluent in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_LAUNCH_CONTAINER</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_ip" title="ansys.fluent.core.module_config.Config.launch_fluent_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_ip</span></code></a></p></td>
+<td><p>Set the IP address of the Fluent server while launching Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_IP</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_port" title="ansys.fluent.core.module_config.Config.launch_fluent_port"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_port</span></code></a></p></td>
+<td><p>Set the port of the Fluent server while launching Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_PORT</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_skip_password_check" title="ansys.fluent.core.module_config.Config.launch_fluent_skip_password_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_skip_password_check</span></code></a></p></td>
+<td><p>Skip password check during RPC execution when Fluent is launched from PyFluent, defaults to False.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_stderr" title="ansys.fluent.core.module_config.Config.launch_fluent_stderr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_stderr</span></code></a></p></td>
+<td><p>Set stderr of the launched Fluent process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_stdout" title="ansys.fluent.core.module_config.Config.launch_fluent_stdout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_stdout</span></code></a></p></td>
+<td><p>Set stdout of the launched Fluent process.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.launch_fluent_timeout" title="ansys.fluent.core.module_config.Config.launch_fluent_timeout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">launch_fluent_timeout</span></code></a></p></td>
+<td><p>The timeout in seconds to wait for Fluent to launch, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_LAUNCH_FLUENT_TIMEOUT</span></code> environment variable or 60 seconds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.logging_level_default" title="ansys.fluent.core.module_config.Config.logging_level_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logging_level_default</span></code></a></p></td>
+<td><p>The default logging level for PyFluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_LOGGING</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.print_search_results" title="ansys.fluent.core.module_config.Config.print_search_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_search_results</span></code></a></p></td>
+<td><p>Whether to print search results, defaults to True.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.remoting_server_address" title="ansys.fluent.core.module_config.Config.remoting_server_address"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remoting_server_address</span></code></a></p></td>
+<td><p>The remoting server address to be used in Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">REMOTING_SERVER_ADDRESS</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.show_fluent_gui" title="ansys.fluent.core.module_config.Config.show_fluent_gui"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_fluent_gui</span></code></a></p></td>
+<td><p>Whether to show the Fluent GUI when launching the server, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_SHOW_SERVER_GUI</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.skip_api_upgrade_advice" title="ansys.fluent.core.module_config.Config.skip_api_upgrade_advice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">skip_api_upgrade_advice</span></code></a></p></td>
+<td><p>Whether to skip API upgrade advice, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_SKIP_API_UPGRADE_ADVICE</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.start_watchdog" title="ansys.fluent.core.module_config.Config.start_watchdog"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_watchdog</span></code></a></p></td>
+<td><p>Whether to start watchdog.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.support_solver_interrupt" title="ansys.fluent.core.module_config.Config.support_solver_interrupt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">support_solver_interrupt</span></code></a></p></td>
+<td><p>Whether to interrupt Fluent solver from PyFluent, defaults to False.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.test_name" title="ansys.fluent.core.module_config.Config.test_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_name</span></code></a></p></td>
+<td><p>Current unit test name, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_TEST_NAME</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.use_docker_compose" title="ansys.fluent.core.module_config.Config.use_docker_compose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_docker_compose</span></code></a></p></td>
+<td><p>Whether to use Docker Compose for launching Fluent in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_USE_DOCKER_COMPOSE</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.use_file_transfer_service" title="ansys.fluent.core.module_config.Config.use_file_transfer_service"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_file_transfer_service</span></code></a></p></td>
+<td><p>Whether to use remote gRPC file transfer service, defaults to False.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.use_podman_compose" title="ansys.fluent.core.module_config.Config.use_podman_compose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_podman_compose</span></code></a></p></td>
+<td><p>Whether to use Podman Compose for launching Fluent in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_USE_PODMAN_COMPOSE</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.use_runtime_python_classes" title="ansys.fluent.core.module_config.Config.use_runtime_python_classes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_runtime_python_classes</span></code></a></p></td>
+<td><p>Whether to use runtime Python classes for settings, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_USE_RUNTIME_PYTHON_CLASSES</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.watchdog_debug" title="ansys.fluent.core.module_config.Config.watchdog_debug"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watchdog_debug</span></code></a></p></td>
+<td><p>Whether to enable debug logging for the watchdog, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_WATCHDOG_DEBUG</span></code> environment variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.module_config.Config.watchdog_exception_on_error" title="ansys.fluent.core.module_config.Config.watchdog_exception_on_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watchdog_exception_on_error</span></code></a></p></td>
+<td><p>Whether to raise an exception when the watchdog encounters an error, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR</span></code> environment variable.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of Config class.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.check_health">
+<span class="sig-name descname"><span class="pre">check_health</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.check_health" title="Link to this definition">#</a></dt>
+<dd><p>Whether to skip health check, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.check_health_timeout">
+<span class="sig-name descname"><span class="pre">check_health_timeout</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.check_health_timeout" title="Link to this definition">#</a></dt>
+<dd><p>Health check timeout in seconds, defaults to 60 seconds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.clear_fluent_para_envs">
+<span class="sig-name descname"><span class="pre">clear_fluent_para_envs</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.clear_fluent_para_envs" title="Link to this definition">#</a></dt>
+<dd><p>Whether to clear environment variables related to Fluent parallel mode, defaults to False.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.codegen_outdir">
+<span class="sig-name descname"><span class="pre">codegen_outdir</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.codegen_outdir" title="Link to this definition">#</a></dt>
+<dd><p>Directory where API files are written out during codegen.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.codegen_skip_builtin_settings">
+<span class="sig-name descname"><span class="pre">codegen_skip_builtin_settings</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.codegen_skip_builtin_settings" title="Link to this definition">#</a></dt>
+<dd><p>Whether to skip code generation of built-in settings, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.container_mount_source">
+<span class="sig-name descname"><span class="pre">container_mount_source</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.container_mount_source" title="Link to this definition">#</a></dt>
+<dd><p>Host path which is mounted to the container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_CONTAINER_MOUNT_SOURCE</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.container_mount_target">
+<span class="sig-name descname"><span class="pre">container_mount_target</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.container_mount_target" title="Link to this definition">#</a></dt>
+<dd><p>Path inside the container where the host path is mounted, defaults to “/home/container/workdir”.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.datamodel_return_state_changes">
+<span class="sig-name descname"><span class="pre">datamodel_return_state_changes</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.datamodel_return_state_changes" title="Link to this definition">#</a></dt>
+<dd><p>Whether to return the state changes on mutating datamodel RPCs, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.datamodel_use_attr_cache">
+<span class="sig-name descname"><span class="pre">datamodel_use_attr_cache</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.datamodel_use_attr_cache" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use datamodel attribute caching, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.datamodel_use_nocommands_diff_state">
+<span class="sig-name descname"><span class="pre">datamodel_use_nocommands_diff_state</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.datamodel_use_nocommands_diff_state" title="Link to this definition">#</a></dt>
+<dd><p>Whether to stream and cache commands state, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.datamodel_use_state_cache">
+<span class="sig-name descname"><span class="pre">datamodel_use_state_cache</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.datamodel_use_state_cache" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use datamodel state caching, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.disable_monitor_refresh_on_init">
+<span class="sig-name descname"><span class="pre">disable_monitor_refresh_on_init</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.disable_monitor_refresh_on_init" title="Link to this definition">#</a></dt>
+<dd><p>Whether to disable monitor refresh on solution initialization, defaults to False.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.disable_parameter_list_return_fix">
+<span class="sig-name descname"><span class="pre">disable_parameter_list_return_fix</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.disable_parameter_list_return_fix" title="Link to this definition">#</a></dt>
+<dd><p>Whether to disable the fix for returning parameter lists via settings API, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_NO_FIX_PARAMETER_LIST_RETURN</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.examples_path">
+<span class="sig-name descname"><span class="pre">examples_path</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.examples_path" title="Link to this definition">#</a></dt>
+<dd><p>Directory where example files are downloaded.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_automatic_transcript">
+<span class="sig-name descname"><span class="pre">fluent_automatic_transcript</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_automatic_transcript" title="Link to this definition">#</a></dt>
+<dd><p>Whether to write the automatic transcript in Fluent, defaults to True if <code class="docutils literal notranslate"><span class="pre">PYFLUENT_SKIP_FLUENT_AUTOMATIC_TRANSCRIPT</span></code> environment variable is not set to “1”.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_container_name">
+<span class="sig-name descname"><span class="pre">fluent_container_name</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_container_name" title="Link to this definition">#</a></dt>
+<dd><p>The name of the Fluent container to use when launching in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">FLUENT_CONTAINER_NAME</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_debug">
+<span class="sig-name descname"><span class="pre">fluent_debug</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_debug" title="Link to this definition">#</a></dt>
+<dd><p>Whether to launch Fluent in debug mode, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_DEBUG</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_dev_version">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fluent_dev_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_dev_version" title="Link to this definition">#</a></dt>
+<dd><p>The latest development version of Fluent.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_image_name">
+<span class="sig-name descname"><span class="pre">fluent_image_name</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_image_name" title="Link to this definition">#</a></dt>
+<dd><p>The name of the Fluent image to use when launching in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">FLUENT_IMAGE_NAME</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_image_tag">
+<span class="sig-name descname"><span class="pre">fluent_image_tag</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_image_tag" title="Link to this definition">#</a></dt>
+<dd><p>The tag of the Fluent image to use when launching in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">FLUENT_IMAGE_TAG</span></code> environment variable or the latest release version of Fluent.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_release_version">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fluent_release_version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_release_version" title="Link to this definition">#</a></dt>
+<dd><p>The latest released version of Fluent.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_server_info_dir">
+<span class="sig-name descname"><span class="pre">fluent_server_info_dir</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_server_info_dir" title="Link to this definition">#</a></dt>
+<dd><p>The directory where server info will be written from Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">SERVER_INFO_DIR</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.fluent_show_mesh_after_case_read">
+<span class="sig-name descname"><span class="pre">fluent_show_mesh_after_case_read</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.fluent_show_mesh_after_case_read" title="Link to this definition">#</a></dt>
+<dd><p>Whether to show mesh in Fluent after case read, defaults to False.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.force_exit_timeout">
+<span class="sig-name descname"><span class="pre">force_exit_timeout</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.force_exit_timeout" title="Link to this definition">#</a></dt>
+<dd><p>The timeout in seconds to wait for Fluent to exit, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FORCE_EXIT_TIMEOUT</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.grpc_log_bytes_limit">
+<span class="sig-name descname"><span class="pre">grpc_log_bytes_limit</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.grpc_log_bytes_limit" title="Link to this definition">#</a></dt>
+<dd><p>The maximum number of bytes to log in gRPC logs, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_GRPC_LOG_BYTES_LIMIT</span></code> environment variable or 1000 bytes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.hide_log_secrets">
+<span class="sig-name descname"><span class="pre">hide_log_secrets</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.hide_log_secrets" title="Link to this definition">#</a></dt>
+<dd><p>Whether to hide sensitive information in logs, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_HIDE_LOG_SECRETS</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.infer_remoting_ip">
+<span class="sig-name descname"><span class="pre">infer_remoting_ip</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.infer_remoting_ip" title="Link to this definition">#</a></dt>
+<dd><p>Set this to False to stop automatically inferring and setting REMOTING_SERVER_ADDRESS, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.infer_remoting_ip_timeout_per_ip">
+<span class="sig-name descname"><span class="pre">infer_remoting_ip_timeout_per_ip</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.infer_remoting_ip_timeout_per_ip" title="Link to this definition">#</a></dt>
+<dd><p>Descriptor for managing configuration attributes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_container">
+<span class="sig-name descname"><span class="pre">launch_fluent_container</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_container" title="Link to this definition">#</a></dt>
+<dd><p>Whether to launch Fluent in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_LAUNCH_CONTAINER</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_ip">
+<span class="sig-name descname"><span class="pre">launch_fluent_ip</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_ip" title="Link to this definition">#</a></dt>
+<dd><p>Set the IP address of the Fluent server while launching Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_IP</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_port">
+<span class="sig-name descname"><span class="pre">launch_fluent_port</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_port" title="Link to this definition">#</a></dt>
+<dd><p>Set the port of the Fluent server while launching Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_FLUENT_PORT</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_skip_password_check">
+<span class="sig-name descname"><span class="pre">launch_fluent_skip_password_check</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_skip_password_check" title="Link to this definition">#</a></dt>
+<dd><p>Skip password check during RPC execution when Fluent is launched from PyFluent, defaults to False.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_stderr">
+<span class="sig-name descname"><span class="pre">launch_fluent_stderr</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_stderr" title="Link to this definition">#</a></dt>
+<dd><p>Set stderr of the launched Fluent process.
+Valid values are the same as subprocess.Popen’s stderr argument.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_stdout">
+<span class="sig-name descname"><span class="pre">launch_fluent_stdout</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_stdout" title="Link to this definition">#</a></dt>
+<dd><p>Set stdout of the launched Fluent process.
+Valid values are the same as subprocess.Popen’s stdout argument.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.launch_fluent_timeout">
+<span class="sig-name descname"><span class="pre">launch_fluent_timeout</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.launch_fluent_timeout" title="Link to this definition">#</a></dt>
+<dd><p>The timeout in seconds to wait for Fluent to launch, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_LAUNCH_FLUENT_TIMEOUT</span></code> environment variable or 60 seconds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.logging_level_default">
+<span class="sig-name descname"><span class="pre">logging_level_default</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.logging_level_default" title="Link to this definition">#</a></dt>
+<dd><p>The default logging level for PyFluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_LOGGING</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.print">
+<span class="sig-name descname"><span class="pre">print</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.print" title="Link to this definition">#</a></dt>
+<dd><p>Print all configuration variables.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.print_search_results">
+<span class="sig-name descname"><span class="pre">print_search_results</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.print_search_results" title="Link to this definition">#</a></dt>
+<dd><p>Whether to print search results, defaults to True.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.remoting_server_address">
+<span class="sig-name descname"><span class="pre">remoting_server_address</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.remoting_server_address" title="Link to this definition">#</a></dt>
+<dd><p>The remoting server address to be used in Fluent, defaults to the value of <code class="docutils literal notranslate"><span class="pre">REMOTING_SERVER_ADDRESS</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.show_fluent_gui">
+<span class="sig-name descname"><span class="pre">show_fluent_gui</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.show_fluent_gui" title="Link to this definition">#</a></dt>
+<dd><p>Whether to show the Fluent GUI when launching the server, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_SHOW_SERVER_GUI</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.skip_api_upgrade_advice">
+<span class="sig-name descname"><span class="pre">skip_api_upgrade_advice</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.skip_api_upgrade_advice" title="Link to this definition">#</a></dt>
+<dd><p>Whether to skip API upgrade advice, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_SKIP_API_UPGRADE_ADVICE</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.start_watchdog">
+<span class="sig-name descname"><span class="pre">start_watchdog</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.start_watchdog" title="Link to this definition">#</a></dt>
+<dd><p>Whether to start watchdog.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.support_solver_interrupt">
+<span class="sig-name descname"><span class="pre">support_solver_interrupt</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.support_solver_interrupt" title="Link to this definition">#</a></dt>
+<dd><p>Whether to interrupt Fluent solver from PyFluent, defaults to False.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.test_name">
+<span class="sig-name descname"><span class="pre">test_name</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.test_name" title="Link to this definition">#</a></dt>
+<dd><p>Current unit test name, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_TEST_NAME</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.use_docker_compose">
+<span class="sig-name descname"><span class="pre">use_docker_compose</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.use_docker_compose" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use Docker Compose for launching Fluent in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_USE_DOCKER_COMPOSE</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.use_file_transfer_service">
+<span class="sig-name descname"><span class="pre">use_file_transfer_service</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.use_file_transfer_service" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use remote gRPC file transfer service, defaults to False.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.use_podman_compose">
+<span class="sig-name descname"><span class="pre">use_podman_compose</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.use_podman_compose" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use Podman Compose for launching Fluent in a container, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_USE_PODMAN_COMPOSE</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.use_runtime_python_classes">
+<span class="sig-name descname"><span class="pre">use_runtime_python_classes</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.use_runtime_python_classes" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use runtime Python classes for settings, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_USE_RUNTIME_PYTHON_CLASSES</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.watchdog_debug">
+<span class="sig-name descname"><span class="pre">watchdog_debug</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.watchdog_debug" title="Link to this definition">#</a></dt>
+<dd><p>Whether to enable debug logging for the watchdog, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_WATCHDOG_DEBUG</span></code> environment variable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.Config.watchdog_exception_on_error">
+<span class="sig-name descname"><span class="pre">watchdog_exception_on_error</span></span><a class="headerlink" href="#ansys.fluent.core.module_config.Config.watchdog_exception_on_error" title="Link to this definition">#</a></dt>
+<dd><p>Whether to raise an exception when the watchdog encounters an error, defaults to the value of <code class="docutils literal notranslate"><span class="pre">PYFLUENT_WATCHDOG_EXCEPTION_ON_ERROR</span></code> environment variable.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ansys.fluent.core.module_config.config">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.module_config.</span></span><span class="sig-name descname"><span class="pre">config</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ansys.fluent.core.module_config.Config</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#ansys.fluent.core.module_config.config" title="Link to this definition">#</a></dt>
+<dd><p>Global configuration object for PyFluent</p>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.__init__"><code class="docutils literal notranslate"><span class="pre">Config.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.check_health"><code class="docutils literal notranslate"><span class="pre">Config.check_health</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.check_health_timeout"><code class="docutils literal notranslate"><span class="pre">Config.check_health_timeout</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.clear_fluent_para_envs"><code class="docutils literal notranslate"><span class="pre">Config.clear_fluent_para_envs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.codegen_outdir"><code class="docutils literal notranslate"><span class="pre">Config.codegen_outdir</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.codegen_skip_builtin_settings"><code class="docutils literal notranslate"><span class="pre">Config.codegen_skip_builtin_settings</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.container_mount_source"><code class="docutils literal notranslate"><span class="pre">Config.container_mount_source</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.container_mount_target"><code class="docutils literal notranslate"><span class="pre">Config.container_mount_target</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.datamodel_return_state_changes"><code class="docutils literal notranslate"><span class="pre">Config.datamodel_return_state_changes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.datamodel_use_attr_cache"><code class="docutils literal notranslate"><span class="pre">Config.datamodel_use_attr_cache</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.datamodel_use_nocommands_diff_state"><code class="docutils literal notranslate"><span class="pre">Config.datamodel_use_nocommands_diff_state</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.datamodel_use_state_cache"><code class="docutils literal notranslate"><span class="pre">Config.datamodel_use_state_cache</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.disable_monitor_refresh_on_init"><code class="docutils literal notranslate"><span class="pre">Config.disable_monitor_refresh_on_init</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.disable_parameter_list_return_fix"><code class="docutils literal notranslate"><span class="pre">Config.disable_parameter_list_return_fix</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.examples_path"><code class="docutils literal notranslate"><span class="pre">Config.examples_path</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_automatic_transcript"><code class="docutils literal notranslate"><span class="pre">Config.fluent_automatic_transcript</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_container_name"><code class="docutils literal notranslate"><span class="pre">Config.fluent_container_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_debug"><code class="docutils literal notranslate"><span class="pre">Config.fluent_debug</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_dev_version"><code class="docutils literal notranslate"><span class="pre">Config.fluent_dev_version</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_image_name"><code class="docutils literal notranslate"><span class="pre">Config.fluent_image_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_image_tag"><code class="docutils literal notranslate"><span class="pre">Config.fluent_image_tag</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_release_version"><code class="docutils literal notranslate"><span class="pre">Config.fluent_release_version</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_server_info_dir"><code class="docutils literal notranslate"><span class="pre">Config.fluent_server_info_dir</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.fluent_show_mesh_after_case_read"><code class="docutils literal notranslate"><span class="pre">Config.fluent_show_mesh_after_case_read</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.force_exit_timeout"><code class="docutils literal notranslate"><span class="pre">Config.force_exit_timeout</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.grpc_log_bytes_limit"><code class="docutils literal notranslate"><span class="pre">Config.grpc_log_bytes_limit</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.hide_log_secrets"><code class="docutils literal notranslate"><span class="pre">Config.hide_log_secrets</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.infer_remoting_ip"><code class="docutils literal notranslate"><span class="pre">Config.infer_remoting_ip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.infer_remoting_ip_timeout_per_ip"><code class="docutils literal notranslate"><span class="pre">Config.infer_remoting_ip_timeout_per_ip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_container"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_container</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_ip"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_ip</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_port"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_port</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_skip_password_check"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_skip_password_check</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_stderr"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_stderr</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_stdout"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_stdout</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.launch_fluent_timeout"><code class="docutils literal notranslate"><span class="pre">Config.launch_fluent_timeout</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.logging_level_default"><code class="docutils literal notranslate"><span class="pre">Config.logging_level_default</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.print"><code class="docutils literal notranslate"><span class="pre">Config.print()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.print_search_results"><code class="docutils literal notranslate"><span class="pre">Config.print_search_results</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.remoting_server_address"><code class="docutils literal notranslate"><span class="pre">Config.remoting_server_address</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.show_fluent_gui"><code class="docutils literal notranslate"><span class="pre">Config.show_fluent_gui</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.skip_api_upgrade_advice"><code class="docutils literal notranslate"><span class="pre">Config.skip_api_upgrade_advice</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.start_watchdog"><code class="docutils literal notranslate"><span class="pre">Config.start_watchdog</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.support_solver_interrupt"><code class="docutils literal notranslate"><span class="pre">Config.support_solver_interrupt</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.test_name"><code class="docutils literal notranslate"><span class="pre">Config.test_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.use_docker_compose"><code class="docutils literal notranslate"><span class="pre">Config.use_docker_compose</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.use_file_transfer_service"><code class="docutils literal notranslate"><span class="pre">Config.use_file_transfer_service</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.use_podman_compose"><code class="docutils literal notranslate"><span class="pre">Config.use_podman_compose</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.use_runtime_python_classes"><code class="docutils literal notranslate"><span class="pre">Config.use_runtime_python_classes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.watchdog_debug"><code class="docutils literal notranslate"><span class="pre">Config.watchdog_debug</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.Config.watchdog_exception_on_error"><code class="docutils literal notranslate"><span class="pre">Config.watchdog_exception_on_error</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.module_config.config"><code class="docutils literal notranslate"><span class="pre">config</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/module_config.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.5.3. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

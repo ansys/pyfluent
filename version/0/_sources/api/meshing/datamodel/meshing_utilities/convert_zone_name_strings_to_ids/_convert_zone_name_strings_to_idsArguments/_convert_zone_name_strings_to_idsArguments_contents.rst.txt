@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_convert_zone_name_strings_to_ids__convert_zone_name_strings_to_idsArguments:
+
+_convert_zone_name_strings_to_idsArguments
+==========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.convert_zone_name_strings_to_ids._convert_zone_name_strings_to_idsArguments
+   :members: _zone_name_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

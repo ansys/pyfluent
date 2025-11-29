@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mt_cav_p_vap_piecewise_polynomial:
+
+mt_cav_p_vap_piecewise_polynomial
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_cav_p_vap_piecewise_polynomial
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ====================================================
+
+Attribute                                                                       Summary
+
+================================   ====================================================
+:ref:`function_of <function_of>`       The independent variable of polynomial function.
+
+:ref:`range <range>`                                     Piecewise-polynomial settings.
+
+================================   ====================================================
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`mt_cav_prop <mt_cav_prop>`       Cavitation properties group.
+
+================================   ================================
+

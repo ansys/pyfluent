@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_3:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================================================
+
+Parent                                                                          Summary
+
+================================   ====================================================
+:ref:`n2o_species <n2o_species>`       Enable/disable additional n2o species equations.
+
+================================   ====================================================
+

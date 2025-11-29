@@ -1,0 +1,55 @@
+:orphan:
+
+.. _ansys_sound_analysis:
+
+ansys_sound_analysis
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ansys_sound_analysis
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =====================================================================================================================================================
+
+Attribute                                                                                                                                                                                  Summary
+
+==========================================   =====================================================================================================================================================
+:ref:`input_data_type <input_data_type>`         The type of input data to use for analysis. Select "pressure" for time-domain pressure signals, or "spectrum" for frequency-domain spectral data.
+
+:ref:`load_input_files <load_input_files>`                                              One or more input files containing the time-domain or frequency-domain data to be used for sound analysis.
+
+:ref:`use_transfer_fn <use_transfer_fn>`                                                         Enable this option to apply Frequency Response Filters (FRFs) to your input data during analysis.
+
+:ref:`load_frf_files <load_frf_files>`                                                               One or more Frequency Response Function (FRF) files to filter the input data during analysis.
+
+:ref:`receiver <receiver_1>`                                     Manage the list of receivers for sound analysis. Each receiver pairs an input file with a Frequency Response Function (FRF) file.
+
+:ref:`sound_duration <sound_duration>`                                                                                                          The duration in seconds for the output sound data.
+
+==========================================   =====================================================================================================================================================
+
+.. rubric:: Methods
+
+==========================================   ========================================================================================================================================================================================================
+
+Method                                                                                                                                                                                                                                        Summary
+
+==========================================   ========================================================================================================================================================================================================
+:ref:`write_files <write_files>`                 Choose the formats and options for generating output files. You can specify a filename prefix, select whether to create a WAV audio file, save the output pressure signal, or write indicator files.
+
+:ref:`print_indicators <print_indicators>`                                                                                                                                            Print acoustic indicators calculated during the sound analysis.
+
+==========================================   ========================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+========================   =============================================================================================
+
+Parent                                                                                                           Summary
+
+========================   =============================================================================================
+:ref:`results <results>`       Access all post-processing tools and reporting features for analyzing simulation results.
+
+========================   =============================================================================================
+

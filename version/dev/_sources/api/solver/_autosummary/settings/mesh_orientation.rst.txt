@@ -1,0 +1,36 @@
+:orphan:
+
+.. _mesh_orientation:
+
+mesh_orientation
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mesh_orientation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==========================================
+
+Attribute                                                                     Summary
+
+========================================   ==========================================
+:ref:`north_direction <north_direction>`       North-direction in global coordinates.
+
+:ref:`east_direction <east_direction>`          East-direction in global coordinates.
+
+========================================   ==========================================
+
+.. rubric:: Included in:
+
+==================================================   ==================================
+
+Parent                                                                          Summary
+
+==================================================   ==================================
+:ref:`solar_calculator <solar_calculator>`               Settings for solar calculator.
+
+:ref:`solar_calculator_gui <solar_calculator_gui>`       Settings for solar calculator.
+
+==================================================   ==================================
+
