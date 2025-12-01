@@ -1,6 +1,0 @@
-fault\_tolerant\_workflow
-=========================
-
-.. currentmodule:: ansys.fluent.core.meshing.faulttolerant
-
-.. autofunction:: fault_tolerant_workflow

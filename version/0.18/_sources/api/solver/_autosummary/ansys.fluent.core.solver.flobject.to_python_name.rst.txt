@@ -1,6 +1,0 @@
-to\_python\_name
-================
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. autofunction:: to_python_name

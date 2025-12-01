@@ -1,6 +1,0 @@
-watertight\_workflow
-====================
-
-.. currentmodule:: ansys.fluent.core.meshing.watertight
-
-.. autofunction:: watertight_workflow

@@ -1,6 +1,0 @@
-arguments
-=========
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: Command.arguments

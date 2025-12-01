@@ -1,6 +1,0 @@
-fault\_tolerant
-===============
-
-.. currentmodule:: ansys.fluent.core.meshing.meshing_workflow
-
-.. automethod:: MeshingWorkflow.fault_tolerant

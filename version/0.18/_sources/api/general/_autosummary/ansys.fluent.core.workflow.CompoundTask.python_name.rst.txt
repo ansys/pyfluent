@@ -1,6 +1,0 @@
-python\_name
-============
-
-.. currentmodule:: ansys.fluent.core.workflow
-
-.. automethod:: CompoundTask.python_name

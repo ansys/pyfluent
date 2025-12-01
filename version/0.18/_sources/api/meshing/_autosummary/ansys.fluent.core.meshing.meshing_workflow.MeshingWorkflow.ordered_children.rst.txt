@@ -1,6 +1,0 @@
-ordered\_children
-=================
-
-.. currentmodule:: ansys.fluent.core.meshing.meshing_workflow
-
-.. automethod:: MeshingWorkflow.ordered_children

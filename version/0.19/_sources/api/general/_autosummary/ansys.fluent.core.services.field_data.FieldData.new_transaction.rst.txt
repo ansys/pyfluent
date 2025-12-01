@@ -1,7 +1,0 @@
-ansys.fluent.core.services.field\_data.FieldData.new\_transaction
-=================================================================
-
-.. currentmodule:: ansys.fluent.core.services.field_data
-
-.. automethod:: FieldData.new_transaction
-   :noindex:

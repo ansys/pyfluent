@@ -1,6 +1,0 @@
-default\_value
-==============
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: FilenameList.default_value

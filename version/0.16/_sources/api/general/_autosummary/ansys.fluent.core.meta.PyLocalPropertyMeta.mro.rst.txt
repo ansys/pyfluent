@@ -1,6 +1,0 @@
-mro
-===
-
-.. currentmodule:: ansys.fluent.core.meta
-
-.. automethod:: PyLocalPropertyMeta.mro

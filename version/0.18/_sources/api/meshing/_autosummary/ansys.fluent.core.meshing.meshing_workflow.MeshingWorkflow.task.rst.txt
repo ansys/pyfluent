@@ -1,6 +1,0 @@
-task
-====
-
-.. currentmodule:: ansys.fluent.core.meshing.meshing_workflow
-
-.. automethod:: MeshingWorkflow.task

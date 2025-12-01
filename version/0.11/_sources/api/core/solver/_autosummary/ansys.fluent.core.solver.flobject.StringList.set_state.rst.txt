@@ -1,6 +1,0 @@
-set\_state
-==========
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: StringList.set_state

@@ -1,6 +1,0 @@
-set\_svar\_data
-===============
-
-.. currentmodule:: ansys.fluent.core.services.svar
-
-.. automethod:: SVARData.set_svar_data

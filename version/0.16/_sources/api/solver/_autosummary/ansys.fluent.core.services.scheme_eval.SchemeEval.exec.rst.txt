@@ -1,7 +1,0 @@
-ansys.fluent.core.services.scheme\_eval.SchemeEval.exec
-=======================================================
-
-.. currentmodule:: ansys.fluent.core.services.scheme_eval
-
-.. automethod:: SchemeEval.exec
-   :noindex:

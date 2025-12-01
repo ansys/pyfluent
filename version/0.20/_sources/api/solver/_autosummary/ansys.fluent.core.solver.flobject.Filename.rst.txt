@@ -1,9 +1,9 @@
-ansys.fluent.core.solver.flobject.Filename
+ansys.fluent.core.solver.flobject.FileName
 ==========================================
 
 .. currentmodule:: ansys.fluent.core.solver.flobject
 
-.. autoclass:: Filename
+.. autoclass:: FileName
 
    
 
@@ -13,23 +13,15 @@ ansys.fluent.core.solver.flobject.Filename
    .. autosummary::
       :toctree:
    
-      ~Filename.__init__
-      ~Filename.after_execute
-      ~Filename.before_execute
-      ~Filename.default_value
-      ~Filename.file_purpose
-      ~Filename.find_object
-      ~Filename.get_attr
-      ~Filename.get_attrs
-      ~Filename.get_state
-      ~Filename.is_active
-      ~Filename.is_read_only
-      ~Filename.print_state
-      ~Filename.set_flproxy
-      ~Filename.set_state
-      ~Filename.state_with_units
-      ~Filename.to_python_keys
-      ~Filename.to_scheme_keys
+      ~FileName.__init__
+      ~FileName.after_execute
+      ~FileName.before_execute
+      ~FileName.find_object
+      ~FileName.get_attr
+      ~FileName.get_attrs
+      ~FileName.is_active
+      ~FileName.is_read_only
+      ~FileName.set_flproxy
    
    
 
@@ -39,13 +31,13 @@ ansys.fluent.core.solver.flobject.Filename
 
    .. autosummary::
    
-      ~Filename.file_transfer_service
-      ~Filename.flproxy
-      ~Filename.fluent_name
-      ~Filename.obj_name
-      ~Filename.parent
-      ~Filename.path
-      ~Filename.python_name
-      ~Filename.python_path
+      ~FileName.file_transfer_service
+      ~FileName.flproxy
+      ~FileName.fluent_name
+      ~FileName.obj_name
+      ~FileName.parent
+      ~FileName.path
+      ~FileName.python_name
+      ~FileName.python_path
    
    

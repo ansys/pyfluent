@@ -1,6 +1,0 @@
-allowed\_values
-===============
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: Textual.allowed_values

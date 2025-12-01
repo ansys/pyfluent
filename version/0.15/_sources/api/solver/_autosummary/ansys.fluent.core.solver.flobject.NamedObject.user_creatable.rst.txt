@@ -1,6 +1,0 @@
-user\_creatable
-===============
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: NamedObject.user_creatable

@@ -1,7 +1,0 @@
-ansys.fluent.core.services.field\_data.FieldInfo.\_\_init\_\_
-=============================================================
-
-.. currentmodule:: ansys.fluent.core.services.field_data
-
-.. automethod:: FieldInfo.__init__
-   :noindex:

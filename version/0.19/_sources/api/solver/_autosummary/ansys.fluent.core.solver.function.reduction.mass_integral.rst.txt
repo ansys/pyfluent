@@ -1,6 +1,0 @@
-mass\_integral
-==============
-
-.. currentmodule:: ansys.fluent.core.solver.function.reduction
-
-.. autofunction:: mass_integral

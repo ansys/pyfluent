@@ -1,6 +1,0 @@
-get\_vector\_field\_data
-========================
-
-.. currentmodule:: ansys.fluent.core.services.field_data
-
-.. automethod:: FieldData.get_vector_field_data

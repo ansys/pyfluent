@@ -1,6 +1,0 @@
-get\_array
-==========
-
-.. currentmodule:: ansys.fluent.core.services.svar
-
-.. automethod:: SVARData.get_array

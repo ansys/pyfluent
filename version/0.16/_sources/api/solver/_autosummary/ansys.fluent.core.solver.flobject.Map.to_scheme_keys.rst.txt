@@ -1,6 +1,0 @@
-to\_scheme\_keys
-================
-
-.. currentmodule:: ansys.fluent.core.solver.flobject
-
-.. automethod:: Map.to_scheme_keys

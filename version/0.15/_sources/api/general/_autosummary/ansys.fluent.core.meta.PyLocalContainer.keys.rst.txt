@@ -1,6 +1,0 @@
-keys
-====
-
-.. currentmodule:: ansys.fluent.core.meta
-
-.. automethod:: PyLocalContainer.keys

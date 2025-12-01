@@ -1,6 +1,0 @@
-display\_name
-=============
-
-.. currentmodule:: ansys.fluent.core.workflow
-
-.. automethod:: BaseTask.display_name
