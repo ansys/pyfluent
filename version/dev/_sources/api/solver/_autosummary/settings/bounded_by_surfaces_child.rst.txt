@@ -1,0 +1,63 @@
+:orphan:
+
+.. _bounded_by_surfaces_child:
+
+bounded_by_surfaces_child
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.bounded_by_surfaces_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ==================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                         Summary
+
+====================================================   ==================================================================================================================================================================
+:ref:`name <name_5>`                                                                                                                                                                                  Name of the object.
+
+:ref:`surfaces <surfaces_18>`                                                                                                                                                                     Surfaces to be bounded.
+
+:ref:`location <location_7>`                                                                                                                                                                                  The object.
+
+:ref:`imported_surfaces <imported_surfaces>`                                                                                                                                                           Bounding surfaces.
+
+:ref:`fit_imported_surfaces <fit_imported_surfaces>`                                                                               Prescribe that the Bounded Surfaces deforms so as to conform to the Imported Surfaces.
+
+:ref:`bounding_offset <bounding_offset>`                                               Bounding Offset that is enforced between the deforming and bounding surfaces to ensure that the two surfaces are never coincident.
+
+:ref:`scale_factor <scale_factor_2>`                       Scale the displacement. A value of 0 will retain the shape of the Bounded Surfaces, while a value of 1 will fit the bounded surfaces to the Imported Surfaces.
+
+:ref:`orientation <orientation_2>`                                  Orientation to ensure that surfaces are constrained on the correct side of the Imported Surfaces (that is, the side that has a positive orientation).
+
+====================================================   ==================================================================================================================================================================
+
+.. rubric:: Methods
+
+============================================================   ==============================
+
+Method                                                                                Summary
+
+============================================================   ==============================
+:ref:`display <display_16>`                                         Display design condition.
+
+:ref:`import_surfaces <import_surfaces>`                                 Read surface meshes.
+
+:ref:`delete_imported_surfaces <delete_imported_surfaces>`          Delete imported surfaces.
+
+:ref:`display_imported_surfaces <display_imported_surfaces>`       Display imported surfaces.
+
+============================================================   ==============================
+
+.. rubric:: Included in:
+
+================================================   ==============================================
+
+Parent                                                                                    Summary
+
+================================================   ==============================================
+:ref:`bounded_by_surfaces <bounded_by_surfaces>`       Bounded by surfaces constraint definition.
+
+================================================   ==============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _material_1:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.material_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==================
+
+Parent                                Summary
+
+========================   ==================
+:ref:`model_5 <model_5>`       Species model.
+
+========================   ==================
+

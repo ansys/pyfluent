@@ -1,0 +1,21 @@
+:orphan:
+
+.. _interface_refinement_edge_length:
+
+interface_refinement_edge_length
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interface_refinement_edge_length
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =============================================================================================================
+
+Parent                                                                                                                                                   Summary
+
+================================================   =============================================================================================================
+:ref:`vof_to_dpm_advanced <vof_to_dpm_advanced>`       Define cell registers, expressions, and adaption settings suitable for an advanced VOF-to-DPM simulation.
+
+================================================   =============================================================================================================
+

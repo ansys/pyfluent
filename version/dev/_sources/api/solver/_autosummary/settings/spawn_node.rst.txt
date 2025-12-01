@@ -1,0 +1,34 @@
+:orphan:
+
+.. _spawn_node:
+
+spawn_node
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.spawn_node
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ===========================================================
+
+Argument                                                                           Summary
+
+============================   ===========================================================
+:ref:`hostname <hostname>`         The hostname of the machine to spawn a compute node on.
+
+:ref:`username <username_2>`          The username to spawn a compute node on the machine.
+
+============================   ===========================================================
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`network_2 <network_2>`       The network configuration object.
+
+============================   =====================================
+

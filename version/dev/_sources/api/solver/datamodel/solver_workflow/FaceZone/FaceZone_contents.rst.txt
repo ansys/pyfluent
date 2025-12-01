@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_solver_workflow_FaceZone:
+
+FaceZone
+========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.solver_workflow.Root.FaceZone
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _FaceZone/_FaceZone_contents

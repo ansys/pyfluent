@@ -1,0 +1,21 @@
+:orphan:
+
+.. _material_3:
+
+material
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.material_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================
+
+Parent                                                     Summary
+
+================================   ===============================
+:ref:`degradation <degradation>`       Degradation model settings.
+
+================================   ===============================
+

@@ -1,0 +1,1570 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta property="og:site_name" content="PyAnsys" />
+    <title>Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=ce7f2556" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=99ee5e77"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/00-fluent/lunar_lander_thermal';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.33';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Fluent setup and solution using settings objects" href="mixing_elbow_settings_api.html" />
+    <link rel="prev" title="Impeller-Volute simulation using the Frozen Rotor Approach" href="frozen_rotor_workflow.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.33.1" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/examples/00-fluent/lunar_lander_thermal.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DOE_ML.html">Design of Experiments and Machine Learning model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ahmed_body_workflow.html">Ahmed Body External Aerodynamics Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brake.html">Automotive Brake Thermal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjugate_heat_transfer.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exhaust_system_settings_api.html">Fault-tolerant meshing workflow using settings objects</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="external_compressible_flow.html">Modeling External Compressible Flow</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="frozen_rotor_workflow.html">Impeller-Volute simulation using the Frozen Rotor Approach</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="mixing_elbow_settings_api.html">Fluent setup and solution using settings objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixing_tank_workflow.html">Mixing Tank Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_ablation.html">Modeling Ablation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_cavitation.html">Modeling Cavitation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="parametric_static_mixer_1.html">Parametric study workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="radiation_headlamp.html">Modeling Radiation in a Headlamp Using the Monte Carlo Method</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="species_transport.html">Modeling Species Transport and Gaseous Combustion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tyler_sofrin_modes.html">Tyler-Sofrin Compressor Modes Post-Processing</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Simulation Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-00-fluent-lunar-lander-thermal-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="thermal-model-of-a-lunar-lander-using-the-monte-carlo-radiation-model">
+<span id="ref-lunar-lander-thermal"></span><span id="sphx-glr-examples-00-fluent-lunar-lander-thermal-py"></span><h1>Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model<a class="headerlink" href="#thermal-model-of-a-lunar-lander-using-the-monte-carlo-radiation-model" title="Link to this heading">#</a></h1>
+<p>This example demonstrates creating and solving a thermal model of a lander on
+the lunar surface using Fluent’s Monte Carlo radiation solver.</p>
+<p>PyFluent uses the following loop at each timestep to retrofit the required
+functionality to Fluent:</p>
+<ol class="arabic simple">
+<li><p>Calculate the current sun vector (direction of Sun relative to observer).</p></li>
+<li><p>Update the radiation direction in Fluent.</p></li>
+<li><p>Change the radiator emissivity depending on whether the louvers are open.</p></li>
+<li><p>Run the solution for 1 timestep.</p></li>
+</ol>
+<p><strong>Workflow tasks</strong></p>
+<p>The Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model
+example guides you through these tasks:</p>
+<ul class="simple">
+<li><p>Setting up a Monte Carlo radiation model.</p></li>
+<li><p>Creation of materials with thermal and radiation properties.</p></li>
+<li><p>Setting boundary conditions for heat transfer and radiation calculations.</p></li>
+<li><p>Setting up shell conduction boundary conditions.</p></li>
+<li><p>Calculating a solution using the pressure-based solver.</p></li>
+<li><p>Dynamically updating the Sun direction and lander state at each step.</p></li>
+</ul>
+<p><strong>Problem description</strong></p>
+<p>The lander is modelled as a hollow 1 m × 1 m × 1 m cube with aluminum walls 3
+mm thick, covered in highly reflective multilayer insulation (MLI). To allow
+for comparison to empirical data, the landing site is selected to be the same
+as that of the Apollo 17 mission, which took measurements of the regolith
+temperatures in the Taurus-Littrow valley located at 20.1908° N, 30.7717° E.</p>
+<p>The lander has a radiator on the top surface of size 0.7 m × 0.7 m with louvers,
+which open above 273 K to reject heat and close below 273 K to retain heat.
+The PyFluent API is used to automatically update the radiator state and the
+direction of the Sun at each timestep.</p>
+<p>The case setup is taken from reference [<a class="reference internal" href="#id1">1</a>], originally created in ANSYS
+Thermal Desktop. It uses a thermal model of the lunar regolith developed in
+reference [<a class="reference internal" href="#id2">2</a>]. Validation data for the regolith temperatures are taken from
+measurements conducted by the Apollo 17 mission to the Moon [<a class="reference internal" href="#id3">3</a>].</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<img alt="../../_images/lunar_lander_thermal_setup.png" class="align-center" src="../../_images/lunar_lander_thermal_setup.png" />
+</section>
+<section id="preliminary-setup">
+<h1>Preliminary Setup<a class="headerlink" href="#preliminary-setup" title="Link to this heading">#</a></h1>
+<p>First, we will define functions to compute the direction of the Sun relative
+to the lander.</p>
+<section id="perform-required-imports">
+<h2>Perform required imports<a class="headerlink" href="#perform-required-imports" title="Link to this heading">#</a></h2>
+<p>Perform required imports, including downloading the required geometry files.
+The mesh has been pre-made for this problem.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># flake8: noqa: E402</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/itertools.html#itertools.chain" title="itertools.chain" class="sphx-glr-backref-module-itertools sphx-glr-backref-type-py-function"><span class="n">chain</span></a>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyfluent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">examples</span>
+
+<span class="n">lander_spaceclaim_file</span><span class="p">,</span> <span class="n">lander_mesh_file</span><span class="p">,</span> <span class="n">apollo17_temp_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">examples</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+        <span class="n">f</span><span class="p">,</span>
+        <span class="s2">&quot;pyfluent/lunar_lander_thermal&quot;</span><span class="p">,</span>
+        <span class="n">save_path</span><span class="o">=</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="s2">&quot;lander_geom.scdoc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;lander_mesh.msh.h5&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;apollo17_temp_data.csv&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="define-variables">
+<h2>Define variables<a class="headerlink" href="#define-variables" title="Link to this heading">#</a></h2>
+<p>Define the key variables:</p>
+<ul class="simple">
+<li><p>The obliquity (axial tilt) of the Moon relative to the plane of the Earth’s
+orbit around the Sun</p></li>
+<li><p>The setpoint temperature above which the radiator louvers open</p></li>
+<li><p>The coordinates of the lander</p></li>
+<li><p>The timestep size</p></li>
+<li><p>The number of timesteps</p></li>
+</ul>
+<p>We will use a timestep size of 24 hours and run the simulation for 60 Earth
+days, or approximately 2 lunar days.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lunar axial obliquity relative to ecliptic</span>
+<span class="n">moon_obliquity</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="numpy.deg2rad" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="mf">1.54</span><span class="p">)</span>
+
+<span class="c1"># Louver setpoint temperature [K]</span>
+<span class="n">louver_setpoint_temp</span> <span class="o">=</span> <span class="mi">273</span>
+
+<span class="c1"># Lander coordinates (Apollo 17 landing site)</span>
+<span class="n">land_lat</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="numpy.deg2rad" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="mf">20.1908</span><span class="p">)</span>
+<span class="n">land_lon</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="numpy.deg2rad" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="mf">30.7717</span><span class="p">)</span>
+
+<span class="c1"># Timestep size of 1 Earth day</span>
+<span class="n">step_size</span> <span class="o">=</span> <span class="mi">86400</span>
+
+<span class="c1"># Run simulation for 60 Earth days</span>
+<span class="n">n_steps</span> <span class="o">=</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</section>
+<section id="define-sun-vector-function">
+<h2>Define sun vector function<a class="headerlink" href="#define-sun-vector-function" title="Link to this heading">#</a></h2>
+<p>Define the function to calculate the Sun vector at the landing site. This is
+a vector that points from the observer’s location toward the Sun. It takes
+Earth’s ecliptic longitude at the beginning of the simulation, the subsolar
+longitude at the beginning of the simulation, the observer’s coordinates, and
+the time elapsed in seconds since the beginning of the simulation as inputs.
+It returns the Sun’s altitude and azimuth as outputs.</p>
+<p>For more information, see the following links:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://w.wiki/7zFR">Ecliptic longitude</a></p></li>
+<li><p><a class="reference external" href="https://w.wiki/7zFS">Subsolar longitude</a></p></li>
+<li><p><a class="reference external" href="https://w.wiki/7zFU">Altitude and azimuth</a></p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calc_sun_vecs_for_moon</span><span class="p">(</span>
+    <span class="n">earth_ecliptic_lon_start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">subsol_lon_start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">obsv_lat</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">obsv_lon</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate sun vectors.&quot;&quot;&quot;</span>
+    <span class="c1"># Earth ecliptic longitude</span>
+    <span class="n">earth_ecliptic_lon</span> <span class="o">=</span> <span class="n">earth_ecliptic_lon_start</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="p">(</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">86400</span><span class="p">)</span> <span class="o">*</span> <span class="n">t</span>
+
+    <span class="c1"># Subsolar point</span>
+    <span class="n">subsol_lat</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arcsin.html#numpy.arcsin" title="numpy.arcsin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="o">-</span><span class="n">moon_obliquity</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">earth_ecliptic_lon</span><span class="p">))</span>
+    <span class="n">subsol_lon</span> <span class="o">=</span> <span class="n">subsol_lon_start</span> <span class="o">+</span> <span class="n">t</span> <span class="o">/</span> <span class="p">(</span><span class="mf">29.5</span> <span class="o">*</span> <span class="mi">86400</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a>
+
+    <span class="c1"># Solar altitude and azimuth</span>
+    <span class="n">sun_obsv_phaseang</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arccos.html#numpy.arccos" title="numpy.arccos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">arccos</span></a><span class="p">(</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">subsol_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">obsv_lat</span><span class="p">)</span>
+        <span class="o">+</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">subsol_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">obsv_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">obsv_lon</span> <span class="o">-</span> <span class="n">subsol_lon</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">sun_alt</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/constants.html#numpy.pi" title="numpy.pi" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">sun_obsv_phaseang</span>
+    <span class="n">sun_azm</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arctan2.html#numpy.arctan2" title="numpy.arctan2" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span></a><span class="p">(</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">obsv_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">subsol_lat</span><span class="p">)</span>
+        <span class="o">-</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">obsv_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">subsol_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">subsol_lon</span> <span class="o">-</span> <span class="n">obsv_lon</span><span class="p">),</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">subsol_lat</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">subsol_lon</span> <span class="o">-</span> <span class="n">obsv_lon</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sun_alt</span><span class="p">,</span> <span class="n">sun_azm</span>
+</pre></div>
+</div>
+</section>
+<section id="define-beam-direction-function">
+<h2>Define beam direction function<a class="headerlink" href="#define-beam-direction-function" title="Link to this heading">#</a></h2>
+<p>Define the function that converts the Sun’s altitude and azimuth, as
+calculated by <code class="docutils literal notranslate"><span class="pre">calc_sun_vecs_for_moon</span></code>, into a beam direction in Cartesian
+coordinates that can be used in Fluent. The coordinate system used is:</p>
+<ul class="simple">
+<li><p>X: North</p></li>
+<li><p>Y: Zenith</p></li>
+<li><p>Z: East</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sun_vec_to_beam_dir</span><span class="p">(</span>
+    <span class="n">sun_alt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">sun_azm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate beam direction.&quot;&quot;&quot;</span>
+    <span class="c1"># Coordinate system:</span>
+    <span class="c1">#   X: North</span>
+    <span class="c1">#   Y: Zenith</span>
+    <span class="c1">#   Z: East</span>
+    <span class="n">x</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">sun_alt</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">sun_azm</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">sun_alt</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.cos.html#numpy.cos" title="numpy.cos" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">sun_alt</span><span class="p">)</span> <span class="o">*</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.sin.html#numpy.sin" title="numpy.sin" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-data"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">sun_azm</span><span class="p">)</span>
+
+    <span class="c1"># Since the sun vector points toward the sun, we need to take the</span>
+    <span class="c1"># negative to get the beam direction</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="n">z</span>
+</pre></div>
+</div>
+</section>
+<section id="define-mean-surface-temperature-function">
+<h2>Define mean surface temperature function<a class="headerlink" href="#define-mean-surface-temperature-function" title="Link to this heading">#</a></h2>
+<p>The radiator will be opened or closed based on its mean temperature. We will
+access the solver session object to extract nodal temperatures. It takes a
+list of surface names as input, finds their surface IDs, obtains the scalar
+field data from the solver, then returns the average temperature.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_surf_mean_temp</span><span class="p">(</span>
+    <span class="n">surf_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">solver</span><span class="p">:</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">session_solver</span><span class="o">.</span><span class="n">Solver</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate mean surface temperature.&quot;&quot;&quot;</span>
+    <span class="c1"># Get surface IDs</span>
+    <span class="n">surfs</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">field_info</span><span class="o">.</span><span class="n">get_surfaces_info</span><span class="p">()</span>
+    <span class="n">surf_ids_</span> <span class="o">=</span> <span class="p">[</span><span class="n">surfs</span><span class="p">[</span><span class="n">surf_name</span><span class="p">][</span><span class="s2">&quot;surface_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">surf_name</span> <span class="ow">in</span> <span class="n">surf_names</span><span class="p">]</span>
+
+    <span class="c1"># Flatten surf_ids nested list</span>
+    <span class="n">surf_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><a href="https://docs.python.org/3/library/itertools.html#itertools.chain" title="itertools.chain" class="sphx-glr-backref-module-itertools sphx-glr-backref-type-py-function"><span class="n">chain</span></a><span class="p">(</span><span class="o">*</span><span class="n">surf_ids_</span><span class="p">))</span>
+
+    <span class="c1"># Get temperature data</span>
+    <span class="n">temp_data</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">field_data</span><span class="o">.</span><span class="n">get_scalar_field_data</span><span class="p">(</span>
+        <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
+        <span class="n">surfaces</span><span class="o">=</span><span class="n">surf_ids</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Calculate mean temperature across surfaces</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">temp_data</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="start-fluent">
+<h1>Start Fluent<a class="headerlink" href="#start-fluent" title="Link to this heading">#</a></h1>
+<p>We are now ready to launch Fluent and load the mesh.</p>
+<section id="launch-fluent-and-print-fluent-version">
+<h2>Launch Fluent and print Fluent version<a class="headerlink" href="#launch-fluent-and-print-fluent-version" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span>
+    <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;double&quot;</span><span class="p">,</span>
+    <span class="n">processor_count</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;solver&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">solver_session</span><span class="o">.</span><span class="n">get_fluent_version</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="load-the-mesh">
+<h2>Load the mesh<a class="headerlink" href="#load-the-mesh" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">lander_mesh_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="case-setup">
+<h1>Case Setup<a class="headerlink" href="#case-setup" title="Link to this heading">#</a></h1>
+<p>We are now ready to begin setting up the case.</p>
+<section id="transient-settings">
+<h2>Transient settings<a class="headerlink" href="#transient-settings" title="Link to this heading">#</a></h2>
+<p>Set the solution type to transient and configure. We will use 2nd-order time-
+stepping, a fixed timestep size, and a limit of 20 iterations per timestep.
+Since we are only running 1 timestep at a time, the time step count is set to
+1.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set solution to transient</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">general</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="s2">&quot;unsteady-2nd-order&quot;</span>
+
+<span class="c1"># Set transient settings</span>
+<span class="n">trans_controls</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">transient_controls</span>
+<span class="n">trans_controls</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Fixed&quot;</span>
+<span class="n">trans_controls</span><span class="o">.</span><span class="n">max_iter_per_time_step</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">trans_controls</span><span class="o">.</span><span class="n">time_step_count</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">trans_controls</span><span class="o">.</span><span class="n">time_step_size</span> <span class="o">=</span> <span class="n">step_size</span>
+</pre></div>
+</div>
+</section>
+<section id="enable-models">
+<h2>Enable models<a class="headerlink" href="#enable-models" title="Link to this heading">#</a></h2>
+<p>Enable the energy model. Since fluid flow is not simulated, we will set the
+viscosity model to laminar.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">models</span>
+<span class="n">models</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">models</span><span class="o">.</span><span class="n">viscous</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;laminar&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="set-up-radiation-model">
+<h2>Set up radiation model<a class="headerlink" href="#set-up-radiation-model" title="Link to this heading">#</a></h2>
+<p>Enable the Monte Carlo radiation model with two radiation bands: one for
+solar radiation and one for thermal infrared radiation. Ensure that bands are
+created in order of increasing wavelength.</p>
+<p>The number of histories is set to 10 million to reduce computation time, but
+more may be required for accurate results.</p>
+<p>The limits of each band are based on Fluent manual recommendations and on
+space industry best practices [<a class="reference internal" href="#id4">4</a>].</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up radiation model</span>
+<span class="n">radiation</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">radiation</span>
+<span class="n">radiation</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;monte-carlo&quot;</span>
+<span class="n">radiation</span><span class="o">.</span><span class="n">monte_carlo</span><span class="o">.</span><span class="n">number_of_histories</span> <span class="o">=</span> <span class="mf">1e7</span>
+
+<span class="c1"># Define range of solar wavelengths</span>
+<span class="n">radiation</span><span class="o">.</span><span class="n">multiband</span><span class="p">[</span><span class="s2">&quot;solar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mf">2.8</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># Define range of thermal IR wavelengths</span>
+<span class="n">radiation</span><span class="o">.</span><span class="n">multiband</span><span class="p">[</span><span class="s2">&quot;thermal-ir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mf">2.8</span><span class="p">,</span>
+    <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Solve radiation once per timestep</span>
+<span class="n">radiation_freq</span> <span class="o">=</span> <span class="n">radiation</span><span class="o">.</span><span class="n">solve_frequency</span>
+<span class="n">radiation_freq</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;time-step&quot;</span>
+<span class="n">radiation_freq</span><span class="o">.</span><span class="n">time_step_interval</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="define-materials">
+<h2>Define materials<a class="headerlink" href="#define-materials" title="Link to this heading">#</a></h2>
+<p>Create materials to represent the vacuum of space (to prevent thermal
+conduction through the cell zone representing vacuum) and the lunar regolith
+(soil). The thermal conductivity of the regolith and the surface ‘fluff’ is
+strongly temperature-dependent and so must be modelled using an expression.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Properties of vacuum ---</span>
+<span class="c1"># Thermal conductivity: 0</span>
+
+<span class="n">vacuum</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;vacuum&quot;</span><span class="p">)</span>
+<span class="n">vacuum</span><span class="o">.</span><span class="n">chemical_formula</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">vacuum</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vacuum</span><span class="o">.</span><span class="n">absorption_coefficient</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vacuum</span><span class="o">.</span><span class="n">refractive_index</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># --- Properties of fluff (see ref. [2]) ---</span>
+<span class="c1"># Density: 1000 [kg m^-3]</span>
+<span class="c1"># Specific heat capacity: 1050 [J kg^-1 K^-1]</span>
+<span class="c1"># Thermal conductivity: 9.22e-4*(1 + 1.48*(temperature/350 K)^3) [W m^-1 K^-1]</span>
+
+<span class="n">fluff</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;fluff&quot;</span><span class="p">)</span>
+<span class="n">fluff</span><span class="o">.</span><span class="n">chemical_formula</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">fluff</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">fluff</span><span class="o">.</span><span class="n">specific_heat</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1050</span>
+<span class="n">fluff</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="s2">&quot;expression&quot;</span>
+<span class="n">fluff</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="o">.</span><span class="n">expression</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;9.22e-4[W m^-1 K^-1]*(1 + 1.48*(StaticTemperature/350[K])^3)&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># --- Properties of regolith (see ref. [2]) ---</span>
+<span class="c1"># Density: 2000 [kg m^-3]</span>
+<span class="c1"># Specific heat capacity: 1050 [J kg^-1 K^-1]</span>
+<span class="c1"># Thermal conductivity: 9.30e-4*(1 + 0.73*(temperature/350 K)^3) [W m^-1 K^-1]</span>
+
+<span class="n">regolith</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;regolith&quot;</span><span class="p">)</span>
+<span class="n">regolith</span><span class="o">.</span><span class="n">chemical_formula</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">regolith</span><span class="o">.</span><span class="n">density</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">regolith</span><span class="o">.</span><span class="n">specific_heat</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1050</span>
+<span class="n">regolith</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="o">.</span><span class="n">option</span> <span class="o">=</span> <span class="s2">&quot;expression&quot;</span>
+<span class="n">regolith</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="o">.</span><span class="n">expression</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;9.30e-4[W m^-1 K^-1]*(1 + 0.73*(StaticTemperature/350[K])^3)&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="cell-zone-conditions">
+<h2>Cell zone conditions<a class="headerlink" href="#cell-zone-conditions" title="Link to this heading">#</a></h2>
+<p>Since the Monte Carlo radiation model only supports radiative transfer
+through a cell zone, a cell zone is used to model the vacuum around the
+lander. This cell zone must be set to be a solid so that the fluid equations
+are not solved there, then it must be assigned to the vacuum material.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cellzones</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">cell_zone_conditions</span>
+<span class="n">cellzones</span><span class="o">.</span><span class="n">set_zone_type</span><span class="p">(</span>
+    <span class="n">zone_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;geom-2_domain&quot;</span><span class="p">],</span>
+    <span class="n">new_type</span><span class="o">=</span><span class="s2">&quot;solid&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">cellzones</span><span class="o">.</span><span class="n">solid</span><span class="p">[</span><span class="s2">&quot;geom-2_domain&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;vacuum&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="regolith-boundary-condition">
+<h2>Regolith boundary condition<a class="headerlink" href="#regolith-boundary-condition" title="Link to this heading">#</a></h2>
+<p>We will implement the regolith model in reference [<a class="reference internal" href="#id2">2</a>] by modelling
+it as a wall exhibiting multilayer shell conduction. A basal heat flux is
+used to represent the geothermal heat from the Moon’s interior that heats
+the regolith from the bottom.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Regolith BC ---</span>
+<span class="c1"># Thickness of layers: 0.02, 0.04, 0.08, 0.16, 0.32 [m]</span>
+<span class="c1"># Heating at base: 0.031 [W m^-2]</span>
+<span class="c1"># Surface absorptivity: 0.87</span>
+<span class="c1"># Surface emissivity: 0.97</span>
+
+<span class="n">regolith_bc</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="s2">&quot;regolith&quot;</span><span class="p">]</span>
+
+<span class="n">regolith_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.031</span>
+<span class="n">regolith_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">planar_conduction</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">regolith_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">shell_conduction</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;fluff&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.04</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;regolith&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;regolith&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.16</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;regolith&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.32</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;regolith&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+<span class="n">regolith_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">internal_emissivity_band</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mf">0.87</span><span class="p">,</span> <span class="s2">&quot;thermal-ir&quot;</span><span class="p">:</span> <span class="mf">0.97</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="space-boundary-condition">
+<h2>Space boundary condition<a class="headerlink" href="#space-boundary-condition" title="Link to this heading">#</a></h2>
+<p>The space boundary condition represents deep space and also acts as the
+source of the Sun’s illumination in the simulation.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Set up space boundary condition ---</span>
+<span class="c1"># Temperature: 3 [K]</span>
+<span class="c1"># Emissivity: 1</span>
+<span class="c1"># Absorptivity: 1</span>
+<span class="c1"># Solar flux: 1414 [W m^-2]</span>
+
+<span class="n">space_bc</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="s2">&quot;space&quot;</span><span class="p">]</span>
+
+<span class="n">space_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">thermal_bc</span> <span class="o">=</span> <span class="s2">&quot;Temperature&quot;</span>
+<span class="n">space_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">space_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;vacuum&quot;</span>
+<span class="n">space_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">mc_bsource_p</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">space_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">direct_irradiation_settings</span><span class="o">.</span><span class="n">direct_irradiation</span><span class="p">[</span><span class="s2">&quot;solar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1414</span>
+<span class="n">space_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">diffuse_irradiation_settings</span><span class="o">.</span><span class="n">diffuse_fraction_band</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;thermal-ir&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">space_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">internal_emissivity_band</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;thermal-ir&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="spacecraft-walls-boundary-condition">
+<h2>Spacecraft walls boundary condition<a class="headerlink" href="#spacecraft-walls-boundary-condition" title="Link to this heading">#</a></h2>
+<p>The spacecraft is covered in reflective MLI (multilayer insulation) and heat
+transfer through the aluminum shell can be simulated using shell conduction.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Set up spacecraft shell boundary condition ---</span>
+<span class="c1"># Thickness: 0.03 [m]</span>
+<span class="c1"># Material: aluminum</span>
+<span class="c1"># Absorptivity: 0.05</span>
+<span class="c1"># Emissivity: 0.05</span>
+
+<span class="n">sc_mli_bc</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="s2">&quot;sc-mli&quot;</span><span class="p">]</span>
+
+<span class="n">sc_mli_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">planar_conduction</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">sc_mli_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">shell_conduction</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;aluminum&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+<span class="n">sc_mli_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">internal_emissivity_band</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s2">&quot;thermal-ir&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="spacecraft-radiator-boundary-condition">
+<h2>Spacecraft radiator boundary condition<a class="headerlink" href="#spacecraft-radiator-boundary-condition" title="Link to this heading">#</a></h2>
+<p>The spacecraft’s radiator is modelled in a similar way to the spacecraft’s
+walls, but the emissivity is left unset as it will be changed dynamically by
+our PyFluent script depending on its temperature during the simulation.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Set up spacecraft radiator boundary condition ---</span>
+<span class="c1"># Thickness: 0.03 [m]</span>
+<span class="c1"># Material: aluminum</span>
+<span class="c1"># Absorptivity: 0.17</span>
+<span class="c1"># Emissivity: 0.09 below 273 K, 0.70 otherwise</span>
+
+<span class="n">sc_rad_bc</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span><span class="s2">&quot;sc-radiator&quot;</span><span class="p">]</span>
+
+<span class="n">sc_rad_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">planar_conduction</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">sc_rad_bc</span><span class="o">.</span><span class="n">thermal</span><span class="o">.</span><span class="n">shell_conduction</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;thickness&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+        <span class="s2">&quot;material&quot;</span><span class="p">:</span> <span class="s2">&quot;aluminum&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+<span class="n">sc_rad_bc</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">internal_emissivity_band</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="mf">0.17</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-simulation">
+<h2>Initialize simulation<a class="headerlink" href="#initialize-simulation" title="Link to this heading">#</a></h2>
+<p>Initialize the simulation. Doing so now will create conductive zones between
+shell layers representing the regolith, allowing us to make report
+definitions on them in the next step. The entire domain will be initialized
+to a temperature of 230 K, or -43 °C.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sim_init</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initialization</span>
+<span class="n">sim_init</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">230</span>
+<span class="n">sim_init</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="spacecraft-temperature-reports">
+<h2>Spacecraft temperature reports<a class="headerlink" href="#spacecraft-temperature-reports" title="Link to this heading">#</a></h2>
+<p>Create reports for the spacecraft’s minimum, mean, and maximum temperatures.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">surf_report_defs</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span>
+
+<span class="n">sc_surfs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sc-radiator&quot;</span><span class="p">,</span> <span class="s2">&quot;sc-mli&quot;</span><span class="p">]</span>
+
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;sc-min-temp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="n">sc_surfs</span><span class="p">,</span>
+    <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-facetmin&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;sc-avg-temp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="n">sc_surfs</span><span class="p">,</span>
+    <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-facetavg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;sc-max-temp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="n">sc_surfs</span><span class="p">,</span>
+    <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-facetmax&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="regolith-temperature-reports">
+<h2>Regolith temperature reports<a class="headerlink" href="#regolith-temperature-reports" title="Link to this heading">#</a></h2>
+<p>Create reports for the mean temperatures of each regolith layer. We will
+store the report names for use later.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">surf_report_defs</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span>
+
+<span class="c1"># Loop over all regolith reports to set common properties</span>
+<span class="n">regolith_report_names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">report_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;regolith-layer-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">-temp&quot;</span>
+    <span class="n">surf_report_defs</span><span class="p">[</span><span class="n">report_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-facetavg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">regolith_report_names</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">report_name</span><span class="p">])</span>
+
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;regolith-layer-1-temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">surface_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;regolith&quot;</span><span class="p">]</span>
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;regolith-layer-2-temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">surface_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;regolith-1:2&quot;</span><span class="p">]</span>
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;regolith-layer-3-temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">surface_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;regolith-2:3&quot;</span><span class="p">]</span>
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;regolith-layer-4-temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">surface_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;regolith-3:4&quot;</span><span class="p">]</span>
+<span class="n">surf_report_defs</span><span class="p">[</span><span class="s2">&quot;regolith-layer-5-temp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">surface_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;regolith-4:5&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="temperature-report-files">
+<h2>Temperature report files<a class="headerlink" href="#temperature-report-files" title="Link to this heading">#</a></h2>
+<p>Create temperature report files for post-processing.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">surf_report_files</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">report_files</span>
+
+<span class="c1"># Spacecraft temperatures</span>
+<span class="n">surf_report_files</span><span class="p">[</span><span class="s2">&quot;sc-temps-rfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;report_defs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;flow-time&quot;</span><span class="p">,</span> <span class="s2">&quot;sc-min-temp&quot;</span><span class="p">,</span> <span class="s2">&quot;sc-avg-temp&quot;</span><span class="p">,</span> <span class="s2">&quot;sc-max-temp&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="c1"># Regolith temperatures</span>
+<span class="n">surf_report_files</span><span class="p">[</span><span class="s2">&quot;regolith-temps-rfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;report_defs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">*</span><span class="n">regolith_report_names</span><span class="p">,</span> <span class="s2">&quot;flow-time&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="autosave">
+<h2>Autosave<a class="headerlink" href="#autosave" title="Link to this heading">#</a></h2>
+<p>Set the case to save only the data file at each timestep for post-processing.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">autosave</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">auto_save</span>
+
+<span class="n">autosave</span><span class="o">.</span><span class="n">case_frequency</span> <span class="o">=</span> <span class="s2">&quot;if-mesh-is-modified&quot;</span>
+<span class="n">autosave</span><span class="o">.</span><span class="n">data_frequency</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">autosave</span><span class="o">.</span><span class="n">save_data_file_every</span><span class="o">.</span><span class="n">frequency_type</span> <span class="o">=</span> <span class="s2">&quot;time-step&quot;</span>
+<span class="n">autosave</span><span class="o">.</span><span class="n">append_file_name_with</span><span class="o">.</span><span class="n">file_suffix_type</span> <span class="o">=</span> <span class="s2">&quot;time-step&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="convergence-criteria">
+<h2>Convergence criteria<a class="headerlink" href="#convergence-criteria" title="Link to this heading">#</a></h2>
+<p>Turn off the convergence criteria pertaining to fluid flow as there is no
+fluid flow in this simulation. Keep only the energy convergence criterion.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">residual</span><span class="o">.</span><span class="n">equations</span>
+
+<span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;continuity&quot;</span><span class="p">,</span> <span class="s2">&quot;x-velocity&quot;</span><span class="p">,</span> <span class="s2">&quot;y-velocity&quot;</span><span class="p">,</span> <span class="s2">&quot;z-velocity&quot;</span><span class="p">]:</span>
+    <span class="n">residuals</span><span class="p">[</span><span class="n">criterion</span><span class="p">]</span><span class="o">.</span><span class="n">check_convergence</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">residuals</span><span class="p">[</span><span class="n">criterion</span><span class="p">]</span><span class="o">.</span><span class="n">monitor</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</section>
+<section id="write-case-file">
+<h2>Write case file<a class="headerlink" href="#write-case-file" title="Link to this heading">#</a></h2>
+<p>Write the case file. Enable overwrite.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">batch_options</span><span class="o">.</span><span class="n">confirm_overwrite</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">solver_session</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+    <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;lunar_lander_thermal.cas.h5&quot;</span><span class="p">,</span>
+    <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;case&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="solve">
+<h1>Solve<a class="headerlink" href="#solve" title="Link to this heading">#</a></h1>
+<section id="solve-case">
+<h2>Solve case<a class="headerlink" href="#solve-case" title="Link to this heading">#</a></h2>
+<p>Run the case, using a loop to update the radiator state and Sun vector at
+each timestep. We will assume that the Earth’s ecliptic longitude and the
+subsolar longitude are both zero at the start of the simulation for
+simplicity.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
+    <span class="c1"># Get current simulation time</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">rp_vars</span><span class="p">(</span><span class="s2">&quot;flow-time&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate sun vector</span>
+    <span class="n">sun_alt</span><span class="p">,</span> <span class="n">sun_azm</span> <span class="o">=</span> <span class="n">calc_sun_vecs_for_moon</span><span class="p">(</span>
+        <span class="n">earth_ecliptic_lon_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">subsol_lon_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">obsv_lat</span><span class="o">=</span><span class="n">land_lat</span><span class="p">,</span>
+        <span class="n">obsv_lon</span><span class="o">=</span><span class="n">land_lon</span><span class="p">,</span>
+        <span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">beam_x</span><span class="p">,</span> <span class="n">beam_y</span><span class="p">,</span> <span class="n">beam_z</span> <span class="o">=</span> <span class="n">sun_vec_to_beam_dir</span><span class="p">(</span>
+        <span class="n">sun_alt</span><span class="o">=</span><span class="n">sun_alt</span><span class="p">,</span>
+        <span class="n">sun_azm</span><span class="o">=</span><span class="n">sun_azm</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Set beam direction</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span>
+        <span class="s2">&quot;space&quot;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">direct_irradiation_settings</span><span class="o">.</span><span class="n">beam_direction</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">beam_x</span><span class="p">,</span>
+        <span class="n">beam_y</span><span class="p">,</span>
+        <span class="n">beam_z</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Calculate radiator mean temperature</span>
+    <span class="n">rad_mean_temp</span> <span class="o">=</span> <span class="n">get_surf_mean_temp</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;sc-radiator&quot;</span><span class="p">],</span>
+        <span class="n">solver_session</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Simulate closing louvers below 273 K by changing emissivity</span>
+    <span class="n">rad_emiss</span> <span class="o">=</span> <span class="n">solver_session</span><span class="o">.</span><span class="n">setup</span><span class="o">.</span><span class="n">boundary_conditions</span><span class="o">.</span><span class="n">wall</span><span class="p">[</span>
+        <span class="s2">&quot;sc-radiator&quot;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">radiation</span><span class="o">.</span><span class="n">internal_emissivity_band</span><span class="p">[</span><span class="s2">&quot;thermal-ir&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">rad_mean_temp</span> <span class="o">&lt;</span> <span class="mi">273</span><span class="p">:</span>
+        <span class="n">rad_emiss</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.09</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rad_emiss</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.70</span>
+
+    <span class="c1"># Run simulation for 1 timestep</span>
+    <span class="n">solver_session</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="close-fluent">
+<h2>Close Fluent<a class="headerlink" href="#close-fluent" title="Link to this heading">#</a></h2>
+<p>Shut down the solver.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_session</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="post-process">
+<h1>Post-process<a class="headerlink" href="#post-process" title="Link to this heading">#</a></h1>
+<p>Post-process the data.</p>
+<section id="import-packages">
+<h2>Import packages<a class="headerlink" href="#import-packages" title="Link to this heading">#</a></h2>
+<p>Import the packages required for post-processing.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Path</span></a>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</section>
+<section id="clean-column-names-function">
+<h2>Clean column names function<a class="headerlink" href="#clean-column-names-function" title="Link to this heading">#</a></h2>
+<p>Pandas will not correctly format the column names when reading in the Fluent
+output files. We will clean the names by removing all parentheses and double
+quotation marks.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">clean_col_names</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean column names.&quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><a href="https://docs.python.org/3/library/re.html#re.sub" title="re.sub" class="sphx-glr-backref-module-re sphx-glr-backref-type-py-function"><span class="n">re</span><span class="o">.</span><span class="n">sub</span></a><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[&quot;()]&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="read-in-simulation-data">
+<h2>Read in simulation data<a class="headerlink" href="#read-in-simulation-data" title="Link to this heading">#</a></h2>
+<p>Read the Fluent output files for the regolith and spacecraft temperature data
+into Pandas dataframes. The separation delimiter between columns is defined
+as one or more spaces that is not immediately in front of or behind an
+alphabetical character, implemented as negative lookarounds in a regular
+expression.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Path</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">())</span>
+<span class="n">sep</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(?&lt;![a-zA-Z])\s+(?![a-zA-Z])&quot;</span>
+
+<span class="c1"># Read in regolith data</span>
+<span class="n">regolith_df</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span>
+    <span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;regolith-temps-rfile.out&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float64</span></a><span class="p">,</span>
+    <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">clean_col_names</span><span class="p">(</span><span class="n">regolith_df</span><span class="p">)</span>
+
+<span class="c1"># Read in spacecraft data</span>
+<span class="n">sc_df</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span>
+    <span class="n">root</span> <span class="o">/</span> <span class="s2">&quot;sc-temps-rfile.out&quot;</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float64</span></a><span class="p">,</span>
+    <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">clean_col_names</span><span class="p">(</span><span class="n">sc_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="read-in-experimental-data">
+<h2>Read in experimental data<a class="headerlink" href="#read-in-experimental-data" title="Link to this heading">#</a></h2>
+<p>Read in the experimental data from Apollo 17 [<a class="reference internal" href="#id3">3</a>] to compare against the
+simulation. We will offset the data to start at time step 25 of the
+simulation, to ensure that the data are compared at the same sun angles.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">apollo17_df</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html#pandas.read_csv" title="pandas.read_csv" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-function"><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span></a><span class="p">(</span><span class="n">apollo17_temp_data</span><span class="p">)</span>
+
+<span class="n">apollo17_offset</span> <span class="o">=</span> <span class="n">regolith_df</span><span class="p">[</span><span class="s2">&quot;flow-time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span>
+<span class="n">apollo17_df</span><span class="p">[</span><span class="s2">&quot;Offset time since sunrise&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">apollo17_df</span><span class="p">[</span><span class="s2">&quot;Time since sunrise&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">apollo17_offset</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="set-data-types">
+<h2>Set data types<a class="headerlink" href="#set-data-types" title="Link to this heading">#</a></h2>
+<p>Set the data type of the time step column to integer.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">regolith_df</span> <span class="o">=</span> <span class="n">regolith_df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Time Step&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="numpy.int64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">int64</span></a><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">sc_df</span> <span class="o">=</span> <span class="n">sc_df</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Time Step&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.int64" title="numpy.int64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">int64</span></a><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-regolith-temperatures">
+<h2>Plot regolith temperatures<a class="headerlink" href="#plot-regolith-temperatures" title="Link to this heading">#</a></h2>
+<p>Plot the mean temperatures of each layer of regolith, as well as a comparison
+with the Apollo 17 data. The simulation agrees well with experiment.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig1</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">regolith_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;flow-time&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;regolith-layer-</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">-temp&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)],</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Regolith temperatures&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">apollo17_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Offset time since sunrise&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Temperature&quot;</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Temperature [K]&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Layer 1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="s2">&quot;Apollo 17&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="plot-spacecraft-temperatures">
+<h2>Plot spacecraft temperatures<a class="headerlink" href="#plot-spacecraft-temperatures" title="Link to this heading">#</a></h2>
+<p>Plot the minimum, mean, and maximum temperatures of the spacecraft.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fig2</span><span class="p">,</span> <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">sc_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;flow-time&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sc-min-temp&quot;</span><span class="p">,</span> <span class="s2">&quot;sc-avg-temp&quot;</span><span class="p">,</span> <span class="s2">&quot;sc-max-temp&quot;</span><span class="p">],</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Spacecraft Temperatures&quot;</span><span class="p">,</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Time [s]&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Temperature [K]&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">273</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;Mean&quot;</span><span class="p">,</span> <span class="s2">&quot;Maximum&quot;</span><span class="p">,</span> <span class="s2">&quot;Setpoint&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="show-plots">
+<h2>Show plots<a class="headerlink" href="#show-plots" title="Link to this heading">#</a></h2>
+<p>Display the plots.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The expected plot for the mean temperature of the regolith layers (Figure 1)
+is as follows. This represents the regolith temperatures that would be
+observed without a spacecraft in the environment.</p>
+<img alt="../../_images/lunar_lander_regolith_temps.png" class="align-center" src="../../_images/lunar_lander_regolith_temps.png" />
+<p>The expected plot for the spacecraft’s minimum, mean, and maximum
+temperatures (Figure 2) is as follows.</p>
+<img alt="../../_images/lunar_lander_sc_temps.png" class="align-center" src="../../_images/lunar_lander_sc_temps.png" />
+</section>
+</section>
+<section id="references">
+<h1>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<p id="id1">[1] T.-Y. Park, J.-J. Lee, J.-H. Kim, and H.-U. Oh, “Preliminary Thermal
+Design and Analysis of Lunar Lander for Night Survival,” <em>International
+Journal of Aerospace Engineering</em>, vol. 2018, p. e4236396, Oct. 2018, doi:
+<a class="reference external" href="https://doi.org/10.1155/2018/4236396">doi.org/10.1155/2018/4236396</a>.</p>
+<p id="id2">[2] R. J. Christie, D. W. Plachta, and M. M. Yasan, “Transient Thermal Model
+and Analysis of the Lunar Surface and Regolith for Cryogenic Fluid Storage,”
+NASA Glenn Research Center, Cleveland, Ohio, NASA Technical Report
+TM-2008-215300, Aug. 2008. [Online]. Available:
+<a class="reference external" href="https://ntrs.nasa.gov/citations/20080039640">https://ntrs.nasa.gov/citations/20080039640</a></p>
+<p id="id3">[3] M. G. Langseth, S. J. Keihm, and J. L. Chute, “Heat Flow Experiment,” in
+<em>Apollo 17: Preliminary Science Report</em>, vol. SP-330, Washington, D.C.: NASA
+Lyndon B. Johnson Space Center, 1973. [Online]. Available:
+<a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1973NASSP.330....../abstract">https://ui.adsabs.harvard.edu/abs/1973NASSP.330……/abstract</a></p>
+<p id="id4">[4] L. Kauder, “Spacecraft Thermal Control Coatings References,” Goddard
+Space Flight Center, Greenbelt, MD 20771, NASA Technical Report
+NASA/TP-2005-212792, Dec. 2005. [Online]. Available:
+<a class="reference external" href="https://ntrs.nasa.gov/citations/20070014757">https://ntrs.nasa.gov/citations/20070014757</a></p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-lunar-lander-thermal-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/ca5d99015f4fcaeeff1697ee41e0b030/lunar_lander_thermal.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">lunar_lander_thermal.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/939816394c3b02b8d5f2eb92beb021a0/lunar_lander_thermal.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">lunar_lander_thermal.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8238ff548d81854228278a69d6f38196/lunar_lander_thermal.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">lunar_lander_thermal.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-setup">Preliminary Setup</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-required-imports">Perform required imports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-variables">Define variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-sun-vector-function">Define sun vector function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-beam-direction-function">Define beam direction function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-mean-surface-temperature-function">Define mean surface temperature function</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#start-fluent">Start Fluent</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-fluent-and-print-fluent-version">Launch Fluent and print Fluent version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-the-mesh">Load the mesh</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#case-setup">Case Setup</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transient-settings">Transient settings</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-models">Enable models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up-radiation-model">Set up radiation model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-materials">Define materials</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cell-zone-conditions">Cell zone conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regolith-boundary-condition">Regolith boundary condition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#space-boundary-condition">Space boundary condition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacecraft-walls-boundary-condition">Spacecraft walls boundary condition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacecraft-radiator-boundary-condition">Spacecraft radiator boundary condition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-simulation">Initialize simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spacecraft-temperature-reports">Spacecraft temperature reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regolith-temperature-reports">Regolith temperature reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-report-files">Temperature report files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autosave">Autosave</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-criteria">Convergence criteria</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#write-case-file">Write case file</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#solve">Solve</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-case">Solve case</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#close-fluent">Close Fluent</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#post-process">Post-process</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-packages">Import packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clean-column-names-function">Clean column names function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-simulation-data">Read in simulation data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-experimental-data">Read in experimental data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-data-types">Set data types</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-regolith-temperatures">Plot regolith temperatures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-spacecraft-temperatures">Plot spacecraft temperatures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#show-plots">Show plots</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/00-fluent/lunar_lander_thermal.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.5.2. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

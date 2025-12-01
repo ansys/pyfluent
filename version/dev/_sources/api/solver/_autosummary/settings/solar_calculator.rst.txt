@@ -1,0 +1,44 @@
+:orphan:
+
+.. _solar_calculator:
+
+solar_calculator
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solar_calculator
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   =======================================================================================
+
+Attribute                                                                                                                      Summary
+
+============================================   =======================================================================================
+:ref:`longitude <longitude>`                                                                                                Longitude.
+
+:ref:`latitude <latitude>`                                                                                                   Latitude.
+
+:ref:`timezone <timezone>`                         Time zone in terms of number of hours of (positive or negative) deviation from GMT.
+
+:ref:`mesh_orientation <mesh_orientation>`                                                     Mesh-orientation for solar calculation.
+
+:ref:`date_and_time <date_and_time>`                                                         Date and time for solar load calculation.
+
+:ref:`calculator_method <calculator_method>`                                                            A method for solar calculator.
+
+:ref:`sunshine_factor <sunshine_factor>`                                                                          The sunshine factor.
+
+============================================   =======================================================================================
+
+.. rubric:: Included in:
+
+============================   ======================================
+
+Parent                                                        Summary
+
+============================   ======================================
+:ref:`radiation <radiation>`       Model for radiative heat-transfer.
+
+============================   ======================================
+

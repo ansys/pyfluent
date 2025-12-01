@@ -1,0 +1,21 @@
+:orphan:
+
+.. _background:
+
+background
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.background
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =========================
+
+Parent                                                     Summary
+
+======================================   =========================
+:ref:`surface_mesh_1 <surface_mesh_1>`       'surface_mesh' child.
+
+======================================   =========================
+

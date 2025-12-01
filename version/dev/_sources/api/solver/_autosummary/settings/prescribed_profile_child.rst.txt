@@ -1,0 +1,53 @@
+:orphan:
+
+.. _prescribed_profile_child:
+
+prescribed_profile_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.prescribed_profile_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ======================================
+
+Attribute                                                                         Summary
+
+================================================   ======================================
+:ref:`name <name_5>`                                                  Name of the object.
+
+:ref:`surfaces <surfaces_1>`                                                     Surface.
+
+:ref:`location <location_7>`                                                  The object.
+
+:ref:`deformation_profile <deformation_profile>`          Prescribed deformation profile.
+
+:ref:`factor <factor_3>`                                       Prescribed scaling factor.
+
+:ref:`parameters <parameters_11>`                      Parameters for prescribed profile.
+
+================================================   ======================================
+
+.. rubric:: Methods
+
+===========================   =============================
+
+Method                                              Summary
+
+===========================   =============================
+:ref:`display <display_16>`       Display design condition.
+
+===========================   =============================
+
+.. rubric:: Included in:
+
+==============================================   =============================================
+
+Parent                                                                                 Summary
+
+==============================================   =============================================
+:ref:`prescribed_profile <prescribed_profile>`       Prescribed profile constraint definition.
+
+==============================================   =============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_species_eq_ratio_molar_frac_corr_constant:
+
+mt_species_eq_ratio_molar_frac_corr_constant
+============================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_species_eq_ratio_molar_frac_corr_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   =================================================
+
+Parent                                                                                                       Summary
+
+================================================================   =================================================
+:ref:`mt_species_model_parameters <mt_species_model_parameters>`       Species mass transfer model parameters group.
+
+================================================================   =================================================
+

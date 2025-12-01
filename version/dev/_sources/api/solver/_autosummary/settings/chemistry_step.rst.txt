@@ -1,0 +1,21 @@
+:orphan:
+
+.. _chemistry_step:
+
+chemistry_step
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.chemistry_step
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================================
+
+Parent                                                               Summary
+
+======================================   ===================================
+:ref:`function_hooks <function_hooks>`       Hook up user-defined functions.
+
+======================================   ===================================
+

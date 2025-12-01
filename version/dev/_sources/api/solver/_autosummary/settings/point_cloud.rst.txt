@@ -1,0 +1,21 @@
+:orphan:
+
+.. _point_cloud:
+
+point_cloud
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.point_cloud
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =================================
+
+Parent                                       Summary
+
+================   =================================
+:ref:`vtk <vtk>`       Write a VTK (.vtp/.vtu) file.
+
+================   =================================
+

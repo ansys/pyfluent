@@ -1,0 +1,34 @@
+:orphan:
+
+.. _specify_coarsening_rate:
+
+specify_coarsening_rate
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.specify_coarsening_rate
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   =======================================
+
+Attribute                                                                                    Summary
+
+==========================================================   =======================================
+:ref:`specify_coarsening_rate <specify_coarsening_rate_1>`       Enable/disable AMG coarsening rate.
+
+:ref:`coarsen_rate <coarsen_rate>`                                              AMG coarsening rate.
+
+==========================================================   =======================================
+
+.. rubric:: Included in:
+
+================   =============================
+
+Parent                                   Summary
+
+================   =============================
+:ref:`amg <amg>`       Flexible numerics object.
+
+================   =============================
+

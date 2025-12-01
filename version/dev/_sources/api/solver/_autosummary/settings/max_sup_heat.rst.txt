@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_sup_heat:
+
+max_sup_heat
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.max_sup_heat
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================================   =================================
+
+Parent                                                                                                       Summary
+
+================================================================================   =================================
+:ref:`mt_evap_cond_sbm_boil_model_exp_opt <mt_evap_cond_sbm_boil_model_exp_opt>`       Boiling model expert options.
+
+================================================================================   =================================
+

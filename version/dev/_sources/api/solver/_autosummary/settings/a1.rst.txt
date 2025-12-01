@@ -1,0 +1,21 @@
+:orphan:
+
+.. _a1:
+
+a1
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.a1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`coefficients_2 <coefficients_2>`       Coefficients group.
+
+======================================   =======================
+

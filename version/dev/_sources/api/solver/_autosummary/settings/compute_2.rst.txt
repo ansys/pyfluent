@@ -1,0 +1,32 @@
+:orphan:
+
+.. _compute_2:
+
+compute
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.compute_2
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ====================================
+
+Argument                                              Summary
+
+======================   ====================================
+:ref:`names <names_1>`       The named expression to compute.
+
+======================   ====================================
+
+.. rubric:: Included in:
+
+============================================   =======================================================================
+
+Parent                                                                                                         Summary
+
+============================================   =======================================================================
+:ref:`named_expressions <named_expressions>`       Accesses the interface for creating and managing named expressions.
+
+============================================   =======================================================================
+

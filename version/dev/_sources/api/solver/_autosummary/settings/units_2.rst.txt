@@ -1,0 +1,21 @@
+:orphan:
+
+.. _units_2:
+
+units
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.units_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`major_gridlines_1 <major_gridlines_1>`       Major rules settings.
+
+============================================   =========================
+

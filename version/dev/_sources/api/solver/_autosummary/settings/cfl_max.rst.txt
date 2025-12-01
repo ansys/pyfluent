@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cfl_max:
+
+cfl_max
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cfl_max
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================
+
+Parent                                                   Summary
+
+==============================   ===============================
+:ref:`settings_4 <settings_4>`       Solution Steering Settings.
+
+==============================   ===============================
+

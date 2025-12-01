@@ -1,0 +1,21 @@
+:orphan:
+
+.. _explicit_relaxation:
+
+explicit_relaxation
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.explicit_relaxation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================
+
+Parent                                                   Summary
+
+==============================   ===============================
+:ref:`settings_4 <settings_4>`       Solution Steering Settings.
+
+==============================   ===============================
+

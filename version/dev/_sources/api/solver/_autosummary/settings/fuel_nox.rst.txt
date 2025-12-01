@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fuel_nox:
+
+fuel_nox
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fuel_nox
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =====================
+
+Parent                                               Summary
+
+====================================   =====================
+:ref:`nox_chemistry <nox_chemistry>`       NOx model object.
+
+====================================   =====================
+

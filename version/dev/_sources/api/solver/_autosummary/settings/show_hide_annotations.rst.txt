@@ -1,0 +1,21 @@
+:orphan:
+
+.. _show_hide_annotations:
+
+show_hide_annotations
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.show_hide_annotations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============================================
+
+Parent                                                                   Summary
+
+==============================   ===============================================
+:ref:`annotation <annotation>`       Add, Edit, Remove annotations in case file.
+
+==============================   ===============================================
+

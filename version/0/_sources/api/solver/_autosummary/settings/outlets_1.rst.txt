@@ -1,0 +1,23 @@
+:orphan:
+
+.. _outlets_1:
+
+outlets
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.outlets_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`isentropic <isentropic>`       Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`       Calculate polytropic efficiency.
+
+==============================   ====================================
+

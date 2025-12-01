@@ -1,0 +1,21 @@
+:orphan:
+
+.. _user_db_name:
+
+user_db_name
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.user_db_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ======================
+
+Parent                                      Summary
+
+==========================   ======================
+:ref:`database <database>`       Material database.
+
+==========================   ======================
+

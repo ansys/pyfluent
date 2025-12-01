@@ -1,0 +1,21 @@
+:orphan:
+
+.. _active_4:
+
+active
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.active_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`conditions_2_child <conditions_2_child>`       'child_object_type' of conditions.
+
+==============================================   ======================================
+

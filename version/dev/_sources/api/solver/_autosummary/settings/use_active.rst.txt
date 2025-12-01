@@ -1,0 +1,32 @@
+:orphan:
+
+.. _use_active:
+
+use_active
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.use_active
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ====================================================================================================================
+
+Argument                                                                                                                                      Summary
+
+==============================   ====================================================================================================================
+:ref:`state_name <state_name>`       Update the currently-selected display state to inherit the display state settings of the active graphics window.
+
+==============================   ====================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`display_states <display_states>`       Display state options.
+
+======================================   ==========================
+

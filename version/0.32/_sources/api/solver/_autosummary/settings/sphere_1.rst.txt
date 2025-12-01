@@ -1,0 +1,36 @@
+:orphan:
+
+.. _sphere_1:
+
+sphere
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sphere_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ==========================================================================
+
+Attribute                                                                                     Summary
+
+========================   ==========================================================================
+:ref:`center <center_1>`                                          The centroid for the sphere region.
+
+:ref:`radius <radius_5>`                                                                  The radius.
+
+:ref:`inside <inside>`         Specifies whether this register marks cells inside the defined region.
+
+========================   ==========================================================================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _porous_jump_settings:
+
+porous_jump_settings
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.porous_jump_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =============================================================
+
+Attribute                                                                                        Summary
+
+========================================   =============================================================
+:ref:`porous_jump <porous_jump_1>`             Allows to change porous-jump model variables or settings.
+
+:ref:`discrete_phase <discrete_phase_2>`                                        Discrete Phase settings.
+
+:ref:`geometry <geometry_7>`                      Allows to change geometry model variables or settings.
+
+========================================   =============================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`interfaces_child <interfaces_child>`       'child_object_type' of interfaces.
+
+==========================================   ======================================
+

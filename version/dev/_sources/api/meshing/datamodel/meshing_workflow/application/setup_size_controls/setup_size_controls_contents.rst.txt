@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_setup_size_controls:
+
+setup_size_controls
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.setup_size_controls
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _setup_size_controlsArguments/_setup_size_controlsArguments_contents

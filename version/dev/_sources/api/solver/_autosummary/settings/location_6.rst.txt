@@ -1,0 +1,21 @@
+:orphan:
+
+.. _location_6:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.location_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ======================================
+
+Parent                                                          Summary
+
+==============================   ======================================
+:ref:`get_bounds <get_bounds>`       Get bounds based on selects zones.
+
+==============================   ======================================
+

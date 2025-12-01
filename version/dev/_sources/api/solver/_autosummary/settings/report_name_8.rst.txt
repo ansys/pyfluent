@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_name_8:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.report_name_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================================================
+
+Parent                                                                                                                            Summary
+
+==========================================================   ============================================================================
+:ref:`reset_report_to_defaults <reset_report_to_defaults>`       Reset all report settings to default for the provided simulation report.
+
+==========================================================   ============================================================================
+

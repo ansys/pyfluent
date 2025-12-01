@@ -1,0 +1,21 @@
+:orphan:
+
+.. _tolerance_8:
+
+tolerance
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.tolerance_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ======================================
+
+Parent                                                                Summary
+
+====================================   ======================================
+:ref:`linear_solver <linear_solver>`       RBF linear solver settings object.
+
+====================================   ======================================
+

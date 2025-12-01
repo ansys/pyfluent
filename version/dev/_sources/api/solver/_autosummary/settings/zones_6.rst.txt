@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zones_6:
+
+zones
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.zones_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`imprint_surface_child <imprint_surface_child>`       'child_object_type' of imprint_surface.
+
+====================================================   ===========================================
+

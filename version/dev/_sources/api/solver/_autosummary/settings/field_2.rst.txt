@@ -1,0 +1,29 @@
+:orphan:
+
+.. _field_2:
+
+field
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.field_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ==============================================================================
+
+Parent                                                                                                                                      Summary
+
+==================================================================   ==============================================================================
+:ref:`iso_surface_child <iso_surface_child>`                                                                    'child_object_type' of iso_surface.
+
+:ref:`iso_clip_child <iso_clip_child>`                                                                             'child_object_type' of iso_clip.
+
+:ref:`create_multiple_iso_surfaces <create_multiple_iso_surfaces>`               Provides access to creating new and editing multiple iso-surfaces.
+
+:ref:`circum_avg_axial <circum_avg_axial>`                               Compute iso-axial band surfaces and plot data vs axial coordinate on them.
+
+:ref:`circum_avg_radial <circum_avg_radial>`                                      Compute iso-radial band surfaces and plot data vs radius on them.
+
+==================================================================   ==============================================================================
+

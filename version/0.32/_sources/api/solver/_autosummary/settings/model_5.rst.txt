@@ -1,0 +1,38 @@
+:orphan:
+
+.. _model_5:
+
+model
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.model_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =================================
+
+Attribute                                                            Summary
+
+========================================   =================================
+:ref:`option <option_18>`                              Species model option.
+
+:ref:`material <material_1>`                               Mixture material.
+
+:ref:`phase_material <phase_material>`                       Phase Material.
+
+:ref:`number_vol_spec <number_vol_spec>`       Number of Volumetric Species.
+
+========================================   =================================
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`species <species>`       Species model object.
+
+========================   =========================
+

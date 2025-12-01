@@ -1,0 +1,38 @@
+:orphan:
+
+.. _solver:
+
+solver
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solver
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ========================================================
+
+Attribute                                                                                             Summary
+
+==================================================   ========================================================
+:ref:`type <type_4>`                                                                             Solver type.
+
+:ref:`two_dim_space <two_dim_space>`                                        The 2D space type for the solver.
+
+:ref:`velocity_formulation <velocity_formulation>`                                      Velocity formulation.
+
+:ref:`time <time>`                                       Solution model formulation type. Steady or Unsteady.
+
+==================================================   ========================================================
+
+.. rubric:: Included in:
+
+========================   ======================================================================================================
+
+Parent                                                                                                                    Summary
+
+========================   ======================================================================================================
+:ref:`general <general>`       Configures general solver settings such as dimensionality, solver type, and time-stepping options.
+
+========================   ======================================================================================================
+

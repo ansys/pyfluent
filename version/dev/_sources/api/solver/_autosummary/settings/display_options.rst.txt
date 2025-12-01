@@ -1,0 +1,44 @@
+:orphan:
+
+.. _display_options:
+
+display_options
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.display_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ==================================================================================
+
+Attribute                                                                                                         Summary
+
+====================================   ==================================================================================
+:ref:`draw_mesh <draw_mesh>`                       Specifies whether the mesh is displayed along with this cell register.
+
+:ref:`filled <filled>`                     Specifies whether the displayed cell register is filled with the chosen color.
+
+:ref:`marker <marker_1>`                             Specifies whether the cell register is displayed as a marker symbol.
+
+:ref:`marker_symbol <marker_symbol>`                                    The display marker symbol for this cell register.
+
+:ref:`marker_size <marker_size>`                                          The display symbol size for this cell register.
+
+:ref:`wireframe <wireframe>`                        Specifies whether the cell register is displayed as a wireframe mesh.
+
+:ref:`color <color_3>`                                                          The display color for this cell register.
+
+====================================   ==================================================================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`cell_registers_child <cell_registers_child>`       'child_object_type' of cell_registers.
+
+==================================================   ==========================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _value_22:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.value_22
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================================   ========================================================
+
+Parent                                                                                                                            Summary
+
+==============================================================================   ========================================================
+:ref:`create_3 <create_3>`                                                                         Create Resistances for physics region.
+
+:ref:`contact_resistance_locations_child <contact_resistance_locations_child>`       'child_object_type' of contact_resistance_locations.
+
+==============================================================================   ========================================================
+

@@ -1,0 +1,29 @@
+.. _ref_solver_tui_solution_controls:
+
+controls
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solution.controls
+   :members: courant_number, reset_amg_controls, reset_limits, reset_multi_stage_parameters, reset_pseudo_time_method_equations, reset_pseudo_time_method_generic, reset_pseudo_time_method_relaxations, reset_pseudo_time_method_scale_factors, reset_solution_controls, species_urf_together
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   acoustics_wave_eqn_controls/acoustics_wave_eqn_controls_contents
+   advanced/advanced_contents
+   contact_solution_controls/contact_solution_controls_contents
+   equations/equations_contents
+   limits/limits_contents
+   p_v_controls/p_v_controls_contents
+   pseudo_time_explicit_relaxation_factor/pseudo_time_explicit_relaxation_factor_contents
+   pseudo_time_method_local_time_step/pseudo_time_method_local_time_step_contents
+   relaxation_factor/relaxation_factor_contents
+   residual_smoothing/residual_smoothing_contents
+   under_relaxation/under_relaxation_contents
+   zonal_pbns_solution_controls/zonal_pbns_solution_controls_contents

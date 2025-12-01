@@ -1,0 +1,21 @@
+:orphan:
+
+.. _probability_density_function:
+
+probability_density_function
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.probability_density_function
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================================================   =============================================
+
+Parent                                                                                                                             Summary
+
+==========================================================================================   =============================================
+:ref:`partially_premixed_combustion_parameters <partially_premixed_combustion_parameters>`       Partially Premixed Combustion Parameters.
+
+==========================================================================================   =============================================
+

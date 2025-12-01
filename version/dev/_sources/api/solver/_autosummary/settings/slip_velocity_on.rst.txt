@@ -1,0 +1,21 @@
+:orphan:
+
+.. _slip_velocity_on:
+
+slip_velocity_on
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.slip_velocity_on
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   =============================
+
+Parent                                                                 Summary
+
+==============================================   =============================
+:ref:`mixture_parameters <mixture_parameters>`       Mixture model parameters.
+
+==============================================   =============================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _export_1:
+
+export
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.export_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =============================================
+
+Argument                                                                     Summary
+
+====================================   =============================================
+:ref:`command_name <command_name>`                          Command names to export.
+
+:ref:`tsv_file_name <tsv_file_name>`       .tsv file name to save exported commands.
+
+====================================   =============================================
+
+.. rubric:: Included in:
+
+==============================================   =========================================
+
+Parent                                                                             Summary
+
+==============================================   =========================================
+:ref:`execute_commands <execute_commands>`                               Execute commands.
+
+:ref:`execute_commands_1 <execute_commands_1>`       Execute commands during optimization.
+
+==============================================   =========================================
+

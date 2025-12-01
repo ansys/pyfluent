@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_6:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================================================
+
+Parent                                                                          Summary
+
+================================   ====================================================
+:ref:`nco_species <nco_species>`       Enable/disable additional nco species equations.
+
+================================   ====================================================
+

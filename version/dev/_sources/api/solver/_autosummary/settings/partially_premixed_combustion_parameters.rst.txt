@@ -1,0 +1,38 @@
+:orphan:
+
+.. _partially_premixed_combustion_parameters:
+
+partially_premixed_combustion_parameters
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.partially_premixed_combustion_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================   =====================================================
+
+Attribute                                                                                                                    Summary
+
+============================================================================   =====================================================
+:ref:`probability_density_function <probability_density_function>`                                     Probability Density Function.
+
+:ref:`flow_iter_per_property_update <flow_iter_per_property_update>`                  Number of Flow Iterations Per Property Update.
+
+:ref:`expert_flamelet_options <expert_flamelet_options>`                               Enable/disable expert flamelet model options.
+
+:ref:`non_adiabatic_laminar_flame_speed <non_adiabatic_laminar_flame_speed>`       Enable/disable non-adiabatic laminar flame speed.
+
+============================================================================   =====================================================
+
+.. rubric:: Included in:
+
+========================   =========================
+
+Parent                                       Summary
+
+========================   =========================
+:ref:`species <species>`       Species model object.
+
+========================   =========================
+

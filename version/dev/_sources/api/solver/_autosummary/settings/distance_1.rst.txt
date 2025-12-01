@@ -1,0 +1,21 @@
+:orphan:
+
+.. _distance_1:
+
+distance
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.distance_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ============================================
+
+Parent                                                                                        Summary
+
+======================================================   ============================================
+:ref:`bounded_by_plane_child <bounded_by_plane_child>`       'child_object_type' of bounded_by_plane.
+
+======================================================   ============================================
+

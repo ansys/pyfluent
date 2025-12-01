@@ -1,0 +1,66 @@
+:orphan:
+
+.. _algorithm_settings:
+
+algorithm_settings
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.algorithm_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================   ===============================================
+
+Attribute                                                                                                                      Summary
+
+====================================================================================   ===============================================
+:ref:`refinement_type <refinement_type>`                                                                              Refinement Type.
+
+:ref:`max_number_of_samples <max_number_of_samples>`                                                            Max Number of Samples.
+
+:ref:`iteration_sampling_type <iteration_sampling_type>`                                                      Iteration sampling type.
+
+:ref:`refinement_sampling_type <refinement_sampling_type>`                                                   Refinement sampling type.
+
+:ref:`iteration_number_of_samples_or_levels <iteration_number_of_samples_or_levels>`       Number of Samples or Levels for iterations.
+
+:ref:`refinement_number_of_samples <refinement_number_of_samples>`                         Number of Samples or Levels for refinement.
+
+:ref:`consider_failed_designs <consider_failed_designs>`                                                      Consider Failed Designs.
+
+:ref:`target_cop <target_cop>`                                                                                   Value for target CoP.
+
+:ref:`max_iterations <max_iterations_4>`                                                                 Value for maximum iterations.
+
+:ref:`imp_of_sample_density <imp_of_sample_density>`                                           Value for importance of weight density.
+
+:ref:`imp_of_local_cop <imp_of_local_cop>`                                                          Value for importance of local CoP.
+
+:ref:`imp_of_criteria <imp_of_criteria>`                                                             Value for importance of criteria.
+
+:ref:`export_fmu <export_fmu>`                                                                                   Value for export FMU.
+
+:ref:`use_mop <use_mop>`                                                                                            Value for Use MOP.
+
+:ref:`number_of_designs_in_parallel <number_of_designs_in_parallel>`                                    Number of designs in parallel.
+
+:ref:`number_of_stagnation_iterations <number_of_stagnation_iterations>`                             Number of stagnation evaluations.
+
+:ref:`seed_value <seed_value>`                                                                                             Seed Value.
+
+:ref:`use_start_designs_only <use_start_designs_only>`                                                         Use Start Designs Only.
+
+====================================================================================   ===============================================
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

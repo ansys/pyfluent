@@ -1,0 +1,21 @@
+:orphan:
+
+.. _update_interval_1:
+
+update_interval
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.update_interval_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =====================================
+
+Parent                                                       Summary
+
+============================   =====================================
+:ref:`fan_model <fan_model>`       Configure user-defined fan model.
+
+============================   =====================================
+

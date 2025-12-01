@@ -1,0 +1,79 @@
+:orphan:
+
+.. _report_definitions:
+
+report_definitions
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.report_definitions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   =======================================================
+
+Attribute                                                                                                    Summary
+
+==========================================================   =======================================================
+:ref:`mesh <mesh_1>`                                                                     The report definition type.
+
+:ref:`surface <surface_1>`                                                               The report definition type.
+
+:ref:`volume <volume>`                                                                   The report definition type.
+
+:ref:`force <force>`                                                                     The report definition type.
+
+:ref:`lift <lift>`                                                                       The report definition type.
+
+:ref:`drag <drag>`                                                                       The report definition type.
+
+:ref:`moment <moment>`                                                                   The report definition type.
+
+:ref:`time <time_1>`                                             Create a new or edit an existing report definition.
+
+:ref:`flux <flux_1>`                                                                     The report definition type.
+
+:ref:`vbm <vbm>`                                                                         The report definition type.
+
+:ref:`injection <injection_2>`                                   Create a new or edit an existing report definition.
+
+:ref:`user_defined <user_defined_13>`                                                    The report definition type.
+
+:ref:`aeromechanics <aeromechanics>`                             Create a new or edit an existing report definition.
+
+:ref:`icing <icing_3>`                                           Create a new or edit an existing report definition.
+
+:ref:`expression <expression_7>`                                 Create a new or edit an existing report definition.
+
+:ref:`single_valued_expression <single_valued_expression>`                               The report definition type.
+
+:ref:`custom <custom>`                                           Create a new or edit an existing report definition.
+
+==========================================================   =======================================================
+
+.. rubric:: Methods
+
+================================   =========================================
+
+Method                                                               Summary
+
+================================   =========================================
+:ref:`compute <compute_2>`                   Compute and view the net value.
+
+:ref:`copy <copy_2>`                   Create a copy of a report definition.
+
+:ref:`delete_all <delete_all_2>`          Delete all the report definitions.
+
+================================   =========================================
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`solution <solution>`       'solution' child.
+
+==========================   =====================
+

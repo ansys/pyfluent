@@ -1,0 +1,21 @@
+:orphan:
+
+.. _shape_parameter:
+
+shape_parameter
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.shape_parameter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =====================================
+
+Parent                                                   Summary
+
+========================   =====================================
+:ref:`carreau <carreau>`       Carreau model viscosity settings.
+
+========================   =====================================
+

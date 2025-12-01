@@ -1,0 +1,48 @@
+:orphan:
+
+.. _definition_5:
+
+definition
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.definition_5
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ==============================================
+
+Attribute                                                                                       Summary
+
+======================================================   ==============================================
+:ref:`fixed_walls_constraint <fixed_walls_constraint>`               Fixed walls constraint definition.
+
+:ref:`bounded_by_plane <bounded_by_plane>`                      Bounded by plane constraint definition.
+
+:ref:`bounded_by_surfaces <bounded_by_surfaces>`             Bounded by surfaces constraint definition.
+
+:ref:`prescribed_profile <prescribed_profile>`                Prescribed profile constraint definition.
+
+:ref:`rotation <rotation>`                                              Rotation constraint definition.
+
+:ref:`translation <translation_1>`                                   Translation constraint definition.
+
+:ref:`scaling <scaling_1>`                                               Scaling constraint definition.
+
+:ref:`rigid_body <rigid_body>`                                        Rigid body constraint definition.
+
+:ref:`compound <compound>`                                               Compound condition definition.
+
+======================================================   ==============================================
+
+.. rubric:: Included in:
+
+============================================   =============================
+
+Parent                                                               Summary
+
+============================================   =============================
+:ref:`design_conditions <design_conditions>`       Design conditions object.
+
+============================================   =============================
+

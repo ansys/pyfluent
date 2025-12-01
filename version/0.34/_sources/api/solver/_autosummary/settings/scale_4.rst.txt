@@ -1,0 +1,36 @@
+:orphan:
+
+.. _scale_4:
+
+scale
+=====
+
+.. deprecated:: Ansys Fluent 2025 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scale_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ====================================================================================================
+
+Attribute                                                                                                                     Summary
+
+==============================   ====================================================================================================
+:ref:`auto_scale <auto_scale>`       Specifies whether you would like Fluent to automatically set a scale factor for the vector size.
+
+:ref:`scale_f <scale_f>`                                                                         A value for scaling the vector size.
+
+==============================   ====================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`vector_1_child <vector_1_child>`       'child_object_type' of vector.
+
+======================================   ==================================
+

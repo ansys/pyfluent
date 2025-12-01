@@ -1,0 +1,38 @@
+:orphan:
+
+.. _cone:
+
+cone
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cone
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ==================================
+
+Attribute                                           Summary
+
+======================   ==================================
+:ref:`axis <axis>`                   The axis for the cone.
+
+:ref:`radius <radius>`              The radius of the cone.
+
+:ref:`length <length>`             The length for the cone.
+
+:ref:`origin <origin>`       The origin point for the cone.
+
+======================   ==================================
+
+.. rubric:: Included in:
+
+============================   ======================
+
+Parent                                        Summary
+
+============================   ======================
+:ref:`primitive <primitive>`       'primitive' child.
+
+============================   ======================
+

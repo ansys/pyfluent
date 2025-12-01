@@ -1,0 +1,21 @@
+:orphan:
+
+.. _get_details_of_last_submitted_job:
+
+get_details_of_last_submitted_job
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.get_details_of_last_submitted_job
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ============================
+
+Parent                                                        Summary
+
+======================================   ============================
+:ref:`remote_compute <remote_compute>`       Remote Compute Settings.
+
+======================================   ============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_iterations_1:
+
+flow_iterations
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.flow_iterations_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================================================================================
+
+Parent                                                                                                                          Summary
+
+========================================   ============================================================================================
+:ref:`validate_models <validate_models>`       Validate neural network models by running simulations and comparing objective functions.
+
+========================================   ============================================================================================
+

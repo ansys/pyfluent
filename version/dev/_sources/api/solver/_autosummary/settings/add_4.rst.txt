@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_4:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ===================================================
+
+Parent                                                                           Summary
+
+==================================   ===================================================
+:ref:`urea_species <urea_species>`       Enable/disable additional no species equations.
+
+==================================   ===================================================
+

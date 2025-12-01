@@ -1,0 +1,25 @@
+:orphan:
+
+.. _file_name_6:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.file_name_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =======================================================================================================================================================
+
+Parent                                                                                                                                                                                     Summary
+
+========================================   =======================================================================================================================================================
+:ref:`write <write>`                                                                                                  Write files of various types. The file type can be case, data, or case-data.
+
+:ref:`write_data <write_data>`                                                                                           Write a data file. The data file contains the solution data for the case.
+
+:ref:`write_case_data <write_case_data>`       Write case and data file. The case file contains the mesh, boundary conditions, solver settings, and data file contains solution data for the case.
+
+========================================   =======================================================================================================================================================
+

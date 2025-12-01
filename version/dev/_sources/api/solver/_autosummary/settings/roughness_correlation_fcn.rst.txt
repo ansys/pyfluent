@@ -1,0 +1,23 @@
+:orphan:
+
+.. _roughness_correlation_fcn:
+
+roughness_correlation_fcn
+=========================
+
+.. deprecated:: Ansys Fluent 2025 R2
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.roughness_correlation_fcn
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`transition_sst <transition_sst>`       Transition-SST options.
+
+======================================   ===========================
+

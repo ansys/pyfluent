@@ -1,0 +1,54 @@
+:orphan:
+
+.. _mt_evap_cond_sbm_sphf_par:
+
+mt_evap_cond_sbm_sphf_par
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.mt_evap_cond_sbm_sphf_par
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===========================================================
+
+Attribute                                                                                              Summary
+
+================================================   ===========================================================
+:ref:`hflux_mult <hflux_mult>`                                                           Heat flux multiplier.
+
+:ref:`hflux_mult_constant <hflux_mult_constant>`                                Heat flux multiplier constant.
+
+:ref:`hflux_mult_udf <hflux_mult_udf>`                                          Heat flux multiplier constant.
+
+:ref:`conv_aug <conv_aug>`                             Convective augmentation factor due to bubble agitation.
+
+:ref:`conv_aug_constant <conv_aug_constant>`                          Convective augmentation factor constant.
+
+:ref:`conv_aug_udf <conv_aug_udf>`                                         Convective augmentation factor UDF.
+
+:ref:`liq_htc <liq_htc>`                                                      Liquid heat transfer coefficent.
+
+:ref:`liq_htc_constant <liq_htc_constant>`                           Liquid heat transfer coefficent constant.
+
+:ref:`liq_htc_udf <liq_htc_udf>`                                          Liquid heat transfer coefficent udf.
+
+:ref:`vap_htc <vap_htc>`                                                      Vapor heat transfer coefficient.
+
+:ref:`vap_htc_constant <vap_htc_constant>`                           Vapor heat transfer coefficient constant.
+
+:ref:`vap_htc_udf <vap_htc_udf>`                                          Vapor heat transfer coefficient udf.
+
+================================================   ===========================================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

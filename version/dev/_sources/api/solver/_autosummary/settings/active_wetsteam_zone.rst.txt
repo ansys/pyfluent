@@ -1,0 +1,23 @@
+:orphan:
+
+.. _active_wetsteam_zone:
+
+active_wetsteam_zone
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.active_wetsteam_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`multiphase_2 <multiphase_2>`       Allows to change multiphase model variables or settings.
+
+:ref:`internal <internal>`                 Allows to change internal model variables or settings.
+
+==================================   ============================================================
+

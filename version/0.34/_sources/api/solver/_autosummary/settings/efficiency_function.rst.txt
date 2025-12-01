@@ -1,0 +1,21 @@
+:orphan:
+
+.. _efficiency_function:
+
+efficiency_function
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.efficiency_function
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`tfm_options <tfm_options>`       TFM model options.
+
+================================   ======================
+

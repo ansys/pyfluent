@@ -1,0 +1,21 @@
+:orphan:
+
+.. _film_regime:
+
+film_regime
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.film_regime
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ================
+
+Parent                                                                Summary
+
+==========================================================   ================
+:ref:`user_defined_functions_1 <user_defined_functions_1>`       Main object.
+
+==========================================================   ================
+

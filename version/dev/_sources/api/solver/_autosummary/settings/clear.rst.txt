@@ -1,0 +1,21 @@
+:orphan:
+
+.. _clear:
+
+clear
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.clear
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================
+
+Parent                                              Summary
+
+========================   ================================
+:ref:`profile <profile>`       The adaption profile object.
+
+========================   ================================
+

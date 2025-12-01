@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_identify_regions__identify_regions_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.identify_regions._identify_regions.arguments
+   :members: add_child, graphical_selection, label_selection_list, link_construction, material_points_name, mpt_method_type, new_region_type, object_selection_list, offset_x, offset_y, offset_z, selection_type, show_coordinates, x, y, z, zone_location, zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

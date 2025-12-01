@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sensor_num_smooths:
+
+sensor_num_smooths
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.sensor_num_smooths
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`tfm_options <tfm_options>`       TFM model options.
+
+================================   ======================
+

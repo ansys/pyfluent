@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_1:
+
+add
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ====================================================
+
+Parent                                                                          Summary
+
+================================   ====================================================
+:ref:`hcn_species <hcn_species>`       Enable/disable additional hcn species equations.
+
+================================   ====================================================
+

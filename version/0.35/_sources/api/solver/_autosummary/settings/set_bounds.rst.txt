@@ -1,0 +1,36 @@
+:orphan:
+
+.. _set_bounds:
+
+set_bounds
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_bounds
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ===================
+
+Argument                                         Summary
+
+==================================   ===================
+:ref:`name <name_38>`                    Parameter Name.
+
+:ref:`lower_bound <lower_bound_1>`          Lower Bound.
+
+:ref:`upper_bound <upper_bound_1>`          Upper Bound.
+
+==================================   ===================
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

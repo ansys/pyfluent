@@ -1,0 +1,21 @@
+:orphan:
+
+.. _run_optimization:
+
+run_optimization
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.run_optimization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

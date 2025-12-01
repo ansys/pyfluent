@@ -1,0 +1,21 @@
+:orphan:
+
+.. _replace_with_udf_rate_1:
+
+replace_with_udf_rate
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.replace_with_udf_rate_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===================
+
+Parent                                               Summary
+
+======================================   ===================
+:ref:`n2o_parameters <n2o_parameters>`       N2O Path model.
+
+======================================   ===================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _write_6:
+
+write
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.write_6
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+===============================   ==========================================
+
+Argument                                                             Summary
+
+===============================   ==========================================
+:ref:`file_name <file_name_17>`       The name you want the file saved with.
+
+===============================   ==========================================
+
+.. rubric:: Included in:
+
+====================================   ===========================
+
+Parent                                                     Summary
+
+====================================   ===========================
+:ref:`solution_plot <solution_plot>`       Plot the solution data.
+
+====================================   ===========================
+

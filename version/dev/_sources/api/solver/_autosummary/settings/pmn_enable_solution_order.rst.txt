@@ -1,0 +1,34 @@
+:orphan:
+
+.. _pmn_enable_solution_order:
+
+pmn_enable_solution_order
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pmn_enable_solution_order
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =============================================================================================================
+
+Argument                                                                                                                                       Summary
+
+======================================   =============================================================================================================
+:ref:`enable <enable_32>`                                                                           Enable solution correction on poor quality meshes.
+
+:ref:`solution_order <solution_order>`       The corrected solution order (0=first-order solution, 1=second-order gradients, 2=first-order gradients).
+
+======================================   =============================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`poor_mesh_numerics <poor_mesh_numerics>`       The poor mesh numerics object.
+
+==============================================   ==================================
+

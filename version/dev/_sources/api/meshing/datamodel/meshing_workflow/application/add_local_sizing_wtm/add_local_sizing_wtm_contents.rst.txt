@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_local_sizing_wtm:
+
+add_local_sizing_wtm
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.add_local_sizing_wtm
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _add_local_sizing_wtmArguments/_add_local_sizing_wtmArguments_contents

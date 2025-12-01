@@ -1,0 +1,23 @@
+:orphan:
+
+.. _auto_range_min:
+
+auto_range_min
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.auto_range_min
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ======================
+
+Parent                            Summary
+
+================   ======================
+:ref:`x_6 <x_6>`       X-axis properties.
+
+:ref:`y_6 <y_6>`       Y-axis properties.
+
+================   ======================
+

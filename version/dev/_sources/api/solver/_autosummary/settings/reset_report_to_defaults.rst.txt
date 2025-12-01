@@ -1,0 +1,32 @@
+:orphan:
+
+.. _reset_report_to_defaults:
+
+reset_report_to_defaults
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.reset_report_to_defaults
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ===================================================
+
+Argument                                                                         Summary
+
+==================================   ===================================================
+:ref:`report_name <report_name_8>`       Simulation report to reset to default settings.
+
+==================================   ===================================================
+
+.. rubric:: Included in:
+
+==============================================   ======================================================================================================================
+
+Parent                                                                                                                                                          Summary
+
+==============================================   ======================================================================================================================
+:ref:`simulation_reports <simulation_reports>`       Provides access to simulation reports, allowing to generate, view, export, and manage reports for the simulations.
+
+==============================================   ======================================================================================================================
+

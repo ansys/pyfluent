@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_spikes__mark_spikesArguments:
+
+_mark_spikesArguments
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.mark_spikes._mark_spikesArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _spike_angle
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flux_fcn:
+
+flux_fcn
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.flux_fcn
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`scalar_child <scalar_child>`       'child_object_type' of scalar.
+
+==================================   ==================================
+

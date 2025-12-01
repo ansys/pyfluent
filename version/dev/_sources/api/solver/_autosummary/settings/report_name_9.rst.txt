@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_name_9:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.report_name_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==========================================
+
+Parent                                                                                          Summary
+
+==========================================================   ==========================================
+:ref:`delete_simulation_report <delete_simulation_report>`       Delete the provided simulation report.
+
+==========================================================   ==========================================
+

@@ -1,0 +1,49 @@
+:orphan:
+
+.. _translation_1_child:
+
+translation_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.translation_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ============================================
+
+Attribute                                                                 Summary
+
+==================================   ============================================
+:ref:`name <name_5>`                                          Name of the object.
+
+:ref:`surfaces <surfaces_1>`                                             Surface.
+
+:ref:`location <location_7>`                                          The object.
+
+:ref:`displacement <displacement>`       Displacements for translation condition.
+
+==================================   ============================================
+
+.. rubric:: Methods
+
+===========================   =============================
+
+Method                                              Summary
+
+===========================   =============================
+:ref:`display <display_16>`       Display design condition.
+
+===========================   =============================
+
+.. rubric:: Included in:
+
+====================================   ======================================
+
+Parent                                                                Summary
+
+====================================   ======================================
+:ref:`translation_1 <translation_1>`       Translation constraint definition.
+
+====================================   ======================================
+

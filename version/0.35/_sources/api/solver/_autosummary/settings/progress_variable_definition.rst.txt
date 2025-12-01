@@ -1,0 +1,34 @@
+:orphan:
+
+.. _progress_variable_definition:
+
+progress_variable_definition
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.progress_variable_definition
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ===========================================================
+
+Attribute                                                                                                                      Summary
+
+========================================================================   ===========================================================
+:ref:`default_progress_variable <default_progress_variable>`                   Species Coefficients for Reaction Progress Definition?.
+
+:ref:`definition_of_progress_variable <definition_of_progress_variable>`        Species Coefficients for Reaction Progress Definition.
+
+========================================================================   ===========================================================
+
+.. rubric:: Included in:
+
+==========================   =========================
+
+Parent                                         Summary
+
+==========================   =========================
+:ref:`boundary <boundary>`       PDF Boundary Options.
+
+==========================   =========================
+

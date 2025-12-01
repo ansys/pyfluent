@@ -1,0 +1,32 @@
+:orphan:
+
+.. _phase_10_child:
+
+phase_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phase_10_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ==========================================================
+
+Attribute                                                                         Summary
+
+============================   ==========================================================
+:ref:`interior <interior_1>`       Allows to change interior model variables or settings.
+
+============================   ==========================================================
+
+.. rubric:: Included in:
+
+==========================   ======================================
+
+Parent                                                      Summary
+
+==========================   ======================================
+:ref:`phase_10 <phase_10>`       Domain name to define settings on.
+
+==========================   ======================================
+

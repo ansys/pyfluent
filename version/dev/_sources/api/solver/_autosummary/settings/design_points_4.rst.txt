@@ -1,0 +1,27 @@
+:orphan:
+
+.. _design_points_4:
+
+design_points
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.design_points_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =================================================
+
+Parent                                                                                               Summary
+
+========================================================   =================================================
+:ref:`interrupt_4 <interrupt_4>`                                                  Interrupt Design Point(s).
+
+:ref:`abort_1 <abort_1>`                                                              Abort Design Point(s).
+
+:ref:`connect_to_web_session <connect_to_web_session>`         Connect to Web Interface of the Design Point.
+
+:ref:`download_output_files_1 <download_output_files_1>`                              Download Output Files.
+
+========================================================   =================================================
+

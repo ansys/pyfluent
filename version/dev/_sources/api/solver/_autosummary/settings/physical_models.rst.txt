@@ -1,0 +1,50 @@
+:orphan:
+
+.. _physical_models:
+
+physical_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.physical_models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================================   ===========================================================================================================
+
+Attribute                                                                                                                                                                                              Summary
+
+================================================================================================   ===========================================================================================================
+:ref:`particle_radiation_enabled <particle_radiation_enabled>`                                                                       Enable/disable interaction between DPM particles and the radiation model.
+
+:ref:`particle_forces <particle_forces>`                                                                                                                          All configurable forces acting on particles.
+
+:ref:`erosion_accretion_enabled <erosion_accretion_enabled>`                                           Enable/disable wall erosion due to particles impacting on walls and/or accretion of particles on walls.
+
+:ref:`erosion_accretion_rate_accumulation_enabled <erosion_accretion_rate_accumulation_enabled>`                             Enable accumulation of erosion and accretion rates over multiple tracking passes.
+
+:ref:`pressure_dependent_boiling <pressure_dependent_boiling>`                                                                                      For pressure-dependent boiling, the boiling temperature is
+
+:ref:`temperature_dependent_latent_heat <temperature_dependent_latent_heat>`                                                          This option includes the droplet temperature effects on the latent heat,
+
+:ref:`twoway_turb_coupl_enabled <twoway_turb_coupl_enabled>`                                                               Enable/disable modulation of carrier phase turbulence due to presence of particles.
+
+:ref:`secondary_breakup_enabled <secondary_breakup_enabled>`                                                                     Enable/disable droplet breakup due to aerodynamic forces acting on particles.
+
+:ref:`volume_displacement <volume_displacement>`                                                                                                                                 Volume displacement settings.
+
+:ref:`wall_film <wall_film>`                                                                                                                                                                      Main object.
+
+================================================================================================   ===========================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

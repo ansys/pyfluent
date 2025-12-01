@@ -1,0 +1,21 @@
+:orphan:
+
+.. _volume_2:
+
+volume
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.volume_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =================================================================================================
+
+Parent                                                                                                                                 Summary
+
+==========================================   =================================================================================================
+:ref:`reference_values <reference_values>`       Manages reference values used in calculations of coefficients and non-dimensional quantities.
+
+==========================================   =================================================================================================
+

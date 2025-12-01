@@ -1,0 +1,19 @@
+.. _ref_meshing_datamodel_meshing_Graphics_Bounds:
+
+Bounds
+======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing.Root.Graphics.Bounds
+   :members: BoundX, BoundY, BoundZ, DeltaValue, Selection
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   ResetBounds/ResetBounds_contents
+   SetBounds/SetBounds_contents

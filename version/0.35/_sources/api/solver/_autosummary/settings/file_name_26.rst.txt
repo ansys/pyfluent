@@ -1,0 +1,23 @@
+:orphan:
+
+.. _file_name_26:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_26
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`write_to_file_6 <write_to_file_6>`             Write report to file.
+
+:ref:`autosave_1 <autosave_1>`                 Optimizer reporting object.
+
+========================================   ===============================
+

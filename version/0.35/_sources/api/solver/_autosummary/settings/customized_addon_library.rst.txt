@@ -1,0 +1,34 @@
+:orphan:
+
+.. _customized_addon_library:
+
+customized_addon_library
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.customized_addon_library
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ==========================================================
+
+Argument                                                                                      Summary
+
+========================================   ==========================================================
+:ref:`customize_addon <customize_addon>`       Enable/disable the customization of the addon library.
+
+:ref:`addon_udf_file <addon_udf_file>`                                            The addon UDF file.
+
+========================================   ==========================================================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

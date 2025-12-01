@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_modify_mesh_refinement__modify_mesh_refinement_get_next_possible_tasks:
+
+get_next_possible_tasks
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.modify_mesh_refinement._modify_mesh_refinement.get_next_possible_tasks
+   :members: _get_next_possible_tasksArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

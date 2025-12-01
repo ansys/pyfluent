@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_generate_surface_mesh__generate_surface_mesh_insert_next_task__insert_next_taskArguments:
+
+_insert_next_taskArguments
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.generate_surface_mesh._generate_surface_mesh.insert_next_task._insert_next_taskArguments
+   :members: _command_name, _select
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _phi_width_of_beam:
+
+phi_width_of_beam
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.phi_width_of_beam
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ========================
+
+Parent                                            Summary
+
+==============================   ========================
+:ref:`beam_width <beam_width>`       Beam width settings.
+
+==============================   ========================
+

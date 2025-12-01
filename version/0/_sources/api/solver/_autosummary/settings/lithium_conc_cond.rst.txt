@@ -1,0 +1,21 @@
+:orphan:
+
+.. _lithium_conc_cond:
+
+lithium_conc_cond
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.lithium_conc_cond
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================================================
+
+Parent                                                                                 Summary
+
+================================   ===========================================================
+:ref:`potential_2 <potential_2>`       Allows to change potential model variables or settings.
+
+================================   ===========================================================
+

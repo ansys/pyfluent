@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_compile_compiled_functions:
+
+auto_compile_compiled_functions
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.auto_compile_compiled_functions
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

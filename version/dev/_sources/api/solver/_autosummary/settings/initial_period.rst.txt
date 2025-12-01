@@ -1,0 +1,21 @@
+:orphan:
+
+.. _initial_period:
+
+initial_period
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.initial_period
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`aeromechanics_child <aeromechanics_child>`       'child_object_type' of aeromechanics.
+
+================================================   =========================================
+

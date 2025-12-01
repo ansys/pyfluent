@@ -1,0 +1,21 @@
+:orphan:
+
+.. _split_surface_1:
+
+split_surface
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.split_surface_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =====================
+
+Parent                                                     Summary
+
+==========================================   =====================
+:ref:`external_surface <external_surface>`       External Surface.
+
+==========================================   =====================
+

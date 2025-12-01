@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_CreateLeakShield__CreateLeakShieldCommandArguments:
+
+_CreateLeakShieldCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.CreateLeakShield._CreateLeakShieldCommandArguments
+   :members: _DeadRegionsList, _LeakShieldName, _LiveMptSelectionList, _MaxHoleSize, _MergePatches, _MinHoleSize, _ObjectSelectionList, _PatchAtLive, _PromptForCleanup, _SizeFieldFileName, _SpecifyDead, _SpecifyLive, _SpecifyObj, _UseSizeField
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

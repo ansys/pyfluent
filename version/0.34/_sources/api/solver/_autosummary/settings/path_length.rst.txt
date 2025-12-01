@@ -1,0 +1,21 @@
+:orphan:
+
+.. _path_length:
+
+path_length
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.path_length
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`absorption_coefficient_1 <absorption_coefficient_1>`       Material property: absorption-coefficient.
+
+==========================================================   ==============================================
+

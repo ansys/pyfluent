@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_generate_surface_mesh__generate_surface_meshArguments:
+
+_generate_surface_meshArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.generate_surface_mesh._generate_surface_meshArguments
+   :members: _advanced_inner_wrap, _advanced_options, _auto_assign_zone_types, _auto_pairing, _auto_region_between_porous, _dihedral_min_angle, _gap_cover_zone_recovery, _global_min, _intermediate_file_name, _leak_shield, _max_island_face, _merge_wrapper_at_solid_conacts, _number_of_sessions, _parallel_serial_option, _project_on_geometry, _save_intermediate_files, _save_surface_mesh, _separate_surface, _show_sub_tasks, _spike_removal_angle, _surface_quality, _use_size_field_for_prime_wrap
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

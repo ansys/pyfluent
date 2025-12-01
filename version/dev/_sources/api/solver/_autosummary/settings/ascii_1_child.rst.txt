@@ -1,0 +1,50 @@
+:orphan:
+
+.. _ascii_1_child:
+
+ascii_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.ascii_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   =========================================================
+
+Attribute                                                                                    Summary
+
+========================================   =========================================================
+:ref:`name <name_5>`                                                             Name of the object.
+
+:ref:`scope <scope_4>`                               The scope of the export (surface, full domain).
+
+:ref:`surfaces <surfaces_1>`                                                                Surface.
+
+:ref:`cell_centered <cell_centered>`           Specifies whether export the cell center data values.
+
+:ref:`delimiter <delimiter>`                                    The delimiter separating the fields.
+
+:ref:`quantities <quantities>`                                     The list of quantities to export.
+
+:ref:`frequency_of <frequency_of_3>`                       Export data every (Time Step, Flow Time).
+
+:ref:`frequency <frequency_6>`                                                     Export Frequency.
+
+:ref:`flow_frequency <flow_frequency_1>`                                           Export Frequency.
+
+:ref:`file_name <file_name_24>`                                             The file name to export.
+
+========================================   =========================================================
+
+.. rubric:: Included in:
+
+========================   =================
+
+Parent                               Summary
+
+========================   =================
+:ref:`ascii_1 <ascii_1>`       ASCII Export.
+
+========================   =================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _mechanical_apdl_input:
+
+mechanical_apdl_input
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mechanical_apdl_input
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   =================================================
+
+Argument                                                                                     Summary
+
+================================================   =================================================
+:ref:`file_name <file_name_1>`                                      The desired file name to export.
+
+:ref:`surface_name_list <surface_name_list_1>`                                              Surface.
+
+:ref:`structural_analysis <structural_analysis>`       Specifies whether structural analysis or not.
+
+:ref:`write_loads <write_loads>`                                   Specifies whether to write loads.
+
+:ref:`loads <loads>`                                            The structural loads type to export.
+
+================================================   =================================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

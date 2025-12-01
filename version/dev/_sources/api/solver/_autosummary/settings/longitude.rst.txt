@@ -1,0 +1,23 @@
+:orphan:
+
+.. _longitude:
+
+longitude
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.longitude
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==================================
+
+Parent                                                                          Summary
+
+==================================================   ==================================
+:ref:`solar_calculator <solar_calculator>`               Settings for solar calculator.
+
+:ref:`solar_calculator_gui <solar_calculator_gui>`       Settings for solar calculator.
+
+==================================================   ==================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _nfaces_as_weights:
+
+nfaces_as_weights
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.nfaces_as_weights
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===========================================================
+
+Attribute                                                                                            Summary
+
+==============================================   ===========================================================
+:ref:`nfaces_as_weights <nfaces_as_weights_1>`              Use number of faces as weights for partitioning.
+
+:ref:`user_defined_value <user_defined_value>`       Use user defined value for number of faces as weights?.
+
+:ref:`value <value_36>`                                   User defined value for number of faces as weights.
+
+==============================================   ===========================================================
+
+.. rubric:: Included in:
+
+====================   ===============
+
+Parent                         Summary
+
+====================   ===============
+:ref:`set_3 <set_3>`       The object.
+
+====================   ===============
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_54:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enabled_54
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   =======================================
+
+Parent                                             Summary
+
+================   =======================================
+:ref:`dnv <dnv>`       Settings for the DNV erosion model.
+
+================   =======================================
+

@@ -1,0 +1,55 @@
+:orphan:
+
+.. _database:
+
+database
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.database
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ======================================
+
+Attribute                                                             Summary
+
+====================================   ======================================
+:ref:`database_type <database_type>`                       Material database.
+
+:ref:`user_db_name <user_db_name>`         Entery user-defined database name.
+
+:ref:`list_by_type <list_by_type>`                    Database material type.
+
+====================================   ======================================
+
+.. rubric:: Methods
+
+==========================================   ======================================
+
+Method                                                                      Summary
+
+==========================================   ======================================
+:ref:`copy_materials <copy_materials>`                Copy materials from database.
+
+:ref:`list_materials <list_materials_1>`                   List database materials.
+
+:ref:`list_properties <list_properties_4>`       List database material properties.
+
+:ref:`copy_by_name <copy_by_name>`                  Copy database material by name.
+
+:ref:`copy_by_formula <copy_by_formula>`         Copy database material by formula.
+
+==========================================   ======================================
+
+.. rubric:: Included in:
+
+============================   ====================================================================================================================================
+
+Parent                                                                                                                                                      Summary
+
+============================   ====================================================================================================================================
+:ref:`materials <materials>`       Accesses the material database and configuration tools for defining fluid, solid, and particle materials used in the simulation.
+
+============================   ====================================================================================================================================
+

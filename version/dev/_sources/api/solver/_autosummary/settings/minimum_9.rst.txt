@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_9:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.minimum_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ========================================
+
+Parent                                                      Summary
+
+========================   ========================================
+:ref:`range_6 <range_6>`       Specifies Range for Filter Settings.
+
+========================   ========================================
+

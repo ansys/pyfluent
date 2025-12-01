@@ -1,0 +1,21 @@
+:orphan:
+
+.. _origin_2:
+
+origin
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.origin_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =====================
+
+Parent                                     Summary
+
+==========================   =====================
+:ref:`cylinder <cylinder>`       'cylinder' child.
+
+==========================   =====================
+

@@ -1,0 +1,32 @@
+:orphan:
+
+.. _copy_3:
+
+copy
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.copy_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =================================
+
+Argument                                                     Summary
+
+================================   =================================
+:ref:`state_name <state_name_2>`       Create copy of display state.
+
+================================   =================================
+
+.. rubric:: Included in:
+
+======================================   ==========================
+
+Parent                                                      Summary
+
+======================================   ==========================
+:ref:`display_states <display_states>`       Display state options.
+
+======================================   ==========================
+

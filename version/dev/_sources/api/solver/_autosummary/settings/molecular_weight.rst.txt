@@ -1,0 +1,33 @@
+:orphan:
+
+.. _molecular_weight:
+
+molecular_weight
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.molecular_weight
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================================================
+
+Parent                                                                             Summary
+
+==================================   =====================================================
+:ref:`no_species <no_species>`             Enable/disable additional no species equations.
+
+:ref:`hcn_species <hcn_species>`          Enable/disable additional hcn species equations.
+
+:ref:`nh3_species <nh3_species>`          Enable/disable additional nh3 species equations.
+
+:ref:`n2o_species <n2o_species>`          Enable/disable additional n2o species equations.
+
+:ref:`urea_species <urea_species>`         Enable/disable additional no species equations.
+
+:ref:`hnco_species <hnco_species>`       Enable/disable additional hnco species equations.
+
+:ref:`nco_species <nco_species>`          Enable/disable additional nco species equations.
+
+==================================   =====================================================
+

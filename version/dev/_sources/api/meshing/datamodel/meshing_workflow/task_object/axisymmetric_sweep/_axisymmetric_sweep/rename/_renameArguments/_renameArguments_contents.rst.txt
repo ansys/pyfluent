@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_axisymmetric_sweep__axisymmetric_sweep_rename__renameArguments:
+
+_renameArguments
+================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.axisymmetric_sweep._axisymmetric_sweep.rename._renameArguments
+   :members: _new_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

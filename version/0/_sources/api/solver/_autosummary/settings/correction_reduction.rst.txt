@@ -1,0 +1,21 @@
+:orphan:
+
+.. _correction_reduction:
+
+correction_reduction
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.correction_reduction
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===========================================
+
+Parent                                                                                 Summary
+
+================================================   ===========================================
+:ref:`relaxation_factor_5 <relaxation_factor_5>`       FAS multigrid relaxation factor object.
+
+================================================   ===========================================
+

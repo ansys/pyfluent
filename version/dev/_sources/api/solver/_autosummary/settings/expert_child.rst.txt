@@ -1,0 +1,38 @@
+:orphan:
+
+.. _expert_child:
+
+expert_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.expert_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===================================================================================
+
+Attribute                                                                                                          Summary
+
+====================================   ===================================================================================
+:ref:`species_1 <species_1>`                    The first species for the translational-vibrational relaxation time model.
+
+:ref:`species_2 <species_2>`                   The second species for the translational-vibrational relaxation time model.
+
+:ref:`coefficient_1 <coefficient_1>`        The first coefficient for the translational-vibrational relaxation time model.
+
+:ref:`coefficient_2 <coefficient_2>`       The second coefficient for the translational-vibrational relaxation time model.
+
+====================================   ===================================================================================
+
+.. rubric:: Included in:
+
+======================   ==================================
+
+Parent                                              Summary
+
+======================   ==================================
+:ref:`expert <expert>`       Expert options in Parks model.
+
+======================   ==================================
+

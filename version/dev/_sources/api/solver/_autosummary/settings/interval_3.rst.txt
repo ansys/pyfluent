@@ -1,0 +1,21 @@
+:orphan:
+
+.. _interval_3:
+
+interval
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.interval_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===============================================================
+
+Parent                                                                                                             Summary
+
+========================================================   ===============================================================
+:ref:`single_session_coupling <single_session_coupling>`       Access the single session conjugate heat transfer settings.
+
+========================================================   ===============================================================
+

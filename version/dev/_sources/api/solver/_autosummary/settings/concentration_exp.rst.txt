@@ -1,0 +1,36 @@
+:orphan:
+
+.. _concentration_exp:
+
+concentration_exp
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.concentration_exp
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ===============================
+
+Attribute                                                    Summary
+
+==================================   ===============================
+:ref:`exponent_h2 <exponent_h2>`          H2 concentration exponent.
+
+:ref:`exponent_o2 <exponent_o2>`          O2 concentration exponent.
+
+:ref:`exponent_h2o <exponent_h2o>`       H2O concentration exponent.
+
+==================================   ===============================
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`electrochemistry <electrochemistry>`       The electrochemistry settings.
+
+==========================================   ==================================
+

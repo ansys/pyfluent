@@ -1,0 +1,21 @@
+:orphan:
+
+.. _stop_1:
+
+stop
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.stop_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ========================================
+
+Parent                                                Summary
+
+==================   ========================================
+:ref:`grpc <grpc>`       Start, stop or manage a gRPC server.
+
+==================   ========================================
+

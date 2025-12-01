@@ -1,0 +1,1176 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Electrolysis Modeling &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=78e06d40"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/00-fluent/Electrolysis_Modeling_workflow';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.37';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Modeling Solidification" href="Modeling_solidification_workflow.html" />
+    <link rel="prev" title="Design of Experiments and Machine Learning model building" href="DOE_ML.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.37.0" />
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/examples/00-fluent/Electrolysis_Modeling_workflow.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark pst-js-only" alt="PyFluent - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DOE_ML.html">Design of Experiments and Machine Learning model building</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Electrolysis Modeling</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Modeling_solidification_workflow.html">Modeling Solidification</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="ahmed_body_workflow.html">Ahmed Body External Aerodynamics Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="battery_pack.html">Simulating a 1P3S Battery Pack Using the Battery Model</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="brake.html">Automotive Brake Thermal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="catalytic_converter_workflow.html">Modeling Flow Through Porous Media - Catalytic Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjugate_heat_transfer.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exhaust_system_settings_api.html">Fault-tolerant meshing workflow using settings objects</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="external_compressible_flow.html">Modeling External Compressible Flow</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="frozen_rotor_workflow.html">Impeller-Volute simulation using the Frozen Rotor Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fsi_1way_workflow.html">Modeling One-Way Fluid-Structure Interaction</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="lunar_lander_thermal.html">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="mixing_elbow_settings_api.html">Fluent setup and solution using settings objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixing_tank_workflow.html">Mixing Tank Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_ablation.html">Modeling Ablation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_cavitation.html">Modeling Cavitation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="parametric_static_mixer_1.html">Parametric study workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="radiation_headlamp.html">Modeling Radiation in a Headlamp Using the Monte Carlo Method</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="single_battery_cell_workflow.html">Single Battery Cell Using MSMD Battery Model Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="species_transport.html">Modeling Species Transport and Gaseous Combustion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="steady_vortex.html">Simulation of Steady Vortex in a Stirred Tank</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transient_compressible_nozzle_workflow.html">Modeling Transient Compressible Flow</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="tyler_sofrin_modes.html">Tyler-Sofrin Compressor Modes Post-Processing</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Simulation Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Electrolysis Modeling</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-00-fluent-electrolysis-modeling-workflow-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="electrolysis-modeling">
+<span id="sphx-glr-examples-00-fluent-electrolysis-modeling-workflow-py"></span><span id="id1"></span><h1>Electrolysis Modeling<a class="headerlink" href="#electrolysis-modeling" title="Link to this heading">#</a></h1>
+</section>
+<section id="objective">
+<h1>Objective<a class="headerlink" href="#objective" title="Link to this heading">#</a></h1>
+<p>This example demonstrates the modeling of a PEM electrolyzer
+using PyFluent. The simulation captures three-dimensional
+multiphase flow involving liquid water and a gas mixture,
+coupled with electrochemical reactions governed by
+Butler–Volmer kinetics. It includes dual potential
+fields representing electronic and ionic conduction,
+along with porous media transport through the catalyst and
+diffusion layers. The workflow employs the electrolysis
+model to simulate hydrogen and oxygen generation at
+the anode and cathode catalyst layers under a total
+cell voltage of 1.73 V. Liquid water enters the anode
+at 333.15 K with a mass flow rate of 0.000404 kg/s.
+The simulation is performed under steady-state conditions,
+initialized with full liquid saturation and a uniform
+temperature field.</p>
+</section>
+<section id="problem-description">
+<h1>Problem Description<a class="headerlink" href="#problem-description" title="Link to this heading">#</a></h1>
+<p>The 3D domain represents a PEM electrolyzer with an anode,
+membrane, and cathode assembly, including porous and catalyst
+layers, flow channels, and current collectors. Electrochemical
+reactions follow Butler-Volmer kinetics with OER at the anode
+and HER at the cathode. A VOF model captures gas-liquid flow,
+while porous media account for Darcy flow, capillary pressure,
+and contact angle effects. Dual conductivity represents both
+electronic and ionic transport, with osmotic drag modeling
+water transport through the membrane. The cell operates at
+1.730202 V, with liquid water entering the anode at 333.15 K
+and 0.000404 kg/s.</p>
+<img alt="Schematic of the Electrolyzer Problem." class="align-center" src="../../_images/Electrolysis_Modeling.png" />
+</section>
+<section id="import-modules">
+<h1>Import modules<a class="headerlink" href="#import-modules" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Importing the following classes offer streamlined access to key solver settings,
+eliminating the need to manually browse through the full settings structure.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyfluent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">examples</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core.solver</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BoundaryConditions</span><span class="p">,</span>
+    <span class="n">Contour</span><span class="p">,</span>
+    <span class="n">Controls</span><span class="p">,</span>
+    <span class="n">Graphics</span><span class="p">,</span>
+    <span class="n">Initialization</span><span class="p">,</span>
+    <span class="n">Materials</span><span class="p">,</span>
+    <span class="n">Mesh</span><span class="p">,</span>
+    <span class="n">RunCalculation</span><span class="p">,</span>
+    <span class="n">Setup</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="launch-fluent-session-in-solver-mode">
+<h1>Launch Fluent session in solver mode<a class="headerlink" href="#launch-fluent-session-in-solver-mode" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span>
+    <span class="n">precision</span><span class="o">=</span><span class="n">pyfluent</span><span class="o">.</span><span class="n">Precision</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+    <span class="n">mode</span><span class="o">=</span><span class="n">pyfluent</span><span class="o">.</span><span class="n">FluentMode</span><span class="o">.</span><span class="n">SOLVER</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="download-mesh-file">
+<h1>Download mesh file<a class="headerlink" href="#download-mesh-file" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">mesh_file</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+    <span class="s2">&quot;electrolysis.msh.h5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pyfluent/electrolysis&quot;</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read_mesh</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="n">mesh_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="display-mesh">
+<h1>Display mesh<a class="headerlink" href="#display-mesh" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">graphics</span> <span class="o">=</span> <span class="n">Graphics</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;mesh-1&quot;</span><span class="p">)</span>
+
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">x_resolution</span> <span class="o">=</span> <span class="mi">650</span>  <span class="c1"># Horizontal resolution for clear visualization</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">y_resolution</span> <span class="o">=</span> <span class="mi">450</span>  <span class="c1"># Vertical resolution matching typical aspect ratio</span>
+
+<span class="n">all_walls</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+
+<span class="n">mesh</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">all_walls</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;Electrolysis_Modeling_1.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Mesh" class="align-center" src="../../_images/Electrolysis_Modeling_1.png" />
+</section>
+<section id="enable-electrolysis-model">
+<h1>Enable Electrolysis Model<a class="headerlink" href="#enable-electrolysis-model" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">setup</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">echemistry</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;potential&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;echemistry_enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;electrolysis&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;bc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Total voltage&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tot_voltage&quot;</span><span class="p">:</span> <span class="mf">1.730202</span><span class="p">,</span>  <span class="c1"># V</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;anode_jref&quot;</span><span class="p">:</span> <span class="mf">1.36e-09</span><span class="p">,</span>  <span class="c1"># A/m²</span>
+            <span class="s2">&quot;anode_jea&quot;</span><span class="p">:</span> <span class="mi">181411</span><span class="p">,</span>  <span class="c1"># A/m²</span>
+            <span class="s2">&quot;anode_exp&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># Concentration exponent</span>
+            <span class="s2">&quot;cathode_jref&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>  <span class="c1"># A/m²</span>
+            <span class="s2">&quot;cathode_jea&quot;</span><span class="p">:</span> <span class="mi">24359</span><span class="p">,</span>  <span class="c1"># A/m²</span>
+            <span class="s2">&quot;cathode_ex_a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Anodic transfer coefficient</span>
+            <span class="s2">&quot;cathode_ex_c&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Cathodic transfer coefficient</span>
+            <span class="s2">&quot;open_voltage&quot;</span><span class="p">:</span> <span class="mf">1.1999</span><span class="p">,</span>  <span class="c1"># V</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;anode&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;anode_cc_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;anode_cc_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;anode_cc&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;anode_cc_material&quot;</span><span class="p">:</span> <span class="s2">&quot;collector-default&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;anode_fc_zone&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;anode_fc_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;anode_fc&quot;</span><span class="p">]},</span>
+            <span class="s2">&quot;anode_pl_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;anode_pl_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;anode_pl&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;anode_pl_material&quot;</span><span class="p">:</span> <span class="s2">&quot;porous-default&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;anode_pl_porosity&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>  <span class="c1"># Porosity of porous layer</span>
+                <span class="s2">&quot;anode_pl_kr&quot;</span><span class="p">:</span> <span class="mf">4.9e-11</span><span class="p">,</span>  <span class="c1"># m² Absolute permeability</span>
+                <span class="s2">&quot;anode_pl_angle&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>  <span class="c1"># Degrees</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;anode_cl_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;anode_cl_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;anode_cl&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;anode_cl_material&quot;</span><span class="p">:</span> <span class="s2">&quot;catalyst-default&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;anode_cl_porosity&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># Catalyst layer porosity</span>
+                <span class="s2">&quot;anode_cl_kr&quot;</span><span class="p">:</span> <span class="mf">4.9e-12</span><span class="p">,</span>  <span class="c1"># m² Catalyst layer permeability</span>
+                <span class="s2">&quot;anode_cl_angle&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>  <span class="c1"># Degrees</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;electrolyte&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;mem_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;mem_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mem&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;mem_material&quot;</span><span class="p">:</span> <span class="s2">&quot;electrolyte-default&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;cathode&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;cathode_cc_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;cathode_cc_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cathode_cc&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;cathode_cc_material&quot;</span><span class="p">:</span> <span class="s2">&quot;collector-default&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;cathode_fc_zone&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;cathode_fc_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cathode_fc&quot;</span><span class="p">]},</span>
+            <span class="s2">&quot;cathode_pl_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;cathode_pl_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cathode_pl&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;cathode_pl_material&quot;</span><span class="p">:</span> <span class="s2">&quot;porous-default&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;cathode_pl_porosity&quot;</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>  <span class="c1"># Porosity</span>
+                <span class="s2">&quot;cathode_pl_kr&quot;</span><span class="p">:</span> <span class="mf">1e-11</span><span class="p">,</span>  <span class="c1"># m² Permeability</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;cathode_cl_zone&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;cathode_cl_zone_list&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cathode_cl&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;cathode_cl_material&quot;</span><span class="p">:</span> <span class="s2">&quot;catalyst-default&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;cathode_cl_porosity&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="c1"># Catalyst layer porosity</span>
+                <span class="s2">&quot;cathode_cl_kr&quot;</span><span class="p">:</span> <span class="mf">2e-12</span><span class="p">,</span>  <span class="c1"># m² Permeability</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;electrical_tab&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;anode_tab&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;anode_tab&quot;</span><span class="p">,</span> <span class="s2">&quot;anode_tab.1&quot;</span><span class="p">,</span> <span class="s2">&quot;anode_tab.1.1&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;cathode_tab&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cathode_tab&quot;</span><span class="p">,</span> <span class="s2">&quot;cathode_tab.1&quot;</span><span class="p">,</span> <span class="s2">&quot;cathode_tab.1.1&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="define-solid-materials">
+<h1>Define solid materials<a class="headerlink" href="#define-solid-materials" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">materials</span> <span class="o">=</span> <span class="n">Materials</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="c1"># Current collector</span>
+<span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="p">[</span><span class="s2">&quot;collector-default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;electric_conductivity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">}</span>  <span class="c1"># S/m</span>
+<span class="p">}</span>
+
+<span class="c1"># Porous layer</span>
+<span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="p">[</span><span class="s2">&quot;porous-default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;electric_conductivity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">}}</span>  <span class="c1"># S/m</span>
+
+<span class="c1"># Catalyst layer: dual conductivity</span>
+<span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="p">[</span><span class="s2">&quot;catalyst-default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;electric_conductivity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">},</span>  <span class="c1"># S/m  Electronic</span>
+    <span class="s2">&quot;dual_electric_conductivity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">4.5</span><span class="p">},</span>  <span class="c1"># S/m  Ionic in catalyst</span>
+<span class="p">}</span>
+
+<span class="c1"># Membrane: ionic conductivity</span>
+<span class="n">materials</span><span class="o">.</span><span class="n">solid</span><span class="p">[</span><span class="s2">&quot;electrolyte-default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;dual_electric_conductivity&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">}</span>  <span class="c1"># S/m  Proton conductivity</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="boundary-conditions">
+<h1>Boundary conditions<a class="headerlink" href="#boundary-conditions" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">conditions</span> <span class="o">=</span> <span class="n">BoundaryConditions</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="c1"># Mixture phase: thermal condition</span>
+<span class="n">conditions</span><span class="o">.</span><span class="n">mass_flow_inlet</span><span class="p">[</span><span class="s2">&quot;anode_in&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;phase&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mixture&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;thermal&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;total_temperature&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">333.15</span><span class="p">}}}}</span>  <span class="c1"># K</span>
+<span class="p">}</span>
+
+<span class="c1"># Phase-2 (liquid water): mass flow rate</span>
+<span class="n">conditions</span><span class="o">.</span><span class="n">mass_flow_inlet</span><span class="p">[</span><span class="s2">&quot;anode_in&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;phase&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;phase-2&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;momentum&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;mass_flow_rate&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.000404</span><span class="p">}}}}</span>  <span class="c1"># kg/s</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="solution-controls">
+<h1>Solution controls<a class="headerlink" href="#solution-controls" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">controls</span> <span class="o">=</span> <span class="n">Controls</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">controls</span><span class="o">.</span><span class="n">under_relaxation</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mp&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-solution">
+<h1>Initialize solution<a class="headerlink" href="#initialize-solution" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">initialize</span> <span class="o">=</span> <span class="n">Initialization</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">initialize</span><span class="o">.</span><span class="n">initialization_type</span> <span class="o">=</span> <span class="s2">&quot;standard&quot;</span>
+<span class="n">initialize</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="mf">333.15</span><span class="p">,</span>  <span class="c1"># K</span>
+    <span class="s2">&quot;phase-2-mp&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Initial volume fraction of liquid</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="run-calculation">
+<h1>Run calculation<a class="headerlink" href="#run-calculation" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">calculation</span> <span class="o">=</span> <span class="n">RunCalculation</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">calculation</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">iter_count</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="post-processing">
+<h1>Post-processing<a class="headerlink" href="#post-processing" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">potential_contour</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;potential_contour&quot;</span><span class="p">)</span>
+
+<span class="n">potential_contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;potential&quot;</span>
+<span class="n">potential_contour</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;zmid&quot;</span><span class="p">]</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">restore_view</span><span class="p">(</span><span class="n">view_name</span><span class="o">=</span><span class="s2">&quot;front&quot;</span><span class="p">)</span>
+<span class="n">potential_contour</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">restore_view</span><span class="p">(</span><span class="n">view_name</span><span class="o">=</span><span class="s2">&quot;front&quot;</span><span class="p">)</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;Electrolysis_Modeling_2.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Potential Contour" class="align-center" src="../../_images/Electrolysis_Modeling_2.png" />
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">volume_fraction_contour</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;volume_fraction_contour&quot;</span><span class="p">)</span>
+
+<span class="n">volume_fraction_contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;phase-1-vof&quot;</span>
+<span class="n">volume_fraction_contour</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;zmid&quot;</span><span class="p">,</span> <span class="s2">&quot;xmid&quot;</span><span class="p">]</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">restore_view</span><span class="p">(</span><span class="n">view_name</span><span class="o">=</span><span class="s2">&quot;isometric&quot;</span><span class="p">)</span>
+<span class="n">volume_fraction_contour</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;Electrolysis_Modeling_3.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Volume Fraction Contour" class="align-center" src="../../_images/Electrolysis_Modeling_3.png" />
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># save case and data file</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;case-data&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;electrolysis&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="close-session">
+<h1>Close session<a class="headerlink" href="#close-session" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h1>
+<p>In this example, we used PyFluent to simulate a complete PEM
+electrolysis process under steady-state conditions. The model
+applies Butler-Volmer electrochemistry with a total cell voltage
+boundary condition and includes dual conductivity in catalyst
+layers, multiphase VOF flow, and porous media transport. Effects
+such as osmotic drag and capillary pressure capture water
+management within the cell. The workflow defines zones, assigns
+materials, sets inlet conditions, and solves for coupled
+electrochemical and flow fields.</p>
+</section>
+<section id="references">
+<h1>References:<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<p>[1] Electrolysis Modeling, <a class="reference external" href="https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_electrolysis.html">Ansys Fluent documentation​</a>.</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-electrolysis-modeling-workflow-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/86a997b1d29f6ce6b66fa91622c088f9/Electrolysis_Modeling_workflow.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Electrolysis_Modeling_workflow.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/3076eefa040365ace3863acdf2af07b1/Electrolysis_Modeling_workflow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Electrolysis_Modeling_workflow.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/72e734a72ce17d453914451437debabd/Electrolysis_Modeling_workflow.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">Electrolysis_Modeling_workflow.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Electrolysis Modeling</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">Objective</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-description">Problem Description</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">Import modules</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-fluent-session-in-solver-mode">Launch Fluent session in solver mode</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#download-mesh-file">Download mesh file</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#display-mesh">Display mesh</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-electrolysis-model">Enable Electrolysis Model</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#define-solid-materials">Define solid materials</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-conditions">Boundary conditions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-controls">Solution controls</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#initialize-solution">Initialize solution</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#run-calculation">Run calculation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing">Post-processing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#close-session">Close session</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References:</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/00-fluent/Electrolysis_Modeling_workflow.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.3. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

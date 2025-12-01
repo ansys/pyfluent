@@ -1,0 +1,45 @@
+:orphan:
+
+.. _plot_from_file:
+
+plot_from_file
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.plot_from_file
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================   ==========================
+
+Attribute                                   Summary
+
+======================   ==========================
+:ref:`axes <axes>`                 Axes-properties.
+
+:ref:`curves <curves>`       Parameters for curves.
+
+======================   ==========================
+
+.. rubric:: Methods
+
+=====================   ========================
+
+Method                                   Summary
+
+=====================   ========================
+:ref:`plot <plot_12>`       Plot data from file.
+
+=====================   ========================
+
+.. rubric:: Included in:
+
+======================   =======================================================================================================================
+
+Parent                                                                                                                                   Summary
+
+======================   =======================================================================================================================
+:ref:`plot_4 <plot_4>`       Provides access to creating new and editing existing plots (XY histograms and so on) of your computational results.
+
+======================   =======================================================================================================================
+

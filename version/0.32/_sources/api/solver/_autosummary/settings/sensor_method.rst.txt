@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sensor_method:
+
+sensor_method
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sensor_method
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`tfm_options <tfm_options>`       TFM model options.
+
+================================   ======================
+

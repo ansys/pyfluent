@@ -1,0 +1,40 @@
+:orphan:
+
+.. _shallow_wave_inputs_child:
+
+shallow_wave_inputs_child
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.shallow_wave_inputs_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ============
+
+Attribute                                   Summary
+
+====================================   ============
+:ref:`theory <theory>`                     Element.
+
+:ref:`wave_ht <wave_ht>`                   Element.
+
+:ref:`wave_len <wave_len>`                 Element.
+
+:ref:`offset <offset_3>`                   Element.
+
+:ref:`heading_angle <heading_angle>`       Element.
+
+====================================   ============
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`shallow_wave_inputs <shallow_wave_inputs>`       List of Shallow Wave Inputs.
+
+================================================   ================================
+

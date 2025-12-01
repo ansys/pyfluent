@@ -1,0 +1,34 @@
+:orphan:
+
+.. _boundary_4:
+
+boundary
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.boundary_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===========================================================
+
+Attribute                                                                                      Summary
+
+========================================   ===========================================================
+:ref:`distance_option <distance_option>`                                          The distance method.
+
+:ref:`boundary_list <boundary_list_2>`         The list of boundary face zones for this cell register.
+
+========================================   ===========================================================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_write_d_mesh__write_d_meshArguments:
+
+_write_2d_meshArguments
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.write_2d_mesh._write_2d_meshArguments
+   :members: _file_name, _skip_export
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _knudsen_number_calculator:
+
+knudsen_number_calculator
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.knudsen_number_calculator
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ==================================
+
+Argument                                                  Summary
+
+============================   ==================================
+:ref:`length <length_3>`           Characteristic physics length.
+
+:ref:`boundary <boundary_3>`             Give flow boundary name.
+
+============================   ==================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`boundary_conditions <boundary_conditions>`       The boundary conditions object.
+
+================================================   ===================================
+

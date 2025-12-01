@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_general_create_new_workflow:
+
+create_new_workflow
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.general.create_new_workflow
+   :members: _create_new_workflowArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

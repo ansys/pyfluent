@@ -1,0 +1,38 @@
+:orphan:
+
+.. _fan_model:
+
+fan_model
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fan_model
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   ============================
+
+Argument                                                          Summary
+
+==========================================   ============================
+:ref:`fan_zone_id <fan_zone_id>`                               Fan zones.
+
+:ref:`update_interval <update_interval_1>`       The Fan update interval.
+
+:ref:`profile_points <profile_points>`           The Fan update interval.
+
+:ref:`program_name <program_name>`                  The Fan program name.
+
+==========================================   ============================
+
+.. rubric:: Included in:
+
+======================================   ===========================
+
+Parent                                                       Summary
+
+======================================   ===========================
+:ref:`user_defined_1 <user_defined_1>`       User-defined functions.
+
+======================================   ===========================
+

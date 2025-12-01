@@ -1,0 +1,21 @@
+:orphan:
+
+.. _project_file_name_2:
+
+project_file_name
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.project_file_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`save_as <save_as>`       Save As Project.
+
+========================   ====================
+
