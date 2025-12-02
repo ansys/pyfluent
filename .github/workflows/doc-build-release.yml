@@ -15,7 +15,7 @@ permissions:
 
 env:
   DOCUMENTATION_CNAME: "fluent.docs.pyansys.com"
-  DOC_DEPLOYMENT_IMAGE_TAG: v25.2.0
+  DOC_DEPLOYMENT_IMAGE_TAG: v25.2.3
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   PYFLUENT_TIMEOUT_FORCE_EXIT: 30
   PYFLUENT_LAUNCH_CONTAINER: 1
@@ -84,7 +84,7 @@ jobs:
           popd
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
@@ -96,8 +96,11 @@ jobs:
 
   deploy_release_docs:
     name: "Deploy Release Documentation"
-    runs-on: ubuntu-latest
+    runs-on: public-ubuntu-latest-8-cores
     needs: [build_release_docs]
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Deploy release documentation"
         uses: ansys/actions/doc-deploy-stable@v10.1

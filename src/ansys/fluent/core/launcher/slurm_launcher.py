@@ -70,6 +70,7 @@ import subprocess
 import time
 from typing import Any, Callable, Dict
 
+from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launch_options import (
@@ -102,6 +103,10 @@ def _get_slurm_job_id(proc: subprocess.Popen):
     for line in proc.stdout:
         if line.startswith(prefix.encode()):
             line = line.decode().removeprefix(prefix).strip()
+            # if the configuration setting 'launch_fluent_stdout' is None,
+            # close proc.stdout after reading the slurm job id to avoid hang in some systems
+            if config.launch_fluent_stdout is None and proc.stdout is not None:
+                proc.stdout.close()
             return int(line)
 
 
@@ -310,6 +315,8 @@ class SlurmLauncher:
         start_watchdog: bool | None = None,
         scheduler_options: dict | None = None,
         file_transfer_service: Any | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -400,6 +407,12 @@ class SlurmLauncher:
             specified in a similar manner to Fluent's scheduler options.
         file_transfer_service : optional
             File transfer service for uploading and downloading files to and from the server.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -416,6 +429,15 @@ class SlurmLauncher:
         passed to Fluent.
         """
         from ansys.fluent.core import config
+
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(
+                "To launch Fluent in Slurm environment, set `certificates_folder`."
+            )
+        if certificates_folder is not None and insecure_mode:
+            raise ValueError(
+                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
+            )
 
         if not _SlurmWrapper.is_available():
             raise RuntimeError("Slurm is not available.")
@@ -463,6 +485,10 @@ class SlurmLauncher:
             self._argvals["topy"], self._argvals["journal_file_names"]
         )
         launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
+        if self._argvals["insecure_mode"]:
+            launch_cmd += " -grpc-allow-remote-host -grpc-insecure-mode"
+        elif self._argvals["certificates_folder"]:
+            launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
@@ -483,6 +509,9 @@ class SlurmLauncher:
             cleanup_on_exit=self._argvals["cleanup_on_exit"],
             start_transcript=self._argvals["start_transcript"],
             inside_container=False,
+            allow_remote_host=True,
+            certificates_folder=self._argvals["certificates_folder"],
+            insecure_mode=self._argvals["insecure_mode"],
         )
         return session
 

@@ -291,7 +291,13 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
             )
         import ansys.tools.filetransfer as ft
 
-        self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
+        self.client = ft.Client.from_transport_options(
+            transport_options=ft.InsecureOptions(
+                host="localhost",
+                port=self.host_port,
+                allow_remote_host=True,
+            )
+        )
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
@@ -417,8 +423,12 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.server_ip = server_ip
         self.server_port = server_port
 
-        self._client = ft.Client.from_server_address(
-            f"{self.server_ip}:{self.server_port}"
+        self._client = ft.Client.from_transport_options(
+            transport_options=ft.InsecureOptions(
+                host=self.server_ip,
+                port=self.server_port,
+                allow_remote_host=True,
+            )
         )
 
     def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):

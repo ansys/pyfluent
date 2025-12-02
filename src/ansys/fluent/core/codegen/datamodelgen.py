@@ -37,7 +37,7 @@ from ansys.fluent.core.codegen.data.meshing_utilities_examples import (
     meshing_utility_examples,
 )
 from ansys.fluent.core.services.datamodel_se import (
-    PySingletonCommandArgumentsSubItem,
+    PyArgumentsSingletonSubItem,
     arg_class_by_type,
 )
 from ansys.fluent.core.utils.fix_doc import escape_wildcards
@@ -357,7 +357,7 @@ class DataModelGenerator:
         for line in arg_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
         f.write(f'{indent}    """\n\n')
-        if arg_class == PySingletonCommandArgumentsSubItem:
+        if arg_class == PyArgumentsSingletonSubItem:
             f.write(
                 f"{indent}    def __init__(self, parent, attr, service, rules, path):\n"
             )
@@ -492,56 +492,55 @@ class DataModelGenerator:
                         info["queries"][k]["queryinfo"],
                         file,
                     )
-        for k in commands:
-            f.write(f"{indent}    class {k}(PyCommand):\n")
-            f.write(f'{indent}        """\n')
-            command_static_info = info["commands"][k]
-            f.write(
-                _build_command_query_docstring(
-                    k, command_static_info, f"{indent}        ", True
-                )
-            )
-            f.write(f'{indent}        """\n')
-            f.write(
-                f"{indent}        class _{k}CommandArguments(PyCommandArguments):\n"
-            )
-            f.write(
-                f"{indent}            def __init__(self, service, rules, command, path, id):\n"
-            )
-            f.write(
-                f"{indent}                super().__init__(service, rules, command, path, id)\n"
-            )
-            args_info = command_static_info["commandinfo"].get("args", [])
-            for arg_info in args_info:
-                arg_name = arg_info["name"]
-                py_name = _convert_to_py_name(arg_name)
-                f.write(
-                    f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
-                )
-            f.write("\n")
-            for arg_info in args_info:
-                self._write_arg_class(f, arg_info, f"{indent}            ")
 
-            f.write(
-                f"{indent}        def create_instance(self) -> _{k}CommandArguments:\n"
-            )
-            f.write(f"{indent}            args = self._get_create_instance_args()\n")
-            f.write(f"{indent}            if args is not None:\n")
-            f.write(
-                f"{indent}                return self._{k}CommandArguments(*args)\n\n"
-            )
-            api_tree[k] = "Command"
-        for k in queries:
-            f.write(f"{indent}    class {k}(PyQuery):\n")
-            f.write(f'{indent}        """\n')
-            f.write(
-                _build_command_query_docstring(
-                    k, info["queries"][k], f"{indent}        ", False
+        def _write_static_command_and_query_info(
+            actions, class_name: str, st_info_key: tuple[str], is_command: bool
+        ):
+            for k in actions:
+                f.write(f"{indent}    class {k}({class_name}):\n")
+                f.write(f'{indent}        """\n')
+                actions_static_info = info[st_info_key[0]][k]
+                f.write(
+                    _build_command_query_docstring(
+                        k, actions_static_info, f"{indent}        ", is_command
+                    )
                 )
-            )
-            f.write(f'{indent}        """\n')
-            f.write(f"{indent}        pass\n\n")
-            api_tree[k] = "Query"
+                f.write(f'{indent}        """\n')
+                f.write(f"{indent}        class _{k}Arguments(PyArguments):\n")
+                f.write(
+                    f"{indent}            def __init__(self, service, rules, command, path, id):\n"
+                )
+                f.write(
+                    f"{indent}                super().__init__(service, rules, command, path, id)\n"
+                )
+                args_info = actions_static_info[st_info_key[1]].get("args", [])
+                for arg_info in args_info:
+                    arg_name = arg_info["name"]
+                    py_name = _convert_to_py_name(arg_name)
+                    f.write(
+                        f'{indent}                self.{py_name} = self._{py_name}(self, "{arg_name}", service, rules, path)\n'
+                    )
+                f.write("\n")
+                for arg_info in args_info:
+                    self._write_arg_class(f, arg_info, f"{indent}            ")
+
+                f.write(
+                    f"{indent}        def create_instance(self) -> _{k}Arguments:\n"
+                )
+                f.write(
+                    f"{indent}            args = self._get_create_instance_args()\n"
+                )
+                f.write(f"{indent}            if args is not None:\n")
+                f.write(f"{indent}                return self._{k}Arguments(*args)\n\n")
+                api_tree[k] = st_info_key[2]
+
+        _write_static_command_and_query_info(
+            commands, "PyCommand", ("commands", "commandinfo", "Command"), True
+        )
+        _write_static_command_and_query_info(
+            queries, "PyQuery", ("queries", "queryinfo", "Query"), False
+        )
+
         return api_tree
 
     def write_static_info(self) -> None:
@@ -566,12 +565,12 @@ class DataModelGenerator:
                 f.write("    PyNamedObjectContainer,\n")
                 f.write("    PyCommand,\n")
                 f.write("    PyQuery,\n")
-                f.write("    PyCommandArguments,\n")
-                f.write("    PyTextualCommandArgumentsSubItem,\n")
-                f.write("    PyNumericalCommandArgumentsSubItem,\n")
-                f.write("    PyDictionaryCommandArgumentsSubItem,\n")
-                f.write("    PyParameterCommandArgumentsSubItem,\n")
-                f.write("    PySingletonCommandArgumentsSubItem\n")
+                f.write("    PyArguments,\n")
+                f.write("    PyArgumentsTextualSubItem,\n")
+                f.write("    PyArgumentsNumericalSubItem,\n")
+                f.write("    PyArgumentsDictionarySubItem,\n")
+                f.write("    PyArgumentsParameterSubItem,\n")
+                f.write("    PyArgumentsSingletonSubItem\n")
                 f.write(")\n\n\n")
                 api_tree_val = {
                     name: self._write_static_info("Root", info.static_info, f)

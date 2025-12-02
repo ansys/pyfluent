@@ -573,8 +573,8 @@ meshing_session.tui.mesh.check_mesh()
 ###############################################################################
 # Solve and postprocess
 # ---------------------
-# Once you have completed the fault tolerate meshing workflow, you can solve and
-# postprcess the results.
+# Once you have completed the fault-tolerant meshing workflow, you can solve and
+# postprocess the results.
 #
 # Switch to solution mode
 # ~~~~~~~~~~~~~~~~~~~~~~~

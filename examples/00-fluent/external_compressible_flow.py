@@ -245,7 +245,7 @@ meshing_session.meshing.File.WriteMesh(FileName="wing.msh.h5")
 # Solve and postprocess
 # ---------------------
 # Once you have completed the watertight geometry meshing workflow, you can
-# solve and postprcess the results.
+# solve and postprocess the results.
 #
 # Switch to solution mode
 # ~~~~~~~~~~~~~~~~~~~~~~~

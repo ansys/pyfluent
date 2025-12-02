@@ -28,12 +28,14 @@ from pathlib import Path
 import pytest
 
 from ansys.fluent.core import examples
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.utils.file_transfer_service import (
     ContainerFileTransferStrategy,
     StandaloneFileTransferStrategy,
 )
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4649")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
@@ -54,8 +56,11 @@ def test_remote_grpc_fts_container():
     file_transfer_service = ContainerFileTransferStrategy(mount_source=str(source_path))
 
     container_dict = {"mount_source": file_transfer_service.mount_source}
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(
-        file_transfer_service=file_transfer_service, container_dict=container_dict
+        file_transfer_service=file_transfer_service,
+        container_dict=container_dict,
+        **grpc_kwds,
     )
 
     session.settings.file.read_case(file_name=case_file)

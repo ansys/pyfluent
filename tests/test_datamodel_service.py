@@ -32,11 +32,13 @@ from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import (
+    PyArguments,
+    PyArgumentsSingletonSubItem,
+    PyArgumentsTextualSubItem,
     PyCommand,
     PyMenuGeneric,
     PyNumerical,
-    PySingletonCommandArgumentsSubItem,
-    PyTextualCommandArgumentsSubItem,
+    PyQuery,
     ReadOnlyObjectError,
     _convert_value_to_variant,
     _convert_variant_to_value,
@@ -861,16 +863,58 @@ def test_field_level_help(new_meshing_session):
         "Specify the CAD geometry that you want to work with. Choose from"
     )
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
-    assert isinstance(import_geometry.FileFormat, PyTextualCommandArgumentsSubItem)
+    assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
     assert import_geometry.FileFormat.__doc__.strip().startswith(
         "Indicate whether the imported geometry is a CAD File or"
     )
     linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
-    assert isinstance(
-        linear_mesh_pattern.PatternVector, PySingletonCommandArgumentsSubItem
-    )
+    assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
     assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
         "Specify a name for the mesh pattern or use the default value."
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=25.1")
+def test_py_query(new_meshing_session):
+    meshing_session = new_meshing_session
+    import_filename = examples.download_file(
+        "mixing_elbow.msh.h5", "pyfluent/mixing_elbow"
+    )
+    meshing_session.tui.file.read_case(import_filename)
+    assert isinstance(
+        meshing_session.meshing_utilities.get_labels_on_face_zones, PyQuery
+    )
+    get_labels_on_face_zones_instance = (
+        meshing_session.meshing_utilities.get_labels_on_face_zones.create_instance()
+    )
+    assert isinstance(get_labels_on_face_zones_instance, PyArguments)
+
+    if meshing_session.get_fluent_version() >= FluentVersion.v261:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": None,
+            "face_zone_id_list": None,
+            "face_zone_name_pattern": "",
+        }
+    else:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": [],
+            "face_zone_id_list": [],
+            "face_zone_name_pattern": "",
+        }
+
+    get_labels_on_face_zones_instance.face_zone_name_list = ["wall-inlet", "wall-elbow"]
+
+    if meshing_session.get_fluent_version() >= FluentVersion.v261:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": ["wall-inlet", "wall-elbow"],
+            "face_zone_name_pattern": "",
+        }
+    else:
+        assert get_labels_on_face_zones_instance() == {
+            "face_zone_name_list": ["wall-inlet", "wall-elbow"],
+            "face_zone_id_list": [],
+            "face_zone_name_pattern": "",
+        }
