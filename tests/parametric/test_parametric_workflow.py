@@ -91,9 +91,7 @@ def test_parametric_workflow():
     outlet_vel_avg.field = "velocity-magnitude"
     outlet_vel_avg.surface_names = ["outlet"]
 
-    create_output_param = (
-        solver_session.tui.define.settings.parameters.output_parameters.create
-    )
+    create_output_param = solver_session.tui.define.parameters.output_parameters.create
     create_output_param("report-definition", "outlet-temp-avg")
     create_output_param("report-definition", "outlet-vel-avg")
 
