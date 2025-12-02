@@ -1019,10 +1019,10 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
             "if-mesh-is-modified",
         ]
 
-     string_with_allowed_values = (
-         solver.settings.setup.general.solver.type.allowed_values()
-     )
-     assert string_with_allowed_values == [
+    string_with_allowed_values = (
+        solver.settings.setup.general.solver.type.allowed_values()
+    )
+    assert string_with_allowed_values == [
         "pressure-based",
         "density-based-implicit",
         "density-based-explicit",
