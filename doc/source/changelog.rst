@@ -9,8 +9,8 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
-`0.37.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.37.dev0>`_ - November 24, 2025
-`0.36.0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.0>`_ - November 25, 2025
+`0.37.0 <https://github.com/ansys/pyfluent/releases/tag/v0.37.0>`_ - November 26, 2025
+======================================================================================
 
 .. tab-set::
 
@@ -20,6 +20,9 @@ This document contains the release notes for the project.
     .. list-table::
         :header-rows: 0
         :widths: auto
+
+        * - Secure gRPC options
+          - `#24 <https://github.com/ansys/pyfluent/pull/24>`_
 
         * - Raise exception on read-only command execution
           - `#4619 <https://github.com/ansys/pyfluent/pull/4619>`_
@@ -31,6 +34,9 @@ This document contains the release notes for the project.
         :header-rows: 0
         :widths: auto
 
+        * - Support insecure mode while launching container
+          - `#14 <https://github.com/ansys/pyfluent/pull/14>`_
+
         * - Use latest units package
           - `#4624 <https://github.com/ansys/pyfluent/pull/4624>`_
 
@@ -41,13 +47,11 @@ This document contains the release notes for the project.
         :header-rows: 0
         :widths: auto
 
+        * - Bump version 0.35.1
+          - `#16 <https://github.com/ansys/pyfluent/pull/16>`_
+
         * - Bump the dependencies group with 4 updates
           - `#4577 <https://github.com/ansys/pyfluent/pull/4577>`_
-
-        * - Bump version to v0.37.dev0
-          - `#4631 <https://github.com/ansys/pyfluent/pull/4631>`_
-        * - Bump version to v0.36.0
-          - `#4630 <https://github.com/ansys/pyfluent/pull/4630>`_
 
 
   .. tab-item:: Documentation
