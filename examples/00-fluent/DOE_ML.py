@@ -111,13 +111,15 @@ solver_session.settings.file.read_case(file_name=import_filename)
 ##############################################################################################
 # Design of Experiments
 # =====================
-# * Define Manual DOE as numpy arrays
-# * Run cases in sequence
-# * Populate results (Mass Weighted Average of Temperature at Outlet) in resArr
 
+# Specify inlet velocities for the cold and hot streams.
+# Each pair of (coldVel, hotVel) will be used to run one Fluent case.
 coldVelArr = np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7])
-hotVelArr = np.array([0.8, 1, 1.2, 1.4, 1.6, 1.8, 2.0])
-resArr = np.zeros((coldVelArr.shape[0], hotVelArr.shape[0]))
+hotVelArr = np.array([0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0])
+
+# Allocate a results array. Entry (i, j) will hold the Mass‑Weighted
+# Average Temperature at the outlet for coldVelArr[i] and hotVelArr[j].
+resArr = np.zeros((coldVelArr.size, hotVelArr.size))
 
 for idx1, coldVel in np.ndenumerate(coldVelArr):
     for idx2, hotVel in np.ndenumerate(hotVelArr):
@@ -248,12 +250,11 @@ y_test = np.ravel(y_test.T)
 # * Prediction on Unseen/Test Data (scikit-learn)
 # * Parity Plot (Matplotlib and Seaborn)
 
-# from pprint import pprint
-
-# from sklearn.ensemble import RandomForestRegressor
-# from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import RepeatedKFold, cross_val_score
+# optionally chose which model to use
+# from sklearn.ensemble import RandomForestRegressor
+# from sklearn.linear_model import LinearRegression
 from xgboost import XGBRegressor
 
 np.set_printoptions(precision=2)
@@ -285,8 +286,6 @@ def fit_and_predict(model):
     print(
         "\n\nPredictions - Ground Truth (Kelvin): ", (test_predictions - y_test), "\n"
     )
-    #    print("\n\nModel Parameters:")
-    #    pprint(model.get_params())
 
     com_train_set = train_set
     com_test_set = test_set

@@ -6,7 +6,7 @@ Solver settings objects
 .. vale Google.Spacing = NO
 
 Solver settings objects provide a natural way to access and modify Fluent solver
-settings and issue commands to be executed in the Fluent solver.
+settings and issue commands to be executed.
 An appropriate call to the :func:`~ansys.fluent.core.launcher.launcher.launch_fluent`
 function returns an object whose interface directly exposes the :ref:`ref_root` of the solver settings hierarchy.
 
@@ -16,10 +16,10 @@ function returns an object whose interface directly exposes the :ref:`ref_root` 
 New format for accessing solver settings objects
 ------------------------------------------------
 
-To simplify the usage of Fluent solver settings and improve readability,
-you can now instantiate settings objects directly using a more intuitive syntax.
-This new approach allows for straightforward access to various settings without
-navigating through the hierarchical structure of the solver settings.
+To simplify access to solver settings and improve readability, you can now
+instantiate settings objects directly using a concise constructor-style syntax.
+This avoids navigating the full hierarchy of solver settings while preserving
+the same functional capabilities.
 
 Example usage
 ~~~~~~~~~~~~~
@@ -37,11 +37,11 @@ making your code easier to read and maintain. By abstracting the underlying hier
 users can focus on the specific settings they need without dealing with potential changes
 in the Fluent API structure.
 
+The traditional hierarchy-based API remains fully supported. The new syntax is an
+additional, more convenient option and not a replacement.
+
 Accessing solver settings
 -------------------------
-
-Following the introduction of the new format, the traditional method remains available for those
-who prefer the existing hierarchy.
 
 .. code-block:: python
 
