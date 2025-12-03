@@ -767,7 +767,7 @@ zone_info.zone_type
 
 ```{python}
 wall_fluid_info = solution_variable_info.get_variables_info(
-    zone_names=['wall' , "fluid"],
+    zone_names=['wall', "fluid"],
     domain_name="mixture")
 wall_fluid_info.solution_variables
 solution_variable_info_centroid = wall_fluid_info['SV_CENTROID']
