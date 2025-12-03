@@ -100,12 +100,12 @@ all PyFluent packages in a Python *virtual environment*:
 
    For Python version information, see the answer to the next question.
 
-#. Install Fluent 2022 R2 or later.
+#. Install Fluent 2024 R2 or later.
 #. Set the environment variable for your installed release to point to
    the appropriate Ansys installation folder.
 
-   For example, for Ansys 2022 R2, you would likely set the ``AWP_ROOT222``
-   environment variable to point to ``C:\Program Files\ANSYS Inc\v222``.
+   For example, for Ansys 2025 R2, you would likely set the ``AWP_ROOT252``
+   environment variable to point to ``C:\Program Files\ANSYS Inc\v252``.
 
    While you must explicitly set this environment variable on Linux, it should
    be automatically set on Windows.
@@ -140,8 +140,8 @@ all PyFluent packages in a Python *virtual environment*:
 
 Which version of Python should you use?
 ---------------------------------------
-PyFluent supports Python 3.10 through Python 3.12 on Windows and Linux. Python
-3.10 is shipped with Ansys 2023 R2 and later. For example, in a 2025 R2 Windows
+PyFluent supports Python 3.10 through Python 3.13 on Windows and Linux. Python
+3.10 is shipped with Ansys 2024 R2 and later. For example, in a 2025 R2 Windows
 installation, the executable file Python 3.10 is typically located at:
 ``C:\Program Files\ANSYS Inc\v252\commonfiles\CPython\3_10\winx64\Release\python.exe``.
 If you're using Python from Ansys installation, make sure to install PyFluent
@@ -232,7 +232,7 @@ learn how to use PyFluent:
   script.
 
   .. note::
-     In Fluent 2022 R2, you can record a journal of your actions in Fluent
+     In Fluent 2024 R2 or later, you can record a journal of your actions in Fluent
      meshing to produce a Scheme script. Within that script are embedded
      Python statements corresponding to each recorded meshing workflow
      action. When extracted from the Scheme script, those Python statements

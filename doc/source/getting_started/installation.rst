@@ -84,7 +84,7 @@ Fluent Installation
 -------------------
 
 To benefit fully from using PyFluent, you must have a licensed copy of Ansys Fluent installed.
-All versions of PyFluent support Fluent 2022 R2 and later. 
+All versions of PyFluent support Fluent 2024 R2 and later. 
 
 PyFluent uses an environment variable to locate your Ansys installation.
 
