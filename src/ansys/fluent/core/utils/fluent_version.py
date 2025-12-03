@@ -90,14 +90,11 @@ class FluentVersion(Enum):
     FluentVersion.v232.awp_var == 'AWP_ROOT232'
     """
 
+    v262 = "26.2.0"
     v261 = "26.1.0"
     v252 = "25.2.0"
     v251 = "25.1.0"
     v242 = "24.2.0"
-    v241 = "24.1.0"
-    v232 = "23.2.0"
-    v231 = "23.1.0"
-    v222 = "22.2.0"
 
     @classmethod
     def _missing_(cls, version: Any):

@@ -96,7 +96,6 @@ def test_eq():
 
 
 def test_str_output():
-    assert str(FluentVersion.v232) == "Ansys Fluent 2023 R2"
     assert str(FluentVersion.v251) == "Ansys Fluent 2025 R1"
 
 
