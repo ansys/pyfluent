@@ -190,7 +190,7 @@ def _locns(locns, ctxt):
 
 
 def _eval_expr(solver, expr_str):
-    named_exprs = solver.settings.setup.named_expressions
+    named_exprs = solver.setup.named_expressions
     expr_name = "temp_expr_1"
     named_exprs[expr_name] = {}
     # request feature: anonymous name object creation

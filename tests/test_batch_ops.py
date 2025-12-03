@@ -26,7 +26,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
 
-@pytest.mark.fluent_version(">=24.1")
+@pytest.mark.fluent_version(">=25.1")
 def test_batch_ops_create_mesh():
     solver = pyfluent.Solver.from_container(insecure_mode=True)
     mesh = solver.settings.results.graphics.mesh
