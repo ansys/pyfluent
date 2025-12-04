@@ -727,10 +727,17 @@ def test_new_launch_fluent_api_standalone():
     meshing_connected.exit()
 
 
-def test_new_launch_fluent_api_dry_run():
-    pyfluent.Solver.from_install(dry_run=True)
-    pyfluent.SolverAero.from_install(dry_run=True)
-    pyfluent.Meshing.from_install(dry_run=True)
+def test_new_launch_fluent_api_dry_run(helpers):
+    helpers.mock_awp_vars()
+    pyfluent.Solver.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+    pyfluent.SolverAero.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+    pyfluent.Meshing.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
 
 
 def test_new_launch_fluent_api_from_container():
