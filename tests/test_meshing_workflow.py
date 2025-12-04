@@ -29,7 +29,6 @@ from util.meshing_workflow import (
 )
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -139,9 +138,7 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if meshing_session.get_fluent_version() < FluentVersion.v231:
-        meshing_session.tui.mesh.check_mesh()
+    meshing_session.tui.mesh.check_mesh()
 
 
 @pytest.mark.codegen_required

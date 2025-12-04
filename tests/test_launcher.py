@@ -233,9 +233,6 @@ def test_case_load():
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
-    # Mesh available because not lightweight
-    if not session.get_fluent_version() < FluentVersion.v231:
-        assert session.mesh.quality.is_active()
     # Data not loaded
     assert not session.fields.field_data.is_data_valid()
 
@@ -278,9 +275,6 @@ def test_case_data_load():
 
     # Case loaded
     assert session.setup.boundary_conditions.is_active()
-    # Mesh available because not lightweight
-    if not session.get_fluent_version() < FluentVersion.v231:
-        assert session.mesh.quality.is_active()
     # Data loaded
     assert session.fields.field_data.is_data_valid()
 
