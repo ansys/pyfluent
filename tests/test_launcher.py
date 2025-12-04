@@ -333,10 +333,10 @@ def test_get_fluent_exe_path_from_awp_root(fluent_version, helpers, fs):
 def test_get_fluent_exe_path_from_product_version_launcher_arg(helpers):
     helpers.mock_awp_vars()
     if platform.system() == "Windows":
-        expected_path = Path("ansys_inc/v231/fluent") / "ntbin" / "win64" / "fluent.exe"
+        expected_path = Path("ansys_inc/v251/fluent") / "ntbin" / "win64" / "fluent.exe"
     else:
-        expected_path = Path("ansys_inc/v231/fluent") / "bin" / "fluent"
-    assert get_fluent_exe_path(product_version=231) == expected_path
+        expected_path = Path("ansys_inc/v251/fluent") / "bin" / "fluent"
+    assert get_fluent_exe_path(product_version=251) == expected_path
 
 
 def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
