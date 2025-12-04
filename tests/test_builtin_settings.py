@@ -53,72 +53,23 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     else:
         with pytest.raises(RuntimeError):
             Species(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert (
-            DiscretePhase(settings_source=solver) == solver.setup.models.discrete_phase
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            DiscretePhase(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert (
-            Injections(settings_source=solver)
-            == solver.setup.models.discrete_phase.injections
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            Injections(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert (
-            VirtualBladeModel(settings_source=solver)
-            == solver.setup.models.virtual_blade_model
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            VirtualBladeModel(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert Optics(settings_source=solver) == solver.setup.models.optics
-    else:
-        with pytest.raises(RuntimeError):
-            Optics(settings_source=solver)
-    if fluent_version >= FluentVersion.v232:
-        assert Structure(settings_source=solver) == solver.setup.models.structure
-    else:
-        with pytest.raises(RuntimeError):
-            Structure(settings_source=solver)
-    if fluent_version >= FluentVersion.v232:
-        assert Ablation(settings_source=solver) == solver.setup.models.ablation
-    else:
-        with pytest.raises(RuntimeError):
-            Ablation(settings_source=solver)
-    if fluent_version >= FluentVersion.v241:
-        assert EChemistry(settings_source=solver) == solver.setup.models.echemistry
-    else:
-        with pytest.raises(RuntimeError):
-            EChemistry(settings_source=solver)
-    if fluent_version >= FluentVersion.v241:
-        assert Battery(settings_source=solver) == solver.setup.models.battery
-    else:
-        with pytest.raises(RuntimeError):
-            Battery(settings_source=solver)
-    if fluent_version >= FluentVersion.v241:
-        assert (
-            SystemCoupling(settings_source=solver)
-            == solver.setup.models.system_coupling
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            SystemCoupling(settings_source=solver)
-    if fluent_version >= FluentVersion.v241:
-        assert Sofc(settings_source=solver) == solver.setup.models.sofc
-    else:
-        with pytest.raises(RuntimeError):
-            Sofc(settings_source=solver)
-    if fluent_version >= FluentVersion.v242:
-        assert Pemfc(settings_source=solver) == solver.setup.models.pemfc
-    else:
-        with pytest.raises(RuntimeError):
-            Pemfc(settings_source=solver)
+    assert DiscretePhase(settings_source=solver) == solver.setup.models.discrete_phase
+    assert (
+        Injections(settings_source=solver)
+        == solver.setup.models.discrete_phase.injections
+    )
+    assert (
+        VirtualBladeModel(settings_source=solver)
+        == solver.setup.models.virtual_blade_model
+    )
+    assert Optics(settings_source=solver) == solver.setup.models.optics
+    assert Structure(settings_source=solver) == solver.setup.models.structure
+    assert Ablation(settings_source=solver) == solver.setup.models.ablation
+    assert EChemistry(settings_source=solver) == solver.setup.models.echemistry
+    assert Battery(settings_source=solver) == solver.setup.models.battery
+    assert SystemCoupling(settings_source=solver) == solver.setup.models.system_coupling
+    assert Sofc(settings_source=solver) == solver.setup.models.sofc
+    assert Pemfc(settings_source=solver) == solver.setup.models.pemfc
     assert Materials(settings_source=solver) == solver.setup.materials
     assert FluidMaterials(settings_source=solver) == solver.setup.materials.fluid
     assert (
@@ -133,14 +84,10 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert (
         CellZoneConditions(settings_source=solver) == solver.setup.cell_zone_conditions
     )
-    if fluent_version >= FluentVersion.v231:
-        assert (
-            CellZoneCondition(settings_source=solver, name="elbow-fluid")
-            == solver.setup.cell_zone_conditions["elbow-fluid"]
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            CellZoneCondition(settings_source=solver, name="elbow-fluid")
+    assert (
+        CellZoneCondition(settings_source=solver, name="elbow-fluid")
+        == solver.setup.cell_zone_conditions["elbow-fluid"]
+    )
     assert (
         FluidCellZones(settings_source=solver)
         == solver.setup.cell_zone_conditions.fluid
@@ -152,14 +99,10 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert (
         BoundaryConditions(settings_source=solver) == solver.setup.boundary_conditions
     )
-    if fluent_version >= FluentVersion.v231:
-        assert (
-            BoundaryCondition(settings_source=solver, name="cold-inlet")
-            == solver.setup.boundary_conditions["cold-inlet"]
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            BoundaryCondition(settings_source=solver, name="cold-inlet")
+    assert (
+        BoundaryCondition(settings_source=solver, name="cold-inlet")
+        == solver.setup.boundary_conditions["cold-inlet"]
+    )
     with pytest.raises(TypeError):
         BoundaryCondition(settings_source=solver, new_instance_name="bc-1")
     assert (
@@ -189,14 +132,10 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         WallBoundary(settings_source=solver, name="wall-elbow")
         == solver.setup.boundary_conditions.wall["wall-elbow"]
     )
-    if fluent_version >= FluentVersion.v231 and fluent_version < FluentVersion.v251:
+    if fluent_version < FluentVersion.v251:
         with pytest.raises(AttributeError):
             WallBoundary(settings_source=solver, new_instance_name="wall-1")
-    if fluent_version >= FluentVersion.v232:
-        assert MeshInterfaces(settings_source=solver) == solver.setup.mesh_interfaces
-    else:
-        with pytest.raises(RuntimeError):
-            MeshInterfaces(settings_source=solver)
+    MeshInterfaces(settings_source=solver) == solver.setup.mesh_interfaces
     if fluent_version >= FluentVersion.v251:
         assert DynamicMesh(settings_source=solver) == solver.setup.dynamic_mesh
     else:
@@ -230,91 +169,75 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert (
         ReportDefinitions(settings_source=solver) == solver.solution.report_definitions
     )
-    if fluent_version >= FluentVersion.v231:
-        assert Monitor(settings_source=solver) == solver.solution.monitor
-        if fluent_version >= FluentVersion.v241:
-            assert Residual(settings_source=solver) == solver.solution.monitor.residual
-        else:
-            with pytest.raises(RuntimeError):
-                Residual(settings_source=solver)
-        assert (
-            ReportFiles(settings_source=solver) == solver.solution.monitor.report_files
-        )
-        assert (
-            ReportFile(settings_source=solver, new_instance_name="report-file-1")
-            == solver.solution.monitor.report_files["report-file-1"]
-        )
-        assert (
-            ReportFile(settings_source=solver, name="report-file-1")
-            == solver.solution.monitor.report_files["report-file-1"]
-        )
-        if fluent_version >= FluentVersion.v251:
-            assert (
-                ReportFile(settings_source=solver)
-                == solver.solution.monitor.report_files["report-file-2"]
-            )
-        assert (
-            ReportPlots(settings_source=solver) == solver.solution.monitor.report_plots
-        )
-        assert (
-            ReportPlot(settings_source=solver, new_instance_name="report-plot-1")
-            == solver.solution.monitor.report_plots["report-plot-1"]
-        )
-        assert (
-            ReportPlot(settings_source=solver, name="report-plot-1")
-            == solver.solution.monitor.report_plots["report-plot-1"]
-        )
-        if fluent_version >= FluentVersion.v251:
-            assert (
-                ReportPlot(settings_source=solver)
-                == solver.solution.monitor.report_plots["report-plot-2"]
-            )
-        assert (
-            ConvergenceConditions(settings_source=solver)
-            == solver.solution.monitor.convergence_conditions
-        )
+    assert Monitor(settings_source=solver) == solver.solution.monitor
+    if fluent_version >= FluentVersion.v241:
+        assert Residual(settings_source=solver) == solver.solution.monitor.residual
     else:
         with pytest.raises(RuntimeError):
-            Monitor(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert CellRegisters(settings_source=solver) == solver.solution.cell_registers
+            Residual(settings_source=solver)
+    assert ReportFiles(settings_source=solver) == solver.solution.monitor.report_files
+    assert (
+        ReportFile(settings_source=solver, new_instance_name="report-file-1")
+        == solver.solution.monitor.report_files["report-file-1"]
+    )
+    assert (
+        ReportFile(settings_source=solver, name="report-file-1")
+        == solver.solution.monitor.report_files["report-file-1"]
+    )
+    if fluent_version >= FluentVersion.v251:
         assert (
-            CellRegister(settings_source=solver, new_instance_name="cell_register_1")
-            == solver.solution.cell_registers["cell_register_1"]
+            ReportFile(settings_source=solver)
+            == solver.solution.monitor.report_files["report-file-2"]
         )
+    assert ReportPlots(settings_source=solver) == solver.solution.monitor.report_plots
+    assert (
+        ReportPlot(settings_source=solver, new_instance_name="report-plot-1")
+        == solver.solution.monitor.report_plots["report-plot-1"]
+    )
+    assert (
+        ReportPlot(settings_source=solver, name="report-plot-1")
+        == solver.solution.monitor.report_plots["report-plot-1"]
+    )
+    if fluent_version >= FluentVersion.v251:
         assert (
-            CellRegister(settings_source=solver, name="cell_register_1")
-            == solver.solution.cell_registers["cell_register_1"]
+            ReportPlot(settings_source=solver)
+            == solver.solution.monitor.report_plots["report-plot-2"]
         )
-        if fluent_version >= FluentVersion.v251:
-            assert (
-                CellRegister(settings_source=solver)
-                == solver.solution.cell_registers["cell_register_2"]
-            )
-    else:
-        with pytest.raises(RuntimeError):
-            CellRegisters(settings_source=solver)
+    assert (
+        ConvergenceConditions(settings_source=solver)
+        == solver.solution.monitor.convergence_conditions
+    )
+    assert CellRegisters(settings_source=solver) == solver.solution.cell_registers
+    assert (
+        CellRegister(settings_source=solver, new_instance_name="cell_register_1")
+        == solver.solution.cell_registers["cell_register_1"]
+    )
+    assert (
+        CellRegister(settings_source=solver, name="cell_register_1")
+        == solver.solution.cell_registers["cell_register_1"]
+    )
+    if fluent_version >= FluentVersion.v251:
+        assert (
+            CellRegister(settings_source=solver)
+            == solver.solution.cell_registers["cell_register_2"]
+        )
     assert Initialization(settings_source=solver) == solver.solution.initialization
-    if fluent_version >= FluentVersion.v231:
+    assert (
+        CalculationActivity(settings_source=solver)
+        == solver.solution.calculation_activity
+    )
+    assert (
+        ExecuteCommands(settings_source=solver)
+        == solver.solution.calculation_activity.execute_commands
+    )
+    if fluent_version >= FluentVersion.v241:
         assert (
-            CalculationActivity(settings_source=solver)
-            == solver.solution.calculation_activity
+            CaseModification(settings_source=solver)
+            == solver.solution.calculation_activity.case_modification
         )
-        assert (
-            ExecuteCommands(settings_source=solver)
-            == solver.solution.calculation_activity.execute_commands
-        )
-        if fluent_version >= FluentVersion.v241:
-            assert (
-                CaseModification(settings_source=solver)
-                == solver.solution.calculation_activity.case_modification
-            )
-        else:
-            with pytest.raises(RuntimeError):
-                CaseModification(settings_source=solver)
     else:
         with pytest.raises(RuntimeError):
-            CalculationActivity(settings_source=solver)
+            CaseModification(settings_source=solver)
     assert RunCalculation(settings_source=solver) == solver.solution.run_calculation
     assert Solution(settings_source=solver) == solver.solution
     assert Results(settings_source=solver) == solver.results
@@ -432,23 +355,12 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
     assert Vectors(settings_source=solver) == solver.results.graphics.vector
     assert LICs(settings_source=solver) == solver.results.graphics.lic
-    if fluent_version >= FluentVersion.v231:
-        assert Pathlines(settings_source=solver) == solver.results.graphics.pathline
-        assert (
-            ParticleTracks(settings_source=solver)
-            == solver.results.graphics.particle_track
-        )
-        assert Plots(settings_source=solver) == solver.results.plot
-        assert XYPlots(settings_source=solver) == solver.results.plot.xy_plot
-    else:
-        with pytest.raises(RuntimeError):
-            Pathlines(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            ParticleTracks(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            Plots(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            XYPlots(settings_source=solver)
+    assert Pathlines(settings_source=solver) == solver.results.graphics.pathline
+    assert (
+        ParticleTracks(settings_source=solver) == solver.results.graphics.particle_track
+    )
+    assert Plots(settings_source=solver) == solver.results.plot
+    assert XYPlots(settings_source=solver) == solver.results.plot.xy_plot
     if fluent_version >= FluentVersion.v241:
         assert Histogram(settings_source=solver) == solver.results.plot.histogram
         assert (
@@ -471,11 +383,7 @@ def test_builtin_settings(mixing_elbow_case_data_session):
             ProfileData(settings_source=solver)
         with pytest.raises(RuntimeError):
             InterpolatedData(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert Scenes(settings_source=solver) == solver.results.scene
-    else:
-        with pytest.raises(RuntimeError):
-            Scenes(settings_source=solver)
+    assert Scenes(settings_source=solver) == solver.results.scene
     if fluent_version >= FluentVersion.v241:
         assert (
             SceneAnimation(settings_source=solver)
@@ -484,38 +392,24 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     else:
         with pytest.raises(RuntimeError):
             SceneAnimation(settings_source=solver)
-    if fluent_version >= FluentVersion.v231:
-        assert Report(settings_source=solver) == solver.results.report
-        assert (
-            DiscretePhaseHistogram(settings_source=solver)
-            == solver.results.report.discrete_phase.histogram
-        )
-        assert Fluxes(settings_source=solver) == solver.results.report.fluxes
-        assert (
-            SurfaceIntegrals(settings_source=solver)
-            == solver.results.report.surface_integrals
-        )
-        assert (
-            VolumeIntegrals(settings_source=solver)
-            == solver.results.report.volume_integrals
-        )
-        assert (
-            SimulationReports(settings_source=solver)
-            == solver.results.report.simulation_reports
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            Report(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            DiscretePhaseHistogram(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            Fluxes(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            SurfaceIntegrals(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            VolumeIntegrals(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            SimulationReports(settings_source=solver)
+    assert Report(settings_source=solver) == solver.results.report
+    assert (
+        DiscretePhaseHistogram(settings_source=solver)
+        == solver.results.report.discrete_phase.histogram
+    )
+    assert Fluxes(settings_source=solver) == solver.results.report.fluxes
+    assert (
+        SurfaceIntegrals(settings_source=solver)
+        == solver.results.report.surface_integrals
+    )
+    assert (
+        VolumeIntegrals(settings_source=solver)
+        == solver.results.report.volume_integrals
+    )
+    assert (
+        SimulationReports(settings_source=solver)
+        == solver.results.report.simulation_reports
+    )
     if fluent_version >= FluentVersion.v241:
         assert (
             InputParameters(settings_source=solver)
