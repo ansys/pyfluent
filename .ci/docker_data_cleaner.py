@@ -15,7 +15,7 @@ def clean_docker_data():
     # Stop and remove all containers
     subprocess.run("docker ps -aq | xargs -r docker rm -f", shell=True, check=True)
 
-    # Remove all images except those in IMAGE_TAGS_TO_RETAIN
+    # Remove all images except those in IMAGE_TAGS_TO_RETAIN and the dev image
     images_to_retain = [f"ghcr.io/ansys/fluent:{tag}" for tag in IMAGE_TAGS_TO_RETAIN]
     dev_image_sha = os.environ["FLUENT_STABLE_IMAGE_DEV"]
     images_output = subprocess.check_output(
