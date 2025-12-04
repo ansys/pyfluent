@@ -993,7 +993,7 @@ class Batch(FieldBatch):
             Data is returned as dictionary of dictionaries in the following structure:
             tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
 
-            The tag is a tuple for Fluent 2024 R2 or later.
+            The tag is a tuple.
         """
         return BatchFieldData(
             ChunkParser().extract_fields(
