@@ -673,7 +673,7 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
 
 @pytest.mark.standalone
-def test_new_launch_fluent_api():
+def test_new_launch_fluent_api_standalone():
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.Solver.from_install()
@@ -725,6 +725,19 @@ def test_new_launch_fluent_api():
 
     meshing.exit()
     meshing_connected.exit()
+
+
+def test_new_launch_fluent_api_dry_run(helpers):
+    helpers.mock_awp_vars()
+    pyfluent.Solver.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+    pyfluent.SolverAero.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+    pyfluent.Meshing.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
 
 
 def test_new_launch_fluent_api_from_container():
