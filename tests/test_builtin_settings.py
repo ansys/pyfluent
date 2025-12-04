@@ -287,17 +287,11 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert (
         CumulativePlots(settings_source=solver) == solver.results.plot.cumulative_plot
     )
-    if fluent_version >= FluentVersion.v242:
-        assert ProfileData(settings_source=solver) == solver.results.plot.profile_data
-        assert (
-            InterpolatedData(settings_source=solver)
-            == solver.results.plot.interpolated_data
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            ProfileData(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            InterpolatedData(settings_source=solver)
+    assert ProfileData(settings_source=solver) == solver.results.plot.profile_data
+    assert (
+        InterpolatedData(settings_source=solver)
+        == solver.results.plot.interpolated_data
+    )
     assert Scenes(settings_source=solver) == solver.results.scene
     assert (
         SceneAnimation(settings_source=solver)

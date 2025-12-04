@@ -624,10 +624,9 @@ if __name__ == "__main__":
     static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
         solver._datamodel_service_se.get_static_info("solverworkflow")
     )
-    if FluentVersion(version) >= FluentVersion.v242:
-        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
-            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
-        )
+    static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+        meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+    )
     if FluentVersion(version) >= FluentVersion.v261:
         static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
             meshing._datamodel_service_se.get_static_info("meshing_workflow")
