@@ -45,7 +45,6 @@ from typing import Any, Dict
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -203,8 +202,6 @@ class StandaloneLauncher:
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
-        if fluent_version:
-            _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
         if (
             fluent_version

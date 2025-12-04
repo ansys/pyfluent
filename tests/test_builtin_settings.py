@@ -43,16 +43,8 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert Multiphase(settings_source=solver) == solver.setup.models.multiphase
     assert Energy(settings_source=solver) == solver.setup.models.energy
     assert Viscous(settings_source=solver) == solver.setup.models.viscous
-    if fluent_version >= FluentVersion.v232:
-        assert Radiation(settings_source=solver) == solver.setup.models.radiation
-    else:
-        with pytest.raises(RuntimeError):
-            Radiation(settings_source=solver)
-    if fluent_version >= FluentVersion.v232:
-        assert Species(settings_source=solver) == solver.setup.models.species
-    else:
-        with pytest.raises(RuntimeError):
-            Species(settings_source=solver)
+    assert Radiation(settings_source=solver) == solver.setup.models.radiation
+    assert Species(settings_source=solver) == solver.setup.models.species
     assert DiscretePhase(settings_source=solver) == solver.setup.models.discrete_phase
     assert (
         Injections(settings_source=solver)
@@ -142,28 +134,14 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         with pytest.raises(RuntimeError):
             DynamicMesh(settings_source=solver)
     assert ReferenceValues(settings_source=solver) == solver.setup.reference_values
-    if fluent_version >= FluentVersion.v232:
-        assert ReferenceFrames(settings_source=solver) == solver.setup.reference_frames
-    else:
-        with pytest.raises(RuntimeError):
-            ReferenceFrames(settings_source=solver)
-    if fluent_version >= FluentVersion.v232:
-        # Fluent 25.1 issue
-        if fluent_version != FluentVersion.v251:
-            assert (
-                ReferenceFrame(settings_source=solver, name="global")
-                == solver.setup.reference_frames["global"]
-            )
-    else:
-        with pytest.raises(RuntimeError):
-            ReferenceFrame(settings_source=solver, name="global")
-    if fluent_version >= FluentVersion.v232:
+    assert ReferenceFrames(settings_source=solver) == solver.setup.reference_frames
+    # Fluent 25.1 issue
+    if fluent_version != FluentVersion.v251:
         assert (
-            NamedExpressions(settings_source=solver) == solver.setup.named_expressions
+            ReferenceFrame(settings_source=solver, name="global")
+            == solver.setup.reference_frames["global"]
         )
-    else:
-        with pytest.raises(RuntimeError):
-            NamedExpressions(settings_source=solver)
+    assert NamedExpressions(settings_source=solver) == solver.setup.named_expressions
     assert Methods(settings_source=solver) == solver.solution.methods
     assert Controls(settings_source=solver) == solver.solution.controls
     assert (
@@ -242,29 +220,12 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     assert Solution(settings_source=solver) == solver.solution
     assert Results(settings_source=solver) == solver.results
     assert Surfaces(settings_source=solver) == solver.results.surfaces
-    if fluent_version >= FluentVersion.v232:
-        assert (
-            PointSurfaces(settings_source=solver)
-            == solver.results.surfaces.point_surface
-        )
-        assert (
-            LineSurfaces(settings_source=solver) == solver.results.surfaces.line_surface
-        )
-        assert (
-            RakeSurfaces(settings_source=solver) == solver.results.surfaces.rake_surface
-        )
-        assert (
-            IsoSurfaces(settings_source=solver) == solver.results.surfaces.iso_surface
-        )
-    else:
-        with pytest.raises(RuntimeError):
-            PointSurfaces(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            LineSurfaces(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            RakeSurfaces(settings_source=solver)
-        with pytest.raises(RuntimeError):
-            IsoSurfaces(settings_source=solver)
+    assert (
+        PointSurfaces(settings_source=solver) == solver.results.surfaces.point_surface
+    )
+    assert LineSurfaces(settings_source=solver) == solver.results.surfaces.line_surface
+    assert RakeSurfaces(settings_source=solver) == solver.results.surfaces.rake_surface
+    assert IsoSurfaces(settings_source=solver) == solver.results.surfaces.iso_surface
     assert (
         PlaneSurfaces(settings_source=solver) == solver.results.surfaces.plane_surface
     )

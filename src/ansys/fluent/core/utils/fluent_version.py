@@ -83,11 +83,11 @@ class FluentVersion(Enum):
 
     Examples
     --------
-    FluentVersion("23.2.0") == FluentVersion.v232
+    FluentVersion("25.2.0") == FluentVersion.v252
 
-    FluentVersion.v232.number == 232
+    FluentVersion.v252.number == 252
 
-    FluentVersion.v232.awp_var == 'AWP_ROOT232'
+    FluentVersion.v252.awp_var == 'AWP_ROOT252'
     """
 
     v262 = "26.2.0"
