@@ -199,14 +199,6 @@ build-all-docs:
 	@xvfb-run make -C doc html
 	@python doc/modify_html.py
 
-cleanup-previous-docker-containers:
-	@if [ -n "$(docker ps -a -q)" ]; then \
-		echo "Found running containers"; \
-		docker inspect --format='{{.Config.Labels.test_name}}' $(docker ps -a -q); \
-		docker stop $(docker ps -a -q); \
-	fi
-	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
-
 write-and-run-fluent-tests:
 	@pip install -r requirements/requirements_build.txt
 	@pip install ansys-fluent-core[reader]
