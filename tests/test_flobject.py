@@ -768,10 +768,7 @@ def test_accessor_methods_on_settings_object_types(static_mixer_settings_session
     accuracy_control = (
         solver.setup.models.discrete_phase.numerics.tracking.accuracy_control
     )
-    if solver.get_fluent_version() < FluentVersion.v241:
-        max_refinements = accuracy_control.max_number_of_refinements
-    else:
-        max_refinements = accuracy_control.max_num_refinements
+    max_refinements = accuracy_control.max_num_refinements
 
     assert max_refinements.min() == 0
     assert max_refinements.max() == 1000000
