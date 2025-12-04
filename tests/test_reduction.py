@@ -593,7 +593,7 @@ def test_named_expression_as_input_for_multiple_solvers(
     absolute_pressure_expression = solver_named_expressions.create()
     absolute_pressure_expression.definition = "AbsolutePressure"
 
-    s1_min = solver1.settings.fields.reduction.minimum(
+    s1_min = solver1.fields.reduction.minimum(
         expression=absolute_pressure_expression,
         locations=solver1.settings.setup.boundary_conditions.velocity_inlet,
     )
