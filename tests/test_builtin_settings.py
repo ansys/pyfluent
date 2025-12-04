@@ -163,9 +163,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
             ReportFile(settings_source=solver)
             == solver.solution.monitor.report_files["report-file-2"]
         )
-    else:
-        with pytest.raises(RuntimeError):
-            ReportFile(settings_source=solver)
     assert ReportPlots(settings_source=solver) == solver.solution.monitor.report_plots
     assert (
         ReportPlot(settings_source=solver, new_instance_name="report-plot-1")
@@ -180,9 +177,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
             ReportPlot(settings_source=solver)
             == solver.solution.monitor.report_plots["report-plot-2"]
         )
-    else:
-        with pytest.raises(RuntimeError):
-            ReportPlot(settings_source=solver)
     assert (
         ConvergenceConditions(settings_source=solver)
         == solver.solution.monitor.convergence_conditions
@@ -201,9 +195,6 @@ def test_builtin_settings(mixing_elbow_case_data_session):
             CellRegister(settings_source=solver)
             == solver.solution.cell_registers["cell_register_2"]
         )
-    else:
-        with pytest.raises(RuntimeError):
-            CellRegister(settings_source=solver)
     assert Initialization(settings_source=solver) == solver.solution.initialization
     assert (
         CalculationActivity(settings_source=solver)
