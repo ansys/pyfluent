@@ -11,7 +11,13 @@ IMAGE_TAGS_TO_RETAIN = ["v24.2.5", "v25.1.4", "v25.2.3"]
 
 
 def clean_docker_data():
-    """Cleans up all docker data except for specified images."""
+    """Cleans up all docker data except for specified images.
+
+    Raises
+    ------
+    OSError
+        If FLUENT_STABLE_IMAGE_DEV environment variable is not set.
+    """
     # Stop and remove all containers
     container_ids = subprocess.check_output(["docker", "ps", "-aq"]).decode().split()
     for container_id in container_ids:
@@ -19,7 +25,10 @@ def clean_docker_data():
 
     # Remove all images except those in IMAGE_TAGS_TO_RETAIN and the dev image
     images_to_retain = [f"ghcr.io/ansys/fluent:{tag}" for tag in IMAGE_TAGS_TO_RETAIN]
-    dev_image_sha = os.environ["FLUENT_STABLE_IMAGE_DEV"]
+    dev_image_sha = os.getenv("FLUENT_STABLE_IMAGE_DEV")
+    if not dev_image_sha:
+        raise OSError("FLUENT_STABLE_IMAGE_DEV environment variable is not set.")
+
     images_output = subprocess.check_output(
         [
             "docker",
