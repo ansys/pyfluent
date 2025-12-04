@@ -22,7 +22,7 @@ openssl req -new -key server.key -out server.csr \
 
 # Generate server certificate signed by the CA
 openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
-    -out server.crt -days 200 -sha256
+    -out server.crt -days 3650 -sha256 -extfile ../.ci/server_ext.cnf -extensions v3_req
 
 # Generate client private key
 openssl genrsa -out client.key 4096
