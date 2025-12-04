@@ -23,9 +23,6 @@ version-info:
 docker-pull:
 	@python .ci/pull_fluent_image.py
 
-docker-clean-images:
-	@docker system prune --volumes -a -f
-
 docker-clean-all-except-supported-images:
 	@python .ci/docker_data_cleaner.py
 
