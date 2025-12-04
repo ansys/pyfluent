@@ -26,6 +26,9 @@ docker-pull:
 docker-clean-images:
 	@docker system prune --volumes -a -f
 
+docker-clean-all-except-supported-images:
+	@python .ci/docker_data_cleaner.py
+
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
 
