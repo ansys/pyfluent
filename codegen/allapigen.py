@@ -17,7 +17,6 @@ if __name__ == "__main__":
     kwds.update(get_grpc_launcher_args_for_gh_runs())
     meshing = launch_fluent(**kwds)
     version = get_version_for_file_name(session=meshing)
-    ge_242 = FluentVersion(version) >= FluentVersion.v242
     ge_261 = FluentVersion(version) >= FluentVersion.v261
 
     static_infos = {
@@ -37,10 +36,9 @@ if __name__ == "__main__":
     static_infos[StaticInfoType.TUI_MESHING] = (
         meshing._datamodel_service_tui.get_static_info("")
     )
-    if ge_242:
-        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
-            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
-        )
+    static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+        meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+    )
     if ge_261:
         static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
             meshing._datamodel_service_se.get_static_info("meshing_workflow")
