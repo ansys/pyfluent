@@ -34,9 +34,6 @@ def clean_docker_data():
         if image not in images_to_retain and image_id != dev_image_sha:
             subprocess.run(["docker", "rmi", "-f", image_id], check=True)
 
-    # Remove dangling images
-    subprocess.run(["docker", "image", "prune", "-f"], check=True)
-
     # Remove everything else (networks, volumes)
     subprocess.run(["docker", "system", "prune", "-f", "--volumes"], check=True)
 
