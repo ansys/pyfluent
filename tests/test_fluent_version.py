@@ -35,22 +35,22 @@ from ansys.fluent.core.utils.fluent_version import (
 
 
 def test_examples():
-    assert FluentVersion("23.2.0") == FluentVersion.v232
-    assert FluentVersion.v232.number == 232
-    assert FluentVersion.v232.awp_var == "AWP_ROOT232"
-    assert FluentVersion.v232.name == "v232"
-    assert FluentVersion.v232.value == "23.2.0"
+    assert FluentVersion("25.2.0") == FluentVersion.v252
+    assert FluentVersion.v252.number == 252
+    assert FluentVersion.v252.awp_var == "AWP_ROOT252"
+    assert FluentVersion.v252.name == "v252"
+    assert FluentVersion.v252.value == "25.2.0"
 
 
 def test_version_found():
-    assert FluentVersion("23.2") == FluentVersion.v232
-    assert FluentVersion(23.2) == FluentVersion.v232
-    assert FluentVersion(232) == FluentVersion.v232
+    assert FluentVersion("25.2") == FluentVersion.v252
+    assert FluentVersion(25.2) == FluentVersion.v252
+    assert FluentVersion(252) == FluentVersion.v252
 
 
 def test_version_not_found():
     with pytest.raises(AnsysVersionNotFound):
-        FluentVersion("25.3.0")
+        FluentVersion("24.1.0")
 
     with pytest.raises(AnsysVersionNotFound):
         FluentVersion(22)
@@ -65,34 +65,29 @@ def test_get_latest_installed(helpers, fs):
 
 
 def test_gt():
-    assert FluentVersion.v232 > FluentVersion.v231
-    assert FluentVersion.v232 > FluentVersion.v222
+    assert FluentVersion.v252 > FluentVersion.v251
 
 
 def test_ge():
-    assert FluentVersion.v232 >= FluentVersion.v232
-    assert FluentVersion.v232 >= FluentVersion.v231
-    assert FluentVersion.v232 >= FluentVersion.v222
+    assert FluentVersion.v252 >= FluentVersion.v252
+    assert FluentVersion.v252 >= FluentVersion.v251
 
 
 def test_lt():
-    assert FluentVersion.v232 < FluentVersion.v242
-    assert FluentVersion.v232 < FluentVersion.v241
+    assert FluentVersion.v251 < FluentVersion.v252
 
 
 def test_le():
-    assert FluentVersion.v232 <= FluentVersion.v232
-    assert FluentVersion.v232 <= FluentVersion.v242
-    assert FluentVersion.v232 <= FluentVersion.v241
+    assert FluentVersion.v251 <= FluentVersion.v251
+    assert FluentVersion.v251 <= FluentVersion.v252
 
 
 def test_ne():
-    assert FluentVersion.v232 != FluentVersion.v242
+    assert FluentVersion.v252 != FluentVersion.v242
 
 
 def test_eq():
-    assert FluentVersion.v232 == FluentVersion.v232
-    assert FluentVersion.v241 == FluentVersion.v241
+    assert FluentVersion.v252 == FluentVersion.v252
 
 
 def test_str_output():

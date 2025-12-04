@@ -132,33 +132,6 @@ def test_container_timeout_deprecation_override(caplog):
     assert "overridden" in caplog.text
 
 
-@pytest.mark.fluent_version("<24.1")
-def test_non_gui_in_windows_throws_exception():
-    default_windows_flag = launcher_utils.is_windows()
-    launcher_utils.is_windows = lambda: True
-    try:
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v232)
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v231)
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v222)
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(
-                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v232
-            )
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(
-                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v231
-            )
-        with pytest.raises(InvalidArgument):
-            _raise_non_gui_exception_in_windows(
-                UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v222
-            )
-    finally:
-        launcher_utils.is_windows = lambda: default_windows_flag
-
-
 @pytest.mark.fluent_version(">=24.1")
 def test_non_gui_in_windows_does_not_throw_exception():
     default_windows_flag = launcher_utils.is_windows()

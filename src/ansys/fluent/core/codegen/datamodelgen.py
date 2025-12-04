@@ -309,7 +309,7 @@ class DataModelGenerator:
         run_solver_mode = any(
             "solver" in info.modes for _, info in self._static_info.items()
         )
-        run_icing_mode = FluentVersion(self.version) >= FluentVersion.v231 and any(
+        run_icing_mode = any(
             "flicing" in info.modes for _, info in self._static_info.items()
         )
 
@@ -617,14 +617,13 @@ if __name__ == "__main__":
             "preferences"
         ),
     }
-    if FluentVersion(version) >= FluentVersion.v231:
-        flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
-        static_infos[StaticInfoType.DATAMODEL_FLICING] = (
-            flicing._datamodel_service_se.get_static_info("flserver")
-        )
-        static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
-            solver._datamodel_service_se.get_static_info("solverworkflow")
-        )
+    flicing = launch_fluent(mode=FluentMode.SOLVER_ICING)
+    static_infos[StaticInfoType.DATAMODEL_FLICING] = (
+        flicing._datamodel_service_se.get_static_info("flserver")
+    )
+    static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
+        solver._datamodel_service_se.get_static_info("solverworkflow")
+    )
     if FluentVersion(version) >= FluentVersion.v242:
         static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
             meshing._datamodel_service_se.get_static_info("MeshingUtilities")
