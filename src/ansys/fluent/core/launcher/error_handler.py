@@ -22,10 +22,6 @@
 
 """Provides a module for customized error handling."""
 
-from ansys.fluent.core.exceptions import InvalidArgument
-from ansys.fluent.core.launcher import launcher_utils
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
 
 class InvalidPassword(ValueError):
     """Raised when password is invalid."""
@@ -72,23 +68,6 @@ class LaunchFluentError(Exception):
         """__init__ method of LaunchFluentError class."""
         details = "\n" + "Fluent Launch command: " + launch_string
         super().__init__(details)
-
-
-def _raise_non_gui_exception_in_windows(
-    ui_mode, product_version: FluentVersion
-) -> None:
-    """Fluent user interface mode lower than ``UIMode.HIDDEN_GUI`` is not supported in
-    Windows in Fluent versions earlier than 2024 R1."""
-    from ansys.fluent.core.launcher.launch_options import UIMode
-
-    if (
-        launcher_utils.is_windows()
-        and UIMode(ui_mode) not in [UIMode.GUI, UIMode.HIDDEN_GUI]
-        and product_version < FluentVersion.v241
-    ):
-        raise InvalidArgument(
-            f"'{ui_mode}' supported in Windows only for {str(FluentVersion.v241)} or later."
-        )
 
 
 def _process_kwargs(kwargs):

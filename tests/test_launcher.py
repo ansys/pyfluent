@@ -33,12 +33,10 @@ from ansys.fluent.core import PyFluentDeprecationWarning, PyFluentUserWarning
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError, InvalidArgument
-from ansys.fluent.core.launcher import launcher_utils
 from ansys.fluent.core.launcher.error_handler import (
     GPUSolverSupportError,
     InvalidIpPort,
     LaunchFluentError,
-    _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.fluent_container import configure_container_dict
 from ansys.fluent.core.launcher.launch_options import (
@@ -130,23 +128,6 @@ def test_container_timeout_deprecation_override(caplog):
             )
     assert isinstance(ex.value.__context__, TimeoutError)
     assert "overridden" in caplog.text
-
-
-@pytest.mark.fluent_version(">=24.1")
-def test_non_gui_in_windows_does_not_throw_exception():
-    default_windows_flag = launcher_utils.is_windows()
-    launcher_utils.is_windows = lambda: True
-    try:
-        _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v241)
-        _raise_non_gui_exception_in_windows(
-            UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v241
-        )
-        _raise_non_gui_exception_in_windows(UIMode.NO_GUI, FluentVersion.v242)
-        _raise_non_gui_exception_in_windows(
-            UIMode.NO_GUI_OR_GRAPHICS, FluentVersion.v242
-        )
-    finally:
-        launcher_utils.is_windows = lambda: default_windows_flag
 
 
 def test_container_launcher():
