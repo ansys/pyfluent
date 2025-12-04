@@ -105,7 +105,7 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
 class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
     def StringEval(self, request, context):
         if request.input == "(cx-version)":
-            return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
+            return scheme_eval_pb2.StringEvalResponse(output="(25 1 0)")
 
     def SchemeEval(
         self,
