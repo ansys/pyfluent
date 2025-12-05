@@ -23,7 +23,6 @@
 import time
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def transcript(data):
@@ -66,7 +65,4 @@ def test_transcript():
         total_checked_transcripts += int(transcript_checked)
         total_passed_transcripts += int(transcript_passed)
 
-    if solver.get_fluent_version() >= FluentVersion.v232:
-        assert total_checked_transcripts == total_passed_transcripts
-    else:
-        assert total_checked_transcripts >= total_passed_transcripts
+    assert total_checked_transcripts == total_passed_transcripts

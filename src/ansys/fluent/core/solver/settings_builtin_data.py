@@ -32,90 +32,20 @@ DATA = {
     "Multiphase": ("Singleton", "setup.models.multiphase"),
     "Energy": ("Singleton", "setup.models.energy"),
     "Viscous": ("Singleton", "setup.models.viscous"),
-    "Radiation": (
-        "Singleton",
-        {
-            since(FluentVersion.v232): "setup.models.radiation",
-        },
-    ),
-    "Species": (
-        "Singleton",
-        {
-            since(FluentVersion.v232): "setup.models.species",
-        },
-    ),
-    "DiscretePhase": (
-        "Singleton",
-        {
-            since(FluentVersion.v231): "setup.models.discrete_phase",
-        },
-    ),
-    "Injections": (
-        "Singleton",
-        {
-            since(FluentVersion.v231): "setup.models.discrete_phase.injections",
-        },
-    ),
-    "Injection": (
-        "NamedObject",
-        {
-            since(FluentVersion.v231): "setup.models.discrete_phase.injections",
-        },
-    ),
-    "VirtualBladeModel": (
-        "Singleton",
-        {
-            since(FluentVersion.v231): "setup.models.virtual_blade_model",
-        },
-    ),
-    "Optics": (
-        "Singleton",
-        {
-            since(FluentVersion.v231): "setup.models.optics",
-        },
-    ),
-    "Structure": (
-        "Singleton",
-        {
-            since(FluentVersion.v232): "setup.models.structure",
-        },
-    ),
-    "Ablation": (
-        "Singleton",
-        {
-            since(FluentVersion.v232): "setup.models.ablation",
-        },
-    ),
-    "EChemistry": (
-        "Singleton",
-        {
-            since(FluentVersion.v241): "setup.models.echemistry",
-        },
-    ),
-    "Battery": (
-        "Singleton",
-        {
-            since(FluentVersion.v241): "setup.models.battery",
-        },
-    ),
-    "SystemCoupling": (
-        "Singleton",
-        {
-            since(FluentVersion.v241): "setup.models.system_coupling",
-        },
-    ),
-    "Sofc": (
-        "Singleton",
-        {
-            since(FluentVersion.v241): "setup.models.sofc",
-        },
-    ),
-    "Pemfc": (
-        "Singleton",
-        {
-            since(FluentVersion.v242): "setup.models.pemfc",
-        },
-    ),
+    "Radiation": ("Singleton", "setup.models.radiation"),
+    "Species": ("Singleton", "setup.models.species"),
+    "DiscretePhase": ("Singleton", "setup.models.discrete_phase"),
+    "Injections": ("Singleton", "setup.models.discrete_phase.injections"),
+    "Injection": ("NamedObject", "setup.models.discrete_phase.injections"),
+    "VirtualBladeModel": ("Singleton", "setup.models.virtual_blade_model"),
+    "Optics": ("Singleton", "setup.models.optics"),
+    "Structure": ("Singleton", "setup.models.structure"),
+    "Ablation": ("Singleton", "setup.models.ablation"),
+    "EChemistry": ("Singleton", "setup.models.echemistry"),
+    "Battery": ("Singleton", "setup.models.battery"),
+    "SystemCoupling": ("Singleton", "setup.models.system_coupling"),
+    "Sofc": ("Singleton", "setup.models.sofc"),
+    "Pemfc": ("Singleton", "setup.models.pemfc"),
     "Materials": ("Singleton", "setup.materials"),
     "FluidMaterials": ("Singleton", "setup.materials.fluid"),
     "FluidMaterial": ("NamedObject", "setup.materials.fluid"),
@@ -126,23 +56,13 @@ DATA = {
     "ParticleMixtureMaterials": ("Singleton", "setup.materials.particle_mixture"),
     "ParticleMixtureMaterial": ("NamedObject", "setup.materials.particle_mixture"),
     "CellZoneConditions": ("Singleton", "setup.cell_zone_conditions"),
-    "CellZoneCondition": (
-        "NamedObject",
-        {
-            since(FluentVersion.v231): "setup.cell_zone_conditions",
-        },
-    ),
+    "CellZoneCondition": ("NamedObject", "setup.cell_zone_conditions"),
     "FluidCellZones": ("Singleton", "setup.cell_zone_conditions.fluid"),
     "FluidCellZone": ("NamedObject", "setup.cell_zone_conditions.fluid"),
     "SolidCellZones": ("Singleton", "setup.cell_zone_conditions.solid"),
     "SolidCellZone": ("NamedObject", "setup.cell_zone_conditions.solid"),
     "BoundaryConditions": ("Singleton", "setup.boundary_conditions"),
-    "BoundaryCondition": (
-        "NamedObject",
-        {
-            since(FluentVersion.v231): "setup.boundary_conditions",
-        },
-    ),
+    "BoundaryCondition": ("NamedObject", "setup.boundary_conditions"),
     "AxisBoundaries": ("Singleton", "setup.boundary_conditions.axis"),
     "AxisBoundary": ("NamedObject", "setup.boundary_conditions.axis"),
     "DegassingBoundaries": ("Singleton", "setup.boundary_conditions.degassing"),
@@ -227,21 +147,15 @@ DATA = {
     "WallBoundary": ("NamedObject", "setup.boundary_conditions.wall"),
     "NonReflectingBoundary": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "setup.boundary_conditions.non_reflecting_bc",
-        },
+        "setup.boundary_conditions.non_reflecting_bc",
     ),
     "PerforatedWallBoundary": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "setup.boundary_conditions.perforated_wall",
-        },
+        "setup.boundary_conditions.perforated_wall",
     ),
     "MeshInterfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "setup.mesh_interfaces",
-        },
+        "setup.mesh_interfaces",
     ),
     "DynamicMesh": (
         "Singleton",
@@ -252,27 +166,19 @@ DATA = {
     "ReferenceValues": ("Singleton", "setup.reference_values"),
     "ReferenceFrames": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "setup.reference_frames",
-        },
+        "setup.reference_frames",
     ),
     "ReferenceFrame": (
         "NamedObject",
-        {
-            since(FluentVersion.v232): "setup.reference_frames",
-        },
+        "setup.reference_frames",
     ),
     "NamedExpressions": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "setup.named_expressions",
-        },
+        "setup.named_expressions",
     ),
     "NamedExpression": (
         "NamedObject",
-        {
-            since(FluentVersion.v232): "setup.named_expressions",
-        },
+        "setup.named_expressions",
     ),
     "Solution": ("Singleton", "solution"),
     "Methods": ("Singleton", "solution.methods"),
@@ -280,239 +186,161 @@ DATA = {
     "ReportDefinitions": ("Singleton", "solution.report_definitions"),
     "Monitor": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.monitor",
-        },
+        "solution.monitor",
     ),
     "Residual": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "solution.monitor.residual",
-        },
+        "solution.monitor.residual",
     ),
     "ReportFiles": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.monitor.report_files",
-        },
+        "solution.monitor.report_files",
     ),
     "ReportFile": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "solution.monitor.report_files",
-        },
+        "solution.monitor.report_files",
     ),
     "ReportPlots": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.monitor.report_plots",
-        },
+        "solution.monitor.report_plots",
     ),
     "ReportPlot": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "solution.monitor.report_plots",
-        },
+        "solution.monitor.report_plots",
     ),
     "ConvergenceConditions": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.monitor.convergence_conditions",
-        },
+        "solution.monitor.convergence_conditions",
     ),
     "CellRegisters": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.cell_registers",
-        },
+        "solution.cell_registers",
     ),
     "CellRegister": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "solution.cell_registers",
-        },
+        "solution.cell_registers",
     ),
     "Initialization": ("Singleton", "solution.initialization"),
     "CalculationActivity": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.calculation_activity",
-        },
+        "solution.calculation_activity",
     ),
     "ExecuteCommands": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "solution.calculation_activity.execute_commands",
-        },
+        "solution.calculation_activity.execute_commands",
     ),
     "CaseModification": (
         "Singleton",
-        {
-            since(
-                FluentVersion.v241
-            ): "solution.calculation_activity.case_modification",
-        },
+        "solution.calculation_activity.case_modification",
     ),
     "RunCalculation": ("Singleton", "solution.run_calculation"),
     "Results": ("Singleton", "results"),
     "Surfaces": ("Singleton", "results.surfaces"),
     "PointSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "results.surfaces.point_surface",
-        },
+        "results.surfaces.point_surface",
     ),
     "PointSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v232): "results.surfaces.point_surface",
-        },
+        "results.surfaces.point_surface",
     ),
     "LineSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "results.surfaces.line_surface",
-        },
+        "results.surfaces.line_surface",
     ),
     "LineSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v232): "results.surfaces.line_surface",
-        },
+        "results.surfaces.line_surface",
     ),
     "RakeSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "results.surfaces.rake_surface",
-        },
+        "results.surfaces.rake_surface",
     ),
     "RakeSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v232): "results.surfaces.rake_surface",
-        },
+        "results.surfaces.rake_surface",
     ),
     "PlaneSurfaces": ("Singleton", "results.surfaces.plane_surface"),
     "PlaneSurface": ("NamedObject", "results.surfaces.plane_surface"),
     "IsoSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v232): "results.surfaces.iso_surface",
-        },
+        "results.surfaces.iso_surface",
     ),
     "IsoSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v232): "results.surfaces.iso_surface",
-        },
+        "results.surfaces.iso_surface",
     ),
     "IsoClips": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.iso_clip",
-        },
+        "results.surfaces.iso_clip",
     ),
     "IsoClip": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.iso_clip",
-        },
+        "results.surfaces.iso_clip",
     ),
     "ZoneSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.zone_surface",
-        },
+        "results.surfaces.zone_surface",
     ),
     "ZoneSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.zone_surface",
-        },
+        "results.surfaces.zone_surface",
     ),
     "PartitionSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.partition_surface",
-        },
+        "results.surfaces.partition_surface",
     ),
     "PartitionSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.partition_surface",
-        },
+        "results.surfaces.partition_surface",
     ),
     "TransformSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.transform_surface",
-        },
+        "results.surfaces.transform_surface",
     ),
     "TransformSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.transform_surface",
-        },
+        "results.surfaces.transform_surface",
     ),
     "ImprintSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.imprint_surface",
-        },
+        "results.surfaces.imprint_surface",
     ),
     "ImprintSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.imprint_surface",
-        },
+        "results.surfaces.imprint_surface",
     ),
     "PlaneSlices": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.plane_slice",
-        },
+        "results.surfaces.plane_slice",
     ),
     "PlaneSlice": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.plane_slice",
-        },
+        "results.surfaces.plane_slice",
     ),
     "SphereSlices": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.sphere_slice",
-        },
+        "results.surfaces.sphere_slice",
     ),
     "SphereSlice": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.sphere_slice",
-        },
+        "results.surfaces.sphere_slice",
     ),
     "QuadricSurfaces": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.quadric_surface",
-        },
+        "results.surfaces.quadric_surface",
     ),
     "QuadricSurface": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.quadric_surface",
-        },
+        "results.surfaces.quadric_surface",
     ),
     "SurfaceCells": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.surfaces.surface_cells",
-        },
+        "results.surfaces.surface_cells",
     ),
     "SurfaceCell": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.surfaces.surface_cells",
-        },
+        "results.surfaces.surface_cells",
     ),
     "ExpressionVolumes": (
         "Singleton",
@@ -547,137 +375,93 @@ DATA = {
     "Vector": ("NamedObject", "results.graphics.vector"),
     "Pathlines": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.graphics.pathline",
-        },
+        "results.graphics.pathline",
     ),
     "Pathline": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "results.graphics.pathline",
-        },
+        "results.graphics.pathline",
     ),
     "ParticleTracks": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.graphics.particle_track",
-        },
+        "results.graphics.particle_track",
     ),
     "ParticleTrack": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "results.graphics.particle_track",
-        },
+        "results.graphics.particle_track",
     ),
     "LICs": ("Singleton", "results.graphics.lic"),
     "LIC": ("NamedObject", "results.graphics.lic"),
     "Plots": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.plot",
-        },
+        "results.plot",
     ),
     "XYPlots": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.plot.xy_plot",
-        },
+        "results.plot.xy_plot",
     ),
     "XYPlot": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "results.plot.xy_plot",
-        },
+        "results.plot.xy_plot",
     ),
     "Histogram": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.plot.histogram",
-        },
+        "results.plot.histogram",
     ),
     "CumulativePlots": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.plot.cumulative_plot",
-        },
+        "results.plot.cumulative_plot",
     ),
     "CumulativePlot": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.plot.cumulative_plot",
-        },
+        "results.plot.cumulative_plot",
     ),
     "ProfileData": (
         "Singleton",
-        {
-            since(FluentVersion.v242): "results.plot.profile_data",
-        },
+        "results.plot.profile_data",
     ),
     "InterpolatedData": (
         "Singleton",
-        {
-            since(FluentVersion.v242): "results.plot.interpolated_data",
-        },
+        "results.plot.interpolated_data",
     ),
     "Scenes": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.scene",
-        },
+        "results.scene",
     ),
     "Scene": (
         "NamedObject",
-        {
-            since(FluentVersion.v231): "results.scene",
-        },
+        "results.scene",
     ),
     "SceneAnimation": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.animations.scene_animation",
-        },
+        "results.animations.scene_animation",
     ),
     "Report": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.report",
-        },
+        "results.report",
     ),
     "DiscretePhaseHistogram": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.report.discrete_phase.histogram",
-        },
+        "results.report.discrete_phase.histogram",
     ),
     "Fluxes": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.report.fluxes",
-        },
+        "results.report.fluxes",
     ),
     "SurfaceIntegrals": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.report.surface_integrals",
-        },
+        "results.report.surface_integrals",
     ),
     "VolumeIntegrals": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.report.volume_integrals",
-        },
+        "results.report.volume_integrals",
     ),
     "InputParameters": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "parameters.input_parameters",
-        },
+        "parameters.input_parameters",
     ),
     "OutputParameters": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "parameters.output_parameters",
-        },
+        "parameters.output_parameters",
     ),
     "CustomFieldFunctions": (
         "Singleton",
@@ -693,21 +477,15 @@ DATA = {
     ),
     "CustomVectors": (
         "Singleton",
-        {
-            since(FluentVersion.v241): "results.custom_vectors",
-        },
+        "results.custom_vectors",
     ),
     "CustomVector": (
         "NamedObject",
-        {
-            since(FluentVersion.v241): "results.custom_vectors",
-        },
+        "results.custom_vectors",
     ),
     "SimulationReports": (
         "Singleton",
-        {
-            since(FluentVersion.v231): "results.report.simulation_reports",
-        },
+        "results.report.simulation_reports",
     ),
     "ParametricStudies": ("Singleton", "parametric_studies"),
     "ParametricStudy": ("NamedObject", "parametric_studies"),
@@ -718,21 +496,15 @@ DATA = {
     "ReadCaseData": ("Command", "file.read_case_data"),
     "WriteCase": (
         "Command",
-        {
-            since(FluentVersion.v241): "file.write_case",
-        },
+        "file.write_case",
     ),
     "WriteData": (
         "Command",
-        {
-            since(FluentVersion.v241): "file.write_data",
-        },
+        "file.write_data",
     ),
     "WriteCaseData": (
         "Command",
-        {
-            since(FluentVersion.v241): "file.write_case_data",
-        },
+        "file.write_case_data",
     ),
     "Initialize": ("Command", "solution.initialization.initialize"),
     "Calculate": ("Command", "solution.run_calculation.calculate"),

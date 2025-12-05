@@ -76,7 +76,7 @@ construct the TUI commands for PyFluent in different Fluent versions.
 TUI command construction
 ------------------------
 
-From the 2023 R2 release onward, a Fluent Python journal contains Python calls
+From the 2024 R2 release onward, a Fluent Python journal contains Python calls
 corresponding to the TUI commands executed in Fluent. Python journaling generates
 a call to a corresponding settings API command if one exists. For instance, with Fluent
 running in solution mode and Python journaling started, you can type the following in
@@ -135,16 +135,12 @@ file my_journal.py in the working directory.
 
    fluent.exe 3ddp -i my_journal.jou -topy
 
-In Fluent 2023 R1, calls to TUI commands that have equivalents in the solver settings
+In Fluent 2024 R2 or later, calls to TUI commands that have equivalents in the solver settings
 API are automatically recorded as method calls to the corresponding solver settings
 objects in the Python journal. If a TUI command does not have an API analogue, it is
 recorded as ``execute_tui(<argument>)``, where ``<argument>`` is the original TUI command string.
 You'll need to manually convert these TUI commands using the transformation rules provided
 in the next section.
-
-In Fluent 2022 R2, the Python journaling feature is not available. Therefore, you must
-manually convert all TUI commands using the transformation rules described in the next
-section.
 
 TUI command transformation rules
 --------------------------------

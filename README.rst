@@ -93,22 +93,25 @@ the latest release with:
 Dependencies
 ------------
 You must have a licensed copy of Ansys Fluent installed locally. PyFluent
-supports Fluent 2022 R2 and later. The Windows installation of Ansys Fluent automatically
+supports Fluent 2024 R2 and later. The Windows installation of Ansys Fluent automatically
 sets the required environment variables so that PyFluent can find the Ansys Fluent
-installation. Using Fluent 2023 R2 (or 23.2) installed in the default directory as an
-example, the installer automatically sets the ``AWP_ROOT232`` environment variable to point
-to ``C:\Program Files\ANSYS Inc\v232``.
-
+installation. Using Fluent 2025 R2 (or 25.2) installed in the default directory as an
+example, the installer automatically sets the ``AWP_ROOT252`` environment variable to point
+to ``C:\Program Files\ANSYS Inc\v252``.
 On Linux, the required environment variable is not set automatically, and can be set for the
-current user in the current shell session, using Fluent 2023 R2 in the default installation
+current user in the current shell session, using Fluent 2025 R2 in the default installation
 directory as an example, before running PyFluent, with:
 
 .. code:: console
 
-    export AWP_ROOT232=/usr/ansys_inc/v232
+    export AWP_ROOT252=/usr/ansys_inc/v252
 
 For this setting to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.
+
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
 
 Getting started
 ---------------
