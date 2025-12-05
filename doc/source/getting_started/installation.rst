@@ -104,6 +104,10 @@ export command can instead be added to the user's ``~/.profile`` file.
 
 For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
 
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
+
 
 Additional PyFluent packages
 ----------------------------

@@ -101,6 +101,7 @@ all PyFluent packages in a Python *virtual environment*:
    For Python version information, see the answer to the next question.
 
 #. Install Fluent 2024 R2 or later.
+
 #. Set the environment variable for your installed release to point to
    the appropriate Ansys installation folder.
 
@@ -136,6 +137,10 @@ all PyFluent packages in a Python *virtual environment*:
       python -m pip install ansys-fluent-core   # Use Fluent’s core capabilities (mesh, solve, postprocess)
       python -m pip install ansys-fluent-parametric   # Use Fluent’s parametric capabilities (optional)
       python -m pip install ansys-fluent-visualization   # Use Fluent's postprocessing capabilities with pyvista and matplotlib (optional)
+
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
 
 
 Which version of Python should you use?

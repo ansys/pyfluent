@@ -109,6 +109,10 @@ directory as an example, before running PyFluent, with:
 For this setting to persist between different shell sessions for the current user, the same
 export command can instead be added to the user's ``~/.profile`` file.
 
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
+
 Getting started
 ---------------
 
