@@ -13,9 +13,8 @@ install:
 install-test:
 	@pip install -r requirements/requirements_build.txt
 	@pip install ansys-fluent-core[reader,tests]
-	@pip install cryptography==45.0.7
 	@python -m pip install -q --force-reinstall dist/*.whl > /dev/null
-	@python tests/generate_certs.py
+	@bash .ci/generate_certs.sh
 
 version-info:
 	@bash -c "date -u +'Build date: %B %d, %Y %H:%M UTC ShaID: <id>' | xargs -I date sed -i 's/_VERSION_INFO = .*/_VERSION_INFO = \"date\"/g' src/ansys/fluent/core/__init__.py"
@@ -175,8 +174,7 @@ api-codegen:
 	@python -m venv env
 	@. env/bin/activate
 	@pip install -q -e .
-	@pip install cryptography==45.0.7
-	@python tests/generate_certs.py
+	@bash .ci/generate_certs.sh
 	@python codegen/allapigen.py
 	@rm -rf env
 
