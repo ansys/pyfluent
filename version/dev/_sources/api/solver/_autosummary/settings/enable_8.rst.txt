@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_8:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.enable_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   =============================
+
+Parent                                                                     Summary
+
+==================================================   =============================
+:ref:`fgm_scalar_transport <fgm_scalar_transport>`       Use FGM Scalar Transport.
+
+==================================================   =============================
+

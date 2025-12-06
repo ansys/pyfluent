@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pdf_points:
+
+pdf_points
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pdf_points
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =====================================
+
+Parent                                                                                 Summary
+
+======================================================   =====================================
+:ref:`turbulence_interaction <turbulence_interaction>`       NOx-turbulence interaction model.
+
+======================================================   =====================================
+

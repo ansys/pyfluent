@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_def_name:
+
+report_def_name
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.report_def_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===================================================
+
+Parent                                                                     Summary
+
+============================   ===================================================
+:ref:`create_16 <create_16>`       Create output parameter from report definition.
+
+============================   ===================================================
+

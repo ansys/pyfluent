@@ -1,0 +1,58 @@
+:orphan:
+
+.. _ref_root:
+
+root
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.root
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ==================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                 Summary
+
+============================================================   ==================================================================================================================================================================================================================
+:ref:`file <file>`                                                 Import and export several kinds of files. Files that are read include mesh, case, data, profile, Scheme, and journal files. Files that are written include case, data, profile, journal, and transcript files.
+
+:ref:`mesh <mesh>`                                                                                                                                                         Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+:ref:`server <server>`                                                                                                                                                                                                Group of commands to start and manage web and gRPC servers.
+
+:ref:`setup <setup>`                                                                                                                               Provides access to all primary setup options including general settings, models, boundary conditions and solver configuration.
+
+:ref:`solution <solution>`                                                                                                                    Provides access to settings like solver controls, initialization, monitors, solution methods and others for running the simulation.
+
+:ref:`results <results>`                                                                                                                                                                Access all post-processing tools and reporting features for analyzing simulation results.
+
+:ref:`design <design>`                                                                                                                                                                                                                      Access Design and Optimization tools.
+
+:ref:`parametric_studies <parametric_studies>`                                                                                                                                         Accesses tools for creating, managing, and analyzing parametric studies and design points.
+
+:ref:`current_parametric_study <current_parametric_study>`                                                                                                                                                                                      Name of Current Parametric Study.
+
+:ref:`parameters <parameters>`                                                                                                                                                          Provides access to define, manage, and monitor input/output parameters in the simulation.
+
+:ref:`parallel <parallel>`                                                                                                                         Provides access to parallel processing configuration, load balancing, network management, and multidomain simulation controls.
+
+:ref:`transient_post_processing <transient_post_processing>`                                                                                                                                                                   Commands associated with transient postprocessing.
+
+============================================================   ==================================================================================================================================================================================================================
+
+.. rubric:: Methods
+
+======================================================   ==========================================
+
+Method                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`list <list>`                                                   List the names of the objects.
+
+:ref:`list_properties <list_properties>`                      List active properties of the object.
+
+:ref:`switch_to_meshing_mode <switch_to_meshing_mode>`       Switch to meshing mode (Beta feature).
+
+======================================================   ==========================================
+

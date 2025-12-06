@@ -1,0 +1,46 @@
+:orphan:
+
+.. _sei_growth:
+
+sei_growth
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.sei_growth
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   ====================================
+
+Attribute                                                                                           Summary
+
+====================================================================   ====================================
+:ref:`ec_concentration <ec_concentration>`                                 EC concentration in electrolyte.
+
+:ref:`ec_diffusivity <ec_diffusivity>`                                         EC diffusivity in SEI layer.
+
+:ref:`ionic_conductivity <ionic_conductivity>`                             Ionic conductivity in SEI layer.
+
+:ref:`rate_constant <rate_constant>`                                        Rate constant for SEI reaction.
+
+:ref:`cathodic_transfer_coefficient <cathodic_transfer_coefficient>`         Cathodic transfer coefficient.
+
+:ref:`equilibrium_potential <equilibrium_potential>`                             SEI equilibrium potential.
+
+:ref:`molecular_weight <molecular_weight>`                                            SEI molecular weight.
+
+:ref:`density <density>`                                                                       SEI density.
+
+====================================================================   ====================================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`aging_model <aging_model>`       Up physics-based aging model.
+
+================================   =================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _method_25:
+
+method
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.method_25
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   =============================
+
+Argument                                                           Summary
+
+==========================================   =============================
+:ref:`partition_method <partition_method>`       'partition_method' child.
+
+:ref:`count <count>`                                        'count' child.
+
+==========================================   =============================
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`partition_3 <partition_3>`       The partition domain object.
+
+================================   ================================
+

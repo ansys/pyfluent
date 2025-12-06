@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_ImportGeometry__ImportGeometryCommandArguments__CadImportOptions:
+
+_CadImportOptions
+=================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.ImportGeometry._ImportGeometryCommandArguments._CadImportOptions
+   :members: _CreateCADAssemblies, _ExtractFeatures, _FeatureAngle, _ImportCurvatureDataFromCAD, _ImportNamedSelections, _ImportPartNames, _OneObjectPer, _OneZonePer, _OpenAllCadInSubdirectories, _SavePMDBIntermediateFile, _UsePartOrBodyAsSuffix
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

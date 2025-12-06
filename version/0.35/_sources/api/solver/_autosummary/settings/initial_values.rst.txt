@@ -1,0 +1,58 @@
+:orphan:
+
+.. _initial_values:
+
+initial_values
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.initial_values
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ====================================================================
+
+Attribute                                                                                                   Summary
+
+============================================   ====================================================================
+:ref:`reference_frame <reference_frame_1>`                                                    The Reference Frame:.
+
+:ref:`times <times>`                                                   Lagrangian particle injection time settings.
+
+:ref:`crank_angles <crank_angles>`                         Lagrangian in-cylinder particle injection time settings.
+
+:ref:`unsteady_inj_file <unsteady_inj_file>`                           Lagrangian unsteady injection file settings.
+
+:ref:`location <location_1>`                                       Lagrangian particle injection location settings.
+
+:ref:`cone_settings <cone_settings>`                                            Lagrangian cone injection settings.
+
+:ref:`atomizer <atomizer>`                                                  Lagrangian atomizer injection settings.
+
+:ref:`mass_flow_rate <mass_flow_rate>`                            Lagrangian particle injection flow rate settings.
+
+:ref:`matrix <matrix>`                                                        Lagrangian matrix injection settings.
+
+:ref:`velocity <velocity>`                                 Lagrangian particle injection initial velocity settings.
+
+:ref:`angular_velocity <angular_velocity>`         Lagrangian particle injection initial angular velocity settings.
+
+:ref:`particle_size <particle_size>`                              Lagrangian particle size (distribution) settings.
+
+:ref:`temperature <temperature_1>`                                                                     Temperature.
+
+:ref:`temperature_2 <temperature_2>`                                                              Last Temperature.
+
+============================================   ====================================================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`injections_child <injections_child>`       'child_object_type' of injections.
+
+==========================================   ======================================
+

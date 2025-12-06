@@ -1,0 +1,46 @@
+:orphan:
+
+.. _solution_based_pmn:
+
+solution_based_pmn
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solution_based_pmn
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ==================================================
+
+Attribute                                                                                                       Summary
+
+==================================================================   ==================================================
+:ref:`enable <enable_31>`                                                              Enable solution based treatment.
+
+:ref:`mark_primary_solution_limits <mark_primary_solution_limits>`                Mark cells violating solution limits.
+
+:ref:`mark_velocity_limit <mark_velocity_limit>`                                   Mark cells exceeding velocity limit.
+
+:ref:`velocity_limit <velocity_limit>`                                                Velocity limit for marking cells.
+
+:ref:`mark_cfl_limit <mark_cfl_limit>`                                                  Mark cells exceeding CFL limit.
+
+:ref:`cfl_limit <cfl_limit>`                                                               CFL limit for marking cells.
+
+:ref:`mark_cfl_jump <mark_cfl_jump>`                                     Mark cells exceeding CFL jump in neighborhood.
+
+:ref:`cfl_jump <cfl_jump>`                                                        CFL jump threshold for marking cells.
+
+==================================================================   ==================================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`poor_mesh_numerics <poor_mesh_numerics>`       The poor mesh numerics object.
+
+==============================================   ==================================
+

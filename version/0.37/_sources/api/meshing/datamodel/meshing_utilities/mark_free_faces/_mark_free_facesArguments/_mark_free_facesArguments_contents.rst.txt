@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_free_faces__mark_free_facesArguments:
+
+_mark_free_facesArguments
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.mark_free_faces._mark_free_facesArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

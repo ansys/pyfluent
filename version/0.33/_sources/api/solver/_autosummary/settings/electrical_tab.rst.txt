@@ -1,0 +1,36 @@
+:orphan:
+
+.. _electrical_tab:
+
+electrical_tab
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.electrical_tab
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ===============================
+
+Attribute                                                  Summary
+
+================================   ===============================
+:ref:`anode_tab <anode_tab>`             Up anode electrical tabs.
+
+:ref:`cathode_tab <cathode_tab>`       Up cathode electrical tabs.
+
+================================   ===============================
+
+.. rubric:: Included in:
+
+==================================   ================================================
+
+Parent                                                                        Summary
+
+==================================   ================================================
+:ref:`electrolysis <electrolysis>`       The Electrolysis and H2 Pump model settings.
+
+:ref:`pemfc <pemfc>`                                            PEMFC model settings.
+
+==================================   ================================================
+

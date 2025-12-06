@@ -1,0 +1,23 @@
+:orphan:
+
+.. _faces_2:
+
+faces
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.faces_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ================================
+
+Parent                                                                Summary
+
+==========================================   ================================
+:ref:`manual_1 <manual_1>`                                    'manual' child.
+
+:ref:`coloring_options <coloring_options>`       The coloring options object.
+
+==========================================   ================================
+

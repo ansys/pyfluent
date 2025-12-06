@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_cell_zone_id_list_with_labels__get_cell_zone_id_list_with_labelsArguments:
+
+_get_cell_zone_id_list_with_labelsArguments
+===========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_cell_zone_id_list_with_labels._get_cell_zone_id_list_with_labelsArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern, _label_name_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

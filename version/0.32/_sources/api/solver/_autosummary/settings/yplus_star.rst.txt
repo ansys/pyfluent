@@ -1,0 +1,42 @@
+:orphan:
+
+.. _yplus_star:
+
+yplus_star
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.yplus_star
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ===========================================================
+
+Attribute                                                                              Summary
+
+================================   ===========================================================
+:ref:`option <option_51>`                Specifies whether marking is based on Yplus or Ystar.
+
+:ref:`range <range_2>`                                                          'range' child.
+
+:ref:`min_allowed <min_allowed>`        Minimum value for cell marking based on Yplus / Ystar.
+
+:ref:`max_allowed <max_allowed>`        Maximum value for cell marking based on Yplus / Ystar.
+
+:ref:`wall_zones <wall_zones>`         The list of boundary face zones for this cell register.
+
+:ref:`phase <phase_53>`                             The material phase for this cell register.
+
+================================   ===========================================================
+
+.. rubric:: Included in:
+
+========================   ====================================
+
+Parent                                                  Summary
+
+========================   ====================================
+:ref:`type_14 <type_14>`       The type for this cell register.
+
+========================   ====================================
+

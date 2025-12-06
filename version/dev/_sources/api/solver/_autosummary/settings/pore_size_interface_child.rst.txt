@@ -1,0 +1,36 @@
+:orphan:
+
+.. _pore_size_interface_child:
+
+pore_size_interface_child
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.pore_size_interface_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ============================================
+
+Attribute                                                                 Summary
+
+==================================   ============================================
+:ref:`zone_name <zone_name_6>`              Zone name in thread-real-pair object.
+
+:ref:`physics_name <physics_name>`       Physics name in thread-real-pair object.
+
+:ref:`value <value_16>`                         Value in thread-real-pair object.
+
+==================================   ============================================
+
+.. rubric:: Included in:
+
+================================================   =================================================
+
+Parent                                                                                       Summary
+
+================================================   =================================================
+:ref:`pore_size_interface <pore_size_interface>`       Setup Knudsen diffusion zones and pore sizes.
+
+================================================   =================================================
+

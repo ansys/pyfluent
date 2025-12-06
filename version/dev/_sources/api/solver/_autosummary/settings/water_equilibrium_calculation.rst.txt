@@ -1,0 +1,21 @@
+:orphan:
+
+.. _water_equilibrium_calculation:
+
+water_equilibrium_calculation
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.water_equilibrium_calculation
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`water_corrosion_pre <water_corrosion_pre>`       Water corrosion preprocessing tool.
+
+================================================   =======================================
+

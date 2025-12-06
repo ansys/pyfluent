@@ -1,0 +1,47 @@
+:orphan:
+
+.. _species_fraction_mf_child:
+
+species_fraction_mf_child
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.species_fraction_mf_child
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =====================================================
+
+Method                                                                                       Summary
+
+============================================   =====================================================
+:ref:`create <create>`                             Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                      Delete selected objects.
+
+:ref:`rename <rename>`                                                            Rename the object.
+
+:ref:`list_1 <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                        Create a copy of the object.
+
+============================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`species_fraction_mf_child_child <species_fraction_mf_child_child>`
+
+
+.. rubric:: Included in:
+
+================================================   ===============================
+
+Parent                                                                     Summary
+
+================================================   ===============================
+:ref:`species_fraction_mf <species_fraction_mf>`       Configure species settings.
+
+================================================   ===============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _bl_deform:
+
+bl_deform
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.bl_deform
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ====================
+
+Parent                                  Summary
+
+========================   ====================
+:ref:`meshing <meshing>`       'meshing' child.
+
+========================   ====================
+

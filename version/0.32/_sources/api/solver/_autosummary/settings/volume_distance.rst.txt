@@ -1,0 +1,34 @@
+:orphan:
+
+.. _volume_distance:
+
+volume_distance
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.volume_distance
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==================================================================================
+
+Attribute                                                                                                             Summary
+
+========================================   ==================================================================================
+:ref:`boundary_volume <boundary_volume>`               The initial target volume to mark cells from specified boundary zones.
+
+:ref:`volume_growth <volume_growth>`           The exponential factor for target volume growth from specified boundary zones.
+
+========================================   ==================================================================================
+
+.. rubric:: Included in:
+
+========================================   ========================
+
+Parent                                                      Summary
+
+========================================   ========================
+:ref:`distance_option <distance_option>`       The distance method.
+
+========================================   ========================
+

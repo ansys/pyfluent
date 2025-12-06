@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_d_boundary_layers:
+
+add_2d_boundary_layers
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.add_2d_boundary_layers
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _add_2d_boundary_layersArguments/_add_2d_boundary_layersArguments_contents

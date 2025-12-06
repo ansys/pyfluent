@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zonal_time_advancement:
+
+zonal_time_advancement
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.zonal_time_advancement
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================
+
+Parent                                                      Summary
+
+==================================   ==============================
+:ref:`zonal_models <zonal_models>`       Zonal flow model settings.
+
+==================================   ==============================
+

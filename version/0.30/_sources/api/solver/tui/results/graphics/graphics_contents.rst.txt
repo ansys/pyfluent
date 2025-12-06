@@ -1,0 +1,36 @@
+.. _ref_solver_tui_results_graphics:
+
+graphics
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_251.main_menu.results.graphics
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   colors/colors_contents
+   contour/contour_contents
+   contours/contours_contents
+   display/display_contents
+   lic/lic_contents
+   lighting/lighting_contents
+   mesh/mesh_contents
+   olic/olic_contents
+   particle_track/particle_track_contents
+   particle_tracks/particle_tracks_contents
+   pathline/pathline_contents
+   periodic_instances/periodic_instances_contents
+   picture/picture_contents
+   pulse/pulse_contents
+   raytracing_options/raytracing_options_contents
+   vector/vector_contents
+   views/views_contents
+   volumes/volumes_contents
+   windows/windows_contents
