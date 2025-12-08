@@ -110,7 +110,7 @@ def _get_slurm_job_id(proc: subprocess.Popen):
             return int(line)
 
 
-_slurm_feature_unavailable_clause = (
+_slurm_unavailable_in_current_machine_clause = (
     " as either Slurm is not available in the current (client) machine or the configuration setting"
     " 'use_slurm_from_current_machine' is False."
 )
@@ -229,7 +229,7 @@ class SlurmFuture:
         """
         if not _SlurmWrapper.use_slurm():
             raise RuntimeError(
-                f"Cannot cancel Slurm job from client {_slurm_feature_unavailable_clause}"
+                f"Cannot cancel Slurm job from client {_slurm_unavailable_in_current_machine_clause}"
             )
         if self.done():
             return False
@@ -256,7 +256,7 @@ class SlurmFuture:
         if not _SlurmWrapper.use_slurm():
             return RuntimeError(
                 "Cannot get Slurm job state from client"
-                + _slurm_feature_unavailable_clause
+                + _slurm_unavailable_in_current_machine_clause
             )
         return self._get_state() == "RUNNING" and self._future.done()
 
@@ -278,7 +278,7 @@ class SlurmFuture:
         if not _SlurmWrapper.use_slurm():
             return RuntimeError(
                 "Cannot get Slurm job state from client"
-                + _slurm_feature_unavailable_clause
+                + _slurm_unavailable_in_current_machine_clause
             )
         return self._future.running()
 
@@ -300,7 +300,7 @@ class SlurmFuture:
         if not _SlurmWrapper.use_slurm():
             return RuntimeError(
                 "Cannot get Slurm job state from client"
-                + _slurm_feature_unavailable_clause
+                + _slurm_unavailable_in_current_machine_clause
             )
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
