@@ -128,7 +128,9 @@ class _SlurmWrapper:
         bool
             ``True`` if Slurm is available, otherwise ``False``.
         """
-        return shutil.which("sinfo") and len(_SlurmWrapper.list_queues()) > 0
+        return (
+            shutil.which("sinfo") is not None and len(_SlurmWrapper.list_queues()) > 0
+        )
 
     @staticmethod
     def use_slurm() -> bool:
@@ -228,7 +230,7 @@ class SlurmFuture:
             If Slurm job cannot be cancelled from client
         """
         if not _SlurmWrapper.use_slurm():
-            RuntimeError(
+            raise RuntimeError(
                 f"Cannot cancel Slurm job from client {_slurm_unavailable_in_current_machine_clause}"
             )
         if self.done():
@@ -254,7 +256,7 @@ class SlurmFuture:
             If Slurm job state cannot be obtained from client
         """
         if not _SlurmWrapper.use_slurm():
-            RuntimeError(
+            raise RuntimeError(
                 "Cannot get Slurm job state from client"
                 + _slurm_unavailable_in_current_machine_clause
             )
@@ -276,7 +278,7 @@ class SlurmFuture:
             If Slurm job state cannot be obtained from client
         """
         if not _SlurmWrapper.use_slurm():
-            RuntimeError(
+            raise RuntimeError(
                 "Cannot get Slurm job state from client"
                 + _slurm_unavailable_in_current_machine_clause
             )
@@ -298,7 +300,7 @@ class SlurmFuture:
             If Slurm job state cannot be obtained from client
         """
         if not _SlurmWrapper.use_slurm():
-            RuntimeError(
+            raise RuntimeError(
                 "Cannot get Slurm job state from client"
                 + _slurm_unavailable_in_current_machine_clause
             )
