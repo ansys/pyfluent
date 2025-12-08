@@ -9,6 +9,98 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.38.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev1>`_ - December 08, 2025
+============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Secure gRPC options
+          - `#24 <https://github.com/ansys/pyfluent/pull/24>`_
+
+        * - Minor improvements of the gRPC feature
+          - `#4660 <https://github.com/ansys/pyfluent/pull/4660>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Support insecure mode while launching container
+          - `#14 <https://github.com/ansys/pyfluent/pull/14>`_
+
+        * - Fix test_strings_with_allowed_values
+          - `#4646 <https://github.com/ansys/pyfluent/pull/4646>`_
+
+        * - Update GRPC file transfer service
+          - `#4655 <https://github.com/ansys/pyfluent/pull/4655>`_
+
+        * - Unskip tests
+          - `#4682 <https://github.com/ansys/pyfluent/pull/4682>`_
+
+        * - From_install
+          - `#4689 <https://github.com/ansys/pyfluent/pull/4689>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version 0.35.1
+          - `#16 <https://github.com/ansys/pyfluent/pull/16>`_
+
+        * - Fix nightly dev docs.
+          - `#4641 <https://github.com/ansys/pyfluent/pull/4641>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Print the Fluent version from settings_rstgen.py [skip tests]
+          - `#4632 <https://github.com/ansys/pyfluent/pull/4632>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update launcher tests for better coverage
+          - `#4629 <https://github.com/ansys/pyfluent/pull/4629>`_
+
+        * - Update CHANGELOG for v0.37.dev0
+          - `#4636 <https://github.com/ansys/pyfluent/pull/4636>`_
+
+        * - Update CHANGELOG for v0.36.0
+          - `#4638 <https://github.com/ansys/pyfluent/pull/4638>`_
+
+        * - Update failing test for settings-api allowed_values.
+          - `#4639 <https://github.com/ansys/pyfluent/pull/4639>`_
+
+        * - Fix nightly
+          - `#4661 <https://github.com/ansys/pyfluent/pull/4661>`_
+
+        * - Use the certificate generation steps from the dev guide
+          - `#4691 <https://github.com/ansys/pyfluent/pull/4691>`_
+
+        * - Remove generated folders from pyfluent directory to avoid a git error [skip tests]
+          - `#4692 <https://github.com/ansys/pyfluent/pull/4692>`_
+
+
 `0.37.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.37.dev0>`_ - November 24, 2025
 `0.36.0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.0>`_ - November 25, 2025
 
