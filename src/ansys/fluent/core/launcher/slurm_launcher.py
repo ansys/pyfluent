@@ -516,6 +516,11 @@ class SlurmLauncher:
                 "`certificates_folder` and `insecure_mode` cannot be set at the same time."
             )
 
+        if not _SlurmWrapper.is_available():
+            logger.debug(
+                "Slurm is not available in or not used from the client machine. "
+                "Job query/control from client will not be possible."
+            )
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
