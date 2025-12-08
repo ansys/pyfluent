@@ -137,7 +137,7 @@ class _SlurmWrapper:
         Returns
         -------
         bool
-            ``True`` if Slurm from the current machine is to be used, otherwise ``False``.
+            ``True`` if Slurm from the current machine will be used, otherwise ``False``.
         """
 
         return config.use_slurm_from_current_machine and _SlurmWrapper.is_available()
@@ -228,7 +228,7 @@ class SlurmFuture:
             If Slurm job cannot be cancelled from client
         """
         if not _SlurmWrapper.use_slurm():
-            raise RuntimeError(
+            RuntimeError(
                 f"Cannot cancel Slurm job from client {_slurm_unavailable_in_current_machine_clause}"
             )
         if self.done():
@@ -254,7 +254,7 @@ class SlurmFuture:
             If Slurm job state cannot be obtained from client
         """
         if not _SlurmWrapper.use_slurm():
-            return RuntimeError(
+            RuntimeError(
                 "Cannot get Slurm job state from client"
                 + _slurm_unavailable_in_current_machine_clause
             )
@@ -276,7 +276,7 @@ class SlurmFuture:
             If Slurm job state cannot be obtained from client
         """
         if not _SlurmWrapper.use_slurm():
-            return RuntimeError(
+            RuntimeError(
                 "Cannot get Slurm job state from client"
                 + _slurm_unavailable_in_current_machine_clause
             )
@@ -298,7 +298,7 @@ class SlurmFuture:
             If Slurm job state cannot be obtained from client
         """
         if not _SlurmWrapper.use_slurm():
-            return RuntimeError(
+            RuntimeError(
                 "Cannot get Slurm job state from client"
                 + _slurm_unavailable_in_current_machine_clause
             )
