@@ -110,6 +110,12 @@ def _get_slurm_job_id(proc: subprocess.Popen):
             return int(line)
 
 
+_slurm_feature_unavailable_clause = (
+    " as either Slurm is not available in the current (client) machine or the configuration setting"
+    " 'use_slurm_from_current_machine' is False."
+)
+
+
 class _SlurmWrapper:
     """A class wrapping Slurm commands."""
 
@@ -215,9 +221,16 @@ class SlurmFuture:
         -------
         bool
             ``True`` if the Fluent launch is successfully cancelled, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job cannot be cancelled from client
         """
         if not _SlurmWrapper.use_slurm():
-            return self._future.cancel()
+            raise RuntimeError(
+                f"Cannot cancel Slurm job from client {_slurm_feature_unavailable_clause}"
+            )
         if self.done():
             return False
         self._cancel()
@@ -228,21 +241,67 @@ class SlurmFuture:
         return False
 
     def running(self) -> bool:
-        """Return ``True`` if Fluent is currently running, otherwise ``False``."""
+        """Return ``True`` if Fluent is currently running, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if Fluent is currently running, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
         if not _SlurmWrapper.use_slurm():
-            return self._future.running()
+            return RuntimeError(
+                "Cannot get Slurm job state from client"
+                + _slurm_feature_unavailable_clause
+            )
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
         """Return ``True`` if the Fluent launch is currently waiting for Slurm
-        allocation or Fluent is being launched, otherwise ``False``."""
+        allocation or Fluent is being launched, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch is currently waiting for Slurm
+            allocation or Fluent is being launched, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        if not _SlurmWrapper.use_slurm():
+            return RuntimeError(
+                "Cannot get Slurm job state from client"
+                + _slurm_feature_unavailable_clause
+            )
         return self._future.running()
 
     def done(self) -> bool:
         """Return ``True`` if the Fluent launch was successfully cancelled or Fluent was
-        finished running, otherwise ``False``."""
+        finished running, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch was successfully cancelled or Fluent was
+            finished running, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
         if not _SlurmWrapper.use_slurm():
-            return self._future.done()
+            return RuntimeError(
+                "Cannot get Slurm job state from client"
+                + _slurm_feature_unavailable_clause
+            )
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
