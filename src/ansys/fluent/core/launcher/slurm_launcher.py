@@ -125,6 +125,18 @@ class _SlurmWrapper:
         return shutil.which("sinfo") and len(_SlurmWrapper.list_queues()) > 0
 
     @staticmethod
+    def use_slurm() -> bool:
+        """Check whether to use Slurm from the current machine.
+
+        Returns
+        -------
+        bool
+            ``True`` if Slurm from the current machine is to be used, otherwise ``False``.
+        """
+
+        return config.use_slurm_from_current_machine and _SlurmWrapper.is_available()
+
+    @staticmethod
     def list_queues() -> list[str]:
         """Return list of queues.
 
@@ -204,6 +216,8 @@ class SlurmFuture:
         bool
             ``True`` if the Fluent launch is successfully cancelled, otherwise ``False``.
         """
+        if not _SlurmWrapper.use_slurm():
+            return self._future.cancel()
         if self.done():
             return False
         self._cancel()
@@ -215,6 +229,8 @@ class SlurmFuture:
 
     def running(self) -> bool:
         """Return ``True`` if Fluent is currently running, otherwise ``False``."""
+        if not _SlurmWrapper.use_slurm():
+            return self._future.running()
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
@@ -225,6 +241,8 @@ class SlurmFuture:
     def done(self) -> bool:
         """Return ``True`` if the Fluent launch was successfully cancelled or Fluent was
         finished running, otherwise ``False``."""
+        if not _SlurmWrapper.use_slurm():
+            return self._future.done()
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
@@ -439,8 +457,6 @@ class SlurmLauncher:
                 "`certificates_folder` and `insecure_mode` cannot be set at the same time."
             )
 
-        if not _SlurmWrapper.is_available():
-            raise RuntimeError("Slurm is not available.")
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
@@ -461,7 +477,7 @@ class SlurmLauncher:
             elif self._argvals["scheduler_options"]["scheduler"] != "slurm":
                 raise InvalidArgument("Only slurm is supported as scheduler.")
             queue = self._argvals["scheduler_options"].get("scheduler_queue")
-            if queue is not None:
+            if queue is not None and _SlurmWrapper.use_slurm():
                 queues = _SlurmWrapper.list_queues()
                 if queue not in queues:
                     raise InvalidArgument(
