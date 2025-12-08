@@ -9,6 +9,7 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.36.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev1>`_ - November 27, 2025
 `0.38.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev0>`_ - November 27, 2025
 
 .. tab-set::
@@ -46,6 +47,8 @@ This document contains the release notes for the project.
         * - Bump version 0.35.1
           - `#16 <https://github.com/ansys/pyfluent/pull/16>`_
 
+
+`0.36.0 <https://github.com/ansys/pyfluent/releases/tag/v0.36.0>`_ - November 25, 2025
         * - Fix nightly dev docs.
           - `#4641 <https://github.com/ansys/pyfluent/pull/4641>`_
 
@@ -116,6 +119,9 @@ This document contains the release notes for the project.
 
         * - Bump the dependencies group with 4 updates
           - `#4577 <https://github.com/ansys/pyfluent/pull/4577>`_
+
+        * - Bump version to v0.36.0
+          - `#4630 <https://github.com/ansys/pyfluent/pull/4630>`_
 
 
   .. tab-item:: Documentation
