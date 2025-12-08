@@ -23,8 +23,8 @@ version-info:
 docker-pull:
 	@python .ci/pull_fluent_image.py
 
-docker-clean-images:
-	@docker system prune --volumes -a -f
+docker-clean-all-except-supported-images:
+	@python .ci/docker_data_cleaner.py
 
 test-import:
 	@python -c "import ansys.fluent.core as pyfluent"
@@ -195,14 +195,6 @@ build-all-docs:
 	@sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
 	@xvfb-run make -C doc html
 	@python doc/modify_html.py
-
-cleanup-previous-docker-containers:
-	@if [ -n "$(docker ps -a -q)" ]; then \
-		echo "Found running containers"; \
-		docker inspect --format='{{.Config.Labels.test_name}}' $(docker ps -a -q); \
-		docker stop $(docker ps -a -q); \
-	fi
-	@if [ -n "$(docker ps -a -q)" ]; then docker rm -vf $(docker ps -a -q); fi
 
 write-and-run-fluent-tests:
 	@pip install -r requirements/requirements_build.txt

@@ -105,7 +105,7 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
 class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
     def StringEval(self, request, context):
         if request.input == "(cx-version)":
-            return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
+            return scheme_eval_pb2.StringEvalResponse(output="(25 1 0)")
 
     def SchemeEval(
         self,
@@ -487,41 +487,17 @@ def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
 
 def test_solver_methods(new_solver_session):
     solver = new_solver_session
-
-    if solver.get_fluent_version() == FluentVersion.v222:
-        api_keys = {
-            "file",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-        }
-    if solver.get_fluent_version() in (FluentVersion.v232, FluentVersion.v231):
-        api_keys = {
-            "file",
-            "mesh",
-            "server",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-            "parallel",
-            "report",
-        }
-    if solver.get_fluent_version() >= FluentVersion.v241:
-        api_keys = {
-            "file",
-            "mesh",
-            "server",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-            "parallel",
-        }
+    api_keys = {
+        "file",
+        "mesh",
+        "server",
+        "setup",
+        "solution",
+        "results",
+        "parametric_studies",
+        "current_parametric_study",
+        "parallel",
+    }
     assert api_keys.issubset(set(dir(solver.settings)))
 
 
