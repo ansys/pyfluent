@@ -47,6 +47,11 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
       - name: Cache pip
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:
@@ -203,10 +208,7 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Cleanup previous docker containers
-        if: always()
-        run: make cleanup-previous-docker-containers
-
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}

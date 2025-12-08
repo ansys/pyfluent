@@ -85,8 +85,6 @@ class SessionBase:
         topy: str | list | None = None,
         start_watchdog: bool | None = None,
         file_transfer_service: Any | None = None,
-        certificates_folder: str | None = None,
-        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in standalone mode.
@@ -154,12 +152,6 @@ class SessionBase:
             GUI-less Fluent sessions started by PyFluent are properly closed when the current Python process ends.
         file_transfer_service : Any
             Service for uploading/downloading files to/from the server.
-        certificates_folder : str, optional
-            Path to the folder containing TLS certificates for Fluent's gRPC server.
-        insecure_mode : bool, optional
-            If True, Fluent's gRPC server will be started in insecure mode without TLS.
-            This mode is not recommended. For more details on the implications
-            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------

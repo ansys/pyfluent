@@ -32,7 +32,6 @@ import warnings
 
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
-    PyFluentUserWarning,
 )
 from ansys.fluent.core.services.datamodel_se import (
     PyArgumentsSingletonSubItem,
@@ -1255,17 +1254,9 @@ class CompoundTask(CommandTask):
         self._command_source._compound_child = True
         self._command_source._parent_of_compound_child = py_name
         try:
-            if self._fluent_version >= FluentVersion.v241:
-                if defer_update is None:
-                    defer_update = False
-                self._task.AddChildAndUpdate(DeferUpdate=defer_update)
-            else:
-                if defer_update is not None:
-                    warnings.warn(
-                        "The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
-                        PyFluentUserWarning,
-                    )
-                self._task.AddChildAndUpdate()
+            if defer_update is None:
+                defer_update = False
+            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
         finally:
             self._command_source._compound_child = False
         # Updates the workflow after the new task is inserted.
