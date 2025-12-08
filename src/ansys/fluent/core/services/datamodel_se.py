@@ -1648,12 +1648,9 @@ class PyNamedObjectContainer:
 
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        if self.service.version <= FluentVersion.v241:
-            return self._get_child_object_display_names()
-        else:
-            return self.service.get_object_names(
-                self.rules, convert_path_to_se_path(self.path)
-            )
+        return self.service.get_object_names(
+            self.rules, convert_path_to_se_path(self.path)
+        )
 
     getChildObjectDisplayNames = get_object_names
 
