@@ -708,24 +708,15 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
     modified = velocity_inlet.user_creatable()
     assert existing == modified
 
-    if solver.get_fluent_version() < FluentVersion.v242:
-        turbulent_viscosity_ratio = velocity_inlet[
-            "inlet1"
-        ].turbulence.turbulent_viscosity_ratio_real
+    turbulent_viscosity_ratio = velocity_inlet[
+        "inlet1"
+    ].turbulence.turbulent_viscosity_ratio
 
-        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio_real'
-        name = "turbulent_viscosity_ratio_real"
-
+    if solver.get_fluent_version() >= FluentVersion.v251:
+        path = '<session>.settings.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
     else:
-        turbulent_viscosity_ratio = velocity_inlet[
-            "inlet1"
-        ].turbulence.turbulent_viscosity_ratio
-
-        if solver.get_fluent_version() >= FluentVersion.v251:
-            path = '<session>.settings.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
-        else:
-            path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
-        name = "turbulent_viscosity_ratio"
+        path = '<session>.setup.boundary_conditions.velocity_inlet["inlet1"].turbulence.turbulent_viscosity_ratio'
+    name = "turbulent_viscosity_ratio"
 
     assert turbulent_viscosity_ratio.python_path == path
     assert turbulent_viscosity_ratio.python_name == name
@@ -742,10 +733,7 @@ def test_accessor_methods_on_settings_object(static_mixer_settings_session):
     assert count_key_recursive(default_attrs, "default") > 5
 
     mesh = solver.results.graphics.mesh.create("mesh-1")
-    if solver.get_fluent_version() < FluentVersion.v242:
-        assert mesh.name.is_read_only()
-    else:
-        assert not mesh.name.is_read_only()
+    assert not mesh.name.is_read_only()
 
     assert solver.results.graphics.mesh.get_object_names() == ["mesh-1"]
 
@@ -768,10 +756,7 @@ def test_accessor_methods_on_settings_object_types(static_mixer_settings_session
     accuracy_control = (
         solver.setup.models.discrete_phase.numerics.tracking.accuracy_control
     )
-    if solver.get_fluent_version() < FluentVersion.v241:
-        max_refinements = accuracy_control.max_number_of_refinements
-    else:
-        max_refinements = accuracy_control.max_num_refinements
+    max_refinements = accuracy_control.max_num_refinements
 
     assert max_refinements.min() == 0
     assert max_refinements.max() == 1000000
@@ -817,26 +802,13 @@ def test_find_children_from_fluent_solver_session(static_mixer_settings_session)
         if path.endswith("geom_dir_spec")
     )
 
-    if static_mixer_settings_session.get_fluent_version() < FluentVersion.v242:
-        assert set(
-            find_children(
-                load_mixer.materials.fluid["air"].density.piecewise_polynomial
-            )
-        ) >= {
-            "minimum",
-            "maximum",
-            "coefficients",
-        }
-    else:
-        assert set(
-            find_children(
-                load_mixer.materials.fluid["air"].density.piecewise_polynomial
-            )
-        ) >= {
-            "range/minimum",
-            "range/maximum",
-            "range/coefficients",
-        }
+    assert set(
+        find_children(load_mixer.materials.fluid["air"].density.piecewise_polynomial)
+    ) >= {
+        "range/minimum",
+        "range/maximum",
+        "range/coefficients",
+    }
 
 
 @pytest.mark.fluent_version(">=24.1")
