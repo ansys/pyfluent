@@ -145,6 +145,23 @@ class _SlurmWrapper:
         return config.use_slurm_from_current_machine and _SlurmWrapper.is_available()
 
     @staticmethod
+    def check_and_raise_slurm_not_used_error(msg: str) -> None:
+        """Raise RuntimeError if Slurm is not used from the current machine.
+
+        Parameters
+        ----------
+        msg : str
+            Error message prefix.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm is not used from the current machine.
+        """
+        if not _SlurmWrapper.use_slurm():
+            raise RuntimeError(msg + _slurm_unavailable_in_current_machine_clause)
+
+    @staticmethod
     def list_queues() -> list[str]:
         """Return list of queues.
 
@@ -229,10 +246,9 @@ class SlurmFuture:
         RuntimeError
             If Slurm job cannot be cancelled from client
         """
-        if not _SlurmWrapper.use_slurm():
-            raise RuntimeError(
-                f"Cannot cancel Slurm job from client {_slurm_unavailable_in_current_machine_clause}"
-            )
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot cancel Slurm job from client"
+        )
         if self.done():
             return False
         self._cancel()
@@ -255,11 +271,9 @@ class SlurmFuture:
         RuntimeError
             If Slurm job state cannot be obtained from client
         """
-        if not _SlurmWrapper.use_slurm():
-            raise RuntimeError(
-                "Cannot get Slurm job state from client"
-                + _slurm_unavailable_in_current_machine_clause
-            )
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
@@ -277,11 +291,9 @@ class SlurmFuture:
         RuntimeError
             If Slurm job state cannot be obtained from client
         """
-        if not _SlurmWrapper.use_slurm():
-            raise RuntimeError(
-                "Cannot get Slurm job state from client"
-                + _slurm_unavailable_in_current_machine_clause
-            )
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._future.running()
 
     def done(self) -> bool:
@@ -299,11 +311,9 @@ class SlurmFuture:
         RuntimeError
             If Slurm job state cannot be obtained from client
         """
-        if not _SlurmWrapper.use_slurm():
-            raise RuntimeError(
-                "Cannot get Slurm job state from client"
-                + _slurm_unavailable_in_current_machine_clause
-            )
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
