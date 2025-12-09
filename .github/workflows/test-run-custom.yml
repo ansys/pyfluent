@@ -1,7 +1,6 @@
 name: Test Run Custom
 
 on:
-  #pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -31,24 +30,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - image-tag: v24.2.0
-          #   version: 242
-          # - image-tag: v25.1.0
-          #   version: 251
-          # - image-tag: v25.2.0
-          #   version: 252
           - image-tag: v26.1.0
             version: 261
     env:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -58,7 +51,7 @@ jobs:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Cache pip
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -73,12 +66,12 @@ jobs:
 
       - name: Retrieve PyFluent version
         run: |
-          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
-          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+          echo "PYFLUENT_VERSION=$(python -c 'from ansys.fluent.core import __version__; print(__version__)')" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c 'from ansys.fluent.core import __version__; print(__version__)')"
         id: version
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
         with:
           registry: ghcr.io
           username: ansys-bot
@@ -112,3 +105,10 @@ jobs:
         run: make docker-clean-all-except-supported-images
         env:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      # If you add 'git' cleanup steps, use a conditional to avoid running if `.git` is missing
+      # - name: Remove Git auth
+      #   if: always() && hashFiles('.git') != ''
+      #   run: |
+      #     git config --local --name-only --get-regexp core\.sshCommand || true
+      #     git submodule foreach --recursive 'git config --local --name-only --get-regexp "core\.sshCommand" && git config --local --unset-all "core.sshCommand" || :'
