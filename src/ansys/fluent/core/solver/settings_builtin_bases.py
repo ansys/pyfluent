@@ -68,7 +68,7 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
         found_path = path
     comps = found_path.split(".")
     for i, comp in enumerate(comps):
-        obj = SettingsBase.__getattribute__(obj, comp)  # bypass InactiveObjectError
+        obj = getattr(obj, comp)
         if i < len(comps) - 1 and isinstance(obj, NamedObject):
             obj_name = getattr(builtin_settings_obj, comp)
             obj = obj[obj_name]
