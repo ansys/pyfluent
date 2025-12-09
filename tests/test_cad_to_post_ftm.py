@@ -496,7 +496,7 @@ def test_exhaust_system(
     # Assert the returned mass flow rate report definition value
     flux = solver_session.solution.report_definitions.flux
     flux["mass_flow_rate"] = {}
-    flux["mass_flow_rate"].zone_names = [
+    flux["mass_flow_rate"].names = [
         "inlet-1",
         "inlet-2",
         "inlet-3",
