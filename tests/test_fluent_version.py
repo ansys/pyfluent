@@ -114,3 +114,7 @@ def test_fluent_version_set():
     d = {}
     d[set1] = "test"
     assert set1 in d
+
+
+def test_minimum_supported():
+    assert FluentVersion.minimum_supported() == min(all_versions())
