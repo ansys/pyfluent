@@ -78,14 +78,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v22.2.0
-            version: 222
-          - image-tag: v23.1.0
-            version: 231
-          - image-tag: v23.2.0
-            version: 232
-          - image-tag: v24.1.0
-            version: 241
           - image-tag: v24.2.0
             version: 242
           - image-tag: v25.1.0
@@ -106,6 +98,11 @@ jobs:
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
+
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Download package
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -139,10 +136,7 @@ jobs:
           make install-test
           make unittest-all-${VERSION}-no-codegen
 
-      - name: Cleanup previous docker containers
-        if: always()
-        run: make cleanup-previous-docker-containers
-
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
