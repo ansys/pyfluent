@@ -9,6 +9,86 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.38.dev2 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev2>`_ - December 08, 2025
+============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Minor improvements of the gRPC feature
+          - `#4660 <https://github.com/ansys/pyfluent/pull/4660>`_
+
+        * - Remove old Fluent version support
+          - `#4690 <https://github.com/ansys/pyfluent/pull/4690>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update GRPC file transfer service
+          - `#4655 <https://github.com/ansys/pyfluent/pull/4655>`_
+
+        * - Unskip tests
+          - `#4682 <https://github.com/ansys/pyfluent/pull/4682>`_
+
+        * - From_install
+          - `#4689 <https://github.com/ansys/pyfluent/pull/4689>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version 0.38.dev2
+          - `#4707 <https://github.com/ansys/pyfluent/pull/4707>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Print the Fluent version from settings_rstgen.py [skip tests]
+          - `#4632 <https://github.com/ansys/pyfluent/pull/4632>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update CHANGELOG for v0.37.0
+          - `#4650 <https://github.com/ansys/pyfluent/pull/4650>`_
+
+        * - Update CHANGELOG for v0.38.dev0
+          - `#4667 <https://github.com/ansys/pyfluent/pull/4667>`_
+
+        * - Update CHANGELOG for v0.36.dev1
+          - `#4668 <https://github.com/ansys/pyfluent/pull/4668>`_
+
+        * - Update CHANGELOG for v0.35.1
+          - `#4676 <https://github.com/ansys/pyfluent/pull/4676>`_
+
+        * - Use the certificate generation steps from the dev guide
+          - `#4691 <https://github.com/ansys/pyfluent/pull/4691>`_
+
+        * - Remove generated folders from pyfluent directory to avoid a git error [skip tests]
+          - `#4692 <https://github.com/ansys/pyfluent/pull/4692>`_
+
+
 `0.35.1 <https://github.com/ansys/pyfluent/releases/tag/v0.35.1>`_ - December 01, 2025
 `0.36.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev1>`_ - November 27, 2025
 `0.38.dev0 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev0>`_ - November 27, 2025
