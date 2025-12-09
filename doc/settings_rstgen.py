@@ -160,7 +160,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
                 pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
             except AnsysVersionNotFound as ex:
                 logger.debug(ex)
-                pyfluent_fluent_version = FluentVersion.minimum_supported
+                pyfluent_fluent_version = FluentVersion.minimum_supported()
                 logger.debug(
                     f"Using minimum supported version {pyfluent_fluent_version} instead of {cls._deprecated_version} for deprecated class {cls_name}."
                 )
