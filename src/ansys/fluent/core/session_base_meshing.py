@@ -113,8 +113,7 @@ class BaseMeshing:
     @property
     def _meshing_utilities_root(self):
         """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version() >= FluentVersion.v242:
-            return _make_datamodel_module(self, "MeshingUtilities")
+        return _make_datamodel_module(self, "MeshingUtilities")
 
     @property
     def meshing_utilities(self):

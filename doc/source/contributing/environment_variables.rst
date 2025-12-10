@@ -78,3 +78,5 @@ control the behavior of PyFluent within the same Python process. Please see the 
       - Specifies the IP address of the Fluent server while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
     * - SERVER_INFO_DIR
       - Specifies the directory where the server-info file is created while launching Fluent in :func:`launch_fluent() <ansys.fluent.core.launcher.launcher.launch_fluent>`.
+    * - PYFLUENT_CONTAINER_INSECURE_MODE
+      - Uses insecure mode when launching Fluent in a container or connecting to a Fluent container.

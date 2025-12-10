@@ -40,6 +40,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
       - name: Install OS packages
         run: |
           sudo apt update
@@ -90,14 +95,18 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
   deploy_release_docs:
     name: "Deploy Release Documentation"
-    runs-on: ubuntu-latest
+    runs-on: public-ubuntu-latest-8-cores
     needs: [build_release_docs]
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Deploy release documentation"
         uses: ansys/actions/doc-deploy-stable@v10.1
