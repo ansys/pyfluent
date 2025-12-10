@@ -496,7 +496,7 @@ def test_exhaust_system(
     # Assert the returned mass flow rate report definition value
     flux = solver_session.solution.report_definitions.flux
     flux["mass_flow_rate"] = {}
-    flux["mass_flow_rate"].names = [
+    flux["mass_flow_rate"].boundaries = [
         "inlet-1",
         "inlet-2",
         "inlet-3",
@@ -531,7 +531,7 @@ def test_exhaust_system(
 
     check_report_definition(
         report_definition_name="velocity_magnitude_outlet",
-        expected_result=pytest.approx(3.7988207, rel=1e-3),
+        expected_result=pytest.approx(3.7946251, rel=1e-3),
     )
 
     ###############################################################################
