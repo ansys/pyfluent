@@ -165,7 +165,7 @@ class Workflow:
             self._workflow.general.workflow.task_list(),
         )
         name_to_task = {
-            task_obj.name(): TaskObject(
+            task_obj.name(): make_task_wrapper(
                 task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
             )
             for task_obj in self.tasks()
@@ -186,35 +186,41 @@ class Workflow:
             return None
         for task_obj in self.tasks():
             if task_obj.name() == first_name:
-                return TaskObject(
-                    task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+                return make_task_wrapper(
+                    task_obj,
+                    task_obj.__class__.__name__.lstrip("_"),
+                    self._workflow,
+                    self,
                 )
 
     def last_child(self):
         task_list = self._workflow.general.workflow.task_list()
         if task_list:
-            last_name = _get_child_task_by_task_id(self._workflow, task_list[1])
+            last_name = _get_child_task_by_task_id(self._workflow, task_list[-1])
         else:
             return None
         for task_obj in self.tasks():
             if task_obj.name() == last_name:
-                return TaskObject(
-                    task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+                return make_task_wrapper(
+                    task_obj,
+                    task_obj.__class__.__name__.lstrip("_"),
+                    self._workflow,
+                    self,
                 )
 
-    def task_list(self):
+    def _task_list(self):
         """."""
         return _convert_task_list_to_display_names(
             self._workflow, self._workflow.general.workflow.task_list()
         )
 
-    def ordered_tasks(self):
+    def _ordered_tasks(self):
         ordered_names = _convert_task_list_to_display_names(
             self._workflow,
             self._workflow.general.workflow.task_list(),
         )
         name_to_task = {
-            task_obj.name(): TaskObject(
+            task_obj.name(): make_task_wrapper(
                 task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
             )
             for task_obj in self.tasks()
@@ -265,7 +271,7 @@ class Workflow:
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
-            return TaskObject(self._task_dict[item], item, self._workflow, self)
+            return make_task_wrapper(self._task_dict[item], item, self._workflow, self)
         return getattr(self._workflow, item)
 
     def __call__(self):
@@ -292,7 +298,7 @@ class TaskObject:
         super().__setattr__("_parent", parent)
         self._cache = {}
 
-    def get_next_possible_tasks(self):
+    def _get_next_possible_tasks(self):
         """."""
         task_obj = super().__getattribute__("_task_object")
         ret_list = []
@@ -303,7 +309,7 @@ class TaskObject:
             ret_list.append(snake_case_name)
         return ret_list
 
-    def insert_next_task(self, task_name):
+    def _insert_next_task(self, task_name):
         """."""
         task_obj = super().__getattribute__("_task_object")
         # This is just a precaution in case this method is directly called from the task level.
@@ -322,7 +328,7 @@ class TaskObject:
             """Initialize an ``_NextTask`` instance."""
             self._base_task = base_task
             self._insertable_tasks = []
-            for item in self._base_task.get_next_possible_tasks():
+            for item in self._base_task._get_next_possible_tasks():
                 insertable_task = type("Insert", (self._Insert,), {})(
                     self._base_task, item
                 )
@@ -340,7 +346,7 @@ class TaskObject:
 
             def insert(self):
                 """Insert a task in the workflow."""
-                return self._base_task.insert_next_task(task_name=self._name)
+                return self._base_task._insert_next_task(task_name=self._name)
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
@@ -377,7 +383,7 @@ class TaskObject:
                 temp_parent = self
             else:
                 temp_parent = parent
-            return TaskObject(task_obj, name_1, workflow, temp_parent)
+            return make_task_wrapper(task_obj, name_1, workflow, temp_parent)
         except LookupError:
             task_obj = getattr(workflow.task_object, name_1)[key]
             if task_obj.task_type == "Compound Child":
@@ -385,7 +391,7 @@ class TaskObject:
             else:
                 temp_parent = parent
             try:
-                return TaskObject(
+                return make_task_wrapper(
                     getattr(workflow.task_object, name_1)[key],
                     name_1,
                     workflow,
@@ -399,7 +405,7 @@ class TaskObject:
     def __delitem__(self, key):
         self[key].delete()
 
-    def task_list(self):
+    def _task_list(self):
         """."""
         task_obj = super().__getattribute__("_task_object")
         # This is just a precaution in case this method is directly called from the task level.
@@ -412,7 +418,7 @@ class TaskObject:
             return []
 
     def children(self):
-        if not self.task_list():
+        if not self._task_list():
             return []
 
         workflow = super().__getattribute__("_workflow")
@@ -420,20 +426,20 @@ class TaskObject:
             item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
         }
         name_to_task = {
-            val: TaskObject(
+            val: make_task_wrapper(
                 getattr(workflow.task_object, key)[val], key, workflow, self
             )
             for key, val in type_to_name.items()
         }
         sorted_list = []
-        for name in self.task_list():
+        for name in self._task_list():
             if name not in name_to_task:
                 continue
             sorted_list.append(name_to_task[name])
         return sorted_list
 
     def first_child(self):
-        task_list = self.task_list()
+        task_list = self._task_list()
         if task_list:
             first_name = task_list[0]
         else:
@@ -445,12 +451,12 @@ class TaskObject:
         }
         for key, val in type_to_name.items():
             if val == first_name:
-                return TaskObject(
+                return make_task_wrapper(
                     getattr(workflow.task_object, key)[val], key, workflow, self
                 )
 
     def last_child(self):
-        task_list = self.task_list()
+        task_list = self._task_list()
         if task_list:
             last_name = task_list[-1]
         else:
@@ -462,7 +468,7 @@ class TaskObject:
         }
         for key, val in type_to_name.items():
             if val == last_name:
-                return TaskObject(
+                return make_task_wrapper(
                     getattr(workflow.task_object, key)[val], key, workflow, self
                 )
 
@@ -495,7 +501,7 @@ class TaskObject:
 
     def has_next(self) -> bool:
         parent = super().__getattribute__("_parent")
-        task_dict = parent.ordered_tasks()
+        task_dict = parent._ordered_tasks()
         try:
             self._get_next_key(task_dict, self.name())
             return True
@@ -504,13 +510,13 @@ class TaskObject:
 
     def next(self):
         parent = super().__getattribute__("_parent")
-        task_dict = parent.ordered_tasks()
+        task_dict = parent._ordered_tasks()
         next_key = self._get_next_key(task_dict, self.name())
         return task_dict[next_key]
 
     def has_previous(self) -> bool:
         parent = super().__getattribute__("_parent")
-        task_dict = parent.ordered_tasks()
+        task_dict = parent._ordered_tasks()
         try:
             self._get_previous_key(task_dict, self.name())
             return True
@@ -519,13 +525,13 @@ class TaskObject:
 
     def previous(self):
         parent = super().__getattribute__("_parent")
-        task_dict = parent.ordered_tasks()
+        task_dict = parent._ordered_tasks()
         previous_key = self._get_previous_key(task_dict, self.name())
         return task_dict[previous_key]
 
-    def ordered_tasks(self):
+    def _ordered_tasks(self):
         sorted_dict = OrderedDict()
-        if not self.task_list():
+        if not self._task_list():
             return sorted_dict
         workflow = super().__getattribute__("_workflow")
 
@@ -534,68 +540,19 @@ class TaskObject:
         }
 
         name_to_task = {
-            val: TaskObject(
+            val: make_task_wrapper(
                 getattr(workflow.task_object, key)[val], key, workflow, self
             )
             for key, val in type_to_name.items()
         }
 
-        for name in self.task_list():
+        for name in self._task_list():
             if name not in name_to_task:
                 continue
             task_obj = name_to_task[name]
             sorted_dict[name] = task_obj
 
         return sorted_dict
-
-    def get_sorted_tasks(self):
-        workflow = super().__getattribute__("_workflow")
-        sorted_dict = OrderedDict()
-        ordered_names = _convert_task_list_to_display_names(
-            workflow,
-            workflow.general.workflow.task_list(),
-        )
-        type_to_name = {
-            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
-        }
-
-        name_to_task = {
-            val: TaskObject(
-                getattr(workflow.task_object, key)[val], key, workflow, self
-            )
-            for key, val in type_to_name.items()
-        }
-
-        for name in ordered_names:
-            if name not in name_to_task:
-                continue
-            task_obj = name_to_task[name]
-            sorted_dict[name] = task_obj
-
-            sub_task_names = task_obj.task_list()
-            if sub_task_names:
-                for sub_task_name in sub_task_names:
-                    sorted_dict[sub_task_name] = name_to_task[sub_task_name]
-
-        return sorted_dict
-
-    def get_upstream_tasks(self):
-        upstream_tasks = OrderedDict()
-        for name, task_obj in self.get_sorted_tasks().items():
-            if name == self.name():
-                break
-            upstream_tasks[name] = task_obj
-        return upstream_tasks
-
-    def get_downstream_tasks(self):
-        name_found = False
-        downstream_tasks = OrderedDict()
-        for name, task_obj in self.get_sorted_tasks().items():
-            if name_found:
-                downstream_tasks[name] = task_obj
-            if name == self.name():
-                name_found = True
-        return downstream_tasks
 
     def delete(self):
         """."""
@@ -603,4 +560,45 @@ class TaskObject:
         workflow.general.delete_tasks(list_of_tasks=[self.name()])
 
     def __repr__(self):
-        return self.name()
+        try:
+            suffix = int(self.name().split()[-1])
+        except (TypeError, ValueError):
+            suffix = 0
+        return f"task < {self._name}: {suffix} >"
+
+
+def build_specific_interface(task_object):
+    """
+    Build a dynamic interface type that exposes task-specific
+    commands/properties while delegating back to the task_object.
+    """
+
+    def make_delegate(attr):
+        def delegate(self, *args, **kwargs):
+            return getattr(self._task_object, attr)(*args, **kwargs)
+
+        return delegate
+
+    # Determine the API surface of the underlying task:
+    public_members = {
+        name
+        for name in dir(task_object)
+        if not name.startswith("_") and callable(getattr(task_object, name))
+    }
+
+    namespace = {name: make_delegate(name) for name in public_members}
+
+    iface_name = f"{task_object.task_type}SpecificInterface"
+
+    return type(iface_name, (), namespace)
+
+
+def make_task_wrapper(task_obj, name, workflow, parent):
+
+    specific_interface = build_specific_interface(task_obj)
+
+    combined_type = type(
+        f"{task_obj.task_type}Task", (specific_interface, TaskObject), {}
+    )
+
+    return combined_type(task_obj, name, workflow, parent)
