@@ -172,6 +172,17 @@ class FluentVersion(Enum):
         """
         return cls(pyfluent.config.fluent_dev_version)
 
+    @classmethod
+    def minimum_supported(cls):
+        """Return the version member of the minimum supported version.
+
+        Returns
+        -------
+        FluentVersion
+            FluentVersion member corresponding to the minimum supported version.
+        """
+        return next(reversed(cls))
+
     @property
     def awp_var(self):
         """Get the Fluent version in AWP environment variable format."""

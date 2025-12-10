@@ -23,6 +23,7 @@ python <path to settings_rstgen.py>
 from contextlib import redirect_stdout
 import importlib
 import io
+import logging
 import os
 from pathlib import Path
 
@@ -31,9 +32,13 @@ from deprecated_pyfluent_apis import PYFLUENT_DEPRECATED_DATA
 from ansys.fluent.core import config
 from ansys.fluent.core.search import search
 from ansys.fluent.core.utils.fluent_version import (
+    AnsysVersionNotFound,
     FluentVersion,
     get_version_for_file_name,
 )
+
+logger = logging.getLogger("pyfluent.settings_api")
+
 
 parents_dict = {}
 rst_list = []
@@ -151,7 +156,14 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         r.write(f'{"="*(len(cls_orig_name))}\n\n')
         deprecated = getattr(cls, "_deprecated_version", None)
         if deprecated:
-            pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
+            try:
+                pyfluent_fluent_version = FluentVersion(float(cls._deprecated_version))
+            except AnsysVersionNotFound as ex:
+                logger.debug(ex)
+                pyfluent_fluent_version = FluentVersion.minimum_supported()
+                logger.debug(
+                    f"Using minimum supported version {pyfluent_fluent_version} instead of {cls._deprecated_version} for deprecated class {cls_name}."
+                )
             release_version = str(pyfluent_fluent_version)
             r.write(f".. deprecated:: {release_version}\n\n")
             deprecated_class_version.update({cls_name: release_version})
