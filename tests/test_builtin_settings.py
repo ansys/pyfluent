@@ -28,6 +28,7 @@ import pytest
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import *  # noqa: F401, F403
+from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 # flake8: noqa: F405
@@ -510,3 +511,11 @@ def test_context_manager_2(new_solver_session):
     with using(solver):
         read_case(file_name=import_filename)
         assert Viscous().model() == "k-omega"
+
+
+@pytest.mark.codegen_required
+def test_inactive_objects(new_solver_session):
+    solver = new_solver_session
+
+    with pytest.raises(InactiveObjectError):
+        pyfluent.solver.Viscous(solver)
