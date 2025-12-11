@@ -44,6 +44,17 @@ class FluentDevVersionWarning(PyFluentUserWarning):
     pass
 
 
+# Deriving from the base Warning instead of any derived classes
+# to have less chance of being ignored by user configurations.
+class InsecureGrpcWarning(Warning):
+    """Warning raised when gRPC connection is insecure."""
+
+    pass
+
+
+warnings.filterwarnings("always", category=InsecureGrpcWarning)
+
+
 def warning_for_fluent_dev_version(version):
     """Provides warning if Fluent develop branch is used."""
     from ansys.fluent.core import FluentVersion, config

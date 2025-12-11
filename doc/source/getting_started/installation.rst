@@ -84,7 +84,7 @@ Fluent Installation
 -------------------
 
 To benefit fully from using PyFluent, you must have a licensed copy of Ansys Fluent installed.
-All versions of PyFluent support Fluent 2022 R2 and later. 
+All versions of PyFluent support Fluent 2024 R2 and later. 
 
 PyFluent uses an environment variable to locate your Ansys installation.
 
@@ -103,6 +103,10 @@ For this variable to persist between different shell sessions for the current us
 export command can instead be added to the user's ``~/.profile`` file.
 
 For information on other ways of specifying the Fluent location for PyFluent, see :ref:`faqs_fluentloc` in :ref:`faqs`.
+
+.. note::
+   Ansys Fluent versions prior to 2024 R2 were supported by PyFluent version 0.37 and earlier.
+   These versions are no longer supported in the current PyFluent releases.
 
 
 Additional PyFluent packages
