@@ -24,7 +24,11 @@
 
 from typing import Protocol, runtime_checkable
 
-from ansys.fluent.core.solver.flobject import NamedObject, SettingsBase
+from ansys.fluent.core.solver.flobject import (
+    InactiveObjectError,
+    NamedObject,
+    SettingsBase,
+)
 from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.context_managers import _get_active_session
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -68,7 +72,10 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
         found_path = path
     comps = found_path.split(".")
     for i, comp in enumerate(comps):
-        obj = getattr(obj, comp)
+        try:
+            obj = getattr(obj, comp)
+        except InactiveObjectError:
+            raise InactiveObjectError(builtin_cls_db_name) from None
         if i < len(comps) - 1 and isinstance(obj, NamedObject):
             obj_name = getattr(builtin_settings_obj, comp)
             obj = obj[obj_name]
