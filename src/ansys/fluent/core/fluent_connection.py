@@ -45,6 +45,7 @@ import grpc
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
+from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
 from ansys.fluent.core.services.app_utilities import (
     AppUtilitiesOld,
@@ -327,7 +328,7 @@ def _get_channel(
                 "The Fluent session will be connected in insecure gRPC mode. "
                 "This mode is not recommended. For more details on the implications "
                 "and usage of insecure mode, refer to the Fluent documentation.",
-                UserWarning,
+                InsecureGrpcWarning,
             )
             return grpc.insecure_channel(address, options=options)
         else:
@@ -337,7 +338,8 @@ def _get_channel(
                 )
             return _get_tls_channel(address, certificates_folder, options=options)
     else:
-        if not _is_localhost(address):
+        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
+        if not (_is_localhost(address) or (inside_container and insecure_mode_env)):
             raise ValueError(
                 "Connecting to remote Fluent instances is not allowed. "
                 "Set 'allow_remote_host=True' to connect to remote hosts."

@@ -35,6 +35,7 @@ from ansys.fluent.core.utils.file_transfer_service import (
 )
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4649")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
