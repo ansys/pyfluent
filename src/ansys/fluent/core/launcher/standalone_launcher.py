@@ -109,6 +109,8 @@ class StandaloneLauncher:
         certificates_folder: str | None = None,
         insecure_mode: bool = False,
     ):
+        self.certificates_folder = certificates_folder
+        self.insecure_mode = insecure_mode
         """
         Launch a Fluent session in standalone mode.
 
