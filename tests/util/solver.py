@@ -20,14 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-
 
 def check_report_definition_result(
     report_definitions, report_definition_name, expected_result
 ):
     assert (
-        report_definitions.compute(report_defs=[report_definition_name])[
+        report_definitions.compute(report_defs=[report_definition_name])[0][
             report_definition_name
         ][0]
         == expected_result
@@ -47,10 +45,7 @@ class ApiNames:
 
     @property
     def initial_gauge_pressure(self):
-        if self.session.get_fluent_version() == FluentVersion.v222:
-            return "p_sup"
-        else:
-            return "initial_gauge_pressure"
+        return "initial_gauge_pressure"
 
 
 def settings_value_from_value_dict(dict_value) -> bool:

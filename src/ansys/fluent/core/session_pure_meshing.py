@@ -37,7 +37,6 @@ from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class PureMeshing(BaseSession):
@@ -144,8 +143,7 @@ class PureMeshing(BaseSession):
     @property
     def meshing_utilities(self):
         """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version() >= FluentVersion.v242:
-            return self._base_meshing.meshing_utilities
+        return self._base_meshing.meshing_utilities
 
     @property
     def workflow(self):
