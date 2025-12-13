@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_pm_file_management_File:
+
+File
+====
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.pm_file_management.Root.File
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _File/_File_contents

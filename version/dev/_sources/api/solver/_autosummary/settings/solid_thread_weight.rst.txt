@@ -1,0 +1,36 @@
+:orphan:
+
+.. _solid_thread_weight:
+
+solid_thread_weight
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.solid_thread_weight
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   =====================================================
+
+Attribute                                                                                            Summary
+
+====================================================   =====================================================
+:ref:`use <use>`                                                 Use solid thread weights for partitioning?.
+
+:ref:`use_user_define_value <use_user_define_value>`       Use user defined value for solid thread weights?.
+
+:ref:`value <value_37>`                                         User defined value for solid thread weights.
+
+====================================================   =====================================================
+
+.. rubric:: Included in:
+
+====================   ===============
+
+Parent                         Summary
+
+====================   ===============
+:ref:`set_3 <set_3>`       The object.
+
+====================   ===============
+

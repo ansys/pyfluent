@@ -1,0 +1,21 @@
+:orphan:
+
+.. _time_step:
+
+time_step
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.time_step
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==============================
+
+Parent                                      Summary
+
+==================   ==============================
+:ref:`dsmc <dsmc>`       Enable/disable dsmc model.
+
+==================   ==============================
+

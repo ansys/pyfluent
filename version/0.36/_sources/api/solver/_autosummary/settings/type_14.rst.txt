@@ -1,0 +1,52 @@
+:orphan:
+
+.. _type_14:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_14
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ====================================
+
+Attribute                                                       Summary
+
+================================   ====================================
+:ref:`option <option_47>`              The type for this cell register.
+
+:ref:`hexahedron <hexahedron>`                      'hexahedron' child.
+
+:ref:`sphere <sphere_1>`                                'sphere' child.
+
+:ref:`cylinder <cylinder_1>`                          'cylinder' child.
+
+:ref:`boundary <boundary_4>`                          'boundary' child.
+
+:ref:`limiters <limiters>`                            'limiters' child.
+
+:ref:`field_value <field_value>`                   'field_value' child.
+
+:ref:`residual <residual_1>`                          'residual' child.
+
+:ref:`volume <volume_3>`                                'volume' child.
+
+:ref:`yplus_star <yplus_star>`                      'yplus_star' child.
+
+:ref:`yplus_ystar <yplus_ystar>`                   'yplus_ystar' child.
+
+================================   ====================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`cell_registers_child <cell_registers_child>`       'child_object_type' of cell_registers.
+
+==================================================   ==========================================
+

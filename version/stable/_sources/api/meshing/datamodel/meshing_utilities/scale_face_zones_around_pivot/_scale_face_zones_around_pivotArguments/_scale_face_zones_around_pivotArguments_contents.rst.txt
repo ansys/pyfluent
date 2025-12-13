@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_scale_face_zones_around_pivot__scale_face_zones_around_pivotArguments:
+
+_scale_face_zones_around_pivotArguments
+=======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.scale_face_zones_around_pivot._scale_face_zones_around_pivotArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _pivot, _scale, _use_bbox_center
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

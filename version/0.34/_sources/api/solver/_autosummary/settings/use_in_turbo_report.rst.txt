@@ -1,0 +1,21 @@
+:orphan:
+
+.. _use_in_turbo_report:
+
+use_in_turbo_report
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.use_in_turbo_report
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`efficiency <efficiency>`       The object.
+
+==============================   ===============
+

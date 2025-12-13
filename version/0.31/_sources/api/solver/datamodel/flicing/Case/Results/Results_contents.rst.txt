@@ -1,0 +1,27 @@
+.. _ref_solver_datamodel_flicing_Case_Results:
+
+Results
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.flicing.Root.Case.Results
+   :members: ResultsExternalInfo
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   CreateCellZoneSurfaces/CreateCellZoneSurfaces_contents
+   CreateMultipleIsosurfaces/CreateMultipleIsosurfaces_contents
+   CreateMultiplePlanes/CreateMultiplePlanes_contents
+   GetFieldMinMax/GetFieldMinMax_contents
+   GetXYData/GetXYData_contents
+   Graphics/Graphics_contents
+   Plots/Plots_contents
+   Reports/Reports_contents
+   SurfaceDefs/SurfaceDefs_contents
+   View/View_contents

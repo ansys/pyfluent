@@ -1,0 +1,38 @@
+:orphan:
+
+.. _anode:
+
+anode
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.anode
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================   ===============================
+
+Attribute                                                      Summary
+
+====================================   ===============================
+:ref:`anode_cc_zone <anode_cc_zone>`       Up anode current collector.
+
+:ref:`anode_fc_zone <anode_fc_zone>`            Up anode flow channel.
+
+:ref:`anode_pl_zone <anode_pl_zone>`            Up anode porous layer.
+
+:ref:`anode_cl_zone <anode_cl_zone>`          Up anode catalyst layer.
+
+====================================   ===============================
+
+.. rubric:: Included in:
+
+==================================   =========================================
+
+Parent                                                                 Summary
+
+==================================   =========================================
+:ref:`electrolysis <electrolysis>`       The Electrochemical Devices settings.
+
+==================================   =========================================
+

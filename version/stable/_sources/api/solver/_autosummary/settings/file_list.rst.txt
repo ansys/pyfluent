@@ -1,0 +1,36 @@
+:orphan:
+
+.. _file_list:
+
+file_list
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_list
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   =================
+
+Argument                                       Summary
+
+==================================   =================
+:ref:`filenames <filenames>`                File name.
+
+:ref:`plot_title <plot_title>`             Plot title.
+
+:ref:`legend_title <legend_title>`       Legend title.
+
+==================================   =================
+
+.. rubric:: Included in:
+
+================================================   ==================================
+
+Parent                                                                        Summary
+
+================================================   ==================================
+:ref:`plot_from_file_list <plot_from_file_list>`       Plot data from multiple files.
+
+================================================   ==================================
+

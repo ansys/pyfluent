@@ -1,0 +1,34 @@
+:orphan:
+
+.. _expert_7:
+
+expert
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.expert_7
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ======================================================
+
+Attribute                                                                                                         Summary
+
+================================================================   ======================================================
+:ref:`mass_flux_correction_method <mass_flux_correction_method>`       Mass flux correction option at overset interfaces.
+
+:ref:`hybrid_mode_selection <hybrid_mode_selection>`                                       Mode for hybrid interpolation.
+
+================================================================   ======================================================
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`overset_3 <overset_3>`       Overset solver options object.
+
+============================   ==================================
+

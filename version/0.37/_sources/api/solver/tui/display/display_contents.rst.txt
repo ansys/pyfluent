@@ -1,0 +1,32 @@
+.. _ref_solver_tui_display:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.display
+   :members: add_custom_vector, annotate, close_window, close_window_by_name, contour, display_custom_vector, graphics_window_layout, grid, grid_outline, hsf_file, mesh, mesh_outline, mesh_partition_boundary, multigrid_coarsening, open_window, profile, re_render, re_scale, reacting_channel_curves, save_picture, set_list_tree_separator, set_window, set_window_by_name, show_hide_annotations, surface_cells, surface_mesh, switch_to_post_processing_volume, switch_to_primary_volume, update_layout, vector, velocity_vector, zone_mesh
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   annotation/annotation_contents
+   define/define_contents
+   display/display_contents
+   display_states/display_states_contents
+   embedded_windows/embedded_windows_contents
+   flamelet_data/flamelet_data_contents
+   objects/objects_contents
+   particle_tracks/particle_tracks_contents
+   path_lines/path_lines_contents
+   pdf_data/pdf_data_contents
+   raytracer/raytracer_contents
+   set/set_contents
+   surface/surface_contents
+   update_scene/update_scene_contents
+   views/views_contents

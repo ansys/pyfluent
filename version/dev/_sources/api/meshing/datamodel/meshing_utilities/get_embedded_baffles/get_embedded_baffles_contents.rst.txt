@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_embedded_baffles:
+
+get_embedded_baffles
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_utilities.Root.get_embedded_baffles
+   :members: _get_embedded_bafflesArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

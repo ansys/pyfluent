@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_ChooseMeshControlOptions__ChooseMeshControlOptionsCommandArguments__MeshControlOptions:
+
+_MeshControlOptions
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.ChooseMeshControlOptions._ChooseMeshControlOptionsCommandArguments._MeshControlOptions
+   :members: _AdvancedOptions, _BoundaryLayers, _EdgeProximityComputation, _ExistingSizeField, _SolidFluidRaio, _TargeSizeFieldFileName, _WrapSizeFieldFileName, _WrapTargetBothOptions, _WrapTargetRaio, _WrapTargetSizeFieldRatio
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

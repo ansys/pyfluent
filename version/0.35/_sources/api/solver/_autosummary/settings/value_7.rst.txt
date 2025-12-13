@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_7:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.value_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ===================================
+
+Parent                                                                                       Summary
+
+==============================================================   ===================================
+:ref:`geometric_roughness_height <geometric_roughness_height>`       The geometric roughness height.
+
+==============================================================   ===================================
+

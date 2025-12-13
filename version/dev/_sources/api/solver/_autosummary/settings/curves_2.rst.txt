@@ -1,0 +1,44 @@
+:orphan:
+
+.. _curves_2:
+
+curves
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.curves_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================   =======================================
+
+Attribute                                                                Summary
+
+======================================   =======================================
+:ref:`line <line>`                                    Parameters for plot lines.
+
+:ref:`line_in_file <line_in_file>`             Parameters for plot lines (file).
+
+:ref:`marker <marker>`                              Parameters for data markers.
+
+:ref:`marker_in_file <marker_in_file>`       Parameters for data markers (file).
+
+======================================   =======================================
+
+.. rubric:: Included in:
+
+====================================================   ====================================================================
+
+Parent                                                                                                              Summary
+
+====================================================   ====================================================================
+:ref:`histogram <histogram>`                               Provides access to create new and edit existing histogram plots.
+
+:ref:`cumulative_plot_child <cumulative_plot_child>`                                'child_object_type' of cumulative_plot.
+
+:ref:`profile_data <profile_data>`                                                                    Display profile data.
+
+:ref:`interpolated_data <interpolated_data>`                                                     Display interpolated data.
+
+====================================================   ====================================================================
+

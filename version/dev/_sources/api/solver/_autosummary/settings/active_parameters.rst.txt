@@ -1,0 +1,21 @@
+:orphan:
+
+.. _active_parameters:
+
+active_parameters
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.active_parameters
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===========================
+
+Parent                                                                       Summary
+
+======================================================   ===========================
+:ref:`optislang_capabilities <optislang_capabilities>`       OptiSLang Capabilities.
+
+======================================================   ===========================
+

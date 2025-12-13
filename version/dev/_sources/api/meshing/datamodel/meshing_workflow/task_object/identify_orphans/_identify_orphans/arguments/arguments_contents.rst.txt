@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_identify_orphans__identify_orphans_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.identify_orphans._identify_orphans.arguments
+   :members: check_overset_interface_intersection, donor_priority_method, enable_grid_priority, number_of_orphans, object_selection_list, old_region_name_list, old_region_size_list, overlap_boundaries, region_name_list, region_size_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
