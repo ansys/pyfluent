@@ -195,6 +195,15 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(
+                "To launch Fluent in Slurm environment, set `certificates_folder`."
+            )
+        if certificates_folder is not None and insecure_mode:
+            raise ValueError(
+                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
+            )
+
         self.certificates_folder = certificates_folder
         self.insecure_mode = insecure_mode
 
