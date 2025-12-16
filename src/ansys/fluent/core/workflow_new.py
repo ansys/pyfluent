@@ -20,7 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Workflow module that wraps and extends the core functionality."""
+"""Workflow module that wraps and extends the core functionality.
+
+This module provides a high-level, Pythonic interface for working with Ansys Fluent
+workflows. It wraps the underlying datamodel service layer to provide intuitive
+navigation, task management, and workflow operations.
+
+The main classes are:
+
+- **Workflow**: Top-level workflow container that manages tasks and provides
+  navigation between them.
+- **TaskObject**: Individual task wrapper that provides access to task properties,
+  arguments, execution, and navigation to sibling/child tasks.
+
+
+Notes
+-----
+This module is designed for Fluent 26R1 and later versions. Some features may not
+be available in earlier versions.
+
+The workflow system provides both imperative and declarative approaches to building
+simulation workflows, with automatic dependency management and validation.
+"""
 
 from __future__ import annotations
 
@@ -33,7 +54,24 @@ from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-def _convert_task_list_to_display_names(workflow_root, task_list):
+def _convert_task_list_to_display_names(
+    workflow_root: PyMenu, task_list: list[str]
+) -> list[str]:
+    """Convert a list of task IDs to their corresponding display names.
+
+    Parameters
+    ----------
+    workflow_root : PyMenu
+        The root workflow datamodel object that provides service access.
+    task_list : list[str]
+        List of internal task identifiers (e.g., ["TaskObject1", "TaskObject2"]).
+
+    Returns
+    -------
+    list[str]
+        List of display names corresponding to the task IDs
+        (e.g., ["Import Geometry", "Add Local Sizing"]).
+    """
     _display_names = []
     for _task_name in task_list:
         name_obj = PyMenu(
@@ -46,6 +84,20 @@ def _convert_task_list_to_display_names(workflow_root, task_list):
 
 
 def _get_child_task_by_task_id(workflow_root, task_id):
+    """Get a child task's display name by its internal task ID.
+
+    Parameters
+    ----------
+    workflow_root : PyMenu
+        The root workflow datamodel object.
+    task_id : str
+        Internal identifier for the task (e.g., "TaskObject1").
+
+    Returns
+    -------
+    str
+        The display name of the task (e.g., "Import Geometry").
+    """
     return PyMenu(
         service=workflow_root.service,
         rules=workflow_root.rules,
@@ -54,7 +106,28 @@ def _get_child_task_by_task_id(workflow_root, task_id):
 
 
 def command_name_to_task_name(workflow_root, command_name: str) -> str:
-    """Command name to task name converter."""
+    """Convert a command name to its corresponding task display name.
+
+    This function maps internal command names (used by the Fluent core) to
+    user-facing task names.
+
+    Parameters
+    ----------
+    workflow_root : PyMenu
+        The root workflow datamodel object.
+    command_name : str
+        Internal command name (e.g., "ImportGeometry").
+
+    Returns
+    -------
+    str
+        User-facing task name (e.g., "import_geometry").
+
+    Notes
+    -----
+    This is a workaround for Fluent 26R1. It attempts to load version-specific
+    datamodel files to perform the conversion, falling back to a generic approach if unavailable.
+    """
     # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
     #  for '<Task Object>.get_next_possible_tasks()'.
     try:
@@ -77,8 +150,16 @@ def command_name_to_task_name(workflow_root, command_name: str) -> str:
 
 
 class Workflow:
-    """Wraps a workflow object, adding methods to discover more about the relationships
-    between task objects."""
+    """High-level workflow container that manages tasks and provides navigation.
+
+    The Workflow class wraps the underlying datamodel workflow object and provides
+    a Pythonic interface for:
+
+    - Discovering and accessing tasks
+    - Creating, loading, and saving workflows
+    - Navigating task hierarchies
+    - Managing task lifecycles (creation/deletion)
+    """
 
     def __init__(
         self,
@@ -86,15 +167,7 @@ class Workflow:
         command_source: PyMenu,
         fluent_version: FluentVersion,
     ) -> None:
-        """Initialize WorkflowWrapper.
-
-        Parameters
-        ----------
-        workflow : PyMenu
-            The workflow object.
-        command_source : PyMenu
-            The application root for commanding.
-        """
+        """Initialize Workflow."""
         self._workflow = workflow
         self._command_source = command_source
         self._fluent_version = fluent_version
@@ -102,7 +175,18 @@ class Workflow:
         self._compound_child_dict = {}
 
     def tasks(self) -> list:
-        """Get the ordered task list held by the workflow."""
+        """Get the complete list of tasks in the workflow.
+
+        This method builds and returns a comprehensive list of all task objects
+        currently present in the workflow, including:
+
+        - Top-level tasks
+        - Compound child tasks (tasks with multiple instances)
+        - Dynamically created tasks
+
+        The method rebuilds its internal task cache on each call to ensure
+        freshness, though this can be expensive for large workflows.
+        """
         self._task_dict = {}
         _state = self._workflow.task_object()
         for task in sorted(_state):
@@ -138,19 +222,23 @@ class Workflow:
         return list(self._task_dict.values())
 
     def _workflow_state(self):
+        """Get the complete state dictionary of the workflow."""
         return self._workflow()
 
     def _new_workflow(self, name: str):
+        """Initialize a new workflow from a predefined template."""
         self._workflow.general.initialize_workflow(workflow_type=name)
 
     def _load_workflow(self, file_path: str):
+        """Load a workflow from a saved workflow file (.wft)."""
         self._workflow.general.load_workflow(file_path=file_path)
 
     def _create_workflow(self):
+        """Create a new empty workflow."""
         self._workflow.general.create_new_workflow()
 
     def save_workflow(self, file_path: str):
-        """Save the current workflow to the location provided."""
+        """Save the current workflow to a file."""
         self._workflow.general.save_workflow(file_path=file_path)
 
     def load_state(self, list_of_roots: list):
@@ -158,13 +246,28 @@ class Workflow:
         self._workflow.general.load_state(list_of_roots=list_of_roots)
 
     def task_names(self):
-        """Get the list of the Python names for the available tasks."""
+        """Get Python-friendly names for all available tasks.
+
+        Returns the list of task names as they would be accessed via Python
+        attribute syntax (e.g., "import_geometry" for "Import Geometry").
+        """
         names = []
         for name in self._workflow.task_object():
             names.append(name.split(":")[0])
         return names
 
-    def children(self):
+    def children(self) -> list[TaskObject]:
+        """Get the top-level tasks in the workflow in display order.
+
+        Returns an ordered list of the workflow's main tasks (those directly under
+        the workflow root, not nested child tasks). The order reflects the execution
+        sequence in the workflow.
+
+        Returns
+        -------
+        List[TaskObject]
+            Ordered list of top-level task wrappers.
+        """
         ordered_names = _convert_task_list_to_display_names(
             self._workflow,
             self._workflow.general.workflow.task_list(),
@@ -183,7 +286,32 @@ class Workflow:
             sorted_list.append(name_to_task[name])
         return sorted_list
 
-    def first_child(self):
+    def first_child(self) -> TaskObject | None:
+        """Get the first top-level task in the workflow.
+
+        Returns
+        -------
+        TaskObject or None
+            The first task in the workflow, or None if the workflow is empty.
+
+        Examples
+        --------
+        >>> first = '<workflow>'.first_child()
+        >>> if first:
+        ...     print(f"Starting task: {first.name()}")
+        ...     first()  # Execute it
+
+        >>> # Navigate from first to last
+        >>> current = '<workflow>'.first_child()
+        >>> while current and current.has_next():
+        ...     print(current.name())
+        ...     current()  # Execute it
+        ...     current = current.next()
+
+        Notes
+        -----
+        Returns None for empty workflows. Always check before accessing properties.
+        """
         task_list = self._workflow.general.workflow.task_list()
         if task_list:
             first_name = _get_child_task_by_task_id(self._workflow, task_list[0])
@@ -198,7 +326,28 @@ class Workflow:
                     self,
                 )
 
-    def last_child(self):
+    def last_child(self) -> TaskObject | None:
+        """Get the last top-level task in the workflow.
+
+        Returns
+        -------
+        TaskObject or None
+            The last task in the workflow, or None if the workflow is empty.
+
+        Examples
+        --------
+        >>> last = '<workflow>'.last_child()
+        >>> if last:
+        ...     print(f"Final task: {last.name()}")
+        ...     last()  # Execute it
+
+        >>> # Execute workflow in reverse
+        >>> current = '<workflow>'.last_child()
+        >>> while current and current.has_previous():
+        ...     print(current.name())
+        ...     current()  # Execute it
+        ...     current = current.previous()
+        """
         task_list = self._workflow.general.workflow.task_list()
         if task_list:
             last_name = _get_child_task_by_task_id(self._workflow, task_list[-1])
@@ -214,12 +363,13 @@ class Workflow:
                 )
 
     def _task_list(self):
-        """."""
+        """Gets a list of display names of all tasks in the workflow."""
         return _convert_task_list_to_display_names(
             self._workflow, self._workflow.general.workflow.task_list()
         )
 
     def _ordered_tasks(self):
+        """Get ordered dictionary mapping task names to task objects."""
         ordered_names = _convert_task_list_to_display_names(
             self._workflow,
             self._workflow.general.workflow.task_list(),
@@ -241,26 +391,25 @@ class Workflow:
 
         return sorted_dict
 
-    def delete_tasks(self, list_of_tasks: list[str]):
-        """Delete the provided list of tasks.
+    def delete_tasks(self, list_of_tasks: list[TaskObject]):
+        """Delete multiple tasks from the workflow.
+
+        Removes the specified tasks from the workflow. Tasks are identified by TaskObject instances.
 
         Parameters
         ----------
-        list_of_tasks: list[str]
-            List of task items.
-
-        Returns
-        -------
-        None
+        list_of_tasks: list[TaskObject]
+            List of task objects to delete.
 
         Raises
         ------
         TypeError
-            If 'task' does not match a task name, no tasks are deleted.
+            If list contains items that are neither TaskObject nor str.
         """
         items_to_be_deleted = []
         for item in list_of_tasks:
             if not isinstance(item, TaskObject):
+                # This is done to support backwards compatibility.
                 if isinstance(item, str):
                     items_to_be_deleted.append(item)
                 else:
@@ -273,6 +422,7 @@ class Workflow:
         self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
 
     def __getattr__(self, item):
+        """Enable attribute-style access to tasks."""
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
@@ -280,9 +430,26 @@ class Workflow:
         return getattr(self._workflow, item)
 
     def __call__(self):
+        """Get workflow state when called as a function."""
         return self._workflow_state()
 
     def __delattr__(self, item):
+        """Delete a task using Python's del statement.
+
+        Parameters
+        ----------
+        item : str
+            Python attribute name of the task to delete.
+
+        Examples
+        --------
+        >>> del '<workflow>'.import_geometry
+
+        Raises
+        ------
+        LookupError
+            If the task name is not valid.
+        """
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
@@ -293,10 +460,46 @@ class Workflow:
 
 
 class TaskObject:
-    """TaskObject"""
+    """Wrapper for individual workflow task objects.
 
-    def __init__(self, task_object, base_name, workflow, parent):
-        """__init__ method of TaskObject class."""
+    TaskObject provides a high-level interface for interacting with individual
+    tasks in a workflow. It exposes task properties, arguments, execution methods,
+    and navigation capabilities.
+
+    Key Features
+    ------------
+    - Access task arguments and properties
+    - Execute tasks
+    - Navigate to parent, sibling, and child tasks
+    - Insert new tasks after the current task
+    - Access compound child tasks (for multi-instance tasks)
+    """
+
+    def __init__(
+        self,
+        task_object: PyMenu,
+        base_name: str,
+        workflow: PyMenu,
+        parent: Workflow | TaskObject,
+    ):
+        """Initialize a TaskObject wrapper.
+
+        Parameters
+        ----------
+        task_object : PyMenu
+            The underlying datamodel task object.
+        base_name : str
+            Python-friendly base name for the task.
+        workflow : PyMenu
+            Reference to the parent workflow datamodel.
+        parent : Union[Workflow, TaskObject]
+            Parent container (Workflow or parent TaskObject).
+
+        Notes
+        -----
+        This constructor is called internally by `make_task_wrapper()`.
+        Users should not instantiate TaskObject directly.
+        """
         super().__setattr__("_task_object", task_object)
         super().__setattr__("_name", base_name)
         super().__setattr__("_workflow", workflow)
@@ -304,7 +507,7 @@ class TaskObject:
         self._cache = {}
 
     def _get_next_possible_tasks(self):
-        """."""
+        """Get display names of tasks that can be inserted after this task."""
         task_obj = super().__getattribute__("_task_object")
         ret_list = []
         for item in task_obj.get_next_possible_tasks():
@@ -317,7 +520,12 @@ class TaskObject:
         return ret_list
 
     def _insert_next_task(self, task_name):
-        """."""
+        """Insert a task after the current task.
+
+        Notes
+        -----
+        Internal method. Users should use `insertable_tasks.<task>.insert()` instead.
+        """
         task_obj = super().__getattribute__("_task_object")
         # This is just a precaution in case this method is directly called from the task level.
         self.get_next_possible_tasks()
@@ -326,13 +534,63 @@ class TaskObject:
 
     @property
     def insertable_tasks(self):
-        """Tasks that can be inserted after the current task."""
+        """Get interface for inserting tasks after this one.
+
+        Returns a dynamic object that exposes all valid task types that can be
+        inserted after the current task. Each insertable task is accessible as
+        an attribute with an `insert()` method.
+
+        Returns
+        -------
+        _NextTask
+            Object with attributes for each insertable task type.
+
+        Examples
+        --------
+        Basic usage::
+
+            >>> task = '<workflow>'.import_geometry
+            >>>
+            >>> # See what's available
+            >>> available = task.insertable_tasks()
+            >>> for insertable in available:
+            ...     print(insertable)
+            <Insertable 'import_boi_geometry' task>
+            <Insertable 'set_up_rotational_periodic_boundaries' task>
+            <Insertable 'create_local_refinement_regions' task>
+            <Insertable 'custom_journal_task' task>
+
+        Insert specific task::
+
+            >>> # Insert by accessing as attribute
+            >>> task.insertable_tasks.import_boi_geometry.insert()
+
+        Access specific task after insertion::
+
+            >>> # Access task as attribute
+            >>> '<workflow>'.import_boi_geometry
+        """
         return self._NextTask(self)
 
     class _NextTask:
-        # Comment the code for better explanation.
+        """Container for insertable task operations.
+
+        This internal class provides a dynamic interface for task insertion.
+        It creates attributes on-the-fly for each valid insertable task type.
+
+        Attributes are created dynamically based on the result of
+        `_get_next_possible_tasks()`, with each attribute being an `_Insert`
+        instance that provides the `insert()` method.
+        """
+
         def __init__(self, base_task):
-            """Initialize an ``_NextTask`` instance."""
+            """Initialize insertable tasks container.
+
+            Parameters
+            ----------
+            base_task : TaskObject
+                The task after which new tasks can be inserted.
+            """
             self._base_task = base_task
             self._insertable_tasks = []
             for item in self._base_task._get_next_possible_tasks():
@@ -342,23 +600,54 @@ class TaskObject:
                 setattr(self, item, insertable_task)
                 self._insertable_tasks.append(insertable_task)
 
-        def __call__(self):
+        def __call__(self) -> list[_Insert]:
+            """Get list of all insertable task objects.
+
+            Returns
+            -------
+            List[_Insert]
+                List of insertable task objects.
+            """
             return self._insertable_tasks
 
         class _Insert:
+            """Represents a single insertable task.
+
+            Provides the `insert()` method to actually insert the task into
+            the workflow after the base task.
+            """
+
             def __init__(self, base_task, name):
-                """Initialize an ``_Insert`` instance."""
+                """Initialize an insertable task reference.
+
+                Parameters
+                ----------
+                base_task : TaskObject
+                    The task after which this will be inserted.
+                name : str
+                    Python friendly name of the insertable task.
+                """
                 self._base_task = base_task
                 self._name = name
 
             def insert(self):
-                """Insert a task in the workflow."""
+                """Insert this task into the workflow.
+
+                Creates a new instance of this task type and inserts it
+                immediately after the base task in the workflow sequence.
+                """
                 return self._base_task._insert_next_task(task_name=self._name)
 
             def __repr__(self):
                 return f"<Insertable '{self._name}' task>"
 
     def __getattr__(self, item):
+        """Enable attribute access to task properties and arguments.
+
+         Notes
+        -----
+        Arguments take precedence over task object properties.
+        """
         task_obj = super().__getattribute__("_task_object")
         args = task_obj.arguments
         if item in args():
@@ -366,6 +655,7 @@ class TaskObject:
         return getattr(task_obj, item)
 
     def __setattr__(self, key, value):
+        """Enable attribute assignment to task arguments."""
         task_obj = super().__getattribute__("_task_object")
         args = task_obj.arguments
         if hasattr(args, key):
@@ -374,6 +664,7 @@ class TaskObject:
             super().__setattr__(key, value)
 
     def __call__(self):
+        """Execute the task when called as a function."""
         task_obj = super().__getattribute__("_task_object")
         return task_obj.execute()
 
@@ -413,7 +704,7 @@ class TaskObject:
         self[key].delete()
 
     def _task_list(self):
-        """."""
+        """Gets the display names of the child tasks of a task item."""
         task_obj = super().__getattribute__("_task_object")
         # This is just a precaution in case this method is directly called from the task level.
         task_list = task_obj.task_list()
@@ -425,6 +716,13 @@ class TaskObject:
             return []
 
     def children(self):
+        """Get ordered list of direct child tasks.
+
+        Returns
+        -------
+        List[TaskObject]
+            Ordered list of child task wrappers, or empty list if no children.
+        """
         if not self._task_list():
             return []
 
@@ -446,6 +744,30 @@ class TaskObject:
         return sorted_list
 
     def first_child(self):
+        """Get the first child task of this task.
+
+        Returns
+        -------
+        TaskObject or None
+            The first child task, or None if no children exist.
+
+        Examples
+        --------
+        >>> parent = '<workflow>'.describe_geometry
+        >>> first = parent.first_child()
+        >>> if first:
+        ...     print(f"First child: {first.name()}")
+
+        Navigate through children::
+
+            >>> current = parent.first_child()
+            >>> while current:
+            ...     print(current.name())
+            ...     if current.has_next():
+            ...         current = current.next()
+            ...     else:
+            ...         break
+        """
         task_list = self._task_list()
         if task_list:
             first_name = task_list[0]
@@ -463,6 +785,20 @@ class TaskObject:
                 )
 
     def last_child(self):
+        """Get the last child task of this task.
+
+        Returns
+        -------
+        TaskObject or None
+            The last child task, or None if no children exist.
+
+        Examples
+        --------
+        >>> parent = '<workflow>'.describe_geometry
+        >>> last = parent.last_child()
+        >>> if last:
+        ...     print(f"Last child: {last.name()}")
+        """
         task_list = self._task_list()
         if task_list:
             last_name = task_list[-1]
@@ -481,6 +817,25 @@ class TaskObject:
 
     @staticmethod
     def _get_next_key(input_dict, current_key):
+        """Get the key that follows current_key in an ordered dictionary.
+
+        Parameters
+        ----------
+        input_dict : Dict
+            Ordered dictionary of tasks.
+        current_key : str
+            Current task name.
+
+        Returns
+        -------
+        str
+            Next task name.
+
+        Raises
+        ------
+        IndexError
+            If current_key is the last key in the dictionary.
+        """
         keys = list(input_dict)
         idx = keys.index(current_key)
         if idx == len(keys) - 1:
@@ -489,6 +844,25 @@ class TaskObject:
 
     @staticmethod
     def _get_previous_key(input_dict, current_key):
+        """Get the key that precedes current_key in an ordered dictionary.
+
+        Parameters
+        ----------
+        input_dict : Dict
+            Ordered dictionary of tasks.
+        current_key : str
+            Current task name.
+
+        Returns
+        -------
+        str
+            Previous task name.
+
+        Raises
+        ------
+        IndexError
+            If current_key is the first key in the dictionary.
+        """
         keys = list(input_dict)
         idx = keys.index(current_key)
         if idx == 0:
@@ -496,6 +870,13 @@ class TaskObject:
         return keys[idx - 1]
 
     def has_parent(self):
+        """Check if this task has a parent container.
+
+        Returns
+        -------
+        bool
+            True if task has a parent (Workflow or TaskObject), False otherwise.
+        """
         try:
             super().__getattribute__("_parent")
             return True
@@ -503,10 +884,29 @@ class TaskObject:
             return False
 
     def parent(self):
+        """Get the parent container of this task.
+
+        Returns
+        -------
+        Union[Workflow, TaskObject]
+            The parent container. Can be:
+            - Workflow instance for top-level tasks
+            - TaskObject instance for nested child tasks
+        """
         parent = super().__getattribute__("_parent")
         return parent
 
     def has_next(self) -> bool:
+        """Check if there is a next sibling task.
+
+        Determines whether this task has a sibling task that follows it in the
+        workflow sequence at the same level.
+
+        Returns
+        -------
+        bool
+            True if a next sibling exists, False if this is the last task.
+        """
         parent = super().__getattribute__("_parent")
         task_dict = parent._ordered_tasks()
         try:
@@ -516,12 +916,23 @@ class TaskObject:
             return False
 
     def next(self):
+        """Returns the next sibling task item."""
         parent = super().__getattribute__("_parent")
         task_dict = parent._ordered_tasks()
         next_key = self._get_next_key(task_dict, self.name())
         return task_dict[next_key]
 
     def has_previous(self) -> bool:
+        """Check if there is a previous sibling task.
+
+        Determines whether this task has a sibling task that precedes it in the
+        workflow sequence at the same level.
+
+        Returns
+        -------
+        bool
+            True if a previous sibling exists, False if this is the first task.
+        """
         parent = super().__getattribute__("_parent")
         task_dict = parent._ordered_tasks()
         try:
@@ -531,6 +942,7 @@ class TaskObject:
             return False
 
     def previous(self):
+        """Returns the previous sibling task item."""
         parent = super().__getattribute__("_parent")
         task_dict = parent._ordered_tasks()
         previous_key = self._get_previous_key(task_dict, self.name())
@@ -562,7 +974,7 @@ class TaskObject:
         return sorted_dict
 
     def delete(self):
-        """."""
+        """Deletes the task item on which it is called."""
         workflow = super().__getattribute__("_workflow")
         workflow.general.delete_tasks(list_of_tasks=[self.name()])
 
@@ -601,6 +1013,7 @@ def build_specific_interface(task_object):
 
 
 def make_task_wrapper(task_obj, name, workflow, parent):
+    """Wraps TaskObjects."""
 
     specific_interface = build_specific_interface(task_obj)
 
