@@ -41,6 +41,7 @@ name_to_identifier_map = {
 
 
 def resolve_workflow_base():
+    """Resolve the base workflow based on environment variable."""
     if os.getenv("USE_SERVER_MW") == "1":
         from ansys.fluent.core.workflow_new import Workflow
     else:
