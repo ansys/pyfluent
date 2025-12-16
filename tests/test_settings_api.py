@@ -31,7 +31,9 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
+    InactiveObjectError,
     NamedObject,
+    ReadOnlyActionError,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -138,13 +140,9 @@ def test_wildcard(new_solver_session):
             "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
         }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    if solver.get_fluent_version() >= FluentVersion.v242:
-        sources = cell_zone_conditions.fluid["*"].sources.terms
-        sources_key = "sources"
-        terms_key = "terms"
-    else:
-        sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
-        sources_key = terms_key = "source_terms"
+    sources = cell_zone_conditions.fluid["*"].sources.terms
+    sources_key = "sources"
+    terms_key = "terms"
     assert sources["*mom*"]() == {
         "fluid": {
             sources_key: {
@@ -444,11 +442,9 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
 @pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
-    version = solver.get_fluent_version()
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    ret = solver.file.read_case_data(file_name=case_path)
-    assert ret is None if version >= FluentVersion.v242 else not None
+    assert solver.file.read_case_data(file_name=case_path) is None
     solver.solution.report_definitions.surface["surface-1"] = dict(
         surface_names=["cold-inlet"]
     )
@@ -846,3 +842,19 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
 def test_set_state_via_call(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_read_only_command_execution(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+    contour = solver.settings.results.graphics.contour.create()
+    assert contour.display.is_active() is False
+    with pytest.raises(InactiveObjectError):
+        contour.display.is_read_only()
+        # Same behaviour for attribute access of command arguments
+
+    contour.surfaces_list = ["wall-elbow"]
+    assert contour.display.is_active() is True
+    assert contour.display.is_read_only() is True
+    with pytest.raises(ReadOnlyActionError):
+        contour.display()

@@ -34,6 +34,7 @@ from packaging.version import Version
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -179,6 +180,9 @@ def run_before_each_test(
     pyfluent.config.container_mount_source = pyfluent.config.examples_path
     original_cwd = os.getcwd()
     monkeypatch.chdir(tmp_path)
+    certs_path = Path(original_cwd) / "certs"
+    if certs_path.exists():
+        shutil.copytree(Path(original_cwd) / "certs", tmp_path / "certs")
     yield
     os.chdir(original_cwd)
 
@@ -250,6 +254,7 @@ def exhaust_system_geometry_filename():
 
 
 def create_session(**kwargs):
+    kwargs.update(get_grpc_launcher_args_for_gh_runs())
     if pyfluent.config.use_file_transfer_service:
         file_transfer_service = ContainerFileTransferStrategy()
         container_dict = {"mount_source": file_transfer_service.mount_source}
@@ -400,6 +405,14 @@ def mixing_elbow_settings_session(new_solver_session):
         file_name=case_name,
         lightweight_setup=True,
     )
+    return solver
+
+
+@pytest.fixture
+def mixing_elbow_case_session(new_solver_session):
+    solver = new_solver_session
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
 
