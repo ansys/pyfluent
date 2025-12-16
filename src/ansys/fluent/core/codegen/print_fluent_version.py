@@ -36,7 +36,7 @@ def print_fluent_version(app_utilities):
         f.write(f'FLUENT_BUILD_ID = "{build_info.build_id}"\n')
         f.write(f'FLUENT_REVISION = "{build_info.vcs_revision}"\n')
         f.write(f'FLUENT_BRANCH = "{build_info.vcs_branch}"\n')
-        f.write(f"PYFLUENT_VERSION = '{__version__}'\n")
+        f.write(f'PYFLUENT_VERSION = "{__version__}"\n')
 
 
 if __name__ == "__main__":
