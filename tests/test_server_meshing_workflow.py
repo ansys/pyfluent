@@ -26,6 +26,7 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_watertight_workflow(new_meshing_session_wo_exit):
     # Import geometry
@@ -133,6 +134,7 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
@@ -145,12 +147,12 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
         WorkflowType="Fault-tolerant Meshing"
     )
     fault_tolerant = meshing.meshing_workflow
-    meshing.PartManagement.InputFileChanged(
-        FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
+    fault_tolerant.parts.input_file_changed(
+        file_path=import_file_name, ignore_solid_names=False, part_per_body=False
     )
-    meshing.PMFileManagement.FileManager.LoadFiles()
-    meshing.PartManagement.Node["Meshing Model"].Copy(
-        Paths=[
+    fault_tolerant.parts_files.file_manager.load_files()
+    fault_tolerant.parts.node["Meshing Model"].copy(
+        paths=[
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
             "/dirty_manifold-for-wrapper,"
             + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
@@ -160,7 +162,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-    meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(
+    fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state(
         "part"
     )
     fault_tolerant.task_object.import_cad_and_part_management[
@@ -492,6 +494,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
@@ -690,6 +693,7 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
     new_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
@@ -832,6 +836,7 @@ def test_get_task_by_id(new_meshing_session):
     }
 
 
+@pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_insert_delete_and_rename_task(new_meshing_session):
     meshing_session = new_meshing_session
@@ -1337,19 +1342,19 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(
     meshing = new_meshing_session
     watertight = meshing.watertight()
     _next_possible_tasks = [
-        "<Insertable 'import_body_of_influence_geometry' task>",
-        "<Insertable 'set_up_periodic_boundaries' task>",
+        "<Insertable 'import_boi_geometry' task>",
+        "<Insertable 'set_up_rotational_periodic_boundaries' task>",
         "<Insertable 'create_local_refinement_regions' task>",
-        "<Insertable 'run_custom_journal' task>",
+        "<Insertable 'custom_journal_task' task>",
     ]
     assert sorted(
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
     assert sorted(
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)
-    watertight.import_geometry.insertable_tasks.set_up_periodic_boundaries.insert()
+    watertight.import_geometry.insertable_tasks.set_up_rotational_periodic_boundaries.insert()
     assert len(watertight.tasks()) == 13
 
 
@@ -1360,17 +1365,17 @@ def test_duplicate_tasks(new_meshing_session, use_server_meshing_workflow):
     watertight = meshing.watertight()
 
     _next_possible_tasks = [
-        "<Insertable 'import_body_of_influence_geometry' task>",
-        "<Insertable 'set_up_periodic_boundaries' task>",
+        "<Insertable 'import_boi_geometry' task>",
+        "<Insertable 'set_up_rotational_periodic_boundaries' task>",
         "<Insertable 'create_local_refinement_regions' task>",
-        "<Insertable 'run_custom_journal' task>",
+        "<Insertable 'custom_journal_task' task>",
     ]
     assert sorted(
         [repr(x) for x in watertight.import_geometry.insertable_tasks()]
     ) == sorted(_next_possible_tasks)
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
 
     assert watertight.import_boi_geometry.name() == "Import Body of Influence Geometry"
     assert (
@@ -1415,8 +1420,8 @@ def test_watertight_workflow(
 def test_delete_interface(new_meshing_session, use_server_meshing_workflow):
     watertight = new_meshing_session.watertight()
 
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
 
     assert watertight.import_boi_geometry.name() == "Import Body of Influence Geometry"
     assert (
@@ -1492,8 +1497,8 @@ def test_ordering_of_tasks(new_meshing_session, use_server_meshing_workflow):
         == "Update Regions"
     )
 
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
-    watertight.import_geometry.insertable_tasks.import_body_of_influence_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
+    watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
 
     assert watertight.import_boi_geometry[1].previous().name() == "Import Geometry"
     assert (
@@ -1515,8 +1520,8 @@ def test_workflow_type_checking(new_meshing_session, use_server_meshing_workflow
 
     assert wf_1.insertable_tasks()
 
-    wf_1.insertable_tasks.import_body_of_influence_geometry.insert()
-    wf_1.insertable_tasks.import_body_of_influence_geometry.insert()
+    wf_1.insertable_tasks.import_boi_geometry.insert()
+    wf_1.insertable_tasks.import_boi_geometry.insert()
 
     assert repr(wf_1.next()) == "task < import_boi_geometry: 1 >"
     assert repr(wf_1.next().next()) == "task < import_boi_geometry: 0 >"
@@ -1632,6 +1637,8 @@ def test_new_watertight_workflow_using_traversal(
     wf_6.add_child_to_task()
     wf_6.control_name.set_state("smooth-transition_1")
     wf_6.insert_compound_child_task()
+    assert wf_6.has_next()
+    assert wf_6.first_child() is not None
     wf_6.first_child()()
 
     # Generate volume mesh

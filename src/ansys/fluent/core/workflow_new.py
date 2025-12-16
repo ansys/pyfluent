@@ -27,7 +27,9 @@ from __future__ import annotations
 from collections import OrderedDict
 import re
 
-from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core import config
+from ansys.fluent.core.services.datamodel_se import PyMenu, PyMenuGeneric
+from ansys.fluent.core.utils import load_module
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -51,24 +53,27 @@ def _get_child_task_by_task_id(workflow_root, task_id):
     ).get_remote_state()
 
 
-def camel_to_snake_case(camel_case_str: str) -> str:
-    """Convert camel case input string to snake case output string."""
-    if not camel_case_str.islower():
-        _snake_case_str = (
-            re.sub(
-                "((?<=[a-z])[A-Z0-9]|(?!^)[A-Z](?=[a-z0-9]))",
-                r"_\1",
-                camel_case_str,
-            )
-            .lower()
-            .replace("__", "_")
+def command_name_to_task_name(workflow_root, command_name: str) -> str:
+    """Command name to task name converter."""
+    # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
+    #  for '<Task Object>.get_next_possible_tasks()'.
+    try:
+        module = load_module(
+            "meshing_261", config.codegen_outdir / "datamodel_261" / "meshing.py"
         )
-    else:
-        _snake_case_str = camel_case_str
-    return _snake_case_str
-
-
-camel_to_snake_case.cache = {}
+        command_instance = getattr(
+            module.Root(workflow_root.service, "meshing", []), command_name
+        ).create_instance()
+        return command_instance.get_attr("APIName") or command_instance.get_attr(
+            "helpString"
+        )
+    except (ImportError, FileNotFoundError):
+        command_instance = getattr(
+            PyMenuGeneric(workflow_root.service, "meshing"), command_name
+        ).create_instance()
+        return command_instance.get_attr("APIName") or command_instance.get_attr(
+            "helpString"
+        )
 
 
 class Workflow:
@@ -303,7 +308,9 @@ class TaskObject:
         task_obj = super().__getattribute__("_task_object")
         ret_list = []
         for item in task_obj.get_next_possible_tasks():
-            snake_case_name = camel_to_snake_case(item)
+            snake_case_name = command_name_to_task_name(
+                super().__getattribute__("_workflow"), item
+            )
             if snake_case_name != item:
                 self._cache[snake_case_name] = item
             ret_list.append(snake_case_name)
