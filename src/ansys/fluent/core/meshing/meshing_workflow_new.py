@@ -31,7 +31,7 @@ import os
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-from ansys.fluent.core.workflow import Workflow
+from ansys.fluent.core.workflow_new import Workflow
 
 name_to_identifier_map = {
     "Watertight Geometry": "EnableCleanCAD",
@@ -77,23 +77,11 @@ class MeshingWorkflow(Workflow):
         self._meshing = meshing
         self._name = name
         self._identifier = identifier
-        self._unsubscribe_root_affected_callback()
         if initialize:
             self._new_workflow(name=self._name)
         else:
             self._activate_dynamic_interface(dynamic_interface=True)
         self._initialized = True
-
-    def __getattribute__(self, item: str):
-        if (
-            not item.startswith("_")
-            and super().__getattribute__("_initialized")
-            and not getattr(self._meshing.GlobalSettings, self._identifier)()
-        ):
-            raise RuntimeError(
-                f"'{self._name}' objects are inaccessible from other workflows."
-            )
-        return super().__getattribute__(item)
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow):
