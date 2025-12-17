@@ -243,9 +243,9 @@ class Workflow:
                 else:
                     self._task_dict[name + f"_{task_obj.name().split()[-1]}"] = task_obj
 
-        for key, value in self._compound_child_dict.items():
-            for task_name, task_obj in value.items():
-                self._task_dict[task_name] = task_obj
+        # Merge all compound child tasks into main dictionary
+        for child_tasks in self._compound_child_dict.values():
+            self._task_dict.update(child_tasks)
 
         return self._task_dict.values()
 
@@ -279,10 +279,7 @@ class Workflow:
         Returns the list of task names as they would be accessed via Python
         attribute syntax (e.g., "import_geometry" for "Import Geometry").
         """
-        names = []
-        for name in self._workflow.task_object():
-            names.append(name.split(":")[0])
-        return names
+        return [name.split(":")[0] for name in self._workflow.task_object()]
 
     def children(self) -> list[TaskObject]:
         """Get the top-level tasks in the workflow in display order.
