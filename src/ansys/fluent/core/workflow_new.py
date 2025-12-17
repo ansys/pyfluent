@@ -47,6 +47,7 @@ from __future__ import annotations
 
 from collections import OrderedDict
 import re
+from typing import ValuesView
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -200,7 +201,7 @@ class Workflow:
         self._task_dict = {}
         self._compound_child_dict = {}
 
-    def tasks(self) -> list:
+    def tasks(self) -> ValuesView[PyMenu]:
         """Get the complete list of tasks in the workflow.
 
         This method builds and returns a comprehensive list of all task objects
@@ -224,10 +225,12 @@ class Workflow:
                         name + "_child_1": task_obj,
                     }
                 else:
-                    _name_list = []
-                    for key, value in self._compound_child_dict[name].items():
-                        _name_list.append(value._name_())
-                    if task_obj._name_() not in _name_list:
+                    # Check if this task name already exists in the compound child dict
+                    if task_obj._name_() not in (
+                        value._name_()
+                        for value in self._compound_child_dict[name].values()
+                    ):
+                        # Get next child number by extracting last digit from last sorted key
                         child_key = (
                             int(sorted(self._compound_child_dict[name])[-1][-1]) + 1
                         )
@@ -244,7 +247,7 @@ class Workflow:
             for task_name, task_obj in value.items():
                 self._task_dict[task_name] = task_obj
 
-        return list(self._task_dict.values())
+        return self._task_dict.values()
 
     def _workflow_state(self):
         """Get the complete state dictionary of the workflow."""
