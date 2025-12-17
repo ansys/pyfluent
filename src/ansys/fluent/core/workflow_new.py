@@ -52,8 +52,45 @@ from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-def is_compound_child(task_type: str):
-    """Returns `True` if the task type is Compound Child, else `False`."""
+def _get_task_type_name(task_obj: PyMenu) -> str:
+    """Extract the task type name from a task object's class name.
+
+    The datamodel generates task classes with leading underscores (e.g., "_import_geometry").
+    This function strips the leading underscore to get the clean task type name.
+
+    Parameters
+    ----------
+    task_obj : PyMenu
+        The task datamodel object.
+
+    Returns
+    -------
+    str
+        Clean task type name without leading underscore (e.g., "import_geometry").
+
+    Notes
+    -----
+    This is needed because the datamodel service generates class names with a leading
+    underscore convention (e.g., `_import_geometry`), but we want clean names for
+    internal use and type creation.
+    """
+    return task_obj.__class__.__name__.lstrip("_")
+
+
+def is_compound_child(task_type: str) -> bool:
+    """Check if a task type represents a compound child task. This encapsulates
+    a string comparison to avoid repetition.
+
+    Parameters
+    ----------
+    task_type : str
+        The task type string to check.
+
+    Returns
+    -------
+    bool
+        True if the task type is "Compound Child", False otherwise.
+    """
     return task_type == "Compound Child"
 
 
@@ -179,8 +216,7 @@ class Workflow:
         self._task_dict = {}
         _state = self._workflow.task_object()
         for task in sorted(_state):
-            name = task.split(":")[0]
-            display_name = task.split(":")[-1]
+            name, display_name = task.split(":")
             task_obj = getattr(self._workflow.task_object, name)[display_name]
             if is_compound_child(task_obj.task_type()):
                 if name not in self._compound_child_dict:
@@ -264,7 +300,7 @@ class Workflow:
         name_to_task = {
             task_obj.name(): make_task_wrapper(
                 task_obj,
-                task_obj.__class__.__name__.lstrip("_"),
+                _get_task_type_name(task_obj),
                 self._workflow,
                 self,
                 self._command_source,
@@ -314,7 +350,7 @@ class Workflow:
             if task_obj.name() == first_name:
                 return make_task_wrapper(
                     task_obj,
-                    task_obj.__class__.__name__.lstrip("_"),
+                    _get_task_type_name(task_obj),
                     self._workflow,
                     self,
                     self._command_source,
@@ -351,7 +387,7 @@ class Workflow:
             if task_obj.name() == last_name:
                 return make_task_wrapper(
                     task_obj,
-                    task_obj.__class__.__name__.lstrip("_"),
+                    _get_task_type_name(task_obj),
                     self._workflow,
                     self,
                     self._command_source,
@@ -372,7 +408,7 @@ class Workflow:
         name_to_task = {
             task_obj.name(): make_task_wrapper(
                 task_obj,
-                task_obj.__class__.__name__.lstrip("_"),
+                _get_task_type_name(task_obj),
                 self._workflow,
                 self,
                 self._command_source,
