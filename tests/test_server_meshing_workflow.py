@@ -1413,7 +1413,7 @@ def test_watertight_workflow(
     add_local_sizing.add_child = True
     add_local_sizing.boi_face_label_list = ["cold-inlet", "hot-inlet"]
     add_local_sizing.add_child_and_update()
-    assert add_local_sizing._task_list() == ["facesize_1"]
+    assert add_local_sizing._task_names() == ["facesize_1"]
     assert watertight.add_local_sizing_wtm_child_1.name() == "facesize_1"
     assert watertight.add_local_sizing_wtm["facesize_1"].name() == "facesize_1"
 

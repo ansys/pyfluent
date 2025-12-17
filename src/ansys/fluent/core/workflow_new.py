@@ -600,12 +600,10 @@ class TaskObject:
 
     def _get_next_possible_tasks(self):
         """Get display names of tasks that can be inserted after this task."""
-        task_obj = super().__getattribute__("_task_object")
+        task_obj = self._task_object
         ret_list = []
         for item in task_obj.get_next_possible_tasks():
-            snake_case_name = command_name_to_task_name(
-                super().__getattribute__("_meshing_root"), item
-            )
+            snake_case_name = command_name_to_task_name(self._meshing_root, item)
             if snake_case_name != item:
                 self._cache[snake_case_name] = item
             ret_list.append(snake_case_name)
@@ -618,10 +616,9 @@ class TaskObject:
         -----
         Internal method. Users should use `insertable_tasks.<task>.insert()` instead.
         """
-        task_obj = super().__getattribute__("_task_object")
-        self.get_next_possible_tasks()
+        self._get_next_possible_tasks()
         command_name = self._cache.get(task_name) or task_name
-        task_obj.insert_next_task(command_name=command_name)
+        self._task_object.insert_next_task(command_name=command_name)
 
     @property
     def insertable_tasks(self):
@@ -739,7 +736,7 @@ class TaskObject:
         -----
         Arguments take precedence over task object properties.
         """
-        task_obj = super().__getattribute__("_task_object")
+        task_obj = self._task_object
         args = task_obj.arguments
         if item in args():
             return getattr(args, item)
@@ -747,8 +744,7 @@ class TaskObject:
 
     def __setattr__(self, key, value):
         """Enable attribute assignment to task arguments."""
-        task_obj = super().__getattribute__("_task_object")
-        args = task_obj.arguments
+        args = self._task_object.arguments
         if hasattr(args, key):
             setattr(args, key, value)
         else:
@@ -756,15 +752,14 @@ class TaskObject:
 
     def __call__(self):
         """Execute the task when called as a function."""
-        task_obj = super().__getattribute__("_task_object")
-        return task_obj.execute()
+        return self._task_object.execute()
 
     def __getitem__(self, key):
-        task_obj = super().__getattribute__("_task_object")
-        name = super().__getattribute__("_name")
-        workflow = super().__getattribute__("_workflow")
-        parent = super().__getattribute__("_parent")
-        meshing_root = super().__getattribute__("_meshing_root")
+        task_obj = self._task_object
+        name = self._name
+        workflow = self._workflow
+        parent = self._parent
+        meshing_root = self._meshing_root
         name_1 = name
         name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
         try:
@@ -800,12 +795,9 @@ class TaskObject:
 
     def _task_names(self):
         """Gets the display names of the child tasks of a task item."""
-        task_obj = super().__getattribute__("_task_object")
-        task_list = task_obj.task_list()
+        task_list = self._task_object.task_list()
         if task_list:
-            return _convert_task_list_to_display_names(
-                super().__getattribute__("_workflow"), task_list
-            )
+            return _convert_task_list_to_display_names(self._workflow, task_list)
         else:
             return []
 
@@ -821,8 +813,7 @@ class TaskObject:
         if not child_names:
             return []
 
-        workflow = super().__getattribute__("_workflow")
-        meshing_root = super().__getattribute__("_meshing_root")
+        workflow = self._workflow
 
         # Create reverse lookup: display name -> task type
         name_to_type = {
@@ -842,7 +833,7 @@ class TaskObject:
                     task_type,
                     workflow,
                     self,
-                    meshing_root,
+                    self._meshing_root,
                 )
                 wrapped_children.append(wrapped)
 
@@ -878,7 +869,7 @@ class TaskObject:
             first_name = task_list[0]
         else:
             return None
-        workflow = super().__getattribute__("_workflow")
+        workflow = self._workflow
 
         type_to_name = {
             item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
@@ -890,7 +881,7 @@ class TaskObject:
                     key,
                     workflow,
                     self,
-                    super().__getattribute__("_meshing_root"),
+                    self._meshing_root,
                 )
 
     def last_child(self):
@@ -913,7 +904,7 @@ class TaskObject:
             last_name = task_list[-1]
         else:
             return None
-        workflow = super().__getattribute__("_workflow")
+        workflow = self._workflow
 
         type_to_name = {
             item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
@@ -925,7 +916,7 @@ class TaskObject:
                     key,
                     workflow,
                     self,
-                    super().__getattribute__("_meshing_root"),
+                    self._meshing_root,
                 )
 
     @staticmethod
@@ -1006,8 +997,7 @@ class TaskObject:
             - Workflow instance for top-level tasks
             - TaskObject instance for nested child tasks
         """
-        parent = super().__getattribute__("_parent")
-        return parent
+        return self._parent
 
     def has_next(self) -> bool:
         """Check if there is a next sibling task.
@@ -1020,8 +1010,7 @@ class TaskObject:
         bool
             True if a next sibling exists, False if this is the last task.
         """
-        parent = super().__getattribute__("_parent")
-        task_dict = parent._ordered_tasks()
+        task_dict = self._parent._ordered_tasks()
         try:
             self._get_next_key(task_dict, self.name())
             return True
@@ -1030,8 +1019,7 @@ class TaskObject:
 
     def next(self):
         """Returns the next sibling task item."""
-        parent = super().__getattribute__("_parent")
-        task_dict = parent._ordered_tasks()
+        task_dict = self._parent._ordered_tasks()
         next_key = self._get_next_key(task_dict, self.name())
         return task_dict[next_key]
 
@@ -1046,8 +1034,7 @@ class TaskObject:
         bool
             True if a previous sibling exists, False if this is the first task.
         """
-        parent = super().__getattribute__("_parent")
-        task_dict = parent._ordered_tasks()
+        task_dict = self._parent._ordered_tasks()
         try:
             self._get_previous_key(task_dict, self.name())
             return True
@@ -1056,8 +1043,7 @@ class TaskObject:
 
     def previous(self):
         """Returns the previous sibling task item."""
-        parent = super().__getattribute__("_parent")
-        task_dict = parent._ordered_tasks()
+        task_dict = self._parent._ordered_tasks()
         previous_key = self._get_previous_key(task_dict, self.name())
         return task_dict[previous_key]
 
@@ -1065,8 +1051,7 @@ class TaskObject:
         if not self._task_names():
             return OrderedDict()
 
-        workflow = super().__getattribute__("_workflow")
-        meshing_root = super().__getattribute__("_meshing_root")
+        workflow = self._workflow
 
         # Create lightweight lookup: task type -> display name
         type_to_name = dict(item.split(":") for item in workflow.task_object())
@@ -1085,7 +1070,7 @@ class TaskObject:
                         task_type,
                         workflow,
                         self,
-                        meshing_root,
+                        self._meshing_root,
                     )
                     sorted_dict[display_name] = wrapped
                     break
@@ -1094,8 +1079,7 @@ class TaskObject:
 
     def delete(self):
         """Deletes the task item on which it is called."""
-        workflow = super().__getattribute__("_workflow")
-        workflow.general.delete_tasks(list_of_tasks=[self.name()])
+        self._workflow.general.delete_tasks(list_of_tasks=[self.name()])
 
     def __repr__(self):
         try:
