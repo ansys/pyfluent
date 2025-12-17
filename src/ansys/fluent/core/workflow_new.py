@@ -48,9 +48,7 @@ from __future__ import annotations
 from collections import OrderedDict
 import re
 
-from ansys.fluent.core import config
-from ansys.fluent.core.services.datamodel_se import PyMenu, PyMenuGeneric
-from ansys.fluent.core.utils import load_module
+from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -105,7 +103,7 @@ def _get_child_task_by_task_id(workflow_root, task_id):
     ).get_remote_state()
 
 
-def command_name_to_task_name(workflow_root, command_name: str) -> str:
+def command_name_to_task_name(meshing_root, command_name: str) -> str:
     """Convert a command name to its corresponding task display name.
 
     This function maps internal command names (used by the Fluent core) to
@@ -113,8 +111,8 @@ def command_name_to_task_name(workflow_root, command_name: str) -> str:
 
     Parameters
     ----------
-    workflow_root : PyMenu
-        The root workflow datamodel object.
+    meshing_root : PyMenu
+        The root meshing datamodel object.
     command_name : str
         Internal command name (e.g., "ImportGeometry").
 
@@ -125,28 +123,14 @@ def command_name_to_task_name(workflow_root, command_name: str) -> str:
 
     Notes
     -----
-    This is a workaround for Fluent 26R1. It attempts to load version-specific
-    datamodel files to perform the conversion, falling back to a generic approach if unavailable.
+    This is a workaround for Fluent 26R1.
     """
     # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
     #  for '<Task Object>.get_next_possible_tasks()'.
-    try:
-        module = load_module(
-            "meshing_261", config.codegen_outdir / "datamodel_261" / "meshing.py"
-        )
-        command_instance = getattr(
-            module.Root(workflow_root.service, "meshing", []), command_name
-        ).create_instance()
-        return command_instance.get_attr("APIName") or command_instance.get_attr(
-            "helpString"
-        )
-    except (ImportError, FileNotFoundError):
-        command_instance = getattr(
-            PyMenuGeneric(workflow_root.service, "meshing"), command_name
-        ).create_instance()
-        return command_instance.get_attr("APIName") or command_instance.get_attr(
-            "helpString"
-        )
+    command_instance = getattr(meshing_root, command_name).create_instance()
+    return command_instance.get_attr("APIName") or command_instance.get_attr(
+        "helpString"
+    )
 
 
 class Workflow:
@@ -274,7 +258,11 @@ class Workflow:
         )
         name_to_task = {
             task_obj.name(): make_task_wrapper(
-                task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+                task_obj,
+                task_obj.__class__.__name__.lstrip("_"),
+                self._workflow,
+                self,
+                self._command_source,
             )
             for task_obj in self.tasks()
         }
@@ -324,6 +312,7 @@ class Workflow:
                     task_obj.__class__.__name__.lstrip("_"),
                     self._workflow,
                     self,
+                    self._command_source,
                 )
 
     def last_child(self) -> TaskObject | None:
@@ -360,6 +349,7 @@ class Workflow:
                     task_obj.__class__.__name__.lstrip("_"),
                     self._workflow,
                     self,
+                    self._command_source,
                 )
 
     def _task_list(self):
@@ -376,7 +366,11 @@ class Workflow:
         )
         name_to_task = {
             task_obj.name(): make_task_wrapper(
-                task_obj, task_obj.__class__.__name__.lstrip("_"), self._workflow, self
+                task_obj,
+                task_obj.__class__.__name__.lstrip("_"),
+                self._workflow,
+                self,
+                self._command_source,
             )
             for task_obj in self.tasks()
         }
@@ -426,7 +420,9 @@ class Workflow:
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
-            return make_task_wrapper(self._task_dict[item], item, self._workflow, self)
+            return make_task_wrapper(
+                self._task_dict[item], item, self._workflow, self, self._command_source
+            )
         return getattr(self._workflow, item)
 
     def __call__(self):
@@ -481,6 +477,7 @@ class TaskObject:
         base_name: str,
         workflow: PyMenu,
         parent: Workflow | TaskObject,
+        meshing_root: PyMenu,
     ):
         """Initialize a TaskObject wrapper.
 
@@ -504,6 +501,7 @@ class TaskObject:
         super().__setattr__("_name", base_name)
         super().__setattr__("_workflow", workflow)
         super().__setattr__("_parent", parent)
+        super().__setattr__("_meshing_root", meshing_root)
         self._cache = {}
 
     def _get_next_possible_tasks(self):
@@ -512,7 +510,7 @@ class TaskObject:
         ret_list = []
         for item in task_obj.get_next_possible_tasks():
             snake_case_name = command_name_to_task_name(
-                super().__getattribute__("_workflow"), item
+                super().__getattribute__("_meshing_root"), item
             )
             if snake_case_name != item:
                 self._cache[snake_case_name] = item
@@ -673,6 +671,7 @@ class TaskObject:
         name = super().__getattribute__("_name")
         workflow = super().__getattribute__("_workflow")
         parent = super().__getattribute__("_parent")
+        meshing_root = super().__getattribute__("_meshing_root")
         name_1 = name
         name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
         try:
@@ -681,7 +680,9 @@ class TaskObject:
                 temp_parent = self
             else:
                 temp_parent = parent
-            return make_task_wrapper(task_obj, name_1, workflow, temp_parent)
+            return make_task_wrapper(
+                task_obj, name_1, workflow, temp_parent, meshing_root
+            )
         except LookupError:
             task_obj = getattr(workflow.task_object, name_1)[key]
             if task_obj.task_type == "Compound Child":
@@ -694,6 +695,7 @@ class TaskObject:
                     name_1,
                     workflow,
                     temp_parent,
+                    meshing_root,
                 )
             except LookupError as ex2:
                 raise LookupError(
@@ -732,7 +734,11 @@ class TaskObject:
         }
         name_to_task = {
             val: make_task_wrapper(
-                getattr(workflow.task_object, key)[val], key, workflow, self
+                getattr(workflow.task_object, key)[val],
+                key,
+                workflow,
+                self,
+                super().__getattribute__("_meshing_root"),
             )
             for key, val in type_to_name.items()
         }
@@ -781,7 +787,11 @@ class TaskObject:
         for key, val in type_to_name.items():
             if val == first_name:
                 return make_task_wrapper(
-                    getattr(workflow.task_object, key)[val], key, workflow, self
+                    getattr(workflow.task_object, key)[val],
+                    key,
+                    workflow,
+                    self,
+                    super().__getattribute__("_meshing_root"),
                 )
 
     def last_child(self):
@@ -812,7 +822,11 @@ class TaskObject:
         for key, val in type_to_name.items():
             if val == last_name:
                 return make_task_wrapper(
-                    getattr(workflow.task_object, key)[val], key, workflow, self
+                    getattr(workflow.task_object, key)[val],
+                    key,
+                    workflow,
+                    self,
+                    super().__getattribute__("_meshing_root"),
                 )
 
     @staticmethod
@@ -960,7 +974,11 @@ class TaskObject:
 
         name_to_task = {
             val: make_task_wrapper(
-                getattr(workflow.task_object, key)[val], key, workflow, self
+                getattr(workflow.task_object, key)[val],
+                key,
+                workflow,
+                self,
+                super().__getattribute__("_meshing_root"),
             )
             for key, val in type_to_name.items()
         }
@@ -1012,7 +1030,7 @@ def build_specific_interface(task_object):
     return type(iface_name, (), namespace)
 
 
-def make_task_wrapper(task_obj, name, workflow, parent):
+def make_task_wrapper(task_obj, name, workflow, parent, meshing_root):
     """Wraps TaskObjects."""
 
     specific_interface = build_specific_interface(task_obj)
@@ -1021,4 +1039,4 @@ def make_task_wrapper(task_obj, name, workflow, parent):
         f"{task_obj.task_type}Task", (specific_interface, TaskObject), {}
     )
 
-    return combined_type(task_obj, name, workflow, parent)
+    return combined_type(task_obj, name, workflow, parent, meshing_root)
