@@ -26,6 +26,7 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
+@pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_watertight_workflow(new_meshing_session_wo_exit):
@@ -134,6 +135,7 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
@@ -494,6 +496,7 @@ def test_new_fault_tolerant_workflow(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
