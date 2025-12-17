@@ -976,12 +976,12 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
     fault_tolerant = meshing.fault_tolerant()
-    meshing.PartManagement.InputFileChanged(
-        FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
+    fault_tolerant.parts.input_file_changed(
+        file_path=import_file_name, ignore_solid_names=False, part_per_body=False
     )
-    meshing.PMFileManagement.FileManager.LoadFiles()
-    meshing.PartManagement.Node["Meshing Model"].Copy(
-        Paths=[
+    fault_tolerant.parts_files.file_manager.load_files()
+    fault_tolerant.parts.node["Meshing Model"].copy(
+        paths=[
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
             "/dirty_manifold-for-wrapper,"
             + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
@@ -991,7 +991,7 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-    meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(
+    fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state(
         "part"
     )
     fault_tolerant.import_cad_and_part_management.context.set_state(0)

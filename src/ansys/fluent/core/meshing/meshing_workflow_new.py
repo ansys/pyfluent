@@ -79,8 +79,6 @@ class MeshingWorkflow(Workflow):
         self._identifier = identifier
         if initialize:
             self._new_workflow(name=self._name)
-        else:
-            self._activate_dynamic_interface(dynamic_interface=True)
         self._initialized = True
 
 
@@ -282,7 +280,6 @@ class LoadWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
-        self._unsubscribe_root_affected_callback()
         self._load_workflow(file_path=os.fspath(file_path))
 
 
@@ -314,8 +311,5 @@ class CreateWorkflow(Workflow):
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
-        self._unsubscribe_root_affected_callback()
         if initialize:
             self._create_workflow()
-        else:
-            self._activate_dynamic_interface(dynamic_interface=True)

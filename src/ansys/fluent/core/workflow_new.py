@@ -52,6 +52,11 @@ from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
+def is_compound_child(task_type: str):
+    """Returns `True` if the task type is Compound Child, else `False`."""
+    return task_type == "Compound Child"
+
+
 def _convert_task_list_to_display_names(
     workflow_root: PyMenu, task_list: list[str]
 ) -> list[str]:
@@ -177,7 +182,7 @@ class Workflow:
             name = task.split(":")[0]
             display_name = task.split(":")[-1]
             task_obj = getattr(self._workflow.task_object, name)[display_name]
-            if task_obj.task_type() == "Compound Child":
+            if is_compound_child(task_obj.task_type()):
                 if name not in self._compound_child_dict:
                     self._compound_child_dict[name] = {
                         name + "_child_1": task_obj,
@@ -642,7 +647,7 @@ class TaskObject:
     def __getattr__(self, item):
         """Enable attribute access to task properties and arguments.
 
-         Notes
+        Notes
         -----
         Arguments take precedence over task object properties.
         """
@@ -676,7 +681,7 @@ class TaskObject:
         name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
         try:
             task_obj = getattr(workflow.task_object, name_1)[name_2]
-            if task_obj.task_type == "Compound Child":
+            if is_compound_child(task_obj.task_type):
                 temp_parent = self
             else:
                 temp_parent = parent
@@ -685,7 +690,7 @@ class TaskObject:
             )
         except LookupError:
             task_obj = getattr(workflow.task_object, name_1)[key]
-            if task_obj.task_type == "Compound Child":
+            if is_compound_child(task_obj.task_type):
                 temp_parent = self
             else:
                 temp_parent = parent
