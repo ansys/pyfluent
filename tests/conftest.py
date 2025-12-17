@@ -491,3 +491,8 @@ def datamodel_api_version_all(request, monkeypatch: pytest.MonkeyPatch) -> None:
 @pytest.fixture
 def datamodel_api_version_new(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("REMOTING_NEW_DM_API", "1")
+
+
+@pytest.fixture
+def use_server_meshing_workflow(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("USE_SERVER_MW", "1")
