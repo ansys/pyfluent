@@ -530,7 +530,6 @@ class TaskObject:
         Internal method. Users should use `insertable_tasks.<task>.insert()` instead.
         """
         task_obj = super().__getattribute__("_task_object")
-        # This is just a precaution in case this method is directly called from the task level.
         self.get_next_possible_tasks()
         command_name = self._cache.get(task_name) or task_name
         task_obj.insert_next_task(command_name=command_name)
@@ -713,7 +712,6 @@ class TaskObject:
     def _task_list(self):
         """Gets the display names of the child tasks of a task item."""
         task_obj = super().__getattribute__("_task_object")
-        # This is just a precaution in case this method is directly called from the task level.
         task_list = task_obj.task_list()
         if task_list:
             return _convert_task_list_to_display_names(
