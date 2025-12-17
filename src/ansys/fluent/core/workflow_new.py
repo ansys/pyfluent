@@ -703,7 +703,7 @@ class TaskObject:
                 )
             except LookupError as ex2:
                 raise LookupError(
-                    f"Neither '{name_2}' nor '{key}' not found in task object '{name_1}'."
+                    f"Neither '{name_2}' nor '{key}' found in task object '{name_1}'."
                 ) from ex2
 
     def __delitem__(self, key):
@@ -732,6 +732,7 @@ class TaskObject:
             return []
 
         workflow = super().__getattribute__("_workflow")
+        meshing_root = super().__getattribute__("_meshing_root")
         type_to_name = {
             item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
         }
@@ -741,7 +742,7 @@ class TaskObject:
                 key,
                 workflow,
                 self,
-                super().__getattribute__("_meshing_root"),
+                meshing_root,
             )
             for key, val in type_to_name.items()
         }
