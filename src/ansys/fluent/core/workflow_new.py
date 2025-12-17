@@ -221,16 +221,47 @@ class Workflow:
             task_obj = getattr(self._workflow.task_object, name)[display_name]
             if is_compound_child(task_obj.task_type()):
                 if name not in self._compound_child_dict:
+                    # CASE 1: First instance of this compound child type
+                    # ===================================================
+                    # This is the first time we've seen this task type (e.g., "add_boundary_layers")
+                    # Create a new entry in the compound child dictionary with the first child
+                    #
+                    # Example: For "Boundary Layer 1" task with name="add_boundary_layers"
+                    # Creates: {"add_boundary_layers": {"add_boundary_layers_child_1": task_obj}}
                     self._compound_child_dict[name] = {
                         name + "_child_1": task_obj,
                     }
                 else:
-                    # Check if this task name already exists in the compound child dict
+                    # CASE 2: Subsequent instance of this compound child type
+                    # ========================================================
+                    # We've already seen this task type before. Now we need to determine if this
+                    # specific task instance is new or if we've already processed it.
+                    #
+                    # Why check for duplicates?
+                    # The workflow datamodel may return the same task multiple times during iteration,
+                    # so we need to verify this is actually a NEW instance (e.g., "Boundary Layer 2")
+                    # and not a duplicate reference to an existing one (e.g., "Boundary Layer 1" again).
+
+                    # Check if this specific task instance already exists in the compound child dict
+                    # We compare by display name using task_obj._name_() which returns names like
+                    # "Boundary Layer 1", "Boundary Layer 2", etc.
                     if task_obj._name_() not in (
                         value._name_()
                         for value in self._compound_child_dict[name].values()
                     ):
-                        # Get next child number by extracting last digit from last sorted key
+                        # This is genuinely a NEW instance - add it with the next available number
+                        #
+                        # Calculate the next child number:
+                        # 1. Sort existing keys: ["add_boundary_layers_child_1", "add_boundary_layers_child_2"]
+                        # 2. Take the last key: "add_boundary_layers_child_2"
+                        # 3. Extract the last character (the number): "2"
+                        # 4. Convert to int and add 1: 3
+                        # 5. Result: "add_boundary_layers_child_3"
+                        #
+                        # Example progression:
+                        #   First:  "add_boundary_layers_child_1" -> number is 1
+                        #   Second: "add_boundary_layers_child_2" -> number is 2
+                        #   Third:  "add_boundary_layers_child_3" -> number is 3
                         child_key = (
                             int(sorted(self._compound_child_dict[name])[-1][-1]) + 1
                         )
@@ -238,9 +269,30 @@ class Workflow:
                             name + f"_child_{child_key}"
                         ] = task_obj
             else:
+                # Store regular (non-compound-child) tasks in the task dictionary
                 if name not in self._task_dict:
+                    # CASE 1: First occurrence of this task type
+                    # =============================================
+                    # Store using the base name (e.g., "import_geometry")
+                    # This allows access via: workflow.import_geometry
                     self._task_dict[name] = task_obj
                 else:
+                    # CASE 2: Duplicate task type (e.g., second "Import Geometry")
+                    # =============================================================
+                    # Multiple tasks of the same type can exist in a workflow.
+                    # Their display names have numeric suffixes: "Import Geometry 1", "Import Geometry 2"
+                    #
+                    # To create unique dictionary keys, we:
+                    # 1. Extract the numeric suffix from the display name
+                    # 2. Append it to the base name with an underscore
+                    #
+                    # Example transformation:
+                    #   Display name: "Import Geometry 2"
+                    #   Base name: "import_geometry"
+                    #   Suffix: "2" (last word from display name)
+                    #   Final key: "import_geometry_2"
+                    #
+                    # This allows access via: workflow.import_geometry_2
                     self._task_dict[name + f"_{task_obj.name().split()[-1]}"] = task_obj
 
         # Merge all compound child tasks into main dictionary
