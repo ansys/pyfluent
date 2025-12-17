@@ -297,23 +297,25 @@ class Workflow:
             self._workflow,
             self._workflow.general.workflow.task_list(),
         )
-        name_to_task = {
-            task_obj.name(): make_task_wrapper(
-                task_obj,
-                _get_task_type_name(task_obj),
-                self._workflow,
-                self,
-                self._command_source,
-            )
-            for task_obj in self.tasks()
-        }
 
-        sorted_list = []
+        # Create lightweight lookup: task name -> task datamodel object
+        tasks_by_name = {task_obj.name(): task_obj for task_obj in self.tasks()}
+
+        # Wrap only the top-level tasks in the correct order
+        wrapped_tasks = []
         for name in ordered_names:
-            if name not in name_to_task:
-                continue
-            sorted_list.append(name_to_task[name])
-        return sorted_list
+            if name in tasks_by_name:
+                task_obj = tasks_by_name[name]
+                wrapped = make_task_wrapper(
+                    task_obj,
+                    _get_task_type_name(task_obj),
+                    self._workflow,
+                    self,
+                    self._command_source,
+                )
+                wrapped_tasks.append(wrapped)
+
+        return wrapped_tasks
 
     def first_child(self) -> TaskObject | None:
         """Get the first top-level task in the workflow.
@@ -405,24 +407,23 @@ class Workflow:
             self._workflow,
             self._workflow.general.workflow.task_list(),
         )
-        name_to_task = {
-            task_obj.name(): make_task_wrapper(
-                task_obj,
-                _get_task_type_name(task_obj),
-                self._workflow,
-                self,
-                self._command_source,
-            )
-            for task_obj in self.tasks()
-        }
 
+        # Create lightweight lookup: display name -> task datamodel object
+        tasks_by_name = {task_obj.name(): task_obj for task_obj in self.tasks()}
+
+        # Build ordered dict by wrapping only the tasks in ordered_names
         sorted_dict = OrderedDict()
-
         for name in ordered_names:
-            if name not in name_to_task:
-                continue
-            task_obj = name_to_task[name]
-            sorted_dict[name] = task_obj
+            if name in tasks_by_name:
+                task_obj = tasks_by_name[name]
+                wrapped = make_task_wrapper(
+                    task_obj,
+                    _get_task_type_name(task_obj),
+                    self._workflow,
+                    self,
+                    self._command_source,
+                )
+                sorted_dict[name] = wrapped
 
         return sorted_dict
 
@@ -764,30 +765,36 @@ class TaskObject:
         List[TaskObject]
             Ordered list of child task wrappers, or empty list if no children.
         """
-        if not self._task_list():
+        child_names = self._task_list()
+        if not child_names:
             return []
 
         workflow = super().__getattribute__("_workflow")
         meshing_root = super().__getattribute__("_meshing_root")
-        type_to_name = {
-            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
-        }
-        name_to_task = {
-            val: make_task_wrapper(
-                getattr(workflow.task_object, key)[val],
-                key,
-                workflow,
-                self,
-                meshing_root,
+
+        # Create reverse lookup: display name -> task type
+        name_to_type = {
+            display_name: task_type
+            for task_type, display_name in (
+                item.split(":") for item in workflow.task_object()
             )
-            for key, val in type_to_name.items()
         }
-        sorted_list = []
-        for name in self._task_list():
-            if name not in name_to_task:
-                continue
-            sorted_list.append(name_to_task[name])
-        return sorted_list
+
+        # Build list by wrapping only the child tasks in the correct order
+        wrapped_children = []
+        for display_name in child_names:
+            if display_name in name_to_type:
+                task_type = name_to_type[display_name]
+                wrapped = make_task_wrapper(
+                    getattr(workflow.task_object, task_type)[display_name],
+                    task_type,
+                    workflow,
+                    self,
+                    meshing_root,
+                )
+                wrapped_children.append(wrapped)
+
+        return wrapped_children
 
     def first_child(self):
         """Get the first child task of this task.
@@ -1003,31 +1010,33 @@ class TaskObject:
         return task_dict[previous_key]
 
     def _ordered_tasks(self):
-        sorted_dict = OrderedDict()
         if not self._task_list():
-            return sorted_dict
+            return OrderedDict()
+
         workflow = super().__getattribute__("_workflow")
+        meshing_root = super().__getattribute__("_meshing_root")
 
-        type_to_name = {
-            item.split(":")[0]: item.split(":")[-1] for item in workflow.task_object()
-        }
+        # Create lightweight lookup: task type -> display name
+        type_to_name = dict(item.split(":") for item in workflow.task_object())
 
-        name_to_task = {
-            val: make_task_wrapper(
-                getattr(workflow.task_object, key)[val],
-                key,
-                workflow,
-                self,
-                super().__getattribute__("_meshing_root"),
-            )
-            for key, val in type_to_name.items()
-        }
+        # Get ordered list of display names for this level
+        ordered_names = self._task_list()
 
-        for name in self._task_list():
-            if name not in name_to_task:
-                continue
-            task_obj = name_to_task[name]
-            sorted_dict[name] = task_obj
+        # Build ordered dict by wrapping only the tasks that are in ordered_names
+        sorted_dict = OrderedDict()
+        for display_name in ordered_names:
+            # Find the matching task type for this display name
+            for task_type, name in type_to_name.items():
+                if name == display_name:
+                    wrapped = make_task_wrapper(
+                        getattr(workflow.task_object, task_type)[display_name],
+                        task_type,
+                        workflow,
+                        self,
+                        meshing_root,
+                    )
+                    sorted_dict[display_name] = wrapped
+                    break
 
         return sorted_dict
 
