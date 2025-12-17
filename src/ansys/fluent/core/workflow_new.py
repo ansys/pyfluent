@@ -447,7 +447,7 @@ class Workflow:
                     self._command_source,
                 )
 
-    def _task_list(self):
+    def _task_names(self):
         """Gets a list of display names of all tasks in the workflow."""
         return _convert_task_list_to_display_names(
             self._workflow, self._workflow.general.workflow.task_list()
@@ -798,7 +798,7 @@ class TaskObject:
     def __delitem__(self, key):
         self[key].delete()
 
-    def _task_list(self):
+    def _task_names(self):
         """Gets the display names of the child tasks of a task item."""
         task_obj = super().__getattribute__("_task_object")
         task_list = task_obj.task_list()
@@ -817,7 +817,7 @@ class TaskObject:
         List[TaskObject]
             Ordered list of child task wrappers, or empty list if no children.
         """
-        child_names = self._task_list()
+        child_names = self._task_names()
         if not child_names:
             return []
 
@@ -873,7 +873,7 @@ class TaskObject:
             ...     else:
             ...         break
         """
-        task_list = self._task_list()
+        task_list = self._task_names()
         if task_list:
             first_name = task_list[0]
         else:
@@ -908,7 +908,7 @@ class TaskObject:
         >>> if last:
         ...     print(f"Last child: {last.name()}")
         """
-        task_list = self._task_list()
+        task_list = self._task_names()
         if task_list:
             last_name = task_list[-1]
         else:
@@ -1062,7 +1062,7 @@ class TaskObject:
         return task_dict[previous_key]
 
     def _ordered_tasks(self):
-        if not self._task_list():
+        if not self._task_names():
             return OrderedDict()
 
         workflow = super().__getattribute__("_workflow")
@@ -1072,7 +1072,7 @@ class TaskObject:
         type_to_name = dict(item.split(":") for item in workflow.task_object())
 
         # Get ordered list of display names for this level
-        ordered_names = self._task_list()
+        ordered_names = self._task_names()
 
         # Build ordered dict by wrapping only the tasks that are in ordered_names
         sorted_dict = OrderedDict()
