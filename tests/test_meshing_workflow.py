@@ -447,7 +447,7 @@ def test_inaccessible_meshing_attributes_after_switching_to_solver(
 ):
     meshing = new_meshing_session_wo_exit
     assert meshing.is_active() is True
-    assert meshing.is_server_healthy()
+    assert meshing._is_server_healthy()
     solver = meshing.switch_to_solver()
     assert solver.is_active() is True
     assert meshing.is_active() is False
