@@ -23,13 +23,9 @@
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 @pytest.mark.fluent_version(">=23.1")
 def test_icing_session():
-    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
-    icing_session = pyfluent.launch_fluent(
-        mode=pyfluent.FluentMode.SOLVER_ICING, **grpc_kwds
-    )
+    icing_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER_ICING)
     assert "icing" in dir(icing_session)

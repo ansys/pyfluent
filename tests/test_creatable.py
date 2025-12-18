@@ -30,12 +30,12 @@ def test_creatable(mixing_elbow_case_data_session) -> None:
     solver = mixing_elbow_case_data_session
     fluent_version = solver.get_fluent_version()
     has_not = (
-        solver.settings.setup.boundary_conditions.velocity_inlet,
-        solver.settings.setup.cell_zone_conditions.fluid,
+        solver.setup.boundary_conditions.velocity_inlet,
+        solver.setup.cell_zone_conditions.fluid,
     )
     has = (
-        solver.settings.results.graphics.contour,
-        solver.settings.results.graphics.vector,
+        solver.results.graphics.contour,
+        solver.results.graphics.vector,
     )
 
     for obj in has_not:

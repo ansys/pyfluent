@@ -26,10 +26,10 @@ import pytest
 @pytest.mark.settings_only
 @pytest.mark.fluent_version("latest")
 def test_post_elbow(mixing_elbow_settings_session):
-    mixing_elbow_settings_session.settings.results.graphics.vector[
+    mixing_elbow_settings_session.results.graphics.vector[
         "velocity_vector_symmetry"
     ] = {}
-    vector_graphics = mixing_elbow_settings_session.settings.results.graphics.vector[
+    vector_graphics = mixing_elbow_settings_session.results.graphics.vector[
         "velocity_vector_symmetry"
     ]
     vector_graphics.field = "temperature"

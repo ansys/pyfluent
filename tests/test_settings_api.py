@@ -28,12 +28,9 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.solver import VelocityInlets, Viscous
+from ansys.fluent.core.solver import Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
-    InactiveObjectError,
-    NamedObject,
-    ReadOnlyActionError,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -48,11 +45,11 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 def test_setup_models_viscous_model_settings(new_solver_session) -> None:
     solver_session = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver_session.settings.file.read(
+    solver_session.file.read(
         file_name=case_path, file_type="case", lightweight_setup=True
     )
 
-    viscous_model = solver_session.settings.setup.models.viscous
+    viscous_model = solver_session.setup.models.viscous
 
     assert viscous_model.model() == "k-epsilon"
     assert "inviscid" in viscous_model.model.get_attr("allowed-values")
@@ -66,10 +63,8 @@ def test_setup_models_viscous_model_settings(new_solver_session) -> None:
 def test_wildcard(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(
-        file_name=case_path, file_type="case", lightweight_setup=True
-    )
-    boundary_conditions = solver.settings.setup.boundary_conditions
+    solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
+    boundary_conditions = solver.setup.boundary_conditions
     if solver.get_fluent_version() >= FluentVersion.v251:
         assert boundary_conditions.velocity_inlet[
             "inl*"
@@ -141,7 +136,7 @@ def test_wildcard(new_solver_session):
             "inlet2": {"momentum": {"velocity": {"option": "value", "value": 10}}},
             "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
         }
-    cell_zone_conditions = solver.settings.setup.cell_zone_conditions
+    cell_zone_conditions = solver.setup.cell_zone_conditions
     if solver.get_fluent_version() >= FluentVersion.v242:
         sources = cell_zone_conditions.fluid["*"].sources.terms
         sources_key = "sources"
@@ -181,11 +176,11 @@ def test_wildcard(new_solver_session):
 def test_wildcard_fnmatch(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read_case(file_name=case_path)
+    solver.file.read_case(file_name=case_path)
 
-    solver.settings.solution.initialization.hybrid_initialize()
+    solver.solution.initialization.hybrid_initialize()
 
-    mesh = solver.settings.results.graphics.mesh
+    mesh = solver.results.graphics.mesh
     assert mesh.create("mesh-a").name() == "mesh-a"
     mesh.create("mesh-bc")
     if solver.get_fluent_version() >= FluentVersion.v251:
@@ -210,11 +205,9 @@ def test_wildcard_fnmatch(new_solver_session):
 def test_wildcard_path_is_iterable(new_solver_session):
     solver = new_solver_session
     case_path = download_file("elbow_source_terms.cas.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read(
-        file_name=case_path, file_type="case", lightweight_setup=True
-    )
+    solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
 
-    velocity_inlet = solver.settings.setup.boundary_conditions.velocity_inlet
+    velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     assert [x for x in velocity_inlet] == ["inlet2", "inlet1"]
     assert [x for x in velocity_inlet["*let*"]] == ["inlet2", "inlet1"]
     assert [x for x in velocity_inlet["*1*"]] == ["inlet1"]
@@ -244,7 +237,7 @@ def test_api_upgrade(new_solver_session, capsys):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     solver.tui.file.read_case(case_path)
     timeout_loop(
-        lambda: "<solver_session>.file.read_case" in capsys.readouterr().out,
+        lambda: "<solver_session>.settings.file.read_case" in capsys.readouterr().out,
         timeout=5,
     )
 
@@ -256,164 +249,137 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.settings.file._setattr("_child_aliases", {"rcd": ("read_case_data", "rcd")})
+    solver.file._setattr("_child_aliases", {"rcd": ("read_case_data", "rcd")})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.file.rcd(file_name=case_path)
+        solver.file.rcd(file_name=case_path)
 
-    solver.settings.setup.boundary_conditions.velocity_inlet.child_object_type._child_aliases[
+    solver.setup.boundary_conditions.velocity_inlet.child_object_type._child_aliases[
         "mom"
-    ] = (
-        "momentum",
-        "mom",
-    )
+    ] = ("momentum", "mom")
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.velocity_inlet[
-            "hot-inlet"
-        ].mom.velocity = 20
+        solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].mom.velocity = 20
     assert (
-        solver.settings.setup.boundary_conditions.velocity_inlet[
+        solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].momentum.velocity.value()
         == 20
     )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.velocity_inlet[
-            "cold-inlet"
-        ].mom.velocity = 2
+        solver.setup.boundary_conditions.velocity_inlet["cold-inlet"].mom.velocity = 2
     assert (
-        solver.settings.setup.boundary_conditions.velocity_inlet[
+        solver.setup.boundary_conditions.velocity_inlet[
             "cold-inlet"
         ].momentum.velocity.value()
         == 2
     )
 
-    solver.settings.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
+    solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
         "Temperature"
     )
     assert (
         len(
-            solver.settings.setup.boundary_conditions.wall[
+            solver.setup.boundary_conditions.wall[
                 "wall-inlet"
             ].thermal.temperature._child_aliases
         )
         > 0
     )
-    assert solver.settings.setup.boundary_conditions.wall[
+    assert solver.setup.boundary_conditions.wall[
         "wall-inlet"
     ].thermal.temperature._child_aliases["constant"] == ("value", "constant")
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.wall[
+        solver.setup.boundary_conditions.wall[
             "wall-inlet"
         ].thermal.temperature.constant = 400
 
     assert (
-        solver.settings.setup.boundary_conditions.wall[
-            "wall-inlet"
-        ].thermal.temperature.value()
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
         == 400
     )
     assert (
         len(
-            solver.settings.setup.boundary_conditions.wall[
+            solver.setup.boundary_conditions.wall[
                 "wall-inlet"
             ].thermal.temperature._child_aliases
         )
         > 0
     )
     assert isinstance(
-        solver.settings.setup.boundary_conditions.wall[
+        solver.setup.boundary_conditions.wall[
             "wall-inlet"
         ].thermal.temperature._child_alias_objs["constant"],
         _Alias,
     )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value = (
-            410
-        )
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.t.value = 410
 
     assert (
-        solver.settings.setup.boundary_conditions.wall[
-            "wall-inlet"
-        ].thermal.temperature.value()
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
         == 410
     )
 
-    solver.settings.setup.boundary_conditions._setattr(
-        "_child_aliases", {"w": ("wall", "w")}
-    )
+    solver.setup.boundary_conditions._setattr("_child_aliases", {"w": ("wall", "w")})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.w[
-            "wall-inlet"
-        ].thermal.temperature.value = 420
+        solver.setup.boundary_conditions.w["wall-inlet"].thermal.temperature.value = 420
 
     assert (
-        solver.settings.setup.boundary_conditions.wall[
-            "wall-inlet"
-        ].thermal.temperature.value()
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
         == 420
     )
 
-    solver.settings.setup._setattr(
-        "_child_aliases", {"bc": ("boundary_conditions", "bc")}
-    )
+    solver.setup._setattr("_child_aliases", {"bc": ("boundary_conditions", "bc")})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.bc.wall["wall-inlet"].thermal.temperature.value = 430
+        solver.setup.bc.wall["wall-inlet"].thermal.temperature.value = 430
 
     assert (
-        solver.settings.setup.boundary_conditions.wall[
-            "wall-inlet"
-        ].thermal.temperature.value()
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
         == 430
     )
 
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.wall[
+        solver.setup.boundary_conditions.wall[
             "wall-inlet"
         ].thermal.temperature.constant = 400
 
     assert (
-        solver.settings.setup.boundary_conditions.wall[
-            "wall-inlet"
-        ].thermal.temperature.value()
+        solver.setup.boundary_conditions.wall["wall-inlet"].thermal.temperature.value()
         == 400
     )
 
-    solver.settings.results._setattr("_child_aliases", {"gr": ("graphics", "gr")})
+    solver.results._setattr("_child_aliases", {"gr": ("graphics", "gr")})
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.results.gr.contour.create("c1")
-
-    with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.results.gr.contour["c1"].field = "pressure"
-
-    assert solver.settings.results.graphics.contour["c1"].field() == "pressure"
+        solver.results.gr.contour.create("c1")
 
     with pytest.warns(DeprecatedSettingWarning):
-        del solver.settings.results.gr.contour["c1"]
+        solver.results.gr.contour["c1"].field = "pressure"
 
-    assert "c1" not in solver.settings.results.graphics.contour
+    assert solver.results.graphics.contour["c1"].field() == "pressure"
 
-    solver.settings.setup.boundary_conditions.velocity_inlet[
+    with pytest.warns(DeprecatedSettingWarning):
+        del solver.results.gr.contour["c1"]
+
+    assert "c1" not in solver.results.graphics.contour
+
+    solver.setup.boundary_conditions.velocity_inlet[
         "hot-inlet"
     ].momentum.velocity._child_aliases["hd"] = (
         "../../turbulence/hydraulic_diameter",
         "hd",
     )
     with pytest.warns(DeprecatedSettingWarning):
-        solver.settings.setup.boundary_conditions.velocity_inlet[
+        solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].momentum.velocity.hd = 10
     assert (
-        solver.settings.setup.boundary_conditions.velocity_inlet[
+        solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
         ].turbulence.hydraulic_diameter()
         == 10
     )
 
-    solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"] = {
-        "material": "air"
-    }
+    solver.setup.cell_zone_conditions.fluid["elbow-fluid"] = {"material": "air"}
 
-    solver.settings.setup.boundary_conditions.wall["wall-inlet"] = {
+    solver.setup.boundary_conditions.wall["wall-inlet"] = {
         "thermal": {"q_dot": {"value": 2000000000}, "wall_thickness": {"value": 0.002}}
     }
 
@@ -480,12 +446,12 @@ def test_command_return_type(new_solver_session):
     version = solver.get_fluent_version()
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    ret = solver.settings.file.read_case_data(file_name=case_path)
+    ret = solver.file.read_case_data(file_name=case_path)
     assert ret is None if version >= FluentVersion.v242 else not None
-    solver.settings.solution.report_definitions.surface["surface-1"] = dict(
+    solver.solution.report_definitions.surface["surface-1"] = dict(
         surface_names=["cold-inlet"]
     )
-    ret = solver.settings.solution.report_definitions.compute(report_defs=["surface-1"])
+    ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
     assert ret is not None
 
 
@@ -500,7 +466,7 @@ def warning_record():
 @pytest.mark.fluent_version(">=24.2")
 def test_generated_code_special_cases(new_solver_session):
     solver = new_solver_session
-    icing_cls = solver.settings.setup.boundary_conditions._child_classes[
+    icing_cls = solver.setup.boundary_conditions._child_classes[
         "velocity_inlet"
     ].child_object_type._child_classes["icing"]
     fensapice_drop_vrh_cls = icing_cls._child_classes["fensapice_drop_vrh"]
@@ -512,17 +478,17 @@ def test_generated_code_special_cases(new_solver_session):
     assert fensapice_drop_vrh_cls.__name__ != fensapice_drop_vrh_1_cls.__name__
 
     assert (
-        solver.settings.file.read_case.file_name.fluent_name
-        == solver.settings.file.write_case.file_name.fluent_name
+        solver.file.read_case.file_name.fluent_name
+        == solver.file.write_case.file_name.fluent_name
     )
     assert (
-        solver.settings.file.read_case.file_name.__class__.__name__
-        != solver.settings.file.write_case.file_name.__class__.__name__
+        solver.file.read_case.file_name.__class__.__name__
+        != solver.file.write_case.file_name.__class__.__name__
     )
-    read_file_bases = solver.settings.file.read_case.file_name.__class__.__bases__
+    read_file_bases = solver.file.read_case.file_name.__class__.__bases__
     assert _InputFile in read_file_bases
     assert _OutputFile not in read_file_bases
-    write_file_bases = solver.settings.file.write_case.file_name.__class__.__bases__
+    write_file_bases = solver.file.write_case.file_name.__class__.__bases__
     assert _InputFile not in write_file_bases
     assert _OutputFile in write_file_bases
 
@@ -792,9 +758,7 @@ def test_runtime_python_classes(
     use_runtime_python_classes, mixing_elbow_settings_session
 ):
     solver = mixing_elbow_settings_session
-    solver.settings.setup.materials.database.copy_by_name(
-        type="fluid", name="water-liquid"
-    )
+    solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
     solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"] = {
         "material": "water-liquid"
     }
@@ -831,17 +795,6 @@ def test_setting_string_constants(mixing_elbow_settings_session):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
 
 
-@pytest.mark.fluent_version(">=24.2")
-def test_named_object_commands(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
-    inlets = VelocityInlets(solver)
-    inlets.list()
-    inlets.list_properties(object_name="hot-inlet")
-    if solver.get_fluent_version() >= FluentVersion.v261:
-        NamedObject.list(inlets)
-        NamedObject.list_properties(inlets, object_name="hot-inlet")
-
-
 @pytest.mark.fluent_version(">=26.1")
 def test_migration_adapter_for_strings(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -876,24 +829,3 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
         == "particle-time-step"
     )
-
-
-def test_set_state_via_call(mixing_elbow_settings_session):
-    solver = mixing_elbow_settings_session
-    solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
-
-
-@pytest.mark.fluent_version(">=26.1")
-def test_read_only_command_execution(mixing_elbow_case_session):
-    solver = mixing_elbow_case_session
-    contour = solver.settings.results.graphics.contour.create()
-    assert contour.display.is_active() is False
-    with pytest.raises(InactiveObjectError):
-        contour.display.is_read_only()
-        # Same behaviour for attribute access of command arguments
-
-    contour.surfaces_list = ["wall-elbow"]
-    assert contour.display.is_active() is True
-    assert contour.display.is_read_only() is True
-    with pytest.raises(ReadOnlyActionError):
-        contour.display()

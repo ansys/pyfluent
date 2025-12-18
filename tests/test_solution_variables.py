@@ -40,7 +40,7 @@ def test_solution_variables(new_solver_session):
     assert solution_variable_info == solver.svar_info
     assert solution_variable_data == solver.svar_data
 
-    solver.settings.file.read_case_data(file_name=import_file_name)
+    solver.file.read_case_data(file_name=import_file_name)
 
     zones_info = solution_variable_info.get_zones_info()
 
@@ -153,7 +153,7 @@ def test_solution_variables_single_precision(new_solver_session_sp):
     assert solution_variable_info == solver.svar_info
     assert solution_variable_data == solver.svar_data
 
-    solver.settings.file.read_case_data(file_name=import_file_name)
+    solver.file.read_case_data(file_name=import_file_name)
 
     zones_info = solution_variable_info.get_zones_info()
 
@@ -225,7 +225,7 @@ def test_solution_variable_does_not_modify_case(new_solver_session):
     solver = new_solver_session
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    solver.settings.file.read_case_data(file_name=case_path)
+    solver.file.read_case_data(file_name=case_path)
     solver.scheme.eval("(%save-case-id)")
     assert not solver.scheme.eval("(case-modified?)")
     solver.fields.solution_variable_data.get_data(

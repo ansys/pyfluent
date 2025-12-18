@@ -33,5 +33,5 @@ container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
 solver = pyfluent.launch_fluent(container_dict=container_dict, use_podman_compose=True)
 assert len(solver._container.ports) == 2
 case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-solver.settings.file.read(file_name=case_file_name, file_type="case")
+solver.file.read(file_name=case_file_name, file_type="case")
 solver.exit()

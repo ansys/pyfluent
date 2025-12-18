@@ -108,7 +108,7 @@ def new_solver_session_2d(globals):
 def static_mixer_settings_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver.settings.file.read(
+    solver.file.read(
         file_type="case",
         file_name=case_name,
         lightweight_setup=True,
@@ -120,7 +120,7 @@ def static_mixer_settings_session(globals):
 def static_mixer_case_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    solver.settings.file.read(file_type="case", file_name=case_name)
+    solver.file.read(file_type="case", file_name=case_name)
     return solver
 
 
@@ -158,7 +158,7 @@ def mixing_elbow_param_case_data_session(globals):
 def disk_settings_session(globals):
     solver = new_solver_session_2d(globals)
     case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
-    solver.settings.file.read(
+    solver.file.read(
         file_type="case",
         file_name=case_name,
         lightweight_setup=True,
@@ -170,7 +170,7 @@ def disk_settings_session(globals):
 def disk_case_session(globals):
     solver = new_solver_session_2d(globals)
     case_name = download_file("disk.cas.h5", "pyfluent/rotating_disk")
-    solver.settings.file.read(file_type="case", file_name=case_name)
+    solver.file.read(file_type="case", file_name=case_name)
     return solver
 
 
@@ -181,7 +181,7 @@ def periodic_rot_settings_session(globals):
         "periodic_rot.cas.h5",
         "pyfluent/periodic_rot",
     )
-    solver.settings.file.read(
+    solver.file.read(
         file_type="case",
         file_name=case_name,
         lightweight_setup=True,
@@ -213,5 +213,5 @@ def new_solver_session2(globals):
 def static_mixer_case_session2(globals):
     session = new_solver_session2(globals)
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    session.settings.file.read(file_type="case", file_name=case_name)
+    session.file.read(file_type="case", file_name=case_name)
     return session

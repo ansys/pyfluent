@@ -25,7 +25,6 @@ import pytest
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.services.datamodel_se import _convert_value_to_variant
 
 
@@ -446,10 +445,9 @@ def test_cache_set_state(
 
 @pytest.mark.fluent_version(">=23.2")
 def test_cache_per_session():
-    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     with (
-        pyfluent.launch_fluent(mode="meshing", **grpc_kwds) as m1,
-        pyfluent.launch_fluent(mode="meshing", **grpc_kwds) as m2,
+        pyfluent.launch_fluent(mode="meshing") as m1,
+        pyfluent.launch_fluent(mode="meshing") as m2,
     ):
         assert m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()

@@ -28,14 +28,13 @@ from ansys.fluent.core import FluentVersion
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.reduction import _locn_names_and_objs
-from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver.function import reduction
 from ansys.units import VariableCatalog
 
 
-def _test_locn_extraction(solver1: Solver, solver2: Solver):
-    solver1_boundary_conditions = solver1.settings.setup.boundary_conditions
-    solver2_boundary_conditions = solver2.settings.setup.boundary_conditions
+def _test_locn_extraction(solver1, solver2):
+    solver1_boundary_conditions = solver1.setup.boundary_conditions
+    solver2_boundary_conditions = solver2.setup.boundary_conditions
     locns = _locn_names_and_objs(["inlet1"])
     assert locns == [["inlet1", ["inlet1"]]]
 
@@ -90,11 +89,11 @@ def _test_locn_extraction(solver1: Solver, solver2: Solver):
         ]
 
 
-def _test_context(solver: Solver):
-    solver.settings.solution.initialization.hybrid_initialize()
+def _test_context(solver):
+    solver.solution.initialization.hybrid_initialize()
 
     assert solver.fields.reduction.area(
-        locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         ctxt=solver,
     )
 
@@ -102,8 +101,8 @@ def _test_context(solver: Solver):
 
 
 def _test_area_average(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver_named_expressions = solver.settings.setup.named_expressions
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = (
         "AreaAve(AbsolutePressure, ['inlet1'])"
@@ -112,7 +111,7 @@ def _test_area_average(solver):
     assert isinstance(expr_val, float) and expr_val != 0.0
     val = solver.fields.reduction.area_average(
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
-        locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver.setup.boundary_conditions.velocity_inlet,
     )
     assert val == expr_val
     solver_named_expressions.pop(key="test_expr_1")
@@ -121,24 +120,24 @@ def _test_area_average(solver):
 def _test_min(solver1, solver2):
     s1_min = solver1.fields.reduction.minimum(
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
-        locations=solver1.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver1.setup.boundary_conditions.velocity_inlet,
     )
     s2_min = solver2.fields.reduction.minimum(
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
-        locations=solver2.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver2.setup.boundary_conditions.velocity_inlet,
     )
     result = reduction.minimum(
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
-        locations=solver1.settings.setup.boundary_conditions.velocity_inlet
-        + solver2.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver1.setup.boundary_conditions.velocity_inlet
+        + solver2.setup.boundary_conditions.velocity_inlet,
     )
     assert result == min(s1_min, s2_min)
 
 
 def _test_count(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver_named_expressions = solver.settings.setup.named_expressions
-    s_velocity_inlet = solver.settings.setup.boundary_conditions.velocity_inlet
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
+    s_velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = "Count(['inlet1'])"
     expr_val_1 = solver_named_expressions["test_expr_1"].get_value()
@@ -157,9 +156,9 @@ def _test_count(solver):
 
 
 def _test_count_if(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver_named_expressions = solver.settings.setup.named_expressions
-    s_velocity_inlet = solver.settings.setup.boundary_conditions.velocity_inlet
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
+    s_velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = (
         "CountIf(AbsolutePressure > 0[Pa], ['inlet1'])"
@@ -190,9 +189,9 @@ def _test_count_if(solver):
 
 
 def _test_centroid(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver_named_expressions = solver.settings.setup.named_expressions
-    velocity_inlet = solver.settings.setup.boundary_conditions.velocity_inlet
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
+    velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = "Centroid(['inlet1'])"
     expr_val_1 = solver_named_expressions["test_expr_1"].get_value()
@@ -212,12 +211,12 @@ def _test_centroid(solver):
 
 
 def _test_area_integrated_average(solver1, solver2):
-    solver1.settings.solution.initialization.hybrid_initialize()
-    solver2.settings.solution.initialization.hybrid_initialize()
-    solver1_boundary_conditions = solver1.settings.setup.boundary_conditions
-    solver2_boundary_conditions = solver2.settings.setup.boundary_conditions
-    solver1_named_expr = solver1.settings.setup.named_expressions
-    solver2_named_expr = solver2.settings.setup.named_expressions
+    solver1.solution.initialization.hybrid_initialize()
+    solver2.solution.initialization.hybrid_initialize()
+    solver1_boundary_conditions = solver1.setup.boundary_conditions
+    solver2_boundary_conditions = solver2.setup.boundary_conditions
+    solver1_named_expr = solver1.setup.named_expressions
+    solver2_named_expr = solver2.setup.named_expressions
 
     solver1_named_expr["test_expr_1"] = {}
     solver1_named_expr["test_expr_1"].definition = (
@@ -303,25 +302,25 @@ def _test_error_handling(solver):
         with pytest.raises(RuntimeError):
             solver.fields.reduction.area_average(
                 expression="AbsoluteVelocity",  # This is a wrong expression intentionally passed
-                locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+                locations=solver.setup.boundary_conditions.velocity_inlet,
             )
 
 
 def _test_force(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver_named_expressions = solver.settings.setup.named_expressions
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = "Force(['wall'])"
     expr_val_1 = solver_named_expressions["test_expr_1"].get_value()
 
     red_total_force = solver.fields.reduction.force(
-        locations=solver.settings.setup.boundary_conditions.wall
+        locations=solver.setup.boundary_conditions.wall
     )
     red_pressure_force = solver.fields.reduction.pressure_force(
-        locations=solver.settings.setup.boundary_conditions.wall
+        locations=solver.setup.boundary_conditions.wall
     )
     red_viscous_force = solver.fields.reduction.viscous_force(
-        locations=solver.settings.setup.boundary_conditions.wall
+        locations=solver.setup.boundary_conditions.wall
     )
 
     assert [red_total_force[0], red_total_force[1], red_total_force[2]] == expr_val_1
@@ -336,9 +335,9 @@ def _test_force(solver):
 
 
 def _test_moment(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver_named_expressions = solver.settings.setup.named_expressions
-    location = solver.settings.setup.boundary_conditions.wall
+    solver.solution.initialization.hybrid_initialize()
+    solver_named_expressions = solver.setup.named_expressions
+    location = solver.setup.boundary_conditions.wall
     solver_named_expressions["test_expr_1"] = {}
     solver_named_expressions["test_expr_1"].definition = (
         "Moment(Force(['wall']),['wall'])"
@@ -367,55 +366,55 @@ def _test_moment(solver):
 
 
 def _test_sum(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver.settings.setup.named_expressions["test_expr_1"] = {}
-    solver.settings.setup.named_expressions["test_expr_1"].definition = (
+    solver.solution.initialization.hybrid_initialize()
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions["test_expr_1"].definition = (
         "Sum(AbsolutePressure, ['inlet1'], Weight=Area)"
     )
-    expr_val = solver.settings.setup.named_expressions["test_expr_1"].get_value()
+    expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0
 
     val = solver.fields.reduction.sum(
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
-        locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight="Area",
     )
 
     assert val == expr_val
-    solver.settings.setup.named_expressions.pop(key="test_expr_1")
+    solver.setup.named_expressions.pop(key="test_expr_1")
 
 
 def _test_sum_if(solver):
-    solver.settings.solution.initialization.hybrid_initialize()
-    solver.settings.setup.named_expressions["test_expr_1"] = {}
-    solver.settings.setup.named_expressions["test_expr_1"].definition = (
+    solver.solution.initialization.hybrid_initialize()
+    solver.setup.named_expressions["test_expr_1"] = {}
+    solver.setup.named_expressions["test_expr_1"].definition = (
         "SumIf(AbsolutePressure, AbsolutePressure > 0[Pa], ['inlet1'], Weight=Area)"
     )
-    expr_val = solver.settings.setup.named_expressions["test_expr_1"].get_value()
+    expr_val = solver.setup.named_expressions["test_expr_1"].get_value()
     assert isinstance(expr_val, float) and expr_val != 0.0
 
     val = solver.fields.reduction.sum_if(
         expression=VariableCatalog.ABSOLUTE_PRESSURE,
         condition="AbsolutePressure > 0[Pa]",
-        locations=[solver.settings.setup.boundary_conditions.velocity_inlet["inlet1"]],
+        locations=[solver.setup.boundary_conditions.velocity_inlet["inlet1"]],
         weight=solver.fields.reduction.weight.AREA,
     )
 
     assert val == expr_val
-    solver.settings.setup.named_expressions.pop(key="test_expr_1")
+    solver.setup.named_expressions.pop(key="test_expr_1")
 
 
 def _test_centroid_2_sources(solver1, solver2):
     s1_cent = solver1.fields.reduction.centroid(
-        locations=solver1.settings.setup.boundary_conditions.velocity_inlet
+        locations=solver1.setup.boundary_conditions.velocity_inlet
     )
     s2_cent = solver2.fields.reduction.centroid(
-        locations=solver2.settings.setup.boundary_conditions.velocity_inlet
+        locations=solver2.setup.boundary_conditions.velocity_inlet
     )
 
     result = reduction.centroid(
-        locations=solver1.settings.setup.boundary_conditions.velocity_inlet
-        + solver2.settings.setup.boundary_conditions.velocity_inlet
+        locations=solver1.setup.boundary_conditions.velocity_inlet
+        + solver2.setup.boundary_conditions.velocity_inlet
     )
     assert [round(x, 5) for x in result] == [
         (round(x, 5) + round(y, 5)) / 2 for x, y in zip(*[s1_cent, s2_cent])
@@ -427,7 +426,7 @@ def static_mixer_case_session2(static_mixer_case_session: Any):
     return static_mixer_case_session
 
 
-@pytest.mark.fluent_version(">=25.2")
+@pytest.mark.fluent_version(">=24.1")
 def test_reductions(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ) -> None:
@@ -452,10 +451,10 @@ def test_reductions(
     download_file(
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
-    solver1.settings.file.read_case_data(file_name=case_path)
+    solver1.file.read_case_data(file_name=case_path)
     case_path1 = download_file("elbow1.cas.h5", "pyfluent/file_session")
     download_file("elbow1.dat.h5", "pyfluent/file_session")
-    solver2.settings.file.read_case_data(file_name=case_path1)
+    solver2.file.read_case_data(file_name=case_path1)
     _test_min(solver1, solver2)
     _test_centroid_2_sources(solver1, solver2)
 
@@ -463,13 +462,13 @@ def test_reductions(
 @pytest.mark.fluent_version(">=24.2")
 def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
     solver = static_mixer_case_session
-    solver.settings.solution.initialization.hybrid_initialize()
+    solver.solution.initialization.hybrid_initialize()
     # After reading the static-mixer case in Fluent, case-modified? flag is somehow True
     solver.scheme.eval("(%save-case-id)")
     assert not solver.scheme.eval("(case-modified?)")
     solver.reduction.area_average(
         expression="AbsolutePressure",
-        locations=solver.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver.setup.boundary_conditions.velocity_inlet,
     )
     assert not solver.scheme.eval("(case-modified?)")
 
@@ -477,7 +476,7 @@ def test_reduction_does_not_modify_case(static_mixer_case_session: Any):
 @pytest.mark.fluent_version(">=24.2")
 def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
     solver = static_mixer_case_session
-    solver.settings.solution.initialization.hybrid_initialize()
+    solver.solution.initialization.hybrid_initialize()
 
     assert solver.fields.reduction.area(locations=["inlet1"], ctxt=solver)
 
@@ -486,9 +485,7 @@ def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
 
     with pytest.raises(KeyError):
         assert solver.fields.reduction.area(
-            locations=[
-                solver.settings.setup.boundary_conditions.velocity_inlet["inlet-1"]
-            ]
+            locations=[solver.setup.boundary_conditions.velocity_inlet["inlet-1"]]
         )
 
     assert solver.fields.reduction.area(locations=["inlet1"])
@@ -498,15 +495,15 @@ def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
 
     with pytest.raises(DisallowedValuesError):
         solver.fields.reduction.area(
-            locations=[solver.settings.setup.boundary_conditions.velocity_inlet]
+            locations=[solver.setup.boundary_conditions.velocity_inlet]
         )
 
     with pytest.raises(DisallowedValuesError):
         reduction.minimum(
             expression="AbsolutePressure",
             locations=[
-                solver.settings.setup.boundary_conditions.velocity_inlet,
-                solver.settings.setup.boundary_conditions.velocity_inlet,
+                solver.setup.boundary_conditions.velocity_inlet,
+                solver.setup.boundary_conditions.velocity_inlet,
             ],
         )
 
@@ -514,7 +511,7 @@ def test_fix_for_invalid_location_inputs(static_mixer_case_session: Any):
 @pytest.mark.fluent_version(">=25.2")
 def test_fix_for_empty_location_inputs(static_mixer_case_session: Any):
     solver = static_mixer_case_session
-    solver.settings.solution.initialization.hybrid_initialize()
+    solver.solution.initialization.hybrid_initialize()
 
     assert solver.fields.reduction.area(locations=["inlet1"])
 
@@ -579,31 +576,31 @@ def test_named_expression_as_input(static_mixer_case_session):
     assert val == expr_val
 
 
-@pytest.mark.fluent_version(">=25.2")
+@pytest.mark.fluent_version(">=25.1")
 def test_named_expression_as_input_for_multiple_solvers(
     static_mixer_case_session: Any, static_mixer_case_session2: Any
 ):
     solver1 = static_mixer_case_session
     solver2 = static_mixer_case_session2
-    solver1.settings.solution.initialization.hybrid_initialize()
-    solver2.settings.solution.initialization.hybrid_initialize()
+    solver1.solution.initialization.hybrid_initialize()
+    solver2.solution.initialization.hybrid_initialize()
 
-    solver_named_expressions = solver1.settings.setup.named_expressions
+    solver_named_expressions = solver1.setup.named_expressions
 
     absolute_pressure_expression = solver_named_expressions.create()
     absolute_pressure_expression.definition = "AbsolutePressure"
 
     s1_min = solver1.fields.reduction.minimum(
         expression=absolute_pressure_expression,
-        locations=solver1.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver1.setup.boundary_conditions.velocity_inlet,
     )
     s2_min = solver2.fields.reduction.minimum(
         expression=absolute_pressure_expression,
-        locations=solver2.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver2.setup.boundary_conditions.velocity_inlet,
     )
     result = reduction.minimum(
         expression=absolute_pressure_expression,
-        locations=solver1.settings.setup.boundary_conditions.velocity_inlet
-        + solver2.settings.setup.boundary_conditions.velocity_inlet,
+        locations=solver1.setup.boundary_conditions.velocity_inlet
+        + solver2.setup.boundary_conditions.velocity_inlet,
     )
     assert result == min(s1_min, s2_min)

@@ -22,7 +22,7 @@
 
 import time
 
-import ansys.fluent.core as pyfluent
+from ansys.fluent.core import connect_to_fluent
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -32,7 +32,9 @@ def transcript(data):
 
 def run_transcript(i, ip, port, password):
     transcript("")
-    session = pyfluent.Solver.from_connection(ip=ip, port=port, password=password)
+    session = connect_to_fluent(
+        ip=ip, port=port, password=password, cleanup_on_exit=False
+    )
     session.transcript.register_callback(transcript)
 
     transcript_checked = False
@@ -52,8 +54,8 @@ def run_transcript(i, ip, port, password):
     return transcript_checked, transcript_passed
 
 
-def test_transcript():
-    solver = pyfluent.Solver.from_container(insecure_mode=True)
+def test_transcript(new_solver_session):
+    solver = new_solver_session
     ip = solver.connection_properties.ip
     port = solver.connection_properties.port
     password = solver.connection_properties.password

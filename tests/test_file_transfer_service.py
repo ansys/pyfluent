@@ -28,14 +28,12 @@ from pathlib import Path
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.utils.file_transfer_service import (
     ContainerFileTransferStrategy,
     StandaloneFileTransferStrategy,
 )
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4649")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
@@ -56,17 +54,14 @@ def test_remote_grpc_fts_container():
     file_transfer_service = ContainerFileTransferStrategy(mount_source=str(source_path))
 
     container_dict = {"mount_source": file_transfer_service.mount_source}
-    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(
-        file_transfer_service=file_transfer_service,
-        container_dict=container_dict,
-        **grpc_kwds,
+        file_transfer_service=file_transfer_service, container_dict=container_dict
     )
 
-    session.settings.file.read_case(file_name=case_file)
+    session.file.read_case(file_name=case_file)
     assert session.file_exists_on_remote("mixing_elbow.cas.h5")
 
-    session.settings.file.write_case(file_name="write_mixing_elbow.cas.h5")
+    session.file.write_case(file_name="write_mixing_elbow.cas.h5")
     assert session.file_exists_on_remote("write_mixing_elbow.cas.h5")
 
     session.exit()
@@ -90,22 +85,22 @@ def test_read_case_and_data(monkeypatch):
         file_transfer_service=StandaloneFileTransferStrategy()
     )
 
-    solver.settings.file.read(file_type="case-data", file_name=case_file_name)
-    solver.settings.file.write(file_type="case-data", file_name="write_data.cas.h5")
+    solver.file.read(file_type="case-data", file_name=case_file_name)
+    solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
 
-    solver.settings.file.read_case_data(file_name=case_file_name)
-    solver.settings.file.write_case_data(file_name="write_case_data.cas.h5")
+    solver.file.read_case_data(file_name=case_file_name)
+    solver.file.write_case_data(file_name="write_case_data.cas.h5")
     solver.exit()
 
     solver = pyfluent.launch_fluent(
         file_transfer_service=StandaloneFileTransferStrategy(server_cwd=os.getcwd())
     )
 
-    solver.settings.file.read(file_type="case-data", file_name=case_file_name)
-    solver.settings.file.write(file_type="case-data", file_name="write_data.cas.h5")
+    solver.file.read(file_type="case-data", file_name=case_file_name)
+    solver.file.write(file_type="case-data", file_name="write_data.cas.h5")
 
-    solver.settings.file.read_case_data(file_name=case_file_name)
-    solver.settings.file.write_case_data(file_name="write_case_data.cas.h5")
+    solver.file.read_case_data(file_name=case_file_name)
+    solver.file.write_case_data(file_name="write_case_data.cas.h5")
     solver.exit()
 
 

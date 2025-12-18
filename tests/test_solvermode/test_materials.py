@@ -28,11 +28,9 @@ from util.solver import copy_database_material
 @pytest.mark.fluent_version("latest")
 def test_solver_material(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
-    setup_materials = solver_session.settings.setup.materials
+    setup_materials = solver_session.setup.materials
     copy_database_material(materials=setup_materials, type="fluid", name="water-liquid")
-    elbow_fluid = solver_session.settings.setup.cell_zone_conditions.fluid[
-        "elbow-fluid"
-    ]
+    elbow_fluid = solver_session.setup.cell_zone_conditions.fluid["elbow-fluid"]
 
     assert "water-liquid" not in elbow_fluid.material()
     elbow_fluid.material = "water-liquid"

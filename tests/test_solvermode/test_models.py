@@ -27,7 +27,7 @@ import pytest
 @pytest.mark.fluent_version("latest")
 def test_solver_models(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
-    models = solver_session.settings.setup.models
+    models = solver_session.setup.models
     assert models.energy.enabled()
     models.energy.enabled = False
     assert not models.energy.enabled()
@@ -47,9 +47,9 @@ def test_solver_models(mixing_elbow_settings_session):
 @pytest.mark.fluent_version("latest")
 def test_disk_2d_models(disk_settings_session):
     solver_session = disk_settings_session
-    models = solver_session.settings.setup.models
-    solver_session.settings.setup.general.solver.two_dim_space = "axisymmetric"
-    solver_session.settings.setup.general.solver.two_dim_space = "swirl"
+    models = solver_session.setup.models
+    solver_session.setup.general.solver.two_dim_space = "axisymmetric"
+    solver_session.setup.general.solver.two_dim_space = "swirl"
 
     models.viscous.model = "k-epsilon"
     near_wall = models.viscous.near_wall_treatment

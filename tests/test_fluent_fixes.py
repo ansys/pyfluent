@@ -35,11 +35,11 @@ def test_allowed_values_on_report_definitions_1364(new_solver_session):
         "elbow.cas.h5", "pyfluent/examples/DOE-ML-Mixing-Elbow"
     )
 
-    solver.settings.file.read(
+    solver.file.read(
         file_name=import_file_name, file_type="case", lightweight_setup=True
     )
 
-    report_def = solver.settings.solution.report_definitions.volume.create("xxx")
+    report_def = solver.solution.report_definitions.volume.create("xxx")
 
     report_def.set_state(
         {
@@ -69,8 +69,8 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
         file_name="exhaust_system.dat.h5", directory="pyfluent/exhaust_system"
     )
 
-    solver_session.settings.file.read_case_data(file_name=import_case)
-    solver_session.settings.solution.run_calculation.iterate(iter_count=1)
+    solver_session.file.read_case_data(file_name=import_case)
+    solver_session.solution.run_calculation.iterate(iter_count=1)
 
     monitors_list = solver_session.monitors.get_monitor_set_names()
 
@@ -90,13 +90,13 @@ def test_monitors_list_set_data_637_974_1744_2188(new_solver_session):
 
     assert mp
 
-    sample_report_plot = solver_session.settings.solution.monitor.report_plots.create(
+    sample_report_plot = solver_session.solution.monitor.report_plots.create(
         "sample-report-plot"
     )
     sample_report_plot.report_defs = "mass-bal"
 
-    solver_session.settings.solution.initialization.hybrid_initialize()
-    solver_session.settings.solution.run_calculation.iterate(iter_count=1)
+    solver_session.solution.initialization.hybrid_initialize()
+    solver_session.solution.run_calculation.iterate(iter_count=1)
 
     new_monitors_list = solver_session.monitors.get_monitor_set_names()
 
@@ -125,9 +125,9 @@ def test_empty_vector_field_data_2339(new_solver_session):
     assert import_case
     assert import_data
 
-    solver.settings.file.read_case(file_name=import_case)
+    solver.file.read_case(file_name=import_case)
 
-    solver.settings.file.read_data(file_name=import_data)
+    solver.file.read_data(file_name=import_data)
 
     assert [
         a[0]
