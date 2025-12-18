@@ -28,9 +28,12 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.solver import Viscous
+from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
+    InactiveObjectError,
+    NamedObject,
+    ReadOnlyActionError,
     _Alias,
     _InputFile,
     _OutputFile,
@@ -789,6 +792,17 @@ def test_setting_string_constants(mixing_elbow_settings_session):
         viscous.k_epsilon_model = viscous.k_epsilon_model.EASM
 
 
+@pytest.mark.fluent_version(">=24.2")
+def test_named_object_commands(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    inlets = VelocityInlets(solver)
+    inlets.list()
+    inlets.list_properties(object_name="hot-inlet")
+    if solver.get_fluent_version() >= FluentVersion.v261:
+        NamedObject.list(inlets)
+        NamedObject.list_properties(inlets, object_name="hot-inlet")
+
+
 @pytest.mark.fluent_version(">=26.1")
 def test_migration_adapter_for_strings(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -823,3 +837,24 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
         == "particle-time-step"
     )
+
+
+def test_set_state_via_call(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+    solver.settings.results.graphics.views.camera.position(xyz=[1.70, 1.14, 0.29])
+
+
+@pytest.mark.fluent_version(">=26.1")
+def test_read_only_command_execution(mixing_elbow_case_session):
+    solver = mixing_elbow_case_session
+    contour = solver.settings.results.graphics.contour.create()
+    assert contour.display.is_active() is False
+    with pytest.raises(InactiveObjectError):
+        contour.display.is_read_only()
+        # Same behaviour for attribute access of command arguments
+
+    contour.surfaces_list = ["wall-elbow"]
+    assert contour.display.is_active() is True
+    assert contour.display.is_read_only() is True
+    with pytest.raises(ReadOnlyActionError):
+        contour.display()

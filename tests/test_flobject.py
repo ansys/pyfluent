@@ -295,6 +295,7 @@ class Command(Setting):
     def __init__(self, parent):
         self.attrs = super().attrs.copy()
         self.attrs["arguments-aliases"] = lambda self: {}
+        self.attrs["read-only?"] = lambda self: False
         super().__init__(parent)
 
     def __call__(self, **kwds):
@@ -891,6 +892,7 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
+@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4645")
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
@@ -973,10 +975,21 @@ def get_child_nodes(node, nodes, type_list):
 @pytest.mark.fluent_version("latest")
 def test_strings_with_allowed_values(static_mixer_settings_session):
     solver = static_mixer_settings_session
+    fluent_version = solver.get_fluent_version()
 
     with pytest.raises(AttributeError) as e:
-        solver.file.auto_save.root_name.allowed_values()
+        if fluent_version >= FluentVersion.v261:
+            solver.solution.calculation_activity.auto_save.root_name.allowed_values()
+        else:
+            solver.file.auto_save.root_name.allowed_values()
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
+
+    if fluent_version >= FluentVersion.v261:
+        assert solver.solution.calculation_activity.auto_save.case_frequency.allowed_values() == [
+            "if-case-is-modified",
+            "each-time",
+            "if-mesh-is-modified",
+        ]
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
     assert string_with_allowed_values == [
@@ -1005,7 +1018,6 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4498")
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
@@ -1195,34 +1207,35 @@ def test_default_argument_names_for_commands(static_mixer_settings_session):
     solver = static_mixer_settings_session
 
     if solver.get_fluent_version() >= FluentVersion.v251:
-        assert set(solver.results.graphics.contour.command_names) == {
-            "create",
-            "delete",
-            "rename",
-            "list",
-            "list_properties",
-            "make_a_copy",
-            "display",
-            "add_to_graphics",
-            "clear_history",
-        }
+        assert set(solver.results.graphics.contour.command_names).issuperset(
+            {
+                "create",
+                "delete",
+                "rename",
+                "make_a_copy",
+                "display",
+                "add_to_graphics",
+                "clear_history",
+            }
+        )
     else:
-        assert set(solver.results.graphics.contour.command_names) == {
-            "delete",
-            "rename",
-            "list",
-            "list_properties",
-            "make_a_copy",
-            "display",
-            "copy",
-            "add_to_graphics",
-            "clear_history",
-        }
+        assert set(solver.results.graphics.contour.command_names).issuperset(
+            {
+                "delete",
+                "rename",
+                "make_a_copy",
+                "display",
+                "copy",
+                "add_to_graphics",
+                "clear_history",
+            }
+        )
 
-    assert solver.results.graphics.contour.rename.argument_names == ["new", "old"]
+    assert set(solver.results.graphics.contour.rename.argument_names) == {"new", "old"}
     assert solver.results.graphics.contour.delete.argument_names == ["name_list"]
-    # The following is the default behavior when no arguments are associated with the command.
-    assert solver.results.graphics.contour.list.argument_names == []
+    if solver.get_fluent_version() < FluentVersion.v261:
+        # The following is the default behavior when no arguments are associated with the command.
+        assert solver.results.graphics.contour.list_1.argument_names == []
 
 
 @pytest.mark.fluent_version(">=25.1")

@@ -39,6 +39,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
@@ -277,7 +278,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
@@ -305,7 +306,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     assert session.is_server_healthy()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 @pytest.mark.parametrize("file_format", ["jou", "py"])
@@ -578,16 +579,18 @@ def test_general_exception_behaviour_in_session(new_solver_session):
     graphics.mesh["mesh-1"] = {"surfaces_list": "*"}
     graphics.mesh["mesh-1"].display()
 
-    # Post-process without data
-    with pytest.raises(RuntimeError) as exec_info:
-        # Invalid result.
-        graphics.contour["contour-velocity"] = {
-            "field": "velocity-magnitude",
-            "surfaces_list": ["wall-elbow"],
-        }
-        graphics.contour["contour-velocity"].display()
-    # Assert that exception is propagated from the Fluent server
-    assert isinstance(exec_info.value.__context__, grpc.RpcError)
+    # Doesn't throw exception in 26.1 - Fluent bug 1354052
+    if fluent_version < FluentVersion.v261:
+        # Post-process without data
+        with pytest.raises(RuntimeError) as exec_info:
+            # Invalid result.
+            graphics.contour["contour-velocity"] = {
+                "field": "velocity-magnitude",
+                "surfaces_list": ["wall-elbow"],
+            }
+            graphics.contour["contour-velocity"].display()
+        # Assert that exception is propagated from the Fluent server
+        assert isinstance(exec_info.value.__context__, grpc.RpcError)
 
     solver.solution.run_calculation.iterate(iter_count=5)
     graphics.contour["contour-velocity"] = {
@@ -669,6 +672,36 @@ def test_new_launch_fluent_api_standalone():
     solver.exit()
     solver_connected.exit()
 
+    solver_aero = pyfluent.SolverAero.from_install()
+    assert solver_aero.is_server_healthy()
+
+    ip = solver_aero.connection_properties.ip
+    port = solver_aero.connection_properties.port
+    password = solver_aero.connection_properties.password
+
+    solver_aero_connected = pyfluent.SolverAero.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert solver_aero_connected.is_server_healthy()
+
+    solver_aero.exit()
+    solver_aero_connected.exit()
+
+    meshing = pyfluent.Meshing.from_install()
+    assert meshing.is_server_healthy()
+
+    ip = meshing.connection_properties.ip
+    port = meshing.connection_properties.port
+    password = meshing.connection_properties.password
+
+    meshing_connected = pyfluent.Meshing.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert meshing_connected.is_server_healthy()
+
+    meshing.exit()
+    meshing_connected.exit()
+
 
 def test_new_launch_fluent_api_dry_run(helpers):
     helpers.mock_awp_vars()
@@ -690,7 +723,8 @@ def test_new_launch_fluent_api_from_container():
     port_1 = get_free_port()
     port_2 = get_free_port()
     container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
-    solver = pyfluent.Solver.from_container(container_dict=container_dict)
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    solver = pyfluent.Solver.from_container(container_dict=container_dict, **grpc_kwds)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
     assert solver.is_server_healthy()
     solver.exit()
@@ -699,7 +733,7 @@ def test_new_launch_fluent_api_from_container():
 def test_new_launch_fluent_api_from_connection():
     import ansys.fluent.core as pyfluent
 
-    solver = pyfluent.Solver.from_container()
+    solver = pyfluent.Solver.from_container(insecure_mode=True)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
     assert solver.is_server_healthy()
     ip = solver.connection_properties.ip
@@ -816,7 +850,7 @@ def test_dir_for_session(new_meshing_session_wo_exit):
 
     solver = meshing.switch_to_solver()
 
-    assert dir(meshing) == ["is_active"]
+    assert dir(meshing) == ["is_active", "wait_process_finished"]
 
     for attr in ["read_case_lightweight", "settings"]:
         assert getattr(solver, attr)
@@ -837,5 +871,5 @@ def test_dir_for_session(new_meshing_session_wo_exit):
     solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
-    assert dir(solver) == ["is_active"]
+    assert dir(solver) == ["is_active", "wait_process_finished"]
     assert len(dir(meshing_new)) > 1
