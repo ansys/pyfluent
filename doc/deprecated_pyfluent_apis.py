@@ -24,6 +24,11 @@ PYFLUENT_DEPRECATED_DATA = [
         ":py:meth:`ansys.fluent.core.session.BaseSession.is_active <ansys.fluent.core.session.BaseSession.is_active>`",
     ),
     (
+        ":py:meth:`ansys.fluent.core.session.BaseSession.is_server_healthy <ansys.fluent.core.session.BaseSession.is_server_healthy>`",
+        "0.38",
+        ":py:meth:`ansys.fluent.core.session.BaseSession.is_active <ansys.fluent.core.session.BaseSession.is_active>`",
+    ),
+    (
         ":py:meth:`ansys.fluent.core.file_session.Transaction.add_surfaces_request <ansys.fluent.core.file_session.Transaction.add_surfaces_request>`",
         "0.25.0",
         ":py:meth:`ansys.fluent.core.file_session.Transaction.add_requests <ansys.fluent.core.file_session.Transaction.add_requests>`",
