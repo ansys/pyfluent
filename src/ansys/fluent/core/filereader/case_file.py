@@ -337,7 +337,7 @@ class Mesh:
         nodes = nodes[previous : previous + np.sum(nnodes)]
         return [nodes, nnodes]
 
-    def get_connectivity(self, surface_id) -> np.array:
+    def get_connectivity(self, surface_id) -> np.ndarray:
         """Returns numpy array of face connectivity data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         key = nodes.copy()
@@ -353,7 +353,7 @@ class Mesh:
         nodes = np.insert(nodes, obj, nnodes)
         return nodes
 
-    def get_vertices(self, surface_id) -> np.array:
+    def get_vertices(self, surface_id) -> np.ndarray:
         """Returns numpy array of vertices data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         nodes = np.unique(nodes)

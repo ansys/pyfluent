@@ -39,7 +39,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 
 from typing_extensions import Unpack
 
@@ -57,7 +57,6 @@ from ansys.fluent.core.launcher.launch_options import (
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
 )
-from ansys.fluent.core.launcher.launcher import LaunchFluentArgs
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
     _build_journal_argument,
@@ -73,6 +72,9 @@ from ansys.fluent.core.launcher.server_info import (
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.launcher.launcher import LaunchFluentArgs
 
 
 class StandaloneArgsWithoutDryRun(
@@ -121,7 +123,7 @@ class StandaloneLauncher:
         *,
         mode: FluentMode,
         dry_run: bool = False,
-        **kwargs: Unpack[LaunchFluentArgs],
+        **kwargs: Unpack["LaunchFluentArgs"],
     ):
         """
         Launch a Fluent session in standalone mode.

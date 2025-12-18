@@ -198,7 +198,7 @@ class BaseFieldDataSource(ABC):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """
         Retrieve the field data for a given request.
 
@@ -605,8 +605,8 @@ class _ReturnFieldData:
         field_name: str,
         surfaces: list[int | str | object],
         surface_ids: list[int],
-        scalar_field_data: np.array,
-    ) -> dict[int | str, np.array]:
+        scalar_field_data: np.ndarray,
+    ) -> dict[int | str, np.ndarray]:
         surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: scalar_field_data[surface_ids[count]][field_name]
@@ -618,10 +618,10 @@ class _ReturnFieldData:
         data_types: list[SurfaceDataType],
         surfaces: list[int | str | object],
         surface_ids: list[int],
-        surface_data: np.array | list[np.array],
+        surface_data: np.ndarray | list[np.ndarray],
         deprecated_flag: bool | None = False,
         flatten_connectivity: bool = False,
-    ) -> dict[int | str, dict[SurfaceDataType, np.array | list[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surfaces = get_surfaces_from_objects(surfaces)
         ret_surf_data = {}
         for count, surface in enumerate(surfaces):
@@ -659,8 +659,8 @@ class _ReturnFieldData:
         field_name: str,
         surfaces: list[int | str | object],
         surface_ids: list[int],
-        vector_field_data: np.array,
-    ) -> dict[int | str, np.array]:
+        vector_field_data: np.ndarray,
+    ) -> dict[int | str, np.ndarray]:
         surfaces = get_surfaces_from_objects(surfaces)
         return {
             surface: vector_field_data[surface_ids[count]][field_name].reshape(-1, 3)

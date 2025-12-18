@@ -21,6 +21,7 @@
 # SOFTWARE.
 
 """Wrappers over FieldData gRPC service of Fluent."""
+
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from enum import Enum
@@ -415,7 +416,6 @@ def _data_type_converter(args_dict):
 
 
 class _FetchFieldData:
-
     @staticmethod
     def _surface_data(
         data_types: list[SurfaceDataType] | list[str],
@@ -512,7 +512,7 @@ class BaseFieldData:
     def _get_scalar_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
@@ -530,7 +530,7 @@ class BaseFieldData:
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> dict[int | str, dict[SurfaceDataType, np.array | list[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_data = self.data[(("type", "surface-data"),)]
         return self._returned_data._surface_data(
             kwargs.get("data_types"),
@@ -543,7 +543,7 @@ class BaseFieldData:
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
             _to_field_name_str(kwargs.get("field_name")),
@@ -577,7 +577,7 @@ class BaseFieldData:
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns
@@ -1108,7 +1108,7 @@ class ChunkParser:
         """__init__ method of ChunkParser class."""
         self._callbacks_provider = callbacks_provider
 
-    def extract_fields(self, chunk_iterator) -> dict[int, dict[str, np.array]]:
+    def extract_fields(self, chunk_iterator) -> dict[int, dict[str, np.ndarray]]:
         """Extracts field data received from Fluent.
 
         if callbacks_provider is set then callbacks are triggered with extracted data.
@@ -1502,7 +1502,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> dict[int | str, dict[SurfaceDataType, np.array | list[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         fields_request = get_fields_request()
         fields_request.surfaceRequest.extend(
@@ -1536,7 +1536,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         surface_ids = self.get_surface_ids(kwargs.get("surfaces"))
         field_name = self._allowed_vector_field_names.valid_name(
             kwargs.get("field_name")
@@ -1627,7 +1627,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         """Get scalar field data on a surface."""
         return self._get_scalar_field_data(
             field_name=field_name,
@@ -1642,7 +1642,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         data_types: list[SurfaceDataType],
         surfaces: list[int | str],
         overset_mesh: bool | None = False,
-    ) -> dict[int | str, dict[SurfaceDataType, np.array | list[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         """Get surface data (vertices, faces connectivity, centroids, and normals)."""
         self._deprecated_flag = True
         return self._get_surface_data(
@@ -1654,7 +1654,7 @@ class LiveFieldData(BaseFieldData, FieldDataSource):
         self,
         field_name: str,
         surfaces: list[int | str],
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         """Get vector field data on a surface."""
         return self._get_vector_field_data(
             field_name=field_name,

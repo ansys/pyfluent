@@ -116,7 +116,7 @@ class BatchFieldData:
     def _get_scalar_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
@@ -134,7 +134,7 @@ class BatchFieldData:
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> dict[int | str, dict[SurfaceDataType, np.array | list[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_data = self.data[(("type", "surface-data"),)]
         return self._returned_data._surface_data(
             kwargs.get("data_types"),
@@ -147,7 +147,7 @@ class BatchFieldData:
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
             _to_vector_field_name(kwargs.get("field_name")),
@@ -187,7 +187,7 @@ class BatchFieldData:
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns
@@ -932,7 +932,7 @@ class FileFieldData(FieldDataSource):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns

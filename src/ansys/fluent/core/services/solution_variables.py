@@ -700,7 +700,7 @@ class SolutionVariableData:
     def set_data(
         self,
         variable_name: str,
-        zone_names_to_data: dict[str, np.array],
+        zone_names_to_data: dict[str, np.ndarray],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set SVAR data on zones.
@@ -804,7 +804,7 @@ class SolutionVariableData:
     def set_svar_data(
         self,
         variable_name: str,
-        zone_names_to_svar_data: dict[str, np.array],
+        zone_names_to_svar_data: dict[str, np.ndarray],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set solution variable data."""

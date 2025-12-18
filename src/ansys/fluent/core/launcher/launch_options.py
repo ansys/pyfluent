@@ -380,11 +380,10 @@ def _validate_gpu(gpu: bool | list, dimension: int):
 
 
 def _get_argvals_and_session(argvals):
-    _validate_gpu(argvals["gpu"], argvals["dimension"])
+    _validate_gpu(argvals.get("gpu"), argvals.get("dimension"))
     argvals["graphics_driver"] = _get_graphics_driver(
-        argvals["graphics_driver"], argvals["ui_mode"]
+        argvals.get("graphics_driver"), argvals.get("ui_mode")
     )
-    argvals["mode"] = FluentMode(argvals["mode"])
-    del argvals["self"]
+    argvals["mode"] = FluentMode(argvals.get("mode"))
     new_session = argvals["mode"].get_fluent_value()
     return argvals, new_session

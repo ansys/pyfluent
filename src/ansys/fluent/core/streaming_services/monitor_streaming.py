@@ -119,7 +119,7 @@ class MonitorsManager(StreamingService):
         monitor_set_name,
         start_index: int = 0,
         end_index: int | None = None,
-    ) -> tuple[np.array, dict[str, np.array]]:
+    ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
         """Get monitor set data.
 
         Parameters
