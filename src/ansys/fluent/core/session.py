@@ -51,6 +51,7 @@ from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
+from .utils.deprecate import deprecate_function
 
 try:
     from ansys.fluent.core.solver.settings import root
@@ -251,13 +252,18 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
+    @deprecate_function(version="v0.38.0", new_func="is_active")
     def is_server_healthy(self) -> bool:
+        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        return self._is_server_healthy()
+
+    def _is_server_healthy(self) -> bool:
         """Whether the current session is healthy (i.e. The server is 'SERVING')."""
         return self._health_check.is_serving
 
     def is_active(self) -> bool:
         """Whether the current session is active."""
-        return True if self._fluent_connection else False
+        return self._fluent_connection is not None and self._is_server_healthy()
 
     @property
     @deprecated(version="0.32", reason="Use ``session.scheme``.")

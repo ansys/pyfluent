@@ -1925,14 +1925,16 @@ class PyCommand(PyAction):
         Any
             Return value.
         """
+        processed = []
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 kwds[arg] = self.before_execute(value)
-        result = super().__call__(*args, **kwds)
-        for arg, value in kwds.items():
-            if self._get_file_purpose(arg):
+                processed.append(kwds[arg])
+        try:
+            return super().__call__(*args, **kwds)
+        finally:
+            for value in processed:
                 self.after_execute(value)
-        return result
 
 
 class _InputFile:
