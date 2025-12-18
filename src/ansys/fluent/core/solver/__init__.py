@@ -22,9 +22,13 @@
 
 """The top-level module of PyFluent providing solver-related functionality."""
 
-try:
-    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
-except (ImportError, AttributeError, SyntaxError):
-    pass
+import logging
 
 from ansys.fluent.core.utils.context_managers import using  # noqa: F401
+
+logger = logging.getLogger("pyfluent.general")
+
+try:
+    from ansys.fluent.core.generated.solver.settings_builtin import *  # noqa: F401, F403
+except (ImportError, AttributeError, SyntaxError) as ex:
+    logger.debug(ex)

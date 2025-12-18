@@ -25,7 +25,7 @@ from pathlib import Path
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import FluentVersion, MeshingEvent, SolverEvent, examples
+from ansys.fluent.core import MeshingEvent, SolverEvent, examples
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
@@ -43,10 +43,9 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
-        if session.get_fluent_version() >= FluentVersion.v232:
-            assert Path(event_info.case_file_name).name == Path(case_file_name).name
-            with pytest.warns(PyFluentDeprecationWarning):
-                assert Path(event_info.casefilepath).name == Path(case_file_name).name
+        assert Path(event_info.case_file_name).name == Path(case_file_name).name
+        with pytest.warns(PyFluentDeprecationWarning):
+            assert Path(event_info.casefilepath).name == Path(case_file_name).name
 
     on_case_loaded.loaded = False
 

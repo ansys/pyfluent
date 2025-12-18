@@ -22,8 +22,7 @@
 
 import time
 
-from ansys.fluent.core import connect_to_fluent
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+import ansys.fluent.core as pyfluent
 
 
 def transcript(data):
@@ -32,7 +31,7 @@ def transcript(data):
 
 def run_transcript(i, ip, port, password):
     transcript("")
-    session = connect_to_fluent(
+    session = pyfluent.connect_to_fluent(
         ip=ip, port=port, password=password, cleanup_on_exit=False
     )
     session.transcript.register_callback(transcript)
@@ -68,7 +67,4 @@ def test_transcript(new_solver_session):
         total_checked_transcripts += int(transcript_checked)
         total_passed_transcripts += int(transcript_passed)
 
-    if solver.get_fluent_version() >= FluentVersion.v232:
-        assert total_checked_transcripts == total_passed_transcripts
-    else:
-        assert total_checked_transcripts >= total_passed_transcripts
+    assert total_checked_transcripts == total_passed_transcripts
