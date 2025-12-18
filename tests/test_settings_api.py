@@ -755,6 +755,10 @@ def test_runtime_python_classes(
     use_runtime_python_classes, mixing_elbow_settings_session
 ):
     solver = mixing_elbow_settings_session
+    assert not any(
+        name == "list" or name.startswith("list_")
+        for name in solver.setup.materials.fluid.command_names
+    )
     solver.setup.materials.database.copy_by_name(type="fluid", name="water-liquid")
     solver.settings.setup.cell_zone_conditions.fluid["elbow-fluid"] = {
         "material": "water-liquid"
