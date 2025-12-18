@@ -254,11 +254,11 @@ class BaseSession:
 
     @deprecate_function(version="v0.38.0", new_func="is_active")
     def is_server_healthy(self) -> bool:
-        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        """Whether the current session is healthy (i.e. the server is 'SERVING')."""
         return self._is_server_healthy()
 
     def _is_server_healthy(self) -> bool:
-        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        """Whether the current session is healthy (i.e. the server is 'SERVING')."""
         return self._health_check.is_serving
 
     def is_active(self) -> bool:
