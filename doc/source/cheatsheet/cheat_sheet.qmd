@@ -33,6 +33,7 @@ jupyter:
     name: python3
 ---
 
+
 ## Session Management
 
 ### Launch sessions
@@ -65,10 +66,10 @@ from ansys.fluent.core.solver import (
 # Read case
 ReadCase(settings_source=solver)(file_name="simulation.cas.h5")
 # Read case and data
-ReadCaseData(settings_source=solver)(file_name="simulation.cas.h5")
+ReadCaseAndData(settings_source=solver)(file_name="simulation.cas.h5")
 # Write files
 WriteCase(settings_source=solver)(file_name="output.cas.h5")
-WriteCaseData(settings_source=solver)(file_name="output.cas.h5")
+WriteCaseAndData(settings_source=solver)(file_name="output.cas.h5")
 ```
 
 ## Meshing Workflow
@@ -265,19 +266,15 @@ sv_data.set_data(
 ## PyAnsys Units
 
 ```{python}
-from ansys.units import Quantity
-# Set with units
+from ansys.units import Quantity as Q
 inlet = solver.setup.boundary_conditions.velocity_inlet["hot-inlet"]
-inlet.turbulence.hydraulic_diameter = Quantity(15, "mm")
-# Get with units
+inlet.turbulence.hydraulic_diameter = Q(15, "mm")
 diam = inlet.turbulence.hydraulic_diameter.as_quantity()
 # Unit conversion
 diam_in_inches = diam.to("in")
 ```
 
-## Advanced Features
-
-### Variable descriptors
+## Variable descriptors
 
 ```{python}
 # Access allowed values and ranges
@@ -287,62 +284,7 @@ intensity = inlet.turbulence.turbulent_intensity
 intensity.min(), intensity.max()
 ```
 
-### Events and callbacks
 
-```{python}
-from ansys.fluent.core import SolverEvent
-def on_iteration_ended(session, event_info):
-    print(f"Iteration {event_info.index} completed")
-callback_id = solver.events.register_callback(
-    SolverEvent.ITERATION_ENDED, on_iteration_ended
-)
-```
 
-### Monitors
 
-```{python}
-# Get monitor data
-monitor_names = solver.monitors.get_monitor_set_names()
-data = solver.monitors.get_monitor_set_data("residuals")
-```
 
-### File readers (no session required)
-
-```{python}
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.file_session import FileSession
-# CaseFile reader
-reader = CaseFile(case_file_name="simulation.cas.h5")
-reader.get_mesh().get_surface_names()
-# FileSession
-fs = FileSession()
-fs.read_case("simulation.cas.h5")
-fs.read_data("simulation.dat.h5")
-fs.fields.field_info.get_scalar_field_range("temperature")
-```
-
-### Journaling
-
-```{python}
-# Record interactions
-solver.journal.start("my_journal.py")
-# ... perform operations ...
-solver.journal.stop()
-```
-
-### API search
-
-```{python}
-# Search for APIs
-pyfluent.search("velocity")
-pyfluent.search("*inlet", wildcard=True)
-```
-
-### Logging
-
-```{python}
-pyfluent.logger.enable()
-pyfluent.logger.set_global_level('DEBUG')
-logger = pyfluent.logger.get_logger('pyfluent.networking')
-logger.setLevel('ERROR')
-```
