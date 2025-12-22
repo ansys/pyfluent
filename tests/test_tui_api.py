@@ -87,13 +87,11 @@ def test_commands_not_in_solver_tui(new_solver_session):
     solver = new_solver_session
 
     deleted_commands = ["exit"]
-    hidden_commands = ["switch_to_meshing_mode"]
 
     for command in deleted_commands:
         assert command not in dir(solver.tui)
         with pytest.raises(AttributeError):
             getattr(solver.tui, command)
 
-    for command in hidden_commands:
-        assert command not in dir(solver.tui)
-        assert getattr(solver.tui, command)
+    assert "switch_to_meshing_mode" in dir(solver.tui)
+    assert getattr(solver.tui, "switch_to_meshing_mode")

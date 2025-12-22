@@ -360,7 +360,7 @@ class TUIMenu:
             for x in PyMenu(
                 self._service, self._version, self._mode, self._path
             ).get_child_names()
-            if x not in ["exit", "switch_to_meshing_mode"]
+            if x not in ["exit"]
         ]
 
     def __getattribute__(self, name) -> Any:
