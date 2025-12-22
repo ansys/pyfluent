@@ -483,7 +483,7 @@ solver_session.mesh.check()
 # Create a few boundary list for display and post-processing
 # ==========================================================
 
-mesh1 = Mesh(solver=solver_session)
+mesh1 = Mesh(solver=solver_session, surfaces=[])
 
 wall_list = []
 periodic_list = []
