@@ -497,13 +497,13 @@ wall_list = []
 periodic_list = []
 symmetry_list = []
 
-for item in mesh1.surfaces.allowed_values:
-    if len(item.split("wall")) > 1:
-        wall_list.append(item)
-    if len(item.split("periodic")) > 1:
-        periodic_list.append(item)
-    if len(item.split("symmetry")) > 1:
-        symmetry_list.append(item)
+for boundary_name in mesh1.surfaces.allowed_values:
+    if "wall" in boundary_name:
+        wall_list.append(boundary_name)
+    if "periodic" in boundary_name:
+        periodic_list.append(boundary_name)
+    if "symmetry" in boundary_name:
+        symmetry_list.append(boundary_name)
 
 #############################################################################
 # Display Mesh
