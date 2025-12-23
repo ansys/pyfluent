@@ -251,7 +251,7 @@ Functional:
 
   >>> reduction.area_average(
   ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
-  ...     locations=solver_session.setup.boundary_conditions.velocity_inlet,
+  ...     locations=solver_session.settings.setup.boundary_conditions.velocity_inlet,
   ... )
   101957.2452989816
 
@@ -271,8 +271,8 @@ Object-Oriented:
 
   >>> reduction.minimum(
   ...     expression=VariableCatalog.ABSOLUTE_PRESSURE,
-  ...     locations=solver1.setup.boundary_conditions.pressure_outlet
-  ...     + solver2.setup.boundary_conditions.pressure_outlet,
+  ...     locations=solver1.settings.setup.boundary_conditions.pressure_outlet
+  ...     + solver2.settings.setup.boundary_conditions.pressure_outlet,
   ... )
   101325.0
 

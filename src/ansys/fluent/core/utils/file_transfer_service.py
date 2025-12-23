@@ -227,8 +227,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
     >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
     >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
-    >>> solver_session.file.read_case(file_name="elbow.cas.h5")
-    >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+    >>> solver_session.settings.file.read_case(file_name="elbow.cas.h5")
+    >>> solver_session.settings.file.write_case(file_name="write_elbow.cas.h5")
     >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
     """
 
@@ -340,7 +340,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
         >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
         >>> solver_session.upload(file_name=case_file_name, remote_file_name="elbow.cas.h5")
-        >>> solver_session.file.read_case(file_name="elbow.cas.h5")
+        >>> solver_session.settings.file.read_case(file_name="elbow.cas.h5")
         """
         files = _get_files(file_name)
         if self.client:
@@ -380,7 +380,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         >>> from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
         >>> case_file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
         >>> solver_session = pyfluent.launch_fluent(file_transfer_service=ContainerFileTransferStrategy())
-        >>> solver_session.file.write_case(file_name="write_elbow.cas.h5")
+        >>> solver_session.settings.file.write_case(file_name="write_elbow.cas.h5")
         >>> solver_session.download(file_name="write_elbow.cas.h5", local_directory="<local_directory_path>")
         """
         files = _get_files(file_name)
