@@ -1,0 +1,39 @@
+:orphan:
+
+.. _cell_function_1:
+
+cell_function
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.cell_function_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ======================================================================
+
+Parent                                                                                                    Summary
+
+========================================   ======================================================================
+:ref:`mass_average <mass_average>`                        Print mass-average of scalar over specified cell zones.
+
+:ref:`mass_integral <mass_integral>`            Print mass-weighted integral of scalar over specified cell zones.
+
+:ref:`mass_2 <mass_2>`                                                  Print total mass of specified cell zones.
+
+:ref:`sum_1 <sum_1>`                                               Print sum of scalar over specified cell zones.
+
+:ref:`twopisum <twopisum>`                     Print sum of scalar over specified cell zones multiplied by 2\*Pi.
+
+:ref:`minimum_11 <minimum_11>`                                 Print minimum of scalar over specified cell zones.
+
+:ref:`maximum_10 <maximum_10>`                                 Print maximum of scalar over specified cell zones.
+
+:ref:`volume_5 <volume_5>`                                            Print total volume of specified cell zones.
+
+:ref:`volume_average <volume_average>`         Print volume-weighted average of scalar over specified cell zones.
+
+:ref:`volume_integral <volume_integral>`               Print volume integral of scalar over specified cell zones.
+
+========================================   ======================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _locations_1:
+
+locations
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.locations_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`display_3 <display_3>`       Display topology part command.
+
+============================   ==================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _skewness_reported_cells:
+
+skewness_reported_cells
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.skewness_reported_cells
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================================================================
+
+Parent                                                                                                                                            Summary
+
+==========================================================   ============================================================================================
+:ref:`improve_tangent_skewness <improve_tangent_skewness>`       Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+
+==========================================================   ============================================================================================
+

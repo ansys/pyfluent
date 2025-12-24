@@ -1,0 +1,21 @@
+:orphan:
+
+.. _transient_frame_motion_numerics:
+
+transient_frame_motion_numerics
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.transient_frame_motion_numerics
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_4 <advanced_4>`       Solution method advanced object.
+
+==============================   ====================================
+

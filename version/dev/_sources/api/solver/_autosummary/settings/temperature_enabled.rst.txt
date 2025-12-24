@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temperature_enabled:
+
+temperature_enabled
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.temperature_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ================
+
+Parent                                                    Summary
+
+==============================================   ================
+:ref:`flow_interpolation <flow_interpolation>`       Main object.
+
+==============================================   ================
+

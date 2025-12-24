@@ -1,0 +1,27 @@
+[
+  {
+    "name": "dev",
+    "version": "dev",
+    "url": "https://fluent.docs.pyansys.com/version/dev/"
+  },
+  {
+    "name": "0.37 (stable)",
+    "version": "0.37",
+    "url": "https://fluent.docs.pyansys.com/version/stable/"
+  },
+  {
+    "name": "0.36",
+    "version": "0.36",
+    "url": "https://fluent.docs.pyansys.com/version/0.36/"
+  },
+  {
+    "name": "0.35",
+    "version": "0.35",
+    "url": "https://fluent.docs.pyansys.com/version/0.35/"
+  },
+  {
+    "name": "Older version",
+    "version": "N/A",
+    "url": "https://fluent.docs.pyansys.com/version/"
+  }
+]

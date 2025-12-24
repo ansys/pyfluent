@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_65:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enabled_65
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==============================
+
+Parent                                                                Summary
+
+============================================   ==============================
+:ref:`case_modification <case_modification>`       'case_modification' child.
+
+============================================   ==============================
+

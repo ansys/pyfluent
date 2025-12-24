@@ -1,0 +1,23 @@
+:orphan:
+
+.. _feature_angle:
+
+feature_angle
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.feature_angle
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ================================================
+
+Parent                                                                                  Summary
+
+============================================   ================================================
+:ref:`feature_detection <feature_detection>`                         'feature_detection' child.
+
+:ref:`feature <feature>`                           Enables feature lines in an outline display.
+
+============================================   ================================================
+

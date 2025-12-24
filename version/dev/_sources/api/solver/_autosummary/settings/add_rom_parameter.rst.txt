@@ -1,0 +1,46 @@
+:orphan:
+
+.. _add_rom_parameter:
+
+add_rom_parameter
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.add_rom_parameter
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================   =========================================================
+
+Argument                                                                                             Summary
+
+================================================   =========================================================
+:ref:`parameter_type <parameter_type>`                                                       Parameter type.
+
+:ref:`entity_list <entity_list>`                                                           Entity list name.
+
+:ref:`group_value <group_value>`                                                                Group value.
+
+:ref:`individual_or_group <individual_or_group>`                                            As-group option.
+
+:ref:`individual_value <individual_value>`             Individual value for different entities in the group.
+
+:ref:`value_list <value_list>`                               Values for the different entities in the group.
+
+:ref:`allow_profile <allow_profile>`                                        Use profile to define heat flux.
+
+:ref:`profile_file_name <profile_file_name>`                                    Heat flux profile file name.
+
+================================================   =========================================================
+
+.. rubric:: Included in:
+
+====================================================   =================
+
+Parent                                                           Summary
+
+====================================================   =================
+:ref:`rom_data_creator_tool <rom_data_creator_tool>`       Rom tool kit.
+
+====================================================   =================
+

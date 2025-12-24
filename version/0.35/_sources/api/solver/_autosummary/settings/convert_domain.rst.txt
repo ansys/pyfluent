@@ -1,0 +1,46 @@
+:orphan:
+
+.. _convert_domain:
+
+convert_domain
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.convert_domain
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================================   ==============================================================================
+
+Argument                                                                                                                                    Summary
+
+==================================================================   ==============================================================================
+:ref:`structured_mesh_option <structured_mesh_option>`                                            Check polyhedra conversion for structured meshes.
+
+:ref:`face_hierarchy_option <face_hierarchy_option>`                                                 Check polyhedra conversion for adapted meshes.
+
+:ref:`reinitialize_option <reinitialize_option>`                                        Check for data reinitialization after polyhedra conversion.
+
+:ref:`boundary_layer_option <boundary_layer_option>`                                          Preserve boundary layers during polyhedra conversion.
+
+:ref:`dynamic_mesh_option <dynamic_mesh_option>`                                                 Check polyhedra conversion for dynamic mesh model.
+
+:ref:`heat_exchanger_option <heat_exchanger_option>`                                           Check polyhedra conversion for heat exchanger model.
+
+:ref:`multiple_shadow_nodes_option <multiple_shadow_nodes_option>`                  Check polyhedra conversion for mesh with multiple shadow nodes.
+
+:ref:`inconsistent_periodic_option <inconsistent_periodic_option>`       Check polyhedra conversion for mesh with inconsistent periodic boundaries.
+
+==================================================================   ==============================================================================
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`polyhedra <polyhedra>`       The polyhedra object.
+
+============================   =========================
+

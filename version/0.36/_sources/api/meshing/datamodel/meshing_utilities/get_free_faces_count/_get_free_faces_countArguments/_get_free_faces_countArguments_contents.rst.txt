@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_free_faces_count__get_free_faces_countArguments:
+
+_get_free_faces_countArguments
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_free_faces_count._get_free_faces_countArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

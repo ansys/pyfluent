@@ -1,0 +1,21 @@
+:orphan:
+
+.. _lower_bound_1:
+
+lower_bound
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.lower_bound_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ===============
+
+Parent                                   Summary
+
+==============================   ===============
+:ref:`set_bounds <set_bounds>`       Set Bounds.
+
+==============================   ===============
+

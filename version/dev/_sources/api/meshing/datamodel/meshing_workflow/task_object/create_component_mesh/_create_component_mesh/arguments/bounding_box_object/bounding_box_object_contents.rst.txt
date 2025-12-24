@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_component_mesh__create_component_mesh_arguments_bounding_box_object:
+
+bounding_box_object
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.task_object.create_component_mesh._create_component_mesh.arguments.bounding_box_object
+   :members: size_relative_length, xmax, xmax_ratio, xmin, xmin_ratio, ymax, ymax_ratio, ymin, ymin_ratio, zmax, zmax_ratio, zmin, zmin_ratio
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

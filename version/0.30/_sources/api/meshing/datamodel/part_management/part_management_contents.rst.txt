@@ -1,0 +1,33 @@
+.. _ref_meshing_datamodel_part_management:
+
+meshing.datamodel.part_management
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.part_management.Root
+   :members: AppendFmdFiles, ChangeFileLengthUnit, ChangeLengthUnit, CreateObjForEachPart, CreateObjects, Delete, DeletePaths, InitializeTemplate, InputFileChanged, ListMeshingOperations, LoadFmdFile, LoadTemplate, MarkObjectsOutofDate, MoveCADComponentsToNewObject, MoveToNewSubobject, MoveToObject, RedoAllTransforms, ResetTemplate, SaveFmdFile, SaveTemplate, SuppressNodeObjects, UndoAllTransforms
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   AssemblyNode/AssemblyNode_contents
+   GlobalSettings/GlobalSettings_contents
+   MeshingOperations/MeshingOperations_contents
+   Mirror/Mirror_contents
+   Node/Node_contents
+   ObjectSetting/ObjectSetting_contents
+   ObjectSettingOperations/ObjectSettingOperations_contents
+   Refaceting/Refaceting_contents
+   RefacetingOperations/RefacetingOperations_contents
+   Rotate/Rotate_contents
+   RotateAboutAxis/RotateAboutAxis_contents
+   Scaling/Scaling_contents
+   Transform/Transform_contents
+   TransformBase/TransformBase_contents
+   TransformOperations/TransformOperations_contents
+   Translate/Translate_contents
