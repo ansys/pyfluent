@@ -519,7 +519,7 @@ Load workflow
     from ansys.fluent.core import examples
 
     saved_workflow_path = examples.download_file(
-        "sample_watertight_workflow.wft", "pyfluent/meshing_workflow"
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
     )
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2

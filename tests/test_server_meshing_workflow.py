@@ -1692,3 +1692,15 @@ def test_created_workflow(new_meshing_session, use_server_meshing_workflow):
     assert sorted(created_workflow.task_names()) == sorted(
         ["import_geometry", "add_local_sizing_wtm"]
     )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_loaded_workflow(new_meshing_session, use_server_meshing_workflow):
+    meshing = new_meshing_session
+    saved_workflow_path = examples.download_file(
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
+    )
+    loaded_workflow = meshing.load_workflow(file_path=saved_workflow_path)
+    assert "set_up_rotational_periodic_boundaries" in loaded_workflow.task_names()
+    assert "import_boi_geometry" in loaded_workflow.task_names()
