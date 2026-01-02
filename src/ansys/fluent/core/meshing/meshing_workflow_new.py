@@ -152,8 +152,31 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             fluent_version=fluent_version,
             initialize=initialize,
         )
+        self._parent_workflow = workflow
         self._part_management = part_management
         self._pm_file_management = pm_file_management
+
+    @property
+    def parts(self) -> PyMenuGeneric | None:
+        """Access part-management in fault-tolerant mode.
+
+        Returns
+        -------
+        PyMenuGeneric | None
+            Part-management.
+        """
+        return self._parent_workflow.parts
+
+    @property
+    def parts_files(self):
+        """Access the part-management file-management object in fault-tolerant mode.
+
+        Returns
+        -------
+        PyMenuGeneric | None
+            File management object in the part management object.
+        """
+        return self._parent_workflow.parts_files
 
     @property
     def part_management(self) -> PyMenuGeneric | None:
@@ -164,6 +187,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         PyMenuGeneric | None
             Part-management.
         """
+        # TODO: Remove this after migrating to the new workflow
         return self._part_management
 
     @property
@@ -175,6 +199,7 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
         PyMenuGeneric | None
             File management object in the part management object.
         """
+        # TODO: Remove this after migrating to the new workflow
         return self._pm_file_management
 
 
