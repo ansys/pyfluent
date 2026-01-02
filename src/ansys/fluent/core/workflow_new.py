@@ -49,7 +49,7 @@ from collections import OrderedDict
 import re
 from typing import ValuesView
 
-from ansys.fluent.core.services.datamodel_se import PyMenu
+from ansys.fluent.core.services.datamodel_se import PyCommand, PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -171,9 +171,11 @@ def command_name_to_task_name(meshing_root, command_name: str) -> str:
     # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
     #  for '<Task Object>.get_next_possible_tasks()'.
     command_instance = getattr(meshing_root, command_name).create_instance()
-    return command_instance.get_attr("APIName") or command_instance.get_attr(
+    retval = command_instance.get_attr("APIName") or command_instance.get_attr(
         "helpString"
     )
+    del command_instance
+    return retval
 
 
 class Workflow:
@@ -508,6 +510,76 @@ class Workflow:
                 items_to_be_deleted.append(item.name())
 
         self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
+
+    def _get_initial_task_list_while_creating_new_workflow(self):
+        for command in dir(self._command_source):
+            if command in ["SwitchToSolution", "set_state", "setState"]:
+                continue
+            command_obj = getattr(self._command_source, command)
+            if isinstance(command_obj, PyCommand):
+                command_obj_instance = command_obj.create_instance()
+                if not command_obj_instance.get_attr("requiredInputs"):
+                    help_str = command_obj_instance.get_attr(
+                        "APIName"
+                    ) or command_obj_instance.get_attr("helpString")
+                    if help_str:
+                        self._initial_task_python_names_map[help_str] = command
+                del command_obj_instance
+
+    @property
+    def insertable_tasks(self):
+        """Tasks that can be inserted on a blank workflow."""
+        return self._FirstTask(self)
+
+    class _FirstTask:
+        def __init__(self, workflow):
+            """Initialize an ``_FirstTask`` instance."""
+            self._workflow = workflow
+            self._insertable_tasks = []
+            self._initial_task_map = {}
+
+            for command in dir(workflow._command_source):
+                if command in ["SwitchToSolution", "set_state", "setState"]:
+                    continue
+                command_obj = getattr(workflow._command_source, command)
+                if isinstance(command_obj, PyCommand):
+                    command_obj_instance = command_obj.create_instance()
+                    if not command_obj_instance.get_attr("requiredInputs"):
+                        help_str = command_obj_instance.get_attr(
+                            "APIName"
+                        ) or command_obj_instance.get_attr("helpString")
+                        if help_str:
+                            self._initial_task_map[help_str] = command
+                    del command_obj_instance
+
+            if self._workflow._workflow.general.workflow.task_list() == []:
+                for item in self._initial_task_map:
+                    insertable_task = type("Insert", (self._Insert,), {})(
+                        self._workflow,
+                        item,
+                        self._initial_task_map,
+                    )
+                    setattr(self, item, insertable_task)
+                    self._insertable_tasks.append(insertable_task)
+
+        def __call__(self):
+            return self._insertable_tasks
+
+        class _Insert:
+            def __init__(self, workflow, name, task_map):
+                """Initialize an ``_Insert`` instance."""
+                self._workflow = workflow
+                self._name = name
+                self._task_map = task_map
+
+            def insert(self):
+                """Insert a task in the workflow."""
+                return self._workflow.general.insert_new_task(
+                    command_name=self._task_map[self._name]
+                )
+
+            def __repr__(self):
+                return f"<Insertable '{self._name}' task>"
 
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""

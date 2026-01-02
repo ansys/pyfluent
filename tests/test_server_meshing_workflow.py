@@ -1660,3 +1660,35 @@ def test_new_watertight_workflow_using_traversal(
     assert new_meshing_session_wo_exit.is_active() is False
     solver.exit()
     assert solver.is_active() is False
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_created_workflow(new_meshing_session, use_server_meshing_workflow):
+    meshing = new_meshing_session
+    created_workflow = meshing.create_workflow()
+
+    assert sorted([repr(x) for x in created_workflow.insertable_tasks()]) == sorted(
+        [
+            "<Insertable 'create_group' task>",
+            "<Insertable 'import_geometry' task>",
+            "<Insertable 'load_cad_geometry' task>",
+            "<Insertable 'import_cad_and_part_management' task>",
+            "<Insertable 'custom_journal_task' task>",
+        ]
+    )
+
+    created_workflow.insertable_tasks()[1].insert()
+
+    assert created_workflow.insertable_tasks() == []
+
+    assert "<Insertable 'add_local_sizing' task>" in [
+        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
+    ]
+    created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
+    assert "<Insertable 'add_local_sizing' task>" not in [
+        repr(x) for x in created_workflow.import_geometry.insertable_tasks()
+    ]
+    assert sorted(created_workflow.task_names()) == sorted(
+        ["import_geometry", "add_local_sizing_wtm"]
+    )
