@@ -511,6 +511,10 @@ class Workflow:
 
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""
+        if item in ["parts", "parts_files"]:
+            raise AttributeError(
+                f"'{item}' is only supported in Fault-tolerant Meshing workflows."
+            )
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
