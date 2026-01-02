@@ -84,7 +84,7 @@ def create_launcher(
         Keyword arguments.
     Returns
     -------
-    DockerLauncher | PimLauncher | SlurmLauncher | StandaloneLauncher
+    DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
