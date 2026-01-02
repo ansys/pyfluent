@@ -68,7 +68,9 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+def create_launcher(
+    fluent_launch_mode: LaunchMode | None = None, **kwargs
+) -> DockerLauncher | PIMLauncher | StandaloneLauncher:
     """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
@@ -76,17 +78,20 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     fluent_launch_mode: LaunchMode
         Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
         ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+        The default is ``None``, in which case ``"LaunchMode.STANDALONE"`` is used.
     kwargs : Any
         Keyword arguments.
     Returns
     -------
-    launcher: DockerLauncher | PimLauncher | StandaloneLauncher
+    DockerLauncher | PimLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
-    DisallowedValuesError
+    ValueError
         If an unknown Fluent launch mode is passed.
     """
+    if fluent_launch_mode is None:
+        fluent_launch_mode = LaunchMode.STANDALONE
     if fluent_launch_mode == LaunchMode.STANDALONE:
         return StandaloneLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.CONTAINER:
@@ -95,6 +100,8 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
         return PIMLauncher(**kwargs)
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
+    else:
+        raise ValueError(f"Unknown Fluent launch mode: {fluent_launch_mode}")
 
 
 def _show_gui_to_ui_mode(old_arg_val, **kwds):
