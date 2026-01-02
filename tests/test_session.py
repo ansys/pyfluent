@@ -153,10 +153,10 @@ def test_create_mock_session_by_passing_ip_port_password() -> None:
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.is_server_healthy()
+    assert session.is_active()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_by_setting_ip_port_env_var(
@@ -178,10 +178,10 @@ def test_create_mock_session_by_setting_ip_port_env_var(
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.is_server_healthy()
+    assert session.is_active()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_by_passing_grpc_channel() -> None:
@@ -202,10 +202,10 @@ def test_create_mock_session_by_passing_grpc_channel() -> None:
         fluent_connection=fluent_connection,
         scheme_eval=fluent_connection._connection_interface.scheme_eval,
     )
-    assert session.is_server_healthy()
+    assert session.is_active()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
@@ -223,10 +223,10 @@ def test_create_mock_session_from_server_info_file(tmp_path: Path) -> None:
     session = BaseSession._create_from_server_info_file(
         server_info_file_name=str(server_info_file), cleanup_on_exit=False
     )
-    assert session.is_server_healthy()
+    assert session.is_active()
     server.stop(None)
     session.exit()
-    assert not session.is_server_healthy()
+    assert not session.is_active()
 
 
 def test_create_mock_session_from_server_info_file_with_wrong_password(
@@ -275,7 +275,7 @@ def test_create_mock_session_from_launch_fluent_by_passing_ip_port_password() ->
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.is_server_healthy()
+    assert session.is_active()
     server.stop(None)
     session.exit()
     assert not session.is_active()
@@ -303,7 +303,7 @@ def test_create_mock_session_from_launch_fluent_by_setting_ip_port_env_var(
     fields_dir = dir(session.fields)
     for attr in ("field_data", "field_info"):
         assert attr in fields_dir
-    assert session.is_server_healthy()
+    assert session.is_active()
     server.stop(None)
     session.exit()
     assert not session.is_active()
@@ -448,8 +448,8 @@ def new_solver_session2(new_solver_session):
 def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
     solver1 = new_solver_session
     solver2 = new_solver_session2
-    assert solver1.is_server_healthy()
-    assert solver2.is_server_healthy()
+    assert solver1.is_active()
+    assert solver2.is_active()
     health_check_service1 = solver1._health_check
     cortex_pid2 = solver2._fluent_connection.connection_properties.cortex_pid
     # The below hack is performed to check the base class method
@@ -459,8 +459,8 @@ def test_build_from_fluent_connection(new_solver_session, new_solver_session2):
         fluent_connection=solver2._fluent_connection,
         scheme_eval=solver2._fluent_connection._connection_interface.scheme_eval,
     )
-    assert solver1.is_server_healthy()
-    assert solver2.is_server_healthy()
+    assert solver1.is_active()
+    assert solver2.is_active()
     timeout_loop(
         not health_check_service1.is_serving,
         timeout=60,
@@ -654,7 +654,7 @@ def test_new_launch_fluent_api_standalone():
 
     solver = pyfluent.Solver.from_install()
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
-    assert solver.is_server_healthy()
+    assert solver.is_active()
 
     ip = solver.connection_properties.ip
     password = solver.connection_properties.password
@@ -667,13 +667,13 @@ def test_new_launch_fluent_api_standalone():
         solver_connected._health_check.check_health()
         == solver._health_check.Status.SERVING
     )
-    assert solver.is_server_healthy()
+    assert solver.is_active()
 
     solver.exit()
     solver_connected.exit()
 
     solver_aero = pyfluent.SolverAero.from_install()
-    assert solver_aero.is_server_healthy()
+    assert solver_aero.is_active()
 
     ip = solver_aero.connection_properties.ip
     port = solver_aero.connection_properties.port
@@ -682,13 +682,13 @@ def test_new_launch_fluent_api_standalone():
     solver_aero_connected = pyfluent.SolverAero.from_connection(
         ip=ip, port=port, password=password
     )
-    assert solver_aero_connected.is_server_healthy()
+    assert solver_aero_connected.is_active()
 
     solver_aero.exit()
     solver_aero_connected.exit()
 
     meshing = pyfluent.Meshing.from_install()
-    assert meshing.is_server_healthy()
+    assert meshing.is_active()
 
     ip = meshing.connection_properties.ip
     port = meshing.connection_properties.port
@@ -697,7 +697,7 @@ def test_new_launch_fluent_api_standalone():
     meshing_connected = pyfluent.Meshing.from_connection(
         ip=ip, port=port, password=password
     )
-    assert meshing_connected.is_server_healthy()
+    assert meshing_connected.is_active()
 
     meshing.exit()
     meshing_connected.exit()
@@ -726,7 +726,7 @@ def test_new_launch_fluent_api_from_container():
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     solver = pyfluent.Solver.from_container(container_dict=container_dict, **grpc_kwds)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
-    assert solver.is_server_healthy()
+    assert solver.is_active()
     solver.exit()
 
 
@@ -735,7 +735,7 @@ def test_new_launch_fluent_api_from_connection():
 
     solver = pyfluent.Solver.from_container(insecure_mode=True)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
-    assert solver.is_server_healthy()
+    assert solver.is_active()
     ip = solver.connection_properties.ip
     port = solver.connection_properties.port
     password = solver.connection_properties.password
@@ -873,3 +873,22 @@ def test_dir_for_session(new_meshing_session_wo_exit):
 
     assert dir(solver) == ["is_active", "wait_process_finished"]
     assert len(dir(meshing_new)) > 1
+
+
+@pytest.mark.standalone
+def test_session_is_active(new_solver_session_wo_exit):
+    session_1 = new_solver_session_wo_exit
+    ip = session_1.connection_properties.ip
+    password = session_1.connection_properties.password
+    port = session_1.connection_properties.port
+
+    assert session_1.is_active()
+
+    session_2 = pyfluent.Solver.from_connection(ip=ip, password=password, port=port)
+
+    assert session_2.is_active()
+
+    session_1.exit()
+
+    assert not session_1.is_active()
+    assert not session_2.is_active()

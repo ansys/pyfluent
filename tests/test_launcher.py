@@ -141,7 +141,7 @@ def test_container_launcher():
 
     # test run with configuration dict
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
 
 
 def test_container_working_dir():
@@ -200,7 +200,7 @@ def test_container_working_dir():
 
     # after all these 'working_dir' changes, the container should still launch
     session = pyfluent.launch_fluent(container_dict=container_dict3, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
 
 
 @pytest.mark.standalone
@@ -549,7 +549,7 @@ def test_container_mount_source_target(caplog):
     }
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
 
