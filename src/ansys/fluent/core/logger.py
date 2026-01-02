@@ -93,8 +93,6 @@ def get_default_config() -> dict:
                                        'level': 'DEBUG'},
                  'pyfluent.networking': {'handlers': ['pyfluent_file'],
                                          'level': 'DEBUG'},
-                 'pyfluent.post_objects': {'handlers': ['pyfluent_file'],
-                                           'level': 'DEBUG'},
                  'pyfluent.settings_api': {'handlers': ['pyfluent_file'],
                                            'level': 'DEBUG'},
                  'pyfluent.tui': {'handlers': ['pyfluent_file'], 'level': 'DEBUG'}},
