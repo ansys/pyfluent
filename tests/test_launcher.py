@@ -755,7 +755,7 @@ def test_create_launcher():
     from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
     from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 
-    with pytest.raises(ValueError):
+    with pytest.raises(DisallowedValuesError):
         create_launcher("unknown_mode")
 
     session = create_launcher()

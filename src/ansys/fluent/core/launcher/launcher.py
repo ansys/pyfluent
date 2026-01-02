@@ -34,6 +34,7 @@ from warnings import warn
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launch_options import (
@@ -87,7 +88,7 @@ def create_launcher(
         Session launcher.
     Raises
     ------
-    ValueError
+    DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
     if fluent_launch_mode is None:
@@ -101,7 +102,11 @@ def create_launcher(
     elif fluent_launch_mode == LaunchMode.SLURM:
         return SlurmLauncher(**kwargs)
     else:
-        raise ValueError(f"Unknown Fluent launch mode: {fluent_launch_mode}")
+        raise DisallowedValuesError(
+            "launch mode",
+            fluent_launch_mode,
+            [f"LaunchMode.{m.value.upper()}" for m in LaunchMode],
+        )
 
 
 def _show_gui_to_ui_mode(old_arg_val, **kwds):
