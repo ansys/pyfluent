@@ -511,21 +511,6 @@ class Workflow:
 
         self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
 
-    def _get_initial_task_list_while_creating_new_workflow(self):
-        for command in dir(self._command_source):
-            if command in ["SwitchToSolution", "set_state", "setState"]:
-                continue
-            command_obj = getattr(self._command_source, command)
-            if isinstance(command_obj, PyCommand):
-                command_obj_instance = command_obj.create_instance()
-                if not command_obj_instance.get_attr("requiredInputs"):
-                    help_str = command_obj_instance.get_attr(
-                        "APIName"
-                    ) or command_obj_instance.get_attr("helpString")
-                    if help_str:
-                        self._initial_task_python_names_map[help_str] = command
-                del command_obj_instance
-
     @property
     def insertable_tasks(self):
         """Tasks that can be inserted on a blank workflow."""
