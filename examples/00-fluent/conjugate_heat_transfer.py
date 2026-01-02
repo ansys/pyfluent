@@ -851,7 +851,14 @@ solver_session.results.surfaces.iso_surface["x=0.012826"] = {"iso_values": [0.01
 # Vector Plot
 # ===========
 
-vector1 = Vector(solver=solver_session, surfaces=["x=0.012826"], scale=2.0, skip=5)
+vector1 = Vector(
+    solver=solver_session,
+    field="velocity",
+    color_by="x-velocity",
+    surfaces=["x=0.012826"],
+    scale=2.0,
+    skip=5,
+)
 window3 = GraphicsWindow()
 window3.add_graphics(vector1)
 window3.show()
