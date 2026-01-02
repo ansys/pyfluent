@@ -70,7 +70,7 @@ logger = logging.getLogger("pyfluent.launcher")
 
 def create_launcher(
     fluent_launch_mode: LaunchMode | None = None, **kwargs
-) -> DockerLauncher | PIMLauncher | StandaloneLauncher:
+) -> DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher:
     """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
@@ -83,7 +83,7 @@ def create_launcher(
         Keyword arguments.
     Returns
     -------
-    DockerLauncher | PimLauncher | StandaloneLauncher
+    DockerLauncher | PimLauncher | SlurmLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
