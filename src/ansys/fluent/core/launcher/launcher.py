@@ -105,7 +105,7 @@ def create_launcher(
         raise DisallowedValuesError(
             "launch mode",
             fluent_launch_mode,
-            [f"LaunchMode.{m.value.upper()}" for m in LaunchMode],
+            [f"LaunchMode.{m.name}" for m in LaunchMode],
         )
 
 
