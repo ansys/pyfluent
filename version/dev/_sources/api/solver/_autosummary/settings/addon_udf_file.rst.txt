@@ -1,0 +1,21 @@
+:orphan:
+
+.. _addon_udf_file:
+
+addon_udf_file
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.addon_udf_file
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =====================================
+
+Parent                                                                                     Summary
+
+==========================================================   =====================================
+:ref:`customized_addon_library <customized_addon_library>`       Compile customized addon module?.
+
+==========================================================   =====================================
+

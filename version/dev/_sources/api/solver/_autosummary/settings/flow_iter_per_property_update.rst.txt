@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flow_iter_per_property_update:
+
+flow_iter_per_property_update
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.flow_iter_per_property_update
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================================================   =============================================
+
+Parent                                                                                                                             Summary
+
+==========================================================================================   =============================================
+:ref:`partially_premixed_combustion_parameters <partially_premixed_combustion_parameters>`       Partially Premixed Combustion Parameters.
+
+==========================================================================================   =============================================
+

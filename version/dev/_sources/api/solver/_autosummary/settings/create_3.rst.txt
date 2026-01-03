@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_3:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.create_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=======================   ===================================================================
+
+Argument                                                                              Summary
+
+=======================   ===================================================================
+:ref:`name <name_12>`         Physics region for which you want to create contact resistance.
+
+:ref:`value <value_22>`                                              Value in for resistance.
+
+=======================   ===================================================================
+
+.. rubric:: Included in:
+
+==================================================================   ===============================
+
+Parent                                                                                       Summary
+
+==================================================================   ===============================
+:ref:`contact_resistance_locations <contact_resistance_locations>`       Contact resistance regions.
+
+==================================================================   ===============================
+

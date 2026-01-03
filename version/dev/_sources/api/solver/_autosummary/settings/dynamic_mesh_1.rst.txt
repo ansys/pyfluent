@@ -1,0 +1,38 @@
+:orphan:
+
+.. _dynamic_mesh_1:
+
+dynamic_mesh
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.dynamic_mesh_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   ============================================================================
+
+Attribute                                                                                             Summary
+
+==============================   ============================================================================
+:ref:`use <use_5>`                           Enables or disables load balancing for dynamic mesh simulations.
+
+:ref:`auto <auto_1>`                                        Enable automatic load balancing for dynamic mesh.
+
+:ref:`threshold <threshold_5>`                Sets the load imbalance threshold for dynamic mesh simulations.
+
+:ref:`interval <interval_2>`         Sets the interval for checking load balance in dynamic mesh simulations.
+
+==============================   ============================================================================
+
+.. rubric:: Included in:
+
+==================================   ================================================
+
+Parent                                                                        Summary
+
+==================================   ================================================
+:ref:`load_balance <load_balance>`       Access the parallel load balancing settings.
+
+==================================   ================================================
+

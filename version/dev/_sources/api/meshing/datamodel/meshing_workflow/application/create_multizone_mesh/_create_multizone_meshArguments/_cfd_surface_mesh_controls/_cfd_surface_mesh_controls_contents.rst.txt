@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_create_multizone_mesh__create_multizone_meshArguments__cfd_surface_mesh_controls:
+
+_cfd_surface_mesh_controls
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.create_multizone_mesh._create_multizone_meshArguments._cfd_surface_mesh_controls
+   :members: _auto_create_scoped_sizing, _cells_per_gap, _curvature_normal_angle, _draw_size_control, _growth_rate, _max_size, _min_size, _object_based_controls, _preview_sizefield, _refacet, _remesh_imported_mesh, _save_size_field, _save_size_field_file, _scope_proximity_to, _size_control_file, _size_field_file, _size_functions, _surface_mesh_method, _use_size_files
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

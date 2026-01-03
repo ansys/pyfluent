@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_controls_contact_solution_controls_methods_gradient_controls:
+
+gradient_controls
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_261.main_menu.solution.controls.contact_solution_controls.methods.gradient_controls
+   :members: gradient_controls, specify_gradient_method
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

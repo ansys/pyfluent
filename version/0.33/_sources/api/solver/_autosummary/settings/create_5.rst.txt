@@ -1,0 +1,90 @@
+:orphan:
+
+.. _create_5:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.create_5
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   =================================================
+
+Argument                                                           Summary
+
+======================   =================================================
+:ref:`name <name_16>`                                Input boundary name .
+
+:ref:`volume <volume>`       Input volume name for which the new boundary.
+
+======================   =================================================
+
+.. rubric:: Included in:
+
+======================================================   ================
+
+Parent                                                            Summary
+
+======================================================   ================
+:ref:`axis_6 <axis_6>`                                       Thread-type.
+
+:ref:`degassing_1 <degassing_1>`                             Thread-type.
+
+:ref:`exhaust_fan_1 <exhaust_fan_1>`                         Thread-type.
+
+:ref:`fan_1 <fan_1>`                                         Thread-type.
+
+:ref:`geometry_8 <geometry_8>`                               Thread-type.
+
+:ref:`inlet_vent_1 <inlet_vent_1>`                           Thread-type.
+
+:ref:`intake_fan_1 <intake_fan_1>`                           Thread-type.
+
+:ref:`interface_2 <interface_2>`                             Thread-type.
+
+:ref:`interior_2 <interior_2>`                               Thread-type.
+
+:ref:`mass_flow_inlet_1 <mass_flow_inlet_1>`                 Thread-type.
+
+:ref:`mass_flow_outlet_1 <mass_flow_outlet_1>`               Thread-type.
+
+:ref:`network_1 <network_1>`                                 Thread-type.
+
+:ref:`network_end_2 <network_end_2>`                         Thread-type.
+
+:ref:`outflow_1 <outflow_1>`                                 Thread-type.
+
+:ref:`outlet_vent_1 <outlet_vent_1>`                         Thread-type.
+
+:ref:`overset_1 <overset_1>`                                 Thread-type.
+
+:ref:`periodic_2 <periodic_2>`                               Thread-type.
+
+:ref:`porous_jump_2 <porous_jump_2>`                         Thread-type.
+
+:ref:`pressure_far_field_1 <pressure_far_field_1>`           Thread-type.
+
+:ref:`pressure_inlet_1 <pressure_inlet_1>`                   Thread-type.
+
+:ref:`pressure_outlet_1 <pressure_outlet_1>`                 Thread-type.
+
+:ref:`radiator_2 <radiator_2>`                               Thread-type.
+
+:ref:`rans_les_interface_1 <rans_les_interface_1>`           Thread-type.
+
+:ref:`recirculation_inlet_2 <recirculation_inlet_2>`         Thread-type.
+
+:ref:`recirculation_outlet_2 <recirculation_outlet_2>`       Thread-type.
+
+:ref:`shadow_1 <shadow_1>`                                   Thread-type.
+
+:ref:`symmetry_1 <symmetry_1>`                               Thread-type.
+
+:ref:`velocity_inlet_1 <velocity_inlet_1>`                   Thread-type.
+
+:ref:`wall_1 <wall_1>`                                       Thread-type.
+
+======================================================   ================
+

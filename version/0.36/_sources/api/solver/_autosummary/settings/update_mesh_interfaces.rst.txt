@@ -1,0 +1,21 @@
+:orphan:
+
+.. _update_mesh_interfaces:
+
+update_mesh_interfaces
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.update_mesh_interfaces
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ========================
+
+Parent                                                  Summary
+
+====================================   ========================
+:ref:`mesh_motion_2 <mesh_motion_2>`       Perform mesh motion.
+
+====================================   ========================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _secondary_phase_velocity_inputs:
+
+secondary_phase_velocity_inputs
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.secondary_phase_velocity_inputs
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================================================   ===================================================
+
+Attribute                                                                                                                                          Summary
+
+====================================================================================================   ===================================================
+:ref:`secondary_phase_velocity_specification_method <secondary_phase_velocity_specification_method>`       Secondary Phase: Velocity Specification Method.
+
+:ref:`secondary_phase_velocity <secondary_phase_velocity>`                                                            Secondary Phase: Velocity Magnitude.
+
+====================================================================================================   ===================================================
+
+.. rubric:: Included in:
+
+================================   ==========================================================
+
+Parent                                                                                Summary
+
+================================   ==========================================================
+:ref:`momentum_10 <momentum_10>`       Allows to change momentum model variables or settings.
+
+================================   ==========================================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _type_5:
+
+type
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.type_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==============================================
+
+Parent                                                                  Summary
+
+==============================   ==============================================
+:ref:`set_type_2 <set_type_2>`       Input boundary name(s) to change its type.
+
+:ref:`create_4 <create_4>`                                  Crate new boundary.
+
+==============================   ==============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _exclusion_zone:
+
+exclusion_zone
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.exclusion_zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`dual_potential_zone <dual_potential_zone>`       Dual-potential zone assignment.
+
+================================================   ===================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities__prism_cell_zones_labels_fdl:
+
+_prism_cell_zones_labels_fdl
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root._prism_cell_zones_labels_fdl
+   :members: __prism_cell_zones_labels_fdlArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

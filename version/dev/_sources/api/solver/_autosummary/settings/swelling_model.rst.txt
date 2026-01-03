@@ -1,0 +1,44 @@
+:orphan:
+
+.. _swelling_model:
+
+swelling_model
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.swelling_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ============================================================
+
+Attribute                                                                                                         Summary
+
+==========================================================   ============================================================
+:ref:`swelling_model_enabled <swelling_model_enabled>`                                            Enable swelling modell.
+
+:ref:`customize_strain_enabled <customize_strain_enabled>`       Enable customized swelling strain in the swelling model.
+
+:ref:`swell_coef_anode <swell_coef_anode>`                                                 Swelling coefficient in anode.
+
+:ref:`swell_coef_cathode <swell_coef_cathode>`                                           Swelling coefficient in cathode.
+
+:ref:`c_ref_anode <c_ref_anode>`                                                     Reference Li concentration in anode.
+
+:ref:`c_ref_cathode <c_ref_cathode>`                                               Reference Li concentration in cathode.
+
+:ref:`strain_udf_name <strain_udf_name>`                                       Swelling strain udf in the swelling model.
+
+==========================================================   ============================================================
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`lithium_battery <lithium_battery>`       Up li-ion battery model.
+
+========================================   ============================
+

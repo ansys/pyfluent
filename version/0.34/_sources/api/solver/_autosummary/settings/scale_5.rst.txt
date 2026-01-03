@@ -1,0 +1,21 @@
+:orphan:
+
+.. _scale_5:
+
+scale
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.scale_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============================
+
+Parent                                                 Summary
+
+==============================   =============================
+:ref:`options_15 <options_15>`       Options for Vector Style.
+
+==============================   =============================
+

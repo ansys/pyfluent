@@ -1,0 +1,23 @@
+:orphan:
+
+.. _faradaic_heat:
+
+faradaic_heat
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.faradaic_heat
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===========================================================
+
+Parent                                                                                 Summary
+
+================================   ===========================================================
+:ref:`reaction <reaction>`              Allows to change reaction model variables or settings.
+
+:ref:`potential_2 <potential_2>`       Allows to change potential model variables or settings.
+
+================================   ===========================================================
+

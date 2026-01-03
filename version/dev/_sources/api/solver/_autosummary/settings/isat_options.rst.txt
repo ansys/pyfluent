@@ -1,0 +1,47 @@
+:orphan:
+
+.. _isat_options:
+
+isat_options
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.isat_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ==============================
+
+Attribute                                                         Summary
+
+========================================   ==============================
+:ref:`error_tolerance <error_tolerance>`        The ISAT error tolerance.
+
+:ref:`table_size <table_size>`                     The Max. Storage [Mb].
+
+:ref:`verbosity <verbosity_1>`                 Verbosity for ISAT output.
+
+========================================   ==============================
+
+.. rubric:: Methods
+
+==========================================   =================================
+
+Method                                                                 Summary
+
+==========================================   =================================
+:ref:`clear_isat_table <clear_isat_table>`       Clear the current ISAT table.
+
+==========================================   =================================
+
+.. rubric:: Included in:
+
+======================================================   ================================================
+
+Parent                                                                                            Summary
+
+======================================================   ================================================
+:ref:`integration_parameters <integration_parameters>`       Species model integration parameters option.
+
+======================================================   ================================================
+
