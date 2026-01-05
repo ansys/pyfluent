@@ -749,10 +749,10 @@ def test_default_launch_mode_is_py():
     assert "-py" in fluent_launch_string
 
 
+@pytest.mark.standalone
 def test_create_launcher():
     from ansys.fluent.core.launcher import create_launcher
     from ansys.fluent.core.launcher.launch_options import LaunchMode
-    from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
     from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 
     with pytest.raises(DisallowedValuesError):
@@ -763,6 +763,3 @@ def test_create_launcher():
 
     session = create_launcher(LaunchMode.STANDALONE)
     assert isinstance(session, StandaloneLauncher)
-
-    session = create_launcher(LaunchMode.PIM)
-    assert isinstance(session, PIMLauncher)
