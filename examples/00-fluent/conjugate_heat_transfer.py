@@ -488,8 +488,8 @@ solver_session.tui.define.mesh_interfaces.create("int", "yes", "no")
 solver_session.settings.mesh.check()
 
 #############################################################################
-# Create a few boundary list for display and post-processing
-# ==========================================================
+# Create boundary lists for display and post-processing
+# =====================================================
 
 mesh1 = Mesh(solver=solver_session)
 
