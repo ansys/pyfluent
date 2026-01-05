@@ -295,14 +295,7 @@ session.settings.file.write(file_type="case-data", file_name="brake-final.cas.h5
 ###############################################
 # Temperature contour object
 # --------------------------
-contour1 = Contour(solver=session)
-
-###############################################
-# Set contour properties
-# ----------------------
-
-contour1.field = "temperature"
-contour1.surfaces = [
+contour1_surfaces = [
     "wall-disc1",
     "wall-disc2",
     "wall-pad-disc2",
@@ -312,6 +305,12 @@ contour1.surfaces = [
     "wall-geom-1-innerpad",
     "wall-geom-1-outerpad",
 ]
+contour1 = Contour(solver=session, field="temperature", surfaces=contour1_surfaces)
+
+###############################################
+# Set contour properties
+# ----------------------
+
 contour1.range.option = "auto-range-off"
 contour1.range.auto_range_off.minimum = 300
 contour1.range.auto_range_off.maximum = 400
