@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -83,7 +83,6 @@ class PIMLauncher:
         start_timeout: int = 60,
         additional_arguments: str = "",
         cleanup_on_exit: bool = True,
-        dry_run: bool | None = None,
         start_transcript: bool = True,
         gpu: bool | None = None,
         start_watchdog: bool | None = None,
@@ -124,8 +123,6 @@ class PIMLauncher:
         cleanup_on_exit : bool
             Determines whether to shut down the connected Fluent session upon exit or when calling
             the session's `exit()` method. Defaults to True.
-        dry_run : bool, optional
-            If True, returns a configuration dictionary instead of starting a Fluent session.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
@@ -139,8 +136,8 @@ class PIMLauncher:
 
         Returns
         -------
-        Union[Meshing, PureMeshing, Solver, SolverIcing, dict]
-            Session object or configuration dictionary if ``dry_run`` is True.
+        Union[Meshing, PureMeshing, Solver, SolverIcing, SolverAero]
+            Session object.
 
         Raises
         ------
