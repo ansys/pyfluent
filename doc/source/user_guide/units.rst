@@ -2,8 +2,8 @@
 
 Physical units
 ==============
-By default, you can access and modify PyFluent solver settings according to its S.I. unit.
-However, PyFluent also allows you to work in arbitrary physical examples. Here's an example:
+By default, you can access and modify PyFluent solver settings according to SI units.
+However, PyFluent also allows you to work in arbitrary physical units. Here's an example:
 
 .. code-block:: python
 
@@ -30,3 +30,9 @@ However, PyFluent also allows you to work in arbitrary physical examples. Here's
 
 You can find out more about using ``Quantity`` objects and other library features in the 
 `PyAnsys Units documentation <https://units.docs.pyansys.com/version/stable/>`_.
+
+.. note::
+
+  While most PyFluent Settings commands expect values in SI units, 
+  :ref:`TUI commands <ref_tui_commands_guide>` work in terms of the current units in Fluent, as specified by the user.
+  For example, if the length unit is set to 'mm' in Fluent, any length values passed to TUI commands should also be in 'mm'.

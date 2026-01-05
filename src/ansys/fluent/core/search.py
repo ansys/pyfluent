@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -31,6 +31,7 @@ import os
 from pathlib import Path
 import pickle
 import re
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver.error_message import closest_allowed_names
@@ -38,6 +39,8 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+
+warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
 
 logger = logging.getLogger("pyfluent.general")
 
