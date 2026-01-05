@@ -114,7 +114,7 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
-    if env and isinstance(env, dict):
+    if env:
         fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
     fluent_env["REMOTING_THROW_LAST_SETTINGS_ERROR"] = "1"
