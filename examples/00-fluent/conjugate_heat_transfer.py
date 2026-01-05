@@ -493,17 +493,9 @@ solver_session.settings.mesh.check()
 
 mesh1 = Mesh(solver=solver_session)
 
-wall_list = []
-periodic_list = []
-symmetry_list = []
-
-for boundary_name in mesh1.surfaces.allowed_values:
-    if "wall" in boundary_name:
-        wall_list.append(boundary_name)
-    if "periodic" in boundary_name:
-        periodic_list.append(boundary_name)
-    if "symmetry" in boundary_name:
-        symmetry_list.append(boundary_name)
+wall_list = [
+    boundary_name for boundary_name in mesh1.surfaces.allowed_values if "wall" in boundary_name
+]
 
 #############################################################################
 # Display Mesh
