@@ -136,7 +136,7 @@ class PIMLauncher:
 
         Returns
         -------
-        Union[Meshing, PureMeshing, Solver, SolverIcing, dict]
+        Union[Meshing, PureMeshing, Solver, SolverIcing, SolverAero]
             Session object.
 
         Raises
