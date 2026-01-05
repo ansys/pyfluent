@@ -45,7 +45,6 @@ from typing import Any, Dict
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
-    _raise_non_gui_exception_in_windows,
 )
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -203,8 +202,6 @@ class StandaloneLauncher:
         if self.argvals["lightweight_mode"] is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
-        if fluent_version:
-            _raise_non_gui_exception_in_windows(self.argvals["ui_mode"], fluent_version)
 
         if (
             fluent_version
@@ -236,14 +233,7 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if (
-                pyfluent.config.launch_fluent_stdout
-                or pyfluent.config.launch_fluent_stderr
-            ):
-                self._launch_cmd = self._launch_string
-            else:
-                # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
-                self._launch_cmd = 'start "" ' + self._launch_string
+            self._launch_cmd = self._launch_string
         else:
             if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
@@ -257,7 +247,6 @@ class StandaloneLauncher:
             return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
@@ -299,8 +288,10 @@ class StandaloneLauncher:
             )
             if start_watchdog:
                 logger.info("Launching Watchdog for local Fluent client...")
-                ip, port, password = _get_server_info(self._server_info_file_name)
-                watchdog.launch(os.getpid(), port, password, ip)
+                values = _get_server_info(self._server_info_file_name)
+                if len(values) == 3:
+                    ip, port, password = values
+                    watchdog.launch(os.getpid(), port, password, ip)
             if self.argvals["case_file_name"]:
                 if FluentMode.is_meshing(self.argvals["mode"]):
                     session.tui.file.read_case(self.argvals["case_file_name"])

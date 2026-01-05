@@ -6,17 +6,17 @@ from time import time
 from ansys.fluent.core import FluentMode, FluentVersion, config, launch_fluent
 from ansys.fluent.core.codegen import StaticInfoType, allapigen
 from ansys.fluent.core.codegen.print_fluent_version import print_fluent_version
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.search import _generate_api_data
 from ansys.fluent.core.utils.fluent_version import get_version_for_file_name
 
 if __name__ == "__main__":
     t0 = time()
     config.fluent_automatic_transcript = True
-    meshing = launch_fluent(mode=FluentMode.MESHING)
+    kwds = {"mode": FluentMode.MESHING}
+    kwds.update(get_grpc_launcher_args_for_gh_runs())
+    meshing = launch_fluent(**kwds)
     version = get_version_for_file_name(session=meshing)
-    gt_222 = FluentVersion(version) > FluentVersion.v222
-    ge_231 = FluentVersion(version) >= FluentVersion.v231
-    ge_242 = FluentVersion(version) >= FluentVersion.v242
     ge_261 = FluentVersion(version) >= FluentVersion.v261
 
     static_infos = {
@@ -33,38 +33,34 @@ if __name__ == "__main__":
             "PMFileManagement"
         ),
     }
-    if gt_222:
-        static_infos[StaticInfoType.TUI_MESHING] = (
-            meshing._datamodel_service_tui.get_static_info("")
-        )
-    if ge_242:
-        static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
-            meshing._datamodel_service_se.get_static_info("MeshingUtilities")
-        )
+    static_infos[StaticInfoType.TUI_MESHING] = (
+        meshing._datamodel_service_tui.get_static_info("")
+    )
+    static_infos[StaticInfoType.DATAMODEL_MESHING_UTILITIES] = (
+        meshing._datamodel_service_se.get_static_info("MeshingUtilities")
+    )
     if ge_261:
         static_infos[StaticInfoType.DATAMODEL_MESHING_WORKFLOW] = (
             meshing._datamodel_service_se.get_static_info("meshing_workflow")
         )
     meshing.exit()
 
-    solver = launch_fluent(
-        mode=FluentMode.SOLVER_ICING if ge_231 else FluentMode.SOLVER
-    )
+    kwds = {"mode": FluentMode.SOLVER_ICING}
+    kwds.update(get_grpc_launcher_args_for_gh_runs())
+    solver = launch_fluent(**kwds)
     static_infos[StaticInfoType.DATAMODEL_PREFERENCES] = (
         solver._datamodel_service_se.get_static_info("preferences")
     )
     static_infos[StaticInfoType.SETTINGS] = solver._settings_service.get_static_info()
-    if gt_222:
-        static_infos[StaticInfoType.TUI_SOLVER] = (
-            solver._datamodel_service_tui.get_static_info("")
-        )
-    if ge_231:
-        static_infos[StaticInfoType.DATAMODEL_FLICING] = (
-            solver._datamodel_service_se.get_static_info("flserver")
-        )
-        static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
-            solver._datamodel_service_se.get_static_info("solverworkflow")
-        )
+    static_infos[StaticInfoType.TUI_SOLVER] = (
+        solver._datamodel_service_tui.get_static_info("")
+    )
+    static_infos[StaticInfoType.DATAMODEL_FLICING] = (
+        solver._datamodel_service_se.get_static_info("flserver")
+    )
+    static_infos[StaticInfoType.DATAMODEL_SOLVER_WORKFLOW] = (
+        solver._datamodel_service_se.get_static_info("solverworkflow")
+    )
     t1 = time()
     print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
     config.codegen_outdir.mkdir(parents=True, exist_ok=True)

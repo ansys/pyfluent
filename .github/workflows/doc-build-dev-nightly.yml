@@ -38,6 +38,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
       - name: Install OS packages
         run: |
           sudo apt update
@@ -61,7 +66,7 @@ jobs:
       - name: Run API codegen
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
 
       - name: Install again after codegen
         run: |
@@ -72,31 +77,36 @@ jobs:
         run: |
           python examples/00-fluent/exhaust_system_settings_api.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute external_compressible_flow.py
         run: |
           python examples/00-fluent/external_compressible_flow.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute mixing_elbow_settings_api.py
         run: |
           python examples/00-fluent/mixing_elbow_settings_api.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute modeling_cavitation.py
         run: |
           python examples/00-fluent/modeling_cavitation.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Execute species_transport.py
         run: |
           python examples/00-fluent/species_transport.py
         env:
-          FLUENT_IMAGE_TAG: ${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
+          FLUENT_IMAGE_TAG: ${{ env.FLUENT_STABLE_IMAGE }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Build All Documentation
         run: |
@@ -123,15 +133,19 @@ jobs:
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
           retention-days: 7
 
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
   deploy_dev_docs:
     name: "Deploy Documentation"
-    runs-on: ubuntu-latest
+    runs-on: public-ubuntu-latest-8-cores
     needs: [build_dev_docs]
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Deploy development documentation"
         uses: ansys/actions/doc-deploy-dev@v10.1

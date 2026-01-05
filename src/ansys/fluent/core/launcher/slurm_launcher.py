@@ -110,6 +110,12 @@ def _get_slurm_job_id(proc: subprocess.Popen):
             return int(line)
 
 
+_slurm_unavailable_in_current_machine_clause = (
+    " as either Slurm is not available in the current (client) machine or the configuration setting"
+    " 'use_slurm_from_current_machine' is False."
+)
+
+
 class _SlurmWrapper:
     """A class wrapping Slurm commands."""
 
@@ -122,7 +128,38 @@ class _SlurmWrapper:
         bool
             ``True`` if Slurm is available, otherwise ``False``.
         """
-        return shutil.which("sinfo") and len(_SlurmWrapper.list_queues()) > 0
+        return (
+            shutil.which("sinfo") is not None and len(_SlurmWrapper.list_queues()) > 0
+        )
+
+    @staticmethod
+    def use_slurm() -> bool:
+        """Check whether to use Slurm from the current machine.
+
+        Returns
+        -------
+        bool
+            ``True`` if Slurm from the current machine will be used, otherwise ``False``.
+        """
+
+        return config.use_slurm_from_current_machine and _SlurmWrapper.is_available()
+
+    @staticmethod
+    def check_and_raise_slurm_not_used_error(msg: str) -> None:
+        """Raise RuntimeError if Slurm is not used from the current machine.
+
+        Parameters
+        ----------
+        msg : str
+            Error message prefix.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm is not used from the current machine.
+        """
+        if not _SlurmWrapper.use_slurm():
+            raise RuntimeError(msg + _slurm_unavailable_in_current_machine_clause)
 
     @staticmethod
     def list_queues() -> list[str]:
@@ -203,7 +240,15 @@ class SlurmFuture:
         -------
         bool
             ``True`` if the Fluent launch is successfully cancelled, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job cannot be cancelled from client
         """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot cancel Slurm job from client"
+        )
         if self.done():
             return False
         self._cancel()
@@ -214,17 +259,61 @@ class SlurmFuture:
         return False
 
     def running(self) -> bool:
-        """Return ``True`` if Fluent is currently running, otherwise ``False``."""
+        """Return ``True`` if Fluent is currently running, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if Fluent is currently running, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._get_state() == "RUNNING" and self._future.done()
 
     def pending(self) -> bool:
         """Return ``True`` if the Fluent launch is currently waiting for Slurm
-        allocation or Fluent is being launched, otherwise ``False``."""
+        allocation or Fluent is being launched, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch is currently waiting for Slurm
+            allocation or Fluent is being launched, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._future.running()
 
     def done(self) -> bool:
         """Return ``True`` if the Fluent launch was successfully cancelled or Fluent was
-        finished running, otherwise ``False``."""
+        finished running, otherwise ``False``.
+
+        Returns
+        -------
+        bool
+            ``True`` if the Fluent launch was successfully cancelled or Fluent was
+            finished running, otherwise ``False``.
+
+        Raises
+        ------
+        RuntimeError
+            If Slurm job state cannot be obtained from client
+        """
+        _SlurmWrapper.check_and_raise_slurm_not_used_error(
+            "Cannot get Slurm job state from client"
+        )
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
@@ -315,6 +404,8 @@ class SlurmLauncher:
         start_watchdog: bool | None = None,
         scheduler_options: dict | None = None,
         file_transfer_service: Any | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Launch Fluent session in standalone mode.
 
@@ -405,6 +496,12 @@ class SlurmLauncher:
             specified in a similar manner to Fluent's scheduler options.
         file_transfer_service : optional
             File transfer service for uploading and downloading files to and from the server.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -422,8 +519,20 @@ class SlurmLauncher:
         """
         from ansys.fluent.core import config
 
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(
+                "To launch Fluent in Slurm environment, set `certificates_folder`."
+            )
+        if certificates_folder is not None and insecure_mode:
+            raise ValueError(
+                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
+            )
+
         if not _SlurmWrapper.is_available():
-            raise RuntimeError("Slurm is not available.")
+            logger.debug(
+                "Slurm is not available in or not used from the client machine. "
+                "Job query/control from client will not be possible."
+            )
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
@@ -444,7 +553,7 @@ class SlurmLauncher:
             elif self._argvals["scheduler_options"]["scheduler"] != "slurm":
                 raise InvalidArgument("Only slurm is supported as scheduler.")
             queue = self._argvals["scheduler_options"].get("scheduler_queue")
-            if queue is not None:
+            if queue is not None and _SlurmWrapper.use_slurm():
                 queues = _SlurmWrapper.list_queues()
                 if queue not in queues:
                     raise InvalidArgument(
@@ -468,6 +577,10 @@ class SlurmLauncher:
             self._argvals["topy"], self._argvals["journal_file_names"]
         )
         launch_cmd += ' -setenv="FLUENT_ALLOW_REMOTE_GRPC_CONNECTION=1"'
+        if self._argvals["insecure_mode"]:
+            launch_cmd += " -grpc-allow-remote-host -grpc-insecure-mode"
+        elif self._argvals["certificates_folder"]:
+            launch_cmd += f' -grpc-allow-remote-host -grpc-certs-folder="{self._argvals["certificates_folder"]}"'
 
         logger.debug(f"Launching Fluent with command: {launch_cmd}")
         proc = subprocess.Popen(launch_cmd, **kwargs)
@@ -488,6 +601,9 @@ class SlurmLauncher:
             cleanup_on_exit=self._argvals["cleanup_on_exit"],
             start_transcript=self._argvals["start_transcript"],
             inside_container=False,
+            allow_remote_host=True,
+            certificates_folder=self._argvals["certificates_folder"],
+            insecure_mode=self._argvals["insecure_mode"],
         )
         return session
 

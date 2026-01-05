@@ -22,6 +22,7 @@
 
 """Provides a module for file transfer service."""
 
+import logging
 import os
 import pathlib
 import random
@@ -33,6 +34,8 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils import get_user_data_dir
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 import ansys.platform.instancemanagement as pypim
+
+logger = logging.getLogger("pyfluent.general")
 
 # Host path which is mounted to the file-transfer-service container
 MOUNT_SOURCE = str(get_user_data_dir())
@@ -291,7 +294,13 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
             )
         import ansys.tools.filetransfer as ft
 
-        self.client = ft.Client.from_server_address(f"localhost:{self.host_port}")
+        self.client = ft.Client.from_transport_options(
+            transport_options=ft.InsecureOptions(
+                host="localhost",
+                port=self.host_port,
+                allow_remote_host=True,
+            )
+        )
 
     def file_exists_on_remote(self, file_name: str) -> bool:
         """Check if remote file exists.
@@ -417,8 +426,12 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.server_ip = server_ip
         self.server_port = server_port
 
-        self._client = ft.Client.from_server_address(
-            f"{self.server_ip}:{self.server_port}"
+        self._client = ft.Client.from_transport_options(
+            transport_options=ft.InsecureOptions(
+                host=self.server_ip,
+                port=self.server_port,
+                allow_remote_host=True,
+            )
         )
 
     def upload(self, file_name: list[str] | str, remote_file_name: str | None = None):
@@ -527,8 +540,8 @@ class PimFileTransferService:
                     url=self.upload_server.uri,
                     headers=self.upload_server.headers,
                 )
-            except ModuleNotFoundError:
-                pass
+            except ModuleNotFoundError as ex:
+                logger.debug(ex)
         self.cwd = os.getcwd()
         self.instance_name = self.pim_instance.name.replace("instances/", "")
         self.instance_dir = os.path.join(self.cwd, self.instance_name)

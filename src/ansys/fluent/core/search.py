@@ -26,10 +26,12 @@ from collections.abc import Mapping
 import fnmatch
 import functools
 import json
+import logging
 import os
 from pathlib import Path
 import pickle
 import re
+import warnings
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver.error_message import closest_allowed_names
@@ -37,6 +39,10 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+
+warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
+
+logger = logging.getLogger("pyfluent.general")
 
 
 def _get_api_tree_data_file_path():
@@ -672,8 +678,8 @@ def search(
             return _search_semantic(
                 search_string, language, api_tree_data=api_tree_data, api_path=api_path
             )
-        except ModuleNotFoundError:
-            pass
+        except ModuleNotFoundError as ex:
+            logger.debug(ex)
         except LookupError:
             _download_nltk_data()
             return _search_semantic(
