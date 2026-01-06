@@ -49,7 +49,7 @@ from collections import OrderedDict
 import re
 from typing import ValuesView
 
-from ansys.fluent.core.services.datamodel_se import PyCommand, PyMenu
+from ansys.fluent.core.services.datamodel_se import PyMenu
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
@@ -169,12 +169,12 @@ def command_name_to_task_name(meshing_root, command_name: str) -> str:
     This is a workaround for Fluent 26R1.
     """
     # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
-    #  for '<Task Object>.get_next_possible_tasks()'.
+    #  for '<Task Object>.get_next_possible_tasks()' and
+    #  for '<Workflow>.get_new_insertable_tasks()'.
     command_instance = getattr(meshing_root, command_name).create_instance()
     retval = command_instance.get_attr("APIName") or command_instance.get_attr(
         "helpString"
     )
-    del command_instance
     return retval
 
 
@@ -522,20 +522,15 @@ class Workflow:
             self._workflow = workflow
             self._insertable_tasks = []
             self._initial_task_map = {}
-
-            for command in dir(workflow._command_source):
-                if command in ["SwitchToSolution", "set_state", "setState"]:
-                    continue
-                command_obj = getattr(workflow._command_source, command)
-                if isinstance(command_obj, PyCommand):
-                    command_obj_instance = command_obj.create_instance()
-                    if not command_obj_instance.get_attr("requiredInputs"):
-                        help_str = command_obj_instance.get_attr(
-                            "APIName"
-                        ) or command_obj_instance.get_attr("helpString")
-                        if help_str:
-                            self._initial_task_map[help_str] = command
-                    del command_obj_instance
+            try:
+                initial_tasks = self._workflow.general.get_new_insertable_tasks()
+            except AttributeError:
+                # For Fluent Version 26R1 or before.
+                initial_tasks = ["ImportGeometry", "PartManagement", "RunCustomJournal"]
+            for command in initial_tasks:
+                self._initial_task_map[command] = command_name_to_task_name(
+                    self._workflow._command_source, command
+                )
 
             if self._workflow._workflow.general.workflow.task_list() == []:
                 for item in self._initial_task_map:
@@ -544,7 +539,7 @@ class Workflow:
                         item,
                         self._initial_task_map,
                     )
-                    setattr(self, item, insertable_task)
+                    setattr(self, self._initial_task_map[item], insertable_task)
                     self._insertable_tasks.append(insertable_task)
 
         def __call__(self):
@@ -559,12 +554,10 @@ class Workflow:
 
             def insert(self):
                 """Insert a task in the workflow."""
-                return self._workflow.general.insert_new_task(
-                    command_name=self._task_map[self._name]
-                )
+                return self._workflow.general.insert_new_task(command_name=self._name)
 
             def __repr__(self):
-                return f"<Insertable '{self._name}' task>"
+                return f"<Insertable '{self._task_map[self._name]}' task>"
 
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""

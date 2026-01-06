@@ -1670,15 +1670,13 @@ def test_created_workflow(new_meshing_session, use_server_meshing_workflow):
 
     assert sorted([repr(x) for x in created_workflow.insertable_tasks()]) == sorted(
         [
-            "<Insertable 'create_group' task>",
             "<Insertable 'import_geometry' task>",
-            "<Insertable 'load_cad_geometry' task>",
             "<Insertable 'import_cad_and_part_management' task>",
             "<Insertable 'custom_journal_task' task>",
         ]
     )
 
-    created_workflow.insertable_tasks()[1].insert()
+    created_workflow.insertable_tasks()[0].insert()
 
     assert created_workflow.insertable_tasks() == []
 
