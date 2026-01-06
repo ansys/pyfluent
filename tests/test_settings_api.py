@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -140,13 +140,9 @@ def test_wildcard(new_solver_session):
             "inlet1": {"momentum": {"velocity": {"option": "value", "value": 10}}},
         }
     cell_zone_conditions = solver.setup.cell_zone_conditions
-    if solver.get_fluent_version() >= FluentVersion.v242:
-        sources = cell_zone_conditions.fluid["*"].sources.terms
-        sources_key = "sources"
-        terms_key = "terms"
-    else:
-        sources = cell_zone_conditions.fluid["*"].source_terms.source_terms
-        sources_key = terms_key = "source_terms"
+    sources = cell_zone_conditions.fluid["*"].sources.terms
+    sources_key = "sources"
+    terms_key = "terms"
     assert sources["*mom*"]() == {
         "fluid": {
             sources_key: {
@@ -446,11 +442,9 @@ def test_deprecated_settings_with_settings_api_aliases(mixing_elbow_case_data_se
 @pytest.mark.fluent_version(">=23.1")
 def test_command_return_type(new_solver_session):
     solver = new_solver_session
-    version = solver.get_fluent_version()
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
-    ret = solver.file.read_case_data(file_name=case_path)
-    assert ret is None if version >= FluentVersion.v242 else not None
+    assert solver.file.read_case_data(file_name=case_path) is None
     solver.solution.report_definitions.surface["surface-1"] = dict(
         surface_names=["cold-inlet"]
     )

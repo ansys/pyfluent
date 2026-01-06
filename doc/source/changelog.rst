@@ -9,6 +9,109 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.37.1 <https://github.com/ansys/pyfluent/releases/tag/v0.37.1>`_ - December 09, 2025
+======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Minor improvements of the gRPC feature
+          - `#4660 <https://github.com/ansys/pyfluent/pull/4660>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Pop up window for launch fluent.
+          - `#4670 <https://github.com/ansys/pyfluent/pull/4670>`_
+
+        * - From_install
+          - `#4689 <https://github.com/ansys/pyfluent/pull/4689>`_
+
+        * - Always show the gRPC warning
+          - `#4712 <https://github.com/ansys/pyfluent/pull/4712>`_
+
+        * - Cherry-picked changes to include in version 0.37.1
+          - `#4716 <https://github.com/ansys/pyfluent/pull/4716>`_
+
+
+`0.37.0 <https://github.com/ansys/pyfluent/releases/tag/v0.37.0>`_ - November 26, 2025
+======================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Added
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Secure gRPC options
+          - `#24 <https://github.com/ansys/pyfluent/pull/24>`_
+
+        * - Raise exception on read-only command execution
+          - `#4619 <https://github.com/ansys/pyfluent/pull/4619>`_
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Support insecure mode while launching container
+          - `#14 <https://github.com/ansys/pyfluent/pull/14>`_
+
+        * - Use latest units package
+          - `#4624 <https://github.com/ansys/pyfluent/pull/4624>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump version 0.35.1
+          - `#16 <https://github.com/ansys/pyfluent/pull/16>`_
+
+        * - Bump the dependencies group with 4 updates
+          - `#4577 <https://github.com/ansys/pyfluent/pull/4577>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Example on battery pack [skip tests]
+          - `#4596 <https://github.com/ansys/pyfluent/pull/4596>`_
+
+        * - Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#4612 <https://github.com/ansys/pyfluent/pull/4612>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update CHANGELOG for v0.36.dev1
+          - `#4623 <https://github.com/ansys/pyfluent/pull/4623>`_
+
+
 `0.36.dev1 <https://github.com/ansys/pyfluent/releases/tag/v0.36.dev1>`_ - November 18, 2025
 ============================================================================================
 

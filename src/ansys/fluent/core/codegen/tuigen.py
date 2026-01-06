@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -290,26 +290,14 @@ class TUIGenerator:
         if self._verbose:
             print(f"{str(self._tui_file)}")
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
-            if FluentVersion(self._version) == FluentVersion.v222:
-                with open(
-                    (
-                        Path(__file__)
-                        / ".."
-                        / "data"
-                        / f"static_info_{self._version}_{self._mode}.pickle"
-                    ).resolve(),
-                    "rb",
-                ) as f:
-                    self._main_menu = _RenameModuleUnpickler(f).load()
-            else:
-                info = self._static_infos[
-                    (
-                        StaticInfoType.TUI_MESHING
-                        if self._mode == "meshing"
-                        else StaticInfoType.TUI_SOLVER
-                    )
-                ]
-                self._populate_menu(self._main_menu, info)
+            info = self._static_infos[
+                (
+                    StaticInfoType.TUI_MESHING
+                    if self._mode == "meshing"
+                    else StaticInfoType.TUI_SOLVER
+                )
+            ]
+            self._populate_menu(self._main_menu, info)
             self._write_code_to_tui_file(
                 f'"""Fluent {self._mode.title().lower()} TUI commands"""\n'
             )
@@ -330,20 +318,18 @@ class TUIGenerator:
 def generate(version, static_infos: dict, verbose: bool = False):
     """Generate TUI API classes."""
     api_tree = {}
-    gt_222 = FluentVersion(version) > FluentVersion.v222
-    if gt_222:
-        if (
-            StaticInfoType.TUI_MESHING not in static_infos
-            and StaticInfoType.TUI_SOLVER not in static_infos
-        ):
-            return api_tree
-        _copy_tui_help_xml_file(version)
+    if (
+        StaticInfoType.TUI_MESHING not in static_infos
+        and StaticInfoType.TUI_SOLVER not in static_infos
+    ):
+        return api_tree
+    _copy_tui_help_xml_file(version)
     _populate_xml_helpstrings()
-    if not gt_222 or StaticInfoType.TUI_MESHING in static_infos:
+    if StaticInfoType.TUI_MESHING in static_infos:
         api_tree["<meshing_session>"] = TUIGenerator(
             "meshing", version, static_infos, verbose
         ).generate()
-    if not gt_222 or StaticInfoType.TUI_SOLVER in static_infos:
+    if StaticInfoType.TUI_SOLVER in static_infos:
         api_tree["<solver_session>"] = TUIGenerator(
             "solver", version, static_infos, verbose
         ).generate()
@@ -362,13 +348,12 @@ if __name__ == "__main__":
     meshing = launch_fluent(mode=FluentMode.MESHING)
     version = get_version_for_file_name(session=solver)
     static_infos = {}
-    if FluentVersion(version) > FluentVersion.v222:
-        static_infos[StaticInfoType.TUI_SOLVER] = (
-            solver._datamodel_service_tui.get_static_info("")
-        )
-        static_infos[StaticInfoType.TUI_MESHING] = (
-            meshing._datamodel_service_tui.get_static_info("")
-        )
+    static_infos[StaticInfoType.TUI_SOLVER] = (
+        solver._datamodel_service_tui.get_static_info("")
+    )
+    static_infos[StaticInfoType.TUI_MESHING] = (
+        meshing._datamodel_service_tui.get_static_info("")
+    )
     parser = argparse.ArgumentParser(
         description="A script to write Fluent API files with an optional verbose output."
     )

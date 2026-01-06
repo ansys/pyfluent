@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -1536,8 +1536,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             Name of the object whose properties are to be listed.
         """
         if FluentVersion(self._version) >= FluentVersion.v261:
-            # The generated parameter name is path_1 as the name path clashes with existing property.
-            return self._root.list_properties(path_1=self.path, name=object_name)
+            return self._root.list_properties(object_path=f"{self.path}/{object_name}")
         else:
             return self.list_properties_1(object_name=object_name)
 

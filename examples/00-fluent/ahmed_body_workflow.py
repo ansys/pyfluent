@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -331,9 +331,8 @@ disp1 = GraphicsWindow()
 disp1.add_graphics(contour1)
 disp1.show()
 
-contour2 = Contour(solver=session, surfaces=["xmid"])
-contour2.field.allowed_values
-contour2.field = "pressure-coefficient"
+contour2 = Contour(solver=session, field="pressure-coefficient", surfaces=["xmid"])
+assert "pressure-coefficient" in contour2.field.allowed_values
 disp2 = GraphicsWindow()
 disp2.add_graphics(contour2)
 disp2.show()

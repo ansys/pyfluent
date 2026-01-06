@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -50,12 +50,10 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
-    FluentVersion,
     get_version_for_file_name,
 )
 from ansys.fluent.core.workflow import ClassicWorkflow
@@ -147,12 +145,9 @@ class Solver(BaseSession):
         self._reduction_service = self._fluent_connection.create_grpc_service(
             ReductionService, self._error_state
         )
-        if FluentVersion(self._version) >= FluentVersion.v241:
-            self.fields.reduction = service_creator("reduction").create(
-                self._reduction_service, self
-            )
-        else:
-            self.fields.reduction = reduction_old
+        self.fields.reduction = service_creator("reduction").create(
+            self._reduction_service, self
+        )
         self.fields.solution_variable_data = self._solution_variable_data()
 
         monitors_service = service_creator("monitors").create(

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -39,6 +39,7 @@ from ansys.api.fluent.v0 import (
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import connect_to_fluent, examples, session
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvided
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
@@ -104,7 +105,7 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
 class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
     def StringEval(self, request, context):
         if request.input == "(cx-version)":
-            return scheme_eval_pb2.StringEvalResponse(output="(23 1 0)")
+            return scheme_eval_pb2.StringEvalResponse(output="(25 1 0)")
 
     def SchemeEval(
         self,
@@ -486,41 +487,17 @@ def test_recover_grpc_error_from_launch_error(monkeypatch: pytest.MonkeyPatch):
 
 def test_solver_methods(new_solver_session):
     solver = new_solver_session
-
-    if solver.get_fluent_version() == FluentVersion.v222:
-        api_keys = {
-            "file",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-        }
-    if solver.get_fluent_version() in (FluentVersion.v232, FluentVersion.v231):
-        api_keys = {
-            "file",
-            "mesh",
-            "server",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-            "parallel",
-            "report",
-        }
-    if solver.get_fluent_version() >= FluentVersion.v241:
-        api_keys = {
-            "file",
-            "mesh",
-            "server",
-            "setup",
-            "solution",
-            "results",
-            "parametric_studies",
-            "current_parametric_study",
-            "parallel",
-        }
+    api_keys = {
+        "file",
+        "mesh",
+        "server",
+        "setup",
+        "solution",
+        "results",
+        "parametric_studies",
+        "current_parametric_study",
+        "parallel",
+    }
     assert api_keys.issubset(set(dir(solver.settings)))
 
 
@@ -672,7 +649,7 @@ def test_app_utilities_new_and_old(mixing_elbow_settings_session):
 
 
 @pytest.mark.standalone
-def test_new_launch_fluent_api():
+def test_new_launch_fluent_api_standalone():
     import ansys.fluent.core as pyfluent
 
     solver = pyfluent.Solver.from_install()
@@ -695,6 +672,49 @@ def test_new_launch_fluent_api():
     solver.exit()
     solver_connected.exit()
 
+    solver_aero = pyfluent.SolverAero.from_install()
+    assert solver_aero.is_server_healthy()
+
+    ip = solver_aero.connection_properties.ip
+    port = solver_aero.connection_properties.port
+    password = solver_aero.connection_properties.password
+
+    solver_aero_connected = pyfluent.SolverAero.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert solver_aero_connected.is_server_healthy()
+
+    solver_aero.exit()
+    solver_aero_connected.exit()
+
+    meshing = pyfluent.Meshing.from_install()
+    assert meshing.is_server_healthy()
+
+    ip = meshing.connection_properties.ip
+    port = meshing.connection_properties.port
+    password = meshing.connection_properties.password
+
+    meshing_connected = pyfluent.Meshing.from_connection(
+        ip=ip, port=port, password=password
+    )
+    assert meshing_connected.is_server_healthy()
+
+    meshing.exit()
+    meshing_connected.exit()
+
+
+def test_new_launch_fluent_api_dry_run(helpers):
+    helpers.mock_awp_vars()
+    pyfluent.Solver.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+    pyfluent.SolverAero.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+    pyfluent.Meshing.from_install(
+        product_version=FluentVersion.current_release(), dry_run=True
+    )
+
 
 def test_new_launch_fluent_api_from_container():
     import ansys.fluent.core as pyfluent
@@ -703,7 +723,8 @@ def test_new_launch_fluent_api_from_container():
     port_1 = get_free_port()
     port_2 = get_free_port()
     container_dict = {"ports": {f"{port_1}": port_1, f"{port_2}": port_2}}
-    solver = pyfluent.Solver.from_container(container_dict=container_dict)
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    solver = pyfluent.Solver.from_container(container_dict=container_dict, **grpc_kwds)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
     assert solver.is_server_healthy()
     solver.exit()
@@ -712,7 +733,7 @@ def test_new_launch_fluent_api_from_container():
 def test_new_launch_fluent_api_from_connection():
     import ansys.fluent.core as pyfluent
 
-    solver = pyfluent.Solver.from_container()
+    solver = pyfluent.Solver.from_container(insecure_mode=True)
     assert solver._health_check.check_health() == solver._health_check.Status.SERVING
     assert solver.is_server_healthy()
     ip = solver.connection_properties.ip

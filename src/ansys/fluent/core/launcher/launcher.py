@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -30,6 +30,7 @@ import inspect
 import logging
 import os
 from typing import Any, Dict
+from warnings import warn
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
@@ -182,6 +183,8 @@ def launch_fluent(
     file_transfer_service: Any | None = None,
     use_docker_compose: bool | None = None,
     use_podman_compose: bool | None = None,
+    certificates_folder: str | None = None,
+    insecure_mode: bool = False,
 ) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -307,6 +310,12 @@ def launch_fluent(
         Whether to use Docker Compose to launch Fluent.
     use_podman_compose: bool
         Whether to use Podman Compose to launch Fluent.
+    certificates_folder : str, optional
+        Path to the folder containing TLS certificates for Fluent's gRPC server.
+    insecure_mode : bool, optional
+        If True, Fluent's gRPC server will be started in insecure mode without TLS.
+        This mode is not recommended. For more details on the implications
+        and usage of insecure mode, refer to the Fluent documentation.
 
     Returns
     -------
@@ -357,6 +366,20 @@ def launch_fluent(
         scheduler_options=scheduler_options,
     )
 
+    if fluent_launch_mode == LaunchMode.STANDALONE and certificates_folder is not None:
+        warn(
+            "``certificates_folder`` is relevant only when launching or connecting to a remote Fluent instance and "
+            "will be ignored for standalone launch mode.",
+            UserWarning,
+        )
+
+    if fluent_launch_mode == LaunchMode.STANDALONE and insecure_mode:
+        warn(
+            "``insecure_mode`` is relevant only when launching or connecting to a remote Fluent instance and "
+            "will be ignored for standalone launch mode.",
+            UserWarning,
+        )
+
     launcher_type = _mode_to_launcher_type(fluent_launch_mode)
     launch_fluent_args = set(inspect.signature(launch_fluent).parameters.keys())
     launcher_type_args = set(
@@ -373,10 +396,14 @@ def launch_fluent(
 def connect_to_fluent(
     ip: str | None = None,
     port: int | None = None,
+    address: str | None = None,
     cleanup_on_exit: bool = False,
     start_transcript: bool = True,
     server_info_file_name: str | None = None,
     password: str | None = None,
+    allow_remote_host: bool = False,
+    certificates_folder: str | None = None,
+    insecure_mode: bool = False,
     start_watchdog: bool | None = None,
     file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
@@ -394,6 +421,10 @@ def connect_to_fluent(
         environment variable ``PYFLUENT_FLUENT_PORT=<port>`` to set a default
         value. The explicit value of ``port`` takes precedence over
         ``PYFLUENT_FLUENT_PORT=<port>``.
+    address : str, optional
+        Address for connecting to an existing Fluent instance. The address
+        can be a TCP address of the form ``<ip>:<port>`` or a Unix domain
+        socket of the form ``unix:/<path>``. The default is ``None``.
     cleanup_on_exit : bool, optional
         Whether to shut down the connected Fluent session when PyFluent is
         exited, or the ``exit()`` method is called on the session instance,
@@ -409,6 +440,14 @@ def connect_to_fluent(
         connect to a running Fluent session.
     password : str, optional
         Password to connect to existing Fluent instance.
+    allow_remote_host : bool, optional
+        Whether to allow connecting to a remote Fluent instance.
+    certificates_folder : str, optional
+        Path to the folder containing TLS certificates for Fluent's gRPC server.
+    insecure_mode : bool, optional
+        If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+        This mode is not recommended. For more details on the implications
+        and usage of insecure mode, refer to the Fluent documentation.
     start_watchdog: bool, optional
         When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
         which means an independent watchdog process is run to ensure
@@ -423,12 +462,48 @@ def connect_to_fluent(
     :class:`~ansys.fluent.core.session_solver.Solver`, \
     :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`]
         Session object.
+
+    Raises
+    -------
+    ValueError
+        Raised when neither `certificates_folder` nor `insecure_mode` are set while `allow_remote_host` is True.
+        Raised when both `certificates_folder` and `insecure_mode` are set simultaneously.
+        Raised when `certificates_folder` is set but `allow_remote_host` is False.
+        Raised when `insecure_mode` is set but `allow_remote_host` is False.
     """
-    ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
+    if allow_remote_host:
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError("To connect to a remote host, set `certificates_folder`.")
+        if certificates_folder is not None and insecure_mode:
+            raise ValueError(
+                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
+            )
+    else:
+        if certificates_folder is not None:
+            raise ValueError(
+                "To set `certificates_folder`, `allow_remote_host` must be True."
+            )
+        if insecure_mode:
+            raise ValueError(
+                "To set `insecure_mode`, `allow_remote_host` must be True."
+            )
+
+    if address is None:
+        values = _get_server_info(server_info_file_name, ip, port, password)
+        if len(values) == 2:
+            address, password = values
+            ip, port = None, None
+        else:
+            ip, port, password = values
+
     fluent_connection = FluentConnection(
         ip=ip,
         port=port,
         password=password,
+        address=address,
+        allow_remote_host=allow_remote_host,
+        certificates_folder=certificates_folder,
+        insecure_mode=insecure_mode,
         cleanup_on_exit=cleanup_on_exit,
     )
     new_session = _get_running_session_mode(fluent_connection)
@@ -439,8 +514,8 @@ def connect_to_fluent(
 
     if start_watchdog:
         logger.info("Launching Watchdog for existing Fluent session...")
-        ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
-        watchdog.launch(os.getpid(), port, password, ip)
+        if ip is not None and port is not None and password is not None:
+            watchdog.launch(os.getpid(), port, password, ip)
 
     return new_session(
         fluent_connection=fluent_connection,

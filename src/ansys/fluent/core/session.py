@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -61,13 +61,19 @@ logger = logging.getLogger("pyfluent.general")
 
 
 def _parse_server_info_file(file_name: str):
+    """Parse server info file.
+    Returns (ip, port, password) or (unix_socket, password)"""
     with open(file_name, encoding="utf-8") as f:
         lines = f.readlines()
-    ip_and_port = lines[0].strip().split(":")
-    ip = ip_and_port[0]
-    port = int(ip_and_port[1])
+    address = lines[0].strip()
     password = lines[1].strip()
-    return ip, port, password
+    if address.startswith("unix:"):
+        return address, password
+    else:
+        ip_and_port = address.split(":")
+        ip = ip_and_port[0]
+        port = int(ip_and_port[1])
+        return ip, port, password
 
 
 class _IsDataValid:
@@ -333,11 +339,18 @@ class BaseSession:
         Session
             Session instance
         """
-        ip, port, password = _parse_server_info_file(server_info_file_name)
+        values = _parse_server_info_file(server_info_file_name)
+        if len(values) == 2:
+            address, password = values
+            ip, port = None, None
+        else:
+            ip, port, password = values
+            address = None
         fluent_connection = FluentConnection(
             ip=ip,
             port=port,
             password=password,
+            address=address,
             file_transfer_service=file_transfer_service,
             **connection_kwargs,
         )

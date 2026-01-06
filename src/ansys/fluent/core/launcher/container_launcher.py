@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -110,6 +110,8 @@ class DockerLauncher:
         file_transfer_service: Any | None = None,
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in container mode.
@@ -168,6 +170,12 @@ class DockerLauncher:
             Whether to use Docker Compose to launch Fluent.
         use_podman_compose: bool
             Whether to use Podman Compose to launch Fluent.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -184,6 +192,16 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
+        if certificates_folder is None and not insecure_mode and not insecure_mode_env:
+            raise ValueError(
+                "To launch Fluent in secure gRPC mode, set `certificates_folder`."
+            )
+        if certificates_folder is not None and insecure_mode:
+            raise ValueError(
+                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
+            )
+
         locals_ = locals().copy()
         argvals = {
             arg: locals_.get(arg)
@@ -206,6 +224,19 @@ class DockerLauncher:
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
         self._compose_config = ComposeConfig(use_docker_compose, use_podman_compose)
+        fluent_image_tag = os.getenv("FLUENT_IMAGE_TAG")
+        # There is an issue in passing gRPC arguments to Fluent image version 24.1.0 during github runs.
+        if (
+            self.argvals["insecure_mode"] or insecure_mode_env
+        ) and fluent_image_tag != "v24.1.0":
+            self._args.append(" -grpc-allow-remote-host")
+            self._args.append(" -grpc-insecure-mode")
+        elif self.argvals["certificates_folder"]:
+            self.argvals["container_dict"]["certificates_folder"] = self.argvals[
+                "certificates_folder"
+            ]
+            self._args.append(" -grpc-allow-remote-host")
+            self._args.append(" -grpc-certs-folder=/tmp/certs")
 
     def __call__(self):
 
@@ -252,6 +283,10 @@ class DockerLauncher:
         fluent_connection = FluentConnection(
             port=port,
             password=password,
+            allow_remote_host=self.argvals["insecure_mode"]
+            or self.argvals["certificates_folder"] is not None,
+            certificates_folder=self.argvals["certificates_folder"],
+            insecure_mode=self.argvals["insecure_mode"],
             file_transfer_service=self.file_transfer_service,
             cleanup_on_exit=self.argvals["cleanup_on_exit"],
             slurm_job_id=self.argvals and self.argvals.get("slurm_job_id"),

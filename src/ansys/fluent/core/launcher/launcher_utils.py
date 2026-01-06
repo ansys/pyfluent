@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -106,7 +106,11 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
             stderr=pyfluent.config.launch_fluent_stderr,
         )
     if is_windows():
-        kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+        kwargs.update(
+            shell=True,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.CREATE_NO_WINDOW,
+        )
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()

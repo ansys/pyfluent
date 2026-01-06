@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -67,6 +67,9 @@ an aspect ratio of 3.8, and a taper ratio of 0.562.
 # the geometry files.
 
 # sphinx_gallery_thumbnail_path = '_static/external_compressible_flow.png'
+import shutil
+import tempfile
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 
@@ -87,6 +90,9 @@ meshing_session = pyfluent.launch_fluent(
     mode="meshing",
 )
 print(meshing_session.get_fluent_version())
+
+tmpdir = tempfile.mkdtemp()
+meshing_session.preferences.MeshingWorkflow.TempFolder = tmpdir
 
 ###############################################################################
 # Initialize workflow
@@ -373,5 +379,8 @@ solver_session.file.write(file_name="external_compressible1.cas.h5", file_type="
 # Close Fluent.
 
 solver_session.exit()
+
+shutil.rmtree(tmpdir, ignore_errors=True)
+shutil.rmtree("wing_workflow_files", ignore_errors=True)
 
 ###############################################################################
