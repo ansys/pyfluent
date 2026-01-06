@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -34,6 +34,7 @@ from warnings import warn
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launch_options import (
@@ -68,7 +69,9 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+def create_launcher(
+    fluent_launch_mode: LaunchMode = LaunchMode.STANDALONE, **kwargs
+) -> DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher:
     """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
@@ -76,25 +79,33 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     fluent_launch_mode: LaunchMode
         Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
         ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+        The default is ``"LaunchMode.STANDALONE"``.
     kwargs : Any
         Keyword arguments.
     Returns
     -------
-    launcher: DockerLauncher | PimLauncher | StandaloneLauncher
+    DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.SLURM:
-        return SlurmLauncher(**kwargs)
+    launchers = {
+        LaunchMode.STANDALONE: StandaloneLauncher,
+        LaunchMode.CONTAINER: DockerLauncher,
+        LaunchMode.PIM: PIMLauncher,
+        LaunchMode.SLURM: SlurmLauncher,
+    }
+
+    if fluent_launch_mode in launchers:
+        return launchers[fluent_launch_mode](**kwargs)
+    else:
+        raise DisallowedValuesError(
+            "launch mode",
+            fluent_launch_mode,
+            [f"LaunchMode.{m.name}" for m in LaunchMode],
+        )
 
 
 def _show_gui_to_ui_mode(old_arg_val, **kwds):
