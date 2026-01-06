@@ -66,10 +66,10 @@ from ansys.fluent.core.solver import (
 # Read case
 ReadCase(settings_source=solver)(file_name="simulation.cas.h5")
 # Read case and data
-ReadCaseAndData(settings_source=solver)(file_name="simulation.cas.h5")
+ReadCaseData(settings_source=solver)(file_name="simulation.cas.h5")
 # Write files
 WriteCase(settings_source=solver)(file_name="output.cas.h5")
-WriteCaseAndData(settings_source=solver)(file_name="output.cas.h5")
+WriteCaseData(settings_source=solver)(file_name="output.cas.h5")
 ```
 
 ## Meshing Workflow
@@ -86,7 +86,7 @@ wt.import_geometry()
 wt.create_surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
 wt.create_surface_mesh()
 # Describe geometry
-wt.describe_geometry.setup_type = "The geometry consists of only fluid regions with no voids"
+wt.describe_geometry.setup_type = "fluids"
 wt.describe_geometry()
 # Update boundaries
 wt.update_boundaries()
@@ -196,32 +196,61 @@ solver.solution.monitor.residual.plot()
 ### Field data access
 
 ```{python}
+# Ensure the session is initialized before requesting field data
+# solver.solution.initialization.hybrid_initialize()
+
+from ansys.fluent.core import (
+    ScalarFieldDataRequest,
+    VectorFieldDataRequest,
+    SurfaceFieldDataRequest,
+    PathlinesFieldDataRequest,
+    SurfaceDataType,
+)
+
 field_data = solver.fields.field_data
-# Scalar field data
-pressure = field_data.get_scalar_field_data(
-    field_name="absolute-pressure", 
-    surfaces=["inlet"]
+
+# Scalar field data (absolute pressure on cold-inlet)
+abs_press_req = ScalarFieldDataRequest(
+    field_name="absolute-pressure",
+    surfaces=["cold-inlet"],
 )
-# Vector field data
-velocity = field_data.get_vector_field_data(
-    field_name="velocity", 
-    surfaces=["inlet"]
+abs_pressure = field_data.get_field_data(abs_press_req)
+
+# Vector field data (velocity on cold-inlet)
+vel_req = VectorFieldDataRequest(
+    field_name="velocity",
+    surfaces=["cold-inlet"],
 )
-# Surface data
-from ansys.fluent.core.services.field_data import SurfaceDataType
-vertices = field_data.get_surface_data(
-    surfaces=["inlet"], 
-    data_types=[SurfaceDataType.Vertices]
+velocity = field_data.get_field_data(vel_req)
+
+# Surface data (vertices and face centroids on hot-inlet and cold-inlet)
+surf_req = SurfaceFieldDataRequest(
+    data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
+    surfaces=["hot-inlet", "cold-inlet"],
 )
+surfaces = field_data.get_field_data(surf_req)
+
+# Access examples
+cold_vertices = surfaces["cold-inlet"].vertices
+hot_centroids = surfaces["hot-inlet"].face_centroids
 ```
 
-### Field info
+### Field info (allowed values, active status, ranges)
 
 ```{python}
-field_info = solver.fields.field_info
-field_info.get_scalar_fields_info()
-field_info.get_scalar_field_range("temperature")
-field_info.get_surfaces_info()
+
+# Allowed values
+scalar_names = sorted(field_data.scalar_fields.allowed_values())
+vector_names = sorted(field_data.vector_fields.allowed_values())
+surface_names = sorted(field_data.surfaces.allowed_values())
+
+# Active status (variable availability)
+is_temp_active = field_data.scalar_fields.is_active("temperature")
+is_vel_active = field_data.vector_fields.is_active("velocity")
+
+# Value ranges (numeric range of value for given variable)
+temp_range = field_data.scalar_fields.range("temperature")
+vmag_range = field_data.scalar_fields.range("velocity-magnitude")
 ```
 
 ### Reduction functions
