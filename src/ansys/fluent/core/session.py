@@ -447,8 +447,10 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        warnings.warn(self._file_transfer_api_warning("upload()"), PyFluentUserWarning)
         if self._file_transfer_service:
+            warnings.warn(
+                self._file_transfer_api_warning("upload()"), PyFluentUserWarning
+            )
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_directory: str | None = None):
@@ -461,10 +463,10 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        warnings.warn(
-            self._file_transfer_api_warning("download()"), PyFluentUserWarning
-        )
         if self._file_transfer_service:
+            warnings.warn(
+                self._file_transfer_api_warning("download()"), PyFluentUserWarning
+            )
             return self._file_transfer_service.download(file_name, local_directory)
 
     def chdir(self, path: PathType) -> None:
