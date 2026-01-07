@@ -535,7 +535,7 @@ class Workflow:
         """
 
         def __init__(self, workflow):
-            """Initialize an ``FirstTask`` instance."""
+            """Initialize a ``FirstTask`` instance."""
             self._workflow = workflow
             self._insertable_tasks: list = []
             # Map: server command name -> python-friendly task name
