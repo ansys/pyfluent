@@ -544,7 +544,7 @@ class Workflow:
             # Query server for commands that can start a new workflow.
             # Older Fluent versions don’t provide this API; use a fallback list.
             try:
-                initial_tasks = self._workflow.general.get_new_insertable_tasks()
+                initial_tasks = self._workflow.general.get_insertable_tasks()
             except AttributeError:
                 # For Fluent Version 26R1 or before.
                 initial_tasks = ["ImportGeometry", "PartManagement", "RunCustomJournal"]
