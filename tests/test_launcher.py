@@ -443,11 +443,12 @@ def test_fluent_launchers():
         assert pim_solver_session
         pim_solver_session.exit()
 
-        pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2, dry_run=True
+        pim_solver_launcher = create_launcher(
+            LaunchMode.PIM, **kwargs, dimension=2
         )
-        args = pim_meshing_launcher()
-        assert args[0] == "fluent-2ddp"
+        pim_solver_session = pim_solver_launcher()
+        assert pim_solver_session.dimension == pyfluent.Dimension.TWO
+        pim_solver_session.exit()
 
 
 @pytest.mark.parametrize(
