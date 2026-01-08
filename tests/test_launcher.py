@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -141,7 +141,7 @@ def test_container_launcher():
 
     # test run with configuration dict
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
 
 
 def test_container_working_dir():
@@ -200,7 +200,7 @@ def test_container_working_dir():
 
     # after all these 'working_dir' changes, the container should still launch
     session = pyfluent.launch_fluent(container_dict=container_dict3, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
 
 
 @pytest.mark.standalone
@@ -549,7 +549,7 @@ def test_container_mount_source_target(caplog):
     }
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
 
@@ -747,3 +747,19 @@ def test_warning_for_deprecated_compose_env_vars(monkeypatch):
 def test_default_launch_mode_is_py():
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
     assert "-py" in fluent_launch_string
+
+
+@pytest.mark.standalone
+def test_create_launcher():
+    from ansys.fluent.core.launcher import create_launcher
+    from ansys.fluent.core.launcher.launch_options import LaunchMode
+    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+    with pytest.raises(DisallowedValuesError):
+        create_launcher("unknown_mode")
+
+    session = create_launcher()
+    assert isinstance(session, StandaloneLauncher)
+
+    session = create_launcher(LaunchMode.STANDALONE)
+    assert isinstance(session, StandaloneLauncher)

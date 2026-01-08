@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -166,16 +166,16 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
-    assert session2.is_server_healthy()
+    assert session2.is_active()
     session2.exit()
 
     timeout_loop(
-        session1.is_server_healthy(),
+        session1.is_active(),
         5.0,
         expected="truthy",
     )
 
-    assert session1.is_server_healthy()
+    assert session1.is_active()
     session1.exit()
 
 
@@ -193,12 +193,12 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.is_server_healthy(),
+        session1.is_active(),
         5.0,
         expected="falsy",
     )
 
-    assert not session1.is_server_healthy()
+    assert not session1.is_active()
 
 
 def test_fluent_connection_properties(
