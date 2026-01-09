@@ -165,6 +165,23 @@ def get_url_content(url: str) -> str:
         return response.read()
 
 
+def is_uds(address: str) -> bool:
+    """
+    Check if the given address is a Unix Domain Socket (UDS) address.
+
+    Parameters
+    ----------
+    address : str
+        The address to check.
+
+    Returns
+    -------
+    bool
+        True if the address is a UDS address, False otherwise.
+    """
+    return address.startswith("unix:/")
+
+
 def is_localhost(address: str) -> bool:
     """
     Check if the given address corresponds to localhost.
@@ -180,7 +197,7 @@ def is_localhost(address: str) -> bool:
         True if the address corresponds to localhost, False otherwise.
     """
     # Unix domain sockets
-    if address.startswith("unix:/"):
+    if is_uds(address):
         return True
 
     # Strip off port (if present) and brackets for IPv6

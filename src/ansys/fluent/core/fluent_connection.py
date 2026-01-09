@@ -60,8 +60,9 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
-from ansys.fluent.core.utils.networking import is_localhost
+from ansys.fluent.core.utils.networking import is_localhost, is_uds
 from ansys.platform.instancemanagement import Instance
+from ansys.tools.common.cyberchannel import create_channel
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -269,33 +270,6 @@ def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, in
     return ip, port
 
 
-def _get_tls_channel(
-    address: str,
-    certificates_folder: str | None,
-    options: list[tuple[str, int]] | None = None,
-):
-    cert_file = f"{certificates_folder}/client.crt"
-    key_file = f"{certificates_folder}/client.key"
-    ca_file = f"{certificates_folder}/ca.crt"
-
-    missing = [f for f in (cert_file, key_file, ca_file) if not os.path.exists(f)]
-    if missing:
-        raise RuntimeError(
-            f"Missing required TLS file(s) for mutual TLS: {', '.join(missing)}"
-        )
-
-    certificate_chain, private_key, root_certificates = (
-        open(path, "rb").read() for path in (cert_file, key_file, ca_file)
-    )
-
-    creds = grpc.ssl_channel_credentials(
-        root_certificates=root_certificates,
-        private_key=private_key,
-        certificate_chain=certificate_chain,
-    )
-    return grpc.secure_channel(target=address, credentials=creds, options=options)
-
-
 def _get_channel(
     address: str,
     allow_remote_host: bool,
@@ -310,6 +284,7 @@ def _get_channel(
         ("grpc.max_receive_message_length", max_message_length),
     ]
     if allow_remote_host:
+        host, port = address.split(":")
         if insecure_mode:
             if is_localhost(address) and not inside_container:
                 raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
@@ -317,16 +292,40 @@ def _get_channel(
                 INSECURE_MODE_WARNING,
                 InsecureGrpcWarning,
             )
-            return grpc.insecure_channel(address, options=options)
+            return create_channel(
+                transport_mode="insecure",
+                host=host,
+                port=int(port),
+                grpc_options=options,
+            )
         else:
             if certificates_folder is None:
                 raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
-            return _get_tls_channel(address, certificates_folder, options=options)
+            return create_channel(
+                transport_mode="mtls",
+                host=host,
+                port=int(port),
+                certs_dir=certificates_folder,
+                grpc_options=options,
+            )
     else:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
         if not (is_localhost(address) or (inside_container and insecure_mode_env)):
             raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE)
-        return grpc.insecure_channel(address, options=options)
+        if is_uds(address):
+            return create_channel(
+                transport_mode="uds",
+                uds_fullpath=address,
+                grpc_options=options,
+            )
+        else:
+            host, port = address.split(":")
+            return create_channel(
+                transport_mode="wnua",
+                host=host,
+                port=int(port),
+                grpc_options=options,
+            )
 
 
 class _ConnectionInterface:
