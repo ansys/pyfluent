@@ -1,6 +1,7 @@
 import os
 import random
 
+import grpc
 import pytest
 
 from ansys.fluent.core.launcher.error_warning_messsages import (
@@ -11,8 +12,10 @@ from ansys.fluent.core.launcher.error_warning_messsages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
     CONNECTING_TO_LOCALHOST_INSECURE_MODE,
+    INSECURE_MODE_WARNING,
 )
 from ansys.fluent.core.launcher.launcher import connect_to_fluent, launch_fluent
+from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.utils.networking import is_localhost
 
 
@@ -106,3 +109,15 @@ def test_allowed_ips():
             allow_remote_host=True,
             insecure_mode=True,
         )
+
+
+def test_insecure_mode_warning():
+    with pytest.warns(InsecureGrpcWarning, match=INSECURE_MODE_WARNING):
+        with pytest.raises(RuntimeError) as ex:
+            connect_to_fluent(
+                allow_remote_host=True,
+                insecure_mode=True,
+                address=_generate_random_remote_address(),
+            )
+        assert isinstance(ex.value.__context__, grpc.RpcError)
+        assert ex.value.__context__.code() == grpc.StatusCode.UNAVAILABLE

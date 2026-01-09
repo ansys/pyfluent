@@ -38,5 +38,5 @@ CONNECTING_TO_LOCALHOST_INSECURE_MODE = (
 INSECURE_MODE_WARNING = (
     "The Fluent session will be connected in insecure gRPC mode. "
     "This mode is not recommended. For more details on the implications "
-    "and usage of insecure mode, refer to the Fluent documentation.",
+    "and usage of insecure mode, refer to the Fluent documentation."
 )
