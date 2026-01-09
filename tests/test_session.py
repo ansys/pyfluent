@@ -914,7 +914,7 @@ def test_session_is_active(new_solver_session_wo_exit):
     assert session_2.is_active()
 
     session_1.exit()
-
+def test_python_attributes_in_inactive_sessions(new_meshing_session_wo_exit):
     assert not session_1.is_active()
     assert not session_2.is_active()
 
