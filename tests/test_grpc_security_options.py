@@ -1,32 +1,18 @@
 import os
-import random
 
 import pytest
 
-from ansys.fluent.core.fluent_connection import _is_localhost
-from ansys.fluent.core.launcher import launcher
 from ansys.fluent.core.launcher.launcher import connect_to_fluent, launch_fluent
-from ansys.fluent.core.module_config import config
-from ansys.fluent.core.session_solver import Solver
 
 
 def _get_certs_folder():
     return os.path.join(os.getcwd(), "certs")
 
 
-def _generate_random_address():
-    while True:
-        octets = [
-            random.randint(0, 255),
-            random.randint(0, 255),
-            random.randint(0, 255),
-            random.randint(0, 255),
-        ]
-        ip = ".".join(map(str, octets))
-        port = random.randint(1024, 65535)
-        address = f"{ip}:{port}"
-        if not _is_localhost(address):
-            return address
+def _get_address_and_password(solver):
+    address = solver._fluent_connection._channel_str
+    password = solver._fluent_connection._metadata[0][1]
+    return address, password
 
 
 def test_invalid_launch_arguments():
@@ -40,33 +26,27 @@ def test_invalid_launch_arguments():
         launch_fluent(certificates_folder=_get_certs_folder(), insecure_mode=True)
 
 
-def test_invalid_connect_to_fluent_arguments(monkeypatch):
-    monkeypatch.setattr(config, "check_health", False)
-    monkeypatch.setattr(
-        launcher, "_get_running_session_mode", lambda *args, **kwargs: Solver
+def test_invalid_connect_to_fluent_arguments():
+    solver = launch_fluent(certificates_folder=_get_certs_folder())
+    address_and_password = dict(
+        zip(["address", "password"], _get_address_and_password(solver))
     )
     with pytest.raises(ValueError):
-        connect_to_fluent(certificates_folder=_get_certs_folder())
+        connect_to_fluent(
+            certificates_folder=_get_certs_folder(), **address_and_password
+        )
 
     with pytest.raises(ValueError):
-        connect_to_fluent(insecure_mode=True)
+        connect_to_fluent(insecure_mode=True, **address_and_password)
 
     with pytest.raises(ValueError):
-        connect_to_fluent(allow_remote_host=True)
+        connect_to_fluent(allow_remote_host=True, **address_and_password)
 
     assert (
         connect_to_fluent(
             allow_remote_host=True,
             certificates_folder=_get_certs_folder(),
-            address=_generate_random_address(),
-        )
-        is not None
-    )
-    assert (
-        connect_to_fluent(
-            allow_remote_host=True,
-            insecure_mode=True,
-            address=_generate_random_address(),
+            **address_and_password,
         )
         is not None
     )
@@ -76,4 +56,5 @@ def test_invalid_connect_to_fluent_arguments(monkeypatch):
             allow_remote_host=True,
             certificates_folder=_get_certs_folder(),
             insecure_mode=True,
+            **address_and_password,
         )
