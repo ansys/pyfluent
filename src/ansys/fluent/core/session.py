@@ -503,7 +503,7 @@ class BaseSession:
             return [
                 name
                 for name in names
-                if name.startswith("__")
+                if (name.startswith("__") and name.endswith("__"))
                 or name in {"is_active", "wait_process_finished"}
             ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
