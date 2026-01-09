@@ -45,6 +45,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvide
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
@@ -890,6 +891,7 @@ def test_dir_for_session(new_meshing_session_wo_exit):
         )
         > 2
     )
+    meshing_new.exit()
 
 
 @pytest.mark.standalone
@@ -909,3 +911,34 @@ def test_session_is_active(new_solver_session_wo_exit):
 
     assert not session_1.is_active()
     assert not session_2.is_active()
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_python_attributes_in_in_active_sessions(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+    solver = meshing.switch_to_solver()
+
+    assert not meshing.is_active()
+    assert len(dir(meshing)) > 2
+    for attr in ["__class__", "__dict__"]:
+        assert getattr(meshing, attr)
+        assert attr in dir(meshing)
+
+    solver.exit()
+
+    assert not solver.is_active()
+    assert len(dir(solver)) > 2
+    for attr in ["__class__", "__dict__"]:
+        assert getattr(solver, attr)
+        assert attr in dir(solver)
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_context_manager_with_session_switch(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+
+    with using(meshing):
+        assert meshing.is_active()
+        solver = meshing.switch_to_solver()
+        assert not meshing.is_active()
+        assert solver.is_active()
