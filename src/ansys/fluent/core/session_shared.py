@@ -49,6 +49,8 @@ EXCLUDED_ATTRIBUTES = [
     "_fluent_connection",
     "_fluent_connection_backup",
     "wait_process_finished",
+    # `_exit` is kept accessible even for inactive sessions to allow callers
+    # to trigger a clean shutdown/teardown on sessions that are no longer active.
     "_exit",
 ]
 
