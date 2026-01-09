@@ -407,11 +407,11 @@ class BaseSession:
 
     def exit(self, **kwargs):
         """Exit session."""
+        logger.debug("session.exit() called")
         self._exit(**kwargs)
 
     def _exit(self, **kwargs) -> None:
         """Exit session."""
-        logger.debug("session.exit() called")
         if self._fluent_connection:
             self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
