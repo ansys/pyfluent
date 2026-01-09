@@ -40,7 +40,11 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
+from ansys.fluent.core.session_shared import (
+    EXCLUDED_ATTRIBUTES,
+    _make_datamodel_module,
+    _make_tui_module,
+)
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -343,18 +347,15 @@ class Solver(BaseSession):
         return self.get_state()
 
     def __getattribute__(self, item: str):
+        if item.startswith("__") and item.endswith("__"):
+            return super().__getattribute__(item)
         try:
             _connection = super(Solver, self).__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
-        if _connection is None and item not in [
-            "is_active",
-            "_fluent_connection",
-            "_fluent_connection_backup",
-            "wait_process_finished",
-        ]:
+        if _connection is None and item not in EXCLUDED_ATTRIBUTES:
             raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{item}'"
+                f"'{self.__class__.__name__}' object has no attribute '{item}'"
             )
         try:
             return super(Solver, self).__getattribute__(item)

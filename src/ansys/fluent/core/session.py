@@ -405,7 +405,11 @@ class BaseSession:
         """
         return self._fluent_connection_backup.wait_process_finished()
 
-    def exit(self, **kwargs) -> None:
+    def exit(self, **kwargs):
+        """Exit session."""
+        self._exit(**kwargs)
+
+    def _exit(self, **kwargs) -> None:
         """Exit session."""
         logger.debug("session.exit() called")
         if self._fluent_connection:
@@ -491,11 +495,17 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
-        self.exit()
+        self._exit()
 
     def __dir__(self):
         if self._fluent_connection is None:
-            return ["is_active", "wait_process_finished"]
+            names = super().__dir__()
+            return [
+                name
+                for name in names
+                if name.startswith("__")
+                or name in {"is_active", "wait_process_finished"}
+            ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",

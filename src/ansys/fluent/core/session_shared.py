@@ -44,6 +44,14 @@ _CODEGEN_MSG_TUI = (
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
 tui_logger = logging.getLogger("pyfluent.tui")
 
+EXCLUDED_ATTRIBUTES = [
+    "is_active",
+    "_fluent_connection",
+    "_fluent_connection_backup",
+    "wait_process_finished",
+    "_exit",
+]
+
 
 def _make_tui_module(session, module_name):
     try:
