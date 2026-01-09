@@ -355,7 +355,7 @@ class Solver(BaseSession):
             _connection = False
         if _connection is None and item not in EXCLUDED_ATTRIBUTES:
             raise AttributeError(
-                f"'{self.__class__.__name__}' object has no attribute '{item}'"
+                f"'{type(self).__name__}' object has no attribute '{item}'"
             )
         try:
             return super(Solver, self).__getattribute__(item)
