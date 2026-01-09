@@ -22,10 +22,6 @@ CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE = (
     "will be ignored for standalone launch mode."
 )
 
-INSECURE_MODE_IN_LOCALHOST = (
-    "Insecure gRPC mode is not allowed when connecting to localhost."
-)
-
 INSECURE_MODE_PROVIDED_IN_STANDALONE = (
     "``insecure_mode`` is relevant only when launching or connecting to a remote Fluent instance and "
     "will be ignored for standalone launch mode."
@@ -33,6 +29,10 @@ INSECURE_MODE_PROVIDED_IN_STANDALONE = (
 
 BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED = (
     "`certificates_folder` and `insecure_mode` cannot be set at the same time."
+)
+
+CONNECTING_TO_LOCALHOST_INSECURE_MODE = (
+    "Insecure gRPC mode is not allowed when connecting to localhost."
 )
 
 INSECURE_MODE_WARNING = (

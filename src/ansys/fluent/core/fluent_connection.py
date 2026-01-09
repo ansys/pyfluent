@@ -46,7 +46,7 @@ import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.error_warning_messsages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
-    INSECURE_MODE_IN_LOCALHOST,
+    CONNECTING_TO_LOCALHOST_INSECURE_MODE,
     INSECURE_MODE_WARNING,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
@@ -312,7 +312,7 @@ def _get_channel(
     if allow_remote_host:
         if insecure_mode:
             if is_localhost(address) and not inside_container:
-                raise RuntimeError(INSECURE_MODE_IN_LOCALHOST)
+                raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
             warnings.warn(
                 INSECURE_MODE_WARNING,
                 InsecureGrpcWarning,

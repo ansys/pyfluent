@@ -3,6 +3,15 @@ import random
 
 import pytest
 
+from ansys.fluent.core.launcher.error_warning_messsages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
+    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+    CONNECTING_TO_LOCALHOST_INSECURE_MODE,
+)
 from ansys.fluent.core.launcher.launcher import connect_to_fluent, launch_fluent
 from ansys.fluent.core.utils.networking import is_localhost
 
@@ -33,13 +42,15 @@ def _generate_random_remote_address():
 
 
 def test_launch_arguments():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH):
         launch_fluent()
 
     assert launch_fluent(certificates_folder=_get_certs_folder()) is not None
     assert launch_fluent(insecure_mode=True) is not None
 
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError, match=BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED
+    ):
         launch_fluent(certificates_folder=_get_certs_folder(), insecure_mode=True)
 
 
@@ -48,15 +59,19 @@ def test_connect_to_fluent_arguments():
     address_and_password = dict(
         zip(["address", "password"], _get_address_and_password(solver))
     )
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError, match=ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER
+    ):
         connect_to_fluent(
             certificates_folder=_get_certs_folder(), **address_and_password
         )
 
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError, match=ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE
+    ):
         connect_to_fluent(insecure_mode=True, **address_and_password)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT):
         connect_to_fluent(allow_remote_host=True, **address_and_password)
 
     assert (
@@ -68,7 +83,9 @@ def test_connect_to_fluent_arguments():
         is not None
     )
 
-    with pytest.raises(ValueError):
+    with pytest.raises(
+        ValueError, match=BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED
+    ):
         connect_to_fluent(
             allow_remote_host=True,
             certificates_folder=_get_certs_folder(),
@@ -78,19 +95,14 @@ def test_connect_to_fluent_arguments():
 
 
 def test_allowed_ips():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE):
         connect_to_fluent(
             address=_generate_random_remote_address(),
         )
 
-    with pytest.raises(ValueError):
-        connect_to_fluent(
-            address="localhost:5000",
-            insecure_mode=True,
-        )
-
-    with pytest.raises(ValueError):
+    with pytest.raises(RuntimeError, match=CONNECTING_TO_LOCALHOST_INSECURE_MODE):
         connect_to_fluent(
             address="localhost:5000",
             allow_remote_host=True,
+            insecure_mode=True,
         )
