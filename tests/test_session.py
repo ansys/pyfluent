@@ -876,20 +876,26 @@ def test_dir_for_session(new_meshing_session_wo_exit):
     solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
-    assert [
+    non_dunder_solver_attrs = [
         name
         for name in dir(solver)
         if not (name.startswith("__") and name.endswith("__"))
-    ] == ["is_active", "wait_process_finished"]
-    assert (
-        len(
-            [
-                name
-                for name in dir(meshing_new)
-                if not (name.startswith("__") and name.endswith("__"))
-            ]
-        )
-        > 2
+    ]
+    assert non_dunder_solver_attrs == ["is_active", "wait_process_finished"]
+
+    # A new meshing session should expose additional meshing-specific attributes
+    # beyond the minimal BaseSession interface (``is_active`` and
+    # ``wait_process_finished``). Instead of relying on a magic number
+    # (previously ``len(...) > 2``), explicitly check for at least one such
+    # extra public attribute.
+    non_dunder_meshing_attrs = [
+        name
+        for name in dir(meshing_new)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert any(
+        name not in {"is_active", "wait_process_finished"}
+        for name in non_dunder_meshing_attrs
     )
     meshing_new.exit()
 
