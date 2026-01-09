@@ -37,7 +37,7 @@ from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
-from ansys.fluent.core.launcher.error_warning_messsages import (
+from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
     BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,

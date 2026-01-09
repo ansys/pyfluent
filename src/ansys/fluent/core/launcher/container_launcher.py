@@ -42,7 +42,7 @@ import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.launcher.error_warning_messsages import (
+from ansys.fluent.core.launcher.error_warning_messages import (
     BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
