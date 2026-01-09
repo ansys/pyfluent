@@ -31,13 +31,17 @@ def test_invalid_connect_to_fluent_arguments():
     address_and_password = dict(
         zip(["address", "password"], _get_address_and_password(solver))
     )
+    insecure_solver = launch_fluent(insecure_mode=True)
+    insecure_address_and_password = dict(
+        zip(["address", "password"], _get_address_and_password(insecure_solver))
+    )
     with pytest.raises(ValueError):
         connect_to_fluent(
             certificates_folder=_get_certs_folder(), **address_and_password
         )
 
     with pytest.raises(ValueError):
-        connect_to_fluent(insecure_mode=True, **address_and_password)
+        connect_to_fluent(insecure_mode=True, **insecure_address_and_password)
 
     with pytest.raises(ValueError):
         connect_to_fluent(allow_remote_host=True, **address_and_password)
@@ -47,6 +51,16 @@ def test_invalid_connect_to_fluent_arguments():
             allow_remote_host=True,
             certificates_folder=_get_certs_folder(),
             **address_and_password,
+        )
+        is not None
+    )
+
+    assert (
+        connect_to_fluent(
+            allow_remote_host=True,
+            insecure_mode=True,
+            inside_container=True,
+            **insecure_address_and_password,
         )
         is not None
     )
