@@ -3,8 +3,11 @@ import random
 
 import pytest
 
-from ansys.fluent.core import connect_to_fluent, launch_fluent
 from ansys.fluent.core.fluent_connection import _is_localhost
+from ansys.fluent.core.launcher import launcher
+from ansys.fluent.core.launcher.launcher import connect_to_fluent, launch_fluent
+from ansys.fluent.core.module_config import config
+from ansys.fluent.core.session_solver import Solver
 
 
 def _get_certs_folder():
@@ -37,7 +40,11 @@ def test_invalid_launch_arguments():
         launch_fluent(certificates_folder=_get_certs_folder(), insecure_mode=True)
 
 
-def test_invalid_connect_to_fluent_arguments():
+def test_invalid_connect_to_fluent_arguments(monkeypatch):
+    monkeypatch.setattr(config, "check_health", False)
+    monkeypatch.setattr(
+        launcher, "_get_running_session_mode", lambda *args, **kwargs: Solver
+    )
     with pytest.raises(ValueError):
         connect_to_fluent(certificates_folder=_get_certs_folder())
 
