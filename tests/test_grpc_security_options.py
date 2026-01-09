@@ -1,8 +1,10 @@
 import os
+import random
 
 import pytest
 
 from ansys.fluent.core.launcher.launcher import connect_to_fluent, launch_fluent
+from ansys.fluent.core.utils.networking import is_localhost
 
 
 def _get_certs_folder():
@@ -15,7 +17,22 @@ def _get_address_and_password(solver):
     return address, password
 
 
-def test_invalid_launch_arguments():
+def _generate_random_remote_address():
+    while True:
+        octets = [
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255),
+        ]
+        ip = ".".join(map(str, octets))
+        port = random.randint(1024, 65535)
+        address = f"{ip}:{port}"
+        if not is_localhost(address):
+            return address
+
+
+def test_launch_arguments():
     with pytest.raises(ValueError):
         launch_fluent()
 
@@ -26,7 +43,7 @@ def test_invalid_launch_arguments():
         launch_fluent(certificates_folder=_get_certs_folder(), insecure_mode=True)
 
 
-def test_invalid_connect_to_fluent_arguments():
+def test_connect_to_fluent_arguments():
     solver = launch_fluent(certificates_folder=_get_certs_folder())
     address_and_password = dict(
         zip(["address", "password"], _get_address_and_password(solver))
@@ -57,4 +74,23 @@ def test_invalid_connect_to_fluent_arguments():
             certificates_folder=_get_certs_folder(),
             insecure_mode=True,
             **address_and_password,
+        )
+
+
+def test_allowed_ips():
+    with pytest.raises(ValueError):
+        connect_to_fluent(
+            address=_generate_random_remote_address(),
+        )
+
+    with pytest.raises(ValueError):
+        connect_to_fluent(
+            address="localhost:5000",
+            insecure_mode=True,
+        )
+
+    with pytest.raises(ValueError):
+        connect_to_fluent(
+            address="localhost:5000",
+            allow_remote_host=True,
         )

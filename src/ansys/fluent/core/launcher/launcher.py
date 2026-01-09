@@ -37,6 +37,14 @@ from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.launcher.error_warning_messsages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
+    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
+    INSECURE_MODE_PROVIDED_IN_STANDALONE,
+)
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -379,15 +387,13 @@ def launch_fluent(
 
     if fluent_launch_mode == LaunchMode.STANDALONE and certificates_folder is not None:
         warn(
-            "``certificates_folder`` is relevant only when launching or connecting to a remote Fluent instance and "
-            "will be ignored for standalone launch mode.",
+            CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
             UserWarning,
         )
 
     if fluent_launch_mode == LaunchMode.STANDALONE and insecure_mode:
         warn(
-            "``insecure_mode`` is relevant only when launching or connecting to a remote Fluent instance and "
-            "will be ignored for standalone launch mode.",
+            INSECURE_MODE_PROVIDED_IN_STANDALONE,
             UserWarning,
         )
 
@@ -484,20 +490,14 @@ def connect_to_fluent(
     """
     if allow_remote_host:
         if certificates_folder is None and not insecure_mode:
-            raise ValueError("To connect to a remote host, set `certificates_folder`.")
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
         if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+            raise ValueError(BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED)
     else:
         if certificates_folder is not None:
-            raise ValueError(
-                "To set `certificates_folder`, `allow_remote_host` must be True."
-            )
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER)
         if insecure_mode:
-            raise ValueError(
-                "To set `insecure_mode`, `allow_remote_host` must be True."
-            )
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE)
 
     if address is None:
         values = _get_server_info(server_info_file_name, ip, port, password)

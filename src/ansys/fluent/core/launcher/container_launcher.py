@@ -42,6 +42,10 @@ import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.error_warning_messsages import (
+    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+)
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     dict_to_str,
@@ -194,13 +198,9 @@ class DockerLauncher:
         """
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
         if certificates_folder is None and not insecure_mode and not insecure_mode_env:
-            raise ValueError(
-                "To launch Fluent in secure gRPC mode, set `certificates_folder`."
-            )
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
         if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+            raise ValueError(BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED)
 
         locals_ = locals().copy()
         argvals = {

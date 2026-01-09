@@ -27,7 +27,6 @@ from __future__ import annotations
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
-import ipaddress
 import itertools
 import logging
 import os
@@ -44,6 +43,12 @@ from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.error_warning_messsages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    INSECURE_MODE_IN_LOCALHOST,
+    INSECURE_MODE_WARNING,
+)
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
@@ -55,6 +60,7 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.utils.networking import is_localhost
 from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
@@ -290,21 +296,6 @@ def _get_tls_channel(
     return grpc.secure_channel(target=address, credentials=creds, options=options)
 
 
-def _is_localhost(address: str) -> bool:
-    # Unix domain sockets
-    if address.startswith("unix:/"):
-        return True
-
-    # Strip off port (if present) and brackets for IPv6
-    host = address.split(":", 1)[0].strip("[]")
-
-    try:
-        return ipaddress.ip_address(host).is_loopback
-    except ValueError:
-        # Not an IP, fall back to hostname
-        return host.lower() == "localhost"
-
-
 def _get_channel(
     address: str,
     allow_remote_host: bool,
@@ -320,30 +311,21 @@ def _get_channel(
     ]
     if allow_remote_host:
         if insecure_mode:
-            if _is_localhost(address) and not inside_container:
-                raise RuntimeError(
-                    "Insecure gRPC mode is not allowed when connecting to localhost."
-                )
+            if is_localhost(address) and not inside_container:
+                raise RuntimeError(INSECURE_MODE_IN_LOCALHOST)
             warnings.warn(
-                "The Fluent session will be connected in insecure gRPC mode. "
-                "This mode is not recommended. For more details on the implications "
-                "and usage of insecure mode, refer to the Fluent documentation.",
+                INSECURE_MODE_WARNING,
                 InsecureGrpcWarning,
             )
             return grpc.insecure_channel(address, options=options)
         else:
             if certificates_folder is None:
-                raise ValueError(
-                    "Specify 'certificates_folder' containing TLS certificates to connect to remote host."
-                )
+                raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
             return _get_tls_channel(address, certificates_folder, options=options)
     else:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if not (_is_localhost(address) or (inside_container and insecure_mode_env)):
-            raise ValueError(
-                "Connecting to remote Fluent instances is not allowed. "
-                "Set 'allow_remote_host=True' to connect to remote hosts."
-            )
+        if not (is_localhost(address) or (inside_container and insecure_mode_env)):
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE)
         return grpc.insecure_channel(address, options=options)
 
 

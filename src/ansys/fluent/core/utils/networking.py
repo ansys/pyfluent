@@ -23,6 +23,7 @@
 """Provides a module to get networking functionality."""
 
 from concurrent import futures
+import ipaddress
 import logging
 import socket
 import ssl
@@ -162,3 +163,31 @@ def get_url_content(url: str) -> str:
     """
     with urllib.request.urlopen(url) as response:
         return response.read()
+
+
+def is_localhost(address: str) -> bool:
+    """
+    Check if the given address corresponds to localhost.
+
+    Parameters
+    ----------
+    address : str
+        The address to check.
+
+    Returns
+    -------
+    bool
+        True if the address corresponds to localhost, False otherwise.
+    """
+    # Unix domain sockets
+    if address.startswith("unix:/"):
+        return True
+
+    # Strip off port (if present) and brackets for IPv6
+    host = address.split(":", 1)[0].strip("[]")
+
+    try:
+        return ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        # Not an IP, fall back to hostname
+        return host.lower() == "localhost"
