@@ -415,8 +415,12 @@ class BaseSession:
         """
         return self._fluent_connection_backup.wait_process_finished()
 
-    def exit(self, **kwargs):
-        """Exit session."""
+    def exit(self, **kwargs) -> None:
+        """Exit session.
+
+        This public method is a convenience wrapper that delegates directly to
+        :meth:`_exit`.
+        """
         logger.debug("session.exit() called")
         self._exit(**kwargs)
 
