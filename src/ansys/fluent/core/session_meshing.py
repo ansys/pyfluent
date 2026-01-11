@@ -26,8 +26,8 @@ from typing import Any, Dict
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_shared import EXCLUDED_ATTRIBUTES
 from ansys.fluent.core.session_solver import Solver
 
 
@@ -102,7 +102,7 @@ class Meshing(PureMeshing):
             _connection = super(Meshing, self).__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
-        if _connection is None and item not in EXCLUDED_ATTRIBUTES:
+        if _connection is None and item not in BaseSession._inactive_session_allow_list:
             raise AttributeError(
                 f"'{type(self).__name__}' object has no attribute '{item}'"
             )

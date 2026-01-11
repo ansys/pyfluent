@@ -162,6 +162,16 @@ class BaseSession:
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
+    _inactive_session_allow_list = [
+        "is_active",
+        "_fluent_connection",
+        "_fluent_connection_backup",
+        "wait_process_finished",
+        # `_exit` is kept accessible even for inactive sessions to allow callers
+        # to trigger a clean shutdown/teardown on sessions that are no longer active.
+        "_exit",
+    ]
+
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,

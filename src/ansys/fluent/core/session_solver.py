@@ -41,7 +41,6 @@ from ansys.fluent.core.services.solution_variables import (
 )
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_shared import (
-    EXCLUDED_ATTRIBUTES,
     _make_datamodel_module,
     _make_tui_module,
 )
@@ -353,7 +352,7 @@ class Solver(BaseSession):
             _connection = super(Solver, self).__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
-        if _connection is None and item not in EXCLUDED_ATTRIBUTES:
+        if _connection is None and item not in BaseSession._inactive_session_allow_list:
             raise AttributeError(
                 f"'{type(self).__name__}' object has no attribute '{item}'"
             )
