@@ -22,20 +22,20 @@
 
 """Wrappers over FieldData gRPC service of Fluent."""
 
-from collections.abc import Callable, Iterable
-from dataclasses import dataclass, field
-from enum import Enum
-from functools import reduce
 import logging
 import time
 import warnings
 import weakref
+from collections.abc import Callable, Iterable
+from dataclasses import dataclass, field
+from enum import Enum
+from functools import reduce
 
 import grpc
 import numpy as np
-
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
+
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldDataSource,
@@ -60,6 +60,7 @@ from ansys.fluent.core.field_data_interfaces import (
     get_surfaces_from_objects,
 )
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -83,7 +84,7 @@ def override_help_text(func, func_to_be_wrapped):
     return func
 
 
-class FieldDataService(StreamingService):
+class FieldDataService(StreamingService, ServiceProtocol):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """FieldData service of Fluent."""
 
     def __init__(

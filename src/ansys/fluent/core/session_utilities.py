@@ -1,3 +1,4 @@
+# pyright: reportNoOverloadImplementation=false
 # Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -24,7 +25,7 @@
 
 from typing import TYPE_CHECKING, Any, Literal, overload
 
-from typing_extensions import Unpack
+from typing_extensions import Unpack, override
 
 from ansys.fluent.core import (
     session_meshing,
@@ -42,7 +43,7 @@ from ansys.fluent.core.launcher.launch_options import (
 )
 from ansys.fluent.core.launcher.launcher import LaunchFluentArgs, connect_to_fluent
 from ansys.fluent.core.launcher.pim_launcher import (
-    PIMArgsWithoutDryRun,
+    PIMArgs,
     PIMLauncher,
 )
 from ansys.fluent.core.launcher.standalone_launcher import (
@@ -277,31 +278,11 @@ class SessionBase:
         )
         return launcher()
 
-    @overload
-    @classmethod
-    def from_pim(
-        cls,
-        *,
-        dry_run: Literal[False] = False,
-        **kwargs: Unpack[PIMArgsWithoutDryRun],
-    ) -> BaseSession: ...
-
-    @overload
-    @classmethod
-    def from_pim(
-        cls,
-        *,
-        dry_run: Literal[True],
-        **kwargs: Unpack[PIMArgsWithoutDryRun],
-    ) -> dict[str, Any]: ...
-
     @classmethod
     def from_pim(  # pylint: disable=missing-param-doc
         cls,
-        *,
-        dry_run: bool = False,
-        **kwargs: Unpack[PIMArgsWithoutDryRun],
-    ) -> BaseSession | dict[str, Any]:
+        **kwargs: Unpack[PIMArgs],
+    ) -> BaseSession:
         """
         Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
 
@@ -463,23 +444,12 @@ class Meshing(SessionBase):
             **kwargs: Unpack[ContainerArgsWithoutDryRun],
         ) -> dict[str, Any]: ...
 
-        @overload
+        @override
         @classmethod
         def from_pim(
             cls,
-            *,
-            dry_run: Literal[False] = False,
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
+            **kwargs: Unpack[PIMArgs],
         ) -> session_meshing.Meshing: ...
-
-        @overload
-        @classmethod
-        def from_pim(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...
 
 
 class PureMeshing(SessionBase):
@@ -523,23 +493,12 @@ class PureMeshing(SessionBase):
             **kwargs: Unpack[ContainerArgsWithoutDryRun],
         ) -> dict[str, Any]: ...
 
-        @overload
+        @override
         @classmethod
         def from_pim(
             cls,
-            *,
-            dry_run: Literal[False] = False,
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
+            **kwargs: Unpack[PIMArgs],
         ) -> session_pure_meshing.PureMeshing: ...
-
-        @overload
-        @classmethod
-        def from_pim(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...
 
 
 class PrePost(SessionBase):
@@ -587,19 +546,8 @@ class PrePost(SessionBase):
         @classmethod
         def from_pim(
             cls,
-            *,
-            dry_run: Literal[False] = False,
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
+            **kwargs: Unpack[PIMArgs],
         ) -> session_solver.Solver: ...
-
-        @overload
-        @classmethod
-        def from_pim(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...
 
 
 class Solver(SessionBase):
@@ -636,30 +584,10 @@ class Solver(SessionBase):
 
         @overload
         @classmethod
-        def from_container(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...
-
-        @overload
-        @classmethod
         def from_pim(
             cls,
-            *,
-            dry_run: Literal[False] = False,
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
+            **kwargs: Unpack[PIMArgs],
         ) -> session_solver.Solver: ...
-
-        @overload
-        @classmethod
-        def from_pim(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...
 
 
 class SolverAero(SessionBase):
@@ -707,19 +635,8 @@ class SolverAero(SessionBase):
         @classmethod
         def from_pim(
             cls,
-            *,
-            dry_run: Literal[False] = False,
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
+            **kwargs: Unpack[PIMArgs],
         ) -> session_solver_aero.SolverAero: ...
-
-        @overload
-        @classmethod
-        def from_pim(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...
 
 
 class SolverIcing(SessionBase):
@@ -767,16 +684,5 @@ class SolverIcing(SessionBase):
         @classmethod
         def from_pim(
             cls,
-            *,
-            dry_run: Literal[False] = False,
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
+            **kwargs: Unpack[PIMArgs],
         ) -> session_solver_icing.SolverIcing: ...
-
-        @overload
-        @classmethod
-        def from_pim(
-            cls,
-            *,
-            dry_run: Literal[True],
-            **kwargs: Unpack[PIMArgsWithoutDryRun],
-        ) -> dict[str, Any]: ...

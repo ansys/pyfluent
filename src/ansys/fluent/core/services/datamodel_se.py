@@ -22,23 +22,24 @@
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 
-from collections.abc import Callable, Iterator, Sequence
-from enum import Enum
 import functools
 import itertools
 import logging
 import os
+from collections.abc import Callable, Iterator, Sequence
+from enum import Enum
 from threading import RLock
 from typing import Any, NoReturn, TypeVar
 
-from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
-
 from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
 from ansys.api.fluent.v0.variant_pb2 import Variant
+from google.protobuf.json_format import MessageToDict, ParseDict
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -177,7 +178,7 @@ class _FilterDatamodelNames:
         return [name for name in names if validate_name(name)]
 
 
-class DatamodelServiceImpl:
+class DatamodelServiceImpl(ServiceProtocol):
     """Wraps the StateEngine-based datamodel gRPC service of Fluent."""
 
     def __init__(
@@ -495,7 +496,7 @@ class SubscriptionList:
                 v.unsubscribe()
 
 
-class DatamodelService(StreamingService):
+class DatamodelService(StreamingService, ServiceProtocol):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Pure Python wrapper of DatamodelServiceImpl."""
 
     def __init__(
@@ -1179,7 +1180,6 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-
         all_children = list(self.__dict__) + dir(type(self))
 
         filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
@@ -1702,7 +1702,7 @@ class PyNamedObjectContainer:
             )
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def _del_item(self, key: str) -> None:
@@ -1725,7 +1725,7 @@ class PyNamedObjectContainer:
             self.service.delete_object(self.rules, se_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def __getitem__(self, key: str) -> PyMenu:
@@ -2283,7 +2283,7 @@ class PyMenuGeneric(PyMenu):
             return PyQuery(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
-                f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{name} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def __dir__(self) -> list[str]:
@@ -2333,5 +2333,5 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
             return PyMenuGeneric(self.service, self.rules, child_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )

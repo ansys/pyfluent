@@ -24,22 +24,23 @@
 
 import inspect
 import logging
+import weakref
 from types import ModuleType
 from typing import TypeVar
-import weakref
-
-from google.protobuf.message import Message
-import grpc
 
 import ansys.api.fluent.v0 as api
+import grpc
 from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
+from google.protobuf.message import Message
+
+from ansys.fluent.core.services._protocols import ServiceProtocol
 
 _TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
 
 network_logger: logging.Logger = logging.getLogger("pyfluent.networking")
 
 
-class BatchOpsService:
+class BatchOpsService(ServiceProtocol):
     """Class wrapping methods in batch RPC service."""
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:

@@ -22,6 +22,7 @@
 
 """Module containing class encapsulating Fluent connection."""
 
+from ansys.fluent.core.meshing.meshing_workflow import WatertightMeshingWorkflow
 import functools
 import os
 from typing import TYPE_CHECKING, Any, cast
@@ -175,7 +176,7 @@ class PureMeshing(BaseSession):
         """Full API to meshing and meshing_workflow."""
         return cast("meshing_workflow_root", self._base_meshing.meshing_workflow)
 
-    def watertight(self):
+    def watertight(self) -> WatertightMeshingWorkflow:
         """Get a new watertight workflow."""
         return self._base_meshing.watertight_workflow()
 

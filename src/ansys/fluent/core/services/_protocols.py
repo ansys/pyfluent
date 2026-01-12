@@ -20,21 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""Wrapper over the events gRPC service of Fluent."""
+"""Provides protocol definitions for gRPC services."""
 
-import grpc
-from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
+from typing import TYPE_CHECKING, Protocol
 
-from ansys.fluent.core.services._protocols import ServiceProtocol
-from ansys.fluent.core.services.streaming import StreamingService
+if TYPE_CHECKING:
+    import grpc
 
 
-class EventsService(StreamingService, ServiceProtocol):  # pyright: ignore[reportUnsafeMultipleInheritance]
-    """Class wrapping the events gRPC service of Fluent."""
+class ServiceProtocol(Protocol):
+    """Protocol for gRPC service classes."""
 
-    def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]):
-        """__init__ method of EventsService class."""
-        super().__init__(
-            stub=EventsGrpcModule.EventsStub(channel),
-            metadata=metadata,
-        )
+    if TYPE_CHECKING:
+
+        def __init__(
+            self, channel: "grpc.Channel", metadata: list[tuple[str, str]]
+        ) -> None: ...

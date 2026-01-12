@@ -27,11 +27,12 @@ import warnings
 
 import grpc
 import numpy as np
-
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
 from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
     override_help_text,
@@ -49,7 +50,7 @@ from ansys.fluent.core.variable_strategies import (
 _to_field_name_str = naming_strategy().to_string
 
 
-class SolutionVariableService:
+class SolutionVariableService(ServiceProtocol):
     """SVAR service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata):

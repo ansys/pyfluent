@@ -24,36 +24,38 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import ctypes
-from ctypes import c_int, sizeof
-from dataclasses import dataclass
 import itertools
 import logging
 import os
-from pathlib import Path
 import platform
 import socket
 import subprocess
 import threading
-from typing import Any, TypeVar
 import weakref
+from collections.abc import Callable
+from ctypes import c_int, sizeof
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, TypeVar
 
-from deprecated.sphinx import deprecated
 import grpc
+from ansys.platform.instancemanagement import Instance
+from deprecated.sphinx import deprecated
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
-from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
+    AppUtilities,
     AppUtilitiesOld,
     AppUtilitiesService,
     AppUtilitiesV252,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEvalService
+from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
-from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -276,9 +278,7 @@ def _get_channel(ip: str, port: int):
 class _ConnectionInterface:
     def __init__(self, create_grpc_service, error_state):
         self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)
         self._app_utilities_service = create_grpc_service(
             AppUtilitiesService, error_state
         )
@@ -292,9 +292,7 @@ class _ConnectionInterface:
                 )
 
             case _:
-                self._app_utilities = service_creator("app_utilities").create(
-                    self._app_utilities_service
-                )
+                self._app_utilities = AppUtilities(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
@@ -354,6 +352,9 @@ def _pid_exists(pid):
         else:
             ctypes.windll.kernel32.CloseHandle(process_handle)
             return True
+
+
+S = TypeVar("S", bound=ServiceProtocol)
 
 
 class FluentConnection:
@@ -445,7 +446,7 @@ class FluentConnection:
             [("password", password)] if password else []
         )
 
-        self._health_check = service_creator("health_check").create(
+        self._health_check = HealthCheckService(
             self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
@@ -638,7 +639,7 @@ class FluentConnection:
         else:
             self.finalizer_cbs.append(cb)
 
-    def create_grpc_service(self, service, *args):
+    def create_grpc_service(self, service: type[S], *args) -> S:
         """Create a gRPC service.
 
         Parameters

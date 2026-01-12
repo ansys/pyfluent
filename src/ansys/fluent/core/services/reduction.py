@@ -21,15 +21,17 @@
 # SOFTWARE.
 
 """Wrappers over Reduction gRPC service of Fluent."""
+
+import weakref
 from collections.abc import Iterable
 from typing import Any
-import weakref
 
 import grpc
-
 from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
 from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+
 from ansys.fluent.core.exceptions import DisallowedValuesError
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -45,7 +47,7 @@ from ansys.fluent.core.variable_strategies import (
 Path = list[tuple[str, str]]
 
 
-class ReductionService:
+class ReductionService(ServiceProtocol):
     """Reduction Service."""
 
     def __init__(
@@ -250,7 +252,9 @@ def _root(obj):
     return (
         None
         if isinstance(obj, list)
-        else obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
+        else obj
+        if not getattr(obj, "obj_name", None)
+        else _root(obj._parent)
     )
 
 

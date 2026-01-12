@@ -24,20 +24,24 @@
 
 import logging
 import threading
-from typing import TYPE_CHECKING, Any, cast
 import warnings
 import weakref
+from typing import TYPE_CHECKING, Any, cast
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
+
 import ansys.fluent.core as pyfluent
+import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
-from ansys.fluent.core.services import SchemeEval, service_creator
+from ansys.fluent.core.services import SchemeEval
 from ansys.fluent.core.services.field_data import ZoneInfo, ZoneType
-from ansys.fluent.core.services.reduction import ReductionService
+from ansys.fluent.core.services.monitor import MonitorsService
+from ansys.fluent.core.services.reduction import Reduction, ReductionService
 from ansys.fluent.core.services.solution_variables import (
     SolutionVariableData,
     SolutionVariableInfo,
+    SolutionVariableService,
 )
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
@@ -50,7 +54,6 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
@@ -61,10 +64,10 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 if TYPE_CHECKING:
+    import ansys.fluent.core.generated.solver.settings_252 as settings_root
     from ansys.fluent.core.generated.datamodel_252.preferences import (
         Root as preferences_root,
     )
-    import ansys.fluent.core.generated.solver.settings_252 as settings_root
     from ansys.fluent.core.generated.solver.tui_252 import main_menu
 
 
@@ -146,7 +149,7 @@ class Solver(BaseSession):
         self._fluent_version = None
         self._bg_session_threads = []
         self._launcher_args = launcher_args
-        self._solution_variable_service = service_creator("svar").create(
+        self._solution_variable_service = SolutionVariableService(
             fluent_connection._channel, fluent_connection._metadata
         )
         self.fields.solution_variable_info = SolutionVariableInfo(
@@ -156,14 +159,12 @@ class Solver(BaseSession):
             ReductionService, self._error_state
         )
         if FluentVersion(self._version) >= FluentVersion.v241:
-            self.fields.reduction = service_creator("reduction").create(
-                self._reduction_service, self
-            )
+            self.fields.reduction = Reduction(self._reduction_service, self)
         else:
             self.fields.reduction = reduction_old
         self.fields.solution_variable_data = self._solution_variable_data()
 
-        monitors_service = service_creator("monitors").create(
+        monitors_service = MonitorsService(
             fluent_connection._channel, fluent_connection._metadata, self._error_state
         )
         #: Manage Fluent's solution monitors.
@@ -184,7 +185,7 @@ class Solver(BaseSession):
 
     def _solution_variable_data(self) -> SolutionVariableData:
         """Return the SolutionVariableData handle."""
-        return service_creator("svar_data").create(
+        return SolutionVariableData(
             self._solution_variable_service, self.fields.solution_variable_info
         )
 

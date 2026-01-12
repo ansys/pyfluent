@@ -23,7 +23,7 @@
 """Wrapper over the streaming gRPC services of Fluent."""
 
 from collections.abc import Generator
-
+from ansys.fluent.core.services._protocols import ServiceProtocol
 
 class _StreamingServiceHelper:
     """Helper Class providing API to start/stop gRPC streaming services of Fluent.
@@ -61,7 +61,7 @@ class _StreamingServiceHelper:
             self._streams.cancel()
 
 
-class StreamingService:
+class StreamingService(ServiceProtocol):
     """Class wrapping the streaming gRPC services of Fluent.
 
     Methods

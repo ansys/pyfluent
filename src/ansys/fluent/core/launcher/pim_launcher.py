@@ -63,7 +63,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
-class PIMArgsWithoutDryRun(
+class PIMArgs(
     TypedDict, total=False
 ):  # pylint: disable=missing-class-docstring
     ui_mode: UIMode | str | None
@@ -81,12 +81,6 @@ class PIMArgsWithoutDryRun(
     gpu: bool | None
     start_watchdog: bool | None
     file_transfer_service: Any | None
-
-
-class PIMArgs(
-    PIMArgsWithoutDryRun, total=False
-):  # pylint: disable=missing-class-docstring
-    dry_run: bool
 
 
 class PIMArgsWithMode(PIMArgs, total=False):  # pylint: disable=missing-class-docstring

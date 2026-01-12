@@ -23,12 +23,13 @@
 """Wrapper over the transcript gRPC service of Fluent."""
 
 import grpc
-
 from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
+
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.streaming import StreamingService
 
 
-class TranscriptService(StreamingService):
+class TranscriptService(StreamingService, ServiceProtocol):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the transcript gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]) -> None:

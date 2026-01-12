@@ -35,12 +35,13 @@ Example
 from collections.abc import Sequence
 from typing import Any
 
-from deprecated.sphinx import deprecated
 import grpc
-
 from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
 from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from deprecated.sphinx import deprecated
+
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -50,7 +51,7 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
-class SchemeEvalService:
+class SchemeEvalService(ServiceProtocol):
     """Class wrapping the SchemeEval gRPC service of Fluent.
 
     Using the methods from the SchemeEval class is recommended.
