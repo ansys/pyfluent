@@ -162,6 +162,16 @@ class BaseSession:
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
+    _inactive_session_allow_list = [
+        "is_active",
+        "_fluent_connection",
+        "_fluent_connection_backup",
+        "wait_process_finished",
+        # `_exit` is kept accessible even for inactive sessions to allow callers
+        # to trigger a clean shutdown/teardown on sessions that are no longer active.
+        "_exit",
+    ]
+
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
@@ -406,8 +416,16 @@ class BaseSession:
         return self._fluent_connection_backup.wait_process_finished()
 
     def exit(self, **kwargs) -> None:
-        """Exit session."""
+        """Exit session.
+
+        This public method is a convenience wrapper that delegates directly to
+        :meth:`_exit`.
+        """
         logger.debug("session.exit() called")
+        self._exit(**kwargs)
+
+    def _exit(self, **kwargs) -> None:
+        """Exit session."""
         if self._fluent_connection:
             self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
@@ -491,11 +509,17 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
-        self.exit()
+        self._exit()
 
     def __dir__(self):
         if self._fluent_connection is None:
-            return ["is_active", "wait_process_finished"]
+            names = super().__dir__()
+            return [
+                name
+                for name in names
+                if (name.startswith("__") and name.endswith("__"))
+                or name in {"is_active", "wait_process_finished"}
+            ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
