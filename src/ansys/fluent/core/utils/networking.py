@@ -201,7 +201,7 @@ def is_localhost(address: str) -> bool:
         return True
 
     # Strip off port (if present) and brackets for IPv6
-    host = address.split(":", 1)[0].strip("[]")
+    host = address.rsplit(":", 1)[0].strip("[]")
 
     try:
         return ipaddress.ip_address(host).is_loopback

@@ -284,7 +284,7 @@ def _get_channel(
         ("grpc.max_receive_message_length", max_message_length),
     ]
     if allow_remote_host:
-        host, port = address.split(":")
+        host, port = address.rsplit(":", 1)
         if insecure_mode:
             if is_localhost(address) and not inside_container:
                 raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
@@ -319,7 +319,7 @@ def _get_channel(
                 grpc_options=options,
             )
         else:
-            host, port = address.split(":")
+            host, port = address.rsplit(":", 1)
             return create_channel(
                 transport_mode="wnua",
                 host=host,
