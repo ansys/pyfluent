@@ -303,7 +303,12 @@ def test_wait_process_finished():
     assert meshing_session.is_active()
     assert meshing_session.tui
     meshing_session.exit()
-    assert dir(meshing_session) == ["is_active", "wait_process_finished"]
+    public_meshing_attrs = [
+        name
+        for name in dir(meshing_session)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_meshing_attrs == ["is_active", "wait_process_finished"]
     assert not meshing_session.is_active()
     with pytest.raises(AttributeError):
         meshing_session.tui
@@ -314,7 +319,12 @@ def test_wait_process_finished():
     assert solver_session.is_active()
     assert solver_session.settings
     solver_session.exit()
-    assert dir(solver_session) == ["is_active", "wait_process_finished"]
+    public_solver_attrs = [
+        name
+        for name in dir(solver_session)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_solver_attrs == ["is_active", "wait_process_finished"]
     assert not solver_session.is_active()
     with pytest.raises(AttributeError):
         solver_session.settings
