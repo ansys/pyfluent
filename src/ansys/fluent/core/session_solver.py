@@ -324,7 +324,9 @@ class Solver(BaseSession):
             Case file name
         """
 
-        self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+        self.settings.file.read(
+            file_type="case", file_name=file_name, lightweight_setup=True
+        )
         launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
