@@ -99,24 +99,36 @@ markers = [
     "nightly: Tests that run under nightly CI",
     "codegen_required: Tests that requires codegen",
     "fluent_version(version): Tests that runs with specified Fluent version",
-    "standalone: Tests that cannot be run within container"
+    "standalone: Tests that cannot be run within container",
 ]
 
-
-[tool.black]
-extend-exclude = "/(src/ansys/fluent/core/meshing/tui*|src/ansys/fluent/core/solver/tui*|src/ansys/fluent/core/solver/settings*|src/ansys/fluent/core/datamodel*)/"
-
-
-[tool.isort]
-profile = "black"
-force_sort_within_sections = true
-line_length = 88
-default_section = "THIRDPARTY"
-skip_glob = [
-    "src/ansys/fluent/core/generated"
+[tool.ruff]
+line-length = 88
+fix = true
+extend-exclude = [
+    "src/ansys/fluent/core/meshing/tui*",
+    "src/ansys/fluent/core/solver/tui*",
+    "src/ansys/fluent/core/solver/settings*",
+    "src/ansys/fluent/core/datamodel*",
+    "src/ansys/fluent/core/generated*",
 ]
-filter_files = "true"
-known_first_party = ["ansys"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint]
+select = ["C4", "F", "G", "RUF", "SIM", "TC", "UP", "W", "PERF", "I", "N", "PTH", "TD"]
+ignore = ["TD003"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+default-section = "third-party"
+known-first-party = ["ansys"]
 
 
 [tool.codespell]
@@ -151,7 +163,7 @@ non-cap = [
     "getSpecs",
     "getStaticInfo",
     "subscribeEvents",
-    "unsubscribeEvents"
+    "unsubscribeEvents",
 ]
 
 
