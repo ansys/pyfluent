@@ -103,7 +103,7 @@ jobs:
 
       - name: Print Fluent version info
         env:
-          VERSION: ${{ matrix.image-tag }}
+          VERSION: ${{ matrix.version }}
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
 
