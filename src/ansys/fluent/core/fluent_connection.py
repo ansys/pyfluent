@@ -271,7 +271,9 @@ def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, in
 
 
 def _get_channel(
-    address: str,
+    ip: str | None,
+    port: int | None,
+    uds_fullpath: str | None,
     allow_remote_host: bool,
     certificates_folder: str | None,
     insecure_mode: bool,
@@ -284,9 +286,8 @@ def _get_channel(
         ("grpc.max_receive_message_length", max_message_length),
     ]
     if allow_remote_host:
-        host, port = address.rsplit(":", 1)
         if insecure_mode:
-            if is_localhost(address) and not inside_container:
+            if is_localhost(ip) and not inside_container:
                 raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
             warnings.warn(
                 INSECURE_MODE_WARNING,
@@ -294,8 +295,8 @@ def _get_channel(
             )
             return create_channel(
                 transport_mode="insecure",
-                host=host,
-                port=int(port),
+                host=ip,
+                port=port,
                 grpc_options=options,
             )
         else:
@@ -303,27 +304,26 @@ def _get_channel(
                 raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
             return create_channel(
                 transport_mode="mtls",
-                host=host,
-                port=int(port),
+                host=ip,
+                port=port,
                 certs_dir=certificates_folder,
                 grpc_options=options,
             )
     else:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if not (is_localhost(address) or (inside_container and insecure_mode_env)):
+        if (ip and not is_localhost(ip)) or (inside_container and insecure_mode_env):
             raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE)
-        if is_uds(address):
+        if uds_fullpath is not None:
             return create_channel(
                 transport_mode="uds",
-                uds_fullpath=address,
+                uds_fullpath=uds_fullpath,
                 grpc_options=options,
             )
         else:
-            host, port = address.rsplit(":", 1)
             return create_channel(
                 transport_mode="wnua",
-                host=host,
-                port=int(port),
+                host=ip,
+                port=port,
                 grpc_options=options,
             )
 
@@ -501,23 +501,28 @@ class FluentConnection:
         self._compose_config = compose_config if compose_config else ComposeConfig()
         self._error_state = ErrorState()
         self._data_valid = False
-        self._channel_str = None
         self._slurm_job_id = None
         self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
         else:
+            ip, port, uds_fullpath = None, None, None
             if address is not None:
-                self._channel_str = address
+                if is_uds(address):
+                    uds_fullpath = address
+                else:
+                    ip, port = address.rsplit(":", 1)
+                    port = int(port)
             else:
                 ip, port = _get_ip_and_port(ip, port)
-                self._channel_str = f"{ip}:{port}"
             self._channel = _get_channel(
-                self._channel_str,
-                allow_remote_host,
-                certificates_folder,
-                insecure_mode,
-                inside_container,
+                ip=ip,
+                port=port,
+                uds_fullpath=uds_fullpath,
+                allow_remote_host=allow_remote_host,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+                inside_container=inside_container,
             )
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []

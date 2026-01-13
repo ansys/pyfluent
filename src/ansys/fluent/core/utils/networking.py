@@ -182,29 +182,22 @@ def is_uds(address: str) -> bool:
     return address.startswith("unix:/")
 
 
-def is_localhost(address: str) -> bool:
+def is_localhost(ip: str) -> bool:
     """
-    Check if the given address corresponds to localhost.
+    Check if the given ip address corresponds to localhost.
 
     Parameters
     ----------
-    address : str
-        The address to check.
+    ip : str
+        The ip address to check.
 
     Returns
     -------
     bool
         True if the address corresponds to localhost, False otherwise.
     """
-    # Unix domain sockets
-    if is_uds(address):
-        return True
-
-    # Strip off port (if present) and brackets for IPv6
-    host = address.rsplit(":", 1)[0].strip("[]")
-
     try:
-        return ipaddress.ip_address(host).is_loopback
+        return ipaddress.ip_address(ip).is_loopback
     except ValueError:
         # Not an IP, fall back to hostname
-        return host.lower() == "localhost"
+        return ip.lower() == "localhost"
