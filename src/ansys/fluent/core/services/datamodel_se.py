@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -1648,12 +1648,9 @@ class PyNamedObjectContainer:
 
     def get_object_names(self) -> Any:
         """Displays the name of objects within a container."""
-        if self.service.version <= FluentVersion.v241:
-            return self._get_child_object_display_names()
-        else:
-            return self.service.get_object_names(
-                self.rules, convert_path_to_se_path(self.path)
-            )
+        return self.service.get_object_names(
+            self.rules, convert_path_to_se_path(self.path)
+        )
 
     getChildObjectDisplayNames = get_object_names
 
@@ -1928,14 +1925,16 @@ class PyCommand(PyAction):
         Any
             Return value.
         """
+        processed = []
         for arg, value in kwds.items():
             if self._get_file_purpose(arg):
                 kwds[arg] = self.before_execute(value)
-        result = super().__call__(*args, **kwds)
-        for arg, value in kwds.items():
-            if self._get_file_purpose(arg):
+                processed.append(kwds[arg])
+        try:
+            return super().__call__(*args, **kwds)
+        finally:
+            for value in processed:
                 self.after_execute(value)
-        return result
 
 
 class _InputFile:

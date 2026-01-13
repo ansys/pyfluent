@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,8 +22,7 @@
 
 import time
 
-from ansys.fluent.core import connect_to_fluent
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+import ansys.fluent.core as pyfluent
 
 
 def transcript(data):
@@ -32,9 +31,7 @@ def transcript(data):
 
 def run_transcript(i, ip, port, password):
     transcript("")
-    session = connect_to_fluent(
-        ip=ip, port=port, password=password, cleanup_on_exit=False
-    )
+    session = pyfluent.Solver.from_connection(ip=ip, port=port, password=password)
     session.transcript.register_callback(transcript)
 
     transcript_checked = False
@@ -54,8 +51,8 @@ def run_transcript(i, ip, port, password):
     return transcript_checked, transcript_passed
 
 
-def test_transcript(new_solver_session):
-    solver = new_solver_session
+def test_transcript():
+    solver = pyfluent.Solver.from_container(insecure_mode=True)
     ip = solver.connection_properties.ip
     port = solver.connection_properties.port
     password = solver.connection_properties.password
@@ -68,7 +65,4 @@ def test_transcript(new_solver_session):
         total_checked_transcripts += int(transcript_checked)
         total_passed_transcripts += int(transcript_passed)
 
-    if solver.get_fluent_version() >= FluentVersion.v232:
-        assert total_checked_transcripts == total_passed_transcripts
-    else:
-        assert total_checked_transcripts >= total_passed_transcripts
+    assert total_checked_transcripts == total_passed_transcripts

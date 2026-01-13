@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -192,6 +192,8 @@ class SessionBase:
         file_transfer_service: Any | None = None,
         use_docker_compose: bool | None = None,
         use_podman_compose: bool | None = None,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """
         Launch a Fluent session in container mode.
@@ -248,6 +250,12 @@ class SessionBase:
             Whether to use Docker Compose to launch Fluent.
         use_podman_compose: bool
             Whether to use Podman Compose to launch Fluent.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -365,6 +373,9 @@ class SessionBase:
         port: int | None = None,
         server_info_file_name: str | None = None,
         password: str | None = None,
+        allow_remote_host: bool = False,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Connect to an existing Fluent server instance.
 
@@ -386,17 +397,24 @@ class SessionBase:
             connect to a running Fluent session.
         password : str, optional
             Password to connect to existing Fluent instance.
+        allow_remote_host : bool, optional
+            Whether to allow connecting to a remote Fluent instance.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
         TypeError
             If the session type does not match the expected session type.
         """
+        argvals = locals().copy()
+        argvals.pop("cls", None)
         session = pyfluent.connect_to_fluent(
-            ip=ip,
-            port=port,
-            server_info_file_name=server_info_file_name,
-            password=password,
+            **argvals,
         )
 
         expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__

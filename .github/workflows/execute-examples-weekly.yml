@@ -38,17 +38,22 @@ jobs:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
       - name: Cache pip
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -165,14 +170,18 @@ jobs:
         run: |
           python examples/00-fluent/steady_vortex.py
 
+      - name: Execute Modeling_solidification_workflow.py
+        run: |
+          python examples/00-fluent/Modeling_solidification_workflow.py
+          
       - name: Execute catalytic_converter_workflow.py
         run: |
           python examples/00-fluent/catalytic_converter_workflow.py
-          
+
       - name: Execute fsi_1way_workflow.py
         run: |
           python examples/00-fluent/fsi_1way_workflow.py
-          
+
       - name: Execute transient_compressible_nozzle_workflow.py
         run: |
           python examples/00-fluent/transient_compressible_nozzle_workflow.py
@@ -180,6 +189,10 @@ jobs:
       - name: Execute Electrolysis_Modeling_workflow.py
         run: |
           python examples/00-fluent/Electrolysis_Modeling_workflow.py
+
+      - name: Execute battery_pack.py
+        run: |
+          python examples/00-fluent/battery_pack.py
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
@@ -195,10 +208,7 @@ jobs:
       #   env:
       #     FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
-      - name: Cleanup previous docker containers
-        if: always()
-        run: make cleanup-previous-docker-containers
-
-      - name: Remove all docker images
-        if: always()
-        run: make docker-clean-images
+      - name: Clean Docker Data
+        run: make docker-clean-all-except-supported-images
+        env:
+          FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}

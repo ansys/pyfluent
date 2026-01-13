@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -40,7 +40,10 @@ from ansys.fluent.core.services.solution_variables import (
     SolutionVariableInfo,
 )
 from ansys.fluent.core.session import BaseSession
-from ansys.fluent.core.session_shared import _make_datamodel_module, _make_tui_module
+from ansys.fluent.core.session_shared import (
+    _make_datamodel_module,
+    _make_tui_module,
+)
 from ansys.fluent.core.solver import flobject
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -50,12 +53,10 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
-import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
 from ansys.fluent.core.utils.fluent_version import (
-    FluentVersion,
     get_version_for_file_name,
 )
 from ansys.fluent.core.workflow import ClassicWorkflow
@@ -147,12 +148,9 @@ class Solver(BaseSession):
         self._reduction_service = self._fluent_connection.create_grpc_service(
             ReductionService, self._error_state
         )
-        if FluentVersion(self._version) >= FluentVersion.v241:
-            self.fields.reduction = service_creator("reduction").create(
-                self._reduction_service, self
-            )
-        else:
-            self.fields.reduction = reduction_old
+        self.fields.reduction = service_creator("reduction").create(
+            self._reduction_service, self
+        )
         self.fields.solution_variable_data = self._solution_variable_data()
 
         monitors_service = service_creator("monitors").create(
@@ -326,7 +324,9 @@ class Solver(BaseSession):
             Case file name
         """
 
-        self.file.read(file_type="case", file_name=file_name, lightweight_setup=True)
+        self.settings.file.read(
+            file_type="case", file_name=file_name, lightweight_setup=True
+        )
         launcher_args = dict(self._launcher_args)
         launcher_args.pop("lightweight_mode", None)
         launcher_args["case_file_name"] = file_name
@@ -348,18 +348,15 @@ class Solver(BaseSession):
         return self.get_state()
 
     def __getattribute__(self, item: str):
+        if item.startswith("__") and item.endswith("__"):
+            return super().__getattribute__(item)
         try:
             _connection = super(Solver, self).__getattribute__("_fluent_connection")
         except AttributeError:
             _connection = False
-        if _connection is None and item not in [
-            "is_active",
-            "_fluent_connection",
-            "_fluent_connection_backup",
-            "wait_process_finished",
-        ]:
+        if _connection is None and item not in BaseSession._inactive_session_allow_list:
             raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{item}'"
+                f"'{type(self).__name__}' object has no attribute '{item}'"
             )
         try:
             return super(Solver, self).__getattribute__(item)

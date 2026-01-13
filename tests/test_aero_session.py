@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -28,11 +28,15 @@ import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 @pytest.mark.fluent_version(">=24.2")
 def test_icing_session():
-    aero_session = pyfluent.launch_fluent(mode=pyfluent.FluentMode.SOLVER_AERO)
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    aero_session = pyfluent.launch_fluent(
+        mode=pyfluent.FluentMode.SOLVER_AERO, **grpc_kwds
+    )
     assert "aero" in dir(aero_session)
 
 

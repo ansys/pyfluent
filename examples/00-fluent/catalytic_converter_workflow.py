@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -341,7 +341,7 @@ meshing.tui.mesh.check_mesh()
 
 # Write mesh files
 
-meshing.tui.file.write_mesh('out/catalytic_converter.msh.h5')
+meshing.tui.file.write_mesh("out/catalytic_converter.msh.h5")
 # %%
 # Switch to Solver
 # ^^^^^^^^^^^^^^^^
@@ -542,7 +542,9 @@ solution_initialization.standard_initialize()
 # Set iteration count and run calculation
 
 run_calculation = RunCalculation(solver_session)
-run_calculation.iter_count = 150  # Iteration count, keep it at 150 for demo purposes only
+run_calculation.iter_count = (
+    150  # Iteration count, keep it at 150 for demo purposes only
+)
 run_calculation.calculate()
 
 

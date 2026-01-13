@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -28,6 +28,7 @@ import time
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.fluent_connection import (
     WaitTypeError,
@@ -36,19 +37,14 @@ from ansys.fluent.core.fluent_connection import (
 )
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from docker.models.containers import Container
 
 
 def _read_case(session, lightweight_setup=True):
     case_path = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
-    # Ignore lightweight_setup variable for Fluent < 23.1 because not supported
-    if session.get_fluent_version() < FluentVersion.v231:
-        session.file.read(file_name=case_path, file_type="case")
-    else:
-        session.file.read(
-            file_name=case_path, file_type="case", lightweight_setup=lightweight_setup
-        )
+    session.file.read(
+        file_name=case_path, file_type="case", lightweight_setup=lightweight_setup
+    )
 
 
 def test_session_starts_transcript_by_default(new_solver_session) -> None:
@@ -90,7 +86,8 @@ def test_session_starts_no_transcript_if_disabled(
 
 def test_server_exits_when_session_goes_out_of_scope() -> None:
     def f():
-        session = pyfluent.launch_fluent()
+        grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+        session = pyfluent.launch_fluent(**grpc_kwds)
         session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
         _cortex_host = session.connection_properties.cortex_host
@@ -113,7 +110,8 @@ def test_server_exits_when_session_goes_out_of_scope() -> None:
 
 def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
     def f():
-        session = pyfluent.launch_fluent(cleanup_on_exit=False)
+        grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+        session = pyfluent.launch_fluent(cleanup_on_exit=False, **grpc_kwds)
         session.settings
         _fluent_host_pid = session.connection_properties.fluent_host_pid
         _cortex_host = session.connection_properties.cortex_host
@@ -151,10 +149,11 @@ def test_server_does_not_exit_when_session_goes_out_of_scope() -> None:
         )
 
 
+@pytest.mark.fluent_version(">=25.1")
 def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:
-    session1 = pyfluent.launch_fluent()
+    session1 = pyfluent.launch_fluent(insecure_mode=True)
 
     with pytest.raises(IpPortNotProvided):
         session2 = pyfluent.connect_to_fluent(
@@ -167,23 +166,24 @@ def test_does_not_exit_fluent_by_default_when_connected_to_running_fluent(
         port=session1.connection_properties.port,
         password=session1.connection_properties.password,
     )
-    assert session2.is_server_healthy()
+    assert session2.is_active()
     session2.exit()
 
     timeout_loop(
-        session1.is_server_healthy(),
+        session1.is_active(),
         5.0,
         expected="truthy",
     )
 
-    assert session1.is_server_healthy()
+    assert session1.is_active()
     session1.exit()
 
 
+@pytest.mark.fluent_version(">=25.1")
 def test_exit_fluent_when_connected_to_running_fluent(
     monkeypatch,
 ) -> None:  # import ansys.fluent.core as pyfluent
-    session1 = pyfluent.launch_fluent(cleanup_on_exit=False)
+    session1 = pyfluent.launch_fluent(cleanup_on_exit=False, insecure_mode=True)
     session2 = pyfluent.connect_to_fluent(
         ip=session1.connection_properties.ip,
         port=session1.connection_properties.port,
@@ -193,12 +193,12 @@ def test_exit_fluent_when_connected_to_running_fluent(
     session2.exit()
 
     timeout_loop(
-        session1.is_server_healthy(),
+        session1.is_active(),
         5.0,
         expected="falsy",
     )
 
-    assert not session1.is_server_healthy()
+    assert not session1.is_active()
 
 
 def test_fluent_connection_properties(
@@ -260,7 +260,8 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(pyfluent.config, "watchdog_debug", False)
     inside_container = pyfluent.config.launch_fluent_container
 
-    solver = pyfluent.launch_fluent(start_watchdog=False)
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    solver = pyfluent.launch_fluent(start_watchdog=False, **grpc_kwds)
     cortex = (
         solver.connection_properties.cortex_host
         if inside_container
@@ -276,42 +277,54 @@ def test_fluent_exit(monkeypatch: pytest.MonkeyPatch):
 
 
 def test_fluent_exit_wait():
-    session1 = pyfluent.launch_fluent()
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    session1 = pyfluent.launch_fluent(**grpc_kwds)
     fl_connection1 = session1._fluent_connection
     session1.exit()
     assert not fl_connection1.wait_process_finished(wait=0)
 
-    session2 = pyfluent.launch_fluent()
+    session2 = pyfluent.launch_fluent(**grpc_kwds)
     session2.exit(wait=60)
     assert session2.wait_process_finished(wait=0)
 
-    session3 = pyfluent.launch_fluent()
+    session3 = pyfluent.launch_fluent(**grpc_kwds)
     session3.exit(wait=True)
     assert session3.wait_process_finished(wait=0)
 
     with pytest.raises(WaitTypeError):
-        session4 = pyfluent.launch_fluent()
+        session4 = pyfluent.launch_fluent(**grpc_kwds)
         session4.exit(wait="wait")
 
 
 def test_wait_process_finished():
-    meshing_session = pyfluent.launch_fluent(mode="meshing")
+    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
+    meshing_session = pyfluent.launch_fluent(mode="meshing", **grpc_kwds)
     assert len(dir(meshing_session)) > 2
     assert meshing_session.is_active()
     assert meshing_session.tui
     meshing_session.exit()
-    assert dir(meshing_session) == ["is_active", "wait_process_finished"]
+    public_meshing_attrs = [
+        name
+        for name in dir(meshing_session)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_meshing_attrs == ["is_active", "wait_process_finished"]
     assert not meshing_session.is_active()
     with pytest.raises(AttributeError):
         meshing_session.tui
     assert meshing_session.wait_process_finished(wait=5)
 
-    solver_session = pyfluent.launch_fluent()
+    solver_session = pyfluent.launch_fluent(**grpc_kwds)
     assert len(dir(solver_session)) > 2
     assert solver_session.is_active()
     assert solver_session.settings
     solver_session.exit()
-    assert dir(solver_session) == ["is_active", "wait_process_finished"]
+    public_solver_attrs = [
+        name
+        for name in dir(solver_session)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_solver_attrs == ["is_active", "wait_process_finished"]
     assert not solver_session.is_active()
     with pytest.raises(AttributeError):
         solver_session.settings

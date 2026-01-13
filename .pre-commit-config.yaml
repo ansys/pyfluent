@@ -8,33 +8,16 @@ ci:
 
 repos:
 
-- repo: https://github.com/psf/black
-  rev: 24.10.0
+- repo: https://github.com/dorschw/riff
+  rev: v0.0.287
   hooks:
-  - id: black
-    args: [
-      --target-version=py310
-    ]
+  - id: ruff
+    args: [--fix]
 
-- repo: https://github.com/pycqa/isort
-  rev: 6.0.0
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.14.11
   hooks:
-  - id: isort
-
-- repo: https://github.com/PyCQA/flake8
-  rev: 7.1.1
-  hooks:
-  - id: flake8
-    additional_dependencies: [flake8-bugbear==24.10.31]
-    args: [
-      --exclude, src/ansys/fluent/core/generated,
-      --count,
-      --statistics,
-      --max-complexity, "10",
-      --max-line-length, "88",
-      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028,
-      src, doc, examples, tests
-    ]
+  - id: ruff-format
 
 - repo: https://github.com/codespell-project/codespell
   rev: v2.3.0

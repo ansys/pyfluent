@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,7 +25,6 @@
 from typing import TypeVar
 
 from ansys.fluent.core.services.app_utilities import AppUtilities
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 _TApiUpgradeAdvisor = TypeVar("_TApiUpgradeAdvisor", bound="ApiUpgradeAdvisor")
 
@@ -48,11 +47,7 @@ class ApiUpgradeAdvisor:
     def _can_advise(self) -> bool:
         from ansys.fluent.core import config
 
-        return (
-            not config.skip_api_upgrade_advice
-            and FluentVersion(self._version) >= FluentVersion.v231
-            and self._mode == "solver"
-        )
+        return not config.skip_api_upgrade_advice and self._mode == "solver"
 
     def __enter__(self) -> _TApiUpgradeAdvisor:
         if self._can_advise():
