@@ -119,6 +119,7 @@ jobs:
         continue-on-error: true
         env:
           FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Cleanup previous containers
         if: always()
