@@ -311,7 +311,7 @@ def _get_channel(
             )
     else:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if (ip and not is_localhost(ip)) or (inside_container and insecure_mode_env):
+        if not ((ip and is_localhost(ip)) or (inside_container and insecure_mode_env)):
             raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE)
         if uds_fullpath is not None:
             return create_channel(
