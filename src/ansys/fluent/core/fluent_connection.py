@@ -60,7 +60,7 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
-from ansys.fluent.core.utils.networking import is_localhost, is_uds
+from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
 from ansys.tools.common.cyberchannel import create_channel
 
@@ -510,9 +510,8 @@ class FluentConnection:
             uds_fullpath = None
             if address is not None:
                 self._channel_str = address
-                if is_uds(address):
-                    uds_fullpath = address
-                else:
+                uds_fullpath = get_uds_path(address)
+                if uds_fullpath is None:
                     ip, port = address.rsplit(":", 1)
                     port = int(port)
             else:

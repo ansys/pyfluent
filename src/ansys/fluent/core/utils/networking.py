@@ -165,21 +165,22 @@ def get_url_content(url: str) -> str:
         return response.read()
 
 
-def is_uds(address: str) -> bool:
+def get_uds_path(address: str) -> str | None:
     """
-    Check if the given address is a Unix Domain Socket (UDS) address.
+    Get the UDS path from a UDS address.
 
     Parameters
     ----------
     address : str
-        The address to check.
+        The address to extract the UDS path from.
 
     Returns
     -------
-    bool
-        True if the address is a UDS address, False otherwise.
+    str | None
+        The UDS path extracted from the address.
     """
-    return address.startswith("unix:/")
+    if address.startswith("unix:"):
+        return address[len("unix:") :]
 
 
 def is_localhost(ip: str) -> bool:
