@@ -52,9 +52,9 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
 
     describe_geo = workflow.TaskObject["Describe Geometry"]
     describe_geo.UpdateChildTasks(SetupTypeChanged=False)
-    describe_geo.Arguments = dict(
-        SetupType="The geometry consists of only fluid regions with no voids"
-    )
+    describe_geo.Arguments = {
+        "SetupType": "The geometry consists of only fluid regions with no voids"
+    }
     describe_geo.UpdateChildTasks(SetupTypeChanged=True)
     describe_geo.Execute()
 
@@ -92,9 +92,9 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
         pure_meshing_session.switch_to_solver()
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geom_name = download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
-    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=geom_name, LengthUnit="in"
-    )
+    pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
+        "FileName": geom_name, "LengthUnit": "in"
+    }
     pure_meshing_session.tui.file.read_journal(file_name)
     if os.path.exists(file_name):
         os.remove(file_name)
@@ -128,7 +128,6 @@ def test_launch_meshing_and_switch(new_meshing_session_wo_exit, capsys):
 @pytest.mark.fluent_version("latest")
 @pytest.mark.codegen_required
 def test_meshing_streaming_and_switch(new_meshing_session_wo_exit):
-
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
 
@@ -169,25 +168,22 @@ def test_meshing_no_foreign_objects(new_meshing_session):
 
 
 def test_fake_session():
-
     class fake_session_base:
-
         def bar(self):
             pass
 
     class fake_session(fake_session_base):
-
         def __init__(self) -> None:
             self._switched = False
 
         def __getattribute__(self, item: str):
             if item == "_switched":
-                return super(fake_session, self).__getattribute__(item)
+                return super().__getattribute__(item)
 
             if self._switched:
                 return None
 
-            return super(fake_session, self).__getattribute__(item)
+            return super().__getattribute__(item)
 
         def foo(self):
             return 42

@@ -25,6 +25,7 @@ import subprocess
 import threading
 import time
 
+from docker.models.containers import Container
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -37,7 +38,6 @@ from ansys.fluent.core.fluent_connection import (
 )
 from ansys.fluent.core.launcher.error_handler import IpPortNotProvided
 from ansys.fluent.core.utils.execution import asynchronous, timeout_loop
-from docker.models.containers import Container
 
 
 def _read_case(session, lightweight_setup=True):

@@ -16,9 +16,8 @@ def modify_html(soup: BeautifulSoup) -> None:
     class_desc = soup.find(class_="sig-name descname")
     class_name = class_desc.text
     cls = getattr(module, class_name)
-    if issubclass(cls, Base):
-        if cls.__name__ != cls._python_name:
-            class_desc.string = cls._python_name
+    if issubclass(cls, Base) and cls.__name__ != cls._python_name:
+        class_desc.string = cls._python_name
 
 
 if __name__ == "__main__":
@@ -32,7 +31,7 @@ if __name__ == "__main__":
         / "settings"
     )
     for html_file in html_dir.glob("*.html"):
-        with open(html_file, "r", encoding="utf-8") as f:
+        with open(html_file, encoding="utf-8") as f:
             soup = BeautifulSoup(f, "html.parser", from_encoding="utf-8")
 
         modify_html(soup)

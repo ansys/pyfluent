@@ -953,41 +953,50 @@ def test_meshing_utilities(new_meshing_session):
         == [29, 30, 31, 32, 33, 34]
     )
 
-    assert meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
-        cell_zone_id_list=[87]
-    ) == [
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        89,
-    ]
+    assert (
+        meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
+            cell_zone_id_list=[87]
+        )
+        == [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            89,
+        ]
+    )
 
-    assert meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
-        cell_zone_name_pattern="*"
-    ) == [
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        89,
-    ]
+    assert (
+        meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
+            cell_zone_name_pattern="*"
+        )
+        == [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            89,
+        ]
+    )
 
-    assert meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
-        cell_zone_name_list=["elbow-fluid"]
-    ) == [
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        89,
-    ]
+    assert (
+        meshing_session.meshing_utilities.get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones(
+            cell_zone_name_list=["elbow-fluid"]
+        )
+        == [
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            89,
+        ]
+    )
 
     assert (
         meshing_session.meshing_utilities.count_marked_faces(
@@ -1074,19 +1083,19 @@ def test_meshing_utilities(new_meshing_session):
 
     assert set(
         meshing_session.meshing_utilities.get_edge_zones_list(filter="*")
-    ) == set([28, 27, 26, 25, 24, 23, 22, 21, 20])
+    ) == {28, 27, 26, 25, 24, 23, 22, 21, 20}
 
     assert set(
         meshing_session.meshing_utilities.get_edge_zones_of_object(
             objects=["elbow-fluid"]
         )
-    ) == set([20, 21, 22, 23, 24, 25, 26, 27, 28])
+    ) == {20, 21, 22, 23, 24, 25, 26, 27, 28}
 
     assert set(
         meshing_session.meshing_utilities.get_edge_zones_of_object(
             object_name="elbow-fluid"
         )
-    ) == set([20, 21, 22, 23, 24, 25, 26, 27, 28])
+    ) == {20, 21, 22, 23, 24, 25, 26, 27, 28}
 
     assert (
         meshing_session.meshing_utilities.get_face_zones_with_zone_specific_prisms_applied()
@@ -1099,9 +1108,7 @@ def test_meshing_utilities(new_meshing_session):
     #     )
     # ) == set([["30", "hot-inlet", "elbow-fluid"], ["31", "cold-inlet", "elbow-fluid"]])
 
-    assert set(meshing_session.meshing_utilities.get_node_zones(filter="*")) == set(
-        [163, 91, 19]
-    )
+    assert set(meshing_session.meshing_utilities.get_node_zones(filter="*")) == {163, 91, 19}
 
     assert not meshing_session.meshing_utilities.get_shared_boundary_face_zones_for_given_cell_zones(
         cell_zone_id_list=[87]

@@ -100,7 +100,7 @@ from ansys.fluent.core import (
     UIMode,
     examples,
 )
-from ansys.fluent.core.solver import (  # noqa: E402
+from ansys.fluent.core.solver import (
     CellZoneCondition,
     General,
     Graphics,
@@ -156,7 +156,7 @@ geometry_filename = examples.download_file(
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
+workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
 workflow.TaskObject["Import Geometry"].Execute()
 
 # %%
@@ -166,8 +166,7 @@ workflow.TaskObject["Import Geometry"].Execute()
 
 # Add local sizing for sensor components
 
-workflow.TaskObject["Add Local Sizing"].Arguments = dict(
-    {
+workflow.TaskObject["Add Local Sizing"].Arguments = {
         "AddChild": "yes",
         "BOIControlName": "sensor",
         "BOIExecution": "Curvature",
@@ -179,10 +178,9 @@ workflow.TaskObject["Add Local Sizing"].Arguments = dict(
         "BOIMaxSize": 1.2,
         "BOIMinSize": 0.1,
     }
-)
 workflow.TaskObject["Add Local Sizing"].AddChildToTask()
 workflow.TaskObject["Add Local Sizing"].InsertCompoundChildTask()
-workflow.TaskObject["Add Local Sizing"].Arguments = dict({"AddChild": "yes"})
+workflow.TaskObject["Add Local Sizing"].Arguments = {"AddChild": "yes"}
 workflow.TaskObject["sensor"].Execute()
 
 # %%
@@ -192,8 +190,7 @@ workflow.TaskObject["sensor"].Execute()
 
 # Configure surface mesh settings
 
-workflow.TaskObject["Generate the Surface Mesh"].Arguments = dict(
-    {
+workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
         "CFDSurfaceMeshControls": {"MinSize": 1.5},
         "SurfaceMeshPreferences": {
             "SMQualityImprove": "yes",
@@ -201,7 +198,6 @@ workflow.TaskObject["Generate the Surface Mesh"].Arguments = dict(
             "ShowSurfaceMeshPreferences": True,
         },
     }
-)
 workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 # %%
@@ -212,27 +208,21 @@ workflow.TaskObject["Generate the Surface Mesh"].Execute()
 # Describe geometry type
 
 workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    {"SetupType": "The geometry consists of both fluid and solid regions and/or voids"}
-)
+workflow.TaskObject["Describe Geometry"].Arguments = {"SetupType": "The geometry consists of both fluid and solid regions and/or voids"}
 workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=True)
 
 # Enable capping and wall-to-internal conversion
 
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    {
+workflow.TaskObject["Describe Geometry"].Arguments = {
         "CappingRequired": "Yes",
         "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
     }
-)
 workflow.TaskObject["Describe Geometry"].UpdateChildTasks(SetupTypeChanged=False)
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    {
+workflow.TaskObject["Describe Geometry"].Arguments = {
         "CappingRequired": "Yes",
         "SetupType": "The geometry consists of both fluid and solid regions and/or voids",
         "WallToInternal": "Yes",
     }
-)
 workflow.TaskObject["Describe Geometry"].Execute()
 
 # %%
@@ -242,24 +232,20 @@ workflow.TaskObject["Describe Geometry"].Execute()
 
 # Create inlet boundary
 
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = dict(
-    {
+workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = {
         "LabelSelectionList": ["in1"],
         "PatchName": "inlet",
     }
-)
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
 workflow.TaskObject["inlet"].Execute()
 
 # Create outlet boundary as pressure outlet
 
-workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = dict(
-    {
+workflow.TaskObject["Enclose Fluid Regions (Capping)"].Arguments = {
         "LabelSelectionList": ["out1"],
         "PatchName": "outlet",
     }
-)
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].AddChildToTask()
 workflow.TaskObject["Enclose Fluid Regions (Capping)"].InsertCompoundChildTask()
 workflow.TaskObject["outlet"].Execute()
@@ -267,14 +253,12 @@ workflow.TaskObject["outlet"].Execute()
 # Configure outlet as pressure-outlet
 
 workflow.TaskObject["outlet"].Revert()
-workflow.TaskObject["outlet"].Arguments = dict(
-    {
+workflow.TaskObject["outlet"].Arguments = {
         "CompleteLabelSelectionList": ["out1"],
         "LabelSelectionList": ["out1"],
         "PatchName": "outlet",
         "ZoneType": "pressure-outlet",
     }
-)
 workflow.TaskObject["outlet"].Execute()
 
 # Update boundaries
@@ -288,19 +272,17 @@ workflow.TaskObject["Update Boundaries"].Execute()
 
 # Create multiple flow volumes
 
-workflow.TaskObject["Create Regions"].Arguments = dict({"NumberOfFlowVolumes": 3})
+workflow.TaskObject["Create Regions"].Arguments = {"NumberOfFlowVolumes": 3}
 workflow.TaskObject["Create Regions"].Execute()
 
 # Convert solid substrate regions to fluid regions
 
-workflow.TaskObject["Update Regions"].Arguments = dict(
-    {
+workflow.TaskObject["Update Regions"].Arguments = {
         "OldRegionNameList": ["honeycomb-solid1", "honeycomb_af0-solid1"],
         "OldRegionTypeList": ["solid", "solid"],
         "RegionNameList": ["fluid:substrate:1", "fluid:substrate:2"],
         "RegionTypeList": ["fluid", "fluid"],
     }
-)
 workflow.TaskObject["Update Regions"].Execute()
 
 # %%
@@ -312,9 +294,7 @@ workflow.TaskObject["Update Regions"].Execute()
 
 workflow.TaskObject["Add Boundary Layers"].AddChildToTask()
 workflow.TaskObject["Add Boundary Layers"].InsertCompoundChildTask()
-workflow.TaskObject["smooth-transition_1"].Arguments = dict(
-    {"BLControlName": "smooth-transition_1"}
-)
+workflow.TaskObject["smooth-transition_1"].Arguments = {"BLControlName": "smooth-transition_1"}
 
 workflow.TaskObject["smooth-transition_1"].Execute()
 
@@ -325,9 +305,7 @@ workflow.TaskObject["smooth-transition_1"].Execute()
 
 # Generate volume mesh
 
-workflow.TaskObject["Generate the Volume Mesh"].Arguments = dict(
-    {"VolumeMeshPreferences": {"MergeBodyLabels": "yes"}}
-)
+workflow.TaskObject["Generate the Volume Mesh"].Arguments = {"VolumeMeshPreferences": {"MergeBodyLabels": "yes"}}
 workflow.TaskObject["Generate the Volume Mesh"].Execute()
 
 # %%

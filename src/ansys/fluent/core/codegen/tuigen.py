@@ -43,7 +43,7 @@ import platform
 import shutil
 import string
 import subprocess
-from typing import Any, Dict
+from typing import Any
 import uuid
 
 from defusedxml.ElementTree import parse
@@ -107,7 +107,7 @@ def _copy_tui_help_xml_file(version: str):
         )
         xml_source = f"/ansys_inc/v{version}/commonfiles/help/en-us/fluent_gui_help/fluent_gui_help.xml"
         subprocess.run(
-            f"docker cp {container_name}:{xml_source} {str(_XML_HELP_FILE)}",
+            f"docker cp {container_name}:{xml_source} {_XML_HELP_FILE!s}",
             shell=is_linux,
         )
         subprocess.run(f"docker container rm {container_name}", shell=is_linux)
@@ -172,7 +172,7 @@ class _TUIMenu:
         self.name = convert_tui_menu_to_func_name(self.tui_name)
         self.is_command = is_command
         tui_path = convert_path_to_grpc_path(path)
-        self.doc = _XML_HELPSTRINGS.get(tui_path, None)
+        self.doc = _XML_HELPSTRINGS.get(tui_path)
         if self.doc:
             del _XML_HELPSTRINGS[tui_path]
         else:
@@ -185,7 +185,7 @@ class _TUIMenu:
 
     def get_command_path(self, command: str) -> str:
         """Get the full path to a command."""
-        return convert_path_to_grpc_path(self.path + [command])
+        return convert_path_to_grpc_path([*self.path, command])
 
 
 class _RenameModuleUnpickler(pickle.Unpickler):
@@ -194,7 +194,7 @@ class _RenameModuleUnpickler(pickle.Unpickler):
         if module == "tuigen":
             renamed_module = "ansys.fluent.core.codegen.tuigen"
 
-        return super(_RenameModuleUnpickler, self).find_class(renamed_module, name)
+        return super().find_class(renamed_module, name)
 
 
 class TUIGenerator:
@@ -217,18 +217,18 @@ class TUIGenerator:
         self._static_infos = static_infos
         self._verbose = verbose
 
-    def _populate_menu(self, menu: _TUIMenu, info: Dict[str, Any]):
+    def _populate_menu(self, menu: _TUIMenu, info: dict[str, Any]):
         for child_menu_name, child_menu_info in sorted(info["menus"].items()):
             if _is_valid_tui_menu_name(child_menu_name):
                 child_menu = _TUIMenu(
-                    menu.path + [child_menu_name], child_menu_info["help"]
+                    [*menu.path, child_menu_name], child_menu_info["help"]
                 )
                 menu.children[child_menu.name] = child_menu
                 self._populate_menu(child_menu, child_menu_info)
         for child_command_name, child_command_info in sorted(info["commands"].items()):
             if _is_valid_tui_menu_name(child_command_name):
                 child_menu = _TUIMenu(
-                    menu.path + [child_command_name], child_command_info["help"], True
+                    [*menu.path, child_command_name], child_command_info["help"], True
                 )
                 menu.children[child_menu.name] = child_menu
 
@@ -288,7 +288,7 @@ class TUIGenerator:
         api_tree = {}
         Path(self._tui_file).parent.mkdir(exist_ok=True)
         if self._verbose:
-            print(f"{str(self._tui_file)}")
+            print(f"{self._tui_file!s}")
         with open(self._tui_file, "w", encoding="utf8") as self.__writer:
             info = self._static_infos[
                 (

@@ -109,7 +109,7 @@ def test_container_timeout_deprecation():
         grpc_kwds = get_grpc_launcher_args_for_gh_runs()
         pyfluent.launch_fluent(
             start_container=True,
-            container_dict=dict(timeout=0),
+            container_dict={"timeout": 0},
             dry_run=True,
             **grpc_kwds,
         )
@@ -122,7 +122,7 @@ def test_container_timeout_deprecation_override(caplog):
             grpc_kwds = get_grpc_launcher_args_for_gh_runs()
             pyfluent.launch_fluent(
                 start_container=True,
-                container_dict=dict(timeout=1),
+                container_dict={"timeout": 1},
                 start_timeout=60,
                 **grpc_kwds,
             )
@@ -310,7 +310,7 @@ def test_get_fluent_exe_path_when_nothing_is_set(helpers):
 
 @pytest.mark.parametrize(
     "fluent_version",
-    [version for version in FluentVersion],
+    list(FluentVersion),
 )
 def test_get_fluent_exe_path_from_awp_root(fluent_version, helpers, fs):
     helpers.mock_awp_vars(version=str(fluent_version.number))
@@ -356,15 +356,15 @@ def test_watchdog_launch(monkeypatch):
 
 @pytest.mark.standalone
 def test_create_standalone_launcher():
-    kwargs = dict(
-        ui_mode=UIMode.NO_GUI,
-        graphics_driver=(
+    kwargs = {
+        "ui_mode": UIMode.NO_GUI,
+        "graphics_driver": (
             FluentWindowsGraphicsDriver.AUTO
             if is_windows()
             else FluentLinuxGraphicsDriver.AUTO
         ),
-        env={},
-    )
+        "env": {},
+    }
 
     standalone_meshing_launcher = create_launcher(
         LaunchMode.STANDALONE, mode=FluentMode.MESHING, **kwargs
@@ -558,14 +558,14 @@ def test_fluent_automatic_transcript(monkeypatch):
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     with TemporaryDirectory(dir=pyfluent.config.examples_path) as tmp_dir:
         with pyfluent.launch_fluent(
-            container_dict=dict(mount_source=tmp_dir), **grpc_kwds
+            container_dict={"mount_source": tmp_dir}, **grpc_kwds
         ):
             assert list(Path(tmp_dir).glob("*.trn"))
     with monkeypatch.context() as m:
         m.setattr(pyfluent.config, "fluent_automatic_transcript", False)
         with TemporaryDirectory(dir=pyfluent.config.examples_path) as tmp_dir:
             with pyfluent.launch_fluent(
-                container_dict=dict(mount_source=tmp_dir), **grpc_kwds
+                container_dict={"mount_source": tmp_dir}, **grpc_kwds
             ):
                 assert not list(Path(tmp_dir).glob("*.trn"))
 

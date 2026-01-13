@@ -1,4 +1,4 @@
-﻿# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 
 # SPDX-License-Identifier: MIT
 #
@@ -149,8 +149,8 @@ def test_launch_remote_instance(monkeypatch, new_solver_session):
 
 class TransferRequestRecorder:
     def __init__(self):
-        self.uploaded_files = list()
-        self.downloaded_files = list()
+        self.uploaded_files = []
+        self.downloaded_files = []
 
     def uploads(self):
         return self.uploaded_files

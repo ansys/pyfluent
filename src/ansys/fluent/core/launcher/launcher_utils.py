@@ -29,7 +29,7 @@ import platform
 import socket
 import subprocess
 import time
-from typing import Any, Dict
+from typing import Any
 import warnings
 
 from ansys.fluent.core.exceptions import InvalidArgument
@@ -92,12 +92,12 @@ def is_windows():
     return platform.system() == "Windows"
 
 
-def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str, Any]:
+def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str, Any]:
     import ansys.fluent.core as pyfluent
 
     scheduler_options = argvals.get("scheduler_options")
     is_slurm = scheduler_options and scheduler_options["scheduler"] == "slurm"
-    kwargs: Dict[str, Any] = {}
+    kwargs: dict[str, Any] = {}
     if is_slurm:
         kwargs.update(stdout=subprocess.PIPE)
     else:
@@ -133,14 +133,13 @@ def _get_subprocess_kwargs_for_fluent(env: Dict[str, Any], argvals) -> Dict[str,
     if pyfluent.config.launch_fluent_skip_password_check:
         fluent_env["FLUENT_LAUNCHED_FROM_PYFLUENT"] = "1"
 
-    if not is_slurm:
-        if (
-            pyfluent.config.infer_remoting_ip
-            and "REMOTING_SERVER_ADDRESS" not in fluent_env
-        ):
-            remoting_ip = find_remoting_ip()
-            if remoting_ip:
-                fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
+    if not is_slurm and (
+        pyfluent.config.infer_remoting_ip
+        and "REMOTING_SERVER_ADDRESS" not in fluent_env
+    ):
+        remoting_ip = find_remoting_ip()
+        if remoting_ip:
+            fluent_env["REMOTING_SERVER_ADDRESS"] = remoting_ip
 
     if not pyfluent.config.fluent_automatic_transcript:
         fluent_env["FLUENT_NO_AUTOMATIC_TRANSCRIPT"] = "1"

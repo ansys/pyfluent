@@ -23,7 +23,7 @@ def create_file_folders_list(files_list: list, fluent_version: Path | str):
     """
     file_folders = []
     for file in files_list:
-        with open(Path(fluent_version) / file, "r") as f:
+        with open(Path(fluent_version) / file) as f:
             lines = f.readlines()
             file_folders.extend([line.rstrip("\n") for line in lines])
     return file_folders

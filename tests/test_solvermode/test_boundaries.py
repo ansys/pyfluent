@@ -25,9 +25,11 @@ import os
 from unittest import TestCase
 
 import pytest
-from util.solver import SettingsValDict as D
-from util.solver import assign_settings_value_from_value_dict as assign_dict_val
-from util.solver import get_name_info
+from util.solver import (
+    SettingsValDict as D,
+    assign_settings_value_from_value_dict as assign_dict_val,
+    get_name_info,
+)
 
 
 @pytest.mark.fluent_version(">=24.1")
@@ -47,7 +49,7 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
     cold_inlet.turbulence.hydraulic_diameter = "4 [in]"
     assign_dict_val(cold_inlet.thermal.t, 293.15)
 
-    assert {
+    assert cold_inlet() == {
         "name": "cold-inlet",
         "momentum": {
             "initial_gauge_pressure": {"option": "value", "value": 0},
@@ -61,7 +63,7 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
             "hydraulic_diameter": "4 [in]",
         },
         "thermal": {"t": {"option": "value", "value": 293.15}},
-    } == cold_inlet()
+    }
 
     hot_inlet = solver_session.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     assign_dict_val(hot_inlet.momentum.velocity, 1.2)
@@ -69,7 +71,7 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
     hot_inlet.turbulence.hydraulic_diameter = "1 [in]"
     assign_dict_val(hot_inlet.thermal.t, 313.15)
 
-    assert {
+    assert hot_inlet() == {
         "name": "hot-inlet",
         "momentum": {
             "initial_gauge_pressure": {"option": "value", "value": 0},
@@ -83,7 +85,7 @@ def test_boundaries_elbow(mixing_elbow_settings_session):
             "hydraulic_diameter": "1 [in]",
         },
         "thermal": {"t": {"option": "value", "value": 313.15}},
-    } == hot_inlet()
+    }
 
     solver_session.setup.boundary_conditions.pressure_outlet[
         "outlet"
@@ -104,15 +106,15 @@ def test_boundaries_periodic(periodic_rot_settings_session):
     _THIS_DIR = os.path.dirname(__file__)
     _DATA_FILE = os.path.join(_THIS_DIR, "boundaries_periodic_expDict")
     boundary_exp = json.load(open(_DATA_FILE))
-    boundary_test = dict()
-    boundary_tested = dict()
+    boundary_test = {}
+    boundary_tested = {}
     for name, boundary in solver_session.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_1"] = boundary_test
 
     TestCase().assertDictEqual(boundary_tested["val_1"], boundary_exp["val_1"])
 
-    boundary_test = dict()
+    boundary_test = {}
     for (
         boundary_type
     ) in solver_session.setup.boundary_conditions.get_active_child_names():
@@ -136,7 +138,7 @@ def test_boundaries_periodic(periodic_rot_settings_session):
     ].momentum.velocity = 5.0
     solver_session.setup.boundary_conditions["inlet"].momentum.velocity = 10.0
     boundaries_check = ["inlet", "out", "pipe2_wall"]
-    boundary_test = dict()
+    boundary_test = {}
     for name, boundary in solver_session.setup.boundary_conditions.items():
         boundary_test[name] = boundary()
     boundary_tested["val_3"] = boundary_test

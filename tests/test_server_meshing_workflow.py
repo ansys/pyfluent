@@ -38,9 +38,9 @@ def test_new_watertight_workflow(new_meshing_session_wo_exit):
         WorkflowType="Watertight Geometry"
     )
     watertight = new_meshing_session_wo_exit.meshing_workflow
-    watertight.task_object.import_geometry["Import Geometry"].arguments.file_name = (
-        import_file_name
-    )
+    watertight.task_object.import_geometry[
+        "Import Geometry"
+    ].arguments.file_name = import_file_name
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
@@ -720,9 +720,9 @@ def test_arguments_and_parameters_in_new_meshing_workflow(new_meshing_session):
         "um",
         "nm",
     ]
-    watertight.task_object.import_geometry["Import Geometry"].arguments.length_unit = (
-        "m"
-    )
+    watertight.task_object.import_geometry[
+        "Import Geometry"
+    ].arguments.length_unit = "m"
     assert (
         watertight.task_object.import_geometry[
             "Import Geometry"
@@ -1297,15 +1297,9 @@ def test_new_2d_meshing_workflow_enhanced_meshing(
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
@@ -1318,15 +1312,9 @@ def test_new_2d_meshing_workflow_enhanced_meshing(
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
     two_dim_mesh.generate_initial_surface_mesh()
 
     # Switch to solution mode

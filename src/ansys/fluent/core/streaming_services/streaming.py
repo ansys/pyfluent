@@ -22,10 +22,10 @@
 
 """Provides a module for streaming services."""
 
+from collections.abc import Callable
 import itertools
 import logging
 import threading
-from typing import Callable
 
 logger = logging.getLogger("pyfluent.networking")
 

@@ -54,8 +54,6 @@ except ModuleNotFoundError as exc:
 
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as vector_naming,
-)
-from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,
 )
 
@@ -236,7 +234,7 @@ class DataFile:
 
 
 def _get_data_file_name_from_flprj(flprj_file):
-    with open(flprj_file, "r") as file:
+    with open(flprj_file) as file:
         content = file.read()
         content = remove_unsupported_xml_chars(content)
         root = ET.fromstring(content)

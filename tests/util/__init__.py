@@ -46,13 +46,12 @@ def create_datamodel_root_in_server(session, rules_str, app_name) -> None:
 def create_root_using_datamodelgen(service, app_name):
     version = "252"
     static_info = service.get_static_info(app_name)
-    with TemporaryDirectory() as temp_dir:
-        with MonkeyPatch.context() as m:
-            m.setattr(pyfluent.config, "codegen_outdir", Path(temp_dir))
-            # TODO: Refactor datamdodelgen so we don't need to hardcode StaticInfoType
-            datamodelgen.generate(
-                version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}
-            )
-            gen_file = Path(temp_dir) / f"datamodel_{version}" / "workflow.py"
-            module = load_module("datamodel", gen_file)
-            return module.Root(service, app_name, [])
+    with TemporaryDirectory() as temp_dir, MonkeyPatch.context() as m:
+        m.setattr(pyfluent.config, "codegen_outdir", Path(temp_dir))
+        # TODO: Refactor datamdodelgen so we don't need to hardcode StaticInfoType
+        datamodelgen.generate(
+            version, static_infos={StaticInfoType.DATAMODEL_WORKFLOW: static_info}
+        )
+        gen_file = Path(temp_dir) / f"datamodel_{version}" / "workflow.py"
+        module = load_module("datamodel", gen_file)
+        return module.Root(service, app_name, [])

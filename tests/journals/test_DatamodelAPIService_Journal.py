@@ -237,13 +237,13 @@ def test_datamodel_api_on_command_executed(solver):
     assert executed == 0
     assert command is None
     assert arguments is None
-    service.execute_command(app_name, "/", "C", dict(X="abc"))
+    service.execute_command(app_name, "/", "C", {"X": "abc"})
     time.sleep(5)
     assert executed == 1
     assert command == "C"
     assert arguments == {"X": "abc"}
     subscription.unsubscribe()
-    service.execute_command(app_name, "/", "C", dict(X="uvw"))
+    service.execute_command(app_name, "/", "C", {"X": "uvw"})
     time.sleep(5)
     assert executed == 1
     assert command == "C"

@@ -6,7 +6,6 @@ Usage: python search_undocumented_fields.py ../../src
 
 import os
 import sys
-from typing import Dict, Set
 
 import ast_comments as ast
 
@@ -38,19 +37,17 @@ class ClassFieldVisitor(ast.NodeVisitor):
             return
         is_enum = False
         for x in node.bases:
-            if isinstance(x, ast.Name) and x.id in (
+            if (isinstance(x, ast.Name) and x.id in (
                 "Enum",
                 "IntEnum",
                 "StrEnum",
                 "FluentEnum",
-            ):
-                is_enum = True
-            elif isinstance(x, ast.Attribute) and x.attr in (
+            )) or (isinstance(x, ast.Attribute) and x.attr in (
                 "Enum",
                 "IntEnum",
                 "StrEnum",
                 "FluentEnum",
-            ):
+            )):
                 is_enum = True
         if is_enum:
             self.current_class = old_class
@@ -105,9 +102,8 @@ class ClassFieldVisitor(ast.NodeVisitor):
                             isinstance(target, ast.Attribute)
                             and isinstance(target.value, ast.Name)
                             and target.value.id == "self"
-                        ):
-                            if is_ith_undocumented_field(results, i):
-                                self.classes[self.current_class].add(target.attr)
+                        ) and is_ith_undocumented_field(results, i):
+                            self.classes[self.current_class].add(target.attr)
 
                 # Handle annotated assignments: self.attr: Type = value
                 elif (
@@ -116,14 +112,13 @@ class ClassFieldVisitor(ast.NodeVisitor):
                     and isinstance(child.target.value, ast.Name)
                     and child.target.value.id == "self"
                     and not child.target.attr.startswith("_")
-                ):
-                    if is_ith_undocumented_field(results, i):
-                        self.classes[self.current_class].add(child.target.attr)
+                ) and is_ith_undocumented_field(results, i):
+                    self.classes[self.current_class].add(child.target.attr)
 
 
-def analyze_file(file_path: str) -> Dict[str, Set[str]]:
+def analyze_file(file_path: str) -> dict[str, set[str]]:
     """Analyze a Python file and return classes with their public fields."""
-    with open(file_path, "r", encoding="utf-8") as file:
+    with open(file_path, encoding="utf-8") as file:
         try:
             tree = ast.parse(file.read(), filename=file_path)
             visitor = ClassFieldVisitor()
@@ -134,7 +129,7 @@ def analyze_file(file_path: str) -> Dict[str, Set[str]]:
             return {}
 
 
-def analyze_package(package_path: str) -> Dict[str, Dict[str, Set[str]]]:
+def analyze_package(package_path: str) -> dict[str, dict[str, set[str]]]:
     """Analyze all Python files in a package directory."""
     result = {}
 
@@ -160,10 +155,9 @@ def analyze_package(package_path: str) -> Dict[str, Dict[str, Set[str]]]:
     return result
 
 
-def write_results(results: Dict[str, Dict[str, Set[str]]], f) -> str:
+def write_results(results: dict[str, dict[str, set[str]]], f) -> str:
     """Format the analysis results."""
     for module_name, classes in sorted(results.items()):
-
         if not classes:
             continue
 

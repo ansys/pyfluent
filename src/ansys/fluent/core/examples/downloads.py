@@ -27,11 +27,14 @@ import os
 from pathlib import Path
 import re
 import shutil
+from typing import TYPE_CHECKING
 import zipfile
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.utils.networking import check_url_exists, get_url_content
+
+if TYPE_CHECKING:
+    from ansys.fluent.core._types import PathType
 
 logger = logging.getLogger("pyfluent.networking")
 
@@ -174,12 +177,11 @@ def download_file(
     >>> file_name
     'bracket.iges'
     """
-    if return_without_path is None:
-        if pyfluent.config.launch_fluent_container:
-            if pyfluent.config.use_file_transfer_service:
-                return_without_path = False
-            else:
-                return_without_path = True
+    if return_without_path is None and pyfluent.config.launch_fluent_container:
+        if pyfluent.config.use_file_transfer_service:
+            return_without_path = False
+        else:
+            return_without_path = True
 
     url = _get_file_url(file_name, directory)
     if not check_url_exists(url):

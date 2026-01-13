@@ -61,8 +61,8 @@ def test_change_create_mixture(mixing_elbow_settings_session):
         "no",  # Do not change speed of sound
         "yes",  # Overwrite mixture-template
     )
-    assert "custom-mixture" in materials.mixture.keys()
-    assert "mixture-template" not in materials.mixture.keys()
+    assert "custom-mixture" in materials.mixture
+    assert "mixture-template" not in materials.mixture
 
     # Test that mixture contains correct species
     mix_species = solver_session.setup.materials.mixture[
@@ -76,7 +76,7 @@ def test_change_create_mixture(mixing_elbow_settings_session):
         from_="custom-mixture",
         to="custom-mixture-copy",
     )
-    assert "custom-mixture-copy" in materials.mixture.keys()
+    assert "custom-mixture-copy" in materials.mixture
 
     # Test changing cellzone mixture
     elbow_zone = solver_session.setup.cell_zone_conditions.fluid["elbow-fluid"]
@@ -86,4 +86,4 @@ def test_change_create_mixture(mixing_elbow_settings_session):
 
     # Test deleting a mixture
     materials.mixture.delete(name_list=["custom-mixture"])
-    assert "custom-mixture" not in materials.mixture.keys()
+    assert "custom-mixture" not in materials.mixture

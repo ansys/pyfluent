@@ -23,7 +23,6 @@
 """Provide a module to test the algorithms which parse job scheduler environments for
 machines to run on."""
 
-from builtins import range
 import os
 import socket
 import tempfile

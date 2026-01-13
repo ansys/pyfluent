@@ -23,15 +23,16 @@
 """Wrappers over SVAR gRPC service of Fluent."""
 
 import math
-from typing import Dict, List
 import warnings
 
 import grpc
 import numpy as np
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
-from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+from ansys.api.fluent.v0 import (
+    field_data_pb2 as FieldDataProtoModule,
+    svar_pb2 as SvarProtoModule,
+    svar_pb2_grpc as SvarGrpcModule,
+)
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
@@ -142,12 +143,12 @@ class SolutionVariableInfo:
             return self._solution_variables_info.get(name, None)
 
         @property
-        def solution_variables(self) -> List[str]:
+        def solution_variables(self) -> list[str]:
             """Solution variables."""
             return list(self._solution_variables_info.keys())
 
         @property
-        def svars(self) -> List[str]:
+        def svars(self) -> list[str]:
             """Solution variables."""
             warnings.warn(
                 "svars is deprecated, use solution_variables instead",
@@ -218,12 +219,12 @@ class SolutionVariableInfo:
             return self.zone_names
 
         @property
-        def zone_names(self) -> List[str]:
+        def zone_names(self) -> list[str]:
             """Get zone names."""
             return list(self._zones_info.keys())
 
         @property
-        def domains(self) -> List[str]:
+        def domains(self) -> list[str]:
             """Get domain names."""
             return list(self._domains_info.keys())
 
@@ -239,7 +240,7 @@ class SolutionVariableInfo:
         self._service = service
 
     def get_variables_info(
-        self, zone_names: List[str], domain_name: str | None = "mixture"
+        self, zone_names: list[str], domain_name: str | None = "mixture"
     ) -> SolutionVariables:
         """Get SVARs info for zones in the domain.
 
@@ -274,7 +275,7 @@ class SolutionVariableInfo:
         return solution_variables_info
 
     def get_svars_info(
-        self, zone_names: List[str], domain_name: str | None = "mixture"
+        self, zone_names: list[str], domain_name: str | None = "mixture"
     ) -> SolutionVariables:
         """Get solution variables info."""
         warnings.warn(
@@ -303,7 +304,7 @@ class SolutionVariableInfo:
 class InvalidSolutionVariableNameError(ValueError):
     """Exception class for errors in solution variable name."""
 
-    def __init__(self, variable_name: str, allowed_values: List[str]):
+    def __init__(self, variable_name: str, allowed_values: list[str]):
         """Initialize InvalidSolutionVariableNameError."""
         super().__init__(
             allowed_name_error_message(
@@ -317,7 +318,7 @@ class InvalidSolutionVariableNameError(ValueError):
 class ZoneError(ValueError):
     """Exception class for errors in Zone name."""
 
-    def __init__(self, zone_name: str, allowed_values: List[str]):
+    def __init__(self, zone_name: str, allowed_values: list[str]):
         """Initialize ZoneError."""
         self.zone_name = zone_name
         super().__init__(
@@ -338,8 +339,8 @@ class _AllowedSvarNames:
         self._solution_variable_info = solution_variable_info
 
     def __call__(
-        self, zone_names: List[str], domain_name: str | None = "mixture"
-    ) -> List[str]:
+        self, zone_names: list[str], domain_name: str | None = "mixture"
+    ) -> list[str]:
         return self._solution_variable_info.get_variables_info(
             zone_names=zone_names, domain_name=domain_name
         ).solution_variables
@@ -352,7 +353,7 @@ class _AllowedSvarNames:
     def is_valid(
         self,
         variable_name,
-        zone_names: List[str],
+        zone_names: list[str],
         domain_name: str | None = "mixture",
     ):
         """Check whether solution variable name is valid or not."""
@@ -366,7 +367,7 @@ class _AllowedSvarNames:
     def valid_name(
         self,
         variable_name,
-        zone_names: List[str],
+        zone_names: list[str],
         domain_name: str | None = "mixture",
     ):
         """Get a valid solution variable name.
@@ -391,7 +392,7 @@ class _AllowedZoneNames(_AllowedNames):
     def __init__(self, solution_variable_info: SolutionVariableInfo):
         self._zones_info = solution_variable_info.get_zones_info()
 
-    def __call__(self) -> List[str]:
+    def __call__(self) -> list[str]:
         return self._zones_info.zone_names
 
     def valid_name(self, zone_name):
@@ -414,7 +415,7 @@ class _AllowedDomainNames(_AllowedNames):
     def __init__(self, solution_variable_info: SolutionVariableInfo):
         self._zones_info = solution_variable_info.get_zones_info()
 
-    def __call__(self) -> List[str]:
+    def __call__(self) -> list[str]:
         return self._zones_info.domains
 
     def valid_name(self, domain_name):
@@ -629,7 +630,7 @@ class SolutionVariableData:
     def get_data(
         self,
         variable_name: str,
-        zone_names: List[str],
+        zone_names: list[str],
         domain_name: str | None = "mixture",
     ) -> Data:
         """Get SVAR data on zones.
@@ -679,7 +680,7 @@ class SolutionVariableData:
     def get_svar_data(
         self,
         variable_name: str,
-        zone_names: List[str],
+        zone_names: list[str],
         domain_name: str | None = "mixture",
     ) -> Data:
         """Get solution variable data."""
@@ -701,7 +702,7 @@ class SolutionVariableData:
     def set_data(
         self,
         variable_name: str,
-        zone_names_to_data: Dict[str, np.array],
+        zone_names_to_data: dict[str, np.array],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set SVAR data on zones.
@@ -793,8 +794,7 @@ class SolutionVariableData:
                     if solution_variable_data.size > 0
                 ]
 
-            for set_data_request in set_data_requests:
-                yield set_data_request
+            yield from set_data_requests
 
         self._service.set_data(generate_set_data_requests())
 
@@ -806,7 +806,7 @@ class SolutionVariableData:
     def set_svar_data(
         self,
         variable_name: str,
-        zone_names_to_svar_data: Dict[str, np.array],
+        zone_names_to_svar_data: dict[str, np.array],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set solution variable data."""

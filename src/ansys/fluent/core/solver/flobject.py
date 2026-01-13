@@ -41,7 +41,7 @@ Example
 from __future__ import annotations
 
 import collections
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager, nullcontext, suppress
 import fnmatch
 import hashlib
 import inspect
@@ -54,14 +54,11 @@ import string
 import sys
 import types
 from typing import (
+    TYPE_CHECKING,
     Any,
-    Callable,
-    Dict,
     ForwardRef,
     Generic,
-    List,
     NewType,
-    Tuple,
     TypeVar,
     Union,
     _eval_type,
@@ -82,11 +79,14 @@ from ansys.fluent.core.variable_strategies import (
 import ansys.units
 from ansys.units import VariableDescriptor
 
-from . import _docstrings
 from ..pyfluent_warnings import warning_for_fluent_dev_version
+from . import _docstrings
 from .error_message import allowed_name_error_message, allowed_values_error
 from .flunits import UnhandledQuantity, get_si_unit_for_fluent_quantity
 from .settings_external import expand_api_file_argument
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 settings_logger = logging.getLogger("pyfluent.settings_api")
 
@@ -127,12 +127,12 @@ class _InlineConstants:
 
 
 # Type hints
-RealType = NewType("real", Union[float, str])  # constant or expression
-RealListType = List[RealType]
-RealVectorType = Tuple[RealType, RealType, RealType]
-IntListType = List[int]
-StringListType = List[str]
-BoolListType = List[bool]
+RealType = NewType("real", float | str)  # constant or expression
+RealListType = list[RealType]
+RealVectorType = tuple[RealType, RealType, RealType]
+IntListType = list[int]
+StringListType = list[str]
+BoolListType = list[bool]
 PrimitiveStateType = Union[
     str,
     RealType,
@@ -143,8 +143,8 @@ PrimitiveStateType = Union[
     StringListType,
     BoolListType,
 ]
-DictStateType = Dict[str, "StateType"]
-ListStateType = List["StateType"]
+DictStateType = dict[str, "StateType"]
+ListStateType = list["StateType"]
 StateType = Union[PrimitiveStateType, DictStateType, ListStateType]
 
 
@@ -411,7 +411,7 @@ class Base:
     def get_attr(
         self,
         attr: str,
-        attr_type_or_types: type | Tuple[type] | None = None,
+        attr_type_or_types: type | tuple[type] | None = None,
     ) -> Any:
         """Get the requested attribute for the object.
 
@@ -456,7 +456,7 @@ class Base:
     def is_active(self) -> bool:
         """Whether the object is active."""
         attr = self.get_attr(_InlineConstants.is_active)
-        return False if attr is False else True
+        return not attr is False
 
     def is_read_only(self) -> bool:
         """Whether the object is read-only."""
@@ -475,10 +475,7 @@ class Base:
         """Find object."""
         obj = self
         for comp in relative_path.split("/"):
-            if comp == "..":
-                obj = obj.parent
-            else:
-                obj = getattr(obj, comp)
+            obj = obj.parent if comp == ".." else getattr(obj, comp)
         return obj
 
     def before_execute(self, command_name, value, kwargs):
@@ -530,7 +527,7 @@ class Base:
             return False
         return self.flproxy == other.flproxy and self.path == other.path
 
-    def get_completer_info(self, prefix="", excluded=None) -> List[List[str]]:
+    def get_completer_info(self, prefix="", excluded=None) -> list[list[str]]:
         """Get completer info of all children.
 
         Returns
@@ -869,14 +866,14 @@ class SettingsBase(Base, Generic[StateT]):
             out.write("\n")
             for key, value in state.items():
                 if value is not None:
-                    out.write(f'{indent*indent_factor*" "}{key} : ')
+                    out.write(f"{indent * indent_factor * ' '}{key} : ")
                     SettingsBase._print_state_helper(
                         value, out, indent + 1, indent_factor
                     )
         elif isinstance(state, list):
             out.write("\n")
             for index, value in enumerate(state):
-                out.write(f'{indent*indent_factor*" "}{index} : ')
+                out.write(f"{indent * indent_factor * ' '}{index} : ")
                 SettingsBase._print_state_helper(value, out, indent + 1, indent_factor)
         else:
             out.write(f"{state}\n")
@@ -897,13 +894,11 @@ class SettingsBase(Base, Generic[StateT]):
 
     def _add_units_to_state(self, state):
         if isinstance(state, collections.abc.Mapping):
-            for k, v in state.items():
+            for k in state:
                 child = None
                 if isinstance(self, collections.abc.Mapping):
-                    try:
+                    with suppress(KeyError):
                         child = self[k]
-                    except KeyError:
-                        pass
                 child = child or getattr(self, k, None)
                 if child is None:
                     raise RuntimeError(
@@ -1106,7 +1101,7 @@ class Group(SettingsBase[DictStateType]):
             for k, v in value.items():
                 if k in cls.child_names:
                     ccls = cls._child_classes[k]
-                    ret[ccls.fluent_name] = ccls.to_scheme_keys(v, root_cls, path + [k])
+                    ret[ccls.fluent_name] = ccls.to_scheme_keys(v, root_cls, [*path, k])
                 elif k in cls._child_aliases:
                     alias, scm_alias_name = cls._child_aliases[k]
                     alias_cls, alias_path = _get_class_from_paths(
@@ -1171,13 +1166,13 @@ class Group(SettingsBase[DictStateType]):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        return dir_list - set(
-            [
+        return dir_list - {
+
                 child
                 for child in self.child_names + self.command_names + self.query_names
                 if _is_deprecated(getattr(self, child))
-            ]
-        )
+
+        }
 
     def __getattribute__(self, name):
         # Avoiding server queries for static attributes
@@ -1567,7 +1562,7 @@ class CombinedNamedObject:
     def __add__(self, other):
         if not isinstance(other, NamedObject):
             raise TypeError(f"Cannot add {type(self)} to NamedObject")
-        return CombinedNamedObject(self.objects + [other])
+        return CombinedNamedObject([*self.objects, other])
 
     def __call__(self):
         temp_dict = {}
@@ -1756,13 +1751,13 @@ class Action(Base):
 
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
-        return dir_list - set(
-            [
+        return dir_list - {
+
                 child
                 for child in self.argument_names
                 if _is_deprecated(getattr(self, child))
-            ]
-        )
+
+        }
 
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
@@ -2019,8 +2014,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         """Iterator for child named objects."""
         for cname in self.child_names:
             try:
-                for item in getattr(self, cname):
-                    yield item
+                yield from getattr(self, cname)
             except Exception:
                 continue
 
@@ -2153,10 +2147,7 @@ _bases_by_class = {}
 def get_cls(name, info, parent=None, version=None, parent_taboo=None):
     """Create a class for the object identified by "path"."""
     try:
-        if name == "":
-            pname = "root"
-        else:
-            pname = to_python_name(name)
+        pname = "root" if name == "" else to_python_name(name)
         obj_type = info["type"]
         base = _baseTypes.get(obj_type)
         if obj_type == "command" and name in ["create", "rename", "delete", "resize"]:
@@ -2195,14 +2186,14 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         bases = (base,)
         if include_child_named_objects:
-            bases = bases + (_ChildNamedObjectAccessorMixin,)
+            bases = (*bases, _ChildNamedObjectAccessorMixin)
         if obj_type == "named-object" and user_creatable:
             if version < "251":
-                bases = bases + (CreatableNamedObjectMixinOld,)
+                bases = (*bases, CreatableNamedObjectMixinOld)
             else:
-                bases = bases + (CreatableNamedObjectMixin,)
+                bases = (*bases, CreatableNamedObjectMixin)
         elif obj_type == "named-object":
-            bases = bases + (_NonCreatableNamedObjectMixin,)
+            bases = (*bases, _NonCreatableNamedObjectMixin)
         elif info.get("has-allowed-values"):
             bases += (AllowedValuesMixin,)
         elif info.get("file_purpose") == "input":
@@ -2237,15 +2228,13 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
             cls._deprecated_version = ""
 
         taboo = set(dir(cls))
-        taboo |= set(
-            [
+        taboo |= {
                 "child_names",
                 "command_names",
                 "query_names",
                 "argument_names",
                 "child_object_type",
-            ]
-        )
+            }
 
         doc = ""
 

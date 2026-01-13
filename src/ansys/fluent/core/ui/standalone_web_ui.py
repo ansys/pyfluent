@@ -24,7 +24,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List
+from typing import TYPE_CHECKING, Any
 
 try:
     import panel as pn
@@ -44,6 +44,9 @@ from ansys.fluent.core.ui.utils import (
     _render_widget_from_props_generic,
     _safe_get_properties,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 _path_backup_dict = {}
 
@@ -72,13 +75,13 @@ if _refresh is None:
 
 
 def _render_widget_from_props(
-    settings_obj, label: str, props: Dict[str, Any]
+    settings_obj, label: str, props: dict[str, Any]
 ) -> pn.viewable.Viewable:
     """Produce a Panel widget from type+props. No backend mutation here."""
     return _render_widget_from_props_generic(settings_obj, label, props, pn.widgets)
 
 
-def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
+def _param_view(settings_obj, props: dict[str, Any]) -> pn.viewable.Viewable:
     label = props["python_name"].replace("_", " ").capitalize()
 
     def get_fn():
@@ -144,14 +147,14 @@ def _param_view(settings_obj, props: Dict[str, Any]) -> pn.viewable.Viewable:
     )
 
 
-def _command_view(func, props: Dict[str, Any]) -> pn.viewable.Viewable:
+def _command_view(func, props: dict[str, Any]) -> pn.viewable.Viewable:
     """Render command arguments (on demand) and execute only on click."""
     # Safely fetch argument names (does NOT execute the command)
     if not hasattr(func, "argument_names"):
         return pn.pane.HTML("<i>Command has no 'argument_names()'.</i>")
     arg_names = func.argument_names
-    arg_widgets: Dict[str, Any] = {}
-    controls: List[pn.viewable.Viewable] = []
+    arg_widgets: dict[str, Any] = {}
+    controls: list[pn.viewable.Viewable] = []
 
     # Build argument widgets immediately when this view is created
     for name in arg_names:
@@ -261,7 +264,7 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
         else:
             return _param_view(obj, props) if props["is_active"] else pn.pane.HTML("")
 
-    sections: List[pn.viewable.Viewable] = []
+    sections: list[pn.viewable.Viewable] = []
 
     for child_name in child_names:
         # Build a lazy loader that only resolves the child on expand
@@ -273,10 +276,7 @@ def _settings_view(obj, indent: int = 0) -> pn.viewable.Viewable:
             return _settings_view(child_obj, lvl)
 
         # Each child gets its own one-item accordion (mirrors your ipywidgets UX)
-        if child_name in command_names:
-            display_name = f"⚡ {child_name}"
-        else:
-            display_name = child_name
+        display_name = f"⚡ {child_name}" if child_name in command_names else child_name
         sections.append(_lazy_section(display_name, _loader))
 
     return pn.Column(

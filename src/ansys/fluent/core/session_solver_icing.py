@@ -26,7 +26,7 @@ Expose icing capabilities.
 """
 
 import importlib
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
@@ -46,7 +46,7 @@ class SolverIcing(Solver):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """SolverIcing session.
 
@@ -64,7 +64,7 @@ class SolverIcing(Solver):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(SolverIcing, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
@@ -92,4 +92,4 @@ class SolverIcing(Solver):
         return self._flserver.Case.App
 
     def __dir__(self):
-        return super(SolverIcing, self).__dir__()
+        return super().__dir__()

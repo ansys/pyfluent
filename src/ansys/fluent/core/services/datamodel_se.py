@@ -22,19 +22,22 @@
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
 
+from collections.abc import Callable, Iterator, Sequence
 from enum import Enum
 import functools
 import itertools
 import logging
 import os
 from threading import RLock
-from typing import Any, Callable, Iterator, NoReturn, Sequence, TypeVar
+from typing import Any, NoReturn, TypeVar
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import grpc
 
-from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_se_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0 import (
+    datamodel_se_pb2 as DataModelProtoModule,
+    datamodel_se_pb2_grpc as DataModelGrpcModule,
+)
 from ansys.api.fluent.v0.variant_pb2 import Variant
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.data_model_cache import DataModelCache, NameKey
@@ -65,10 +68,7 @@ def _get_value_from_message_dict(d: dict[str, Any], key: list[str | Sequence[str
     A key can also be a list of oneof types.
     """
     for k in key:
-        if isinstance(k, str):
-            d = d[k]
-        else:
-            d = next(filter(None, (d.get(x) for x in k)))
+        d = d[k] if isinstance(k, str) else next(filter(None, (d.get(x) for x in k)))
     return d
 
 
@@ -1013,12 +1013,12 @@ class PyStateContainer(PyCallableStateObject):
         """__init__ method of PyStateContainer class."""
         super().__init__()
         self.__dict__.update(
-            dict(
-                service=service,
-                rules=rules,
-                path=[] if path is None else path,
-                _cached_attrs={},
-            )
+            {
+                "service": service,
+                "rules": rules,
+                "path": [] if path is None else path,
+                "_cached_attrs": {},
+            }
         )
 
     def get_remote_state(self) -> Any:
@@ -1168,7 +1168,6 @@ class PyStateContainer(PyCallableStateObject):
         )
 
     def __dir__(self):
-
         all_children = list(self.__dict__) + dir(type(self))
 
         filtered_children = _FilterDatamodelNames(self.service)(self, all_children)
@@ -1688,7 +1687,7 @@ class PyNamedObjectContainer:
             )
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def _del_item(self, key: str) -> None:
@@ -1711,7 +1710,7 @@ class PyNamedObjectContainer:
             self.service.delete_object(self.rules, se_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def __getitem__(self, key: str) -> PyMenu:
@@ -1977,13 +1976,13 @@ class PyArgumentsSubItem(PyCallableStateObject):
     ) -> None:
         """__init__ method of PyArgumentsSubItem class."""
         self.__dict__.update(
-            dict(
-                parent=parent,
-                name=name,
-                service=service,
-                rules=rules,
-                path=path,
-            )
+            {
+                "parent": parent,
+                "name": name,
+                "service": service,
+                "rules": rules,
+                "path": path,
+            }
         )
 
     def get_state(self) -> Any:
@@ -2038,10 +2037,10 @@ class PyArguments(PyStateContainer):
         """__init__ method of PyArguments class."""
         super().__init__(service, rules, path)
         self.__dict__.update(
-            dict(
-                command=command,
-                id=id,
-            )
+            {
+                "command": command,
+                "id": id,
+            }
         )
         self.path.append((command, id))
 
@@ -2054,7 +2053,7 @@ class PyArguments(PyStateContainer):
                 self.path[-1][1],
             )
         except Exception as exc:
-            logger.info("__del__ %s: %s" % (type(exc).__name__, exc))
+            logger.info(f"__del__ {type(exc).__name__}: {exc}")
 
     def get_attr(self, attrib: str) -> Any:
         """Get attribute value of the current object.
@@ -2210,10 +2209,10 @@ class PyMenuGeneric(PyMenu):
     def _get_child(self, name: str) -> PyNamedObjectContainer | PyCommand | PyQuery:
         singletons, creatable_types, commands, queries = self._get_child_names()
         if name in singletons:
-            child_path = self.path + [(name, "")]
+            child_path = [*self.path, (name, "")]
             return PyMenuGeneric(self.service, self.rules, child_path)
         elif name in creatable_types:
-            child_path = self.path + [(name, "")]
+            child_path = [*self.path, (name, "")]
             return PyNamedObjectContainerGeneric(self.service, self.rules, child_path)
         elif name in commands:
             return PyCommand(self.service, self.rules, name, self.path)
@@ -2221,7 +2220,7 @@ class PyMenuGeneric(PyMenu):
             return PyQuery(self.service, self.rules, name, self.path)
         else:
             raise LookupError(
-                f"{name} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{name} is not found at path {convert_path_to_se_path(self.path)}"
             )
 
     def __dir__(self) -> list[str]:
@@ -2244,7 +2243,7 @@ class PySimpleMenuGeneric(PyMenu, PyDictionary):
     attrs = ("service", "rules", "path")
 
     def _get_child(self, name: str) -> "PySimpleMenuGeneric":
-        child_path = self.path + [(name, "")]
+        child_path = [*self.path, (name, "")]
         return PySimpleMenuGeneric(self.service, self.rules, child_path)
 
     def __getattr__(self, name: str):
@@ -2271,5 +2270,5 @@ class PyNamedObjectContainerGeneric(PyNamedObjectContainer):
             return PyMenuGeneric(self.service, self.rules, child_path)
         else:
             raise LookupError(
-                f"{key} is not found at path " f"{convert_path_to_se_path(self.path)}"
+                f"{key} is not found at path {convert_path_to_se_path(self.path)}"
             )

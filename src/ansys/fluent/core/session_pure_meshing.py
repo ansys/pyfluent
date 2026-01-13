@@ -24,7 +24,7 @@
 
 import functools
 import os
-from typing import Any, Dict
+from typing import Any
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
@@ -67,7 +67,7 @@ class PureMeshing(BaseSession):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """PureMeshing session.
 
@@ -85,7 +85,7 @@ class PureMeshing(BaseSession):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(PureMeshing, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,

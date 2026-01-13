@@ -25,12 +25,12 @@
 from pathlib import Path
 
 import grpc
+from tests.run_stateengine_server import kill_server, run_server
 
 from ansys.fluent.core.services.datamodel_se import (
     DatamodelService,
     PySimpleMenuGeneric,
 )
-from tests.run_stateengine_server import kill_server, run_server
 
 
 def run_datamodel_server(batch_file_name: str | Path, rules):

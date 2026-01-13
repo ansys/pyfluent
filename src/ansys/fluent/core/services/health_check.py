@@ -27,8 +27,10 @@ import logging
 import sys
 
 import grpc
-from grpc_health.v1 import health_pb2 as HealthCheckModule
-from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
+from grpc_health.v1 import (
+    health_pb2 as HealthCheckModule,
+    health_pb2_grpc as HealthCheckGrpcModule,
+)
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.services.interceptors import (

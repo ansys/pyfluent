@@ -32,7 +32,7 @@ import re
 
 _choose_words = ("Choose", "Indicate", "Select", "Specify")
 
-_remove_first_words = _choose_words + ("Enter", "Set", "To")
+_remove_first_words = (*_choose_words, "Enter", "Set", "To")
 
 # Define problematic patterns with exclusions
 _dubious_patterns = [

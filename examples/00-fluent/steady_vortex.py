@@ -86,7 +86,7 @@ import imageio.v2 as imageio
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import Dimension, FluentMode, Precision
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.solver import (  # noqa: E402
+from ansys.fluent.core.solver import (
     LIC,
     CellRegister,
     CellZoneCondition,
@@ -255,12 +255,8 @@ model_setup.multiphase.advanced_formulation.implicit_body_force = True
 model_setup.viscous.options.curvature_correction = True
 
 solution_methods = Methods(solver_session)
-solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization = (
-    True
-)
-solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization = (
-    True
-)
+solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization = True
+solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization = True
 
 # Change phase names
 solver_session.tui.define.phases.set_domain_properties.change_phases_names(

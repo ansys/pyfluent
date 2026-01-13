@@ -51,11 +51,10 @@ def test_batch_ops_create_mesh_and_access_fails(new_solver_session):
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )
-    with pytest.raises(KeyError):
-        with pyfluent.BatchOps(solver):
-            solver.file.read(
-                file_name=case_file_name, file_type="case", lightweight_setup=True
-            )
-            mesh["mesh-1"] = {}
-            mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+    with pytest.raises(KeyError), pyfluent.BatchOps(solver):
+        solver.file.read(
+            file_name=case_file_name, file_type="case", lightweight_setup=True
+        )
+        mesh["mesh-1"] = {}
+        mesh["mesh-1"].surfaces_list = ["wall-elbow"]
     assert not solver.scheme.eval("(case-valid?)")

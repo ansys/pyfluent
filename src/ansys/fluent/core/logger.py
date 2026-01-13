@@ -103,7 +103,7 @@ def get_default_config() -> dict:
     file_name = os.path.abspath(__file__)
     file_dir = os.path.dirname(file_name)
     yaml_path = os.path.join(file_dir, "logging_config.yaml")
-    with open(yaml_path, "rt") as f:
+    with open(yaml_path) as f:
         config = yaml.safe_load(f)
     return config
 
@@ -147,10 +147,7 @@ def enable(level: str | int = "DEBUG", custom_config: dict | None = None):
     _logging_file_enabled = True
 
     # Configure the logging system
-    if custom_config is not None:
-        config = custom_config
-    else:
-        config = get_default_config()
+    config = custom_config if custom_config is not None else get_default_config()
 
     logging.config.dictConfig(config)
     file_name = config["handlers"]["pyfluent_file"]["filename"]
@@ -193,10 +190,7 @@ def set_global_level(level: str | int):
         print("Logging is not active, enable it first.")
         return
     if isinstance(level, str):
-        if level.isdigit():
-            level = int(level)
-        else:
-            level = level.upper()
+        level = int(level) if level.isdigit() else level.upper()
     print(f"Setting PyFluent global logging level to {level}.")
     pyfluent_loggers = list_loggers()
     for name in pyfluent_loggers:

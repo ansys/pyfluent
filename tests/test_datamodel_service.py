@@ -116,17 +116,13 @@ def test_event_subscription(new_meshing_session):
     e8.commandExecutedEventRequest.command = "InitializeWorkflow"
     response = session._datamodel_service_se.subscribe_events(MessageToDict(request))
     assert all(
-        [
-            r["status"] == datamodel_se_pb2.STATUS_SUBSCRIBED and r["tag"] == t
+        r["status"] == datamodel_se_pb2.STATUS_SUBSCRIBED and r["tag"] == t
             for r, t in zip(response, tags)
-        ]
     )
     response = session._datamodel_service_se.unsubscribe_events(tags)
     assert all(
-        [
-            r["status"] == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r["tag"] == t
+        r["status"] == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r["tag"] == t
             for r, t in zip(response, tags)
-        ]
     )
 
 

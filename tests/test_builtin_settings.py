@@ -20,14 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from pathlib import Path
-import tempfile
 
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
-from ansys.fluent.core.solver import *  # noqa: F401, F403
+from ansys.fluent.core.solver import *  # noqa: F403
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 

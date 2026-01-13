@@ -22,7 +22,6 @@
 
 """Script to test viability of gRPC connection in the current machine."""
 
-
 from argparse import ArgumentParser
 import socket
 
@@ -37,16 +36,15 @@ def _test_connection_using_specified_ip(ip: str, port: int | None = None) -> boo
         port = get_free_port()
     address = f"{ip}:{port}"
     try:
-        with _GrpcServer(address):
-            with grpc.insecure_channel(address) as channel:
-                stub = health_pb2_grpc.HealthStub(channel)
-                return (
-                    stub.Check(
-                        health_pb2.HealthCheckRequest(),
-                        timeout=1,
-                    ).status
-                    == health_pb2.HealthCheckResponse.ServingStatus.SERVING
-                )
+        with _GrpcServer(address), grpc.insecure_channel(address) as channel:
+            stub = health_pb2_grpc.HealthStub(channel)
+            return (
+                stub.Check(
+                    health_pb2.HealthCheckRequest(),
+                    timeout=1,
+                ).status
+                == health_pb2.HealthCheckResponse.ServingStatus.SERVING
+            )
     except Exception:
         return False
 

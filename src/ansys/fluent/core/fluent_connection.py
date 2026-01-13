@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
@@ -36,7 +37,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 import warnings
 import weakref
 
@@ -55,7 +56,11 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
-from ansys.platform.instancemanagement import Instance
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from ansys.platform.instancemanagement import Instance
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -118,7 +123,7 @@ class MonitorThread(threading.Thread):
     def __init__(self):
         """Initialize MonitorThread."""
         super().__init__(daemon=True)
-        self.cbs: List[Callable] = []
+        self.cbs: list[Callable] = []
 
     def run(self) -> None:
         """Run monitor thread."""
@@ -439,7 +444,7 @@ class FluentConnection:
         Close the Fluent connection and exit Fluent.
     """
 
-    _on_exit_cbs: List[Callable] = []
+    _on_exit_cbs: list[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: MonitorThread | None = None
 
@@ -538,7 +543,7 @@ class FluentConnection:
                 insecure_mode,
                 inside_container,
             )
-        self._metadata: List[Tuple[str, str]] = (
+        self._metadata: list[tuple[str, str]] = (
             [("password", password)] if password else []
         )
 
@@ -929,10 +934,8 @@ class FluentConnection:
             for cb in finalizer_cbs:
                 cb()
             if cleanup_on_exit:
-                try:
+                with contextlib.suppress(Exception):
                     connection_interface.exit_server()
-                except Exception:
-                    pass
             channel.close()
             channel = None
 

@@ -166,7 +166,11 @@ setup.models.viscous.model = "laminar"
 
 # Enable the Solidification/Melting
 solver.tui.define.models.solidification_melting(
-    "yes", "constant", "100000", "yes", "no"  # 100000 for the Mushy Zone Constant.
+    "yes",
+    "constant",
+    "100000",
+    "yes",
+    "no",  # 100000 for the Mushy Zone Constant.
 )
 
 # %%
@@ -281,7 +285,8 @@ initialize.hybrid_initialize()
 results = Results(solver)
 
 results.custom_field_functions.create(
-    name="omegar", custom_field_function="1 * radial_coordinate"  # ω = 1 rad/s
+    name="omegar",
+    custom_field_function="1 * radial_coordinate",  # ω = 1 rad/s
 )
 
 # %%

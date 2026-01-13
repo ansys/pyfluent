@@ -126,10 +126,10 @@ def test_parametric_workflow():
         333.348727
     )
     assert base_dp.output_parameters["outlet-vel-avg-op"]() == pytest_approx(1.506855)
-    dp_names = set([*study1.design_points.keys()])
+    dp_names = {*study1.design_points.keys()}
     if solver_session.get_fluent_version() < FluentVersion.v251:
         study1.design_points.create_1()
-        dp1_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
+        dp1_name = {*study1.design_points.keys()}.difference(dp_names).pop()
         dp1 = study1.design_points[dp1_name]
     else:
         dp1 = study1.design_points.create()
@@ -141,9 +141,9 @@ def test_parametric_workflow():
     assert dp1.input_parameters["inlet1_vel"]() == 1
     assert dp1.input_parameters["inlet2_vel"]() == 1
     assert dp1.input_parameters["inlet2_temp"]() == 350.0
-    dp_names = set([*study1.design_points.keys()])
+    dp_names = {*study1.design_points.keys()}
     study1.design_points.duplicate(design_point=dp1.obj_name)
-    dp2_name = set([*study1.design_points.keys()]).difference(dp_names).pop()
+    dp2_name = {*study1.design_points.keys()}.difference(dp_names).pop()
     dp2 = study1.design_points[dp2_name]
     assert dp1.input_parameters() == dp2.input_parameters()
     assert len(study1.design_points) == 3
@@ -171,11 +171,11 @@ def test_parametric_workflow():
 
     study1.design_points.delete_design_points(design_points=[dp1.obj_name])
     assert len(study1.design_points) == 2
-    study_names = set([*solver_session.parametric_studies.keys()])
+    study_names = {*solver_session.parametric_studies.keys()}
     solver_session.parametric_studies.duplicate()
     assert len(solver_session.parametric_studies) == 2
     study2_name = (
-        set([*solver_session.parametric_studies.keys()]).difference(study_names).pop()
+        {*solver_session.parametric_studies.keys()}.difference(study_names).pop()
     )
     study2 = solver_session.parametric_studies[study2_name]
     assert len(study2.design_points) == 2

@@ -28,7 +28,7 @@ import os
 from pathlib import Path
 import shutil
 import string
-from typing import Any, Dict
+from typing import Any
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import FluentMode, launch_fluent
@@ -123,9 +123,9 @@ def _write_command_query_stub(name: str, info: Any, f: FileIO):
     if info.get("args"):
         for arg in info.get("args"):
             signature.write(
-                f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
+                f"{indent}{arg['name']}: {_PY_TYPE_BY_DM_TYPE[arg['type']]} | None = None,\n"
             )
-    signature.write(f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...')
+    signature.write(f"{indent}) -> {_PY_TYPE_BY_DM_TYPE[info['returntype']]}: ...")
     f.write(f"\n    def {name}{signature.getvalue()}\n")
 
 
@@ -161,15 +161,15 @@ def _build_command_query_docstring(
         doc.write(f"{indent}Parameters\n")
         doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
-            doc.write(f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n')
+            doc.write(f"{indent}{arg['name']} : {_PY_TYPE_BY_DM_TYPE[arg['type']]}\n")
             if arg.get("helpstring"):
                 for line in arg["helpstring"].splitlines():
                     doc.write(f"{indent}    {line}\n")
             elif arg.get("docstring"):
-                doc.write(f'{indent}    {arg["docstring"]}\n')
+                doc.write(f"{indent}    {arg['docstring']}\n")
     doc.write(f"\n{indent}Returns\n")
     doc.write(f"{indent}{'-' * len('Returns')}\n")
-    doc.write(f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n')
+    doc.write(f"{indent}{_PY_TYPE_BY_DM_TYPE[info['returntype']]}\n")
     if meshing_utility_examples.get(name):
         doc.write(f"\n{indent}Examples\n")
         doc.write(f"{indent}{'-' * len('Examples')}\n")
@@ -230,7 +230,7 @@ class DataModelGenerator:
     def __init__(self, version, static_infos: dict, verbose: bool = False):
         self.version = version
         self._server_static_infos = static_infos
-        self._static_info: Dict[str, DataModelStaticInfo] = {}
+        self._static_info: dict[str, DataModelStaticInfo] = {}
         self._verbose = verbose
         if StaticInfoType.DATAMODEL_WORKFLOW in static_infos:
             self._static_info["workflow"] = DataModelStaticInfo(
@@ -314,12 +314,12 @@ class DataModelGenerator:
         )
 
         if run_meshing_mode:
-            for _, info in self._static_info.items():
+            for info in self._static_info.values():
                 if "meshing" in info.modes:
                     info.static_info = self._get_static_info(info.static_info_type)
 
         if run_solver_mode:
-            for _, info in self._static_info.items():
+            for info in self._static_info.values():
                 if "solver" in info.modes:
                     info.static_info = self._get_static_info(info.static_info_type)
 
@@ -435,7 +435,7 @@ class DataModelGenerator:
                 f"_{k}", info["namedobjects"][k], f, level + 2
             )
             # Specify the concrete named object type for __getitem__
-            f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
+            f.write(f"{indent}        def __getitem__(self, key: str) -> _{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
         for k in singletons:
             if k.isidentifier():
@@ -548,7 +548,7 @@ class DataModelGenerator:
         api_tree = {"<meshing_session>": {}, "<solver_session>": {}}
         for name, info in self._static_info.items():
             if self._verbose:
-                print(f"{str(info.file_name)}")
+                print(f"{info.file_name!s}")
             if info.static_info is None:
                 continue
             with open(info.file_name, "w", encoding="utf8") as f:
@@ -582,7 +582,7 @@ class DataModelGenerator:
         return api_tree
 
     def _delete_generated_files(self):
-        for _, info in self._static_info.items():
+        for info in self._static_info.values():
             if info.file_name.exists():
                 info.file_name.unlink()
         if Path(_MESHING_DM_DOC_DIR).exists():

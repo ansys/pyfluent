@@ -43,8 +43,8 @@ class Fake:
 def test_data_model_cache():
     cache = DataModelCache()
     cache.set_state("x", Fake([("A", ""), ("x", "")]), 42.0)
-    assert 42.0 == cache.get_state("x", Fake([("A", ""), ("x", "")]))
-    assert dict(x=42.0) == cache.get_state("x", Fake([("A", "")]))
+    assert cache.get_state("x", Fake([("A", ""), ("x", "")])) == 42.0
+    assert cache.get_state("x", Fake([("A", "")])) == {"x": 42.0}
     assert DataModelCache.Empty == cache.get_state("x", Fake([("B", "")]))
     assert DataModelCache.Empty == cache.get_state("y", Fake([]))
 
@@ -240,8 +240,8 @@ def test_update_cache_internal_names_as_keys(
 def test_get_cached_values_in_command_arguments(new_meshing_session):
     wt = new_meshing_session.watertight()
     geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName="Bob")
-    geo_import.Arguments = dict(FileName=None)
+    geo_import.Arguments = {"FileName": "Bob"}
+    geo_import.Arguments = {"FileName": None}
     assert "FileName" in wt.import_geometry.command_arguments()
     assert wt.import_geometry.command_arguments()["FileName"] is None
 

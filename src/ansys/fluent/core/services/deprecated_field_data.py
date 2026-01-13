@@ -22,7 +22,7 @@
 
 """Deprecated wrappers over FieldData gRPC service of Fluent."""
 
-from typing import Callable, Dict, List
+from collections.abc import Callable
 import warnings
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
@@ -245,12 +245,12 @@ class DeprecatedFieldData:
             is_data_valid, field_info
         )
 
-        surface_args = dict(
-            surface_ids=self._allowed_surface_ids,
-            surface_name=self._allowed_surface_names,
-        )
+        surface_args = {
+            "surface_ids": self._allowed_surface_ids,
+            "surface_name": self._allowed_surface_names,
+        }
         scalar_field_args = {
-            **dict(field_name=self._allowed_scalar_field_names),
+            **{"field_name": self._allowed_scalar_field_names},
             **surface_args,
         }
         self.get_scalar_field_data = override_help_text(
@@ -264,7 +264,7 @@ class DeprecatedFieldData:
             _FieldMethod(
                 field_data_accessor=self.get_vector_field_data,
                 args_allowed_values_accessors={
-                    **dict(field_name=self._allowed_vector_field_names),
+                    **{"field_name": self._allowed_vector_field_names},
                     **surface_args,
                 },
             ),
@@ -310,10 +310,10 @@ class DeprecatedFieldData:
     def get_scalar_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         node_value: bool | None = True,
         boundary_value: bool | None = True,
-    ) -> ScalarFieldData | Dict[int, ScalarFieldData]:
+    ) -> ScalarFieldData | dict[int, ScalarFieldData]:
         """Get scalar field data on a surface.
 
         Parameters
@@ -393,15 +393,15 @@ class DeprecatedFieldData:
     )
     def get_surface_data(
         self,
-        data_types: List[SurfaceDataType] | List[str],
-        surfaces: List[int | str],
+        data_types: list[SurfaceDataType] | list[str],
+        surfaces: list[int | str],
         overset_mesh: bool | None = False,
     ) -> (
         Vertices
         | FacesConnectivity
         | FacesNormal
         | FacesCentroid
-        | Dict[int, Vertices | FacesConnectivity | FacesNormal | FacesCentroid]
+        | dict[int, Vertices | FacesConnectivity | FacesNormal | FacesCentroid]
     ):
         """Get surface data (vertices, faces connectivity, centroids, and normals).
 
@@ -522,8 +522,8 @@ class DeprecatedFieldData:
     def get_vector_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
-    ) -> VectorFieldData | Dict[int, VectorFieldData]:
+        surfaces: list[int | str],
+    ) -> VectorFieldData | dict[int, VectorFieldData]:
         """Get vector field data on a surface.
 
         Parameters
@@ -592,7 +592,7 @@ class DeprecatedFieldData:
     def get_pathlines_field_data(
         self,
         field_name: str,
-        surfaces: List[int | str],
+        surfaces: list[int | str],
         additional_field_name: str = "",
         provide_particle_time_field: bool | None = False,
         node_value: bool | None = True,
@@ -605,7 +605,7 @@ class DeprecatedFieldData:
         coarsen: int | None = 1,
         velocity_domain: str | None = "all-phases",
         zones: list | None = None,
-    ) -> Dict:
+    ) -> dict:
         """Get the pathlines field data on a surface.
 
         Parameters

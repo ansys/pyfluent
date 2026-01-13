@@ -476,9 +476,7 @@ solver.settings.file.read_case(file_name="ntgk.cas.h5")
 solver.settings.setup.models.battery.eload_condition.eload_settings.eload_type = (
     "specified-resistance"
 )
-solver.settings.setup.models.battery.eload_condition.eload_settings.external_resistance = (
-    0.5
-)
+solver.settings.setup.models.battery.eload_condition.eload_settings.external_resistance = 0.5
 
 # Create a new cell register named "register_patch"
 patch = solver.settings.solution.cell_registers.create(name="register_patch")

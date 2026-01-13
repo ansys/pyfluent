@@ -102,21 +102,20 @@ def find_remoting_ip() -> str:
     for ip in all_ips:
         port = get_free_port()
         address = f"{ip}:{port}"
-        with _GrpcServer(address):
-            with grpc.insecure_channel(address) as channel:
-                stub = health_pb2_grpc.HealthStub(channel)
-                try:
-                    if (
-                        stub.Check(
-                            health_pb2.HealthCheckRequest(),
-                            timeout=config.infer_remoting_ip_timeout_per_ip,
-                        ).status
-                        == health_pb2.HealthCheckResponse.ServingStatus.SERVING
-                    ):
-                        network_logger.debug(f"Can use {ip} as remoting ip")
-                        return ip
-                except Exception:
-                    network_logger.debug(f"Cannot use {ip} as remoting ip")
+        with _GrpcServer(address), grpc.insecure_channel(address) as channel:
+            stub = health_pb2_grpc.HealthStub(channel)
+            try:
+                if (
+                    stub.Check(
+                        health_pb2.HealthCheckRequest(),
+                        timeout=config.infer_remoting_ip_timeout_per_ip,
+                    ).status
+                    == health_pb2.HealthCheckResponse.ServingStatus.SERVING
+                ):
+                    network_logger.debug(f"Can use {ip} as remoting ip")
+                    return ip
+            except Exception:
+                network_logger.debug(f"Cannot use {ip} as remoting ip")
 
 
 def check_url_exists(url: str) -> bool:

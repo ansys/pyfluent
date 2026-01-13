@@ -77,8 +77,7 @@ def test_get_capitalize_match_for_word_from_names():
         names=api_object_names,
     )
     assert "font" not in capitalize_match_cases
-    assert set(capitalize_match_cases) == set(
-        [
+    assert set(capitalize_match_cases) == {
             "TextFontAutomaticHorizontalSize",
             "TextFontName",
             "TextFontFixedHorizontalSize",
@@ -90,8 +89,7 @@ def test_get_capitalize_match_for_word_from_names():
             "TextFontFixedUnits",
             "TextFontAutomaticUnits",
             "Font",
-        ]
-    )
+        }
 
 
 @pytest.mark.fluent_version("==26.1")

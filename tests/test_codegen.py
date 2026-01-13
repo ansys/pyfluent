@@ -65,12 +65,10 @@ def test_settings_allowed_values(new_solver_session):
     )
 
     file_type_1 = getattr(module, "file_type_1")
-    assert set(file_type_1._allowed_values) == set(
-        ["case", "case-data", "data", "mesh"]
-    )
+    assert set(file_type_1._allowed_values) == {"case", "case-data", "data", "mesh"}
 
     unit = getattr(module, "unit")
-    assert set(unit._allowed_values) == set(["m", "cm", "mm", "in", "ft"])
+    assert set(unit._allowed_values) == {"m", "cm", "mm", "in", "ft"}
 
 
 def test_codegen_with_no_static_info(monkeypatch):
@@ -80,7 +78,7 @@ def test_codegen_with_no_static_info(monkeypatch):
     allapigen.generate(version, {})
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 1
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle"}
+    assert {p.name for p in generated_paths} == {f"api_tree_{version}.pickle"}
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
         api_tree = pickle.load(f)
@@ -172,11 +170,11 @@ def test_codegen_with_tui_solver_static_info(mode, monkeypatch):
     allapigen.generate(version, static_infos)
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {f"api_tree_{version}.pickle", mode}
+    assert {p.name for p in generated_paths} == {f"api_tree_{version}.pickle", mode}
     solver_paths = list((codegen_outdir / mode).iterdir())
     assert len(solver_paths) == 1
-    assert set(p.name for p in solver_paths) == {f"tui_{version}.py"}
-    with open(codegen_outdir / mode / f"tui_{version}.py", "r") as f:
+    assert {p.name for p in solver_paths} == {f"tui_{version}.py"}
+    with open(codegen_outdir / mode / f"tui_{version}.py") as f:
         assert f.read().strip() == _get_expected_tui_api_output(mode)
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -399,20 +397,19 @@ def test_codegen_with_datamodel_static_info(monkeypatch, rules):
     allapigen.generate(version, static_infos)
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {
+    assert {p.name for p in generated_paths} == {
         f"api_tree_{version}.pickle",
         f"datamodel_{version}",
     }
     datamodel_paths = list((codegen_outdir / f"datamodel_{version}").iterdir())
     assert len(datamodel_paths) == 1 or 2
-    assert set(p.name for p in datamodel_paths) == {
+    assert {p.name for p in datamodel_paths} == {
         f"{datamodel_file_name_map[rules]}.py"
     } or {f"{datamodel_file_name_map[rules]}.pyi"}
     with open(
         codegen_outdir
         / f"datamodel_{version}"
         / f"{datamodel_file_name_map[rules]}.py",
-        "r",
     ) as f:
         assert f.read().strip() == _expected_datamodel_api_output
     api_tree_file = get_api_tree_file_name(version)
@@ -722,7 +719,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
     allapigen.generate(version, static_infos)
     generated_paths = list(codegen_outdir.iterdir())
     assert len(generated_paths) == 2
-    assert set(p.name for p in generated_paths) == {
+    assert {p.name for p in generated_paths} == {
         f"api_tree_{version}.pickle",
         "solver",
     }
@@ -730,7 +727,7 @@ def test_codegen_with_settings_static_info(monkeypatch):
         f"settings_{version}.py",
         f"settings_{version}.pyi",
     }
-    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+    with open(codegen_outdir / "solver" / f"settings_{version}.py") as f:
         assert f.read().strip() == _expected_settings_api_output
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
@@ -846,14 +843,13 @@ _settings_static_info_combined_case = {
 def test_codegen_with_settings_static_info_edge_cases(
     monkeypatch, settings_static_info, class_names
 ):
-
     codegen_outdir = Path(tempfile.mkdtemp())
     monkeypatch.setattr(pyfluent.config, "codegen_outdir", codegen_outdir)
     version = "251"
     static_infos = {}
     static_infos[StaticInfoType.SETTINGS] = settings_static_info
     allapigen.generate(version, static_infos)
-    with open(codegen_outdir / "solver" / f"settings_{version}.py", "r") as f:
+    with open(codegen_outdir / "solver" / f"settings_{version}.py") as f:
         module_def = ast.parse(f.read())
         class_names_from_file = [
             x.name for x in module_def.body if isinstance(x, ast.ClassDef)

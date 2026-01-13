@@ -107,15 +107,15 @@ geometry_filename = examples.download_file(
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
+workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
 workflow.TaskObject["Import Geometry"].Execute()
 
 workflow.TaskObject["Generate the Surface Mesh"].Execute()
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    SetupType="The geometry consists of only fluid regions with no voids",
-    wall_to_internal="Yes",
-    InvokeShareTopology="Yes",
-)
+workflow.TaskObject["Describe Geometry"].Arguments = {
+    "SetupType": "The geometry consists of only fluid regions with no voids",
+    "wall_to_internal": "Yes",
+    "InvokeShareTopology": "Yes",
+}
 workflow.TaskObject["Describe Geometry"].Execute()
 workflow.TaskObject["Apply Share Topology"].Execute()
 workflow.TaskObject["Update Boundaries"].Execute()

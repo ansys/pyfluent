@@ -28,7 +28,6 @@ from ansys.fluent.core.utils.execution import timeout_loop
 
 @pytest.mark.fluent_version(">=23.2")
 def test_solver_monitors(new_solver_session):
-
     solver = new_solver_session
 
     import_case = examples.download_file(
@@ -65,7 +64,7 @@ def test_solver_monitors(new_solver_session):
     # monitor set names becomes available after initializing
     solver.solution.initialization.hybrid_initialize()
 
-    monitor_set_names = ordered_report_plot_names + ["residual"]
+    monitor_set_names = [*ordered_report_plot_names, "residual"]
     assert timeout_loop(
         lambda: sorted(solver.monitors.get_monitor_set_names())
         == sorted(monitor_set_names),

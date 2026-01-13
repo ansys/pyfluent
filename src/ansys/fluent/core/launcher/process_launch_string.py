@@ -79,10 +79,7 @@ def _build_fluent_launch_args_string(**kwargs) -> str:
                     continue
             fluent_map = v.get("fluent_map")
             if fluent_map:
-                if isinstance(argval, str):
-                    json_key = argval
-                else:
-                    json_key = json.dumps(argval)
+                json_key = argval if isinstance(argval, str) else json.dumps(argval)
                 argval = fluent_map[json_key]
             launch_args_string += v["fluent_format"].replace("{}", str(argval))
     additional_arguments = kwargs["additional_arguments"]

@@ -22,11 +22,12 @@
 
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
+from collections.abc import Callable
 from enum import Enum
 import json
 import logging
 import os
-from typing import Any, Callable, Dict
+from typing import Any
 import warnings
 import weakref
 
@@ -127,7 +128,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         event_type: Enum | None = None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
@@ -179,7 +180,7 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
@@ -328,7 +329,7 @@ class BaseSession:
         server_info_file_name: str,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.

@@ -46,7 +46,7 @@ deprecated_class_version = {}
 
 
 def _get_indent_str(indent):
-    return f"{' '*indent*4}"
+    return f"{' ' * indent * 4}"
 
 
 def _generate_table_for_rst(r, data_dict=None):
@@ -58,19 +58,19 @@ def _generate_table_for_rst(r, data_dict=None):
     col_gap = 3
     total = key_max + val_max + col_gap
     # Top border
-    r.write(f'{"="*key_max}{" "*col_gap}{"="*val_max}\n\n')
+    r.write(f"{'=' * key_max}{' ' * col_gap}{'=' * val_max}\n\n")
     header = True
     for key, value in data_dict.items():
         if header:
             # Write header and border
-            r.write(f'{key}{" "*(total-len(key)-len(value))}{value}\n\n')
-            r.write(f'{"="*key_max}{" "*col_gap}{"="*val_max}\n')
+            r.write(f"{key}{' ' * (total - len(key) - len(value))}{value}\n\n")
+            r.write(f"{'=' * key_max}{' ' * col_gap}{'=' * val_max}\n")
             header = False
         else:
             # actual data
-            r.write(f'{key}{" "*(total-len(key)-len(value))}{value}\n\n')
+            r.write(f"{key}{' ' * (total - len(key) - len(value))}{value}\n\n")
     # Bottom border
-    r.write(f'{"="*key_max}{" "*col_gap}{"="*val_max}\n\n')
+    r.write(f"{'=' * key_max}{' ' * col_gap}{'=' * val_max}\n\n")
 
 
 def _populate_parents_list(cls):
@@ -153,7 +153,7 @@ def _populate_rst_from_settings(rst_dir, cls, version):
         else:
             r.write(f".. _{cls_name}:\n\n")
         r.write(f"{cls_orig_name}\n")
-        r.write(f'{"="*(len(cls_orig_name))}\n\n')
+        r.write(f"{'=' * (len(cls_orig_name))}\n\n")
         deprecated = getattr(cls, "_deprecated_version", None)
         if deprecated:
             try:
@@ -241,13 +241,13 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
             search(class_name)
         output = buffer.getvalue()
         out = output.split("\n")
-        settings = set(
-            [
+        settings = {
+
                 setting
                 for setting in out
                 if "tui" not in setting and "meshing" not in setting
-            ]
-        )
+
+        }
         for setting in settings:
             if setting and setting.split(".")[-1].split(" ")[0] == class_name:
                 setting = (
@@ -261,10 +261,10 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
     with open(deprecated_rst, "w", encoding="utf-8") as f:
         f.write(":orphan:\n\n")
         f.write(f"{name}\n")
-        f.write(f'{"="*(len(name))}\n\n')
+        f.write(f"{'=' * (len(name))}\n\n")
 
         f.write(f"{pyfluent_name}\n")
-        f.write(f'{"-"*(len(pyfluent_name))}\n\n')
+        f.write(f"{'-' * (len(pyfluent_name))}\n\n")
         f.write(".. list-table:: Deprecated PyFluent APIs\n")
         f.write("   :header-rows: 1\n\n")
         f.write("   * - " + "\n     - ".join(pyflunet_header) + "\n")
@@ -272,7 +272,7 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
             f.write("   * - " + "\n     - ".join(row) + "\n")
 
         f.write(f"{fluent_name}\n")
-        f.write(f'{"-"*(len(fluent_name))}\n\n')
+        f.write(f"{'-' * (len(fluent_name))}\n\n")
         f.write(".. list-table:: Deprecated Ansys Fluent APIs\n")
         f.write("   :header-rows: 1\n\n")
         f.write("   * - " + "\n     - ".join(fluent_header) + "\n")

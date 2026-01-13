@@ -25,8 +25,10 @@
 from google.protobuf.json_format import MessageToDict
 import grpc
 
-from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
-from ansys.api.fluent.v0 import monitor_pb2_grpc as MonitorGrpcModule
+from ansys.api.fluent.v0 import (
+    monitor_pb2 as MonitorModule,
+    monitor_pb2_grpc as MonitorGrpcModule,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,

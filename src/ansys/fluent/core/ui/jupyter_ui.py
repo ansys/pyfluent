@@ -149,7 +149,7 @@ def _command_ui(func, props):
                 print("Error:", e)
 
     button.on_click(on_click)
-    return widgets.VBox(controls + [button, output])
+    return widgets.VBox([*controls, button, output])
 
 
 def settings_ui(obj, indent=0):

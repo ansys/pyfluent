@@ -24,7 +24,6 @@
 Utility functions for working with Fluent Docker images.
 """
 
-
 import os
 
 

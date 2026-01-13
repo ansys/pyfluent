@@ -216,9 +216,9 @@ class DockerLauncher:
         if self.argvals["container_dict"] is None:
             self.argvals["container_dict"] = {}
         if self.argvals["product_version"]:
-            self.argvals["container_dict"][
-                "image_tag"
-            ] = f"v{FluentVersion(self.argvals['product_version']).value}"
+            self.argvals["container_dict"]["image_tag"] = (
+                f"v{FluentVersion(self.argvals['product_version']).value}"
+            )
 
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
@@ -239,7 +239,6 @@ class DockerLauncher:
             self._args.append(" -grpc-certs-folder=/tmp/certs")
 
     def __call__(self):
-
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
                 self._args,

@@ -52,7 +52,7 @@ Display results
 
 from math import ceil
 import os
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.launcher import launch_fluent
@@ -62,8 +62,8 @@ BASE_DP_NAME = "Base DP"
 
 
 def convert_design_point_parameter_units(
-    value: Dict[str, float | int | str],
-) -> Dict[str, float | int]:
+    value: dict[str, float | int | str],
+) -> dict[str, float | int]:
     """Convert design point parameter units."""
 
     def conv(val):
@@ -220,12 +220,12 @@ def _run_local_study_in_fluent(
     @asynchronous
     def apply_to_study(study, inputs):
         for input in inputs:
-            dp_names = set([*study.design_points.keys()])
+            dp_names = {*study.design_points.keys()}
             try:
                 study.design_points.create_1()
             except AttributeError:
                 study.design_points.create()
-            dp1_name = set([*study.design_points.keys()]).difference(dp_names).pop()
+            dp1_name = {*study.design_points.keys()}.difference(dp_names).pop()
             dp = study.design_points[dp1_name]
             dp.capture_simulation_report_data = capture_report_data
             dp.input_parameters = convert_design_point_parameter_units(input.copy())
@@ -268,7 +268,7 @@ def _run_local_study_in_fluent(
         update.result()
 
     for study in studies:
-        for _, design_point in study.design_points.items():
+        for design_point in study.design_points.values():
             for local_design_point in local_study.design_point_table:
                 local_design_point.output_parameters = (
                     design_point.output_parameters.get_state()

@@ -207,9 +207,9 @@ def test_wildcard_path_is_iterable(new_solver_session):
     solver.file.read(file_name=case_path, file_type="case", lightweight_setup=True)
 
     velocity_inlet = solver.setup.boundary_conditions.velocity_inlet
-    assert [x for x in velocity_inlet] == ["inlet2", "inlet1"]
-    assert [x for x in velocity_inlet["*let*"]] == ["inlet2", "inlet1"]
-    assert [x for x in velocity_inlet["*1*"]] == ["inlet1"]
+    assert list(velocity_inlet) == ["inlet2", "inlet1"]
+    assert list(velocity_inlet["*let*"]) == ["inlet2", "inlet1"]
+    assert list(velocity_inlet["*1*"]) == ["inlet1"]
 
     test_data = []
     for k, v in velocity_inlet.items():
@@ -272,9 +272,9 @@ def test_deprecated_settings_with_custom_aliases(new_solver_session):
         == 2
     )
 
-    solver.setup.boundary_conditions.wall["wall-inlet"].thermal.thermal_bc = (
-        "Temperature"
-    )
+    solver.setup.boundary_conditions.wall[
+        "wall-inlet"
+    ].thermal.thermal_bc = "Temperature"
     assert (
         len(
             solver.setup.boundary_conditions.wall[
@@ -445,9 +445,9 @@ def test_command_return_type(new_solver_session):
     case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     assert solver.file.read_case_data(file_name=case_path) is None
-    solver.solution.report_definitions.surface["surface-1"] = dict(
-        surface_names=["cold-inlet"]
-    )
+    solver.solution.report_definitions.surface["surface-1"] = {
+        "surface_names": ["cold-inlet"]
+    }
     ret = solver.solution.report_definitions.compute(report_defs=["surface-1"])
     assert ret is not None
 
@@ -522,12 +522,8 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
             "option": ("../kernel_type", "option"),
         }
     )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = (
-        True
-    )
-    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type = (
-        "inverse-distance"
-    )
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.enabled = True
+    solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel_type = "inverse-distance"
     solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel = {
         "option": "gaussian",
         "gaussian_factor": 0.5,
@@ -547,9 +543,7 @@ def test_child_alias_with_parent_path(mixing_elbow_settings_session):
             "solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor = 0.6"
         ),
     ):
-        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = (
-            0.6
-        )
+        solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.kernel.gaussian_factor = 0.6
     assert (
         solver.settings.setup.models.discrete_phase.numerics.node_based_averaging.gaussian_factor()
         == 0.6
@@ -572,9 +566,7 @@ def test_nested_alias(mixing_elbow_settings_session):
             "solver.settings.setup.models.viscous.k_omega.k_omega_low_re_correction = False"
         ),
     ):
-        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction = (
-            False
-        )
+        solver.settings.setup.models.viscous.k_omega_options.k_omega_low_re_correction = False
     with pytest.warns(
         DeprecatedSettingWarning,
         match=(
@@ -724,9 +716,9 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
 
     # Named-object
     solver.settings.solution.report_definitions.surface["report-def-1"] = {}
-    solver.settings.solution.report_definitions.surface["report-def-1"].report_type = (
-        "surface-area"
-    )
+    solver.settings.solution.report_definitions.surface[
+        "report-def-1"
+    ].report_type = "surface-area"
     solver.settings.solution.report_definitions.surface[
         "report-def-1"
     ].surface_names = ["cold-inlet", "hot-inlet"]
@@ -811,28 +803,18 @@ def test_migration_adapter_for_strings(mixing_elbow_settings_session):
         True
     )
 
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.enabled = (
-        True
-    )
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.option = (
-        "particle-time-step"
-    )
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.dpm_time_step_size = (
-        0.0002
-    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.enabled = True
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.option = "particle-time-step"
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.dpm_time_step_size = 0.0002
 
     # Migration adapter is set on the 'create_particles_at' to accept boolean values as well besides string
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
-        False
-    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = False
     assert (
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
         == "fluid-flow-time-step"
     )
 
-    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = (
-        True
-    )
+    solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at = True
     assert (
         solver.settings.setup.models.discrete_phase.general_settings.unsteady_tracking.create_particles_at()
         == "particle-time-step"

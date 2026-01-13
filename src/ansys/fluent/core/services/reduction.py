@@ -21,14 +21,17 @@
 # SOFTWARE.
 
 """Wrappers over Reduction gRPC service of Fluent."""
+
 from collections.abc import Iterable
-from typing import Any, List, Tuple
+from typing import Any
 import weakref
 
 import grpc
 
-from ansys.api.fluent.v0 import reduction_pb2 as ReductionProtoModule
-from ansys.api.fluent.v0 import reduction_pb2_grpc as ReductionGrpcModule
+from ansys.api.fluent.v0 import (
+    reduction_pb2 as ReductionProtoModule,
+    reduction_pb2_grpc as ReductionGrpcModule,
+)
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.services.interceptors import (
@@ -42,14 +45,14 @@ from ansys.fluent.core.variable_strategies import (
     FluentExprNamingStrategy as naming_strategy,
 )
 
-Path = List[Tuple[str, str]]
+Path = list[tuple[str, str]]
 
 
 class ReductionService:
     """Reduction Service."""
 
     def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
         """__init__ method of Reduction class."""
         intercept_channel = grpc.intercept_channel(
@@ -250,7 +253,9 @@ def _root(obj):
     return (
         None
         if isinstance(obj, list)
-        else obj if not getattr(obj, "obj_name", None) else _root(obj._parent)
+        else obj
+        if not getattr(obj, "obj_name", None)
+        else _root(obj._parent)
     )
 
 
@@ -290,7 +295,7 @@ class Reduction:
         ):
             raise ValueError(f"Invalid location input: '{loc}'")
 
-    def _get_location_string(self, locations, ctxt) -> List[str]:
+    def _get_location_string(self, locations, ctxt) -> list[str]:
         if locations == []:
             return []
         for loc in locations:

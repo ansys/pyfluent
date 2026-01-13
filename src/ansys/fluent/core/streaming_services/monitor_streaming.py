@@ -23,7 +23,6 @@
 """Module for monitors management."""
 
 import threading
-from typing import Dict, List, Tuple
 
 import numpy as np
 
@@ -60,7 +59,7 @@ class MonitorsManager(StreamingService):
         self._monitors_info = None
         self._data_frames = {}
 
-    def get_monitor_set_names(self) -> List[str]:
+    def get_monitor_set_names(self) -> list[str]:
         """Get monitor set names.
 
         Parameters
@@ -120,7 +119,7 @@ class MonitorsManager(StreamingService):
         monitor_set_name,
         start_index: int = 0,
         end_index: int | None = None,
-    ) -> Tuple[np.array, Dict[str, np.array]]:
+    ) -> tuple[np.array, dict[str, np.array]]:
         """Get monitor set data.
 
         Parameters
@@ -178,7 +177,7 @@ class MonitorsManager(StreamingService):
         self._update_dataframe()
 
     def _populate_dataframes(self, data_received, *args, **kwargs):
-        for _, df_data in self._data_frames.items():
+        for df_data in self._data_frames.values():
             df = df_data["df"]
             monitors = df_data["monitors"]
             monitor_data = []
@@ -229,7 +228,7 @@ class MonitorsManager(StreamingService):
                 if "monitors" not in monitor_set_info:
                     continue
                 self._data_frames[monitor_set_name] = {}
-                monitors_name = list(monitor_set_info["monitors"]) + ["xvalues"]
+                monitors_name = [*list(monitor_set_info["monitors"]), "xvalues"]
                 df = _pandas().DataFrame([], columns=monitors_name)
                 df.set_index("xvalues", inplace=True)
                 self._data_frames[monitor_set_name]["df"] = df

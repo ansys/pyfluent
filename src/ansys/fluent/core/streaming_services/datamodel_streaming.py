@@ -76,7 +76,7 @@ class DatamodelStream(StreamingService):
                 )
                 with self._lock:
                     self._streaming = True
-                    for _, cb_list in self._service_callbacks.items():
+                    for cb_list in self._service_callbacks.values():
                         state = response.state if hasattr(response, "state") else None
                         deleted_paths = getattr(response, "deletedpaths", None)
                         cb_list[0](state=state, deleted_paths=deleted_paths)

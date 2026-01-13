@@ -157,9 +157,9 @@ solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"] =
 solver_session.settings.solution.report_definitions.surface[
     "outlet-temp-avg"
 ].report_type = "surface-areaavg"
-solver_session.settings.solution.report_definitions.surface["outlet-temp-avg"].field = (
-    "temperature"
-)
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-temp-avg"
+].field = "temperature"
 solver_session.settings.solution.report_definitions.surface[
     "outlet-temp-avg"
 ].surface_names = ["outlet"]
@@ -168,9 +168,9 @@ solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"] = 
 solver_session.settings.solution.report_definitions.surface[
     "outlet-vel-avg"
 ].report_type = "surface-areaavg"
-solver_session.settings.solution.report_definitions.surface["outlet-vel-avg"].field = (
-    "velocity-magnitude"
-)
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-vel-avg"
+].field = "velocity-magnitude"
 solver_session.settings.solution.report_definitions.surface[
     "outlet-vel-avg"
 ].surface_names = ["outlet"]

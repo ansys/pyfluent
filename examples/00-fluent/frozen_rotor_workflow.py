@@ -367,9 +367,7 @@ blade_pressure_report_def.per_surface = False
 # ==============================================================================================================
 initialization = solver_session.settings.solution.initialization
 initialization.reference_frame = "absolute"
-initialization.hybrid_init_options.general_settings.initialization_options.initial_pressure = (
-    True
-)
+initialization.hybrid_init_options.general_settings.initialization_options.initial_pressure = True
 initialization.hybrid_initialize()
 
 # Run calculation settings

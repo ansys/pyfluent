@@ -24,7 +24,6 @@
 
 from dataclasses import dataclass
 import os
-from typing import List
 import xml.etree.ElementTree as XmlET
 
 from defusedxml.ElementTree import fromstring
@@ -52,8 +51,8 @@ class Region:
     name: str
     display_name: str
     topology: str
-    input_variables: List[str]
-    output_variables: List[str]
+    input_variables: list[str]
+    output_variables: list[str]
 
 
 class SystemCoupling:
@@ -86,11 +85,11 @@ class SystemCoupling:
         """Get participant type."""
         return "FLUENT"
 
-    def get_variables(self) -> List[Variable]:
+    def get_variables(self) -> list[Variable]:
         """Get variables."""
 
         if self._solver.get_fluent_version() >= FluentVersion.v251:
-            variables = list()
+            variables = []
             region_names = (
                 self._solver.settings.setup.models.system_coupling.get_all_regions()
             )
@@ -108,7 +107,7 @@ class SystemCoupling:
                 )
                 variable_names.update(in_var_names)
                 variable_names.update(out_var_names)
-            variable_names = sorted(list(variable_names))
+            variable_names = sorted(variable_names)
             for variable_name in variable_names:
                 variables.append(
                     Variable(
@@ -131,14 +130,14 @@ class SystemCoupling:
             # maintains back-compatibility for 24.1 and 24.2
             return self.__get_syc_setup()["variables"]
 
-    def get_regions(self) -> List[Region]:
+    def get_regions(self) -> list[Region]:
         """Get regions."""
 
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             region_names = (
                 self._solver.settings.setup.models.system_coupling.get_all_regions()
             )
-            regions = list()
+            regions = []
             for region_name in region_names:
                 regions.append(
                     Region(
@@ -218,7 +217,7 @@ class SystemCoupling:
         if isinstance(value, list):
             return value
         elif value is None:
-            return list()
+            return []
         raise TypeError(f"_get_list unexpected type of {value}")
 
     def __get_syc_setup(self) -> dict:
@@ -253,11 +252,11 @@ class SystemCoupling:
                 if os.path.exists(examples_path_scp):
                     scp_file_name = examples_path_scp
 
-            assert os.path.exists(
-                scp_file_name
-            ), f"ERROR: could not create System Coupling SCP file: {scp_file_name}"
+            assert os.path.exists(scp_file_name), (
+                f"ERROR: could not create System Coupling SCP file: {scp_file_name}"
+            )
 
-            with open(scp_file_name, "r") as f:
+            with open(scp_file_name) as f:
                 xml_string = f.read()
 
             os.remove(scp_file_name)
@@ -296,10 +295,7 @@ class SystemCoupling:
                 "heatflow",
                 "mass-flow-rate",
             }
-            if get_name(variable) in ext_vars:
-                return True
-            else:
-                return False
+            return get_name(variable) in ext_vars
 
         def get_location(variable) -> str:
             # SCP file contents for location are not always correct,
@@ -319,14 +315,14 @@ class SystemCoupling:
             else:
                 return "Unspecified"
 
-        setup_info = dict()
+        setup_info = {}
 
         xml_root = XmlET.ElementTree(fromstring(get_scp_string()))
         cosim_control = xml_root.find("./CosimulationControl")
 
         setup_info["analysis-type"] = cosim_control.find("AnalysisType").text
 
-        setup_info["variables"] = list()
+        setup_info["variables"] = []
         for variable in cosim_control.find("Variables").findall("Variable"):
             setup_info["variables"].append(
                 Variable(

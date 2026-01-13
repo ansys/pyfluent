@@ -22,6 +22,7 @@
 
 """Session to session data transfer, supporting Fluent in all modes."""
 
+import contextlib
 from functools import partial
 import logging
 import os
@@ -44,10 +45,8 @@ class MeshWriteError(RuntimeError):
 @asynchronous
 def _read_case_into(solver, file_type, file_name, full_file_name_container=None):
     network_logger.info(f"Trying to read case: {file_name}")
-    try:
+    with contextlib.suppress(AttributeError):
         solver._file_transfer_service.upload(file_name=file_name)
-    except AttributeError:
-        pass
     if full_file_name_container:
         solver.settings.file.read(
             file_name=full_file_name_container, file_type=file_type
@@ -115,10 +114,7 @@ def transfer_case(
         If mesh cannot be written from ``source_instance``.
     """
     inside_container = source_instance.connection_properties.inside_container
-    if not workdir:
-        workdir = Path(pyfluent.config.examples_path)
-    else:
-        workdir = Path(workdir)
+    workdir = Path(pyfluent.config.examples_path) if not workdir else Path(workdir)
     if inside_container:
         if not container_workdir:
             network_logger.warning(
@@ -176,12 +172,10 @@ def transfer_case(
                 writer("y")
             else:
                 writer()
-            try:
+            with contextlib.suppress(AttributeError):
                 source_instance._file_transfer_service.download(
                     file_name=full_file_name
                 )
-            except AttributeError:
-                pass
             network_logger.info(f"Saved mesh from meshing session: {full_file_name}")
             if inside_container:
                 _read_case_into_each(

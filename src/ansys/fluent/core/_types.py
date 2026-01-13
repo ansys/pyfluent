@@ -28,8 +28,10 @@ This module centralizes reusable typing constructs
 
 from __future__ import annotations
 
-import os
-from typing import TypeAlias
+from typing import TYPE_CHECKING, TypeAlias
+
+if TYPE_CHECKING:
+    import os
 
 PathType: TypeAlias = "os.PathLike[str] | os.PathLike[bytes] | str | bytes"
 """Type alias for file system paths."""

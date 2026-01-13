@@ -106,23 +106,21 @@ print(meshing_session.get_fluent_version())
 
 meshing_session.workflow.InitializeWorkflow(WorkflowType=r"Watertight Geometry")
 
-meshing_session.workflow.TaskObject["Import Geometry"].Arguments = dict(
-    FileName=geom_filename
-)
+meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
+    "FileName": geom_filename
+}
 
 meshing_session.workflow.TaskObject["Import Geometry"].Execute()
 
 meshing_session.workflow.TaskObject["Add Local Sizing"].Execute()
 
-meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Arguments = dict(
-    {
+meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
         "CFDSurfaceMeshControls": {
             "MinSize": 0.3,
             "MaxSize": 1,
             "ScopeProximityTo": "faces",
         },
     }
-)
 meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 meshing_session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
@@ -364,15 +362,13 @@ meshing_session.workflow.TaskObject["Describe Geometry"].InsertNextTask(
 meshing_session.workflow.TaskObject["Run Custom Journal"].Rename(
     NewName=r"set-periodicity"
 )
-meshing_session.workflow.TaskObject["set-periodicity"].Arguments = dict(
-    {
+meshing_session.workflow.TaskObject["set-periodicity"].Arguments = {
         r"JournalString": r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-5* , 0 0 -2.3
 /bo rps translational semi-auto periodic-6-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-7-high , 0 0 -2.3
 """,
     }
-)
 
 meshing_session.workflow.TaskObject["set-periodicity"].Execute()
 
@@ -652,9 +648,9 @@ solver_session.settings.solution.report_definitions.volume["max-vel-louvers4"] =
 solver_session.settings.solution.report_definitions.volume[
     "max-vel-louvers4"
 ].report_type = "volume-max"
-solver_session.settings.solution.report_definitions.volume["max-vel-louvers4"].field = (
-    "velocity-magnitude"
-)
+solver_session.settings.solution.report_definitions.volume[
+    "max-vel-louvers4"
+].field = "velocity-magnitude"
 solver_session.settings.solution.report_definitions.volume[
     "max-vel-louvers4"
 ].cell_zones = ["fluid-tet-4"]
@@ -663,9 +659,9 @@ solver_session.settings.solution.report_definitions.surface["wall-shear-int"] = 
 solver_session.settings.solution.report_definitions.surface[
     "wall-shear-int"
 ].report_type = "surface-integral"
-solver_session.settings.solution.report_definitions.surface["wall-shear-int"].field = (
-    "wall-shear"
-)
+solver_session.settings.solution.report_definitions.surface[
+    "wall-shear-int"
+].field = "wall-shear"
 solver_session.settings.solution.report_definitions.surface[
     "wall-shear-int"
 ].surface_names = [
@@ -736,12 +732,8 @@ solver_session.settings.file.write(file_type="case", file_name="hx-fin-2mm.cas.h
 # Set Aggressive Length Scale Method; Run Calculation & Save Data
 # ===============================================================
 
-solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_method = (
-    "automatic"
-)
-solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.length_scale_methods = (
-    "aggressive"
-)
+solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_method = "automatic"
+solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.length_scale_methods = "aggressive"
 
 solver_session.settings.solution.run_calculation.iterate(iter_count=250)
 
@@ -795,7 +787,7 @@ for ax in axs.flat:
     X = []
     Y = []
     i = -1
-    with open(outFilesList[index], "r") as datafile:
+    with open(outFilesList[index]) as datafile:
         plotting = csv.reader(datafile, delimiter=" ")
         for rows in plotting:
             i += 1
@@ -862,9 +854,9 @@ p.add_scalar_bar(
 # ==================================
 
 solver_session.settings.results.surfaces.iso_surface["x=0.012826"] = {}
-solver_session.settings.results.surfaces.iso_surface["x=0.012826"].field = (
-    "x-coordinate"
-)
+solver_session.settings.results.surfaces.iso_surface[
+    "x=0.012826"
+].field = "x-coordinate"
 solver_session.settings.results.surfaces.iso_surface["x=0.012826"] = {
     "iso_values": [0.012826]
 }

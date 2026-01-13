@@ -109,7 +109,7 @@ class Transcript(StreamingService):
                     transcript += response.transcript
                     if transcript and transcript[-1] == "\n":
                         for callback_map in self._service_callbacks.values():
-                            if "keep_new_lines" in callback_map[-1].keys():
+                            if "keep_new_lines" in callback_map[-1]:
                                 if callback_map[-1]["keep_new_lines"]:
                                     callback_map[0](transcript)
                                 else:

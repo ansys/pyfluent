@@ -96,50 +96,44 @@ geometry_filename = examples.download_file(
 )
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
+workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
 workflow.TaskObject["Import Geometry"].Execute()
 
 #######################################################################################
 # Add Local Face Sizing
 # =====================================================================================
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
+add_local_sizing.Arguments = {
         "AddChild": "yes",
         "BOIControlName": "facesize_front",
         "BOIFaceLabelList": ["wall_ahmed_body_front"],
         "BOIGrowthRate": 1.15,
         "BOISize": 8,
     }
-)
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
+add_local_sizing.Arguments = {
         "AddChild": "yes",
         "BOIControlName": "facesize_rear",
         "BOIFaceLabelList": ["wall_ahmed_body_rear"],
         "BOIGrowthRate": 1.15,
         "BOISize": 5,
     }
-)
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
+add_local_sizing.Arguments = {
         "AddChild": "yes",
         "BOIControlName": "facesize_main",
         "BOIFaceLabelList": ["wall_ahmed_body_main"],
         "BOIGrowthRate": 1.15,
         "BOISize": 12,
     }
-)
 add_local_sizing.Execute()
 
 #######################################################################################
@@ -147,15 +141,13 @@ add_local_sizing.Execute()
 # =====================================================================================
 add_boi_sizing = workflow.TaskObject["Add Local Sizing"]
 add_boi_sizing.InsertCompoundChildTask()
-add_boi_sizing.Arguments = dict(
-    {
+add_boi_sizing.Arguments = {
         "AddChild": "yes",
         "BOIControlName": "boi_1",
         "BOIExecution": "Body Of Influence",
         "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
         "BOISize": 20,
     }
-)
 add_boi_sizing.Execute()
 add_boi_sizing.InsertCompoundChildTask()
 
@@ -164,8 +156,7 @@ add_boi_sizing.InsertCompoundChildTask()
 # Add Surface Mesh Sizing
 # =====================================================================================
 generate_surface_mesh = workflow.TaskObject["Generate the Surface Mesh"]
-generate_surface_mesh.Arguments = dict(
-    {
+generate_surface_mesh.Arguments = {
         "CFDSurfaceMeshControls": {
             "CurvatureNormalAngle": 12,
             "GrowthRate": 1.15,
@@ -174,7 +165,6 @@ generate_surface_mesh.Arguments = dict(
             "SizeFunctions": "Curvature",
         }
     }
-)
 
 generate_surface_mesh.Execute()
 generate_surface_mesh.InsertNextTask(CommandName="ImproveSurfaceMesh")
@@ -185,10 +175,10 @@ improve_surface_mesh.Execute()
 #######################################################################################
 # Describe Geometry, Update Boundaries, Update Regions
 # =====================================================================================
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    CappingRequired="Yes",
-    SetupType="The geometry consists of only fluid regions with no voids",
-)
+workflow.TaskObject["Describe Geometry"].Arguments = {
+    "CappingRequired": "Yes",
+    "SetupType": "The geometry consists of only fluid regions with no voids",
+}
 workflow.TaskObject["Describe Geometry"].Execute()
 workflow.TaskObject["Update Boundaries"].Execute()
 workflow.TaskObject["Update Regions"].Execute()
@@ -283,22 +273,22 @@ session.tui.solve.set.discretization_scheme("k", 1)
 session.tui.solve.set.discretization_scheme("epsilon", 1)
 session.tui.solve.initialize.set_defaults("k", 0.000001)
 
-session.settings.solution.monitor.residual.equations["continuity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["x-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["y-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["z-velocity"].absolute_criteria = (
-    0.0001
-)
+session.settings.solution.monitor.residual.equations[
+    "continuity"
+].absolute_criteria = 0.0001
+session.settings.solution.monitor.residual.equations[
+    "x-velocity"
+].absolute_criteria = 0.0001
+session.settings.solution.monitor.residual.equations[
+    "y-velocity"
+].absolute_criteria = 0.0001
+session.settings.solution.monitor.residual.equations[
+    "z-velocity"
+].absolute_criteria = 0.0001
 session.settings.solution.monitor.residual.equations["k"].absolute_criteria = 0.0001
-session.settings.solution.monitor.residual.equations["epsilon"].absolute_criteria = (
-    0.0001
-)
+session.settings.solution.monitor.residual.equations[
+    "epsilon"
+].absolute_criteria = 0.0001
 
 #######################################################################################
 # Define Report Definitions

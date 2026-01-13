@@ -40,7 +40,7 @@ import logging
 import os
 import tempfile
 import time
-from typing import Any, Dict
+from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
@@ -249,7 +249,7 @@ def launch_remote_fluent(
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Dimension | int = Dimension.THREE,
-    launcher_args: Dict[str, Any] | None = None,
+    launcher_args: dict[str, Any] | None = None,
     file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
@@ -340,7 +340,9 @@ def create_fluent_instance(
     product_name = (
         "fluent-meshing"
         if FluentMode.is_meshing(mode)
-        else "fluent-2ddp" if dimensionality == Dimension.TWO else "fluent-3ddp"
+        else "fluent-2ddp"
+        if dimensionality == Dimension.TWO
+        else "fluent-3ddp"
     )
 
     return pim.create_instance(
@@ -355,7 +357,7 @@ def create_fluent_connection(
     channel,
     cleanup_on_exit: bool,
     instance,
-    launcher_args: Dict[str, Any] | None,
+    launcher_args: dict[str, Any] | None,
 ):
     """Create a Fluent connection."""
 

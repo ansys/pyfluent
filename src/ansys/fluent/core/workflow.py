@@ -24,10 +24,11 @@
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, Tuple
+from typing import TYPE_CHECKING, Any
 import warnings
 
 from ansys.fluent.core.pyfluent_warnings import (
@@ -41,7 +42,11 @@ from ansys.fluent.core.services.datamodel_se import (
     PyMenuGeneric,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator
+
+    from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class CommandInstanceCreationError(RuntimeError):
@@ -137,10 +142,8 @@ def _refresh_task_accessors(obj):
     created_task_names = current_task_name_set - old_task_names
     deleted_task_names = old_task_names - current_task_name_set
     for task_name in deleted_task_names:
-        try:
+        with contextlib.suppress(KeyError):
             del obj._task_objects[task_name]
-        except KeyError:
-            pass
     for task_name in created_task_names:
         if task_name not in obj._task_objects:
             logger.debug(f"Add task {task_name}")
@@ -218,21 +221,21 @@ class BaseTask:
             Name of this task.
         """
         self.__dict__.update(
-            dict(
-                _command_source=command_source,
-                _workflow=command_source._workflow,
-                _source=command_source._command_source,
-                _task=task,
-                _cmd=None,
-                _python_name=None,
-                _python_task_names=[],
-                _python_task_names_map={},
-                _lock=command_source._lock,
-                _ordered_children=[],
-                _task_list=[],
-                _task_objects={},
-                _fluent_version=command_source._fluent_version,
-            )
+            {
+                "_command_source": command_source,
+                "_workflow": command_source._workflow,
+                "_source": command_source._command_source,
+                "_task": task,
+                "_cmd": None,
+                "_python_name": None,
+                "_python_task_names": [],
+                "_python_task_names_map": {},
+                "_lock": command_source._lock,
+                "_ordered_children": [],
+                "_task_list": [],
+                "_task_objects": {},
+                "_fluent_version": command_source._fluent_version,
+            }
         )
 
     def get_direct_upstream_tasks(self) -> list:
@@ -305,9 +308,7 @@ class BaseTask:
             task_list = self._task.TaskList()
             task_list = _convert_task_list_to_display_names(self._workflow, task_list)
             if task_list != self._task_list:
-                mappings = {
-                    k: v for k, v in zip(self._task_list, self._ordered_children)
-                }
+                mappings = dict(zip(self._task_list, self._ordered_children))
                 self._ordered_children = list(
                     filter(None, map(task_by_id(mappings), task_list))
                 )
@@ -417,7 +418,7 @@ class BaseTask:
     def _get_camel_case_arg_keys(self):
         args = self.arguments
         camel_args = []
-        for arg in args().keys():
+        for arg in args():
             camel_args.append(args._snake_to_camel_map[arg])
 
         return camel_args
@@ -708,10 +709,10 @@ class ArgumentsWrapper(PyCallableStateObject):
             Task holding these arguments.
         """
         self.__dict__.update(
-            dict(
-                _task=task,
-                _snake_to_camel_map={},
-            )
+            {
+                "_task": task,
+                "_snake_to_camel_map": {},
+            }
         )
 
     def set_state(self, args: dict) -> None:
@@ -836,10 +837,8 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task._refreshed_command()()
         except Exception as ex:
             self._just_set_state(recovery_state)
-            try:
+            with contextlib.suppress(Exception):
                 self._task._refreshed_command()()
-            except Exception:
-                pass
             raise ex
 
     def _just_set_state(self, args):
@@ -881,12 +880,12 @@ class ArgumentWrapper(PyCallableStateObject):
             Argument name.
         """
         self.__dict__.update(
-            dict(
-                _task=task,
-                _arg_name=arg,
-                _arg=getattr(task._command_arguments, arg),
-                _snake_to_camel_map={},
-            )
+            {
+                "_task": task,
+                "_arg_name": arg,
+                "_arg": getattr(task._command_arguments, arg),
+                "_snake_to_camel_map": {},
+            }
         )
         if self._arg is None:
             raise RuntimeError(f"{arg} is not an argument.")
@@ -929,7 +928,7 @@ class ArgumentWrapper(PyCallableStateObject):
             return
         _args = self
         _camel_args = []
-        for arg in _args().keys():
+        for arg in _args():
             try:
                 _camel_args.append(self._snake_to_camel_map[arg])
             except KeyError:
@@ -1305,10 +1304,7 @@ def _makeTask(command_source, name: str) -> BaseTask:
     }
     task_type = task.TaskType()
     if task_type is None:
-        if command_source._compound_child:
-            kind = CompoundChild
-        else:
-            kind = SimpleTask
+        kind = CompoundChild if command_source._compound_child else SimpleTask
     else:
         kind = kinds[task_type]
     if not kind:
@@ -1351,28 +1347,28 @@ class Workflow:
             The application root for commanding.
         """
         self.__dict__.update(
-            dict(
-                _workflow=workflow,
-                _command_source=command_source,
-                _python_task_names=[],
-                _lock=threading.RLock(),
-                _refreshing=False,
-                _dynamic_python_names=False,
-                _refresh_count=0,
-                _ordered_children=[],
-                _task_list=[],
-                _getattr_recurse_depth=0,
-                _main_thread_ident=None,
-                _task_objects={},
-                _python_name_command_id_map={},
-                _python_name_display_id_map={},
-                _python_name_display_text_map={},
-                _repeated_task_python_name_display_text_map={},
-                _initial_task_python_names_map={},
-                _parent_of_compound_child=None,
-                _compound_child_map={},
-                _compound_child=False,
-                _unwanted_attrs={
+            {
+                "_workflow": workflow,
+                "_command_source": command_source,
+                "_python_task_names": [],
+                "_lock": threading.RLock(),
+                "_refreshing": False,
+                "_dynamic_python_names": False,
+                "_refresh_count": 0,
+                "_ordered_children": [],
+                "_task_list": [],
+                "_getattr_recurse_depth": 0,
+                "_main_thread_ident": None,
+                "_task_objects": {},
+                "_python_name_command_id_map": {},
+                "_python_name_display_id_map": {},
+                "_python_name_display_text_map": {},
+                "_repeated_task_python_name_display_text_map": {},
+                "_initial_task_python_names_map": {},
+                "_parent_of_compound_child": None,
+                "_compound_child_map": {},
+                "_compound_child": False,
+                "_unwanted_attrs": {
                     "reset_workflow",
                     "initialize_workflow",
                     "load_workflow",
@@ -1385,9 +1381,9 @@ class Workflow:
                     "workflow",
                     "rename",
                 },
-                _fluent_version=fluent_version,
-                _initialized=False,
-            )
+                "_fluent_version": fluent_version,
+                "_initialized": False,
+            }
         )
 
     def task(self, name: str) -> BaseTask:
@@ -1464,9 +1460,7 @@ class Workflow:
                 return _task_by_id
 
             if task_list != self._task_list:
-                mappings = {
-                    k: v for k, v in zip(self._task_list, self._ordered_children)
-                }
+                mappings = dict(zip(self._task_list, self._ordered_children))
                 self._ordered_children = list(
                     filter(None, map(task_by_id(mappings), task_list))
                 )
@@ -1534,12 +1528,12 @@ class Workflow:
     def _workflow_state(self):
         return self._workflow()
 
-    def _workflow_and_task_list_state(self) -> Tuple[dict, dict]:
+    def _workflow_and_task_list_state(self) -> tuple[dict, dict]:
         workflow_state = self._workflow_state()
         prefix = "TaskObject:"
         task_list = [
             x.removeprefix(prefix)
-            for x in workflow_state.keys()
+            for x in workflow_state
             if x.startswith(prefix)
         ]
         return workflow_state, task_list
@@ -1590,9 +1584,7 @@ class Workflow:
             self._workflow = workflow
             self._insertable_tasks = []
             if len(self._workflow.task_names()) == 0:
-                for (
-                    item
-                ) in (
+                for item in (
                     self._workflow._get_initial_task_list_while_creating_new_workflow()
                 ):
                     insertable_task = type("Insert", (self._Insert,), {})(

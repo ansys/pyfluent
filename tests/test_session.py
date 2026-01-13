@@ -74,7 +74,7 @@ class MockSettingsServicer(settings_pb2_grpc.SettingsServicer):
 class MockHealthServicer(health_pb2_grpc.HealthServicer):
     def Check(self, request, context: grpc.ServicerContext):  # noqa N802
         metadata = dict(context.invocation_metadata())
-        password = metadata.get("password", None)
+        password = metadata.get("password")
         if password != "12345":
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
             return health_pb2.HealthCheckResponse()
@@ -84,7 +84,7 @@ class MockHealthServicer(health_pb2_grpc.HealthServicer):
 
     def Watch(self, request, context: grpc.ServicerContext):  # noqa N802
         metadata = dict(context.invocation_metadata())
-        password = metadata.get("password", None)
+        password = metadata.get("password")
         if password != "12345":
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
             yield health_pb2.HealthCheckResponse()
@@ -114,7 +114,7 @@ class MockSchemeEvalServicer(scheme_eval_pb2_grpc.SchemeEvalServicer):
         context: grpc.ServicerContext,
     ) -> scheme_eval_pb2.SchemeEvalResponse:
         metadata = dict(context.invocation_metadata())
-        password = metadata.get("password", None)
+        password = metadata.get("password")
         if password != "12345":
             context.set_code(grpc.StatusCode.UNAUTHENTICATED)
         return scheme_eval_pb2.SchemeEvalResponse(output=SchemePointer(b=True))

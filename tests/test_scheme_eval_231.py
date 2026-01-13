@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import Any, Dict
+from typing import Any
 
 from google.protobuf.json_format import MessageToDict, ParseDict
 import pytest
@@ -90,7 +90,7 @@ from ansys.fluent.core.services.scheme_eval import (
     ],
 )
 def test_convert_py_value_to_scheme_pointer(
-    py_value: Any, json_dict: Dict[str, Any]
+    py_value: Any, json_dict: dict[str, Any]
 ) -> None:
     p = SchemePointer()
     _convert_py_value_to_scheme_pointer(py_value, p, "23.1.0")
@@ -181,7 +181,7 @@ def test_convert_py_value_to_scheme_pointer(
     ],
 )
 def test_convert_scheme_pointer_to_py_value(
-    py_value: Any, json_dict: Dict[str, Any]
+    py_value: Any, json_dict: dict[str, Any]
 ) -> None:
     p = SchemePointer()
     ParseDict(json_dict, p)
@@ -257,7 +257,7 @@ def test_two_way_conversion_for_pairs() -> None:
 @pytest.mark.fluent_version(">=23.1")
 def test_long_list(new_solver_session) -> None:
     length = 10**6
-    assert new_solver_session.scheme._eval([Symbol("+")] + list(range(length))) == sum(
+    assert new_solver_session.scheme._eval([Symbol("+"), *list(range(length))]) == sum(
         range(length)
     )
     assert sum(new_solver_session.scheme._eval([Symbol("range"), length])) == sum(

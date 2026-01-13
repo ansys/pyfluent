@@ -66,7 +66,7 @@ class FluentEnum(Enum):
 
         def is_int():
             for m in cls:
-                return True if isinstance(m.value, int) else False
+                return bool(isinstance(m.value, int))
 
         msg = ", " if is_int() else "', '"
         msg = (
@@ -75,7 +75,7 @@ class FluentEnum(Enum):
             else f"'{msg.join(str(member.value) for member in cls)}'"
         )
         raise DisallowedValuesError(
-            f"""The specified value: {repr(value)} """
+            f"""The specified value: {value!r} """
             f"""is not a supported value of {cls.__name__}."""
             f""" The supported values are: {msg}."""
         )

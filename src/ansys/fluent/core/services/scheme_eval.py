@@ -32,13 +32,16 @@ Example
 0.7
 """
 
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
-from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
+from ansys.api.fluent.v0 import (
+    scheme_eval_pb2 as SchemeEvalProtoModule,
+    scheme_eval_pb2_grpc as SchemeEvalGrpcModule,
+)
 from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -88,7 +91,7 @@ class SchemeEvalService:
     def scheme_eval(
         self,
         request: SchemeEvalProtoModule.SchemeEvalRequest,
-        metadata: list[tuple[str, str]] = None,
+        metadata: list[tuple[str, str]] | None = None,
     ) -> SchemeEvalProtoModule.SchemeEvalResponse:
         """SchemeEval RPC of SchemeEval service."""
         new_metadata = self.__metadata
@@ -146,7 +149,7 @@ def _convert_py_value_to_scheme_pointer(
     elif isinstance(val, tuple) and len(val) == 2:
         _convert_py_value_to_scheme_pointer(val[0], p.pair.car, version)
         _convert_py_value_to_scheme_pointer(val[1], p.pair.cdr, version)
-    elif isinstance(val, list) or isinstance(val, tuple):
+    elif isinstance(val, (list, tuple)):
         for item in val:
             _convert_py_value_to_scheme_pointer(item, p.list.item.add(), version)
     elif isinstance(val, dict):
@@ -165,7 +168,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer, version: str) -> dict |
     if all(
         isinstance(x, dict)
         or (
-            (isinstance(x, tuple) or isinstance(x, list))
+            (isinstance(x, (tuple, list)))
             and x
             and isinstance(x[0], str)
         )

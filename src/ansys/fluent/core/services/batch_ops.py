@@ -22,6 +22,7 @@
 
 """Batch RPC service."""
 
+import contextlib
 import inspect
 import logging
 from types import ModuleType
@@ -164,16 +165,14 @@ class BatchOps:
         def update_result(self, status: batch_ops_pb2.ExecuteStatus, data: str) -> None:
             """Update results after the batch operation is executed."""
             obj = self.response_cls()
-            try:
+            with contextlib.suppress(Exception):
                 obj.ParseFromString(data)
-            except Exception:
-                pass
             self._status = status
             self._result = obj
 
     def __new__(cls, session) -> _TBatchOps:
         if cls.instance() is None:
-            instance = super(BatchOps, cls).__new__(cls)
+            instance = super().__new__(cls)
             instance._service: BatchOpsService = session._batch_ops_service
             instance._ops: list[BatchOps.Op] = []
             instance.batching = False

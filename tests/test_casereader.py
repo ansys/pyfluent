@@ -30,13 +30,13 @@ import pytest
 from ansys.fluent.core import examples
 from ansys.fluent.core.filereader import lispy
 from ansys.fluent.core.filereader.case_file import (
+    CaseFile,
+    CaseFile as CaseReader,
     InputParameter,
     InputParameterOld,
     MeshType,
     _get_processed_string,
 )
-from ansys.fluent.core.filereader.case_file import CaseFile
-from ansys.fluent.core.filereader.case_file import CaseFile as CaseReader
 from ansys.fluent.core.filereader.pre_processor import remove_unsupported_xml_chars
 
 
@@ -66,21 +66,21 @@ def call_casereader_static_mixer(
     call_casereader(
         case_file_name=case_file_name,
         project_file_name=project_file_name,
-        expected=dict(
-            precision=2,
-            num_dimensions=3,
-            iter_count=100,
-            input_parameters=dict(
-                inlet1_temp=(300, "K"),
-                inlet1_vel=(1, "m/s"),
-                inlet2_temp=(350, "K"),
-                inlet2_vel=(1, "m/s"),
-            ),
-            output_parameters={
+        expected={
+            "precision": 2,
+            "num_dimensions": 3,
+            "iter_count": 100,
+            "input_parameters": {
+                "inlet1_temp": (300, "K"),
+                "inlet1_vel": (1, "m/s"),
+                "inlet2_temp": (350, "K"),
+                "inlet2_vel": (1, "m/s"),
+            },
+            "output_parameters": {
                 "outlet-temp-avg-op": "K",
                 "outlet-vel-avg-op": "m s^-1",
             },
-        ),
+        },
     )
 
 
@@ -198,23 +198,23 @@ def test_case_reader_with_bad_data_to_be_skipped_and_input_parameters_labeled_di
         case_file_name=examples.download_file(
             "mixer-ran_2019r3.cas.gz", "pyfluent/optislang", return_without_path=False
         ),
-        expected=dict(
-            precision=1,
-            num_dimensions=3,
-            iter_count=25,
-            input_parameters=dict(
-                swirl_max_hot=(0.1, "m s^-1"),
-                vel_hot=(0.1, "m s^-1"),
-                vel_cold=(0.1, "m s^-1"),
-                swirl_max_cold=(0.1, "m s^-1"),
-            ),
-            output_parameters={
+        expected={
+            "precision": 1,
+            "num_dimensions": 3,
+            "iter_count": 25,
+            "input_parameters": {
+                "swirl_max_hot": (0.1, "m s^-1"),
+                "vel_hot": (0.1, "m s^-1"),
+                "vel_cold": (0.1, "m s^-1"),
+                "swirl_max_cold": (0.1, "m s^-1"),
+            },
+            "output_parameters": {
                 "p2-op": "kg m^-1 s^-2",
                 "t-dev-op": "K",
                 "p1-op": "kg m^-1 s^-2",
                 "ave_temp_out": "K",
             },
-        ),
+        },
     )
 
 

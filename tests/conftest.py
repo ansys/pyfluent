@@ -131,7 +131,7 @@ def pytest_collection_finish(session):
             fluent_test_file = fluent_test_dir / "test.py"
             launcher_args = ""
             parameters = inspect.signature(item.function).parameters
-            parameter_set = {p for p in parameters}
+            parameter_set = set(parameters)
             if not (parameter_set & set(launcher_args_by_fixture.keys())):
                 # Skipping as unittest doesn't use fluent fixture
                 continue
@@ -324,9 +324,9 @@ def mixing_elbow_watertight_pure_meshing_session(
 ):
     meshing = new_pure_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=mixing_elbow_geometry_filename, LengthUnit="in"
-    )
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+        "FileName": mixing_elbow_geometry_filename, "LengthUnit": "in"
+    }
 
     return meshing
 

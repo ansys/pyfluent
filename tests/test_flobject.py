@@ -687,7 +687,7 @@ class root(Group):
             """
             fluent_name = "a-2"
 '''
-    )  # noqa: W293
+    )
 
 
 @pytest.mark.fluent_version("latest")
@@ -826,9 +826,7 @@ def test_settings_wild_card_access(new_solver_session) -> None:
                 "*1"
             ].momentum.velocity_magnitude.value()["inlet1"]["momentum"][
                 "velocity_magnitude"
-            ][
-                "value"
-            ]
+            ]["value"]
             == solver.setup.boundary_conditions.velocity_inlet[
                 "inlet1"
             ].momentum.velocity.value()
@@ -985,11 +983,14 @@ def test_strings_with_allowed_values(static_mixer_settings_session):
     assert e.value.args[0] == "'root_name' object has no attribute 'allowed_values'"
 
     if fluent_version >= FluentVersion.v261:
-        assert solver.solution.calculation_activity.auto_save.case_frequency.allowed_values() == [
-            "if-case-is-modified",
-            "each-time",
-            "if-mesh-is-modified",
-        ]
+        assert (
+            solver.solution.calculation_activity.auto_save.case_frequency.allowed_values()
+            == [
+                "if-case-is-modified",
+                "each-time",
+                "if-mesh-is-modified",
+            ]
+        )
 
     string_with_allowed_values = solver.setup.general.solver.type.allowed_values()
     assert string_with_allowed_values == [
@@ -1133,9 +1134,9 @@ def test_bug_1001124_quantity_assignment(mixing_elbow_settings_session):
         ].momentum.velocity.value()
         == speed.value
     )
-    solver.setup.boundary_conditions.velocity_inlet["hot-inlet"].momentum.velocity = (
-        speed
-    )
+    solver.setup.boundary_conditions.velocity_inlet[
+        "hot-inlet"
+    ].momentum.velocity = speed
     assert (
         solver.setup.boundary_conditions.velocity_inlet[
             "hot-inlet"
@@ -1199,7 +1200,7 @@ def test_static_info_hash_identity(new_solver_session):
 def test_no_hash_mismatch(new_solver_session, caplog):
     caplog.clear()
     new_solver_session.setup
-    assert all(["Mismatch" not in record.message for record in caplog.records])
+    assert all("Mismatch" not in record.message for record in caplog.records)
 
 
 @pytest.mark.fluent_version(">=24.2")
@@ -1287,17 +1288,17 @@ def test_get_completer_info(static_mixer_settings_session):
         "is_active",
         "python_name",
         "read_case",
-    } < set([x[0] for x in completer_info])
+    } < {x[0] for x in completer_info}
     # command
     completer_info = solver.settings.file.read_case.get_completer_info()
-    assert {"argument_names", "file_name", "is_active", "python_path"} < set(
-        [x[0] for x in completer_info]
-    )
+    assert {"argument_names", "file_name", "is_active", "python_path"} < {
+        x[0] for x in completer_info
+    }
     # parameter
     completer_info = solver.settings.file.read_case.file_name.get_completer_info()
-    assert {"default_value", "is_active", "python_name", "set_state"} < set(
-        [x[0] for x in completer_info]
-    )
+    assert {"default_value", "is_active", "python_name", "set_state"} < {
+        x[0] for x in completer_info
+    }
     # named-object
     completer_info = (
         solver.settings.setup.boundary_conditions.velocity_inlet.get_completer_info()
@@ -1308,7 +1309,7 @@ def test_get_completer_info(static_mixer_settings_session):
         "is_active",
         "list",
         "python_name",
-    } < set([x[0] for x in completer_info])
+    } < {x[0] for x in completer_info}
 
 
 @pytest.mark.fluent_version(">=25.2")
@@ -1364,6 +1365,6 @@ def test_concatenation_of_named_objects(mixing_elbow_case_data_session):
     ]
 
     assert (
-        list(solver.settings.setup.boundary_conditions.pressure_outlet.items())[0]
+        next(iter(solver.settings.setup.boundary_conditions.pressure_outlet.items()))
         in chained_named_objects.items()
     )

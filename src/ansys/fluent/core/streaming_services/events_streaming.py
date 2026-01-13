@@ -22,12 +22,13 @@
 
 """Module for events management."""
 
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field, fields
 from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Sequence, Type, TypeVar
+from typing import Generic, Literal, TypeVar
 import warnings
 
 from google.protobuf.json_format import MessageToDict
@@ -38,31 +39,31 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 __all__ = [
-    "EventsManager",
-    "Event",
-    "SolverEvent",
-    "MeshingEvent",
-    "TimestepStartedEventInfo",
-    "TimestepEndedEventInfo",
-    "IterationEndedEventInfo",
-    "CalculationsStartedEventInfo",
+    "AboutToInitializeSolutionEventInfo",
+    "AboutToLoadCaseEventInfo",
+    "AboutToLoadDataEventInfo",
     "CalculationsEndedEventInfo",
     "CalculationsPausedEventInfo",
     "CalculationsResumedEventInfo",
-    "AboutToLoadCaseEventInfo",
+    "CalculationsStartedEventInfo",
     "CaseLoadedEventInfo",
-    "AboutToLoadDataEventInfo",
     "DataLoadedEventInfo",
-    "AboutToInitializeSolutionEventInfo",
-    "SolutionInitializedEventInfo",
+    "Event",
+    "EventsManager",
+    "FatalErrorEventInfo",
+    "IterationEndedEventInfo",
+    "MeshingEvent",
+    "ProgressUpdatedEventInfo",
     "ReportDefinitionUpdatedEventInfo",
     "ReportPlotSetUpdatedEventInfo",
     "ResidualPlotUpdatedEventInfo",
     "SettingsClearedEventInfo",
+    "SolutionInitializedEventInfo",
     "SolutionPausedEventInfo",
-    "ProgressUpdatedEventInfo",
+    "SolverEvent",
     "SolverTimeEstimateUpdatedEventInfo",
-    "FatalErrorEventInfo",
+    "TimestepEndedEventInfo",
+    "TimestepStartedEventInfo",
 ]
 
 network_logger = logging.getLogger("pyfluent.networking")
@@ -223,7 +224,7 @@ class AboutToLoadCaseEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_CA
         Case filename.
     """
 
-    case_file_name: str = field(metadata=dict(deprecated_name="casefilepath"))
+    case_file_name: str = field(metadata={"deprecated_name": "casefilepath"})
 
 
 @dataclass
@@ -236,7 +237,7 @@ class CaseLoadedEventInfo(EventInfoBase, event=SolverEvent.CASE_LOADED):
         Case filename.
     """
 
-    case_file_name: str = field(metadata=dict(deprecated_name="casefilepath"))
+    case_file_name: str = field(metadata={"deprecated_name": "casefilepath"})
 
 
 @dataclass
@@ -249,7 +250,7 @@ class AboutToLoadDataEventInfo(EventInfoBase, event=SolverEvent.ABOUT_TO_LOAD_DA
         Data filename.
     """
 
-    data_file_name: str = field(metadata=dict(deprecated_name="datafilepath"))
+    data_file_name: str = field(metadata={"deprecated_name": "datafilepath"})
 
 
 @dataclass
@@ -262,7 +263,7 @@ class DataLoadedEventInfo(EventInfoBase, event=SolverEvent.DATA_LOADED):
         Data filename.
     """
 
-    data_file_name: str = field(metadata=dict(deprecated_name="datafilepath"))
+    data_file_name: str = field(metadata={"deprecated_name": "datafilepath"})
 
 
 class AboutToInitializeSolutionEventInfo(
@@ -330,7 +331,7 @@ class ProgressUpdatedEventInfo(EventInfoBase, event=SolverEvent.PROGRESS_UPDATED
     """
 
     message: str
-    percentage: int = field(metadata=dict(deprecated_name="percentComplete"))
+    percentage: int = field(metadata={"deprecated_name": "percentComplete"})
 
 
 @dataclass
@@ -367,7 +368,7 @@ class FatalErrorEventInfo(EventInfoBase, event=SolverEvent.FATAL_ERROR):
     """
 
     message: str
-    error_code: int = field(metadata=dict(deprecated_name="errorCode"))
+    error_code: int = field(metadata={"deprecated_name": "errorCode"})
 
 
 TEvent = TypeVar("TEvent")
@@ -382,7 +383,7 @@ class EventsManager(Generic[TEvent]):
 
     def __init__(
         self,
-        event_type: Type[TEvent],
+        event_type: type[TEvent],
         session_events_service,
         fluent_error_state,
         session,

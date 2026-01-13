@@ -192,7 +192,7 @@ def test_field_data_batches(new_solver_session) -> None:
         data_types=[SurfaceDataType.Vertices, SurfaceDataType.FacesCentroid],
     )
     sc1 = ScalarFieldDataRequest(
-        surfaces=[1] + [item for item in VelocityInlets(settings_source=solver)],
+        surfaces=[1, *list(VelocityInlets(settings_source=solver))],
         field_name="temperature",
         node_value=True,
         boundary_value=True,
@@ -217,7 +217,12 @@ def test_field_data_batches(new_solver_session) -> None:
         surface_request_with_faces_connectivity_deprecated,
     )
     data = batch.add_requests(
-        su2, sux, sc1, sc2, vc1, pt1  # 'sux' is duplicate and will be ignored
+        su2,
+        sux,
+        sc1,
+        sc2,
+        vc1,
+        pt1,  # 'sux' is duplicate and will be ignored
     ).get_response()  # adding multiple requests.
 
     with pytest.raises(ValueError):
@@ -298,7 +303,7 @@ def test_field_data_batches(new_solver_session) -> None:
         round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
     )
     assert sorted(
-        list(pathlines_data["hot-inlet"]._pathlines_data_for_surface)
+        pathlines_data["hot-inlet"]._pathlines_data_for_surface
     ) == sorted(
         [
             "vertices",
@@ -323,7 +328,7 @@ def test_field_data_attributes(new_solver_session) -> None:
 
     field_data = solver.fields.field_data
 
-    assert [] == field_data.scalar_fields.allowed_values()
+    assert field_data.scalar_fields.allowed_values() == []
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
@@ -354,7 +359,7 @@ def test_field_data_objects_3d_deprecated_interface(new_solver_session) -> None:
 
     field_data = solver.fields.field_data
 
-    assert [] == field_data.scalar_fields.allowed_values()
+    assert field_data.scalar_fields.allowed_values() == []
 
     solver.file.read(file_type="case", file_name=import_file_name)
 
@@ -467,7 +472,7 @@ def test_field_data_objects_3d(new_solver_session) -> None:
 
     field_data = solver.fields.field_data
 
-    assert [] == field_data.scalar_fields.allowed_values()
+    assert field_data.scalar_fields.allowed_values() == []
 
     solver.file.read(file_type="case", file_name=import_file_name)
 

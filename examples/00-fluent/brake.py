@@ -256,9 +256,9 @@ session.settings.results.graphics.contour["temperature"] = {
     },
 }
 
-session.settings.results.graphics.contour["temperature"].range_option.option = (
-    "auto-range-off"
-)
+session.settings.results.graphics.contour[
+    "temperature"
+].range_option.option = "auto-range-off"
 session.settings.results.graphics.contour["temperature"].range_option.set_state(
     {
         "auto_range_off": {"maximum": 400.0, "minimum": 300, "clip_to_range": False},
@@ -351,7 +351,7 @@ X = []
 Y = []
 Z = []
 i = -1
-with open(os.path.join(os.getcwd(), "max-temperature.out"), "r") as datafile:
+with open(os.path.join(os.getcwd(), "max-temperature.out")) as datafile:
     plotting = csv.reader(datafile, delimiter=" ")
     for rows in plotting:
         i = i + 1

@@ -35,7 +35,7 @@ def parse_github_log(log_file_path: str) -> str:
     tests = {}
     hanging_tests = []
 
-    with open(log_file_path, "r", encoding="utf-8") as f:
+    with open(log_file_path, encoding="utf-8") as f:
         log_lines = f.readlines()
 
     for line in log_lines:

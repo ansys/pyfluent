@@ -81,9 +81,7 @@ def test_initialization_settings(new_solver_session):
 
     solver.solution.methods.p_v_coupling.flow_scheme = "Coupled"
     solver.solution.methods.p_v_coupling.coupled_form = True
-    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = (
-        True
-    )
+    solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters.laplace_coarsening = True
     solver.solution.initialization.open_channel_auto_init = {
         "boundary_zone": 3,
         "flat_init": True,

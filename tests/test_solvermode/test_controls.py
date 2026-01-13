@@ -40,9 +40,7 @@ def test_controls(mixing_elbow_settings_session):
     ]
     solver.setup.general.solver.time = "steady"
     assert solver.setup.general.solver.time() == "steady"
-    param_coarsening = (
-        solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters
-    )
+    param_coarsening = solver.solution.controls.advanced.multi_grid.amg_controls.coupled_parameters.coarsening_parameters
     param_coarsening.laplace_coarsening = True
     assert param_coarsening() == {
         "max_coarse_levels": 40,
@@ -68,9 +66,7 @@ def test_controls(mixing_elbow_settings_session):
     assert param_coarsening.conservative_coarsening() is True
     assert param_coarsening.aggressive_coarsening() is True
 
-    param_fixed_cycle = (
-        solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters
-    )
+    param_fixed_cycle = solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.fixed_cycle_parameters
     param_fixed_cycle.max_cycle = 300
     assert param_fixed_cycle.max_cycle() == 300
     param_fixed_cycle.set_state(
@@ -89,9 +85,7 @@ def test_controls(mixing_elbow_settings_session):
     assert solver.solution.methods.p_v_coupling.flow_scheme() == "Coupled"
     solver.solution.methods.p_v_coupling.coupled_form = True
     assert solver.solution.methods.p_v_coupling.coupled_form() is True
-    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type = (
-        "Gauss-Seidel"
-    )
+    solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type = "Gauss-Seidel"
     assert (
         solver.solution.controls.advanced.multi_grid.amg_controls.scalar_parameters.smoother_type()
         == "Gauss-Seidel"

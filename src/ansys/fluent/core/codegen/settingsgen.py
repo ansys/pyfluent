@@ -373,8 +373,8 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
     _NAME_BY_HASH.clear()
     _CLASS_WRITTEN.clear()
     if verbose:
-        print(f"{str(output_file)}")
-        print(f"{str(output_stub_file)}")
+        print(f"{output_file!s}")
+        print(f"{output_stub_file!s}")
     with open(output_file, "w") as f, open(output_stub_file, "w") as f_stub:
         header = StringIO()
         header.write("#\n")

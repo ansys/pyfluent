@@ -235,7 +235,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                 if folder:
                     if "root" in file:
                         rst.write("solver.settings\n")
-                        rst.write(f'{"="*(len("solver.settings"))}\n\n')
+                        rst.write(f"{'=' * (len('solver.settings'))}\n\n")
                         rst.write(
                             "The :ref:`ref_root` is the top-level solver settings object. It contains all\n"
                         )
@@ -244,13 +244,13 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         )
                     else:
                         rst.write(f"{file}\n")
-                        rst.write(f'{"="*(len(f"{file}"))}\n\n')
+                        rst.write(f"{'=' * (len(f'{file}'))}\n\n")
                         rst.write(
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
                 else:
                     rst.write(f"{file}\n")
-                    rst.write(f'{"="*(len(f"{file}"))}\n\n')
+                    rst.write(f"{'=' * (len(f'{file}'))}\n\n")
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
@@ -268,7 +268,7 @@ def _generate_api_index_rst_files():
             with open(folder_index, "w", encoding="utf8") as index:
                 index.write(f".. _ref_{folder}:\n\n")
                 index.write(f"{folder}\n")
-                index.write(f'{"="*(len(f"{folder}"))}\n\n')
+                index.write(f"{'=' * (len(f'{folder}'))}\n\n")
                 index.write(f".. automodule:: ansys.fluent.core.{folder}\n")
                 _write_common_rst_members(rst_file=index)
                 index.write(".. toctree::\n")

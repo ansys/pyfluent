@@ -63,45 +63,19 @@ def test_sample_setup():
     solver.aero.AeroWorkflow.Setup.GeometricProperties.RefArea = 0.05334
 
     # Simulation Conditions
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowSpeed.Parameter = (
-        "Mach"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowSpeed.Distribution = (
-        "Constant"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowSpeed.Mach = (
-        0.3
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.Parameter = (
-        "AoA"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.DistributionAoa = (
-        "Uniform"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.AoaMin = (
-        3
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.AoaMax = (
-        5
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.AoaNum = (
-        2
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.Parameter = (
-        "Static"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.DistributionPressure = (
-        "Constant"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.DistributionTemperature = (
-        "Constant"
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.Pressure = (
-        101325
-    )
-    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.Temperature = (
-        300
-    )
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowSpeed.Parameter = "Mach"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowSpeed.Distribution = "Constant"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowSpeed.Mach = 0.3
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.Parameter = "AoA"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.DistributionAoa = "Uniform"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.AoaMin = 3
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.AoaMax = 5
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.FlowDirection.AoaNum = 2
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.Parameter = "Static"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.DistributionPressure = "Constant"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.DistributionTemperature = "Constant"
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.Pressure = 101325
+    solver.aero.AeroWorkflow.Setup.SimulationConditions.FlightConditions.PresTempInput.Temperature = 300
 
     # Solve
     solver.aero.AeroWorkflow.Solution.Solve.Iterations = 10

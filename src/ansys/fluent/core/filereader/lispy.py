@@ -22,7 +22,6 @@
 
 """Provides a module for Scheme Interpreter in Python."""
 
-# flake8: noqa: E266
 
 ################ Scheme Interpreter in Python
 
@@ -33,7 +32,6 @@
 ## This code is copied from
 ## https://github.com/norvig/pytudes/blob/main/py/lispy.py
 ## and modified as necessary
-
 
 import io
 import re
@@ -61,10 +59,10 @@ def Sym(s, symbol_table={}):
     _lambda,
     _begin,
     _definemacro,
-) = map(Sym, "quote   if   set!  define   lambda   begin   define-macro".split())
+) = map(Sym, ["quote", "if", "set!", "define", "lambda", "begin", "define-macro"])
 
 _quasiquote, _unquote, _unquotesplicing = map(
-    Sym, "quasiquote   unquote   unquote-splicing".split()
+    Sym, ["quasiquote", "unquote", "unquote-splicing"]
 )
 
 
@@ -155,7 +153,7 @@ def read(in_port):
     """Read a Scheme expression from an input port."""
 
     def read_ahead(token):
-        if "(" == token:
+        if token == "(":
             list_ = None
             to_tuple = False
             cons = None
@@ -187,7 +185,7 @@ def read(in_port):
                         list_ = list_ or []
                     if list_ is not None:
                         list_.append(ahead)
-        elif ")" == token:
+        elif token == ")":
             raise SyntaxError("unexpected )")
         elif token in quotes:
             return [quotes[token], read(in_port)]
@@ -313,7 +311,7 @@ def is_pair(x):
 
 def cons(x, y):
     """Form a pair."""
-    return [x] + y
+    return [x, *y]
 
 
 def callcc(proc):
@@ -469,7 +467,7 @@ def expand(x, toplevel=False):
         _def, v, body = x[0], x[1], x[2:]
         if isa(v, list) and v:  # (define (f args) body)
             f, args = v[0], v[1:]  #  => (define f (lambda (args) body))
-            return expand([_def, f, [_lambda, args] + body])
+            return expand([_def, f, [_lambda, args, *body]])
         else:
             require(x, len(x) in (2, 3))  # (define non-var/list exp) => Error
             if not isa(v, Symbol):
@@ -497,7 +495,7 @@ def expand(x, toplevel=False):
             or isa(variables, Symbol),
             "illegal lambda argument list",
         )
-        exp = body[0] if len(body) == 1 else [_begin] + body
+        exp = body[0] if len(body) == 1 else [_begin, *body]
         return [_lambda, variables, expand(exp)]
     elif x[0] is _quasiquote:  # `x => expand_quasiquote(x)
         require(x, len(x) == 2)
@@ -520,7 +518,7 @@ def require(x, predicate, msg="wrong length"):
         raise SyntaxError(to_string(x) + ": " + msg)
 
 
-_append, _cons, _let = map(Sym, "append cons let".split())
+_append, _cons, _let = map(Sym, ["append", "cons", "let"])
 
 
 def expand_quasiquote(x):
@@ -551,9 +549,7 @@ def let(*args):
     )
     # variables was vars in oss lispy but that shadows a builtin
     variables, vals = zip(*bindings)
-    return [[_lambda, list(variables)] + list(map(expand, body))] + list(
-        map(expand, vals)
-    )
+    return [[_lambda, list(variables), *list(map(expand, body))], *list(map(expand, vals))]
 
 
 macro_table = {_let: let}  ## More macros can go here

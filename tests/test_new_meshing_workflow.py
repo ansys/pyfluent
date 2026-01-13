@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections.abc import Iterable
 import time
-from typing import Iterable
 
 import pytest
 
@@ -424,15 +424,9 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
     two_dim_mesh.generate_initial_surface_mesh()
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
@@ -445,15 +439,9 @@ def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
 
     # NOTE: Setting `show_advanced_options = True` is required to configure advanced preferences.
     # This dependency may be removed in a future release as the API evolves.
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = (
-        True
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = (
-        "no"
-    )
-    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = (
-        "no"
-    )
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.show_advanced_options = True
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_edge_zones_based_on_labels = "no"
+    two_dim_mesh.generate_initial_surface_mesh.surface_2d_preferences.merge_face_zones_based_on_labels = "no"
     two_dim_mesh.generate_initial_surface_mesh()
 
     # Switch to solution mode
@@ -680,20 +668,20 @@ def test_extended_wrapper(new_meshing_session, mixing_elbow_geometry_filename):
     watertight = new_meshing_session.watertight()
     import_geometry = watertight.import_geometry
     assert import_geometry.Arguments() == {}
-    import_geometry.Arguments = dict(FileName=mixing_elbow_geometry_filename)
+    import_geometry.Arguments = {"FileName": mixing_elbow_geometry_filename}
     assert 7 <= len(import_geometry.arguments.get_state()) < 15
     assert len(import_geometry.arguments.get_state(explicit_only=True)) == 1
-    import_geometry.arguments.set_state(dict(file_name=None))
+    import_geometry.arguments.set_state({"file_name": None})
     time.sleep(5)
-    assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        file_name=None
-    )
+    assert import_geometry.arguments.get_state(explicit_only=True) == {
+        "file_name": None
+    }
     assert import_geometry.arguments.get_state()["file_name"] is None
-    import_geometry.arguments.set_state(dict(file_name=mixing_elbow_geometry_filename))
+    import_geometry.arguments.set_state({"file_name": mixing_elbow_geometry_filename})
     time.sleep(5)
-    assert import_geometry.arguments.get_state(explicit_only=True) == dict(
-        file_name=mixing_elbow_geometry_filename
-    )
+    assert import_geometry.arguments.get_state(explicit_only=True) == {
+        "file_name": mixing_elbow_geometry_filename
+    }
     assert import_geometry.file_name() == mixing_elbow_geometry_filename
     import_geometry.file_name.set_state("bob")
     time.sleep(5)
@@ -977,7 +965,7 @@ def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
 @pytest.mark.fluent_version(">=23.2")
 def test_ordered_children_in_enhanced_meshing_workflow(new_meshing_session):
     watertight = new_meshing_session.watertight()
-    assert set([repr(x) for x in watertight.tasks()]) == {
+    assert {repr(x) for x in watertight.tasks()} == {
         "<Task 'Add Boundary Layers'>",
         "<Task 'Add Local Sizing'>",
         "<Task 'Apply Share Topology'>",
@@ -1151,7 +1139,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
     with pytest.raises(ValueError):
         watertight.create_regions.arguments.update_dict(
-            dict(number_of_flow_volumes=1.2)
+            {"number_of_flow_volumes": 1.2}
         )
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
 
@@ -1161,7 +1149,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
     with pytest.raises(ValueError):
         watertight.create_regions.arguments.update_dict(
-            dict(number_of_flow_volumes=1.2)
+            {"number_of_flow_volumes": 1.2}
         )
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
 
@@ -1171,7 +1159,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
     with pytest.raises(ValueError):
         watertight.create_regions.arguments.update_dict(
-            dict(number_of_flow_volumes=1.2)
+            {"number_of_flow_volumes": 1.2}
         )
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
 
@@ -1515,7 +1503,7 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
     assert import_geom.arguments.length_unit() == "in"
     import_geom.arguments["length_unit"] = "m"
     assert import_geom.arguments["length_unit"] == "m"
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(LengthUnit="in")
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = {"LengthUnit": "in"}
     assert import_geom.arguments.length_unit() == "in"
 
     import_geom.arguments.file_format = "Mesh"

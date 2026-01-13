@@ -239,7 +239,7 @@ def test_dummy_journal_data_model_methods(new_meshing_session):
 def test_iterate_meshing_workflow_task_container(new_meshing_session):
     workflow = new_meshing_session.workflow
     workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    tasks = [task for task in workflow.TaskObject]
+    tasks = list(workflow.TaskObject)
     assert len(tasks) == 11
     assert tasks[0].name() == "Import Geometry"
 

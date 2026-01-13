@@ -28,8 +28,10 @@ from typing import Any
 
 import grpc
 
-from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
-from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
+from ansys.api.fluent.v0 import (
+    settings_pb2 as SettingsModule,
+    settings_pb2_grpc as SettingsGrpcModule,
+)
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -134,13 +136,13 @@ def _trace(fn):
     def _fn(self, *args, **kwds):
         global _indent
         if trace:
-            print(f"{' '*_indent}fn={fn.__name__}, args={args} {{")
+            print(f"{' ' * _indent}fn={fn.__name__}, args={args} {{")
             try:
                 _indent += 1
                 ret = fn(self, *args, **kwds)
             finally:
                 _indent -= 1
-            print(f"{' '*_indent}fn = {fn.__name__}, ret={ret} }}")
+            print(f"{' ' * _indent}fn = {fn.__name__}, ret={ret} }}")
             return ret
         else:
             return fn(self, *args, **kwds)

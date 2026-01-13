@@ -118,20 +118,20 @@ def test_simple_solve(mixing_elbow_param_case_data_session):
 
     fluent_version = solver_session.get_fluent_version()
     fluent_input_table = solver_session.settings.parameters.input_parameters.list()
-    for key, entry in fluent_input_table.items():
+    for entry in fluent_input_table.values():
         input_value = entry[0]
         if fluent_version >= FluentVersion.v261:
-            input_unit = list(entry[1].values())[0][-1]
+            input_unit = next(iter(entry[1].values()))[-1]
         else:
             input_unit = entry[1]
     assert input_value == 500
     assert input_unit == "K"
 
     fluent_output_table = solver_session.settings.parameters.output_parameters.list()
-    for key, entry in fluent_output_table.items():
+    for entry in fluent_output_table.values():
         output_value = entry[0]
         if fluent_version >= FluentVersion.v261:
-            output_unit = list(entry[1].values())[0][-1]
+            output_unit = next(iter(entry[1].values()))[-1]
         else:
             output_unit = entry[1]
 
@@ -172,7 +172,7 @@ def test_simple_solve_unitless(static_mixer_params_unitless_session):
         input_parameters_dict[key] = OrderedDict()
         input_parameters_dict[key]["numeric_value"] = entry[0]
         if fluent_version >= FluentVersion.v261:
-            input_parameters_dict[key]["units"] = list(entry[1].values())[0][-1]
+            input_parameters_dict[key]["units"] = next(iter(entry[1].values()))[-1]
         else:
             input_parameters_dict[key]["units"] = entry[1]
 
@@ -240,7 +240,7 @@ def test_generate_read_mesh(mixing_elbow_geometry_filename):
     # Step 2: Generate mesh from geometry with default workflow settings
     meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geo_import = meshing_session.workflow.TaskObject["Import Geometry"]
-    geo_import.Arguments = dict(FileName=mixing_elbow_geometry_filename)
+    geo_import.Arguments = {"FileName": mixing_elbow_geometry_filename}
     geo_import.Execute()
     meshing_session.workflow.TaskObject["Generate the Volume Mesh"].Execute()
     meshing_session.meshing.CheckMesh()
@@ -319,7 +319,7 @@ def test_parameters(mixing_elbow_param_case_data_session):
     for key, entry in input_params.items():
         input_value = entry[0]
         if fluent_version >= FluentVersion.v261:
-            input_unit = list(entry[1].values())[0][-1]
+            input_unit = next(iter(entry[1].values()))[-1]
         else:
             input_unit = entry[1]
 
@@ -330,7 +330,7 @@ def test_parameters(mixing_elbow_param_case_data_session):
     output_jdict = {}
     for key, entry in output_params.items():
         if fluent_version >= FluentVersion.v261:
-            output_jdict[key] = list(entry[1].values())[0][-1]
+            output_jdict[key] = next(iter(entry[1].values()))[-1]
         else:
             output_jdict[key] = entry[1]
 
@@ -375,6 +375,6 @@ def test_parametric_project(mixing_elbow_param_case_data_session, new_solver_ses
     dp.input_parameters["inlet2_temp"] = 600.0
     pstudy.design_points.update_selected(design_points=["DP1"])
     fluent_output_table = dp.output_parameters
-    for key, entry in fluent_output_table.items():
+    for entry in fluent_output_table.values():
         output_value_dp1 = entry()
     assert output_value_dp1 == pytest_approx(333.421)

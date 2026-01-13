@@ -129,15 +129,15 @@ def _generate_api_data(
 
     inner(api_tree, "")
 
-    api_tree_data = dict()
-    api_tree_data["api_objects"] = sorted(list(api_objects))
-    api_tree_data["api_tui_objects"] = sorted(list(api_tui_objects))
-    api_tree_data["all_api_object_names"] = sorted(list(api_object_names))
+    api_tree_data = {}
+    api_tree_data["api_objects"] = sorted(api_objects)
+    api_tree_data["api_tui_objects"] = sorted(api_tui_objects)
+    api_tree_data["all_api_object_names"] = sorted(api_object_names)
     api_object_name_map["meshing_session"] = sorted(
-        list(api_object_name_map["meshing_session"])
+        api_object_name_map["meshing_session"]
     )
     api_object_name_map["solver_session"] = sorted(
-        list(api_object_name_map["solver_session"])
+        api_object_name_map["solver_session"]
     )
     api_tree_data["api_object_name_map"] = api_object_name_map
 
@@ -150,14 +150,14 @@ def _generate_api_data(
         json_file_folder = Path(os.path.join(config.codegen_outdir, "api_tree"))
         json_file_folder.mkdir(parents=True, exist_ok=True)
 
-        all_api_object_name_synsets = dict()
+        all_api_object_name_synsets = {}
         for name in api_object_names:
             api_object_name_synsets = wn.synsets(name, lang="eng")
             synset_names = set()
             for api_object_name_synset in api_object_name_synsets:
                 synset_names.add(api_object_name_synset.name())
             if synset_names:
-                all_api_object_name_synsets[name] = sorted(list(synset_names))
+                all_api_object_name_synsets[name] = sorted(synset_names)
         api_tree_data["all_api_object_name_synsets"] = all_api_object_name_synsets
 
         api_tree_file_path = _get_api_tree_data_file_path()
@@ -176,7 +176,7 @@ def _get_api_tree_data():
     """Get API tree data."""
     api_tree_data_file_path = _get_api_tree_data_file_path()
     if api_tree_data_file_path.exists():
-        json_file = open(api_tree_data_file_path, "r")
+        json_file = open(api_tree_data_file_path)
         api_tree_data = json.load(json_file)
         return api_tree_data
 
@@ -235,18 +235,15 @@ def _print_search_results(
                         name in first_token
                         and has_query(name, substrings)
                         and name in substrings[-1]
-                    ):
-                        if score is not None:
-                            results.add((api_object, round(score, 2)))
+                    ) and score is not None:
+                        results.add((api_object, round(score, 2)))
                 else:
                     name = query
                     score = None
 
-                    if match_whole_word and (
+                    if (match_whole_word and (
                         first_token == name or first_token.endswith(f".{name}")
-                    ):
-                        results.add(api_object)
-                    elif not match_whole_word and name in first_token:
+                    )) or (not match_whole_word and name in first_token):
                         results.add(api_object)
 
         return sorted(results)
@@ -425,7 +422,7 @@ def _search_whole_word(
     search_string: str,
     match_case: bool = False,
     match_whole_word: bool = True,
-    api_tree_data: dict = None,
+    api_tree_data: dict | None = None,
     api_path: str | None = None,
 ):
     """Perform exact search for a word through the Fluent's object hierarchy.

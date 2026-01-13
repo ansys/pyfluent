@@ -27,7 +27,7 @@ from pathlib import Path
 import pickle
 
 from ansys.fluent.core import config
-from ansys.fluent.core.codegen import (  # noqa: F401
+from ansys.fluent.core.codegen import (
     builtin_settingsgen,
     datamodelgen,
     settingsgen,

@@ -40,9 +40,8 @@ import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any
 
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
@@ -71,6 +70,9 @@ from ansys.fluent.core.launcher.server_info import (
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+if TYPE_CHECKING:
+    from ansys.fluent.core._types import PathType
+
 logger = logging.getLogger("pyfluent.launcher")
 
 
@@ -91,7 +93,7 @@ class StandaloneLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,

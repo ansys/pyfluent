@@ -29,8 +29,10 @@ from typing import Any
 from google.protobuf.json_format import MessageToDict
 import grpc
 
-from ansys.api.fluent.v0 import datamodel_tui_pb2 as DataModelProtoModule
-from ansys.api.fluent.v0 import datamodel_tui_pb2_grpc as DataModelGrpcModule
+from ansys.api.fluent.v0 import (
+    datamodel_tui_pb2 as DataModelProtoModule,
+    datamodel_tui_pb2_grpc as DataModelGrpcModule,
+)
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.services.api_upgrade import ApiUpgradeAdvisor
 from ansys.fluent.core.services.interceptors import (
@@ -103,11 +105,11 @@ def _convert_value_to_gvalue(val: Any, gval: Variant) -> None:
     """Convert Python datatype to Value type of google/protobuf/struct.proto."""
     if isinstance(val, bool):
         gval.bool_value = val
-    elif isinstance(val, int) or isinstance(val, float):
+    elif isinstance(val, (int, float)):
         gval.number_value = val
     elif isinstance(val, str):
         gval.string_value = val
-    elif isinstance(val, list) or isinstance(val, tuple):
+    elif isinstance(val, (list, tuple)):
         # set the one_of to list_value
         gval.list_value.values.add()
         gval.list_value.values.pop()
@@ -372,7 +374,7 @@ class TUIMenu:
             attr = super().__getattribute__(name)
             if isinstance(attr, TUIMethod):
                 # some runtime submenus are generated as methods during codegen
-                path = self._path + [name]
+                path = [*self._path, name]
                 if PyMenu(
                     self._service, self._version, self._mode, path
                 ).get_child_names():
@@ -381,7 +383,7 @@ class TUIMenu:
         except AttributeError as ex:
             if name in dir(self):
                 # for runtime submenus and commands which are not available during codegen
-                path = self._path + [name]
+                path = [*self._path, name]
                 if PyMenu(
                     self._service, self._version, self._mode, path
                 ).get_child_names():

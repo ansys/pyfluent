@@ -47,21 +47,21 @@ def call_settings_reader_static_mixer(
 ):
     call_settings_reader(
         settings_file_name=settings_file_name,
-        expected=dict(
-            precision=2,
-            num_dimensions=3,
-            iter_count=100,
-            input_parameters=dict(
-                inlet1_temp=(300, "K"),
-                inlet1_vel=(1, "m/s"),
-                inlet2_temp=(350, "K"),
-                inlet2_vel=(1, "m/s"),
-            ),
-            output_parameters={
+        expected={
+            "precision": 2,
+            "num_dimensions": 3,
+            "iter_count": 100,
+            "input_parameters": {
+                "inlet1_temp": (300, "K"),
+                "inlet1_vel": (1, "m/s"),
+                "inlet2_temp": (350, "K"),
+                "inlet2_vel": (1, "m/s"),
+            },
+            "output_parameters": {
                 "outlet-temp-avg-op": "K",
                 "outlet-vel-avg-op": "m s^-1",
             },
-        ),
+        },
     )
 
 

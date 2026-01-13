@@ -50,7 +50,7 @@ def test_get_set_config(reset_examples_path):
 
     # Both deprecated var and config should have the new value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
-        assert pyfluent.EXAMPLES_PATH == new_path
+        assert new_path == pyfluent.EXAMPLES_PATH
     assert pyfluent.config.examples_path == new_path
 
 
@@ -60,7 +60,7 @@ def test_get_set_deprecated_var(reset_examples_path):
     pyfluent.EXAMPLES_PATH = new_path
 
     # Both deprecated var and config should have the new value
-    assert pyfluent.EXAMPLES_PATH == new_path
+    assert new_path == pyfluent.EXAMPLES_PATH
     assert pyfluent.config.examples_path == new_path
 
 
@@ -70,7 +70,7 @@ def test_set_config_after_deprecated_var(reset_examples_path):
     pyfluent.EXAMPLES_PATH = new_path1
 
     # Both deprecated var and config should have the new value
-    assert pyfluent.EXAMPLES_PATH == new_path1
+    assert new_path1 == pyfluent.EXAMPLES_PATH
     assert pyfluent.config.examples_path == new_path1
 
     # Set config
@@ -80,7 +80,7 @@ def test_set_config_after_deprecated_var(reset_examples_path):
 
     # Both deprecated var and config should have the latest value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
-        assert pyfluent.EXAMPLES_PATH == new_path2
+        assert new_path2 == pyfluent.EXAMPLES_PATH
     assert pyfluent.config.examples_path == new_path2
 
 
@@ -91,7 +91,7 @@ def test_set_deprecated_var_after_config(reset_examples_path):
 
     # Both deprecated var and config should have the new value
     with pytest.warns(pyfluent.PyFluentDeprecationWarning):
-        assert pyfluent.EXAMPLES_PATH == new_path1
+        assert new_path1 == pyfluent.EXAMPLES_PATH
     assert pyfluent.config.examples_path == new_path1
 
     # Set config
@@ -99,5 +99,5 @@ def test_set_deprecated_var_after_config(reset_examples_path):
     pyfluent.EXAMPLES_PATH = new_path2
 
     # Both deprecated var and config should have the latest value
-    assert pyfluent.EXAMPLES_PATH == new_path2
+    assert new_path2 == pyfluent.EXAMPLES_PATH
     assert pyfluent.config.examples_path == new_path2

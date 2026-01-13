@@ -27,11 +27,14 @@ from __future__ import annotations
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING
 
-from ansys.fluent.core._types import PathType
-from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow_new import Workflow
+
+if TYPE_CHECKING:
+    from ansys.fluent.core._types import PathType
+    from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
+    from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 name_to_identifier_map = {
     "Watertight Geometry": "EnableCleanCAD",

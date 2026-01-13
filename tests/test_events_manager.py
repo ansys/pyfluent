@@ -31,14 +31,13 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
 def test_receive_events_on_case_loaded(new_solver_session) -> None:
-
     def on_case_loaded_old(session_id, event_info):
         on_case_loaded_old.loaded = True
 
     on_case_loaded_old.loaded = False
 
     def on_case_loaded_old_with_args(x, y, session_id, event_info):
-        on_case_loaded_old_with_args.state = dict(x=x, y=y)
+        on_case_loaded_old_with_args.state = {"x": x, "y": y}
 
     on_case_loaded_old_with_args.state = None
 
@@ -51,12 +50,12 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
     on_case_loaded.loaded = False
 
     def on_case_loaded_with_args_optional_first(x, y, session, event_info):
-        on_case_loaded_with_args_optional_first.state = dict(x=x, y=y)
+        on_case_loaded_with_args_optional_first.state = {"x": x, "y": y}
 
     on_case_loaded_with_args_optional_first.state = None
 
     def on_case_loaded_with_args(session, event_info, x, y):
-        on_case_loaded_with_args.state = dict(x=x, y=y)
+        on_case_loaded_with_args.state = {"x": x, "y": y}
 
     on_case_loaded_with_args.state = None
 
@@ -95,13 +94,12 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     assert on_case_loaded_old.loaded
     assert on_case_loaded.loaded
-    assert on_case_loaded_old_with_args.state == dict(x=12, y=42)
-    assert on_case_loaded_with_args_optional_first.state == dict(x=12, y=42)
-    assert on_case_loaded_with_args.state == dict(x=12, y=42)
+    assert on_case_loaded_old_with_args.state == {"x": 12, "y": 42}
+    assert on_case_loaded_with_args_optional_first.state == {"x": 12, "y": 42}
+    assert on_case_loaded_with_args.state == {"x": 12, "y": 42}
 
 
 def test_receive_meshing_events_on_case_loaded(new_meshing_session) -> None:
-
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"
     )

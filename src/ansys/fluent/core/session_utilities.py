@@ -22,10 +22,9 @@
 
 """Session utilities."""
 
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -38,6 +37,9 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.launcher.pim_launcher import PIMLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core._types import PathType
 
 
 class SessionBase:
@@ -71,7 +73,7 @@ class SessionBase:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str = "",
-        env: Dict[str, Any] = {},  # noqa: B006
+        env: dict[str, Any] = {},
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,

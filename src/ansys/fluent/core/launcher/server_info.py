@@ -59,7 +59,9 @@ def _get_server_info_file_names(use_tmpdir=True) -> tuple[str, str]:
     dir_ = (
         Path(server_info_dir)
         if server_info_dir
-        else tempfile.gettempdir() if use_tmpdir else Path.cwd()
+        else tempfile.gettempdir()
+        if use_tmpdir
+        else Path.cwd()
     )
     fd, file_name = tempfile.mkstemp(suffix=".txt", prefix="serverinfo-", dir=str(dir_))
     os.close(fd)

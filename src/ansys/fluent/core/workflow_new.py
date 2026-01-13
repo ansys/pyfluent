@@ -47,10 +47,14 @@ from __future__ import annotations
 
 from collections import OrderedDict
 import re
-from typing import ValuesView
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core.services.datamodel_se import PyMenu
-from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from collections.abc import ValuesView
+
+    from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 def _get_task_type_name(task_obj: PyMenu) -> str:
@@ -857,19 +861,13 @@ class TaskObject:
         name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
         try:
             task_obj = getattr(workflow.task_object, name_1)[name_2]
-            if is_compound_child(task_obj.task_type):
-                temp_parent = self
-            else:
-                temp_parent = parent
+            temp_parent = self if is_compound_child(task_obj.task_type) else parent
             return make_task_wrapper(
                 task_obj, name_1, workflow, temp_parent, meshing_root
             )
         except LookupError:
             task_obj = getattr(workflow.task_object, name_1)[key]
-            if is_compound_child(task_obj.task_type):
-                temp_parent = self
-            else:
-                temp_parent = parent
+            temp_parent = self if is_compound_child(task_obj.task_type) else parent
             try:
                 return make_task_wrapper(
                     getattr(workflow.task_object, name_1)[key],

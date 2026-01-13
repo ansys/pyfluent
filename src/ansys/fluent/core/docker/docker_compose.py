@@ -151,10 +151,10 @@ class ComposeBasedLauncher:
     def check_image_exists(self) -> bool:
         """Check if the image exists locally."""
         try:
-            cmd = self._container_source + ["images", "-q", self._image_name]
+            cmd = [*self._container_source, "images", "-q", self._image_name]
             # Podman users do not always configure rootless mode in /etc/subuids and /etc/subgids
             if self._compose_config.use_podman_compose:
-                sudo_cmd = ["sudo"] + cmd
+                sudo_cmd = ["sudo", *cmd]
                 output_1 = subprocess.check_output(cmd)
                 output_2 = subprocess.check_output(sudo_cmd)
                 output_1_result = output_1.decode("utf-8").strip() != ""
@@ -171,7 +171,7 @@ class ComposeBasedLauncher:
     def pull_image(self) -> None:
         """Pull a Docker image if it does not exist locally."""
 
-        cmd = self._container_source + ["pull", self._image_name]
+        cmd = [*self._container_source, "pull", self._image_name]
 
         subprocess.check_call(cmd)
 
@@ -243,7 +243,7 @@ class ComposeBasedLauncher:
     def ports(self) -> list[str]:
         """Return the ports of the launched services."""
         output = subprocess.check_output(
-            self._container_source + ["port", f"{self._compose_name}-fluent-1"],
+            [*self._container_source, "port", f"{self._compose_name}-fluent-1"],
         )
         return self._extract_ports(output.decode("utf-8").strip())
 
@@ -256,14 +256,7 @@ class ComposeBasedLauncher:
             If the command fails.
         """
         result = subprocess.run(
-            self._container_source
-            + [
-                "exec",
-                f"{self._compose_name}-fluent-1",
-                "chown",
-                f"{os.getuid()}:{os.getgid()}",
-                self._container_server_info_file,
-            ],
+            [*self._container_source, "exec", f"{self._compose_name}-fluent-1", "chown", f"{os.getuid()}:{os.getgid()}", self._container_server_info_file],
             capture_output=True,
             text=True,
         )

@@ -22,9 +22,9 @@
 
 """Provides a module for datamodel event streaming."""
 
+from collections.abc import Callable
 import logging
 import threading
-from typing import Callable
 
 from google.protobuf.json_format import MessageToDict
 
@@ -91,9 +91,7 @@ class DatamodelEvents(StreamingService):
                         elif response.HasField("modifiedEventResponse"):
                             value = response.modifiedEventResponse.value
                             cb(_convert_variant_to_value(value))
-                        elif response.HasField("affectedEventResponse"):
-                            cb()
-                        elif response.HasField("deletedEventResponse"):
+                        elif response.HasField("affectedEventResponse") or response.HasField("deletedEventResponse"):
                             cb()
                         elif response.HasField("commandExecutedEventResponse"):
                             command = response.commandExecutedEventResponse.command

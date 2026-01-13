@@ -29,11 +29,10 @@ with gRPC.
 import inspect
 import logging
 import os
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any
 from warnings import warn
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
@@ -63,6 +62,9 @@ from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core._types import PathType
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -112,11 +114,7 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
     start_container = kwds.get("start_container")
     container_dict = kwds.get("container_dict")
     if old_arg_val is True:
-        if start_container is True:
-            return UIMode.NO_GUI
-        elif container_dict:
-            return UIMode.NO_GUI
-        elif pyfluent.config.launch_fluent_container:
+        if start_container is True or container_dict or pyfluent.config.launch_fluent_container:
             return UIMode.NO_GUI
         else:
             return UIMode.GUI
@@ -168,9 +166,9 @@ def launch_fluent(
     precision: Precision | str | None = None,
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
-    start_timeout: int = None,
+    start_timeout: int | None = None,
     additional_arguments: str = "",
-    env: Dict[str, Any] | None = None,
+    env: dict[str, Any] | None = None,
     start_container: bool | None = None,
     container_dict: dict | None = None,
     dry_run: bool = False,

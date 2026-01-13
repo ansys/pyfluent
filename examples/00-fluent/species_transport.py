@@ -99,9 +99,9 @@ print(solver_session.get_fluent_version())
 # These classes allow straightforward access to various settings without the need to navigate through the settings hierarchy.
 
 
-from ansys.fluent.core import FluentVersion  # noqa: E402
-from ansys.fluent.core.examples import download_file  # noqa: E402
-from ansys.fluent.core.solver import (  # noqa: E402
+from ansys.fluent.core import FluentVersion
+from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.solver import (
     Contour,
     Energy,
     Mesh,
@@ -455,9 +455,7 @@ solver_session.settings.solution.run_calculation.iterate(iter_count=200)
 # *The Time Scale Factor allows us to further manipulate the computed time step size calculated by Fluent.
 # Larger time steps can lead to faster convergence. However, if the time step is too large it can lead to solution instability.*
 
-solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_size_scale_factor = (
-    5
-)
+solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_size_scale_factor = 5
 
 # %%
 # Run the calculation for 200 iterations.

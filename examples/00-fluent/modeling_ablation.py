@@ -301,9 +301,9 @@ solver_session.settings.solution.report_definitions.drag["drag_force_x"].zones =
     "wall_ablation"
 ]
 solver_session.settings.solution.monitor.report_plots.create(name="drag_force_x")
-solver_session.settings.solution.monitor.report_plots["drag_force_x"].report_defs = (
+solver_session.settings.solution.monitor.report_plots[
     "drag_force_x"
-)
+].report_defs = "drag_force_x"
 solver_session.settings.solution.monitor.report_files.create(name="drag_force_x")
 solver_session.settings.solution.monitor.report_files["drag_force_x"] = {
     "file_name": "drag_force_x.out",
@@ -340,16 +340,16 @@ solver_session.settings.solution.report_definitions.surface.create(name="recede_
 solver_session.settings.solution.report_definitions.surface[
     "recede_point"
 ].report_type = "surface-vertexmax"
-solver_session.settings.solution.report_definitions.surface["recede_point"].field = (
-    "z-coordinate"
-)
+solver_session.settings.solution.report_definitions.surface[
+    "recede_point"
+].field = "z-coordinate"
 solver_session.settings.solution.report_definitions.surface[
     "recede_point"
 ].surface_names = ["wall_ablation"]
 solver_session.settings.solution.monitor.report_plots.create(name="recede_point")
-solver_session.settings.solution.monitor.report_plots["recede_point"].report_defs = (
+solver_session.settings.solution.monitor.report_plots[
     "recede_point"
-)
+].report_defs = "recede_point"
 solver_session.settings.solution.monitor.report_files.create(name="recede_point")
 solver_session.settings.solution.monitor.report_files["recede_point"] = {
     "file_name": "recede_point.out",

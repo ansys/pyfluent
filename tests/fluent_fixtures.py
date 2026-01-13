@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from typing import Callable
+from collections.abc import Callable
 
 import pytest
 
@@ -82,9 +82,9 @@ def mixing_elbow_watertight_pure_meshing_session(globals):
     meshing = new_pure_meshing_session(globals)
     geometry_filename = mixing_elbow_geometry_filename(globals)
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-    meshing.workflow.TaskObject["Import Geometry"].Arguments = dict(
-        FileName=geometry_filename, LengthUnit="in"
-    )
+    meshing.workflow.TaskObject["Import Geometry"].Arguments = {
+        "FileName": geometry_filename, "LengthUnit": "in"
+    }
     return meshing
 
 

@@ -61,6 +61,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm_solver_session = slurm_solver_launcher()
 """
 
+from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor
 import inspect
 import logging
@@ -68,10 +69,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Callable, Dict
+from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core import config
-from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
@@ -94,6 +94,9 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core._types import PathType
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -317,7 +320,7 @@ class SlurmFuture:
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
     def result(
-        self, timeout: int = None
+        self, timeout: int | None = None
     ) -> Meshing | PureMeshing | Solver | SolverIcing:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
@@ -341,7 +344,7 @@ class SlurmFuture:
         """
         return self._future.result(timeout)
 
-    def exception(self, timeout: int = None) -> Exception:
+    def exception(self, timeout: int | None = None) -> Exception:
         """Return the exception raised by the Fluent launch. If Fluent hasn't yet
         launched, then this method will wait up to timeout seconds. If Fluent hasn't
         launched in timeout seconds, then a TimeoutError will be raised. If timeout is
@@ -390,7 +393,7 @@ class SlurmLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
         additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         case_file_name: "PathType | None" = None,
