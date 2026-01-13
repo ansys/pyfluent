@@ -40,7 +40,6 @@ from ansys.fluent.core.launcher.container_launcher import DockerLauncher
 from ansys.fluent.core.launcher.error_warning_messages import (
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
     ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
-    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
     CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
     INSECURE_MODE_PROVIDED_IN_STANDALONE,
@@ -55,6 +54,7 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_fluent_launch_mode,
     _get_running_session_mode,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
@@ -489,10 +489,11 @@ def connect_to_fluent(
         Raised when `insecure_mode` is set but `allow_remote_host` is False.
     """
     if allow_remote_host:
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
         if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED)
     else:
         if certificates_folder is not None:
             raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER)

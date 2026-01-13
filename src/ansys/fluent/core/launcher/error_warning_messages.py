@@ -35,9 +35,9 @@ ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE = (
     "To set `insecure_mode`, `allow_remote_host` must be True."
 )
 
-CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH = "To launch Fluent in remote mode, set `certificates_folder` containing TLS certificates."
+CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH = "To launch Fluent in remote mode, pass the `certificates_folder` argument or set the environment variable `ANSYS_GRPC_CERTIFICATES` containing TLS certificates."
 
-CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT = "To connect to a remote Fluent instance, set `certificates_folder` containing TLS certificates."
+CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT = "To connect to a remote Fluent instance, pass the `certificates_folder` argument or set the environment variable `ANSYS_GRPC_CERTIFICATES` containing TLS certificates."
 
 CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE = (
     "``certificates_folder`` is relevant only when launching or connecting to a remote Fluent instance and "

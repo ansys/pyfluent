@@ -43,7 +43,6 @@ from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.error_warning_messages import (
-    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
 from ansys.fluent.core.launcher.fluent_container import (
@@ -59,6 +58,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -196,11 +196,14 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        # Note: PYFLUENT_CONTAINER_INSECURE_MODE is not exposed to users. It is used internally in
+        # GitHub Actions runs to indicate that insecure mode should be used.
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if certificates_folder is None and not insecure_mode and not insecure_mode_env:
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode or insecure_mode_env
+        )
+        if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED)
 
         locals_ = locals().copy()
         argvals = {

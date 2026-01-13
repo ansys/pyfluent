@@ -74,7 +74,6 @@ from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
-    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
 from ansys.fluent.core.launcher.launch_options import (
@@ -85,6 +84,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
@@ -523,10 +523,11 @@ class SlurmLauncher:
         """
         from ansys.fluent.core import config
 
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
         if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED)
 
         if not _SlurmWrapper.is_available():
             logger.debug(
