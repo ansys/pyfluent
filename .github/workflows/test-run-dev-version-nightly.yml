@@ -117,7 +117,7 @@ jobs:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Send GitHub Actions Run Status Adaptive Card to Teams via Power Automate
-        if: github.event_name == 'schedule' && steps.fluent_test.outcome != 'success'
+        if: github.event_name == 'schedule' && steps.unittest.outcome != 'success'
         run: | # zizmor: ignore[template-injection]
           STATUS="Failure"
           RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
@@ -178,4 +178,3 @@ jobs:
         run: |
           echo "One or more tests failed. Failing the job."
           exit 1
-
