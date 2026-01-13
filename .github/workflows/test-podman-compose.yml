@@ -84,7 +84,7 @@ jobs:
 
       - name: Pull Fluent docker image
         env:
-          FLUENT_IMAGE_TAG: v25.2.3
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
           make docker-pull
           docker images
@@ -98,6 +98,8 @@ jobs:
 
       - name: Run API codegen
         run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Print Fluent version info
         env:
@@ -115,6 +117,8 @@ jobs:
         run: |
           python tests/podman_compose.py
         continue-on-error: true
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Cleanup previous containers
         if: always()
