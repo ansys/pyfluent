@@ -86,7 +86,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
-          docker pull ghcr.io/ansys/pyfluent:${IMAGE_TAG}
+          make docker-pull
           docker images
 
       - name: Transport docker image to podman
