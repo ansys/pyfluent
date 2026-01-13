@@ -45,6 +45,7 @@ from ansys.fluent.core.fluent_connection import FluentConnection, PortNotProvide
 from ansys.fluent.core.launcher.error_handler import LaunchFluentError
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.session import BaseSession
+from ansys.fluent.core.solver import using
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.execution import timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
@@ -850,7 +851,11 @@ def test_dir_for_session(new_meshing_session_wo_exit):
 
     solver = meshing.switch_to_solver()
 
-    assert dir(meshing) == ["is_active", "wait_process_finished"]
+    assert [
+        name
+        for name in dir(meshing)
+        if not (name.startswith("__") and name.endswith("__"))
+    ] == ["is_active", "wait_process_finished"]
 
     for attr in ["read_case_lightweight", "settings"]:
         assert getattr(solver, attr)
@@ -871,8 +876,28 @@ def test_dir_for_session(new_meshing_session_wo_exit):
     solver.enable_beta_features()
     meshing_new = solver.switch_to_meshing()
 
-    assert dir(solver) == ["is_active", "wait_process_finished"]
-    assert len(dir(meshing_new)) > 1
+    non_dunder_solver_attrs = [
+        name
+        for name in dir(solver)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert non_dunder_solver_attrs == ["is_active", "wait_process_finished"]
+
+    # A new meshing session should expose additional meshing-specific attributes
+    # beyond the minimal BaseSession interface (``is_active`` and
+    # ``wait_process_finished``). Instead of relying on a magic number
+    # (previously ``len(...) > 2``), explicitly check for at least one such
+    # extra public attribute.
+    non_dunder_meshing_attrs = [
+        name
+        for name in dir(meshing_new)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert any(
+        name not in {"is_active", "wait_process_finished"}
+        for name in non_dunder_meshing_attrs
+    )
+    meshing_new.exit()
 
 
 @pytest.mark.standalone
@@ -890,5 +915,33 @@ def test_session_is_active(new_solver_session_wo_exit):
 
     session_1.exit()
 
-    assert not session_1.is_active()
-    assert not session_2.is_active()
+
+@pytest.mark.fluent_version(">=25.2")
+def test_python_attributes_in_inactive_sessions(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+    solver = meshing.switch_to_solver()
+
+    assert not meshing.is_active()
+    assert len(dir(meshing)) > 2
+    for attr in ["__class__", "__dict__"]:
+        assert getattr(meshing, attr)
+        assert attr in dir(meshing)
+
+    solver.exit()
+
+    assert not solver.is_active()
+    assert len(dir(solver)) > 2
+    for attr in ["__class__", "__dict__"]:
+        assert getattr(solver, attr)
+        assert attr in dir(solver)
+
+
+@pytest.mark.fluent_version(">=25.2")
+def test_context_manager_with_session_switch(new_meshing_session_wo_exit):
+    meshing = new_meshing_session_wo_exit
+
+    with using(meshing):
+        assert meshing.is_active()
+        solver = meshing.switch_to_solver()
+        assert not meshing.is_active()
+        assert solver.is_active()

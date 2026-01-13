@@ -1,3 +1,10 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -302,8 +309,10 @@ session.settings.solution.report_definitions.drag["cd-mon1"] = {
     "zones": ["wall_ahmed_body_main", "wall_ahmed_body_front", "wall_ahmed_body_rear"],
     "force_vector": [0, 0, 1],
 }
-session.parameters.output_parameters.report_definitions.create(name="parameter-1")
-session.parameters.output_parameters.report_definitions["parameter-1"] = {
+session.settings.parameters.output_parameters.report_definitions.create(
+    name="parameter-1"
+)
+session.settings.parameters.output_parameters.report_definitions["parameter-1"] = {
     "report_definition": "cd-mon1"
 }
 
@@ -322,9 +331,9 @@ session.settings.solution.run_calculation.iterate(iter_count=5)
 #######################################################################################
 # Post-Processing Workflow
 # =====================================================================================
-session.results.surfaces.iso_surface.create(name="xmid")
-session.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
-session.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
+session.settings.results.surfaces.iso_surface.create(name="xmid")
+session.settings.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
+session.settings.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
 
 contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])
 disp1 = GraphicsWindow()

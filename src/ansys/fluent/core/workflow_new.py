@@ -168,8 +168,9 @@ def command_name_to_task_name(meshing_root, command_name: str) -> str:
     -----
     This is a workaround for Fluent 26R1.
     """
-    # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
-    #  for '<Task Object>.get_next_possible_tasks()'.
+    # TODO: This fix is applicable till the server lacks the mechanism to return mapped values
+    #  for '<Task Object>.get_next_possible_tasks()' and
+    #  for '<Workflow>.get_new_insertable_tasks()'.
     command_instance = getattr(meshing_root, command_name).create_instance()
     return command_instance.get_attr("APIName") or command_instance.get_attr(
         "helpString"
@@ -509,8 +510,100 @@ class Workflow:
 
         self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
 
+    @property
+    def insertable_tasks(self) -> FirstTask:
+        """Tasks that can be inserted into an empty workflow.
+
+        Returns a helper that exposes the set of valid starting tasks for a blank
+        workflow as attributes. Each attribute is an object with an `insert()`
+        method that inserts that task into the workflow.
+
+        Notes
+        -----
+        - This helper only populates insertable tasks when the workflow is empty.
+        - Task names are exposed using Python-friendly identifiers (snake_case).
+        """
+        return self.FirstTask(self)
+
+    class FirstTask:
+        """Helper exposing insertable tasks for an empty workflow.
+
+        This container dynamically creates attributes for each command that the
+        server allows as the first task in a new workflow.
+
+        Access an attribute and call `.insert()` to insert that task.
+        """
+
+        def __init__(self, workflow):
+            """Initialize a ``FirstTask`` instance."""
+            self._workflow = workflow
+            self._insertable_tasks: list = []
+            # Map: server command name -> python-friendly task name
+            self._initial_task_map: dict[str, str] = {}
+
+            # Query server for commands that can start a new workflow.
+            # Older Fluent versions don’t provide this API; use a fallback list.
+            try:
+                initial_tasks = self._workflow.general.get_insertable_tasks()
+            except AttributeError:
+                # For Fluent Version 26R1 or before.
+                initial_tasks = ["ImportGeometry", "PartManagement", "RunCustomJournal"]
+            for command in initial_tasks:
+                self._initial_task_map[command] = command_name_to_task_name(
+                    self._workflow._command_source, command
+                )
+            # Only expose these attributes when the workflow is empty.
+            if self._workflow._workflow.general.workflow.task_list() == []:
+                for command_name, python_name in self._initial_task_map.items():
+                    # Build a lightweight proxy object with an insert() method.
+                    insertable_task = type("Insert", (self._Insert,), {})(
+                        self._workflow,
+                        command_name,
+                        self._initial_task_map,
+                    )
+                    # Expose as attribute: e.g., <workflow>.insertable_tasks.import_geometry.insert()
+                    setattr(self, python_name, insertable_task)
+                    self._insertable_tasks.append(insertable_task)
+
+        def __call__(self) -> list:
+            """Return all insertable task proxies as a list."""
+            return self._insertable_tasks
+
+        class _Insert:
+            """Represents a single insertable starting task.
+
+            Provides the `insert()` method to add this task to the workflow.
+            """
+
+            def __init__(self, workflow, name, task_map):
+                """Initialize an _Insert instance.
+
+                Parameters
+                ----------
+                workflow : Workflow
+                    Target workflow.
+                name : str
+                    Server command name (e.g., "ImportGeometry").
+                task_map : dict[str, str]
+                    Mapping from server command name -> python-friendly task name.
+                """
+                self._workflow = workflow
+                self._name = name
+                self._task_map = task_map
+
+            def insert(self) -> None:
+                """Insert this task into the workflow as the first task."""
+                self._workflow.general.insert_new_task(command_name=self._name)
+
+            def __repr__(self) -> str:
+                return f"<Insertable '{self._task_map[self._name]}' task>"
+
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""
+        if item in ["parts", "parts_files"]:
+            raise AttributeError(
+                f"'{item}' is only supported in Fault-tolerant Meshing workflows."
+            )
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:

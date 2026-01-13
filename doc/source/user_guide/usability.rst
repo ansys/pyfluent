@@ -116,7 +116,7 @@ Examples
    <solver_session>.tui.results.report.simulation_reports.read_simulation_report_template_file (Command) (similarity: 100.0%)
    >>>
    >>> # Whole word search
-   >>> pyfluent.search("iteration_at_creation_or_edit", match_whole_word=True) 
+   >>> pyfluent.search("iteration_at_creation_or_edit", match_whole_word=True)
    <solver_session>.solution.monitor.convergence_conditions.convergence_reports["<name>"].iteration_at_creation_or_edit (Parameter)
    >>>
    >>> # Whole word search within a specific API object
@@ -144,7 +144,7 @@ Examples
    ...
    >>>
    >> # Wildcard pattern search within a specific API object
-   >>> pyfluent.search("iter*", api_path="<solver_session>.parallel.multidomain") 
+   >>> pyfluent.search("iter*", api_path="<solver_session>.parallel.multidomain")
    <solver_session>.parallel.multidomain.conjugate_heat_transfer.set.coupling.iter_per_coupling_count (Parameter)
    <solver_session>.parallel.multidomain.conjugate_heat_transfer.set.coupling.single_session_coupling.iteration (Parameter)
    <solver_session>.parallel.multidomain.solve.dual_time_iterate (Command)
