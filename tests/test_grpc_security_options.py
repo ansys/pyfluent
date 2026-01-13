@@ -44,9 +44,13 @@ def _generate_random_remote_address():
             return address
 
 
-def test_launch_arguments():
+def test_launch_arguments(monkeypatch):
     with pytest.raises(ValueError, match=CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH):
         launch_fluent()
+
+    with monkeypatch.context() as m:
+        m.setenv("ANSYS_GRPC_CERTIFICATES", _get_certs_folder())
+        assert launch_fluent() is not None
 
     assert launch_fluent(certificates_folder=_get_certs_folder()) is not None
     assert launch_fluent(insecure_mode=True) is not None

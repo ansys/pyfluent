@@ -501,13 +501,15 @@ class FluentConnection:
         self._compose_config = compose_config if compose_config else ComposeConfig()
         self._error_state = ErrorState()
         self._data_valid = False
+        self._channel_str = None
         self._slurm_job_id = None
         self.finalizer_cbs = []
         if channel is not None:
             self._channel = channel
         else:
-            ip, port, uds_fullpath = None, None, None
+            uds_fullpath = None
             if address is not None:
+                self._channel_str = address
                 if is_uds(address):
                     uds_fullpath = address
                 else:
@@ -515,6 +517,7 @@ class FluentConnection:
                     port = int(port)
             else:
                 ip, port = _get_ip_and_port(ip, port)
+                self._channel_str = f"{ip}:{port}"
             self._channel = _get_channel(
                 ip=ip,
                 port=port,
