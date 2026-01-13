@@ -93,7 +93,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
-          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${IMAGE_TAG}
+          sudo podman pull docker-daemon:ghcr.io/ansys/fluent:${IMAGE_TAG}
           sudo podman images
 
       - name: Run API codegen
