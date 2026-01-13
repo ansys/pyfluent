@@ -40,7 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v25.2.0
+          - image-tag: v25.2.3
             version: 252
 
     steps:
@@ -178,7 +178,6 @@ jobs:
 
           echo "Sending notification to Power Automate..."
           curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
-
 
       - name: Check test run status and fail the whole job if tests failed
         if: steps.fluent_test.outcome != 'success'
