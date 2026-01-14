@@ -24,10 +24,10 @@
 
 import warnings
 
-from deprecated.sphinx import deprecated
 import numpy as np
-
 from ansys.api.fluent.v0.field_data_pb2 import DataLocation
+from deprecated.sphinx import deprecated
+
 from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldInfo,
@@ -53,10 +53,7 @@ from ansys.fluent.core.filereader.data_file import (
     _to_scalar_field_name,
     _to_vector_field_name,
 )
-from ansys.fluent.core.utils.deprecate import (
-    deprecate_arguments,
-    deprecate_function,
-)
+from ansys.fluent.core.utils.deprecate import deprecate_arguments, deprecate_function
 
 
 class InvalidMultiPhaseFieldName(ValueError):
@@ -116,7 +113,7 @@ class BatchFieldData:
     def _get_scalar_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         scalar_field_data = self.data[
             (
                 ("type", "scalar-field"),
@@ -134,7 +131,7 @@ class BatchFieldData:
     def _get_surface_data(
         self,
         **kwargs,
-    ) -> dict[int | str, dict[SurfaceDataType, np.array | list[np.array]]]:
+    ) -> dict[int | str, dict[SurfaceDataType, np.ndarray | list[np.ndarray]]]:
         surface_data = self.data[(("type", "surface-data"),)]
         return self._returned_data._surface_data(
             kwargs.get("data_types"),
@@ -147,7 +144,7 @@ class BatchFieldData:
     def _get_vector_field_data(
         self,
         **kwargs,
-    ) -> dict[int | str, np.array]:
+    ) -> dict[int | str, np.ndarray]:
         vector_field_data = self.data[(("type", "vector-field"),)]
         return self._returned_data._vector_data(
             _to_vector_field_name(kwargs.get("field_name")),
@@ -187,12 +184,12 @@ class BatchFieldData:
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns
         -------
-        Dict[int | str, Dict | np.array]
+        Dict[int | str, Dict | np.ndarray]
             Field data for the requested surface. If field data is unavailable for the surface,
             an empty array is returned and a warning is issued. Users should always check
             the array size before using the data.
@@ -532,9 +529,9 @@ class Batch(FieldBatch):
 
         Returns
         -------
-        Dict[int, Dict[int, Dict[str, np.array]]]
+        Dict[int, Dict[int, Dict[str, np.ndarray]]]
             Data is returned as dictionary of dictionaries in the following structure:
-            tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
+            tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.ndarray]
 
         Raises
         ------
@@ -932,12 +929,12 @@ class FileFieldData(FieldDataSource):
             | VectorFieldDataRequest
             | PathlinesFieldDataRequest
         ),
-    ) -> dict[int | str, dict | np.array]:
+    ) -> dict[int | str, dict | np.ndarray]:
         """Get the surface, scalar, vector or path-lines field data on a surface.
 
         Returns
         -------
-        Dict[int | str, Dict | np.array]
+        Dict[int | str, Dict | np.ndarray]
             Field data for the requested surface. If field data is unavailable for the surface,
             an empty array is returned and a warning is issued. Users should always check
             the array size before using the data.

@@ -27,12 +27,10 @@ import warnings
 
 import grpc
 import numpy as np
+from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
 
-from ansys.api.fluent.v0 import (
-    field_data_pb2 as FieldDataProtoModule,
-    svar_pb2 as SvarProtoModule,
-    svar_pb2_grpc as SvarGrpcModule,
-)
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
@@ -702,7 +700,7 @@ class SolutionVariableData:
     def set_data(
         self,
         variable_name: str,
-        zone_names_to_data: dict[str, np.array],
+        zone_names_to_data: dict[str, np.ndarray],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set SVAR data on zones.
@@ -711,7 +709,7 @@ class SolutionVariableData:
         ----------
         variable_name : str
             Name of the solution variable.
-        zone_names_to_data: Dict[str, np.array]
+        zone_names_to_data: Dict[str, np.ndarray]
             Dictionary containing zone names for solution variable data.
         domain_name : str, optional
             Domain name. The default is ``mixture``.
@@ -743,7 +741,7 @@ class SolutionVariableData:
                     _FieldDataConstants.chunk_size
                     / np.dtype(solution_variable_data.dtype).itemsize
                 )
-                solution_variable_data_list = np.array_split(
+                solution_variable_data_list = np.ndarray_split(
                     solution_variable_data,
                     math.ceil(solution_variable_data.size / max_array_size),
                 )
@@ -806,7 +804,7 @@ class SolutionVariableData:
     def set_svar_data(
         self,
         variable_name: str,
-        zone_names_to_svar_data: dict[str, np.array],
+        zone_names_to_svar_data: dict[str, np.ndarray],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set solution variable data."""

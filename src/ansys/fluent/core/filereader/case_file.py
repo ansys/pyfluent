@@ -38,9 +38,9 @@ Example
 """
 
 import codecs
-from enum import Enum
 import gzip
 import os
+from enum import Enum
 from os.path import dirname
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -340,14 +340,14 @@ class Mesh:
         nodes = nodes[previous : previous + np.sum(nnodes)]
         return [nodes, nnodes]
 
-    def get_connectivity(self, surface_id) -> np.array:
+    def get_connectivity(self, surface_id) -> np.ndarray:
         """Returns numpy array of face connectivity data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         key = nodes.copy()
         key.sort()
         key = np.unique(key)
         value = np.arange(0, len(key))
-        replace = np.array([key, value])
+        replace = np.ndarray([key, value])
         mask = np.in1d(nodes, key)
         nodes[mask] = replace[1, np.searchsorted(replace[0, :], nodes[mask])]
         obj = np.cumsum(nnodes)
@@ -356,7 +356,7 @@ class Mesh:
         nodes = np.insert(nodes, obj, nnodes)
         return nodes
 
-    def get_vertices(self, surface_id) -> np.array:
+    def get_vertices(self, surface_id) -> np.ndarray:
         """Returns numpy array of vertices data for a particular surface."""
         nodes, _nnodes = self._get_nodes(surface_id)
         nodes = np.unique(nodes)

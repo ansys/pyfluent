@@ -54,6 +54,8 @@ except ModuleNotFoundError as exc:
 
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as vector_naming,
+)
+from ansys.fluent.core.variable_strategies import (
     FluentSVarNamingStrategy as scalar_naming,
 )
 
@@ -176,7 +178,7 @@ class DataFile:
 
     def get_face_scalar_field_data(
         self, phase_name: str, field_name: str, surface_id: int
-    ) -> np.array:
+    ) -> np.ndarray:
         """Gets scalar field data for face.
 
         Parameters
@@ -207,7 +209,9 @@ class DataFile:
                 return field_array[min_id - array_min_id : max_id + 1 - array_min_id]
         return np.zeros(max_id + 1 - min_id)
 
-    def get_face_vector_field_data(self, phase_name: str, surface_id: int) -> np.array:
+    def get_face_vector_field_data(
+        self, phase_name: str, surface_id: int
+    ) -> np.ndarray:
         """Gets vector field data for face.
 
         Parameters
@@ -226,7 +230,7 @@ class DataFile:
         y_comp = self.get_face_scalar_field_data(phase_name, "SV_V", surface_id)
         z_comp = self.get_face_scalar_field_data(phase_name, "SV_W", surface_id)
 
-        vector_data = np.array([])
+        vector_data = np.ndarray([])
         for a, b, c in zip(x_comp, y_comp, z_comp, strict=False):
             vector_data = np.append(vector_data, [a, b, c])
 

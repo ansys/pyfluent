@@ -25,8 +25,8 @@
 import threading
 
 import numpy as np
-
 from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
+
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
@@ -119,7 +119,7 @@ class MonitorsManager(StreamingService):
         monitor_set_name,
         start_index: int = 0,
         end_index: int | None = None,
-    ) -> tuple[np.array, dict[str, np.array]]:
+    ) -> tuple[np.ndarray, dict[str, np.ndarray]]:
         """Get monitor set data.
 
         Parameters
@@ -133,7 +133,7 @@ class MonitorsManager(StreamingService):
 
         Returns
         -------
-        Tuple[np.array, Dict[str, np.array]]
+        Tuple[np.ndarray, Dict[str, np.ndarray]]
             Tuple containing two elements: a numpy array of x-axis values and a dictionary
             associating monitor names of type ``str`` to numpy arrays of y-axis values.
         """
@@ -142,9 +142,9 @@ class MonitorsManager(StreamingService):
             try:
                 df = df_data["df"].iloc[start_index:end_index]
             except IndexError:
-                return (np.array([]), {})
+                return (np.ndarray([]), {})
             return (
-                (np.array([]), {})
+                (np.ndarray([]), {})
                 if df.empty
                 else (
                     df.index.to_numpy(),
