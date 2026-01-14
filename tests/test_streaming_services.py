@@ -23,15 +23,18 @@
 import time
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 def transcript(data):
     transcript.data = data
 
 
-def run_transcript(i, ip, port, password):
+def run_transcript(i, ip, port, password, **kwargs):
     transcript("")
-    session = pyfluent.Solver.from_connection(ip=ip, port=port, password=password)
+    session = pyfluent.Solver.from_connection(
+        ip=ip, port=port, password=password, allow_remote_host=True, **kwargs
+    )
     session.transcript.register_callback(transcript)
 
     transcript_checked = False
@@ -52,7 +55,8 @@ def run_transcript(i, ip, port, password):
 
 
 def test_transcript():
-    solver = pyfluent.Solver.from_container(insecure_mode=True)
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    solver = pyfluent.Solver.from_container(**kwargs)
     ip = solver.connection_properties.ip
     port = solver.connection_properties.port
     password = solver.connection_properties.password
@@ -61,7 +65,9 @@ def test_transcript():
     total_passed_transcripts = 0
 
     for i in range(100):
-        transcript_checked, transcript_passed = run_transcript(i, ip, port, password)
+        transcript_checked, transcript_passed = run_transcript(
+            i, ip, port, password, **kwargs
+        )
         total_checked_transcripts += int(transcript_checked)
         total_passed_transcripts += int(transcript_passed)
 

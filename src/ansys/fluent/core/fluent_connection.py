@@ -540,7 +540,7 @@ class FluentConnection:
             try:
                 self._health_check.check_health()
             except RuntimeError:
-                if inside_container:
+                if inside_container and container is not None:
                     logger.error("Error reported from Fluent:")
                     logger.error(
                         container.logs(stdout=False).decode("utf-8", errors="replace")
