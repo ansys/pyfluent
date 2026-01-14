@@ -3,7 +3,7 @@ ARG baseImage=rockylinux/rockylinux:8.10
 FROM ${baseImage}
 
 # Add metadata
-LABEL description="Ansys Fluent 2025 R2"
+LABEL description="Ansys Fluent 2026 R1"
 LABEL email="pyansys.core@ansys.com"
 
 # OCI label

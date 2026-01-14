@@ -14,7 +14,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
 COPY ansys_inc /ansys_inc
 
 # Add metadata
-LABEL description="Ansys Fluent 2026 R1"
+LABEL description="Ansys Fluent 2025 R2"
 LABEL email="pyansys.core@ansys.com"
 
 # OCI label
