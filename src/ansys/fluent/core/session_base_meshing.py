@@ -172,15 +172,15 @@ class BaseMeshing:
         - Returns True regardless of version
         """
         fluent_version = self.get_fluent_version()
-        is_legacy_only = fluent_version < FluentVersion.v261
+        only_legacy_allowed = fluent_version < FluentVersion.v261
 
         # Case 1: Auto-detect based on version
         if legacy is None:
-            return is_legacy_only
+            return only_legacy_allowed
 
         # Case 2: User explicitly requests new mode
         if legacy is False:
-            if is_legacy_only:
+            if only_legacy_allowed:
                 # Fluent version doesn't support new mode - warn and fallback
                 PyFluentUserWarning(
                     "Non-legacy workflow mode is only available from Fluent 26R1 onwards. "
@@ -194,7 +194,22 @@ class BaseMeshing:
         return True
 
     def watertight_workflow(self, initialize: bool = True, legacy: bool | None = None):
-        """Create a watertight meshing workflow."""
+        """Create a watertight meshing workflow.
+
+        Parameters
+        ----------
+        initialize: bool, optional
+            If True (default), initializes the workflow with default settings and
+            prepares it for immediate use. If False, creates the workflow without
+            initialization, useful when loading a saved state or applying custom
+            configuration before starting.
+
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+        """
         legacy = self._fallback_check(legacy)
         if legacy:
             root_module = "workflow"
@@ -213,7 +228,22 @@ class BaseMeshing:
     def fault_tolerant_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ):
-        """Create a fault-tolerant meshing workflow."""
+        """Create a fault-tolerant meshing workflow.
+
+        Parameters
+        ----------
+        initialize: bool, optional
+            If True (default), initializes the workflow with default settings and
+            prepares it for immediate use. If False, creates the workflow without
+            initialization, useful when loading a saved state or applying custom
+            configuration before starting.
+
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+        """
         legacy = self._fallback_check(legacy)
         if legacy:
             root_module = "workflow"
@@ -234,7 +264,22 @@ class BaseMeshing:
     def two_dimensional_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ):
-        """Create a 2D meshing workflow."""
+        """Create a 2D meshing workflow.
+
+        Parameters
+        ----------
+        initialize: bool, optional
+            If True (default), initializes the workflow with default settings and
+            prepares it for immediate use. If False, creates the workflow without
+            initialization, useful when loading a saved state or applying custom
+            configuration before starting.
+
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+        """
         legacy = self._fallback_check(legacy)
         if legacy:
             root_module = "workflow"
@@ -253,7 +298,22 @@ class BaseMeshing:
     def topology_based_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
     ):
-        """Create a topology-based workflow (beta)."""
+        """Create a topology-based workflow (beta).
+
+        Parameters
+        ----------
+        initialize: bool, optional
+            If True (default), initializes the workflow with default settings and
+            prepares it for immediate use. If False, creates the workflow without
+            initialization, useful when loading a saved state or applying custom
+            configuration before starting.
+
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
+        """
         legacy = self._fallback_check(legacy)
         if legacy:
             root_module = "workflow"
@@ -279,6 +339,23 @@ class BaseMeshing:
         """Load a previously saved meshing workflow from file.
 
         Restores workflow configuration including tasks, settings, and state.
+
+        Parameters
+        ----------
+        file_path : str or PathType
+            Path to the saved workflow file (typically with .wft extension).
+
+        initialize: bool, optional
+            If True (default), initializes the workflow with default settings and
+            prepares it for immediate use. If False, creates the workflow without
+            initialization, useful when loading a saved state or applying custom
+            configuration before starting.
+
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
         if legacy:
@@ -308,6 +385,20 @@ class BaseMeshing:
         """Create a new blank meshing workflow for manual task configuration.
 
         Provides an empty workflow to build custom task sequences from scratch.
+
+        Parameters
+        ----------
+        initialize: bool, optional
+            If True (default), initializes the workflow with default settings and
+            prepares it for immediate use. If False, creates the workflow without
+            initialization, useful when loading a saved state or applying custom
+            configuration before starting.
+
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
         if legacy:
@@ -336,6 +427,14 @@ class BaseMeshing:
         """Get the currently active meshing workflow.
 
         Returns the workflow instance that is currently loaded in the session.
+
+        Parameters
+        ----------
+        legacy : bool, optional
+            If True, creates a legacy workflow implementation.
+            If False, creates a new workflow implementation.
+            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            and uses the new workflow implementation for later versions (since 26R1).
 
         Raises
         ------

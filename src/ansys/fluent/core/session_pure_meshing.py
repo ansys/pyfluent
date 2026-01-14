@@ -218,7 +218,7 @@ class PureMeshing(BaseSession):
 
         Parameters
         ----------
-        file_path : str or Path
+        file_path : str or PathType
             Path to the saved workflow file (typically with .wft extension).
         legacy : bool, optional
             If True, loads as a legacy workflow implementation.
