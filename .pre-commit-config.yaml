@@ -9,7 +9,7 @@ ci:
 repos:
 
 - repo: https://github.com/dorschw/riff
-  rev: v0.0.287
+  rev: v0.0.287.0
   hooks:
   - id: ruff
     args: [--fix]
