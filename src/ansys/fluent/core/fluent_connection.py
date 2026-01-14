@@ -287,7 +287,7 @@ def _get_channel(
     ]
     if allow_remote_host:
         if insecure_mode:
-            if is_localhost(ip) and not inside_container:
+            if ip is not None and is_localhost(ip) and not inside_container:
                 raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
             warnings.warn(
                 INSECURE_MODE_WARNING,

@@ -62,7 +62,7 @@ def _generate_random_remote_address():
         ip = ".".join(map(str, octets))
         port = random.randint(1024, 65535)
         address = f"{ip}:{port}"
-        if not is_localhost(address):
+        if not is_localhost(ip):
             return address
 
 
