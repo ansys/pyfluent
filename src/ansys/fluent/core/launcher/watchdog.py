@@ -50,7 +50,13 @@ class UnsuccessfulWatchdogLaunch(RuntimeError):
 
 
 def launch(
-    main_pid: int, sv_port: int, sv_password: str, sv_ip: str | None = None
+    main_pid: int,
+    sv_port: int,
+    sv_password: str,
+    sv_ip: str | None = None,
+    allow_remote_host: bool | None = None,
+    certificates_folder: str | None = None,
+    insecure_mode: bool | None = None,
 ) -> None:
     """Function to launch the Watchdog. Automatically used and managed by PyFluent.
 
@@ -64,6 +70,12 @@ def launch(
         Fluent server password.
     sv_ip : str, optional
         Fluent server IP.
+    allow_remote_host: bool, optional
+        Whether to allow remote hosts to connect to the Fluent server.
+    certificates_folder : str, optional
+        Path to the folder containing gRPC certificates.
+    insecure_mode : bool, optional
+        Whether to use insecure gRPC mode.
 
     Raises
     ------
@@ -129,6 +141,9 @@ def launch(
         str(sv_port),
         sv_password,
         watchdog_id,
+        str(allow_remote_host),
+        str(certificates_folder),
+        str(insecure_mode),
     ]
 
     if debug_watchdog:

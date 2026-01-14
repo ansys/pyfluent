@@ -283,11 +283,14 @@ class DockerLauncher:
                 compose_config=self._compose_config,
             )
 
+        allow_remote_host = (
+            self.argvals["insecure_mode"]
+            or self.argvals["certificates_folder"] is not None
+        )
         fluent_connection = FluentConnection(
             port=port,
             password=password,
-            allow_remote_host=self.argvals["insecure_mode"]
-            or self.argvals["certificates_folder"] is not None,
+            allow_remote_host=allow_remote_host,
             certificates_folder=self.argvals["certificates_folder"],
             insecure_mode=self.argvals["insecure_mode"],
             file_transfer_service=self.file_transfer_service,
@@ -318,6 +321,13 @@ class DockerLauncher:
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:
                 logger.debug("Launching Watchdog for Fluent container...")
-                watchdog.launch(os.getpid(), port, password)
+                watchdog.launch(
+                    os.getpid(),
+                    port,
+                    password,
+                    allow_remote_host=allow_remote_host,
+                    certificates_folder=self.argvals["certificates_folder"],
+                    insecure_mode=self.argvals["insecure_mode"],
+                )
 
         return session

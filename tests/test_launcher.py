@@ -349,10 +349,10 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     assert get_fluent_exe_path() == expected_path
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4805")
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setattr(pyfluent.config, "watchdog_exception_on_error", True)
-    pyfluent.launch_fluent(start_watchdog=True, insecure_mode=True)
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    pyfluent.launch_fluent(start_watchdog=True, **kwargs)
 
 
 @pytest.mark.standalone

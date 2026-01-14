@@ -527,7 +527,15 @@ def connect_to_fluent(
     if start_watchdog:
         logger.info("Launching Watchdog for existing Fluent session...")
         if ip is not None and port is not None and password is not None:
-            watchdog.launch(os.getpid(), port, password, ip)
+            watchdog.launch(
+                os.getpid(),
+                port,
+                password,
+                ip,
+                allow_remote_host=allow_remote_host,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+            )
 
     return new_session(
         fluent_connection=fluent_connection,
