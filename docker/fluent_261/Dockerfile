@@ -1,8 +1,15 @@
+# Specify base image
 ARG baseImage=rockylinux/rockylinux:8.10
-
 FROM ${baseImage}
-LABEL description="Ansys Fluent 2026 R1"
-MAINTAINER Ben Widmann "ben.widmann@ansys.com"
+
+# Add metadata
+LABEL description="Ansys Fluent 2025 R2"
+LABEL email="pyansys.core@ansys.com"
+
+# OCI label
+LABEL org.opencontainers.image.documentation="https://fluent.docs.pyansys.com"
+
+# Install dependencies
 RUN yum install -y \
     findutils \
     tcsh.x86_64 \
@@ -19,15 +26,18 @@ RUN yum install -y \
     libtirpc-devel \
     glx-utils-8.4.0-5.20181118git1830dcb.el8.x86_64 \
     && yum clean all
+
 RUN dnf install --enablerepo=powertools -y \
     libnsl2-devel \
     bison-devel \
     flex-devel \
     libglvnd-opengl \
     nss-softokn \
-    libGLEW-2.0.0-6.el8.x86_64   
+    libGLEW-2.0.0-6.el8.x86_64
+
 RUN dnf install --enablerepo=devel -y \
     libXcomposite
+
 RUN dnf install -y \
     libXdamage \
     libXtst \
@@ -38,20 +48,27 @@ RUN dnf install -y \
     xrandr \
     mesa-dri-drivers \
     && dnf clean all
+
+# Set environment variables for XVFB
 ENV DISPLAY=:1
 ENV QT_QPA_PLATFORM=offscreen
 
+# Copy ``ansys_inc`` directory
 COPY ansys_inc /ansys_inc/
 
+# Add entrypoint script for XVFB
 COPY entrypoint_xvfb.sh /entrypoint_xvfb.sh
 RUN chmod a+x /entrypoint_xvfb.sh
 
+# User variables
 ARG USERNAME=fluentuser
 ARG USER_UID=10000
 ARG USER_GID=$USER_UID
 
+# Create the user
 RUN groupadd --gid $USER_GID $USERNAME && \
     useradd --uid $USER_UID --gid $USER_GID -m $USERNAME && \
     chown -R $USER_UID:$USER_GID /home/$USERNAME
 
+# Specify default Fluent executable
 ENTRYPOINT [ "/entrypoint_xvfb.sh" ]
