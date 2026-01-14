@@ -202,16 +202,24 @@ class BaseMeshing:
         if os.getenv("USE_SERVER_MW") == "1":
             root_module = "meshing_workflow"
             from ansys.fluent.core.meshing.meshing_workflow_new import LoadWorkflow
+
+            self._current_workflow = LoadWorkflow(
+                _make_datamodel_module(self, root_module),
+                self.meshing,
+                self.get_fluent_version(),
+                os.fspath(file_path),
+                initialize,
+            )
         else:
             root_module = "workflow"
             from ansys.fluent.core.meshing.meshing_workflow import LoadWorkflow
-        self._current_workflow = LoadWorkflow(
-            _make_datamodel_module(self, root_module),
-            self.meshing,
-            self.get_fluent_version(),
-            os.fspath(file_path),
-            initialize,
-        )
+
+            self._current_workflow = LoadWorkflow(
+                _make_datamodel_module(self, root_module),
+                self.meshing,
+                os.fspath(file_path),
+                self.get_fluent_version(),
+            )
         return self._current_workflow
 
     def create_workflow(self, initialize: bool = True):
