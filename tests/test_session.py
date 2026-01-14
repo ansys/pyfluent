@@ -781,6 +781,7 @@ def test_new_launch_fluent_api_from_container():
     solver.exit()
 
 
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
 def test_new_launch_fluent_api_from_connection():
     import ansys.fluent.core as pyfluent
 

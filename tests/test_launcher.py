@@ -349,6 +349,7 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     assert get_fluent_exe_path() == expected_path
 
 
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setattr(pyfluent.config, "watchdog_exception_on_error", True)
     kwargs = get_grpc_launcher_args_for_gh_runs()

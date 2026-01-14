@@ -170,7 +170,7 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     assert len(event_index) == len(iteration_index)
 
 
-@pytest.mark.fluent_version(">=23.1")
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
 def test_iteration_ended_sync_event_multiple_connections():
     kwargs = get_grpc_launcher_args_for_gh_runs()
     solver1 = pyfluent.Solver.from_container(**kwargs)

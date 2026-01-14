@@ -22,6 +22,8 @@
 
 import time
 
+import pytest
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
@@ -54,6 +56,7 @@ def run_transcript(i, ip, port, password, **kwargs):
     return transcript_checked, transcript_passed
 
 
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
 def test_transcript():
     kwargs = get_grpc_launcher_args_for_gh_runs()
     solver = pyfluent.Solver.from_container(**kwargs)
