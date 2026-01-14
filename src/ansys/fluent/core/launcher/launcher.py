@@ -37,6 +37,13 @@ from ansys.fluent.core._types import PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.launcher.error_warning_messages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
+    INSECURE_MODE_PROVIDED_IN_STANDALONE,
+)
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -47,6 +54,7 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_fluent_launch_mode,
     _get_running_session_mode,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
@@ -379,15 +387,13 @@ def launch_fluent(
 
     if fluent_launch_mode == LaunchMode.STANDALONE and certificates_folder is not None:
         warn(
-            "``certificates_folder`` is relevant only when launching or connecting to a remote Fluent instance and "
-            "will be ignored for standalone launch mode.",
+            CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
             UserWarning,
         )
 
     if fluent_launch_mode == LaunchMode.STANDALONE and insecure_mode:
         warn(
-            "``insecure_mode`` is relevant only when launching or connecting to a remote Fluent instance and "
-            "will be ignored for standalone launch mode.",
+            INSECURE_MODE_PROVIDED_IN_STANDALONE,
             UserWarning,
         )
 
@@ -483,21 +489,16 @@ def connect_to_fluent(
         Raised when `insecure_mode` is set but `allow_remote_host` is False.
     """
     if allow_remote_host:
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
         if certificates_folder is None and not insecure_mode:
-            raise ValueError("To connect to a remote host, set `certificates_folder`.")
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
     else:
         if certificates_folder is not None:
-            raise ValueError(
-                "To set `certificates_folder`, `allow_remote_host` must be True."
-            )
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER)
         if insecure_mode:
-            raise ValueError(
-                "To set `insecure_mode`, `allow_remote_host` must be True."
-            )
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE)
 
     if address is None:
         values = _get_server_info(server_info_file_name, ip, port, password)
@@ -526,7 +527,15 @@ def connect_to_fluent(
     if start_watchdog:
         logger.info("Launching Watchdog for existing Fluent session...")
         if ip is not None and port is not None and password is not None:
-            watchdog.launch(os.getpid(), port, password, ip)
+            watchdog.launch(
+                os.getpid(),
+                port,
+                password,
+                ip,
+                allow_remote_host=allow_remote_host,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+            )
 
     return new_session(
         fluent_connection=fluent_connection,
