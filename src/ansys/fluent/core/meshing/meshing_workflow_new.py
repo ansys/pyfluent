@@ -33,13 +33,6 @@ from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow_new import Workflow
 
-name_to_identifier_map = {
-    "Watertight Geometry": "EnableCleanCAD",
-    "Fault-tolerant Meshing": "EnableComplexMeshing",
-    "2D Meshing": "EnablePrime2dMeshing",
-    "Topology Based Meshing": "EnablePrimeMeshing",
-}
-
 
 class MeshingWorkflow(Workflow):
     """Provides meshing specialization of the workflow wrapper that extends the core
@@ -50,7 +43,6 @@ class MeshingWorkflow(Workflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         name: str,
-        identifier: str,
         fluent_version: FluentVersion,
         initialize: bool = True,
     ) -> None:
@@ -64,8 +56,6 @@ class MeshingWorkflow(Workflow):
             Meshing object.
         name: str
             Workflow name to initialize it.
-        identifier: str
-            Workflow name to identify it from global settings.
         fluent_version: FluentVersion
             Version of Fluent in this session.
         initialize: bool
@@ -76,7 +66,6 @@ class MeshingWorkflow(Workflow):
         )
         self._meshing = meshing
         self._name = name
-        self._identifier = identifier
         if initialize:
             self._new_workflow(name=self._name)
         self._initialized = True
@@ -109,7 +98,6 @@ class WatertightMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="Watertight Geometry",
-            identifier=name_to_identifier_map["Watertight Geometry"],
             fluent_version=fluent_version,
             initialize=initialize,
         )
@@ -148,7 +136,6 @@ class FaultTolerantMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="Fault-tolerant Meshing",
-            identifier=name_to_identifier_map["Fault-tolerant Meshing"],
             fluent_version=fluent_version,
             initialize=initialize,
         )
@@ -230,7 +217,6 @@ class TwoDimensionalMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="2D Meshing",
-            identifier=name_to_identifier_map["2D Meshing"],
             fluent_version=fluent_version,
             initialize=initialize,
         )
@@ -263,7 +249,6 @@ class TopologyBasedMeshingWorkflow(MeshingWorkflow):
             workflow=workflow,
             meshing=meshing,
             name="Topology Based Meshing",
-            identifier=name_to_identifier_map["Topology Based Meshing"],
             fluent_version=fluent_version,
             initialize=initialize,
         )
@@ -285,8 +270,9 @@ class LoadWorkflow(Workflow):
         self,
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
-        file_path: PathType,
         fluent_version: FluentVersion,
+        file_path: PathType = None,
+        initialize: bool = True,
     ) -> None:
         """Initialize a ``LoadWorkflow`` instance.
 
@@ -300,12 +286,15 @@ class LoadWorkflow(Workflow):
             Path to the saved workflow file.
         fluent_version: FluentVersion
             Version of Fluent in this session.
+        initialize: bool
+            Flag to initialize the workflow, defaults to True.
         """
         super().__init__(
             workflow=workflow, command_source=meshing, fluent_version=fluent_version
         )
         self._meshing = meshing
-        self._load_workflow(file_path=os.fspath(file_path))
+        if initialize:
+            self._load_workflow(file_path=os.fspath(file_path))
 
 
 class CreateWorkflow(Workflow):

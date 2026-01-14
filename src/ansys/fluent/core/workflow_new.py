@@ -308,15 +308,33 @@ class Workflow:
 
     def _new_workflow(self, name: str):
         """Initialize a new workflow from a predefined template."""
-        self._workflow.general.initialize_workflow(workflow_type=name)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.initialize_workflow(workflow_type=name)
+        else:
+            raise RuntimeError("Switching between workflows is yet to be implemented.")
 
     def _load_workflow(self, file_path: str):
         """Load a workflow from a saved workflow file (.wft)."""
-        self._workflow.general.load_workflow(file_path=file_path)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.load_workflow(file_path=file_path)
+        else:
+            raise RuntimeError("Switching between workflows is yet to be implemented.")
 
     def _create_workflow(self):
         """Create a new empty workflow."""
-        self._workflow.general.create_new_workflow()
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.create_new_workflow()
+        else:
+            raise RuntimeError("Switching between workflows is yet to be implemented.")
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to a file."""
