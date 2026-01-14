@@ -23,6 +23,7 @@
 """Provides a module to get networking functionality."""
 
 from concurrent import futures
+import ipaddress
 import logging
 import socket
 import ssl
@@ -161,3 +162,42 @@ def get_url_content(url: str) -> str:
     """
     with urllib.request.urlopen(url) as response:
         return response.read()
+
+
+def get_uds_path(address: str) -> str | None:
+    """
+    Get the UDS path from a UDS address.
+
+    Parameters
+    ----------
+    address : str
+        The address to extract the UDS path from.
+
+    Returns
+    -------
+    str | None
+        The UDS path extracted from the address.
+    """
+    if address.startswith("unix:"):
+        return address[len("unix:") :]
+
+
+def is_localhost(ip: str) -> bool:
+    """
+    Check if the given ip address corresponds to localhost.
+
+    Parameters
+    ----------
+    ip : str
+        The ip address to check.
+
+    Returns
+    -------
+    bool
+        True if the address corresponds to localhost, False otherwise.
+    """
+    try:
+        return ipaddress.ip_address(ip).is_loopback
+    except ValueError:
+        # Not an IP, fall back to hostname
+        return ip.lower() == "localhost"

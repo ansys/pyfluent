@@ -73,6 +73,9 @@ from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core import config
 from ansys.fluent.core.exceptions import InvalidArgument
+from ansys.fluent.core.launcher.error_warning_messages import (
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+)
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -81,6 +84,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _await_fluent_launch,
@@ -522,14 +526,11 @@ class SlurmLauncher:
         """
         from ansys.fluent.core import config
 
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
         if certificates_folder is None and not insecure_mode:
-            raise ValueError(
-                "To launch Fluent in Slurm environment, set `certificates_folder`."
-            )
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         if not _SlurmWrapper.is_available():
             logger.debug(
