@@ -93,7 +93,8 @@ def test_launch_pure_meshing(mixing_elbow_watertight_pure_meshing_session):
     pure_meshing_session.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     geom_name = download_file("mixing_elbow.pmdb", "pyfluent/mixing_elbow")
     pure_meshing_session.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": geom_name, "LengthUnit": "in"
+        "FileName": geom_name,
+        "LengthUnit": "in",
     }
     pure_meshing_session.tui.file.read_journal(file_name)
     if os.path.exists(file_name):

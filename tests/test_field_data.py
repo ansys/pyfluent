@@ -302,9 +302,7 @@ def test_field_data_batches(new_solver_session) -> None:
     assert (
         round(float(np.average(scalar_data_1["hot-inlet"])), 2) == HOT_INLET_TEMPERATURE
     )
-    assert sorted(
-        pathlines_data["hot-inlet"]._pathlines_data_for_surface
-    ) == sorted(
+    assert sorted(pathlines_data["hot-inlet"]._pathlines_data_for_surface) == sorted(
         [
             "vertices",
             "lines",

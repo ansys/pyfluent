@@ -236,7 +236,7 @@ def _run_local_study_in_fluent(
 
     def apply_to_studies(studies, inputs) -> None:
         results = []
-        for item in list(zip(studies, inputs)):
+        for item in list(zip(studies, inputs, strict=False)):
             study, input = item
             results.append(apply_to_study(study, input))
         for result in results:

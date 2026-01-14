@@ -174,9 +174,9 @@ def test_parametric_workflow():
     study_names = {*solver_session.parametric_studies.keys()}
     solver_session.parametric_studies.duplicate()
     assert len(solver_session.parametric_studies) == 2
-    study2_name = (
-        {*solver_session.parametric_studies.keys()}.difference(study_names).pop()
-    )
+    study2_name = {*solver_session.parametric_studies.keys()}.difference(
+        study_names
+    ).pop()
     study2 = solver_session.parametric_studies[study2_name]
     assert len(study2.design_points) == 2
     solver_session.parametric_studies[study2_name].rename("New Study")

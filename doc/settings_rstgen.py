@@ -242,11 +242,9 @@ def _write_deprecated_rst_table(rst_dir, deprecated_class_version):
         output = buffer.getvalue()
         out = output.split("\n")
         settings = {
-
-                setting
-                for setting in out
-                if "tui" not in setting and "meshing" not in setting
-
+            setting
+            for setting in out
+            if "tui" not in setting and "meshing" not in setting
         }
         for setting in settings:
             if setting and setting.split(".")[-1].split(" ")[0] == class_name:

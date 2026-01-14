@@ -115,12 +115,12 @@ meshing_session.workflow.TaskObject["Import Geometry"].Execute()
 meshing_session.workflow.TaskObject["Add Local Sizing"].Execute()
 
 meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Arguments = {
-        "CFDSurfaceMeshControls": {
-            "MinSize": 0.3,
-            "MaxSize": 1,
-            "ScopeProximityTo": "faces",
-        },
-    }
+    "CFDSurfaceMeshControls": {
+        "MinSize": 0.3,
+        "MaxSize": 1,
+        "ScopeProximityTo": "faces",
+    },
+}
 meshing_session.workflow.TaskObject["Generate the Surface Mesh"].Execute()
 
 meshing_session.workflow.TaskObject["Describe Geometry"].UpdateChildTasks(
@@ -363,12 +363,12 @@ meshing_session.workflow.TaskObject["Run Custom Journal"].Rename(
     NewName=r"set-periodicity"
 )
 meshing_session.workflow.TaskObject["set-periodicity"].Arguments = {
-        r"JournalString": r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3
+    r"JournalString": r"""/bo rps translational semi-auto periodic-1-high periodic-2-high periodic-3-high periodic-4-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-5* , 0 0 -2.3
 /bo rps translational semi-auto periodic-6-high , 0 0 -2.3
 /bo rps translational semi-auto periodic-7-high , 0 0 -2.3
 """,
-    }
+}
 
 meshing_session.workflow.TaskObject["set-periodicity"].Execute()
 

@@ -73,7 +73,7 @@ class SessionBase:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = 60,
         additional_arguments: str = "",
-        env: dict[str, Any] = {},
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         dry_run: bool = False,
         start_transcript: bool = True,
@@ -165,6 +165,8 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        if env is None:
+            env = {}
         mode = cls._session_mode[cls.__name__]
         argvals = locals().copy()
         argvals.pop("cls", None)  # Remove the class reference from the arguments

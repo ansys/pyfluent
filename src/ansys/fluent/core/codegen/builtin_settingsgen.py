@@ -65,7 +65,7 @@ def _get_named_objects_in_path(root, path, kind):
             cls = cls.child_object_type
     final_type = ""
     if kind == "NamedObject":
-        if not issubclass(cls, (NamedObject, _ChildNamedObjectAccessorMixin)):
+        if not issubclass(cls, NamedObject | _ChildNamedObjectAccessorMixin):
             raise TypeError(f"{cls.__name__} is not NamedObject type.")
         if issubclass(cls, CreatableNamedObjectMixin):
             final_type = "Creatable"

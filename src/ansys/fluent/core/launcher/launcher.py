@@ -122,7 +122,11 @@ def _show_gui_to_ui_mode(old_arg_val, **kwds):
     start_container = kwds.get("start_container")
     container_dict = kwds.get("container_dict")
     if old_arg_val is True:
-        if start_container is True or container_dict or pyfluent.config.launch_fluent_container:
+        if (
+            start_container is True
+            or container_dict
+            or pyfluent.config.launch_fluent_container
+        ):
             return UIMode.NO_GUI
         else:
             return UIMode.GUI

@@ -104,36 +104,36 @@ workflow.TaskObject["Import Geometry"].Execute()
 # =====================================================================================
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
 add_local_sizing.Arguments = {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_front",
-        "BOIFaceLabelList": ["wall_ahmed_body_front"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 8,
-    }
+    "AddChild": "yes",
+    "BOIControlName": "facesize_front",
+    "BOIFaceLabelList": ["wall_ahmed_body_front"],
+    "BOIGrowthRate": 1.15,
+    "BOISize": 8,
+}
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
 add_local_sizing.Arguments = {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_rear",
-        "BOIFaceLabelList": ["wall_ahmed_body_rear"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 5,
-    }
+    "AddChild": "yes",
+    "BOIControlName": "facesize_rear",
+    "BOIFaceLabelList": ["wall_ahmed_body_rear"],
+    "BOIGrowthRate": 1.15,
+    "BOISize": 5,
+}
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
 add_local_sizing.Arguments = {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_main",
-        "BOIFaceLabelList": ["wall_ahmed_body_main"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 12,
-    }
+    "AddChild": "yes",
+    "BOIControlName": "facesize_main",
+    "BOIFaceLabelList": ["wall_ahmed_body_main"],
+    "BOIGrowthRate": 1.15,
+    "BOISize": 12,
+}
 add_local_sizing.Execute()
 
 #######################################################################################
@@ -142,12 +142,12 @@ add_local_sizing.Execute()
 add_boi_sizing = workflow.TaskObject["Add Local Sizing"]
 add_boi_sizing.InsertCompoundChildTask()
 add_boi_sizing.Arguments = {
-        "AddChild": "yes",
-        "BOIControlName": "boi_1",
-        "BOIExecution": "Body Of Influence",
-        "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
-        "BOISize": 20,
-    }
+    "AddChild": "yes",
+    "BOIControlName": "boi_1",
+    "BOIExecution": "Body Of Influence",
+    "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
+    "BOISize": 20,
+}
 add_boi_sizing.Execute()
 add_boi_sizing.InsertCompoundChildTask()
 
@@ -157,14 +157,14 @@ add_boi_sizing.InsertCompoundChildTask()
 # =====================================================================================
 generate_surface_mesh = workflow.TaskObject["Generate the Surface Mesh"]
 generate_surface_mesh.Arguments = {
-        "CFDSurfaceMeshControls": {
-            "CurvatureNormalAngle": 12,
-            "GrowthRate": 1.15,
-            "MaxSize": 50,
-            "MinSize": 1,
-            "SizeFunctions": "Curvature",
-        }
+    "CFDSurfaceMeshControls": {
+        "CurvatureNormalAngle": 12,
+        "GrowthRate": 1.15,
+        "MaxSize": 50,
+        "MinSize": 1,
+        "SizeFunctions": "Curvature",
     }
+}
 
 generate_surface_mesh.Execute()
 generate_surface_mesh.InsertNextTask(CommandName="ImproveSurfaceMesh")

@@ -227,7 +227,7 @@ class DataFile:
         z_comp = self.get_face_scalar_field_data(phase_name, "SV_W", surface_id)
 
         vector_data = np.array([])
-        for a, b, c in zip(x_comp, y_comp, z_comp):
+        for a, b, c in zip(x_comp, y_comp, z_comp, strict=False):
             vector_data = np.append(vector_data, [a, b, c])
 
         return vector_data

@@ -117,12 +117,12 @@ def test_event_subscription(new_meshing_session):
     response = session._datamodel_service_se.subscribe_events(MessageToDict(request))
     assert all(
         r["status"] == datamodel_se_pb2.STATUS_SUBSCRIBED and r["tag"] == t
-            for r, t in zip(response, tags)
+        for r, t in zip(response, tags, strict=False)
     )
     response = session._datamodel_service_se.unsubscribe_events(tags)
     assert all(
         r["status"] == datamodel_se_pb2.STATUS_UNSUBSCRIBED and r["tag"] == t
-            for r, t in zip(response, tags)
+        for r, t in zip(response, tags, strict=False)
     )
 
 

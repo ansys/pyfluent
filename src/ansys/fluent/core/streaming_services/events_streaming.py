@@ -464,7 +464,7 @@ class EventsManager(Generic[TEvent]):
                 for p in params
                 if p not in kwargs and p not in ("session", "event_info")
             ]
-            kwargs.update(dict(zip(positional_args, args)))
+            kwargs.update(dict(zip(positional_args, args, strict=False)))
             return lambda session, event_info: callback(
                 session=session, event_info=event_info, **kwargs
             )

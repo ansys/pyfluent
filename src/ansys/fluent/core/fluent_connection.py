@@ -41,7 +41,6 @@ import warnings
 import weakref
 
 from deprecated.sphinx import deprecated
-import grpc
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.launcher.error_warning_messages import (
@@ -67,6 +66,8 @@ from ansys.tools.common.cyberchannel import create_channel
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+    import grpc
 
     from ansys.platform.instancemanagement import Instance
 

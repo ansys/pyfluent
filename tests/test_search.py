@@ -78,18 +78,18 @@ def test_get_capitalize_match_for_word_from_names():
     )
     assert "font" not in capitalize_match_cases
     assert set(capitalize_match_cases) == {
-            "TextFontAutomaticHorizontalSize",
-            "TextFontName",
-            "TextFontFixedHorizontalSize",
-            "TextFontFixedSize",
-            "TextFontAutomaticSize",
-            "TextFontFixedVerticalSize",
-            "TextFontAutomaticVerticalSize",
-            "ApplicationFontSize",
-            "TextFontFixedUnits",
-            "TextFontAutomaticUnits",
-            "Font",
-        }
+        "TextFontAutomaticHorizontalSize",
+        "TextFontName",
+        "TextFontFixedHorizontalSize",
+        "TextFontFixedSize",
+        "TextFontAutomaticSize",
+        "TextFontFixedVerticalSize",
+        "TextFontAutomaticVerticalSize",
+        "ApplicationFontSize",
+        "TextFontFixedUnits",
+        "TextFontAutomaticUnits",
+        "Font",
+    }
 
 
 @pytest.mark.fluent_version("==26.1")

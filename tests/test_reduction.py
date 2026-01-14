@@ -419,7 +419,7 @@ def _test_centroid_2_sources(solver1, solver2):
         + solver2.setup.boundary_conditions.velocity_inlet
     )
     assert [round(x, 5) for x in result] == [
-        (round(x, 5) + round(y, 5)) / 2 for x, y in zip(*[s1_cent, s2_cent])
+        (round(x, 5) + round(y, 5)) / 2 for x, y in zip(s1_cent, s2_cent, strict=False)
     ]
 
 

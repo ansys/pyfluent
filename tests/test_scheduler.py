@@ -89,7 +89,9 @@ class TestMachineList(unittest.TestCase):
         import copy
 
         newMachineList = copy.deepcopy(self._machineList)
-        for m1, m2 in zip(self._machineList.machines, newMachineList.machines):
+        for m1, m2 in zip(
+            self._machineList.machines, newMachineList.machines, strict=False
+        ):
             self.assertEqual(m1.host_name, m2.host_name)
             self.assertEqual(m1.number_of_cores, m2.number_of_cores)
 
@@ -164,7 +166,9 @@ class TestMachineList(unittest.TestCase):
         import copy
 
         machineListCopy = copy.deepcopy(self._machineList)
-        for m1, m2 in zip(self._machineList.machines, machineListCopy.machines):
+        for m1, m2 in zip(
+            self._machineList.machines, machineListCopy.machines, strict=False
+        ):
             self.assertEqual(m1.host_name, m2.host_name)
             self.assertEqual(m1.number_of_cores, m2.number_of_cores)
 

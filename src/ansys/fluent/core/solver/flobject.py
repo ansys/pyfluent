@@ -161,7 +161,7 @@ def check_type(val, tp):
         )
     elif origin == tuple:
         return isinstance(val, tuple) and all(
-            check_type(x, t) for x, t in zip(val, get_args(tp))
+            check_type(x, t) for x, t in zip(val, get_args(tp), strict=False)
         )
     elif origin == Union:
         return any(check_type(val, t) for t in get_args(tp))
@@ -254,7 +254,7 @@ def _get_class_from_paths(root_cls, some_path: list[str], other_path: list[str])
     cls = root_cls
     for comp in full_path:
         cls = cls._child_classes[comp]
-        if issubclass(cls, (NamedObject, ListObject)):
+        if issubclass(cls, NamedObject | ListObject):
             cls = cls.child_object_type
     return cls, full_path
 
@@ -1034,17 +1034,17 @@ class BooleanList(SettingsBase[BoolListType], Property):
 
 
 def _get_type_for_completer_info(cls) -> str:
-    if issubclass(cls, (FileName, _InputFile)):
+    if issubclass(cls, FileName | _InputFile):
         return "InputFilename"
-    elif issubclass(cls, (FileName, _OutputFile)):
+    elif issubclass(cls, FileName | _OutputFile):
         return "OutputFilename"
-    elif issubclass(cls, (FileName, _InOutFile)):
+    elif issubclass(cls, FileName | _InOutFile):
         return "InOutFilename"
-    elif issubclass(cls, (FilenameList, _InputFile)):
+    elif issubclass(cls, FilenameList | _InputFile):
         return "InputFilenameList"
-    elif issubclass(cls, (FilenameList, _OutputFile)):
+    elif issubclass(cls, FilenameList | _OutputFile):
         return "OutputFilenameList"
-    elif issubclass(cls, (FilenameList, _InOutFile)):
+    elif issubclass(cls, FilenameList | _InOutFile):
         return "InOutFilenameList"
     else:
         return cls.__bases__[0].__name__
@@ -1167,11 +1167,9 @@ class Group(SettingsBase[DictStateType]):
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         return dir_list - {
-
-                child
-                for child in self.child_names + self.command_names + self.query_names
-                if _is_deprecated(getattr(self, child))
-
+            child
+            for child in self.child_names + self.command_names + self.query_names
+            if _is_deprecated(getattr(self, child))
         }
 
     def __getattribute__(self, name):
@@ -1752,11 +1750,9 @@ class Action(Base):
     def __dir__(self):
         dir_list = set(list(self.__dict__.keys()) + dir(type(self)))
         return dir_list - {
-
-                child
-                for child in self.argument_names
-                if _is_deprecated(getattr(self, child))
-
+            child
+            for child in self.argument_names
+            if _is_deprecated(getattr(self, child))
         }
 
     def __getattr__(self, name: str):
@@ -2229,12 +2225,12 @@ def get_cls(name, info, parent=None, version=None, parent_taboo=None):
 
         taboo = set(dir(cls))
         taboo |= {
-                "child_names",
-                "command_names",
-                "query_names",
-                "argument_names",
-                "child_object_type",
-            }
+            "child_names",
+            "command_names",
+            "query_names",
+            "argument_names",
+            "child_object_type",
+        }
 
         doc = ""
 
@@ -2429,7 +2425,7 @@ def find_children(obj, identifier="*"):
 
 
 def _list_children(cls, identifier, path, list_of_children):
-    if issubclass(cls, (NamedObject, ListObject)):
+    if issubclass(cls, NamedObject | ListObject):
         if hasattr(cls.child_object_type, "child_names"):
             _get_child_path(cls.child_object_type, path, identifier, list_of_children)
     if issubclass(cls, Group):

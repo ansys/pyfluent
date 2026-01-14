@@ -91,7 +91,9 @@ class DatamodelEvents(StreamingService):
                         elif response.HasField("modifiedEventResponse"):
                             value = response.modifiedEventResponse.value
                             cb(_convert_variant_to_value(value))
-                        elif response.HasField("affectedEventResponse") or response.HasField("deletedEventResponse"):
+                        elif response.HasField(
+                            "affectedEventResponse"
+                        ) or response.HasField("deletedEventResponse"):
                             cb()
                         elif response.HasField("commandExecutedEventResponse"):
                             command = response.commandExecutedEventResponse.command

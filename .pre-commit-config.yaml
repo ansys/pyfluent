@@ -11,8 +11,21 @@ repos:
 - repo: https://github.com/dorschw/riff
   rev: v0.0.287.0
   hooks:
-  - id: ruff
-    args: [--fix]
+  - id: riff
+    additional_dependencies: [
+      "--no-deps",  # riff's dependencies aren't up to date
+      "ruff>=0.14.11",
+      "gitpython>=3.1.43",
+      "gitdb>=4.0.1,<5",
+      "smmap>=3.0.1,<6",
+      "loguru>=0.7.3",
+      "packaging>=24.2",
+      "typer>=0.15.1",
+      "click>=8.0.0",
+      "typing-extensions>=4",
+      "unidiff>=0.7.5",
+    ]
+    args: ["--print-github-annotation"]
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.14.11

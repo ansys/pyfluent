@@ -1109,7 +1109,7 @@ class _FileFieldInfo(BaseFieldInfo):
                 "zone_type": "wall",
                 "type": "plane",
             }
-            for name, surface_id in zip(surface_names, surface_ids)
+            for name, surface_id in zip(surface_names, surface_ids, strict=False)
         }
         return info
 

@@ -44,8 +44,10 @@ class Symbol(str):
     pass
 
 
-def Sym(s, symbol_table={}):
+def Sym(s, symbol_table=None):
     """Find or create unique Symbol entry for str s in symbol table."""
+    if symbol_table is None:
+        symbol_table = {}
     if s not in symbol_table:
         symbol_table[s] = Symbol(s)
     return symbol_table[s]
@@ -286,7 +288,7 @@ class Env(dict):
                 raise TypeError(
                     f"expected {to_string(params)}, given {to_string(args)}"
                 )
-            self.update(zip(params, args))
+            self.update(zip(params, args, strict=False))
 
     def find(self, var):
         """Find the innermost Env where var appears.
@@ -548,8 +550,11 @@ def let(*args):
         "illegal binding list",
     )
     # variables was vars in oss lispy but that shadows a builtin
-    variables, vals = zip(*bindings)
-    return [[_lambda, list(variables), *list(map(expand, body))], *list(map(expand, vals))]
+    variables, vals = zip(*bindings, strict=False)
+    return [
+        [_lambda, list(variables), *list(map(expand, body))],
+        *list(map(expand, vals)),
+    ]
 
 
 macro_table = {_let: let}  ## More macros can go here

@@ -256,7 +256,14 @@ class ComposeBasedLauncher:
             If the command fails.
         """
         result = subprocess.run(
-            [*self._container_source, "exec", f"{self._compose_name}-fluent-1", "chown", f"{os.getuid()}:{os.getgid()}", self._container_server_info_file],
+            [
+                *self._container_source,
+                "exec",
+                f"{self._compose_name}-fluent-1",
+                "chown",
+                f"{os.getuid()}:{os.getgid()}",
+                self._container_server_info_file,
+            ],
             capture_output=True,
             text=True,
         )

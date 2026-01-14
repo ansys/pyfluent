@@ -85,7 +85,7 @@ def deprecate_arguments(
         new_params: list[str],
     ) -> dict[str, Any]:
         """Default converter that maps all old args to new args one-to-one."""
-        for old_arg, new_arg in zip(old_params, new_params):
+        for old_arg, new_arg in zip(old_params, new_params, strict=False):
             if old_arg in kwargs:
                 old_val = kwargs.pop(old_arg)
                 target_arg = new_arg

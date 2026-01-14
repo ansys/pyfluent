@@ -86,7 +86,7 @@ def test_launch_arguments(monkeypatch):
 def test_connect_to_fluent_arguments():
     solver = launch_fluent(certificates_folder=_get_certs_folder())
     address_and_password = dict(
-        zip(["address", "password"], _get_address_and_password(solver))
+        zip(["address", "password"], _get_address_and_password(solver), strict=False)
     )
     with pytest.raises(
         ValueError, match=ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER

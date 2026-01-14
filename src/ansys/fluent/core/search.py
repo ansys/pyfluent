@@ -241,9 +241,10 @@ def _print_search_results(
                     name = query
                     score = None
 
-                    if (match_whole_word and (
-                        first_token == name or first_token.endswith(f".{name}")
-                    )) or (not match_whole_word and name in first_token):
+                    if (
+                        match_whole_word
+                        and (first_token == name or first_token.endswith(f".{name}"))
+                    ) or (not match_whole_word and name in first_token):
                         results.add(api_object)
 
         return sorted(results)

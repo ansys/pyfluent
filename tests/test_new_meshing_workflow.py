@@ -1138,9 +1138,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
         watertight.create_regions.number_of_flow_volumes = 1.2
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
     with pytest.raises(ValueError):
-        watertight.create_regions.arguments.update_dict(
-            {"number_of_flow_volumes": 1.2}
-        )
+        watertight.create_regions.arguments.update_dict({"number_of_flow_volumes": 1.2})
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
 
     watertight.create_regions.number_of_flow_volumes = 2
@@ -1148,9 +1146,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
         watertight.create_regions.number_of_flow_volumes = 1.2
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
     with pytest.raises(ValueError):
-        watertight.create_regions.arguments.update_dict(
-            {"number_of_flow_volumes": 1.2}
-        )
+        watertight.create_regions.arguments.update_dict({"number_of_flow_volumes": 1.2})
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 2
 
     watertight.create_regions.number_of_flow_volumes = None
@@ -1158,9 +1154,7 @@ def test_new_meshing_workflow_validate_arguments(new_meshing_session):
         watertight.create_regions.number_of_flow_volumes = 1.2
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
     with pytest.raises(ValueError):
-        watertight.create_regions.arguments.update_dict(
-            {"number_of_flow_volumes": 1.2}
-        )
+        watertight.create_regions.arguments.update_dict({"number_of_flow_volumes": 1.2})
     assert watertight.create_regions.arguments()["number_of_flow_volumes"] == 1
 
 

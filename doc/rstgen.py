@@ -78,7 +78,9 @@ def _add_with_without_members(with_member: type, all_menus: list):
     )
     all_menus.append(
         {
-            "name": with_member, "with_members": with_members, "without_members": without_members
+            "name": with_member,
+            "with_members": with_members,
+            "without_members": without_members,
         }
     )
     return with_members, all_menus
@@ -399,7 +401,11 @@ def _generate_all_attribute_classes(all_menus: list, main_menu: type):
         main_menu
     )
     all_menus.append(
-        {"name": main_menu, "with_members": with_members, "without_members": without_members}
+        {
+            "name": main_menu,
+            "with_members": with_members,
+            "without_members": without_members,
+        }
     )
     for member in with_members:
         _get_attribute_classes_recursively(member, all_menus)

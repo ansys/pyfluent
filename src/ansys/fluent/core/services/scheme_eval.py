@@ -167,11 +167,7 @@ def _convert_scheme_pointer_to_py_list(p: SchemePointer, version: str) -> dict |
         val.extend([tail] if isinstance(tail, dict) else tail)
     if all(
         isinstance(x, dict)
-        or (
-            (isinstance(x, (tuple, list)))
-            and x
-            and isinstance(x[0], str)
-        )
+        or ((isinstance(x, (tuple, list))) and x and isinstance(x[0], str))
         for x in val
     ):
         d = {}

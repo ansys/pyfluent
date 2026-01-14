@@ -1081,9 +1081,17 @@ def test_meshing_utilities(new_meshing_session):
         == "mixed"
     )
 
-    assert set(
-        meshing_session.meshing_utilities.get_edge_zones_list(filter="*")
-    ) == {28, 27, 26, 25, 24, 23, 22, 21, 20}
+    assert set(meshing_session.meshing_utilities.get_edge_zones_list(filter="*")) == {
+        28,
+        27,
+        26,
+        25,
+        24,
+        23,
+        22,
+        21,
+        20,
+    }
 
     assert set(
         meshing_session.meshing_utilities.get_edge_zones_of_object(
@@ -1108,7 +1116,11 @@ def test_meshing_utilities(new_meshing_session):
     #     )
     # ) == set([["30", "hot-inlet", "elbow-fluid"], ["31", "cold-inlet", "elbow-fluid"]])
 
-    assert set(meshing_session.meshing_utilities.get_node_zones(filter="*")) == {163, 91, 19}
+    assert set(meshing_session.meshing_utilities.get_node_zones(filter="*")) == {
+        163,
+        91,
+        19,
+    }
 
     assert not meshing_session.meshing_utilities.get_shared_boundary_face_zones_for_given_cell_zones(
         cell_zone_id_list=[87]

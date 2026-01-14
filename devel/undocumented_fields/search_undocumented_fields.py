@@ -37,17 +37,25 @@ class ClassFieldVisitor(ast.NodeVisitor):
             return
         is_enum = False
         for x in node.bases:
-            if (isinstance(x, ast.Name) and x.id in (
-                "Enum",
-                "IntEnum",
-                "StrEnum",
-                "FluentEnum",
-            )) or (isinstance(x, ast.Attribute) and x.attr in (
-                "Enum",
-                "IntEnum",
-                "StrEnum",
-                "FluentEnum",
-            )):
+            if (
+                isinstance(x, ast.Name)
+                and x.id
+                in (
+                    "Enum",
+                    "IntEnum",
+                    "StrEnum",
+                    "FluentEnum",
+                )
+            ) or (
+                isinstance(x, ast.Attribute)
+                and x.attr
+                in (
+                    "Enum",
+                    "IntEnum",
+                    "StrEnum",
+                    "FluentEnum",
+                )
+            ):
                 is_enum = True
         if is_enum:
             self.current_class = old_class

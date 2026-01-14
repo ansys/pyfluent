@@ -1014,7 +1014,7 @@ def _check_vector_units(obj, units):
     state = obj.get_state()
     assert len(state_with_units) == 2
     assert len(state) == len(state_with_units[0])
-    assert all(x == y for x, y in zip(state, state_with_units[0]))
+    assert all(x == y for x, y in zip(state, state_with_units[0], strict=False))
     assert units == state_with_units[1]
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 

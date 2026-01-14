@@ -576,8 +576,12 @@ class PathlinesData:
     def __init__(self, pathlines_data_for_surface):
         """__init__ method of PathlinesData class."""
         self._pathlines_data_for_surface = pathlines_data_for_surface
-        self.scalar_field_name: str = next(iter(set(self._pathlines_data_for_surface.keys())
-            - {"lines", "vertices", "pathlines-count", "particle-time"}))
+        self.scalar_field_name: str = next(
+            iter(
+                set(self._pathlines_data_for_surface.keys())
+                - {"lines", "vertices", "pathlines-count", "particle-time"}
+            )
+        )
         self.vertices: npt.NDArray[np.float64] | None = (
             self._pathlines_data_for_surface.get("vertices")
         )

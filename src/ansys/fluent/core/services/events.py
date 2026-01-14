@@ -22,7 +22,6 @@
 
 """Wrapper over the events gRPC service of Fluent."""
 
-
 import grpc
 
 from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule

@@ -303,7 +303,7 @@ def _get_graphics_driver(
             PyFluentUserWarning,
         )
     if isinstance(
-        graphics_driver, (FluentWindowsGraphicsDriver, FluentLinuxGraphicsDriver)
+        graphics_driver, FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver
     ):
         graphics_driver = graphics_driver.value
     graphics_driver = (

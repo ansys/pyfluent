@@ -325,7 +325,8 @@ def mixing_elbow_watertight_pure_meshing_session(
     meshing = new_pure_meshing_session
     meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
     meshing.workflow.TaskObject["Import Geometry"].Arguments = {
-        "FileName": mixing_elbow_geometry_filename, "LengthUnit": "in"
+        "FileName": mixing_elbow_geometry_filename,
+        "LengthUnit": "in",
     }
 
     return meshing

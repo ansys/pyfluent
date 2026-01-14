@@ -308,7 +308,9 @@ class BaseTask:
             task_list = self._task.TaskList()
             task_list = _convert_task_list_to_display_names(self._workflow, task_list)
             if task_list != self._task_list:
-                mappings = dict(zip(self._task_list, self._ordered_children))
+                mappings = dict(
+                    zip(self._task_list, self._ordered_children, strict=False)
+                )
                 self._ordered_children = list(
                     filter(None, map(task_by_id(mappings), task_list))
                 )
@@ -1460,7 +1462,9 @@ class Workflow:
                 return _task_by_id
 
             if task_list != self._task_list:
-                mappings = dict(zip(self._task_list, self._ordered_children))
+                mappings = dict(
+                    zip(self._task_list, self._ordered_children, strict=False)
+                )
                 self._ordered_children = list(
                     filter(None, map(task_by_id(mappings), task_list))
                 )
@@ -1532,9 +1536,7 @@ class Workflow:
         workflow_state = self._workflow_state()
         prefix = "TaskObject:"
         task_list = [
-            x.removeprefix(prefix)
-            for x in workflow_state
-            if x.startswith(prefix)
+            x.removeprefix(prefix) for x in workflow_state if x.startswith(prefix)
         ]
         return workflow_state, task_list
 
