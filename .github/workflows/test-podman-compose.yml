@@ -40,7 +40,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v25.2.0
+          - image-tag: v25.2.3
             version: 252
 
     steps:
@@ -84,24 +84,26 @@ jobs:
 
       - name: Pull Fluent docker image
         env:
-          IMAGE_TAG: ${{ matrix.image-tag }}
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
-          docker pull ghcr.io/ansys/pyfluent:${IMAGE_TAG}
+          make docker-pull
           docker images
 
       - name: Transport docker image to podman
         env:
           IMAGE_TAG: ${{ matrix.image-tag }}
         run: |
-          sudo podman pull docker-daemon:ghcr.io/ansys/pyfluent:${IMAGE_TAG}
+          sudo podman pull docker-daemon:ghcr.io/ansys/fluent:${IMAGE_TAG}
           sudo podman images
 
       - name: Run API codegen
         run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
 
       - name: Print Fluent version info
         env:
-          VERSION: ${{ matrix.image-tag }}
+          VERSION: ${{ matrix.version }}
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_${VERSION}.py
 
@@ -115,6 +117,9 @@ jobs:
         run: |
           python tests/podman_compose.py
         continue-on-error: true
+        env:
+          FLUENT_IMAGE_TAG: ${{ matrix.image-tag }}
+          PYFLUENT_CONTAINER_INSECURE_MODE: 1
 
       - name: Cleanup previous containers
         if: always()
@@ -178,7 +183,6 @@ jobs:
 
           echo "Sending notification to Power Automate..."
           curl -X POST -H "Content-Type: application/json" -d "$JSON_PAYLOAD" "${{ secrets.PYFLUENT_WEBHOOK_URL }}"
-
 
       - name: Check test run status and fail the whole job if tests failed
         if: steps.fluent_test.outcome != 'success'
