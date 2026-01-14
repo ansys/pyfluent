@@ -27,7 +27,6 @@ from __future__ import annotations
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
-import ipaddress
 import itertools
 import logging
 import os
@@ -44,6 +43,12 @@ from deprecated.sphinx import deprecated
 import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.error_warning_messages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    CONNECTING_TO_LOCALHOST_INSECURE_MODE,
+    INSECURE_MODE_WARNING,
+)
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
 from ansys.fluent.core.services import service_creator
@@ -55,7 +60,9 @@ from ansys.fluent.core.services.app_utilities import (
 from ansys.fluent.core.services.scheme_eval import SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
 from ansys.platform.instancemanagement import Instance
+from ansys.tools.common.cyberchannel import create_channel
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -263,50 +270,10 @@ def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, in
     return ip, port
 
 
-def _get_tls_channel(
-    address: str,
-    certificates_folder: str | None,
-    options: list[tuple[str, int]] | None = None,
-):
-    cert_file = f"{certificates_folder}/client.crt"
-    key_file = f"{certificates_folder}/client.key"
-    ca_file = f"{certificates_folder}/ca.crt"
-
-    missing = [f for f in (cert_file, key_file, ca_file) if not os.path.exists(f)]
-    if missing:
-        raise RuntimeError(
-            f"Missing required TLS file(s) for mutual TLS: {', '.join(missing)}"
-        )
-
-    certificate_chain, private_key, root_certificates = (
-        open(path, "rb").read() for path in (cert_file, key_file, ca_file)
-    )
-
-    creds = grpc.ssl_channel_credentials(
-        root_certificates=root_certificates,
-        private_key=private_key,
-        certificate_chain=certificate_chain,
-    )
-    return grpc.secure_channel(target=address, credentials=creds, options=options)
-
-
-def _is_localhost(address: str) -> bool:
-    # Unix domain sockets
-    if address.startswith("unix:/"):
-        return True
-
-    # Strip off port (if present) and brackets for IPv6
-    host = address.split(":", 1)[0].strip("[]")
-
-    try:
-        return ipaddress.ip_address(host).is_loopback
-    except ValueError:
-        # Not an IP, fall back to hostname
-        return host.lower() == "localhost"
-
-
 def _get_channel(
-    address: str,
+    ip: str | None,
+    port: int | None,
+    uds_fullpath: str | None,
     allow_remote_host: bool,
     certificates_folder: str | None,
     insecure_mode: bool,
@@ -320,31 +287,45 @@ def _get_channel(
     ]
     if allow_remote_host:
         if insecure_mode:
-            if _is_localhost(address) and not inside_container:
-                raise RuntimeError(
-                    "Insecure gRPC mode is not allowed when connecting to localhost."
-                )
+            if ip is not None and is_localhost(ip) and not inside_container:
+                raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
             warnings.warn(
-                "The Fluent session will be connected in insecure gRPC mode. "
-                "This mode is not recommended. For more details on the implications "
-                "and usage of insecure mode, refer to the Fluent documentation.",
+                INSECURE_MODE_WARNING,
                 InsecureGrpcWarning,
             )
-            return grpc.insecure_channel(address, options=options)
+            return create_channel(
+                transport_mode="insecure",
+                host=ip,
+                port=port,
+                grpc_options=options,
+            )
         else:
             if certificates_folder is None:
-                raise ValueError(
-                    "Specify 'certificates_folder' containing TLS certificates to connect to remote host."
-                )
-            return _get_tls_channel(address, certificates_folder, options=options)
+                raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
+            return create_channel(
+                transport_mode="mtls",
+                host=ip,
+                port=port,
+                certs_dir=certificates_folder,
+                grpc_options=options,
+            )
     else:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if not (_is_localhost(address) or (inside_container and insecure_mode_env)):
-            raise ValueError(
-                "Connecting to remote Fluent instances is not allowed. "
-                "Set 'allow_remote_host=True' to connect to remote hosts."
+        if not ((ip and is_localhost(ip)) or (inside_container and insecure_mode_env)):
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE)
+        if uds_fullpath is not None:
+            return create_channel(
+                transport_mode="uds",
+                uds_fullpath=uds_fullpath,
+                grpc_options=options,
             )
-        return grpc.insecure_channel(address, options=options)
+        else:
+            return create_channel(
+                transport_mode="wnua",
+                host=ip,
+                port=port,
+                grpc_options=options,
+            )
 
 
 class _ConnectionInterface:
@@ -526,17 +507,24 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
+            uds_fullpath = None
             if address is not None:
                 self._channel_str = address
+                uds_fullpath = get_uds_path(address)
+                if uds_fullpath is None:
+                    ip, port = address.rsplit(":", 1)
+                    port = int(port)
             else:
                 ip, port = _get_ip_and_port(ip, port)
                 self._channel_str = f"{ip}:{port}"
             self._channel = _get_channel(
-                self._channel_str,
-                allow_remote_host,
-                certificates_folder,
-                insecure_mode,
-                inside_container,
+                ip=ip,
+                port=port,
+                uds_fullpath=uds_fullpath,
+                allow_remote_host=allow_remote_host,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+                inside_container=inside_container,
             )
         self._metadata: List[Tuple[str, str]] = (
             [("password", password)] if password else []
@@ -552,7 +540,7 @@ class FluentConnection:
             try:
                 self._health_check.check_health()
             except RuntimeError:
-                if inside_container:
+                if inside_container and container is not None:
                     logger.error("Error reported from Fluent:")
                     logger.error(
                         container.logs(stdout=False).decode("utf-8", errors="replace")
