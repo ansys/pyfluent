@@ -351,21 +351,23 @@ class BaseMeshing:
             elif self._check_workflow_type("Watertight Geometry"):
                 return self._get_current_workflow(
                     "Watertight Geometry"
-                ) or self.watertight_workflow(initialize=False)
+                ) or self.watertight_workflow(initialize=False, legacy=True)
             elif self._check_workflow_type("Fault-tolerant Meshing"):
                 return self._get_current_workflow(
                     "Fault-tolerant Meshing"
-                ) or self.fault_tolerant_workflow(initialize=False)
+                ) or self.fault_tolerant_workflow(initialize=False, legacy=True)
             elif self._check_workflow_type("2D Meshing"):
                 return self._get_current_workflow(
                     "2D Meshing"
-                ) or self.two_dimensional_meshing_workflow(initialize=False)
+                ) or self.two_dimensional_meshing_workflow(
+                    initialize=False, legacy=True
+                )
             elif self._check_workflow_type("Topology Based Meshing"):
                 return self._get_current_workflow(
                     "Topology Based Meshing"
-                ) or self.topology_based_meshing_workflow(initialize=False)
+                ) or self.topology_based_meshing_workflow(initialize=False, legacy=True)
             else:
-                return self.create_workflow(initialize=False)
+                return self.create_workflow(initialize=False, legacy=True)
         else:
             meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
             if meshing_workflow.general.workflow.workflow_type() in [

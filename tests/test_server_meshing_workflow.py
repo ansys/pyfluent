@@ -22,7 +22,7 @@
 
 import pytest
 
-from ansys.fluent.core import examples
+from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
@@ -2010,3 +2010,38 @@ def test_recursive_update_dict(new_meshing_session):
         "identify_regions": True,
         "porous_regions": True,
     }
+
+
+def test_default_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        watertight = meshing.watertight()
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow"
+        )
+    else:
+        watertight = meshing.watertight()
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow_new"
+        )
+
+
+def test_non_default_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        with pytest.warns(PyFluentUserWarning):
+            watertight = meshing.watertight(legacy=False)
+            assert (
+                watertight.__class__.__module__
+                == "ansys.fluent.core.meshing.meshing_workflow"
+            )
+    else:
+        watertight = meshing.watertight(legacy=True)
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow"
+        )

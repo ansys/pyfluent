@@ -238,7 +238,7 @@ def test_update_cache_internal_names_as_keys(
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_get_cached_values_in_command_arguments(new_meshing_session):
-    wt = new_meshing_session.watertight()
+    wt = new_meshing_session.watertight(legacy=True)
     geo_import = new_meshing_session.workflow.TaskObject["Import Geometry"]
     geo_import.Arguments = dict(FileName="Bob")
     geo_import.Arguments = dict(FileName=None)
@@ -453,6 +453,6 @@ def test_cache_per_session():
     ):
         assert m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()
-        _ = m1.watertight()
+        _ = m1.watertight(legacy=True)
         assert not m1.meshing.GlobalSettings.EnableComplexMeshing()
         assert m2.meshing.GlobalSettings.EnableComplexMeshing()
