@@ -42,6 +42,9 @@ import time
 from typing import Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
+from ansys.fluent.core.launcher.error_warning_messages import (
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
+)
 from ansys.fluent.core.launcher.fluent_container import (
     configure_container_dict,
     dict_to_str,
@@ -55,6 +58,7 @@ from ansys.fluent.core.launcher.launch_options import (
     Precision,
     UIMode,
     _get_argvals_and_session,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.launcher.process_launch_string import (
@@ -192,15 +196,14 @@ class DockerLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        # Note: PYFLUENT_CONTAINER_INSECURE_MODE is not exposed to users. It is used internally in
+        # GitHub Actions runs to indicate that insecure mode should be used.
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
-        if certificates_folder is None and not insecure_mode and not insecure_mode_env:
-            raise ValueError(
-                "To launch Fluent in secure gRPC mode, set `certificates_folder`."
-            )
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode or insecure_mode_env
+        )
+        if certificates_folder is None and not insecure_mode:
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         locals_ = locals().copy()
         argvals = {
@@ -280,11 +283,14 @@ class DockerLauncher:
                 compose_config=self._compose_config,
             )
 
+        allow_remote_host = (
+            self.argvals["insecure_mode"]
+            or self.argvals["certificates_folder"] is not None
+        )
         fluent_connection = FluentConnection(
             port=port,
             password=password,
-            allow_remote_host=self.argvals["insecure_mode"]
-            or self.argvals["certificates_folder"] is not None,
+            allow_remote_host=allow_remote_host,
             certificates_folder=self.argvals["certificates_folder"],
             insecure_mode=self.argvals["insecure_mode"],
             file_transfer_service=self.file_transfer_service,
@@ -315,6 +321,13 @@ class DockerLauncher:
                 self.argvals["start_watchdog"] = True
             if self.argvals["start_watchdog"]:
                 logger.debug("Launching Watchdog for Fluent container...")
-                watchdog.launch(os.getpid(), port, password)
+                watchdog.launch(
+                    os.getpid(),
+                    port,
+                    password,
+                    allow_remote_host=allow_remote_host,
+                    certificates_folder=self.argvals["certificates_folder"],
+                    insecure_mode=self.argvals["insecure_mode"],
+                )
 
         return session
