@@ -327,3 +327,55 @@ class CreateWorkflow(Workflow):
         self._meshing = meshing
         if initialize:
             self._create_workflow()
+
+
+def _get_current_workflow(current_workflow, name: str):
+    if current_workflow and current_workflow._name == name:
+        return current_workflow
+
+
+def get_current_workflow(
+    workflow_root, current_workflow, workflow_factories, load_workflow_handle
+) -> Workflow:
+    """Get the currently active workflow in new mode.
+
+    Parameters
+    ----------
+    workflow_root : PyMenuGeneric
+        Root workflow datamodel object.
+    current_workflow : Workflow or None
+        Currently cached workflow instance.
+    workflow_factories : dict
+        Mapping of workflow type names to factory functions.
+    load_workflow_handle : callable
+        Function to load a workflow from file.
+
+    Returns
+    -------
+    Workflow
+        The currently active workflow instance.
+
+    Raises
+    ------
+    RuntimeError
+        If no workflow is initialized.
+    """
+    # New mode: Check workflow type from meshing_workflow datamodel
+    workflow_type = workflow_root.general.workflow.workflow_type()
+
+    # Check if no workflow is initialized
+    if workflow_type in ["Select Workflow Type", None]:
+        raise RuntimeError("No workflow initialized.")
+
+    # Handle loaded workflows (not in the factory map)
+    if workflow_type not in workflow_factories:
+        # This is a loaded workflow
+        if current_workflow and current_workflow.__class__.__name__ == "LoadWorkflow":
+            return current_workflow
+        return load_workflow_handle(initialize=False)
+
+    # Get or create workflow based on type
+    factory = workflow_factories[workflow_type]
+    return _get_current_workflow(current_workflow, workflow_type) or factory(
+        initialize=False
+    )

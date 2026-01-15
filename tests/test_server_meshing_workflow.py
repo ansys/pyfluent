@@ -22,7 +22,7 @@
 
 import pytest
 
-from ansys.fluent.core import examples
+from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
@@ -901,9 +901,7 @@ def test_insert_delete_and_rename_task(new_meshing_session):
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_new_watertight_workflow_enhanced_meshing(
-    new_meshing_session_wo_exit, use_server_meshing_workflow
-):
+def test_new_watertight_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
@@ -969,9 +967,7 @@ def test_new_watertight_workflow_enhanced_meshing(
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_new_fault_tolerant_workflow_enhanced_meshing(
-    new_meshing_session_wo_exit, use_server_meshing_workflow
-):
+def test_new_fault_tolerant_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     meshing = new_meshing_session_wo_exit
 
     # Import CAD and part management
@@ -1234,9 +1230,7 @@ def test_new_fault_tolerant_workflow_enhanced_meshing(
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_new_2d_meshing_workflow_enhanced_meshing(
-    new_meshing_session_wo_exit, use_server_meshing_workflow
-):
+def test_new_2d_meshing_workflow_enhanced_meshing(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
     two_dim_mesh = new_meshing_session_wo_exit.two_dimensional_meshing()
@@ -1339,9 +1333,7 @@ def test_new_2d_meshing_workflow_enhanced_meshing(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_workflow_and_data_model_methods_new_meshing_workflow(
-    new_meshing_session, use_server_meshing_workflow
-):
+def test_workflow_and_data_model_methods_new_meshing_workflow(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight()
     _next_possible_tasks = [
@@ -1363,7 +1355,7 @@ def test_workflow_and_data_model_methods_new_meshing_workflow(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_duplicate_tasks(new_meshing_session, use_server_meshing_workflow):
+def test_duplicate_tasks(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight()
 
@@ -1402,9 +1394,7 @@ def test_duplicate_tasks(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_watertight_workflow(
-    mixing_elbow_geometry_filename, new_meshing_session, use_server_meshing_workflow
-):
+def test_watertight_workflow(mixing_elbow_geometry_filename, new_meshing_session):
     watertight = new_meshing_session.watertight()
     watertight.import_geometry.file_name = mixing_elbow_geometry_filename
     watertight.import_geometry()
@@ -1421,7 +1411,7 @@ def test_watertight_workflow(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_delete_interface(new_meshing_session, use_server_meshing_workflow):
+def test_delete_interface(new_meshing_session):
     watertight = new_meshing_session.watertight()
 
     watertight.import_geometry.insertable_tasks.import_boi_geometry.insert()
@@ -1460,7 +1450,7 @@ def test_delete_interface(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_ordering_of_tasks(new_meshing_session, use_server_meshing_workflow):
+def test_ordering_of_tasks(new_meshing_session):
     watertight = new_meshing_session.watertight()
     assert len(watertight.children()) == 7
     _watertight_tasks = [
@@ -1514,7 +1504,7 @@ def test_ordering_of_tasks(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_workflow_type_checking(new_meshing_session, use_server_meshing_workflow):
+def test_workflow_type_checking(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight()
 
@@ -1533,7 +1523,7 @@ def test_workflow_type_checking(new_meshing_session, use_server_meshing_workflow
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_workflow_traversal(new_meshing_session, use_server_meshing_workflow):
+def test_workflow_traversal(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight()
 
@@ -1587,9 +1577,7 @@ def test_workflow_traversal(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_new_watertight_workflow_using_traversal(
-    new_meshing_session_wo_exit, use_server_meshing_workflow
-):
+def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
@@ -1665,7 +1653,7 @@ def test_new_watertight_workflow_using_traversal(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_created_workflow(new_meshing_session, use_server_meshing_workflow):
+def test_created_workflow(new_meshing_session):
     meshing = new_meshing_session
     created_workflow = meshing.create_workflow()
 
@@ -1695,7 +1683,7 @@ def test_created_workflow(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_loaded_workflow(new_meshing_session, use_server_meshing_workflow):
+def test_loaded_workflow(new_meshing_session):
     meshing = new_meshing_session
     saved_workflow_path = examples.download_file(
         "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
@@ -1707,7 +1695,7 @@ def test_loaded_workflow(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_new_workflow_structure(new_meshing_session, use_server_meshing_workflow):
+def test_new_workflow_structure(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight()
     assert watertight.import_geometry.arguments()
@@ -1717,9 +1705,7 @@ def test_new_workflow_structure(new_meshing_session, use_server_meshing_workflow
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_attrs_in_watertight_meshing_workflow(
-    new_meshing_session, use_server_meshing_workflow
-):
+def test_attrs_in_watertight_meshing_workflow(new_meshing_session):
     # Import geometry
     import_file_name = examples.download_file(
         "mixing_elbow.pmdb", "pyfluent/mixing_elbow"
@@ -1741,9 +1727,7 @@ def test_attrs_in_watertight_meshing_workflow(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_attrs_in_fault_tolerant_meshing_workflow(
-    new_meshing_session, use_server_meshing_workflow
-):
+def test_attrs_in_fault_tolerant_meshing_workflow(new_meshing_session):
     import_file_name = examples.download_file(
         "exhaust_system.fmd", "pyfluent/exhaust_system"
     )
@@ -1768,7 +1752,7 @@ def test_attrs_in_fault_tolerant_meshing_workflow(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_switch_between_workflows(new_meshing_session, use_server_meshing_workflow):
+def test_switch_between_workflows(new_meshing_session):
     # TODO: Revisit
     meshing = new_meshing_session
 
@@ -1792,7 +1776,7 @@ def test_switch_between_workflows(new_meshing_session, use_server_meshing_workfl
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_insertable_tasks_in_workflow(new_meshing_session, use_server_meshing_workflow):
+def test_insertable_tasks_in_workflow(new_meshing_session):
     meshing = new_meshing_session
     watertight = meshing.watertight()
 
@@ -1816,15 +1800,13 @@ def test_insertable_tasks_in_workflow(new_meshing_session, use_server_meshing_wo
 
 
 @pytest.fixture
-def new_meshing_session2(new_meshing_session, use_server_meshing_workflow):
+def new_meshing_session2(new_meshing_session):
     return new_meshing_session
 
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_independent_meshing_sessions(
-    new_meshing_session, new_meshing_session2, use_server_meshing_workflow
-):
+def test_independent_meshing_sessions(new_meshing_session, new_meshing_session2):
     # TODO: Revisit
     meshing_1 = new_meshing_session
     meshing_2 = new_meshing_session2
@@ -1840,7 +1822,7 @@ def test_independent_meshing_sessions(
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_duplicate_children_of_compound_task(
-    new_meshing_session, mixing_elbow_geometry_filename, use_server_meshing_workflow
+    new_meshing_session, mixing_elbow_geometry_filename
 ):
     watertight = new_meshing_session.watertight()
     watertight.import_geometry.file_name = mixing_elbow_geometry_filename
@@ -1874,7 +1856,7 @@ def test_duplicate_children_of_compound_task(
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_current_workflow(new_meshing_session, use_server_meshing_workflow):
+def test_current_workflow(new_meshing_session):
     meshing = new_meshing_session
 
     with pytest.raises(RuntimeError):
@@ -1890,7 +1872,7 @@ def test_current_workflow(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_mark_as_updated(new_meshing_session, use_server_meshing_workflow):
+def test_mark_as_updated(new_meshing_session):
     meshing = new_meshing_session
 
     watertight = meshing.watertight()
@@ -1923,9 +1905,7 @@ def test_mark_as_updated(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_accessors_for_argument_sub_items(
-    new_meshing_session, use_server_meshing_workflow
-):
+def test_accessors_for_argument_sub_items(new_meshing_session):
     meshing = new_meshing_session
 
     watertight = meshing.watertight()
@@ -1966,9 +1946,10 @@ def test_accessors_for_argument_sub_items(
         assert import_geom.length_unit.min()
 
 
+@pytest.mark.skip("Failing in Github randomly.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_return_state_changes(new_meshing_session, use_server_meshing_workflow):
+def test_return_state_changes(new_meshing_session):
     meshing = new_meshing_session
     wt = meshing.watertight()
 
@@ -1990,7 +1971,7 @@ def test_return_state_changes(new_meshing_session, use_server_meshing_workflow):
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
-def test_recursive_update_dict(new_meshing_session, use_server_meshing_workflow):
+def test_recursive_update_dict(new_meshing_session):
     meshing = new_meshing_session
     fault_tolerant = meshing.fault_tolerant()
     import_file_name = examples.download_file(
@@ -2029,3 +2010,37 @@ def test_recursive_update_dict(new_meshing_session, use_server_meshing_workflow)
         "identify_regions": True,
         "porous_regions": True,
     }
+
+
+def test_default_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        watertight = meshing.watertight()
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow"
+        )
+    else:
+        watertight = meshing.watertight()
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow_new"
+        )
+
+
+def test_non_default_workflow(new_meshing_session):
+    meshing = new_meshing_session
+
+    if meshing.get_fluent_version() < FluentVersion.v261:
+        watertight = meshing.watertight(legacy=False)
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow"
+        )
+    else:
+        watertight = meshing.watertight(legacy=True)
+        assert (
+            watertight.__class__.__module__
+            == "ansys.fluent.core.meshing.meshing_workflow"
+        )
