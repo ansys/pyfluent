@@ -363,12 +363,6 @@ Choose mesh control options
         "inlet-3",
     ]
     fault_tolerant.setup_size_controls.add_child_and_update(defer_update=False)
-
-Choose mesh control options
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. code:: python
-
     fault_tolerant.choose_mesh_control_options()
 
 Generate surface mesh
