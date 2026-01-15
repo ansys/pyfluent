@@ -442,71 +442,59 @@ class BaseMeshing:
             If no workflow is initialized.
         """
         legacy = self._fallback_check(legacy)
+
+        # Define workflow type to factory method mapping
+        workflow_factories = {
+            "Watertight Geometry": self.watertight_workflow,
+            "Fault-tolerant Meshing": self.fault_tolerant_workflow,
+            "2D Meshing": self.two_dimensional_meshing_workflow,
+            "Topology Based Meshing": self.topology_based_meshing_workflow,
+            "Create New": self.create_workflow,
+        }
+
         if legacy:
             if self._check_workflow_type(
                 "Watertight Geometry"
             ) and self._check_workflow_type("Fault-tolerant Meshing"):
                 raise RuntimeError("No workflow initialized.")
-            elif self._check_workflow_type("Watertight Geometry"):
-                return self._get_current_workflow(
-                    "Watertight Geometry"
-                ) or self.watertight_workflow(initialize=False, legacy=True)
-            elif self._check_workflow_type("Fault-tolerant Meshing"):
-                return self._get_current_workflow(
-                    "Fault-tolerant Meshing"
-                ) or self.fault_tolerant_workflow(initialize=False, legacy=True)
-            elif self._check_workflow_type("2D Meshing"):
-                return self._get_current_workflow(
-                    "2D Meshing"
-                ) or self.two_dimensional_meshing_workflow(
-                    initialize=False, legacy=True
-                )
-            elif self._check_workflow_type("Topology Based Meshing"):
-                return self._get_current_workflow(
-                    "Topology Based Meshing"
-                ) or self.topology_based_meshing_workflow(initialize=False, legacy=True)
-            else:
-                return self.create_workflow(initialize=False, legacy=True)
+
+            # Find active workflow type
+            for workflow_name, factory in workflow_factories.items():
+                if workflow_name == "Create New":
+                    # Default to create_workflow if no specific type matches
+                    return self._get_current_workflow(workflow_name) or factory(
+                        initialize=False, legacy=True
+                    )
+
+                # Check if this workflow type is active (returns False when active)
+                if self._check_workflow_type(workflow_name):
+                    return self._get_current_workflow(workflow_name) or factory(
+                        initialize=False, legacy=True
+                    )
         else:
+            # New mode: Check workflow type from meshing_workflow datamodel
             meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
-            if meshing_workflow.general.workflow.workflow_type() in [
-                "Select Workflow Type",
-                None,
-            ]:
+            workflow_type = meshing_workflow.general.workflow.workflow_type()
+
+            # Check if no workflow is initialized
+            if workflow_type in ["Select Workflow Type", None]:
                 raise RuntimeError("No workflow initialized.")
-            elif (
-                meshing_workflow.general.workflow.workflow_type()
-                == "Watertight Geometry"
-            ):
-                return self._get_current_workflow(
-                    "Watertight Geometry"
-                ) or self.watertight_workflow(initialize=False)
-            elif (
-                meshing_workflow.general.workflow.workflow_type()
-                == "Fault-tolerant Meshing"
-            ):
-                return self._get_current_workflow(
-                    "Fault-tolerant Meshing"
-                ) or self.fault_tolerant_workflow(initialize=False)
-            elif meshing_workflow.general.workflow.workflow_type() == "2D Meshing":
-                return self._get_current_workflow(
-                    "2D Meshing"
-                ) or self.two_dimensional_meshing_workflow(initialize=False)
-            elif (
-                meshing_workflow.general.workflow.workflow_type()
-                == "Topology Based Meshing"
-            ):
-                return self._get_current_workflow(
-                    "Topology Based Meshing"
-                ) or self.topology_based_meshing_workflow(initialize=False)
-            elif meshing_workflow.general.workflow.workflow_type() == "Create New":
-                if self._current_workflow.__class__.__name__ == "CreateWorkflow":
-                    return self._current_workflow
-                return self.create_workflow(initialize=False)
-            else:
-                if self._current_workflow.__class__.__name__ == "LoadWorkflow":
+
+            # Handle loaded workflows (not in the factory map)
+            if workflow_type not in workflow_factories:
+                # This is a loaded workflow
+                if (
+                    self._current_workflow
+                    and self._current_workflow.__class__.__name__ == "LoadWorkflow"
+                ):
                     return self._current_workflow
                 return self.load_workflow(initialize=False)
+
+            # Get or create workflow based on type
+            factory = workflow_factories[workflow_type]
+            return self._get_current_workflow(workflow_type) or factory(
+                initialize=False
+            )
 
     @property
     def PartManagement(self):
