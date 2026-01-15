@@ -27,7 +27,6 @@ import os
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.meshing.meshing_workflow import name_to_identifier_map
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
@@ -416,13 +415,6 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def _check_workflow_type(self, name: str):
-        return getattr(self.meshing.GlobalSettings, name_to_identifier_map[name])()
-
-    def _get_current_workflow(self, name: str):
-        if self._current_workflow and self._current_workflow._name == name:
-            return self._current_workflow
-
     def current_workflow(self, legacy: bool | None = None):
         """Get the currently active meshing workflow.
 
@@ -453,47 +445,24 @@ class BaseMeshing:
         }
 
         if legacy:
-            if self._check_workflow_type(
-                "Watertight Geometry"
-            ) and self._check_workflow_type("Fault-tolerant Meshing"):
-                raise RuntimeError("No workflow initialized.")
+            from ansys.fluent.core.meshing.meshing_workflow import get_current_workflow
 
-            # Find active workflow type
-            for workflow_name, factory in workflow_factories.items():
-                if workflow_name == "Create New":
-                    # Default to create_workflow if no specific type matches
-                    return self._get_current_workflow(workflow_name) or factory(
-                        initialize=False, legacy=True
-                    )
+            return get_current_workflow(
+                meshing_root=self.meshing,
+                current_workflow=self._current_workflow,
+                workflow_factories=workflow_factories,
+            )
 
-                # Check if this workflow type is active (returns False when active)
-                if self._check_workflow_type(workflow_name):
-                    return self._get_current_workflow(workflow_name) or factory(
-                        initialize=False, legacy=True
-                    )
         else:
-            # New mode: Check workflow type from meshing_workflow datamodel
-            meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
-            workflow_type = meshing_workflow.general.workflow.workflow_type()
+            from ansys.fluent.core.meshing.meshing_workflow_new import (
+                get_current_workflow,
+            )
 
-            # Check if no workflow is initialized
-            if workflow_type in ["Select Workflow Type", None]:
-                raise RuntimeError("No workflow initialized.")
-
-            # Handle loaded workflows (not in the factory map)
-            if workflow_type not in workflow_factories:
-                # This is a loaded workflow
-                if (
-                    self._current_workflow
-                    and self._current_workflow.__class__.__name__ == "LoadWorkflow"
-                ):
-                    return self._current_workflow
-                return self.load_workflow(initialize=False)
-
-            # Get or create workflow based on type
-            factory = workflow_factories[workflow_type]
-            return self._get_current_workflow(workflow_type) or factory(
-                initialize=False
+            return get_current_workflow(
+                workflow_root=_make_datamodel_module(self, "meshing_workflow"),
+                current_workflow=self._current_workflow,
+                workflow_factories=workflow_factories,
+                load_workflow_handle=self.load_workflow,
             )
 
     @property
