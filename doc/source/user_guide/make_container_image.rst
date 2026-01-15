@@ -46,6 +46,36 @@ command line arguments and run this script to copy needed files from the Ansys i
 
 2. If you find that some of the excluded files are needed to run your workflows then you can remove those files from the exclusion list.
 
+Selecting solver-only, meshing-only, or both
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can control which parts of Fluent are copied into the image by adding a third argument to ``copy_ansys_files.py``:
+
+- Solver only:
+
+    .. code:: console
+
+         python copy_ansys_files.py <path to 'ansys_inc'> <path to 'docker/fluent_<version>'> solver
+
+    Uses lists: ``ceiList.txt``, ``cfdpostList.txt``, ``fluentList.txt`` and excludes ``excludeCEIList.txt``, ``excludeFluentList.txt``.
+
+- Meshing only:
+
+    .. code:: console
+
+         python copy_ansys_files.py <path to 'ansys_inc'> <path to 'docker/fluent_<version>'> meshing
+
+    Uses lists: ``cadList.txt``, ``fluentList.txt`` and excludes ``excludeFluentList.txt``.
+
+- Solver + Meshing (default):
+
+    .. code:: console
+
+         python copy_ansys_files.py <path to 'ansys_inc'> <path to 'docker/fluent_<version>'>
+
+    Uses all lists: ``cadList.txt``, ``ceiList.txt``, ``cfdpostList.txt``, ``fluentList.txt`` and excludes ``excludeCEIList.txt``, ``excludeFluentList.txt``.
+
+
 3. Build the Docker image
 +++++++++++++++++++++++++
 
