@@ -713,7 +713,7 @@ Use the ``mark_as_updated()`` to explicitly mark a task as updated.
 
 Renaming tasks in workflow
 --------------------------
-After a task is renamed, the new display name change its Python attribute name.
+After a task is renamed, the new display name changes its Python attribute name.
 Access the task as shown:
 
 .. code:: python
