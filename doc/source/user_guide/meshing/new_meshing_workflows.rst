@@ -813,7 +813,7 @@ This enables navigation without relying on Python attribute names.
 
 Known limitations
 -----------------
-- In ``enhanced_api_261``, switching between workflows and reinitializing workflows
+- In ``enhanced_api_261``, switching between workflows and re-initializing workflows
   within the same session are currently blocked.
 - Workaround: start a new session and initialize the required workflow again.
 
