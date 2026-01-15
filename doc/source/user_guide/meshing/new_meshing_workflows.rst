@@ -87,9 +87,9 @@ Generate volume mesh
 
 .. code:: python
 
-    watertight.create_volume_mesh.volume_fill.set_state("poly-hexcore")
-    watertight.create_volume_mesh.volume_fill_controls.hex_max_cell_length.set_state(0.3)
-    watertight.create_volume_mesh()
+    watertight.create_volume_mesh_wtm.volume_fill.set_state("poly-hexcore")
+    watertight.create_volume_mesh_wtm.volume_fill_controls.hex_max_cell_length.set_state(0.3)
+    watertight.create_volume_mesh_wtm()
 
 Switch to solution mode
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -313,7 +313,7 @@ Generate volume mesh
 
 .. code:: python
 
-    fault_tolerant.create_volume_mesh.all_region_name_list.set_state([
+    fault_tolerant.create_volume_mesh_ftm.all_region_name_list.set_state([
                 "main",
                 "flow_pipe",
                 "outpipe3",
@@ -322,9 +322,9 @@ Generate volume mesh
                 "void-region-1",
                 "fluid-region-1",
             ])
-    fault_tolerant.create_volume_mesh.all_region_size_list.set_state(["11.33375"] * 7)
-    fault_tolerant.create_volume_mesh.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
-    fault_tolerant.create_volume_mesh()
+    fault_tolerant.create_volume_mesh_ftm.all_region_size_list.set_state(["11.33375"] * 7)
+    fault_tolerant.create_volume_mesh_ftm.all_region_volume_fill_list.set_state(["none"] * 6 + ["tet"])
+    fault_tolerant.create_volume_mesh_ftm()
 
 Switch to solution mode
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -519,7 +519,7 @@ Load workflow
     from ansys.fluent.core import examples
 
     saved_workflow_path = examples.download_file(
-        "sample_watertight_workflow.wft", "pyfluent/meshing_workflow"
+        "sample_watertight_workflow.wft", "pyfluent/meshing_workflows"
     )
     meshing_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2

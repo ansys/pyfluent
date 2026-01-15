@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -76,11 +76,6 @@ class SystemCoupling:
     def __init__(self, solver):
         """Initialize SystemCoupling."""
         self._solver = solver
-        # version check - this requires Fluent 2024 R1 or newer.
-        if self._solver.get_fluent_version() < FluentVersion.v241:
-            raise RuntimeError(
-                f"Using {str(self._solver.get_fluent_version())}. PySystemCoupling integration requires {str(FluentVersion.v241)} or later."
-            )
         if self._solver.get_fluent_version() >= FluentVersion.v251:
             # enable feature to be able to make System Coupling settings APIs calls
             self._solver.scheme.eval("(enable-feature 'sc/participant-info)")

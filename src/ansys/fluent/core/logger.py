@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -95,8 +95,6 @@ def get_default_config() -> dict:
                                        'level': 'DEBUG'},
                  'pyfluent.networking': {'handlers': ['pyfluent_file'],
                                          'level': 'DEBUG'},
-                 'pyfluent.post_objects': {'handlers': ['pyfluent_file'],
-                                           'level': 'DEBUG'},
                  'pyfluent.settings_api': {'handlers': ['pyfluent_file'],
                                            'level': 'DEBUG'},
                  'pyfluent.tui': {'handlers': ['pyfluent_file'], 'level': 'DEBUG'}},

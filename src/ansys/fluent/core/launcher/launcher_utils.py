@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -106,11 +106,16 @@ def _get_subprocess_kwargs_for_fluent(env: dict[str, Any], argvals) -> dict[str,
             stderr=pyfluent.config.launch_fluent_stderr,
         )
     if is_windows():
-        kwargs.update(shell=True, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+        kwargs.update(
+            shell=True,
+            creationflags=subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.CREATE_NO_WINDOW,
+        )
     else:
         kwargs.update(shell=True, start_new_session=True)
     fluent_env = os.environ.copy()
-    fluent_env.update({k: str(v) for k, v in env.items()})
+    if env:
+        fluent_env.update({k: str(v) for k, v in env.items()})
     fluent_env["REMOTING_THROW_LAST_TUI_ERROR"] = "1"
     fluent_env["REMOTING_THROW_LAST_SETTINGS_ERROR"] = "1"
     if pyfluent.config.clear_fluent_para_envs:

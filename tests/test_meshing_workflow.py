@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -29,7 +29,6 @@ from util.meshing_workflow import (
 )
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 @pytest.mark.fluent_version(">=23.1")
@@ -139,9 +138,7 @@ def test_mixing_elbow_meshing_workflow(
 
     ###############################################################################
     # Check the mesh in Meshing mode
-    # TODO: Remove the if condition after a stable version of 23.1 is available and update the commands as required.
-    if meshing_session.get_fluent_version() < FluentVersion.v231:
-        meshing_session.tui.mesh.check_mesh()
+    meshing_session.tui.mesh.check_mesh()
 
 
 @pytest.mark.codegen_required
@@ -450,16 +447,26 @@ def test_inaccessible_meshing_attributes_after_switching_to_solver(
 ):
     meshing = new_meshing_session_wo_exit
     assert meshing.is_active() is True
-    assert meshing.is_server_healthy()
+    assert meshing._is_server_healthy()
     solver = meshing.switch_to_solver()
     assert solver.is_active() is True
     assert meshing.is_active() is False
     with pytest.raises(AttributeError):
         # 'switched' attribute is not there in Meshing.
         assert meshing.switched
-    assert dir(meshing) == ["is_active", "wait_process_finished"]
+    public_meshing_attrs = [
+        name
+        for name in dir(meshing)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_meshing_attrs == ["is_active", "wait_process_finished"]
     del meshing
     assert solver.is_active() is True
     solver.exit()
     assert solver.is_active() is False
-    assert dir(solver) == ["is_active", "wait_process_finished"]
+    public_solver_attrs = [
+        name
+        for name in dir(solver)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_solver_attrs == ["is_active", "wait_process_finished"]

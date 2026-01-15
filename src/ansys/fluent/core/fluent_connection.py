@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,27 +25,33 @@
 from __future__ import annotations
 
 import ctypes
+from ctypes import c_int, sizeof
+from dataclasses import dataclass
 import itertools
 import logging
 import os
+from pathlib import Path
 import platform
 import socket
 import subprocess
 import threading
+from typing import Any, Callable, TypeVar
+import warnings
 import weakref
-from collections.abc import Callable
-from ctypes import c_int, sizeof
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, TypeVar
 
-import grpc
-from ansys.platform.instancemanagement import Instance
 from deprecated.sphinx import deprecated
+import grpc
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.launcher.error_warning_messages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    CONNECTING_TO_LOCALHOST_INSECURE_MODE,
+    INSECURE_MODE_WARNING,
+)
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
-from ansys.fluent.core.services import ServiceProtocol
+from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
     AppUtilities,
     AppUtilitiesOld,
@@ -56,6 +62,9 @@ from ansys.fluent.core.services.health_check import HealthCheckService
 from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
+from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
+from ansys.platform.instancemanagement import Instance
+from ansys.tools.common.cyberchannel import create_channel
 
 logger = logging.getLogger("pyfluent.general")
 
@@ -263,16 +272,62 @@ def _get_ip_and_port(ip: str | None = None, port: int | None = None) -> (str, in
     return ip, port
 
 
-def _get_channel(ip: str, port: int):
+def _get_channel(
+    ip: str | None,
+    port: int | None,
+    uds_fullpath: str | None,
+    allow_remote_host: bool,
+    certificates_folder: str | None,
+    insecure_mode: bool,
+    inside_container: bool,
+):
     # Same maximum message length is used in the server
     max_message_length = _get_max_c_int_limit()
-    return grpc.insecure_channel(
-        f"{ip}:{port}",
-        options=[
-            ("grpc.max_send_message_length", max_message_length),
-            ("grpc.max_receive_message_length", max_message_length),
-        ],
-    )
+    options = [
+        ("grpc.max_send_message_length", max_message_length),
+        ("grpc.max_receive_message_length", max_message_length),
+    ]
+    if allow_remote_host:
+        if insecure_mode:
+            if ip is not None and is_localhost(ip) and not inside_container:
+                raise RuntimeError(CONNECTING_TO_LOCALHOST_INSECURE_MODE)
+            warnings.warn(
+                INSECURE_MODE_WARNING,
+                InsecureGrpcWarning,
+            )
+            return create_channel(
+                transport_mode="insecure",
+                host=ip,
+                port=port,
+                grpc_options=options,
+            )
+        else:
+            if certificates_folder is None:
+                raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
+            return create_channel(
+                transport_mode="mtls",
+                host=ip,
+                port=port,
+                certs_dir=certificates_folder,
+                grpc_options=options,
+            )
+    else:
+        insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
+        if not ((ip and is_localhost(ip)) or (inside_container and insecure_mode_env)):
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_IN_REMOTE)
+        if uds_fullpath is not None:
+            return create_channel(
+                transport_mode="uds",
+                uds_fullpath=uds_fullpath,
+                grpc_options=options,
+            )
+        else:
+            return create_channel(
+                transport_mode="wnua",
+                host=ip,
+                port=port,
+                grpc_options=options,
+            )
 
 
 class _ConnectionInterface:
@@ -375,7 +430,11 @@ class FluentConnection:
         ip: str | None = None,
         port: int | None = None,
         password: str | None = None,
+        address: str | None = None,
         channel: grpc.Channel | None = None,
+        allow_remote_host: bool = False,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
         cleanup_on_exit: bool = True,
         remote_instance: Instance | None = None,
         file_transfer_service: Any | None = None,
@@ -399,6 +458,8 @@ class FluentConnection:
             the environment variable ``PYFLUENT_FLUENT_PORT=<port>``.
         password : str, optional
             Password to connect to existing Fluent instance.
+        address : str, optional
+            Address to connect to existing Fluent instance.
         channel : grpc.Channel, optional
             Grpc channel to use to connect to existing Fluent instance.
             ip and port arguments will be ignored when channel is
@@ -424,6 +485,14 @@ class FluentConnection:
             a container.
         compose_config: ComposeConfig, optional
             Configuration for Docker Compose or Podman Compose.
+        allow_remote_host : bool, optional
+            Whether to allow connecting to a remote Fluent instance.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
@@ -439,9 +508,25 @@ class FluentConnection:
         if channel is not None:
             self._channel = channel
         else:
-            ip, port = _get_ip_and_port(ip, port)
-            self._channel = _get_channel(ip, port)
-            self._channel_str = f"{ip}:{port}"
+            uds_fullpath = None
+            if address is not None:
+                self._channel_str = address
+                uds_fullpath = get_uds_path(address)
+                if uds_fullpath is None:
+                    ip, port = address.rsplit(":", 1)
+                    port = int(port)
+            else:
+                ip, port = _get_ip_and_port(ip, port)
+                self._channel_str = f"{ip}:{port}"
+            self._channel = _get_channel(
+                ip=ip,
+                port=port,
+                uds_fullpath=uds_fullpath,
+                allow_remote_host=allow_remote_host,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+                inside_container=inside_container,
+            )
         self._metadata: list[tuple[str, str]] = (
             [("password", password)] if password else []
         )
@@ -453,7 +538,15 @@ class FluentConnection:
         # throws, we should not proceed.
         # TODO: Show user-friendly error message.
         if pyfluent.config.check_health:
-            self._health_check.check_health()
+            try:
+                self._health_check.check_health()
+            except RuntimeError:
+                if inside_container and container is not None:
+                    logger.error("Error reported from Fluent:")
+                    logger.error(
+                        container.logs(stdout=False).decode("utf-8", errors="replace")
+                    )
+                raise
 
         self._slurm_job_id = slurm_job_id
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -33,9 +33,8 @@ from ansys.fluent.core.meshing.meshing_workflow import (
     FaultTolerantMeshingWorkflow,
     LoadWorkflow,
     WatertightMeshingWorkflow,
-    WorkflowMode,
-    name_to_identifier_map,
 )
+from ansys.fluent.core.meshing.meshing_workflow_new import name_to_identifier_map
 from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
     _make_tui_module,
@@ -135,16 +134,14 @@ class BaseMeshing:
         return cast("meshing_root", self._meshing)
 
     @property
-    def _meshing_utilities_root(self) -> "meshing_utilities_root | None":
+    def _meshing_utilities_root(self) -> "meshing_utilities_root":
         """Datamodel root of meshing_utilities."""
-        if self.get_fluent_version() >= FluentVersion.v242:
-            return cast(
-                "meshing_utilities_root",
-                _make_datamodel_module(self, "MeshingUtilities"),
-            )
+        return cast(
+            "meshing_utilities_root", _make_datamodel_module(self, "MeshingUtilities")
+        )
 
     @property
-    def meshing_utilities(self) -> "meshing_utilities_root | None":
+    def meshing_utilities(self) -> "meshing_utilities_root":
         """A wrapper over the Fluent's meshing queries."""
         if self._meshing_utilities is None:
             self._meshing_utilities = self._meshing_utilities_root
@@ -171,8 +168,14 @@ class BaseMeshing:
 
     def watertight_workflow(self, initialize: bool = True) -> WatertightMeshingWorkflow:
         """Datamodel root of workflow."""
+        if os.getenv("USE_SERVER_MW") == "1":
+            root_module = "meshing_workflow"
+            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+        else:
+            root_module = "workflow"
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, root_module),
             self.meshing,
             self.get_fluent_version(),
             initialize,
@@ -183,8 +186,14 @@ class BaseMeshing:
         self, initialize: bool = True
     ) -> FaultTolerantMeshingWorkflow:
         """Datamodel root of workflow."""
+        if os.getenv("USE_SERVER_MW") == "1":
+            root_module = "meshing_workflow"
+            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+        else:
+            root_module = "workflow"
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, root_module),
             self.meshing,
             self.PartManagement,
             self.PMFileManagement,
@@ -195,8 +204,14 @@ class BaseMeshing:
 
     def two_dimensional_meshing_workflow(self, initialize: bool = True):
         """Data model root of the workflow."""
+        if os.getenv("USE_SERVER_MW") == "1":
+            root_module = "meshing_workflow"
+            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+        else:
+            root_module = "workflow"
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         self._current_workflow = WorkflowMode.TWO_DIMENSIONAL_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, root_module),
             self.meshing,
             self.get_fluent_version(),
             initialize,
@@ -205,8 +220,14 @@ class BaseMeshing:
 
     def topology_based_meshing_workflow(self, initialize: bool = True):
         """Datamodel root of workflow."""
+        if os.getenv("USE_SERVER_MW") == "1":
+            root_module = "meshing_workflow"
+            from ansys.fluent.core.meshing.meshing_workflow_new import WorkflowMode
+        else:
+            root_module = "workflow"
+            from ansys.fluent.core.meshing.meshing_workflow import WorkflowMode
         self._current_workflow = WorkflowMode.TOPOLOGY_BASED_MESHING_MODE.value(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, root_module),
             self.meshing,
             self.get_fluent_version(),
             initialize,
@@ -215,8 +236,14 @@ class BaseMeshing:
 
     def load_workflow(self, file_path: PathType) -> LoadWorkflow:
         """Datamodel root of workflow."""
+        if os.getenv("USE_SERVER_MW") == "1":
+            root_module = "meshing_workflow"
+            from ansys.fluent.core.meshing.meshing_workflow_new import LoadWorkflow
+        else:
+            root_module = "workflow"
+            from ansys.fluent.core.meshing.meshing_workflow import LoadWorkflow
         self._current_workflow = LoadWorkflow(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, root_module),
             self.meshing,
             os.fspath(file_path),
             self.get_fluent_version(),
@@ -225,8 +252,14 @@ class BaseMeshing:
 
     def create_workflow(self, initialize: bool = True) -> CreateWorkflow:
         """Datamodel root of the workflow."""
+        if os.getenv("USE_SERVER_MW") == "1":
+            root_module = "meshing_workflow"
+            from ansys.fluent.core.meshing.meshing_workflow_new import CreateWorkflow
+        else:
+            root_module = "workflow"
+            from ansys.fluent.core.meshing.meshing_workflow import CreateWorkflow
         self._current_workflow = CreateWorkflow(
-            _make_datamodel_module(self, "workflow"),
+            _make_datamodel_module(self, root_module),
             self.meshing,
             self.get_fluent_version(),
             initialize,

@@ -1,5 +1,6 @@
 # pyright: reportNoOverloadImplementation=false
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -267,6 +268,12 @@ class SessionBase:
             Whether to use Docker Compose to launch Fluent.
         use_podman_compose: bool
             Whether to use Podman Compose to launch Fluent.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be started in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Returns
         -------
@@ -367,6 +374,9 @@ class SessionBase:
         port: int | None = None,
         server_info_file_name: str | None = None,
         password: str | None = None,
+        allow_remote_host: bool = False,
+        certificates_folder: str | None = None,
+        insecure_mode: bool = False,
     ):
         """Connect to an existing Fluent server instance.
 
@@ -388,6 +398,14 @@ class SessionBase:
             connect to a running Fluent session.
         password : str, optional
             Password to connect to existing Fluent instance.
+        allow_remote_host : bool, optional
+            Whether to allow connecting to a remote Fluent instance.
+        certificates_folder : str, optional
+            Path to the folder containing TLS certificates for Fluent's gRPC server.
+        insecure_mode : bool, optional
+            If True, Fluent's gRPC server will be connected in insecure mode without TLS.
+            This mode is not recommended. For more details on the implications
+            and usage of insecure mode, refer to the Fluent documentation.
 
         Raises
         ------
@@ -591,7 +609,6 @@ class Solver(SessionBase):
             **kwargs: Unpack[ContainerArgsWithoutDryRun],
         ) -> session_solver.Solver: ...
 
-        @overload
         @classmethod
         def from_pim(
             cls,

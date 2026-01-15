@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -33,7 +33,7 @@ import ansys.fluent.core as pyfluent
 def test_solver_import_mixingelbow(mixing_elbow_settings_session):
     solver_session = mixing_elbow_settings_session
     assert solver_session.settings.is_active()
-    assert solver_session.is_server_healthy()
+    assert solver_session.is_active()
     file_name = Path(pyfluent.config.examples_path) / "jou_test_general.py"
     solver_session.journal.start(file_name.as_posix())
     ###
@@ -108,7 +108,7 @@ def test_solver_import_mixingelbow(mixing_elbow_settings_session):
 def test_disk_2d_setup(disk_settings_session):
     session = disk_settings_session
     assert session.settings.is_active()
-    assert session.is_server_healthy()
+    assert session.is_active()
     ###
     assert not session.setup.models.energy.enabled()
     assert session.scheme.eval("(case-valid?)")

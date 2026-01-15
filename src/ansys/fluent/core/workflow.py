@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -33,14 +33,13 @@ import warnings
 
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
-    PyFluentUserWarning,
 )
 from ansys.fluent.core.services.datamodel_se import (
+    PyArgumentsSingletonSubItem,
     PyCallableStateObject,
     PyCommand,
     PyMenu,
     PyMenuGeneric,
-    PySingletonCommandArgumentsSubItem,
 )
 from ansys.fluent.core.utils.dictionary_operations import get_first_dict_key_for_value
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -685,7 +684,7 @@ def _getarg_recursive(obj, arg_name):
             if sub_attr_name.startswith("_"):
                 continue
             sub_attr = getattr(obj, sub_attr_name)
-            if isinstance(sub_attr, PySingletonCommandArgumentsSubItem):
+            if isinstance(sub_attr, PyArgumentsSingletonSubItem):
                 result = inner(sub_attr, arg_name)
                 if result is not None:
                     return result
@@ -755,7 +754,7 @@ class ArgumentsWrapper(PyCallableStateObject):
                 # Key can be parameter name of a singleton-type command argument.
                 # Hence, we are searching for the key recursively within the command arguments.
                 _getarg_recursive(cmd_args, key),
-                PySingletonCommandArgumentsSubItem,
+                PyArgumentsSingletonSubItem,
             ):
                 snake_case_state_dict[camel_to_snake_case(key)] = (
                     self._camel_snake_arguments_map(val)
@@ -808,9 +807,7 @@ class ArgumentsWrapper(PyCallableStateObject):
         for key, val in args.items():
             camel_arg = self._snake_to_camel_map[key] if key.islower() else key
             # TODO: Implement enhanced meshing workflow to hide away internal info.
-            if isinstance(
-                getattr(cmd_args, camel_arg), PySingletonCommandArgumentsSubItem
-            ):
+            if isinstance(getattr(cmd_args, camel_arg), PyArgumentsSingletonSubItem):
                 updated_dict = {}
                 for attr, attr_val in val.items():
                     camel_attr = snake_to_camel_case(
@@ -919,7 +916,7 @@ class ArgumentWrapper(PyCallableStateObject):
             self._task.Arguments()[self._arg_name] if explicit_only else self._arg()
         )
 
-        if isinstance(self._arg, PySingletonCommandArgumentsSubItem):
+        if isinstance(self._arg, PyArgumentsSingletonSubItem):
             snake_case_state_dict = {}
             for key, val in state_dict.items():
                 self._snake_to_camel_map[camel_to_snake_case(key)] = key
@@ -1258,17 +1255,9 @@ class CompoundTask(CommandTask):
         self._command_source._compound_child = True
         self._command_source._parent_of_compound_child = py_name
         try:
-            if self._fluent_version >= FluentVersion.v241:
-                if defer_update is None:
-                    defer_update = False
-                self._task.AddChildAndUpdate(DeferUpdate=defer_update)
-            else:
-                if defer_update is not None:
-                    warnings.warn(
-                        "The 'defer_update()' method is supported in Fluent 2024 R1 and later.",
-                        PyFluentUserWarning,
-                    )
-                self._task.AddChildAndUpdate()
+            if defer_update is None:
+                defer_update = False
+            self._task.AddChildAndUpdate(DeferUpdate=defer_update)
         finally:
             self._command_source._compound_child = False
         # Updates the workflow after the new task is inserted.

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -86,6 +86,7 @@ class MeshingWorkflow(Workflow):
         self._initialized = True
 
     if not TYPE_CHECKING:
+
         def __getattribute__(self, item: str):
             if (
                 not item.startswith("_")

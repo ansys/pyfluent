@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,9 +22,9 @@
 
 """Wrapper over the health check gRPC service of Fluent."""
 
+from enum import Enum
 import logging
 import sys
-from enum import Enum
 
 import grpc
 from grpc_health.v1 import health_pb2 as HealthCheckModule

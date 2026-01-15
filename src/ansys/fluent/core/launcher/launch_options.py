@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -29,6 +29,9 @@ import warnings
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
+from ansys.fluent.core.launcher.error_warning_messages import (
+    BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED,
+)
 from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.session_meshing import Meshing
@@ -388,7 +391,7 @@ def _validate_gpu(gpu: bool | list, dimension: int):
         raise exceptions.GPUSolverSupportError()
 
 
-def _get_argvals_and_session(argvals):
+def _get_argvals_and_session(argvals) -> tuple[dict, type]:
     _validate_gpu(argvals.get("gpu"), argvals.get("dimension"))
     argvals["graphics_driver"] = _get_graphics_driver(
         argvals.get("graphics_driver"), argvals.get("ui_mode")
@@ -396,3 +399,37 @@ def _get_argvals_and_session(argvals):
     argvals["mode"] = FluentMode(argvals.get("mode"))
     new_session = argvals["mode"].get_fluent_value()
     return argvals, new_session
+
+
+def get_remote_grpc_options(
+    certificates_folder: str | None, insecure_mode: bool
+) -> tuple[str | None, bool]:
+    """Get (certificates_folder, insecure_mode) from user input or environment variable for remote gRPC connection.
+
+    Parameters
+    ----------
+    certificates_folder : str, optional
+        Path to the certificates folder provided by the user.
+    insecure_mode : bool
+        Whether to use insecure gRPC mode, provided by the user.
+
+    Returns
+    -------
+    tuple[str | None, bool]
+        Path to the certificates folder and whether to use insecure gRPC mode.
+
+    Raises
+    ------
+    ValueError
+        If both `certificates_folder` and `insecure_mode` are provided by the user.
+    """
+    if certificates_folder is not None and insecure_mode:
+        raise ValueError(BOTH_CERTIFICATES_FOLDER_AND_INSECURE_MODE_PROVIDED)
+
+    if insecure_mode:
+        # if insecure_mode is passed True by the user, ignore certificates_folder environment variable
+        return None, insecure_mode
+    else:
+        if certificates_folder is not None:
+            return certificates_folder, insecure_mode
+        return os.environ.get("ANSYS_GRPC_CERTIFICATES"), insecure_mode

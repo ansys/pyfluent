@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,20 +22,20 @@
 
 """Wrappers over FieldData gRPC service of Fluent."""
 
-import logging
-import time
-import warnings
-import weakref
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
+import logging
+import time
+import warnings
+import weakref
 
 import grpc
 import numpy as np
+
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
-
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldDataSource,
@@ -84,7 +84,9 @@ def override_help_text(func, func_to_be_wrapped):
     return func
 
 
-class FieldDataService(StreamingService, ServiceProtocol):  # pyright: ignore[reportUnsafeMultipleInheritance]
+class FieldDataService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """FieldData service of Fluent."""
 
     def __init__(
@@ -993,7 +995,7 @@ class Batch(FieldBatch):
             Data is returned as dictionary of dictionaries in the following structure:
             tag int | Tuple-> surface_id [int] -> field_name [str] -> field_data[np.array]
 
-            The tag is a tuple for Fluent 2023 R1 or later.
+            The tag is a tuple.
         """
         return BatchFieldData(
             ChunkParser().extract_fields(

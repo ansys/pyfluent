@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,9 +27,9 @@ from functools import wraps
 from typing import Any
 
 import grpc
+
 from ansys.api.fluent.v0 import settings_pb2 as SettingsModule
 from ansys.api.fluent.v0 import settings_pb2_grpc as SettingsGrpcModule
-
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -346,17 +346,11 @@ class SettingsService:
 
     @_trace
     def execute_cmd(self, path: str, command: str, **kwds) -> Any:
-        """Execute a given command with the provided keyword arguments.
-
-        If `path` is in kwds, rename it to `path_1` to avoid conflict with
-        the `path` argument.
-        """
+        """Execute a given command with the provided keyword arguments."""
         request = _get_request_instance_for_path(
             SettingsModule.ExecuteCommandRequest, path
         )
         request.command = command
-        if "path_1" in kwds:
-            kwds["path"] = kwds.pop("path_1")
         self._set_state_from_value(request.args, kwds)
 
         response = self._service_impl.execute_cmd(request)

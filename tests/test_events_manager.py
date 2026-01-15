@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,7 +25,9 @@ from pathlib import Path
 import pytest
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import FluentVersion, MeshingEvent, SolverEvent, examples
+from ansys.fluent.core import MeshingEvent, SolverEvent, examples
+from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
+from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 
 
@@ -43,10 +45,9 @@ def test_receive_events_on_case_loaded(new_solver_session) -> None:
 
     def on_case_loaded(session, event_info):
         on_case_loaded.loaded = True
-        if session.get_fluent_version() >= FluentVersion.v232:
-            assert Path(event_info.case_file_name).name == Path(case_file_name).name
-            with pytest.warns(PyFluentDeprecationWarning):
-                assert Path(event_info.casefilepath).name == Path(case_file_name).name
+        assert Path(event_info.case_file_name).name == Path(case_file_name).name
+        with pytest.warns(PyFluentDeprecationWarning):
+            assert Path(event_info.casefilepath).name == Path(case_file_name).name
 
     on_case_loaded.loaded = False
 
@@ -169,13 +170,18 @@ def test_multiple_register_callback_event(static_mixer_case_session, caplog):
     assert len(event_index) == len(iteration_index)
 
 
-@pytest.mark.fluent_version(">=23.1")
-def test_iteration_ended_sync_event_multiple_connections(static_mixer_case_session):
-    solver1 = static_mixer_case_session
-    solver2 = pyfluent.connect_to_fluent(
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
+def test_iteration_ended_sync_event_multiple_connections():
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    solver1 = pyfluent.Solver.from_container(**kwargs)
+    case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
+    solver1.file.read(file_type="case", file_name=case_name)
+    solver2 = pyfluent.Solver.from_connection(
         ip=solver1.connection_properties.ip,
         port=solver1.connection_properties.port,
         password=solver1.connection_properties.password,
+        allow_remote_host=True,
+        **kwargs,
     )
     solver1.settings.solution.initialization.hybrid_initialize()
     solver1_count = 0

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -38,7 +38,6 @@ from ansys.fluent.core.session_base_meshing import BaseMeshing
 from ansys.fluent.core.streaming_services.datamodel_streaming import DatamodelStream
 from ansys.fluent.core.streaming_services.events_streaming import MeshingEvent
 from ansys.fluent.core.utils.data_transfer import transfer_case
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
     from ansys.fluent.core.generated.datamodel_252.meshing import Root as meshing_root
@@ -62,13 +61,16 @@ if TYPE_CHECKING:
 
 
 class PureMeshing(BaseSession):
-    """Encapsulates a Fluent meshing session.
+    """Encapsulates a Fluent meshing session with a meshing-only Python interface.
 
-    A ``tui`` object
-    for meshing TUI commanding, and ``meshing`` and ``workflow``
-    objects for access to task-based meshing workflows are all
-    exposed here. No ``switch_to_solver`` method is available
-    in this mode.
+    ``PureMeshing`` is designed for workflows where meshing and solving are run as
+        separate stages or in different environments, such as modular or containerized
+        deployments. It provides a clean API that focuses solely on meshing tasks.
+
+        This interface exposes:
+
+        - ``workflow`` and ``meshing`` objects for task-based meshing operations.
+        - ``tui`` for scripting via the legacy Text User Interface (when needed).
     """
 
     _rules = [

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -27,8 +27,8 @@ from ansys.fluent.core import examples
 
 
 @pytest.mark.fluent_version(">=24.1")
-def test_batch_ops_create_mesh(new_solver_session):
-    solver = new_solver_session
+def test_batch_ops_create_mesh():
+    solver = pyfluent.Solver.from_container(insecure_mode=True)
     mesh = solver.results.graphics.mesh
     case_file_name = examples.download_file(
         "mixing_elbow.cas.h5", "pyfluent/mixing_elbow"

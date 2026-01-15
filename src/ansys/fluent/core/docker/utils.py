@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,11 +25,56 @@ Utility functions for working with Fluent Docker images.
 """
 
 
+import os
+
+
+def _is_grpc_patched(image_tag: str):
+    """
+    Check if the image tag corresponds to a version that patches gRPC.
+    """
+    if image_tag.startswith("sha256:"):
+        return True
+
+    if image_tag == "v26.1.latest":
+        return True
+
+    min_patched_versions = {
+        "v25.2": 3,
+        "v25.1": 4,
+        "v24.2": 5,
+    }
+    for version, min_patch in min_patched_versions.items():
+        if image_tag.startswith(version) and image_tag.count(".") == 2:
+            patch_version = int(image_tag.split(".")[-1])
+            return patch_version >= min_patch
+    return False
+
+
+def get_grpc_launcher_args_for_gh_runs():
+    """
+    Get the gRPC launcher arguments for GitHub Actions runs based on the Fluent image tag.
+    """
+    kwds = {}
+    fluent_image_tag = os.getenv("FLUENT_IMAGE_TAG")
+    if fluent_image_tag:
+        if _is_grpc_patched(fluent_image_tag) and not fluent_image_tag.startswith(
+            "v24.2"
+        ):
+            kwds["certificates_folder"] = os.path.join(os.getcwd(), "certs")
+        else:
+            kwds["insecure_mode"] = True
+    return kwds
+
+
 def get_ghcr_fluent_image_name(image_tag: str):
     """
     Get the Fluent image name from GitHub registry based on the image tag.
     """
-    if image_tag.startswith("sha256:") or image_tag >= "v26.1":
+    if (
+        image_tag.startswith("sha256:")
+        or image_tag >= "v26.1"
+        or _is_grpc_patched(image_tag)
+    ):
         return "ghcr.io/ansys/fluent"
     else:
         return "ghcr.io/ansys/pyfluent"

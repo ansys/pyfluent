@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -63,9 +63,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
 
 
-class PIMArgs(
-    TypedDict, total=False
-):  # pylint: disable=missing-class-docstring
+class PIMArgs(TypedDict, total=False):  # pylint: disable=missing-class-docstring
     ui_mode: UIMode | str | None
     graphics_driver: (
         FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
@@ -134,8 +132,6 @@ class PIMLauncher:
         cleanup_on_exit : bool
             Determines whether to shut down the connected Fluent session upon exit or when calling
             the session's `exit()` method. Defaults to True.
-        dry_run : bool, optional
-            If True, returns a configuration dictionary instead of starting a Fluent session.
         start_transcript : bool
             Indicates whether to start streaming the Fluent transcript in the client. Defaults to True;
             streaming can be controlled via `transcript.start()` and `transcript.stop()` methods on the session object.
@@ -149,8 +145,8 @@ class PIMLauncher:
 
         Returns
         -------
-        Union[Meshing, PureMeshing, Solver, SolverIcing, dict]
-            Session object or configuration dictionary if ``dry_run`` is True.
+        Union[Meshing, PureMeshing, Solver, SolverIcing, SolverAero]
+            Session object.
 
         Raises
         ------
@@ -259,7 +255,7 @@ def launch_remote_fluent(
     product_version: str | None = None,
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
-    dimensionality: str | None = None,
+    dimensionality: Dimension | int = Dimension.THREE,
     launcher_args: dict[str, Any] | None = None,
     file_transfer_service: Any | None = None,
 ) -> Meshing | PureMeshing | Solver | SolverIcing:
@@ -281,8 +277,8 @@ def launch_remote_fluent(
         Whether to clean up and exit Fluent when Python exits. Default is ``True``.
     mode : FluentMode, optional
         Launch Fluent in meshing mode. Default is ``FluentMode.SOLVER``.
-    dimensionality : str, optional
-        Geometric dimensionality of the Fluent simulation. Default is ``None`` (3D).
+    dimensionality : Dimension | int
+        Geometric dimensionality of the Fluent simulation. Default is Dimension.THREE.
     file_transfer_service : optional
         Service for uploading/downloading files to/from the server.
     launcher_args : Any
@@ -344,7 +340,7 @@ def launch_remote_fluent(
 
 
 def create_fluent_instance(
-    pim, mode: FluentMode, dimensionality: str | None, product_version: str | None
+    pim, mode: FluentMode, dimensionality: Dimension | int, product_version: str | None
 ):
     """Create a Fluent instance based on mode and dimensionality."""
 

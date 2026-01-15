@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -23,13 +23,15 @@
 """Wrapper over the events gRPC service of Fluent."""
 
 import grpc
-from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
 
+from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
 from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.streaming import StreamingService
 
 
-class EventsService(StreamingService, ServiceProtocol):  # pyright: ignore[reportUnsafeMultipleInheritance]
+class EventsService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the events gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata: list[tuple[str, str]]):
