@@ -27,7 +27,6 @@ import os
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
-from ansys.fluent.core.meshing.meshing_workflow import name_to_identifier_map
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.session_shared import (
     _make_datamodel_module,
@@ -416,13 +415,6 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def _check_workflow_type(self, name: str):
-        return getattr(self.meshing.GlobalSettings, name_to_identifier_map[name])()
-
-    def _get_current_workflow(self, name: str):
-        if self._current_workflow and self._current_workflow._name == name:
-            return self._current_workflow
-
     def current_workflow(self, legacy: bool | None = None):
         """Get the currently active meshing workflow.
 
@@ -442,71 +434,36 @@ class BaseMeshing:
             If no workflow is initialized.
         """
         legacy = self._fallback_check(legacy)
+
+        # Define workflow type to factory method mapping
+        workflow_factories = {
+            "Watertight Geometry": self.watertight_workflow,
+            "Fault-tolerant Meshing": self.fault_tolerant_workflow,
+            "2D Meshing": self.two_dimensional_meshing_workflow,
+            "Topology Based Meshing": self.topology_based_meshing_workflow,
+            "Create New": self.create_workflow,
+        }
+
         if legacy:
-            if self._check_workflow_type(
-                "Watertight Geometry"
-            ) and self._check_workflow_type("Fault-tolerant Meshing"):
-                raise RuntimeError("No workflow initialized.")
-            elif self._check_workflow_type("Watertight Geometry"):
-                return self._get_current_workflow(
-                    "Watertight Geometry"
-                ) or self.watertight_workflow(initialize=False, legacy=True)
-            elif self._check_workflow_type("Fault-tolerant Meshing"):
-                return self._get_current_workflow(
-                    "Fault-tolerant Meshing"
-                ) or self.fault_tolerant_workflow(initialize=False, legacy=True)
-            elif self._check_workflow_type("2D Meshing"):
-                return self._get_current_workflow(
-                    "2D Meshing"
-                ) or self.two_dimensional_meshing_workflow(
-                    initialize=False, legacy=True
-                )
-            elif self._check_workflow_type("Topology Based Meshing"):
-                return self._get_current_workflow(
-                    "Topology Based Meshing"
-                ) or self.topology_based_meshing_workflow(initialize=False, legacy=True)
-            else:
-                return self.create_workflow(initialize=False, legacy=True)
+            from ansys.fluent.core.meshing.meshing_workflow import get_current_workflow
+
+            return get_current_workflow(
+                meshing_root=self.meshing,
+                current_workflow=self._current_workflow,
+                workflow_factories=workflow_factories,
+            )
+
         else:
-            meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
-            if meshing_workflow.general.workflow.workflow_type() in [
-                "Select Workflow Type",
-                None,
-            ]:
-                raise RuntimeError("No workflow initialized.")
-            elif (
-                meshing_workflow.general.workflow.workflow_type()
-                == "Watertight Geometry"
-            ):
-                return self._get_current_workflow(
-                    "Watertight Geometry"
-                ) or self.watertight_workflow(initialize=False)
-            elif (
-                meshing_workflow.general.workflow.workflow_type()
-                == "Fault-tolerant Meshing"
-            ):
-                return self._get_current_workflow(
-                    "Fault-tolerant Meshing"
-                ) or self.fault_tolerant_workflow(initialize=False)
-            elif meshing_workflow.general.workflow.workflow_type() == "2D Meshing":
-                return self._get_current_workflow(
-                    "2D Meshing"
-                ) or self.two_dimensional_meshing_workflow(initialize=False)
-            elif (
-                meshing_workflow.general.workflow.workflow_type()
-                == "Topology Based Meshing"
-            ):
-                return self._get_current_workflow(
-                    "Topology Based Meshing"
-                ) or self.topology_based_meshing_workflow(initialize=False)
-            elif meshing_workflow.general.workflow.workflow_type() == "Create New":
-                if self._current_workflow.__class__.__name__ == "CreateWorkflow":
-                    return self._current_workflow
-                return self.create_workflow(initialize=False)
-            else:
-                if self._current_workflow.__class__.__name__ == "LoadWorkflow":
-                    return self._current_workflow
-                return self.load_workflow(initialize=False)
+            from ansys.fluent.core.meshing.meshing_workflow_new import (
+                get_current_workflow,
+            )
+
+            return get_current_workflow(
+                workflow_root=_make_datamodel_module(self, "meshing_workflow"),
+                current_workflow=self._current_workflow,
+                workflow_factories=workflow_factories,
+                load_workflow_handle=self.load_workflow,
+            )
 
     @property
     def PartManagement(self):
