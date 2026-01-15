@@ -52,6 +52,16 @@ from ansys.fluent.core.launcher.standalone_launcher import (
 )
 from ansys.fluent.core.session import BaseSession
 
+__all__ = (
+    "Meshing",
+    "PureMeshing",
+    "PrePost",
+    "PureMeshing",
+    "Solver",
+    "SolverAero",
+    "SolverIcing",
+)
+
 
 class SessionBase:
     """Base class for Fluent sessions.
@@ -347,7 +357,6 @@ class SessionBase:
         """
         kwargs_with_mode = dict(kwargs)
         kwargs_with_mode["mode"] = cls._session_mode[cls.__name__]
-        kwargs_with_mode["dry_run"] = dry_run
         launcher = PIMLauncher(**kwargs_with_mode)
         return launcher()
 

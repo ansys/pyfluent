@@ -22,14 +22,14 @@
 
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
+from collections.abc import Callable
+from enum import Enum
 import json
 import logging
 import os
+from typing import Any
 import warnings
 import weakref
-from collections.abc import Callable
-from enum import Enum
-from typing import Any
 
 from deprecated.sphinx import deprecated
 
@@ -81,6 +81,9 @@ except Exception:
     root = Any
 
 logger = logging.getLogger("pyfluent.general")
+
+
+__all__ = ("BaseSession",)
 
 
 def _parse_server_info_file(file_name: str):

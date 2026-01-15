@@ -27,6 +27,9 @@ from pathlib import Path
 from typing import Any, Generic, TypeVar
 import warnings
 
+__all__ = ("config",)
+
+
 TConfig = TypeVar("TConfig", bound="Config")
 
 

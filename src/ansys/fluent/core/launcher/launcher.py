@@ -65,6 +65,11 @@ from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+__all__ = (
+    "create_launcher",
+    "launch_fluent",
+)
+
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
@@ -542,6 +547,7 @@ def connect_to_fluent(
         Session object.
     """
     ip, port, password = _get_server_info(server_info_file_name, ip, port, password)
+
     fluent_connection = FluentConnection(
         ip=ip,
         port=port,

@@ -61,6 +61,9 @@ from ansys.fluent.core.utils.execution import asynchronous
 BASE_DP_NAME = "Base DP"
 
 
+__all__ = ("LocalParametricStudy",)
+
+
 def convert_design_point_parameter_units(
     value: dict[str, float | int | str],
 ) -> dict[str, float | int]:
@@ -211,6 +214,7 @@ def _run_local_study_in_fluent(
             study_inputs.append(
                 make_input_for_study(range(range_base, range_base + count))
             )
+
         return study_inputs
 
     @asynchronous

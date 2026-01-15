@@ -29,57 +29,28 @@ import warnings
 # isort: off
 
 # config must be initialized before logging setup.
-from ansys.fluent.core.module_config import config
+from ansys.fluent.core.module_config import *
 
 # Logging has to be imported before importing other PyFluent modules
-from ansys.fluent.core.logger import set_console_logging_level  # noqa: F401
+from ansys.fluent.core.logger import *
 
 # isort: on
 
-from ansys.fluent.core.field_data_interfaces import (  # noqa: F401
-    PathlinesFieldDataRequest,
-    ScalarFieldDataRequest,
-    SurfaceDataType,
-    SurfaceFieldDataRequest,
-    VectorFieldDataRequest,
-)
-from ansys.fluent.core.get_build_details import (  # noqa: F401
-    get_build_version,
-    get_build_version_string,
-)
-from ansys.fluent.core.launcher.launch_options import (  # noqa: F401
-    Dimension,
-    FluentLinuxGraphicsDriver,
-    FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
-)
-from ansys.fluent.core.launcher.launcher import (  # noqa: F401
-    connect_to_fluent,
-    launch_fluent,
-)
-from ansys.fluent.core.parametric import LocalParametricStudy  # noqa: F401
-from ansys.fluent.core.pyfluent_warnings import (  # noqa: F401
-    PyFluentDeprecationWarning,
-    PyFluentUserWarning,
-    warning,
-)
-from ansys.fluent.core.search import search  # noqa: F401
-from ansys.fluent.core.services.batch_ops import BatchOps  # noqa: F401
-from ansys.fluent.core.session import BaseSession as Fluent  # noqa: F401
-from ansys.fluent.core.session_utilities import (  # noqa: F401
-    Meshing,
-    PrePost,
-    PureMeshing,
-    Solver,
-    SolverAero,
-    SolverIcing,
-)
-from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
-from ansys.fluent.core.utils import fldoc
-from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
-from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
+from ansys.fluent.core.field_data_interfaces import *
+from ansys.fluent.core.get_build_details import *
+from ansys.fluent.core.launcher.launch_options import *
+from ansys.fluent.core.launcher.launcher import *
+from ansys.fluent.core.parametric import *
+from ansys.fluent.core.pyfluent_warnings import *
+from ansys.fluent.core.search import *
+from ansys.fluent.core.services.batch_ops import *
+from ansys.fluent.core.session import *
+from ansys.fluent.core.session import BaseSession as Fluent
+from ansys.fluent.core.session_utilities import *
+from ansys.fluent.core.streaming_services.events_streaming import *
+from ansys.fluent.core.utils import *
+from ansys.fluent.core.utils.fluent_version import *
+from ansys.fluent.core.utils.setup_for_fluent import *
 
 __version__ = "0.36.dev0"
 
@@ -144,14 +115,17 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",
 }
 
+from typing import TYPE_CHECKING
 
-def __getattr__(name: str) -> str:
-    """Get the value of a deprecated configuration variable."""
-    if name in _config_by_deprecated_name:
-        config_name = _config_by_deprecated_name[name]
-        warnings.warn(
-            f"'{name}' is deprecated, use 'config.{config_name}' instead.",
-            category=PyFluentDeprecationWarning,
-        )
-        return getattr(config, config_name)
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+if not TYPE_CHECKING:
+
+    def __getattr__(name: str) -> str:
+        """Get the value of a deprecated configuration variable."""
+        if name in _config_by_deprecated_name:
+            config_name = _config_by_deprecated_name[name]
+            warnings.warn(
+                f"'{name}' is deprecated, use 'config.{config_name}' instead.",
+                category=PyFluentDeprecationWarning,
+            )
+            return getattr(config, config_name)
+        raise AttributeError(f"module '{__name__}' has no attribute '{name}'")

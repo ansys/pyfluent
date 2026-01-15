@@ -24,14 +24,12 @@
 
 import logging
 import threading
+from typing import TYPE_CHECKING, Any, cast
 import warnings
 import weakref
-from typing import TYPE_CHECKING, Any, cast
 
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
-
 import ansys.fluent.core as pyfluent
-import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services import SchemeEval
@@ -54,6 +52,7 @@ from ansys.fluent.core.solver.flobject import (
     StateT,
     StateType,
 )
+import ansys.fluent.core.solver.function.reduction as reduction_old
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 from ansys.fluent.core.streaming_services.monitor_streaming import MonitorsManager
 from ansys.fluent.core.system_coupling import SystemCoupling
@@ -64,10 +63,10 @@ from ansys.fluent.core.utils.fluent_version import (
 from ansys.fluent.core.workflow import ClassicWorkflow
 
 if TYPE_CHECKING:
-    import ansys.fluent.core.generated.solver.settings_252 as settings_root
     from ansys.fluent.core.generated.datamodel_252.preferences import (
         Root as preferences_root,
     )
+    import ansys.fluent.core.generated.solver.settings_252 as settings_root
     from ansys.fluent.core.generated.solver.tui_252 import main_menu
 
 
@@ -89,7 +88,7 @@ def _set_state_safe(obj: SettingsBase, state: StateType):
             datamodel_logger.debug(f"set_state failed at {obj.path}")
 
 
-class Solver(BaseSession):
+class Solver(BaseSession, settings_root.root if TYPE_CHECKING else object):
     """Encapsulates a Fluent solver session.
 
     A ``tui`` object for solver TUI
@@ -356,31 +355,33 @@ class Solver(BaseSession):
     def __call__(self):
         return self.get_state()
 
-    def __getattribute__(self, item: str):
-        try:
-            _connection = super().__getattribute__("_fluent_connection")
-        except AttributeError:
-            _connection = False
-        if _connection is None and item not in [
-            "is_active",
-            "_fluent_connection",
-            "_fluent_connection_backup",
-            "wait_process_finished",
-        ]:
-            raise AttributeError(
-                f"'{__class__.__name__}' object has no attribute '{item}'"
-            )
-        try:
-            return super().__getattribute__(item)
-        except AttributeError:
-            settings = super().__getattribute__("settings")
-            if item in settings.child_names:
-                warnings.warn(
-                    f"'{item}' is deprecated. Use 'settings.{item}' instead.",
-                    DeprecatedSettingWarning,
+    if not TYPE_CHECKING:
+
+        def __getattribute__(self, item: str):
+            try:
+                _connection = super().__getattribute__("_fluent_connection")
+            except AttributeError:
+                _connection = False
+            if _connection is None and item not in [
+                "is_active",
+                "_fluent_connection",
+                "_fluent_connection_backup",
+                "wait_process_finished",
+            ]:
+                raise AttributeError(
+                    f"'{__class__.__name__}' object has no attribute '{item}'"
                 )
-                return getattr(settings, item)
-            raise
+            try:
+                return super().__getattribute__(item)
+            except AttributeError:
+                settings = super().__getattribute__("settings")
+                if item in settings.child_names:
+                    warnings.warn(
+                        f"'{item}' is deprecated. Use 'settings.{item}' instead.",
+                        DeprecatedSettingWarning,
+                    )
+                    return getattr(settings, item)
+                raise
 
     def __dir__(self):
         dir_list = set(super().__dir__()) - {

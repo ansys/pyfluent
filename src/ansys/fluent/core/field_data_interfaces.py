@@ -36,6 +36,14 @@ from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
 
+__all__ = (
+    "PathlinesFieldDataRequest",
+    "ScalarFieldDataRequest",
+    "SurfaceDataType",
+    "SurfaceFieldDataRequest",
+    "VectorFieldDataRequest",
+)
+
 _to_field_name_str = naming_strategy().to_string
 
 

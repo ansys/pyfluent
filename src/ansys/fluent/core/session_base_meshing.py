@@ -24,12 +24,15 @@
 
 import logging
 import os
+from typing import TYPE_CHECKING, cast
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.meshing.meshing_workflow import (
     CreateWorkflow,
+    FaultTolerantMeshingWorkflow,
     LoadWorkflow,
+    WatertightMeshingWorkflow,
     WorkflowMode,
     name_to_identifier_map,
 )
@@ -41,6 +44,27 @@ from ansys.fluent.core.utils.fluent_version import (
     FluentVersion,
     get_version_for_file_name,
 )
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.generated.datamodel_252.meshing import Root as meshing_root
+    from ansys.fluent.core.generated.datamodel_252.meshing_utilities import (
+        Root as meshing_utilities_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.meshing_workflow import (
+        Root as meshing_workflow_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.part_management import (
+        Root as partmanagement_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.pm_file_management import (
+        Root as pmfilemanagement_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.preferences import (
+        Root as preferences_root,
+    )
+    from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
+    from ansys.fluent.core.generated.meshing.tui_252 import main_menu
+
 
 pyfluent_logger = logging.getLogger("pyfluent.general")
 datamodel_logger = logging.getLogger("pyfluent.datamodel")
@@ -95,49 +119,57 @@ class BaseMeshing:
         return self._product_version
 
     @property
-    def tui(self):
+    def tui(self) -> "main_menu":
         """Instance of ``main_menu`` on which Fluent's SolverTUI methods can be
         executed."""
         if self._tui is None:
             self._tui = _make_tui_module(self, "meshing")
 
-        return self._tui
+        return cast("main_menu", self._tui)
 
     @property
-    def meshing(self):
+    def meshing(self) -> "meshing_root":
         """Meshing object."""
         if self._meshing is None:
             self._meshing = _make_datamodel_module(self, "meshing")
-        return self._meshing
+        return cast("meshing_root", self._meshing)
 
     @property
-    def _meshing_utilities_root(self):
+    def _meshing_utilities_root(self) -> "meshing_utilities_root | None":
         """Datamodel root of meshing_utilities."""
         if self.get_fluent_version() >= FluentVersion.v242:
-            return _make_datamodel_module(self, "MeshingUtilities")
+            return cast(
+                "meshing_utilities_root",
+                _make_datamodel_module(self, "MeshingUtilities"),
+            )
 
     @property
-    def meshing_utilities(self):
+    def meshing_utilities(self) -> "meshing_utilities_root | None":
         """A wrapper over the Fluent's meshing queries."""
         if self._meshing_utilities is None:
             self._meshing_utilities = self._meshing_utilities_root
         return self._meshing_utilities
 
     @property
-    def workflow(self):
+    def workflow(self) -> "workflow_root":
         """Datamodel root of workflow."""
         if self._old_workflow is None:
-            self._old_workflow = _make_datamodel_module(self, "workflow")
+            self._old_workflow = cast(
+                "workflow_root", _make_datamodel_module(self, "workflow")
+            )
         return self._old_workflow
 
     @property
-    def meshing_workflow(self):
+    def meshing_workflow(self) -> "meshing_workflow_root":
         """Full API to meshing and meshing_workflow."""
         if self._meshing_workflow is None:
-            self._meshing_workflow = _make_datamodel_module(self, "meshing_workflow")
+            self._meshing_workflow = cast(
+                "meshing_workflow_root",
+                _make_datamodel_module(self, "meshing_workflow"),
+            )
         return self._meshing_workflow
 
-    def watertight_workflow(self, initialize: bool = True):
+    def watertight_workflow(self, initialize: bool = True) -> WatertightMeshingWorkflow:
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.WATERTIGHT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
@@ -147,7 +179,9 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def fault_tolerant_workflow(self, initialize: bool = True):
+    def fault_tolerant_workflow(
+        self, initialize: bool = True
+    ) -> FaultTolerantMeshingWorkflow:
         """Datamodel root of workflow."""
         self._current_workflow = WorkflowMode.FAULT_TOLERANT_MESHING_MODE.value(
             _make_datamodel_module(self, "workflow"),
@@ -179,7 +213,7 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def load_workflow(self, file_path: PathType):
+    def load_workflow(self, file_path: PathType) -> LoadWorkflow:
         """Datamodel root of workflow."""
         self._current_workflow = LoadWorkflow(
             _make_datamodel_module(self, "workflow"),
@@ -189,7 +223,7 @@ class BaseMeshing:
         )
         return self._current_workflow
 
-    def create_workflow(self, initialize: bool = True):
+    def create_workflow(self, initialize: bool = True) -> CreateWorkflow:
         """Datamodel root of the workflow."""
         self._current_workflow = CreateWorkflow(
             _make_datamodel_module(self, "workflow"),
@@ -207,7 +241,9 @@ class BaseMeshing:
             return self._current_workflow
 
     @property
-    def current_workflow(self):
+    def current_workflow(
+        self,
+    ):  # TODO(gobot1234): consider making this generic over workflow?
         """Datamodel root of the workflow.
 
         Raises
@@ -239,22 +275,29 @@ class BaseMeshing:
             return self.create_workflow(initialize=False)
 
     @property
-    def PartManagement(self):
+    def PartManagement(self) -> "partmanagement_root":
         """Datamodel root of ``PartManagement``."""
         if self._part_management is None:
-            self._part_management = _make_datamodel_module(self, "PartManagement")
+            self._part_management = cast(
+                "partmanagement_root", _make_datamodel_module(self, "PartManagement")
+            )
         return self._part_management
 
     @property
-    def PMFileManagement(self):
+    def PMFileManagement(self) -> "pmfilemanagement_root":
         """Datamodel root of PMFileManagement."""
         if self._pm_file_management is None:
-            self._pm_file_management = _make_datamodel_module(self, "PMFileManagement")
+            self._pm_file_management = cast(
+                "pmfilemanagement_root",
+                _make_datamodel_module(self, "PMFileManagement"),
+            )
         return self._pm_file_management
 
     @property
-    def preferences(self):
+    def preferences(self) -> "preferences_root":
         """Datamodel root of preferences."""
         if self._preferences is None:
-            self._preferences = _make_datamodel_module(self, "preferences")
+            self._preferences = cast(
+                "preferences_root", _make_datamodel_module(self, "preferences")
+            )
         return self._preferences

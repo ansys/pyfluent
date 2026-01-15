@@ -27,6 +27,8 @@ import os
 
 from ansys.fluent.core import config
 
+__all__ = ("set_console_logging_level",)
+
 _logging_file_enabled = False
 
 

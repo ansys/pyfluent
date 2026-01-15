@@ -38,6 +38,8 @@ from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
 
+__all__ = ("search",)
+
 
 def _get_api_tree_data_file_path():
     """Get API tree data file."""
@@ -305,6 +307,7 @@ def _search_wildcard(
     -------
         List of search string matches.
     """
+
     api_tree_data = api_tree_data or _get_api_tree_data()
     all_names = api_tree_data["all_api_object_names"]
     queries = []
