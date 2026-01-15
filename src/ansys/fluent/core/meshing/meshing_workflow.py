@@ -378,14 +378,15 @@ def get_current_workflow(
 
     # Find active workflow type
     for workflow_name, factory in workflow_factories.items():
-        if workflow_name == "Create New":
-            # Default to create_workflow if no specific type matches
+
+        # Check if this workflow type is active (returns True when active)
+        if _check_workflow_type(meshing_root, workflow_name):
             return _get_current_workflow(current_workflow, workflow_name) or factory(
                 initialize=False, legacy=True
             )
 
-        # Check if this workflow type is active (returns False when active)
-        if _check_workflow_type(meshing_root, workflow_name):
+        if workflow_name == "Create New":
+            # Default to create_workflow if no specific type matches
             return _get_current_workflow(current_workflow, workflow_name) or factory(
                 initialize=False, legacy=True
             )

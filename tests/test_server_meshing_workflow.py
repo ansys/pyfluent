@@ -22,7 +22,7 @@
 
 import pytest
 
-from ansys.fluent.core import FluentVersion, examples
+from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
 
 
@@ -2033,11 +2033,12 @@ def test_non_default_workflow(new_meshing_session):
     meshing = new_meshing_session
 
     if meshing.get_fluent_version() < FluentVersion.v261:
-        watertight = meshing.watertight(legacy=False)
-        assert (
-            watertight.__class__.__module__
-            == "ansys.fluent.core.meshing.meshing_workflow"
-        )
+        with pytest.warns(PyFluentUserWarning):
+            watertight = meshing.watertight(legacy=False)
+            assert (
+                watertight.__class__.__module__
+                == "ansys.fluent.core.meshing.meshing_workflow"
+            )
     else:
         watertight = meshing.watertight(legacy=True)
         assert (

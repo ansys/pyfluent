@@ -884,7 +884,8 @@ class TaskObject:
         parent = self._parent
         meshing_root = self._meshing_root
         name_1 = name
-        name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
+        temp_name = re.sub(r"\s+\d+$", "", task_obj.name().strip())
+        name_2 = temp_name if key == 0 else temp_name + f" {key}"
         try:
             task_obj = getattr(workflow.task_object, name_1)[name_2]
             if is_compound_child(task_obj.task_type):

@@ -24,6 +24,7 @@
 
 import logging
 import os
+import warnings
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.fluent_connection import FluentConnection
@@ -181,9 +182,10 @@ class BaseMeshing:
         if legacy is False:
             if only_legacy_allowed:
                 # Fluent version doesn't support new mode - warn and fallback
-                PyFluentUserWarning(
+                warnings.warn(
                     "Non-legacy workflow mode is only available from Fluent 26R1 onwards. "
-                    "Falling back to legacy mode."
+                    "Falling back to legacy mode.",
+                    PyFluentUserWarning,
                 )
                 return True
             # New mode is available
@@ -206,7 +208,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
@@ -240,7 +242,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
@@ -276,7 +278,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
@@ -310,7 +312,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
@@ -353,7 +355,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
@@ -396,7 +398,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
         """
         legacy = self._fallback_check(legacy)
@@ -425,7 +427,7 @@ class BaseMeshing:
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Raises
