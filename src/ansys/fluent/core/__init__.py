@@ -49,6 +49,7 @@ from ansys.fluent.core.session import BaseSession as Fluent
 from ansys.fluent.core.session_utilities import *
 from ansys.fluent.core.streaming_services.events_streaming import *
 from ansys.fluent.core.utils import *
+from ansys.fluent.core.utils import fldoc
 from ansys.fluent.core.utils.fluent_version import *
 from ansys.fluent.core.utils.setup_for_fluent import *
 

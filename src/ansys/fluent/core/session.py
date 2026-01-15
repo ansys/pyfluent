@@ -55,8 +55,8 @@ from ansys.fluent.core.services.datamodel_se import (
 from ansys.fluent.core.services.datamodel_tui import (
     DatamodelService as DatamodelService_TUI,
 )
+from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
 from ansys.fluent.core.services.field_data import (
-    DeprecatedFieldData,
     FieldDataService,
     LiveFieldData,
     ZoneInfo,
