@@ -308,15 +308,39 @@ class Workflow:
 
     def _new_workflow(self, name: str):
         """Initialize a new workflow from a predefined template."""
-        self._workflow.general.initialize_workflow(workflow_type=name)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.initialize_workflow(workflow_type=name)
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def _load_workflow(self, file_path: str):
         """Load a workflow from a saved workflow file (.wft)."""
-        self._workflow.general.load_workflow(file_path=file_path)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.load_workflow(file_path=file_path)
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def _create_workflow(self):
         """Create a new empty workflow."""
-        self._workflow.general.create_new_workflow()
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.create_new_workflow()
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to a file."""
@@ -690,6 +714,12 @@ class TaskObject:
         super().__setattr__("_parent", parent)
         super().__setattr__("_meshing_root", meshing_root)
         self._cache = {}
+
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self._task_object, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
 
     def _get_next_possible_tasks(self):
         """Get display names of tasks that can be inserted after this task."""
