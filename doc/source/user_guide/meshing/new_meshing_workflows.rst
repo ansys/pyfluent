@@ -3,34 +3,31 @@
 Meshing workflow
 ================
 
-PyFluent provides access to Fluent’s meshing workflows. When using PyFluent with
-Ansys Fluent 2026 R1, the enhanced workflow API is refined and extended for clearer
-task organization, easier navigation, and stronger typing.
+PyFluent provides access to Fluent’s meshing workflows.
+
+Definitions
+-----------
+- Enhanced Meshing Workflow: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
+  It provides clearer task organization, easier navigation, and strongly typed, well-documented arguments.
+- Legacy Meshing Workflows: The PyFluent meshing API used prior to Ansys Fluent 2026 R1
+  (previously branded “Enhanced Meshing Workflows”). It remains available by passing
+  ``legacy=True`` when initializing a workflow. You can pass ``legacy=True`` unconditionally to avoid version checks.
+  See :ref:`ref_legacy_meshing_workflow` for details.
 
 Choosing an interface
 ---------------------
-- Default (recommended): Use the enhanced workflow. It provides clearer task organization,
-  improved traversal, and strongly typed, well-documented arguments.
-- Legacy (for existing scripts): Pass ``legacy=True`` to the workflow during initialization to use the
-  legacy interface. This can be passed unconditionally to avoid version checks.
+- Default (recommended): Use Enhanced Meshing Workflow.
+- Existing scripts: Initialize with ``legacy=True`` to use Legacy Meshing Workflows.
+  See :ref:`ref_legacy_meshing_workflow`.
 
-  For example:
+For example:
 
-    **Initialize a legacy workflow:**
+  **Initialize a legacy workflow:**
 
-    ``watertight = meshing_session.watertight(legacy=True)``
-    ``fault_tolerant = meshing_session.fault_tolerant(legacy=True)``
+  ``watertight = meshing_session.watertight(legacy=True)``
+  ``fault_tolerant = meshing_session.fault_tolerant(legacy=True)``
 
 - Backward compatibility: Most behavior is preserved. For earlier behaviors and examples, see :ref:`ref_legacy_meshing_workflow`.
-
-Terminology and versioning
---------------------------
-
-- ``enhanced_api_261``: The enhanced meshing workflow interface with clearer task organization,
-  improved traversal, and updated object names. Tasks and arguments are strongly typed and documented.
-
-- Legacy workflow: The prior PyFluent meshing interface, available by passing ``legacy=True`` when
-  initializing a workflow.
 
 Watertight geometry meshing workflow
 ------------------------------------
@@ -620,7 +617,7 @@ Duplicate tasks
     assert watertight.import_boi_geometry_2.arguments()
 
 .. Note::
-   ``enhanced_api_261`` also supports indexed access to duplicate tasks:
+   **Enhanced Meshing Workflow** also supports indexed access to duplicate tasks:
 
    .. code:: python
 
@@ -678,7 +675,7 @@ Use the ``mark_as_updated()`` to explicitly mark a task as updated.
 
 Renaming tasks in workflow
 --------------------------
-In ``enhanced_api_261`` the display name update is decoupled from the Python attribute access:
+In **Enhanced Meshing Workflow** the display name update is decoupled from the Python attribute access:
 
 .. Note::
    Behavior change. Display name changes do not affect attribute access.
@@ -699,7 +696,7 @@ In ``enhanced_api_261`` the display name update is decoupled from the Python att
 
 Deleting tasks from workflow
 ----------------------------
-Tasks can be deleted individually or in groups. In ``enhanced_api_261``,
+Tasks can be deleted individually or in groups. In **Enhanced Meshing Workflow**,
 pass task objects to ``list_of_tasks``:
 
 .. Note::
@@ -735,7 +732,7 @@ Workflow navigation enhancements
 The refined API enables straightforward traversal of tasks within a workflow:
 
 .. Note::
-   New in ``enhanced_api_261``. This capability is not available in the legacy interface.
+   New in **Enhanced Meshing Workflow**. This capability is not available in the legacy interface.
 
 .. code:: python
 
@@ -779,7 +776,7 @@ This enables navigation without relying on Python attribute names.
 
 Known limitations
 -----------------
-In ``enhanced_api_261``, the following operations are not supported within a single meshing session:
+In **Enhanced Meshing Workflow**, the following operations are not supported within a single meshing session:
 - Switching from one meshing workflow to another.
 - Re-initializing a meshing workflow after it has already been initialized.
 
