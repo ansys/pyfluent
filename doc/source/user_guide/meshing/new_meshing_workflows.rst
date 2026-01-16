@@ -25,7 +25,9 @@ Terminology and versioning
 --------------------------
 
 - ``enhanced_api_261``: The Fluent 2026 R1 enhancement of the enhanced workflow, offering
-  clearer task organization, improved traversal, and updated object names.
+  clearer task organization, improved traversal, and updated object names. Also, every
+  item in the interface, including specific tasks and their arguments, is strongly-typed
+  and documented in detail, which offers a new level of discoverability and usability.
 
 - Legacy workflow: The pre-2026 R1 interface. Use ``legacy=True`` to opt in on 2026 R1+.
 
@@ -88,7 +90,7 @@ Describe geometry
 
     describe_geometry = watertight.describe_geometry
     describe_geometry.update_child_tasks(setup_type_changed=False)
-    describe_geometry.setup_type = "fluids"
+    describe_geometry.setup_type = "fluid"
     describe_geometry.update_child_tasks(setup_type_changed=True)
     describe_geometry()
 
@@ -800,29 +802,40 @@ The refined API enables straightforward traversal of tasks within a workflow:
 
 .. code:: python
 
-    watertight = meshing.watertight()
+    >>> watertight = meshing.watertight()
 
-    task_1 = watertight.first_child()
-    task_1.has_parent() is True
-    task_1.parent().__class__.__name__ == "WatertightMeshingWorkflow"
-    task_1.has_previous() is False  # As this is the first task in the workflow
-    task_1.has_next() is True
-    task_1.first_child() is None  # It is a simple task with no children
-    task_1.last_child() is None
+    >>> task_1 = watertight.first_child()
+    >>> task_1.has_parent()
+    True
+    >>> task_1.parent()
+    <ansys.fluent.core.meshing.meshing_workflow_new.WatertightMeshingWorkflow at 0x22931166000>
+    >>> task_1.has_previous()
+    False  # As this is the first task in the workflow
+    >>> task_1.has_next()
+    True
+    >>> assert task_1.first_child() is None  # It is a simple task with no children
+    >>> assert task_1.last_child() is None
 
-    task_2 = task_1.next()
-    task_2.name() == "Add Local Sizing"
+    >>> task_2 = task_1.next()
+    >>> task_2
+    task < add_local_sizing_wtm: 0 >
 
-    task_4 = task_2.next().next()
-    task_4.name() == "Describe Geometry"
-    task_4_1 = task_4.first_child()  # It is a compound task with children
-    task_4_1.name() == "Enclose Fluid Regions (Capping)"
+    >>> task_4 = task_2.next().next()
+    >>> task_4
+    task < describe_geometry: 0 >
+    >>> task_4_1 = task_4.first_child()  # It is a compound task with children
+    >>> task_4_1
+    task < capping: 0 >
 
-    task_7 = watertight.last_child()
-    task_7.name() == "Generate the Volume Mesh"
+    >>> task_7 = watertight.last_child()
+    >>> task_7
+    task < create_volume_mesh_wtm: 0 >
 
-    task_6 = task_7.previous()
-    task_6.name() == "Add Boundary Layers"
+    >>> task_7.has_previous()
+    True
+    >>> task_6 = task_7.previous()
+    >>> task_6
+    task < add_boundary_layers: 0 >
 
 This enables navigation without relying on Python attribute names.
 
