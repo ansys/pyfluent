@@ -13,7 +13,7 @@ Supported versions
 
 Enable the legacy interface
 ---------------------------
-Pass ``legacy=True`` to the workflow initializer:
+Pass ``legacy=True`` during the workflow initialization:
 
 .. code:: python
 
