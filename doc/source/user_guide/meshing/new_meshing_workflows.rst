@@ -3,13 +3,13 @@
 Meshing workflow
 ================
 
-PyFluent provides access to Fluent’s meshing workflows. In Ansys Fluent 2026 R1,
-the enhanced workflow API was refined and extended for clearer task organization,
-easier navigation, and stronger typing.
+PyFluent provides access to Fluent’s meshing workflows. When using PyFluent with
+Ansys Fluent 2026 R1, the enhanced workflow API is refined and extended for clearer
+task organization, easier navigation, and stronger typing.
 
 Choosing an interface
 ---------------------
-- Default (recommended): Use the enhanced workflow in Ansys Fluent 2026 R1 and later.
+- Default (recommended): Use the enhanced workflow in PyFluent using Ansys Fluent 2026 R1 and later.
   It offers clearer task organization, improved traversal, and strongly typed,
   well-documented arguments.
 - Legacy (for existing scripts): If you want legacy semantics, pass ``legacy=True`` when
@@ -29,11 +29,11 @@ Choosing an interface
 Terminology and versioning
 --------------------------
 
-- ``enhanced_api_261``: The Ansys Fluent 2026 R1 enhancement of the enhanced workflow, offering
+- ``enhanced_api_261``: The PyFluent version using Ansys Fluent 2026 R1 enhancement of the enhanced workflow, offering
   clearer task organization, improved traversal, and updated object names. Every item in the
   interface (tasks and their arguments) is strongly typed and documented for discoverability and usability.
 
-- Legacy workflow: The interface used in versions prior to Ansys Fluent 2026 R1. It remains available
+- Legacy workflow: The interface used in PyFluent versions prior to using Ansys Fluent 2026 R1. It remains available
   in Ansys Fluent 2026 R1 and later by passing ``legacy=True`` when initializing a workflow.
 
 
