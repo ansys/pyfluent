@@ -3,14 +3,14 @@
 Legacy meshing workflows (prior to Ansys Fluent 2026 R1)
 ========================================================
 
-This page documents the legacy meshing workflow interface that existed in
-versions prior to Ansys Fluent 2026 R1. Use the enhanced workflow for all new scripts.
+This page documents the legacy meshing workflow interface that existed in PyFluent
+versions prior to using Ansys Fluent 2026 R1. Use the enhanced workflow for all new scripts.
 If you need to keep older scripts working without changes, you can initialize a workflow
 with legacy semantics by passing ``legacy=True``.
 
 Portability note
 ----------------
-You can pass ``legacy=True`` unconditionally in any Fluent version, including
+You can pass ``legacy=True`` unconditionally in PyFluent using any Fluent version, including
 Ansys Fluent 2026 R1 and later. This lets you avoid version checks and keep scripts
 written for earlier releases working as-is.
 
