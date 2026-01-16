@@ -4,7 +4,7 @@ Legacy meshing interface
 ========================
 
 The legacy PyFluent meshing interface for the API-based meshing infrastructure is
-distinct from the classic meshing workflow. See :ref:`ref_meshing_workflows_guide`.
+distinct from the classic meshing workflow (:ref:`ref_meshing_workflows_guide`).
 
 Supported versions
 ------------------
