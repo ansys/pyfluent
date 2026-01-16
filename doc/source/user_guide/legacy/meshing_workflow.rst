@@ -3,7 +3,7 @@
 Legacy meshing interface
 ========================
 
-This page documents the legacy PyFluent meshing interface. It remains available when using
+The legacy PyFluent meshing interface remains available when using
 PyFluent with Ansys Fluent 2026 R1 and later (for example, Ansys Fluent 2027 R1). Use it to
 run existing scripts without changes.
 
