@@ -4,16 +4,16 @@ Meshing workflow
 ================
 
 PyFluent provides access to Fluent's meshing workflows. A new, enhanced meshing workflow
-has existed for prior releases; in Fluent 26R1 the API was further refined and extended.
-This refinement is referred to as ``enhanced_api_261`` and is the default in Fluent 26R1
+has existed for prior releases; in Fluent 2026 R1 the API was further refined and extended.
+This refinement is referred to as ``enhanced_api_261`` and is the default in Fluent 2026 R1
 and later.
 
-- To use the legacy workflow interface in Fluent 26R1 and later,
+- To use the legacy workflow interface in Fluent 2026 R1 and later,
   pass ``legacy=True`` when initializing a workflow.
 
   For example:
 
-    **Initializing a legacy watertight workflow with Fluent version 26R1:**
+    **Initializing a legacy watertight workflow with Fluent version 2026 R1:**
 
     ``watertight = meshing.watertight(legacy=True)``
 
@@ -24,10 +24,10 @@ and later.
 Terminology and versioning
 --------------------------
 
-- ``enhanced_api_261``: The Fluent 26R1 enhancement of the enhanced workflow, offering
+- ``enhanced_api_261``: The Fluent 2026 R1 enhancement of the enhanced workflow, offering
   clearer task organization, improved traversal, and updated object names.
 
-- Legacy workflow: The pre-26R1 interface. Use ``legacy=True`` to opt in on 26R1+.
+- Legacy workflow: The pre-2026 R1 interface. Use ``legacy=True`` to opt in on 2026 R1+.
 
 
 Watertight geometry meshing workflow
@@ -55,7 +55,7 @@ Import geometry
     watertight.import_geometry()
 
 .. Note::
-   Fluent 26R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
+   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
 
    .. code:: python
 
@@ -176,7 +176,7 @@ Import CAD and part management
     fault_tolerant.import_cad_and_part_management()
 
 .. Note::
-   Fluent 26R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
+   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
 
    .. code:: python
 
@@ -439,7 +439,7 @@ Import geometry
     two_dim_mesh.load_cad_geometry()
 
 .. Note::
-   Fluent 26R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
+   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
 
    .. code:: python
 
@@ -574,7 +574,7 @@ Create workflow
     created_workflow = meshing_session.create_workflow()
 
 .. Note::
-   Fluent 26R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
+   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
 
    .. code:: python
 
@@ -620,7 +620,7 @@ Load workflow
     loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path)
 
 .. Note::
-   Fluent 26R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
+   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
 
    .. code:: python
 
