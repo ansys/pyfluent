@@ -83,12 +83,13 @@ Import CAD and part management
     )
     meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state("part")
 
-    fault_tolerant.import_cad_and_part_management.context.set_state(0)
-    fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
-    fault_tolerant.import_cad_and_part_management.fmd_file_name.set_state(import_file_name)
-    fault_tolerant.import_cad_and_part_management.file_loaded.set_state("yes")
-    fault_tolerant.import_cad_and_part_management.object_setting.set_state("DefaultObjectSetting")
-    fault_tolerant.import_cad_and_part_management()
+    import_cad = fault_tolerant.import_cad_and_part_management
+    import_cad.context.set_state(0)
+    import_cad.create_object_per.set_state("Custom")
+    import_cad.fmd_file_name.set_state(import_file_name)
+    import_cad.file_loaded.set_state("yes")
+    import_cad.object_setting.set_state("DefaultObjectSetting")
+    import_cad()
 
 
 Renaming tasks in workflow
