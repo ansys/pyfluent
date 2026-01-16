@@ -18,7 +18,7 @@ Scope of this page
 
 Opt in to the legacy interface
 ------------------------------
-Pass ``legacy=True`` to the workflow initializer to use the legacy interface:
+Pass ``legacy=True`` during workflow initialization to use the legacy interface:
 
 .. code:: python
 
@@ -42,10 +42,12 @@ Fault-tolerant meshing workflow
 In the legacy fault-tolerant workflow, PartManagement and PMFileManagement are accessed
 directly from the meshing session. Use these objects and their methods as shown below:
 
-- meshing_session.PartManagement.InputFileChanged(...)
-- meshing_session.PMFileManagement.FileManager.LoadFiles()
-- meshing_session.PartManagement.Node["Meshing Model"].Copy(...)
-- meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(...)
+.. code:: python
+
+    - meshing_session.PartManagement.InputFileChanged(...)
+    - meshing_session.PMFileManagement.FileManager.LoadFiles()
+    - meshing_session.PartManagement.Node["Meshing Model"].Copy(...)
+    - meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(...)
 
 .. Note::
    Backward compatible: These entries are still supported in PyFLuent using
