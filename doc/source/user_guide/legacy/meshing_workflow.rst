@@ -3,39 +3,26 @@
 Legacy meshing interface
 ========================
 
-The legacy PyFluent meshing interface remains available when using
-PyFluent with Ansys Fluent 2026 R1 and later (for example, Ansys Fluent 2027 R1). Use it to
-run existing scripts without changes.
+This page documents the legacy PyFluent meshing interface for the API-based meshing infrastructure.
+It is distinct from the classic meshing workflow. See :ref:`ref_meshing_workflows_guide`.
 
-.. Note::
-    The legacy PyFluent meshing interface for the API-based meshing infrastructure is
-    distinct from PyFluent’s classic meshing workflow. See :ref:`ref_meshing_workflows_guide`.
-
-Scope of this page
+Supported versions
 ------------------
-- What this page covers: how to opt in to the legacy interface and behaviors that differ from the enhanced workflow.
-- What this page does not cover: an overview or migration guide. See :ref:`ref_new_meshing_workflows_guide` for the enhanced workflow.
+- Available in PyFluent with Ansys Fluent versions prior to 2026 R1.
+- Also supported when using PyFluent with Ansys Fluent 2026 R1 and 2027 R1.
 
-Opt in to the legacy interface
-------------------------------
-Pass ``legacy=True`` during workflow initialization to use the legacy interface:
+Enable the legacy interface
+---------------------------
+Pass ``legacy=True`` to the workflow initializer:
 
 .. code:: python
 
     watertight = meshing_session.watertight(legacy=True)
     fault_tolerant = meshing_session.fault_tolerant(legacy=True)
-    # ...use the workflow as shown in the examples ...
 
-Portability note
-----------------
-You can pass ``legacy=True`` unconditionally when using PyFluent with any Fluent version,
-including PyFluent with Ansys Fluent 2026 R1 and later. This avoids version checks and keeps
-scripts written for earlier releases working as-is.
-
-Terminology
+Portability
 -----------
-Historically, this interface was sometimes referred to as “enhanced.” In this documentation,
-“legacy interface” means the pre–Ansys Fluent 2026 R1 PyFluent meshing API.
+You can pass ``legacy=True`` unconditionally to avoid version checks and keep earlier scripts working unchanged.
 
 Fault-tolerant meshing workflow
 -------------------------------
@@ -99,9 +86,7 @@ Access the task by the new name.
 
 .. Note::
    Not backward compatible: In the enhanced workflow (Ansys Fluent 2026 R1 and later),
-   changing a task’s display name does not change its Python attribute path. Update
-   scripts to the new access pattern or pass ``legacy=True`` to preserve legacy
-   rename behavior.
+   changing a task’s display name does not change its Python attribute path.
 
 .. code:: python
 
