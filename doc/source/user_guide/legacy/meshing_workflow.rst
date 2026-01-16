@@ -27,7 +27,7 @@ attributes and methods accessed directly on the meshing session like
 .. Note::
    Backward compatible: These camel-case Part/File Management entries are still
    supported in Ansys Fluent 2026 R1 for legacy scripts. The recommended approach
-   in 2026 R1 and later is to use the enhanced workflow accessors, for example
+   in 2026 R1 and later is to use the enhanced workflow attributes, for example
    ``fault_tolerant.parts.*`` and ``fault_tolerant.parts_files.file_manager.*``.
 
 
