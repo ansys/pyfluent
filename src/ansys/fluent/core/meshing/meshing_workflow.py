@@ -333,7 +333,7 @@ class CreateWorkflow(Workflow):
             self._activate_dynamic_interface(dynamic_interface=True)
 
 
-def _check_workflow_type(meshing_root, name: str):
+def _is_workflow_active(meshing_root, name: str):
     return getattr(meshing_root.GlobalSettings, name_to_identifier_map[name])()
 
 
@@ -371,21 +371,18 @@ def get_current_workflow(
         If no workflow is initialized (both watertight and fault-tolerant are active).
 
     """
-    if _check_workflow_type(
-        meshing_root, "Watertight Geometry"
-    ) and _check_workflow_type(meshing_root, "Fault-tolerant Meshing"):
+    if _is_workflow_active(meshing_root, "Watertight Geometry") and _is_workflow_active(
+        meshing_root, "Fault-tolerant Meshing"
+    ):
         raise RuntimeError("No workflow initialized.")
 
     # Find active workflow type
     for workflow_name, factory in workflow_factories.items():
-
-        # Check if this workflow type is active (returns True when active)
-        if _check_workflow_type(meshing_root, workflow_name):
+        if _is_workflow_active(meshing_root, workflow_name):
             return _get_current_workflow(current_workflow, workflow_name) or factory(
                 initialize=False, legacy=True
             )
-
-        if workflow_name == "Create New":
+        else:
             # Default to create_workflow if no specific type matches
             return _get_current_workflow(current_workflow, workflow_name) or factory(
                 initialize=False, legacy=True
