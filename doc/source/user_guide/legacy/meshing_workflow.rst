@@ -1,15 +1,15 @@
 .. _ref_legacy_meshing_workflow:
 
-Legacy meshing interface (opt-in)
-=================================
+Legacy meshing interface
+========================
 
 This page documents the legacy PyFluent meshing interface. It remains available when using
 PyFluent with Ansys Fluent 2026 R1 and later (for example, Ansys Fluent 2027 R1). Use it to
 run existing scripts without changes.
 
 .. Note::
-    This page documents the legacy PyFluent meshing interface for the API-based meshing infrastructure.
-    It is distinct from PyFluent’s classic meshing workflow. See :ref:`ref_meshing_workflows_guide`.
+    The legacy PyFluent meshing interface for the API-based meshing infrastructure is
+    distinct from PyFluent’s classic meshing workflow. See :ref:`ref_meshing_workflows_guide`.
 
 Scope of this page
 ------------------
