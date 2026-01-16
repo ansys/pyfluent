@@ -29,7 +29,7 @@ Choosing an interface
 Terminology and versioning
 --------------------------
 
-- ``enhanced_api_261``: The PyFluent version introduced in Ansys Fluent 2026 R1 with an enhanced workflow interface, offering
+- ``enhanced_api_261``: PyFluent using Ansys Fluent 2026 R1 with an enhanced workflow interface, offering
   clearer task organization, improved traversal, and updated object names. Every item in the
   interface (tasks and their arguments) is strongly typed and documented for discoverability and usability.
 
