@@ -50,7 +50,7 @@ directly from the meshing session. Use these objects and their methods as shown 
     - meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(...)
 
 .. Note::
-   Backward compatible: These entries are still supported in PyFLuent using
+   Backward compatible: These entries are still supported in PyFluent using
    Ansys Fluent 2026 R1 for legacy scripts.
 
 

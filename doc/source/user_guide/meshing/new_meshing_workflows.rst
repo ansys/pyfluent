@@ -11,7 +11,7 @@ Choosing an interface
 ---------------------
 - Default (recommended): Use the enhanced workflow. It provides clearer task organization,
   improved traversal, and strongly typed, well-documented arguments.
-- Legacy (for existing scripts): Pass ``legacy=True`` to the workflow initializer to use the
+- Legacy (for existing scripts): Pass ``legacy=True`` to the workflow during initialization to use the
   legacy interface. This can be passed unconditionally to avoid version checks.
 
   For example:
