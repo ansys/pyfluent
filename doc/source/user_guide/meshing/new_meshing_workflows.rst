@@ -9,33 +9,28 @@ task organization, easier navigation, and stronger typing.
 
 Choosing an interface
 ---------------------
-- Default (recommended): Use the enhanced workflow in PyFluent using Ansys Fluent 2026 R1 and later.
-  It offers clearer task organization, improved traversal, and strongly typed,
-  well-documented arguments.
-- Legacy (for existing scripts): If you want legacy semantics, pass ``legacy=True`` when
-  initializing a workflow. You can pass ``legacy=True`` unconditionally in any Fluent version,
-  including Ansys Fluent 2026 R1 and later, to keep legacy scripts running without version checks.
+- Default (recommended): Use the enhanced workflow. It provides clearer task organization,
+  improved traversal, and strongly typed, well-documented arguments.
+- Legacy (for existing scripts): Pass ``legacy=True`` to the workflow initializer to use the
+  legacy interface. This can be passed unconditionally to avoid version checks.
 
   For example:
 
-    **Initializing a legacy watertight workflow:**
+    **Initialize a legacy workflow:**
 
-    ``watertight = meshing.watertight(legacy=True)``
+    ``watertight = meshing_session.watertight(legacy=True)``
+    ``fault_tolerant = meshing_session.fault_tolerant(legacy=True)``
 
-- Backward compatibility: The enhanced workflow preserves most behavior. For examples and features
-  that existed in versions prior to Ansys Fluent 2026 R1, see :ref:`ref_legacy_meshing_workflow`.
-
+- Backward compatibility: Most behavior is preserved. For earlier behaviors and examples, see :ref:`ref_legacy_meshing_workflow`.
 
 Terminology and versioning
 --------------------------
 
-- ``enhanced_api_261``: PyFluent using Ansys Fluent 2026 R1 with an enhanced workflow interface, offering
-  clearer task organization, improved traversal, and updated object names. Every item in the
-  interface (tasks and their arguments) is strongly typed and documented for discoverability and usability.
+- ``enhanced_api_261``: The enhanced meshing workflow interface with clearer task organization,
+  improved traversal, and updated object names. Tasks and arguments are strongly typed and documented.
 
-- Legacy workflow: The interface used in PyFluent versions prior to using Ansys Fluent 2026 R1. It remains available
-  in Ansys Fluent 2026 R1 and later by passing ``legacy=True`` when initializing a workflow.
-
+- Legacy workflow: The prior PyFluent meshing interface, available by passing ``legacy=True`` when
+  initializing a workflow.
 
 Watertight geometry meshing workflow
 ------------------------------------
@@ -148,8 +143,7 @@ Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. Note::
-   Behavior change (compared to versions prior to Ansys Fluent 2026 R1). For earlier
-   behavior and to check whether the enhanced workflow is backward compatible,
+   Behavior change. For earlier behavior and compatibility details,
    see :ref:`ref_legacy_meshing_workflow`.
 
 .. code:: python
@@ -646,16 +640,16 @@ Duplicate tasks
    .. code:: python
 
        >>> watertight.children()
-           [task < import_geometry: 0 >,
-            task < import_boi_geometry: 2 >,
-            task < import_boi_geometry: 1 >,
-            task < import_boi_geometry: 0 >,
-            task < add_local_sizing_wtm: 0 >,
-            task < create_surface_mesh: 0 >,
-            task < describe_geometry: 0 >,
-            task < update_regions: 0 >,
-            task < add_boundary_layers: 0 >,
-            task < create_volume_mesh_wtm: 0 >]
+       [task < import_geometry: 0 >,
+        task < import_boi_geometry: 2 >,
+        task < import_boi_geometry: 1 >,
+        task < import_boi_geometry: 0 >,
+        task < add_local_sizing_wtm: 0 >,
+        task < create_surface_mesh: 0 >,
+        task < describe_geometry: 0 >,
+        task < update_regions: 0 >,
+        task < add_boundary_layers: 0 >,
+        task < create_volume_mesh_wtm: 0 >]
 
 
 Current meshing workflow
@@ -687,9 +681,8 @@ Renaming tasks in workflow
 In ``enhanced_api_261`` the display name update is decoupled from the Python attribute access:
 
 .. Note::
-   Behavior change (compared to versions prior to Ansys Fluent 2026 R1). For earlier
-   behavior and to check whether the enhanced workflow is backward compatible,
-   see :ref:`ref_legacy_meshing_workflow`.
+   Behavior change. Display name changes do not affect attribute access.
+   For legacy rename behavior, see :ref:`ref_legacy_meshing_workflow`.
 
     .. code:: python
 
@@ -710,9 +703,8 @@ Tasks can be deleted individually or in groups. In ``enhanced_api_261``,
 pass task objects to ``list_of_tasks``:
 
 .. Note::
-   Behavior change (compared to versions prior to Ansys Fluent 2026 R1). For earlier
-   behavior and to check whether the enhanced workflow is backward compatible,
-   see :ref:`ref_legacy_meshing_workflow`.
+   Behavior change. Delete-by-name (strings) is replaced by passing task objects.
+   Calling ``task.delete()`` still works. See :ref:`ref_legacy_meshing_workflow` for earlier usage.
 
     .. code:: python
 
@@ -737,14 +729,13 @@ Duplicate tasks can also be deleted via indexing:
        del watertight.create_regions
 
 
-Workflow navigation enhancements (``enhanced_api_261``)
--------------------------------------------------------
+Workflow navigation enhancements
+--------------------------------
 
 The refined API enables straightforward traversal of tasks within a workflow:
 
 .. Note::
-   New in Ansys Fluent 2026 R1: This capability is available only in the enhanced workflow.
-   It is not present in versions prior to Ansys Fluent 2026 R1.
+   New in ``enhanced_api_261``. This capability is not available in the legacy interface.
 
 .. code:: python
 

@@ -1,34 +1,55 @@
 .. _ref_legacy_meshing_workflow:
 
-Legacy meshing workflows (prior to Ansys Fluent 2026 R1)
-========================================================
+Legacy meshing interface (opt-in)
+=================================
 
-This page documents the legacy meshing workflow interface that existed in PyFluent
-versions prior to using Ansys Fluent 2026 R1. Use the enhanced workflow for all new scripts.
-If you need to keep older scripts working without changes, you can initialize a workflow
-with legacy semantics by passing ``legacy=True``.
+This page documents the legacy PyFluent meshing interface. It remains available when using
+PyFluent with Ansys Fluent 2026 R1 and later (for example, Ansys Fluent 2027 R1). Use it to
+run existing scripts without changes.
+
+.. Note::
+    This page documents the legacy PyFluent meshing interface for the API-based meshing infrastructure.
+    It is distinct from PyFluent’s classic meshing workflow. See :ref:`ref_meshing_workflows_guide`.
+
+Scope of this page
+------------------
+- What this page covers: how to opt in to the legacy interface and behaviors that differ from the enhanced workflow.
+- What this page does not cover: an overview or migration guide. See :ref:`ref_new_meshing_workflows_guide` for the enhanced workflow.
+
+Opt in to the legacy interface
+------------------------------
+Pass ``legacy=True`` to the workflow initializer to use the legacy interface:
+
+.. code:: python
+
+    watertight = meshing_session.watertight(legacy=True)
+    fault_tolerant = meshing_session.fault_tolerant(legacy=True)
+    # ...use the workflow as shown in the examples ...
 
 Portability note
 ----------------
-You can pass ``legacy=True`` unconditionally in PyFluent using any Fluent version, including
-Ansys Fluent 2026 R1 and later. This lets you avoid version checks and keep scripts
-written for earlier releases working as-is.
+You can pass ``legacy=True`` unconditionally when using PyFluent with any Fluent version,
+including PyFluent with Ansys Fluent 2026 R1 and later. This avoids version checks and keeps
+scripts written for earlier releases working as-is.
 
-For the enhanced workflow and examples, see :ref:`ref_new_meshing_workflows_guide`.
-
+Terminology
+-----------
+Historically, this interface was sometimes referred to as “enhanced.” In this documentation,
+“legacy interface” means the pre–Ansys Fluent 2026 R1 PyFluent meshing API.
 
 Fault-tolerant meshing workflow
 -------------------------------
-In the legacy fault-tolerant workflow, Part and File Management use camel-case
-attributes and methods accessed directly on the meshing session like
-``meshing_session.PartManagement.*``,  ``meshing_session.PMFileManagement.FileManager.*``,
-``InputFileChanged`` and ``LoadFiles``.
+In the legacy fault-tolerant workflow, PartManagement and PMFileManagement are accessed
+directly from the meshing session. Use these objects and their methods as shown below:
+
+- meshing_session.PartManagement.InputFileChanged(...)
+- meshing_session.PMFileManagement.FileManager.LoadFiles()
+- meshing_session.PartManagement.Node["Meshing Model"].Copy(...)
+- meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(...)
 
 .. Note::
-   Backward compatible: These camel-case Part/File Management entries are still
-   supported in Ansys Fluent 2026 R1 for legacy scripts. The recommended approach
-   in 2026 R1 and later is to use the enhanced workflow attributes, for example
-   ``fault_tolerant.parts.*`` and ``fault_tolerant.parts_files.file_manager.*``.
+   Backward compatible: These entries are still supported in PyFLuent using
+   Ansys Fluent 2026 R1 for legacy scripts.
 
 
 Import CAD and part management
@@ -92,8 +113,7 @@ names as strings in ``list_of_tasks``.
 
 .. Note::
    Partly backward compatible: In the enhanced workflow (Ansys Fluent 2026 R1 and later),
-   delete-by-name has been replaced by passing task objects to ``list_of_tasks``
-   (for example, ``watertight.delete_tasks(list_of_tasks=[watertight.create_volume_mesh_wtm, watertight.add_boundary_layers])``).
+   delete-by-name has been replaced by passing task objects to ``list_of_tasks``.
    Calling ``task.delete()`` on a task object still works.
 
 
