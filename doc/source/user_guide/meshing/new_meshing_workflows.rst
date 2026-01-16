@@ -1,13 +1,13 @@
 .. _ref_new_meshing_workflows_guide:
 
-Meshing workflow
-================
+Meshing workflows
+=================
 
 PyFluent provides access to Fluent’s meshing workflows.
 
 Definitions
 -----------
-- Enhanced Meshing Workflow: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
+- Enhanced Meshing Workflows: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
   It provides clearer task organization, easier navigation, and strongly typed, well-documented arguments.
 - Legacy Meshing Workflows: The PyFluent meshing API used prior to Ansys Fluent 2026 R1
   (previously branded “Enhanced Meshing Workflows”). It remains available by passing
@@ -16,7 +16,7 @@ Definitions
 
 Choosing an interface
 ---------------------
-- Default (recommended): Use Enhanced Meshing Workflow.
+- Default (recommended): Use Enhanced Meshing Workflows.
 - Existing scripts: Initialize with ``legacy=True`` to use Legacy Meshing Workflows.
   See :ref:`ref_legacy_meshing_workflow`.
 
@@ -140,7 +140,7 @@ Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. Note::
-   Behavior change. For earlier behavior and compatibility details,
+   API change. For earlier API and compatibility details,
    see :ref:`ref_legacy_meshing_workflow`.
 
 .. code:: python
@@ -617,7 +617,7 @@ Duplicate tasks
     assert watertight.import_boi_geometry_2.arguments()
 
 .. Note::
-   **Enhanced Meshing Workflow** also supports indexed access to duplicate tasks:
+   **Enhanced Meshing Workflows** also supports indexed access to duplicate tasks:
 
    .. code:: python
 
