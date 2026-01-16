@@ -163,7 +163,7 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Returns
@@ -181,7 +181,7 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Returns
@@ -199,7 +199,7 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Returns
@@ -223,7 +223,7 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, loads as a legacy workflow implementation.
             If False, loads as a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Returns
@@ -247,7 +247,7 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, creates a legacy workflow implementation.
             If False, creates a new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Returns
@@ -291,7 +291,7 @@ class PureMeshing(BaseSession):
         legacy : bool, optional
             If True, returns the legacy workflow implementation.
             If False, returns the new workflow implementation.
-            If None (default), uses the legacy workflow implementation till Fluent versions 25R2
+            If None (default), uses the legacy workflow implementation for Fluent versions up to 25R2
             and uses the new workflow implementation for later versions (since 26R1).
 
         Returns
