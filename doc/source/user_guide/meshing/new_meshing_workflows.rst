@@ -176,7 +176,7 @@ Import CAD and part management
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-   fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state("part")
+    fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state("part")
 
     fault_tolerant.import_cad_and_part_management.context.set_state(0)
     fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
