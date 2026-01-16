@@ -807,9 +807,11 @@ This enables navigation without relying on Python attribute names.
 
 Known limitations
 -----------------
-- In ``enhanced_api_261``, switching between workflows and re-initializing workflows
-  within the same session are currently blocked.
-- Workaround: start a new session and initialize the required workflow again.
+In ``enhanced_api_261``, the following operations are not supported within a single meshing session:
+- Switching from one meshing workflow to another.
+- Re-initializing a meshing workflow after it has already been initialized.
+
+To perform either operation, start a new meshing session and initialize the required workflow.
 
 .. Note::
 
