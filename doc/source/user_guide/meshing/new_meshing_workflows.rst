@@ -3,41 +3,45 @@
 Meshing workflow
 ================
 
-PyFluent provides access to Fluent's meshing workflows. A new, enhanced meshing workflow
-has existed for prior releases; in Fluent 2026 R1 the API was further refined and extended.
-This refinement is referred to as ``enhanced_api_261`` and is the default in Fluent 2026 R1
-and later.
+PyFluent provides access to Fluent’s meshing workflows. In Ansys Fluent 2026 R1,
+the enhanced workflow API was refined and extended for clearer task organization,
+easier navigation, and stronger typing.
 
-- To use the legacy workflow interface in Fluent 2026 R1 and later,
-  pass ``legacy=True`` when initializing a workflow.
+Choosing an interface
+---------------------
+- Default (recommended): Use the enhanced workflow in Ansys Fluent 2026 R1 and later.
+  It offers clearer task organization, improved traversal, and strongly typed,
+  well-documented arguments.
+- Legacy (for existing scripts): If you want legacy semantics, pass ``legacy=True`` when
+  initializing a workflow. You can pass ``legacy=True`` unconditionally in any Fluent version,
+  including Ansys Fluent 2026 R1 and later, to keep legacy scripts running without version checks.
 
   For example:
 
-    **Initializing a legacy watertight workflow with Fluent version 2026 R1:**
+    **Initializing a legacy watertight workflow:**
 
     ``watertight = meshing.watertight(legacy=True)``
 
-- Most functionality remains backward compatible; some APIs have updated names or structure.
-  Differences are noted in the relevant sections below.
+- Backward compatibility: The enhanced workflow preserves most behavior. For examples and features
+  that existed only in versions prior to Ansys Fluent 2026 R1, see :ref:`ref_legacy_meshing_workflow`.
 
 
 Terminology and versioning
 --------------------------
 
-- ``enhanced_api_261``: The Fluent 2026 R1 enhancement of the enhanced workflow, offering
-  clearer task organization, improved traversal, and updated object names. Also, every
-  item in the interface, including specific tasks and their arguments, is strongly-typed
-  and documented in detail, which offers a new level of discoverability and usability.
+- ``enhanced_api_261``: The Ansys Fluent 2026 R1 enhancement of the enhanced workflow, offering
+  clearer task organization, improved traversal, and updated object names. Every item in the
+  interface (tasks and their arguments) is strongly typed and documented for discoverability and usability.
 
-- Legacy workflow: The pre-2026 R1 interface. Use ``legacy=True`` to opt in on 2026 R1+.
+- Legacy workflow: The interface used in versions prior to Ansys Fluent 2026 R1. It remains available
+  in Ansys Fluent 2026 R1 and later by passing ``legacy=True`` when initializing a workflow.
 
 
 Watertight geometry meshing workflow
 ------------------------------------
 Use the **Watertight Geometry** workflow for watertight CAD geometries that
-require little cleanup. This is useful for clean geometries that have already
-been prepped in another software, such as Ansys SpaceClaim.
-The following example shows how to use the Watertight Geometry workflow.
+require little cleanup. This is useful for clean geometries prepared in CAD tools
+such as Ansys SpaceClaim.
 
 Import geometry
 ~~~~~~~~~~~~~~~
@@ -56,14 +60,6 @@ Import geometry
     import_geometry.file_name.set_state(import_file_name)
     import_geometry.length_unit.set_state("in")
     import_geometry()
-
-.. Note::
-   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
-
-   .. code:: python
-
-       watertight = meshing_session.watertight(legacy=True)
-
 
 Add local sizing
 ~~~~~~~~~~~~~~~~
@@ -162,12 +158,12 @@ Import CAD and part management
     meshing_session = pyfluent.launch_fluent(precision=pyfluent.Precision.DOUBLE, processor_count=2, mode=pyfluent.FluentMode.MESHING)
 
     fault_tolerant = meshing_session.fault_tolerant()
-    meshing_session.PartManagement.InputFileChanged(
-        FilePath=import_file_name, IgnoreSolidNames=False, PartPerBody=False
+    fault_tolerant.parts.input_file_changed(
+     file_path=import_file_name, ignore_solid_names=False, part_per_body=False
     )
-    meshing_session.PMFileManagement.FileManager.LoadFiles()
-    meshing_session.PartManagement.Node["Meshing Model"].Copy(
-        Paths=[
+    fault_tolerant.parts_files.file_manager.load_files()
+    fault_tolerant.parts.node["Meshing Model"].copy(
+        paths=[
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/outpipe3,1",
@@ -175,7 +171,7 @@ Import CAD and part management
             "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
         ]
     )
-    meshing_session.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state("part")
+   fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state("part")
 
     fault_tolerant.import_cad_and_part_management.context.set_state(0)
     fault_tolerant.import_cad_and_part_management.create_object_per.set_state("Custom")
@@ -183,34 +179,6 @@ Import CAD and part management
     fault_tolerant.import_cad_and_part_management.file_loaded.set_state("yes")
     fault_tolerant.import_cad_and_part_management.object_setting.set_state("DefaultObjectSetting")
     fault_tolerant.import_cad_and_part_management()
-
-.. Note::
-   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
-
-   .. code:: python
-
-       fault_tolerant = meshing_session.fault_tolerant(legacy=True)
-
-   ``enhanced_api_261`` includes improved naming and organization for ``PartManagement`` and ``PMFileManagement``:
-
-   .. code:: python
-
-       fault_tolerant = meshing_session.fault_tolerant()
-       fault_tolerant.parts.input_file_changed(
-        file_path=import_file_name, ignore_solid_names=False, part_per_body=False
-       )
-       fault_tolerant.parts_files.file_manager.load_files()
-       fault_tolerant.parts.node["Meshing Model"].copy(
-           paths=[
-               "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/main,1",
-               "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/flow-pipe,1",
-               "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/outpipe3,1",
-               "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object2,1",
-               "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
-           ]
-       )
-       fault_tolerant.parts.object_setting["DefaultObjectSetting"].one_zone_per.set_state("part")
-
 
 Describe geometry and flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -304,10 +272,6 @@ Define leakage threshold
 .. code:: python
 
     leakage_threshold = fault_tolerant.define_leakage_threshold
-    leakage_threshold.add_child.set_state("yes")
-    leakage_threshold.flip_direction.set_state(True)
-    leakage_threshold.plane_direction.set_state("X")
-    leakage_threshold.region_selection_single.set_state("void-region-1")
     leakage_threshold.add_child = "yes"
     leakage_threshold.flip_direction = True
     leakage_threshold.leakage_name = "leakage-1"
@@ -454,13 +418,6 @@ Import geometry
     load_cad.refaceting.refacet = False
     load_cad()
 
-.. Note::
-   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
-
-   .. code:: python
-
-       two_dim_mesh = meshing_session.two_dimensional_meshing(legacy=True)
-
 Set regions and boundaries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -595,13 +552,6 @@ Create workflow
     )
     created_workflow = meshing_session.create_workflow()
 
-.. Note::
-   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
-
-   .. code:: python
-
-       created_workflow = meshing_session.create_workflow(legacy=True)
-
 Insert first task
 ~~~~~~~~~~~~~~~~~
 
@@ -640,13 +590,6 @@ Load workflow
         mode=pyfluent.FluentMode.MESHING, precision=pyfluent.Precision.DOUBLE, processor_count=2
     )
     loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path)
-
-.. Note::
-   Fluent 2026 R1 and later use ``enhanced_api_261`` by default. To use the legacy interface:
-
-   .. code:: python
-
-       loaded_workflow = meshing_session.load_workflow(file_path=saved_workflow_path, legacy=True)
 
 
 Insert new task
@@ -736,18 +679,9 @@ Use the ``mark_as_updated()`` to explicitly mark a task as updated.
 
 Renaming tasks in workflow
 --------------------------
-After a task is renamed, the new display name changes its Python attribute name.
-Access the task as shown:
+In ``enhanced_api_261`` the display name update is decoupled from the Python attribute access:
 
-.. code:: python
-
-    watertight.import_geometry.rename(new_name="import_geom_wtm")
-    assert watertight.import_geom_wtm
-
-.. Note::
-   In ``enhanced_api_261`` the display name update is decoupled from the Python attribute access:
-
-   .. code:: python
+    .. code:: python
 
        >>> watertight.import_geometry.rename(new_name="IG")
        >>> watertight.import_geometry["IG"]
@@ -757,22 +691,15 @@ Access the task as shown:
        >>> watertight.import_geometry[0]
        task < import_geometry: 0 >
 
-   This allows non-Pythonic display names (for example, "I-G") without affecting attribute access.
+    This allows non-Pythonic display names (for example, "I-G") without affecting attribute access.
 
 
 Deleting tasks from workflow
 ----------------------------
-Tasks can be deleted individually or in groups.
+Tasks can be deleted individually or in groups. In ``enhanced_api_261``,
+pass task objects to ``list_of_tasks``:
 
-.. code:: python
-
-    watertight.delete_tasks(list_of_tasks=["create_volume_mesh_wtm", "add_boundary_layers"])
-    watertight.update_regions.delete()
-
-.. Note::
-   In ``enhanced_api_261``, pass task objects to ``list_of_tasks``:
-
-   .. code:: python
+    .. code:: python
 
        watertight.delete_tasks(
             list_of_tasks=[
@@ -782,9 +709,9 @@ Tasks can be deleted individually or in groups.
         )
        watertight.update_regions.delete()
 
-   Duplicate tasks can also be deleted via indexing:
+Duplicate tasks can also be deleted via indexing:
 
-   .. code:: python
+    .. code:: python
 
        ig = watertight.import_geometry
        ig.insertable_tasks.import_boi_geometry.insert()
