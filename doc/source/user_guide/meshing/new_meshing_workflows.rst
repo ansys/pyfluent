@@ -23,7 +23,7 @@ Choosing an interface
     ``watertight = meshing.watertight(legacy=True)``
 
 - Backward compatibility: The enhanced workflow preserves most behavior. For examples and features
-  that existed only in versions prior to Ansys Fluent 2026 R1, see :ref:`ref_legacy_meshing_workflow`.
+  that existed in versions prior to Ansys Fluent 2026 R1, see :ref:`ref_legacy_meshing_workflow`.
 
 
 Terminology and versioning
@@ -146,6 +146,11 @@ The following example shows how to use the fault-tolerant workflow.
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Note::
+   Behavior change (compared to versions prior to Ansys Fluent 2026 R1). For earlier
+   behavior and to check whether the enhanced workflow is backward compatible,
+   see :ref:`ref_legacy_meshing_workflow`.
 
 .. code:: python
 
@@ -681,6 +686,11 @@ Renaming tasks in workflow
 --------------------------
 In ``enhanced_api_261`` the display name update is decoupled from the Python attribute access:
 
+.. Note::
+   Behavior change (compared to versions prior to Ansys Fluent 2026 R1). For earlier
+   behavior and to check whether the enhanced workflow is backward compatible,
+   see :ref:`ref_legacy_meshing_workflow`.
+
     .. code:: python
 
        >>> watertight.import_geometry.rename(new_name="IG")
@@ -698,6 +708,11 @@ Deleting tasks from workflow
 ----------------------------
 Tasks can be deleted individually or in groups. In ``enhanced_api_261``,
 pass task objects to ``list_of_tasks``:
+
+.. Note::
+   Behavior change (compared to versions prior to Ansys Fluent 2026 R1). For earlier
+   behavior and to check whether the enhanced workflow is backward compatible,
+   see :ref:`ref_legacy_meshing_workflow`.
 
     .. code:: python
 
@@ -726,6 +741,10 @@ Workflow navigation enhancements (``enhanced_api_261``)
 -------------------------------------------------------
 
 The refined API enables straightforward traversal of tasks within a workflow:
+
+.. Note::
+   New in Ansys Fluent 2026 R1: This capability is available only in the enhanced workflow.
+   It is not present in versions prior to Ansys Fluent 2026 R1.
 
 .. code:: python
 

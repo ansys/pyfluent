@@ -24,6 +24,12 @@ attributes and methods accessed directly on the meshing session like
 ``meshing_session.PartManagement.*``,  ``meshing_session.PMFileManagement.FileManager.*``,
 ``InputFileChanged`` and ``LoadFiles``.
 
+.. Note::
+   Backward compatible: These camel-case Part/File Management entries are still
+   supported in Ansys Fluent 2026 R1 for legacy scripts. The recommended approach
+   in 2026 R1 and later is to use the enhanced workflow accessors, for example
+   ``fault_tolerant.parts.*`` and ``fault_tolerant.parts_files.file_manager.*``.
+
 
 Import CAD and part management
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,6 +73,12 @@ Renaming tasks in workflow
 In the legacy workflow, renaming a task updates its Python attribute path.
 Access the task by the new name.
 
+.. Note::
+   Not backward compatible: In the enhanced workflow (Ansys Fluent 2026 R1 and later),
+   changing a task’s display name does not change its Python attribute path. Update
+   scripts to the new access pattern or pass ``legacy=True`` to preserve legacy
+   rename behavior.
+
 .. code:: python
 
     watertight.import_geometry.rename(new_name="import_geom_wtm")
@@ -77,6 +89,13 @@ Deleting tasks from workflow
 ----------------------------
 In the legacy workflow, you delete tasks by passing their Python attribute
 names as strings in ``list_of_tasks``.
+
+.. Note::
+   Partly backward compatible: In the enhanced workflow (Ansys Fluent 2026 R1 and later),
+   delete-by-name has been replaced by passing task objects to ``list_of_tasks``
+   (for example, ``watertight.delete_tasks(list_of_tasks=[watertight.create_volume_mesh_wtm, watertight.add_boundary_layers])``).
+   Calling ``task.delete()`` on a task object still works.
+
 
 .. code:: python
 
