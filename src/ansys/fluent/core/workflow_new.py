@@ -885,6 +885,8 @@ class TaskObject:
         meshing_root = self._meshing_root
         name_1 = name
         temp_name = re.sub(r"\s+\d+$", "", task_obj.name().strip())
+        # For the first instance (index 0), use the base task name without a numeric suffix;
+        # subsequent instances follow the "<base> <index>" naming convention (e.g., "Task 1").
         name_2 = temp_name if key == 0 else temp_name + f" {key}"
         try:
             task_obj = getattr(workflow.task_object, name_1)[name_2]
