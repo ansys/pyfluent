@@ -9,7 +9,7 @@ distinct from the classic meshing workflow (:ref:`ref_meshing_workflows_guide`).
 Supported versions
 ------------------
 - Available in PyFluent with Ansys Fluent versions prior to 2026 R1.
-- Also supported when using PyFluent with Ansys Fluent 2026 R1 and 2027 R1.
+- Also supported when using PyFluent with Ansys Fluent 2026 R1 or later version.
 
 Enable the legacy interface
 ---------------------------

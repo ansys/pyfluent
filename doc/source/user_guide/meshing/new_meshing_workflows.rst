@@ -5,29 +5,12 @@ Meshing workflows
 
 PyFluent provides access to Fluent’s meshing workflows.
 
-Definitions
------------
+Overview
+--------
 - Enhanced Meshing Workflows: A PyFluent API available only when using PyFluent with Ansys Fluent 2026 R1 and later.
   It provides clearer task organization, easier navigation, and strongly typed, well-documented arguments.
-- Legacy Meshing Workflows: The PyFluent meshing API used prior to Ansys Fluent 2026 R1
-  (previously branded “Enhanced Meshing Workflows”). It remains available by passing
-  ``legacy=True`` when initializing a workflow. You can pass ``legacy=True`` unconditionally to avoid version checks.
-  See :ref:`ref_legacy_meshing_workflow` for details.
-
-Choosing an interface
----------------------
-- Default (recommended): Use Enhanced Meshing Workflows.
-- Existing scripts: Initialize with ``legacy=True`` to use Legacy Meshing Workflows.
-  See :ref:`ref_legacy_meshing_workflow`.
-
-For example:
-
-  **Initialize a legacy workflow:**
-
-  ``watertight = meshing_session.watertight(legacy=True)``
-  ``fault_tolerant = meshing_session.fault_tolerant(legacy=True)``
-
-- Backward compatibility: Most behavior is preserved. For earlier behaviors and examples, see :ref:`ref_legacy_meshing_workflow`.
+- Legacy Meshing Workflows: The PyFluent meshing API used prior to Ansys Fluent 2026 R1 remains available.
+  For information on how to enable and use it, see :ref:`ref_legacy_meshing_workflow`.
 
 Watertight geometry meshing workflow
 ------------------------------------
