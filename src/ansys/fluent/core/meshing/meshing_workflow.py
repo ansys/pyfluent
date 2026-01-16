@@ -382,8 +382,7 @@ def get_current_workflow(
             return _get_current_workflow(current_workflow, workflow_name) or factory(
                 initialize=False, legacy=True
             )
-        else:
-            # Default to create_workflow if no specific type matches
-            return _get_current_workflow(current_workflow, workflow_name) or factory(
-                initialize=False, legacy=True
-            )
+    # Default to create_workflow if no specific type matches
+    return _get_current_workflow(current_workflow, "Create New") or workflow_factories[
+        "create New"
+    ](initialize=False, legacy=True)
