@@ -396,7 +396,9 @@ class _ScalarFields(_Fields):
         -------
         List[float]
         """
-        return self._field_info._get_scalar_field_range(field, node_value, surface_ids)
+        return self._field_info._get_scalar_field_range(
+            _to_field_name_str(field), node_value, surface_ids
+        )
 
 
 class _VectorFields(_Fields):
