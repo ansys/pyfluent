@@ -57,7 +57,6 @@ __all__ = (
     "Meshing",
     "PureMeshing",
     "PrePost",
-    "PureMeshing",
     "Solver",
     "SolverAero",
     "SolverIcing",

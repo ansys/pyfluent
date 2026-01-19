@@ -99,6 +99,7 @@ from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -213,8 +214,8 @@ class _SlurmWrapper:
 
 SessionT = TypeVar(
     "SessionT",
-    bound="Meshing | PureMeshing | Solver | SolverIcing",
-    default="Meshing | PureMeshing | Solver | SolverIcing",
+    bound="Meshing | PureMeshing | Solver | SolverIcing | SolverAero",
+    default="Meshing | PureMeshing | Solver | SolverIcing | SolverAero",
 )
 
 

@@ -220,7 +220,7 @@ class DockerLauncher:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         self.argvals, self.new_session = _get_argvals_and_session(
-            {**kwargs, mode: mode}
+            {**kwargs, "mode": mode}
         )
         if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
