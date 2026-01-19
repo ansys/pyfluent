@@ -114,7 +114,7 @@ watertight.import_geometry()
 watertight.create_surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
 watertight.create_surface_mesh()
 # Describe geometry
-watertight.describe_geometry.setup_type.set_state("fluids")
+watertight.describe_geometry.setup_type = "fluids"
 watertight.describe_geometry()
 # Update boundaries
 watertight.update_boundaries.boundary_label_list.set_state(["wall-inlet"])
