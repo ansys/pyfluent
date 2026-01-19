@@ -83,11 +83,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   code-style:
-    name: Code style
+    name: "Code style"
     runs-on: ubuntu-latest
     steps:
-      - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v10.2
+      - uses: ansys/actions/code-style@v10
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
+          skip-install: false
+
+      - name: "Make venv"
+        run: uv venv
+
+      - name: "Install basedpyright"
+        run: uv tool install basedpyright
+
+      - name: "Install extras"
+        run: uv pip install -e ".[ci_types]"
+
+      - name: "Check Type hints"
+        run: basedpyright
 
   commit-style:
     name: "Run commit style checks"

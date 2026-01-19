@@ -237,6 +237,10 @@ skips = [
     ]
 
 [tool.basedpyright]
+reportAny = false
 reportUnknownMemberType = false
 reportExplicitAny = false
 reportPrivateUsage = false
+reportUnusedCallResult = false
+ignore = ["doc", "src/ansys/fluent/core/generated"]
+baselineFile = ".ci/basedpyright.json"
