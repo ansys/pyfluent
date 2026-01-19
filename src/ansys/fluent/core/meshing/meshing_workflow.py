@@ -334,3 +334,58 @@ class CreateWorkflow(Workflow):
             self._create_workflow()
         else:
             self._activate_dynamic_interface(dynamic_interface=True)
+
+
+def _is_workflow_active(meshing_root, name: str):
+    return getattr(meshing_root.GlobalSettings, name_to_identifier_map[name])()
+
+
+def _get_current_workflow(current_workflow, name: str):
+    if current_workflow and current_workflow._name == name:
+        return current_workflow
+
+
+def get_current_workflow(
+    meshing_root, current_workflow, workflow_factories
+) -> Workflow:
+    """Get the currently active meshing workflow (legacy mode).
+
+    Determines which workflow type is currently active by checking GlobalSettings
+    flags, and returns the appropriate workflow instance. This is the legacy
+    implementation.
+
+    Parameters
+    ----------
+    meshing_root : PyMenuGeneric
+        Root meshing datamodel object containing GlobalSettings and workflow state.
+    current_workflow : Workflow or None
+        Currently cached workflow instance (may be None or outdated).
+    workflow_factories : dict[str, callable]
+        Mapping of workflow type names to factory functions that create workflow instances.
+
+    Returns
+    -------
+    Workflow
+        The currently active workflow instance (either cached or newly created).
+
+    Raises
+    ------
+    RuntimeError
+        If no workflow is initialized (both watertight and fault-tolerant are active).
+
+    """
+    if _is_workflow_active(meshing_root, "Watertight Geometry") and _is_workflow_active(
+        meshing_root, "Fault-tolerant Meshing"
+    ):
+        raise RuntimeError("No workflow initialized.")
+
+    # Find active workflow type
+    for workflow_name, factory in workflow_factories.items():
+        if _is_workflow_active(meshing_root, workflow_name):
+            return _get_current_workflow(current_workflow, workflow_name) or factory(
+                initialize=False, legacy=True
+            )
+    # Default to create_workflow if no specific type matches
+    return _get_current_workflow(current_workflow, "Create New") or workflow_factories[
+        "Create New"
+    ](initialize=False, legacy=True)
