@@ -1,19 +1,9 @@
 ---
 title: PyFluent cheat sheet
-format:
-  html:
-    include-in-header: |
-      <style>
-      /* De-emphasize import-only code blocks */
-      pre code.imports, code.imports {
-        font-size: 0.75em;
-        line-height: 1.3;
-        opacity: 0.85;
-      }
-      </style>
 version: 0.1.0
-footer: PyFluent
 footerlinks:
+  - urls: 'https://github.com/ansys/pyfluent'
+    text: PyFluent
   - urls: 'https://fluent.docs.pyansys.com/version/stable/'
     text: Documentation
   - urls: 'https://fluent.docs.pyansys.com/version/stable/getting_started/index.html'
@@ -43,50 +33,58 @@ jupyter:
     name: python3
 ---
 
+```{=html}
+<style>
+pre.small-import {
+  font-size: 0.50em;
+  line-height: 0.75;
+  opacity: 0.85;
+}
+</style>
+```
+
+## Typical workflow:
+1. Launch or connect to session
+2. Import mesh / create mesh
+3. Physics and materials setup
+4. Solution setup and run
+5. Post-processing and field data access
+
 
 ## Session Management
 
 ### Launch sessions
-```{python .imports}
+
+```{python .small-import}
 import ansys.fluent.core as pyfluent
 ```
+
 ```{python}
+import ansys.fluent.core as pyfluent
 # Solver mode
 solver = pyfluent.Solver.from_install()
 # Meshing mode
 meshing = pyfluent.Meshing.from_install()
 
-# Connect to existing session
-solver = pyfluent.Solver.from_connection(
+### Connect to existing session
+session = pyfluent.Solver.from_connection(
     ip="<ip>", port="<port>", password="<password>"
 )
 ```
 
 ### File I/O
 
-```{python .imports}
+```{python}
 from ansys.fluent.core.solver import (
     ReadCase, ReadCaseData, WriteCase, WriteCaseData)
-from ansys.fluent.core import examples
-
-EXAMPLE_DIR = "pyfluent/mixing_elbow"
-
-def download_example_file(file_name):
-    return examples.download_file(file_name, EXAMPLE_DIR)
-
-mesh_file = download_example_file("mixing_elbow.msh.h5")
-case_file = download_example_file("mixing_elbow.cas.h5")
-data_file = download_example_file("mixing_elbow.dat.h5")
-```
-```{python}
 # Read case
-ReadCase(settings_source=solver)(file_name=case_file)
+ReadCase(settings_source=solver)(file_name="<case_file>")
 # Read case and data
-ReadCaseData(settings_source=solver)(file_name=data_file)
+ReadCaseData(settings_source=solver)(file_name="<data_file>")
 # Write case
-WriteCase(settings_source=solver)(file_name="output.cas.h5")
+WriteCase(settings_source=solver)(file_name="<output_case_file>")
 # Write case and data
-WriteCaseData(settings_source=solver)(file_name="output.cas.h5")
+WriteCaseData(settings_source=solver)(file_name="<output_case_file>")
 ```
 
 ## Meshing Workflow
@@ -94,11 +92,10 @@ WriteCaseData(settings_source=solver)(file_name="output.cas.h5")
 ### Watertight geometry workflow
 
 ```{python}
-file_name = download_example_file("mixing_elbow.pmdb")
 watertight = meshing.watertight()
 # Import Geometry
 import_geom = watertight.import_geometry
-import_geom.file_name = file_name
+import_geom.file_name = "<geometry_file>"
 import_geom.length_unit = "mm"
 import_geom()
 # Surface mesh
@@ -116,7 +113,7 @@ update_boundaries.old_boundary_label_list.set_state(["wall-inlet"])
 update_boundaries.old_boundary_label_type_list.set_state(["velocity-inlet"])
 update_boundaries()
 # Volume mesh
-volume_mesh = watertight.create_volume_mesh
+volume_mesh = watertight.create_volume_mesh_wtm
 volume_mesh.volume_fill = "poly-hexcore"
 volume_mesh.volume_fill_controls.hex_max_cell_length = 0.3
 volume_mesh()
@@ -128,11 +125,9 @@ solver = meshing.switch_to_solver()
 
 ### Boundary conditions
 
-```{python .imports}
-from ansys.fluent.core.solver import VelocityInlet
-```
+
 ```{python}
-boundary_conditions = solver.settings.setup.boundary_conditions
+from ansys.fluent.core.solver import VelocityInlet
 # Velocity inlet
 inlet = VelocityInlet(settings_source=solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude = 0.4
@@ -163,10 +158,8 @@ cell_zones.fluid["elbow-fluid"].general.material = "air-copied"
 ```
 
 ### Models
-```{python .imports}
-from ansys.fluent.core.solver import Viscous
-```
 ```{python}
+from ansys.fluent.core.solver import Viscous
 models = solver.settings.setup.models
 # Energy
 models.energy.enabled = True
@@ -183,22 +176,13 @@ rad.solve_frequency.number_of_histories = 1e7
 models.species.model.option = "species-transport"
 ```
 ## Solution
-
-```{python .imports}
-soln = solver.settings.solution
-```
-
-### Solution methods
-
 ```{python}
+# Solution methods
+soln = solver.settings.solution
 methods = soln.methods
 methods.p_v_coupling.flow_scheme = "Coupled"
 methods.spatial_discretization.gradient_scheme = "green-gauss-node-based"
-```
-
-### Solution controls
-
-```{python}
+# Solution controls
 control = soln.controls
 control.p_v_controls.flow_courant_number = 0.5
 ```
@@ -298,9 +282,9 @@ vmag_range = scalar_fields.range(VC.VELOCITY_MAGNITUDE)
 reduction = solver.fields.reduction
 # Area and volume
 
-location = [solver.setup.boundary_conditions.velocity_inlet["cold-inlet"]]
-outlet_location = [solver.setup.boundary_conditions.pressure_outlet["outlet"]]
-wall_location = [solver.setup.boundary_conditions.wall["wall-elbow"]]
+location = [solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]]
+outlet_location = [solver.settings.setup.boundary_conditions.pressure_outlet["outlet"]]
+wall_location = [solver.settings.setup.boundary_conditions.wall["wall-elbow"]]
 # Area
 area = reduction.area(locations=location)
 # Volume
