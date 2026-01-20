@@ -7,6 +7,7 @@ Legacy interfaces
    :maxdepth: 1
    :hidden:
 
+   meshing_workflow
    rpvars
    scheme
    tui
