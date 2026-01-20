@@ -202,11 +202,10 @@ class _FieldInfo(BaseFieldInfo):
     def _get_scalar_field_range(
         self, field: str, node_value: bool = False, surface_ids: List[int] = None
     ) -> List[float]:
-        field = _to_field_name_str(field)
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = field
+        request.fieldName = _to_field_name_str(field)
         request.nodeValue = node_value
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]
