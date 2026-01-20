@@ -89,14 +89,14 @@ surface_mesh = watertight.create_surface_mesh
 surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
 surface_mesh()
 # Describe geometry
-watertight.describe_geometry.setup_type = "fluids"
+watertight.describe_geometry.setup_type = "fluid"
 watertight.describe_geometry()
 # Update boundaries
 update_boundaries = watertight.update_boundaries
-update_boundaries.boundary_label_list.set_state(["wall-inlet"])
-update_boundaries.boundary_label_type_list.set_state(["wall"])
-update_boundaries.old_boundary_label_list.set_state(["wall-inlet"])
-update_boundaries.old_boundary_label_type_list.set_state(["velocity-inlet"])
+update_boundaries.boundary_zone_list.set_state(["wall-inlet"])
+update_boundaries.boundary_zone_type_list.set_state(["wall"])
+update_boundaries.old_boundary_zone_list.set_state(["wall-inlet"])
+update_boundaries.old_boundary_zone_type_list.set_state(["velocity-inlet"])
 update_boundaries()
 # Volume mesh
 volume_mesh = watertight.create_volume_mesh_wtm
@@ -115,7 +115,7 @@ solver = meshing.switch_to_solver()
 ```{python}
 from ansys.fluent.core.solver import VelocityInlet
 # Velocity inlet
-inlet = VelocityInlet(settings_source=solver, name="cold-inlet")
+inlet = VelocityInlet(solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude = 0.4
 inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 inlet.turbulence.turbulent_intensity = 0.05
@@ -126,8 +126,9 @@ inlet.thermal.temperature = 293.15
 ### Materials
 
 ```{python}
+from ansys.fluent.core.solver import Materials
+materials = Materials(solver)
 # Copy and modify material
-materials = solver.settings.setup.materials
 air_copy = materials.fluid.make_a_copy(from_="air", to="air-copied")
 materials.fluid["air-copied"].viscosity = 1.81e-05
 # Create new material
@@ -139,14 +140,15 @@ mysolid.thermal_conductivity.value = 7.6
 ### Cell zone conditions
 
 ```{python}
-cell_zones = solver.settings.setup.cell_zone_conditions
+from ansys.fluent.core.solver import CellZoneConditions
+cell_zones = CellZoneConditions(solver)
 cell_zones.fluid["elbow-fluid"].general.material = "air-copied"
 ```
 
 ### Models
 ```{python}
-from ansys.fluent.core.solver import Viscous
-models = solver.settings.setup.models
+from ansys.fluent.core.solver import Models, Viscous, Radiation, Species
+models = Models(solver)
 # Energy
 models.energy.enabled = True
 models.energy.viscous_dissipation = True
@@ -155,42 +157,55 @@ viscous = Viscous(solver)
 viscous.model = viscous.model.K_EPSILON
 viscous.k_epsilon_model = viscous.k_epsilon_model.REALIZABLE
 # Radiation
-rad = models.radiation
-rad.model = "monte-carlo"
+rad = Radiation(solver)
+rad.model = rad.model.MONTE_CARLO
 rad.solve_frequency.number_of_histories = 1e7
 # Species transport
-models.species.model.option = "species-transport"
+species = Species(solver)
+species.model.option = species.model.option.SPECIES_TRANSPORT
 ```
 ## Solution
 ```{python}
+from ansys.fluent.core.solver import Solution, Controls
 # Solution methods
-soln = solver.settings.solution
+soln = Solution(solver)
 methods = soln.methods
 methods.p_v_coupling.flow_scheme = "Coupled"
-methods.spatial_discretization.gradient_scheme = "green-gauss-node-based"
+grad_scheme = methods.spatial_discretization.gradient_scheme
+grad_scheme = grad_scheme.GREEN_GAUSS_NODE_BASED
 # Solution controls
-control = soln.controls
-control.p_v_controls.flow_courant_number = 0.5
+control = Controls(solver)
+control.p_v_controls.explicit_pressure_under_relaxation = 0.5
 ```
 
 ### Report definitions
 
 ```{python}
-rep_defs = soln.report_definitions
+from ansys.fluent.core.solver import ReportDefinitions
+rep_defs = ReportDefinitions(solver)
 surf_rep = rep_defs.surface["outlet-temp-avg"] = {}
-rep_defs.surface["outlet-temp-avg"].report_type = "surface-massavg"
-rep_defs.surface["outlet-temp-avg"].field = "temperature"  
+soln_report_type = rep_defs.surface["outlet-temp-avg"].report_type
+soln_report_type = soln_report_type.SURFACE_MASSAVG
+rep_defs.surface["outlet-temp-avg"].field = "temperature"
 ```
 
 ### Initialize and solve
 
 ```{python}
+from ansys.fluent.core.solver import Initialization, Initialize, RunCalculation, Iterate, Monitor
 # Initialization
-soln.initialization.hybrid_initialize()
+initialization = Initialization(solver)
+initialization.initialization_type = initialization.initialization_type.HYBRID
+initialize = Initialize(solver)
+initialize()
 # Run calculation
-soln.run_calculation.iterate(iter_count=100)
+run_calc = RunCalculation(solver)
+run_calc.parameters.iter_count = 100
+iterate = Iterate(solver)
+iterate()
 # Check convergence
-soln.monitor.residual.plot()
+monitor = Monitor(solver)
+monitor.residual.plot()
 ```
 
 ## Post-Processing
@@ -219,6 +234,7 @@ abs_press_req = ScalarFieldDataRequest(
     surfaces=["cold-inlet"],
     )
 abs_pressure = field_data.get_field_data(abs_press_req)
+abs_pressure["cold-inlet"]  # Access absolute pressure data on cold-inlet
 
 # Vector field data (velocity on cold-inlet)
 vel_req = VectorFieldDataRequest(
@@ -265,23 +281,22 @@ vmag_range = scalar_fields.range(VC.VELOCITY_MAGNITUDE)
 ### Reduction functions
 
 ```{python}
+from ansys.fluent.core.solver import VelocityInlet, PressureOutlet, WallBoundary
 reduction = solver.fields.reduction
-# Area and volume
-
-location = [solver.settings.setup.boundary_conditions.velocity_inlet["cold-inlet"]]
-outlet_location = [solver.settings.setup.boundary_conditions.pressure_outlet["outlet"]]
-wall_location = [solver.settings.setup.boundary_conditions.wall["wall-elbow"]]
+velocity_inlet = VelocityInlet(solver, name="cold-inlet")
+pressure_outlet = PressureOutlet(solver, name="outlet")
+wall = WallBoundary(solver, name="wall-elbow")
 # Area
-area = reduction.area(locations=location)
+area = reduction.area(locations=[velocity_inlet])
 # Volume
-volume = reduction.volume(locations=location)
+volume = reduction.volume(locations=[velocity_inlet])
 # Averages and integrals
-avg_pressure = reduction.area_average(VC.ABSOLUTE_PRESSURE, locations=outlet_location)  
-total_mass = reduction.mass_integral(VC.ONE, locations=outlet_location)
+avg_pressure = reduction.area_average(VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
+total_mass = reduction.mass_integral(VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
 # Force and moment
-force = reduction.force(locations=wall_location)
+force = reduction.force(locations=[wall])
 # Min/max
-max_vel = reduction.maximum(VC.VELOCITY_MAGNITUDE, locations=wall_location)
+max_vel = reduction.maximum(VC.VELOCITY_MAGNITUDE, locations=[wall])
 ```
 
 ### Solution variables
@@ -293,15 +308,15 @@ sv_data = solver.fields.solution_variable_data
 zones_info = sv_info.get_zones_info()
 # Get variable data
 temp_data = sv_data.get_data(
-    variable_name="VC.TEMPERATURE",
+    variable_name=VC.TEMPERATURE,
     zone_names=["elbow-fluid"], 
     domain_name="mixture"
     )
 # Set variable data
-temp_array = sv_data.create_empty_array("VC.TEMPERATURE", "elbow-fluid", "mixture")
+temp_array = sv_data.create_empty_array(VC.TEMPERATURE, "elbow-fluid", "mixture")
 temp_array[:] = 500
 sv_data.set_data(
-    variable_name="VC.TEMPERATURE",
+    variable_name=VC.TEMPERATURE,
     zone_names_to_data={'elbow-fluid': temp_array},
     domain_name="mixture"
     )
