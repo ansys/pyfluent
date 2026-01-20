@@ -1,9 +1,9 @@
 ---
 title: PyFluent cheat sheet
 version: 0.1.0
+format: cheat_sheet-pdf
+footer: PyFluent
 footerlinks:
-  - urls: 'https://github.com/ansys/pyfluent'
-    text: PyFluent
   - urls: 'https://fluent.docs.pyansys.com/version/stable/'
     text: Documentation
   - urls: 'https://fluent.docs.pyansys.com/version/stable/getting_started/index.html'
@@ -33,16 +33,6 @@ jupyter:
     name: python3
 ---
 
-```{=html}
-<style>
-pre.small-import {
-  font-size: 0.50em;
-  line-height: 0.75;
-  opacity: 0.85;
-}
-</style>
-```
-
 ## Typical workflow:
 1. Launch or connect to session
 2. Import mesh / create mesh
@@ -54,10 +44,6 @@ pre.small-import {
 ## Session Management
 
 ### Launch sessions
-
-```{python .small-import}
-import ansys.fluent.core as pyfluent
-```
 
 ```{python}
 import ansys.fluent.core as pyfluent
