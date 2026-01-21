@@ -431,9 +431,7 @@ def test_fluent_launchers():
     container_solver_session.exit()
 
     if pypim.is_configured():
-        pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs
-        )
+        pim_solver_launcher = create_launcher(LaunchMode.PIM, **kwargs, dimension=2)
         pim_meshing_session = pim_meshing_launcher()
         assert pim_meshing_session
         pim_meshing_session.exit()
