@@ -32,7 +32,6 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
-    "pyansys-tools-report>=0.8.1",
     "pyyaml>=6.0",
 ]
 dynamic = ["version"]
