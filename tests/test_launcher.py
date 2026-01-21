@@ -444,7 +444,7 @@ def test_fluent_launchers():
         pim_solver_session.exit()
 
         pim_solver_launcher = create_launcher(
-            LaunchMode.PIM, **kwargs, dimension=2
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2
         )
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session.dimension == pyfluent.Dimension.TWO
