@@ -214,11 +214,11 @@ calculation.iterate(iter_count=1000)
 
 graphics = Graphics(solver)
 
-Image_Width = 650
-Image_Height = 450
+image_width = 650
+image_height = 450
 
-graphics.picture.x_resolution = Image_Width
-graphics.picture.y_resolution = Image_Height
+graphics.picture.x_resolution = image_width
+graphics.picture.y_resolution = image_height
 # %%
 
 plane_surfaces = PlaneSurfaces(solver)
