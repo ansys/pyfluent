@@ -393,7 +393,6 @@ plot_window.add_plot(voltage_rplot, position=(0, 0))
 temp_rplot = Monitor(solver=solver, monitor_set_name="volume_max_temp-rplot")
 plot_window.add_plot(temp_rplot, position=(1, 1))
 
-plot_window.renderer = "matplotlib"
 plot_window.show()
 
 # %%
