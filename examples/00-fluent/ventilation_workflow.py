@@ -30,7 +30,7 @@ Wind Flow Through A Mechanically Ventilated Poultry House
 # ---------
 #
 # The primary objective of this PyFluent study is to investigate airflow patterns, air distribution,
-# and ventilation effectiveness inside a mechanically ventilated poultry house. 
+# and ventilation effectiveness inside a mechanically ventilated poultry house.
 # The simulation represents a typical poultry housing configuration with
 # 32 side inlet windows and six exhaust fans installed on one end wall, capturing the
 # interaction between inlet air jets and exhaust driven flow.
@@ -85,17 +85,16 @@ from ansys.fluent.core.solver import (
     SurfaceIntegrals,
     Viscous,
 )
+from ansys.units.common import kg, s
 
 # %%
 # Launch Fluent in solver mode
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
 # .. note::
-#   To enable the graphical user interface (GUI), import the ``UIMode`` class
-#   and set the UI mode before launching the solver::
-#
-#       from ansys.fluent.core import UIMode
-#       ui_mode = UIMode.GUI
+#   Fluent supports multiple launch modes and options. For a full description of the
+#   available launch methods and how to configure them, refer to the:
+#   `PyFluent documentation <https://fluent.docs.pyansys.com/version/stable/api/launcher/launcher.html>`_.
 
 solver = pyfluent.launch_fluent(
     precision=pyfluent.Precision.DOUBLE,
@@ -123,7 +122,7 @@ solver.file.read(file_type="mesh", file_name=mesh_file)
 # Viscous Model
 # ^^^^^^^^^^^^^
 viscous = Viscous(solver)
-viscous.model = "k-epsilon"
+viscous.model = viscous.model.K_EPSILON
 
 # %%
 # Boundary conditions
@@ -136,16 +135,16 @@ pressure_outlets = PressureOutlets(solver)
 # %%
 # The target mass flow rate option is enabled to ensure that each exhaust outlet (fan) removes a specified and controlled amount of air
 
-pressure_outlets["outlet_1"] = {
+pressure_outlets["outlet_*"] = {
     "momentum": {
         "target_mass_flow_rate": True,
         "target_mass_flow": {
-            "value": 12.25  # kg/s  Represents the design airflow capacity of one exhaust fan
+            "value": 12.25
+            * kg
+            / s  # Represents the design airflow capacity of one exhaust fan
         },
     }
 }
-
-boundary_conditions.copy(from_="outlet_1", to=["*outlet_*"])
 
 # %%
 # Solution methods and controls
@@ -173,12 +172,17 @@ solution_methods.spatial_discretization = {
 
 # %%
 monitor_residuals = Residual(solver)
-monitor_residuals.equations["continuity"].absolute_criteria = 1e-06
-monitor_residuals.equations["x-velocity"].absolute_criteria = 1e-06
-monitor_residuals.equations["y-velocity"].absolute_criteria = 1e-06
-monitor_residuals.equations["z-velocity"].absolute_criteria = 1e-06
-monitor_residuals.equations["k"].absolute_criteria = 1e-06
-monitor_residuals.equations["epsilon"].absolute_criteria = 1e-06
+
+equations = (
+    "continuity",
+    "x-velocity",
+    "y-velocity",
+    "z-velocity",
+    "k",
+    "epsilon",
+)
+
+monitor_residuals.equations = {eqn: {"absolute_criteria": 1e-6} for eqn in equations}
 
 # %%
 # Residual convergence: to ensure a high level of numerical accuracy and solution stability in the simulation
@@ -193,10 +197,29 @@ solution_initialization.initialize()
 calculation = RunCalculation(solver)
 calculation.iterate(iter_count=1000)
 # %%
+# The objective of running 1000 iterations is to obtain a physically reasonable
+# flow field and to demonstrate typical convergence behavior. Increasing the number
+# of iterations generally helps reduce residuals and stabilize key monitored quantities
+# such as mass flow, average velocity, and recirculation patterns. For faster
+# demonstration runs, the iteration count can be reduced once the residuals no longer change significantly.
+
+# %%
 # Results
 # ^^^^^^^
 
+# %%
+# Define image resolution as named constants to improve maintainability.
+# Updating these values will automatically apply to all image save operations.
+
 graphics = Graphics(solver)
+
+Image_Width = 650
+Image_Height = 450
+
+graphics.picture.x_resolution = Image_Width
+graphics.picture.y_resolution = Image_Height
+# %%
+
 plane_surfaces = PlaneSurfaces(solver)
 
 # Create ZX plane at the center of the domain
@@ -213,8 +236,6 @@ velocity_pathline["pathlines-1"] = {
 }
 velocity_pathline["pathlines-1"].display()
 
-graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
-graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
 graphics.picture.save_picture(file_name="wind_flow_2.jpg")
 
 
