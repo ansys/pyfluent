@@ -133,7 +133,8 @@ boundary_conditions.set_zone_type(new_type="inlet-vent", zone_list=["*inlet_vent
 
 pressure_outlets = PressureOutlets(solver)
 # %%
-# The target mass flow rate option is enabled to ensure that each exhaust outlet (fan) removes a specified and controlled amount of air
+# The target mass flow rate option is enabled to ensure that each exhaust outlet
+# (fan) removes a specified and controlled amount of air.
 
 pressure_outlets["outlet_*"] = {
     "momentum": {
