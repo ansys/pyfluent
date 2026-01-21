@@ -242,7 +242,7 @@ graphics.picture.save_picture(file_name="wind_flow_3.jpg")
 surface_integrals_reports = SurfaceIntegrals(solver)
 
 surface_integrals_reports.area_weighted_avg(
-    file_name="velocity_area_avg_of_oulets",
+    file_name="velocity_area_avg_of_outlets",
     report_of="velocity-magnitude",
     surface_names=["*outlet_*"],
     write_to_file=True,
