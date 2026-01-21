@@ -29,9 +29,9 @@ Wind Flow Through A Mechanically Ventilated Poultry House
 # Objective
 # ---------
 #
-# The primary objective of this study is to investigate airflow patterns, air distribution,
-# and ventilation effectiveness inside a mechanically ventilated poultry house
-# using PyFluent. The simulation represents a typical poultry housing configuration with
+# The primary objective of this PyFluent study is to investigate airflow patterns, air distribution,
+# and ventilation effectiveness inside a mechanically ventilated poultry house. 
+# The simulation represents a typical poultry housing configuration with
 # 32 side inlet windows and six exhaust fans installed on one end wall, capturing the
 # interaction between inlet air jets and exhaust driven flow.
 #
