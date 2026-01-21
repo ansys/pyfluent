@@ -199,7 +199,7 @@ calculation.iterate(iter_count=1000)
 graphics = Graphics(solver)
 plane_surfaces = PlaneSurfaces(solver)
 
-# Crete ZX plane at the center of the domain
+# Create ZX plane at the center of the domain
 plane_surfaces.create()
 plane_surfaces.rename(new="zx-plane", old="plane-1")
 plane_surfaces["zx-plane"].method = "zx-plane"
