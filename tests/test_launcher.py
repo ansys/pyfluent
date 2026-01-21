@@ -628,7 +628,7 @@ def test_container_launcher_args():
 
 def test_report():
     from ansys.fluent.core.report import ANSYS_ENV_VARS, dependencies
-    from ansys.tools.report import Report
+    from ansys.tools.common.report import Report
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
