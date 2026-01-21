@@ -25,6 +25,7 @@ import pytest
 
 from ansys.fluent.core import examples
 from ansys.fluent.core.examples.downloads import download_file
+from ansys.units.variable_descriptor import VariableCatalog
 
 
 @pytest.mark.fluent_version(">=23.2")
@@ -107,7 +108,7 @@ def test_solution_variables(new_solver_session):
     assert str(fluid_temp.dtype) == "float64"
 
     wall_press_array = solution_variable_data.create_empty_array(
-        "SV_P", "wall-elbow", "mixture"
+        VariableCatalog.PRESSURE, "wall-elbow", "mixture"
     )
     fluid_press_array = solution_variable_data.create_empty_array(
         "SV_P", "elbow-fluid", "mixture"
@@ -119,7 +120,7 @@ def test_solution_variables(new_solver_session):
         "elbow-fluid": fluid_press_array,
     }
     solution_variable_data.set_data(
-        variable_name="SV_P",
+        variable_name=VariableCatalog.PRESSURE,
         zone_names_to_data=zone_names_to_solution_variable_data,
         domain_name="mixture",
     )
