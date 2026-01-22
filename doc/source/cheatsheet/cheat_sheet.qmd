@@ -86,17 +86,16 @@ import_geom.file_name = "<geometry_file>"
 import_geom.length_unit = "mm"
 import_geom()
 
-create_surface_mesh = watertight.create_surface_mesh
-create_surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
-create_surface_mesh()
+surf_mesh = watertight.create_surface_mesh
+surf_mesh.cfd_surface_mesh_controls.max_size = 0.3
+surf_mesh()
 
 watertight.describe_geometry.setup_type = "fluid"
 watertight.describe_geometry()
 
-create_volume_mesh = watertight.create_volume_mesh_wtm
-create_volume_mesh.volume_fill = "poly-hexcore"
-create_volume_mesh.volume_fill_controls.hex_max_cell_length = 0.3
-create_volume_mesh()
+volume_mesh = watertight.create_volume_mesh_wtm
+volume_mesh.volume_fill = "poly-hexcore"
+volume_mesh()
 
 solver = meshing.switch_to_solver()
 ```
@@ -204,6 +203,7 @@ field_data = solver.fields.field_data
 abs_press_req = ScalarFieldDataRequest(
     field_name=VC.ABSOLUTE_PRESSURE,
     surfaces=["cold-inlet"],)
+    
 abs_pressure = field_data.get_field_data(abs_press_req)
 
 vel_req = VectorFieldDataRequest(
@@ -251,10 +251,13 @@ vmag_range = scalar_fields.range(VC.VELOCITY_MAGNITUDE)
 reduction = solver.fields.reduction
 
 velocity_inlet = VelocityInlet(solver, name="cold-inlet")
+
 pressure_outlet = PressureOutlet(solver, name="outlet")
+
 wall = WallBoundary(solver, name="wall-elbow")
 
 area = reduction.area(locations=[velocity_inlet])
+
 volume = reduction.volume(locations=[velocity_inlet])
 
 avg_pressure = reduction.area_average(VC.ABSOLUTE_PRESSURE, locations=[pressure_outlet])
