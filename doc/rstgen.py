@@ -407,18 +407,12 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         f.write("   :undoc-members:\n")
         f.write("   :exclude-members: __weakref__, __dict__\n")
         f.write("   :special-members: __init__\n")
-        if title != "task_object":
-            f.write("   :autosummary:\n")
-            f.write("   :autosummary-members:\n\n")
-        else:
-            f.write("\n")
+        f.write("   :autosummary:\n")
+        f.write("   :autosummary-members:\n\n")
 
         if menu["with_members"]:
             f.write(".. toctree::\n")
-            if title != "task_object":
-                f.write("   :hidden:\n\n")
-            else:
-                f.write("\n")
+            f.write("   :hidden:\n\n")
             for member in menu["with_members"]:
                 temp_member_name = _get_task_object_name(member)
                 if temp_member_name and temp_member_name == member.__name__[1:]:
