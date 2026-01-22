@@ -45,7 +45,7 @@ from ansys.fluent.core import (
     PathlinesFieldDataRequest,
     SurfaceDataType,
     )
-import ansys.fluent.core.solver import * 
+from ansys.fluent.core.solver import *
 ```
 
 ## Session Management
@@ -53,7 +53,6 @@ import ansys.fluent.core.solver import *
 ### Launch sessions
 
 ```{python}
-import ansys.fluent.core as pyfluent
 solver = pyfluent.Solver.from_install()
 meshing = pyfluent.Meshing.from_install()
 
@@ -88,8 +87,7 @@ import_geom.length_unit = "mm"
 import_geom()
 
 create_surface_mesh = watertight.create_surface_mesh
-create_surface_mesh.cfd_surface_mesh_controls
-  .max_size = 0.3
+create_surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
 create_surface_mesh()
 
 watertight.describe_geometry.setup_type = "fluid"
@@ -97,8 +95,7 @@ watertight.describe_geometry()
 
 create_volume_mesh = watertight.create_volume_mesh_wtm
 create_volume_mesh.volume_fill = "poly-hexcore"
-create_volume_mesh.volume_fill_controls
-  .hex_max_cell_length = 0.3
+create_volume_mesh.volume_fill_controls.hex_max_cell_length = 0.3
 create_volume_mesh()
 
 solver = meshing.switch_to_solver()
@@ -111,11 +108,11 @@ solver = meshing.switch_to_solver()
 ```{python}
 inlet = VelocityInlet(solver, name="cold-inlet")
 inlet.momentum.velocity_magnitude = 0.4
-turbulance = inlet.turbulence
-turbulance = turbulance.turbulence_specification
-  .INTENSITY_AND_HYDRAULIC_DIAMETER
-turbulance.turbulent_intensity = 0.05
-turbulance.hydraulic_diameter = "4 [in]"
+turbulence = inlet.turbulence
+turbulence = (turbulence.turbulence_specification.
+  INTENSITY_AND_HYDRAULIC_DIAMETER)
+turbulence.turbulent_intensity = 0.05
+turbulence.hydraulic_diameter = "4 [in]"
 inlet.thermal.temperature = 293.15
 ```
 
@@ -218,8 +215,7 @@ velocity = field_data.get_field_data(vel_req)
 surf_req = SurfaceFieldDataRequest(                                      
     data_types=[SurfaceDataType.Vertices, 
                 SurfaceDataType.FacesCentroid],
-                surfaces=["hot-inlet", "cold-inlet"],
-    )
+                surfaces=["hot-inlet", "cold-inlet"])
 surfaces = field_data.get_field_data(surf_req)
 
 vertices = surfaces["cold-inlet"].vertices
@@ -279,8 +275,7 @@ zones_info = sv_info.get_zones_info()
 temp_data = sv_data.get_data(
     variable_name=VC.TEMPERATURE,
     zone_names=["elbow-fluid"], 
-    domain_name="mixture"
-    )
+    domain_name="mixture")
 
 temp_array = sv_data.create_empty_array(VC.TEMPERATURE, "elbow-fluid", "mixture")
 
@@ -289,6 +284,5 @@ temp_array[:] = 500
 sv_data.set_data(
     variable_name=VC.TEMPERATURE,
     zone_names_to_data={'elbow-fluid': temp_array},
-    domain_name="mixture"
-    )
+    domain_name="mixture")
 ```
