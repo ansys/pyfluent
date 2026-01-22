@@ -234,7 +234,7 @@ velocity_pathline["pathlines-1"] = {
 }
 velocity_pathline["pathlines-1"].display()
 
-graphics.picture.save_picture(file_name="wind_flow_2.jpg")
+graphics.picture.save_picture(file_name="wind_flow_2.png")
 
 
 # %%
@@ -250,7 +250,7 @@ velocity_contour.field = "velocity-magnitude"
 velocity_contour.surfaces_list = ["zx-plane"]
 velocity_contour.display()
 
-graphics.picture.save_picture(file_name="wind_flow_3.jpg")
+graphics.picture.save_picture(file_name="wind_flow_3.png")
 
 # %%
 # .. image:: ../../_static/wind_flow_3.png
