@@ -366,7 +366,7 @@ plastic.refractive_index.value = 1
 # ~~~~~~~~~~~~~~~~~~~~
 # Set the cell zone conditions for the bezel and the lens.
 
-solver_session.settings.setup.cell_zone_conditions.solid["bezel"].material = "plastic"
+solver_session.settings.setup.cell_zone_conditions.solid["bezel"].general.material = "plastic"
 solver_session.settings.setup.cell_zone_conditions.copy(
     from_="bezel",
     to=[
