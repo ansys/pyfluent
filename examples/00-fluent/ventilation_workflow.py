@@ -85,7 +85,6 @@ from ansys.fluent.core.solver import (
     SurfaceIntegrals,
     Viscous,
 )
-from ansys.units.common import kg, s
 
 # %%
 # Launch Fluent in solver mode
@@ -140,9 +139,7 @@ pressure_outlets["outlet_*"] = {
     "momentum": {
         "target_mass_flow_rate": True,
         "target_mass_flow": {
-            "value": 12.25
-            * kg
-            / s  # Represents the design airflow capacity of one exhaust fan
+            "value": 12.25  # kg/ s; Represents the design airflow capacity of one exhaust fan
         },
     }
 }
