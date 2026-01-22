@@ -310,8 +310,11 @@ def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
             reference = f".. _ref_{mode}_datamodel_{menu_path}:\n\n"
         else:
             temp_path = _get_task_object_name(menu["name"])
-            if temp_path and temp_path == menu_path[1:]:
-                menu_path = re.sub(r"/_([^/]+)$", r"/\1", menu_path)
+            menu_path = (
+                menu_path.removesuffix("/_" + temp_path)
+                if temp_path and menu_path.endswith("/_" + temp_path)
+                else menu_path
+            )
             reference = f".. _ref_{mode}_datamodel_{menu_path.rstrip('/').replace('/', '_')}:\n\n"
     else:
         if menu["name"].__name__ == "main_menu":
@@ -354,7 +357,7 @@ def _get_task_object_name(menu_obj):
     temp_path_list = menu_obj.__qualname__.split(".")
     if (
         len(temp_path_list) > 3
-        and temp_path_list[1] == "task_object"
+        and temp_path_list[1] in ["task_object", "parts", "parts_files"]
         and (
             menu_obj.__name__.startswith("_")
             or menu_obj.__qualname__.split(".")[-2].startswith("_")
@@ -381,10 +384,7 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     if temp_task_obj_name:
         temp_folder_path = _get_docdir(mode, menu_path, is_datamodel)
         full_folder_path = Path(
-            *(
-                temp_task_obj_name if part == f"_{temp_task_obj_name}" else part
-                for part in temp_folder_path.parts
-            )
+            *(p for p in temp_folder_path.parts if p != f"_{temp_task_obj_name}")
         )
     else:
         full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
