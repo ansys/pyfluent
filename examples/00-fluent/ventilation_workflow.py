@@ -165,7 +165,7 @@ solution_methods.spatial_discretization = {
     },
 }
 # %%
-# The cell-based Green–Gauss method calculates gradients using cell centered values and face fluxes,
+# The cell-based Green–Gauss method calculates gradients using cell-centered values and face fluxes,
 # making it less sensitive to mesh irregularities and more stable than node-based methods
 
 # %%
