@@ -37,7 +37,7 @@ Lid Driven Flow in a Cavity
 # primary vortex and secondary corner vortices due to viscous effects and no-slip
 # boundary conditions. This problem is widely used to validate CFD solvers because
 # it combines simple geometry with complex flow physics governed by the incompressible
-# Navier–Stokes equations. Through this simulation, we analyze vortex formation, velocity distribution.
+# Navier–Stokes equations. Through this simulation, we analyze vortex formation and velocity distribution.
 #
 # Problem Description
 # -------------------
