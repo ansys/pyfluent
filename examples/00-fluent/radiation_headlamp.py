@@ -303,7 +303,7 @@ models.viscous.model = "laminar"
 
 radiation = models.radiation
 radiation.model = "monte-carlo"
-radiation.monte_carlo.number_of_histories = 1e7
+radiation.solve_frequency.number_of_histories = 10000000
 radiation.solve_frequency.iteration_interval = 20
 
 ###############################################################################
@@ -366,7 +366,9 @@ plastic.refractive_index.value = 1
 # ~~~~~~~~~~~~~~~~~~~~
 # Set the cell zone conditions for the bezel and the lens.
 
-solver_session.settings.setup.cell_zone_conditions.solid["bezel"].material = "plastic"
+solver_session.settings.setup.cell_zone_conditions.solid["bezel"].general.material = (
+    "plastic"
+)
 solver_session.settings.setup.cell_zone_conditions.copy(
     from_="bezel",
     to=[
@@ -380,7 +382,7 @@ solver_session.settings.setup.cell_zone_conditions.copy(
 )
 
 lens_cellzone_conds = solver_session.settings.setup.cell_zone_conditions.solid["lens"]
-lens_cellzone_conds.material = "glass"
+lens_cellzone_conds.general.material = "glass"
 lens_cellzone_conds.general.participates_in_radiation = True
 
 ###########################################################################################################
@@ -396,7 +398,7 @@ lens_cellzone_conds.general.participates_in_radiation = True
 
 bezel_enc_bc = solver_session.settings.setup.boundary_conditions.wall["bezel-enclosure"]
 bezel_enc_bc.thermal.material = "plastic"
-bezel_enc_bc.radiation.radiation_bc = "Opaque"
+bezel_enc_bc.radiation.bc_type = "Opaque"
 bezel_enc_bc.radiation.internal_emissivity = 1
 bezel_enc_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {"s-": 1}
 
@@ -420,7 +422,7 @@ solver_session.settings.setup.boundary_conditions.copy(
 
 enc_lens_bc = solver_session.settings.setup.boundary_conditions.wall["enclosure-lens"]
 enc_lens_bc.thermal.material = "glass"
-enc_lens_bc.radiation.radiation_bc = "Semi Transparent"
+enc_lens_bc.radiation.bc_type = "Semi Transparent"
 enc_lens_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {"s-": 0}
 
 # Copy enclosure-lens BC to other lens boundary
@@ -439,7 +441,7 @@ enc_rim_bezel_bc = solver_session.settings.setup.boundary_conditions.wall[
     "enclosure-rim-bezel"
 ]
 enc_rim_bezel_bc.thermal.material = "plastic"
-enc_rim_bezel_bc.radiation.radiation_bc = "Opaque"
+enc_rim_bezel_bc.radiation.bc_type = "Opaque"
 enc_rim_bezel_bc.radiation.internal_emissivity = 0.16
 enc_rim_bezel_bc.radiation.diffuse_irradiation_settings.diffuse_fraction_band = {
     "s-": 0.1
@@ -479,7 +481,7 @@ rad_input_bc.radiation.boundary_source = True
 rad_input_bc.radiation.direct_irradiation_settings.direct_irradiation = {
     "Full-spectrum": {"option": "value", "value": 1200}
 }
-rad_input_bc.radiation.direct_irradiation_settings.reference_direction = [
+rad_input_bc.radiation.direct_irradiation_settings.beam_direction = [
     -0.848,
     0,
     -0.53,
