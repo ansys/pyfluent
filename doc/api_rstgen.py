@@ -28,7 +28,7 @@ All the public APIs for PyFluent are listed in the left hand margin. Some key AP
 Meshing mode
 ------------
 
-The :ref:`meshing interface <ref_meshing_workflow_new>` and :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` provide the primary interface for
+The :ref:`meshing workflow <ref_meshing_workflow_new>` and :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` provide the primary interface for
 creating, editing, managing, and querying mesh data.
 
 Solution mode
