@@ -242,14 +242,16 @@ def _generate_api_source_rst_files(folder: str, files: list):
                             "other settings objects in a hierarchical structure.\n"
                         )
                     else:
-                        rst.write(f"{file.removesuffix("_new")}\n")
-                        rst.write(f'{"="*(len(file.removesuffix("_new")))}\n\n')
+                        temp_file_name = file.removesuffix("_new")
+                        rst.write(f"{temp_file_name}\n")
+                        rst.write(f'{"="*(len(temp_file_name))}\n\n')
                         rst.write(
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
                 else:
-                    rst.write(f"{file.removesuffix("_new")}\n")
-                    rst.write(f'{"="*(len(f"{file.removesuffix("_new")}"))}\n\n')
+                    temp_file_name = file.removesuffix("_new")
+                    rst.write(f"{temp_file_name}\n")
+                    rst.write(f'{"="*(len(temp_file_name))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
