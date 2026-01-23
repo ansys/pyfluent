@@ -243,7 +243,7 @@ def _generate_api_source_rst_files(folder: str, files: list):
                         )
                     else:
                         rst.write(f"{file.removesuffix("_new")}\n")
-                        rst.write(f'{"="*(len(f"{file.removesuffix("_new")}"))}\n\n')
+                        rst.write(f'{"="*(len(file.removesuffix("_new")))}\n\n')
                         rst.write(
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
