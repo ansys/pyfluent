@@ -393,7 +393,9 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
     index_file = folder / f"{folder.name}_contents.rst"
     title = _get_title(mode, menu_path, menu, is_datamodel)
     title = (
-        title[1:] if temp_task_obj_name and title == "_" + temp_task_obj_name else title
+        title.removeprefix("_")
+        if temp_task_obj_name and title == "_" + temp_task_obj_name
+        else title
     )
     with open(index_file, "w", encoding="utf8") as f:
         f.write(_get_reference(menu, menu_path, mode, is_datamodel))
@@ -415,7 +417,10 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
             f.write("   :hidden:\n\n")
             for member in menu["with_members"]:
                 temp_member_name = _get_task_object_name(member)
-                if temp_member_name and temp_member_name == member.__name__[1:]:
+                if (
+                    temp_member_name
+                    and temp_member_name == member.__name__.removeprefix("_")
+                ):
                     f.write(f"   {temp_member_name}/{temp_member_name}_contents\n")
                 else:
                     f.write(f"   {member.__name__}/{member.__name__}_contents\n")

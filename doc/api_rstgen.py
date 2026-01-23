@@ -220,10 +220,6 @@ def _write_common_rst_members(rst_file):
     rst_file.write("    :autosummary:\n")
 
 
-def _remove_new(s: str) -> str:
-    return s[:-4] if s.endswith("_new") else s
-
-
 def _generate_api_source_rst_files(folder: str, files: list):
     for file in files:
         if file.endswith("_contents"):
@@ -246,14 +242,14 @@ def _generate_api_source_rst_files(folder: str, files: list):
                             "other settings objects in a hierarchical structure.\n"
                         )
                     else:
-                        rst.write(f"{_remove_new(file)}\n")
-                        rst.write(f'{"="*(len(f"{_remove_new(file)}"))}\n\n')
+                        rst.write(f"{file.removesuffix("_new")}\n")
+                        rst.write(f'{"="*(len(f"{file.removesuffix("_new")}"))}\n\n')
                         rst.write(
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
                 else:
-                    rst.write(f"{_remove_new(file)}\n")
-                    rst.write(f'{"="*(len(f"{_remove_new(file)}"))}\n\n')
+                    rst.write(f"{file.removesuffix("_new")}\n")
+                    rst.write(f'{"="*(len(f"{file.removesuffix("_new")}"))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
