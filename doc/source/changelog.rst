@@ -9,6 +9,7 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.38.dev4 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev4>`_ - January 22, 2026
 `0.38.dev3 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev3>`_ - January 19, 2026
 ===========================================================================================
 
@@ -79,6 +80,9 @@ This document contains the release notes for the project.
         * - Python dunder method access via inactive session.
           - `#4796 <https://github.com/ansys/pyfluent/pull/4796>`_
 
+        * - Fix standalone linux connection
+          - `#4838 <https://github.com/ansys/pyfluent/pull/4838>`_
+
 
   .. tab-item:: Dependencies
 
@@ -91,6 +95,12 @@ This document contains the release notes for the project.
 
         * - Bump version to v0.38.dev3
           - `#4815 <https://github.com/ansys/pyfluent/pull/4815>`_
+
+        * - Limit major version on ansys-tools-filetransfer project
+          - `#4824 <https://github.com/ansys/pyfluent/pull/4824>`_
+
+        * - Remove dependency on pyansys-tools-report
+          - `#4825 <https://github.com/ansys/pyfluent/pull/4825>`_
 
 
   .. tab-item:: Documentation
@@ -153,6 +163,15 @@ This document contains the release notes for the project.
 
         * - Update ansys-units version
           - `#4816 <https://github.com/ansys/pyfluent/pull/4816>`_
+
+        * - Update 'range' from scalar fields to take Variable Descriptors.
+          - `#4822 <https://github.com/ansys/pyfluent/pull/4822>`_
+
+        * - Update the usage of Variable Descriptors in svars.
+          - `#4826 <https://github.com/ansys/pyfluent/pull/4826>`_
+
+        * - Update battery pack and transient compressible nozzle examples [skip tests]
+          - `#4832 <https://github.com/ansys/pyfluent/pull/4832>`_
 
 
 `0.37.1 <https://github.com/ansys/pyfluent/releases/tag/v0.37.1>`_ - December 09, 2025
