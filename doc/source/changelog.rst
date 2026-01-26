@@ -10,6 +10,7 @@ This document contains the release notes for the project.
 .. towncrier release notes start
 
 `0.38.dev4 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev4>`_ - January 22, 2026
+`0.38.dev3 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev3>`_ - January 19, 2026
 ===========================================================================================
 
 .. tab-set::

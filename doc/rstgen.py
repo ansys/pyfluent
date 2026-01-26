@@ -113,7 +113,7 @@ def _process_datamodel_path(full_name: str):
     """
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.generated.", "")
-    path = re.sub("[0-9]", "", path)
+    path = re.sub(r"\d+(?![A-Za-z])", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
     path = path.rstrip(".")
@@ -166,7 +166,9 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
     return full_name, full_path
 
 
-def _get_docdir(mode: str, path: str | None = None, is_datamodel: bool | None = None):
+def _get_docdir(
+    mode: str, path: str | None = None, is_datamodel: bool | None = None
+) -> Path:
     """Get tui doc directory to generate all RST files.
 
     Parameters
@@ -307,6 +309,12 @@ def _get_reference(menu: type, menu_path: str, mode: str, is_datamodel: bool):
         if menu["name"].__name__ == "Root":
             reference = f".. _ref_{mode}_datamodel_{menu_path}:\n\n"
         else:
+            temp_path = _get_task_object_name(menu["name"])
+            menu_path = (
+                menu_path.removesuffix("/_" + temp_path)
+                if temp_path and menu_path.endswith("/_" + temp_path)
+                else menu_path
+            )
             reference = f".. _ref_{mode}_datamodel_{menu_path.rstrip('/').replace('/', '_')}:\n\n"
     else:
         if menu["name"].__name__ == "main_menu":
@@ -345,6 +353,20 @@ def _get_title(mode: str, menu_path: str, menu: type, is_datamodel: bool):
     return title
 
 
+def _get_task_object_name(menu_obj):
+    temp_path_list = menu_obj.__qualname__.split(".")
+    if (
+        len(temp_path_list) > 3
+        and temp_path_list[1] in ["task_object", "parts", "parts_files"]
+        and (
+            menu_obj.__name__.startswith("_")
+            or menu_obj.__qualname__.split(".")[-2].startswith("_")
+            or menu_obj.__qualname__.split(".")[-3].startswith("_")
+        )
+    ):
+        return temp_path_list[2]
+
+
 def _write_doc(menu: type, mode: str, is_datamodel: bool):
     """Write RST file for each menu.
 
@@ -358,11 +380,23 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         Whether to generate datamodel RST files.
     """
     menu_name, menu_path = _get_menu_name_path(menu["name"], is_datamodel)
-    full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
+    temp_task_obj_name = _get_task_object_name(menu["name"])
+    if temp_task_obj_name:
+        temp_folder_path = _get_docdir(mode, menu_path, is_datamodel)
+        full_folder_path = Path(
+            *(p for p in temp_folder_path.parts if p != f"_{temp_task_obj_name}")
+        )
+    else:
+        full_folder_path = _get_docdir(mode, menu_path, is_datamodel)
     Path(full_folder_path).mkdir(parents=True, exist_ok=True)
     folder = Path(full_folder_path)
     index_file = folder / f"{folder.name}_contents.rst"
     title = _get_title(mode, menu_path, menu, is_datamodel)
+    title = (
+        title.removeprefix("_")
+        if temp_task_obj_name and title == "_" + temp_task_obj_name
+        else title
+    )
     with open(index_file, "w", encoding="utf8") as f:
         f.write(_get_reference(menu, menu_path, mode, is_datamodel))
         f.write(f"{title}\n")
@@ -381,8 +415,15 @@ def _write_doc(menu: type, mode: str, is_datamodel: bool):
         if menu["with_members"]:
             f.write(".. toctree::\n")
             f.write("   :hidden:\n\n")
-            for member in _get_sorted_members(menu["with_members"]):
-                f.write(f"   {member}/{member}_contents\n")
+            for member in menu["with_members"]:
+                temp_member_name = _get_task_object_name(member)
+                if (
+                    temp_member_name
+                    and temp_member_name == member.__name__.removeprefix("_")
+                ):
+                    f.write(f"   {temp_member_name}/{temp_member_name}_contents\n")
+                else:
+                    f.write(f"   {member.__name__}/{member.__name__}_contents\n")
 
 
 def _generate_all_attribute_classes(all_menus: list, main_menu: type):
