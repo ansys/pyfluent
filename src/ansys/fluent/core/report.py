@@ -26,7 +26,7 @@ from importlib.metadata import requires
 
 from packaging.requirements import Requirement
 
-import ansys.tools.report as pyansys_report
+import ansys.tools.common.report as pyansys_report
 
 ANSYS_ENV_VARS = [
     "ANSYSLMD_LICENSE_FILE",

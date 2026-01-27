@@ -194,7 +194,7 @@ def test_add_on_affected(new_meshing_session):
         lambda obj: data.append(True)
     )
     assert data == []
-    wt = meshing.watertight()
+    wt = meshing.watertight(legacy=True)
     sleep(5)
     assert len(data) > 0
     assert data[0]

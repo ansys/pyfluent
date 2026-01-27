@@ -168,8 +168,9 @@ def command_name_to_task_name(meshing_root, command_name: str) -> str:
     -----
     This is a workaround for Fluent 26R1.
     """
-    # TODO: This is a fix only for 26R1 as the server lacks the mechanism to return mapped values
-    #  for '<Task Object>.get_next_possible_tasks()'.
+    # TODO: This fix is applicable till the server lacks the mechanism to return mapped values
+    #  for '<Task Object>.get_next_possible_tasks()' and
+    #  for '<Workflow>.get_new_insertable_tasks()'.
     command_instance = getattr(meshing_root, command_name).create_instance()
     return command_instance.get_attr("APIName") or command_instance.get_attr(
         "helpString"
@@ -307,15 +308,39 @@ class Workflow:
 
     def _new_workflow(self, name: str):
         """Initialize a new workflow from a predefined template."""
-        self._workflow.general.initialize_workflow(workflow_type=name)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.initialize_workflow(workflow_type=name)
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def _load_workflow(self, file_path: str):
         """Load a workflow from a saved workflow file (.wft)."""
-        self._workflow.general.load_workflow(file_path=file_path)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.load_workflow(file_path=file_path)
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def _create_workflow(self):
         """Create a new empty workflow."""
-        self._workflow.general.create_new_workflow()
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.create_new_workflow()
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to a file."""
@@ -509,8 +534,100 @@ class Workflow:
 
         self._workflow.general.delete_tasks(list_of_tasks=items_to_be_deleted)
 
+    @property
+    def insertable_tasks(self) -> FirstTask:
+        """Tasks that can be inserted into an empty workflow.
+
+        Returns a helper that exposes the set of valid starting tasks for a blank
+        workflow as attributes. Each attribute is an object with an `insert()`
+        method that inserts that task into the workflow.
+
+        Notes
+        -----
+        - This helper only populates insertable tasks when the workflow is empty.
+        - Task names are exposed using Python-friendly identifiers (snake_case).
+        """
+        return self.FirstTask(self)
+
+    class FirstTask:
+        """Helper exposing insertable tasks for an empty workflow.
+
+        This container dynamically creates attributes for each command that the
+        server allows as the first task in a new workflow.
+
+        Access an attribute and call `.insert()` to insert that task.
+        """
+
+        def __init__(self, workflow):
+            """Initialize a ``FirstTask`` instance."""
+            self._workflow = workflow
+            self._insertable_tasks: list = []
+            # Map: server command name -> python-friendly task name
+            self._initial_task_map: dict[str, str] = {}
+
+            # Query server for commands that can start a new workflow.
+            # Older Fluent versions don’t provide this API; use a fallback list.
+            try:
+                initial_tasks = self._workflow.general.get_insertable_tasks()
+            except AttributeError:
+                # For Fluent Version 26R1 or before.
+                initial_tasks = ["ImportGeometry", "PartManagement", "RunCustomJournal"]
+            for command in initial_tasks:
+                self._initial_task_map[command] = command_name_to_task_name(
+                    self._workflow._command_source, command
+                )
+            # Only expose these attributes when the workflow is empty.
+            if self._workflow._workflow.general.workflow.task_list() == []:
+                for command_name, python_name in self._initial_task_map.items():
+                    # Build a lightweight proxy object with an insert() method.
+                    insertable_task = type("Insert", (self._Insert,), {})(
+                        self._workflow,
+                        command_name,
+                        self._initial_task_map,
+                    )
+                    # Expose as attribute: e.g., <workflow>.insertable_tasks.import_geometry.insert()
+                    setattr(self, python_name, insertable_task)
+                    self._insertable_tasks.append(insertable_task)
+
+        def __call__(self) -> list:
+            """Return all insertable task proxies as a list."""
+            return self._insertable_tasks
+
+        class _Insert:
+            """Represents a single insertable starting task.
+
+            Provides the `insert()` method to add this task to the workflow.
+            """
+
+            def __init__(self, workflow, name, task_map):
+                """Initialize an _Insert instance.
+
+                Parameters
+                ----------
+                workflow : Workflow
+                    Target workflow.
+                name : str
+                    Server command name (e.g., "ImportGeometry").
+                task_map : dict[str, str]
+                    Mapping from server command name -> python-friendly task name.
+                """
+                self._workflow = workflow
+                self._name = name
+                self._task_map = task_map
+
+            def insert(self) -> None:
+                """Insert this task into the workflow as the first task."""
+                self._workflow.general.insert_new_task(command_name=self._name)
+
+            def __repr__(self) -> str:
+                return f"<Insertable '{self._task_map[self._name]}' task>"
+
     def __getattr__(self, item):
         """Enable attribute-style access to tasks."""
+        if item in ["parts", "parts_files"]:
+            raise AttributeError(
+                f"'{item}' is only supported in Fault-tolerant Meshing workflows."
+            )
         if item not in self._task_dict:
             self.tasks()
         if item in self._task_dict:
@@ -597,6 +714,12 @@ class TaskObject:
         super().__setattr__("_parent", parent)
         super().__setattr__("_meshing_root", meshing_root)
         self._cache = {}
+
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self._task_object, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
 
     def _get_next_possible_tasks(self):
         """Get display names of tasks that can be inserted after this task."""
@@ -761,7 +884,10 @@ class TaskObject:
         parent = self._parent
         meshing_root = self._meshing_root
         name_1 = name
-        name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
+        temp_name = re.sub(r"\s+\d+$", "", task_obj.name().strip())
+        # For the first instance (index 0), use the base task name without a numeric suffix;
+        # subsequent instances follow the "<base> <index>" naming convention (e.g., "Task 1").
+        name_2 = temp_name if key == 0 else temp_name + f" {key}"
         try:
             task_obj = getattr(workflow.task_object, name_1)[name_2]
             if is_compound_child(task_obj.task_type):
