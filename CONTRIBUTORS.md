@@ -47,6 +47,7 @@
 * [Roberto Pastor Muela](https://github.com/RobPasMue)
 * [Stephen Fuqua](https://github.com/smf2001)
 * [sujal-tipnis](https://github.com/sujal-tipnis)
+* [Sébastien Morais](https://github.com/SMoraisAnsys)
 * [Tejal Prabhu](https://github.com/tejalprabhu01)
 * [Varun Dandekar](https://github.com/V-Dandekar)
 * [Yogesh Patel](https://github.com/ypatel-qa)
