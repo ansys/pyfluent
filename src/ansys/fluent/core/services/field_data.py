@@ -205,7 +205,7 @@ class _FieldInfo(BaseFieldInfo):
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = field
+        request.fieldName = _to_field_name_str(field)
         request.nodeValue = node_value
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]

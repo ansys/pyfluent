@@ -1,3 +1,11 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+#   "matplotlib",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -64,7 +72,7 @@ import_filename = examples.download_file(
 # Launch Fluent session with solver mode and print Fluent version
 # ---------------------------------------------------------------
 
-session = pyfluent.launch_fluent(precision="double", processor_count=2, version="3d")
+session = pyfluent.launch_fluent(precision="double", processor_count=2, dimension=3)
 print(session.get_fluent_version())
 
 ####################################################################################
