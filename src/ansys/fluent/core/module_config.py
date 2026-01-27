@@ -20,11 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """Configuration variables for PyFluent."""
+from collections.abc import Callable
 import inspect
 import os
 from pathlib import Path
-from typing import Any, Callable, Generic, TypeVar
+from typing import Any, Generic, TypeVar
 import warnings
+
+__all__ = ("config",)
+
 
 TConfig = TypeVar("TConfig", bound="Config")
 

@@ -33,6 +33,7 @@ dependencies = [
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
     "pyyaml>=6.0",
+    "typing-extensions>=4.12"
 ]
 dynamic = ["version"]
 
@@ -233,3 +234,12 @@ skips = [
     "B604",
     "B607",
     ]
+
+[tool.basedpyright]
+reportAny = false
+reportUnknownMemberType = false
+reportExplicitAny = false
+reportPrivateUsage = false
+reportUnusedCallResult = false
+ignore = ["doc", "src/ansys/fluent/core/generated"]
+baselineFile = ".ci/basedpyright.json"

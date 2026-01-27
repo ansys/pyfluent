@@ -61,6 +61,7 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm_solver_session = slurm_solver_launcher()
 """
 
+from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor
 import inspect
 import logging
@@ -68,7 +69,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Callable, Dict
+from typing import Any, Generic
+
+from typing_extensions import TypeVar
 
 from ansys.fluent.core import config
 from ansys.fluent.core._types import PathType
@@ -96,6 +99,7 @@ from ansys.fluent.core.launcher.server_info import _get_server_info_file_names
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -208,7 +212,14 @@ class _SlurmWrapper:
         subprocess.run(["scancel", f"{job_id}"])
 
 
-class SlurmFuture:
+SessionT = TypeVar(
+    "SessionT",
+    bound="Meshing | PureMeshing | Solver | SolverIcing | SolverAero",
+    default="Meshing | PureMeshing | Solver | SolverIcing | SolverAero",
+)
+
+
+class SlurmFuture(Generic[SessionT]):
     """Encapsulates asynchronous launch of Fluent within a Slurm environment.
 
     The interface is similar to Python's
@@ -320,9 +331,7 @@ class SlurmFuture:
         )
         return self._get_state() in ["", "CANCELLED", "COMPLETED"]
 
-    def result(
-        self, timeout: int = None
-    ) -> Meshing | PureMeshing | Solver | SolverIcing:
+    def result(self, timeout: int | None = None) -> SessionT:
         """Return the session instance corresponding to the Fluent launch. If Fluent
         hasn't yet launched, then this method will wait up to timeout seconds. If Fluent
         hasn't launched in timeout seconds, then a TimeoutError will be raised. If
@@ -345,7 +354,7 @@ class SlurmFuture:
         """
         return self._future.result(timeout)
 
-    def exception(self, timeout: int = None) -> Exception:
+    def exception(self, timeout: int | None = None) -> Exception:
         """Return the exception raised by the Fluent launch. If Fluent hasn't yet
         launched, then this method will wait up to timeout seconds. If Fluent hasn't
         launched in timeout seconds, then a TimeoutError will be raised. If timeout is
@@ -394,7 +403,7 @@ class SlurmLauncher:
         journal_file_names: None | str | list[str] = None,
         start_timeout: int = -1,
         additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
+        env: dict[str, Any] | None = None,
         cleanup_on_exit: bool = True,
         start_transcript: bool = True,
         case_file_name: "PathType | None" = None,

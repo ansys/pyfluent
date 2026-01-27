@@ -27,6 +27,7 @@ from __future__ import annotations
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
@@ -84,16 +85,18 @@ class MeshingWorkflow(Workflow):
             self._activate_dynamic_interface(dynamic_interface=True)
         self._initialized = True
 
-    def __getattribute__(self, item: str):
-        if (
-            not item.startswith("_")
-            and super().__getattribute__("_initialized")
-            and not getattr(self._meshing.GlobalSettings, self._identifier)()
-        ):
-            raise RuntimeError(
-                f"'{self._name}' objects are inaccessible from other workflows."
-            )
-        return super().__getattribute__(item)
+    if not TYPE_CHECKING:
+
+        def __getattribute__(self, item: str):
+            if (
+                not item.startswith("_")
+                and super().__getattribute__("_initialized")
+                and not getattr(self._meshing.GlobalSettings, self._identifier)()
+            ):
+                raise RuntimeError(
+                    f"'{self._name}' objects are inaccessible from other workflows."
+                )
+            return super().__getattribute__(item)
 
 
 class WatertightMeshingWorkflow(MeshingWorkflow):

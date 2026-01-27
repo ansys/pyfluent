@@ -35,11 +35,12 @@ Examples
 >>> container_solver_session = container_solver_launcher()
 """
 
-import inspect
 import logging
 import os
 import time
-from typing import Any
+from typing import Any, TypedDict
+
+from typing_extensions import Unpack
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.error_warning_messages import (
@@ -68,6 +69,39 @@ import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+
+class ContainerArgsWithoutDryRun(
+    TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    ui_mode: UIMode | str | None
+    graphics_driver: (
+        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
+    )
+    product_version: FluentVersion | str | float | int | None
+    dimension: Dimension | int | None
+    precision: Precision | str | None
+    processor_count: int | None
+    start_timeout: int
+    additional_arguments: str
+    container_dict: dict[str, Any] | None
+    cleanup_on_exit: bool
+    start_transcript: bool
+    py: bool | None
+    gpu: bool | None
+    start_watchdog: bool | None
+    file_transfer_service: Any | None
+    use_docker_compose: bool | None
+    use_podman_compose: bool | None
+    certificates_folder: str | None
+    insecure_mode: bool
+
+
+class ContainerArgs(
+    ContainerArgsWithoutDryRun, total=False
+):  # pylint: disable=missing-class-docstring
+    dry_run: bool
+
+
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
@@ -93,29 +127,8 @@ class DockerLauncher:
 
     def __init__(
         self,
-        mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        container_dict: dict | None = None,
-        dry_run: bool = False,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        py: bool | None = None,
-        gpu: bool | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
-        use_docker_compose: bool | None = None,
-        use_podman_compose: bool | None = None,
-        certificates_folder: str | None = None,
-        insecure_mode: bool = False,
+        mode: FluentMode | str,
+        **kwargs: Unpack[ContainerArgs],
     ):
         """
         Launch a Fluent session in container mode.
@@ -200,25 +213,23 @@ class DockerLauncher:
         # GitHub Actions runs to indicate that insecure mode should be used.
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
         certificates_folder, insecure_mode = get_remote_grpc_options(
-            certificates_folder, insecure_mode or insecure_mode_env
+            kwargs.get("certificates_folder"),
+            kwargs.get("insecure_mode") or insecure_mode_env,
         )
         if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
-        locals_ = locals().copy()
-        argvals = {
-            arg: locals_.get(arg)
-            for arg in inspect.getargvalues(inspect.currentframe()).args
-        }
-        self.argvals, self.new_session = _get_argvals_and_session(argvals)
-        if self.argvals["start_timeout"] is None:
+        self.argvals, self.new_session = _get_argvals_and_session(
+            {**kwargs, "mode": mode}
+        )
+        if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
-        self.file_transfer_service = file_transfer_service
+        self.file_transfer_service = kwargs.get("file_transfer_service")
         if self.argvals["mode"] == FluentMode.SOLVER_ICING:
             self.argvals["fluent_icing"] = True
-        if self.argvals["container_dict"] is None:
+        if self.argvals.get("container_dict") is None:
             self.argvals["container_dict"] = {}
-        if self.argvals["product_version"]:
+        if "product_version" in self.argvals:
             self.argvals["container_dict"][
                 "image_tag"
             ] = f"v{FluentVersion(self.argvals['product_version']).value}"
@@ -226,6 +237,9 @@ class DockerLauncher:
         self._args = _build_fluent_launch_args_string(**self.argvals).split()
         if FluentMode.is_meshing(self.argvals["mode"]):
             self._args.append(" -meshing")
+
+        use_docker_compose = kwargs.get("use_docker_compose")
+        use_podman_compose = kwargs.get("use_podman_compose")
         self._compose_config = ComposeConfig(use_docker_compose, use_podman_compose)
         fluent_image_tag = os.getenv("FLUENT_IMAGE_TAG")
         # There is an issue in passing gRPC arguments to Fluent image version 24.1.0 during github runs.
@@ -242,7 +256,6 @@ class DockerLauncher:
             self._args.append(" -grpc-certs-folder=/tmp/certs")
 
     def __call__(self):
-
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
                 self._args,
