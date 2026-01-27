@@ -385,15 +385,14 @@ graphics.picture.save_picture(file_name="battery_pack_5.png")
 # Display monitor plots
 # ---------------------
 
-plot_window = GraphicsWindow(solver)
+plot_window = GraphicsWindow()
 
-voltage_rplot = Monitor(solver, monitor_set_name="voltage_surface_areaavg-rplot")
+voltage_rplot = Monitor(solver=solver, monitor_set_name="voltage_surface_areaavg-rplot")
 plot_window.add_plot(voltage_rplot, position=(0, 0))
 
-temp_rplot = Monitor(solver, monitor_set_name="volume_max_temp-rplot")
+temp_rplot = Monitor(solver=solver, monitor_set_name="volume_max_temp-rplot")
 plot_window.add_plot(temp_rplot, position=(1, 1))
 
-plot_window.renderer = "matplotlib"
 plot_window.show()
 
 # %%

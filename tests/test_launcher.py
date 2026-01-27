@@ -349,9 +349,11 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     assert get_fluent_exe_path() == expected_path
 
 
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setattr(pyfluent.config, "watchdog_exception_on_error", True)
-    pyfluent.launch_fluent(start_watchdog=True, insecure_mode=True)
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    pyfluent.launch_fluent(start_watchdog=True, **kwargs)
 
 
 @pytest.mark.standalone
@@ -436,18 +438,17 @@ def test_fluent_launchers():
         assert pim_meshing_session
         pim_meshing_session.exit()
 
-        pim_solver_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.SOLVER, **kwargs
-        )
+        pim_solver_launcher = create_launcher(LaunchMode.PIM, **kwargs, dimension=2)
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
         pim_solver_session.exit()
 
-        pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2, dry_run=True
+        two_d_pim_meshing_launcher = create_launcher(
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2
         )
-        args = pim_meshing_launcher()
-        assert args[0] == "fluent-2ddp"
+        two_d_pim_meshing_session = two_d_pim_meshing_launcher()
+        assert two_d_pim_meshing_session.dimension == pyfluent.Dimension.TWO
+        two_d_pim_meshing_session.exit()
 
 
 @pytest.mark.parametrize(
@@ -626,7 +627,7 @@ def test_container_launcher_args():
 
 def test_report():
     from ansys.fluent.core.report import ANSYS_ENV_VARS, dependencies
-    from ansys.tools.report import Report
+    from ansys.tools.common.report import Report
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
