@@ -1389,7 +1389,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
     query_names = []
     _child_aliases = {}
 
-    def _create_child_object(self, cname: str):
+    def _create_child_object(self, cname: str, **kwargs: Any):
         ret = self._objects.get(cname)
         if not ret:
             cls = self.__class__.child_object_type
@@ -1399,6 +1399,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
             "rename",
             types.MethodType(lambda obj, name: _rename(self, name, cname), ret),
         )
+        ret.set_state(kwargs)
         return ret
 
     def _update_objects(self):
@@ -1451,7 +1452,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         obj_names_list = obj_names if isinstance(obj_names, list) else list(obj_names)
         return obj_names_list
 
-    def __getitem__(self, name: str) -> ChildTypeT:
+    def __getitem__(self, name: str, **kwargs: Any) -> ChildTypeT:
         if name not in self.get_object_names():
             if self.flproxy.has_wildcard(name):
                 child_cls = self.__class__.child_object_type
@@ -1473,7 +1474,7 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
 
         obj = self._objects.get(name)
         if not obj:
-            obj = self._create_child_object(name)
+            obj = self._create_child_object(name, **kwargs)
         return obj
 
     def get(self, name: str) -> ChildTypeT:
@@ -1843,7 +1844,8 @@ class BaseCommand(Action):
             and isinstance(self._parent, NamedObject)
             and ret in self._parent
         ):
-            return self._parent[ret]
+            nameless_kwargs = {k: v for k, v in kwds.items() if k != "name"}
+            return self._parent.__getitem__(ret, **nameless_kwargs)
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)

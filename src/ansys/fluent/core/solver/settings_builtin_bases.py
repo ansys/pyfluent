@@ -22,7 +22,9 @@
 
 """Base classes for builtin setting classes."""
 
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
+
+from typing_extensions import Self
 
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
@@ -82,19 +84,19 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     return obj
 
 
-def _initialize_settings(instance, defaults: dict, settings_source=None, **kwargs):
-    active_session = _get_active_session()
-    instance.__dict__.update(defaults | kwargs)
-    if settings_source is not None:
-        instance.settings_source = settings_source
-    elif active_session:
-        instance.settings_source = active_session
+class _SettingsInitializerMixin:
+    def __init__(self, defaults: dict, settings_source: SettingsBase | Solver | None = None, **kwargs: Any):
+        active_session = _get_active_session()
+        self.__dict__.update(defaults | kwargs)
+        if settings_source is not None:
+            self.settings_source = settings_source
+        elif active_session:
+            self.settings_source = active_session
 
-
-class _SingletonSetting:
+class _SingletonSetting(_SettingsInitializerMixin):
     # Covers groups, named-object containers and commands.
     def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
-        _initialize_settings(self, {"settings_source": None}, settings_source, **kwargs)
+        super().__init__({"settings_source": None}, settings_source, **kwargs)
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -106,14 +108,25 @@ class _SingletonSetting:
         else:
             super().__setattr__(name, value)
 
+    @classmethod
+    def get(cls, settings_source: SettingsBase | Solver | None = None, /, * name: str) -> Self:
+        """Get and return the singleton instance of this object in Fluent.
 
-class _NonCreatableNamedObjectSetting:
+        Parameters
+        ----------
+        settings_source
+            Something with a .settings attribute. If omitted the active session assumed from the :func:`using` context manager.
+        name
+            Name of the object to get, if applicable, can be a wildcard pattern.
+        """
+        return cls(settings_source=settings_source, name=name)
+
+
+class _NonCreatableNamedObjectSetting(_SettingsInitializerMixin):
     def __init__(
         self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
     ):
-        _initialize_settings(
-            self, {"settings_source": None, "name": name}, settings_source, **kwargs
-        )
+        super().__init__({"settings_source": None, "name": name}, settings_source, **kwargs)
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -127,7 +140,7 @@ class _NonCreatableNamedObjectSetting:
             super().__setattr__(name, value)
 
 
-class _CreatableNamedObjectSetting:
+class _CreatableNamedObjectSetting(_SettingsInitializerMixin):
     def __init__(
         self,
         settings_source: SettingsBase | Solver | None = None,
@@ -137,8 +150,7 @@ class _CreatableNamedObjectSetting:
     ):
         if name and new_instance_name:
             raise ValueError("Cannot specify both name and new_instance_name.")
-        _initialize_settings(
-            self,
+        super().__init__(
             {
                 "settings_source": None,
                 "name": name,
@@ -147,6 +159,27 @@ class _CreatableNamedObjectSetting:
             settings_source,
             **kwargs,
         )
+
+    @classmethod
+    def create(cls, settings_source: SettingsBase | Solver | None = None, /, name: str | None = None, **kwargs: Any) -> Self:
+        """Create and return an instance of this object in Fluent.
+
+        Parameters
+        ----------
+        settings_source
+            Something with a .settings attribute. If omitted the active session assumed from the :func:`using` context manager.
+        name
+            Name of the new object to create. If omitted, a default name will be assigned by Fluent.
+        **kwargs
+            Additional attributes to set on the created object. This only works for direct value assignments, not for nested objects.
+        """
+        self = cls(
+            settings_source=settings_source,
+            new_instance_name=name,
+        )
+        self.set_state(kwargs)
+
+        return self
 
     def __setattr__(self, name, value):
         if name == "settings_source":
