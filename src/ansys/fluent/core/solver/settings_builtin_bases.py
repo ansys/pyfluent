@@ -22,7 +22,7 @@
 
 """Base classes for builtin setting classes."""
 
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Protocol, TypeVar, runtime_checkable
 
 from typing_extensions import Self
 
@@ -85,7 +85,12 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
 
 
 class _SettingsObjectMixin:
-    def __init__(self, defaults: dict, settings_source: SettingsBase | Solver | None = None, **kwargs: Any):
+    def __init__(
+        self,
+        defaults: dict,
+        settings_source: SettingsBase | Solver | None = None,
+        **kwargs: Any,
+    ):
         active_session = _get_active_session()
         self.__dict__.update(defaults | kwargs)
         if settings_source is not None:
@@ -93,18 +98,6 @@ class _SettingsObjectMixin:
         elif active_session:
             self.settings_source = active_session
 
-    @classmethod
-    def get(cls, settings_source: SettingsBase | Solver | None = None, /, *, name: str) -> Self:
-        """Get and return the singleton instance of this object in Fluent.
-
-        Parameters
-        ----------
-        settings_source
-            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
-        name
-            Name of the object to get, if applicable, can be a wildcard pattern.
-        """
-        return cls(settings_source=settings_source, name=name)
 
 class _SingletonSetting(_SettingsObjectMixin):
     # Covers groups, named-object containers and commands.
@@ -122,12 +115,16 @@ class _SingletonSetting(_SettingsObjectMixin):
             super().__setattr__(name, value)
 
 
+MixinT = TypeVar("MixinT", bound="_SettingsObjectMixin")
+
 
 class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
     def __init__(
         self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
     ):
-        super().__init__({"settings_source": None, "name": name}, settings_source, **kwargs)
+        super().__init__(
+            {"settings_source": None, "name": name}, settings_source, **kwargs
+        )
 
     def __setattr__(self, name, value):
         if name == "settings_source":
@@ -139,6 +136,26 @@ class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
             self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
         else:
             super().__setattr__(name, value)
+
+    @classmethod
+    def get(
+        cls: type[MixinT],
+        settings_source: SettingsBase | Solver | None = None,
+        /,
+        *,
+        name: str,
+    ) -> MixinT:
+        """Get and return the singleton instance of this object in Fluent.
+
+        Parameters
+        ----------
+        settings_source
+            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
+        name
+            Name of the object to get, if applicable, can be a wildcard pattern.
+        """
+        return cls(settings_source=settings_source, name=name)
+
 
 class _CreatableNamedObjectSetting(_SettingsObjectMixin):
     def __init__(
@@ -160,8 +177,16 @@ class _CreatableNamedObjectSetting(_SettingsObjectMixin):
             **kwargs,
         )
 
+    get = classmethod(_NonCreatableNamedObjectSetting.get.__func__)
+
     @classmethod
-    def create(cls, settings_source: SettingsBase | Solver | None = None, /, name: str | None = None, **kwargs: Any) -> Self:
+    def create(
+        cls,
+        settings_source: SettingsBase | Solver | None = None,
+        /,
+        name: str | None = None,
+        **kwargs: Any,
+    ) -> Self:
         """Create and return an instance of this object in Fluent.
 
         Parameters

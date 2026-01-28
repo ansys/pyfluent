@@ -1728,7 +1728,7 @@ def _get_new_keywords(obj, *args, **kwds):
                 newkwds[alias] = v
             elif k in obj.argument_names:
                 newkwds[k] = v
-            else:
+            elif k not in obj.get_active_child_names():
                 unknown_keywords.add(k)
     for k in unknown_keywords:
         # Noisily ignore unknown keywords

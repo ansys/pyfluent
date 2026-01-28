@@ -23,11 +23,11 @@
 from pathlib import Path
 import tempfile
 
-from ansys.fluent.core.session_solver import Solver
 import pytest
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import *  # noqa: F401, F403
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -378,24 +378,18 @@ def test_builtin_settings(mixing_elbow_case_data_session):
 @pytest.mark.codegen_required
 def test_builtin_settings_methods(mixing_elbow_case_data_session: Solver):
     solver = mixing_elbow_case_data_session
-    assert (
-        ReportFile.create(solver, name="report-file-1")
-        == ReportFile.get(solver, name="report-file-1")
+    assert ReportFile.create(solver, name="report-file-1") == ReportFile.get(
+        solver, name="report-file-1"
     )
 
     file = ReportFile.create(solver, name="report-file-2", file_name="foo.out")
-    assert (
-        file
-        == ReportFile.get(solver, name="report-file-2")
-    )
-    assert file.file_name == "foo.out"
+    assert file == ReportFile.get(solver, name="report-file-2")
+    assert file.file_name() == r".\\foo.out"
 
     file_2 = ReportFile.create(solver)
     assert file_2.name()  # it should have a default anonymous name assigned by Fluent
 
-    assert BoundaryCondition.get(
-        solver, name="cold-inlet"
-    )
+    assert BoundaryCondition.get(solver, name="cold-inlet")
 
 
 @pytest.mark.codegen_required
