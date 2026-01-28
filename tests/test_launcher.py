@@ -438,18 +438,17 @@ def test_fluent_launchers():
         assert pim_meshing_session
         pim_meshing_session.exit()
 
-        pim_solver_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.SOLVER, **kwargs
-        )
+        pim_solver_launcher = create_launcher(LaunchMode.PIM, **kwargs, dimension=2)
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
         pim_solver_session.exit()
 
-        pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2, dry_run=True
+        two_d_pim_meshing_launcher = create_launcher(
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2
         )
-        args = pim_meshing_launcher()
-        assert args[0] == "fluent-2ddp"
+        two_d_pim_meshing_session = two_d_pim_meshing_launcher()
+        assert two_d_pim_meshing_session.dimension == pyfluent.Dimension.TWO
+        two_d_pim_meshing_session.exit()
 
 
 @pytest.mark.parametrize(
