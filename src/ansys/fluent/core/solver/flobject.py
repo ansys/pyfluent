@@ -1844,8 +1844,8 @@ class BaseCommand(Action):
             and isinstance(self._parent, NamedObject)
             and ret in self._parent
         ):
-            nameless_kwargs = {k: v for k, v in kwds.items() if k != "name"}
-            return self._parent.__getitem__(ret, **nameless_kwargs)
+            child_attributes = {k: v for k, v in kwds.items() if k != "name"}
+            return self._parent.__getitem__(ret, **child_attributes)
         return_t = getattr(self, "return_type", None)
         if return_t:
             base_t = _baseTypes.get(return_t)
