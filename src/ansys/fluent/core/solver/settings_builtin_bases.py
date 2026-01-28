@@ -109,7 +109,7 @@ class _SingletonSetting(_SettingsInitializerMixin):
             super().__setattr__(name, value)
 
     @classmethod
-    def get(cls, settings_source: SettingsBase | Solver | None = None, /, * name: str) -> Self:
+    def get(cls, settings_source: SettingsBase | Solver | None = None, /, *, name: str) -> Self:
         """Get and return the singleton instance of this object in Fluent.
 
         Parameters
