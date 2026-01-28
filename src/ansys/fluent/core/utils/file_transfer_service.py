@@ -277,6 +277,17 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         self.image_tag = image_tag if image_tag else "latest"
         self.mount_target = mount_target if mount_target else "/home/container/workdir/"
         self.mount_source = mount_source if mount_source else MOUNT_SOURCE
+        server_command = [
+            "--host=0.0.0.0",
+            "--port=50000",
+            "--allow-remote-host",
+            "--transport-mode=mtls",
+            "--certs-dir=/certs",
+        ]
+
+        volumes = [f"{self.mount_source}:{self.mount_target}"]
+        if certs_dir:
+            volumes.append(f"{certs_dir}:/certs:ro")
         try:
             self.host_port = port if port else random.randint(5000, 6000)
             self.ports = {"50000/tcp": self.host_port}
@@ -284,7 +295,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
+                volumes=volumes,
+                command=server_command,
             )
         except docker.errors.DockerException:
             self.host_port = port if port else random.randint(6000, 7000)
@@ -293,7 +305,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
                 image=f"{self.image_name}:{self.image_tag}",
                 ports=self.ports,
                 detach=True,
-                volumes=[f"{self.mount_source}:{self.mount_target}"],
+                volumes=volumes,
+                command=server_command,
             )
         import ansys.tools.filetransfer as ft
 
