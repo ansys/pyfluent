@@ -393,6 +393,10 @@ def test_builtin_settings_methods(mixing_elbow_case_data_session: Solver):
     file_2 = ReportFile.create(solver)
     assert file_2.name()  # it should have a default anonymous name assigned by Fluent
 
+    assert BoundaryCondition.get(
+        solver, name="cold-inlet"
+    )
+
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=23.2")

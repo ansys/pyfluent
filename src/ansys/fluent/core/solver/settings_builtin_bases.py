@@ -84,7 +84,7 @@ def _get_settings_obj(settings_root, builtin_settings_obj):
     return obj
 
 
-class _SettingsInitializerMixin:
+class _SettingsObjectMixin:
     def __init__(self, defaults: dict, settings_source: SettingsBase | Solver | None = None, **kwargs: Any):
         active_session = _get_active_session()
         self.__dict__.update(defaults | kwargs)
@@ -93,7 +93,20 @@ class _SettingsInitializerMixin:
         elif active_session:
             self.settings_source = active_session
 
-class _SingletonSetting(_SettingsInitializerMixin):
+    @classmethod
+    def get(cls, settings_source: SettingsBase | Solver | None = None, /, *, name: str) -> Self:
+        """Get and return the singleton instance of this object in Fluent.
+
+        Parameters
+        ----------
+        settings_source
+            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
+        name
+            Name of the object to get, if applicable, can be a wildcard pattern.
+        """
+        return cls(settings_source=settings_source, name=name)
+
+class _SingletonSetting(_SettingsObjectMixin):
     # Covers groups, named-object containers and commands.
     def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
         super().__init__({"settings_source": None}, settings_source, **kwargs)
@@ -108,21 +121,9 @@ class _SingletonSetting(_SettingsInitializerMixin):
         else:
             super().__setattr__(name, value)
 
-    @classmethod
-    def get(cls, settings_source: SettingsBase | Solver | None = None, /, *, name: str) -> Self:
-        """Get and return the singleton instance of this object in Fluent.
-
-        Parameters
-        ----------
-        settings_source
-            Something with a .settings attribute. If omitted the active session assumed from the :func:`using` context manager.
-        name
-            Name of the object to get, if applicable, can be a wildcard pattern.
-        """
-        return cls(settings_source=settings_source, name=name)
 
 
-class _NonCreatableNamedObjectSetting(_SettingsInitializerMixin):
+class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
     def __init__(
         self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
     ):
@@ -139,8 +140,7 @@ class _NonCreatableNamedObjectSetting(_SettingsInitializerMixin):
         else:
             super().__setattr__(name, value)
 
-
-class _CreatableNamedObjectSetting(_SettingsInitializerMixin):
+class _CreatableNamedObjectSetting(_SettingsObjectMixin):
     def __init__(
         self,
         settings_source: SettingsBase | Solver | None = None,
@@ -167,7 +167,7 @@ class _CreatableNamedObjectSetting(_SettingsInitializerMixin):
         Parameters
         ----------
         settings_source
-            Something with a .settings attribute. If omitted the active session assumed from the :func:`using` context manager.
+            Something with a ``settings`` attribute. If omitted the active session is assumed from the :func:`using` context manager.
         name
             Name of the new object to create. If omitted, a default name will be assigned by Fluent.
         **kwargs
