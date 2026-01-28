@@ -40,7 +40,7 @@ Example
 
 from __future__ import annotations
 
-import collections
+import collections.abc
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
@@ -49,6 +49,7 @@ import keyword
 import logging
 import os
 import os.path
+from pathlib import Path
 import pickle
 import string
 import sys
@@ -61,12 +62,14 @@ from typing import (
     Generic,
     List,
     NewType,
+    Protocol,
     Tuple,
     TypeVar,
     Union,
     _eval_type,
     get_args,
     get_origin,
+    override,
 )
 import warnings
 import weakref
@@ -673,10 +676,15 @@ class RealNumerical(Numerical):
         return get_si_unit_for_fluent_quantity(quantity)
 
 
+class SettingsBaseWithName(Protocol):
+    __class__: type["SettingsBase"]  # pyright: ignore[reportIncompatibleMethodOverride]
+    name: Callable[[], str]
+
+
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def set_state(self, state: StateT | None = None, **kwargs):
+    def set_state(self, state: str | VariableDescriptor | SettingsBaseWithName | None = None, **kwargs):
         """Set the state of the object.
 
         Parameters
@@ -691,6 +699,9 @@ class Textual(Property):
         TypeError
             If state is not a string.
         """
+        if isinstance(state, SettingsBase) and hasattr(state, "name"):
+            state = state.name()
+
         allowed_types = (str, VariableDescriptor)
 
         if not isinstance(state, allowed_types):
@@ -947,6 +958,10 @@ class Filename(SettingsBase[str], Textual):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
+
+    @override
+    def set_state(self, state: Path | str | None = None, **kwargs):
+        return super().set_state(state, **kwargs)
 
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
