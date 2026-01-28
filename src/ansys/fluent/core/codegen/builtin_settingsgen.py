@@ -88,6 +88,14 @@ def _has_create_method(root, path):
         return False
 
 
+def _get_reciprocal_name(name: str) -> str | None:
+    """Get the reciprocal name (singular/plural counterpart) from DATA."""
+    try:
+        return DATA[name][2]
+    except KeyError:
+        return None
+
+
 def generate(version: str):
     """Generate builtin setting classes."""
     print("Generating builtin settings...")
@@ -101,14 +109,14 @@ def generate(version: str):
             "from ansys.fluent.core.solver.flobject import SettingsBase\n\n\n"
         )
         f.write("__all__ = [\n")
-        for name, (kind, _) in DATA.items():
+        for name, (kind, _, _) in DATA.items():
             f.write(f'    "{name}",\n')
             if kind == "Command":
                 command_name = _convert_camel_case_to_snake_case(name)
                 f.write(f'    "{command_name}",\n')
         f.write("]\n\n")
         for name, v in DATA.items():
-            kind, path = v
+            kind, path, _ = v
             if isinstance(path, dict):
                 version_supported = False
                 for version_set, p in path.items():
@@ -161,8 +169,9 @@ def generate(version: str):
         config.codegen_outdir / "solver" / f"settings_builtin_{version.number}.pyi"
     )
     with open(_PYI_FILE, "w") as f:
-        # Import base classes
+        # Import base classes and deprecated decorator
         f.write(
+            "from typing_extensions import deprecated\n"
             "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting\n"
         )
         # Import version-specific root for type hints
@@ -171,7 +180,7 @@ def generate(version: str):
         )
         f.write("\n\n")
         for name, v in DATA.items():
-            kind, path = v
+            kind, path, recip = v
             if isinstance(path, dict):
                 version_supported = False
                 for version_set, p in path.items():
@@ -200,6 +209,11 @@ def generate(version: str):
                 f.write("\n")
             else:
                 # For Singleton and Command types
+                # Check if this is a plural class by looking at its reciprocal
+                if kind == "Singleton" and recip:
+                    # Add deprecated decorator for plural container classes
+                    f.write(f'@deprecated("Use {recip}.all() instead")\n')
+
                 f.write(f"class {name}(\n")
                 f.write(f"    _{kind}Setting,\n")
                 f.write(f"    type(settings_root_{version.number}.{path}),\n")

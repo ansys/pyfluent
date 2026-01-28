@@ -22,7 +22,7 @@
 
 """Base classes for builtin setting classes."""
 
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Protocol, cast, runtime_checkable
 
 from typing_extensions import Self
 
@@ -58,7 +58,7 @@ def _get_settings_root(settings_source: SettingsBase | Solver):
 
 
 def _get_settings_obj(settings_root, builtin_settings_obj):
-    builtin_cls_db_name = builtin_settings_obj.__class__._db_name
+    builtin_cls_db_name = builtin_settings_obj._db_name
     obj = settings_root
     path = DATA[builtin_cls_db_name][1]
     found_path = None
@@ -91,6 +91,10 @@ class _SettingsObjectMixin:
         settings_source: SettingsBase | Solver | None = None,
         **kwargs: Any,
     ):
+        if db_name := kwargs.pop("_db_name", None) is not None:
+            super().__setattr__(
+                "_db_name", db_name
+            )  # bypass the current setattr to initialise the right object
         active_session = _get_active_session()
         self.__dict__.update(defaults | kwargs)
         if settings_source is not None:
@@ -116,6 +120,8 @@ class _SingletonSetting(_SettingsObjectMixin):
 
 
 class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
+    _db_name: str  # pyright: ignore[reportUninitializedInstanceVariable]
+
     def __init__(
         self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
     ):
@@ -133,6 +139,23 @@ class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
             self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
         else:
             super().__setattr__(name, value)
+
+    @classmethod
+    def all(cls, solver: SettingsBase | Solver | None = None, /) -> list[Self]:
+        """Return a list of all instances of this object in Fluent."""
+        return cast(
+            list[
+                Self
+            ],  # yes this looks like an unsafe cast but this works via clearing the instance's dict
+            cast(
+                object,
+                _SettingsObjectMixin(
+                    {"settings_source": None},
+                    settings_source=solver,
+                    _db_name=DATA[cls._db_name][2],  # plural form for the container
+                ),
+            ),
+        )
 
     @classmethod
     def get(
