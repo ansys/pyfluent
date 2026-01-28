@@ -23,6 +23,7 @@
 from pathlib import Path
 import tempfile
 
+from ansys.fluent.core.session_solver import Solver
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -98,6 +99,12 @@ def test_builtin_settings(mixing_elbow_case_data_session):
     )
     with pytest.raises(TypeError):
         BoundaryCondition(settings_source=solver, new_instance_name="bc-1")
+
+    assert (
+        BoundaryCondition.get(settings_source=solver, name="cold-inlet")
+        == solver.setup.boundary_conditions["cold-inlet"]
+    )
+
     assert (
         VelocityInlets(settings_source=solver)
         == solver.setup.boundary_conditions.velocity_inlet
@@ -366,6 +373,25 @@ def test_builtin_settings(mixing_elbow_case_data_session):
         DualTimeIterate(settings_source=solver)
         == solver.solution.run_calculation.dual_time_iterate
     )
+
+
+@pytest.mark.codegen_required
+def test_builtin_settings_methods(mixing_elbow_case_data_session: Solver):
+    solver = mixing_elbow_case_data_session
+    assert (
+        ReportFile.create(solver, name="report-file-1")
+        == ReportFile.get(solver, name="report-file-1")
+    )
+
+    file = ReportFile.create(solver, name="report-file-2", file_name="foo.out")
+    assert (
+        file
+        == ReportFile.get(solver, name="report-file-2")
+    )
+    assert file.file_name == "foo.out"
+
+    file_2 = ReportFile.create(solver)
+    assert file_2.name()  # it should have a default anonymous name assigned by Fluent
 
 
 @pytest.mark.codegen_required
