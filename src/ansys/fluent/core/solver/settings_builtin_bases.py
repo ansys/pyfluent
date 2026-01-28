@@ -165,7 +165,7 @@ class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
         *,
         name: str,
     ) -> Self:
-        """Get and return the singleton instance of this object in Fluent.
+        """Get and return the named instance of this object in Fluent.
 
         Parameters
         ----------

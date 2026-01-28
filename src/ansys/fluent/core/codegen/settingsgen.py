@@ -293,8 +293,7 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             # to write only if it is not found in the _NAME_BY_HASH dict and avoid
             # the _CLASS_WRITTEN set.
             if k in command_names + query_names:
-                if cls_name == "phase_29":
-                    print()
+
                 if k == "create" and v["child_classes"].keys() == {"name"}:
                     child_object_type = data["child_object_type"]
                     v["argument_names"] = child_object_type["child_names"]

@@ -165,10 +165,10 @@ def generate(version: str):
                 f.write("       return instance(**kwargs)\n\n")
 
     # Generate version-specific .pyi files
-    _PYI_FILE = (
+    pyi_file = (
         config.codegen_outdir / "solver" / f"settings_builtin_{version.number}.pyi"
     )
-    with open(_PYI_FILE, "w") as f:
+    with open(pyi_file, "w") as f:
         # Import base classes and deprecated decorator
         f.write(
             "from typing_extensions import deprecated\n"
@@ -230,9 +230,9 @@ def generate(version: str):
 
 def generate_main_pyi(version: str):
     """Generate main settings_builtin.pyi that imports from a specific version."""
-    _MAIN_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
+    main_pyi_file = config.codegen_outdir / "solver" / "settings_builtin.pyi"
     version_obj = FluentVersion(version)
-    with open(_MAIN_PYI_FILE, "w") as f:
+    with open(main_pyi_file, "w") as f:
         f.write(f"# Re-export from version {version}\n")
         f.write(
             f"from ansys.fluent.core.generated.solver.settings_builtin_{version_obj.number} import *\n"
