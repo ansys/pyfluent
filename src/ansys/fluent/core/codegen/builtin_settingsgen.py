@@ -34,7 +34,6 @@ from ansys.fluent.core.solver.settings_builtin_data import DATA
 from ansys.fluent.core.utils.fluent_version import all_versions
 
 _PY_FILE = config.codegen_outdir / "solver" / "settings_builtin.py"
-_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
 
 
 def _get_settings_root(version: str):
@@ -72,6 +71,21 @@ def _get_named_objects_in_path(root, path, kind):
         else:
             final_type = "NonCreatable"
     return named_objects, final_type
+
+
+def _has_create_method(root, path):
+    """Check if a setting object has a create method."""
+    try:
+        cls = root
+        comps = path.split(".")
+        for comp in comps:
+            cls = cls._child_classes[comp]
+        # Check if the class has 'create' in its child classes or command names
+        return "create" in getattr(cls, "_child_classes", {}) or "create" in getattr(
+            cls, "command_names", []
+        )
+    except (KeyError, AttributeError):
+        return False
 
 
 def generate(version: str):
@@ -142,25 +156,82 @@ def generate(version: str):
                 )
                 f.write("       return instance(**kwargs)\n\n")
 
+    # Generate version-specific .pyi files
+    _PYI_FILE = (
+        config.codegen_outdir / "solver" / f"settings_builtin_{version.number}.pyi"
+    )
     with open(_PYI_FILE, "w") as f:
-        for version in FluentVersion:
-            f.write(
-                f"from ansys.fluent.core.generated.solver.settings_{version.number} import root as settings_root_{version.number}\n"
-            )
+        # Import base classes
+        f.write(
+            "from ansys.fluent.core.solver.settings_builtin_bases import _SingletonSetting, _CreatableNamedObjectSetting, _NonCreatableNamedObjectSetting, _CommandSetting\n"
+        )
+        # Import version-specific root for type hints
+        f.write(
+            f"from ansys.fluent.core.generated.solver.settings_{version.number} import root as settings_root_{version.number}\n"
+        )
         f.write("\n\n")
         for name, v in DATA.items():
             kind, path = v
-            f.write(f"class {name}(\n")
-            if isinstance(path, str):
-                path = {all_versions(): path}
-            for version_set, p in path.items():
-                if kind == "NamedObject":
-                    p = f"{p}.child_object_type"
-                for v in reversed(list(version_set)):
-                    f.write(f"    type(settings_root_{v.number}.{p}),\n")
-            f.write("): ...\n\n")
+            if isinstance(path, dict):
+                version_supported = False
+                for version_set, p in path.items():
+                    if version in version_set:
+                        path = p
+                        version_supported = True
+                        break
+                if not version_supported:
+                    continue
+            named_objects, final_type = _get_named_objects_in_path(root, path, kind)
+            if kind == "NamedObject":
+                kind = f"{final_type}NamedObject"
+                path_with_child = f"{path}.child_object_type"
+                f.write(f"class {name}(\n")
+                f.write(f"    _{kind}Setting,\n")
+                f.write(
+                    f"    type(settings_root_{version.number}.{path_with_child}),\n"
+                )
+                f.write("):\n")
+                if final_type == "Creatable":
+                    f.write(
+                        f"    create = settings_root_{version.number}.{path}.create\n"
+                    )
+                else:
+                    f.write("    ...\n")
+                f.write("\n")
+            else:
+                # For Singleton and Command types
+                f.write(f"class {name}(\n")
+                f.write(f"    _{kind}Setting,\n")
+                f.write(f"    type(settings_root_{version.number}.{path}),\n")
+                f.write("):\n")
+                # Check if singleton has create method
+                if kind == "Singleton" and _has_create_method(root, path):
+                    f.write(
+                        f"    create = settings_root_{version.number}.{path}.create\n"
+                    )
+                else:
+                    f.write("    ...\n")
+                f.write("\n")
+
+
+def generate_main_pyi(version: str):
+    """Generate main settings_builtin.pyi that imports from a specific version."""
+    _MAIN_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
+    version_obj = FluentVersion(version)
+    with open(_MAIN_PYI_FILE, "w") as f:
+        f.write(f"# Re-export from version {version}\n")
+        f.write(
+            f"from ansys.fluent.core.generated.solver.settings_builtin_{version_obj.number} import *\n"
+        )
 
 
 if __name__ == "__main__":
-    version = "261"  # for development
-    generate(version)
+    # Generate for all available versions
+    versions = sorted([v.number for v in all_versions()])
+    for version in versions:
+        try:
+            generate(str(version))
+        except Exception as e:
+            print(f"Failed to generate for version {version}: {e}")
+    # Generate main .pyi that imports from the latest version
+    generate_main_pyi(str(versions[-1]))

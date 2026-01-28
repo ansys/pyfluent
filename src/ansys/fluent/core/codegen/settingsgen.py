@@ -200,10 +200,14 @@ _arg_type_strings = {
 
 def _write_function_stub(name, data, s_stub):
     s_stub.write(f"    def {name}(self")
+    if name == "create":
+        s_stub.write(", *")  # allow only keyword arguments as best practice
     for arg_name in data["argument_names"]:
         arg_type = data["child_classes"][arg_name]["bases"][0]
         py_arg_type = _arg_type_strings.get(arg_type, "Any")
-        s_stub.write(f", {arg_name}: {py_arg_type}")
+        if name == "create" and py_arg_type == "Any":
+            continue  # don't write the object arguments for create as they shouldn't be used
+        s_stub.write(f", {arg_name}: {py_arg_type} = ...")
     s_stub.write("):\n")
     # TODO: add return type
     doc = data["doc"]
@@ -283,6 +287,10 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             # to write only if it is not found in the _NAME_BY_HASH dict and avoid
             # the _CLASS_WRITTEN set.
             if k in command_names + query_names:
+                if k == "create" and v["child_classes"].keys() == {"name"}:
+                    child_object_type = data["child_object_type"]
+                    v["argument_names"] = child_object_type["child_names"]
+                    v["child_classes"] = child_object_type["child_classes"]
                 _write_function_stub(k, v, s_stub)
                 classes_to_write[unique_name] = (child_python_name, v, hash_, False)
             else:
