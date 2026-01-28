@@ -249,6 +249,7 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         port: int | None = None,
         mount_target: str | None = None,
         mount_source: str | None = None,
+        certs_dir: str | None = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -264,6 +265,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
             Path inside the container where ``mount_source`` will be mounted to.
         mount_source: str | Path, optional
             Existing path in the host operating system that will be mounted to ``mount_target``.
+        certs_dir : str, optional
+            Directory containing the TLS certificates. The default is ``None``.
         """
         import docker
 
@@ -295,7 +298,8 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         import ansys.tools.filetransfer as ft
 
         self.client = ft.Client.from_transport_options(
-            transport_options=ft.InsecureOptions(
+            transport_options=ft.MTLSOptions(
+                certs_dir=certs_dir,
                 host="localhost",
                 port=self.host_port,
                 allow_remote_host=True,
@@ -411,6 +415,7 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self,
         server_ip: str | None = None,
         server_port: int | None = None,
+        certs_dir: str | None = None,
     ):
         """Provides the gRPC-based remote file transfer strategy.
 
@@ -420,6 +425,8 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
             IP address of the server.
         server_port : int
             Port of the server.
+        certs_dir : str, optional
+            Directory containing the TLS certificates. The default is ``None``.
         """
         import ansys.tools.filetransfer as ft
 
@@ -427,8 +434,9 @@ class RemoteFileTransferStrategy(FileTransferStrategy):
         self.server_port = server_port
 
         self._client = ft.Client.from_transport_options(
-            transport_options=ft.InsecureOptions(
-                host=self.server_ip,
+            transport_options=ft.MTLSOptions(
+                certs_dir=certs_dir,
+                host=self.server_ip if self.server_ip else "localhost",
                 port=self.server_port,
                 allow_remote_host=True,
             )
