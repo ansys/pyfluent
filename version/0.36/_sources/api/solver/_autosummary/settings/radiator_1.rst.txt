@@ -1,0 +1,50 @@
+:orphan:
+
+.. _radiator_1:
+
+radiator
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.radiator_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================   ==================================
+
+Attribute                                                                                             Summary
+
+========================================================================   ==================================
+:ref:`porous_jump_turb_wall_treatment <porous_jump_turb_wall_treatment>`       Enable/disable Wall Treatment.
+
+:ref:`loss_coefficient <loss_coefficient>`                                                  Loss Coefficient.
+
+:ref:`hc <hc>`                                                                     Heat-Transfer-Coefficient.
+
+:ref:`t <t>`                                                                                     Temperature.
+
+:ref:`heat_flux <heat_flux>`                                                                       Heat flux.
+
+:ref:`strength <strength>`                                                                          Strength.
+
+========================================================================   ==================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`settings_19 <settings_19>`                 Domain name to define settings on.
+
+:ref:`phase_21_child <phase_21_child>`                'child_object_type' of phase.
+
+:ref:`radiator_2_child <radiator_2_child>`         'child_object_type' of radiator.
+
+:ref:`radiator_3_child <radiator_3_child>`         'child_object_type' of radiator.
+
+:ref:`phase_46_child <phase_46_child>`                'child_object_type' of phase.
+
+==========================================   ======================================
+

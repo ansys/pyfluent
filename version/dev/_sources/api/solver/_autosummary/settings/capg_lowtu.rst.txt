@@ -1,0 +1,21 @@
+:orphan:
+
+.. _capg_lowtu:
+
+capg_lowtu
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.capg_lowtu
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`transition <transition>`       The transition model options.
+
+==============================   =================================
+

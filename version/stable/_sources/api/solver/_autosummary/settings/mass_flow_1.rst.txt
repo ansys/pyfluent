@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mass_flow_1:
+
+mass_flow
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.mass_flow_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ============================================
+
+Parent                                                                                  Summary
+
+================================================   ============================================
+:ref:`periodic_conditions <periodic_conditions>`       The periodic boundary conditions object.
+
+================================================   ============================================
+

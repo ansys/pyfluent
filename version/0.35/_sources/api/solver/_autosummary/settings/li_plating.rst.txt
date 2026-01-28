@@ -1,0 +1,42 @@
+:orphan:
+
+.. _li_plating:
+
+li_plating
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.li_plating
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================================   =====================================================
+
+Attribute                                                                                                            Summary
+
+====================================================================   =====================================================
+:ref:`current_exchange_density <current_exchange_density>`                 Current exchange density for Li-plating reaction.
+
+:ref:`cathodic_transfer_coefficient <cathodic_transfer_coefficient>`                          Cathodic transfer coefficient.
+
+:ref:`equilibrium_potential <equilibrium_potential_1>`                                     Li-plating equilibrium potential.
+
+:ref:`molecular_weight <molecular_weight_1>`                                                    Li-plating molecular weight.
+
+:ref:`density <density_1>`                                                                               Li-plating density.
+
+:ref:`spliting_coefficient <spliting_coefficient>`                                                     Spliting coefficient.
+
+====================================================================   =====================================================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`aging_model <aging_model>`       Up physics-based aging model.
+
+================================   =================================
+

@@ -1,0 +1,18 @@
+.. _ref_solver_datamodel_solver_workflow_TWF_TurboPhysics__TWF_TurboPhysicsCommandArguments:
+
+_TWF_TurboPhysicsCommandArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.solver_workflow.Root.TWF_TurboPhysics._TWF_TurboPhysicsCommandArguments
+   :members: 
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _States/_States_contents

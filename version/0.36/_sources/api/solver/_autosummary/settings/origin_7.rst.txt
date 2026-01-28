@@ -1,0 +1,21 @@
+:orphan:
+
+.. _origin_7:
+
+origin
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.origin_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================
+
+Parent                                            Summary
+
+====================================   ==================
+:ref:`current_state <current_state>`       Current state.
+
+====================================   ==================
+

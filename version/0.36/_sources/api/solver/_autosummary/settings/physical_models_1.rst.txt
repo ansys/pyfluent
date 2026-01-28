@@ -1,0 +1,44 @@
+:orphan:
+
+.. _physical_models_1:
+
+physical_models
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.physical_models_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   =============================================
+
+Attribute                                                                                                  Summary
+
+==================================================================   =============================================
+:ref:`particle_drag <particle_drag>`                                               Lagrangian drag model settings.
+
+:ref:`turbulent_dispersion <turbulent_dispersion>`                       Lagrangian turbulent dispersion settings.
+
+:ref:`heat_exchange <heat_exchange>`                                            Lagrangian heat transfer settings.
+
+:ref:`droplet_breakup <droplet_breakup>`                                     Lagrangian droplet break-up settings.
+
+:ref:`particle_rotation <particle_rotation>`                                Lagrangian particle rotation settings.
+
+:ref:`rough_wall_treatment_enabled <rough_wall_treatment_enabled>`                   Enable rough wall treatment?.
+
+:ref:`custom_laws <custom_laws>`                                          Lagrangian custom particle law settings.
+
+==================================================================   =============================================
+
+.. rubric:: Included in:
+
+==========================================   ======================================
+
+Parent                                                                      Summary
+
+==========================================   ======================================
+:ref:`injections_child <injections_child>`       'child_object_type' of injections.
+
+==========================================   ======================================
+

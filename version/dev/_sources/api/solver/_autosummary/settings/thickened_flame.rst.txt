@@ -1,0 +1,21 @@
+:orphan:
+
+.. _thickened_flame:
+
+thickened_flame
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.thickened_flame
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =================================
+
+Parent                                                   Summary
+
+============================   =================================
+:ref:`options_2 <options_2>`       Species model options object.
+
+============================   =================================
+

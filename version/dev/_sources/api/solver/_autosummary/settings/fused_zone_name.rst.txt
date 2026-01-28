@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fused_zone_name:
+
+fused_zone_name
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.fused_zone_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===============================================================================
+
+Parent                                                                                                             Summary
+
+========================================   ===============================================================================
+:ref:`fuse_face_zones <fuse_face_zones>`       Attempt to fuse a list of face zones by removing duplicate faces and nodes.
+
+========================================   ===============================================================================
+

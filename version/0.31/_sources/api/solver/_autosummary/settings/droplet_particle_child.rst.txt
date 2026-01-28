@@ -1,0 +1,90 @@
+:orphan:
+
+.. _droplet_particle_child:
+
+droplet_particle_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.droplet_particle_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ======================================================
+
+Attribute                                                                                                               Summary
+
+======================================================================   ======================================================
+:ref:`name <name_8>`                                                                                             Material name.
+
+:ref:`chemical_formula <chemical_formula>`                                                           Material chemical formula.
+
+:ref:`density <density_6>`                                                                          Material property: density.
+
+:ref:`viscosity <viscosity_2>`                                                                    Material property: viscosity.
+
+:ref:`specific_heat <specific_heat_3>`                                                        Material property: specific-heat.
+
+:ref:`thermal_conductivity <thermal_conductivity_4>`                                   Material property: thermal-conductivity.
+
+:ref:`vaporization_model <vaporization_model>`                                           Material property: vaporization-model.
+
+:ref:`thermolysis_model <thermolysis_model>`                                              Material property: thermolysis-model.
+
+:ref:`latent_heat <latent_heat_1>`                                                              Material property: latent-heat.
+
+:ref:`volatile_fraction <volatile_fraction>`                                              Material property: volatile-fraction.
+
+:ref:`heat_of_pyrolysis <heat_of_pyrolysis>`                                              Material property: heat-of-pyrolysis.
+
+:ref:`binary_diffusivity <binary_diffusivity>`                                           Material property: binary-diffusivity.
+
+:ref:`diffusivity_reference_pressure <diffusivity_reference_pressure>`       Material property: diffusivity-reference-pressure.
+
+:ref:`averaging_coefficient_t <averaging_coefficient_t>`                            Material property: averaging-coefficient-t.
+
+:ref:`averaging_coefficient_y <averaging_coefficient_y>`                            Material property: averaging-coefficient-y.
+
+:ref:`vapor_pressure <vapor_pressure>`                                                       Material property: vapor-pressure.
+
+:ref:`molecular_weight <molecular_weight_4>`                                               Material property: molecular-weight.
+
+:ref:`vaporization_temperature <vaporization_temperature>`                         Material property: vaporization-temperature.
+
+:ref:`boiling_point <boiling_point>`                                                          Material property: boiling-point.
+
+:ref:`thermophoretic_co <thermophoretic_co>`                                              Material property: thermophoretic-co.
+
+:ref:`scattering_factor <scattering_factor_1>`                                            Material property: scattering-factor.
+
+:ref:`emissivity <emissivity_1>`                                                                 Material property: emissivity.
+
+:ref:`dpm_surften <dpm_surften_1>`                                                              Material property: dpm-surften.
+
+:ref:`electric_conductivity <electric_conductivity_2>`                                Material property: electric-conductivity.
+
+:ref:`dual_electric_conductivity <dual_electric_conductivity_1>`                 Material property: dual-electric-conductivity.
+
+:ref:`magnetic_permeability <magnetic_permeability>`                                  Material property: magnetic-permeability.
+
+:ref:`charge_density <charge_density>`                                                       Material property: charge-density.
+
+:ref:`formation_entropy <formation_entropy>`                                              Material property: formation-entropy.
+
+:ref:`formation_enthalpy <formation_enthalpy>`                                           Material property: formation-enthalpy.
+
+:ref:`reference_temperature <reference_temperature>`                                  Material property: reference-temperature.
+
+======================================================================   ======================================================
+
+.. rubric:: Included in:
+
+==========================================   =============================
+
+Parent                                                             Summary
+
+==========================================   =============================
+:ref:`droplet_particle <droplet_particle>`       'droplet_particle' child.
+
+==========================================   =============================
+

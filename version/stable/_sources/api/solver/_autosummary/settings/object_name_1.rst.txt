@@ -1,0 +1,21 @@
+:orphan:
+
+.. _object_name_1:
+
+object_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.object_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==================================
+
+Parent                                                                Summary
+
+========================================   ==================================
+:ref:`interface_check <interface_check>`       Perform turbo interface check.
+
+========================================   ==================================
+

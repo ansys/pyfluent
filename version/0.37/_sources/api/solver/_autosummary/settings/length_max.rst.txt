@@ -1,0 +1,21 @@
+:orphan:
+
+.. _length_max:
+
+length_max
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.length_max
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =====================
+
+Parent                                           Summary
+
+================================   =====================
+:ref:`settings_26 <settings_26>`       'settings' child.
+
+================================   =====================
+

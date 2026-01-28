@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_choose_mesh_control_options__choose_mesh_control_optionsArguments__mesh_control_options:
+
+_mesh_control_options
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.choose_mesh_control_options._choose_mesh_control_optionsArguments._mesh_control_options
+   :members: _advanced_options, _boundary_layers, _edge_proximity_computation, _existing_size_field, _solid_fluid_raio, _solid_fluid_ratio, _targe_size_field_file_name, _target_size_field_file_name, _wrap_size_field_file_name, _wrap_target_both_options, _wrap_target_raio, _wrap_target_ratio, _wrap_target_size_field_ratio
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

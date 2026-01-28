@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_bounds_set_bounds__set_boundsArguments:
+
+_set_boundsArguments
+====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.graphics.bounds.set_bounds._set_boundsArguments
+   :members: _value
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

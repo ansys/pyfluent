@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_prepare_for_volume_meshing__prepare_for_volume_meshingArguments:
+
+_prepare_for_volume_meshingArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_261.meshing_workflow.Root.application.prepare_for_volume_meshing._prepare_for_volume_meshingArguments
+   :members: _hard_target_skewness, _merge_zones_based_on_labels, _soft_target_skewness
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

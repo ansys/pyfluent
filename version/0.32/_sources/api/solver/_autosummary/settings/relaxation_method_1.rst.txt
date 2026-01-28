@@ -1,0 +1,21 @@
+:orphan:
+
+.. _relaxation_method_1:
+
+relaxation_method
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.relaxation_method_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_3 <advanced_3>`       Solution method advanced object.
+
+==============================   ====================================
+

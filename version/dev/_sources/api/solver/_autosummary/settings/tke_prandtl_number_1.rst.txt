@@ -1,0 +1,23 @@
+:orphan:
+
+.. _tke_prandtl_number_1:
+
+tke_prandtl_number
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_261.tke_prandtl_number_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ==================================
+
+Parent                                                                  Summary
+
+==========================================   ==================================
+:ref:`k_omega_regime <k_omega_regime>`             K-Omega regime coefficients.
+
+:ref:`k_epsilon_regime <k_epsilon_regime>`       K-Epsilon regime coefficients.
+
+==========================================   ==================================
+

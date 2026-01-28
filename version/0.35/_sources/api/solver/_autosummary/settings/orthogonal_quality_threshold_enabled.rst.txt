@@ -1,0 +1,21 @@
+:orphan:
+
+.. _orthogonal_quality_threshold_enabled:
+
+orthogonal_quality_threshold_enabled
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.orthogonal_quality_threshold_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =================================
+
+Parent                                                                   Summary
+
+============================================   =================================
+:ref:`poor_mesh_removal <poor_mesh_removal>`       The poor mesh removal object.
+
+============================================   =================================
+
