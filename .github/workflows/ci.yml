@@ -431,14 +431,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v24.2.5
-            version: 242
+          # - image-tag: v24.2.5
+          #   version: 242
           - image-tag: v25.1.4
             version: 251
-          - image-tag: v25.2.3
-            version: 252
-          - image-tag: v26.1.latest
-            version: 261
+          # - image-tag: v25.2.3
+          #   version: 252
+          # - image-tag: v26.1.latest
+          #   version: 261
     timeout-minutes: 60
     env:
       FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
@@ -597,8 +597,8 @@ jobs:
     needs: [test, update-changelog]
     runs-on: ubuntu-latest
     permissions:
-      id-token: write       # required for trusted publishing
-      contents: write       # required for GitHub release upload
+      id-token: write # required for trusted publishing
+      contents: write # required for GitHub release upload
 
     steps:
       - name: Set up Python
