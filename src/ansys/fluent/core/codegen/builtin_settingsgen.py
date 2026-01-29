@@ -228,12 +228,12 @@ def generate(version: str):
                 f.write("\n")
 
 
-def generate_main_pyi(version: str):
+def generate_main_pyi(version_str: str):
     """Generate main settings_builtin.pyi that imports from a specific version."""
-    main_pyi_file = config.codegen_outdir / "solver" / "settings_builtin.pyi"
-    version_obj = FluentVersion(version)
-    with open(main_pyi_file, "w") as f:
-        f.write(f"# Re-export from version {version}\n")
+    _MAIN_PYI_FILE = config.codegen_outdir / "solver" / "settings_builtin.pyi"
+    version_obj = FluentVersion(version_str)
+    with open(_MAIN_PYI_FILE, "w") as f:
+        f.write(f"# Re-export from version {version_str}\n")
         f.write(
             f"from ansys.fluent.core.generated.solver.settings_builtin_{version_obj.number} import *\n"
         )

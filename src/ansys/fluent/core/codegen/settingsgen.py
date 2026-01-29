@@ -294,6 +294,12 @@ def _write_data(cls_name: str, python_name: str, data: dict, f: IO, f_stub: IO |
             # the _CLASS_WRITTEN set.
             if k in command_names + query_names:
 
+                # Special handling for create commands that only expose a "name" child.
+                # In this case, the actual arguments of the create operation are
+                # described by the associated child_object_type, not by the "name"
+                # placeholder itself. We therefore replace the argument_names and
+                # child_classes with those from child_object_type so that the
+                # generated stubs show the full set of creation parameters.
                 if k == "create" and v["child_classes"].keys() == {"name"}:
                     child_object_type = data["child_object_type"]
                     v["argument_names"] = child_object_type["child_names"]

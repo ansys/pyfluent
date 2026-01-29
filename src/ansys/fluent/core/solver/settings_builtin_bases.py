@@ -91,7 +91,7 @@ class _SettingsObjectMixin:
         settings_source: SettingsBase | Solver | None = None,
         **kwargs: Any,
     ):
-        if db_name := kwargs.pop("_db_name", None) is not None:
+        if (db_name := kwargs.pop("_db_name", None)) is not None:
             super().__setattr__(
                 "_db_name", db_name
             )  # bypass the current setattr to initialise the right object
@@ -205,7 +205,7 @@ class _CreatableNamedObjectSetting(_SettingsObjectMixin):
         *,
         name: str,
     ) -> Self:
-        """Get and return the singleton instance of this object in Fluent.
+        """Get and return a named instance of this object in Fluent.
 
         Parameters
         ----------
