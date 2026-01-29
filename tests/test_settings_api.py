@@ -862,7 +862,7 @@ def test_read_only_command_execution(mixing_elbow_case_session):
         contour.display()
 
 
-def test_sequence_attributes(mixing_elbow_settings_session: Solver):
+def test_copy_accepts_sequence_types(mixing_elbow_settings_session: Solver):
     solver = mixing_elbow_settings_session
     bc = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
     bc.momentum.velocity = 1.0
