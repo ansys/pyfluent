@@ -40,7 +40,8 @@ def _get_certs_folder():
 
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
-def test_remote_grpc_fts_container():
+def test_remote_grpc_fts_container(monkeypatch):
+    monkeypatch.setenv("PYFLUENT_CONTAINER_INSECURE_MODE", "0")
     import ansys.fluent.core as pyfluent
     from ansys.fluent.core import examples
     from ansys.fluent.core.utils.file_transfer_service import (
