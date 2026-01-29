@@ -327,23 +327,23 @@ jobs:
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-v24.2.0-v25.2.3-${{ vars.FLUENT_STABLE_IMAGE_DEV }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           lookup-only: false # zizmor: ignore[cache-poisoning]
 
-      - name: Pull 24.2 Fluent docker image
-        if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v24.2.5
+      # - name: Pull 24.2 Fluent docker image
+      #   if: steps.cache-api-code.outputs.cache-hit != 'true'
+      #   run: make docker-pull
+      #   env:
+      #     FLUENT_IMAGE_TAG: v24.2.5
 
-      - name: Run 24.2 API codegen
-        if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: v24.2.5
-          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
+      # - name: Run 24.2 API codegen
+      #   if: steps.cache-api-code.outputs.cache-hit != 'true'
+      #   run: make api-codegen
+      #   env:
+      #     FLUENT_IMAGE_TAG: v24.2.5
+      #     PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
-      - name: Print 24.2 Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_242.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+      # - name: Print 24.2 Fluent version info
+      #   run: |
+      #     cat src/ansys/fluent/core/generated/fluent_version_242.py
+      #     python -c "from src.ansys.fluent.core.generated.solver.settings_242 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Pull 25.1 Fluent docker image
         if: steps.cache-api-code.outputs.cache-hit != 'true'
@@ -363,40 +363,40 @@ jobs:
           cat src/ansys/fluent/core/generated/fluent_version_251.py
           python -c "from src.ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
-      - name: Pull 25.2 Fluent docker image
-        if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: v25.2.3
+      # - name: Pull 25.2 Fluent docker image
+      #   if: steps.cache-api-code.outputs.cache-hit != 'true'
+      #   run: make docker-pull
+      #   env:
+      #     FLUENT_IMAGE_TAG: v25.2.3
 
-      - name: Run 25.2 API codegen
-        if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: v25.2.3
-          PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
+      # - name: Run 25.2 API codegen
+      #   if: steps.cache-api-code.outputs.cache-hit != 'true'
+      #   run: make api-codegen
+      #   env:
+      #     FLUENT_IMAGE_TAG: v25.2.3
+      #     PYFLUENT_CODEGEN_SKIP_BUILTIN_SETTINGS: 1
 
-      - name: Print 25.2 Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_252.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_252 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+      # - name: Print 25.2 Fluent version info
+      #   run: |
+      #     cat src/ansys/fluent/core/generated/fluent_version_252.py
+      #     python -c "from src.ansys.fluent.core.generated.solver.settings_252 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
-      - name: Pull 26.1 Fluent docker image
-        if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make docker-pull
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+      # - name: Pull 26.1 Fluent docker image
+      #   if: steps.cache-api-code.outputs.cache-hit != 'true'
+      #   run: make docker-pull
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
-      - name: Run 26.1 API codegen
-        if: steps.cache-api-code.outputs.cache-hit != 'true'
-        run: make api-codegen
-        env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+      # - name: Run 26.1 API codegen
+      #   if: steps.cache-api-code.outputs.cache-hit != 'true'
+      #   run: make api-codegen
+      #   env:
+      #     FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
-      - name: Print 26.1 Fluent version info
-        run: |
-          cat src/ansys/fluent/core/generated/fluent_version_261.py
-          python -c "from src.ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+      # - name: Print 26.1 Fluent version info
+      #   run: |
+      #     cat src/ansys/fluent/core/generated/fluent_version_261.py
+      #     python -c "from src.ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
