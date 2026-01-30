@@ -46,6 +46,8 @@ simulation workflows, with automatic dependency management and validation.
 from __future__ import annotations
 
 from collections import OrderedDict
+from functools import wraps
+import inspect
 import re
 from typing import ValuesView
 
@@ -1222,8 +1224,32 @@ def build_specific_interface(task_object):
     """
 
     def make_delegate(attr):
+        target = getattr(task_object, attr)
+
+        # If this is a bound method, unwrap it
+        func = getattr(target, "__func__", target)
+
+        @wraps(func)
         def delegate(self, *args, **kwargs):
             return getattr(self._task_object, attr)(*args, **kwargs)
+
+        # Force friendly names for help()/pydoc
+        delegate.__name__ = attr
+        delegate.__qualname__ = f"{task_object.__class__.__name__}.{attr}"
+
+        try:
+            sig = inspect.signature(target)
+            delegate.__signature__ = sig
+            # pydoc uses __text_signature__ when present
+            delegate.__text_signature__ = str(sig)
+        except (TypeError, ValueError):
+            # guards cases where Python can’t derive a signature (e.g., some C-implemented callables),
+            # so the wrapper still works even if signature extraction fails.
+            pass
+
+        # Preserve docstring explicitly (wraps may not)
+        if func.__doc__:
+            delegate.__doc__ = func.__doc__
 
         return delegate
 
@@ -1236,7 +1262,7 @@ def build_specific_interface(task_object):
 
     namespace = {name: make_delegate(name) for name in public_members}
 
-    iface_name = f"{task_object.task_type}SpecificInterface"
+    iface_name = f"{task_object}Interface"
 
     return type(iface_name, (), namespace)
 
@@ -1246,8 +1272,6 @@ def make_task_wrapper(task_obj, name, workflow, parent, meshing_root):
 
     specific_interface = build_specific_interface(task_obj)
 
-    combined_type = type(
-        f"{task_obj.task_type}Task", (specific_interface, TaskObject), {}
-    )
+    combined_type = type(f"{task_obj}", (specific_interface, TaskObject), {})
 
     return combined_type(task_obj, name, workflow, parent, meshing_root)
