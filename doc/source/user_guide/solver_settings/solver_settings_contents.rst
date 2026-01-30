@@ -85,7 +85,7 @@ of container objects: :obj:`~ansys.fluent.core.solver.flobject.Group`,
   created unnamed objects of
   its specified child type (accessible via a ``child_object_type`` attribute) in a
   list. Children of a ``ListObject`` object can be accessed using the index operator.
-  For example, ``solver_session.settings.setup.cell_zone_conditions.fluid['fluid-1'].source_terms['mass'][2]``
+  For example, ``solver_session.settings.setup.cell_zone_conditions.fluid['fluid-1'].sources.terms['mass'][2]``
   refers to the third (starting from index 0) mass source entry for the fluid zone
   named ``fluid-1``. The current number of child objects can be accessed with the
   ``get_size()`` method.
@@ -352,8 +352,8 @@ For named objects and list objects, for instance::
 
   >>> from ansys.fluent.core.solver import FluidCellZone
   >>> fluid = FluidCellZone(settings_source=solver_session, name="*")
-  >>> fluid.source_terms["*mom*"]()
-  {'fluid': {'source_terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}
+  >>> fluid.sources.terms["*mom*"]()
+  {'fluid': {'sources' :{'terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}}
 
 Also, when you have one or more velocity inlets with "inlet" in their names::
 
