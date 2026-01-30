@@ -8,6 +8,24 @@ updates:
     labels:
       - "Maintenance"
       - "Dependencies"
+    ignore:
+      # Exclude main project dependencies and optional dependencies (like reader)
+      - dependency-name: "ansys-api-fluent"
+      - dependency-name: "ansys-platform-instancemanagement"
+      - dependency-name: "ansys-tools-filetransfer"
+      - dependency-name: "ansys-units"
+      - dependency-name: "defusedxml"
+      - dependency-name: "deprecated"
+      - dependency-name: "docker"
+      - dependency-name: "grpcio"
+      - dependency-name: "grpcio-health-checking"
+      - dependency-name: "grpcio-status"
+      - dependency-name: "nltk"
+      - dependency-name: "numpy"
+      - dependency-name: "pandas"
+      - dependency-name: "pyansys-tools-report"
+      - dependency-name: "pyyaml"
+      - dependency-name: "h5py"
     groups:
       dependencies:
         patterns:

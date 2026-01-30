@@ -28,13 +28,8 @@ All the public APIs for PyFluent are listed in the left hand margin. Some key AP
 Meshing mode
 ------------
 
-The following interfaces are specific to meshing mode.
-
-* :ref:`meshing <ref_meshing_datamodel_meshing>`
-* :ref:`PartManagement <ref_meshing_datamodel_part_management>`
-* :ref:`PMFileManagement <ref_meshing_datamodel_pm_file_management>`
-* :ref:`workflow <ref_meshing_datamodel_workflow>`
-* :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>`
+The :ref:`meshing workflow <ref_meshing_workflow_new>` and :ref:`meshing utilities <ref_meshing_datamodel_meshing_utilities>` provide the primary interface for
+creating, editing, managing, and querying mesh data.
 
 Solution mode
 -------------
@@ -77,7 +72,7 @@ The solver :ref:`settings API <ref_root>` is the main interface for controlling 
     session_utilities
     system_coupling
     pyfluent_warnings
-    workflow
+    workflow_new
     deprecated_apis
 """
 
@@ -137,7 +132,11 @@ hierarchy = {
         "standalone_launcher",
         "watchdog",
     ],
-    "meshing": ["meshing_workflow", "datamodel/datamodel_contents", "tui/tui_contents"],
+    "meshing": [
+        "meshing_workflow_new",
+        "datamodel/datamodel_contents",
+        "tui/tui_contents",
+    ],
     "scheduler": ["load_machines", "machine_list"],
     "services": [
         "api_upgrade",
@@ -207,7 +206,7 @@ hierarchy = {
         "session",
         "system_coupling",
         "pyfluent_warnings",
-        "workflow",
+        "workflow_new",
     ],
 }
 
@@ -243,14 +242,16 @@ def _generate_api_source_rst_files(folder: str, files: list):
                             "other settings objects in a hierarchical structure.\n"
                         )
                     else:
-                        rst.write(f"{file}\n")
-                        rst.write(f'{"="*(len(f"{file}"))}\n\n')
+                        temp_file_name = file.removesuffix("_new")
+                        rst.write(f"{temp_file_name}\n")
+                        rst.write(f'{"="*(len(temp_file_name))}\n\n')
                         rst.write(
                             f".. automodule:: ansys.fluent.core.{folder}.{file}\n"
                         )
                 else:
-                    rst.write(f"{file}\n")
-                    rst.write(f'{"="*(len(f"{file}"))}\n\n')
+                    temp_file_name = file.removesuffix("_new")
+                    rst.write(f"{temp_file_name}\n")
+                    rst.write(f'{"="*(len(temp_file_name))}\n\n')
                     rst.write(f".. automodule:: ansys.fluent.core.{file}\n")
                 if "root" not in file:
                     _write_common_rst_members(rst_file=rst)
