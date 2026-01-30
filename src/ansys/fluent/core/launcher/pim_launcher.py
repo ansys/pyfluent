@@ -300,7 +300,7 @@ def launch_remote_fluent(
     instance = create_fluent_instance(
         pim=pim,
         mode=mode,
-        dimensionality=dimensionality,
+        dimensionality=Dimension(dimensionality),
         product_version=product_version,
     )
 
@@ -340,7 +340,7 @@ def launch_remote_fluent(
 
 
 def create_fluent_instance(
-    pim, mode: FluentMode, dimensionality: Dimension | int, product_version: str | None
+    pim, mode: FluentMode, dimensionality: Dimension, product_version: str | None
 ):
     """Create a Fluent instance based on mode and dimensionality."""
 

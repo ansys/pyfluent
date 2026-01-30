@@ -174,5 +174,5 @@ class FluentFieldDataNamingStrategy(MappingConversionStrategy):
         _c.mesh.CELL_ZONE_INDEX: "cell-zone",
         _c.mesh.CELL_ZONE_TYPE: "cell-type",
         _c.mesh.PARTITION_NEIGHBOURS: "partition-neighbors",
-        _c.mesh.STORED_CELL_PARTITIION: "cell-partition-stored",
+        _c.mesh.STORED_CELL_PARTITION: "cell-partition-stored",
     }
