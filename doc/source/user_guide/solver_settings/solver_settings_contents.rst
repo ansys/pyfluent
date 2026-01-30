@@ -353,7 +353,7 @@ For named objects and list objects, for instance::
   >>> from ansys.fluent.core.solver import FluidCellZone
   >>> fluid = FluidCellZone(settings_source=solver_session, name="*")
   >>> fluid.sources.terms["*mom*"]()
-  {'fluid': {'sources' :{'terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}}
+  {'fluid': {'sources': {'terms': {'x-momentum': [], 'y-momentum': [], 'z-momentum': []}}}}
 
 Also, when you have one or more velocity inlets with "inlet" in their names::
 
