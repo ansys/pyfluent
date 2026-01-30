@@ -1,3 +1,10 @@
+# Enforce UTF-8 (no BOM) storage for patch and diff files
+# Store normalized UTF-8 in the repository and ensure working-tree encoding
+# for these file types is UTF-8 (without BOM).
+*.patch text working-tree-encoding=UTF-8
+*.diff text working-tree-encoding=UTF-8
+the-patch.diff text working-tree-encoding=UTF-8
+patches/*.patch text working-tree-encoding=UTF-8
 * text=auto !eol
 *.sh         eol=lf
 *.bat        eol=crlf
