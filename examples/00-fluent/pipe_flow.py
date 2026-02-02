@@ -305,8 +305,8 @@ solver.exit()
 # Discussion
 # ----------
 #
-# This example validates PyFluent's capability to accurately simulate conjugate heat transfer
-# problems involving high-Prandtl-number fluids in thermally developing flow regimes.
+# This example validates PyFluent's capability to accurately simulate convective heat transfer
+# in internal pipe flows involving high-Prandtl-number fluids in thermally developing flow regimes.
 # The PyFluent simulation was compared with the analytical solution for thermally developing laminar flow in a pipe with constant wall temperature.
 #
 # Analytical outlet temperature: :T_e = 292.74 K
