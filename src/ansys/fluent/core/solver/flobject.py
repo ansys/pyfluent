@@ -1495,6 +1495,10 @@ class NamedObject(SettingsBase[DictStateType], Generic[ChildTypeT]):
         except Exception:
             return
 
+    def all(self) -> list[ChildTypeT]:
+        """Return all child objects."""
+        return list(self.values())
+
     def __getattr__(self, name: str):
         alias = self._child_aliases.get(name)
         if alias:

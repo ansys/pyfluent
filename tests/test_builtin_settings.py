@@ -383,14 +383,21 @@ def test_builtin_settings_methods(mixing_elbow_case_data_session: Solver):
 
     file = ReportFile.create(solver, name="report-file-2", file_name="foo.out")
     assert file == ReportFile.get(solver, name="report-file-2")
-    assert file.file_name() == r".\\foo.out"
+    assert file.file_name() == r"./foo.out"
 
     file_2 = ReportFile.create(solver)
     assert file_2.name()  # it should have a default anonymous name assigned by Fluent
 
     assert BoundaryCondition.get(solver, name="cold-inlet")
 
-    assert BoundaryCondition.all(solver) == solver.setup.boundary_conditions["*"]
+    assert list(BoundaryCondition.all(solver)) == list(
+        solver.settings.setup.boundary_conditions["*"]
+    )
+
+    report_file = ReportFile(solver)
+    report_file.create(name="report-file-1")
+    assert report_file == report_file.get(solver, name="report-file-1")
+    assert report_file.all() == list(solver.settings.setup.report_files["*"])
 
 
 @pytest.mark.codegen_required

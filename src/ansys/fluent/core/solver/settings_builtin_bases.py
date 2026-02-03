@@ -22,10 +22,11 @@
 
 """Base classes for builtin setting classes."""
 
-from typing import Any, Protocol, cast, runtime_checkable
+from typing import TYPE_CHECKING, Any, Protocol, cast, runtime_checkable
 
 from typing_extensions import Self
 
+from ansys.fluent.core.generated.solver.settings_261 import root as Settings
 from ansys.fluent.core.solver.flobject import (
     InactiveObjectError,
     NamedObject,
@@ -40,10 +41,13 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 class Solver(Protocol):
     """Solver session class for type hinting."""
 
-    settings: SettingsBase
+    @property
+    def settings(self) -> Settings:
+        """The settings root object."""
+        ...
 
 
-def _get_settings_root(settings_source: SettingsBase | Solver):
+def _get_settings_root(settings_source: Solver | SettingsBase[object]):
     def is_root_obj(obj):
         return isinstance(obj, SettingsBase) and obj.parent is None
 
@@ -88,16 +92,17 @@ class _SettingsObjectMixin:
     def __init__(
         self,
         defaults: dict,
-        settings_source: SettingsBase | Solver | None = None,
+        settings_source: Solver | None = None,
         **kwargs: Any,
     ):
         if (db_name := kwargs.pop("_db_name", None)) is not None:
-            super().__setattr__(
-                "_db_name", db_name
-            )  # bypass the current setattr to initialise the right object
+            self._db_name = db_name  # used to change the cardinality in .all()
         active_session = _get_active_session()
-        self.__dict__.update(defaults | kwargs)
-        if settings_source is not None:
+        self.kwargs = kwargs
+        self.__dict__.update(defaults)
+        if (
+            settings_source is not None
+        ):  # after this the object is converted to a settings object
             self.settings_source = settings_source
         elif active_session:
             self.settings_source = active_session
@@ -105,54 +110,66 @@ class _SettingsObjectMixin:
 
 class _SingletonSetting(_SettingsObjectMixin):
     # Covers groups, named-object containers and commands.
-    def __init__(self, settings_source: SettingsBase | Solver | None = None, **kwargs):
+    def __init__(self, settings_source: Solver | None = None, **kwargs):
         super().__init__({"settings_source": None}, settings_source, **kwargs)
 
-    def __setattr__(self, name, value):
-        if name == "settings_source":
-            settings_root = _get_settings_root(value)
-            obj = _get_settings_obj(settings_root, self)
-            self.__class__ = obj.__class__
-            self.__dict__.clear()
-            self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
-        else:
-            super().__setattr__(name, value)
+    if not TYPE_CHECKING:
+
+        def __setattr__(self, name, value):
+            if name == "settings_source":
+                settings_root = _get_settings_root(value)
+                obj = _get_settings_obj(settings_root, self)
+                self.__class__ = obj.__class__
+                self.__dict__.clear()
+                self.__dict__.update(obj.__dict__ | {"settings_source": settings_root})
+            else:
+                super().__setattr__(name, value)
 
 
 class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
     _db_name: str  # pyright: ignore[reportUninitializedInstanceVariable]
 
     def __init__(
-        self, name: str, settings_source: SettingsBase | Solver | None = None, **kwargs
+        self,
+        settings_source: Solver | None = None,
+        name: str | None = None,
+        **kwargs: Any,
     ):
+        kwargs["_db_name"] = (
+            DATA[self.__class__._db_name][2] if name is None else kwargs.get("_db_name")
+        )  # initialise as the parent container
         super().__init__(
             {"settings_source": None, "name": name}, settings_source, **kwargs
         )
 
-    def __setattr__(self, name, value):
-        if name == "settings_source":
-            settings_root = _get_settings_root(value)
-            obj = _get_settings_obj(settings_root, self)
-            obj = obj[self.name]
-            self.__class__ = obj.__class__
-            self.__dict__.clear()
-            self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
-        else:
-            super().__setattr__(name, value)
+    if not TYPE_CHECKING:
+
+        def __setattr__(self, name, value):
+            if name == "settings_source":
+                settings_root = _get_settings_root(value)
+                obj = _get_settings_obj(settings_root, self)
+                obj = obj[self.name]
+                self.__class__ = obj.__class__
+                self.__dict__.clear()
+                self.__dict__.update(obj.__dict__ | {"settings_source": settings_root})
+            else:
+                super().__setattr__(name, value)
 
     @classmethod
-    def all(cls, solver: SettingsBase | Solver | None = None, /) -> list[Self]:
+    def all(cls, solver: Solver | None = None, /) -> list[Self]:
         """Return a list of all instances of this object in Fluent."""
         return cast(
             list[
                 Self
             ],  # yes this looks like an unsafe cast but this works via clearing the instance's dict
-            cast(
-                object,
-                _SettingsObjectMixin(
-                    {"settings_source": None},
-                    settings_source=solver,
-                    _db_name=DATA[cls._db_name][2],  # plural form for the container
+            list(
+                cast(
+                    Any,
+                    _NonCreatableNamedObjectSetting(
+                        settings_source=solver,
+                        name="*",
+                        _db_name=DATA[cls._db_name][2],  # initialise parent container
+                    ),
                 ),
             ),
         )
@@ -160,7 +177,7 @@ class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
     @classmethod
     def get(
         cls,
-        settings_source: SettingsBase | Solver | None = None,
+        settings_source: Solver | None = None,
         /,
         *,
         name: str,
@@ -180,13 +197,19 @@ class _NonCreatableNamedObjectSetting(_SettingsObjectMixin):
 class _CreatableNamedObjectSetting(_SettingsObjectMixin):
     def __init__(
         self,
-        settings_source: SettingsBase | Solver | None = None,
+        settings_source: Solver | None = None,
         name: str | None = None,
         new_instance_name: str | None = None,
-        **kwargs,
+        _from_create: bool = False,
+        **kwargs: Any,
     ):
         if name and new_instance_name:
             raise ValueError("Cannot specify both name and new_instance_name.")
+        kwargs["_db_name"] = (
+            DATA[self.__class__._db_name][2]
+            if name is None and not _from_create
+            else kwargs.get("_db_name")
+        )  # initialise as the parent container
         super().__init__(
             {
                 "settings_source": None,
@@ -200,7 +223,7 @@ class _CreatableNamedObjectSetting(_SettingsObjectMixin):
     @classmethod
     def get(
         cls,
-        settings_source: SettingsBase | Solver | None = None,
+        settings_source: Solver | None = None,
         /,
         *,
         name: str,
@@ -219,7 +242,7 @@ class _CreatableNamedObjectSetting(_SettingsObjectMixin):
     @classmethod
     def create(
         cls,
-        settings_source: SettingsBase | Solver | None = None,
+        settings_source: Solver | None = None,
         /,
         name: str | None = None,
         **kwargs: Any,
@@ -235,29 +258,33 @@ class _CreatableNamedObjectSetting(_SettingsObjectMixin):
         **kwargs
             Additional attributes to set on the created object. This only works for direct value assignments, not for nested objects.
         """
-        self = cls(
-            settings_source=settings_source,
-            new_instance_name=name,
+        root = _get_settings_root(
+            settings_source or _get_active_session()
+        )  # validate settings_source
+        instance = _CreatableNamedObjectSetting(
+            _from_create=True, new_instance_name=name, _db_name=DATA[cls._db_name][2]
         )
-        self.set_state(kwargs)
 
-        return self
+        obj = _get_settings_obj(root, instance)
+        return obj.create(name=name, **kwargs)
 
-    def __setattr__(self, name, value):
-        if name == "settings_source":
-            settings_root = _get_settings_root(value)
-            obj = _get_settings_obj(settings_root, self)
-            if self.name:
-                obj = obj[self.name]
-            elif self.new_instance_name:
-                obj = obj.create(self.new_instance_name)
+    if not TYPE_CHECKING:
+
+        def __setattr__(self, name, value):
+            if name == "settings_source":
+                settings_root = _get_settings_root(value)
+                obj = _get_settings_obj(settings_root, self)
+                if self.name:
+                    obj = obj[self.name]
+                elif (
+                    self.new_instance_name or self._db_name == self.__class__._db_name
+                ):  # create a new potentially anonymous instance
+                    obj = obj.create(self.new_instance_name, **self.kwargs)
+                self.__class__ = obj.__class__
+                self.__dict__.clear()
+                self.__dict__.update(obj.__dict__ | {"settings_source": settings_root})
             else:
-                obj = obj.create()
-            self.__class__ = obj.__class__
-            self.__dict__.clear()
-            self.__dict__.update(obj.__dict__ | dict(settings_source=settings_root))
-        else:
-            super().__setattr__(name, value)
+                super().__setattr__(name, value)
 
 
 _CommandSetting = _SingletonSetting
