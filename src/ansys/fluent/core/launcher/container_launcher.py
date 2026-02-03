@@ -214,8 +214,10 @@ class DockerLauncher:
         insecure_mode_env = os.getenv("PYFLUENT_CONTAINER_INSECURE_MODE") == "1"
         certificates_folder, insecure_mode = get_remote_grpc_options(
             kwargs.get("certificates_folder"),
-            kwargs.get("insecure_mode") or insecure_mode_env,
+            kwargs.get("insecure_mode", False) or insecure_mode_env,
         )
+        kwargs["certificates_folder"] = certificates_folder
+        kwargs["insecure_mode"] = insecure_mode
         if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
