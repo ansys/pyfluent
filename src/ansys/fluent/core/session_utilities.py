@@ -361,9 +361,7 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        kwargs_with_mode = dict(kwargs)
-        kwargs_with_mode["mode"] = cls._session_mode[cls.__name__]
-        launcher = PIMLauncher(**kwargs_with_mode)
+        launcher = PIMLauncher(**kwargs, mode=cls._session_mode[cls.__name__])
         return launcher()
 
     @classmethod
