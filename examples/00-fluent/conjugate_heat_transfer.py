@@ -466,7 +466,7 @@ meshing_session.workflow.TaskObject["Improve Volume Mesh"].Execute()
 # Save Mesh File
 # ==============
 
-save_mesh_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.msh.h5")
+save_mesh_as = str(Path(pyfluent.config.examples_path) / "hx-fin-2mm.msh.h5")
 meshing_session.tui.file.write_mesh(save_mesh_as)
 
 #############################################################################

@@ -301,10 +301,7 @@ class BaseMeshing:
 
     def two_dimensional_meshing_workflow(
         self, initialize: bool = True, legacy: bool | None = None
-    ) -> (
-        _meshing_workflow.TwoDimensionalMeshingWorkflow
-        | meshing_workflow_new.TwoDimensionalMeshingWorkflow
-    ):
+    ) -> "_meshing_workflow.TwoDimensionalMeshingWorkflow | meshing_workflow_new.TwoDimensionalMeshingWorkflow":
         """Create a 2D meshing workflow.
 
         Parameters

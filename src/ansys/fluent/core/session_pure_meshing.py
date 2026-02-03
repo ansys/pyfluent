@@ -181,10 +181,7 @@ class PureMeshing(BaseSession):
 
     def watertight(
         self, legacy: bool | None = None
-    ) -> (
-        _meshing_workflow.WatertightMeshingWorkflow
-        | meshing_workflow_new.WatertightMeshingWorkflow
-    ):
+    ) -> "_meshing_workflow.WatertightMeshingWorkflow | meshing_workflow_new.WatertightMeshingWorkflow":
         """Get a new watertight meshing workflow.
 
         Parameters
