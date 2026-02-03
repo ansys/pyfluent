@@ -86,7 +86,7 @@ jobs:
     name: "Code style"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/code-style@v10
+      - uses: ansys/actions/code-style@v10.2
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: false
@@ -101,7 +101,7 @@ jobs:
         run: uv pip install -e ".[ci_types]"
 
       - name: "Check Type hints"
-        run: basedpyright
+        run: basedpyright --baselinemode=auto
 
   commit-style:
     name: "Run commit style checks"
