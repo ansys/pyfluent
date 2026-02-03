@@ -83,10 +83,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   code-style:
-    name: "Code style"
+    name: Code style
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/code-style@v10.2
+      - name: "Run PyAnsys code style checks"
+        uses: ansys/actions/code-style@v10.2
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
           skip-install: false
