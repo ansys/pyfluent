@@ -31,7 +31,7 @@ import ansys.fluent.core as pyfluent
 
 
 @pytest.mark.skip(
-    reason=f"{SKIP_BLOCKED}Unable to read generated python journal from fluent."
+    reason=f"{SKIP_BLOCKED} Unable to read generated python journal from fluent."
 )
 def test_single_jou():
     file_name = os.path.join(pyfluent.config.examples_path, "jou1.jou")

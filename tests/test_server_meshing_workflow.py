@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
-from tests.conftest import SKIP_UNKNOWN
 
 
 @pytest.mark.nightly

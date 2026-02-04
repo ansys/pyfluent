@@ -23,11 +23,11 @@
 import time
 from typing import Iterable
 
+from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, examples
 from ansys.fluent.core.workflow import camel_to_snake_case
-from tests.conftest import SKIP_UNKNOWN
 
 
 @pytest.mark.nightly
@@ -1306,7 +1306,7 @@ def test_loaded_workflow(new_meshing_session):
     # assert loaded_workflow.import_boi_geometry_1.arguments()
 
 
-@pytest.mark.skip(f"{SKIP_UNKNOWN} https://github.com/ansys/pyfluent/issues/3065")
+@pytest.mark.skip(f"{SKIP_INVESTIGATING} https://github.com/ansys/pyfluent/issues/3065")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.1")
 def test_created_workflow(new_meshing_session):
