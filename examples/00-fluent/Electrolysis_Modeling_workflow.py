@@ -74,21 +74,29 @@ Electrolysis Modeling
 #   Importing the following classes offer streamlined access to key solver settings,
 #   eliminating the need to manually browse through the full settings structure.
 
-import os
+from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.generated.solver.settings_builtin_261 import iterate, write_case_data
 from ansys.fluent.core.solver import (
     BoundaryConditions,
     Contour,
     Controls,
+    EChemistry,
     Graphics,
     Initialization,
+    MassFlowInlet,
     Materials,
     Mesh,
     RunCalculation,
     Setup,
+    SolidMaterial,
 )
+from ansys.units.common import A, K, V, degree, m, ohm, s
+
+# a Siemen
+S = 1 / ohm
 
 # %%
 # Launch Fluent session in solver mode
@@ -105,8 +113,11 @@ solver = pyfluent.launch_fluent(
 mesh_file = examples.download_file(
     "electrolysis.msh.h5",
     "pyfluent/electrolysis",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
+
+# upload mesh to solver (required for some remote/meshing workflows)
+solver.upload(mesh_file)
 
 solver.settings.file.read_mesh(file_name=mesh_file)
 
@@ -136,117 +147,84 @@ graphics.picture.save_picture(file_name="Electrolysis_Modeling_1.png")
 # %%
 # Enable Electrolysis Model
 # -------------------------
-setup = Setup(solver)
+echem = EChemistry(solver)
+echem.potential = True
+echem.echemistry_enabled = True
+echem.electrolysis.options.bc_type = echem.electrolysis.options.bc_type.TOTAL_VOLTAGE
+echem.electrolysis.options.tot_voltage = 1.730202 * V
 
-setup.models.echemistry = {
-    "potential": True,
-    "echemistry_enabled": True,
-    "electrolysis": {
-        "options": {
-            "bc_type": "Total voltage",
-            "tot_voltage": 1.730202,  # V
-        },
-        "parameters": {
-            "anode_jref": 1.36e-09,  # A/m²
-            "anode_jea": 181411,  # A/m²
-            "anode_exp": 0,  # Concentration exponent
-            "cathode_jref": 200,  # A/m²
-            "cathode_jea": 24359,  # A/m²
-            "cathode_ex_a": 1,  # Anodic transfer coefficient
-            "cathode_ex_c": 1,  # Cathodic transfer coefficient
-            "open_voltage": 1.1999,  # V
-        },
-        "anode": {
-            "anode_cc_zone": {
-                "anode_cc_zone_list": ["anode_cc"],
-                "anode_cc_material": "collector-default",
-            },
-            "anode_fc_zone": {"anode_fc_zone_list": ["anode_fc"]},
-            "anode_pl_zone": {
-                "anode_pl_zone_list": ["anode_pl"],
-                "anode_pl_material": "porous-default",
-                "anode_pl_porosity": 0.75,  # Porosity of porous layer
-                "anode_pl_kr": 4.9e-11,  # m² Absolute permeability
-                "anode_pl_angle": 70,  # Degrees
-            },
-            "anode_cl_zone": {
-                "anode_cl_zone_list": ["anode_cl"],
-                "anode_cl_material": "catalyst-default",
-                "anode_cl_porosity": 0.2,  # Catalyst layer porosity
-                "anode_cl_kr": 4.9e-12,  # m² Catalyst layer permeability
-                "anode_cl_angle": 80,  # Degrees
-            },
-        },
-        "electrolyte": {
-            "mem_zone": {
-                "mem_zone_list": ["mem"],
-                "mem_material": "electrolyte-default",
-            }
-        },
-        "cathode": {
-            "cathode_cc_zone": {
-                "cathode_cc_zone_list": ["cathode_cc"],
-                "cathode_cc_material": "collector-default",
-            },
-            "cathode_fc_zone": {"cathode_fc_zone_list": ["cathode_fc"]},
-            "cathode_pl_zone": {
-                "cathode_pl_zone_list": ["cathode_pl"],
-                "cathode_pl_material": "porous-default",
-                "cathode_pl_porosity": 0.75,  # Porosity
-                "cathode_pl_kr": 1e-11,  # m² Permeability
-            },
-            "cathode_cl_zone": {
-                "cathode_cl_zone_list": ["cathode_cl"],
-                "cathode_cl_material": "catalyst-default",
-                "cathode_cl_porosity": 0.2,  # Catalyst layer porosity
-                "cathode_cl_kr": 2e-12,  # m² Permeability
-            },
-        },
-        "electrical_tab": {
-            "anode_tab": ["anode_tab", "anode_tab.1", "anode_tab.1.1"],
-            "cathode_tab": ["cathode_tab", "cathode_tab.1", "cathode_tab.1.1"],
-        },
-    },
-}
+electrolysis_params = echem.electrolysis.parameters
+electrolysis_params.anode_jref = 1.36e-09 * A / m**2
+electrolysis_params.anode_jea = 181411 * A / m**2
+electrolysis_params.anode_exp = 0
+electrolysis_params.cathode_jref = 200 * A / m**2
+electrolysis_params.cathode_jea = 24359 * A / m**2
+electrolysis_params.cathode_ex_a = 1
+electrolysis_params.cathode_ex_c = 1
+electrolysis_params.open_voltage = 1.1999 * V
 
-# %%
-# Define solid materials
+anode = echem.electrolysis.anode
+anode.anode_cc_zone.anode_cc_zone_list = ["anode_cc"]
+anode.anode_cc_zone.anode_cc_material = "collector-default"
+
+anode.anode_fc_zone.anode_fc_zone_list = ["anode_fc"]
+
+anode.anode_pl_zone.anode_pl_zone_list = ["anode_pl"]
+anode.anode_pl_zone.anode_pl_material = "porous-default"
+anode.anode_pl_zone.anode_pl_porosity = 0.75
+anode.anode_pl_zone.anode_pl_kr = 4.9e-11 * m**2
+anode.anode_pl_zone.anode_pl_angle = 70 * degree
+
+anode.anode_cl_zone.anode_cl_zone_list = ["anode_cl"]
+anode.anode_cl_zone.anode_cl_material = "catalyst-default"
+anode.anode_cl_zone.anode_cl_porosity = 0.2
+anode.anode_cl_zone.anode_cl_kr = 4.9e-12 * m**2
+anode.anode_cl_zone.anode_cl_angle = 80 * degree
+
+electrolyte = echem.electrolysis.electrolyte
+electrolyte.mem_zone.mem_zone_list = ["mem"]
+electrolyte.mem_zone.mem_material = "electrolyte-default"
+
+cathode = echem.electrolysis.cathode
+cathode.cathode_cc_zone.cathode_cc_zone_list = ["cathode_cc"]
+cathode.cathode_cc_zone.cathode_cc_material = "collector-default"
+
+cathode.cathode_fc_zone.cathode_fc_zone_list = ["cathode_fc"]
+cathode.cathode_pl_zone.cathode_pl_zone_list = ["cathode_pl"]
+cathode.cathode_pl_zone.cathode_pl_material = "porous-default"
+cathode.cathode_pl_zone.cathode_pl_porosity = 0.75
+cathode.cathode_pl_zone.cathode_pl_kr = 1e-11 * m**2
+cathode.cathode_pl_zone.cathode_pl_angle = 70 * degree
+cathode.cathode_cl_zone.cathode_cl_zone_list = ["cathode_cl"]
+cathode.cathode_cl_zone.cathode_cl_material = "catalyst-default"
+cathode.cathode_cl_zone.cathode_cl_porosity = 0.2
+cathode.cathode_cl_zone.cathode_cl_kr = 2e-12 * m**2
+cathode.cathode_cl_zone.cathode_cl_angle = 80 * degree
+
+electrical_tab = echem.electrolysis.electrical_tab
+electrical_tab.anode_tab = ["anode_tab", "anode_tab.1", "anode_tab.1.1"]
+electrical_tab.cathode_tab = ["cathode_tab", "cathode_tab.1", "cathode_tab.1.1"]
+
 # ----------------------
 materials = Materials(solver)
 
-# Current collector
-materials.solid["collector-default"] = {
-    "electric_conductivity": {"value": 20000}  # S/m
-}
+SolidMaterial.create(solver, name="collector-default", electric_conductivity = 20000 * S / m)
 
-# Porous layer
-materials.solid["porous-default"] = {"electric_conductivity": {"value": 20000}}  # S/m
+SolidMaterial.create(solver, name="porous-default", electric_conductivity = 20000 * S / m)
 
-# Catalyst layer: dual conductivity
-materials.solid["catalyst-default"] = {
-    "electric_conductivity": {"value": 5000},  # S/m  Electronic
-    "dual_electric_conductivity": {"value": 4.5},  # S/m  Ionic in catalyst
-}
+SolidMaterial.create(solver, name="catalyst-default", electrical_conductivity = 5000 * S / m, dual_electric_conductivity = 4.5 * S / m)
 
-# Membrane: ionic conductivity
-materials.solid["electrolyte-default"] = {
-    "dual_electric_conductivity": {"value": 11}  # S/m  Proton conductivity
-}
+SolidMaterial.create(solver, name="electrolyte-default", dual_electric_conductivity = 11 * S / m)
 
 # %%
 # Boundary conditions
 # -------------------
 conditions = BoundaryConditions(solver)
 
-# Mixture phase: thermal condition
-conditions.mass_flow_inlet["anode_in"] = {
-    "phase": {"mixture": {"thermal": {"total_temperature": {"value": 333.15}}}}  # K
-}
-
-# Phase-2 (liquid water): mass flow rate
-conditions.mass_flow_inlet["anode_in"] = {
-    "phase": {"phase-2": {"momentum": {"mass_flow_rate": {"value": 0.000404}}}}  # kg/s
-}
+# Configure mass flow inlet for anode using typed MassFlowInlet API
+anode_in = MassFlowInlet(solver, name="anode_in")
+anode_in.phase.mixture.thermal.total_temperature = 333.15 * K
+anode_in.phase.phase_2.momentum.mass_flow_rate = 0.000404  # kg/s
 
 # %%
 # Solution controls
@@ -254,7 +232,7 @@ conditions.mass_flow_inlet["anode_in"] = {
 
 controls = Controls(solver)
 
-controls.under_relaxation = {"mp": 1}
+controls.under_relaxation.mp = 1
 
 # %%
 # Initialize solution
@@ -262,27 +240,22 @@ controls.under_relaxation = {"mp": 1}
 initialize = Initialization(solver)
 
 initialize.initialization_type = "standard"
-initialize.defaults = {
-    "temperature": 333.15,  # K
-    "phase-2-mp": 1,  # Initial volume fraction of liquid
-}
+initialize.defaults["temperature"] = 333.15 * K
+initialize.defaults["phase-2-mp"] = 1
 
 # %%
 # Run calculation
 # ---------------
 
-calculation = RunCalculation(solver)
-
-calculation.iterate(iter_count=300)
+iterate(solver, iter_count=300)
 
 # %%
 # Post-processing
 # ---------------
 
-potential_contour = Contour(solver, new_instance_name="potential_contour")
+potential_contour = Contour.create(solver, name="potential_contour", field = "potential", surfaces_list = ["zmid"])
 
-potential_contour.field = "potential"
-potential_contour.surfaces_list = ["zmid"]
+
 graphics.views.restore_view(view_name="front")
 potential_contour.display()
 
@@ -294,10 +267,7 @@ graphics.picture.save_picture(file_name="Electrolysis_Modeling_2.png")
 #    :align: center
 #    :alt: Potential Contour
 
-volume_fraction_contour = Contour(solver, new_instance_name="volume_fraction_contour")
-
-volume_fraction_contour.field = "phase-1-vof"
-volume_fraction_contour.surfaces_list = ["zmid", "xmid"]
+volume_fraction_contour = Contour.create(solver, name="volume_fraction_contour", field = "phase-1-vof", surfaces_list = ["zmid", "xmid"])
 
 graphics.views.restore_view(view_name="isometric")
 volume_fraction_contour.display()
@@ -310,7 +280,7 @@ graphics.picture.save_picture(file_name="Electrolysis_Modeling_3.png")
 #    :alt: Volume Fraction Contour
 
 # save case and data file
-solver.settings.file.write(file_type="case-data", file_name="electrolysis")
+write_case_data(solver, file_name="electrolysis")
 
 # %%
 # Close session

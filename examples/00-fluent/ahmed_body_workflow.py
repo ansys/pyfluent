@@ -61,18 +61,36 @@ Ahmed Body External Aerodynamics Simulation
 # Import required libraries/modules
 # =====================================================================================
 
-import os
+from pathlib import Path
 import platform
+
+from ansys.units import VariableCatalog
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.solver import (
+    Methods,
+    ReferenceValues,
+    Residual,
+ iterate, write_case,
+    FluidMaterial,
+    Initialization,
+    IsoSurface,
+    Monitor,
+    OutputParameters,
+    PressureOutlet,
+    ReportDefinitions,
+    VelocityInlet,
+    Viscous,
+)
 from ansys.fluent.visualization import Contour, GraphicsWindow
+from ansys.units.common import kg, m, s
 
 #######################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
 # =====================================================================================
-session = pyfluent.launch_fluent(mode="meshing", cleanup_on_exit=True)
-print(session.get_fluent_version())
+meshing = pyfluent.Meshing.from_install(cleanup_on_exit=True, fluent_path=r"C:\ANSYSDev\v261\fluent\ntbin\win64\fluent.exe")
+print(meshing.get_fluent_version())
 
 #######################################################################################
 # Meshing Workflow
@@ -82,7 +100,7 @@ print(session.get_fluent_version())
 # Initialize the Meshing Workflow
 # =====================================================================================
 
-workflow = session.workflow
+workflow = meshing.workflow
 
 filenames = {
     "Windows": "ahmed_body_20_0degree_boi_half.scdoc",
@@ -92,54 +110,49 @@ filenames = {
 geometry_filename = examples.download_file(
     filenames.get(platform.system(), filenames["Other"]),
     "pyfluent/examples/Ahmed-Body-Simulation",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
+meshing.upload(geometry_filename)
 
 workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
-workflow.TaskObject["Import Geometry"].Arguments = dict(FileName=geometry_filename)
+workflow.TaskObject["Import Geometry"].Arguments = {"FileName": geometry_filename}
 workflow.TaskObject["Import Geometry"].Execute()
 
 #######################################################################################
 # Add Local Face Sizing
 # =====================================================================================
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_front",
-        "BOIFaceLabelList": ["wall_ahmed_body_front"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 8,
-    }
-)
+add_local_sizing.Arguments = {
+    "AddChild": "yes",
+    "BOIControlName": "facesize_front",
+    "BOIFaceLabelList": ["wall_ahmed_body_front"],
+    "BOIGrowthRate": 1.15,
+    "BOISize": 8,
+}
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_rear",
-        "BOIFaceLabelList": ["wall_ahmed_body_rear"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 5,
-    }
-)
+add_local_sizing.Arguments = {
+    "AddChild": "yes",
+    "BOIControlName": "facesize_rear",
+    "BOIFaceLabelList": ["wall_ahmed_body_rear"],
+    "BOIGrowthRate": 1.15,
+    "BOISize": 5,
+}
 add_local_sizing.Execute()
 
 add_local_sizing.InsertCompoundChildTask()
 workflow.TaskObject["Add Local Sizing"].Execute()
 add_local_sizing = workflow.TaskObject["Add Local Sizing"]
-add_local_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "facesize_main",
-        "BOIFaceLabelList": ["wall_ahmed_body_main"],
-        "BOIGrowthRate": 1.15,
-        "BOISize": 12,
-    }
-)
+add_local_sizing.Arguments = {
+    "AddChild": "yes",
+    "BOIControlName": "facesize_main",
+    "BOIFaceLabelList": ["wall_ahmed_body_main"],
+    "BOIGrowthRate": 1.15,
+    "BOISize": 12,
+}
 add_local_sizing.Execute()
 
 #######################################################################################
@@ -147,15 +160,13 @@ add_local_sizing.Execute()
 # =====================================================================================
 add_boi_sizing = workflow.TaskObject["Add Local Sizing"]
 add_boi_sizing.InsertCompoundChildTask()
-add_boi_sizing.Arguments = dict(
-    {
-        "AddChild": "yes",
-        "BOIControlName": "boi_1",
-        "BOIExecution": "Body Of Influence",
-        "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
-        "BOISize": 20,
-    }
-)
+add_boi_sizing.Arguments = {
+    "AddChild": "yes",
+    "BOIControlName": "boi_1",
+    "BOIExecution": "Body Of Influence",
+    "BOIFaceLabelList": ["ahmed_body_20_0degree_boi_half-boi"],
+    "BOISize": 20,
+}
 add_boi_sizing.Execute()
 add_boi_sizing.InsertCompoundChildTask()
 
@@ -164,17 +175,15 @@ add_boi_sizing.InsertCompoundChildTask()
 # Add Surface Mesh Sizing
 # =====================================================================================
 generate_surface_mesh = workflow.TaskObject["Generate the Surface Mesh"]
-generate_surface_mesh.Arguments = dict(
-    {
-        "CFDSurfaceMeshControls": {
-            "CurvatureNormalAngle": 12,
-            "GrowthRate": 1.15,
-            "MaxSize": 50,
-            "MinSize": 1,
-            "SizeFunctions": "Curvature",
-        }
+generate_surface_mesh.Arguments = {
+    "CFDSurfaceMeshControls": {
+        "CurvatureNormalAngle": 12,
+        "GrowthRate": 1.15,
+        "MaxSize": 50,
+        "MinSize": 1,
+        "SizeFunctions": "Curvature",
     }
-)
+}
 
 generate_surface_mesh.Execute()
 generate_surface_mesh.InsertNextTask(CommandName="ImproveSurfaceMesh")
@@ -185,10 +194,10 @@ improve_surface_mesh.Execute()
 #######################################################################################
 # Describe Geometry, Update Boundaries, Update Regions
 # =====================================================================================
-workflow.TaskObject["Describe Geometry"].Arguments = dict(
-    CappingRequired="Yes",
-    SetupType="The geometry consists of only fluid regions with no voids",
-)
+workflow.TaskObject["Describe Geometry"].Arguments = {
+    "CappingRequired": "Yes",
+    "SetupType": "The geometry consists of only fluid regions with no voids",
+}
 workflow.TaskObject["Describe Geometry"].Execute()
 workflow.TaskObject["Update Boundaries"].Execute()
 workflow.TaskObject["Update Regions"].Execute()
@@ -220,7 +229,7 @@ generate_volume_mesh.Execute()
 #######################################################################################
 # Switch to the Solver Mode
 # =====================================================================================
-session = session.switch_to_solver()
+solver = meshing.switch_to_solver()
 
 #######################################################################################
 # Mesh Visualization
@@ -243,107 +252,110 @@ session = session.switch_to_solver()
 #######################################################################################
 # Define Constants
 # =====================================================================================
-density = 1.225
-inlet_velocity = 30
-inlet_area = 0.11203202
+density = 1.225 * kg / m**3
+inlet_velocity = 30 * m / s
+inlet_area = 0.11203202 * m**2
 
 #######################################################################################
 # Define Materials
 # =====================================================================================
-session.tui.define.materials.change_create("air", "air", "yes", "constant", density)
-session.settings.setup.models.viscous.model = "k-epsilon"
-session.settings.setup.models.viscous.k_epsilon_model = "realizable"
-session.settings.setup.models.viscous.options.curvature_correction = True
+air = FluidMaterial.get(solver, name="air")
+air.density = density
+
+viscous = Viscous(solver=solver)
+viscous.model = viscous.model.K_EPSILON
+viscous.k_epsilon_model = viscous.k_epsilon_model.REALIZABLE
+viscous.options.curvature_correction = True
 
 #######################################################################################
 # Define Boundary Conditions
 # =====================================================================================
-inlet = session.settings.setup.boundary_conditions.velocity_inlet["inlet"]
+inlet = VelocityInlet.get(solver, name="inlet")
 inlet.turbulence.turb_intensity = 0.05
 inlet.momentum.velocity.value = inlet_velocity
 inlet.turbulence.turb_viscosity_ratio = 5
 
-outlet = session.settings.setup.boundary_conditions.pressure_outlet["outlet"]
+outlet = PressureOutlet.get(solver, name="outlet")
 outlet.turbulence.turb_intensity = 0.05
 
 #######################################################################################
 # Define Reference Values
 # =====================================================================================
-session.settings.setup.reference_values.area = inlet_area
-session.settings.setup.reference_values.density = density
-session.settings.setup.reference_values.velocity = inlet_velocity
+ref_values = ReferenceValues(solver)
+ref_values.area = inlet_area
+ref_values.density = density
+ref_values.velocity = inlet_velocity
 
 #######################################################################################
 # Define Solver Settings
 # =====================================================================================
-session.tui.solve.set.p_v_coupling(24)
+methods = Methods(solver)
+methods.p_v_coupling.flow_scheme = "Coupled"
 
-session.tui.solve.set.discretization_scheme("pressure", 12)
-session.tui.solve.set.discretization_scheme("k", 1)
-session.tui.solve.set.discretization_scheme("epsilon", 1)
-session.tui.solve.initialize.set_defaults("k", 0.000001)
+discretization_scheme = methods.spatial_discretization.discretization_scheme
+discretization_scheme["pressure"] = "second-order"
+discretization_scheme["k"] = "second-order-upwind"
+discretization_scheme["epsilon"] = "second-order-upwind"
+initialization = Initialization(solver)
+initialization.defaults.k = 0.000001
 
-session.settings.solution.monitor.residual.equations["continuity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["x-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["y-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["z-velocity"].absolute_criteria = (
-    0.0001
-)
-session.settings.solution.monitor.residual.equations["k"].absolute_criteria = 0.0001
-session.settings.solution.monitor.residual.equations["epsilon"].absolute_criteria = (
-    0.0001
-)
+residual = Residual(solver)
+for monitor in (
+    "continuity",
+    "x-velocity",
+    "y-velocity",
+    "z-velocity",
+    "k",
+    "epsilon",
+):
+    residual.equations[monitor].absolute_criteria = 1e-4
 
 #######################################################################################
 # Define Report Definitions
 # =====================================================================================
 
-session.settings.solution.report_definitions.drag["cd-mon1"] = {}
-session.settings.solution.report_definitions.drag["cd-mon1"] = {
-    "zones": ["wall_ahmed_body_main", "wall_ahmed_body_front", "wall_ahmed_body_rear"],
-    "force_vector": [0, 0, 1],
-}
-session.settings.parameters.output_parameters.report_definitions.create(
-    name="parameter-1"
+drag = ReportDefinitions(solver).drag.create(
+    name="cd-mon1",
+    zones=[
+        "wall_ahmed_body_main",
+        "wall_ahmed_body_front",
+        "wall_ahmed_body_rear",
+    ],
+    force_vector=(0, 0, 1),
 )
-session.settings.parameters.output_parameters.report_definitions["parameter-1"] = {
-    "report_definition": "cd-mon1"
-}
 
-session.settings.solution.monitor.report_plots.create(name="cd-mon1")
-session.settings.solution.monitor.report_plots["cd-mon1"] = {"report_defs": ["cd-mon1"]}
+params_report_defs = OutputParameters(solver).report_definitions
+param_1 = params_report_defs.create(report_def_name=drag)
+
+monitor = Monitor(solver)
+plot_mon = monitor.report_plots.create(name=drag, print=True, report_defs=[drag])
 
 #######################################################################################
 # Initialize and Run Solver
 # =====================================================================================
 
-session.settings.solution.run_calculation.iter_count = 5
-session.settings.solution.initialization.initialization_type = "standard"
-session.settings.solution.initialization.standard_initialize()
-session.settings.solution.run_calculation.iterate(iter_count=5)
+init = Initialization(solver)
+init.initialization_type = "standard"
+init.standard_initialize()
+iterate(solver, iter_count=5)
 
 #######################################################################################
 # Post-Processing Workflow
 # =====================================================================================
-session.settings.results.surfaces.iso_surface.create(name="xmid")
-session.settings.results.surfaces.iso_surface["xmid"].field = "x-coordinate"
-session.settings.results.surfaces.iso_surface["xmid"] = {"iso_values": [0]}
+iso = IsoSurface.create(solver, name="xmid", field="x-coordinate", iso_values=[0 * m])
 
-contour1 = Contour(solver=session, field="velocity-magnitude", surfaces=["xmid"])
+velocity_mag = Contour(
+    solver=solver, field=VariableCatalog.VELOCITY_MAGNITUDE, surfaces=["xmid"]
+)
 disp1 = GraphicsWindow()
-disp1.add_graphics(contour1)
+disp1.add_graphics(velocity_mag)
 disp1.show()
 
-contour2 = Contour(solver=session, field="pressure-coefficient", surfaces=["xmid"])
-assert "pressure-coefficient" in contour2.field.allowed_values
+pressure_coeff = Contour(
+    solver=solver, field=VariableCatalog.PRESSURE_COEFFICIENT, surfaces=["xmid"]
+)
 disp2 = GraphicsWindow()
-disp2.add_graphics(contour2)
+disp2.add_graphics(pressure_coeff)
 disp2.show()
 
 #######################################################################################
@@ -369,12 +381,12 @@ disp2.show()
 #######################################################################################
 # Save the case file
 # =====================================================================================
-session.settings.file.write(file_type="case-data", file_name="ahmed_body_final.cas.h5")
+write_case(solver, file_name="ahmed_body_final.cas.h5")
 
 #######################################################################################
 # Close the session
 # =====================================================================================
-session.exit()
+solver.exit()
 
 
 #######################################################################################

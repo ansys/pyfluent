@@ -87,12 +87,17 @@ Modeling Species Transport and Gaseous Combustion
 # sphinx_gallery_capture_repr = ('_repr_html_', '__repr__')
 # sphinx_gallery_thumbnail_path = '_static/species_transport/setup.png'
 
-import os
+from pathlib import Path
+
+from ansys.units import VariableCatalog
 
 import ansys.fluent.core as pyfluent
+from ansys.units.common import K, m, Pa, W, s
 
-solver_session = pyfluent.launch_fluent(dimension=2)
-print(solver_session.get_fluent_version())
+from ansys.fluent.core.generated.solver.settings_builtin_261 import Fluxes, General, Iterate, SurfaceIntegrals, WriteCase, WriteCaseData, write_case
+
+solver = pyfluent.Solver.from_install(dimension=2)
+print(solver.get_fluent_version())
 
 # %%
 # Import some direct settings classes which will be used in the following sections.
@@ -104,14 +109,20 @@ from ansys.fluent.core.examples import download_file  # noqa: E402
 from ansys.fluent.core.solver import (  # noqa: E402
     Contour,
     Energy,
+    Initialize,
     Mesh,
     MixtureMaterial,
     PressureOutlet,
+    RunCalculation,
     Species,
     Vector,
     VelocityInlet,
     Viscous,
     WallBoundary,
+    BoundaryCondition,
+    Methods,
+    Monitor,
+    Graphics,
 )
 
 # %%
@@ -121,9 +132,9 @@ from ansys.fluent.core.solver import (  # noqa: E402
 # Download the mesh file and read it into the Fluent session.
 
 mesh_file = download_file(
-    "gascomb.msh.gz", "pyfluent/tutorials/species_transport", save_path=os.getcwd()
+    "gascomb.msh.gz", "pyfluent/tutorials/species_transport", save_path=Path.cwd()
 )
-solver_session.settings.file.read_mesh(file_name=mesh_file)
+solver.settings.file.read_mesh(file_name=mesh_file)
 
 # %%
 # General Settings
@@ -133,7 +144,7 @@ solver_session.settings.file.read_mesh(file_name=mesh_file)
 # Fluent will perform various checks on the mesh and will report the progress in the console.
 # Ensure that the reported minimum volume reported is a positive number.
 
-solver_session.settings.mesh.check()
+solver.settings.mesh.check()
 
 # %%
 # Scale the mesh and check it again.
@@ -144,17 +155,17 @@ solver_session.settings.mesh.check()
 #
 #    We should check the mesh after we manipulate it (scale, convert to polyhedra, merge, separate, fuse, add zones, or smooth and swap).
 #    This will ensure that the quality of the mesh has not been compromised.
-
-solver_session.settings.mesh.scale(x_scale=0.001, y_scale=0.001)
-solver_session.settings.mesh.check()
+mesh = Mesh(solver)
+mesh.scale(x_scale=0.001, y_scale=0.001)
+mesh.check()
 
 # %%
 # Display the mesh in Fluent and save the image to a file to examine locally.
 
-mesh = Mesh(solver_session, new_instance_name="mesh")
+mesh = Mesh.create(solver, name="mesh")
 mesh.surfaces_list = mesh.surfaces_list.allowed_values()
 mesh.display()
-graphics = solver_session.settings.results.graphics
+graphics = Graphics(solver)
 graphics.views.auto_scale()
 if graphics.picture.use_window_resolution.is_active():
     graphics.picture.use_window_resolution = False
@@ -173,34 +184,61 @@ graphics.picture.save_picture(file_name="mesh.png")
 # %%
 # Inspect the available options for the two-dimensional space setting and set it to axisymmetric.
 
-solver_session.settings.setup.general.solver.two_dim_space.allowed_values()
+solver_ = General(solver).solver
+
+solver_.two_dim_space.allowed_values()
 
 # %%
 
-solver_session.settings.setup.general.solver.two_dim_space = "axisymmetric"
+solver_.two_dim_space = "axisymmetric"
 
 # %%
 # Models
 # ^^^^^^
 # Enable heat transfer by enabling the energy model.
 
-Energy(solver_session).enabled = True
+Energy(solver).enabled = True
 
 # %%
 # Inspect the default settings for the k-ω SST viscous model.
 
-Viscous(solver_session).print_state()
+Viscous(solver).print_state()
+
+
+# %%
+# Materials
+# ^^^^^^^^^
+# In this step, we will examine the default settings for the mixture material.
+# This tutorial uses mixture properties copied from the Ansys Fluent database.
+# In general, we can modify these or create our own mixture properties for our specific problem as necessary.
+
+# %%
+# Print some specific properties of the mixture material (methane-air).
+# We avoid printing the entire state of the mixture material to keep the output concise.
+
+mixture_material = MixtureMaterial(solver, name="methane-air")
+print(f"Species list: {mixture_material.species.volumetric_species.get_object_names()}")
+print(f"Reactions option: {mixture_material.reactions.option()}")
+print(f"Density option: {mixture_material.density.option()}")
+print(f"Cp (specific heat) option: {mixture_material.specific_heat.option()}")
+print(f"Thermal conductivity value: {mixture_material.thermal_conductivity.value()}")
+print(f"Viscosity value: {mixture_material.viscosity.value()}")
+if solver.get_fluent_version() < FluentVersion.v252:
+    print(f"Mass diffusivity value: {mixture_material.mass_diffusivity.value()}")
+else:
+    print(
+        f"Mass diffusivity value: {mixture_material.mass_diffusivity.constant_mass_diffusivity()}"
+    )
 
 # %%
 # Inspect the available options for the species model and set it to species transport.
 
-species = Species(solver_session)
+species = Species(solver)
 species.model.option.allowed_values()
 
 # %%
 
-species.model.option = "species-transport"
-
+species.model.option = species.model.option.SPECIES_TRANSPORT
 # %%
 # Inspect the species model settings.
 
@@ -221,7 +259,7 @@ species.reactions.enable_volumetric_reactions = True
 #    The chemical species in the system and their physical and thermodynamic properties are defined by our selection of the mixture material.
 #    We can alter the mixture material selection or modify the mixture material properties using the material settings (see `Materials`_).
 
-species.model.material = "methane-air"
+species.model.material = mixture_material
 
 # %%
 # Set the turbulence-chemistry interaction model to eddy-dissipation.
@@ -236,40 +274,13 @@ species.turb_chem_interaction_model = "eddy-dissipation"
 species.print_state()
 
 # %%
-# Materials
-# ^^^^^^^^^
-# In this step, we will examine the default settings for the mixture material.
-# This tutorial uses mixture properties copied from the Ansys Fluent database.
-# In general, we can modify these or create our own mixture properties for our specific problem as necessary.
-
-# %%
-# Print some specific properties of the mixture material (methane-air).
-# We avoid printing the entire state of the mixture material to keep the output concise.
-
-mixture_material = MixtureMaterial(solver_session, name="methane-air")
-print(f"Species list: {mixture_material.species.volumetric_species.get_object_names()}")
-print(f"Reactions option: {mixture_material.reactions.option()}")
-print(f"Density option: {mixture_material.density.option()}")
-print(f"Cp (specific heat) option: {mixture_material.specific_heat.option()}")
-print(f"Thermal conductivity value: {mixture_material.thermal_conductivity.value()}")
-print(f"Viscosity value: {mixture_material.viscosity.value()}")
-if solver_session.get_fluent_version() < FluentVersion.v252:
-    print(f"Mass diffusivity value: {mixture_material.mass_diffusivity.value()}")
-else:
-    print(
-        f"Mass diffusivity value: {mixture_material.mass_diffusivity.constant_mass_diffusivity()}"
-    )
-
-# %%
 # Boundary Conditions
 # ^^^^^^^^^^^^^^^^^^^
 # Convert the symmetry zone to the axis type.
 #
 # *The symmetry zone must be converted to an axis to prevent numerical difficulties where the radius reduces to zero.*
 
-solver_session.settings.setup.boundary_conditions.set_zone_type(
-    zone_list=["symmetry-5"], new_type="axis"
-)
+BoundaryCondition(solver).set_zone_type(zone_list=["symmetry-5"], new_type="axis")
 
 # %%
 # Set the boundary conditions for the air inlet (velocity-inlet-8).
@@ -278,9 +289,7 @@ solver_session.settings.setup.boundary_conditions.set_zone_type(
 #
 # *This name is more descriptive for the zone than velocity-inlet-8.*
 
-solver_session.settings.setup.boundary_conditions.velocity_inlet[
-    "velocity-inlet-8"
-].rename("air-inlet")
+VelocityInlet.get(solver, name="velocity-inlet-8").rename("air-inlet")
 
 # %%
 # Set the following boundary conditions for the air-inlet:
@@ -295,12 +304,12 @@ solver_session.settings.setup.boundary_conditions.velocity_inlet[
 #
 # * Species mass fraction for o2: 0.23
 
-air_inlet = VelocityInlet(solver_session, name="air-inlet")
-air_inlet.momentum.velocity_magnitude = 0.5
+air_inlet = VelocityInlet.get(solver, name="air-inlet")
+air_inlet.momentum.velocity_magnitude = 0.5 * m / s
 air_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 air_inlet.turbulence.turbulent_intensity = 0.1
-air_inlet.turbulence.hydraulic_diameter = 0.44
-air_inlet.thermal.temperature = 300
+air_inlet.turbulence.hydraulic_diameter = 0.44 * m
+air_inlet.thermal.temperature = 300 * K
 air_inlet.species.species_mass_fraction["o2"] = 0.23
 
 # %%
@@ -315,9 +324,7 @@ air_inlet.print_state()
 #
 # *This name is more descriptive for the zone than velocity-inlet-6.*
 
-solver_session.settings.setup.boundary_conditions.velocity_inlet[
-    "velocity-inlet-6"
-].rename("fuel-inlet")
+VelocityInlet.get(solver, name="velocity-inlet-6").rename("fuel-inlet")
 
 # %%
 # Set the following boundary conditions for the fuel-inlet:
@@ -332,12 +339,12 @@ solver_session.settings.setup.boundary_conditions.velocity_inlet[
 #
 # * Species mass fraction for ch4: 1
 
-fuel_inlet = VelocityInlet(solver_session, name="fuel-inlet")
-fuel_inlet.momentum.velocity_magnitude = 80
+fuel_inlet = VelocityInlet(solver, name="fuel-inlet")
+fuel_inlet.momentum.velocity_magnitude = 80 *  m /  s
 fuel_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 fuel_inlet.turbulence.turbulent_intensity = 0.1
-fuel_inlet.turbulence.hydraulic_diameter = 0.01
-fuel_inlet.thermal.temperature = 300
+fuel_inlet.turbulence.hydraulic_diameter = 0.01 *  m
+fuel_inlet.thermal.temperature = 300 *  K
 fuel_inlet.species.species_mass_fraction["ch4"] = 1
 
 # %%
@@ -346,27 +353,17 @@ fuel_inlet.species.species_mass_fraction["ch4"] = 1
 fuel_inlet.print_state()
 
 # %%
-# Set the following boundary conditions for the exit boundary (pressure-outlet-9):
-#
-# * Gauge pressure: 0 Pa
-#
-# * Backflow turbulence intensity: 10%
-#
-# * Backflow Hydraulic diameter: 0.45 m
-#
-# * Backflow total temperature: 300 K
-#
-# * Backflow species mass fraction for o2: 0.23
+# Set the  boundary conditions for the exit boundary (pressure-outlet-9):
 #
 # *The Backflow values in the pressure outlet boundary condition are utilized only when backflow occurs at the pressure outlet.
 # Always assign reasonable values because backflow may occur during intermediate iterations and could affect the solution stability.*
 
-pressure_outlet = PressureOutlet(solver_session, name="pressure-outlet-9")
-pressure_outlet.momentum.gauge_pressure = 0
+pressure_outlet = PressureOutlet.get(solver, name="pressure-outlet-9")
+pressure_outlet.momentum.gauge_pressure = 0 *  Pa
 pressure_outlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 pressure_outlet.turbulence.backflow_turbulent_intensity = 0.1
-pressure_outlet.turbulence.backflow_hydraulic_diameter = 0.45
-pressure_outlet.thermal.backflow_total_temperature = 300
+pressure_outlet.turbulence.backflow_hydraulic_diameter = 0.45 *  m
+pressure_outlet.thermal.backflow_total_temperature = 300 *  K
 pressure_outlet.species.backflow_species_mass_fraction["o2"] = 0.23
 
 # %%
@@ -381,16 +378,14 @@ pressure_outlet.print_state()
 #
 # *This name is more descriptive for the zone than wall-7.*
 
-solver_session.settings.setup.boundary_conditions.wall["wall-7"].rename("outer-wall")
+WallBoundary.get(solver, name="wall-7").rename("outer-wall")
 
 # %%
 # Set the following boundary conditions for the outer-wall:
-#
-# * Temperature: 300 K
 
-outer_wall = WallBoundary(solver_session, name="outer-wall")
+outer_wall = WallBoundary.get(solver, name="outer-wall")
 outer_wall.thermal.thermal_condition = "Temperature"
-outer_wall.thermal.temperature = 300
+outer_wall.thermal.temperature = 300 * K
 
 # %%
 # Verify the state of thermal properties of the outer-wall boundary condition after the changes.
@@ -404,16 +399,16 @@ outer_wall.thermal.print_state()
 #
 # *This name is more descriptive for the zone than wall-2.*
 
-solver_session.settings.setup.boundary_conditions.wall["wall-2"].rename("nozzle")
+WallBoundary.get(solver, name="wall-2").rename("nozzle")
 
 # %%
 # Set the following boundary conditions for the nozzle for adiabatic wall conditions:
 #
 # * Heat flux: 0 :math:`W/m^2`
 
-nozzle = WallBoundary(solver_session, name="nozzle")
-nozzle.thermal.thermal_condition = "Heat Flux"
-nozzle.thermal.heat_flux = 0
+nozzle = WallBoundary.get(solver, name="nozzle")
+nozzle.thermal.thermal_condition = nozzle.thermal.thermal_condition.HEAT_FLUX
+nozzle.thermal.heat_flux = 0 *  W * m ** -2
 
 # %%
 # Verify the state of thermal properties of the nozzle boundary condition after the changes.
@@ -427,27 +422,27 @@ nozzle.thermal.print_state()
 #
 # Inspect the solution methods settings.
 
-solver_session.settings.solution.methods.print_state()
+Methods(solver).print_state()
 
 # %%
 # Ensure that plot is enabled in residual monitor options.
 
-solver_session.settings.solution.monitor.residual.options.plot()
+Monitor(solver).residual.options.plot()
 
 # %%
 # Initialize the field variables.
 
-solver_session.settings.solution.initialization.hybrid_initialize()
+Initialize(solver).hybrid_initialize()
 
 # %%
 # Save the case file (gascomb1.cas.h5).
 
-solver_session.settings.file.write_case(file_name="gascomb1.cas.h5")
+WriteCase(file_name="gascomb1.cas.h5")
 
 # %%
 # Run the calculation for 200 iterations.
 
-solver_session.settings.solution.run_calculation.iterate(iter_count=200)
+Iterate(solver, iter_count=200)
 
 # %%
 # Set time scale factor to 5.
@@ -455,19 +450,16 @@ solver_session.settings.solution.run_calculation.iterate(iter_count=200)
 # *The Time Scale Factor allows us to further manipulate the computed time step size calculated by Fluent.
 # Larger time steps can lead to faster convergence. However, if the time step is too large it can lead to solution instability.*
 
-solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_size_scale_factor = (
-    5
-)
+RunCalculation(solver).pseudo_time_settings.time_step_method.time_step_size_scale_factor = 5
 
 # %%
 # Run the calculation for 200 iterations.
 
-solver_session.settings.solution.run_calculation.iterate(iter_count=200)
+Iterate(solver, iter_count=200)
 
 # %%
 # Save the case and data files (gascomb1.cas.h5 and gascomb1.dat.h5).
-
-solver_session.settings.file.write_case_data(file_name="gascomb1.cas.h5")
+WriteCaseData(solver, file_name="gascomb1.cas.h5")
 
 # %%
 # Postprocessing
@@ -477,13 +469,12 @@ solver_session.settings.file.write_case_data(file_name="gascomb1.cas.h5")
 # Report the total sensible heat flux.
 # We shall use wildcards to specify all zones.
 
-solver_session.settings.results.report.fluxes.get_heat_transfer_sensible(zones="*")
+Fluxes.get_heat_transfer_sensible(zones="*")
 
 # %%
 # Display filled contours of temperature and save the image to a file.
 
-contour1 = Contour(solver_session, new_instance_name="contour-temp")
-contour1.field = "temperature"
+contour1 = Contour.create(solver, name="contour-temp", field = VariableCatalog.TEMPERATURE)
 contour1.surfaces_list = contour1.surfaces_list.allowed_values()
 contour1.colorings.banded = True
 contour1.display()
@@ -502,8 +493,7 @@ graphics.views.auto_scale()
 # %%
 # Display velocity vectors and save the image to a file.
 
-vector1 = Vector(solver_session, new_instance_name="vector-vel")
-vector1.surfaces_list = ["interior-4"]
+vector1 = Vector.create(solver, name="vector-vel", surfaces_list = ["interior-4"])
 vector1.options.scale = 0.01
 vector1.vector_opt.fixed_length = True
 
@@ -529,8 +519,7 @@ graphics.picture.save_picture(file_name="vector-vel.png")
 # %%
 # Display filled contours of mass fraction of :math:`CH_4` and save the image to a file.
 
-contour2 = Contour(solver_session, new_instance_name="contour-ch4-mass-fraction")
-contour2.field = "ch4"
+contour2 = Contour.create(solver, name="contour-ch4-mass-fraction", field = "ch4")
 contour2.surfaces_list = contour2.surfaces_list.allowed_values()
 contour2.display()
 graphics.views.auto_scale()
@@ -547,8 +536,7 @@ graphics.picture.save_picture(file_name="contour-ch4-mass-fraction.png")
 # %%
 # Display filled contours of mass fraction of :math:`O_2` and save the image to a file.
 
-contour3 = Contour(solver_session, new_instance_name="contour-o2-mass-fraction")
-contour3.field = "o2"
+contour3 = Contour.create(solver, name="contour-o2-mass-fraction", field = "o2")
 contour3.surfaces_list = contour3.surfaces_list.allowed_values()
 contour3.display()
 graphics.views.auto_scale()
@@ -564,8 +552,7 @@ graphics.picture.save_picture(file_name="contour-o2-mass-fraction.png")
 # %%
 # Display filled contours of mass fraction of :math:`CO_2` and save the image to a file.
 
-contour4 = Contour(solver_session, new_instance_name="contour-co2-mass-fraction")
-contour4.field = "co2"
+contour4 = Contour.create(solver, name="contour-co2-mass-fraction", field = "co2")
 contour4.surfaces_list = contour4.surfaces_list.allowed_values()
 contour4.display()
 graphics.views.auto_scale()
@@ -581,8 +568,7 @@ graphics.picture.save_picture(file_name="contour-co2-mass-fraction.png")
 # %%
 # Display filled contours of mass fraction of :math:`H_2O` and save the image to a file.
 
-contour5 = Contour(solver_session, new_instance_name="contour-h2o-mass-fraction")
-contour5.field = "h2o"
+contour5 = Contour.create(solver, name="contour-h2o-mass-fraction", field = "h2o")
 contour5.surfaces_list = contour5.surfaces_list.allowed_values()
 contour5.display()
 graphics.views.auto_scale()
@@ -604,7 +590,7 @@ graphics.picture.save_picture(file_name="contour-h2o-mass-fraction.png")
 #
 # *The mass-averaged temperature at the exit is approximately 1840 K.*
 
-solver_session.settings.results.report.surface_integrals.get_mass_weighted_avg(
+SurfaceIntegrals(solver).get_mass_weighted_avg(
     report_of="temperature", surface_names=["pressure-outlet-9"]
 )
 
@@ -617,20 +603,20 @@ solver_session.settings.results.report.surface_integrals.get_mass_weighted_avg(
 #
 # *The Area-Weighted Average field will show that the exit velocity is approximately 3.37 m/s.*
 
-solver_session.settings.results.report.surface_integrals.get_area_weighted_avg(
+SolverIntegrals(solver).get_area_weighted_avg(
     report_of="velocity-magnitude", surface_names=["pressure-outlet-9"]
 )
 
 # %%
 # Save the case file (gascomb1.cas.h5).
 
-solver_session.settings.file.write_case(file_name="gascomb1.cas.h5")
+write_case(solver, file_name="gascomb1.cas.h5")
 
 # %%
 # Close Fluent
 # ^^^^^^^^^^^^
 
-solver_session.exit()
+solver.exit()
 
 # %%
 # Summary
