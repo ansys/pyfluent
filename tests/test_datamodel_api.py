@@ -22,6 +22,7 @@
 
 import time
 
+from conftest import SKIP_BLOCKED
 import pytest
 from util import create_datamodel_root_in_server
 
@@ -203,7 +204,9 @@ def test_datamodel_api_on_affected_at_type_path(
     assert called == 1
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
+@pytest.mark.skip(
+    reason=f"{SKIP_BLOCKED} https://github.com/ansys/pyfluent/issues/4298"
+)
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_deleted(
     datamodel_api_version_all, request, new_solver_session
@@ -276,7 +279,9 @@ def test_datamodel_api_on_attribute_changed(
     assert value == "xyz"
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
+@pytest.mark.skip(
+    reason=f"{SKIP_BLOCKED} https://github.com/ansys/pyfluent/issues/4298"
+)
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_command_attribute_changed(
     datamodel_api_version_all, request, new_solver_session
@@ -382,7 +387,9 @@ def test_datamodel_api_update_dict(datamodel_api_version_all, new_solver_session
     assert service.get_state(app_name, "/G/H") == {"X": "abc"}
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
+@pytest.mark.skip(
+    reason=f"{SKIP_BLOCKED} https://github.com/ansys/pyfluent/issues/4298"
+)
 @pytest.mark.fluent_version(">=25.2")
 def test_datamodel_api_on_bad_input(
     datamodel_api_version_all, request, new_solver_session

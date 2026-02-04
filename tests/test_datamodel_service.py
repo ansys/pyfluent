@@ -23,6 +23,7 @@
 import gc
 from time import sleep
 
+from conftest import SKIP_BLOCKED
 from google.protobuf.json_format import MessageToDict
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
@@ -289,7 +290,7 @@ def test_add_on_command_executed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
+@pytest.mark.skip(f"{SKIP_BLOCKED} https://github.com/ansys/pyfluent/issues/2999")
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(

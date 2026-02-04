@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_UNKNOWN
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -27,7 +28,7 @@ from ansys.fluent.core import examples
 from ansys.fluent.core.solver.flobject import InactiveObjectError
 
 
-@pytest.mark.skip(reason="This test works fine locally but fails on CI")
+@pytest.mark.skip(reason=f"{SKIP_UNKNOWN} This test works fine locally but fails on CI")
 @pytest.mark.fluent_version(">=23.1")
 def test_pre_post_session():
     file_name = examples.download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")

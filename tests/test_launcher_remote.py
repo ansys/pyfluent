@@ -51,9 +51,10 @@ import ansys.fluent.core.utils.fluent_version as docker_image_version
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.utils.networking import get_free_port
 import ansys.platform.instancemanagement as pypim
+from tests.conftest import SKIP_UNKNOWN
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/4055")
+@pytest.mark.skip(f"{SKIP_UNKNOWN} https://github.com/ansys/pyfluent/issues/4055")
 def test_launch_remote_instance(monkeypatch, new_solver_session):
     monkeypatch.setattr(pyfluent.config, "check_health", False)
     fluent = new_solver_session

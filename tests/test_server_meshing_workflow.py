@@ -24,6 +24,7 @@ import pytest
 
 from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
 from ansys.fluent.core.services.datamodel_se import PyMenu
+from tests.conftest import SKIP_UNKNOWN
 
 
 @pytest.mark.nightly
@@ -1946,7 +1947,7 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         assert import_geom.length_unit.min()
 
 
-@pytest.mark.skip("Failing in Github randomly.")
+@pytest.mark.skip(f"{SKIP_UNKNOWN} Failing in Github randomly.")
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_return_state_changes(new_meshing_session):

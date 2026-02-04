@@ -22,6 +22,7 @@
 
 import os
 
+from conftest import SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion
@@ -29,7 +30,7 @@ from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.services.datamodel_tui import TUIMenu
 
 
-@pytest.mark.skip("Failing in github")
+@pytest.mark.skip(f"{SKIP_UNKNOWN} Failing in github")
 def test_report_system_proc_stats_tui(new_solver_session, capsys) -> None:
     new_solver_session.tui.report.system.sys_stats()
     captured = capsys.readouterr()
@@ -52,7 +53,7 @@ def test_python_keyword_menu_name(new_meshing_session):
     meshing.tui.file.import_.cad_options.create_cad_assemblies("yes")
 
 
-@pytest.mark.skip("Failing in github")
+@pytest.mark.skip(f"{SKIP_UNKNOWN} Failing in github")
 def test_api_upgrade_message(new_solver_session):
     solver = new_solver_session
     case_name = download_file(

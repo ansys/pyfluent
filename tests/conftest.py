@@ -41,6 +41,15 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 sys.path.append(Path(__file__).parent / "util")
 
+# 1. Root cause completely unknown
+SKIP_UNKNOWN = "Skipped (root cause unknown)"
+
+# 2. Partially understood but unresolved
+SKIP_INVESTIGATING = "Skipped (partially understood, under investigation)"
+
+# 3. Understood but blocked for other reasons
+SKIP_BLOCKED = "Skipped (understood but blocked)"
+
 
 def pytest_addoption(parser):
     parser.addoption(

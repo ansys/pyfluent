@@ -25,6 +25,7 @@
 import os
 from pathlib import Path
 
+from conftest import SKIP_BLOCKED, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import examples
@@ -39,7 +40,7 @@ def _get_certs_folder():
 
 
 @pytest.mark.skip(
-    reason="Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI."
+    reason=f"{SKIP_UNKNOWN} Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI."
 )
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
@@ -116,7 +117,9 @@ def test_read_case_and_data(monkeypatch):
     solver.exit()
 
 
-@pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")
+@pytest.mark.skip(
+    reason=f"{SKIP_BLOCKED} Skips upload even after adding ImportGeometry task object."
+)
 def test_datamodel_execute():
     import ansys.fluent.core as pyfluent
 
