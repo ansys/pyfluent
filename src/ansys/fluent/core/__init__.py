@@ -59,7 +59,6 @@ Build timestamp and commit hash are added to this variable during packaging.
 import os as _os  # noqa: E402
 import warnings as _warnings  # noqa: E402
 
-
 _THIS_DIRNAME = _os.path.dirname(__file__)
 _README_FILE = _os.path.normpath(_os.path.join(_THIS_DIRNAME, "docs", "README.rst"))
 
@@ -84,6 +83,7 @@ def version_info() -> str:
 
 
 import pydoc as _pydoc  # noqa: E402
+
 from ansys.fluent.core.utils import fldoc as _fldoc  # noqa: E402
 
 _pydoc.text.docother = _fldoc.docother.__get__(_pydoc.text, _pydoc.TextDoc)

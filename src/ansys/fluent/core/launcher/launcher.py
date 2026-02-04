@@ -78,6 +78,7 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 __all__ = (
     "create_launcher",
     "launch_fluent",
+    "connect_to_fluent",
 )
 
 _THIS_DIR = os.path.dirname(__file__)
