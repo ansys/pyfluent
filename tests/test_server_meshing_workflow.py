@@ -1947,7 +1947,8 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         assert import_geom.length_unit.min()
 
 
-@pytest.mark.skip(f"{SKIP_UNKNOWN} Failing in Github randomly.")
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# Failing in Github randomly.
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_return_state_changes(new_meshing_session):

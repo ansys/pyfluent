@@ -39,9 +39,8 @@ def _get_certs_folder():
     return os.path.join(os.getcwd(), "certs")
 
 
-@pytest.mark.skip(
-    reason=f"{SKIP_UNKNOWN} Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI."
-)
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI.
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
@@ -117,9 +116,8 @@ def test_read_case_and_data(monkeypatch):
     solver.exit()
 
 
-@pytest.mark.skip(
-    reason=f"{SKIP_BLOCKED} Skips upload even after adding ImportGeometry task object."
-)
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Skips upload even after adding ImportGeometry task object.
 def test_datamodel_execute():
     import ansys.fluent.core as pyfluent
 

@@ -718,7 +718,8 @@ def test_field_data_errors(new_solver_session) -> None:
         )
 
 
-@pytest.mark.skip(f"{SKIP_INVESTIGATING} https://github.com/ansys/pyfluent/issues/2404")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2404
 @pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session

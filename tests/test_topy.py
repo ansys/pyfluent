@@ -30,9 +30,8 @@ import pytest
 import ansys.fluent.core as pyfluent
 
 
-@pytest.mark.skip(
-    reason=f"{SKIP_BLOCKED} Unable to read generated python journal from fluent."
-)
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Unable to read generated python journal from fluent.
 def test_single_jou():
     file_name = os.path.join(pyfluent.config.examples_path, "jou1.jou")
 
@@ -66,9 +65,8 @@ def test_single_jou():
             break
 
 
-@pytest.mark.skip(
-    reason=f"{SKIP_BLOCKED} Unable to read generated python journal from fluent."
-)
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Unable to read generated python journal from fluent.
 def test_single_scm():
     file_name = os.path.join(pyfluent.config.examples_path, "jou1.scm")
 
@@ -102,9 +100,8 @@ def test_single_scm():
             break
 
 
-@pytest.mark.skip(
-    reason=f"{SKIP_BLOCKED} Unable to read generated python journal from fluent."
-)
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Unable to read generated python journal from fluent.
 def test_2_jou():
     file_name_1 = os.path.join(pyfluent.config.examples_path, "jou1.jou")
     file_name_2 = os.path.join(pyfluent.config.examples_path, "jou2.jou")
@@ -156,9 +153,8 @@ def test_2_jou():
             break
 
 
-@pytest.mark.skip(
-    reason=f"{SKIP_BLOCKED} Unable to read generated python journal from fluent."
-)
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Unable to read generated python journal from fluent.
 def test_2_scm():
     file_name_1 = os.path.join(pyfluent.config.examples_path, "jou1.scm")
     file_name_2 = os.path.join(pyfluent.config.examples_path, "jou2.scm")

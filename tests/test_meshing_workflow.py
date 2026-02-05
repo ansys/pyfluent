@@ -205,7 +205,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skip(f"{SKIP_INVESTIGATING} Wait for later implementation.")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# Wait for later implementation.
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_meshing_session):
