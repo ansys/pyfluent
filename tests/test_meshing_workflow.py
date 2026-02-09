@@ -264,10 +264,11 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
-@pytest.mark.skip
 def test_new_2d_meshing_workflow(new_meshing_session_wo_exit):
     # Import geometry
     import_file_name = examples.download_file("NACA0012.fmd", "pyfluent/airfoils")
