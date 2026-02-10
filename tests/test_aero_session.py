@@ -24,6 +24,7 @@ import os.path
 from pathlib import Path
 import shutil
 
+from conftest import SKIP_BLOCKED
 import pytest
 
 import ansys.fluent.core as pyfluent
@@ -40,7 +41,8 @@ def test_icing_session():
     assert "aero" in dir(aero_session)
 
 
-@pytest.mark.skip("Run this locally only as of now.")
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Run this locally only as of now.
 @pytest.mark.fluent_version(">=24.2")
 def test_sample_setup():
     mesh_filepath = examples.download_file(

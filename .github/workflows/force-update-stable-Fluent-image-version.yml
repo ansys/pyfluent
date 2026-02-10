@@ -17,8 +17,8 @@ permissions:
 env:
   ANSYSLMD_LICENSE_FILE: ${{ format('1055@{0}', secrets.LICENSE_SERVER) }}
   MAIN_PYTHON_VERSION: "3.10"
-  FLUENT_IMAGE_TAG: v26.1.latest
-  FLUENT_VERSION: 261
+  FLUENT_IMAGE_TAG: v27.1.latest
+  FLUENT_VERSION: 271
 
 jobs:
   test:
@@ -30,6 +30,11 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
