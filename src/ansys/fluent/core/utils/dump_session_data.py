@@ -23,7 +23,10 @@
 """Module providing dump session data functionality."""
 
 from pathlib import Path
-import pickle
+
+# pickle is used to serialize session data internally.
+# No untrusted data is deserialized, so there are no security risks.
+import pickle  # nosec: B403
 
 import numpy as np
 

@@ -213,7 +213,7 @@ name = "Test"
 showcontent = true
 
 [tool.bandit]
-exclude_dirs = ["tests"]
+exclude_dirs = ["src/ansys/fluent/core/generated", "tests"]
 skips = [
     "B101",
     "B105",
@@ -225,7 +225,6 @@ skips = [
     "B310",
     "B311",
     "B314",
-    "B404",
     "B405",
     "B602",
     "B603",
