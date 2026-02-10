@@ -313,9 +313,9 @@ def _custom_converter_dimension(kwargs):
 def launch_fluent(
     *,
     product_version: FluentVersion | str | float | int | None = None,
-    dimension: Dimension | int = Dimension.THREE,
-    precision: Precision | str = Precision.DOUBLE,
-    processor_count: int | None = None,
+    dimension: Dimension | Literal[2, 3] = Dimension.THREE,
+    precision: Precision | Literal["single", "double"] = Precision.DOUBLE,
+    processor_count: int = 1,
     journal_file_names: None | str | list[str] = None,
     start_timeout: int | None = None,
     additional_arguments: str = "",
@@ -352,7 +352,7 @@ def launch_fluent(
     | SolverIcing
     | SolverAero
     | SlurmFuture
-    | dict[Any, Any]
+    | tuple[str, str]
 ):
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
@@ -362,7 +362,7 @@ def launch_fluent(
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str]]
         Session object or configuration dictionary if ``dry_run = True``.
 
     Raises
@@ -448,7 +448,6 @@ def launch_fluent(
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
             )
-
         case LaunchMode.PIM:
             launcher = PIMLauncher(
                 mode=mode,
@@ -466,7 +465,6 @@ def launch_fluent(
                 start_watchdog=start_watchdog,
                 file_transfer_service=file_transfer_service,
             )
-
         case LaunchMode.SLURM:
             launcher = SlurmLauncher(
                 mode=mode,

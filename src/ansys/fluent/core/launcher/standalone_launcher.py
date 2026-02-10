@@ -71,7 +71,11 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
     from ansys.fluent.core.launcher.launcher import LaunchFluentArgs
-
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
 
 class StandaloneArgsWithoutDryRun(LauncherArgsBase, TypedDict, total=False):  # pylint: disable=missing-class-docstring
     journal_file_names: None | str | list[str]
@@ -248,7 +252,7 @@ class StandaloneLauncher:
             else:
                 self._launch_cmd = self._launch_string
 
-    def __call__(self) -> tuple[str, str] | BaseSession:
+    def __call__(self) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name

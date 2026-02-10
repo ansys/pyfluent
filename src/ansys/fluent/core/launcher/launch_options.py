@@ -24,6 +24,7 @@
 
 from enum import Enum
 import os
+from typing import TYPE_CHECKING
 import warnings
 
 from ansys.fluent.core.exceptions import DisallowedValuesError
@@ -41,6 +42,14 @@ from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
+from ansys.fluent.core._types import LauncherArgsBase
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
 
 __all__ = (
     "FluentMode",
@@ -377,7 +386,7 @@ def _get_standalone_launch_fluent_version(argvals) -> FluentVersion | None:
     return FluentVersion.get_latest_installed()
 
 
-def _validate_gpu(gpu: bool | list, dimension: int):
+def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
     """Raise an exception if the GPU Solver is unsupported.
 
     Parameters
@@ -391,7 +400,7 @@ def _validate_gpu(gpu: bool | list, dimension: int):
         raise exceptions.GPUSolverSupportError()
 
 
-def _get_argvals_and_session(argvals) -> tuple[dict, type]:
+def _get_argvals_and_session(argvals: LauncherArgsBase) -> tuple[LauncherArgsBase, type["Meshing | PureMeshing | Solver | SolverIcing | SolverAero"]]:
     _validate_gpu(argvals.get("gpu"), argvals.get("dimension"))
     argvals["graphics_driver"] = _get_graphics_driver(
         argvals.get("graphics_driver"), argvals.get("ui_mode")

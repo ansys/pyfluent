@@ -638,7 +638,7 @@ class SlurmLauncher:
         )
         return session
 
-    def __call__(self) -> SlurmFuture:
+    def __call__(self) -> "SlurmFuture[Meshing | PureMeshing | Solver | SolverIcing | SolverAero]":
         slurm_job_id = self._prepare()
         return SlurmFuture(
             ThreadPoolExecutor(max_workers=1).submit(self._launch, slurm_job_id),

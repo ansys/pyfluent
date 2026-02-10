@@ -190,11 +190,6 @@ class DockerLauncher:
             This mode is not recommended. For more details on the implications
             and usage of insecure mode, refer to the Fluent documentation.
 
-        Returns
-        -------
-        Meshing | PureMeshing | Solver | SolverIcing | dict
-            Session object or configuration dictionary if ``dry_run`` is True.
-
         Raises
         ------
         UnexpectedKeywordArgument
@@ -227,7 +222,7 @@ class DockerLauncher:
             self.argvals["fluent_icing"] = True
         if self.argvals.get("container_dict") is None:
             self.argvals["container_dict"] = {}
-        if "product_version" in self.argvals:
+        if self.argvals.get("product_version") is not None:
             self.argvals["container_dict"][
                 "image_tag"
             ] = f"v{FluentVersion(self.argvals['product_version']).value}"
@@ -253,7 +248,7 @@ class DockerLauncher:
             self._args.append(" -grpc-allow-remote-host")
             self._args.append(" -grpc-certs-folder=/tmp/certs")
 
-    def __call__(self):
+    def __call__(self) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero":
         if self.argvals["dry_run"]:
             config_dict, *_ = configure_container_dict(
                 self._args,

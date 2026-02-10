@@ -79,7 +79,7 @@ class LauncherArgsBase(TypedDict, total=False):
     precision: "Precision | Literal['single', 'double']"
     """Floating point precision."""
     processor_count: int | None
-    """Number of processors. The default is ``1`` processor is used.  In job scheduler environments
+    """Number of processors. The default is ``1``.  In job scheduler environments
     the total number of allocated cores is clamped to value of ``processor_count``.
     """
     start_timeout: int
