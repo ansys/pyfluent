@@ -391,11 +391,11 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     """Mapping to modify environment variables in Fluent. The default
     is ``None``.
     """
-    case_file_name: PathType | None
+    case_file_name: "PathType | None"
     """Name of the case file to read into the
     Fluent session. The default is ``None``.
     """
-    case_data_file_name: PathType | None
+    case_data_file_name: "PathType | None"
     """Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session."""
     lightweight_mode: bool | None
     """Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
@@ -407,9 +407,9 @@ class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
     """
     py: bool | None
     """If True, Fluent will run in Python mode. Default is None."""
-    cwd: PathType | None
+    cwd: "PathType | None"
     """Working directory for the Fluent client."""
-    fluent_path: PathType | None
+    fluent_path: "PathType | None"
     """User provided Fluent installation path."""
     topy: str | list[Any] | None
     """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.

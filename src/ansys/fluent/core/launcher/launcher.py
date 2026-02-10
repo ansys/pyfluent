@@ -392,7 +392,7 @@ def launch_fluent(
         else pyfluent.config.launch_fluent_timeout
     )
 
-    def _normalize_path(value: PathType | None) -> str | None:
+    def _normalize_path(value: "PathType | None") -> str | None:
         if value is None or isinstance(value, str):
             return value
         return os.fspath(value)
