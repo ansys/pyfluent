@@ -37,13 +37,12 @@ Examples
 
 import logging
 import os
-import subprocess
 from pathlib import Path
+import subprocess
 from typing import TYPE_CHECKING, Any, TypedDict
 
 from typing_extensions import Unpack
 
-import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
@@ -66,6 +65,7 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info,
     _get_server_info_file_names,
 )
+import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -77,7 +77,10 @@ if TYPE_CHECKING:
     from ansys.fluent.core.session_solver_aero import SolverAero
     from ansys.fluent.core.session_solver_icing import SolverIcing
 
-class StandaloneArgsWithoutDryRun(LauncherArgsBase, TypedDict, total=False):  # pylint: disable=missing-class-docstring
+
+class StandaloneArgsWithoutDryRun(
+    LauncherArgsBase, TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
     journal_file_names: None | str | list[str]
     """Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``."""
     env: dict[str, Any] | None
@@ -102,7 +105,9 @@ class StandaloneArgsWithoutDryRun(LauncherArgsBase, TypedDict, total=False):  # 
     """
 
 
-class StandaloneArgs(StandaloneArgsWithoutDryRun, total=False):  # pylint: disable=missing-class-docstring
+class StandaloneArgs(
+    StandaloneArgsWithoutDryRun, total=False
+):  # pylint: disable=missing-class-docstring
     dry_run: bool | None
     """If True, does not launch Fluent but prints configuration information instead. The `call()` method
     returns a tuple containing the launch string and server info file name. Defaults to False.
@@ -252,7 +257,9 @@ class StandaloneLauncher:
             else:
                 self._launch_cmd = self._launch_string
 
-    def __call__(self) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
+    def __call__(
+        self,
+    ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name

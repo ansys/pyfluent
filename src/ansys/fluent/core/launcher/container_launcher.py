@@ -38,10 +38,11 @@ Examples
 import logging
 import os
 import time
-from typing import Any, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 
 from typing_extensions import Required, Unpack
 
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
@@ -51,7 +52,6 @@ from ansys.fluent.core.launcher.fluent_container import (
     dict_to_str,
     start_fluent_container,
 )
-from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
     _get_argvals_and_session,
@@ -64,6 +64,13 @@ from ansys.fluent.core.launcher.process_launch_string import (
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
 
 
 class ContainerArgsWithoutDryRun(
@@ -212,9 +219,7 @@ class DockerLauncher:
         if certificates_folder is None and not insecure_mode:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
-        self.argvals, self.new_session = _get_argvals_and_session(
-            kwargs
-        )
+        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
         self.file_transfer_service = kwargs.get("file_transfer_service")

@@ -532,7 +532,6 @@ def launch_fluent(
     )
 
 
-
 def connect_to_fluent(
     *,
     ip: str | None = None,

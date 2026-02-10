@@ -61,13 +61,13 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm_solver_session = slurm_solver_launcher()
 """
 
+from collections.abc import Callable
+from concurrent.futures import Future, ThreadPoolExecutor
 import logging
+from pathlib import Path
 import shutil
 import subprocess
 import time
-from collections.abc import Callable
-from concurrent.futures import Future, ThreadPoolExecutor
-from pathlib import Path
 from typing import Any, Generic, TypedDict
 
 from typing_extensions import TypeVar, Unpack
@@ -381,6 +381,8 @@ class SlurmFuture(Generic[SessionT]):
 
 
 class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
+    """TypedDict for SlurmLauncher arguments."""
+
     mode: FluentMode | str | None
     """Launch mode of Fluent to point to a specific session type."""
     journal_file_names: None | str | list[str]
@@ -638,7 +640,9 @@ class SlurmLauncher:
         )
         return session
 
-    def __call__(self) -> "SlurmFuture[Meshing | PureMeshing | Solver | SolverIcing | SolverAero]":
+    def __call__(
+        self,
+    ) -> "SlurmFuture[Meshing | PureMeshing | Solver | SolverIcing | SolverAero]":
         slurm_job_id = self._prepare()
         return SlurmFuture(
             ThreadPoolExecutor(max_workers=1).submit(self._launch, slurm_job_id),

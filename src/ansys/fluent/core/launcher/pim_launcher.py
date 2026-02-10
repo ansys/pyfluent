@@ -41,7 +41,6 @@ import tempfile
 import time
 from typing import TYPE_CHECKING, Any, TypedDict
 
-import ansys.platform.instancemanagement as pypim
 from typing_extensions import Unpack
 
 from ansys.fluent.core._types import LauncherArgsBase
@@ -54,6 +53,7 @@ from ansys.fluent.core.launcher.launch_options import (
 from ansys.fluent.core.session import _parse_server_info_file
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+import ansys.platform.instancemanagement as pypim
 
 if TYPE_CHECKING:
     from ansys.fluent.core.session_meshing import Meshing
@@ -62,7 +62,10 @@ if TYPE_CHECKING:
     from ansys.fluent.core.session_solver_aero import SolverAero
     from ansys.fluent.core.session_solver_icing import SolverIcing
 
-class PIMArgs(LauncherArgsBase, TypedDict, total=False):  # pylint: disable=missing-class-docstring
+
+class PIMArgs(
+    LauncherArgsBase, TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
     pass
 
 
@@ -328,9 +331,7 @@ def create_fluent_instance(
     product_name = (
         "fluent-meshing"
         if FluentMode.is_meshing(mode)
-        else "fluent-2ddp"
-        if dimensionality == Dimension.TWO
-        else "fluent-3ddp"
+        else "fluent-2ddp" if dimensionality == Dimension.TWO else "fluent-3ddp"
     )
 
     return pim.create_instance(

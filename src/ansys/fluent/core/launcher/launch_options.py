@@ -24,9 +24,10 @@
 
 from enum import Enum
 import os
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 import warnings
 
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 import ansys.fluent.core.launcher.error_handler as exceptions
@@ -35,14 +36,8 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 )
 from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.session_meshing import Meshing
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session_solver_aero import SolverAero
-from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
-from ansys.fluent.core._types import LauncherArgsBase
 
 if TYPE_CHECKING:
     from ansys.fluent.core.session_meshing import Meshing
@@ -400,7 +395,14 @@ def _validate_gpu(gpu: bool | list[int] | None, dimension: Dimension | int):
         raise exceptions.GPUSolverSupportError()
 
 
-def _get_argvals_and_session(argvals: LauncherArgsBase) -> tuple[LauncherArgsBase, type["Meshing | PureMeshing | Solver | SolverIcing | SolverAero"]]:
+LauncherArgsT = TypeVar("LauncherArgsT", bound=LauncherArgsBase)
+
+
+def _get_argvals_and_session(
+    argvals: LauncherArgsT,
+) -> tuple[
+    LauncherArgsT, type["Meshing | PureMeshing | Solver | SolverIcing | SolverAero"]
+]:
     _validate_gpu(argvals.get("gpu"), argvals.get("dimension"))
     argvals["graphics_driver"] = _get_graphics_driver(
         argvals.get("graphics_driver"), argvals.get("ui_mode")
