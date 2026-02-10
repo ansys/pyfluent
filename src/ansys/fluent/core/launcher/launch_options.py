@@ -24,7 +24,7 @@
 
 from enum import Enum
 import os
-from typing import TYPE_CHECKING, TypeVar
+from typing import TypeVar
 import warnings
 
 from ansys.fluent.core._types import LauncherArgsBase
@@ -38,13 +38,11 @@ from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
-
-if TYPE_CHECKING:
-    from ansys.fluent.core.session_meshing import Meshing
-    from ansys.fluent.core.session_pure_meshing import PureMeshing
-    from ansys.fluent.core.session_solver import Solver
-    from ansys.fluent.core.session_solver_aero import SolverAero
-    from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.session_meshing import Meshing
+from ansys.fluent.core.session_pure_meshing import PureMeshing
+from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
+from ansys.fluent.core.session_solver_icing import SolverIcing
 
 __all__ = (
     "FluentMode",
