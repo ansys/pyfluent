@@ -40,7 +40,7 @@ import os
 import time
 from typing import Any, TypedDict
 
-from typing_extensions import Unpack
+from typing_extensions import Required, Unpack
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.error_warning_messages import (
@@ -51,13 +51,9 @@ from ansys.fluent.core.launcher.fluent_container import (
     dict_to_str,
     start_fluent_container,
 )
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.launch_options import (
-    Dimension,
-    FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
     _get_argvals_and_session,
     get_remote_grpc_options,
 )
@@ -71,35 +67,36 @@ from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 
 class ContainerArgsWithoutDryRun(
-    TypedDict, total=False
+    LauncherArgsBase, TypedDict, total=False
 ):  # pylint: disable=missing-class-docstring
-    ui_mode: UIMode | str | None
-    graphics_driver: (
-        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-    )
-    product_version: FluentVersion | str | float | int | None
-    dimension: Dimension | int | None
-    precision: Precision | str | None
-    processor_count: int | None
-    start_timeout: int
-    additional_arguments: str
+    mode: Required[FluentMode | str]
+    """Specifies the launch mode of Fluent to target a specific session type."""
     container_dict: dict[str, Any] | None
-    cleanup_on_exit: bool
-    start_transcript: bool
+    """Configuration dictionary for launching Fluent inside a Docker container. See also
+    :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    """
     py: bool | None
-    gpu: bool | None
-    start_watchdog: bool | None
-    file_transfer_service: Any | None
+    """If True, runs Fluent in Python mode. Defaults to None."""
     use_docker_compose: bool | None
+    """Whether to use Docker Compose to launch Fluent."""
     use_podman_compose: bool | None
+    """Whether to use Podman Compose to launch Fluent."""
     certificates_folder: str | None
+    """Path to the folder containing TLS certificates for Fluent's gRPC server."""
     insecure_mode: bool
+    """If True, Fluent's gRPC server will be started in insecure mode without TLS.
+    This mode is not recommended. For more details on the implications
+    and usage of insecure mode, refer to the Fluent documentation.
+    """
 
 
 class ContainerArgs(
-    ContainerArgsWithoutDryRun, total=False
+    ContainerArgsWithoutDryRun, TypedDict, total=False
 ):  # pylint: disable=missing-class-docstring
     dry_run: bool
+    """If True, does not launch Fluent but prints configuration information instead. If dry running a
+    container start, this method will return the configured ``container_dict``. Defaults to False.
+    """
 
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -127,7 +124,6 @@ class DockerLauncher:
 
     def __init__(
         self,
-        mode: FluentMode | str,
         **kwargs: Unpack[ContainerArgs],
     ):
         """
@@ -222,7 +218,7 @@ class DockerLauncher:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         self.argvals, self.new_session = _get_argvals_and_session(
-            {**kwargs, "mode": mode}
+            kwargs
         )
         if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60

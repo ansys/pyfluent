@@ -41,16 +41,14 @@ import tempfile
 import time
 from typing import Any, TypedDict
 
+import ansys.platform.instancemanagement as pypim
 from typing_extensions import Unpack
 
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
-    FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
     _get_argvals_and_session,
 )
 from ansys.fluent.core.session import _parse_server_info_file
@@ -60,29 +58,15 @@ from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
-import ansys.platform.instancemanagement as pypim
 
 
-class PIMArgs(TypedDict, total=False):  # pylint: disable=missing-class-docstring
-    ui_mode: UIMode | str | None
-    graphics_driver: (
-        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-    )
-    product_version: FluentVersion | str | float | int | None
-    dimension: Dimension | int | None
-    precision: Precision | str | None
-    processor_count: int | None
-    start_timeout: int
-    additional_arguments: str
-    cleanup_on_exit: bool
-    start_transcript: bool
-    gpu: bool | None
-    start_watchdog: bool | None
-    file_transfer_service: Any | None
+class PIMArgs(LauncherArgsBase, TypedDict, total=False):  # pylint: disable=missing-class-docstring
+    pass
 
 
 class PIMArgsWithMode(PIMArgs, total=False):  # pylint: disable=missing-class-docstring
     mode: FluentMode | str | None
+    """Specifies the launch mode of Fluent for targeting a specific session type."""
 
 
 _THIS_DIR = os.path.dirname(__file__)
@@ -347,7 +331,9 @@ def create_fluent_instance(
     product_name = (
         "fluent-meshing"
         if FluentMode.is_meshing(mode)
-        else "fluent-2ddp" if dimensionality == Dimension.TWO else "fluent-3ddp"
+        else "fluent-2ddp"
+        if dimensionality == Dimension.TWO
+        else "fluent-3ddp"
     )
 
     return pim.create_instance(

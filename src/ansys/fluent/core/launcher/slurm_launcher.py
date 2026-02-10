@@ -61,30 +61,25 @@ are optional and should be specified in a similar manner to Fluent's scheduler o
 >>> slurm_solver_session = slurm_solver_launcher()
 """
 
-from collections.abc import Callable
-from concurrent.futures import Future, ThreadPoolExecutor
-import inspect
 import logging
-from pathlib import Path
 import shutil
 import subprocess
 import time
-from typing import Any, Generic
+from collections.abc import Callable
+from concurrent.futures import Future, ThreadPoolExecutor
+from pathlib import Path
+from typing import Any, Generic, TypedDict
 
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, Unpack
 
 from ansys.fluent.core import config
-from ansys.fluent.core._types import PathType
+from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.exceptions import InvalidArgument
 from ansys.fluent.core.launcher.error_warning_messages import (
     CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH,
 )
 from ansys.fluent.core.launcher.launch_options import (
-    Dimension,
-    FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
     UIMode,
     _get_argvals_and_session,
     get_remote_grpc_options,
@@ -101,7 +96,6 @@ from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
-from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 logger = logging.getLogger("pyfluent.launcher")
 
@@ -386,39 +380,66 @@ class SlurmFuture(Generic[SessionT]):
         self._future.add_done_callback(fn)
 
 
+class SlurmLauncherArgs(LauncherArgsBase, TypedDict, total=False):
+    mode: FluentMode | str | None
+    """Launch mode of Fluent to point to a specific session type."""
+    journal_file_names: None | str | list[str]
+    """The string path to a Fluent journal file or a list of such paths. Fluent executes the
+    journals. The default is ``None``.
+    """
+    env: dict[str, Any] | None
+    """Mapping to modify environment variables in Fluent. The default
+    is ``None``.
+    """
+    case_file_name: PathType | None
+    """Name of the case file to read into the
+    Fluent session. The default is ``None``.
+    """
+    case_data_file_name: PathType | None
+    """Name of the case data file. If names of both a case file and case data file are provided, they are read into the Fluent session."""
+    lightweight_mode: bool | None
+    """Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
+    current Fluent solver session. The mesh is read into a background Fluent solver session,
+    which replaces the current Fluent solver session once the mesh is read and the lightweight settings
+    made by the user in the current Fluent solver session have been applied in the background Fluent
+    solver session. This is all orchestrated by PyFluent and requires no special usage.
+    This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
+    """
+    py: bool | None
+    """If True, Fluent will run in Python mode. Default is None."""
+    cwd: PathType | None
+    """Working directory for the Fluent client."""
+    fluent_path: PathType | None
+    """User provided Fluent installation path."""
+    topy: str | list[Any] | None
+    """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
+    Can optionally take the file name of the new python journal file.
+    """
+    scheduler_options: dict[str, Any] | None
+    """Dictionary containing scheduler options. Default is None.
+
+    Currently only the Slurm scheduler is supported. The ``scheduler_options``
+    dictionary must be of the form ``{"scheduler": "slurm",
+    "scheduler_headnode": "<headnode>", "scheduler_queue": "<queue>",
+    "scheduler_account": "<account>"}``. The keys ``scheduler_headnode``,
+    ``scheduler_queue`` and ``scheduler_account`` are optional and should be
+    specified in a similar manner to Fluent's scheduler options.
+    """
+    certificates_folder: str | None
+    """Path to the folder containing TLS certificates for Fluent's gRPC server."""
+    insecure_mode: bool
+    """If True, Fluent's gRPC server will be started in insecure mode without TLS.
+    This mode is not recommended. For more details on the implications
+    and usage of insecure mode, refer to the Fluent documentation.
+    """
+
+
 class SlurmLauncher:
     """Instantiates Fluent session within a Slurm environment."""
 
     def __init__(
         self,
-        mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        journal_file_names: None | str | list[str] = None,
-        start_timeout: int = -1,
-        additional_arguments: str = "",
-        env: dict[str, Any] | None = None,
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        case_file_name: "PathType | None" = None,
-        case_data_file_name: "PathType | None" = None,
-        lightweight_mode: bool | None = None,
-        py: bool | None = None,
-        gpu: bool | None = None,
-        cwd: "PathType | None" = None,
-        fluent_path: "PathType | None" = None,
-        topy: str | list | None = None,
-        start_watchdog: bool | None = None,
-        scheduler_options: dict | None = None,
-        file_transfer_service: Any | None = None,
-        certificates_folder: str | None = None,
-        insecure_mode: bool = False,
+        **kwargs: Unpack[SlurmLauncherArgs],
     ):
         """Launch Fluent session in standalone mode.
 
@@ -532,6 +553,10 @@ class SlurmLauncher:
         """
         from ansys.fluent.core import config
 
+        certificates_folder: str | None = kwargs.get("certificates_folder")
+        insecure_mode: bool = kwargs.get("insecure_mode", False)
+        file_transfer_service: Any | None = kwargs.get("file_transfer_service")
+        ui_mode = kwargs.get("ui_mode")
         certificates_folder, insecure_mode = get_remote_grpc_options(
             certificates_folder, insecure_mode
         )
@@ -543,11 +568,7 @@ class SlurmLauncher:
                 "Slurm is not available in or not used from the client machine. "
                 "Job query/control from client will not be possible."
             )
-        locals_ = locals().copy()
-        argvals = {
-            arg: locals_.get(arg)
-            for arg in inspect.getargvalues(inspect.currentframe()).args
-        }
+        argvals = {name: kwargs.get(name) for name in SlurmLauncherArgs.__annotations__}
         self._argvals, self._new_session = _get_argvals_and_session(argvals)
         self.file_transfer_service = file_transfer_service
         if config.show_fluent_gui:
