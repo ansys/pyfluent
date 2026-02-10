@@ -16,7 +16,9 @@ if __name__ == "__main__":
     kwds = {"mode": FluentMode.MESHING}
     kwds.update(get_grpc_launcher_args_for_gh_runs())
     meshing = launch_fluent(**kwds)
+    print(meshing.get_fluent_version().value, "*-*-*-*-*-***********")
     version = get_version_for_file_name(session=meshing)
+    print(version, "*-*-*-*-*-*-*-*-*-*-*-*-*")
     ge_261 = FluentVersion(version) >= FluentVersion.v261
 
     static_infos = {
@@ -63,6 +65,7 @@ if __name__ == "__main__":
     )
     t1 = time()
     print(f"\nTime to fetch static info: {t1 - t0:.2f} seconds")
+    print(solver.get_fluent_version().value, "*-*-*-*-*-*****#####******")
     config.codegen_outdir.mkdir(parents=True, exist_ok=True)
     print_fluent_version(solver._app_utilities)
     solver.exit()
