@@ -144,8 +144,7 @@ for idx1, coldVel in np.ndenumerate(coldVelArr):
                 'temperature no")',
             )
         )
-        # Evaluating numeric data from trusted Fluent session output; no user input is involved.
-        resArr[idx1][idx2] = eval(res_tui.split(" ")[-1])  # nosec B307
+        resArr[idx1][idx2] = eval(res_tui.split(" ")[-1])
 
 
 ##############################################################################################
