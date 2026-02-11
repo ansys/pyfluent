@@ -76,7 +76,7 @@ class Procedure:
         self.params, self.exp, self.env = params, exp, env
 
     def __call__(self, *args):
-        return eval(self.exp, Env(self.params, args, self.env))
+        return evaluate_expression(self.exp, Env(self.params, args, self.env))
 
 
 ################ parse, read, and user interaction
@@ -264,7 +264,7 @@ def repl(prompt="lispy> ", in_port=InputPort(sys.stdin), out=sys.stdout):
             x = parse(in_port)
             if x is eof_object:
                 return
-            val = eval(x)
+            val = evaluate_expression(x)
             if val is not None and out:
                 print(to_string(val), file=out)
         except Exception as e:
@@ -374,7 +374,7 @@ def add_globals(self):
             "pair?": is_pair,
             "port?": lambda x: isa(x, file),
             "apply": lambda proc, l: proc(*l),
-            "eval": lambda x: eval(expand(x)),
+            "eval": lambda x: evaluate_expression(expand(x)),
             "load": lambda fn: load(fn),
             "call/cc": callcc,
             "open-input-file": open,
@@ -400,7 +400,7 @@ global_env = add_globals(Env())
 ################ eval (tail recursive)
 
 
-def eval(x, env=global_env):
+def evaluate_expression(x, env=global_env):
     """Evaluate an expression in an environment."""
     while True:
         if isa(x, Symbol):  # variable reference
@@ -412,15 +412,15 @@ def eval(x, env=global_env):
             return exp
         elif x[0] is _if:  # (if test conseq alt)
             (_, test, conseq, alt) = x
-            x = conseq if eval(test, env) else alt
+            x = conseq if evaluate_expression(test, env) else alt
         elif x[0] is _set:  # (set! var exp)
             (_, var, exp) = x
-            env.find(var)[var] = eval(exp, env)
+            env.find(var)[var] = evaluate_expression(exp, env)
             return None
         elif x[0] is _define:  # (define var exp)
             if len(x) == 3:
                 (_, var, exp) = x
-                env[var] = eval(exp, env)
+                env[var] = evaluate_expression(exp, env)
             else:
                 env[x[1]] = None
             return None
@@ -429,10 +429,10 @@ def eval(x, env=global_env):
             return Procedure(vars, exp, env)
         elif x[0] is _begin:  # (begin exp+)
             for exp in x[1:-1]:
-                eval(exp, env)
+                evaluate_expression(exp, env)
             x = x[-1]
         else:  # (proc exp*)
-            exps = [eval(exp, env) for exp in x]
+            exps = [evaluate_expression(exp, env) for exp in x]
             proc = exps.pop(0)
             if isa(proc, Procedure):
                 x = proc.exp
@@ -477,7 +477,7 @@ def expand(x, toplevel=False):
             exp = expand(x[2]) if len(x) == 3 else None
             if _def is _definemacro:
                 require(x, toplevel, "define-macro only allowed at top level")
-                proc = eval(exp)
+                proc = evaluate_expression(exp)
                 require(x, callable(proc), "macro must be a procedure")
                 macro_table[v] = proc  # (define-macro v proc)
                 return None  #  => None; add v:proc to macro_table
@@ -558,7 +558,7 @@ def let(*args):
 
 macro_table = {_let: let}  ## More macros can go here
 
-eval(
+evaluate_expression(
     parse(
         """(begin
 
