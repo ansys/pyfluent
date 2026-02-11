@@ -41,7 +41,7 @@ Example
 from __future__ import annotations
 
 import collections
-from contextlib import contextmanager, nullcontext
+from contextlib import contextmanager, nullcontext, suppress
 import fnmatch
 import hashlib
 import inspect
@@ -2018,11 +2018,9 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
-            try:
+            with suppress(Exception):
                 for item in getattr(self, cname):
                     yield item
-            except Exception:
-                continue
 
     def __len__(self):
         """Number of child named objects."""
