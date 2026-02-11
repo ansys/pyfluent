@@ -36,19 +36,19 @@ from ansys.fluent.core import (
     session_solver_icing,
 )
 from ansys.fluent.core.launcher.container_launcher import (
-    ContainerArgsWithoutDryRun,
+    ContainerArgsWithoutDryRunMode,
     DockerLauncher,
 )
 from ansys.fluent.core.launcher.launch_options import (
     FluentMode,
 )
-from ansys.fluent.core.launcher.launcher import LaunchFluentArgs, connect_to_fluent
+from ansys.fluent.core.launcher.launcher import connect_to_fluent
 from ansys.fluent.core.launcher.pim_launcher import (
-    PIMArgs,
+    PIMArgsWithoutMode,
     PIMLauncher,
 )
 from ansys.fluent.core.launcher.standalone_launcher import (
-    StandaloneArgsWithoutDryRun,
+    StandaloneArgsWithoutDryRunMode,
     StandaloneLauncher,
 )
 from ansys.fluent.core.session import BaseSession
@@ -86,7 +86,7 @@ class SessionBase:
         cls,
         *,
         dry_run: Literal[False] = False,
-        **kwargs: Unpack[StandaloneArgsWithoutDryRun],
+        **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
     ) -> BaseSession: ...
 
     @overload
@@ -95,7 +95,7 @@ class SessionBase:
         cls,
         *,
         dry_run: Literal[True],
-        **kwargs: Unpack[StandaloneArgsWithoutDryRun],
+        **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
     ) -> tuple[str, str]: ...
 
     @classmethod
@@ -103,7 +103,7 @@ class SessionBase:
         cls,
         *,
         dry_run: bool = False,
-        **kwargs: Unpack[StandaloneArgsWithoutDryRun],
+        **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
     ) -> BaseSession | tuple[str, str]:
         """
         Launch a Fluent session in standalone mode.
@@ -193,7 +193,7 @@ class SessionBase:
         cls,
         *,
         dry_run: Literal[False] = False,
-        **kwargs: Unpack[ContainerArgsWithoutDryRun],
+        **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
     ) -> BaseSession: ...
 
     @overload
@@ -202,7 +202,7 @@ class SessionBase:
         cls,
         *,
         dry_run: Literal[True],
-        **kwargs: Unpack[ContainerArgsWithoutDryRun],
+        **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
     ) -> dict[str, Any]: ...
 
     @classmethod
@@ -210,7 +210,7 @@ class SessionBase:
         cls,
         *,
         dry_run: bool = False,
-        **kwargs: Unpack[ContainerArgsWithoutDryRun],
+        **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
     ) -> BaseSession | dict[str, Any]:
         """
         Launch a Fluent session in container mode.
@@ -297,7 +297,7 @@ class SessionBase:
     @classmethod
     def from_pim(  # pylint: disable=missing-param-doc
         cls,
-        **kwargs: Unpack[PIMArgs],
+        **kwargs: Unpack[PIMArgsWithoutMode],
     ) -> BaseSession:
         """
         Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
@@ -361,9 +361,7 @@ class SessionBase:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
-        kwargs_with_mode = dict(kwargs)
-        kwargs_with_mode["mode"] = cls._session_mode[cls.__name__]
-        launcher = PIMLauncher(**kwargs_with_mode)
+        launcher = PIMLauncher(**kwargs, mode=cls._session_mode[cls.__name__])
         return launcher()
 
     @classmethod
@@ -440,7 +438,7 @@ class Meshing(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> session_meshing.Meshing: ...
 
         @overload
@@ -449,7 +447,7 @@ class Meshing(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> tuple[str, str]: ...
 
         @overload
@@ -458,7 +456,7 @@ class Meshing(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> session_meshing.Meshing: ...
 
         @overload
@@ -467,14 +465,14 @@ class Meshing(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> dict[str, Any]: ...
 
         @override
         @classmethod
         def from_pim(
             cls,
-            **kwargs: Unpack[PIMArgs],
+            **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_meshing.Meshing: ...
 
 
@@ -489,7 +487,7 @@ class PureMeshing(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> session_pure_meshing.PureMeshing: ...
 
         @overload
@@ -498,7 +496,7 @@ class PureMeshing(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> tuple[str, str]: ...
 
         @overload
@@ -507,7 +505,7 @@ class PureMeshing(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> session_pure_meshing.PureMeshing: ...
 
         @overload
@@ -516,14 +514,14 @@ class PureMeshing(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> dict[str, Any]: ...
 
         @override
         @classmethod
         def from_pim(
             cls,
-            **kwargs: Unpack[PIMArgs],
+            **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_pure_meshing.PureMeshing: ...
 
 
@@ -538,7 +536,7 @@ class PrePost(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> session_solver.Solver: ...
 
         @overload
@@ -547,7 +545,7 @@ class PrePost(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> tuple[str, str]: ...
 
         @overload
@@ -556,7 +554,7 @@ class PrePost(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> session_solver.Solver: ...
 
         @overload
@@ -565,14 +563,14 @@ class PrePost(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> dict[str, Any]: ...
 
         @overload
         @classmethod
         def from_pim(
             cls,
-            **kwargs: Unpack[PIMArgs],
+            **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_solver.Solver: ...
 
 
@@ -587,7 +585,7 @@ class Solver(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> session_solver.Solver: ...
 
         @overload
@@ -596,7 +594,7 @@ class Solver(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> tuple[str, str]: ...
 
         @overload
@@ -605,13 +603,13 @@ class Solver(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> session_solver.Solver: ...
 
         @classmethod
         def from_pim(
             cls,
-            **kwargs: Unpack[PIMArgs],
+            **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_solver.Solver: ...
 
 
@@ -626,7 +624,7 @@ class SolverAero(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> session_solver_aero.SolverAero: ...
 
         @overload
@@ -635,7 +633,7 @@ class SolverAero(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> tuple[str, str]: ...
 
         @overload
@@ -644,7 +642,7 @@ class SolverAero(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> session_solver_aero.SolverAero: ...
 
         @overload
@@ -653,14 +651,14 @@ class SolverAero(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> dict[str, Any]: ...
 
         @overload
         @classmethod
         def from_pim(
             cls,
-            **kwargs: Unpack[PIMArgs],
+            **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_solver_aero.SolverAero: ...
 
 
@@ -675,7 +673,7 @@ class SolverIcing(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> session_solver_icing.SolverIcing: ...
 
         @overload
@@ -684,7 +682,7 @@ class SolverIcing(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[LaunchFluentArgs],
+            **kwargs: Unpack[StandaloneArgsWithoutDryRunMode],
         ) -> tuple[str, str]: ...
 
         @overload
@@ -693,7 +691,7 @@ class SolverIcing(SessionBase):
             cls,
             *,
             dry_run: Literal[False] = False,
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> session_solver_icing.SolverIcing: ...
 
         @overload
@@ -702,12 +700,12 @@ class SolverIcing(SessionBase):
             cls,
             *,
             dry_run: Literal[True],
-            **kwargs: Unpack[ContainerArgsWithoutDryRun],
+            **kwargs: Unpack[ContainerArgsWithoutDryRunMode],
         ) -> dict[str, Any]: ...
 
         @overload
         @classmethod
         def from_pim(
             cls,
-            **kwargs: Unpack[PIMArgs],
+            **kwargs: Unpack[PIMArgsWithoutMode],
         ) -> session_solver_icing.SolverIcing: ...

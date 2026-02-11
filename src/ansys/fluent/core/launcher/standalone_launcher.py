@@ -43,15 +43,12 @@ from typing import TYPE_CHECKING, Any, TypedDict
 
 from typing_extensions import Unpack
 
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
 from ansys.fluent.core.launcher.launch_options import (
-    Dimension,
-    FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
     UIMode,
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
@@ -69,46 +66,63 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.launcher.launcher import LaunchFluentArgs
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
+
+
+class StandaloneArgsWithoutDryRunMode(
+    LauncherArgsBase, TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    journal_file_names: None | str | list[str]
+    """Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``."""
+    env: dict[str, Any] | None
+    """A mapping for modifying environment variables in Fluent. Defaults to ``None``."""
+    case_file_name: str | None
+    """Name of the case file to read into the Fluent session. Defaults to None."""
+    case_data_file_name: str | None
+    """Name of the case data file. If both case and data files are provided, they are read into the session."""
+    lightweight_mode: bool | None
+    """If True, runs in lightweight mode where mesh settings are read into a background solver session,
+    replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
+    """
+    py: bool | None
+    """If True, runs Fluent in Python mode. Defaults to None."""
+    cwd: str | None
+    """Working directory for the Fluent client."""
+    fluent_path: str | None
+    """User-specified path for Fluent installation."""
+    topy: str | list[Any] | None
+    """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
+    a filename for the new Python journal.
+    """
 
 
 class StandaloneArgsWithoutDryRun(
-    TypedDict, total=False
+    StandaloneArgsWithoutDryRunMode
 ):  # pylint: disable=missing-class-docstring
-    product_version: FluentVersion | str | float | int | None
-    dimension: Dimension | int
-    precision: Precision | str
-    processor_count: int | None
-    journal_file_names: None | str | list[str]
-    start_timeout: int
-    additional_arguments: str
-    env: dict[str, Any] | None
-    cleanup_on_exit: bool
-    start_transcript: bool
-    ui_mode: UIMode | str | None
-    graphics_driver: (
-        FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-    )
-    case_file_name: str | None
-    case_data_file_name: str | None
-    lightweight_mode: bool | None
-    py: bool | None
-    gpu: bool | list[int] | None
-    cwd: str | None
-    fluent_path: str | None
-    topy: str | list[Any] | None
-    start_watchdog: bool | None
-    file_transfer_service: Any | None
+    mode: FluentMode
+    """Specifies the launch mode of Fluent to target a specific session type."""
+
+
+class StandaloneArgsWithoutMode(
+    StandaloneArgsWithoutDryRunMode, total=False
+):  # pylint: disable=missing-class-docstring
+    dry_run: bool | None
+    """If True, does not launch Fluent but prints configuration information instead. The `call()` method
+    returns a tuple containing the launch string and server info file name. Defaults to False.
+    """
 
 
 class StandaloneArgs(
-    StandaloneArgsWithoutDryRun, total=False
-):  # pylint: disable=missing-class-docstring
-    dry_run: bool | None
+    StandaloneArgsWithoutMode, StandaloneArgsWithoutDryRun, total=False
+):
+    """Arguments for launching Fluent in standalone mode."""
 
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -121,8 +135,7 @@ class StandaloneLauncher:
         self,
         *,
         mode: FluentMode,
-        dry_run: bool = False,
-        **kwargs: Unpack["LaunchFluentArgs"],
+        **kwargs: Unpack[StandaloneArgsWithoutMode],
     ):
         """
         Launch a Fluent session in standalone mode.
@@ -239,7 +252,7 @@ class StandaloneLauncher:
         self._kwargs = _get_subprocess_kwargs_for_fluent(
             self.argvals.get("env", {}), self.argvals
         )
-        if "cwd" in self.argvals:
+        if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
         self._launch_string += _build_journal_argument(
             self.argvals.get("topy", []), self.argvals.get("journal_file_names")
@@ -254,7 +267,9 @@ class StandaloneLauncher:
             else:
                 self._launch_cmd = self._launch_string
 
-    def __call__(self) -> tuple[str, str] | BaseSession:
+    def __call__(
+        self,
+    ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
         if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name

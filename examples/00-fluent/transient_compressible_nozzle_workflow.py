@@ -417,9 +417,8 @@ Transient_controls.max_iter_per_time_step = (
 
 calculation.calculate()
 
-mass_bal_rplot = Monitor(solver)
+mass_bal_rplot = Monitor(solver=solver, monitor_set_name="mass_flow_rate_out_rplot")
 plot_window = GraphicsWindow()
-mass_bal_rplot.monitor_set_name = "mass_flow_rate_out_rplot"
 plot_window.add_plot(mass_bal_rplot)
 plot_window.show()
 
