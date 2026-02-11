@@ -22,9 +22,10 @@
 
 """Module containing class encapsulating Fluent connection."""
 
+
 import functools
 import os
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal, overload
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
@@ -43,9 +44,6 @@ if TYPE_CHECKING:
     from ansys.fluent.core.generated.datamodel_252.meshing_utilities import (
         Root as meshing_utilities_root,
     )
-    from ansys.fluent.core.generated.datamodel_252.meshing_workflow import (
-        Root as meshing_workflow_root,
-    )
     from ansys.fluent.core.generated.datamodel_252.part_management import (
         Root as partmanagement_root,
     )
@@ -57,10 +55,9 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
     from ansys.fluent.core.generated.meshing.tui_252 import main_menu
-    from ansys.fluent.core.meshing import (
-        meshing_workflow_new,
-    )
     from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
+    import ansys.fluent.core.meshing.meshing_workflow as mesh_wf_old
+    import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
 
 
 class PureMeshing(BaseSession):
@@ -179,12 +176,26 @@ class PureMeshing(BaseSession):
         """Full API to meshing and meshing_workflow."""
         return self._base_meshing.meshing_workflow
 
+    @overload
+    def watertight(
+        self, legacy: Literal[True]
+    ) -> mesh_wf_old.WatertightMeshingWorkflow: ...
+
+    @overload
+    def watertight(
+        self, legacy: Literal[False]
+    ) -> mesh_wf_new.WatertightMeshingWorkflow: ...
+
+    @overload
+    def watertight(
+        self, legacy: None = None
+    ) -> (
+        mesh_wf_new.WatertightMeshingWorkflow | mesh_wf_old.WatertightMeshingWorkflow
+    ): ...
+
     def watertight(
         self, legacy: bool | None = None
-    ) -> (
-        _meshing_workflow.WatertightMeshingWorkflow
-        | meshing_workflow_new.WatertightMeshingWorkflow
-    ):
+    ) -> mesh_wf_new.WatertightMeshingWorkflow | mesh_wf_old.WatertightMeshingWorkflow:
         """Get a new watertight meshing workflow.
 
         Parameters
@@ -202,7 +213,30 @@ class PureMeshing(BaseSession):
         """
         return self._base_meshing.watertight_workflow(legacy=legacy)
 
-    def fault_tolerant(self, legacy: bool | None = None):
+    @overload
+    def fault_tolerant(
+        self, legacy: Literal[True]
+    ) -> mesh_wf_old.FaultTolerantMeshingWorkflow: ...
+
+    @overload
+    def fault_tolerant(
+        self, legacy: Literal[False]
+    ) -> mesh_wf_new.FaultTolerantMeshingWorkflow: ...
+
+    @overload
+    def fault_tolerant(
+        self, legacy: None = None
+    ) -> (
+        mesh_wf_new.FaultTolerantMeshingWorkflow
+        | mesh_wf_old.FaultTolerantMeshingWorkflow
+    ): ...
+
+    def fault_tolerant(
+        self, legacy: bool | None = None
+    ) -> (
+        mesh_wf_new.FaultTolerantMeshingWorkflow
+        | mesh_wf_old.FaultTolerantMeshingWorkflow
+    ):
         """Get a new fault-tolerant meshing workflow.
 
         Parameters
@@ -219,6 +253,24 @@ class PureMeshing(BaseSession):
             A new fault-tolerant workflow instance ready for configuration and execution.
         """
         return self._base_meshing.fault_tolerant_workflow(legacy=legacy)
+
+    @overload
+    def two_dimensional_meshing(
+        self, legacy: Literal[True]
+    ) -> mesh_wf_old.TwoDimensionalMeshingWorkflow: ...
+
+    @overload
+    def two_dimensional_meshing(
+        self, legacy: Literal[False]
+    ) -> mesh_wf_new.TwoDimensionalMeshingWorkflow: ...
+
+    @overload
+    def two_dimensional_meshing(
+        self, legacy: None = None
+    ) -> (
+        mesh_wf_new.TwoDimensionalMeshingWorkflow
+        | mesh_wf_old.TwoDimensionalMeshingWorkflow
+    ): ...
 
     def two_dimensional_meshing(self, legacy: bool | None = None):
         """Get a new 2D meshing workflow.
@@ -237,6 +289,21 @@ class PureMeshing(BaseSession):
             A new 2D meshing workflow instance ready for configuration and execution.
         """
         return self._base_meshing.two_dimensional_meshing_workflow(legacy=legacy)
+
+    @overload
+    def load_workflow(
+        self, file_path: PathType, legacy: Literal[True]
+    ) -> mesh_wf_old.Workflow: ...
+
+    @overload
+    def load_workflow(
+        self, file_path: PathType, legacy: Literal[False]
+    ) -> mesh_wf_new.Workflow: ...
+
+    @overload
+    def load_workflow(
+        self, file_path: PathType, legacy: None = None
+    ) -> mesh_wf_new.Workflow | mesh_wf_old.Workflow: ...
 
     def load_workflow(self, file_path: PathType, legacy: bool | None = None):
         """Load a saved meshing workflow from a file.
@@ -263,6 +330,17 @@ class PureMeshing(BaseSession):
         return self._base_meshing.load_workflow(
             file_path=os.fspath(file_path), legacy=legacy
         )
+
+    @overload
+    def create_workflow(self, legacy: Literal[True]) -> mesh_wf_old.Workflow: ...
+
+    @overload
+    def create_workflow(self, legacy: Literal[False]) -> mesh_wf_new.Workflow: ...
+
+    @overload
+    def create_workflow(
+        self, legacy: None = None
+    ) -> mesh_wf_new.Workflow | mesh_wf_old.Workflow: ...
 
     def create_workflow(self, legacy: bool | None = None):
         """Create a new blank meshing workflow.
@@ -311,6 +389,17 @@ class PureMeshing(BaseSession):
         and earlier versions.
         """
         return self._base_meshing.current_workflow(legacy=True)
+
+    @overload
+    def topology_based(self, legacy: Literal[True]) -> mesh_wf_old.Workflow: ...
+
+    @overload
+    def topology_based(self, legacy: Literal[False]) -> mesh_wf_new.Workflow: ...
+
+    @overload
+    def topology_based(
+        self, legacy: None = None
+    ) -> mesh_wf_new.Workflow | mesh_wf_old.Workflow: ...
 
     def topology_based(self, legacy: bool | None = None):
         """Get a new topology-based meshing workflow (beta feature).

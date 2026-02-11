@@ -387,7 +387,7 @@ class DataModelGenerator:
             return api_tree
         indent = " " * level * 4
         singleton_doc = info.get("helpstring", _build_singleton_docstring(name))
-        f.write(f"{indent}class {name}(PyMenu):\n")
+        f.write(f"{indent}class _{name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
         for line in singleton_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
@@ -401,33 +401,33 @@ class DataModelGenerator:
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
+                f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in singletons:
             # This is where filtering these names out really matters (see commsent above)
             if k.isidentifier():
                 f.write(
                     f"{indent}        self.{k} = "
-                    f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
+                    f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
                 )
         for k in parameters:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__.{k}(service, rules, path + [("{k}", "")])\n'
+                f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in commands:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__.{k}(service, rules, "{k}", path)\n'
+                f'self.__class__._{k}(service, rules, "{k}", path)\n'
             )
         for k in queries:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__.{k}(service, rules, "{k}", path)\n'
+                f'self.__class__._{k}(service, rules, "{k}", path)\n'
             )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
-            f.write(f"{indent}    class {k}(PyNamedObjectContainer):\n")
+            f.write(f"{indent}    class _{k}(PyNamedObjectContainer):\n")
             f.write(f'{indent}        """\n')
             f.write(f"{indent}        .\n")
             f.write(f'{indent}        """\n')
