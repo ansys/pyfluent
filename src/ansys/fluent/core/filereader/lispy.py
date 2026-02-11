@@ -135,11 +135,11 @@ class InputPort:
                             break
             if self.line == "":
                 return eof_object
-            token, self.line = re.match(InputPort.tokenizer, self.line).groups()
-            if token != "" and not token.startswith(";"):
+            tok, self.line = re.match(InputPort.tokenizer, self.line).groups()
+            if tok != "" and not tok.startswith(";"):
                 # Replace back "<newline>" to newline character after tokenizing
-                token = token.replace("<newline>", "\n")
-                return token
+                tok = tok.replace("<newline>", "\n")
+                return tok
 
 
 def readchar(in_port):
@@ -154,20 +154,20 @@ def readchar(in_port):
 def read(in_port):
     """Read a Scheme expression from an input port."""
 
-    def read_ahead(token):
-        if "(" == token:
+    def read_ahead(tok):
+        if "(" == tok:
             list_ = None
             to_tuple = False
             cons = None
             while True:
-                token = in_port.next_token()
-                if token == ")":
+                tok = in_port.next_token()
+                if tok == ")":
                     return (
                         (tuple(list_) if to_tuple else list_)
                         if list_
                         else (tuple(cons) if cons else ([]))
                     )
-                if token == ".":
+                if tok == ".":
                     if list_:
                         cons = [list_.pop()]
                         if len(list_):
@@ -177,7 +177,7 @@ def read(in_port):
                     else:
                         raise SyntaxError("unexpected .")
                 else:
-                    ahead = read_ahead(token)
+                    ahead = read_ahead(tok)
                     if cons:
                         cons.append(ahead)
                         ahead = tuple(cons)
@@ -187,14 +187,14 @@ def read(in_port):
                         list_ = list_ or []
                     if list_ is not None:
                         list_.append(ahead)
-        elif ")" == token:
+        elif ")" == tok:
             raise SyntaxError("unexpected )")
-        elif token in quotes:
-            return [quotes[token], read(in_port)]
-        elif token is eof_object:
+        elif tok in quotes:
+            return [quotes[tok], read(in_port)]
+        elif tok is eof_object:
             raise SyntaxError("unexpected EOF in list")
         else:
-            return atom(token)
+            return atom(tok)
 
     # body of read:
     token1 = in_port.next_token()
@@ -204,25 +204,25 @@ def read(in_port):
 quotes = {"'": _quote, "`": _quasiquote, ",": _unquote, ",@": _unquotesplicing}
 
 
-def atom(token):
+def atom(tok):
     """Numbers become numbers; #t and #f are booleans; "..." string; otherwise
     Symbol."""
-    if token == "#t":
+    if tok == "#t":
         return True
-    elif token == "#f":
+    elif tok == "#f":
         return False
-    elif token[0] == '"':
-        return token
+    elif tok[0] == '"':
+        return tok
     try:
-        return int(token)
+        return int(tok)
     except ValueError:
         try:
-            return float(token)
+            return float(tok)
         except ValueError:
             try:
-                return complex(token.replace("i", "j", 1))
+                return complex(tok.replace("i", "j", 1))
             except ValueError:
-                return Sym(token)
+                return Sym(tok)
 
 
 def to_string(x):
