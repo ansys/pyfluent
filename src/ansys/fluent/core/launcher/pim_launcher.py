@@ -63,13 +63,15 @@ if TYPE_CHECKING:
     from ansys.fluent.core.session_solver_icing import SolverIcing
 
 
-class PIMArgs(
+class PIMArgsWithoutMode(
     LauncherArgsBase, TypedDict, total=False
 ):  # pylint: disable=missing-class-docstring
     pass
 
 
-class PIMArgsWithMode(PIMArgs, total=False):  # pylint: disable=missing-class-docstring
+class PIMArgs(
+    PIMArgsWithoutMode, total=False
+):  # pylint: disable=missing-class-docstring
     mode: FluentMode | str | None
     """Specifies the launch mode of Fluent for targeting a specific session type."""
 
@@ -84,7 +86,7 @@ class PIMLauncher:
 
     def __init__(
         self,
-        **kwargs: Unpack[PIMArgsWithMode],
+        **kwargs: Unpack[PIMArgs],
     ):
         """
         Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.

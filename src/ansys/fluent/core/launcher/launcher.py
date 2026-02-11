@@ -283,7 +283,7 @@ def launch_fluent(
     *,
     dry_run: Literal[True],
     **kwargs: Unpack[LaunchFluentArgs],
-) -> dict[str, Any]: ...
+) -> tuple[str, str]: ...
 
 
 def _custom_converter_gui(kwargs):

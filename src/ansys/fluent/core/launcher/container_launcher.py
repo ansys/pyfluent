@@ -73,11 +73,9 @@ if TYPE_CHECKING:
     from ansys.fluent.core.session_solver_icing import SolverIcing
 
 
-class ContainerArgsWithoutDryRun(
-    LauncherArgsBase, TypedDict, total=False
-):  # pylint: disable=missing-class-docstring
-    mode: Required[FluentMode | str]
-    """Specifies the launch mode of Fluent to target a specific session type."""
+class ContainerArgsWithoutDryRunMode(LauncherArgsBase, TypedDict, total=False):
+    """Launcher arguments for launching Fluent in a container, excluding the 'dry_run' argument."""
+
     container_dict: dict[str, Any] | None
     """Configuration dictionary for launching Fluent inside a Docker container. See also
     :mod:`~ansys.fluent.core.launcher.fluent_container`.
@@ -97,13 +95,26 @@ class ContainerArgsWithoutDryRun(
     """
 
 
-class ContainerArgs(
-    ContainerArgsWithoutDryRun, TypedDict, total=False
+class ContainerArgsWithoutMode(
+    ContainerArgsWithoutDryRunMode, TypedDict, total=False
 ):  # pylint: disable=missing-class-docstring
     dry_run: bool
     """If True, does not launch Fluent but prints configuration information instead. If dry running a
     container start, this method will return the configured ``container_dict``. Defaults to False.
     """
+
+
+class ContainerArgsWithoutDryRun(
+    ContainerArgsWithoutDryRunMode, TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    mode: Required[FluentMode | str]
+    """Specifies the launch mode of Fluent to target a specific session type."""
+
+
+class ContainerArgs(
+    ContainerArgsWithoutDryRun, ContainerArgsWithoutMode, TypedDict, total=False
+):
+    """Launcher arguments for launching Fluent in a container."""
 
 
 _THIS_DIR = os.path.dirname(__file__)

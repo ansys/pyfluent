@@ -66,11 +66,9 @@ from ansys.fluent.core.launcher.server_info import (
     _get_server_info_file_names,
 )
 import ansys.fluent.core.launcher.watchdog as watchdog
-from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 if TYPE_CHECKING:
-    from ansys.fluent.core.launcher.launcher import LaunchFluentArgs
     from ansys.fluent.core.session_meshing import Meshing
     from ansys.fluent.core.session_pure_meshing import PureMeshing
     from ansys.fluent.core.session_solver import Solver
@@ -78,7 +76,7 @@ if TYPE_CHECKING:
     from ansys.fluent.core.session_solver_icing import SolverIcing
 
 
-class StandaloneArgsWithoutDryRun(
+class StandaloneArgsWithoutDryRunMode(
     LauncherArgsBase, TypedDict, total=False
 ):  # pylint: disable=missing-class-docstring
     journal_file_names: None | str | list[str]
@@ -105,13 +103,26 @@ class StandaloneArgsWithoutDryRun(
     """
 
 
-class StandaloneArgs(
-    StandaloneArgsWithoutDryRun, total=False
+class StandaloneArgsWithoutDryRun(
+    StandaloneArgsWithoutDryRunMode
+):  # pylint: disable=missing-class-docstring
+    mode: FluentMode
+    """Specifies the launch mode of Fluent to target a specific session type."""
+
+
+class StandaloneArgsWithoutMode(
+    StandaloneArgsWithoutDryRunMode, total=False
 ):  # pylint: disable=missing-class-docstring
     dry_run: bool | None
     """If True, does not launch Fluent but prints configuration information instead. The `call()` method
     returns a tuple containing the launch string and server info file name. Defaults to False.
     """
+
+
+class StandaloneArgs(
+    StandaloneArgsWithoutMode, StandaloneArgsWithoutDryRun, total=False
+):
+    """Arguments for launching Fluent in standalone mode."""
 
 
 logger = logging.getLogger("pyfluent.launcher")
@@ -124,8 +135,7 @@ class StandaloneLauncher:
         self,
         *,
         mode: FluentMode,
-        dry_run: bool = False,
-        **kwargs: Unpack["LaunchFluentArgs"],
+        **kwargs: Unpack[StandaloneArgsWithoutMode],
     ):
         """
         Launch a Fluent session in standalone mode.
@@ -242,7 +252,7 @@ class StandaloneLauncher:
         self._kwargs = _get_subprocess_kwargs_for_fluent(
             self.argvals.get("env", {}), self.argvals
         )
-        if "cwd" in self.argvals:
+        if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
         self._launch_string += _build_journal_argument(
             self.argvals.get("topy", []), self.argvals.get("journal_file_names")
