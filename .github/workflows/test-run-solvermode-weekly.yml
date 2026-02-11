@@ -19,7 +19,7 @@ env:
   PYFLUENT_LOGGING: "DEBUG"
   PYFLUENT_WATCHDOG_DEBUG: "OFF"
   PYFLUENT_HIDE_LOG_SECRETS: 1
-  FLUENT_IMAGE_TAG: v25.2.0
+  FLUENT_IMAGE_TAG: v26.1.latest
   PYTHON_VERSION: "3.10"
 
 jobs:
@@ -69,15 +69,15 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull 25.2 Fluent docker image
+      - name: Pull 26.1 Fluent docker image
         run: make docker-pull
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
-      - name: Run 25.2 API codegen
+      - name: Run 26.1 API codegen
         run: make api-codegen
 
-      - name: Print 25.2 Fluent version info
+      - name: Print 26.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_251.py
           python -c "from ansys.fluent.core.generated.solver.settings_251 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
@@ -87,10 +87,10 @@ jobs:
           rm -rf dist
           make install > /dev/null
 
-      - name: 25.2 Unit Testing
+      - name: 26.1 Unit Testing
         run: |
           make install-test
-          make unittest-solvermode-251
+          make unittest-solvermode-261
 
       - name: Clean Docker Data
         run: make docker-clean-all-except-supported-images
