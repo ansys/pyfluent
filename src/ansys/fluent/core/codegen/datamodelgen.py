@@ -142,7 +142,7 @@ def _get_api_help_text(info: Dict[str, Any], default: str) -> str:
     attrs = info.get("attrs") or {}
     api_help_text = attrs.get("api_help_text")
     return (
-        f"api help text::: {api_help_text.get("stringState")}"
+        f"api help text::: {api_help_text.get('stringState')}"
         if api_help_text
         else info.get("helpstring", default)
     )
