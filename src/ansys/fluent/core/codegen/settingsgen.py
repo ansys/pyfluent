@@ -26,10 +26,7 @@ import argparse
 import hashlib
 from io import StringIO
 import keyword
-
-# pickle is used to serialize internally-generated settings data for hashing purposes.
-# No untrusted data is deserialized, so there are no security risks.
-import pickle  # nosec: B403
+import pickle
 import time
 from typing import IO
 

@@ -24,10 +24,7 @@
 
 import argparse
 from pathlib import Path
-
-# pickle is used to serialize internally-generated API tree data only.
-# No untrusted data is deserialized, so there are no security risks.
-import pickle  # nosec: B403
+import pickle
 
 from ansys.fluent.core import config
 from ansys.fluent.core.codegen import (  # noqa: F401

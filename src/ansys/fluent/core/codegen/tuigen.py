@@ -38,17 +38,11 @@ import argparse
 import logging
 import os
 from pathlib import Path
-
-# pickle is used to serialize internally-generated settings data for hashing purposes.
-# No untrusted data is deserialized, so there are no security risks.
-import pickle  # nosec: B403
+import pickle
 import platform
 import shutil
 import string
-
-# subprocess is used to run internal code generation tools with controlled arguments.
-# Only internal build processes invoke this, not user-supplied data.
-import subprocess  # nosec: B404
+import subprocess
 from typing import Any, Dict
 import uuid
 
