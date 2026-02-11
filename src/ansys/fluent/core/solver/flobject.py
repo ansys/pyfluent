@@ -49,7 +49,7 @@ import keyword
 import logging
 import os
 import os.path
-import pickle  # nosec: B403
+import pickle
 import string
 import sys
 import types
