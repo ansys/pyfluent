@@ -168,7 +168,7 @@ You can also create a :obj:`~ansys.fluent.core.session_pure_meshing.PureMeshing`
   >>> pure_meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.PURE_MESHING)
 
 
-Thet only difference between the two meshing session types is that a pure session canno be
+The only difference between the two meshing session types is that a pure session cannot be
 switched to solution mode directly. The existence of the pure session type promotes creation
 of minimal server images, which becomes significant in the context of containerization.
 
@@ -224,7 +224,7 @@ Use ``using(meshing_session)`` to make a meshing session active and interact wit
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core.solver import using
+  >>> from ansys.fluent.core import using
   >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
   >>> with using(meshing):
   ...     wt = meshing.watertight()
