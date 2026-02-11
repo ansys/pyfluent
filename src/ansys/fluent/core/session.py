@@ -512,7 +512,7 @@ class BaseSession:
         self._exit()
 
     def __dir__(self):
-        if self.is_active() is False:
+        if self._fluent_connection is None:
             names = super().__dir__()
             return [
                 name
