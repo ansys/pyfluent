@@ -176,64 +176,71 @@ of minimal server images, which becomes significant in the context of containeri
 Context manager for active sessions
 -----------------------------------
 
-When working with generated settings and functions, you often need to pass the current session explicitly via the
-``settings_source`` or a session argument. The ``using(session)`` context manager lets you set an "active session"
-so you can call top-level settings objects and functions without wiring the session each time. This works for both
-:obj:`~ansys.fluent.core.session_solver.Solver` and :obj:`~ansys.fluent.core.session_meshing.Meshing` sessions and is
-thread-safe.
+The ``using(session)`` context manager sets an active session so you can call top-level settings objects and functions
+without explicitly passing the session each time.
 
-Note: You can import the context manager as ``from ansys.fluent.core import using``. It also remains available via
-``from ansys.fluent.core.solver import using`` for backward compatibility.
+Example:
 
-Solver context manager
-~~~~~~~~~~~~~~~~~~~~~~
+.. code:: python
 
-Use ``using(solver_session)`` to make a solver the active session inside a ``with`` block:
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import ReadCase, Viscous
+  >>> with using(solver_session):
+  ...     ReadCase()(file_name=<case_file>)
+  ...     print(Viscous().model())
+  k-omega
+
+.. note::
+
+  Settings trees are inactive outside an active session. Set or query state inside ``with using(session)`` or
+  pass the session explicitly via ``settings_source=...`` on the object.
+
+
+Multiple sessions in one script
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When working with multiple sessions in the same script, use separate ``with`` blocks to make each session active only
+within its intended scope:
 
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  >>> from ansys.fluent.core.solver import using
-  >>> solver = pyfluent.launch_fluent()
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import ReadCase, Viscous
+  >>> solver_session_1 = pyfluent.launch_fluent()
+  >>> solver_session_2 = pyfluent.launch_fluent()
   >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> with using(solver):
-  ...     # Call file I/O and settings without passing solver explicitly
-  ...     read_case(file_name=case_file)
-  ...     # Access models directly
-  ...     viscous_model = Viscous()
-  ...     viscous_model.model()  # returns the current viscous model state
-  'k-omega'
+  >>> with using(solver_session_1):
+  ...     ReadCase()(file_name=case_file)
+  ...     Viscous().model.set_state("laminar")
+  ...     print(Viscous().model())
+  laminar
+  >>> with using(solver_session_2):
+  ...     ReadCase()(file_name=case_file)
+  ...     Viscous().model.set_state("k-omega")
+  ...     print(Viscous().model())
+  k-omega
 
-Thread safety: The active session is maintained per thread, so each thread can safely set and use its own session:
+Thread-local behavior
+~~~~~~~~~~~~~~~~~~~~~
+
+Each thread can set and use its own active session. Sessions set in one thread are not visible to other threads:
 
 .. code:: python
 
   >>> import threading
-  >>> def work(sess):
-  ...     with using(sess):
-  ...         assert Setup() == sess.setup
-  >>> t = threading.Thread(target=work, args=(solver,))
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> def work(session):
+  ...     with using(session):
+  ...         print(Viscous().model())
+  k-omega
+  >>> t = threading.Thread(target=work, args=(solver_session,))
   >>> t.start(); t.join()
 
-Meshing context manager
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Use ``using(meshing_session)`` to make a meshing session active and interact with workflows without passing the session:
-
-.. code:: python
-
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core import using
-  >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
-  >>> with using(meshing):
-  ...     wt = meshing.watertight()
-  ...     import_geometry = wt.import_geometry
-  ...     # Set states and execute tasks here
-  ...     # e.g., import_geometry.file_name.set_state(<geometry_file>); import_geometry()
-
-Outside of a ``with using(...)`` block, you can continue to pass sessions explicitly when you need to operate on
-multiple sessions in the same scope or prefer explicit control.
+Outside of a ``with using(...)`` block, pass sessions explicitly when operating on multiple sessions in the same scope
+or when working with multi-threaded code.
 
 
 Switching between sessions
