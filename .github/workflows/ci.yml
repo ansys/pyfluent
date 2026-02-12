@@ -102,7 +102,7 @@ jobs:
         run: uv pip install -e ".[ci_types]"
 
       - name: "Regenerate API codegen"
-        run: uv python codegen/allapigen.py
+        run: uv python run codegen/allapigen.py
         env:
           FLUENT_IMAGE_TAG: v26.1.latest
 

@@ -658,6 +658,7 @@ def connect_to_fluent(
                 allow_remote_host=allow_remote_host,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
+                inside_container=fluent_connection.connection_properties.inside_container,
             )
 
     return new_session(

@@ -317,7 +317,13 @@ class StandaloneLauncher:
                 values = _get_server_info(self._server_info_file_name)
                 if len(values) == 3:
                     ip, port, password = values
-                    watchdog.launch(os.getpid(), port, password, ip)
+                    watchdog.launch(
+                        os.getpid(),
+                        port,
+                        password,
+                        ip,
+                        inside_container=False,
+                    )
             if self.argvals.get("case_file_name"):
                 if FluentMode.is_meshing(self.argvals.get("mode")):
                     session.tui.file.read_case(self.argvals.get("case_file_name"))
