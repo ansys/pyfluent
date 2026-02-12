@@ -248,7 +248,7 @@ class StandaloneLauncher:
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         self._kwargs = _get_subprocess_kwargs_for_fluent(
-            self.argvals.get("env", {}), self.argvals
+            self.argvals.get("env") or {}, self.argvals
         )
         if self.argvals.get("cwd"):
             self._kwargs.update(cwd=self.argvals.get("cwd"))
