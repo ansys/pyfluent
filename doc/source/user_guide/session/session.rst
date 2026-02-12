@@ -194,25 +194,25 @@ Use ``using(solver_session)`` to make a solver the active session inside a ``wit
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
+  from ansys.fluent.core.solver import Viscous, Read_case
   >>> from ansys.fluent.core.solver import using
   >>> solver = pyfluent.launch_fluent()
   >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> with using(solver):
   ...     # Call file I/O and settings without passing solver explicitly
-  ...     read_case(file_name=case_file)
+  ...     Read_case(file_name=case_file)
   ...     # Access models directly
   ...     viscous_model = Viscous()
-  ...     viscous_model.model()  # returns the current viscous model state
-  'k-omega'
+  ...     viscous_model.model()  # returns the current viscous model state 'k-omega'
 
 Thread safety: The active session is maintained per thread, so each thread can safely set and use its own session:
 
 .. code:: python
 
   >>> import threading
-  >>> def work(sess):
-  ...     with using(sess):
-  ...         assert Setup() == sess.setup
+  >>> def work(session):
+  ...     with using(session):
+  ...         assert Setup() == session.setup
   >>> t = threading.Thread(target=work, args=(solver,))
   >>> t.start(); t.join()
 
@@ -227,7 +227,7 @@ Use ``using(meshing_session)`` to make a meshing session active and interact wit
   >>> from ansys.fluent.core import using
   >>> meshing = pyfluent.launch_fluent(mode=pyfluent.FluentMode.MESHING)
   >>> with using(meshing):
-  ...     wt = meshing.watertight()
+  ...     wt = watertight()
   ...     import_geometry = wt.import_geometry
   ...     # Set states and execute tasks here
   ...     # e.g., import_geometry.file_name.set_state(<geometry_file>); import_geometry()
