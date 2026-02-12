@@ -104,7 +104,7 @@ jobs:
       - name: "Regenerate API codegen"
         run: uv run codegen/allapigen.py
         env:
-          FLUENT_IMAGE_TAG: v27.1.latest
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: "Check type hints"
         run: basedpyright --baselinemode=auto
