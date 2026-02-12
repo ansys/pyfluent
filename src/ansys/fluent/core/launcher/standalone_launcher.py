@@ -133,9 +133,7 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        *,
-        mode: FluentMode,
-        **kwargs: Unpack[StandaloneArgsWithoutMode],
+        **kwargs: Unpack[StandaloneArgs],
     ):
         """
         Launch a Fluent session in standalone mode.
