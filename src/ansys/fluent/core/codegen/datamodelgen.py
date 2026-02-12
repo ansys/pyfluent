@@ -171,7 +171,7 @@ def _build_command_query_docstring(
             else f"{indent}Query {name}.\n\n"
         )
     if info.get("args"):
-        doc.write(f"{indent}Parameters\n")
+        doc.write(f"\n{indent}Parameters\n")
         doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
             doc.write(f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n')
@@ -179,8 +179,9 @@ def _build_command_query_docstring(
             if arg_help:
                 for line in arg_help.splitlines():
                     doc.write(f"{indent}    {line}\n")
+                doc.write("\n")
             elif arg.get("docstring"):
-                doc.write(f'{indent}    {arg["docstring"]}\n')
+                doc.write(f'{indent}    {arg["docstring"]}\n\n')
     doc.write(f"\n{indent}Returns\n")
     doc.write(f"{indent}{'-' * len('Returns')}\n")
     doc.write(f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n')
