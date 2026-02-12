@@ -93,7 +93,7 @@ jobs:
           skip-install: false
 
       - name: "Make venv"
-        run: uv venv
+        run: uv venv --clear
 
       - name: "Install basedpyright"
         run: uv tool install basedpyright
@@ -101,7 +101,12 @@ jobs:
       - name: "Install extras"
         run: uv pip install -e ".[ci_types]"
 
-      - name: "Check Type hints"
+      - name: "Regenerate API codegen"
+        run: uv python codegen/allapigen.py
+        env:
+          FLUENT_IMAGE_TAG: v26.1.latest
+
+      - name: "Check type hints"
         run: basedpyright --baselinemode=auto
 
   commit-style:
