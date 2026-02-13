@@ -179,7 +179,7 @@ class _FieldInfo(BaseFieldInfo):
         self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -203,7 +203,7 @@ class _FieldInfo(BaseFieldInfo):
         return self._get_scalar_field_range(field, node_value, surface_ids)
 
     def _get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         if not surface_ids:
             surface_ids = []
