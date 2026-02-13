@@ -195,7 +195,9 @@ class PureMeshing(BaseSession):
 
     def watertight(
         self, legacy: bool | None = None
-    ) -> "mesh_wf_new.WatertightMeshingWorkflow | mesh_wf_old.WatertightMeshingWorkflow":
+    ) -> (
+        "mesh_wf_new.WatertightMeshingWorkflow | mesh_wf_old.WatertightMeshingWorkflow"
+    ):
         """Get a new watertight meshing workflow.
 
         Parameters
@@ -216,7 +218,7 @@ class PureMeshing(BaseSession):
     @overload
     def fault_tolerant(
         self, legacy: Literal[True]
-    ) -> "mesh_wf_old.FaultTolerantMeshingWorkflow': ...
+    ) -> "mesh_wf_old.FaultTolerantMeshingWorkflow": ...
 
     @overload
     def fault_tolerant(
@@ -226,15 +228,11 @@ class PureMeshing(BaseSession):
     @overload
     def fault_tolerant(
         self, legacy: None = None
-    ) -> (
-        "mesh_wf_new.FaultTolerantMeshingWorkflow | mesh_wf_old.FaultTolerantMeshingWorkflow"
-    ): ...
+    ) -> "mesh_wf_new.FaultTolerantMeshingWorkflow | mesh_wf_old.FaultTolerantMeshingWorkflow": ...
 
     def fault_tolerant(
         self, legacy: bool | None = None
-    ) -> (
-        "mesh_wf_new.FaultTolerantMeshingWorkflow | mesh_wf_old.FaultTolerantMeshingWorkflow"
-    ):
+    ) -> "mesh_wf_new.FaultTolerantMeshingWorkflow | mesh_wf_old.FaultTolerantMeshingWorkflow":
         """Get a new fault-tolerant meshing workflow.
 
         Parameters
@@ -265,9 +263,7 @@ class PureMeshing(BaseSession):
     @overload
     def two_dimensional_meshing(
         self, legacy: None = None
-    ) -> (
-        "mesh_wf_new.TwoDimensionalMeshingWorkflow | mesh_wf_old.TwoDimensionalMeshingWorkflow"
-    ): ...
+    ) -> "mesh_wf_new.TwoDimensionalMeshingWorkflow | mesh_wf_old.TwoDimensionalMeshingWorkflow": ...
 
     def two_dimensional_meshing(self, legacy: bool | None = None):
         """Get a new 2D meshing workflow.

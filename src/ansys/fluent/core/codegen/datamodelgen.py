@@ -123,9 +123,9 @@ def _write_command_query_stub(name: str, info: Any, f: FileIO):
     if info.get("args"):
         for arg in info.get("args"):
             signature.write(
-                f'{indent}{arg["name"]}: {_PY_TYPE_BY_DM_TYPE[arg["type"]]} | None = None,\n'
+                f"{indent}{arg['name']}: {_PY_TYPE_BY_DM_TYPE[arg['type']]} | None = None,\n"
             )
-    signature.write(f'{indent}) -> {_PY_TYPE_BY_DM_TYPE[info["returntype"]]}: ...')
+    signature.write(f"{indent}) -> {_PY_TYPE_BY_DM_TYPE[info['returntype']]}: ...")
     f.write(f"\n    def {name}{signature.getvalue()}\n")
 
 
@@ -161,15 +161,15 @@ def _build_command_query_docstring(
         doc.write(f"{indent}Parameters\n")
         doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
-            doc.write(f'{indent}{arg["name"]} : {_PY_TYPE_BY_DM_TYPE[arg["type"]]}\n')
+            doc.write(f"{indent}{arg['name']} : {_PY_TYPE_BY_DM_TYPE[arg['type']]}\n")
             if arg.get("helpstring"):
                 for line in arg["helpstring"].splitlines():
                     doc.write(f"{indent}    {line}\n")
             elif arg.get("docstring"):
-                doc.write(f'{indent}    {arg["docstring"]}\n')
+                doc.write(f"{indent}    {arg['docstring']}\n")
     doc.write(f"\n{indent}Returns\n")
     doc.write(f"{indent}{'-' * len('Returns')}\n")
-    doc.write(f'{indent}{_PY_TYPE_BY_DM_TYPE[info["returntype"]]}\n')
+    doc.write(f"{indent}{_PY_TYPE_BY_DM_TYPE[info['returntype']]}\n")
     if meshing_utility_examples.get(name):
         doc.write(f"\n{indent}Examples\n")
         doc.write(f"{indent}{'-' * len('Examples')}\n")
@@ -387,7 +387,7 @@ class DataModelGenerator:
             return api_tree
         indent = " " * level * 4
         singleton_doc = info.get("helpstring", _build_singleton_docstring(name))
-        f.write(f"{indent}class _{name}(PyMenu):\n")
+        f.write(f"{indent}class {'_' if name != 'Root' else ''}{name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
         for line in singleton_doc.splitlines():
             f.write(f"{indent}    {escape_wildcards(line)}\n")
@@ -435,7 +435,7 @@ class DataModelGenerator:
                 f"_{k}", info["namedobjects"][k], f, level + 2
             )
             # Specify the concrete named object type for __getitem__
-            f.write(f"{indent}        def __getitem__(self, key: str) -> " f"_{k}:\n")
+            f.write(f"{indent}        def __getitem__(self, key: str) -> _{k}:\n")
             f.write(f"{indent}            return super().__getitem__(key)\n\n")
         for k in singletons:
             if k.isidentifier():
@@ -477,7 +477,7 @@ class DataModelGenerator:
                 file.write(
                     "from ansys.fluent.core.services.datamodel_se import PyMenu\n"
                 )
-                file.write("from typing import Any\n")
+                file.write("from typing import Any, TYPE_CHECKING\n")
                 file.write("\n\n")
                 file.write("class Root(PyMenu):\n")
                 for k in commands:
@@ -497,7 +497,7 @@ class DataModelGenerator:
             actions, class_name: str, st_info_key: tuple[str], is_command: bool
         ):
             for k in actions:
-                f.write(f"{indent}    class {k}({class_name}):\n")
+                f.write(f"{indent}    class _{k}({class_name}):\n")
                 f.write(f'{indent}        """\n')
                 actions_static_info = info[st_info_key[0]][k]
                 f.write(
@@ -506,6 +506,17 @@ class DataModelGenerator:
                     )
                 )
                 f.write(f'{indent}        """\n')
+                args_info = actions_static_info[st_info_key[1]].get("args", [])
+
+                if is_command:
+                    f.write(f"{indent}        if TYPE_CHECKING:\n")
+                    py_names = [
+                        f"{_convert_to_py_name(arg['name'])}: {_PY_TYPE_BY_DM_TYPE[arg['type']]}"
+                        for arg in args_info
+                    ]
+                    f.write(
+                        f"{indent}            def __call__(self, {'*, ' if py_names else ''}{', '.join(py_names)}): ...\n"
+                    )
                 f.write(f"{indent}        class _{k}Arguments(PyArguments):\n")
                 f.write(
                     f"{indent}            def __init__(self, service, rules, command, path, id):\n"
@@ -513,7 +524,6 @@ class DataModelGenerator:
                 f.write(
                     f"{indent}                super().__init__(service, rules, command, path, id)\n"
                 )
-                args_info = actions_static_info[st_info_key[1]].get("args", [])
                 for arg_info in args_info:
                     arg_name = arg_info["name"]
                     py_name = _convert_to_py_name(arg_name)
@@ -525,7 +535,7 @@ class DataModelGenerator:
                     self._write_arg_class(f, arg_info, f"{indent}            ")
 
                 f.write(
-                    f"{indent}        def create_instance(self) -> _{k}Arguments:\n"
+                    f"{indent}        def create_instance(self) -> _{k}Arguments | None:\n"
                 )
                 f.write(
                     f"{indent}            args = self._get_create_instance_args()\n"
@@ -556,6 +566,7 @@ class DataModelGenerator:
                 f.write("# This is an auto-generated file.  DO NOT EDIT!\n")
                 f.write("#\n")
                 f.write("# pylint: disable=line-too-long\n\n")
+                f.write("from typing import Any, TYPE_CHECKING\n\n")
                 f.write("from ansys.fluent.core.services.datamodel_se import (\n")
                 f.write("    PyMenu,\n")
                 f.write("    PyParameter,\n")
