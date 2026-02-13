@@ -101,6 +101,13 @@ jobs:
       - name: "Install extras"
         run: uv pip install -e ".[ci_types]"
 
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: "Regenerate API codegen"
         run: uv run codegen/allapigen.py
         env:
