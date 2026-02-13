@@ -85,6 +85,9 @@ jobs:
   code-style:
     name: Code style
     runs-on: ubuntu-latest
+    env:
+      FLUENT_IMAGE_TAG: v26.1.latest
+
     steps:
       - name: "Run PyAnsys code style checks"
         uses: ansys/actions/code-style@v10.2
@@ -101,6 +104,12 @@ jobs:
       - name: "Install extras"
         run: uv pip install -e ".[ci_types]"
 
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
@@ -108,10 +117,17 @@ jobs:
           username: ansys-bot
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Cache API Code
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        id: cache-api-code
+        with:
+          path: |
+            src/ansys/fluent/core/generated
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.FLUENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          lookup-only: false # zizmor: ignore[cache-poisoning]
+
       - name: "Regenerate API codegen"
         run: uv run codegen/allapigen.py
-        env:
-          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: "Check type hints"
         run: basedpyright --baselinemode=auto
