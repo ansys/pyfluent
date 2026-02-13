@@ -176,43 +176,125 @@ of minimal server images, which becomes significant in the context of containeri
 Context manager for active sessions
 -----------------------------------
 
-When working with generated settings and functions, you often need to pass the current session explicitly via the
-``settings_source`` or a session argument. The ``using(session)`` context manager lets you set an "active session"
-so you can call top-level settings objects and functions without wiring the session each time. It is thread-safe.
+Before, you had to pass an active session object into most API calls. This often required explicitly wiring the
+session into generated settings objects and helper functions using a ``settings_source`` or a session argument.
+
+For example:
+
+.. code:: python
+
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> viscous = Viscous(settings_source=solver_session)
+  >>> viscous.model()
+  'k-omega'
+
+The ``using()`` context manager lets you temporarily set an active session so API calls inside the block no longer
+require an explicit session argument.
+
+Now you can do:
+
+.. code:: python
+
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> with using(solver_session):
+  ...     print(Viscous().model())
+  k-omega
+
+This significantly reduces boilerplate and improves readability.
+
+The ``using()`` context manager sets a thread-local active session. Sessions activated in one thread are not visible to
+code running in other threads. In multi-threaded applications, pass the session explicitly instead of relying on the
+implicit active session.
+
+.. note::
+
+  You can import ``using`` from ``ansys.fluent.core``. In older versions, it was exposed only under
+  ``ansys.fluent.core.solver``.
+
+Before and after comparison
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before:
+
+.. code:: python
+
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core.solver import Setup, Viscous
+  >>> solver_session = pyfluent.launch_fluent()
+  >>> Setup(settings_source=solver_session) == solver_session.setup
+  True
+  >>> Viscous(settings_source=solver_session).model()
+  'k-omega'
+
+After (with a context manager):
+
+.. code:: python
+
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import Setup, Viscous
+  >>> with using(solver_session):
+  ...     Setup() == solver_session.setup
+  True
+  ...     print(Viscous().model())
+  k-omega
 
 Solver context manager
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Use ``using(solver_session)`` to make a solver the active session inside a ``with`` block:
+Use ``using(solver_session)`` to make a solver session the active session inside a ``with`` block:
 
 .. code:: python
 
   >>> import ansys.fluent.core as pyfluent
   >>> from ansys.fluent.core.examples import download_file
-  from ansys.fluent.core.solver import Viscous, ReadCase
-  >>> from ansys.fluent.core.solver import using
-  >>> solver = pyfluent.launch_fluent()
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import ReadCase, Viscous
+  >>> solver_session = pyfluent.launch_fluent()
   >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> with using(solver):
-  ...     # Call file I/O and settings without passing solver explicitly
+  >>> with using(solver_session):
   ...     ReadCase()(file_name=case_file)
-  ...     # Access models directly
-  ...     viscous_model = Viscous()
-  ...     viscous_model.model()  # returns the current viscous model state 'k-omega'
+  ...     print(Viscous().model())
+  k-omega
 
-Thread safety: The active session is maintained per thread, so each thread can safely set and use its own session:
+Multiple sessions in one script
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When working with multiple sessions in the same script, use separate ``with`` blocks to make each session active only
+within its intended scope:
+
+.. code:: python
+
+  >>> solver_session_1 = pyfluent.launch_fluent()
+  >>> solver_session_2 = pyfluent.launch_fluent()
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import Viscous
+  >>> with using(solver_session_1):
+  ...     print(Viscous().model())
+  k-omega
+  >>> with using(solver_session_2):
+  ...     print(Viscous().model())
+  k-omega
+
+Thread-local behavior
+~~~~~~~~~~~~~~~~~~~~~
+
+Each thread can set and use its own active session. Sessions set in one thread are not visible to other threads:
 
 .. code:: python
 
   >>> import threading
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import Setup
   >>> def work(session):
   ...     with using(session):
-  ...         assert Setup() == session.setup
-  >>> t = threading.Thread(target=work, args=(solver,))
+  ...         print(Setup() == session.setup)
+  True
+  >>> t = threading.Thread(target=work, args=(solver_session,))
   >>> t.start(); t.join()
 
-Outside of a ``with using(...)`` block, you can continue to pass sessions explicitly when you need to operate on
-multiple sessions in the same scope or prefer explicit control.
+Outside of a ``with using(...)`` block, pass sessions explicitly when operating on multiple sessions in the same scope
+or when working with multi-threaded code.
 
 
 Switching between sessions
