@@ -41,6 +41,7 @@ Example
 from __future__ import annotations
 
 import collections.abc
+from collections.abc import Sequence
 from contextlib import contextmanager, nullcontext
 import fnmatch
 import hashlib
@@ -49,12 +50,12 @@ import keyword
 import logging
 import os
 import os.path
-from pathlib import Path
 import pickle
 import string
 import sys
 import types
 from typing import (
+    TYPE_CHECKING,
     Any,
     Callable,
     Dict,
@@ -69,11 +70,13 @@ from typing import (
     _eval_type,
     get_args,
     get_origin,
-    override,
 )
 import warnings
 import weakref
 
+from typing_extensions import override
+
+from ansys.fluent.core._types import PathType
 from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
@@ -676,7 +679,7 @@ class RealNumerical(Numerical):
         return get_si_unit_for_fluent_quantity(quantity)
 
 
-class SettingsBaseWithName(Protocol):
+class SettingsBaseWithName(Protocol):  # pylint: disable=missing-class-docstring
     __class__: type["SettingsBase"]  # pyright: ignore[reportIncompatibleMethodOverride]
     name: Callable[[], str]
 
@@ -684,20 +687,24 @@ class SettingsBaseWithName(Protocol):
 class Textual(Property):
     """Exposes attribute accessor on settings object - specific to string objects."""
 
-    def set_state(self, state: str | VariableDescriptor | SettingsBaseWithName | None = None, **kwargs):
+    def set_state(
+        self,
+        state: str | VariableDescriptor | SettingsBaseWithName | None = None,
+        **kwargs,
+    ):
         """Set the state of the object.
 
         Parameters
         ----------
         state
-            Either str or VariableDescriptor.
+            Either str, settings object with a ``name()`` method or VariableDescriptor.
         kwargs : Any
             Keyword arguments.
 
         Raises
         ------
         TypeError
-            If state is not a string.
+            If state is not an appropriate type.
         """
         if isinstance(state, SettingsBase) and hasattr(state, "name"):
             state = state.name()
@@ -954,13 +961,15 @@ class String(SettingsBase[str], Textual):
     set_state = Textual.set_state
 
 
-class Filename(SettingsBase[str], Textual):
+class Filename(SettingsBase[PathType], Textual):
     """A ``Filename`` object representing a file name."""
 
     _state_type = str
 
     @override
-    def set_state(self, state: Path | str | None = None, **kwargs):
+    def set_state(self, state: PathType | None = None, **kwargs):
+        if state is not None:
+            state = os.fspath(state)
         return super().set_state(state, **kwargs)
 
     def file_purpose(self):
@@ -972,6 +981,11 @@ class FilenameList(SettingsBase[StringListType], Textual):
     """A FilenameList object represents a list of file names."""
 
     _state_type = StringListType
+
+    if TYPE_CHECKING:
+
+        @override
+        def set_state(self, state: Sequence[PathType] | None = None, **kwargs): ...
 
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
