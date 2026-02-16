@@ -1262,7 +1262,7 @@ def build_specific_interface(task_object):
 
     namespace = {name: make_delegate(name) for name in public_members}
 
-    iface_name = f"{task_object}Interface"
+    iface_name = f"{task_object._name_()} Interface"
 
     return type(iface_name, (), namespace)
 
@@ -1272,6 +1272,8 @@ def make_task_wrapper(task_obj, name, workflow, parent, meshing_root):
 
     specific_interface = build_specific_interface(task_obj)
 
-    combined_type = type(f"{task_obj}", (specific_interface, TaskObject), {})
+    combined_type = type(
+        f"{task_obj._name_()} Task", (specific_interface, TaskObject), {}
+    )
 
     return combined_type(task_obj, name, workflow, parent, meshing_root)
