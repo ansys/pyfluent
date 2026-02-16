@@ -126,6 +126,9 @@ jobs:
           key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.FLUENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
           lookup-only: false # zizmor: ignore[cache-poisoning]
 
+      - name:  "Generate the certificates"
+        run: bash .ci/generate_certs.sh
+
       - name: "Regenerate API codegen"
         run: uv run codegen/allapigen.py
 
