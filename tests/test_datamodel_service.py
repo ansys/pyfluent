@@ -856,6 +856,7 @@ def test_field_level_help(new_meshing_session):
     assert isinstance(deviation, PyNumerical)
     # Field-level help at parameter level
     if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
         assert deviation.__doc__.strip().startswith(
             "The distance between facet edges and geometry edges, where lower values result in more facets along curved edges."
         )
@@ -867,6 +868,7 @@ def test_field_level_help(new_meshing_session):
     assert meshing.meshing.ImportGeometry, PyCommand
     # Field-level help at command level
     if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
         assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
             "Imports a geometry file for meshing tasks."
         )
@@ -884,6 +886,7 @@ def test_field_level_help(new_meshing_session):
     assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
     if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
         assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
             "Represents a vector defining the direction and magnitude of a linear mesh pattern within a meshing framework."
         )
