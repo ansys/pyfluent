@@ -139,8 +139,15 @@ def _build_parameter_docstring(name: str, t: str):
 
 def _get_api_help_text(info: Dict[str, Any], default: str) -> str:
     """Prefer attrs.api_help_text, else helpstring, else default."""
+    # Newer servers (Ansys Fluent 2026 R1 and later) may attach a richer help payload under 'attrs' -> 'api_help_text'.
+    # Older entries may only have a plain 'helpstring'. If neither exists, use 'default'.
     attrs = info.get("attrs") or {}
+    # Get the richer help payload if present; otherwise None.
     api_help_text = attrs.get("api_help_text")
+    # Return precedence:
+    # 1) api_help_text['stringState'] if available (richer text from server).
+    # 2) info['helpstring'] if present (legacy help).
+    # 3) default (provided by caller) when nothing else exists.
     return (
         api_help_text.get("stringState")
         if api_help_text
