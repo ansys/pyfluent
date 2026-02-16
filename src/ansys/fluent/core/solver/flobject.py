@@ -987,6 +987,11 @@ class FilenameList(SettingsBase[StringListType], Textual):
         @override
         def set_state(self, state: Sequence[PathType] | None = None, **kwargs): ...
 
+    @override
+    def set_state(self, state: Sequence[PathType] | None = None, **kwargs):
+        if state is not None:
+            state = [os.fspath(path) for path in state]
+        return super().set_state(state, **kwargs)
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
