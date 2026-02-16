@@ -855,15 +855,25 @@ def test_field_level_help(new_meshing_session):
     deviation = meshing.PartManagement.AssemblyNode["node-1"].Refaceting.Deviation
     assert isinstance(deviation, PyNumerical)
     # Field-level help at parameter level
-    assert deviation.__doc__.strip().startswith(
-        "Specify the distance between facet edges and the geometry edges. Decreasing this value"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        assert deviation.__doc__.strip().startswith(
+            "The distance between facet edges and geometry edges, where lower values result in more facets along curved edges."
+        )
+    else:
+        assert deviation.__doc__.strip().startswith(
+            "Specify the distance between facet edges and the geometry edges. Decreasing this value"
+        )
     # TODO Test Field-level help at singleton level when we have that in the datamodel
     assert meshing.meshing.ImportGeometry, PyCommand
     # Field-level help at command level
-    assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
-        "Specify the CAD geometry that you want to work with. Choose from"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Imports a geometry file for meshing tasks."
+        )
+    else:
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Specify the CAD geometry that you want to work with. Choose from"
+        )
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
     assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
@@ -873,9 +883,14 @@ def test_field_level_help(new_meshing_session):
     linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
     assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
-    assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
-        "Specify a name for the mesh pattern or use the default value."
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Represents a vector defining the direction and magnitude of a linear mesh pattern within a meshing framework."
+        )
+    else:
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Specify a name for the mesh pattern or use the default value."
+        )
 
 
 @pytest.mark.codegen_required
