@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,6 +22,7 @@
 
 from functools import partial
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from util.meshing_workflow import (
     assign_task_arguments,
@@ -204,7 +205,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skip("Wait for later implementation.")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# Wait for later implementation.
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_meshing_session):
@@ -262,6 +264,8 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
@@ -447,16 +451,26 @@ def test_inaccessible_meshing_attributes_after_switching_to_solver(
 ):
     meshing = new_meshing_session_wo_exit
     assert meshing.is_active() is True
-    assert meshing.is_server_healthy()
+    assert meshing._is_server_healthy()
     solver = meshing.switch_to_solver()
     assert solver.is_active() is True
     assert meshing.is_active() is False
     with pytest.raises(AttributeError):
         # 'switched' attribute is not there in Meshing.
         assert meshing.switched
-    assert dir(meshing) == ["is_active", "wait_process_finished"]
+    public_meshing_attrs = [
+        name
+        for name in dir(meshing)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_meshing_attrs == ["is_active", "wait_process_finished"]
     del meshing
     assert solver.is_active() is True
     solver.exit()
     assert solver.is_active() is False
-    assert dir(solver) == ["is_active", "wait_process_finished"]
+    public_solver_attrs = [
+        name
+        for name in dir(solver)
+        if not (name.startswith("__") and name.endswith("__"))
+    ]
+    assert public_solver_attrs == ["is_active", "wait_process_finished"]

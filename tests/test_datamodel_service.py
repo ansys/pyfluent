@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -23,6 +23,7 @@
 import gc
 from time import sleep
 
+from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
@@ -194,7 +195,7 @@ def test_add_on_affected(new_meshing_session):
         lambda obj: data.append(True)
     )
     assert data == []
-    wt = meshing.watertight()
+    wt = meshing.watertight(legacy=True)
     sleep(5)
     assert len(data) > 0
     assert data[0]
@@ -289,7 +290,8 @@ def test_add_on_command_executed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2999
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(

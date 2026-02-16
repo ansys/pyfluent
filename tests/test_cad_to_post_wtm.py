@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -234,7 +234,7 @@ def test_mixing_elbow(
     # Assert the returned mass flow rate report definition value
     flux = solver_session.solution.report_definitions.flux
     flux["mass_flow_rate"] = {}
-    flux["mass_flow_rate"].zone_names = [
+    flux["mass_flow_rate"].boundaries = [
         "cold-inlet",
         "hot-inlet",
         "outlet",

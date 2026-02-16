@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -34,8 +34,16 @@ from warnings import warn
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
+from ansys.fluent.core.launcher.error_warning_messages import (
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER,
+    ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE,
+    CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT,
+    CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
+    INSECURE_MODE_PROVIDED_IN_STANDALONE,
+)
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
     FluentLinuxGraphicsDriver,
@@ -46,6 +54,7 @@ from ansys.fluent.core.launcher.launch_options import (
     UIMode,
     _get_fluent_launch_mode,
     _get_running_session_mode,
+    get_remote_grpc_options,
 )
 from ansys.fluent.core.launcher.launcher_utils import (
     _confirm_watchdog_start,
@@ -68,7 +77,9 @@ _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
 logger = logging.getLogger("pyfluent.launcher")
 
 
-def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
+def create_launcher(
+    fluent_launch_mode: LaunchMode = LaunchMode.STANDALONE, **kwargs
+) -> DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher:
     """Use the factory function to create a launcher for supported launch modes.
 
     Parameters
@@ -76,25 +87,33 @@ def create_launcher(fluent_launch_mode: LaunchMode = None, **kwargs):
     fluent_launch_mode: LaunchMode
         Supported Fluent launch modes. Options are ``"LaunchMode.CONTAINER"``,
         ``"LaunchMode.PIM"``, ``"LaunchMode.SLURM"``, and ``"LaunchMode.STANDALONE"``.
+        The default is ``"LaunchMode.STANDALONE"``.
     kwargs : Any
         Keyword arguments.
     Returns
     -------
-    launcher: DockerLauncher | PimLauncher | StandaloneLauncher
+    DockerLauncher | PIMLauncher | SlurmLauncher | StandaloneLauncher
         Session launcher.
     Raises
     ------
     DisallowedValuesError
         If an unknown Fluent launch mode is passed.
     """
-    if fluent_launch_mode == LaunchMode.STANDALONE:
-        return StandaloneLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.CONTAINER:
-        return DockerLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.PIM:
-        return PIMLauncher(**kwargs)
-    elif fluent_launch_mode == LaunchMode.SLURM:
-        return SlurmLauncher(**kwargs)
+    launchers = {
+        LaunchMode.STANDALONE: StandaloneLauncher,
+        LaunchMode.CONTAINER: DockerLauncher,
+        LaunchMode.PIM: PIMLauncher,
+        LaunchMode.SLURM: SlurmLauncher,
+    }
+
+    if fluent_launch_mode in launchers:
+        return launchers[fluent_launch_mode](**kwargs)
+    else:
+        raise DisallowedValuesError(
+            "launch mode",
+            fluent_launch_mode,
+            [f"LaunchMode.{m.name}" for m in LaunchMode],
+        )
 
 
 def _show_gui_to_ui_mode(old_arg_val, **kwds):
@@ -368,15 +387,13 @@ def launch_fluent(
 
     if fluent_launch_mode == LaunchMode.STANDALONE and certificates_folder is not None:
         warn(
-            "``certificates_folder`` is relevant only when launching or connecting to a remote Fluent instance and "
-            "will be ignored for standalone launch mode.",
+            CERTIFICATES_FOLDER_PROVIDED_IN_STANDALONE,
             UserWarning,
         )
 
     if fluent_launch_mode == LaunchMode.STANDALONE and insecure_mode:
         warn(
-            "``insecure_mode`` is relevant only when launching or connecting to a remote Fluent instance and "
-            "will be ignored for standalone launch mode.",
+            INSECURE_MODE_PROVIDED_IN_STANDALONE,
             UserWarning,
         )
 
@@ -472,21 +489,16 @@ def connect_to_fluent(
         Raised when `insecure_mode` is set but `allow_remote_host` is False.
     """
     if allow_remote_host:
+        certificates_folder, insecure_mode = get_remote_grpc_options(
+            certificates_folder, insecure_mode
+        )
         if certificates_folder is None and not insecure_mode:
-            raise ValueError("To connect to a remote host, set `certificates_folder`.")
-        if certificates_folder is not None and insecure_mode:
-            raise ValueError(
-                "`certificates_folder` and `insecure_mode` cannot be set at the same time."
-            )
+            raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_CONNECT)
     else:
         if certificates_folder is not None:
-            raise ValueError(
-                "To set `certificates_folder`, `allow_remote_host` must be True."
-            )
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_CERTIFICATES_FOLDER)
         if insecure_mode:
-            raise ValueError(
-                "To set `insecure_mode`, `allow_remote_host` must be True."
-            )
+            raise ValueError(ALLOW_REMOTE_HOST_NOT_PROVIDED_WITH_INSECURE_MODE)
 
     if address is None:
         values = _get_server_info(server_info_file_name, ip, port, password)
@@ -515,7 +527,15 @@ def connect_to_fluent(
     if start_watchdog:
         logger.info("Launching Watchdog for existing Fluent session...")
         if ip is not None and port is not None and password is not None:
-            watchdog.launch(os.getpid(), port, password, ip)
+            watchdog.launch(
+                os.getpid(),
+                port,
+                password,
+                ip,
+                allow_remote_host=allow_remote_host,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+            )
 
     return new_session(
         fluent_connection=fluent_connection,

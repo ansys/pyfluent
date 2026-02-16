@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -325,6 +325,9 @@ class Config:
         lambda instance: False
     )
 
+    #: Whether to use Slurm from the current machine if it is available, defaults to True.
+    use_slurm_from_current_machine = _ConfigDescriptor["Config"](lambda instance: True)
+
     def __init__(self):
         """__init__ method of Config class."""
         # Read the environment variable once when pyfluent is imported
@@ -334,12 +337,12 @@ class Config:
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""
-        return "25.2.0"
+        return "26.1.0"
 
     @property
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
-        return "26.1.0"
+        return "27.1.0"
 
     def print(self):
         """Print all configuration variables."""

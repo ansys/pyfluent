@@ -1,4 +1,13 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+#   "matplotlib",
+#   "pyvista",
+# ]
+# ///
+
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -86,7 +95,6 @@ geom_filename = examples.download_file(
 
 meshing_session = pyfluent.launch_fluent(
     mode="meshing",
-    dimension=3,
     precision="double",
     processor_count=4,
 )
@@ -458,7 +466,7 @@ meshing_session.workflow.TaskObject["Improve Volume Mesh"].Execute()
 # Save Mesh File
 # ==============
 
-save_mesh_as = str(Path(pyfluent.EXAMPLES_PATH) / "hx-fin-2mm.msh.h5")
+save_mesh_as = str(Path(pyfluent.config.examples_path) / "hx-fin-2mm.msh.h5")
 meshing_session.tui.file.write_mesh(save_mesh_as)
 
 #############################################################################
@@ -477,25 +485,19 @@ solver_session.tui.define.mesh_interfaces.create("int", "yes", "no")
 # Mesh Check; Review Fluent transcript for errors
 # ===============================================
 
-solver_session.mesh.check()
+solver_session.settings.mesh.check()
 
 #############################################################################
-# Create a few boundary list for display and post-processing
-# ==========================================================
+# Create boundary lists for display and post-processing
+# =====================================================
 
-mesh1 = Mesh(solver=solver_session)
+mesh1 = Mesh(solver=solver_session, surfaces=[])
 
-wall_list = []
-periodic_list = []
-symmetry_list = []
-
-for item in mesh1.surfaces.allowed_values:
-    if len(item.split("wall")) > 1:
-        wall_list.append(item)
-    if len(item.split("periodic")) > 1:
-        periodic_list.append(item)
-    if len(item.split("symmetry")) > 1:
-        symmetry_list.append(item)
+wall_list = [
+    boundary_name
+    for boundary_name in mesh1.surfaces.allowed_values
+    if "wall" in boundary_name
+]
 
 #############################################################################
 # Display Mesh
@@ -521,66 +523,78 @@ p.add_light(light)
 # * Enable Energy Equation
 # * Enable Laminar Viscous Model
 
-solver_session.setup.general.units.set_units(
+solver_session.settings.setup.general.units.set_units(
     quantity="temperature", units_name="C", scale_factor=1.0, offset=273.15
 )
-solver_session.setup.models.energy.enabled = True
-solver_session.setup.models.viscous.model.set_state("laminar")
+solver_session.settings.setup.models.energy.enabled = True
+solver_session.settings.setup.models.viscous.model.set_state("laminar")
 
 #############################################################################
 # Change a few material properties of default Air
 # ===============================================
 
-air_dict = solver_session.setup.materials.fluid["air"].get_state()
+air_dict = solver_session.settings.setup.materials.fluid["air"].get_state()
 air_dict["density"]["value"] = 1.2
 air_dict["viscosity"]["value"] = 1.5e-5
 air_dict["thermal_conductivity"]["value"] = 0.026
 air_dict["specific_heat"]["value"] = 1006.0
-solver_session.setup.materials.fluid["air"].set_state(air_dict)
+solver_session.settings.setup.materials.fluid["air"].set_state(air_dict)
 
 #############################################################################
 # Change a few material properties of default Aluminum
 # ====================================================
 
-al_dict = solver_session.setup.materials.solid["aluminum"].get_state()
+al_dict = solver_session.settings.setup.materials.solid["aluminum"].get_state()
 al_dict["density"]["value"] = 2719.0
 al_dict["thermal_conductivity"]["value"] = 200.0
 al_dict["specific_heat"]["value"] = 871.0
-solver_session.setup.materials.solid["aluminum"].set_state(al_dict)
+solver_session.settings.setup.materials.solid["aluminum"].set_state(al_dict)
 
 #############################################################################
 # Copy Copper and change a few material properties of default Copper
 # ==================================================================
 
-solver_session.setup.materials.database.copy_by_name(type="solid", name="copper")
-cu_dict = solver_session.setup.materials.solid["copper"].get_state()
+solver_session.settings.setup.materials.database.copy_by_name(
+    type="solid", name="copper"
+)
+cu_dict = solver_session.settings.setup.materials.solid["copper"].get_state()
 cu_dict["density"]["value"] = 8978.0
 cu_dict["thermal_conductivity"]["value"] = 340.0
 cu_dict["specific_heat"]["value"] = 381.0
-solver_session.setup.materials.solid["copper"].set_state(cu_dict)
+solver_session.settings.setup.materials.solid["copper"].set_state(cu_dict)
 
 #############################################################################
 # Set Tube Cell Zone Material as Copper
 # =====================================
 
-tube_dict = solver_session.setup.cell_zone_conditions.solid["solid-tube-1"].get_state()
+tube_dict = solver_session.settings.setup.cell_zone_conditions.solid[
+    "solid-tube-1"
+].get_state()
 tube_dict["material"] = "copper"
-solver_session.setup.cell_zone_conditions.solid["solid-tube-1"].set_state(tube_dict)
+solver_session.settings.setup.cell_zone_conditions.solid["solid-tube-1"].set_state(
+    tube_dict
+)
 
-tube_dict = solver_session.setup.cell_zone_conditions.solid["solid-tube-2"].get_state()
+tube_dict = solver_session.settings.setup.cell_zone_conditions.solid[
+    "solid-tube-2"
+].get_state()
 tube_dict["material"] = "copper"
-solver_session.setup.cell_zone_conditions.solid["solid-tube-2"].set_state(tube_dict)
+solver_session.settings.setup.cell_zone_conditions.solid["solid-tube-2"].set_state(
+    tube_dict
+)
 
 #############################################################################
 # Set Boundary Condition for Inlet and Outlet
 # ===========================================
 
-solver_session.setup.boundary_conditions.velocity_inlet["inlet"].momentum.velocity = 4.0
-solver_session.setup.boundary_conditions.velocity_inlet["inlet"].thermal.temperature = (
-    293.15  # Need to specify in Kelvin
-)
+solver_session.settings.setup.boundary_conditions.velocity_inlet[
+    "inlet"
+].momentum.velocity = 4.0
+solver_session.settings.setup.boundary_conditions.velocity_inlet[
+    "inlet"
+].thermal.temperature = 293.15  # Need to specify in Kelvin
 
-solver_session.setup.boundary_conditions.pressure_outlet[
+solver_session.settings.setup.boundary_conditions.pressure_outlet[
     "outlet"
 ].thermal.backflow_total_temperature = 293.15
 
@@ -588,17 +602,17 @@ solver_session.setup.boundary_conditions.pressure_outlet[
 # Set Thermal Boundary Condition for Wall Inner Tube
 # ==================================================
 
-solver_session.setup.boundary_conditions.wall[
+solver_session.settings.setup.boundary_conditions.wall[
     "wall-inner-tube-1"
 ].thermal.thermal_condition = "Convection"
-solver_session.setup.boundary_conditions.wall[
+solver_session.settings.setup.boundary_conditions.wall[
     "wall-inner-tube-1"
 ].thermal.heat_transfer_coeff = 1050.0
-solver_session.setup.boundary_conditions.wall[
+solver_session.settings.setup.boundary_conditions.wall[
     "wall-inner-tube-1"
 ].thermal.free_stream_temp = 353.15
 
-solver_session.setup.boundary_conditions.copy(
+solver_session.settings.setup.boundary_conditions.copy(
     from_="wall-inner-tube-1", to="wall-inner-tube-2"
 )
 
@@ -606,53 +620,55 @@ solver_session.setup.boundary_conditions.copy(
 # Enable HOTR
 # ===========
 
-solver_session.solution.methods.high_order_term_relaxation.enable = True
+solver_session.settings.solution.methods.high_order_term_relaxation.enable = True
 
 #############################################################################
 # Define Report Definitions
 # =========================
 
-solver_session.solution.report_definitions.surface["outlet-enthalpy-flow"] = {}
-solver_session.solution.report_definitions.surface[
+solver_session.settings.solution.report_definitions.surface["outlet-enthalpy-flow"] = {}
+solver_session.settings.solution.report_definitions.surface[
     "outlet-enthalpy-flow"
 ].report_type = "surface-flowrate"
-solver_session.solution.report_definitions.surface["outlet-enthalpy-flow"].field = (
-    "enthalpy"
-)
-solver_session.solution.report_definitions.surface[
+solver_session.settings.solution.report_definitions.surface[
+    "outlet-enthalpy-flow"
+].field = "enthalpy"
+solver_session.settings.solution.report_definitions.surface[
     "outlet-enthalpy-flow"
 ].surface_names = ["outlet"]
 
-solver_session.solution.report_definitions.surface["avg-pressure-inlet"] = {}
-solver_session.solution.report_definitions.surface["avg-pressure-inlet"].report_type = (
-    "surface-areaavg"
-)
-solver_session.solution.report_definitions.surface["avg-pressure-inlet"].field = (
-    "pressure"
-)
-solver_session.solution.report_definitions.surface[
+solver_session.settings.solution.report_definitions.surface["avg-pressure-inlet"] = {}
+solver_session.settings.solution.report_definitions.surface[
+    "avg-pressure-inlet"
+].report_type = "surface-areaavg"
+solver_session.settings.solution.report_definitions.surface[
+    "avg-pressure-inlet"
+].field = "pressure"
+solver_session.settings.solution.report_definitions.surface[
     "avg-pressure-inlet"
 ].surface_names = ["inlet"]
 
-solver_session.solution.report_definitions.volume["max-vel-louvers4"] = {}
-solver_session.solution.report_definitions.volume["max-vel-louvers4"].report_type = (
-    "volume-max"
-)
-solver_session.solution.report_definitions.volume["max-vel-louvers4"].field = (
+solver_session.settings.solution.report_definitions.volume["max-vel-louvers4"] = {}
+solver_session.settings.solution.report_definitions.volume[
+    "max-vel-louvers4"
+].report_type = "volume-max"
+solver_session.settings.solution.report_definitions.volume["max-vel-louvers4"].field = (
     "velocity-magnitude"
 )
-solver_session.solution.report_definitions.volume["max-vel-louvers4"].cell_zones = [
-    "fluid-tet-4"
-]
+solver_session.settings.solution.report_definitions.volume[
+    "max-vel-louvers4"
+].cell_zones = ["fluid-tet-4"]
 
-solver_session.solution.report_definitions.surface["wall-shear-int"] = {}
-solver_session.solution.report_definitions.surface["wall-shear-int"].report_type = (
-    "surface-integral"
-)
-solver_session.solution.report_definitions.surface["wall-shear-int"].field = (
+solver_session.settings.solution.report_definitions.surface["wall-shear-int"] = {}
+solver_session.settings.solution.report_definitions.surface[
+    "wall-shear-int"
+].report_type = "surface-integral"
+solver_session.settings.solution.report_definitions.surface["wall-shear-int"].field = (
     "wall-shear"
 )
-solver_session.solution.report_definitions.surface["wall-shear-int"].surface_names = [
+solver_session.settings.solution.report_definitions.surface[
+    "wall-shear-int"
+].surface_names = [
     "wall-fluid-sweep-fin-solid-sweep-fin-shadow",
     "wall-fluid-tet-1-solid-tet-1",
     "wall-fluid-tet-2-solid-tet-2",
@@ -660,46 +676,48 @@ solver_session.solution.report_definitions.surface["wall-shear-int"].surface_nam
     "wall-fluid-tet-4-solid-tet-4",
 ]
 
-solver_session.solution.monitor.report_plots.create(name="outlet-enthalpy-flow-plot")
-solver_session.solution.monitor.report_plots[
+solver_session.settings.solution.monitor.report_plots.create(
+    name="outlet-enthalpy-flow-plot"
+)
+solver_session.settings.solution.monitor.report_plots[
     "outlet-enthalpy-flow-plot"
 ].report_defs = "outlet-enthalpy-flow"
 
-solver_session.solution.monitor.report_files["outlet-enthalpy-flow-file"] = {}
-solver_session.solution.monitor.report_files["outlet-enthalpy-flow-file"] = {
+solver_session.settings.solution.monitor.report_files["outlet-enthalpy-flow-file"] = {}
+solver_session.settings.solution.monitor.report_files["outlet-enthalpy-flow-file"] = {
     "report_defs": ["outlet-enthalpy-flow"],
     "file_name": r"outlet-enthalpy-flow.out",
 }
 
-solver_session.solution.monitor.report_plots["avg-pressure-inlet-plot"] = {}
-solver_session.solution.monitor.report_plots["avg-pressure-inlet-plot"] = {
+solver_session.settings.solution.monitor.report_plots["avg-pressure-inlet-plot"] = {}
+solver_session.settings.solution.monitor.report_plots["avg-pressure-inlet-plot"] = {
     "report_defs": ["avg-pressure-inlet"]
 }
 
-solver_session.solution.monitor.report_files["avg-pressure-inlet-file"] = {}
-solver_session.solution.monitor.report_files["avg-pressure-inlet-file"] = {
+solver_session.settings.solution.monitor.report_files["avg-pressure-inlet-file"] = {}
+solver_session.settings.solution.monitor.report_files["avg-pressure-inlet-file"] = {
     "report_defs": ["avg-pressure-inlet"],
     "file_name": r"avg-pressure-inlet.out",
 }
 
-solver_session.solution.monitor.report_plots["max-vel-louvers4-plot"] = {}
-solver_session.solution.monitor.report_plots["max-vel-louvers4-plot"] = {
+solver_session.settings.solution.monitor.report_plots["max-vel-louvers4-plot"] = {}
+solver_session.settings.solution.monitor.report_plots["max-vel-louvers4-plot"] = {
     "report_defs": ["max-vel-louvers4"]
 }
 
-solver_session.solution.monitor.report_files["max-vel-louvers4-file"] = {}
-solver_session.solution.monitor.report_files["max-vel-louvers4-file"] = {
+solver_session.settings.solution.monitor.report_files["max-vel-louvers4-file"] = {}
+solver_session.settings.solution.monitor.report_files["max-vel-louvers4-file"] = {
     "report_defs": ["max-vel-louvers4"],
     "file_name": r"max-vel-louvers4.out",
 }
 
-solver_session.solution.monitor.report_plots["wall-shear-int-plot"] = {}
-solver_session.solution.monitor.report_plots["wall-shear-int-plot"] = {
+solver_session.settings.solution.monitor.report_plots["wall-shear-int-plot"] = {}
+solver_session.settings.solution.monitor.report_plots["wall-shear-int-plot"] = {
     "report_defs": ["wall-shear-int"]
 }
 
-solver_session.solution.monitor.report_files["wall-shear-int-file"] = {}
-solver_session.solution.monitor.report_files["wall-shear-int-file"] = {
+solver_session.settings.solution.monitor.report_files["wall-shear-int-file"] = {}
+solver_session.settings.solution.monitor.report_files["wall-shear-int-file"] = {
     "report_defs": ["wall-shear-int"],
     "file_name": r"wall-shear-int.out",
 }
@@ -708,26 +726,26 @@ solver_session.solution.monitor.report_files["wall-shear-int-file"] = {
 # Hybrid Initialization; Slit Interior between Solid Zones; Save Case
 # ===================================================================
 
-solver_session.solution.initialization.initialization_type = "hybrid"
-solver_session.solution.initialization.hybrid_initialize()
+solver_session.settings.solution.initialization.initialization_type = "hybrid"
+solver_session.settings.solution.initialization.hybrid_initialize()
 
-solver_session.setup.boundary_conditions.slit_interior_between_diff_solids()
-solver_session.file.write(file_type="case", file_name="hx-fin-2mm.cas.h5")
+solver_session.settings.setup.boundary_conditions.slit_interior_between_diff_solids()
+solver_session.settings.file.write(file_type="case", file_name="hx-fin-2mm.cas.h5")
 
 #############################################################################
 # Set Aggressive Length Scale Method; Run Calculation & Save Data
 # ===============================================================
 
-solver_session.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_method = (
+solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.time_step_method = (
     "automatic"
 )
-solver_session.solution.run_calculation.pseudo_time_settings.time_step_method.length_scale_methods = (
+solver_session.settings.solution.run_calculation.pseudo_time_settings.time_step_method.length_scale_methods = (
     "aggressive"
 )
 
-solver_session.solution.run_calculation.iterate(iter_count=250)
+solver_session.settings.solution.run_calculation.iterate(iter_count=250)
 
-solver_session.file.write(file_type="case-data", file_name="hx-fin-2mm.dat.h5")
+solver_session.settings.file.write(file_type="case-data", file_name="hx-fin-2mm.dat.h5")
 
 #############################################################################
 # Post-Processing Mass Balance Report
@@ -843,15 +861,26 @@ p.add_scalar_bar(
 # Create Iso-Surface of X=0.012826 m
 # ==================================
 
-solver_session.results.surfaces.iso_surface["x=0.012826"] = {}
-solver_session.results.surfaces.iso_surface["x=0.012826"].field = "x-coordinate"
-solver_session.results.surfaces.iso_surface["x=0.012826"] = {"iso_values": [0.012826]}
+solver_session.settings.results.surfaces.iso_surface["x=0.012826"] = {}
+solver_session.settings.results.surfaces.iso_surface["x=0.012826"].field = (
+    "x-coordinate"
+)
+solver_session.settings.results.surfaces.iso_surface["x=0.012826"] = {
+    "iso_values": [0.012826]
+}
 
 #############################################################################
 # Vector Plot
 # ===========
 
-vector1 = Vector(solver=solver_session, surfaces=["x=0.012826"], scale=2.0, skip=5)
+vector1 = Vector(
+    solver=solver_session,
+    field="velocity",
+    color_by="x-velocity",
+    surfaces=["x=0.012826"],
+    scale=2.0,
+    skip=5,
+)
 window3 = GraphicsWindow()
 window3.add_graphics(vector1)
 window3.show()

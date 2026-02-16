@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -608,6 +608,11 @@ class SolutionVariableData:
         This array can be populated  with values to set SVAR data.
         """
         self._update_solution_variable_info()
+        variable_name = self._allowed_solution_variable_names.valid_name(
+            variable_name,
+            [zone_name],
+            domain_name,
+        )
 
         zones_info = self._solution_variable_info.get_zones_info()
         if zone_name in zones_info.zone_names:
@@ -720,6 +725,11 @@ class SolutionVariableData:
         None
         """
         self._update_solution_variable_info()
+        variable_name = self._allowed_solution_variable_names.valid_name(
+            variable_name,
+            list(zone_names_to_data.keys()),
+            domain_name,
+        )
         domain_id = self._allowed_domain_names.valid_name(domain_name)
         zone_ids_to_svar_data = {
             self._allowed_zone_names.valid_name(zone_name): solution_variable_data

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -22,6 +22,7 @@
 
 import warnings
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from pytest import WarningsRecorder
 
@@ -633,7 +634,8 @@ def test_deprecated_command_arguments(mixing_elbow_case_data_session):
     }
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4298")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4298
 @pytest.mark.fluent_version(">=25.2")
 def test_return_types_of_operations_on_named_objects(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session

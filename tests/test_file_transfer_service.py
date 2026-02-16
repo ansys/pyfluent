@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,17 +25,22 @@
 import os
 from pathlib import Path
 
+from conftest import SKIP_BLOCKED, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import examples
-from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 from ansys.fluent.core.utils.file_transfer_service import (
     ContainerFileTransferStrategy,
     StandaloneFileTransferStrategy,
 )
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4649")
+def _get_certs_folder():
+    return os.path.join(os.getcwd(), "certs")
+
+
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# Root cause is unknown - works fine locally and on Test Custom Run workflow, fails on CI.
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
 def test_remote_grpc_fts_container():
@@ -53,14 +58,16 @@ def test_remote_grpc_fts_container():
     if not source_path.exists():
         source_path.mkdir(parents=True, exist_ok=True)
 
-    file_transfer_service = ContainerFileTransferStrategy(mount_source=str(source_path))
+    file_transfer_service = ContainerFileTransferStrategy(
+        mount_source=str(source_path), certs_dir=_get_certs_folder()
+    )
 
     container_dict = {"mount_source": file_transfer_service.mount_source}
-    grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(
         file_transfer_service=file_transfer_service,
         container_dict=container_dict,
-        **grpc_kwds,
+        certificates_folder=_get_certs_folder(),
+        insecure_mode=False,
     )
 
     session.file.read_case(file_name=case_file)
@@ -109,7 +116,8 @@ def test_read_case_and_data(monkeypatch):
     solver.exit()
 
 
-@pytest.mark.skip(reason="Skips upload even after adding ImportGeometry task object.")
+@pytest.mark.skip(reason=SKIP_BLOCKED)
+# Skips upload even after adding ImportGeometry task object.
 def test_datamodel_execute():
     import ansys.fluent.core as pyfluent
 

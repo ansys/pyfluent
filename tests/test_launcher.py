@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -141,7 +141,7 @@ def test_container_launcher():
 
     # test run with configuration dict
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
 
 
 def test_container_working_dir():
@@ -200,7 +200,7 @@ def test_container_working_dir():
 
     # after all these 'working_dir' changes, the container should still launch
     session = pyfluent.launch_fluent(container_dict=container_dict3, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
 
 
 @pytest.mark.standalone
@@ -349,9 +349,11 @@ def test_get_fluent_exe_path_from_pyfluent_fluent_root(helpers, monkeypatch):
     assert get_fluent_exe_path() == expected_path
 
 
+@pytest.mark.fluent_version(">=25.1")  # Cannot use insecure_mode of 24.2 image
 def test_watchdog_launch(monkeypatch):
     monkeypatch.setattr(pyfluent.config, "watchdog_exception_on_error", True)
-    pyfluent.launch_fluent(start_watchdog=True, insecure_mode=True)
+    kwargs = get_grpc_launcher_args_for_gh_runs()
+    pyfluent.launch_fluent(start_watchdog=True, **kwargs)
 
 
 @pytest.mark.standalone
@@ -436,18 +438,17 @@ def test_fluent_launchers():
         assert pim_meshing_session
         pim_meshing_session.exit()
 
-        pim_solver_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.SOLVER, **kwargs
-        )
+        pim_solver_launcher = create_launcher(LaunchMode.PIM, **kwargs, dimension=2)
         pim_solver_session = pim_solver_launcher()
         assert pim_solver_session
         pim_solver_session.exit()
 
-        pim_meshing_launcher = create_launcher(
-            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2, dry_run=True
+        two_d_pim_meshing_launcher = create_launcher(
+            LaunchMode.PIM, mode=FluentMode.MESHING, **kwargs, dimension=2
         )
-        args = pim_meshing_launcher()
-        assert args[0] == "fluent-2ddp"
+        two_d_pim_meshing_session = two_d_pim_meshing_launcher()
+        assert two_d_pim_meshing_session.dimension == pyfluent.Dimension.TWO
+        two_d_pim_meshing_session.exit()
 
 
 @pytest.mark.parametrize(
@@ -549,7 +550,7 @@ def test_container_mount_source_target(caplog):
     }
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     session = pyfluent.launch_fluent(container_dict=container_dict, **grpc_kwds)
-    assert session.is_server_healthy()
+    assert session.is_active()
     assert container_dict["mount_source"] in caplog.text
     assert container_dict["mount_target"] in caplog.text
 
@@ -626,7 +627,7 @@ def test_container_launcher_args():
 
 def test_report():
     from ansys.fluent.core.report import ANSYS_ENV_VARS, dependencies
-    from ansys.tools.report import Report
+    from ansys.tools.common.report import Report
 
     rep = Report(ansys_libs=dependencies, ansys_vars=ANSYS_ENV_VARS)
     assert "PyAnsys Software and Environment Report" in str(rep)
@@ -747,3 +748,19 @@ def test_warning_for_deprecated_compose_env_vars(monkeypatch):
 def test_default_launch_mode_is_py():
     fluent_launch_string, _ = pyfluent.launch_fluent(dry_run=True)
     assert "-py" in fluent_launch_string
+
+
+@pytest.mark.standalone
+def test_create_launcher():
+    from ansys.fluent.core.launcher import create_launcher
+    from ansys.fluent.core.launcher.launch_options import LaunchMode
+    from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
+
+    with pytest.raises(DisallowedValuesError):
+        create_launcher("unknown_mode")
+
+    session = create_launcher()
+    assert isinstance(session, StandaloneLauncher)
+
+    session = create_launcher(LaunchMode.STANDALONE)
+    assert isinstance(session, StandaloneLauncher)

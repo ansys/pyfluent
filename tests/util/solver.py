@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -25,7 +25,7 @@ def check_report_definition_result(
     report_definitions, report_definition_name, expected_result
 ):
     assert (
-        report_definitions.compute(report_defs=[report_definition_name])[
+        report_definitions.compute(report_defs=[report_definition_name])[0][
             report_definition_name
         ][0]
         == expected_result

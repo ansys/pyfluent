@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -205,7 +205,7 @@ class _FieldInfo(BaseFieldInfo):
         if not surface_ids:
             surface_ids = []
         request = FieldDataProtoModule.GetRangeRequest()
-        request.fieldName = field
+        request.fieldName = _to_field_name_str(field)
         request.nodeValue = node_value
         request.surfaceid.extend(
             [FieldDataProtoModule.SurfaceId(id=int(id)) for id in surface_ids]

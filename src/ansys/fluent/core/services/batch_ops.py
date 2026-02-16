@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -68,7 +68,7 @@ class BatchOps:
     --------
     >>> with pyfluent.BatchOps(solver):
     >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
-    >>>     solver.results.graphics.mesh["mesh-1"] = {}
+    >>>     solver.settings.results.graphics.mesh["mesh-1"] = {}
 
     Above code will execute both operations through a single gRPC call upon exiting the
     ``with`` block.
@@ -83,10 +83,10 @@ class BatchOps:
 
     >>> with pyfluent.BatchOps(solver):
     >>>     solver.tui.file.read_case("mixing_elbow.cas.h5")
-    >>>     solver.results.graphics.mesh["mesh-1"] = {}
-    >>>     solver.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
+    >>>     solver.settings.results.graphics.mesh["mesh-1"] = {}
+    >>>     solver.settings.results.graphics.mesh["mesh-1"].surfaces_list = ["wall-elbow"]
 
-    will throw a ``KeyError`` as ``solver.results.graphics.mesh["mesh-1"]`` attempts to
+    will throw a ``KeyError`` as ``solver.settings.results.graphics.mesh["mesh-1"]`` attempts to
     access the ``mesh-1`` mesh object which has not been created yet.
     """
 

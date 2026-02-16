@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -114,3 +114,7 @@ def test_fluent_version_set():
     d = {}
     d[set1] = "test"
     assert set1 in d
+
+
+def test_minimum_supported():
+    assert FluentVersion.minimum_supported() == min(all_versions())

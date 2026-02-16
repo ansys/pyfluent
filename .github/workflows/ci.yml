@@ -42,12 +42,12 @@ jobs:
     name: "Add license headers"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -67,7 +67,7 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: ansys/actions/doc-deploy-changelog@v10.1
+      - uses: ansys/actions/doc-deploy-changelog@v10.2
         with:
           bot-user: ${{ secrets.PYANSYS_CI_BOT_USERNAME }}
           bot-email: ${{ secrets.PYANSYS_CI_BOT_EMAIL }}
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running Vale
-        uses: ansys/actions/doc-style@v10.1
+        uses: ansys/actions/doc-style@v10.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -87,13 +87,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Run PyAnsys code style checks"
-        uses: ansys/actions/code-style@v10.1
+        uses: ansys/actions/code-style@v10.2
 
   commit-style:
     name: "Run commit style checks"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-pr-title@v10.1
+      - uses: ansys/actions/check-pr-title@v10.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -112,7 +112,7 @@ jobs:
             os: macos-latest
     steps:
       - name: Build wheelhouse and perform smoke test
-        uses: ansys/actions/build-wheelhouse@v10.1
+        uses: ansys/actions/build-wheelhouse@v10.2
         with:
           library-name: ${{ env.PACKAGE_NAME }}
           operating-system: ${{ matrix.os }}
@@ -136,7 +136,7 @@ jobs:
     name: "Actions Security"
     runs-on: ubuntu-latest
     steps:
-      - uses: ansys/actions/check-actions-security@c2fa7c93f6883114e0e643599431b33d29f0b13f # v10.1.4
+      - uses: ansys/actions/check-actions-security@21c9de9bee9692173780696d4a39964f20b9cfa3 # v10.1.5
         with:
           generate-summary: true
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -147,16 +147,17 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.3
+      DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
+      PYTHONDONTWRITEBYTECODE: 1
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -171,7 +172,7 @@ jobs:
           sudo apt-get install pandoc libegl1 make xvfb libfontconfig1 libxrender1 libxkbcommon-x11-0 -y
 
       - name: Cache pip
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -180,7 +181,7 @@ jobs:
           lookup-only: false # zizmor: ignore[cache-poisoning]
 
       - name: Install Quarto
-        uses: quarto-dev/quarto-actions/setup@9e48da27e184aa238fcb49f5db75469626d43adb # v2.1.9
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b # v2.2.0
 
       - name: Check Quarto Version
         shell: bash
@@ -207,7 +208,7 @@ jobs:
         id: version
 
       - name: Cache API Code
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         id: cache-api-code
         with:
           path: |
@@ -258,7 +259,7 @@ jobs:
           popd
 
       - name: Upload HTML Documentation
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}
           path: HTML-Documentation-tag-${{ env.DOC_DEPLOYMENT_IMAGE_TAG }}.zip
@@ -273,14 +274,16 @@ jobs:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
     runs-on: [self-hosted, pyfluent]
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -290,7 +293,7 @@ jobs:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Cache pip
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ env.MAIN_PYTHON_VERSION }}-${{ hashFiles('pyproject.toml') }}
@@ -318,7 +321,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache API Code
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         id: cache-api-code
         with:
           path: src/ansys/fluent/core/generated
@@ -385,18 +388,35 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Run 26.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Print 26.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_261.py
           python -c "from src.ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Pull 27.1 Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Run 27.1 API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Print 27.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_271.py
+          python -c "from src.ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -409,7 +429,7 @@ jobs:
           twine check dist/*
 
       - name: Upload package
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: PyFluent-packages
           path: |
@@ -439,18 +459,20 @@ jobs:
             version: 252
           - image-tag: v26.1.latest
             version: 261
+          - image-tag: v27.1.latest
+            version: 271
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -461,7 +483,7 @@ jobs:
 
       - name: Download package
         if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: PyFluent-packages
           path: dist
@@ -497,9 +519,9 @@ jobs:
           make install-test
           make unittest-dev-${MATRIX_VERSION}
 
-      - name: Upload 25.2 Coverage Artifacts
-        if: matrix.image-tag == 'v25.2.3'
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+      - name: Upload 26.1 Coverage Artifacts
+        if: matrix.image-tag == 'v26.1.latest'
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage_report
           path: ./htmlcov
@@ -517,12 +539,12 @@ jobs:
       PYTEST_XDIST_AUTO_NUM_WORKERS: 1
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
@@ -532,7 +554,7 @@ jobs:
           FLUENT_STABLE_IMAGE_DEV: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
       - name: Cache pip
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/pip
           key: Python-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
@@ -571,8 +593,8 @@ jobs:
 
       - name: Print Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_261.py
-          python -c "from ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_271.py
+          python -c "from ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -582,7 +604,7 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-261
+          make unittest-all-271
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
@@ -602,12 +624,12 @@ jobs:
 
     steps:
       - name: Set up Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ env.MAIN_PYTHON_VERSION }}
 
       - name: "Download the library artifacts from build-library step"
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: PyFluent-packages
           path: PyFluent-packages
@@ -634,7 +656,7 @@ jobs:
           skip-existing: false
 
       - name: Release
-        uses: softprops/action-gh-release@6da8fa9354ddfdc4aeace5fc48d7f679b5214090 # v2.4.1
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           files: |
             ./**/*.whl

@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -233,14 +233,7 @@ class StandaloneLauncher:
         )
 
         if is_windows():
-            if (
-                pyfluent.config.launch_fluent_stdout
-                or pyfluent.config.launch_fluent_stderr
-            ):
-                self._launch_cmd = self._launch_string
-            else:
-                # Using 'start.exe' is better; otherwise Fluent is more susceptible to bad termination attempts.
-                self._launch_cmd = 'start "" ' + self._launch_string
+            self._launch_cmd = self._launch_string
         else:
             if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
@@ -254,7 +247,6 @@ class StandaloneLauncher:
             return self._launch_string, self._server_info_file_name
         try:
             logger.debug(f"Launching Fluent with command: {self._launch_cmd}")
-
             process = subprocess.Popen(self._launch_cmd, **self._kwargs)
 
             try:
@@ -306,13 +298,13 @@ class StandaloneLauncher:
                 elif self.argvals["lightweight_mode"]:
                     session.read_case_lightweight(self.argvals["case_file_name"])
                 else:
-                    session.file.read(
+                    session.settings.file.read(
                         file_type="case",
                         file_name=self.argvals["case_file_name"],
                     )
             if self.argvals["case_data_file_name"]:
                 if not FluentMode.is_meshing(self.argvals["mode"]):
-                    session.file.read(
+                    session.settings.file.read(
                         file_type="case-data",
                         file_name=self.argvals["case_data_file_name"],
                     )

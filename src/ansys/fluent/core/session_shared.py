@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -57,7 +57,8 @@ def _make_tui_module(session, module_name):
         return tui_module.main_menu(
             session._tui_service, session._version, module_name, []
         )
-    except (ImportError, FileNotFoundError):
+    except (ImportError, FileNotFoundError) as ex:
+        tui_logger.debug(ex)
         tui_logger.warning(_CODEGEN_MSG_TUI)
         return TUIMenu(session._tui_service, session._version, module_name, [])
 
@@ -74,7 +75,8 @@ def _make_datamodel_module(session, module_name):
         )
         warning_for_fluent_dev_version(session._version)
         return module.Root(session._se_service, module_name, [])
-    except (ImportError, FileNotFoundError):
+    except (ImportError, FileNotFoundError) as ex:
+        datamodel_logger.debug(ex)
         datamodel_logger.warning("Generated API not found for %s.", module_name)
         datamodel_logger.warning(_CODEGEN_MSG_DATAMODEL)
         return PyMenuGeneric(session._se_service, module_name)

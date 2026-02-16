@@ -1,4 +1,4 @@
-# Copyright (C) 2021 - 2025 ANSYS, Inc. and/or its affiliates.
+# Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
 #
@@ -51,6 +51,7 @@ from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 from .rpvars import RPVars
+from .utils.deprecate import deprecate_function
 
 try:
     from ansys.fluent.core.solver.settings import root
@@ -161,6 +162,16 @@ class BaseSession:
         )
         self.register_finalizer_callback = fluent_connection.register_finalizer_cb
 
+    _inactive_session_allow_list = [
+        "is_active",
+        "_fluent_connection",
+        "_fluent_connection_backup",
+        "wait_process_finished",
+        # `_exit` is kept accessible even for inactive sessions to allow callers
+        # to trigger a clean shutdown/teardown on sessions that are no longer active.
+        "_exit",
+    ]
+
     def _build_from_fluent_connection(
         self,
         fluent_connection: FluentConnection,
@@ -251,13 +262,18 @@ class BaseSession:
         for obj in filter(None, (self._datamodel_events, self.transcript, self.events)):
             self._fluent_connection.register_finalizer_cb(obj.stop)
 
+    @deprecate_function(version="v0.38.0", new_func="is_active")
     def is_server_healthy(self) -> bool:
-        """Whether the current session is healthy (i.e. The server is 'SERVING')."""
+        """Whether the current session is healthy (i.e. the server is 'SERVING')."""
+        return self._is_server_healthy()
+
+    def _is_server_healthy(self) -> bool:
+        """Whether the current session is healthy (i.e. the server is 'SERVING')."""
         return self._health_check.is_serving
 
     def is_active(self) -> bool:
         """Whether the current session is active."""
-        return True if self._fluent_connection else False
+        return self._fluent_connection is not None and self._is_server_healthy()
 
     @property
     @deprecated(version="0.32", reason="Use ``session.scheme``.")
@@ -400,8 +416,16 @@ class BaseSession:
         return self._fluent_connection_backup.wait_process_finished()
 
     def exit(self, **kwargs) -> None:
-        """Exit session."""
+        """Exit session.
+
+        This public method is a convenience wrapper that delegates directly to
+        :meth:`_exit`.
+        """
         logger.debug("session.exit() called")
+        self._exit(**kwargs)
+
+    def _exit(self, **kwargs) -> None:
+        """Exit session."""
         if self._fluent_connection:
             self._exit_compose_service()
             self._fluent_connection.exit(**kwargs)
@@ -447,8 +471,10 @@ class BaseSession:
         remote_file_name : str, optional
             remote file name, by default None
         """
-        warnings.warn(self._file_transfer_api_warning("upload()"), PyFluentUserWarning)
         if self._file_transfer_service:
+            warnings.warn(
+                self._file_transfer_api_warning("upload()"), PyFluentUserWarning
+            )
             return self._file_transfer_service.upload(file_name, remote_file_name)
 
     def download(self, file_name: str, local_directory: str | None = None):
@@ -461,10 +487,10 @@ class BaseSession:
         local_directory : str, optional
             Local destination directory. The default is the current working directory.
         """
-        warnings.warn(
-            self._file_transfer_api_warning("download()"), PyFluentUserWarning
-        )
         if self._file_transfer_service:
+            warnings.warn(
+                self._file_transfer_api_warning("download()"), PyFluentUserWarning
+            )
             return self._file_transfer_service.download(file_name, local_directory)
 
     def chdir(self, path: PathType) -> None:
@@ -483,11 +509,17 @@ class BaseSession:
     def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any):
         """Close the Fluent connection and exit Fluent."""
         logger.debug("session.__exit__() called")
-        self.exit()
+        self._exit()
 
     def __dir__(self):
         if self._fluent_connection is None:
-            return ["is_active", "wait_process_finished"]
+            names = super().__dir__()
+            return [
+                name
+                for name in names
+                if (name.startswith("__") and name.endswith("__"))
+                or name in {"is_active", "wait_process_finished"}
+            ]
         dir_list = set(list(self.__dict__.keys()) + dir(type(self))) - {
             "field_data",
             "field_info",
