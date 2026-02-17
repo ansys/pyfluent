@@ -24,7 +24,7 @@ from collections.abc import Callable
 import inspect
 import os
 from pathlib import Path
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, cast
 import warnings
 
 __all__ = ("config",)
@@ -351,13 +351,14 @@ class Config:
     def print(self):
         """Print all configuration variables."""
         config_dict = {}
-        k: str
-        v: Any
         for (
             k,
             v,
-        ) in inspect.getmembers_static(  # pyright: ignore[reportAttributeAccessIssue]
-            self
+        ) in cast(
+            list[tuple[str, Any]],
+            inspect.getmembers_static(  # pyright: ignore[reportAttributeAccessIssue]
+                self
+            ),
         ):
             # FIXME: This is an actual bug due to not being in 3.10 (added in 3.11)
             if isinstance(v, (_ConfigDescriptor, property)):

@@ -109,7 +109,9 @@ class SolutionVariableInfo:
         class SolutionVariable:
             """Class containing information for single solution variable."""
 
-            def __init__(self, solution_variable_info):
+            def __init__(
+                self, solution_variable_info: SvarProtoModule.global___SvarInfo
+            ):
                 """Initialize SolutionVariable."""
                 self.name = solution_variable_info.name
                 self.dimension = solution_variable_info.dimension
@@ -120,7 +122,9 @@ class SolutionVariableInfo:
             def __repr__(self):
                 return f"name:{self.name} dimension:{self.dimension} field_type:{self.field_type}"
 
-        def __init__(self, solution_variables_info):
+        def __init__(
+            self, solution_variables_info: Sequence[SvarProtoModule.global___SvarInfo]
+        ):
             """Initialize SolutionVariables."""
             self._solution_variables_info: dict[
                 str, "SolutionVariableInfo.SolutionVariables.SolutionVariable"
