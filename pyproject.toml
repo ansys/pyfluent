@@ -32,6 +32,7 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
+    "pandas-stubs>=1.1.0,<3.0.0",
     "pyyaml>=6.0",
     "typing-extensions>=4.12"
 ]
@@ -78,20 +79,20 @@ docs = [
     "seaborn>=0.13.2",
 ]
 ci_types = [
-    "ansys-fluent-visualization>=0.24",
-    "h5py>=3.15.1",
-    "pytest>=9.0.1",
-    "pytest-cov>=7.0.0",
-    "pytest-mock>=3.15.1",
-    "pytest-xdist>=3.8.0",
-    "pyfakefs>=5.10.1",
-    "tensorflow>=2",
-    "matplotlib>=3",
-    "plotly>=5",
-    "scikit-learn>=1",
-    "seaborn>=0.13",
-    "xgboost>=3",
-    "imageio>=2",
+    "ansys-fluent-visualization",
+    "h5py",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pyfakefs",
+    "tensorflow",
+    "matplotlib",
+    "plotly",
+    "scikit-learn",
+    "seaborn",
+    "xgboost",
+    "imageio",
 ]
 
 [tool.flit.module]
