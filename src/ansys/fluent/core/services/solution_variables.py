@@ -22,11 +22,14 @@
 
 """Wrappers over SVAR gRPC service of Fluent."""
 
+from collections.abc import Sequence
 import math
+from typing import Any
 import warnings
 
 import grpc
 import numpy as np
+import numpy.typing as npt
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
@@ -454,7 +457,9 @@ class _SvarMethod:
 def extract_svars(solution_variables_data):
     """Extracts SVAR data via a server call."""
 
-    def _extract_svar(field_datatype, field_size, solution_variables_data):
+    def _extract_svar(
+        field_datatype: npt.DTypeLike, field_size: int, solution_variables_data
+    ) -> npt.NDArray[np.float64] | None:
         field_arr = np.empty(field_size, dtype=field_datatype)
         field_datatype_item_size = np.dtype(field_datatype).itemsize
         index = 0
@@ -472,7 +477,7 @@ def extract_svars(solution_variables_data):
                 if index == field_size:
                     return field_arr
             else:
-                payload = (
+                payload: Sequence[float] = (
                     chunk.floatPayload.payload
                     or chunk.intPayload.payload
                     or chunk.doublePayload.payload
@@ -486,7 +491,7 @@ def extract_svars(solution_variables_data):
                 if index == field_size:
                     return field_arr
 
-    zones_svar_data = {}
+    zones_svar_data = dict[Any, npt.NDArray[Any] | None]()
     for array in solution_variables_data:
         if array.WhichOneof("array") == "payloadInfo":
             zones_svar_data[array.payloadInfo.zone] = _extract_svar(
@@ -602,7 +607,7 @@ class SolutionVariableData:
         variable_name: str,
         zone_name: str,
         domain_name: str | None = "mixture",
-    ) -> np.zeros:
+    ) -> npt.NDArray[Any] | None:
         """Get numpy zeros array for the SVAR on a zone.
 
         This array can be populated  with values to set SVAR data.
@@ -815,7 +820,7 @@ class SolutionVariableData:
     def set_svar_data(
         self,
         variable_name: str,
-        zone_names_to_svar_data: dict[str, np.ndarray],
+        zone_names_to_svar_data: dict[str, npt.NDArray[Any]],
         domain_name: str | None = "mixture",
     ) -> None:
         """Set solution variable data."""
