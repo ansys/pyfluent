@@ -78,6 +78,7 @@ docs = [
     "seaborn>=0.13.2",
 ]
 ci_types = [
+    "ansys-fluent-visualization>=0.24",
     "h5py>=3.15.1",
     "pytest>=9.0.1",
     "pytest-cov>=7.0.0",
@@ -85,6 +86,12 @@ ci_types = [
     "pytest-xdist>=3.8.0",
     "pyfakefs>=5.10.1",
     "tensorflow>=2",
+    "matplotlib>=3",
+    "plotly>=5",
+    "scikit-learn>=1",
+    "seaborn>=0.13",
+    "xgboost>=3",
+    "imageio>=2",
 ]
 
 [tool.flit.module]
