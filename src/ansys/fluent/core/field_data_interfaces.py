@@ -34,8 +34,10 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+from ansys.units.variable_descriptor import VariableDescriptor
 
-_to_field_name_str = naming_strategy().to_string
+_naming_strategy_instance = naming_strategy()
+_to_field_name_str = _naming_strategy_instance.to_string
 
 
 class SurfaceDataType(Enum):
@@ -367,8 +369,41 @@ class _Fields:
         return False
 
     def allowed_values(self):
-        """Lists available scalar or vector field names."""
+        """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
+
+    def is_allowed_variable(self, variable: VariableDescriptor | str) -> bool:
+        """Check if a variable is in the allowed list.
+
+        Parameters
+        ----------
+        variable : VariableDescriptor | str
+            The variable to check. Can be a VariableDescriptor or a string.
+
+        Returns
+        -------
+        bool
+            True if the variable is allowed, False otherwise.
+        """
+        # _to_field_name_str handles both VariableDescriptor and str
+        field_str = _to_field_name_str(variable)
+        return field_str in self._available_field_names()
+
+    def allowed_variables(self) -> list[VariableDescriptor]:
+        """Return allowed field names as VariableDescriptor objects.
+
+        Returns
+        -------
+        list[VariableDescriptor]
+            List of VariableDescriptor objects for all allowed fields.
+            Fields without a corresponding VariableDescriptor are excluded.
+        """
+        result = []
+        for field_name in self._available_field_names():
+            descriptor = _naming_strategy_instance.to_variable_descriptor(field_name)
+            if descriptor is not None:
+                result.append(descriptor)
+        return result
 
     def __call__(self):
         return self._available_field_names()
