@@ -304,6 +304,7 @@ class Root(PyMenu):
             """
             Command C2.
 
+
             Parameters
             ----------
             A2 : float
@@ -336,6 +337,7 @@ class Root(PyMenu):
     class C1(PyCommand):
         """
         Command C1.
+
 
         Parameters
         ----------
