@@ -46,6 +46,8 @@ simulation workflows, with automatic dependency management and validation.
 from __future__ import annotations
 
 from collections import OrderedDict
+from functools import wraps
+import inspect
 import re
 from typing import ValuesView
 
@@ -308,15 +310,39 @@ class Workflow:
 
     def _new_workflow(self, name: str):
         """Initialize a new workflow from a predefined template."""
-        self._workflow.general.initialize_workflow(workflow_type=name)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.initialize_workflow(workflow_type=name)
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def _load_workflow(self, file_path: str):
         """Load a workflow from a saved workflow file (.wft)."""
-        self._workflow.general.load_workflow(file_path=file_path)
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.load_workflow(file_path=file_path)
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def _create_workflow(self):
         """Create a new empty workflow."""
-        self._workflow.general.create_new_workflow()
+        if self._workflow.general.workflow.workflow_type() in [
+            "Select Workflow Type",
+            None,
+        ]:
+            self._workflow.general.create_new_workflow()
+        else:
+            raise RuntimeError(
+                "Switching between workflows or re-initializing is yet to be implemented."
+            )
 
     def save_workflow(self, file_path: str):
         """Save the current workflow to a file."""
@@ -691,6 +717,12 @@ class TaskObject:
         super().__setattr__("_meshing_root", meshing_root)
         self._cache = {}
 
+    def mark_as_updated(self) -> None:
+        """Mark tasks in workflow as updated."""
+        state = getattr(self._task_object, "state", None)
+        if state and "Forced-up-to-date" in state.allowed_values():
+            state.set_state("Forced-up-to-date")
+
     def _get_next_possible_tasks(self):
         """Get display names of tasks that can be inserted after this task."""
         task_obj = self._task_object
@@ -854,7 +886,10 @@ class TaskObject:
         parent = self._parent
         meshing_root = self._meshing_root
         name_1 = name
-        name_2 = re.sub(r"\s+\d+$", "", task_obj.name().strip()) + f" {key}"
+        temp_name = re.sub(r"\s+\d+$", "", task_obj.name().strip())
+        # For the first instance (index 0), use the base task name without a numeric suffix;
+        # subsequent instances follow the "<base> <index>" naming convention (e.g., "Task 1").
+        name_2 = temp_name if key == 0 else temp_name + f" {key}"
         try:
             task_obj = getattr(workflow.task_object, name_1)[name_2]
             if is_compound_child(task_obj.task_type):
@@ -1189,8 +1224,32 @@ def build_specific_interface(task_object):
     """
 
     def make_delegate(attr):
+        target = getattr(task_object, attr)
+
+        # If this is a bound method, unwrap it
+        func = getattr(target, "__func__", target)
+
+        @wraps(func)
         def delegate(self, *args, **kwargs):
             return getattr(self._task_object, attr)(*args, **kwargs)
+
+        # Force friendly names for help()/pydoc
+        delegate.__name__ = attr
+        delegate.__qualname__ = f"{task_object.__class__.__name__}.{attr}"
+
+        try:
+            sig = inspect.signature(target)
+            delegate.__signature__ = sig
+            # pydoc uses __text_signature__ when present
+            delegate.__text_signature__ = str(sig)
+        except (TypeError, ValueError):
+            # guards cases where Python can’t derive a signature (e.g., some C-implemented callables),
+            # so the wrapper still works even if signature extraction fails.
+            pass
+
+        # Preserve docstring explicitly (wraps may not)
+        if func.__doc__:
+            delegate.__doc__ = func.__doc__
 
         return delegate
 
@@ -1201,20 +1260,38 @@ def build_specific_interface(task_object):
         if not name.startswith("_") and callable(getattr(task_object, name))
     }
 
+    # Build the namespace (class dictionary) for a new dynamic interface class where
+    # each public member is replaced by a lightweight delegating wrapper.
+    # The delegate forwards the call to self._task_object.<method>(*args, **kwargs).
     namespace = {name: make_delegate(name) for name in public_members}
 
-    iface_name = f"{task_object.task_type}SpecificInterface"
+    # Give the interface a friendly, human-readable class name based on the display name
+    # of the underlying task. task_object._name_() returns the display name, e.g., "Import Geometry".
+    # This produces "Import Geometry Interface" for clearer repr/help/pydoc.
+    iface_name = f"{task_object._name_()} Interface"
 
+    # Dynamically create the interface type with the computed name and namespace.
+    # This class only contains the delegated methods; it does not yet include TaskObject behavior.
     return type(iface_name, (), namespace)
 
 
 def make_task_wrapper(task_obj, name, workflow, parent, meshing_root):
     """Wraps TaskObjects."""
 
+    # Build the method-only dynamic interface for the concrete task (e.g., "Import Geometry Interface").
     specific_interface = build_specific_interface(task_obj)
 
+    # Create a concrete wrapper class that:
+    # - Inherits from the task-specific interface (delegated methods)
+    # - Inherits from TaskObject (core wrapper features: navigation, insert, children, etc.)
+    #
+    # The resulting class name is also human-friendly:
+    #   f"{task_obj._name_()} Task" -> "Import Geometry Task" for the Import Geometry TaskObject.
     combined_type = type(
-        f"{task_obj.task_type}Task", (specific_interface, TaskObject), {}
+        f"{task_obj._name_()} Task", (specific_interface, TaskObject), {}
     )
 
+    # Instantiate and return the wrapper. Instances expose:
+    # - TaskObject features (parent/next/prev/children/execute/etc.)
+    # - Task-specific delegated methods from the datamodel via the interface
     return combined_type(task_obj, name, workflow, parent, meshing_root)

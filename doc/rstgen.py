@@ -113,7 +113,7 @@ def _process_datamodel_path(full_name: str):
     """
     path_string = re.findall("core.*", full_name)
     path = path_string[0].replace("core.generated.", "")
-    path = re.sub("[0-9]", "", path)
+    path = re.sub(r"\d+(?![A-Za-z])", "", path)
     path = path.replace("Root." if "Root." in path else "Root", "")
     path = path.replace("datamodel_.", "")
     path = path.rstrip(".")
@@ -166,7 +166,9 @@ def _get_menu_name_path(menu: type, is_datamodel: bool):
     return full_name, full_path
 
 
-def _get_docdir(mode: str, path: str | None = None, is_datamodel: bool | None = None):
+def _get_docdir(
+    mode: str, path: str | None = None, is_datamodel: bool | None = None
+) -> Path:
     """Get tui doc directory to generate all RST files.
 
     Parameters

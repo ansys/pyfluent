@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_INVESTIGATING
 import numpy as np
 import pytest
 from test_utils import pytest_approx
@@ -717,7 +718,8 @@ def test_field_data_errors(new_solver_session) -> None:
         )
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2404")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2404
 @pytest.mark.fluent_version(">=24.2")
 def test_field_data_does_not_modify_case(new_solver_session):
     solver = new_solver_session

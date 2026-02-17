@@ -23,6 +23,7 @@
 import gc
 from time import sleep
 
+from conftest import SKIP_INVESTIGATING
 from google.protobuf.json_format import MessageToDict
 import pytest
 from util import create_datamodel_root_in_server, create_root_using_datamodelgen
@@ -194,7 +195,7 @@ def test_add_on_affected(new_meshing_session):
         lambda obj: data.append(True)
     )
     assert data == []
-    wt = meshing.watertight()
+    wt = meshing.watertight(legacy=True)
     sleep(5)
     assert len(data) > 0
     assert data[0]
@@ -289,7 +290,8 @@ def test_add_on_command_executed(new_meshing_session):
     assert data == []
 
 
-@pytest.mark.skip("https://github.com/ansys/pyfluent/issues/2999")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/2999
 @pytest.mark.fluent_version(">=23.2")
 @pytest.mark.codegen_required
 def test_datamodel_streaming_full_diff_state(
@@ -853,15 +855,27 @@ def test_field_level_help(new_meshing_session):
     deviation = meshing.PartManagement.AssemblyNode["node-1"].Refaceting.Deviation
     assert isinstance(deviation, PyNumerical)
     # Field-level help at parameter level
-    assert deviation.__doc__.strip().startswith(
-        "Specify the distance between facet edges and the geometry edges. Decreasing this value"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert deviation.__doc__.strip().startswith(
+            "The distance between facet edges and geometry edges, where lower values result in more facets along curved edges."
+        )
+    else:
+        assert deviation.__doc__.strip().startswith(
+            "Specify the distance between facet edges and the geometry edges. Decreasing this value"
+        )
     # TODO Test Field-level help at singleton level when we have that in the datamodel
     assert meshing.meshing.ImportGeometry, PyCommand
     # Field-level help at command level
-    assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
-        "Specify the CAD geometry that you want to work with. Choose from"
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Imports a geometry file for meshing tasks."
+        )
+    else:
+        assert meshing.meshing.ImportGeometry.__doc__.strip().startswith(
+            "Specify the CAD geometry that you want to work with. Choose from"
+        )
     import_geometry = meshing.meshing.ImportGeometry.create_instance()
     assert isinstance(import_geometry.FileFormat, PyArgumentsTextualSubItem)
     # Field-level help at parameter-type command argument level
@@ -871,9 +885,15 @@ def test_field_level_help(new_meshing_session):
     linear_mesh_pattern = meshing.meshing.LinearMeshPattern.create_instance()
     assert isinstance(linear_mesh_pattern.PatternVector, PyArgumentsSingletonSubItem)
     # Field-level help at singleton-type command argument level
-    assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
-        "Specify a name for the mesh pattern or use the default value."
-    )
+    if meshing.get_fluent_version() >= FluentVersion.v271:
+        # API help text is available since Fluent 2027 R1
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Represents a vector defining the direction and magnitude of a linear mesh pattern within a meshing framework."
+        )
+    else:
+        assert linear_mesh_pattern.PatternVector.__doc__.strip().startswith(
+            "Specify a name for the mesh pattern or use the default value."
+        )
 
 
 @pytest.mark.codegen_required

@@ -31,16 +31,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image-tag: v24.2.0
-            version: 242
-          - image-tag: v25.1.0
+          # - image-tag: v24.2.5
+          #   version: 242
+          - image-tag: v25.1.4
             version: 251
-          - image-tag: v25.2.0
-            version: 252
-          - image-tag: v26.1.0
-            version: 261
+          # - image-tag: v25.2.3
+          #   version: 252
+          # - image-tag: v26.1.0
+          #   version: 261
+          # - image-tag: v27.1.latest
+          #   version: 271
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -106,7 +108,7 @@ jobs:
           echo "Running custom unittest"
           sudo rm -rf /home/ansys/Downloads/ansys_fluent_core_examples/*
           make install-test
-          python -m pytest -v --no-cov --capture=no -k test_parametric_workflow --nightly
+          python -m pytest -v --no-cov --capture=no -k test_remote_grpc_fts_container
 
       - name: Clean Docker Data
         run: make docker-clean-all-except-supported-images

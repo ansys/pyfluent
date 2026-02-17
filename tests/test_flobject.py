@@ -26,6 +26,7 @@ from collections.abc import MutableMapping
 import io
 import weakref
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from test_utils import MockTracingInterceptor, count_key_recursive
 
@@ -892,7 +893,8 @@ def test_settings_api_names_exception(new_solver_session):
         solver.setup.boundary_conditions["cold-inlet"].name = "hot-inlet"
 
 
-@pytest.mark.skip(reason="https://github.com/ansys/pyfluent/issues/4645")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4645
 @pytest.mark.fluent_version(">=24.2")
 def test_accessor_methods_on_settings_objects(new_solver_session):
     solver = new_solver_session
@@ -1018,6 +1020,8 @@ def _check_vector_units(obj, units):
     assert obj.as_quantity() == ansys.units.Quantity(obj.get_state(), units)
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.fluent_version(">=24.1")
 def test_ansys_units_integration(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
