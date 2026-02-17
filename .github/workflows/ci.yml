@@ -98,9 +98,6 @@ jobs:
       - name: "Make venv"
         run: uv venv --clear
 
-      - name: "Install basedpyright"
-        run: uv tool install basedpyright
-
       - name: "Install extras"
         run: uv pip install -e ".[ci_types]"
 
@@ -133,7 +130,7 @@ jobs:
         run: uv run codegen/allapigen.py
 
       - name: "Check type hints"
-        run: basedpyright --baselinemode=auto
+        run: uv run basedpyright --baselinemode=auto
 
   commit-style:
     name: "Run commit style checks"

@@ -79,6 +79,7 @@ docs = [
     "seaborn>=0.13.2",
 ]
 ci_types = [
+    "basedpyright==1.38.0",
     "ansys-fluent-visualization",
     "h5py",
     "pytest",
