@@ -137,7 +137,7 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
-def _get_api_help_text(info: Dict[str, Any], default: str) -> str:
+def _get_api_help_text(info: dict[str, Any], default: str) -> str:
     """Prefer attrs.api_help_text, else helpstring, else default."""
     # Newer servers (Ansys Fluent 2026 R1 and later) may attach a richer help payload under 'attrs' -> 'api_help_text'.
     # Older entries may only have a plain 'helpstring'. If neither exists, use 'default'.
