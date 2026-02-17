@@ -122,13 +122,14 @@ class SolutionVariableInfo:
 
         def __init__(self, solution_variables_info):
             """Initialize SolutionVariables."""
-            self._solution_variables_info = {}
-            for solution_variable_info in solution_variables_info:
-                self._solution_variables_info[solution_variable_info.name] = (
-                    SolutionVariableInfo.SolutionVariables.SolutionVariable(
-                        solution_variable_info
-                    )
+            self._solution_variables_info: dict[
+                str, "SolutionVariableInfo.SolutionVariables.SolutionVariable"
+            ] = {
+                solution_variable_info.name: SolutionVariableInfo.SolutionVariables.SolutionVariable(
+                    solution_variable_info
                 )
+                for solution_variable_info in solution_variables_info
+            }
 
         def _filter(self, solution_variables_info):
             self._solution_variables_info = {
@@ -141,8 +142,16 @@ class SolutionVariableInfo:
                 ]
             }
 
-        def __getitem__(self, name):
-            return self._solution_variables_info.get(name, None)
+        def __getitem__(
+            self, name: str
+        ) -> "SolutionVariableInfo.SolutionVariables.SolutionVariable":
+            return self._solution_variables_info[name]
+
+        def get(
+            self, name: str
+        ) -> "SolutionVariableInfo.SolutionVariables.SolutionVariable | None":
+            """Get name from solution variables"""
+            return self._solution_variables_info.get(name)
 
         @property
         def solution_variables(self) -> list[str]:
@@ -201,15 +210,19 @@ class SolutionVariableInfo:
 
         def __init__(self, zones_info, domains_info):
             """Initialize ZonesInfo."""
-            self._zones_info = {}
-            self._domains_info = {}
-            for zone_info in zones_info:
-                self._zones_info[zone_info.name] = self.ZoneInfo(zone_info)
-            for domain_info in domains_info:
-                self._domains_info[domain_info.name] = domain_info.domainId
+            self._zones_info: dict[str, "SolutionVariableInfo.ZonesInfo.ZoneInfo"] = {
+                zone_info.name: self.ZoneInfo(zone_info) for zone_info in zones_info
+            }
+            self._domains_info: dict[str, int] = {
+                domain_info.name: domain_info.domainId for domain_info in domains_info
+            }
 
-        def __getitem__(self, name):
-            return self._zones_info.get(name, None)
+        def __getitem__(self, name: str) -> "SolutionVariableInfo.ZonesInfo.ZoneInfo":
+            return self._zones_info[name]
+
+        def get(self, name: str) -> "SolutionVariableInfo.ZonesInfo.ZoneInfo | None":
+            """Get name from zones info"""
+            return self._zones_info.get(name)
 
         @property
         def zones(self):

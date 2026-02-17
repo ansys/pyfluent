@@ -351,6 +351,8 @@ class Config:
     def print(self):
         """Print all configuration variables."""
         config_dict = {}
+        k: str
+        v: Any
         for (
             k,
             v,
