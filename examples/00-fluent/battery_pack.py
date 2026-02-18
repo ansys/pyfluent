@@ -1,3 +1,10 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -74,8 +81,6 @@ Simulating a 1P3S Battery Pack Using the Battery Model
 
 from pathlib import Path
 
-from ansys.units import VariableCatalog
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
@@ -88,24 +93,25 @@ from ansys.fluent.core.solver import (
     Materials,
     Mesh,
     ReportDefinitions,
+    ReportPlot,
     RunCalculation,
+    SolidCellZone,
     SolidMaterial,
     Solution,
     Vector,
-    write_case_data,
     WallBoundary,
-    SolidCellZone,
-    ReportPlot,
     read_mesh,
+    write_case_data,
 )
 from ansys.fluent.visualization import GraphicsWindow, Monitor
+from ansys.units import VariableCatalog
 from ansys.units.common import K, W, m, ohm
 
 # %%
 # Define constants
 # ----------------
 
-S = 1 / ohm  # a Siemen
+S = 1 / ohm  # 1 siemens
 
 
 # %%
@@ -126,7 +132,7 @@ mesh_file = examples.download_file(
     save_path=Path.cwd(),
 )
 
-solver.setting.file.read_mesh(file_name=mesh_file)
+solver.settings.file.read_mesh(file_name=mesh_file)
 
 # %%
 # Display mesh
@@ -138,7 +144,7 @@ mesh = Mesh.create(solver, name="mesh-1")
 graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
 graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
 
-all_walls = mesh.surfaces_list.allowed_values()
+all_walls = mesh.surfaces_list.all()
 mesh.surfaces_list = all_walls
 mesh.options.edges = True
 mesh.display()
@@ -274,6 +280,7 @@ vol_max = definitions.volume.create(
     create_report_plot=True,
 )
 
+# Format plot axes
 volume_max_temp = ReportPlot.get(solver, name="volume_max_temp-rplot")
 volume_max_temp.axes.x.number_format.precision = 0
 volume_max_temp.axes.y.number_format.precision = 2
@@ -294,8 +301,7 @@ transient_controls = calculation.transient_controls
 transient_controls.time_step_count = 50  # Number of time steps
 transient_controls.time_step_size = 30  # 30s per step
 
-# Run transient simulation
-calculation.calculate()
+calculation.calculate()  # Run transient simulation
 
 # %%
 # Post-processing

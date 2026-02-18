@@ -58,17 +58,18 @@ from pathlib import Path
 # sphinx_gallery_thumbnail_path = '_static/mixing_elbow_settings.png'
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin import Fluxes, Vector
-from ansys.fluent.core.generated.solver.settings_builtin_261 import Materials, read_case
 from ansys.fluent.core.solver import (
     Energy,
     FluidCellZone,
+    Graphics,
     Initialization,
+    Materials,
     PressureOutlet,
     ReportDefinitions,
-    VelocityInlet,
     RunCalculation,
-    Graphics,
+    Vector,
+    VelocityInlet,
+    read_case,
 )
 from ansys.units.common import K, inch, m, s
 
@@ -115,9 +116,7 @@ energy.enabled = True
 # ~~~~~~~~~~~~~~~
 # Create a material named ``"water-liquid"``.
 
-Materials(solver).database.copy_by_name(
-    type="fluid", name="water-liquid"
-)
+Materials(solver).database.copy_by_name(type="fluid", name="water-liquid")
 
 ###############################################################################
 # Set up cell zone conditions
@@ -211,7 +210,12 @@ graphics.picture.y_resolution = 1440
 graphics = solver.settings.results.graphics
 
 graphics.vector["velocity_vector_symmetry"] = {}
-velocity_symmetry = Vector.create(solver, name=    "velocity_vector_symmetry", field = "velocity-magnitude",surfaces_list = ["symmetry-xyplane"],style = "arrow"
+velocity_symmetry = Vector.create(
+    solver,
+    name="velocity_vector_symmetry",
+    field="velocity-magnitude",
+    surfaces_list=["symmetry-xyplane"],
+    style="arrow",
 )
 velocity_symmetry.options.scale = 4
 velocity_symmetry.display()
@@ -231,7 +235,9 @@ graphics.picture.save_picture(file_name="velocity_vector_symmetry.png")
 # Compute the mass flow rate.
 report_defs = ReportDefinitions(solver)
 
-mass_flow_rate = report_defs.flux.create(name="mass_flow_rate", boundaries = [cold_inlet, hot_inlet, outlet])
+mass_flow_rate = report_defs.flux.create(
+    name="mass_flow_rate", boundaries=[cold_inlet, hot_inlet, outlet]
+)
 report_defs.compute(report_defs=[mass_flow_rate])
 
 #########################################################################

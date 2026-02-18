@@ -101,30 +101,25 @@ import numpy as np
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.solver import write_case
-from ansys.fluent.core.generated.solver.settings_builtin import (
-    BoundaryCondition,
-    CellZoneConditions,
-    Monitor,
-    RunCalculation,
-)
-from ansys.fluent.core.generated.solver.settings_builtin_261 import (
-    CellZoneCondition,
-    calculate,
-)
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import (
+    BoundaryCondition,
+    CellZoneCondition,
     Energy,
     General,
     Initialization,
+    Monitor,
     Radiation,
     ReportDefinitions,
+    RunCalculation,
     SolidCellZone,
     SolidMaterial,
     Viscous,
     WallBoundary,
+    calculate,
+    write_case,
 )
-from ansys.units import Quantity, VariableCatalog
+from ansys.units import VariableCatalog
 from ansys.units.common import J, K, W, kg, m, s
 
 lander_spaceclaim_file, lander_mesh_file, apollo17_temp_data = [
@@ -554,7 +549,7 @@ regolith_reports = [
         name=f"regolith-layer-{i}-temp",
         report_type="surface-facetavg",
         field=VariableCatalog.TEMPERATURE,
-        surface_names = [f"regolith{f'-{i-1}:{i}' if i > 1 else ''}"],
+        surface_names=[f"regolith{f'-{i - 1}:{i}' if i > 1 else ''}"],
     )
     for i in range(1, 5 + 1)
 ]

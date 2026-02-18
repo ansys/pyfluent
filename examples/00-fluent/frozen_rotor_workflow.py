@@ -1,6 +1,7 @@
 # /// script
 # dependencies = [
 #   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
 # ]
 # ///
 
@@ -80,18 +81,16 @@ Impeller-Volute simulation using the Frozen Rotor Approach
 # Import required libraries/modules
 # ==============================================================================================================
 import math
-from mimetypes import init
-from nt import write
 from pathlib import Path
-
-from ansys.units import VariableCatalog
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin import (
-    BoundaryCondition,
+from ansys.fluent.core.solver import (
     BoundaryConditions,
+    FluidCellZone,
+    General,
     Initialization,
+    MassFlowOutlet,
     Materials,
     MeshInterfaces,
     Methods,
@@ -101,20 +100,15 @@ from ansys.fluent.core.generated.solver.settings_builtin import (
     PressureInlet,
     ReportDefinitions,
     ReportPlot,
+    RunCalculation,
     Setup,
-    Surfaces,
-)
-from ansys.fluent.core.generated.solver.settings_builtin_261 import write_case, write_case_data
-from ansys.fluent.core.solver import (
-    FluidCellZone,
-    General,
-    MassFlowOutletBoundary,
-    PressureInletBoundary,
     Viscous,
     WallBoundary,
+    write_case,
+    write_case_data,
 )
-from ansys.fluent.core.solver import RunCalculation
 from ansys.fluent.visualization import Contour, Graphics
+from ansys.units import VariableCatalog
 from ansys.units.common import Pa, kg, m, s
 
 ################################################################################################################
@@ -144,7 +138,7 @@ density_water = 998.2 * kg / m**3
 viscosity_water = 0.001002 * Pa * s
 g = 9.81 * m / s**2
 impeller_speed = 1450  # rpm
-# Convert to rad/s (numeric)
+# Convert to rad/s
 impeller_speed_rad = impeller_speed * 2 * math.pi / 60
 
 ################################################################################################################
@@ -278,7 +272,7 @@ BoundaryConditions(solver).set_zone_type(
 )
 # Outlet Boundary Condition
 
-mass_flow_outlet = MassFlowOutletBoundary.get(solver, name="mass-flow-inlet-11")
+mass_flow_outlet = MassFlowOutlet.get(solver, name="mass-flow-inlet-11")
 mass_flow_outlet.momentum.mass_flow_rate.value = 90 * kg / s
 
 
@@ -332,12 +326,22 @@ outlet_pressure_report_def = report_definitions.surface.create(
     per_surface=False,
 )
 
-outlet_pressure_report_plot = ReportPlot(solver, name="p-out-rplot",report_defs = "p-out")
+outlet_pressure_report_plot = ReportPlot(
+    solver, name="p-out-rplot", report_defs="p-out"
+)
 
-outlet_pressure_report_file = ReportPlot(solver, name="p-out-rfile",report_defs = "p-out")
+outlet_pressure_report_file = ReportPlot(
+    solver, name="p-out-rfile", report_defs="p-out"
+)
 
 # p-in
-inlet_pressure_report_def = report_definitions.surface.create("p-in", report_type = "surface-massavg", surface_names = ["inlet"], field = "total-pressure", per_surface = False)
+inlet_pressure_report_def = report_definitions.surface.create(
+    "p-in",
+    report_type="surface-massavg",
+    surface_names=["inlet"],
+    field="total-pressure",
+    per_surface=False,
+)
 
 
 # Pump Head
@@ -346,20 +350,32 @@ pump_head_report_def = report_definitions.single_valued_expression.create("pump-
 pump_head_report_def.definition = "head"
 
 # report plot
-pump_head_report_plot = monitor.report_plots.create("pump-head-rplot", report_defs=pump_head_report_def)
+pump_head_report_plot = monitor.report_plots.create(
+    "pump-head-rplot", report_defs=pump_head_report_def
+)
 
 # report file
-pump_head_report_file = monitor.report_files.create("pump-head-rfile", report_defs=pump_head_report_def)
+pump_head_report_file = monitor.report_files.create(
+    "pump-head-rfile", report_defs=pump_head_report_def
+)
 
 # p-blade
-blade_pressure_report_def = report_definitions.surface.create("p-blade", report_type = "surface-massavg", surface_names = ["blade"], field = "pressure", per_surface = False)
+blade_pressure_report_def = report_definitions.surface.create(
+    "p-blade",
+    report_type="surface-massavg",
+    surface_names=["blade"],
+    field="pressure",
+    per_surface=False,
+)
 
 ################################################################################################################
 # Initialization and run solver
 # ==============================================================================================================
 initialization = Initialization(solver)
 initialization.reference_frame = "absolute"
-initialization.hybrid_init_options.general_settings.initialization_options.initial_pressure = True
+initialization.hybrid_init_options.general_settings.initialization_options.initial_pressure = (
+    True
+)
 initialization.hybrid_initialize()
 
 # Run calculation settings
@@ -377,12 +393,16 @@ run_calculation.calculate()
 # ==============================================================================================================
 
 # Create a mid-plane surface at z = -0.015 m
-z_mid_plane = PlaneSurface.create(solver, name="z_mid_plane", method = "xy-plane", z = -0.015)
+z_mid_plane = PlaneSurface.create(
+    solver, name="z_mid_plane", method="xy-plane", z=-0.015
+)
 z_mid_plane.display()
 
 # Define and display the contour for static pressure using typed API
 graphics = Graphics(solver)
-pressure_contour = Contour.create(solver=solver, field=VariableCatalog.PRESSURE, surfaces=["z_mid_plane"])
+pressure_contour = Contour.create(
+    solver=solver, field=VariableCatalog.PRESSURE, surfaces=["z_mid_plane"]
+)
 pressure_contour.display()
 graphics.views.restore_view(view_name="front")
 graphics.views.auto_scale()
@@ -397,9 +417,7 @@ graphics.picture.save_picture(file_name="static-pressure-contour.png")
 ################################################################################################################
 # Save the case file
 # ==============================================================================================================
-write_case_data(solver,
-    file_name="pump_volute_setup_solved.cas.h5"
-)
+write_case_data(solver, file_name="pump_volute_setup_solved.cas.h5")
 
 ################################################################################################################
 # Close the session

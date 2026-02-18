@@ -64,32 +64,32 @@ Ahmed Body External Aerodynamics Simulation
 from pathlib import Path
 import platform
 
-from ansys.units import VariableCatalog
-
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
-    Methods,
-    ReferenceValues,
-    Residual,
- iterate, write_case,
     FluidMaterial,
     Initialization,
     IsoSurface,
+    Methods,
     Monitor,
     OutputParameters,
     PressureOutlet,
+    ReferenceValues,
     ReportDefinitions,
+    Residual,
     VelocityInlet,
     Viscous,
+    iterate,
+    write_case,
 )
 from ansys.fluent.visualization import Contour, GraphicsWindow
+from ansys.units import VariableCatalog
 from ansys.units.common import kg, m, s
 
 #######################################################################################
 # Launch Fluent session with meshing mode and print Fluent version
 # =====================================================================================
-meshing = pyfluent.Meshing.from_install(cleanup_on_exit=True, fluent_path=r"C:\ANSYSDev\v261\fluent\ntbin\win64\fluent.exe")
+meshing = pyfluent.Meshing.from_install()
 print(meshing.get_fluent_version())
 
 #######################################################################################

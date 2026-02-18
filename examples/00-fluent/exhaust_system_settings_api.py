@@ -73,14 +73,25 @@ to demonstrate the automatic leakage detection aspects of the meshing workflow.
 # the geometry file.
 
 # sphinx_gallery_thumbnail_path = '_static/exhaust_system_settings.png'
-from ansys.units import VariableCatalog
+
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from pathlib import Path
-from ansys.fluent.core.generated.solver.settings_builtin import IsoSurface
-from ansys.fluent.core.generated.solver.settings_builtin_261 import iterate, write_case_data
-from ansys.fluent.core.solver import Viscous, VelocityInlet, PressureOutlet, Initialization, RunCalculation, Graphics, Pathline, Scene, Surfaces
+from ansys.fluent.core.solver import (
+    Graphics,
+    Initialization,
+    IsoSurface,
+    Pathline,
+    PressureOutlet,
+    RunCalculation,
+    Scene,
+    Surfaces,
+    VelocityInlet,
+    Viscous,
+    iterate,
+    write_case_data,
+)
 from ansys.units.common import m, s
+
 import_file_name = examples.download_file(
     "exhaust_system.fmd", "pyfluent/exhaust_system"
 )
@@ -129,9 +140,9 @@ meshing.PartManagement.Node["Meshing Model"].Copy(
         "/dirty_manifold-for-wrapper," + "1/dirty_manifold-for-wrapper,1/object1,1",
     ]
 )
-meshing.PartManagement.ObjectSetting[
-    "DefaultObjectSetting"
-].OneZonePer.set_state("part")
+meshing.PartManagement.ObjectSetting["DefaultObjectSetting"].OneZonePer.set_state(
+    "part"
+)
 cad_import = meshing.workflow.TaskObject["Import CAD and Part Management"]
 cad_import.Arguments.set_state(
     {
@@ -640,7 +651,8 @@ iterate(solver, iter_count=100)
 # Write the case and data files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-write_case_data(solver,
+write_case_data(
+    solver,
     file_name="exhaust_system.cas.h5",
 )
 
@@ -669,10 +681,12 @@ graphics.picture.y_resolution = 1440
 #   :width: 500pt
 #   :align: center
 
-pathlines = Pathline.create(solver, name="pathlines-1",
-field = "time",
-skip = 5,
-release_from_surfaces = list(inlets),
+pathlines = Pathline.create(
+    solver,
+    name="pathlines-1",
+    field="time",
+    skip=5,
+    release_from_surfaces=list(inlets),
 )
 pathlines.accuracy_control.tolerance = 0.001
 pathlines.display()
@@ -686,7 +700,13 @@ graphics.picture.save_picture(file_name="pathlines-1.png")
 # ~~~~~~~~~~~~~~~~~~
 # Create an iso-surface through the manifold geometry.
 
-IsoSurface.create(solver, name="surf-x-coordinate", field="x-coordinate", zones=["fluid-region-1"], iso_values=[0.38] * m)
+IsoSurface.create(
+    solver,
+    name="surf-x-coordinate",
+    field="x-coordinate",
+    zones=["fluid-region-1"],
+    iso_values=[0.38] * m,
+)
 
 ###############################################################################
 # Create contours of velocity magnitude
@@ -699,8 +719,14 @@ IsoSurface.create(solver, name="surf-x-coordinate", field="x-coordinate", zones=
 #   :width: 500pt
 #   :align: center
 
-graphics =  Graphics(solver)
-vel_contour = Contour.create(solver, name="contour-velocity", field = "velocity-magnitude", surfaces_list = ["surf-x-coordinate"], node_values = False)
+graphics = Graphics(solver)
+vel_contour = Contour.create(
+    solver,
+    name="contour-velocity",
+    field="velocity-magnitude",
+    surfaces_list=["surf-x-coordinate"],
+    node_values=False,
+)
 vel_contour.range_option.option = "auto-range-on"
 vel_contour.range_option.auto_range_on.global_range = False
 

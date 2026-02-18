@@ -186,7 +186,7 @@ m_inc = 2  # TS mode increment
 for angle in range(0, 360, d_theta):
     x = math.cos(math.radians(angle)) * r
     y = math.sin(math.radians(angle)) * r
-    PointSurface(solver, new_instance_name=f"point-{angle}"). point=(x, y, z)
+    PointSurface.create(solver, name=f"point-{angle}", point=(x, y, z))
 
 #######################################################################################
 # Compute Fourier coefficients at each monitor point (An, Bn)

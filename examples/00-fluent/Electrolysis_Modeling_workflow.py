@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -78,7 +84,6 @@ from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin_261 import iterate, write_case_data
 from ansys.fluent.core.solver import (
     BoundaryConditions,
     Contour,
@@ -89,9 +94,9 @@ from ansys.fluent.core.solver import (
     MassFlowInlet,
     Materials,
     Mesh,
-    RunCalculation,
-    Setup,
     SolidMaterial,
+    iterate,
+    write_case_data,
 )
 from ansys.units.common import A, K, V, degree, m, ohm, s
 
@@ -208,13 +213,22 @@ electrical_tab.cathode_tab = ["cathode_tab", "cathode_tab.1", "cathode_tab.1.1"]
 # ----------------------
 materials = Materials(solver)
 
-SolidMaterial.create(solver, name="collector-default", electric_conductivity = 20000 * S / m)
+SolidMaterial.create(
+    solver, name="collector-default", electric_conductivity=20000 * S / m
+)
 
-SolidMaterial.create(solver, name="porous-default", electric_conductivity = 20000 * S / m)
+SolidMaterial.create(solver, name="porous-default", electric_conductivity=20000 * S / m)
 
-SolidMaterial.create(solver, name="catalyst-default", electrical_conductivity = 5000 * S / m, dual_electric_conductivity = 4.5 * S / m)
+SolidMaterial.create(
+    solver,
+    name="catalyst-default",
+    electrical_conductivity=5000 * S / m,
+    dual_electric_conductivity=4.5 * S / m,
+)
 
-SolidMaterial.create(solver, name="electrolyte-default", dual_electric_conductivity = 11 * S / m)
+SolidMaterial.create(
+    solver, name="electrolyte-default", dual_electric_conductivity=11 * S / m
+)
 
 # %%
 # Boundary conditions
@@ -253,7 +267,9 @@ iterate(solver, iter_count=300)
 # Post-processing
 # ---------------
 
-potential_contour = Contour.create(solver, name="potential_contour", field = "potential", surfaces_list = ["zmid"])
+potential_contour = Contour.create(
+    solver, name="potential_contour", field="potential", surfaces_list=["zmid"]
+)
 
 
 graphics.views.restore_view(view_name="front")
@@ -267,7 +283,12 @@ graphics.picture.save_picture(file_name="Electrolysis_Modeling_2.png")
 #    :align: center
 #    :alt: Potential Contour
 
-volume_fraction_contour = Contour.create(solver, name="volume_fraction_contour", field = "phase-1-vof", surfaces_list = ["zmid", "xmid"])
+volume_fraction_contour = Contour.create(
+    solver,
+    name="volume_fraction_contour",
+    field="phase-1-vof",
+    surfaces_list=["zmid", "xmid"],
+)
 
 graphics.views.restore_view(view_name="isometric")
 volume_fraction_contour.display()

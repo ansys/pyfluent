@@ -53,26 +53,27 @@ import csv
 import itertools
 from pathlib import Path
 
-from ansys.units import VariableCatalog
 import matplotlib.pyplot as plt
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_242 import report_type
-from ansys.fluent.core.generated.solver.settings_builtin_261 import read_case, write_case_data
-from ansys.fluent.visualization import Contour, GraphicsWindow
-from ansys.fluent.core.generated.solver.settings_builtin import Controls, Graphics
 from ansys.fluent.core.solver import (
+    Controls,
     Energy,
     General,
+    Graphics,
+    Initialization,
+    Monitor,
+    ReportDefinitions,
+    RunCalculation,
     SolidCellZone,
     WallBoundary,
-    ReportDefinitions,
-    Monitor,
-    Initialization,
-    RunCalculation,
+    read_case,
+    write_case_data,
 )
-from ansys.units.common import K, m, W, radian, s
+from ansys.fluent.visualization import Contour, GraphicsWindow
+from ansys.units import VariableCatalog
+from ansys.units.common import K, W, m, radian, s
 
 import_filename = examples.download_file(
     "brake.msh.h5",
@@ -88,7 +89,9 @@ import_filename = examples.download_file(
 # Launch Fluent session with solver mode and print Fluent version
 # ---------------------------------------------------------------
 
-solver = pyfluent.Solver.from_install(precision="double", processor_count=2, dimension=3)
+solver = pyfluent.Solver.from_install(
+    precision="double", processor_count=2, dimension=3
+)
 print(solver.get_fluent_version())
 
 ####################################################################################
@@ -168,27 +171,36 @@ initialization.standard_initialize()
 
 report_defs = ReportDefinitions(solver)
 
-max_pad_temp = report_defs.volume.create(name="max-pad-temperature", report_type="volume-max", field=VariableCatalog.TEMPERATURE, cell_zones=["geom-1-innerpad", "geom-1-outerpad"])
+max_pad_temp = report_defs.volume.create(
+    name="max-pad-temperature",
+    report_type="volume-max",
+    field=VariableCatalog.TEMPERATURE,
+    cell_zones=["geom-1-innerpad", "geom-1-outerpad"],
+)
 
 
-max_disc_temp = report_defs.volume.create(name="max-disc-temperature",
-report_type = "volume-max",
-field = "temperature",
-cell_zones = ["disc1", "disc2"],)
+max_disc_temp = report_defs.volume.create(
+    name="max-disc-temperature",
+    report_type="volume-max",
+    field="temperature",
+    cell_zones=["disc1", "disc2"],
+)
 
 monitor = Monitor(solver)
 temp_plot = monitor.report_plots.create(name="max-temperature")
 temp_plot.report_defs = [max_pad_temp, max_disc_temp]
 
-temp_file = monitor.report_files.create(name="max-temperature",
-report_defs = [max_pad_temp, max_disc_temp, "flow-time"],
-file_name = "max-temperature.out")
+temp_file = monitor.report_files.create(
+    name="max-temperature",
+    report_defs=[max_pad_temp, max_disc_temp, "flow-time"],
+    file_name="max-temperature.out",
+)
 
 
 graphics = Graphics(solver)
-temp_contour = graphics.contour.create(name="temperature",
-field = VariableCatalog.TEMPERATURE,
-surfaces_list = "wall*")
+temp_contour = graphics.contour.create(
+    name="temperature", field=VariableCatalog.TEMPERATURE, surfaces_list="wall*"
+)
 
 temp_contour.color_map.visible = True
 temp_contour.color_map.size = 100
@@ -220,10 +232,11 @@ graphics.views.save_view(view_name="animation-view")
 
 solver.solution.calculation_activity.solution_animations.create(
     name="animate-temperature",
-animate_on = "temperature",
-frequency_of = "flow-time",
-flow_time_frequency = 0.05,
-view = "animation-view",)
+    animate_on="temperature",
+    frequency_of="flow-time",
+    flow_time_frequency=0.05,
+    view="animation-view",
+)
 
 ##################################################################################################
 # Run simulation

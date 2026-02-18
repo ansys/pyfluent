@@ -1,3 +1,10 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+#   "ansys-fluent-visualization",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -91,24 +98,15 @@ Modeling Flow Through Porous Media - Catalytic Converter
 from pathlib import Path
 import platform
 
-from ansys.units import VariableCatalog
-
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import (
-    Dimension,
-    Precision,
-    UIMode,
-    examples,
-)
-from ansys.fluent.core.generated.solver.settings_builtin import IsoSurface
-from ansys.fluent.core.generated.solver.settings_builtin_261 import write_case_data
+from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (  # noqa: E402
     CellZoneConditions,
     Energy,
     General,
     Graphics,
     Initialization,
-    IsoSurfaces,
+    IsoSurface,
     Materials,
     Mesh,
     Monitor,
@@ -119,17 +117,19 @@ from ansys.fluent.core.solver import (  # noqa: E402
     Scene,
     VelocityInlet,
     WallBoundaries,
+    write_case_data,
 )
+from ansys.units import VariableCatalog
 from ansys.units.common import K, Pa, m, s
 
 # %%
 # Launch meshing session
 # ----------------------------
 meshing = pyfluent.Meshing.from_install(
-    ui_mode=UIMode.GUI,
+    ui_mode=pyfluent.UIMode.GUI,
     processor_count=4,
-    precision=Precision.DOUBLE,
-    dimension=Dimension.THREE,
+    precision=pyfluent.Precision.DOUBLE,
+    dimension=pyfluent.Dimension.THREE,
 )
 
 # %%
@@ -634,7 +634,7 @@ velocity_vectors_scene.graphics_objects.add(name="vector-vel")
 velocity_vectors_scene.graphics_objects.add(name="mesh-1")
 
 # Configure scene appearance and display settings
-scene_1= Scene.create(solver, name="scene-1")
+scene_1 = Scene.create(solver, name="scene-1")
 scene_1.graphics_objects = {
     "vector-vel": {"name": "vectors"},  # Label for the vector plot
     "mesh-1": {"transparency": 75},  # Semi-transparent mesh (75% transparent)
@@ -658,7 +658,7 @@ pressure_contour_scene = static_pressure_scene.graphics_objects.add(name="contou
 mesh_1_scene = static_pressure_scene.graphics_objects.add(name="mesh-1")
 
 # Configure pressure contour scene settings
-pressure_contour_scene.name =pressure_contour  # Label for the pressure contour
+pressure_contour_scene.name = pressure_contour  # Label for the pressure contour
 mesh_1_scene.transparency = 75  # Consistent mesh transparency
 
 static_pressure_scene.display()
@@ -677,11 +677,15 @@ graphics.picture.save_picture(file_name="out/static_pressure.png")
 # This scene shows speed distribution across multiple axial locations
 
 velocity_magnitude_scene = Scene.create(solver, name="scene-3")
-velocity_mag_contour_scene = velocity_magnitude_scene.graphics_objects.add(name="contour-velmag")
+velocity_mag_contour_scene = velocity_magnitude_scene.graphics_objects.add(
+    name="contour-velmag"
+)
 mesh_1_scene = velocity_magnitude_scene.graphics_objects.add(name="mesh-1")
 
 # Configure velocity magnitude contour scene settings
-velocity_mag_contour_scene.name = velocity_mag_contour  # Label for velocity magnitude contour
+velocity_mag_contour_scene.name = (
+    velocity_mag_contour  # Label for velocity magnitude contour
+)
 mesh_1_scene.transparency = 75  # Consistent mesh transparency
 
 velocity_magnitude_scene.display()
@@ -703,10 +707,7 @@ graphics.picture.save_picture(file_name="out/velocity_magnitude.png")
 
 # Write final case and data
 
-write_case_data(
-    solver,
-    file_name="out/catalytic_converter_final.cas.h5"
-)
+write_case_data(solver, file_name="out/catalytic_converter_final.cas.h5")
 
 # %%
 # Solver Exit

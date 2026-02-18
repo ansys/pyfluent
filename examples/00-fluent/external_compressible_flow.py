@@ -78,14 +78,14 @@ import tempfile
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin import RunCalculation
-from ansys.fluent.core.generated.solver.settings_builtin_261 import write_case
 from ansys.fluent.core.solver import (
     FluidMaterial,
     General,
     Initialization,
     PressureFarFieldBoundary,
+    RunCalculation,
     Viscous,
+    write_case,
 )
 from ansys.units.common import K, Pa, kg, m, s
 
@@ -354,10 +354,7 @@ initialize.hybrid_initialize()
 # ~~~~~~~~~~~~~~
 # Save the case file ``external_compressible1.cas.h5``.
 
-write_case(
-    solver,
-    file_name="external_compressible.cas.h5"
-)
+write_case(solver, file_name="external_compressible.cas.h5")
 
 ###############################################################################
 # Solve for 25 iterations
@@ -371,10 +368,7 @@ RunCalculation(solver).iterate(iter_count=25)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Write the final case file and the data.
 
-write_case(
-    solver,
-    file_name="external_compressible1.cas.h5"
-)
+write_case(solver, file_name="external_compressible1.cas.h5")
 
 ###############################################################################
 # Close Fluent

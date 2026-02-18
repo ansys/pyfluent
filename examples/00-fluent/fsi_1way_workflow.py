@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -70,22 +76,23 @@ Modeling One-Way Fluid-Structure Interaction
 from pathlib import Path
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import Precision, examples
-from ansys.fluent.core.generated.solver.settings_242 import read_case
-from ansys.fluent.core.generated.solver.settings_builtin import Controls
-from ansys.fluent.core.generated.solver.settings_builtin_261 import BoundaryCondition, Materials, iterate, write_case, write_case_data
+from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
-    BoundaryConditions,
+    BoundaryCondition,
     Contour,
+    Controls,
     Graphics,
     Initialization,
-    RunCalculation,
+    Materials,
     Setup,
     SolidCellZone,
-    Solution,
     Structure,
     VelocityInlet,
     WallBoundary,
+    iterate,
+    read_case,
+    write_case,
+    write_case_data,
 )
 from ansys.units import VariableCatalog
 from ansys.units.common import m, s
@@ -94,7 +101,7 @@ from ansys.units.common import m, s
 # Launch Fluent session in solver mode
 # ------------------------------------
 
-solver = pyfluent.Solver.from_install(precision=Precision.DOUBLE)
+solver = pyfluent.Solver.from_install(precision=pyfluent.Precision.DOUBLE)
 
 # %%
 # Download and read the mesh file
@@ -112,7 +119,7 @@ read_case(solver, file_name=mesh_file)
 # ----------------------------------------
 
 velocity_inlet = VelocityInlet.get(solver, name="velocity_inlet")
-velocity_inlet.momentum.velocity_magnitude = 100.0 * m / s
+velocity_inlet.momentum.velocity_magnitude = 100.0 * m / s  # High-speed inlet flow
 velocity_inlet.turbulence.turbulent_viscosity_ratio = (
     5  # Dimensionless, typically 1-10 for moderate turbulence
 )

@@ -8,6 +8,7 @@
 #   "scikit-learn",
 #   "seaborn",
 #   "tensorflow",
+#   "xgboost",
 # ]
 # ///
 
@@ -63,26 +64,27 @@ Design of Experiments and Machine Learning model building
 # flake8: noqa: E402
 
 import itertools
-import json
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
-from ansys.units import Quantity
-from ansys.units.quantity import ArrayLike
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-# import plotly.express as px
-# import plotly.graph_objects as go
-# import seaborn as sns
-# import tensorflow as tf
-# from tensorflow import keras
+import plotly.express as px
+import plotly.graph_objects as go
+import seaborn as sns
+import tensorflow as tf
+from tensorflow import keras
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin import SurfaceIntegrals
-from ansys.fluent.core.generated.solver.settings_builtin_261 import iterate, read_case
-from ansys.fluent.core.solver import Initialization, VelocityInlet, RunCalculation
+from ansys.fluent.core.solver import (
+    Initialization,
+    SurfaceIntegrals,
+    VelocityInlet,
+    iterate,
+    read_case,
+)
 from ansys.units.common import m, s
 
 ###########################################################################
@@ -145,7 +147,7 @@ for (idx1, cold_value), (idx2, hot_value) in itertools.product(
     initialize.initialization_type = "standard"
     initialize.standard_initialize()
 
-    iterate(solver,iter_count=200)
+    iterate(solver, iter_count=200)
 
     temperatures = SurfaceIntegrals(solver).get_mass_weighted_avg(
         surface_names=["outlet"], report_of="temperature"
@@ -420,7 +422,7 @@ model = keras.models.Sequential(
     ]
 )
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
+optimizer = keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
 
 model.compile(loss="mean_squared_error", optimizer=optimizer)
 checkpoint_cb = keras.callbacks.ModelCheckpoint(
