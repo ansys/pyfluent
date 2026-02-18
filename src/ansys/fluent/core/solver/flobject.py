@@ -55,7 +55,6 @@ import string
 import sys
 import types
 from typing import (
-    TYPE_CHECKING,
     Any,
     Callable,
     Dict,
@@ -982,16 +981,12 @@ class FilenameList(SettingsBase[StringListType], Textual):
 
     _state_type = StringListType
 
-    if TYPE_CHECKING:
-
-        @override
-        def set_state(self, state: Sequence[PathType] | None = None, **kwargs): ...
-
     @override
     def set_state(self, state: Sequence[PathType] | None = None, **kwargs):
         if state is not None:
             state = [os.fspath(path) for path in state]
         return super().set_state(state, **kwargs)
+
     def file_purpose(self):
         """Specifies whether this file is used as input or output by Fluent."""
         return self.get_attr(_InlineConstants.file_purpose)
@@ -1064,6 +1059,24 @@ class StringList(SettingsBase[StringListType], Textual):
     """A ``StringList`` object representing a string list setting."""
 
     _state_type = StringListType
+
+    @override
+    def set_state(
+        self,
+        state: Sequence[str | SettingsBaseWithName | VariableDescriptor] | None = None,
+        **kwargs,
+    ):
+        if isinstance(state, Sequence):
+            state = [
+                (
+                    entry.name()
+                    if isinstance(entry, SettingsBase) and hasattr(entry, "name")
+                    else entry
+                )
+                for entry in state
+            ]
+
+        return super().set_state(state, **kwargs)
 
 
 class BooleanList(SettingsBase[BoolListType], Property):
