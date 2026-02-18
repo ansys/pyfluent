@@ -176,22 +176,10 @@ of minimal server images, which becomes significant in the context of containeri
 Context manager for active sessions
 -----------------------------------
 
-Before, you had to pass an active session object into most API calls. This often required explicitly wiring the
-session into generated settings objects and helper functions using a ``settings_source`` or a session argument.
+The ``using(session)`` context manager sets an active session so you can call top-level settings objects and functions
+without explicitly passing the session each time.
 
-For example:
-
-.. code:: python
-
-  >>> from ansys.fluent.core.solver import Viscous
-  >>> viscous = Viscous(settings_source=solver_session)
-  >>> viscous.model()
-  'k-omega'
-
-The ``using()`` context manager lets you temporarily set an active session so API calls inside the block no longer
-require an explicit session argument.
-
-Now you can do:
+Example:
 
 .. code:: python
 
@@ -200,44 +188,12 @@ Now you can do:
   >>> with using(solver_session):
   ...     print(Viscous().model())
   k-omega
-
-This significantly reduces boilerplate and improves readability.
-
-The ``using()`` context manager sets a thread-local active session. Sessions activated in one thread are not visible to
-code running in other threads. In multi-threaded applications, pass the session explicitly instead of relying on the
-implicit active session.
 
 .. note::
 
   You can import ``using`` from ``ansys.fluent.core``. In older versions, it was exposed only under
   ``ansys.fluent.core.solver``.
 
-Before and after comparison
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Before:
-
-.. code:: python
-
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core.solver import Setup, Viscous
-  >>> solver_session = pyfluent.launch_fluent()
-  >>> Setup(settings_source=solver_session) == solver_session.setup
-  True
-  >>> Viscous(settings_source=solver_session).model()
-  'k-omega'
-
-After (with a context manager):
-
-.. code:: python
-
-  >>> from ansys.fluent.core import using
-  >>> from ansys.fluent.core.solver import Setup, Viscous
-  >>> with using(solver_session):
-  ...     Setup() == solver_session.setup
-  True
-  ...     print(Viscous().model())
-  k-omega
 
 Solver context manager
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -285,11 +241,11 @@ Each thread can set and use its own active session. Sessions set in one thread a
 
   >>> import threading
   >>> from ansys.fluent.core import using
-  >>> from ansys.fluent.core.solver import Setup
+  >>> from ansys.fluent.core.solver import Viscous
   >>> def work(session):
   ...     with using(session):
-  ...         print(Setup() == session.setup)
-  True
+  ...         print(Viscous().model())
+  k-omega
   >>> t = threading.Thread(target=work, args=(solver_session,))
   >>> t.start(); t.join()
 
