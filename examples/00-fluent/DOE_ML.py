@@ -238,7 +238,7 @@ train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
 # cast is a function that improves intellisense by saying we know the data returned by
 # fit_transform is an ndarray
 X_train = cast(npt.NDArray[np.float64], x_ct.fit_transform(train_set))
-X_test = cast(npt.NDArray[np.float64], x_ct.fit_transform(test_set))
+X_test = cast(npt.NDArray[np.float64], x_ct.transform(test_set))
 
 y_train = train_set["Result"]
 y_test = test_set["Result"]
