@@ -137,13 +137,33 @@ def _build_parameter_docstring(name: str, t: str):
     return f"Parameter {name} of value type {_PY_TYPE_BY_DM_TYPE[t]}."
 
 
+def _get_api_help_text(info: dict[str, Any], default: str) -> str:
+    """Prefer attrs.api_help_text, else helpstring, else default."""
+    # Newer servers (Ansys Fluent 2026 R1 and later) may attach a richer help payload under 'attrs' -> 'api_help_text'.
+    # Older entries may only have a plain 'helpstring'. If neither exists, use 'default'.
+    attrs = info.get("attrs") or {}
+    # Get the richer help payload if present; otherwise None.
+    api_help_text = attrs.get("api_help_text")
+    # Return precedence:
+    # 1) api_help_text['stringState'] if available (richer text from server).
+    # 2) info['helpstring'] if present (legacy help).
+    # 3) default (provided by caller) when nothing else exists.
+    return (
+        api_help_text.get("stringState")
+        if api_help_text
+        else info.get("helpstring", default)
+    )
+
+
 def _build_command_query_docstring(
     name: str, static_info: Any, indent: str, is_command: bool
 ):
     doc = StringIO()
     info = static_info["commandinfo"] if is_command else static_info["queryinfo"]
-    if static_info.get("helpstring"):
-        for line in static_info["helpstring"].splitlines():
+
+    top_text = _get_api_help_text(static_info, "")
+    if top_text:
+        for line in top_text.splitlines():
             doc.write(f"{indent}{line}\n")
     elif info.get("docstring"):
         for line in info["docstring"].split("."):
@@ -158,13 +178,15 @@ def _build_command_query_docstring(
             else f"{indent}Query {name}.\n\n"
         )
     if info.get("args"):
-        doc.write(f"{indent}Parameters\n")
+        doc.write(f"\n{indent}Parameters\n")
         doc.write(f"{indent}{'-' * len('Parameters')}\n")
         for arg in info.get("args"):
             doc.write(f"{indent}{arg['name']} : {_PY_TYPE_BY_DM_TYPE[arg['type']]}\n")
-            if arg.get("helpstring"):
-                for line in arg["helpstring"].splitlines():
+            arg_help = _get_api_help_text(arg, "")
+            if arg_help:
+                for line in arg_help.splitlines():
                     doc.write(f"{indent}    {line}\n")
+                doc.write("\n")
             elif arg.get("docstring"):
                 doc.write(f"{indent}    {arg['docstring']}\n")
     doc.write(f"\n{indent}Returns\n")
@@ -349,7 +371,7 @@ class DataModelGenerator:
     def _write_arg_class(self, f: FileIO, arg_info, indent: str):
         arg_name = arg_info["name"]
         arg_type = arg_info["type"]
-        arg_doc = arg_info.get("helpstring", f"Argument {arg_name}.")
+        arg_doc = _get_api_help_text(arg_info, f"Argument {arg_name}.")
         arg_class = arg_class_by_type[arg_type]
         py_name = _convert_to_py_name(arg_name)
         f.write(f"{indent}class _{py_name}({arg_class.__name__}):\n")
@@ -386,7 +408,7 @@ class DataModelGenerator:
         if not name.isidentifier():
             return api_tree
         indent = " " * level * 4
-        singleton_doc = info.get("helpstring", _build_singleton_docstring(name))
+        singleton_doc = _get_api_help_text(info, _build_singleton_docstring(name))
         f.write(f"{indent}class {'_' if name != 'Root' else ''}{name}(PyMenu):\n")
         f.write(f'{indent}    """\n')
         for line in singleton_doc.splitlines():
@@ -457,8 +479,9 @@ class DataModelGenerator:
                 f.write(f"{indent}    class {parameter_name}(PyDictionary):\n")
             else:
                 f.write(f"{indent}    class {parameter_name}(PyParameter):\n")
-            parameter_doc = parameter_info.get(
-                "helpstring", _build_parameter_docstring(parameter_name, parameter_type)
+            parameter_doc = _get_api_help_text(
+                parameter_info,
+                _build_parameter_docstring(parameter_name, parameter_type),
             )
             f.write(f'{indent}        """\n')
             for line in parameter_doc.splitlines():

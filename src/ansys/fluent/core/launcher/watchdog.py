@@ -57,6 +57,7 @@ def launch(
     allow_remote_host: bool | None = None,
     certificates_folder: str | None = None,
     insecure_mode: bool | None = None,
+    inside_container: bool | None = None,
 ) -> None:
     """Function to launch the Watchdog. Automatically used and managed by PyFluent.
 
@@ -76,6 +77,8 @@ def launch(
         Path to the folder containing gRPC certificates.
     insecure_mode : bool, optional
         Whether to use insecure gRPC mode.
+    inside_container : bool, optional
+        Whether the Fluent session is running inside a container.
 
     Raises
     ------
@@ -144,6 +147,7 @@ def launch(
         str(allow_remote_host),
         str(certificates_folder),
         str(insecure_mode),
+        str(inside_container),
     ]
 
     if debug_watchdog:

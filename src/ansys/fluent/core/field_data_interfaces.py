@@ -120,7 +120,7 @@ class BaseFieldInfo(ABC):
 
     @abstractmethod
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         """
         Retrieve the range (minimum and maximum values) of a scalar field.
@@ -389,7 +389,7 @@ class _ScalarFields(_Fields):
         self._field_info = field_info
 
     def range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 

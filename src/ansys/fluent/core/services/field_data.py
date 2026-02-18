@@ -22,17 +22,19 @@
 
 """Wrappers over FieldData gRPC service of Fluent."""
 
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
 from functools import reduce
 import logging
 import time
+from typing import Any, Sized
 import warnings
 import weakref
 
 import grpc
 import numpy as np
+import numpy.typing as npt
 
 from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
 from ansys.api.fluent.v0 import field_data_pb2_grpc as FieldGrpcModule
@@ -84,9 +86,9 @@ def override_help_text(func, func_to_be_wrapped):
     return func
 
 
-class FieldDataService(
+class FieldDataService(  # pyright: ignore[reportUnsafeMultipleInheritance]
     StreamingService, ServiceProtocol
-):  # pyright: ignore[reportUnsafeMultipleInheritance]
+):
     """FieldData service of Fluent."""
 
     def __init__(
@@ -179,7 +181,7 @@ class _FieldInfo(BaseFieldInfo):
         self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -203,7 +205,7 @@ class _FieldInfo(BaseFieldInfo):
         return self._get_scalar_field_range(field, node_value, surface_ids)
 
     def _get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         if not surface_ids:
             surface_ids = []
@@ -557,7 +559,7 @@ class BaseFieldData:
 
     def _get_pathlines_field_data(
         self,
-        **kwargs,
+        **kwargs: Any,
     ) -> dict:
         if kwargs.get("zones") is None:
             zones = []
@@ -1111,32 +1113,38 @@ class ChunkParser:
         """__init__ method of ChunkParser class."""
         self._callbacks_provider = callbacks_provider
 
-    def extract_fields(self, chunk_iterator) -> dict[int, dict[str, np.ndarray]]:
+    def extract_fields(self, chunk_iterator) -> dict[Any, dict[str, npt.NDArray[Any]]]:
         """Extracts field data received from Fluent.
 
         if callbacks_provider is set then callbacks are triggered with extracted data.
         """
 
-        def _get_tag_for_surface_request():
+        def _get_tag_for_surface_request() -> tuple[tuple[str, str]]:
             return (("type", "surface-data"),)
 
-        def _get_tag_for_vector_field_request():
+        def _get_tag_for_vector_field_request() -> tuple[tuple[str, str]]:
             return (("type", "vector-field"),)
 
-        def _get_tag_for_scalar_field_request(scalar_field_request):
+        def _get_tag_for_scalar_field_request(
+            scalar_field_request,
+        ) -> tuple[tuple[str, str], tuple[str, Any], tuple[str, Any]]:
             return (
                 ("type", "scalar-field"),
                 ("dataLocation", scalar_field_request.dataLocation),
                 ("boundaryValues", scalar_field_request.provideBoundaryValues),
             )
 
-        def _get_tag_for_pathlines_field_request(pathlines_field_request):
+        def _get_tag_for_pathlines_field_request(
+            pathlines_field_request,
+        ) -> tuple[tuple[str, str], tuple[str, Any]]:
             return (
                 ("type", "pathlines-field"),
                 ("field", pathlines_field_request.field),
             )
 
-        def _extract_field(field_datatype, field_size, chunk_iterator):
+        def _extract_field(
+            field_datatype: npt.DTypeLike, field_size: int, chunk_iterator
+        ) -> npt.NDArray[Any] | None:
             field_arr = np.empty(field_size, dtype=field_datatype)
             field_datatype_item_size = np.dtype(field_datatype).itemsize
             index = 0
@@ -1153,7 +1161,7 @@ class ChunkParser:
                     if index == field_size:
                         return field_arr
                 else:
-                    payload = (
+                    payload: Sequence[float] = (
                         chunk.floatPayload.payload
                         or chunk.intPayload.payload
                         or chunk.doublePayload.payload
@@ -1167,7 +1175,7 @@ class ChunkParser:
                     if index == field_size:
                         return field_arr
 
-        fields_data = {}
+        fields_data = dict[Any, dict[str, npt.NDArray[Any]]]()
         for chunk in chunk_iterator:
             payload_info = chunk.payloadInfo
             surface_id = payload_info.surfaceId
@@ -1207,7 +1215,7 @@ class ChunkParser:
                     )
                 else:
                     payload_tag_id = None
-            field = None
+            field: npt.NDArray[Any] | None = None
             if payload_tag_id is not None:
                 if payload_info.fieldSize > 0:
                     field = _extract_field(
@@ -1235,15 +1243,11 @@ class ChunkParser:
                 surface_data = payload_data.get(surface_id)
                 if surface_data:
                     if payload_info.fieldName in surface_data:
-                        surface_data.update(
-                            {
-                                payload_info.fieldName: np.concatenate(
-                                    (surface_data[payload_info.fieldName], field)
-                                )
-                            }
+                        surface_data[payload_info.fieldName] = np.concatenate(
+                            (surface_data[payload_info.fieldName], field)
                         )
                     else:
-                        surface_data.update({payload_info.fieldName: field})
+                        surface_data[payload_info.fieldName] = field
                 else:
                     payload_data[surface_id] = {payload_info.fieldName: field}
         return fields_data

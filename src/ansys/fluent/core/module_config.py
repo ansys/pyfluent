@@ -24,7 +24,7 @@ from collections.abc import Callable
 import inspect
 import os
 from pathlib import Path
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, cast
 import warnings
 
 __all__ = ("config",)
@@ -341,17 +341,26 @@ class Config:
     @property
     def fluent_release_version(self) -> str:
         """The latest released version of Fluent."""
-        return "25.2.0"
+        return "26.1.0"
 
     @property
     def fluent_dev_version(self) -> str:
         """The latest development version of Fluent."""
-        return "26.1.0"
+        return "27.1.0"
 
     def print(self):
         """Print all configuration variables."""
         config_dict = {}
-        for k, v in inspect.getmembers_static(self):
+        for (
+            k,
+            v,
+        ) in cast(
+            list[tuple[str, Any]],
+            inspect.getmembers_static(  # pyright: ignore[reportAttributeAccessIssue]
+                self
+            ),
+        ):
+            # FIXME: This is an actual bug due to not being in 3.10 (added in 3.11)
             if isinstance(v, (_ConfigDescriptor, property)):
                 config_dict[k] = v.__get__(self, self.__class__)
         max_key_length = max(len(k) for k in config_dict)

@@ -231,6 +231,12 @@ class DockerLauncher:
             raise ValueError(CERTIFICATES_FOLDER_NOT_PROVIDED_AT_LAUNCH)
 
         self.argvals, self.new_session = _get_argvals_and_session(kwargs)
+        if self.argvals.get("cleanup_on_exit") is None:
+            self.argvals["cleanup_on_exit"] = True
+        if self.argvals.get("start_transcript") is None:
+            self.argvals["start_transcript"] = True
+        if "start_watchdog" not in self.argvals:
+            self.argvals["start_watchdog"] = None
         if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
         self.file_transfer_service = kwargs.get("file_transfer_service")
@@ -350,6 +356,7 @@ class DockerLauncher:
                     allow_remote_host=allow_remote_host,
                     certificates_folder=self.argvals["certificates_folder"],
                     insecure_mode=self.argvals["insecure_mode"],
+                    inside_container=True,
                 )
 
         return session

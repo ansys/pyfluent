@@ -22,6 +22,7 @@
 
 from functools import partial
 
+from conftest import SKIP_INVESTIGATING
 import pytest
 from util.meshing_workflow import (
     assign_task_arguments,
@@ -204,7 +205,8 @@ def test_meshing_workflow_raises_exception_on_invalid_key_in_task_args_2(
 """
 
 
-@pytest.mark.skip("Wait for later implementation.")
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# Wait for later implementation.
 @pytest.mark.fluent_version(">=23.1")
 @pytest.mark.codegen_required
 def test_read_only_behaviour_of_command_arguments(new_meshing_session):
@@ -262,6 +264,8 @@ def test_old_workflow_structure(new_meshing_session):
         meshing.workflow.import_geometry
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.nightly
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=24.2")
