@@ -267,8 +267,8 @@ np.set_printoptions(precision=2)
 def display_scores(scores):
     """Display scores."""
     print("\nCross-Validation Scores:", scores)
-    print(f"Mean:{scores.mean():0.2f}")
-    print(f"Std. Dev.:{scores.std():0.2f}")
+    print(f"Mean: {scores.mean():0.2f}")
+    print(f"Std. Dev.: {scores.std():0.2f}")
 
 
 def fit_and_predict(model):
