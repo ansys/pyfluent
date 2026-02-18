@@ -78,7 +78,7 @@ class LauncherArgsBase(TypedDict, total=False):
     """Geometric dimensionality of the Fluent simulation. The default is ``Dimension.THREE``."""
     precision: "Precision | Literal['single', 'double']"
     """Floating point precision."""
-    processor_count: int
+    processor_count: int | None
     """Number of processors. The default is ``1``.  In job scheduler environments
     the total number of allocated cores is clamped to value of ``processor_count``.
     """

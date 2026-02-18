@@ -63,9 +63,11 @@ Design of Experiments and Machine Learning model building
 # flake8: noqa: E402
 
 import os
+from typing import TypeAlias, cast
 
 import matplotlib.pyplot as plt
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -233,8 +235,10 @@ x_ct = ColumnTransformer(
 
 train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
 
-X_train = x_ct.fit_transform(train_set)
-X_test = x_ct.fit_transform(test_set)
+# cast is a function that improves intellisense by saying we know the data returned by
+# fit_transform is an ndarray
+X_train = cast(npt.NDArray[np.float64], x_ct.fit_transform(train_set))
+X_test = cast(npt.NDArray[np.float64], x_ct.fit_transform(test_set))
 
 y_train = train_set["Result"]
 y_test = test_set["Result"]
@@ -398,21 +402,31 @@ keras.backend.clear_session()
 np.random.seed(42)
 tf.random.set_seed(42)
 
-model = keras.models.Sequential(
-    [
-        keras.layers.Dense(
-            20,
-            activation="relu",
-            input_shape=X_train.shape[1:],
-            kernel_initializer="lecun_normal",
-        ),
-        keras.layers.BatchNormalization(),
-        keras.layers.Dense(20, activation="relu", kernel_initializer="lecun_normal"),
-        keras.layers.BatchNormalization(),
-        keras.layers.Dense(20, activation="relu", kernel_initializer="lecun_normal"),
-        keras.layers.BatchNormalization(),
-        keras.layers.Dense(1),
-    ]
+ModelType: TypeAlias = keras.models.Model[
+    npt.NDArray[np.float64], npt.NDArray[np.float64]
+]
+model = cast(
+    ModelType,
+    keras.models.Sequential(
+        [
+            keras.layers.Dense(
+                20,
+                activation="relu",
+                input_shape=X_train.shape[1:],
+                kernel_initializer="lecun_normal",
+            ),
+            keras.layers.BatchNormalization(),
+            keras.layers.Dense(
+                20, activation="relu", kernel_initializer="lecun_normal"
+            ),
+            keras.layers.BatchNormalization(),
+            keras.layers.Dense(
+                20, activation="relu", kernel_initializer="lecun_normal"
+            ),
+            keras.layers.BatchNormalization(),
+            keras.layers.Dense(1),
+        ]
+    ),
 )
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
@@ -436,7 +450,7 @@ history = model.fit(
     validation_split=0.2,
     callbacks=[checkpoint_cb, early_stopping_cb],
 )
-model = keras.models.load_model("my_keras_model.h5")
+model = cast(ModelType, keras.models.load_model("my_keras_model.h5"))
 
 print(history.params)
 

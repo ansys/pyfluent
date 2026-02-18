@@ -28,9 +28,9 @@ if __name__ == "__main__":
 
         # Configure logger for Watchdog process
         log_config = pyfluent.logger.get_default_config()
-        log_config["handlers"]["pyfluent_file"][
-            "filename"
-        ] = f"pyfluent_watchdog_{watchdog_id}.log"
+        log_config["handlers"]["pyfluent_file"]["filename"] = (
+            f"pyfluent_watchdog_{watchdog_id}.log"
+        )
 
         logger = pyfluent.logger.get_logger("pyfluent.watchdog")
 
@@ -65,12 +65,15 @@ if __name__ == "__main__":
         logger.debug(f"Python launcher pid: {launcher_pid}")
 
         ip, port, password = sys.argv[2:5]
-        allow_remote_host, certificates_folder, insecure_mode = sys.argv[6:9]
+        allow_remote_host, certificates_folder, insecure_mode, inside_container = (
+            sys.argv[6:10]
+        )
 
         allow_remote_host = allow_remote_host == "True"
         if certificates_folder == "None":
             certificates_folder = None
         insecure_mode = insecure_mode == "True"
+        inside_container = inside_container == "True"
 
         logger.debug(f"ip:{ip} port:{port} pass:{password}")
 
@@ -87,6 +90,7 @@ if __name__ == "__main__":
             "allow_remote_host": allow_remote_host,
             "certificates_folder": certificates_folder,
             "insecure_mode": insecure_mode,
+            "inside_container": inside_container,
             "cleanup_on_exit": True,
         }
 

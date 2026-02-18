@@ -149,6 +149,11 @@ def check_type(val, tp):
     """Check type of object."""
     if hasattr(tp, "__supertype__"):
         return check_type(val, tp.__supertype__)
+    if isinstance(tp, str):
+        try:
+            return check_type(val, _eval_type(ForwardRef(tp), globals(), locals()))
+        except Exception:
+            return False
     if isinstance(tp, ForwardRef):
         return check_type(val, _eval_type(tp, globals(), locals()))
     origin = get_origin(tp)
@@ -160,7 +165,7 @@ def check_type(val, tp):
         return isinstance(val, tuple) and all(
             check_type(x, t) for x, t in zip(val, get_args(tp))
         )
-    elif origin == Union:
+    elif origin in (Union, types.UnionType):
         return any(check_type(val, t) for t in get_args(tp))
     elif origin == dict:
         k_t, k_v = get_args(tp)

@@ -112,4 +112,4 @@ class Meshing(PureMeshing):
                     f"'{type(self).__name__}' object has no attribute '{item}'"
                 )
 
-                return super().__getattribute__(item)
+            return super().__getattribute__(item)

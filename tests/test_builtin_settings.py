@@ -23,6 +23,7 @@
 
 import pytest
 
+import ansys.fluent.core as pyfluent
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import *  # noqa: F401, F403
 from ansys.fluent.core.solver.flobject import InactiveObjectError

@@ -96,7 +96,6 @@ def test_ansys_fluent_core_public_api():
         "exceptions",
         "field_data_interfaces",
         "filereader",
-        "fldoc",
         "fluent_connection",
         "generated",
         "get_build_details",
@@ -107,9 +106,7 @@ def test_ansys_fluent_core_public_api():
         "launcher",
         "logger",
         "module_config",
-        "os",
         "parametric",
-        "pydoc",
         "pyfluent_warnings",
         "rpvars",
         "scheduler",
@@ -133,7 +130,6 @@ def test_ansys_fluent_core_public_api():
         "variable_strategies",
         "version_info",
         "warning",
-        "warnings",
         "workflow",
     ]
 

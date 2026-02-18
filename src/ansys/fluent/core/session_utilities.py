@@ -414,6 +414,9 @@ class SessionBase:
             port=port,
             server_info_file_name=server_info_file_name,
             password=password,
+            allow_remote_host=allow_remote_host,
+            certificates_folder=certificates_folder,
+            insecure_mode=insecure_mode,
         )
 
         expected = "Solver" if cls.__name__ == "PrePost" else cls.__name__

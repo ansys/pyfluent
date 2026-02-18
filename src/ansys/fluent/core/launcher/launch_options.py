@@ -36,13 +36,13 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 )
 from ansys.fluent.core.launcher.launcher_utils import is_windows
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
-from ansys.fluent.core.utils.fluent_version import FluentVersion
-import ansys.platform.instancemanagement as pypim
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
+from ansys.fluent.core.utils.fluent_version import FluentVersion
+import ansys.platform.instancemanagement as pypim
 
 __all__ = (
     "FluentMode",

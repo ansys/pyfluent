@@ -315,7 +315,7 @@ def launch_fluent(
     product_version: FluentVersion | str | float | int | None = None,
     dimension: Dimension | Literal[2, 3] = Dimension.THREE,
     precision: Precision | Literal["single", "double"] = Precision.DOUBLE,
-    processor_count: int = 1,
+    processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
     start_timeout: int | None = None,
     additional_arguments: str = "",
@@ -658,6 +658,7 @@ def connect_to_fluent(
                 allow_remote_host=allow_remote_host,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
+                inside_container=fluent_connection.connection_properties.inside_container,
             )
 
     return new_session(

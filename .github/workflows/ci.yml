@@ -85,6 +85,9 @@ jobs:
   code-style:
     name: Code style
     runs-on: ubuntu-latest
+    env:
+      FLUENT_IMAGE_TAG: v26.1.latest
+
     steps:
       - name: "Run PyAnsys code style checks"
         uses: ansys/actions/code-style@v10.2
@@ -93,16 +96,41 @@ jobs:
           skip-install: false
 
       - name: "Make venv"
-        run: uv venv
-
-      - name: "Install basedpyright"
-        run: uv tool install basedpyright
+        run: uv venv --clear
 
       - name: "Install extras"
         run: uv pip install -e ".[ci_types]"
 
-      - name: "Check Type hints"
-        run: basedpyright --baselinemode=auto
+      - name: Retrieve PyFluent version
+        run: |
+          echo "PYFLUENT_VERSION=$(uv run python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)" >> $GITHUB_OUTPUT
+          echo "PYFLUENT version is: $(uv run python -c "from ansys.fluent.core import __version__; print(); print(__version__)" | tail -1)"
+        id: version
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ansys-bot
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache API Code
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
+        id: cache-api-code
+        with:
+          path: |
+            src/ansys/fluent/core/generated
+          key: API-Code-v${{ env.API_CODE_CACHE }}-${{ steps.version.outputs.PYFLUENT_VERSION }}-${{ env.FLUENT_IMAGE_TAG }}-${{ hashFiles('src/ansys/fluent/core/codegen/**') }}
+          lookup-only: false # zizmor: ignore[cache-poisoning]
+
+      - name:  "Generate the certificates"
+        run: bash .ci/generate_certs.sh
+
+      - name: "Regenerate API codegen"
+        run: uv run codegen/allapigen.py
+
+      - name: "Check type hints"
+        run: uv run basedpyright --baselinemode=auto
 
   commit-style:
     name: "Run commit style checks"
@@ -162,8 +190,9 @@ jobs:
     needs: [docs-style]
     runs-on: [self-hosted, pyfluent]
     env:
-      DOC_DEPLOYMENT_IMAGE_TAG: v25.2.3
+      DOC_DEPLOYMENT_IMAGE_TAG: v26.1.latest
       PYFLUENT_CONTAINER_MOUNT_SOURCE: "/home/ansys/Downloads/ansys_fluent_core_examples"
+      PYTHONDONTWRITEBYTECODE: 1
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -288,6 +317,8 @@ jobs:
     name: Build
     if: ${{ !contains(github.event.pull_request.title, '[skip tests]') }}
     runs-on: [self-hosted, pyfluent]
+    env:
+      PYTHONDONTWRITEBYTECODE: 1
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -400,18 +431,35 @@ jobs:
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make docker-pull
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Run 26.1 API codegen
         if: steps.cache-api-code.outputs.cache-hit != 'true'
         run: make api-codegen
         env:
-          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+          FLUENT_IMAGE_TAG: v26.1.latest
 
       - name: Print 26.1 Fluent version info
         run: |
           cat src/ansys/fluent/core/generated/fluent_version_261.py
           python -c "from src.ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+
+      - name: Pull 27.1 Fluent docker image
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make docker-pull
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Run 27.1 API codegen
+        if: steps.cache-api-code.outputs.cache-hit != 'true'
+        run: make api-codegen
+        env:
+          FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
+
+      - name: Print 27.1 Fluent version info
+        run: |
+          cat src/ansys/fluent/core/generated/fluent_version_271.py
+          python -c "from src.ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -454,9 +502,11 @@ jobs:
             version: 252
           - image-tag: v26.1.latest
             version: 261
+          - image-tag: v27.1.latest
+            version: 271
     timeout-minutes: 60
     env:
-      FLUENT_IMAGE_TAG: ${{ matrix.version == 261 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
+      FLUENT_IMAGE_TAG: ${{ matrix.version == 271 && vars.FLUENT_STABLE_IMAGE_DEV || matrix.image-tag }}
 
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -512,8 +562,8 @@ jobs:
           make install-test
           make unittest-dev-${MATRIX_VERSION}
 
-      - name: Upload 25.2 Coverage Artifacts
-        if: matrix.image-tag == 'v25.2.3'
+      - name: Upload 26.1 Coverage Artifacts
+        if: matrix.image-tag == 'v26.1.latest'
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage_report
@@ -586,8 +636,8 @@ jobs:
 
       - name: Print Fluent version info
         run: |
-          cat src/ansys/fluent/core/generated/fluent_version_261.py
-          python -c "from ansys.fluent.core.generated.solver.settings_261 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
+          cat src/ansys/fluent/core/generated/fluent_version_271.py
+          python -c "from ansys.fluent.core.generated.solver.settings_271 import SHASH; print(f'SETTINGS_HASH = {SHASH}')"
 
       - name: Install again after codegen
         run: |
@@ -597,7 +647,7 @@ jobs:
       - name: Unit Testing
         run: |
           make install-test
-          make unittest-all-261
+          make unittest-all-271
         env:
           FLUENT_IMAGE_TAG: ${{ vars.FLUENT_STABLE_IMAGE_DEV }}
 
