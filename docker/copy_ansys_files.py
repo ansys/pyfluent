@@ -51,13 +51,12 @@ def copy_files(src: Path | str, fluent_version: Path | str, mode: str | None = N
             "ceiList.txt",
             "cfdpostList.txt",
             "fluentList.txt",
-            "gpuList.txt",
         ],
     }
     remove_map = {
-        "solver": ["excludeCEIList.txt", "excludeFluentList.txt"],
-        "meshing": ["excludeFluentList.txt"],
-        "default": ["excludeCEIList.txt", "excludeFluentList.txt"],
+        "solver": ["excludeCEIList.txt"],
+        "meshing": [],
+        "default": ["excludeCEIList.txt"],
     }
 
     # Fallback to default if mode is unrecognized
