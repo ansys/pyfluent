@@ -55,7 +55,6 @@ if TYPE_CHECKING:
     )
     from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
     from ansys.fluent.core.generated.meshing.tui_252 import main_menu
-    from ansys.fluent.core.meshing import meshing_workflow as _meshing_workflow
     import ansys.fluent.core.meshing.meshing_workflow as mesh_wf_old
     import ansys.fluent.core.meshing.meshing_workflow_new as mesh_wf_new
 

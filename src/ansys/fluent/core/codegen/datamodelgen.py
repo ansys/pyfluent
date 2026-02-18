@@ -23,7 +23,7 @@
 """Module to generate Fluent datamodel API classes."""
 
 import argparse
-from io import FileIO, StringIO
+from io import StringIO, TextIOWrapper
 import os
 from pathlib import Path
 import shutil
@@ -116,7 +116,7 @@ def _convert_to_py_name(name: str) -> str:
     return name
 
 
-def _write_command_query_stub(name: str, info: Any, f: FileIO):
+def _write_command_query_stub(name: str, info: Any, f: TextIOWrapper):
     signature = StringIO()
     indent = "        "
     signature.write(f"(\n{indent}self,\n")
@@ -346,7 +346,7 @@ class DataModelGenerator:
                         "Information: Problem accessing flserver datamodel for icing settings\n"
                     )
 
-    def _write_arg_class(self, f: FileIO, arg_info, indent: str):
+    def _write_arg_class(self, f: TextIOWrapper, arg_info, indent: str):
         arg_name = arg_info["name"]
         arg_type = arg_info["type"]
         arg_doc = arg_info.get("helpstring", f"Argument {arg_name}.")
@@ -378,7 +378,9 @@ class DataModelGenerator:
                         f, parameter_info | {"name": name}, f"{indent}    "
                     )
 
-    def _write_static_info(self, name: str, info: Any, f: FileIO, level: int = 0):
+    def _write_static_info(
+        self, name: str, info: Any, f: TextIOWrapper, level: int = 0
+    ):
         api_tree = {}
         # preferences contains a deprecated object Meshing Workflow (with a space)
         # which migrates to MeshingWorkflow automatically. Simplest thing to do is
@@ -401,29 +403,29 @@ class DataModelGenerator:
         for k in named_objects:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
+                + f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in singletons:
             # This is where filtering these names out really matters (see commsent above)
             if k.isidentifier():
                 f.write(
                     f"{indent}        self.{k} = "
-                    f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
+                    + f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
                 )
         for k in parameters:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
+                + f'self.__class__._{k}(service, rules, path + [("{k}", "")])\n'
             )
         for k in commands:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__._{k}(service, rules, "{k}", path)\n'
+                + f'self.__class__._{k}(service, rules, "{k}", path)\n'
             )
         for k in queries:
             f.write(
                 f"{indent}        self.{k} = "
-                f'self.__class__._{k}(service, rules, "{k}", path)\n'
+                + f'self.__class__._{k}(service, rules, "{k}", path)\n'
             )
         f.write(f"{indent}        super().__init__(service, rules, path)\n\n")
         for k in named_objects:
@@ -494,7 +496,7 @@ class DataModelGenerator:
                     )
 
         def _write_static_command_and_query_info(
-            actions, class_name: str, st_info_key: tuple[str], is_command: bool
+            actions, class_name: str, st_info_key: tuple[str, ...], is_command: bool
         ):
             for k in actions:
                 f.write(f"{indent}    class _{k}({class_name}):\n")
