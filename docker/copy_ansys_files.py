@@ -51,6 +51,7 @@ def copy_files(src: Path | str, fluent_version: Path | str, mode: str | None = N
             "ceiList.txt",
             "cfdpostList.txt",
             "fluentList.txt",
+            "gpuList.txt",
         ],
     }
     remove_map = {

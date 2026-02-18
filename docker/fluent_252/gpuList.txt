@@ -1,0 +1,1 @@
+v252/fluent/fluent25.2.0/addons/gpuapp
