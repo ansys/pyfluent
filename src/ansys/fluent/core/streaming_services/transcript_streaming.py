@@ -25,7 +25,7 @@
 import os
 from pathlib import Path
 
-from ansys.api.fluent.v0 import transcript_pb2 as TranscriptModule
+from ansys.api.fluent.v1 import transcript_pb2 as TranscriptModule
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
 
