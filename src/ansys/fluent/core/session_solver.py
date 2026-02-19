@@ -28,7 +28,7 @@ from typing import Any, Dict
 import warnings
 import weakref
 
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.exceptions import BetaFeaturesNotEnabled
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning

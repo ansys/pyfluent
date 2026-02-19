@@ -25,7 +25,7 @@
 from typing import Callable, Dict, List
 import warnings
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     Batch,

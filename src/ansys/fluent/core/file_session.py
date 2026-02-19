@@ -28,7 +28,7 @@ import warnings
 from deprecated.sphinx import deprecated
 import numpy as np
 
-from ansys.api.fluent.v0.field_data_pb2 import DataLocation
+from ansys.api.fluent.v1.field_data_pb2 import DataLocation
 from ansys.fluent.core import PyFluentDeprecationWarning
 from ansys.fluent.core.field_data_interfaces import (
     BaseFieldInfo,
