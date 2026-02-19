@@ -28,7 +28,7 @@ from typing import Callable
 
 from google.protobuf.json_format import MessageToDict
 
-from ansys.api.fluent.v0 import datamodel_se_pb2 as DataModelProtoModule
+from ansys.api.fluent.v1 import datamodel_se_pb2 as DataModelProtoModule
 from ansys.fluent.core.services.datamodel_se import _convert_variant_to_value
 from ansys.fluent.core.streaming_services.streaming import StreamingService
 
@@ -63,13 +63,15 @@ class DatamodelEvents(StreamingService):
         """Processes datamodel events."""
         from ansys.fluent.core import config
 
-        request = DataModelProtoModule.EventRequest(*args, **kwargs)
+        request = DataModelProtoModule.BeginEventStreamingRequest(*args, **kwargs)
         responses = self._streaming_service.begin_streaming(
             request, started_evt, id=id, stream_begin_method=stream_begin_method
         )
         while True:
             try:
-                response: DataModelProtoModule.EventResponse = next(responses)
+                response: DataModelProtoModule.BeginEventStreamingResponse = next(
+                    responses
+                )
                 if not config.hide_log_secrets:
                     network_logger.debug(
                         f"GRPC_TRACE: RPC = /grpcRemoting.DataModel/BeginEventStreaming, response = {MessageToDict(response)}"

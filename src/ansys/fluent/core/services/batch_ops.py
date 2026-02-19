@@ -31,8 +31,8 @@ import weakref
 from google.protobuf.message import Message
 import grpc
 
-import ansys.api.fluent.v0 as api
-from ansys.api.fluent.v0 import batch_ops_pb2, batch_ops_pb2_grpc
+import ansys.api.fluent.v1 as api
+from ansys.api.fluent.v1 import batch_ops_pb2, batch_ops_pb2_grpc
 
 _TBatchOps = TypeVar("_TBatchOps", bound="BatchOps")
 

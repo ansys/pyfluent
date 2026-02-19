@@ -29,7 +29,7 @@ from enum import Enum
 from threading import RLock
 from typing import Any, Dict, List, Optional
 
-from ansys.api.fluent.v0.variant_pb2 import Variant
+from ansys.api.fluent.v1.variant_pb2 import Variant
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
 StateType = (
