@@ -25,13 +25,13 @@
 from dataclasses import dataclass
 from enum import Enum
 import os
-from typing import List, Tuple
 
 import grpc
 
 from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
 from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -41,11 +41,11 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.streaming_services.events_streaming import SolverEvent
 
 
-class AppUtilitiesService:
+class AppUtilitiesService(ServiceProtocol):
     """AppUtilities Service."""
 
-    def __init__(
-        self, channel: grpc.Channel, metadata: List[Tuple[str, str]], fluent_error_state
+    def __init__(  # pyright: ignore[reportMissingSuperCall]
+        self, channel: grpc.Channel, metadata: list[tuple[str, str]], fluent_error_state
     ):
         """__init__ method of AppUtilities class."""
         intercept_channel = grpc.intercept_channel(

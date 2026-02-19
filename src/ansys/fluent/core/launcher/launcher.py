@@ -26,14 +26,15 @@ This module supports both starting Fluent locally and connecting to a remote ins
 with gRPC.
 """
 
-import inspect
 import logging
 import os
-from typing import Any, Dict
+from typing import Any, Literal, TypedDict, cast, overload
 from warnings import warn
 
+from typing_extensions import Required, Unpack, assert_never
+
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core._types import PathType
+from ansys.fluent.core._types import LauncherArgsBase, PathType
 from ansys.fluent.core.exceptions import DisallowedValuesError
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.launcher.container_launcher import DockerLauncher
@@ -65,12 +66,20 @@ from ansys.fluent.core.launcher.server_info import _get_server_info
 from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, SlurmLauncher
 from ansys.fluent.core.launcher.standalone_launcher import StandaloneLauncher
 import ansys.fluent.core.launcher.watchdog as watchdog
+from ansys.fluent.core.session import BaseSession
 from ansys.fluent.core.session_meshing import Meshing
 from ansys.fluent.core.session_pure_meshing import PureMeshing
 from ansys.fluent.core.session_solver import Solver
+from ansys.fluent.core.session_solver_aero import SolverAero
 from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.deprecate import deprecate_arguments
 from ansys.fluent.core.utils.fluent_version import FluentVersion
+
+__all__ = (
+    "create_launcher",
+    "launch_fluent",
+    "connect_to_fluent",
+)
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -96,7 +105,7 @@ def create_launcher(
         Session launcher.
     Raises
     ------
-    DisallowedValuesError
+    ValueError
         If an unknown Fluent launch mode is passed.
     """
     launchers = {
@@ -146,6 +155,137 @@ def _version_to_dimension(old_arg_val):
         return None
 
 
+class LaunchFluentArgs(LauncherArgsBase, TypedDict, total=False):
+    """Arguments for launch_fluent()."""
+
+    journal_file_names: None | str | list[str]
+    """The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
+    journal(s). The default is ``None``.
+    """
+    env: dict[str, Any] | None
+    """Mapping to modify environment variables in Fluent. The default
+    is ``None``.
+    """
+    start_container: bool | None
+    """Specifies whether to launch a Fluent Docker container image. For more details about containers, see
+    :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    """
+    container_dict: dict[str, Any] | None
+    """Dictionary for Fluent Docker container configuration. If specified,
+    setting ``start_container = True`` as well is redundant.
+    Will launch Fluent inside a Docker container using the configuration changes specified.
+    See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
+    """
+    case_file_name: str | None
+    """If provided, the case file at ``case_file_name`` is read into the Fluent session."""
+    case_data_file_name: str | None
+    """If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session."""
+    lightweight_mode: bool | None
+    """Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
+    current Fluent solver session. The mesh is read into a background Fluent solver session which will
+    replace the current Fluent solver session once the mesh read is complete and the lightweight settings
+    made by the user in the current Fluent solver session have been applied in the background Fluent
+    solver session. This is all orchestrated by PyFluent and requires no special usage.
+    This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
+    """
+    py: bool | None
+    """If True, Fluent will run in Python mode. Default is None."""
+    cwd: str | None
+    """Working directory for the Fluent client."""
+    fluent_path: str | None
+    """User provided Fluent installation path."""
+    topy: str | list[Any] | None
+    """A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
+    Can optionally take the file name of the new python journal file.
+    """
+    use_docker_compose: bool
+    """Whether to use Docker Compose to launch Fluent."""
+    use_podman_compose: bool
+    """Whether to use Podman Compose to launch Fluent."""
+
+
+class SlurmSchedulerOptions(
+    TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    scheduler: Required[Literal["slurm"]]
+    """Currently only the Slurm scheduler is supported."""
+    scheduler_headnode: str
+    """The keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account`` are optional and should be
+    specified in a similar manner to Fluent's scheduler options.
+    """
+    scheduler_queue: str
+    """The keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account`` are optional and should be
+    specified in a similar manner to Fluent's scheduler options.
+    """
+    scheduler_account: str
+    """The keys ``scheduler_headnode``, ``scheduler_queue`` and ``scheduler_account`` are optional and should be
+    specified in a similar manner to Fluent's scheduler options.
+    """
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.MESHING, "meshing"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> Meshing: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.PURE_MESHING, "pure_meshing"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> PureMeshing: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.SOLVER, "solver"] = FluentMode.SOLVER,
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> Solver: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.SOLVER_ICING, "solver_icing"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> SolverIcing: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    mode: Literal[FluentMode.SOLVER_AERO, "solver_aero"],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> SolverAero: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[False] = False,
+    scheduler_options: SlurmSchedulerOptions,
+    mode: FluentMode | str = FluentMode.SOLVER,
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> SlurmFuture: ...
+
+
+@overload
+def launch_fluent(
+    *,
+    dry_run: Literal[True],
+    **kwargs: Unpack[LaunchFluentArgs],
+) -> tuple[str, str]: ...
+
+
 def _custom_converter_gui(kwargs):
     old_val = kwargs.pop("show_gui", None)
     kwargs["ui_mode"] = _show_gui_to_ui_mode(old_val, **kwargs)
@@ -171,16 +311,17 @@ def _custom_converter_dimension(kwargs):
     converter=_custom_converter_dimension,
 )
 def launch_fluent(
+    *,
     product_version: FluentVersion | str | float | int | None = None,
-    dimension: Dimension | int | None = None,
-    precision: Precision | str | None = None,
+    dimension: Dimension | Literal[2, 3] = Dimension.THREE,
+    precision: Precision | Literal["single", "double"] = Precision.DOUBLE,
     processor_count: int | None = None,
     journal_file_names: None | str | list[str] = None,
-    start_timeout: int = None,
+    start_timeout: int | None = None,
     additional_arguments: str = "",
-    env: Dict[str, Any] | None = None,
+    env: dict[str, Any] | None = None,
     start_container: bool | None = None,
-    container_dict: dict | None = None,
+    container_dict: dict[str, Any] | None = None,
     dry_run: bool = False,
     cleanup_on_exit: bool = True,
     start_transcript: bool = True,
@@ -191,157 +332,37 @@ def launch_fluent(
     case_file_name: "PathType | None" = None,
     case_data_file_name: "PathType | None" = None,
     lightweight_mode: bool | None = None,
-    mode: FluentMode | str | None = None,
+    mode: FluentMode | str = FluentMode.SOLVER,
     py: bool | None = None,
     gpu: bool | list[int] | None = None,
     cwd: "PathType | None" = None,
     fluent_path: "PathType | None" = None,
-    topy: str | list | None = None,
+    topy: str | list[Any] | None = None,
     start_watchdog: bool | None = None,
-    scheduler_options: dict | None = None,
+    scheduler_options: SlurmSchedulerOptions | None = None,
     file_transfer_service: Any | None = None,
-    use_docker_compose: bool | None = None,
-    use_podman_compose: bool | None = None,
+    use_docker_compose: bool = False,
+    use_podman_compose: bool = False,
     certificates_folder: str | None = None,
     insecure_mode: bool = False,
-) -> Meshing | PureMeshing | Solver | SolverIcing | SlurmFuture | dict:
+) -> (
+    Meshing
+    | PureMeshing
+    | Solver
+    | SolverIcing
+    | SolverAero
+    | SlurmFuture
+    | tuple[str, str]
+):
     """Launch Fluent locally in server mode or connect to a running Fluent server
     instance.
-
-    Parameters
-    ----------
-    product_version : FluentVersion or str or float or int, optional
-        Version of Ansys Fluent to launch. To use Fluent version 2025 R1, pass
-        any of  ``FluentVersion.v251``, ``"25.1.0"``, ``"25.1"``, ``25.1``or ``251``.
-        The default is ``None``, in which case the newest installed version is used.
-        PyFluent uses the ``AWP_ROOT<ver>`` environment variable to locate the Fluent
-        installation, where ``<ver>`` is the Ansys release number such as ``251``.
-        The ``AWP_ROOT<ver>`` environment variable is automatically configured on Windows
-        system when Fluent is installed. On Linux systems, ``AWP_ROOT<ver>`` must be
-        configured to point to the absolute path of an Ansys installation such as
-        ``/apps/ansys_inc/v251``.
-    dimension : Dimension or int, optional
-        Geometric dimensionality of the Fluent simulation. The default is ``None``,
-        in which case ``Dimension.THREE`` is used. Options are either the values of the
-        ``Dimension`` enum (``Dimension.TWO`` or ``Dimension.THREE``) or any of ``2`` and ``3``.
-    precision : Precision or str, optional
-        Floating point precision. The default is ``None``, in which case ``Precision.DOUBLE``
-        is used. Options are either the values of the ``Precision`` enum (``Precision.SINGLE``
-        or ``Precision.DOUBLE``) or any of ``"double"`` and ``"single"``.
-    processor_count : int, optional
-        Number of processors. The default is ``None``, in which case ``1``
-        processor is used.  In job scheduler environments the total number of
-        allocated cores is clamped to value of ``processor_count``.
-    journal_file_names : str or list of str, optional
-        The string path to a Fluent journal file, or a list of such paths. Fluent will execute the
-        journal(s). The default is ``None``.
-    start_timeout : int, optional
-        Maximum allowable time in seconds for connecting to the Fluent
-        server. The default is ``60`` if Fluent is launched outside a Slurm environment,
-        no timeout if Fluent is launched within a Slurm environment.
-    additional_arguments : str, optional
-        Additional arguments to send to Fluent as a string in the same
-        format they are normally passed to Fluent on the command line.
-    env : dict[str, str], optional
-        Mapping to modify environment variables in Fluent. The default
-        is ``None``.
-    start_container : bool, optional
-        Specifies whether to launch a Fluent Docker container image. For more details about containers, see
-        :mod:`~ansys.fluent.core.launcher.fluent_container`.
-    container_dict : dict, optional
-        Dictionary for Fluent Docker container configuration. If specified,
-        setting ``start_container = True`` as well is redundant.
-        Will launch Fluent inside a Docker container using the configuration changes specified.
-        See also :mod:`~ansys.fluent.core.launcher.fluent_container`.
-    dry_run : bool, optional
-        Defaults to False. If True, will not launch Fluent, and will instead print configuration information
-        that would be used as if Fluent was being launched. If dry running a standalone start
-        ``launch_fluent()`` will return a tuple containing Fluent launch string and the server info file name.
-        If dry running a container start, ``launch_fluent()`` will return the configured ``container_dict``.
-    cleanup_on_exit : bool, optional
-        Whether to shut down the connected Fluent session when PyFluent is
-        exited, or the ``exit()`` method is called on the session instance,
-        or if the session instance becomes unreferenced. The default is ``True``.
-    start_transcript : bool, optional
-        Whether to start streaming the Fluent transcript in the client. The
-        default is ``True``. You can stop and start the streaming of the
-        Fluent transcript subsequently via the method calls, ``transcript.start()``
-        and ``transcript.stop()`` on the session object.
-    ui_mode : UIMode or str, optional
-        Defines the user interface mode for Fluent. Accepts either a ``UIMode`` value
-        or a corresponding string such as ``"no_gui"``, ``"hidden_gui"``, or ``"gui"``.
-    graphics_driver : FluentWindowsGraphicsDriver or FluentLinuxGraphicsDriver or str, optional
-        Graphics driver of Fluent. In Windows, options are either the values of the
-        ``FluentWindowsGraphicsDriver`` enum or any of ``"null"``, ``"msw"``,
-        ``"dx11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. In Linux, options are
-        either the values of the ``FluentLinuxGraphicsDriver`` enum or any of
-       ``"null"``, ``"x11"``, ``"opengl2"``, ``"opengl"`` or ``"auto"``. The default is
-       ``FluentWindowsGraphicsDriver.AUTO`` in Windows and
-       ``FluentLinuxGraphicsDriver.AUTO`` in Linux.
-    case_file_name : :class:`os.PathLike` or str, optional
-        If provided, the case file at ``case_file_name`` is read into the Fluent session.
-    case_data_file_name : :class:`os.PathLike` or str, optional
-        If provided, the case and data files at ``case_data_file_name`` are read into the Fluent session.
-    lightweight_mode : bool, optional
-        Whether to run in lightweight mode. In lightweight mode, the lightweight settings are read into the
-        current Fluent solver session. The mesh is read into a background Fluent solver session which will
-        replace the current Fluent solver session once the mesh read is complete and the lightweight settings
-        made by the user in the current Fluent solver session have been applied in the background Fluent
-        solver session. This is all orchestrated by PyFluent and requires no special usage.
-        This parameter is used only when ``case_file_name`` is provided. The default is ``False``.
-    mode : FluentMode or str or None, optional
-        Launch mode of Fluent to point to a specific session type. Can be a
-        ``FluentMode`` enum member or a string. The default value is ``None``.
-        Valid string options include ``"meshing"``, ``"pure-meshing"``, and
-        ``"solver"``.
-    py : bool, optional
-        If True, Fluent will run in Python mode. Default is None.
-    gpu : bool or list, optional
-        This option will start Fluent with the GPU Solver. A list of GPU IDs can be
-        passed to use specific GPUs. If True is passed, the number of GPUs used will be
-        clamped to the value of ``processor_count``. Please refer to
-        *Starting the Fluent GPU Solver* section in *Fluent's User Guide* for more
-        information like how to determine the GPU IDs.
-    cwd : :class:`os.PathLike` or str, optional
-        Working directory for the Fluent client.
-    fluent_path: :class:`os.PathLike` or str, optional
-        User provided Fluent installation path.
-    topy : bool or str, optional
-        A boolean flag to write the equivalent Python journal(s) from the journal(s) passed.
-        Can optionally take the file name of the new python journal file.
-    start_watchdog : bool, optional
-        When ``cleanup_on_exit`` is True, ``start_watchdog`` defaults to True,
-        which means an independent watchdog process is run to ensure
-        that any local GUI-less Fluent sessions started by PyFluent are properly closed (or killed if frozen)
-        when the current Python process ends.
-    scheduler_options : dict, optional
-        Dictionary containing scheduler options. Default is None.
-
-        Currently only the Slurm scheduler is supported. The ``scheduler_options``
-        dictionary must be of the form ``{"scheduler": "slurm",
-        "scheduler_headnode": "<headnode>", "scheduler_queue": "<queue>",
-        "scheduler_account": "<account>"}``. The keys ``scheduler_headnode``,
-        ``scheduler_queue`` and ``scheduler_account`` are optional and should be
-        specified in a similar manner to Fluent's scheduler options.
-    file_transfer_service : optional
-        File transfer service. Uploads/downloads files to/from the server.
-    use_docker_compose: bool
-        Whether to use Docker Compose to launch Fluent.
-    use_podman_compose: bool
-        Whether to use Podman Compose to launch Fluent.
-    certificates_folder : str, optional
-        Path to the folder containing TLS certificates for Fluent's gRPC server.
-    insecure_mode : bool, optional
-        If True, Fluent's gRPC server will be started in insecure mode without TLS.
-        This mode is not recommended. For more details on the implications
-        and usage of insecure mode, refer to the Fluent documentation.
 
     Returns
     -------
     :obj:`~typing.Union` [:class:`Meshing<ansys.fluent.core.session_meshing.Meshing>`, \
     :class:`~ansys.fluent.core.session_pure_meshing.PureMeshing`, \
     :class:`~ansys.fluent.core.session_solver.Solver`, \
-    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, dict]
+    :class:`~ansys.fluent.core.session_solver_icing.SolverIcing`, tuple[str, str]]
         Session object or configuration dictionary if ``dry_run = True``.
 
     Raises
@@ -365,19 +386,21 @@ def launch_fluent(
             "Cannot use both 'use_docker_compose' and 'use_podman_compose' at the same time."
         )
 
-    if start_timeout is None:
-        start_timeout = pyfluent.config.launch_fluent_timeout
+    start_timeout_val = (
+        start_timeout
+        if start_timeout is not None
+        else pyfluent.config.launch_fluent_timeout
+    )
 
-    def _mode_to_launcher_type(fluent_launch_mode: LaunchMode):
-        launcher_mode_type = {
-            LaunchMode.CONTAINER: DockerLauncher,
-            LaunchMode.PIM: PIMLauncher,
-            LaunchMode.SLURM: SlurmLauncher,
-            LaunchMode.STANDALONE: StandaloneLauncher,
-        }
-        return launcher_mode_type[fluent_launch_mode]
+    def _normalize_path(value: "PathType | None") -> str | None:
+        if value is None or isinstance(value, str):
+            return value
+        return os.fspath(value)
 
-    argvals = inspect.getargvalues(inspect.currentframe()).locals
+    case_file_name_val = _normalize_path(case_file_name)
+    case_data_file_name_val = _normalize_path(case_data_file_name)
+    cwd_val = _normalize_path(cwd)
+    fluent_path_val = _normalize_path(fluent_path)
 
     fluent_launch_mode = _get_fluent_launch_mode(
         start_container=start_container,
@@ -397,20 +420,120 @@ def launch_fluent(
             UserWarning,
         )
 
-    launcher_type = _mode_to_launcher_type(fluent_launch_mode)
-    launch_fluent_args = set(inspect.signature(launch_fluent).parameters.keys())
-    launcher_type_args = set(
-        inspect.signature(launcher_type.__init__).parameters.keys()
-    )
-    common_args = launch_fluent_args.intersection(launcher_type_args)
-    launcher_argvals = {arg: val for arg, val in argvals.items() if arg in common_args}
     if pyfluent.config.start_watchdog is False:
-        launcher_argvals["start_watchdog"] = False
-    launcher = launcher_type(**launcher_argvals)
-    return launcher()
+        start_watchdog = False
+
+    match fluent_launch_mode:
+        case LaunchMode.CONTAINER:
+            launcher = DockerLauncher(
+                mode=mode,
+                ui_mode=ui_mode,
+                graphics_driver=graphics_driver,
+                product_version=product_version,
+                dimension=dimension,
+                precision=precision,
+                processor_count=processor_count,
+                start_timeout=start_timeout_val,
+                additional_arguments=additional_arguments,
+                container_dict=container_dict,
+                dry_run=dry_run,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                py=py,
+                gpu=gpu,
+                start_watchdog=start_watchdog,
+                file_transfer_service=file_transfer_service,
+                use_docker_compose=use_docker_compose,
+                use_podman_compose=use_podman_compose,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+            )
+        case LaunchMode.PIM:
+            launcher = PIMLauncher(
+                mode=mode,
+                ui_mode=ui_mode,
+                graphics_driver=graphics_driver,
+                product_version=product_version,
+                dimension=dimension,
+                precision=precision,
+                processor_count=processor_count,
+                start_timeout=start_timeout_val,
+                additional_arguments=additional_arguments,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                gpu=gpu,
+                start_watchdog=start_watchdog,
+                file_transfer_service=file_transfer_service,
+            )
+        case LaunchMode.SLURM:
+            launcher = SlurmLauncher(
+                mode=mode,
+                ui_mode=ui_mode,
+                graphics_driver=graphics_driver,
+                product_version=product_version,
+                dimension=dimension,
+                precision=precision,
+                processor_count=processor_count,
+                journal_file_names=journal_file_names,
+                start_timeout=start_timeout_val,
+                additional_arguments=additional_arguments,
+                env=env,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                case_file_name=case_file_name_val,
+                case_data_file_name=case_data_file_name_val,
+                lightweight_mode=lightweight_mode,
+                py=py,
+                gpu=gpu,
+                cwd=cwd_val,
+                fluent_path=fluent_path_val,
+                topy=topy,
+                start_watchdog=start_watchdog,
+                scheduler_options=(
+                    dict(scheduler_options) if scheduler_options is not None else None
+                ),
+                file_transfer_service=file_transfer_service,
+                certificates_folder=certificates_folder,
+                insecure_mode=insecure_mode,
+            )
+        case LaunchMode.STANDALONE:
+            launcher = StandaloneLauncher(
+                mode=FluentMode(mode),
+                dry_run=dry_run,
+                product_version=product_version,
+                dimension=dimension,
+                precision=precision,
+                processor_count=processor_count,
+                journal_file_names=journal_file_names,
+                start_timeout=start_timeout_val,
+                additional_arguments=additional_arguments,
+                env=env,
+                cleanup_on_exit=cleanup_on_exit,
+                start_transcript=start_transcript,
+                ui_mode=ui_mode,
+                graphics_driver=graphics_driver,
+                case_file_name=case_file_name_val,
+                case_data_file_name=case_data_file_name_val,
+                lightweight_mode=lightweight_mode,
+                py=py,
+                gpu=gpu,
+                cwd=cwd_val,
+                fluent_path=fluent_path_val,
+                topy=topy,
+                start_watchdog=start_watchdog,
+                file_transfer_service=file_transfer_service,
+            )
+        case _:
+            assert_never(fluent_launch_mode)
+
+    return cast(
+        Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str],
+        launcher(),
+    )
 
 
 def connect_to_fluent(
+    *,
     ip: str | None = None,
     port: int | None = None,
     address: str | None = None,
@@ -423,7 +546,7 @@ def connect_to_fluent(
     insecure_mode: bool = False,
     start_watchdog: bool | None = None,
     file_transfer_service: Any | None = None,
-) -> Meshing | PureMeshing | Solver | SolverIcing:
+) -> Meshing | PureMeshing | Solver | SolverIcing | SolverAero:
     """Connect to an existing Fluent server instance.
 
     Parameters
@@ -535,6 +658,7 @@ def connect_to_fluent(
                 allow_remote_host=allow_remote_host,
                 certificates_folder=certificates_folder,
                 insecure_mode=insecure_mode,
+                inside_container=fluent_connection.connection_properties.inside_container,
             )
 
     return new_session(

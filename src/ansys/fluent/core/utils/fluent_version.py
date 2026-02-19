@@ -32,6 +32,8 @@ from typing import Any
 
 import ansys.fluent.core as pyfluent
 
+__all__ = ("FluentVersion",)
+
 
 class AnsysVersionNotFound(RuntimeError):
     """Raised when Ansys version is not found."""

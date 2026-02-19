@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections.abc import Iterable
 import time
-from typing import Iterable
 
 from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest

@@ -22,12 +22,13 @@
 
 """Module for events management."""
 
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass, field, fields
 from enum import Enum
 from functools import partial
 import inspect
 import logging
-from typing import Callable, Generic, Literal, Sequence, Type, TypeVar
+from typing import Generic, Literal, TypeVar
 import warnings
 
 from google.protobuf.json_format import MessageToDict
@@ -382,7 +383,7 @@ class EventsManager(Generic[TEvent]):
 
     def __init__(
         self,
-        event_type: Type[TEvent],
+        event_type: type[TEvent],
         session_events_service,
         fluent_error_state,
         session,

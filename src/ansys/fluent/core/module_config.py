@@ -20,11 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 """Configuration variables for PyFluent."""
+from collections.abc import Callable
 import inspect
 import os
 from pathlib import Path
-from typing import Any, Callable, Generic, TypeVar
+from typing import Any, Generic, TypeVar, cast
 import warnings
+
+__all__ = ("config",)
+
 
 TConfig = TypeVar("TConfig", bound="Config")
 
@@ -347,7 +351,16 @@ class Config:
     def print(self):
         """Print all configuration variables."""
         config_dict = {}
-        for k, v in inspect.getmembers_static(self):
+        for (
+            k,
+            v,
+        ) in cast(
+            list[tuple[str, Any]],
+            inspect.getmembers_static(  # pyright: ignore[reportAttributeAccessIssue]
+                self
+            ),
+        ):
+            # FIXME: This is an actual bug due to not being in 3.10 (added in 3.11)
             if isinstance(v, (_ConfigDescriptor, property)):
                 config_dict[k] = v.__get__(self, self.__class__)
         max_key_length = max(len(k) for k in config_dict)

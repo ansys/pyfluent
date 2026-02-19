@@ -27,6 +27,11 @@ import subprocess
 
 import ansys.fluent.core as pyfluent
 
+__all__ = (
+    "get_build_version",
+    "get_build_version_string",
+)
+
 
 def get_build_version():
     """Get build version."""

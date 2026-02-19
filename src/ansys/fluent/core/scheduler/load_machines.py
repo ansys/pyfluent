@@ -31,13 +31,12 @@ import csv
 import os
 from pathlib import Path
 import subprocess
-from typing import Dict, List
 
 from ansys.fluent.core.scheduler.machine_list import Machine, MachineList
 
 
 def load_machines(
-    machine_info: List[Dict[str, int]] | None = None,
+    machine_info: list[dict[str, int]] | None = None,
     host_info: str | None = None,
     ncores: int | None = None,
 ) -> MachineList:
@@ -145,7 +144,7 @@ def _parse_host_info(host_info):
     """
     if Path(host_info).is_file():
         # Only opens a file if it exists
-        with open(host_info, "r") as f:
+        with open(host_info) as f:
             host_info = f.read()
 
     sMod = 1 if host_info[0] == "[" else 0
@@ -275,7 +274,7 @@ def _construct_machine_list_uge(host_file_name):
     """Provide private module function to parse the UGE host file."""
     csv.register_dialect("pemachines", delimiter=" ", skipinitialspace=True)
     machineList = MachineList()
-    with open(host_file_name, "r") as peFile:
+    with open(host_file_name) as peFile:
         peReader = csv.reader(peFile, dialect="pemachines")
         for row in peReader:
             if len(row) == 0:
@@ -305,7 +304,7 @@ def _construct_machine_list_pbs(host_file_name):
     # It's identical to a Fluent host file format.  This code accumulates the total
     # core count on each machine.
     machineDict = {}
-    with open(host_file_name, "r") as pbsFile:
+    with open(host_file_name) as pbsFile:
         for hostname in pbsFile:
             hostname = hostname.rstrip("\r\n")
             if len(hostname) == 0:

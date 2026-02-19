@@ -31,6 +31,7 @@ from grpc_health.v1 import health_pb2 as HealthCheckModule
 from grpc_health.v1 import health_pb2_grpc as HealthCheckGrpcModule
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -41,7 +42,7 @@ from ansys.fluent.core.services.interceptors import (
 logger: logging.Logger = logging.getLogger("pyfluent.general")
 
 
-class HealthCheckService:
+class HealthCheckService(ServiceProtocol):
     """Class wrapping the health check gRPC service of Fluent.
 
     Methods

@@ -22,7 +22,7 @@
 
 """Module containing class encapsulating Fluent connection."""
 
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any
 
 from ansys.fluent.core.fluent_connection import FluentConnection
 from ansys.fluent.core.services import SchemeEval
@@ -47,7 +47,7 @@ class Meshing(PureMeshing):
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Meshing session.
 
@@ -65,7 +65,7 @@ class Meshing(PureMeshing):
             transcript can be subsequently started and stopped
             using method calls on the ``Session`` object.
         """
-        super(Meshing, self).__init__(
+        super().__init__(
             fluent_connection=fluent_connection,
             scheme_eval=scheme_eval,
             file_transfer_service=file_transfer_service,
@@ -95,56 +95,21 @@ class Meshing(PureMeshing):
         )
         return solver_session
 
-    def __getattribute__(self, item: str):
-        if item.startswith("__") and item.endswith("__"):
+    if not TYPE_CHECKING:
+
+        def __getattribute__(self, item: str):
+            if item.startswith("__") and item.endswith("__"):
+                return super().__getattribute__(item)
+            try:
+                _connection = super().__getattribute__("_fluent_connection")
+            except AttributeError:
+                _connection = False
+            if (
+                _connection is None
+                and item not in BaseSession._inactive_session_allow_list
+            ):
+                raise AttributeError(
+                    f"'{type(self).__name__}' object has no attribute '{item}'"
+                )
+
             return super().__getattribute__(item)
-        try:
-            _connection = super(Meshing, self).__getattribute__("_fluent_connection")
-        except AttributeError:
-            _connection = False
-        if _connection is None and item not in BaseSession._inactive_session_allow_list:
-            raise AttributeError(
-                f"'{type(self).__name__}' object has no attribute '{item}'"
-            )
-
-        return super(Meshing, self).__getattribute__(item)
-
-    @property
-    def tui(self):
-        """Meshing TUI root."""
-        return super(Meshing, self).tui
-
-    @property
-    def meshing(self):
-        """Meshing datamodel root."""
-        return super(Meshing, self).meshing
-
-    @property
-    def meshing_utilities(self):
-        """Meshing utilities datamodel root."""
-        return super(Meshing, self).meshing_utilities
-
-    @property
-    def workflow(self):
-        """Workflow datamodel root."""
-        return super(Meshing, self).workflow
-
-    @property
-    def meshing_workflow(self):
-        """Full API to meshing and meshing_workflow."""
-        return super(Meshing, self).meshing_workflow
-
-    @property
-    def PartManagement(self):
-        """Part management datamodel root."""
-        return super(Meshing, self).PartManagement
-
-    @property
-    def PMFileManagement(self):
-        """Part management file management datamodel root."""
-        return super(Meshing, self).PMFileManagement
-
-    @property
-    def preferences(self):
-        """Preferences datamodel root."""
-        return super(Meshing, self).preferences

@@ -20,28 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from ansys.fluent.core.generated.datamodel_252.preferences import (
-    Root as preferences_root,
-)
-from ansys.fluent.core.generated.datamodel_252.workflow import Root as workflow_root
-import ansys.fluent.core.generated.solver.settings_252 as settings_root
-from ansys.fluent.core.generated.solver.tui_252 import main_menu
-from ansys.fluent.core.system_coupling import SystemCoupling
+"""Provides protocol definitions for gRPC services."""
 
-class Solver:
-    @property
-    def version(self): ...
-    @property
-    def tui(self) -> main_menu: ...
-    @property
-    def workflow(self) -> workflow_root: ...
-    @property
-    def system_coupling(self) -> SystemCoupling: ...
-    @property
-    def preferences(self) -> preferences_root: ...
-    def read_case_lightweight(self, file_name: str): ...
-    def read_case(self, file_name: str): ...
-    def write_case(self, file_name: str): ...
-    @property
-    def settings(self) -> settings_root.root: ...
-    def enable_beta_features(self): ...
+from typing import TYPE_CHECKING, Protocol
+
+if TYPE_CHECKING:
+    import grpc
+
+
+class ServiceProtocol(Protocol):
+    """Protocol for gRPC service classes."""
+
+    if TYPE_CHECKING:
+
+        def __init__(
+            self, channel: "grpc.Channel", metadata: list[tuple[str, str]]
+        ) -> None: ...
