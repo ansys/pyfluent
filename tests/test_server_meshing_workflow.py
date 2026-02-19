@@ -1576,6 +1576,8 @@ def test_workflow_traversal(new_meshing_session):
     assert wf_6.name() == "Add Boundary Layers"
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
