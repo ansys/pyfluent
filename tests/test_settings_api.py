@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from pathlib import Path
+import tempfile
 import warnings
 
 from conftest import SKIP_INVESTIGATING
@@ -799,7 +801,7 @@ def test_named_object_commands(mixing_elbow_settings_session):
     solver = mixing_elbow_settings_session
     inlets = VelocityInlets(solver)
     inlets.list()
-    inlets.list_properties(object_name="hot-inlet")
+    inlets.list_properties(object_name="hot-i   nlet")
     if solver.get_fluent_version() >= FluentVersion.v261:
         NamedObject.list(inlets)
         NamedObject.list_properties(inlets, object_name="hot-inlet")
@@ -860,3 +862,47 @@ def test_read_only_command_execution(mixing_elbow_case_session):
     assert contour.display.is_read_only() is True
     with pytest.raises(ReadOnlyActionError):
         contour.display()
+
+
+def test_setting_base_with_name(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+
+    with solver:
+        report_def = solver.settings.solution.report_definitions.surface.create(
+            "test-report-def"
+        )
+        report_def.report_type = "surface-areaavg"
+        report_def.field = "temperature"
+        report_def.surface_names = ["hot-inlet"]
+
+        report_file_obj = solver.settings.solution.monitor.report_files.create(
+            "test-file"
+        )
+        report_file_obj.report_defs = [report_def]
+
+        assert report_file_obj.report_defs() == [report_def.name()]
+
+
+def test_filename_with_pathlib_path(mixing_elbow_settings_session):
+    solver = mixing_elbow_settings_session
+
+    with tempfile.TemporaryDirectory() as tmpdir, solver:
+        path_obj = Path(tmpdir) / "test_output.dat"
+        path_str = str(path_obj)
+
+        report_def = solver.settings.solution.report_definitions.surface.create(
+            "test-path-report"
+        )
+        report_def.report_type = "surface-areaavg"
+        report_def.field = "pressure"
+        report_def.surface_names = ["cold-inlet"]
+
+        report_file = solver.settings.solution.monitor.report_files.create(
+            "test-path-file"
+        )
+        report_file.report_defs = "test-path-report"
+
+        report_file.file_name = path_obj
+
+        result_path = report_file.file_name()
+        assert result_path == path_str

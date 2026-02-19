@@ -188,13 +188,13 @@ _arg_type_strings = {
     "Integer": "int",
     "Real": "float | str",
     "String": "str",
-    "Filename": "str",
+    "Filename": "PathType",
     "BooleanList": "list[bool]",
     "IntegerList": "list[int]",
     "RealVector": "tuple[float | str, float | str, float | str]",
     "RealList": "list[float | str]",
     "StringList": "list[str]",
-    "FilenameList": "list[str]",
+    "FilenameList": "list[PathType]",
 }
 
 
@@ -381,6 +381,7 @@ def generate(version: str, static_infos: dict, verbose: bool = False) -> None:
         header.write("# This is an auto-generated file.  DO NOT EDIT!\n")
         header.write("#\n")
         header.write("\n")
+        header.write("from ansys.fluent.core._types import PathType\n")
         header.write("from ansys.fluent.core.solver.flobject import *\n\n")
         header.write("from ansys.fluent.core.solver.flobject import (\n")
         header.write("    _ChildNamedObjectAccessorMixin,\n")
