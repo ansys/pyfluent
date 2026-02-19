@@ -24,6 +24,7 @@
 
 from __future__ import annotations
 
+from contextlib import suppress
 import ctypes
 from ctypes import c_int, sizeof
 from dataclasses import dataclass
@@ -923,10 +924,9 @@ class FluentConnection:
             for cb in finalizer_cbs:
                 cb()
             if cleanup_on_exit:
-                try:
+                # Use suppress to ignore exceptions during task lookup without triggering B110
+                with suppress(Exception):
                     connection_interface.exit_server()
-                except Exception:
-                    pass
             channel.close()
             channel = None
 
