@@ -89,12 +89,9 @@ Modeling Species Transport and Gaseous Combustion
 
 from pathlib import Path
 
-from ansys.units import VariableCatalog
-
 import ansys.fluent.core as pyfluent
-from ansys.units.common import K, m, Pa, W, s
-
-from ansys.fluent.core.generated.solver.settings_builtin_261 import Fluxes, General, Iterate, SurfaceIntegrals, WriteCase, WriteCaseData, write_case
+from ansys.units import VariableCatalog
+from ansys.units.common import K, Pa, W, m, s
 
 solver = pyfluent.Solver.from_install(dimension=2)
 print(solver.get_fluent_version())
@@ -107,23 +104,30 @@ print(solver.get_fluent_version())
 from ansys.fluent.core import FluentVersion  # noqa: E402
 from ansys.fluent.core.examples import download_file  # noqa: E402
 from ansys.fluent.core.solver import (  # noqa: E402
+    BoundaryCondition,
     Contour,
     Energy,
+    Fluxes,
+    General,
+    Graphics,
     Initialize,
+    Iterate,
     Mesh,
+    Methods,
     MixtureMaterial,
+    Monitor,
     PressureOutlet,
     RunCalculation,
+    SolverIntegrals,
     Species,
+    SurfaceIntegrals,
     Vector,
     VelocityInlet,
     Viscous,
     WallBoundary,
-    BoundaryCondition,
-    Methods,
-    Monitor,
-    SolverIntegrals,
-    Graphics,
+    WriteCase,
+    WriteCaseData,
+    write_case,
 )
 
 # %%
@@ -341,11 +345,11 @@ VelocityInlet.get(solver, name="velocity-inlet-6").rename("fuel-inlet")
 # * Species mass fraction for ch4: 1
 
 fuel_inlet = VelocityInlet(solver, name="fuel-inlet")
-fuel_inlet.momentum.velocity_magnitude = 80 *  m /  s
+fuel_inlet.momentum.velocity_magnitude = 80 * m / s
 fuel_inlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 fuel_inlet.turbulence.turbulent_intensity = 0.1
-fuel_inlet.turbulence.hydraulic_diameter = 0.01 *  m
-fuel_inlet.thermal.temperature = 300 *  K
+fuel_inlet.turbulence.hydraulic_diameter = 0.01 * m
+fuel_inlet.thermal.temperature = 300 * K
 fuel_inlet.species.species_mass_fraction["ch4"] = 1
 
 # %%
@@ -360,11 +364,11 @@ fuel_inlet.print_state()
 # Always assign reasonable values because backflow may occur during intermediate iterations and could affect the solution stability.*
 
 pressure_outlet = PressureOutlet.get(solver, name="pressure-outlet-9")
-pressure_outlet.momentum.gauge_pressure = 0 *  Pa
+pressure_outlet.momentum.gauge_pressure = 0 * Pa
 pressure_outlet.turbulence.turbulence_specification = "Intensity and Hydraulic Diameter"
 pressure_outlet.turbulence.backflow_turbulent_intensity = 0.1
-pressure_outlet.turbulence.backflow_hydraulic_diameter = 0.45 *  m
-pressure_outlet.thermal.backflow_total_temperature = 300 *  K
+pressure_outlet.turbulence.backflow_hydraulic_diameter = 0.45 * m
+pressure_outlet.thermal.backflow_total_temperature = 300 * K
 pressure_outlet.species.backflow_species_mass_fraction["o2"] = 0.23
 
 # %%
@@ -409,7 +413,7 @@ WallBoundary.get(solver, name="wall-2").rename("nozzle")
 
 nozzle = WallBoundary.get(solver, name="nozzle")
 nozzle.thermal.thermal_condition = nozzle.thermal.thermal_condition.HEAT_FLUX
-nozzle.thermal.heat_flux = 0 *  W * m ** -2
+nozzle.thermal.heat_flux = 0 * W * m**-2
 
 # %%
 # Verify the state of thermal properties of the nozzle boundary condition after the changes.
@@ -451,7 +455,9 @@ Iterate(solver, iter_count=200)
 # *The Time Scale Factor allows us to further manipulate the computed time step size calculated by Fluent.
 # Larger time steps can lead to faster convergence. However, if the time step is too large it can lead to solution instability.*
 
-RunCalculation(solver).pseudo_time_settings.time_step_method.time_step_size_scale_factor = 5
+RunCalculation(
+    solver
+).pseudo_time_settings.time_step_method.time_step_size_scale_factor = 5
 
 # %%
 # Run the calculation for 200 iterations.
@@ -475,7 +481,9 @@ Fluxes.get_heat_transfer_sensible(zones="*")
 # %%
 # Display filled contours of temperature and save the image to a file.
 
-contour1 = Contour.create(solver, name="contour-temp", field = VariableCatalog.TEMPERATURE)
+contour1 = Contour.create(
+    solver, name="contour-temp", field=VariableCatalog.TEMPERATURE
+)
 contour1.surfaces_list = contour1.surfaces_list.allowed_values()
 contour1.colorings.banded = True
 contour1.display()
@@ -494,7 +502,7 @@ graphics.views.auto_scale()
 # %%
 # Display velocity vectors and save the image to a file.
 
-vector1 = Vector.create(solver, name="vector-vel", surfaces_list = ["interior-4"])
+vector1 = Vector.create(solver, name="vector-vel", surfaces_list=["interior-4"])
 vector1.options.scale = 0.01
 vector1.vector_opt.fixed_length = True
 
@@ -520,7 +528,7 @@ graphics.picture.save_picture(file_name="vector-vel.png")
 # %%
 # Display filled contours of mass fraction of :math:`CH_4` and save the image to a file.
 
-contour2 = Contour.create(solver, name="contour-ch4-mass-fraction", field = "ch4")
+contour2 = Contour.create(solver, name="contour-ch4-mass-fraction", field="ch4")
 contour2.surfaces_list = contour2.surfaces_list.allowed_values()
 contour2.display()
 graphics.views.auto_scale()
@@ -537,7 +545,7 @@ graphics.picture.save_picture(file_name="contour-ch4-mass-fraction.png")
 # %%
 # Display filled contours of mass fraction of :math:`O_2` and save the image to a file.
 
-contour3 = Contour.create(solver, name="contour-o2-mass-fraction", field = "o2")
+contour3 = Contour.create(solver, name="contour-o2-mass-fraction", field="o2")
 contour3.surfaces_list = contour3.surfaces_list.allowed_values()
 contour3.display()
 graphics.views.auto_scale()
@@ -553,7 +561,7 @@ graphics.picture.save_picture(file_name="contour-o2-mass-fraction.png")
 # %%
 # Display filled contours of mass fraction of :math:`CO_2` and save the image to a file.
 
-contour4 = Contour.create(solver, name="contour-co2-mass-fraction", field = "co2")
+contour4 = Contour.create(solver, name="contour-co2-mass-fraction", field="co2")
 contour4.surfaces_list = contour4.surfaces_list.allowed_values()
 contour4.display()
 graphics.views.auto_scale()
@@ -569,7 +577,7 @@ graphics.picture.save_picture(file_name="contour-co2-mass-fraction.png")
 # %%
 # Display filled contours of mass fraction of :math:`H_2O` and save the image to a file.
 
-contour5 = Contour.create(solver, name="contour-h2o-mass-fraction", field = "h2o")
+contour5 = Contour.create(solver, name="contour-h2o-mass-fraction", field="h2o")
 contour5.surfaces_list = contour5.surfaces_list.allowed_values()
 contour5.display()
 graphics.views.auto_scale()

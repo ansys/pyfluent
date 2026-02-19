@@ -268,12 +268,14 @@ for n_ind, variable in enumerate(varname):  # loop over n modes
         for angle_ind, angle in enumerate(
             np.arange(0, math.radians(360), math.radians(d_theta))
         ):  # loop over all angles, in radians
-            Anm[n_ind][m_ind] += An[n_ind][angle_ind] * math.cos(_m * angle) - Bn[n_ind][
-                angle_ind
-            ] * math.sin(_m * angle)
-            Bnm[n_ind][m_ind] += An[n_ind][angle_ind] * math.sin(_m * angle) + Bn[n_ind][
-                angle_ind
-            ] * math.cos(_m * angle)
+            Anm[n_ind][m_ind] += (  # fmt: skip
+                An[n_ind][angle_ind] * math.cos(_m * angle)
+                - Bn[n_ind][angle_ind] * math.sin(_m * angle)
+            )
+            Bnm[n_ind][m_ind] += (  # fmt: skip
+                An[n_ind][angle_ind] * math.sin(_m * angle)
+                + Bn[n_ind][angle_ind] * math.cos(_m * angle)
+            )
         Anm[n_ind][m_ind] = Anm[n_ind][m_ind] / (2 * math.pi) * math.radians(d_theta)
         Bnm[n_ind][m_ind] = Bnm[n_ind][m_ind] / (2 * math.pi) * math.radians(d_theta)
         Pnm[n_ind][m_ind] = math.sqrt(Anm[n_ind][m_ind] ** 2 + Bnm[n_ind][m_ind] ** 2)
