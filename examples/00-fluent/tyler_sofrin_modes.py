@@ -165,7 +165,7 @@ read_case_data(solver, file_name=import_filename)
 # .. image:: ../../_static/var_names.jpg
 #    :alt: variable names
 
-varname = [
+var_names = [
     "mean-static-pressure-dataset",
     "dft-static-pressure_10.00kHz-ta",
     "dft-static-pressure-1_21.43kHz-ta",
@@ -191,12 +191,12 @@ for angle in range(0, 360, d_theta):
 #######################################################################################
 # Compute Fourier coefficients at each monitor point (An, Bn)
 # =====================================================================================
-An = np.zeros((len(varname), int(360 / d_theta)))
-Bn = np.zeros((len(varname), int(360 / d_theta)))
+An = np.zeros((len(var_names), int(360 / d_theta)))
+Bn = np.zeros((len(var_names), int(360 / d_theta)))
 report_defs = ReportDefinitions(solver)
 
 for angle_ind, angle in enumerate(range(0, 360, d_theta)):
-    for n_ind, variable in enumerate(varname):
+    for n_ind, variable in enumerate(var_names):
         if variable.startswith("mean"):
             mag_report = report_defs.surface.create(
                 name="mag-report",
@@ -241,7 +241,7 @@ with (Path.cwd() / "FourierCoefficients.csv").open("w") as f:
     writer = csv.writer(f)
     writer.writerow(["n", "theta", "An", "Bn"])
 
-    for n_ind, variable in enumerate(varname):
+    for n_ind, variable in enumerate(var_names):
         for ind, _ in enumerate(An[n_ind, :]):
             writer.writerow(
                 [n_mode[n_ind], ind * d_theta, An[n_ind, ind], Bn[n_ind, ind]]
@@ -259,11 +259,11 @@ with (Path.cwd() / "FourierCoefficients.csv").open("w") as f:
 m_mode = range(-m_max, m_max + m_inc, m_inc)
 
 # Initialize solution matrices with zeros
-Anm = np.zeros((len(varname), len(m_mode)))
-Bnm = np.zeros((len(varname), len(m_mode)))
-Pnm = np.zeros((len(varname), len(m_mode)))
+Anm = np.zeros((len(var_names), len(m_mode)))
+Bnm = np.zeros((len(var_names), len(m_mode)))
+Pnm = np.zeros((len(var_names), len(m_mode)))
 
-for n_ind, variable in enumerate(varname):  # loop over n modes
+for n_ind, variable in enumerate(var_names):  # loop over n modes
     for m_ind, _m in enumerate(m_mode):  # loop over m modes
         for angle_ind, angle in enumerate(
             np.arange(0, math.radians(360), math.radians(d_theta))
