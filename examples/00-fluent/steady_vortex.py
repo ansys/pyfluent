@@ -84,16 +84,16 @@ from pathlib import Path
 import imageio.v2 as imageio
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import Dimension, Precision
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.solver import (  # noqa: E402
     LIC,
+    CalculationActivity,
     CellRegister,
     CellZoneCondition,
     Contour,
+    FluidMaterial,
     General,
     Graphics,
-    FluidMaterial,
     Initialization,
     IsoClip,
     IsoSurface,
@@ -107,9 +107,8 @@ from ansys.fluent.core.solver import (  # noqa: E402
     Scene,
     Viscous,
     WallBoundary,
-    read_case,
-    CalculationActivity,
     iterate,
+    read_case,
     write_case_data,
 )
 from ansys.units.common import m, s
@@ -121,8 +120,8 @@ from ansys.units.common import m, s
 # Launch Fluent in 3D double precision solver mode.
 
 solver = pyfluent.Solver.from_install(
-    dimension=Dimension.THREE,
-    precision=Precision.DOUBLE,
+    dimension=pyfluent.Dimension.THREE,
+    precision=pyfluent.Precision.DOUBLE,
     cleanup_on_exit=True,
     cwd=Path.cwd(),
 )
@@ -198,7 +197,7 @@ graphics.picture.save_picture(file_name="mesh.png")
 
 general = General(solver)
 general.operating_conditions.gravity.enable = True
-general.operating_conditions.gravity.components = [0.0, 0.0, -g]
+general.operating_conditions.gravity.components = (0.0, 0.0, -g)
 
 # %%
 # Copy Materials from Fluent Database
@@ -261,8 +260,12 @@ viscous.options.curvature_correction = True
 model_setup.viscous = viscous
 
 solution_methods = Methods(solver)
-solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization = True
-solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization = True
+solution_methods.multiphase_numerics.solution_stabilization.execute_settings_optimization = (
+    True
+)
+solution_methods.multiphase_numerics.solution_stabilization.execute_advanced_stabilization = (
+    True
+)
 
 # Change phase names
 # TODO check
@@ -365,7 +368,7 @@ wet_wall_comp_mesh.coloring.manual.faces = "pastel cyan"
 
 # liquid level
 liquidlevel_comp_mesh = Mesh.create(
-    solver, name="liquidlevel", surfaces_list=[freesurface]
+    solver, name="liquidlevel", surfaces_list=[free_surface]
 )
 liquidlevel_comp_mesh.surfaces_list()
 liquidlevel_comp_mesh.coloring.option = "manual"

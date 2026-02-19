@@ -1,3 +1,9 @@
+# /// script
+# dependencies = [
+#   "ansys-fluent-core",
+# ]
+# ///
+
 # Copyright (C) 2021 - 2026 ANSYS, Inc. and/or its affiliates.
 # SPDX-License-Identifier: MIT
 #
@@ -71,8 +77,9 @@ import platform
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
-from ansys.fluent.core.generated.solver.settings_builtin_261 import BoundaryCondition
 from ansys.fluent.core.solver import (
+    BoundaryCondition,
+    CellRegister,
     Contour,
     Controls,
     FluidMaterial,
@@ -83,18 +90,17 @@ from ansys.fluent.core.solver import (
     PressureInlet,
     PressureOutlet,
     ReportDefinitions,
-    RunCalculation,
-    Setup,
-    CellRegister,
     ReportFile,
     ReportPlot,
+    RunCalculation,
+    Setup,
     calculate,
     iterate,
     write_case,
 )
 from ansys.fluent.visualization import GraphicsWindow, Monitor
-from ansys.units import Quantity, VariableCatalog
-from ansys.units.common import Pa, m, s
+from ansys.units import VariableCatalog
+from ansys.units.common import Pa, s
 
 # %%
 # Launch Fluent session in meshing mode

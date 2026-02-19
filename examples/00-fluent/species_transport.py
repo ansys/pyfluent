@@ -122,6 +122,7 @@ from ansys.fluent.core.solver import (  # noqa: E402
     BoundaryCondition,
     Methods,
     Monitor,
+    SolverIntegrals,
     Graphics,
 )
 
