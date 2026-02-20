@@ -1,0 +1,21 @@
+:orphan:
+
+.. _efficiency_expression_name:
+
+efficiency_expression_name
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.efficiency_expression_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============
+
+Parent                                     Summary
+
+================================   ===============
+:ref:`performance <performance>`       The object.
+
+================================   ===============
+

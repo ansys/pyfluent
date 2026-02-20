@@ -1,0 +1,57 @@
+:orphan:
+
+.. _playback:
+
+playback
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.playback
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ===========================================================
+
+Attribute                                                                                          Summary
+
+============================================   ===========================================================
+:ref:`set_custom_frames <set_custom_frames>`       Custom frames start, end, skip frames for video export.
+
+:ref:`video <video_1>`                                  Generate video output from the animation playback.
+
+:ref:`current_animation <current_animation>`                                   Animation sequence to play.
+
+============================================   ===========================================================
+
+.. rubric:: Methods
+
+================================================   =========================================================================
+
+Method                                                                                                               Summary
+
+================================================   =========================================================================
+:ref:`read_animation_file <read_animation_file>`                 Read new animation from file or already-defined animations.
+
+:ref:`write_animation <write_animation>`                                               Write animation sequence to the file.
+
+:ref:`stored_view <stored_view>`                       Play the 3D animation sequence using the view stored in the sequence.
+
+:ref:`view_mode <view_mode>`                                                 Play the 3D animation sequence in desired view.
+
+:ref:`delete <delete_7>`                                                                          Delete animation sequence.
+
+:ref:`play <play>`                                                                              Play the selected animation.
+
+================================================   =========================================================================
+
+.. rubric:: Included in:
+
+==============================   ========================================================
+
+Parent                                                                            Summary
+
+==============================   ========================================================
+:ref:`animations <animations>`       View and manage animation objects in the simulation.
+
+==============================   ========================================================
+

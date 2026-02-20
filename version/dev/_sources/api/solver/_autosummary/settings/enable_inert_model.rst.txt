@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_inert_model:
+
+enable_inert_model
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_inert_model
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   =============================================================
+
+Parent                                                                                   Summary
+
+================================   =============================================================
+:ref:`inert_model <inert_model>`       Inert model for non-premixed/partial-premixed combustion.
+
+================================   =============================================================
+

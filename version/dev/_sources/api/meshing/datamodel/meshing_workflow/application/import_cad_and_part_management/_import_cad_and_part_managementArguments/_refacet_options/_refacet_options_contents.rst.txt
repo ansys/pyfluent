@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_import_cad_and_part_management__import_cad_and_part_managementArguments__refacet_options:
+
+_refacet_options
+================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.import_cad_and_part_management._import_cad_and_part_managementArguments._refacet_options
+   :members: _deviation, _max_size, _normal_angle, _refacet_during_load
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ratio_of_specific_heats:
+
+ratio_of_specific_heats
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ratio_of_specific_heats
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =================================================================================================
+
+Parent                                                                                                                                 Summary
+
+==========================================   =================================================================================================
+:ref:`reference_values <reference_values>`       Manages reference values used in calculations of coefficients and non-dimensional quantities.
+
+==========================================   =================================================================================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _sep_face_zone_region:
+
+sep_face_zone_region
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sep_face_zone_region
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ===================================================================
+
+Argument                                                                                             Summary
+
+======================================   ===================================================================
+:ref:`face_zone_name <face_zone_name>`                                                        The zone name.
+
+:ref:`move_faces <move_faces_4>`             Specifies whether to move faces during region-based separation.
+
+======================================   ===================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nodal_diameter:
+
+nodal_diameter
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nodal_diameter
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ====================================================
+
+Parent                                                                                                                Summary
+
+======================================================================   ====================================================
+:ref:`perdisp_group_properties_child <perdisp_group_properties_child>`       'child_object_type' of perdisp_group_properties.
+
+======================================================================   ====================================================
+

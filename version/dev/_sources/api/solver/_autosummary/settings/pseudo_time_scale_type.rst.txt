@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pseudo_time_scale_type:
+
+pseudo_time_scale_type
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pseudo_time_scale_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================================
+
+Parent                                                                        Summary
+
+==============================   ====================================================
+:ref:`options_10 <options_10>`       Turbomachinery-specific numerics options object.
+
+==============================   ====================================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _coefficients_3:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coefficients_3
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===========================
+
+Attribute                                                            Summary
+
+==============================================   ===========================
+:ref:`tke_prandtl_number <tke_prandtl_number>`       The TKE Prandtl number.
+
+:ref:`tdr_prandtl_number <tdr_prandtl_number>`       The TDR Prandtl number.
+
+==============================================   ===========================
+
+.. rubric:: Included in:
+
+============================   ============================
+
+Parent                                              Summary
+
+============================   ============================
+:ref:`k_epsilon <k_epsilon>`       K-epsilon model options.
+
+============================   ============================
+

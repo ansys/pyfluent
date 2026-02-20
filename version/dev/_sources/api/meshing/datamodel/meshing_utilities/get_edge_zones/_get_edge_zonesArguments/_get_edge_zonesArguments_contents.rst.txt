@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_edge_zones__get_edge_zonesArguments:
+
+_get_edge_zonesArguments
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_edge_zones._get_edge_zonesArguments
+   :members: _filter, _maximum_entity_count, _only_boundary
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

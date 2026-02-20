@@ -1,0 +1,23 @@
+:orphan:
+
+.. _drag_opt_constant:
+
+drag_opt_constant
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.drag_opt_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ========================================
+
+Parent                                                                            Summary
+
+==============================================   ========================================
+:ref:`drag_mixture_child <drag_mixture_child>`       'child_object_type' of drag_mixture.
+
+:ref:`drag_euler_child <drag_euler_child>`             'child_object_type' of drag_euler.
+
+==============================================   ========================================
+

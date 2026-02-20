@@ -1,0 +1,42 @@
+:orphan:
+
+.. _automatic_exports:
+
+automatic_exports
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.automatic_exports
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================
+
+Attribute                                                Summary
+
+============================   =================================
+:ref:`ascii <ascii_1>`                             ASCII Export.
+
+:ref:`cgns <cgns_1>`                                CGNS Export.
+
+:ref:`visualize <visualize>`             Visualize (DVS) Export.
+
+:ref:`mapdl <mapdl>`               Mechanical APDL Input Export.
+
+:ref:`nastran <nastran_1>`                       NASTRAN Export.
+
+:ref:`tecplot <tecplot_1>`                       Tecplot Export.
+
+============================   =================================
+
+.. rubric:: Included in:
+
+==================================================   =============================================================================================
+
+Parent                                                                                                                                     Summary
+
+==================================================   =============================================================================================
+:ref:`calculation_activity <calculation_activity>`       Manages additional solution-time activities like animations and mesh quality diagnostics.
+
+==================================================   =============================================================================================
+

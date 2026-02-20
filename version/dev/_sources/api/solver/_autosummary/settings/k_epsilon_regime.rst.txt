@@ -1,0 +1,36 @@
+:orphan:
+
+.. _k_epsilon_regime:
+
+k_epsilon_regime
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.k_epsilon_regime
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =================================
+
+Attribute                                                                    Summary
+
+================================================   =================================
+:ref:`beta_i <beta_i>`                                 The model coefficient Beta_i.
+
+:ref:`tke_prandtl_number <tke_prandtl_number_1>`             The TKE Prandtl number.
+
+:ref:`sdr_prandtl_number <sdr_prandtl_number_1>`             The SDR Prandtl number.
+
+================================================   =================================
+
+.. rubric:: Included in:
+
+======================================   =======================
+
+Parent                                                   Summary
+
+======================================   =======================
+:ref:`coefficients_2 <coefficients_2>`       Coefficients group.
+
+======================================   =======================
+

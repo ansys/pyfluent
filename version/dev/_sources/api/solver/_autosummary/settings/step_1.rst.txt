@@ -1,0 +1,21 @@
+:orphan:
+
+.. _step_1:
+
+step
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.step_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`option_71 <option_71>`       Check the control options.
+
+============================   ==============================
+

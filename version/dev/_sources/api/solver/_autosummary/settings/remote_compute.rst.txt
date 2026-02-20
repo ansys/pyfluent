@@ -1,0 +1,53 @@
+:orphan:
+
+.. _remote_compute:
+
+remote_compute
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.remote_compute
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ========================
+
+Attribute                                             Summary
+
+==================================   ========================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+:ref:`job_actions <job_actions>`          Remote Job Actions.
+
+==================================   ========================
+
+.. rubric:: Methods
+
+============================================================================   ================================================
+
+Method                                                                                                                  Summary
+
+============================================================================   ================================================
+:ref:`submit_job <submit_job>`                                                                    Submit job to remote cluster.
+
+:ref:`view_jobs <view_jobs>`                                                                     View jobs from remote cluster.
+
+:ref:`get_status_of_job <get_status_of_job>`                                           Get status of a job from remote cluster.
+
+:ref:`get_properties_of_job <get_properties_of_job>`                               Get properties of a job from remote cluster.
+
+:ref:`get_details_of_last_submitted_job <get_details_of_last_submitted_job>`               Get details of a last submitted job.
+
+============================================================================   ================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

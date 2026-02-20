@@ -1,0 +1,36 @@
+:orphan:
+
+.. _components_1_child:
+
+components_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.components_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ==========================================================================
+
+Attribute                                                                                                               Summary
+
+==================================================   ==========================================================================
+:ref:`mass_fraction <mass_fraction>`                     The initial mass fraction of this component in the injected particles.
+
+:ref:`evaporating_species <evaporating_species_1>`                             Pick the evaporating species for this component.
+
+:ref:`evaporating_stream <evaporating_stream_1>`                                Pick the evaporating stream for this component.
+
+==================================================   ==========================================================================
+
+.. rubric:: Included in:
+
+==================================   ==============================================================================
+
+Parent                                                                                                      Summary
+
+==================================   ==============================================================================
+:ref:`components_1 <components_1>`       Initial mass fractions and evaporating species of all chemical components.
+
+==================================   ==============================================================================
+

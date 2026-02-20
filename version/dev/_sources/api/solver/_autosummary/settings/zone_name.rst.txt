@@ -1,0 +1,34 @@
+:orphan:
+
+.. _zone_name:
+
+zone_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zone_name
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================   ==============================
+
+Argument                                                Summary
+
+==============================   ==============================
+:ref:`zone_name <zone_name_1>`                   The zone name.
+
+:ref:`new_name <new_name>`           The new name for the zone.
+
+==============================   ==============================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

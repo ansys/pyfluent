@@ -1,0 +1,34 @@
+:orphan:
+
+.. _reset_min_and_max:
+
+reset_min_and_max
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reset_min_and_max
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   =================================================================
+
+Argument                                                                                     Summary
+
+================================   =================================================================
+:ref:`sample_var <sample_var>`          Reset the min and max values for a specific sample variable.
+
+:ref:`reset_range <reset_range>`       Toggle the reset of the min-max range for histogram plotting.
+
+================================   =================================================================
+
+.. rubric:: Included in:
+
+========================================   ======================================================================================================
+
+Parent                                                                                                                                    Summary
+
+========================================   ======================================================================================================
+:ref:`setup_reduction <setup_reduction>`       Up the sample data reduction by specifying all relevant options and setting parameters as desired.
+
+========================================   ======================================================================================================
+

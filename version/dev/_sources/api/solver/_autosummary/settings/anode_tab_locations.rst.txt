@@ -1,0 +1,21 @@
+:orphan:
+
+.. _anode_tab_locations:
+
+anode_tab_locations
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.anode_tab_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ================================
+
+Parent                                                            Summary
+
+======================================   ================================
+:ref:`electrical_tab <electrical_tab>`       Up external electrical tabs.
+
+======================================   ================================
+

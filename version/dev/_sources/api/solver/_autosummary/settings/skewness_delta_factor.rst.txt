@@ -1,0 +1,21 @@
+:orphan:
+
+.. _skewness_delta_factor:
+
+skewness_delta_factor
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.skewness_delta_factor
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ============================================================================================
+
+Parent                                                                                                                                            Summary
+
+==========================================================   ============================================================================================
+:ref:`improve_tangent_skewness <improve_tangent_skewness>`       Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+
+==========================================================   ============================================================================================
+

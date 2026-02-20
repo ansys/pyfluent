@@ -1,0 +1,38 @@
+:orphan:
+
+.. _rotate_zone:
+
+rotate_zone
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rotate_zone
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ================================================
+
+Argument                                                                            Summary
+
+========================================   ================================================
+:ref:`zone_names <zone_names_1>`                               Rotate specified cell zones.
+
+:ref:`rotation_angle <rotation_angle_1>`       Sets the rotation angle for rotating a zone.
+
+:ref:`origin <origin_4>`                           Specifies the origin point for rotation.
+
+:ref:`axis <axis_5>`                             Specifies the axis of rotation for a zone.
+
+========================================   ================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

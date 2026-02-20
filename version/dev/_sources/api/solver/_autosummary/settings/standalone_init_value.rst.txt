@@ -1,0 +1,21 @@
+:orphan:
+
+.. _standalone_init_value:
+
+standalone_init_value
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.standalone_init_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================
+
+Parent                                                     Summary
+
+================================   ===============================
+:ref:`degradation <degradation>`       Degradation model settings.
+
+================================   ===============================
+

@@ -1,0 +1,57 @@
+:orphan:
+
+.. _sampling_and_erosion:
+
+sampling_and_erosion
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sampling_and_erosion
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================================   =============================================================================================================
+
+Attribute                                                                                                                                                                                                Summary
+
+================================================================================================   =============================================================================================================
+:ref:`output_udf <output_udf>`                                                                                                                                                      The DPM sampling output UDF.
+
+:ref:`sort_sample_files <sort_sample_files>`                                                                                                                          Enable writing of sorted DPM sample files.
+
+:ref:`erosion_accretion_rate_accumulation_enabled <erosion_accretion_rate_accumulation_enabled>`                               Enable accumulation of erosion and accretion rates over multiple tracking passes.
+
+:ref:`number_of_passes_done <number_of_passes_done>`                                                   The number of times steady particle tracking has been repeated to accumulate erosion and accretion rates.
+
+================================================================================================   =============================================================================================================
+
+.. rubric:: Methods
+
+========================================================================   ==========================================================================================================================================
+
+Method                                                                                                                                                                                                        Summary
+
+========================================================================   ==========================================================================================================================================
+:ref:`compute_samples <compute_samples>`                                                                                          Compute particle trajectories to record sampling data at planes and boundary zones.
+
+:ref:`start_file_write <start_file_write>`                                                               Enable recording particle sampling data at planes and boundary zones when the simulation progresses in time.
+
+:ref:`stop_file_write <stop_file_write>`                                                                          Stop recording particle sampling data at planes and boundary zones, finalise the output data files.
+
+:ref:`compute_erosion_accretion_rates <compute_erosion_accretion_rates>`       Compute erosion and accretion rates for selected injections; updates the rates or ADDs to them depending on the corresponding setting.
+
+:ref:`reset_erosion_accretion_rates <reset_erosion_accretion_rates>`                                                                                                      Initialize Erosion/Accretion rates to zero.
+
+========================================================================   ==========================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===========================================================================================
+
+Parent                                                                                                                           Summary
+
+==========================================   ===========================================================================================
+:ref:`discrete_phase_6 <discrete_phase_6>`       Access and configure reporting options for discrete phase (particle-based) simulations.
+
+==========================================   ===========================================================================================
+

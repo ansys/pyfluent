@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_objects__get_objectsArguments:
+
+_get_objectsArguments
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_objects._get_objectsArguments
+   :members: _filter, _type_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

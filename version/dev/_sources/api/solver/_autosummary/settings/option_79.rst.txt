@@ -1,0 +1,23 @@
+:orphan:
+
+.. _option_79:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_79
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`x_axis_data <x_axis_data>`       Options for X axis function.
+
+:ref:`y_axis_data <y_axis_data>`       Options for Y axis function.
+
+================================   ================================
+

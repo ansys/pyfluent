@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normalize:
+
+normalize
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.normalize
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ====================================
+
+Parent                                                                                    Summary
+
+==========================================================   ====================================
+:ref:`inert_stream_composition <inert_stream_composition>`       Define inert stream composition.
+
+==========================================================   ====================================
+

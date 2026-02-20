@@ -1,0 +1,47 @@
+:orphan:
+
+.. _input_parameters_2:
+
+input_parameters
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.input_parameters_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   ==============================================================
+
+Attribute                                                                                 Summary
+
+================================   ==============================================================
+:ref:`scheme_proc <scheme_proc>`                         Use input parameter in scheme-procedure.
+
+:ref:`udf_side <udf_side>`                                     Use input parameter in solver-udf.
+
+:ref:`expression <expression_9>`       Accesses input parameters defined using named expressions.
+
+================================   ==============================================================
+
+.. rubric:: Methods
+
+====================   ==============================
+
+Method                                        Summary
+
+====================   ==============================
+:ref:`list <list_4>`       List all input parameters.
+
+====================   ==============================
+
+.. rubric:: Included in:
+
+==============================   =============================================================================================
+
+Parent                                                                                                                 Summary
+
+==============================   =============================================================================================
+:ref:`parameters <parameters>`       Provides access to define, manage, and monitor input/output parameters in the simulation.
+
+==============================   =============================================================================================
+

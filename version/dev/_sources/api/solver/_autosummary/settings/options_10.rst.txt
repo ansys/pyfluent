@@ -1,0 +1,34 @@
+:orphan:
+
+.. _options_10:
+
+options
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.options_10
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ==========================================================================
+
+Attribute                                                                                                                               Summary
+
+==================================================================   ==========================================================================
+:ref:`gradient_limiter_combination <gradient_limiter_combination>`           Gradient limiter combination for turbomachinery-specific numerics.
+
+:ref:`pseudo_time_scale_type <pseudo_time_scale_type>`                   Pseudo transient time scale type for turbomachinery-specific numerics.
+
+==================================================================   ==========================================================================
+
+.. rubric:: Included in:
+
+======================================   ============================================
+
+Parent                                                                        Summary
+
+======================================   ============================================
+:ref:`turbo_numerics <turbo_numerics>`       Turbomachinery-specific numerics object.
+
+======================================   ============================================
+

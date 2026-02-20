@@ -1,0 +1,21 @@
+:orphan:
+
+.. _freeze_iteration:
+
+freeze_iteration
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.freeze_iteration
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===================================================================================================================
+
+Parent                                                                                                                                                       Summary
+
+==============================================   ===================================================================================================================
+:ref:`bcd_weights_freeze <bcd_weights_freeze>`       At each timestep, freeze BCD scheme weights after specified iteration in order to improve timestep convergence.
+
+==============================================   ===================================================================================================================
+

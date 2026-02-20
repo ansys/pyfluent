@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_surface_mesh__create_surface_mesh_arguments_share_topology_preferences:
+
+share_topology_preferences
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_surface_mesh._create_surface_mesh.arguments.share_topology_preferences
+   :members: advanced_improve, allow_defeaturing, connect_label_wildcard, execute_join_intersect, fluid_label_wildcard, intf_label_list, join_tolerance_increment, model_is_periodic, number_of_join_tries, operation, per_label_list, relative_share_topology_tolerance, rename_internals_by_body_names, share_topology_angle, show_in_gui
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

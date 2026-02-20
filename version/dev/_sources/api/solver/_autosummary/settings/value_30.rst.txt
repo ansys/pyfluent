@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_30:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_30
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`imagy <imagy>`       'imagy' child.
+
+====================   ==================
+

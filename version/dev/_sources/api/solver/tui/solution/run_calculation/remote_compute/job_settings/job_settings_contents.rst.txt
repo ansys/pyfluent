@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_run_calculation_remote_compute_job_settings:
+
+job_settings
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solution.run_calculation.remote_compute.job_settings
+   :members: auto_generate_simulation_report, capability, current_queue, custom_journal_path, exclusive, export_sim_report_as_html, export_sim_report_as_pdf, export_sim_report_as_ppt, file_types_to_monitor, interconnect_type, job_name, keep_all_output_files, keep_specific_output_files, launch_web_server, list_of_output_files, maximum_execution_time, mpi_type, number_of_gpus_per_node, number_of_processes, number_of_processes_per_node, upload_all_files_from_working_directory, upload_associated_files_only, use_custom_journal, use_default_journal, use_gpu_solver, web_server_token
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

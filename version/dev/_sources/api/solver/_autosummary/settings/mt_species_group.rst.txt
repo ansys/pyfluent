@@ -1,0 +1,36 @@
+:orphan:
+
+.. _mt_species_group:
+
+mt_species_group
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_species_group
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   =================================================
+
+Attribute                                                                                                    Summary
+
+================================================================   =================================================
+:ref:`mt_species_model_options <mt_species_model_options>`                      Species mass transfer model options.
+
+:ref:`mt_species_model_parameters <mt_species_model_parameters>`       Species mass transfer model parameters group.
+
+:ref:`mt_species_int_phase_mt <mt_species_int_phase_mt>`                             Interphase mass transfer class.
+
+================================================================   =================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`mass_transfer_list_child <mass_transfer_list_child>`       'child_object_type' of mass_transfer_list.
+
+==========================================================   ==============================================
+

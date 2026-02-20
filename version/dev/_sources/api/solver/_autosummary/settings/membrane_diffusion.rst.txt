@@ -1,0 +1,34 @@
+:orphan:
+
+.. _membrane_diffusion:
+
+membrane_diffusion
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.membrane_diffusion
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ======================================
+
+Attribute                                                  Summary
+
+=========================   ======================================
+:ref:`enable <enable_14>`       Enable Membrane Species Diffusion.
+
+:ref:`setup <setup_1>`               Membrane species diffusivity.
+
+=========================   ======================================
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`advanced_1 <advanced_1>`       Advanced settings.
+
+==============================   ======================
+

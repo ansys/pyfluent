@@ -1,0 +1,21 @@
+:orphan:
+
+.. _window_id_3:
+
+window_id
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.window_id_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =================================
+
+Parent                                                         Summary
+
+==================================   =================================
+:ref:`close_window <close_window>`       Close a user graphics window.
+
+==================================   =================================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _improve_tangent_skewness:
+
+improve_tangent_skewness
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.improve_tangent_skewness
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================================================   =============================================================================================================================
+
+Argument                                                                                                                                                                                         Summary
+
+========================================================================   =============================================================================================================================
+:ref:`improve_tangent_skewness_method <improve_tangent_skewness_method>`                                                                                            Tangent skewness improvement method.
+
+:ref:`skewness_threshold <skewness_threshold_1>`                                                                                        Threshold for tangent skewness quality-based poor mesh numerics.
+
+:ref:`skewness_delta_factor <skewness_delta_factor>`                                                                                              Delta factor for tangent skewness quality improvement.
+
+:ref:`skewness_gamma_factor <skewness_gamma_factor>`                                                                                              Gamma factor for tangent skewness quality improvement.
+
+:ref:`skewness_verbosity_level <skewness_verbosity_level>`                                                                        Verbosity level for tangent skewness quality-based poor mesh numerics.
+
+:ref:`skewness_neighbors <skewness_neighbors>`                                                                                    Verbosity level for tangent skewness quality-based poor mesh numerics.
+
+:ref:`skewness_reported_cells <skewness_reported_cells>`                       Number of poor quality cells to be reported at each partition core for tangent skewness quality-based poor mesh numerics.
+
+========================================================================   =============================================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`poor_mesh_numerics <poor_mesh_numerics>`       The poor mesh numerics object.
+
+==============================================   ==================================
+

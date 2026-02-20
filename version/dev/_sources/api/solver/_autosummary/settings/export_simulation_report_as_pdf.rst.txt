@@ -1,0 +1,36 @@
+:orphan:
+
+.. _export_simulation_report_as_pdf:
+
+export_simulation_report_as_pdf
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.export_simulation_report_as_pdf
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================================   ===========================================================================================================================================================
+
+Argument                                                                                                                                                                                                   Summary
+
+====================================================   ===========================================================================================================================================================
+:ref:`report_name <report_name_3>`                                                                                                                                 Simulation report to be exported as a PDF file.
+
+:ref:`register_with_project <register_with_project>`                                                                                                                                       Register With Project?.
+
+:ref:`file_name <file_name_32>`                            File name to export the simulation report as a PDF file. If saving with an active Fluent project, provide only a file name; otherwise include the path.
+
+====================================================   ===========================================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ======================================================================================================================
+
+Parent                                                                                                                                                          Summary
+
+==============================================   ======================================================================================================================
+:ref:`simulation_reports <simulation_reports>`       Provides access to simulation reports, allowing to generate, view, export, and manage reports for the simulations.
+
+==============================================   ======================================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _solution_based_initialization:
+
+solution_based_initialization
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.solution_based_initialization
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ================================
+
+Parent                                                                        Summary
+
+==================================================   ================================
+:ref:`advancement_controls <advancement_controls>`       The adjoint controls object.
+
+==================================================   ================================
+

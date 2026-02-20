@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cell_averaged_postprocessing:
+
+cell_averaged_postprocessing
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cell_averaged_postprocessing
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ================
+
+Parent                                                Summary
+
+==========================================   ================
+:ref:`general_settings <general_settings>`       Main object.
+
+==========================================   ================
+

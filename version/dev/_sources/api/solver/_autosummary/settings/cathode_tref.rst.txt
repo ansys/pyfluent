@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cathode_tref:
+
+cathode_tref
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cathode_tref
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+==================================   =====================
+

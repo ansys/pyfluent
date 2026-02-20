@@ -1,0 +1,21 @@
+:orphan:
+
+.. _last_view:
+
+last_view
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.last_view
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ===============================================================================
+
+Parent                                                                                         Summary
+
+====================   ===============================================================================
+:ref:`views <views>`       Access controls for managing named camera views and display configurations.
+
+====================   ===============================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surfaces_20:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.surfaces_20
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =============================
+
+Parent                                                                             Summary
+
+==========================================================   =============================
+:ref:`delete_imported_surfaces <delete_imported_surfaces>`       Delete imported surfaces.
+
+==========================================================   =============================
+

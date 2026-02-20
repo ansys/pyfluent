@@ -1,0 +1,21 @@
+:orphan:
+
+.. _overset_4:
+
+overset
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.overset_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================
+
+Parent                                                     Summary
+
+==============================   =================================
+:ref:`options_15 <options_15>`       The rendering options object.
+
+==============================   =================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reload_case:
+
+reload_case
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reload_case
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================================================================================
+
+Parent                                                                                                                          Summary
+
+========================================   ============================================================================================
+:ref:`validate_models <validate_models>`       Validate neural network models by running simulations and comparing objective functions.
+
+========================================   ============================================================================================
+

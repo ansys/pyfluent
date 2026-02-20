@@ -1,0 +1,23 @@
+:orphan:
+
+.. _global_settings:
+
+global_settings
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.global_settings
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`parameters_6 <parameters_6>`       'parameters' child.
+
+:ref:`elements <elements>`                 'elements' child.
+
+==================================   =======================
+

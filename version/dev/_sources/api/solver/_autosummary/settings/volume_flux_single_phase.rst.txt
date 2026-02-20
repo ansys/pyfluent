@@ -1,0 +1,21 @@
+:orphan:
+
+.. _volume_flux_single_phase:
+
+volume_flux_single_phase
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.volume_flux_single_phase
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_4 <advanced_4>`       Solution method advanced object.
+
+==============================   ====================================
+

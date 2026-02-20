@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normalize_2:
+
+normalize
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.normalize_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==========================================
+
+Parent                                                            Summary
+
+============================   ==========================================
+:ref:`monitor_3 <monitor_3>`       Calculation activities monitor object.
+
+============================   ==========================================
+

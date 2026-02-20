@@ -1,0 +1,39 @@
+:orphan:
+
+.. _drag_mixture:
+
+drag_mixture
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.drag_mixture
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`drag_mixture_child <drag_mixture_child>`
+
+
+.. rubric:: Included in:
+
+======================   =======================
+
+Parent                                   Summary
+
+======================   =======================
+:ref:`forces <forces>`       Interfacial forces.
+
+======================   =======================
+

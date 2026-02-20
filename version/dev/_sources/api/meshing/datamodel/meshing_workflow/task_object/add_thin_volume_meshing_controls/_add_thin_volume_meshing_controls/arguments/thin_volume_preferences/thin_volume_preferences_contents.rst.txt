@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_thin_volume_meshing_controls__add_thin_volume_meshing_controls_arguments_thin_volume_preferences:
+
+thin_volume_preferences
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.add_thin_volume_meshing_controls._add_thin_volume_meshing_controls.arguments.thin_volume_preferences
+   :members: ignore_extra_sources, include_adjacent, max_gap_size, show_in_gui, stacked_plate_tolerance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

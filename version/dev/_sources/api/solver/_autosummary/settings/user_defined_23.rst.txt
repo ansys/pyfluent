@@ -1,0 +1,21 @@
+:orphan:
+
+.. _user_defined_23:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.user_defined_23
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ============================
+
+Parent                                                                          Summary
+
+========================================================   ============================
+:ref:`vof_free_surface_weight <vof_free_surface_weight>`       VOF free surface weight.
+
+========================================================   ============================
+

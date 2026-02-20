@@ -1,0 +1,34 @@
+:orphan:
+
+.. _expression_9_child:
+
+expression_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.expression_9_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=======================   ====================================================================
+
+Attribute                                                                              Summary
+
+=======================   ====================================================================
+:ref:`name <name_5>`                                                       Name of the object.
+
+:ref:`value <value_43>`       Sets the current value for the Expression-based Input Parameter.
+
+=======================   ====================================================================
+
+.. rubric:: Included in:
+
+==================================   ==============================================================
+
+Parent                                                                                      Summary
+
+==================================   ==============================================================
+:ref:`expression_9 <expression_9>`       Accesses input parameters defined using named expressions.
+
+==================================   ==============================================================
+

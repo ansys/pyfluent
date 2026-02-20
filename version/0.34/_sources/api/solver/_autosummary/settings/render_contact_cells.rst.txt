@@ -1,0 +1,32 @@
+:orphan:
+
+.. _render_contact_cells:
+
+render_contact_cells
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.render_contact_cells
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ==============================================
+
+Argument                                                          Summary
+
+========================   ==============================================
+:ref:`include <include>`       Include contact-cells in post-processing?.
+
+========================   ==============================================
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`flow_control <flow_control>`       'flow_control' child.
+
+==================================   =========================
+

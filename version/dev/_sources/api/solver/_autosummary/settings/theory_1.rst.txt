@@ -1,0 +1,21 @@
+:orphan:
+
+.. _theory_1:
+
+theory
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.theory_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`shallow_wave_inputs_child <shallow_wave_inputs_child>`       'child_object_type' of shallow_wave_inputs.
+
+============================================================   ===============================================
+

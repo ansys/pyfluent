@@ -1,0 +1,34 @@
+:orphan:
+
+.. _thread_number_control:
+
+thread_number_control
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.thread_number_control
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =============================================================================================================================================================
+
+Attribute                                                                                                                                                                                                  Summary
+
+==================================================   =============================================================================================================================================================
+:ref:`thread_number_method <thread_number_method>`       Thread number method. 0 - same as number of node processes on each machine, 1 - maximum physical cores on each machine, 2 - fixed number on each machine.
+
+:ref:`fixed_thread_number <fixed_thread_number>`                                                                                                                              Fixed thread number on each machine.
+
+==================================================   =============================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ==================================================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+==========================   ==================================================================================================================================
+:ref:`parallel <parallel>`       Provides access to parallel processing configuration, load balancing, network management, and multidomain simulation controls.
+
+==========================   ==================================================================================================================================
+

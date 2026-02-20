@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_add_boundary_layers_for_part_replacement__add_boundary_layers_for_part_replacement_arguments_local_prism_preferences:
+
+local_prism_preferences
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.add_boundary_layers_for_part_replacement._add_boundary_layers_for_part_replacement.arguments.local_prism_preferences
+   :members: additional_ignored_layers, allowed_tangency_at_invalid_normals, continuous, ignore_boundary_layers, invalid_normal_method, last_ratio, last_ratio_num_layers, modify_at_invalid_normals, number_of_split_layers, remesh_at_invalid_normals, show_in_gui, smooth_rings_at_invalid_normals, sphere_radius_factor_at_invalid_normals, split_prism
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _anode_exp:
+
+anode_exp
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.anode_exp
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+:ref:`parameters_5 <parameters_5>`       Model parameters.
+
+==================================   =====================
+

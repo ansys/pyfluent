@@ -1,0 +1,32 @@
+:orphan:
+
+.. _export_cgns_volumetric:
+
+export_cgns_volumetric
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.export_cgns_volumetric
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================   ===============================================================================================
+
+Argument                                                                                                                                 Summary
+
+==============================================   ===============================================================================================
+:ref:`export_fluid_zones <export_fluid_zones>`       Enable export of volumetric acoustic source data in CGNS format for Simcenter 3D Acoustics.
+
+==============================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+==============================================   =======================================
+
+Parent                                                                           Summary
+
+==============================================   =======================================
+:ref:`export_source_data <export_source_data>`       Entering source data export object.
+
+==============================================   =======================================
+

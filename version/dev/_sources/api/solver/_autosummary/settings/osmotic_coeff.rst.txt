@@ -1,0 +1,21 @@
+:orphan:
+
+.. _osmotic_coeff:
+
+osmotic_coeff
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.osmotic_coeff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_5 <parameters_5>`       Model parameters.
+
+==================================   =====================
+

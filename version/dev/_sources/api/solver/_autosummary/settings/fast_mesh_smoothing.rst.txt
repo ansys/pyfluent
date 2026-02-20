@@ -1,0 +1,21 @@
+:orphan:
+
+.. _fast_mesh_smoothing:
+
+fast_mesh_smoothing
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.fast_mesh_smoothing
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ===================================
+
+Parent                                                                               Summary
+
+======================================================   ===================================
+:ref:`periodic_displacements <periodic_displacements>`       'periodic_displacements' child.
+
+======================================================   ===================================
+

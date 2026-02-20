@@ -1,0 +1,54 @@
+:orphan:
+
+.. _mt_species_int_phase_mt:
+
+mt_species_int_phase_mt
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_species_int_phase_mt
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================================   =========================================================
+
+Attribute                                                                                                                                        Summary
+
+============================================================================================   =========================================================
+:ref:`mt_species_int_phase_mt_options <mt_species_int_phase_mt_options>`                                                Interphase Mass Transfer models.
+
+:ref:`mt_species_int_ph_from_ph <mt_species_int_ph_from_ph>`                                                       From phase mass transfer coefficient.
+
+:ref:`mt_species_int_ph_from_ph_constant <mt_species_int_ph_from_ph_constant>`                            From phase mass transfer constant coefficient.
+
+:ref:`mt_species_int_ph_from_ph_sherwood_number <mt_species_int_ph_from_ph_sherwood_number>`       From phase mass transfer sherwood-number coefficient.
+
+:ref:`mt_species_int_ph_from_ph_udf <mt_species_int_ph_from_ph_udf>`                                  From phase mass transfer user-defined coefficient.
+
+:ref:`mt_species_int_ph_to_ph <mt_species_int_ph_to_ph>`                                                                Phase mass transfer coefficient.
+
+:ref:`mt_species_int_ph_to_ph_constant <mt_species_int_ph_to_ph_constant>`                                     Phase mass transfer constant coefficient.
+
+:ref:`mt_species_int_ph_to_ph_sherwood_number <mt_species_int_ph_to_ph_sherwood_number>`                Phase mass transfer sherwood-number coefficient.
+
+:ref:`mt_species_int_ph_to_ph_udf <mt_species_int_ph_to_ph_udf>`                                           Phase mass transfer user-defined coefficient.
+
+:ref:`mt_species_int_ph_overall <mt_species_int_ph_overall>`                                                          Overall mass transfer coefficient.
+
+:ref:`mt_species_int_ph_overall_constant <mt_species_int_ph_overall_constant>`                            From phase mass transfer constant coefficient.
+
+:ref:`mt_species_int_ph_overall_udf <mt_species_int_ph_overall_udf>`                                  From phase mass transfer user-defined coefficient.
+
+============================================================================================   =========================================================
+
+.. rubric:: Included in:
+
+==========================================   ================================
+
+Parent                                                                Summary
+
+==========================================   ================================
+:ref:`mt_species_group <mt_species_group>`       Species mass transfer group.
+
+==========================================   ================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_42:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_42
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`udf_side_child <udf_side_child>`       'child_object_type' of udf_side.
+
+======================================   ====================================
+

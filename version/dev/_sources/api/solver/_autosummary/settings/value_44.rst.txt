@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_44:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_44
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ===================================
+
+Parent                                                                     Summary
+
+============================================   ===================================
+:ref:`nfaces_as_weights <nfaces_as_weights>`       Use number of faces as weights.
+
+============================================   ===================================
+

@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_merge_face_zones_of_type:
+
+merge_face_zones_of_type
+========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.merge_face_zones_of_type
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _merge_face_zones_of_typeCommandArguments/_merge_face_zones_of_typeCommandArguments_contents

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _h_by_c_ratio_value:
+
+h_by_c_ratio_value
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.h_by_c_ratio_value
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ====================================
+
+Parent                                                                                    Summary
+
+==========================================================   ====================================
+:ref:`inert_stream_composition <inert_stream_composition>`       Define inert stream composition.
+
+==========================================================   ====================================
+

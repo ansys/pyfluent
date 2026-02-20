@@ -1,0 +1,21 @@
+:orphan:
+
+.. _color_8:
+
+color
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.color_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ======================================================
+
+Parent                                                                  Summary
+
+======================   ======================================================
+:ref:`line_1 <line_1>`       Configure line settings for a specific plot curve.
+
+======================   ======================================================
+

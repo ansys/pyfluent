@@ -1,0 +1,21 @@
+:orphan:
+
+.. _integral_type_1:
+
+integral_type
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.integral_type_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ===========================================
+
+Parent                                                                                         Summary
+
+========================================================   ===========================================
+:ref:`volume_integral_1_child <volume_integral_1_child>`       'child_object_type' of volume_integral.
+
+========================================================   ===========================================
+

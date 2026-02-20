@@ -1,0 +1,40 @@
+:orphan:
+
+.. _dispz:
+
+dispz
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dispz
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================================================
+
+Attribute                                                                         Summary
+
+==================================   ====================================================
+:ref:`option <option_54>`                         How the Z displacement will be defined.
+
+:ref:`value <value_28>`                  Constant value or expression for Z displacement.
+
+:ref:`profile_name <profile_name>`                               The name of the profile.
+
+:ref:`field_name <field_name>`                                     The name of the field.
+
+:ref:`udf <udf_4>`                          The user-defined function for Z displacement.
+
+==================================   ====================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`perdisp_properties_child <perdisp_properties_child>`       'child_object_type' of perdisp_properties.
+
+==========================================================   ==============================================
+

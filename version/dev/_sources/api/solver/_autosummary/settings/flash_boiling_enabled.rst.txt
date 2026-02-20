@@ -1,0 +1,21 @@
+:orphan:
+
+.. _flash_boiling_enabled:
+
+flash_boiling_enabled
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.flash_boiling_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ========================================
+
+Parent                                                                          Summary
+
+============================================   ========================================
+:ref:`physical_models_1 <physical_models_1>`       Lagrangian physical models settings.
+
+============================================   ========================================
+

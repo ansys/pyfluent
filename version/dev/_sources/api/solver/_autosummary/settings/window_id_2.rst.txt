@@ -1,0 +1,21 @@
+:orphan:
+
+.. _window_id_2:
+
+window_id
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.window_id_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =======================================================
+
+Parent                                                                           Summary
+
+==============================   =======================================================
+:ref:`set_window <set_window>`       Set a user graphics window to be the active window.
+
+==============================   =======================================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _angle_8:
+
+angle
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.angle_8
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =================================
+
+Attribute                                                  Summary
+
+==============================   =================================
+:ref:`prescribed <prescribed>`       Prescribed or freeform value.
+
+:ref:`value <value_37>`                          Prescribed value.
+
+==============================   =================================
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`rotation_child <rotation_child>`       'child_object_type' of rotation.
+
+======================================   ====================================
+

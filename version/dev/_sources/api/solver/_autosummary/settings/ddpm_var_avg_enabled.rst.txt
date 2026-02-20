@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ddpm_var_avg_enabled:
+
+ddpm_var_avg_enabled
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ddpm_var_avg_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+==================================================   ==========================================================================================================
+:ref:`node_based_averaging <node_based_averaging>`       Menu containing options to enable/disable node-based averaging of DPM variables and DPM source terms. 
+
+==================================================   ==========================================================================================================
+

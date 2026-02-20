@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mt_species_raoult_sat_press_polynomial:
+
+mt_species_raoult_sat_press_polynomial
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_species_raoult_sat_press_polynomial
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ====================================================
+
+Attribute                                                                         Summary
+
+==================================   ====================================================
+:ref:`function_of <function_of>`         The independent variable of polynomial function.
+
+:ref:`coefficients <coefficients>`                               Polynomial coefficients.
+
+==================================   ====================================================
+
+.. rubric:: Included in:
+
+================================================================   =================================================
+
+Parent                                                                                                       Summary
+
+================================================================   =================================================
+:ref:`mt_species_model_parameters <mt_species_model_parameters>`       Species mass transfer model parameters group.
+
+================================================================   =================================================
+

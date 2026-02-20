@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_name:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.report_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ========================================================================================================
+
+Parent                                                                                                                                                            Summary
+
+==============================================================   ========================================================================================================
+:ref:`generate_simulation_report <generate_simulation_report>`       Generate a new simulation report or regenerate an existing simulation report with the provided name.
+
+==============================================================   ========================================================================================================
+

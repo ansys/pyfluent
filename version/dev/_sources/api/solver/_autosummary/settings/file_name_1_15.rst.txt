@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_15:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_1_15
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==============================================================================================
+
+Parent                                                                                                                            Summary
+
+========================================   ==============================================================================================
+:ref:`read_isat_table <read_isat_table>`       Loads an ISAT (In Situ Adaptive Tabulation) table for accelerating combustion simulations.
+
+========================================   ==============================================================================================
+

@@ -1,0 +1,73 @@
+:orphan:
+
+.. _views:
+
+views
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.views
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ====================================================================================
+
+Attribute                                                                                                                   Summary
+
+============================================   ====================================================================================
+:ref:`camera <camera>`                             Camera settings for adjusting the camera position, target, and other parameters.
+
+:ref:`display_states <display_states>`                                                                       Display state options.
+
+:ref:`rendering_options <rendering_options>`                       Rendering features like antialiasing, shadows, and transparency.
+
+:ref:`mirror_planes <mirror_planes>`                                                              The mirror planes options object.
+
+:ref:`mirror_zones <mirror_zones>`                                                                Zones to mirror the domain about.
+
+:ref:`view_sync <view_sync>`                                                              Settings related to view synchronization.
+
+============================================   ====================================================================================
+
+.. rubric:: Methods
+
+====================================================   ==========================================================================
+
+Method                                                                                                                    Summary
+
+====================================================   ==========================================================================
+:ref:`auto_scale <auto_scale_1>`                               Automatically scale the view to fit visible objects in the window.
+
+:ref:`reset_to_default_view <reset_to_default_view>`                                              Reset view to front and center.
+
+:ref:`delete_view <delete_view>`                                                                     Remove a view from the list.
+
+:ref:`last_view <last_view>`                                          Return to the camera position before the last manipulation.
+
+:ref:`next_view <next_view>`                               Return to the camera position after the current position in the stack.
+
+:ref:`list_views <list_views>`                                                                   List predefined and saved views.
+
+:ref:`restore_view <restore_view>`                                                                              Use a saved view.
+
+:ref:`read_views <read_views>`                                                                       Read views from a view file.
+
+:ref:`save_view <save_view>`                                                              Save the current view to the view list.
+
+:ref:`write_views <write_views>`                                                             Write selected views to a view file.
+
+:ref:`apply_mirror_planes <apply_mirror_planes>`                     Apply mirror planes for a symmetric or non-symmetric domain.
+
+====================================================   ==========================================================================
+
+.. rubric:: Included in:
+
+==========================   ============================================================
+
+Parent                                                                            Summary
+
+==========================   ============================================================
+:ref:`graphics <graphics>`       Controls the graphics display of the simulation results.
+
+==========================   ============================================================
+

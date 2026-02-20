@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_36:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_1_36
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ====================================
+
+Parent                                                Summary
+
+======================   ====================================
+:ref:`read_4 <read_4>`       Read display states from a file.
+
+======================   ====================================
+

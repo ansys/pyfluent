@@ -1,0 +1,46 @@
+:orphan:
+
+.. _vector_opt:
+
+vector_opt
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.vector_opt
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =================================================================
+
+Attribute                                                                                      Summary
+
+==================================   =================================================================
+:ref:`in_plane <in_plane>`                                Specifies whether you want in plane vectors.
+
+:ref:`fixed_length <fixed_length>`                    Specifies whether you want fixed length vectors.
+
+:ref:`x_comp <x_comp>`                   Specifies whether you want to display X-axis aligned vectors.
+
+:ref:`y_comp <y_comp>`                   Specifies whether you want to display Y-axis aligned vectors.
+
+:ref:`z_comp <z_comp>`                   Specifies whether you want to display Z-axis aligned vectors.
+
+:ref:`scale_head <scale_head>`                        A value for scaling the size of the vector head.
+
+:ref:`tessellation <tessellation>`                                           A value for tessellation.
+
+:ref:`color <color_5>`                                                        A color for the vectors.
+
+==================================   =================================================================
+
+.. rubric:: Included in:
+
+======================================   ==================================
+
+Parent                                                              Summary
+
+======================================   ==================================
+:ref:`vector_1_child <vector_1_child>`       'child_object_type' of vector.
+
+======================================   ==================================
+

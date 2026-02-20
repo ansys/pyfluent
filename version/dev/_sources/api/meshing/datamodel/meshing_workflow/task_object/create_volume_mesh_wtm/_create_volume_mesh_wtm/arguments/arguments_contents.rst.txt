@@ -1,0 +1,23 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_volume_mesh_wtm__create_volume_mesh_wtm_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_volume_mesh_wtm._create_volume_mesh_wtm.arguments
+   :members: body_label_body_list, body_label_list, decoupled_parallel_meshing, first_aspect_ratio, first_height, invoke_prims_control, merge_cell_zones, mesh_dead_regions, mesh_fluid_regions, mesh_object, mesh_solid_regions, number_of_layers, offset_method_type, old_region_hex_max_cell_length_list, old_region_tet_growth_rate_list, old_region_tet_max_cell_length_list, parallel_meshing, prime_meshing, prism_layers, quad_tet_transition, rate, re_merge_zones, region_based_preferences, region_hex_max_cell_length_list, region_hex_name_list, region_tet_growth_rate_list, region_tet_max_cell_length_list, region_tet_name_list, show_solid_fluid_meshed, sizing_method, solver, transition_ratio, volume_fill
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   cfd_surface_mesh_controls/cfd_surface_mesh_controls_contents
+   face_scope/face_scope_contents
+   global_thin_volume_preferences/global_thin_volume_preferences_contents
+   prism_preferences/prism_preferences_contents
+   volume_fill_controls/volume_fill_controls_contents
+   volume_mesh_preferences/volume_mesh_preferences_contents

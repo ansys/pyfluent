@@ -1,0 +1,21 @@
+:orphan:
+
+.. _list_5:
+
+list
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.list_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =================================
+
+Parent                                                                       Summary
+
+================================================   =================================
+:ref:`output_parameters_1 <output_parameters_1>`       The output-parameters object.
+
+================================================   =================================
+

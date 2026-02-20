@@ -1,0 +1,49 @@
+:orphan:
+
+.. _discrete_boundary_condition:
+
+discrete_boundary_condition
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.discrete_boundary_condition
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =====================================================
+
+Method                                                                                       Summary
+
+============================================   =====================================================
+:ref:`create <create>`                             Create a new instance of the current object type.
+
+:ref:`delete <delete>`                                                      Delete selected objects.
+
+:ref:`rename <rename>`                                                            Rename the object.
+
+:ref:`list_1 <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                        Create a copy of the object.
+
+============================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`discrete_boundary_condition_child <discrete_boundary_condition_child>`
+
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`population_balance <population_balance>`                                   Population balance settings.
+
+:ref:`multiphase_7 <multiphase_7>`                   Allows to change multiphase model variables or settings.
+
+==============================================   ============================================================
+

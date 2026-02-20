@@ -1,0 +1,23 @@
+:orphan:
+
+.. _inlets:
+
+inlets
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inlets
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============
+
+Parent                                     Summary
+
+================================   ===============
+:ref:`performance <performance>`       The object.
+
+:ref:`efficiency <efficiency>`         The object.
+
+================================   ===============
+

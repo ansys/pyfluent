@@ -1,0 +1,23 @@
+:orphan:
+
+.. _keep_specific_output_files:
+
+keep_specific_output_files
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.keep_specific_output_files
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`job_settings <job_settings>`                     Remote Job Settings.
+
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

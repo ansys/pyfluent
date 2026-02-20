@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_81:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled_81
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ==========================================
+
+Parent                                                                                Summary
+
+================================================   ==========================================
+:ref:`boundary_continuity <boundary_continuity>`       Region boundary continuity conditions.
+
+================================================   ==========================================
+

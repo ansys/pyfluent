@@ -1,0 +1,21 @@
+:orphan:
+
+.. _equilibrium_rich_flammability:
+
+equilibrium_rich_flammability
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.equilibrium_rich_flammability
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================================   ====================================================
+
+Parent                                                                                                                              Summary
+
+====================================================================================   ====================================================
+:ref:`equilibrium_rich_flammability_options <equilibrium_rich_flammability_options>`       Equilibrium rich flammability parameters option.
+
+====================================================================================   ====================================================
+

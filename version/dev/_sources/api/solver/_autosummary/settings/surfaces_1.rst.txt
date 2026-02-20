@@ -1,0 +1,67 @@
+:orphan:
+
+.. _surfaces_1:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.surfaces_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   ===============================================================================================================================
+
+Parent                                                                                                                                                                                           Summary
+
+======================================================================   ===============================================================================================================================
+:ref:`ensight_dvs <ensight_dvs>`                                                                                                                                               Write a EnSight DVS file.
+
+:ref:`visualize_output_options <visualize_output_options>`                                                                                   Setup write options for Visualize connection in Fluids One.
+
+:ref:`cgns <cgns>`                                                                                                                                                                    Write a CGNS file.
+
+:ref:`dx <dx>`                                                                                                                                                   Write an IBM Data Explorer format file.
+
+:ref:`ensight_gold_parallel_surfaces <ensight_gold_parallel_surfaces>`       Write EnSight Gold geometry, velocity and scalar files for surfaces. Fluent will write files suitable for EnSight Parallel.
+
+:ref:`fieldview_unstruct_surfaces <fieldview_unstruct_surfaces>`                                                                                      Write a Fieldview unstructured surface mesh, data.
+
+:ref:`nastran <nastran>`                                                                                                                                                           Write a NASTRAN file.
+
+:ref:`patran_neutral <patran_neutral>`                                                                                                                                      Write a PATRAN neutral file.
+
+:ref:`vtk <vtk>`                                                                                                                                                           Write a VTK (.vtp/.vtu) file.
+
+:ref:`tecplot <tecplot>`                                                                                                                                                Write a Tecplot+3DV format file.
+
+:ref:`ascii_1_child <ascii_1_child>`                                                                                                                                       'child_object_type' of ascii.
+
+:ref:`cgns_1_child <cgns_1_child>`                                                                                                                                          'child_object_type' of cgns.
+
+:ref:`visualize_child <visualize_child>`                                                                                                                               'child_object_type' of visualize.
+
+:ref:`mapdl_child <mapdl_child>`                                                                                                                                           'child_object_type' of mapdl.
+
+:ref:`nastran_1_child <nastran_1_child>`                                                                                                                                 'child_object_type' of nastran.
+
+:ref:`tecplot_1_child <tecplot_1_child>`                                                                                                                                 'child_object_type' of tecplot.
+
+:ref:`projected_surface_area <projected_surface_area>`                                                                             Print total area of the projection of a group of surfaces to a plane.
+
+:ref:`fixed_walls_constraint_child <fixed_walls_constraint_child>`                                                                                        'child_object_type' of fixed_walls_constraint.
+
+:ref:`bounded_by_plane_child <bounded_by_plane_child>`                                                                                                          'child_object_type' of bounded_by_plane.
+
+:ref:`prescribed_profile_child <prescribed_profile_child>`                                                                                                    'child_object_type' of prescribed_profile.
+
+:ref:`rotation_child <rotation_child>`                                                                                                                                  'child_object_type' of rotation.
+
+:ref:`translation_1_child <translation_1_child>`                                                                                                                     'child_object_type' of translation.
+
+:ref:`scaling_1_child <scaling_1_child>`                                                                                                                                 'child_object_type' of scaling.
+
+:ref:`rigid_body_child <rigid_body_child>`                                                                                                                            'child_object_type' of rigid_body.
+
+======================================================================   ===============================================================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _pressure_outlet_3:
+
+pressure_outlet
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure_outlet_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ========================================================================================
+
+Parent                                                                                                                                                          Summary
+
+============================================================================   ========================================================================================
+:ref:`non_reflecting_boundary_treatment <non_reflecting_boundary_treatment>`       Non reflecting boundary treatment using minimal pressure reflection approach object.
+
+============================================================================   ========================================================================================
+

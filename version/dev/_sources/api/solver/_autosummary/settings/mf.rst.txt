@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mf:
+
+mf
+==
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =============================================
+
+Parent                                                                                           Summary
+
+========================================================   =============================================
+:ref:`user_defined_comp_child <user_defined_comp_child>`       'child_object_type' of user_defined_comp.
+
+========================================================   =============================================
+

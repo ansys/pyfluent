@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_update_region_settings__update_region_settingsArguments:
+
+_update_region_settingsArguments
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.update_region_settings._update_region_settingsArguments
+   :members: _all_region_filter_categories, _all_region_leakage_size_list, _all_region_linked_construction_surface_list, _all_region_mesh_method_list, _all_region_name_list, _all_region_overset_componen_list, _all_region_source_list, _all_region_type_list, _all_region_volume_fill_list, _filter_category, _main_fluid_region, _old_region_leakage_size_list, _old_region_mesh_method_list, _old_region_name_list, _old_region_overset_componen_list, _old_region_type_list, _old_region_volume_fill_list, _region_leakage_size_list, _region_mesh_method_list, _region_name_list, _region_overset_componen_list, _region_type_list, _region_volume_fill_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_transform_volume_mesh__transform_volume_meshArguments:
+
+_transform_volume_meshArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.transform_volume_mesh._transform_volume_meshArguments
+   :members: _angle, _cell_zone_list, _control_name, _copy, _merge, _merge_boundaries, _method, _num_of_copies, _rename, _selection_type, _topo_body_list, _type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _rotation_axis_direction/_rotation_axis_direction_contents
+   _rotation_axis_origin/_rotation_axis_origin_contents
+   _trans_shift/_trans_shift_contents

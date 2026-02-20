@@ -1,0 +1,21 @@
+:orphan:
+
+.. _conditions_1:
+
+conditions
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.conditions_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ====================================
+
+Parent                                                                Summary
+
+======================================   ====================================
+:ref:`compound_child <compound_child>`       'child_object_type' of compound.
+
+======================================   ====================================
+

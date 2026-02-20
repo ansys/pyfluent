@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_zones__get_zonesArguments:
+
+_get_zonesArguments
+===================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_zones._get_zonesArguments
+   :members: _group_name, _type_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

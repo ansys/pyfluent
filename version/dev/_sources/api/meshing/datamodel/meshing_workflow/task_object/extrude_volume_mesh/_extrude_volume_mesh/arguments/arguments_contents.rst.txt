@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_extrude_volume_mesh__extrude_volume_mesh_arguments:
+
+arguments
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.extrude_volume_mesh._extrude_volume_mesh.arguments
+   :members: extend_to_periodic_pair, external_boundary_zone_list, extrude_normal_based, first_height, growth_rate, m_ex_control_name, method, numberof_layers, preserve_periodic_info, reverse_direction, selection_type, topology_list, total_height, zone_location
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   volume_mesh_extrusion_preferences/volume_mesh_extrusion_preferences_contents

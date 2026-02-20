@@ -1,0 +1,21 @@
+:orphan:
+
+.. _injection_init:
+
+injection_init
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.injection_init
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   =================================
+
+Parent                                                                                 Summary
+
+==========================================================   =================================
+:ref:`user_defined_functions_2 <user_defined_functions_2>`       DPM Injection User Functions.
+
+==========================================================   =================================
+

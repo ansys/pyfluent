@@ -1,0 +1,21 @@
+:orphan:
+
+.. _size_adaption:
+
+size_adaption
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.size_adaption
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ================================================================
+
+Parent                                                                              Summary
+
+========================   ================================================================
+:ref:`overset <overset>`       Define adaption settings suitable for an overset simulation.
+
+========================   ================================================================
+

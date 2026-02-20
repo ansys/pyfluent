@@ -1,0 +1,1414 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>workflow &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../_static/documentation_options.js?v=176e5614"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/workflow_new';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="icon" href="../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Deprecated APIs" href="deprecated_apis.html" />
+    <link rel="prev" title="pyfluent_warnings" href="pyfluent_warnings.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/api/workflow_new.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <script>document.write(`<img src="../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark" alt="PyFluent - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">ansys.fluent.core</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="docker/docker_contents.html">docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filereader/filereader_contents.html">filereader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="launcher/launcher_contents.html">launcher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshing/meshing_contents.html">meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler/scheduler_contents.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services/services_contents.html">services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="solver/solver_contents.html">solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="streaming_services/streaming_services_contents.html">streaming_services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/utils_contents.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="exceptions.html">exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_session.html">file_session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="field_data_interfaces.html">field_data_interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fluent_connection.html">fluent_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journaling.html">journaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_config.html">module_config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parametric.html">parametric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rpvars.html">rpvars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search.html">search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_base_meshing.html">session_base_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_meshing.html">session_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_pure_meshing.html">session_pure_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_solver_icing.html">session_solver_icing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_solver_lite.html">session_solver_lite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_solver.html">session_solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session.html">session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="session_utilities.html">session_utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="system_coupling.html">system_coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyfluent_warnings.html">pyfluent_warnings</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deprecated_apis.html">Deprecated APIs</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="api_contents.html" class="nav-link">API reference</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">workflow</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-ansys.fluent.core.workflow_new">
+<span id="workflow"></span><span id="ref-workflow-new"></span><h1>workflow<a class="headerlink" href="#module-ansys.fluent.core.workflow_new" title="Link to this heading">#</a></h1>
+<p>Workflow module that wraps and extends the core functionality.</p>
+<p>This module provides a high-level, Pythonic interface for working with Ansys Fluent
+workflows. It wraps the underlying datamodel service layer to provide intuitive
+navigation, task management, and workflow operations.</p>
+<p>The main classes are:</p>
+<ul class="simple">
+<li><p><strong>Workflow</strong>: Top-level workflow container that manages tasks and provides
+navigation between them.</p></li>
+<li><p><strong>TaskObject</strong>: Individual task wrapper that provides access to task properties,
+arguments, execution, and navigation to sibling/child tasks.</p></li>
+</ul>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<p>This module is designed for Fluent 26R1 and later versions. Some features may not
+be available in earlier versions.</p>
+<p>The workflow system provides both imperative and declarative approaches to building
+simulation workflows, with automatic dependency management and validation.</p>
+</section>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a>(task_object, base_name, workflow, ...)</p></td>
+<td><p>Wrapper for individual workflow task objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow" title="ansys.fluent.core.workflow_new.Workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Workflow</span></code></a>(workflow, command_source, ...)</p></td>
+<td><p>High-level workflow container that manages tasks and provides navigation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Functions:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.build_specific_interface" title="ansys.fluent.core.workflow_new.build_specific_interface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_specific_interface</span></code></a>(task_object)</p></td>
+<td><p>Build a dynamic interface type that exposes task-specific commands/properties while delegating back to the task_object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.command_name_to_task_name" title="ansys.fluent.core.workflow_new.command_name_to_task_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">command_name_to_task_name</span></code></a>(meshing_root, ...)</p></td>
+<td><p>Convert a command name to its corresponding task display name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.is_compound_child" title="ansys.fluent.core.workflow_new.is_compound_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_compound_child</span></code></a>(task_type)</p></td>
+<td><p>Check if a task type represents a compound child task.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.make_task_wrapper" title="ansys.fluent.core.workflow_new.make_task_wrapper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_task_wrapper</span></code></a>(task_obj, name, workflow, ...)</p></td>
+<td><p>Wraps TaskObjects.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.workflow_new.</span></span><span class="sig-name descname"><span class="pre">TaskObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshing_root</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Wrapper for individual workflow task objects.</p>
+<p>TaskObject provides a high-level interface for interacting with individual
+tasks in a workflow. It exposes task properties, arguments, execution methods,
+and navigation capabilities.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.__init__" title="ansys.fluent.core.workflow_new.TaskObject.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(task_object, base_name, workflow, ...)</p></td>
+<td><p>Initialize a TaskObject wrapper.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.children" title="ansys.fluent.core.workflow_new.TaskObject.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a>()</p></td>
+<td><p>Get ordered list of direct child tasks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.delete" title="ansys.fluent.core.workflow_new.TaskObject.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>()</p></td>
+<td><p>Deletes the task item on which it is called.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.first_child" title="ansys.fluent.core.workflow_new.TaskObject.first_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_child</span></code></a>()</p></td>
+<td><p>Get the first child task of this task.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.has_next" title="ansys.fluent.core.workflow_new.TaskObject.has_next"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_next</span></code></a>()</p></td>
+<td><p>Check if there is a next sibling task.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.has_parent" title="ansys.fluent.core.workflow_new.TaskObject.has_parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_parent</span></code></a>()</p></td>
+<td><p>Check if this task has a parent container.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.has_previous" title="ansys.fluent.core.workflow_new.TaskObject.has_previous"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_previous</span></code></a>()</p></td>
+<td><p>Check if there is a previous sibling task.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.last_child" title="ansys.fluent.core.workflow_new.TaskObject.last_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_child</span></code></a>()</p></td>
+<td><p>Get the last child task of this task.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.mark_as_updated" title="ansys.fluent.core.workflow_new.TaskObject.mark_as_updated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mark_as_updated</span></code></a>()</p></td>
+<td><p>Mark tasks in workflow as updated.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.next" title="ansys.fluent.core.workflow_new.TaskObject.next"><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code></a>()</p></td>
+<td><p>Returns the next sibling task item.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.parent" title="ansys.fluent.core.workflow_new.TaskObject.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a>()</p></td>
+<td><p>Get the parent container of this task.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.previous" title="ansys.fluent.core.workflow_new.TaskObject.previous"><code class="xref py py-obj docutils literal notranslate"><span class="pre">previous</span></code></a>()</p></td>
+<td><p>Returns the previous sibling task item.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject.insertable_tasks" title="ansys.fluent.core.workflow_new.TaskObject.insertable_tasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insertable_tasks</span></code></a></p></td>
+<td><p>Get interface for inserting tasks after this one.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshing_root</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize a TaskObject wrapper.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>task_object</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyMenu</span></code></span></dt><dd><p>The underlying datamodel task object.</p>
+</dd>
+<dt><strong>base_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Python-friendly base name for the task.</p>
+</dd>
+<dt><strong>workflow</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyMenu</span></code></span></dt><dd><p>Reference to the parent workflow datamodel.</p>
+</dd>
+<dt><strong>parent</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow" title="ansys.fluent.core.workflow_new.Workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Workflow</span></code></a>, <a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a>]</span></dt><dd><p>Parent container (Workflow or parent TaskObject).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This constructor is called internally by <cite>make_task_wrapper()</cite>.
+Users should not instantiate TaskObject directly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.children">
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.children" title="Link to this definition">#</a></dt>
+<dd><p>Get ordered list of direct child tasks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a>]</dt><dd><p>Ordered list of child task wrappers, or empty list if no children.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.delete" title="Link to this definition">#</a></dt>
+<dd><p>Deletes the task item on which it is called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.first_child">
+<span class="sig-name descname"><span class="pre">first_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.first_child" title="Link to this definition">#</a></dt>
+<dd><p>Get the first child task of this task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></dt><dd><p>The first child task, or None if no children exist.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">describe_geometry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">first_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">first</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First child: </span><span class="si">{</span><span class="n">first</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Navigate through children:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">current</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">first_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">current</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">current</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
+<span class="gp">... </span>        <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">break</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.has_next">
+<span class="sig-name descname"><span class="pre">has_next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.has_next" title="Link to this definition">#</a></dt>
+<dd><p>Check if there is a next sibling task.</p>
+<p>Determines whether this task has a sibling task that follows it in the
+workflow sequence at the same level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></dt><dd><p>True if a next sibling exists, False if this is the last task.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.has_parent">
+<span class="sig-name descname"><span class="pre">has_parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.has_parent" title="Link to this definition">#</a></dt>
+<dd><p>Check if this task has a parent container.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></dt><dd><p>True if task has a parent (Workflow or TaskObject), False otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.has_previous">
+<span class="sig-name descname"><span class="pre">has_previous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.has_previous" title="Link to this definition">#</a></dt>
+<dd><p>Check if there is a previous sibling task.</p>
+<p>Determines whether this task has a sibling task that precedes it in the
+workflow sequence at the same level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></dt><dd><p>True if a previous sibling exists, False if this is the first task.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.insertable_tasks">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insertable_tasks</span></span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.insertable_tasks" title="Link to this definition">#</a></dt>
+<dd><p>Get interface for inserting tasks after this one.</p>
+<p>Returns a dynamic object that exposes all valid task types that can be
+inserted after the current task. Each insertable task is accessible as
+an attribute with an <cite>insert()</cite> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">_NextTask</span></code></dt><dd><p>Object with attributes for each insertable task type.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Basic usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">task</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">import_geometry</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># See what&#39;s available</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">available</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">insertable_tasks</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">insertable</span> <span class="ow">in</span> <span class="n">available</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">insertable</span><span class="p">)</span>
+<span class="go">&lt;Insertable &#39;import_boi_geometry&#39; task&gt;</span>
+<span class="go">&lt;Insertable &#39;set_up_rotational_periodic_boundaries&#39; task&gt;</span>
+<span class="go">&lt;Insertable &#39;create_local_refinement_regions&#39; task&gt;</span>
+<span class="go">&lt;Insertable &#39;custom_journal_task&#39; task&gt;</span>
+</pre></div>
+</div>
+<p>Insert specific task:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Insert by accessing as attribute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">task</span><span class="o">.</span><span class="n">insertable_tasks</span><span class="o">.</span><span class="n">import_boi_geometry</span><span class="o">.</span><span class="n">insert</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Access specific task after insertion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Access task as attribute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">import_boi_geometry</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.last_child">
+<span class="sig-name descname"><span class="pre">last_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.last_child" title="Link to this definition">#</a></dt>
+<dd><p>Get the last child task of this task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></dt><dd><p>The last child task, or None if no children exist.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parent</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">describe_geometry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">last</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">last_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">last</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Last child: </span><span class="si">{</span><span class="n">last</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.mark_as_updated">
+<span class="sig-name descname"><span class="pre">mark_as_updated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.mark_as_updated" title="Link to this definition">#</a></dt>
+<dd><p>Mark tasks in workflow as updated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.next" title="Link to this definition">#</a></dt>
+<dd><p>Returns the next sibling task item.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.parent" title="Link to this definition">#</a></dt>
+<dd><p>Get the parent container of this task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow" title="ansys.fluent.core.workflow_new.Workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Workflow</span></code></a>, <a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a>]</dt><dd><p>The parent container. Can be:
+- Workflow instance for top-level tasks
+- TaskObject instance for nested child tasks</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.TaskObject.previous">
+<span class="sig-name descname"><span class="pre">previous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.TaskObject.previous" title="Link to this definition">#</a></dt>
+<dd><p>Returns the previous sibling task item.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.workflow_new.</span></span><span class="sig-name descname"><span class="pre">Workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>High-level workflow container that manages tasks and provides navigation.</p>
+<p>The Workflow class wraps the underlying datamodel workflow object and provides
+a Pythonic interface for:</p>
+<ul class="simple">
+<li><p>Discovering and accessing tasks</p></li>
+<li><p>Creating, loading, and saving workflows</p></li>
+<li><p>Navigating task hierarchies</p></li>
+<li><p>Managing task lifecycles (creation/deletion)</p></li>
+</ul>
+<p><strong>Classes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask" title="ansys.fluent.core.workflow_new.Workflow.FirstTask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FirstTask</span></code></a>(workflow)</p></td>
+<td><p>Helper exposing insertable tasks for an empty workflow.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.__init__" title="ansys.fluent.core.workflow_new.Workflow.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(workflow, command_source, ...)</p></td>
+<td><p>Initialize Workflow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.children" title="ansys.fluent.core.workflow_new.Workflow.children"><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code></a>()</p></td>
+<td><p>Get the top-level tasks in the workflow in display order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.delete_tasks" title="ansys.fluent.core.workflow_new.Workflow.delete_tasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_tasks</span></code></a>(list_of_tasks)</p></td>
+<td><p>Delete multiple tasks from the workflow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.first_child" title="ansys.fluent.core.workflow_new.Workflow.first_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">first_child</span></code></a>()</p></td>
+<td><p>Get the first top-level task in the workflow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.last_child" title="ansys.fluent.core.workflow_new.Workflow.last_child"><code class="xref py py-obj docutils literal notranslate"><span class="pre">last_child</span></code></a>()</p></td>
+<td><p>Get the last top-level task in the workflow.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.load_state" title="ansys.fluent.core.workflow_new.Workflow.load_state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_state</span></code></a>(list_of_roots)</p></td>
+<td><p>Load the state of the workflow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.save_workflow" title="ansys.fluent.core.workflow_new.Workflow.save_workflow"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_workflow</span></code></a>(file_path)</p></td>
+<td><p>Save the current workflow to a file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.task_names" title="ansys.fluent.core.workflow_new.Workflow.task_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">task_names</span></code></a>()</p></td>
+<td><p>Get Python-friendly names for all available tasks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.tasks" title="ansys.fluent.core.workflow_new.Workflow.tasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tasks</span></code></a>()</p></td>
+<td><p>Get the complete list of tasks in the workflow.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Attributes:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.insertable_tasks" title="ansys.fluent.core.workflow_new.Workflow.insertable_tasks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insertable_tasks</span></code></a></p></td>
+<td><p>Tasks that can be inserted into an empty workflow.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.FirstTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FirstTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Helper exposing insertable tasks for an empty workflow.</p>
+<p>This container dynamically creates attributes for each command that the
+server allows as the first task in a new workflow.</p>
+<p>Access an attribute and call <cite>.insert()</cite> to insert that task.</p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask.__init__" title="ansys.fluent.core.workflow_new.Workflow.FirstTask.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(workflow)</p></td>
+<td><p>Initialize a <code class="docutils literal notranslate"><span class="pre">FirstTask</span></code> instance.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.FirstTask.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize a <code class="docutils literal notranslate"><span class="pre">FirstTask</span></code> instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluent_version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.__init__" title="Link to this definition">#</a></dt>
+<dd><p>Initialize Workflow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.children">
+<span class="sig-name descname"><span class="pre">children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.children" title="Link to this definition">#</a></dt>
+<dd><p>Get the top-level tasks in the workflow in display order.</p>
+<p>Returns an ordered list of the workflow’s main tasks (those directly under
+the workflow root, not nested child tasks). The order reflects the execution
+sequence in the workflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">List</span></code>[<a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a>]</dt><dd><p>Ordered list of top-level task wrappers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.delete_tasks">
+<span class="sig-name descname"><span class="pre">delete_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_of_tasks</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.delete_tasks" title="Link to this definition">#</a></dt>
+<dd><p>Delete multiple tasks from the workflow.</p>
+<p>Removes the specified tasks from the workflow. Tasks are identified by TaskObject instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>list_of_tasks: list[TaskObject]</strong></dt><dd><p>List of task objects to delete.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TypeError</span></code></a></dt><dd><p>If list contains items that are neither TaskObject nor str.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.first_child">
+<span class="sig-name descname"><span class="pre">first_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.first_child" title="Link to this definition">#</a></dt>
+<dd><p>Get the first top-level task in the workflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></dt><dd><p>The first task in the workflow, or None if the workflow is empty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Returns None for empty workflows. Always check before accessing properties.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">first</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">first_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">first</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting task: </span><span class="si">{</span><span class="n">first</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">first</span><span class="p">()</span>  <span class="c1"># Execute it</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Navigate from first to last</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">current</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">first_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">current</span> <span class="ow">and</span> <span class="n">current</span><span class="o">.</span><span class="n">has_next</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="n">current</span><span class="p">()</span>  <span class="c1"># Execute it</span>
+<span class="gp">... </span>    <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.insertable_tasks">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insertable_tasks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask" title="ansys.fluent.core.workflow_new.Workflow.FirstTask"><span class="pre">FirstTask</span></a></em><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.insertable_tasks" title="Link to this definition">#</a></dt>
+<dd><p>Tasks that can be inserted into an empty workflow.</p>
+<p>Returns a helper that exposes the set of valid starting tasks for a blank
+workflow as attributes. Each attribute is an object with an <cite>insert()</cite>
+method that inserts that task into the workflow.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This helper only populates insertable tasks when the workflow is empty.</p></li>
+<li><p>Task names are exposed using Python-friendly identifiers (snake_case).</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.last_child">
+<span class="sig-name descname"><span class="pre">last_child</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.last_child" title="Link to this definition">#</a></dt>
+<dd><p>Get the last top-level task in the workflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="#ansys.fluent.core.workflow_new.TaskObject" title="ansys.fluent.core.workflow_new.TaskObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TaskObject</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></dt><dd><p>The last task in the workflow, or None if the workflow is empty.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">last</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">last_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">last</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final task: </span><span class="si">{</span><span class="n">last</span><span class="o">.</span><span class="n">name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">last</span><span class="p">()</span>  <span class="c1"># Execute it</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Execute workflow in reverse</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">current</span> <span class="o">=</span> <span class="s1">&#39;&lt;workflow&gt;&#39;</span><span class="o">.</span><span class="n">last_child</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">current</span> <span class="ow">and</span> <span class="n">current</span><span class="o">.</span><span class="n">has_previous</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="n">current</span><span class="p">()</span>  <span class="c1"># Execute it</span>
+<span class="gp">... </span>    <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">previous</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.load_state">
+<span class="sig-name descname"><span class="pre">load_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_of_roots</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.load_state" title="Link to this definition">#</a></dt>
+<dd><p>Load the state of the workflow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.save_workflow">
+<span class="sig-name descname"><span class="pre">save_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.save_workflow" title="Link to this definition">#</a></dt>
+<dd><p>Save the current workflow to a file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.task_names">
+<span class="sig-name descname"><span class="pre">task_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.task_names" title="Link to this definition">#</a></dt>
+<dd><p>Get Python-friendly names for all available tasks.</p>
+<p>Returns the list of task names as they would be accessed via Python
+attribute syntax (e.g., “import_geometry” for “Import Geometry”).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.Workflow.tasks">
+<span class="sig-name descname"><span class="pre">tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.Workflow.tasks" title="Link to this definition">#</a></dt>
+<dd><p>Get the complete list of tasks in the workflow.</p>
+<p>This method builds and returns a comprehensive list of all task objects
+currently present in the workflow, including:</p>
+<ul class="simple">
+<li><p>Top-level tasks</p></li>
+<li><p>Compound child tasks (tasks with multiple instances)</p></li>
+<li><p>Dynamically created tasks</p></li>
+</ul>
+<p>The method rebuilds its internal task cache on each call to ensure
+freshness, though this can be expensive for large workflows.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.build_specific_interface">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.workflow_new.</span></span><span class="sig-name descname"><span class="pre">build_specific_interface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.build_specific_interface" title="Link to this definition">#</a></dt>
+<dd><p>Build a dynamic interface type that exposes task-specific
+commands/properties while delegating back to the task_object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.command_name_to_task_name">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.workflow_new.</span></span><span class="sig-name descname"><span class="pre">command_name_to_task_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meshing_root</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.command_name_to_task_name" title="Link to this definition">#</a></dt>
+<dd><p>Convert a command name to its corresponding task display name.</p>
+<p>This function maps internal command names (used by the Fluent core) to
+user-facing task names.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>meshing_root</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyMenu</span></code></span></dt><dd><p>The root meshing datamodel object.</p>
+</dd>
+<dt><strong>command_name</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Internal command name (e.g., “ImportGeometry”).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>User-facing task name (e.g., “import_geometry”).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is a workaround for Fluent 26R1.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.is_compound_child">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.workflow_new.</span></span><span class="sig-name descname"><span class="pre">is_compound_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.is_compound_child" title="Link to this definition">#</a></dt>
+<dd><p>Check if a task type represents a compound child task. This encapsulates
+a string comparison to avoid repetition.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>task_type</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The task type string to check.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></dt><dd><p>True if the task type is “Compound Child”, False otherwise.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ansys.fluent.core.workflow_new.make_task_wrapper">
+<span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.workflow_new.</span></span><span class="sig-name descname"><span class="pre">make_task_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshing_root</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.workflow_new.make_task_wrapper" title="Link to this definition">#</a></dt>
+<dd><p>Wraps TaskObjects.</p>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject"><code class="docutils literal notranslate"><span class="pre">TaskObject</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.__init__"><code class="docutils literal notranslate"><span class="pre">TaskObject.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.children"><code class="docutils literal notranslate"><span class="pre">TaskObject.children()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.delete"><code class="docutils literal notranslate"><span class="pre">TaskObject.delete()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.first_child"><code class="docutils literal notranslate"><span class="pre">TaskObject.first_child()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.has_next"><code class="docutils literal notranslate"><span class="pre">TaskObject.has_next()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.has_parent"><code class="docutils literal notranslate"><span class="pre">TaskObject.has_parent()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.has_previous"><code class="docutils literal notranslate"><span class="pre">TaskObject.has_previous()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.insertable_tasks"><code class="docutils literal notranslate"><span class="pre">TaskObject.insertable_tasks</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.last_child"><code class="docutils literal notranslate"><span class="pre">TaskObject.last_child()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.mark_as_updated"><code class="docutils literal notranslate"><span class="pre">TaskObject.mark_as_updated()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.next"><code class="docutils literal notranslate"><span class="pre">TaskObject.next()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.parent"><code class="docutils literal notranslate"><span class="pre">TaskObject.parent()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.TaskObject.previous"><code class="docutils literal notranslate"><span class="pre">TaskObject.previous()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow"><code class="docutils literal notranslate"><span class="pre">Workflow</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask"><code class="docutils literal notranslate"><span class="pre">Workflow.FirstTask</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.FirstTask.__init__"><code class="docutils literal notranslate"><span class="pre">Workflow.FirstTask.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.__init__"><code class="docutils literal notranslate"><span class="pre">Workflow.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.children"><code class="docutils literal notranslate"><span class="pre">Workflow.children()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.delete_tasks"><code class="docutils literal notranslate"><span class="pre">Workflow.delete_tasks()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.first_child"><code class="docutils literal notranslate"><span class="pre">Workflow.first_child()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.insertable_tasks"><code class="docutils literal notranslate"><span class="pre">Workflow.insertable_tasks</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.last_child"><code class="docutils literal notranslate"><span class="pre">Workflow.last_child()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.load_state"><code class="docutils literal notranslate"><span class="pre">Workflow.load_state()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.save_workflow"><code class="docutils literal notranslate"><span class="pre">Workflow.save_workflow()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.task_names"><code class="docutils literal notranslate"><span class="pre">Workflow.task_names()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.Workflow.tasks"><code class="docutils literal notranslate"><span class="pre">Workflow.tasks()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.build_specific_interface"><code class="docutils literal notranslate"><span class="pre">build_specific_interface()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.command_name_to_task_name"><code class="docutils literal notranslate"><span class="pre">command_name_to_task_name()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.is_compound_child"><code class="docutils literal notranslate"><span class="pre">is_compound_child()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.workflow_new.make_task_wrapper"><code class="docutils literal notranslate"><span class="pre">make_task_wrapper()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/workflow_new.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.3. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

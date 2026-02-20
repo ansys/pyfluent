@@ -1,0 +1,51 @@
+:orphan:
+
+.. _criteria_1:
+
+criteria
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.criteria_1
+    :show-inheritance:
+
+.. rubric:: Methods
+
+========================================   =====================================================
+
+Method                                                                                   Summary
+
+========================================   =====================================================
+:ref:`create <create>`                         Create a new instance of the current object type.
+
+:ref:`delete <delete_8>`                                                       Delete Criterion.
+
+:ref:`rename <rename>`                                                        Rename the object.
+
+:ref:`list <list>`                                                List the names of the objects.
+
+:ref:`list_properties <list_properties>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                    Create a copy of the object.
+
+:ref:`add_objective <add_objective>`                                              Add Objective.
+
+:ref:`add_constraint <add_constraint>`                                           Add Constraint.
+
+========================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`criteria_1_child <criteria_1_child>`
+
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

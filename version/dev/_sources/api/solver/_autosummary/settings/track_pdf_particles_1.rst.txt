@@ -1,0 +1,21 @@
+:orphan:
+
+.. _track_pdf_particles_1:
+
+track_pdf_particles
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.track_pdf_particles_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================================
+
+Parent                                                                Summary
+
+============================   ==============================================
+:ref:`option_74 <option_74>`       Check the Particle-tracks control options.
+
+============================   ==============================================
+

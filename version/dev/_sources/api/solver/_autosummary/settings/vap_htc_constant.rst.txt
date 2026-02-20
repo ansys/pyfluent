@@ -1,0 +1,21 @@
+:orphan:
+
+.. _vap_htc_constant:
+
+vap_htc_constant
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.vap_htc_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================   ===========================================
+
+Parent                                                                                             Summary
+
+============================================================   ===========================================
+:ref:`mt_evap_cond_sbm_sphf_par <mt_evap_cond_sbm_sphf_par>`       Single phase heat flux parameter group.
+
+============================================================   ===========================================
+

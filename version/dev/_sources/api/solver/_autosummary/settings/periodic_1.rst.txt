@@ -1,0 +1,48 @@
+:orphan:
+
+.. _periodic_1:
+
+periodic
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.periodic_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+====================================================   ===============================================================
+
+Attribute                                                                                                      Summary
+
+====================================================   ===============================================================
+:ref:`rotationally_periodic <rotationally_periodic>`                                           Rotationally Periodic?.
+
+:ref:`p_jump <p_jump>`                                                                         Periodic Pressure Jump.
+
+:ref:`axis_direction <axis_direction_3>`                   Axis direction components for periodic boundary conditions.
+
+:ref:`axis_origin <axis_origin_3>`                                       Axis origin for periodic boundary conditions.
+
+:ref:`shift_component <shift_component>`                            Shift components for periodic boundary conditions.
+
+:ref:`per_angle <per_angle>`                                         Periodic angle for rotationally periodic threads.
+
+====================================================   ===============================================================
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`periodic_child <periodic_child>`           'child_object_type' of periodic.
+
+:ref:`phase_17_child <phase_17_child>`              'child_object_type' of phase.
+
+:ref:`periodic_2_child <periodic_2_child>`       'child_object_type' of periodic.
+
+:ref:`phase_41_child <phase_41_child>`              'child_object_type' of phase.
+
+==========================================   ====================================
+

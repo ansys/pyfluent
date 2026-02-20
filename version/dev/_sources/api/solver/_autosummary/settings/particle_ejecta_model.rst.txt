@@ -1,0 +1,61 @@
+:orphan:
+
+.. _particle_ejecta_model:
+
+particle_ejecta_model
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.particle_ejecta_model
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ===========================================================================================
+
+Attribute                                                                                                                          Summary
+
+============================================   ===========================================================================================
+:ref:`enabled <enabled_38>`                                                                                  Enable particle ejecta model.
+
+:ref:`one_mass <one_mass_1>`                                                                 Total ejecta release in the 1-eq abuse model.
+
+:ref:`four_sei <four_sei_1>`                                             Total ejecta release due to SEI-reaction in the 4-eq abuse model.
+
+:ref:`four_pe <four_pe_1>`                                                Total ejecta release due to PE-reaction in the 4-eq abuse model.
+
+:ref:`four_ne <four_ne_1>`                                                Total ejecta release due to NE-reaction in the 4-eq abuse model.
+
+:ref:`four_e <four_e_1>`                           Total ejecta release due to electrolyte decomposition reaction in the 4-eq abuse model.
+
+:ref:`n_eqn_mass <n_eqn_mass_1>`                                  Total ejecta release due to each abuse reaction in the N-eq abuse model.
+
+:ref:`mass_ratio <mass_ratio>`                                                                              Ejecta-venting gas mass ratio.
+
+:ref:`velocity_ratio <velocity_ratio>`                                                                  Ejecta-venting gas velocity ratio.
+
+:ref:`temperature_ratio <temperature_ratio>`                                                         Ejecta-venting gas temperature ratio.
+
+============================================   ===========================================================================================
+
+.. rubric:: Methods
+
+==========================================================   ====================================================
+
+Method                                                                                                    Summary
+
+==========================================================   ====================================================
+:ref:`create_ejecta_injections <create_ejecta_injections>`       Execute command to create all ejecta injections.
+
+==========================================================   ====================================================
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`advanced_models <advanced_models>`       Advanced model options.
+
+========================================   ===========================
+

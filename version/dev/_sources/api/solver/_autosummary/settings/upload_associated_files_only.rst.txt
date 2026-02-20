@@ -1,0 +1,21 @@
+:orphan:
+
+.. _upload_associated_files_only:
+
+upload_associated_files_only
+============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.upload_associated_files_only
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ========================
+
+Parent                                                Summary
+
+==================================   ========================
+:ref:`job_settings <job_settings>`       Remote Job Settings.
+
+==================================   ========================
+

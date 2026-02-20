@@ -1,0 +1,34 @@
+:orphan:
+
+.. _write_simulation_report_template_file:
+
+write_simulation_report_template_file
+=====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.write_simulation_report_template_file
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================================   =============================================================================================================================================================
+
+Argument                                                                                                                                                                                                     Summary
+
+====================================================   =============================================================================================================================================================
+:ref:`register_with_project <register_with_project>`                                                                                                                                         Register With Project?.
+
+:ref:`file_name <file_name_35>`                            File name to write the simulation report template file to. If saving with an active Fluent project, provide only a file name; otherwise include the path.
+
+====================================================   =============================================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ======================================================================================================================
+
+Parent                                                                                                                                                          Summary
+
+==============================================   ======================================================================================================================
+:ref:`simulation_reports <simulation_reports>`       Provides access to simulation reports, allowing to generate, view, export, and manage reports for the simulations.
+
+==============================================   ======================================================================================================================
+

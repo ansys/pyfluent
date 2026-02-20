@@ -1,0 +1,21 @@
+:orphan:
+
+.. _coolant_locations:
+
+coolant_locations
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coolant_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =======================
+
+Parent                                                     Summary
+
+========================================   =======================
+:ref:`coolant_channel <coolant_channel>`       Up coolant channel.
+
+========================================   =======================
+

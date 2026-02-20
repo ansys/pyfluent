@@ -1,0 +1,21 @@
+:orphan:
+
+.. _sc_set_output_parameters_names:
+
+sc_set_output_parameters_names
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.sc_set_output_parameters_names
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =====================================
+
+Parent                                                                   Summary
+
+========================================   =====================================
+:ref:`system_coupling <system_coupling>`       The system coupling model object.
+
+========================================   =====================================
+

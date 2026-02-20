@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_4:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_4
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=====================   ===========================
+
+Argument                                    Summary
+
+=====================   ===========================
+:ref:`name <name_21>`       Input new volume name .
+
+:ref:`type <type_8>`             Input volume type.
+
+=====================   ===========================
+
+.. rubric:: Included in:
+
+========================   ========================
+
+Parent                                      Summary
+
+========================   ========================
+:ref:`volumes <volumes>`       Volumes definitions.
+
+========================   ========================
+

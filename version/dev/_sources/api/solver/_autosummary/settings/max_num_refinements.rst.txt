@@ -1,0 +1,21 @@
+:orphan:
+
+.. _max_num_refinements:
+
+max_num_refinements
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.max_num_refinements
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   =============================================================================
+
+Parent                                                                                                             Summary
+
+==========================================   =============================================================================
+:ref:`accuracy_control <accuracy_control>`       Settings that control the accuracy of the DPM particle tracking tracking.
+
+==========================================   =============================================================================
+

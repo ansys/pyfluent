@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_cell_quality_limits__get_cell_quality_limitsArguments:
+
+_get_cell_quality_limitsArguments
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_cell_quality_limits._get_cell_quality_limitsArguments
+   :members: _cell_zone_id_list, _cell_zone_name_list, _cell_zone_name_pattern, _measure
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

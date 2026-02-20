@@ -1,0 +1,21 @@
+:orphan:
+
+.. _time_steps_per_period:
+
+time_steps_per_period
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.time_steps_per_period
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ================================
+
+Parent                                                        Summary
+
+==================================   ================================
+:ref:`parameters_9 <parameters_9>`       Iteration parameters object.
+
+==================================   ================================
+
