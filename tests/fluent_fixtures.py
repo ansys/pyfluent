@@ -20,13 +20,18 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from concurrent.futures import Future
 from typing import Callable
+import warnings
 
+from _pytest.recwarn import WarningsRecorder
 import pytest
 
 import ansys.fluent.core as pyfluent
+from ansys.fluent.core import config
 from ansys.fluent.core.data_model_cache import DataModelCache
 from ansys.fluent.core.examples import download_file
+from ansys.fluent.core.launcher.slurm_launcher import SlurmFuture, _SlurmWrapper
 
 
 def fluent_launcher_args(args: str):
@@ -59,6 +64,11 @@ def new_meshing_session(globals):
 
 
 @fluent_launcher_args("3ddp -meshing")
+def new_meshing_session_wo_exit(globals):
+    return new_meshing_session(globals)
+
+
+@fluent_launcher_args("3ddp -meshing")
 def new_pure_meshing_session(globals):
     return new_meshing_session(globals)
 
@@ -71,8 +81,22 @@ def watertight_workflow_session(globals):
 
 
 @fluent_launcher_args("3ddp -meshing")
+def watertight_workflow_session_wo_exit(globals):
+    meshing = new_meshing_session_wo_exit(globals)
+    meshing.workflow.InitializeWorkflow(WorkflowType="Watertight Geometry")
+    return meshing
+
+
+@fluent_launcher_args("3ddp -meshing")
 def fault_tolerant_workflow_session(globals):
     meshing = new_meshing_session(globals)
+    meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
+    return meshing
+
+
+@fluent_launcher_args("3ddp -meshing")
+def fault_tolerant_workflow_session_wo_exit(globals):
+    meshing = new_meshing_session_wo_exit(globals)
     meshing.workflow.InitializeWorkflow(WorkflowType="Fault-tolerant Meshing")
     return meshing
 
@@ -92,6 +116,16 @@ def mixing_elbow_watertight_pure_meshing_session(globals):
 def new_solver_session(globals):
     solver = globals["solver"]
     return solver
+
+
+@fluent_launcher_args("3ddp")
+def new_solver_session_wo_exit(globals):
+    return new_solver_session(globals)
+
+
+@fluent_launcher_args("3ddp -t 4")
+def new_solver_session_t4(globals):
+    return new_solver_session(globals)
 
 
 @fluent_launcher_args("3d")
@@ -125,6 +159,16 @@ def static_mixer_case_session(globals):
 
 
 @fluent_launcher_args("3ddp")
+def static_mixer_params_unitless_session(globals):
+    solver = new_solver_session(globals)
+    case_name = download_file(
+        "Static_Mixer_Parameters_unitless.cas.h5", "pyfluent/static_mixer"
+    )
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@fluent_launcher_args("3ddp")
 def mixing_elbow_settings_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
@@ -137,11 +181,27 @@ def mixing_elbow_settings_session(globals):
 
 
 @fluent_launcher_args("3ddp")
+def mixing_elbow_case_session(globals):
+    solver = new_solver_session(globals)
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
+    return solver
+
+
+@fluent_launcher_args("3ddp")
 def mixing_elbow_case_data_session(globals):
     solver = new_solver_session(globals)
     case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
     download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
     solver.settings.file.read(file_type="case-data", file_name=case_name)
+    return solver
+
+
+@fluent_launcher_args("3ddp -t 4")
+def mixing_elbow_case_session_t4(globals):
+    solver = new_solver_session_t4(globals)
+    case_name = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    solver.settings.file.read(file_type="case", file_name=case_name)
     return solver
 
 
@@ -215,3 +275,46 @@ def static_mixer_case_session2(globals):
     case_name = download_file("Static_Mixer_main.cas.h5", "pyfluent/static_mixer")
     session.file.read(file_type="case", file_name=case_name)
     return session
+
+
+def reset_examples_path(globals):
+    try:
+        delattr(pyfluent, "EXAMPLES_PATH")
+        delattr(pyfluent.config, "_examples_path")
+    except AttributeError:
+        pass
+
+
+def slurm_future(globals) -> SlurmFuture:
+    class _Env:
+        def __init__(self):
+            self.state = None
+
+        def set_state(self, state):
+            self.state = state
+
+    _SlurmWrapper.is_available = staticmethod(lambda: True)
+    env = _Env()
+    fut = Future()
+    fut.set_running_or_notify_cancel()
+    sf = SlurmFuture(fut, 0)
+    sf._get_state = lambda: env.state
+    sf._cancel = lambda: env.set_state("")
+    env.set_state("RUNNING")
+    sf.env = env
+    return sf
+
+
+def disable_slurm_in_current_machine(globals):
+    config.use_slurm_from_current_machine = False
+
+
+def warning_record(globals):
+    wrec = WarningsRecorder(_ispytest=True)
+    wrec.__enter__()
+    warnings.simplefilter("ignore", ResourceWarning)
+    return wrec
+
+
+def use_runtime_python_classes(globals):
+    config.use_runtime_python_classes = True

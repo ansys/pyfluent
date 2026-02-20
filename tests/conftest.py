@@ -181,7 +181,9 @@ def pytest_collection_finish(session):
                 f.write(f"launcher_args: {launcher_args}\n")
             with open(fluent_test_file, "w") as f:
                 f.write("import sys\n")
-                f.write('sys.path.append("/testing")\n')
+                f.write("from pathlib import Path\n")
+                f.write("ROOT = Path(__file__).resolve().parents[3]\n")
+                f.write("sys.path.append(str(ROOT))\n")
                 f.write(
                     f"from {item.module.__name__} import {item.name}  # noqa: E402\n"
                 )
