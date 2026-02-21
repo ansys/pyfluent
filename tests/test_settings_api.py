@@ -683,20 +683,19 @@ def test_settings_with_deprecated_flag(mixing_elbow_settings_session):
     # User won't normally find deprecated objects in the settings API, so it is OK to leave them active.
     assert graphics.contour["contour-velocity"].range_options.is_active()
 
-    # https://github.com/ansys/pyfluent/issues/3813
     # in 'get_state'
-    # if solver.get_fluent_version() >= FluentVersion.v252:
-    #     # From v252 'get_state' behaviour is to be corrected in Fluent.
-    #     assert not {"range_option", "coloring"}.issubset(
-    #         set(graphics.contour["contour-velocity"].get_state())
-    #     )
-    #     assert {"range_options", "colorings"}.issubset(
-    #         set(graphics.contour["contour-velocity"].get_state())
-    #     )
-    # else:
-    #     assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
-    #         set(graphics.contour["contour-velocity"].get_state())
-    #     )
+    if solver.get_fluent_version() >= FluentVersion.v252:
+        # From v252 'get_state' behaviour is to be corrected in Fluent.
+        assert not {"range_option", "coloring"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+        assert {"range_options", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
+    else:
+        assert {"range_option", "range_options", "coloring", "colorings"}.issubset(
+            set(graphics.contour["contour-velocity"].get_state())
+        )
 
     # in 'child_names'
     # 'child_names', 'command_names' and 'query_names' will remain unchanged.
