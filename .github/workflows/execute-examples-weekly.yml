@@ -175,7 +175,7 @@ jobs:
       - name: Execute Modeling_solidification_workflow.py
         run: |
           python examples/00-fluent/Modeling_solidification_workflow.py
-          
+
       - name: Execute catalytic_converter_workflow.py
         run: |
           python examples/00-fluent/catalytic_converter_workflow.py
@@ -195,6 +195,10 @@ jobs:
       - name: Execute battery_pack.py
         run: |
           python examples/00-fluent/battery_pack.py
+
+      - name: Execute pipe_flow.py
+        run: |
+          python examples/00-fluent/pipe_flow.py
 
       # https://github.com/ansys/pyfluent/issues/4157
       # - name: Execute conjugate_heat_transfer.py
