@@ -924,8 +924,8 @@ class FluentConnection:
             for cb in finalizer_cbs:
                 cb()
             if cleanup_on_exit:
-                # Use suppress to ignore exceptions during server shutdown without triggering B110
-                # TODO: Investigate why this exception handling is required?
+                # Use suppress to ignore exceptions during server exit cleanup without triggering B110
+                # TODO: Investigate and document which exceptions exit_server() may raise during shutdown and why they can be safely ignored.
                 with suppress(Exception):
                     connection_interface.exit_server()
             channel.close()
