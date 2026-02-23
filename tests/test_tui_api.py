@@ -100,3 +100,11 @@ def test_commands_not_in_solver_tui(new_solver_session):
     for command in hidden_commands:
         assert command not in dir(solver.tui)
         assert getattr(solver.tui, command)
+
+    case_path = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
+    download_file("mixing_elbow.dat.h5", "pyfluent/mixing_elbow")
+    solver.file.read_case_data(file_name=case_path)
+
+    for command in hidden_commands:
+        assert command not in dir(solver.tui)
+        assert getattr(solver.tui, command)
