@@ -833,7 +833,7 @@ class ArgumentsWrapper(PyCallableStateObject):
             self._task._refreshed_command()()
         except Exception as ex:
             self._just_set_state(recovery_state)
-            # Use suppress to ignore exceptions during task lookup without triggering B110
+            # Use suppress to ignore exceptions when retrying command refresh without triggering B110
             with suppress(Exception):
                 self._task._refreshed_command()()
             raise ex
