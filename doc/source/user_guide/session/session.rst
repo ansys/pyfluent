@@ -184,34 +184,17 @@ Example:
 .. code:: python
 
   >>> from ansys.fluent.core import using
-  >>> from ansys.fluent.core.solver import Viscous
+  >>> from ansys.fluent.core.solver import ReadCase, Viscous
   >>> with using(solver_session):
+  ...     ReadCase()(file_name=<case_file>)
   ...     print(Viscous().model())
   k-omega
 
 .. note::
 
-  You can import ``using`` from ``ansys.fluent.core``. In older versions, it was exposed only under
-  ``ansys.fluent.core.solver``.
+  Settings trees are inactive outside an active session. Set or query state inside ``with using(session)`` or
+  pass the session explicitly via ``settings_source=...`` on the object.
 
-
-Solver context manager
-~~~~~~~~~~~~~~~~~~~~~~
-
-Use ``using(solver_session)`` to make a solver session the active session inside a ``with`` block:
-
-.. code:: python
-
-  >>> import ansys.fluent.core as pyfluent
-  >>> from ansys.fluent.core.examples import download_file
-  >>> from ansys.fluent.core import using
-  >>> from ansys.fluent.core.solver import ReadCase, Viscous
-  >>> solver_session = pyfluent.launch_fluent()
-  >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
-  >>> with using(solver_session):
-  ...     ReadCase()(file_name=case_file)
-  ...     print(Viscous().model())
-  k-omega
 
 Multiple sessions in one script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -221,14 +204,21 @@ within its intended scope:
 
 .. code:: python
 
+  >>> import ansys.fluent.core as pyfluent
+  >>> from ansys.fluent.core.examples import download_file
+  >>> from ansys.fluent.core import using
+  >>> from ansys.fluent.core.solver import ReadCase, Viscous
   >>> solver_session_1 = pyfluent.launch_fluent()
   >>> solver_session_2 = pyfluent.launch_fluent()
-  >>> from ansys.fluent.core import using
-  >>> from ansys.fluent.core.solver import Viscous
+  >>> case_file = download_file("mixing_elbow.cas.h5", "pyfluent/mixing_elbow")
   >>> with using(solver_session_1):
+  ...     ReadCase()(file_name=case_file)
+  ...     Viscous().model.set_state("laminar")
   ...     print(Viscous().model())
-  k-omega
+  laminar
   >>> with using(solver_session_2):
+  ...     ReadCase()(file_name=case_file)
+  ...     Viscous().model.set_state("k-omega")
   ...     print(Viscous().model())
   k-omega
 
