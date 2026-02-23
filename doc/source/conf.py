@@ -127,8 +127,8 @@ copybutton_prompt_is_regexp = True
 
 
 def _stop_fluent_container(gallery_conf, fname):
-    # Use suppress to ignore exceptions when stopping containers without triggering B110
-    # TODO: Investigate why this exception handling is required?
+    # Use suppress to ignore benign exceptions during Docker container cleanup
+    # (for example, when Docker is unavailable or no containers are running) without triggering B110.
     with suppress(Exception):
         is_linux = platform.system() == "Linux"
         container_names = (
