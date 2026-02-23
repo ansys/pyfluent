@@ -127,7 +127,7 @@ copybutton_prompt_is_regexp = True
 
 
 def _stop_fluent_container(gallery_conf, fname):
-    # Use suppress to ignore exceptions during task lookup without triggering B110
+    # Use suppress to ignore exceptions when stopping containers without triggering B110
     # TODO: Investigate why this exception handling is required?
     with suppress(Exception):
         is_linux = platform.system() == "Linux"
