@@ -216,7 +216,6 @@ showcontent = true
 exclude_dirs = ["src/ansys/fluent/core/generated", "examples", "tests"]
 skips = [
     "B301",
-    "B310",
     "B314",
     "B403",
     "B404",
