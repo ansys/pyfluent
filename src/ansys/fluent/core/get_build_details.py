@@ -32,7 +32,7 @@ import ansys.fluent.core as pyfluent
 def get_build_version():
     """Get build version."""
     build_details = OrderedDict()
-    # Use suppress to ignore exceptions during task lookup without triggering B110
+    # Use suppress to ignore exceptions when running git commands without triggering B110
     # TODO: Investigate why this exception handling is required?
     with suppress(Exception):
         last_commit_time = (
