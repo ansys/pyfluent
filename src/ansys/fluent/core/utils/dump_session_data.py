@@ -131,7 +131,7 @@ class DumpDataReader:
             str(Path(file_name).resolve()),
             "rb",
         ) as pickle_obj:
-            self._session_data = pickle.load(pickle_obj)
+            self._session_data = pickle.load(pickle_obj)  # nosec B301
 
     def get_session_data(self):
         """Get session data."""
