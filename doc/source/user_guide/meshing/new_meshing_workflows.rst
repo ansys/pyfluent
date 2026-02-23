@@ -343,7 +343,7 @@ Add boundary layers
     add_boundary_layer = fault_tolerant.add_boundary_layers
     add_boundary_layer.control_name.set_state("aspect-ratio_1")
     add_boundary_layer.insert_compound_child_task()
-    fault_tolerant.add_boundary_layer_ftm_child_1()
+    fault_tolerant.add_boundary_layers_child_1()
 
 Generate volume mesh
 ~~~~~~~~~~~~~~~~~~~~
