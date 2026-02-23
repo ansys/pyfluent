@@ -83,9 +83,8 @@ def launch(
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
-        secrets.choices(
-            string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
-        )
+        secrets.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits)
+        for _ in range(6)
     )
 
     debug_watchdog = pyfluent.config.watchdog_debug
