@@ -126,6 +126,7 @@ def test_ansys_fluent_core_public_api():
         "solver",
         "streaming_services",
         "system_coupling",
+        "using",
         "utils",
         "variable_strategies",
         "version_info",
