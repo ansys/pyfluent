@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from conftest import SKIP_INVESTIGATING, SKIP_UNKNOWN
 import pytest
 
 from ansys.fluent.core import FluentVersion, PyFluentUserWarning, examples
@@ -1575,6 +1576,8 @@ def test_workflow_traversal(new_meshing_session):
     assert wf_6.name() == "Add Boundary Layers"
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
@@ -1651,6 +1654,8 @@ def test_new_watertight_workflow_using_traversal(new_meshing_session_wo_exit):
     assert solver.is_active() is False
 
 
+@pytest.mark.skip(reason=SKIP_INVESTIGATING)
+# https://github.com/ansys/pyfluent/issues/4914
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_created_workflow(new_meshing_session):
@@ -1946,7 +1951,8 @@ def test_accessors_for_argument_sub_items(new_meshing_session):
         assert import_geom.length_unit.min()
 
 
-@pytest.mark.skip("Failing in Github randomly.")
+@pytest.mark.skip(reason=SKIP_UNKNOWN)
+# Failing in Github randomly.
 @pytest.mark.codegen_required
 @pytest.mark.fluent_version(">=26.1")
 def test_return_state_changes(new_meshing_session):

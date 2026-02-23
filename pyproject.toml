@@ -18,7 +18,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "ansys-api-fluent>=0.3.36",
+    "ansys-api-fluent>=0.3.37",
     "ansys-platform-instancemanagement~=1.1",
     "ansys-tools-common>=0.4.0",
     "ansys-tools-filetransfer>=0.2,<1.0",
@@ -44,7 +44,7 @@ reader = ["h5py>=3.15.1"]
 ui-jupyter = ["ipywidgets>=8.1.8"]
 ui = ["panel>=1.8.1"]
 tests = [
-    "pytest==8.4.2",
+    "pytest==9.0.1",
     "pytest-cov==7.0.0",
     "pytest-mock==3.15.1",
     "pytest-xdist==3.8.0",
