@@ -160,7 +160,7 @@ def _refresh_task_accessors(obj):
 
 def _call_refresh_task_accessors(obj):
     """This layer handles exception for PyConsole."""
-    # Use suppress to ignore exceptions during task lookup without triggering B110
+    # Use suppress to ignore exceptions during task accessor refresh without triggering B110
     with suppress(Exception):
         _refresh_task_accessors(obj)
 
