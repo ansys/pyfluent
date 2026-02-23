@@ -78,10 +78,11 @@ from ansys.fluent.core.session_utilities import (  # noqa: F401
 )
 from ansys.fluent.core.streaming_services.events_streaming import *  # noqa: F401, F403
 from ansys.fluent.core.utils import fldoc
+from ansys.fluent.core.utils.context_managers import using  # noqa: F401
 from ansys.fluent.core.utils.fluent_version import FluentVersion  # noqa: F401
 from ansys.fluent.core.utils.setup_for_fluent import setup_for_fluent  # noqa: F401
 
-__version__ = "0.38.dev5"
+__version__ = "0.38.dev6"
 
 _VERSION_INFO = None
 """
