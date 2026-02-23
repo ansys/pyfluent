@@ -33,6 +33,7 @@ def get_build_version():
     """Get build version."""
     build_details = OrderedDict()
     # Use suppress to ignore exceptions during task lookup without triggering B110
+    # TODO: Investigate why this exception handling is required?
     with suppress(Exception):
         last_commit_time = (
             subprocess.check_output(["git", "log", "-n", "1", "--pretty=tformat:%ad"])

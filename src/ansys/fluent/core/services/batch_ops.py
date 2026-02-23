@@ -22,7 +22,6 @@
 
 """Batch RPC service."""
 
-from contextlib import suppress
 import inspect
 import logging
 from types import ModuleType
@@ -165,9 +164,11 @@ class BatchOps:
         def update_result(self, status: batch_ops_pb2.ExecuteStatus, data: str) -> None:
             """Update results after the batch operation is executed."""
             obj = self.response_cls()
-            # Use suppress to ignore exceptions during task lookup without triggering B110
-            with suppress(Exception):
+            try:
                 obj.ParseFromString(data)
+            except Exception as ex:
+                # It will log any exception coming from grpc layer during parsing of data.
+                network_logger.warning(ex)
             self._status = status
             self._result = obj
 

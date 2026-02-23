@@ -1995,6 +1995,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         for cname in self.child_names:
             cobj = getattr(self, cname)
             # Use suppress to ignore exceptions during task lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
             with suppress(Exception):
                 return cobj[name]
         raise KeyError(name)
@@ -2008,6 +2009,7 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
         for cname in self.child_names:
             cobj = getattr(self, cname)
             # Use suppress to ignore exceptions during task lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
             with suppress(Exception):
                 del cobj[name]
                 return
@@ -2016,6 +2018,8 @@ class _ChildNamedObjectAccessorMixin(collections.abc.MutableMapping):
     def __iter__(self):
         """Iterator for child named objects."""
         for cname in self.child_names:
+            # Use suppress to ignore exceptions during task lookup without triggering B110
+            # TODO: Investigate why this exception handling is required?
             with suppress(Exception):
                 for item in getattr(self, cname):
                     yield item
