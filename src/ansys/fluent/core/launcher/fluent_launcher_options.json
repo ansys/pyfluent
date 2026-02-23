@@ -32,5 +32,9 @@
     "scheduler_account": {
         "type": "str",
         "fluent_format": " -scheduler_account={}"
-    }
+    },
+    "insecure_mode": {
+        "type": "bool",
+        "fluent_format": " -grpc-allow-remote-host -grpc-insecure-mode"
+    },
 }
