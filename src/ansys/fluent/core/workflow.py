@@ -1452,7 +1452,7 @@ class Workflow:
                 def _task_by_id(task_id):
                     if task_id in mappings:
                         return mappings[task_id]
-                    # Use suppress to ignore exceptions during task lookup without triggering B110
+                    # Use suppress to ignore exceptions during task ID resolution fallback without triggering B110
                     with suppress(Exception):
                         return self._task_by_id_impl(task_id, workflow_state)
 
