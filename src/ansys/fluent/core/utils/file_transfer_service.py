@@ -25,7 +25,7 @@
 import logging
 import os
 import pathlib
-import random
+import secrets
 import shutil
 from typing import Any, Protocol
 import warnings
@@ -289,7 +289,9 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
         if certs_dir:
             volumes.append(f"{certs_dir}:/certs:ro")
         try:
-            self.host_port = port if port else random.randint(5000, 6000)
+            self.host_port = (
+                port if port else secrets.SystemRandom().randint(5000, 6000)
+            )
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",
@@ -299,7 +301,9 @@ class ContainerFileTransferStrategy(FileTransferStrategy):
                 command=server_command,
             )
         except docker.errors.DockerException:
-            self.host_port = port if port else random.randint(6000, 7000)
+            self.host_port = (
+                port if port else secrets.SystemRandom().randint(6000, 7000)
+            )
             self.ports = {"50000/tcp": self.host_port}
             self.container = self.docker_client.containers.run(
                 image=f"{self.image_name}:{self.image_tag}",

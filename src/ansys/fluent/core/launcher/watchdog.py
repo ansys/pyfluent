@@ -28,7 +28,7 @@ See :func:`~ansys.fluent.core.launcher.launcher.launch_fluent()` `start_watchdog
 
 import os
 from pathlib import Path
-import random
+import secrets
 import string
 import subprocess
 import sys
@@ -83,7 +83,7 @@ def launch(
         If Watchdog fails to launch.
     """
     watchdog_id = "".join(
-        random.choices(
+        secrets.choices(
             string.ascii_uppercase + string.ascii_lowercase + string.digits, k=6
         )
     )
