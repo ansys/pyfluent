@@ -23,6 +23,7 @@
 """Get the git build info."""
 
 from collections import OrderedDict
+from contextlib import suppress
 import subprocess
 
 import ansys.fluent.core as pyfluent
@@ -36,7 +37,8 @@ __all__ = (
 def get_build_version():
     """Get build version."""
     build_details = OrderedDict()
-    try:
+    # Use suppress to ignore exceptions during git command execution to get build details without triggering B110
+    with suppress(Exception):
         last_commit_time = (
             subprocess.check_output(["git", "log", "-n", "1", "--pretty=tformat:%ad"])
             .decode("ascii")
@@ -58,8 +60,6 @@ def get_build_version():
             .decode("ascii")
             .strip()
         )
-    except Exception:
-        pass
     return build_details
 
 

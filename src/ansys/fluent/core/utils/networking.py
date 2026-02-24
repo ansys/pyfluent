@@ -28,6 +28,7 @@ import logging
 import socket
 import ssl
 from typing import Any
+import urllib.parse
 import urllib.request
 
 import grpc
@@ -137,9 +138,19 @@ def check_url_exists(url: str) -> bool:
     ------
     ssl.SSLError
         If there is an SSL error while checking the URL
+    ValueError
+        If the URL scheme is not http or https
     """
+    # Validate URL scheme to prevent security issues
+    parsed_url = urllib.parse.urlparse(url)
+    if parsed_url.scheme not in ("http", "https"):
+        raise ValueError(
+            f"Invalid URL scheme: {parsed_url.scheme}. Only http and https are allowed."
+        )
     try:
-        with urllib.request.urlopen(url) as response:
+        with urllib.request.urlopen(
+            url
+        ) as response:  # nosec B310 (Already validated url scheme)
             return response.status == 200
     except urllib.error.URLError as ex:
         if ex.__context__ and isinstance(ex.__context__, ssl.SSLError):
@@ -160,8 +171,21 @@ def get_url_content(url: str) -> str:
     -------
     str
         content of the URL
+
+    Raises
+    ------
+    ValueError
+        If the URL scheme is not http or https
     """
-    with urllib.request.urlopen(url) as response:
+    # Validate URL scheme to prevent security issues
+    parsed_url = urllib.parse.urlparse(url)
+    if parsed_url.scheme not in ("http", "https"):
+        raise ValueError(
+            f"Invalid URL scheme: {parsed_url.scheme}. Only http and https are allowed."
+        )
+    with urllib.request.urlopen(
+        url
+    ) as response:  # nosec B310 (Already validated url scheme)
         return response.read()
 
 

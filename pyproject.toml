@@ -232,19 +232,9 @@ name = "Test"
 showcontent = true
 
 [tool.bandit]
-exclude_dirs = ["tests"]
+exclude_dirs = ["src/ansys/fluent/core/generated", "examples", "tests"]
 skips = [
-    "B101",
-    "B105",
-    "B106",
-    "B110",
-    "B112",
-    "B301",
-    "B307",
-    "B310",
-    "B311",
-    "B314",
-    "B403",
+    "B403", # Only for pickle module.
     "B404",
     "B405",
     "B602",

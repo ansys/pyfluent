@@ -35,6 +35,16 @@ repos:
       --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028 F403 F405 F401 E402,
       src, doc, examples, tests
     ]
+  
+- repo: https://github.com/PyCQA/bandit
+  rev: 1.8.0
+  hooks:
+  - id: bandit
+    args: [
+      -r,
+      -c, pyproject.toml,
+      src, doc, examples, tests
+    ]
 
 - repo: https://github.com/codespell-project/codespell
   rev: v2.3.0
