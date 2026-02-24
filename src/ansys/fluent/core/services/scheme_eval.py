@@ -37,9 +37,9 @@ from typing import Any, Sequence
 from deprecated.sphinx import deprecated
 import grpc
 
-from ansys.api.fluent.v0 import scheme_eval_pb2 as SchemeEvalProtoModule
-from ansys.api.fluent.v0 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
-from ansys.api.fluent.v0.scheme_pointer_pb2 import SchemePointer
+from ansys.api.fluent.v1 import scheme_eval_pb2 as SchemeEvalProtoModule
+from ansys.api.fluent.v1 import scheme_eval_pb2_grpc as SchemeEvalGrpcModule
+from ansys.api.fluent.v1.scheme_pointer_pb2 import SchemePointer
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,

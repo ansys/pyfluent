@@ -26,7 +26,7 @@ from typing import List, Tuple
 
 import grpc
 
-from ansys.api.fluent.v0 import events_pb2_grpc as EventsGrpcModule
+from ansys.api.fluent.v1 import events_pb2_grpc as EventsGrpcModule
 from ansys.fluent.core.services.streaming import StreamingService
 
 

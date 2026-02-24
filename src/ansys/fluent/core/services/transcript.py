@@ -24,7 +24,7 @@
 
 import grpc
 
-from ansys.api.fluent.v0 import transcript_pb2_grpc as TranscriptGrpcModule
+from ansys.api.fluent.v1 import transcript_pb2_grpc as TranscriptGrpcModule
 from ansys.fluent.core.services.streaming import StreamingService
 
 

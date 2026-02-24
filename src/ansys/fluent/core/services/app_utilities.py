@@ -29,8 +29,8 @@ from typing import List, Tuple
 
 import grpc
 
-from ansys.api.fluent.v0 import app_utilities_pb2 as AppUtilitiesProtoModule
-from ansys.api.fluent.v0 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
+from ansys.api.fluent.v1 import app_utilities_pb2 as AppUtilitiesProtoModule
+from ansys.api.fluent.v1 import app_utilities_pb2_grpc as AppUtilitiesGrpcModule
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
@@ -125,24 +125,22 @@ class AppUtilitiesService:
         return self._stub.IsSolutionDataAvailable(request, metadata=self._metadata)
 
     def register_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsRequest
-    ) -> AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsResponse:
+        self, request: AppUtilitiesProtoModule.RegisterPauseSolutionEventsRequest
+    ) -> AppUtilitiesProtoModule.RegisterPauseSolutionEventsResponse:
         """Register on pause solution events RPC of AppUtilities service."""
-        return self._stub.RegisterPauseOnSolutionEvents(
-            request, metadata=self._metadata
-        )
+        return self._stub.RegisterPauseSolutionEvents(request, metadata=self._metadata)
 
     def resume_on_solution_event(
-        self, request: AppUtilitiesProtoModule.ResumeOnSolutionEventRequest
-    ) -> AppUtilitiesProtoModule.ResumeOnSolutionEventResponse:
+        self, request: AppUtilitiesProtoModule.ResumeSolutionEventRequest
+    ) -> AppUtilitiesProtoModule.ResumeSolutionEventResponse:
         """Resume on solution event RPC of AppUtilities service."""
-        return self._stub.ResumeOnSolutionEvent(request, metadata=self._metadata)
+        return self._stub.ResumeSolutionEvent(request, metadata=self._metadata)
 
     def unregister_pause_on_solution_events(
-        self, request: AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsRequest
-    ) -> AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsResponse:
+        self, request: AppUtilitiesProtoModule.UnregisterPauseSolutionEventsRequest
+    ) -> AppUtilitiesProtoModule.UnregisterPauseSolutionEventsResponse:
         """Unregister on pause solution events RPC of AppUtilities service."""
-        return self._stub.UnregisterPauseOnSolutionEvents(
+        return self._stub.UnregisterPauseSolutionEvents(
             request, metadata=self._metadata
         )
 
@@ -392,7 +390,7 @@ class AppUtilities:
         request = AppUtilitiesProtoModule.GetAppModeRequest()
         response = self.service.get_app_mode(request)
         match response.app_mode:
-            case AppUtilitiesProtoModule.APP_MODE_UNKNOWN:
+            case AppUtilitiesProtoModule.APP_MODE_UNSPECIFIED:
                 raise ValueError("Unknown app mode.")
             case AppUtilitiesProtoModule.APP_MODE_MESHING:
                 return pyfluent.FluentMode.MESHING
@@ -445,8 +443,8 @@ class AppUtilities:
 
     def register_pause_on_solution_events(self, solution_event: SolverEvent) -> int:
         """Register pause on solution events."""
-        request = AppUtilitiesProtoModule.RegisterPauseOnSolutionEventsRequest()
-        request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNKNOWN
+        request = AppUtilitiesProtoModule.RegisterPauseSolutionEventsRequest()
+        request.solution_event = AppUtilitiesProtoModule.SOLUTION_EVENT_UNSPECIFIED
         match solution_event:
             case SolverEvent.ITERATION_ENDED:
                 request.solution_event = (
@@ -461,13 +459,13 @@ class AppUtilities:
 
     def resume_on_solution_event(self, registration_id: int) -> None:
         """Resume on solution event."""
-        request = AppUtilitiesProtoModule.ResumeOnSolutionEventRequest()
+        request = AppUtilitiesProtoModule.ResumeSolutionEventRequest()
         request.registration_id = registration_id
         self.service.resume_on_solution_event(request)
 
     def unregister_pause_on_solution_events(self, registration_id: int) -> None:
         """Unregister pause on solution events."""
-        request = AppUtilitiesProtoModule.UnregisterPauseOnSolutionEventsRequest()
+        request = AppUtilitiesProtoModule.UnregisterPauseSolutionEventsRequest()
         request.registration_id = registration_id
         self.service.unregister_pause_on_solution_events(request)
 
