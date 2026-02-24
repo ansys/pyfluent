@@ -92,7 +92,7 @@ Add boundary layers
 
     add_boundary_layers = watertight.add_boundary_layers
     add_boundary_layers.add_child_to_task()
-    add_boundary_layers.bl_control_name.set_state("smooth-transition_1")
+    add_boundary_layers.control_name.set_state("smooth-transition_1")
     add_boundary_layers.insert_compound_child_task()
     watertight.add_boundary_layers_child_1()
 
@@ -181,31 +181,31 @@ Enclose fluid regions (capping)
 
     fault_tolerant.capping.create_patch_preferences.show_in_gui.set_state(False)
 
-    enclose_fluid_regions = fault_tolerant.enclose_fluid_regions_fault
+    enclose_fluid_regions = fault_tolerant.capping
     enclose_fluid_regions.patch_name.set_state("inlet-1")
     enclose_fluid_regions.selection_type.set_state("zone")
     enclose_fluid_regions.zone_selection_list.set_state(["inlet.1"])
     enclose_fluid_regions.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault_child_1()
+    fault_tolerant.capping_child_1()
 
     enclose_fluid_regions.patch_name.set_state("inlet-2")
     enclose_fluid_regions.selection_type.set_state("zone")
     enclose_fluid_regions.zone_selection_list.set_state(["inlet.2"])
     enclose_fluid_regions.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault_child_2()
+    fault_tolerant.capping_child_2()
 
     enclose_fluid_regions.patch_name.set_state("inlet-3")
     enclose_fluid_regions.selection_type.set_state("zone")
     enclose_fluid_regions.zone_selection_list.set_state(["inlet"])
     enclose_fluid_regions.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault_child_3()
+    fault_tolerant.capping_child_3()
 
     enclose_fluid_regions.patch_name.set_state("outlet-1")
     enclose_fluid_regions.selection_type.set_state("zone")
     enclose_fluid_regions.zone_selection_list.set_state(["outlet"])
     enclose_fluid_regions.zone_type.set_state("pressure-outlet")
     enclose_fluid_regions.insert_compound_child_task()
-    fault_tolerant.enclose_fluid_regions_fault_child_4()
+    fault_tolerant.capping_child_4()
 
 Extract edge features
 ~~~~~~~~~~~~~~~~~~~~~
@@ -238,6 +238,7 @@ Identify regions
     identify_regions.show_coordinates = True
     identify_regions.material_points_name.set_state("void-region-1")
     identify_regions.new_region_type.set_state("void")
+    identify_regions.selection_type = "object"
     identify_regions.object_selection_list.set_state(["inlet-1", "inlet-2", "inlet-3", "main"])
     identify_regions.x.set_state(374.722045740589)
     identify_regions.y.set_state(-278.9775145640143)
@@ -340,10 +341,10 @@ Add boundary layers
 
 .. code:: python
 
-    add_boundary_layer = fault_tolerant.add_boundary_layer_ftm
-    add_boundary_layer.bl_control_name.set_state("aspect-ratio_1")
+    add_boundary_layer = fault_tolerant.add_boundary_layers
+    add_boundary_layer.control_name.set_state("aspect-ratio_1")
     add_boundary_layer.insert_compound_child_task()
-    fault_tolerant.add_boundary_layer_ftm_child_1()
+    fault_tolerant.add_boundary_layers_child_1()
 
 Generate volume mesh
 ~~~~~~~~~~~~~~~~~~~~

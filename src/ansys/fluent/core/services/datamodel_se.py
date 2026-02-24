@@ -21,7 +21,6 @@
 # SOFTWARE.
 
 """Wrappers over StateEngine based datamodel gRPC service of Fluent."""
-
 from enum import Enum
 import functools
 import itertools
@@ -1078,14 +1077,15 @@ class PyStateContainer(PyCallableStateObject):
         cached_val = self._cached_attrs.get(attrib)
         if cached_val is None:
             cached_val = self._get_remote_attr(attrib)
-            try:  # will fail for Fluent 23.1 or before
+            try:
                 self.add_on_attribute_changed(
                     attrib,
                     functools.partial(dict.__setitem__, self._cached_attrs, attrib),
                 )
                 self._cached_attrs[attrib] = cached_val
-            except Exception:
-                pass
+            except Exception as ex:
+                # will fail for Fluent 23.1 or before
+                logger.warning(ex)
         return cached_val
 
     def get_attr(self, attrib: str) -> Any:
