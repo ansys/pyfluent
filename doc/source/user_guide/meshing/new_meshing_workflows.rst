@@ -238,6 +238,7 @@ Identify regions
     identify_regions.show_coordinates = True
     identify_regions.material_points_name.set_state("void-region-1")
     identify_regions.new_region_type.set_state("void")
+    identify_regions.selection_type = "object"
     identify_regions.object_selection_list.set_state(["inlet-1", "inlet-2", "inlet-3", "main"])
     identify_regions.x.set_state(374.722045740589)
     identify_regions.y.set_state(-278.9775145640143)
