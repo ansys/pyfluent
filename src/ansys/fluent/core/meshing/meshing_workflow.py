@@ -30,6 +30,7 @@ import os
 from typing import TYPE_CHECKING
 
 from ansys.fluent.core._types import PathType
+from ansys.fluent.core.generated.datamodel_261.meshing import Root
 from ansys.fluent.core.services.datamodel_se import PyMenuGeneric
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 from ansys.fluent.core.workflow import Workflow
@@ -42,7 +43,9 @@ name_to_identifier_map = {
 }
 
 
-class MeshingWorkflow(Workflow):
+class MeshingWorkflow(
+    Workflow, Root if TYPE_CHECKING else object
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Provides meshing specialization of the workflow wrapper that extends the core
     functionality in an object-oriented manner."""
 
