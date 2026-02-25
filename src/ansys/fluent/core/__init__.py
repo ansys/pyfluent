@@ -142,7 +142,7 @@ _config_by_deprecated_name = {
     "LAUNCH_FLUENT_STDERR": "launch_fluent_stderr",
     "LAUNCH_FLUENT_IP": "launch_fluent_ip",
     "LAUNCH_FLUENT_PORT": "launch_fluent_port",
-    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",
+    "LAUNCH_FLUENT_SKIP_PASSWORD_CHECK": "launch_fluent_skip_password_check",  # nosec B105: Not a password
 }
 
 

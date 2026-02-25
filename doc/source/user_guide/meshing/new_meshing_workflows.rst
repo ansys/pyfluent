@@ -51,7 +51,7 @@ Generate surface mesh
 .. code:: python
 
     create_surface_mesh = watertight.create_surface_mesh
-    create_surface_mesh.cfd_surface_mesh_controls.max_size.set_state(0.3)
+    create_surface_mesh.cfd_surface_mesh_controls.max_size = 0.3
     create_surface_mesh()
 
 Describe geometry
@@ -548,7 +548,7 @@ Insert next task
 .. code:: python
 
     created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
-    created_workflow.add_local_sizing()
+    created_workflow.add_local_sizing_wtm()
 
 
 Loading a saved meshing workflow
