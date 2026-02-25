@@ -2051,3 +2051,15 @@ def test_non_default_workflow(new_meshing_session):
             watertight.__class__.__module__
             == "ansys.fluent.core.meshing.meshing_workflow"
         )
+
+
+@pytest.mark.codegen_required
+@pytest.mark.fluent_version(">=26.1")
+def test_rename(new_meshing_session):
+    meshing = new_meshing_session
+    watertight = meshing.watertight()
+    assert watertight.import_geometry["Import Geometry"]
+    watertight.import_geometry.rename(new_name="IG")
+    with pytest.raises(LookupError):
+        assert watertight.import_geometry["Import Geometry"]
+    assert watertight.import_geometry["IG"]

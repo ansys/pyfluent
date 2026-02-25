@@ -548,7 +548,7 @@ Insert next task
 .. code:: python
 
     created_workflow.import_geometry.insertable_tasks.add_local_sizing.insert()
-    created_workflow.add_local_sizing()
+    created_workflow.add_local_sizing_wtm()
 
 
 Loading a saved meshing workflow
