@@ -2061,5 +2061,5 @@ def test_rename(new_meshing_session):
     assert watertight.import_geometry["Import Geometry"]
     watertight.import_geometry.rename(new_name="IG")
     with pytest.raises(LookupError):
-        assert watertight.import_geometry["Import Geometry"]
+        watertight.import_geometry["Import Geometry"]
     assert watertight.import_geometry["IG"]
