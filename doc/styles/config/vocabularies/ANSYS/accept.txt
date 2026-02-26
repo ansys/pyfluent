@@ -57,6 +57,7 @@ Pythonic
 post_helper
 post_objects_container
 pyvista
+enum
 rpc
 rpvars
 sbatch

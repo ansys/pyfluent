@@ -28,12 +28,13 @@ Creating rpvars
 ~~~~~~~~~~~~~~~
 
 You can create custom user-defined rpvars with specific types using the ``create`` method.
-The ``var_type`` parameter accepts either Python types (``int``, ``float``, ``bool``, ``str``, 
-``list``, ``tuple``) or ``RPVarType`` enum values. Use ``None`` to create a custom-typed rpvars
+The ``var_type`` parameter accepts either Python types (``int``, ``float``, ``bool``, ``str``)
+or ``RPVarType`` enum values. Use ``None`` to create a custom-typed rpvars
 that can hold any value type.
 
 .. code-block:: python
 
+   >>> import ansys.fluent.core as pyfluent
    >>> from ansys.fluent.core.rpvars import RPVarType
    >>> solver_session = pyfluent.launch_fluent()
    

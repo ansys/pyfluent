@@ -40,7 +40,6 @@ class RPVarType(Enum):
     REAL = "real"
     BOOLEAN = "boolean"
     STRING = "string"
-    LIST = "list"
     CUSTOM = "none"
 
     @classmethod
@@ -67,8 +66,6 @@ class RPVarType(Enum):
             float: cls.REAL,
             bool: cls.BOOLEAN,
             str: cls.STRING,
-            list: cls.LIST,
-            tuple: cls.LIST,
         }
         if python_type not in type_map:
             raise ValueError(f"Unsupported type: {python_type}")
@@ -134,12 +131,13 @@ class RPVars:
         return lispy.parse(self._eval_fn("(cx-send '(map car rp-variables))"))
 
     def _get_var(self, var: str):
-        if var not in self.allowed_values():
+        allowed_rp_vars = self.allowed_values()
+        if var not in allowed_rp_vars:
             raise RuntimeError(
                 allowed_name_error_message(
                     context="rp-vars",
                     trial_name=var,
-                    allowed_values=self.allowed_values(),
+                    allowed_values=allowed_rp_vars,
                 )
             )
 
@@ -169,7 +167,7 @@ class RPVars:
             Initial value for the rpvar.
         var_type : RPVarType | type | None
             Type of the rpvar, either as RPVarType enum or Python type.
-            Allowed Python types: int, float, bool, str, list, tuple, or None.
+            Allowed Python types: int, float, bool, str or None.
 
         Raises
         ------
@@ -179,26 +177,38 @@ class RPVars:
             If the value type doesn't match the specified var_type.
         """
         if name in self.allowed_values():
-            raise NameError(f"'{name}' is already a pre-defined rpvar.")
+            raise NameError(f"'{name}' already exists as an rpvar.")
         if var_type is None:
             var_type = RPVarType.CUSTOM
             python_type = None
         elif isinstance(var_type, type):
             python_type = var_type
             var_type = RPVarType.from_python_type(var_type)
-        else:
+        elif isinstance(var_type, RPVarType):
             type_map = {
                 RPVarType.INTEGER: int,
                 RPVarType.REAL: float,
                 RPVarType.BOOLEAN: bool,
                 RPVarType.STRING: str,
-                RPVarType.LIST: (list, tuple),
             }
             python_type = type_map.get(var_type)
+        else:
+            raise TypeError(
+                "Invalid var_type: expected RPVarType enum, Python type, or None."
+            )
 
         # Type check the value
         if python_type and var_type != RPVarType.CUSTOM:
-            if not isinstance(value, python_type):
+            type_mismatch = False
+            if python_type is int:
+                # Avoid accepting booleans where a strict integer is expected
+                type_mismatch = type(value) is not int
+            elif python_type is bool:
+                # Enforce strict boolean type as well
+                type_mismatch = type(value) is not bool
+            else:
+                type_mismatch = not isinstance(value, python_type)
+            if type_mismatch:
                 raise TypeError(
                     f"Value type mismatch: expected {python_type}, got {type(value).__name__}"
                 )
