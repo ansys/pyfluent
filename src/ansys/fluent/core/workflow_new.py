@@ -630,8 +630,7 @@ class Workflow:
             raise AttributeError(
                 f"'{item}' is only supported in Fault-tolerant Meshing workflows."
             )
-        if item not in self._task_dict:
-            self.tasks()
+        self.tasks()
         if item in self._task_dict:
             return make_task_wrapper(
                 self._task_dict[item], item, self._workflow, self, self._command_source
