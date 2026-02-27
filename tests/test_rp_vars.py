@@ -132,6 +132,18 @@ def test_create_rp_vars(new_solver_session) -> None:
     solver.rp_vars("my-custom-var", "any-str")
     assert solver.rp_vars("my-custom-var") == '"any-str"'
 
+    # Create RPVar with a list value and verify it is stored and retrieved correctly.
+    solver.rp_vars.create(name="my-list-var", value=[1, 2, 3], var_type=None)
+    list_var_value = solver.rp_vars("my-list-var")
+    assert isinstance(list_var_value, (list, tuple))
+    assert list(list_var_value) == [1, 2, 3]
+
+    # Create RPVar with a tuple value and verify it is stored and retrieved correctly.
+    solver.rp_vars.create(name="my-tuple-var", value=(4, 5, 6), var_type=None)
+    tuple_var_value = solver.rp_vars("my-tuple-var")
+    assert isinstance(tuple_var_value, (list, tuple))
+    assert list(tuple_var_value) == [4, 5, 6]
+
     # REAL (float) RP var
     solver.rp_vars.create(
         name="my-real-var", value=1.5, var_type=RPVarType.REAL
