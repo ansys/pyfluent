@@ -150,7 +150,7 @@ class RPVars:
 
     def _set_var(self, var: str, val):
         prefix = "'" if isinstance(val, (list, tuple)) else ""
-        if isinstance(val, str):
+        if type(val) is str:
             cmd = f'(rpsetvar {RPVars._var(var)} {prefix}"{lispy.to_string(val)}")'
         else:
             cmd = f"(rpsetvar {RPVars._var(var)} {prefix}{lispy.to_string(val)})"
