@@ -176,8 +176,6 @@ class RPVars:
         TypeError
             If the value type doesn't match the specified var_type.
         """
-        if name in self.allowed_values():
-            raise NameError(f"'{name}' already exists as an rpvar.")
         if var_type is None:
             var_type = RPVarType.CUSTOM
             python_type = None
@@ -217,7 +215,12 @@ class RPVars:
             cmd = f'(make-new-rpvar {RPVars._var(name)} "{prefix}{lispy.to_string(value)}" \'{lispy.to_string(var_type.value)})'
         else:
             cmd = f"(make-new-rpvar {RPVars._var(name)} {prefix}{lispy.to_string(value)} '{lispy.to_string(var_type.value)})"
-        return self._execute(cmd)
+        returned_val = self._execute(cmd)
+        if returned_val is False:
+            if name in self.allowed_values():
+                raise NameError(f"'{name}' already exists as an rpvar.")
+        else:
+            return returned_val
 
     def _execute(self, cmd: str):
         scheme_val = self._eval_fn(cmd)
