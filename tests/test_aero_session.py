@@ -33,7 +33,7 @@ from ansys.fluent.core.docker.utils import get_grpc_launcher_args_for_gh_runs
 
 
 @pytest.mark.fluent_version(">=24.2")
-def test_icing_session():
+def test_aero_session():
     grpc_kwds = get_grpc_launcher_args_for_gh_runs()
     aero_session = pyfluent.launch_fluent(
         mode=pyfluent.FluentMode.SOLVER_AERO, **grpc_kwds
