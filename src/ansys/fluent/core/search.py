@@ -40,6 +40,7 @@ from ansys.fluent.core.utils.fluent_version import (
     get_version_for_file_name,
 )
 
+__all__ = ("search",)
 warnings.filterwarnings("ignore", category=UserWarning, module="nltk")
 
 logger = logging.getLogger("pyfluent.general")
@@ -177,7 +178,7 @@ def _get_api_tree_data():
     """Get API tree data."""
     api_tree_data_file_path = _get_api_tree_data_file_path()
     if api_tree_data_file_path.exists():
-        json_file = open(api_tree_data_file_path, "r")
+        json_file = open(api_tree_data_file_path)
         api_tree_data = json.load(json_file)
         return api_tree_data
 
@@ -312,6 +313,7 @@ def _search_wildcard(
     -------
         List of search string matches.
     """
+
     api_tree_data = api_tree_data or _get_api_tree_data()
     all_names = api_tree_data["all_api_object_names"]
     queries = []

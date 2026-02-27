@@ -35,23 +35,20 @@ Examples
 >>> standalone_solver_session = standalone_solver_launcher()
 """
 
-import inspect
 import logging
 import os
 from pathlib import Path
 import subprocess
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, TypedDict
 
-from ansys.fluent.core._types import PathType
+from typing_extensions import Unpack
+
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.launcher.error_handler import (
     LaunchFluentError,
 )
 from ansys.fluent.core.launcher.launch_options import (
-    Dimension,
-    FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
     UIMode,
     _get_argvals_and_session,
     _get_standalone_launch_fluent_version,
@@ -71,6 +68,63 @@ from ansys.fluent.core.launcher.server_info import (
 import ansys.fluent.core.launcher.watchdog as watchdog
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
+if TYPE_CHECKING:
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
+
+
+class StandaloneArgsWithoutDryRunMode(
+    LauncherArgsBase, TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    journal_file_names: None | str | list[str]
+    """Path(s) to a Fluent journal file(s) that Fluent will execute. Defaults to ``None``."""
+    env: dict[str, Any] | None
+    """A mapping for modifying environment variables in Fluent. Defaults to ``None``."""
+    case_file_name: str | None
+    """Name of the case file to read into the Fluent session. Defaults to None."""
+    case_data_file_name: str | None
+    """Name of the case data file. If both case and data files are provided, they are read into the session."""
+    lightweight_mode: bool | None
+    """If True, runs in lightweight mode where mesh settings are read into a background solver session,
+    replacing it once complete. This parameter is only applicable when `case_file_name` is provided; defaults to False.
+    """
+    py: bool | None
+    """If True, runs Fluent in Python mode. Defaults to None."""
+    cwd: str | None
+    """Working directory for the Fluent client."""
+    fluent_path: str | None
+    """User-specified path for Fluent installation."""
+    topy: str | list[Any] | None
+    """A flag indicating whether to write equivalent Python journals from provided journal files; can also specify
+    a filename for the new Python journal.
+    """
+
+
+class StandaloneArgsWithoutDryRun(
+    StandaloneArgsWithoutDryRunMode
+):  # pylint: disable=missing-class-docstring
+    mode: FluentMode
+    """Specifies the launch mode of Fluent to target a specific session type."""
+
+
+class StandaloneArgsWithoutMode(
+    StandaloneArgsWithoutDryRunMode, total=False
+):  # pylint: disable=missing-class-docstring
+    dry_run: bool | None
+    """If True, does not launch Fluent but prints configuration information instead. The `call()` method
+    returns a tuple containing the launch string and server info file name. Defaults to False.
+    """
+
+
+class StandaloneArgs(
+    StandaloneArgsWithoutMode, StandaloneArgsWithoutDryRun, total=False
+):
+    """Arguments for launching Fluent in standalone mode."""
+
+
 logger = logging.getLogger("pyfluent.launcher")
 
 
@@ -79,32 +133,7 @@ class StandaloneLauncher:
 
     def __init__(
         self,
-        mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int | None = None,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        journal_file_names: None | str | list[str] = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        env: Dict[str, Any] | None = None,
-        cleanup_on_exit: bool = True,
-        dry_run: bool = False,
-        start_transcript: bool = True,
-        case_file_name: "PathType | None" = None,
-        case_data_file_name: "PathType | None" = None,
-        lightweight_mode: bool | None = None,
-        py: bool | None = None,
-        gpu: bool | None = None,
-        cwd: "PathType | None" = None,
-        fluent_path: "PathType | None" = None,
-        topy: str | list | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
+        **kwargs: Unpack[StandaloneArgs],
     ):
         """
         Launch a Fluent session in standalone mode.
@@ -187,26 +216,21 @@ class StandaloneLauncher:
         """
         import ansys.fluent.core as pyfluent
 
-        locals_ = locals().copy()
-        argvals = {
-            arg: locals_.get(arg)
-            for arg in inspect.getargvalues(inspect.currentframe()).args
-        }
-        self.argvals, self.new_session = _get_argvals_and_session(argvals)
-        self.file_transfer_service = file_transfer_service
+        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
+        self.file_transfer_service = kwargs.get("file_transfer_service")
         if pyfluent.config.show_fluent_gui:
-            ui_mode = UIMode.GUI
-        self.argvals["ui_mode"] = UIMode(ui_mode)
-        if self.argvals["start_timeout"] is None:
+            kwargs["ui_mode"] = UIMode.GUI
+        self.argvals["ui_mode"] = UIMode(kwargs.get("ui_mode"))
+        if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
-        if self.argvals["lightweight_mode"] is None:
+        if self.argvals.get("lightweight_mode") is None:
             self.argvals["lightweight_mode"] = False
         fluent_version = _get_standalone_launch_fluent_version(self.argvals)
 
         if (
             fluent_version
             and fluent_version >= FluentVersion.v251
-            and self.argvals["py"] is None
+            and self.argvals.get("py") is None
         ):
             self.argvals["py"] = True
 
@@ -224,25 +248,27 @@ class StandaloneLauncher:
 
         self._sifile_last_mtime = Path(self._server_info_file_name).stat().st_mtime
         self._kwargs = _get_subprocess_kwargs_for_fluent(
-            self.argvals["env"], self.argvals
+            self.argvals.get("env") or {}, self.argvals
         )
-        if self.argvals["cwd"]:
-            self._kwargs.update(cwd=self.argvals["cwd"])
+        if self.argvals.get("cwd"):
+            self._kwargs.update(cwd=self.argvals.get("cwd"))
         self._launch_string += _build_journal_argument(
-            self.argvals["topy"], self.argvals["journal_file_names"]
+            self.argvals.get("topy", []), self.argvals.get("journal_file_names")
         )
 
         if is_windows():
             self._launch_cmd = self._launch_string
         else:
-            if self.argvals["ui_mode"] not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
+            if self.argvals.get("ui_mode") not in [UIMode.GUI, UIMode.HIDDEN_GUI]:
                 # Using nohup to hide Fluent output from the current terminal
                 self._launch_cmd = "nohup " + self._launch_string + " &"
             else:
                 self._launch_cmd = self._launch_string
 
-    def __call__(self):
-        if self.argvals["dry_run"]:
+    def __call__(
+        self,
+    ) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero | tuple[str, str]":
+        if self.argvals.get("dry_run"):
             print(f"Fluent launch string: {self._launch_string}")
             return self._launch_string, self._server_info_file_name
         try:
@@ -252,7 +278,7 @@ class StandaloneLauncher:
             try:
                 _await_fluent_launch(
                     self._server_info_file_name,
-                    self.argvals["start_timeout"],
+                    self.argvals.get("start_timeout", 60),
                     self._sifile_last_mtime,
                 )
             except TimeoutError as ex:
@@ -266,7 +292,7 @@ class StandaloneLauncher:
                     process = subprocess.Popen(launch_cmd, **self._kwargs)
                     _await_fluent_launch(
                         self._server_info_file_name,
-                        self.argvals["start_timeout"],
+                        self.argvals.get("start_timeout", 60),
                         self._sifile_last_mtime,
                     )
                 else:
@@ -275,15 +301,15 @@ class StandaloneLauncher:
             session = self.new_session._create_from_server_info_file(
                 server_info_file_name=self._server_info_file_name,
                 file_transfer_service=self.file_transfer_service,
-                cleanup_on_exit=self.argvals["cleanup_on_exit"],
-                start_transcript=self.argvals["start_transcript"],
+                cleanup_on_exit=self.argvals.get("cleanup_on_exit"),
+                start_transcript=self.argvals.get("start_transcript"),
                 launcher_args=self.argvals,
                 inside_container=False,
             )
             session._process = process
             start_watchdog = _confirm_watchdog_start(
-                self.argvals["start_watchdog"],
-                self.argvals["cleanup_on_exit"],
+                self.argvals.get("start_watchdog"),
+                self.argvals.get("cleanup_on_exit"),
                 session._fluent_connection,
             )
             if start_watchdog:
@@ -291,22 +317,28 @@ class StandaloneLauncher:
                 values = _get_server_info(self._server_info_file_name)
                 if len(values) == 3:
                     ip, port, password = values
-                    watchdog.launch(os.getpid(), port, password, ip)
-            if self.argvals["case_file_name"]:
-                if FluentMode.is_meshing(self.argvals["mode"]):
-                    session.tui.file.read_case(self.argvals["case_file_name"])
-                elif self.argvals["lightweight_mode"]:
-                    session.read_case_lightweight(self.argvals["case_file_name"])
+                    watchdog.launch(
+                        os.getpid(),
+                        port,
+                        password,
+                        ip,
+                        inside_container=False,
+                    )
+            if self.argvals.get("case_file_name"):
+                if FluentMode.is_meshing(self.argvals.get("mode")):
+                    session.tui.file.read_case(self.argvals.get("case_file_name"))
+                elif self.argvals.get("lightweight_mode"):
+                    session.read_case_lightweight(self.argvals.get("case_file_name"))
                 else:
                     session.settings.file.read(
                         file_type="case",
-                        file_name=self.argvals["case_file_name"],
+                        file_name=self.argvals.get("case_file_name"),
                     )
-            if self.argvals["case_data_file_name"]:
-                if not FluentMode.is_meshing(self.argvals["mode"]):
+            if self.argvals.get("case_data_file_name"):
+                if not FluentMode.is_meshing(self.argvals.get("mode")):
                     session.settings.file.read(
                         file_type="case-data",
-                        file_name=self.argvals["case_data_file_name"],
+                        file_name=self.argvals.get("case_data_file_name"),
                     )
                 else:
                     raise RuntimeError(

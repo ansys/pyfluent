@@ -32,7 +32,7 @@ repos:
       --statistics,
       --max-complexity, "10",
       --max-line-length, "88",
-      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028,
+      --extend-ignore, E203 E501 C901 B007 B009 B010 B011 B028 F403 F405 F401 E402,
       src, doc, examples, tests
     ]
   

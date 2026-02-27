@@ -27,6 +27,7 @@ import grpc
 
 from ansys.api.fluent.v0 import monitor_pb2 as MonitorModule
 from ansys.api.fluent.v0 import monitor_pb2_grpc as MonitorGrpcModule
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.interceptors import (
     BatchInterceptor,
     ErrorStateInterceptor,
@@ -35,7 +36,9 @@ from ansys.fluent.core.services.interceptors import (
 from ansys.fluent.core.services.streaming import StreamingService
 
 
-class MonitorsService(StreamingService):
+class MonitorsService(
+    StreamingService, ServiceProtocol
+):  # pyright: ignore[reportUnsafeMultipleInheritance]
     """Class wrapping the monitor gRPC service of Fluent."""
 
     def __init__(self, channel: grpc.Channel, metadata, fluent_error_state):

@@ -35,31 +35,46 @@ Examples
 >>> pim_solver_session = pim_solver_launcher()
 """
 
-import inspect
 import logging
 import os
 import tempfile
 import time
-from typing import Any, Dict
+from typing import TYPE_CHECKING, Any, TypedDict
 
+from typing_extensions import Unpack
+
+from ansys.fluent.core._types import LauncherArgsBase
 from ansys.fluent.core.fluent_connection import FluentConnection, _get_max_c_int_limit
 from ansys.fluent.core.launcher.launch_options import (
     Dimension,
-    FluentLinuxGraphicsDriver,
     FluentMode,
-    FluentWindowsGraphicsDriver,
-    Precision,
-    UIMode,
     _get_argvals_and_session,
 )
 from ansys.fluent.core.session import _parse_server_info_file
-from ansys.fluent.core.session_meshing import Meshing
-from ansys.fluent.core.session_pure_meshing import PureMeshing
-from ansys.fluent.core.session_solver import Solver
-from ansys.fluent.core.session_solver_icing import SolverIcing
 from ansys.fluent.core.utils.file_transfer_service import PimFileTransferService
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 import ansys.platform.instancemanagement as pypim
+
+if TYPE_CHECKING:
+    from ansys.fluent.core.session_meshing import Meshing
+    from ansys.fluent.core.session_pure_meshing import PureMeshing
+    from ansys.fluent.core.session_solver import Solver
+    from ansys.fluent.core.session_solver_aero import SolverAero
+    from ansys.fluent.core.session_solver_icing import SolverIcing
+
+
+class PIMArgsWithoutMode(
+    LauncherArgsBase, TypedDict, total=False
+):  # pylint: disable=missing-class-docstring
+    pass
+
+
+class PIMArgs(
+    PIMArgsWithoutMode, total=False
+):  # pylint: disable=missing-class-docstring
+    mode: FluentMode | str | None
+    """Specifies the launch mode of Fluent for targeting a specific session type."""
+
 
 _THIS_DIR = os.path.dirname(__file__)
 _OPTIONS_FILE = os.path.join(_THIS_DIR, "fluent_launcher_options.json")
@@ -71,22 +86,7 @@ class PIMLauncher:
 
     def __init__(
         self,
-        mode: FluentMode | str | None = None,
-        ui_mode: UIMode | str | None = None,
-        graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
-        ) = None,
-        product_version: FluentVersion | str | float | int | None = None,
-        dimension: Dimension | int = Dimension.THREE,
-        precision: Precision | str | None = None,
-        processor_count: int | None = None,
-        start_timeout: int = 60,
-        additional_arguments: str = "",
-        cleanup_on_exit: bool = True,
-        start_transcript: bool = True,
-        gpu: bool | None = None,
-        start_watchdog: bool | None = None,
-        file_transfer_service: Any | None = None,
+        **kwargs: Unpack[PIMArgs],
     ):
         """
         Launch a Fluent session in `PIM <https://pypim.docs.pyansys.com/version/stable/>`_ mode.
@@ -134,11 +134,6 @@ class PIMLauncher:
         file_transfer_service : Any, optional
             Service for uploading/downloading files to/from the server.
 
-        Returns
-        -------
-        Union[Meshing, PureMeshing, Solver, SolverIcing, SolverAero]
-            Session object.
-
         Raises
         ------
         UnexpectedKeywordArgument
@@ -149,6 +144,9 @@ class PIMLauncher:
         In job scheduler environments (e.g., SLURM, LSF, PBS), resources and compute nodes are allocated,
         and core counts are queried from these environments before being passed to Fluent.
         """
+        additional_arguments = kwargs.get("additional_arguments", "")
+        start_watchdog = kwargs.get("start_watchdog")
+        file_transfer_service = kwargs.get("file_transfer_service")
 
         if additional_arguments:
             logger.warning(
@@ -161,17 +159,12 @@ class PIMLauncher:
                 "'start_watchdog' argument for 'launch_fluent()' method is not supported "
                 "when starting a remote Fluent PyPIM client."
             )
-        locals_ = locals().copy()
-        argvals = {
-            arg: locals_.get(arg)
-            for arg in inspect.getargvalues(inspect.currentframe()).args
-        }
-        self.argvals, self.new_session = _get_argvals_and_session(argvals)
+        self.argvals, self.new_session = _get_argvals_and_session(kwargs)
         self.file_transfer_service = file_transfer_service
-        if self.argvals["start_timeout"] is None:
+        if self.argvals.get("start_timeout") is None:
             self.argvals["start_timeout"] = 60
 
-    def __call__(self):
+    def __call__(self) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero":
         logger.info("Starting Fluent remotely. The startup configuration is ignored.")
         if self.argvals["product_version"]:
             fluent_product_version = str(
@@ -249,9 +242,9 @@ def launch_remote_fluent(
     cleanup_on_exit: bool = True,
     mode: FluentMode = FluentMode.SOLVER,
     dimensionality: Dimension | int = Dimension.THREE,
-    launcher_args: Dict[str, Any] | None = None,
+    launcher_args: dict[str, Any] | None = None,
     file_transfer_service: Any | None = None,
-) -> Meshing | PureMeshing | Solver | SolverIcing:
+) -> "Meshing | PureMeshing | Solver | SolverIcing | SolverAero":
     """Launch Fluent remotely using `PyPIM <https://pypim.docs.pyansys.com>`.
 
     Ensure that you are in an environment where PyPIM is configured.
@@ -260,7 +253,7 @@ def launch_remote_fluent(
 
     Parameters
     ----------
-    session_cls: type(Meshing) | type(PureMeshing) | type(Solver) | type(SolverIcing)
+    session_cls: type(Meshing) | type(PureMeshing) | type(Solver) | type(SolverIcing) | type(SolverAero)
         Session type.
     start_transcript: bool
         Whether to start streaming the Fluent transcript in the client.
@@ -270,8 +263,8 @@ def launch_remote_fluent(
         Whether to clean up and exit Fluent when Python exits. Default is ``True``.
     mode : FluentMode, optional
         Launch Fluent in meshing mode. Default is ``FluentMode.SOLVER``.
-    dimensionality : str, optional
-        Geometric dimensionality of the Fluent simulation. Default is ``None`` (3D).
+    dimensionality : Dimension | int
+        Geometric dimensionality of the Fluent simulation. Default is Dimension.THREE.
     file_transfer_service : optional
         Service for uploading/downloading files to/from the server.
     launcher_args : Any
@@ -279,7 +272,7 @@ def launch_remote_fluent(
 
     Returns
     -------
-    Meshing | PureMeshing | Solver | SolverIcing
+    Meshing | PureMeshing | Solver | SolverIcing | SolverAero
         Session object.
 
     Raises
@@ -355,7 +348,7 @@ def create_fluent_connection(
     channel,
     cleanup_on_exit: bool,
     instance,
-    launcher_args: Dict[str, Any] | None,
+    launcher_args: dict[str, Any] | None,
 ):
     """Create a Fluent connection."""
 

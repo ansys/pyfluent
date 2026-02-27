@@ -37,11 +37,10 @@ of this object hold a collection of ``Machine`` objects that are initialized
 when the machine file is loaded.
 """
 
-from builtins import object
 import copy
 
 
-class Machine(object):
+class Machine:
     """Provides an interface for a single machine allocated by a queue system."""
 
     def __init__(self, hostName, numberOfCores, queueName=None, coreList=None):
@@ -99,7 +98,7 @@ class Machine(object):
         return self._coreList
 
 
-class MachineList(object):
+class MachineList:
     """Provides an interface to list of machines allocated by a queue system."""
 
     def __init__(self, machinesIn=None):

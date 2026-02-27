@@ -22,11 +22,12 @@
 
 """Module containing class encapsulating Fluent connection and the Base Session."""
 
+from collections.abc import Callable
 from enum import Enum
 import json
 import logging
 import os
-from typing import Any, Callable, Dict
+from typing import Any
 import warnings
 import weakref
 
@@ -39,14 +40,36 @@ from ansys.fluent.core.pyfluent_warnings import (
     PyFluentDeprecationWarning,
     PyFluentUserWarning,
 )
-from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services import (
+    BatchOpsService,
+    EventsService,
+    SettingsService,
+    SolutionVariableData,
+    SolutionVariableService,
+    TranscriptService,
+)
 from ansys.fluent.core.services.app_utilities import AppUtilitiesOld
-from ansys.fluent.core.services.field_data import FieldDataService, ZoneInfo
+from ansys.fluent.core.services.datamodel_se import (
+    DatamodelService as DatamodelService_SE,
+)
+from ansys.fluent.core.services.datamodel_tui import (
+    DatamodelService as DatamodelService_TUI,
+)
+from ansys.fluent.core.services.deprecated_field_data import DeprecatedFieldData
+from ansys.fluent.core.services.field_data import (
+    FieldDataService,
+    LiveFieldData,
+    ZoneInfo,
+    _FieldInfo,
+)
 from ansys.fluent.core.services.scheme_eval import SchemeEval
 from ansys.fluent.core.streaming_services.datamodel_event_streaming import (
     DatamodelEvents,
 )
 from ansys.fluent.core.streaming_services.events_streaming import EventsManager
+from ansys.fluent.core.streaming_services.field_data_streaming import (
+    FieldDataStreaming,
+)
 from ansys.fluent.core.streaming_services.transcript_streaming import Transcript
 from ansys.fluent.core.utils.fluent_version import FluentVersion
 
@@ -59,6 +82,9 @@ except Exception:
     root = Any
 
 logger = logging.getLogger("pyfluent.general")
+
+
+__all__ = ("BaseSession",)
 
 
 def _parse_server_info_file(file_name: str):
@@ -127,7 +153,7 @@ class BaseSession:
         scheme_eval: SchemeEval,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         event_type: Enum | None = None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
     ):
@@ -179,7 +205,7 @@ class BaseSession:
         file_transfer_service: Any | None = None,
         event_type=None,
         get_zones_info: weakref.WeakMethod[Callable[[], list[ZoneInfo]]] | None = None,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
     ):
         """Build a BaseSession object from fluent_connection object."""
         self._fluent_connection = fluent_connection
@@ -192,7 +218,7 @@ class BaseSession:
         self.rp_vars = RPVars(self.scheme.string_eval)
         self._preferences = None
 
-        self._transcript_service = service_creator("transcript").create(
+        self._transcript_service = TranscriptService(
             fluent_connection._channel, fluent_connection._metadata
         )
         self.transcript = Transcript(self._transcript_service)
@@ -205,7 +231,7 @@ class BaseSession:
 
         self.journal = Journal(self._app_utilities)
 
-        self._datamodel_service_tui = service_creator("tui").create(
+        self._datamodel_service_tui = DatamodelService_TUI(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._error_state,
@@ -213,7 +239,7 @@ class BaseSession:
             self.scheme,
         )
 
-        self._datamodel_service_se = service_creator("datamodel").create(
+        self._datamodel_service_se = DatamodelService_SE(
             fluent_connection._channel,
             fluent_connection._metadata,
             self.get_fluent_version(),
@@ -224,12 +250,12 @@ class BaseSession:
         self._datamodel_events = DatamodelEvents(self._datamodel_service_se)
         self._datamodel_events.start()
 
-        self._batch_ops_service = service_creator("batch_ops").create(
+        self._batch_ops_service = BatchOpsService(
             fluent_connection._channel, fluent_connection._metadata
         )
 
         if event_type:
-            events_service = service_creator("events").create(
+            events_service = EventsService(
                 fluent_connection._channel, fluent_connection._metadata
             )
             self.events = EventsManager[event_type](
@@ -245,7 +271,7 @@ class BaseSession:
 
         self.fields = Fields(self, get_zones_info)
 
-        self._settings_service = service_creator("settings").create(
+        self._settings_service = SettingsService(
             fluent_connection._channel,
             fluent_connection._metadata,
             self._app_utilities,
@@ -328,7 +354,7 @@ class BaseSession:
         server_info_file_name: str,
         file_transfer_service: Any | None = None,
         start_transcript: bool = True,
-        launcher_args: Dict[str, Any] | None = None,
+        launcher_args: dict[str, Any] | None = None,
         **connection_kwargs,
     ):
         """Create a Session instance from server-info file.
@@ -551,21 +577,21 @@ class Fields:
         self._is_solution_data_valid = (
             _session._app_utilities.is_solution_data_available
         )
-        self._field_info = service_creator("field_info").create(
+        self._field_info = _FieldInfo(
             _session._field_data_service,
             self._is_solution_data_valid,
         )
-        self.field_data = service_creator("field_data").create(
+        self.field_data = LiveFieldData(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,
             _session.scheme,
             get_zones_info,
         )
-        self.field_data_streaming = service_creator("field_data_streaming").create(
+        self.field_data_streaming = FieldDataStreaming(
             _session._fluent_connection._id, _session._field_data_service
         )
-        self.field_data_old = service_creator("field_data_old").create(
+        self.field_data_old = DeprecatedFieldData(
             _session._field_data_service,
             self._field_info,
             self._is_solution_data_valid,

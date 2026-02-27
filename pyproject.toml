@@ -32,7 +32,9 @@ dependencies = [
     "nltk>=3.9.1",
     "numpy>=1.14.0,<3.0.0",
     "pandas>=1.1.0,<3.0.0",
+    "pandas-stubs>=1.1.0,<3.0.0",
     "pyyaml>=6.0",
+    "typing-extensions>=4.12"
 ]
 dynamic = ["version"]
 
@@ -75,6 +77,23 @@ docs = [
     "quarto-cli==1.8.25",
     "pdf2image==1.17.0",
     "seaborn>=0.13.2",
+]
+ci_types = [
+    "basedpyright==1.38.0",
+    "ansys-fluent-visualization",
+    "h5py",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
+    "pyfakefs",
+    "tensorflow",
+    "matplotlib",
+    "plotly",
+    "scikit-learn",
+    "seaborn",
+    "xgboost",
+    "imageio",
 ]
 
 [tool.flit.module]
@@ -223,3 +242,13 @@ skips = [
     "B604",
     "B607",
     ]
+
+[tool.basedpyright]
+reportAny = false
+reportUnknownMemberType = false
+reportExplicitAny = false
+reportPrivateUsage = false
+reportUnusedCallResult = false
+reportUnannotatedClassAttribute = false
+ignore = ["doc", "src/ansys/fluent/core/generated"]
+baselineFile = ".ci/basedpyright.json"

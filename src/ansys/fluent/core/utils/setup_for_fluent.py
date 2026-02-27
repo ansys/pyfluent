@@ -25,6 +25,8 @@
 from ansys.fluent.core.launcher.launcher import launch_fluent
 from ansys.fluent.core.session_solver import Solver
 
+__all__ = ("setup_for_fluent",)
+
 
 def setup_for_fluent(*args, **kwargs):
     """Returns global PyConsole objects."""

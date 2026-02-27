@@ -36,7 +36,7 @@ import platform
 import socket
 import subprocess
 import threading
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import Any, Callable, TypeVar
 import warnings
 import weakref
 
@@ -52,13 +52,15 @@ from ansys.fluent.core.launcher.error_warning_messages import (
 )
 from ansys.fluent.core.launcher.launcher_utils import ComposeConfig
 from ansys.fluent.core.pyfluent_warnings import InsecureGrpcWarning
-from ansys.fluent.core.services import service_creator
+from ansys.fluent.core.services._protocols import ServiceProtocol
 from ansys.fluent.core.services.app_utilities import (
+    AppUtilities,
     AppUtilitiesOld,
     AppUtilitiesService,
     AppUtilitiesV252,
 )
-from ansys.fluent.core.services.scheme_eval import SchemeEvalService
+from ansys.fluent.core.services.health_check import HealthCheckService
+from ansys.fluent.core.services.scheme_eval import SchemeEval, SchemeEvalService
 from ansys.fluent.core.utils.execution import timeout_exec, timeout_loop
 from ansys.fluent.core.utils.file_transfer_service import ContainerFileTransferStrategy
 from ansys.fluent.core.utils.networking import get_uds_path, is_localhost
@@ -126,7 +128,7 @@ class MonitorThread(threading.Thread):
     def __init__(self):
         """Initialize MonitorThread."""
         super().__init__(daemon=True)
-        self.cbs: List[Callable] = []
+        self.cbs: list[Callable] = []
 
     def run(self) -> None:
         """Run monitor thread."""
@@ -338,9 +340,7 @@ def _get_channel(
 class _ConnectionInterface:
     def __init__(self, create_grpc_service, error_state):
         self._scheme_eval_service = create_grpc_service(SchemeEvalService, error_state)
-        self.scheme_eval = service_creator("scheme_eval").create(
-            self._scheme_eval_service
-        )
+        self.scheme_eval = SchemeEval(self._scheme_eval_service)
         self._app_utilities_service = create_grpc_service(
             AppUtilitiesService, error_state
         )
@@ -354,9 +354,7 @@ class _ConnectionInterface:
                 )
 
             case _:
-                self._app_utilities = service_creator("app_utilities").create(
-                    self._app_utilities_service
-                )
+                self._app_utilities = AppUtilities(self._app_utilities_service)
 
     @property
     def product_build_info(self) -> str:
@@ -418,6 +416,9 @@ def _pid_exists(pid):
             return True
 
 
+S = TypeVar("S", bound=ServiceProtocol)
+
+
 class FluentConnection:
     """Encapsulates a Fluent connection.
 
@@ -427,7 +428,7 @@ class FluentConnection:
         Close the Fluent connection and exit Fluent.
     """
 
-    _on_exit_cbs: List[Callable] = []
+    _on_exit_cbs: list[Callable] = []
     _id_iter = itertools.count()
     _monitor_thread: MonitorThread | None = None
 
@@ -533,11 +534,11 @@ class FluentConnection:
                 insecure_mode=insecure_mode,
                 inside_container=inside_container,
             )
-        self._metadata: List[Tuple[str, str]] = (
+        self._metadata: list[tuple[str, str]] = (
             [("password", password)] if password else []
         )
 
-        self._health_check = service_creator("health_check").create(
+        self._health_check = HealthCheckService(
             self._channel, self._metadata, self._error_state
         )
         # At this point, the server must be running. If the following check_health()
@@ -738,7 +739,7 @@ class FluentConnection:
         else:
             self.finalizer_cbs.append(cb)
 
-    def create_grpc_service(self, service, *args):
+    def create_grpc_service(self, service: type[S], *args) -> S:
         """Create a gRPC service.
 
         Parameters

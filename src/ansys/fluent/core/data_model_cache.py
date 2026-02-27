@@ -27,7 +27,7 @@ from contextlib import contextmanager
 import copy
 from enum import Enum
 from threading import RLock
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ansys.api.fluent.v0.variant_pb2 import Variant
 from ansys.fluent.core.utils.fluent_version import FluentVersion
@@ -37,12 +37,12 @@ StateType = (
     | int
     | float
     | str
-    | List[bool]
-    | List[int]
-    | List[float]
-    | List[str]
-    | List["StateType"]
-    | Dict[str, "StateType"]
+    | list[bool]
+    | list[int]
+    | list[float]
+    | list[str]
+    | list["StateType"]
+    | dict[str, "StateType"]
 )
 
 
@@ -225,7 +225,7 @@ class DataModelCache:
     def _update_cache_from_variant_state(
         self,
         rules: str,
-        source: Dict[str, StateType],
+        source: dict[str, StateType],
         key: str,
         state: Variant,
         updater_fn,
@@ -309,7 +309,7 @@ class DataModelCache:
 
     def _determine_key(
         self,
-        source: Dict[str, StateType],
+        source: dict[str, StateType],
         internal_names_as_keys: bool,
         key: str,
         state: Variant,
@@ -338,7 +338,7 @@ class DataModelCache:
         return new_key
 
     def update_cache(
-        self, rules: str, state: Variant, deleted_paths: List[str], version=None
+        self, rules: str, state: Variant, deleted_paths: list[str], version=None
     ):
         """Update datamodel cache from streamed state.
 
@@ -377,8 +377,8 @@ class DataModelCache:
 
     def _process_deleted_paths(
         self,
-        cache: Dict[str, Any],
-        deleted_paths: List[str],
+        cache: dict[str, Any],
+        deleted_paths: list[str],
         internal_names_as_keys: bool,
     ):
         """Process and delete paths from the cache based on the deleted paths list."""
@@ -387,7 +387,7 @@ class DataModelCache:
             self._delete_from_cache(cache, comps, internal_names_as_keys)
 
     def _delete_from_cache(
-        self, sub_cache: Dict[str, Any], comps: List[str], internal_names_as_keys: bool
+        self, sub_cache: dict[str, Any], comps: list[str], internal_names_as_keys: bool
     ):
         """Recursively delete components from the cache."""
         for i, comp in enumerate(comps):
@@ -407,12 +407,12 @@ class DataModelCache:
 
     def _find_key_to_delete(
         self,
-        sub_cache: Dict[str, Any],
+        sub_cache: dict[str, Any],
         comp: str,
         iname: str,
         is_last_component: bool,
         internal_names_as_keys: bool,
-    ) -> Optional[str]:
+    ) -> str | None:
         """Find the key to delete from the sub-cache."""
         for k, v in sub_cache.items():
             if (internal_names_as_keys and k == comp) or (

@@ -24,11 +24,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Iterator
 from contextlib import suppress
 import logging
 import re
 import threading
-from typing import Any, Iterable, Iterator, Tuple
+from typing import Any
 import warnings
 
 from ansys.fluent.core.pyfluent_warnings import (
@@ -1529,7 +1530,7 @@ class Workflow:
     def _workflow_state(self):
         return self._workflow()
 
-    def _workflow_and_task_list_state(self) -> Tuple[dict, dict]:
+    def _workflow_and_task_list_state(self) -> tuple[dict, dict]:
         workflow_state = self._workflow_state()
         prefix = "TaskObject:"
         task_list = [

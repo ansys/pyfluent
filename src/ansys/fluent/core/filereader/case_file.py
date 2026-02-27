@@ -43,10 +43,11 @@ import gzip
 import os
 from os.path import dirname
 from pathlib import Path
-from typing import Dict, List
+from typing import Any
 
 import defusedxml.ElementTree as ET
 import numpy as np
+import numpy.typing as npt
 
 from ansys.fluent.core._types import PathType
 from ansys.fluent.core.solver.error_message import allowed_name_error_message
@@ -73,7 +74,7 @@ class InputParameterOld:
         a string, qualified by units
     """
 
-    def __init__(self, raw_data: List) -> None:
+    def __init__(self, raw_data: list) -> None:
         """Initialize InputParameter.
 
         Parameters
@@ -118,7 +119,7 @@ class InputParameter:
         a string, qualified by units
     """
 
-    def __init__(self, raw_data: Dict[str, str]) -> None:
+    def __init__(self, raw_data: dict[str, str]) -> None:
         """Initialize InputParameter.
 
         Parameters
@@ -289,10 +290,10 @@ class Mesh:
         Get list of vertices of the surface.
     """
 
-    def __init__(self, file_handle):
+    def __init__(self, file_handle: h5py.File):
         """Initialize the object."""
         _check_h5_extension(file_handle.filename)
-        self._file_handle = file_handle
+        self._file_handle: Any = file_handle
 
     def get_mesh_type(self) -> MeshType:
         """Returns the type of the mesh."""
@@ -304,12 +305,12 @@ class Mesh:
         except Exception:
             return MeshType.UNKNOWN
 
-    def get_surface_ids(self) -> list:
+    def get_surface_ids(self) -> list[int]:
         """Returns list of ids of all available surfaces."""
         id_data = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["id"]
         return [id_data[i] for i in range(id_data.size)]
 
-    def get_surface_names(self) -> list:
+    def get_surface_names(self) -> list[str]:
         """Returns list of names of all available surfaces."""
         return (
             self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["name"][0]
@@ -317,7 +318,7 @@ class Mesh:
             .split(";")
         )
 
-    def get_surface_locs(self, surface_id) -> list:
+    def get_surface_locs(self, surface_id: int) -> tuple[int, int]:
         """Returns range of surface locations for a particular surface."""
         ids = self.get_surface_ids()
         index = ids.index(surface_id)
@@ -327,18 +328,18 @@ class Mesh:
         max_id = self._file_handle["meshes"]["1"]["faces"]["zoneTopology"]["maxId"][
             index
         ]
-        return [int(min_id - 1), int(max_id - 1)]
+        return (int(min_id - 1), int(max_id - 1))
 
-    def _get_nodes(self, surface_id):
+    def _get_nodes(self, surface_id: int) -> tuple[npt.NDArray[np.uint32], np.int16]:
         min_id, max_id = self.get_surface_locs(surface_id)
         nnodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nnodes"]
         nodes = self._file_handle["meshes"]["1"]["faces"]["nodes"]["1"]["nodes"]
         previous = np.sum(nnodes[0:min_id])
         nnodes = nnodes[min_id : max_id + 1]
         nodes = nodes[previous : previous + np.sum(nnodes)]
-        return [nodes, nnodes]
+        return (nodes, nnodes)
 
-    def get_connectivity(self, surface_id) -> np.array:
+    def get_connectivity(self, surface_id: int) -> npt.NDArray[np.uint32]:
         """Returns numpy array of face connectivity data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         key = nodes.copy()
@@ -354,7 +355,7 @@ class Mesh:
         nodes = np.insert(nodes, obj, nnodes)
         return nodes
 
-    def get_vertices(self, surface_id) -> np.array:
+    def get_vertices(self, surface_id: int) -> npt.NDArray[np.float64]:
         """Returns numpy array of vertices data for a particular surface."""
         nodes, nnodes = self._get_nodes(surface_id)
         nodes = np.unique(nodes)
@@ -420,7 +421,7 @@ class RPVarProcessor:
 
         self._config_vars = {v[0]: v[1] for v in self._rp_vars["case-config"]}
 
-    def input_parameters(self) -> List[InputParameter] | List[InputParameterOld]:
+    def input_parameters(self) -> list[InputParameter] | list[InputParameterOld]:
         """Get the input parameters.
 
         Returns
@@ -443,7 +444,7 @@ class RPVarProcessor:
         except ValueError:
             return [InputParameterOld(param) for param in rp_var_params]
 
-    def output_parameters(self) -> List[OutputParameter]:
+    def output_parameters(self) -> list[OutputParameter]:
         """Get the output parameters.
 
         Returns
@@ -573,7 +574,7 @@ class SettingsFile(RPVarProcessor):
         """
         if settings_file_name:
             try:
-                with open(settings_file_name, "r") as file:
+                with open(settings_file_name) as file:
                     rp_vars_str = file.read()
                 if not rp_vars_str.startswith("(rp ("):
                     raise RuntimeError("Not a valid settings file.")
@@ -733,7 +734,7 @@ def _get_processed_string(input_string: bytes) -> str:
 
 
 def _get_case_file_name_from_flprj(flprj_file):
-    with open(flprj_file, "r") as file:
+    with open(flprj_file) as file:
         content = file.read()
         content = remove_unsupported_xml_chars(content)
         root = ET.fromstring(content)
