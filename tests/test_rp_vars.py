@@ -131,3 +131,22 @@ def test_create_rp_vars(new_solver_session) -> None:
     assert solver.rp_vars("my-custom-var") == 100
     solver.rp_vars("my-custom-var", "any-str")
     assert solver.rp_vars("my-custom-var") == '"any-str"'
+
+    # REAL (float) RP var
+    solver.rp_vars.create(
+        name="my-real-var", value=1.5, var_type=RPVarType.REAL
+    )
+    assert solver.rp_vars("my-real-var") == pytest.approx(1.5)
+    solver.rp_vars("my-real-var", 2.75)
+    assert solver.rp_vars("my-real-var") == pytest.approx(2.75)
+
+    # BOOLEAN RP var
+    solver.rp_vars.create(
+        name="my-bool-var", value=True, var_type=RPVarType.BOOLEAN
+    )
+    bool_val = solver.rp_vars("my-bool-var")
+    assert isinstance(bool_val, bool)
+    assert bool_val is True
+
+    solver.rp_vars("my-bool-var", False)
+    assert solver.rp_vars("my-bool-var") is False
