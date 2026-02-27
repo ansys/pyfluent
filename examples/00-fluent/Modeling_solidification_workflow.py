@@ -77,14 +77,17 @@ Modeling Solidification
 #   Importing the following classes offer streamlined access to key solver settings,
 #   eliminating the need to manually browse through the full settings structure.
 
-import os
+from pathlib import Path
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
 from ansys.fluent.core.solver import (
-    BoundaryConditions,
+    BoundaryCondition,
     Contour,
     Controls,
+    FluidCellZone,
+    write_case_data,
+    FluidMaterial,
     General,
     Graphics,
     Initialization,
@@ -96,15 +99,19 @@ from ansys.fluent.core.solver import (
     Setup,
     Solution,
     VelocityInlet,
+    WallBoundary,
+    Models,
 )
+from ansys.units import VariableCatalog
+from ansys.units.common import J, K, N, Pa, W, kg, m, radian, s
 
 # %%
 # Launch Fluent session in solver mode
 # ------------------------------------
-solver = pyfluent.launch_fluent(
+solver = pyfluent.Solver.from_install(
     precision=pyfluent.Precision.DOUBLE,
-    mode="solver",
     dimension=pyfluent.Dimension.TWO,
+    fluent_path=r"C:\ANSYSDev\v261\fluent\ntbin\win64\fluent.exe",
 )
 
 # %%
@@ -113,7 +120,7 @@ solver = pyfluent.launch_fluent(
 mesh_file = examples.download_file(
     "solid.msh",
     "pyfluent/solidification",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
 
 solver.settings.file.read_mesh(file_name=mesh_file)
@@ -122,8 +129,7 @@ solver.settings.file.read_mesh(file_name=mesh_file)
 # Display mesh
 # ------------
 graphics = Graphics(solver)
-mesh = Mesh(solver, new_instance_name="mesh-1")
-boundary_conditions = BoundaryConditions(solver)
+mesh = Mesh.create(solver)
 
 graphics.picture.x_resolution = 650  # Horizontal resolution for clear visualization
 graphics.picture.y_resolution = 450  # Vertical resolution matching typical aspect ratio
@@ -134,7 +140,7 @@ mesh.surfaces_list = all_walls
 mesh.options.edges = True
 mesh.display()
 
-graphics.picture.save_picture(file_name="modeling_solidification_1.png")
+# graphics.picture.save_picture(file_name="modeling_solidification_1.png")
 
 # %%
 # .. image:: ../../_static/modeling_solidification_1.png
@@ -144,14 +150,12 @@ graphics.picture.save_picture(file_name="modeling_solidification_1.png")
 # %%
 # Configure solver
 # ----------------
-solver_general_settings = General(solver)
+general = General(solver)
 
-solver_general_settings.solver.two_dim_space = "swirl"
+general.solver.two_dim_space = "swirl"
 
-solver_general_settings.operating_conditions.gravity = {
-    "enable": True,
-    "components": [-9.81],
-}
+general.operating_conditions.gravity.enable = True
+general.operating_conditions.gravity.components = [-9.81 * m / s**2]
 
 # %%
 # Enable models
@@ -164,93 +168,92 @@ setup = Setup(solver)
 
 setup.models.viscous.model = "laminar"
 
-# Enable the Solidification/Melting
 solver.tui.define.models.solidification_melting(
-    "yes", "constant", "100000", "yes", "no"  # 100000 for the Mushy Zone Constant.
+    "yes",  # Enable Solidification/Melting model
+    "constant",  # Mushy Zone Parameter
+    "100000",  # Mushy Zone Constant
+    "yes",  # Include Pull Velocities
+    "no",  # Compute Pull Velocities
 )
+
+Models(solver)
 
 # %%
 # Define material
 # ---------------
-materials = Materials(solver)
+Materials(solver).database.copy_by_name(type="fluid", name="air", new_name="liquid-metal")
 
-materials.database.copy_by_name(type="fluid", name="air", new_name="liquid-metal")
+liquid_metal = FluidMaterial(
+    solver,
+    name="liquid-metal",
+    viscosity=0.00553 * Pa * s,
+    specific_heat=680.0 * J / kg / K,
+    thermal_conductivity=30.0 * W / m / K,
+    melting_heat=100000.0 * J / kg,
+    tsolidus=1150.0 * K,
+    tliqidus=1150.0 * K,
+)
+liquid_metal.density.option = "polynomial"
+liquid_metal.density.polynomial.coefficients = [
+    8000,
+    -0.1,
+]  # [Density (kg/m³), Linear temp coefficient (kg/(m³·K))]
 
-materials.fluid["liquid-metal"] = {
-    "density": {
-        "polynomial": {
-            "coefficients": [
-                8000,
-                -0.1,
-            ],  # [Density (kg/m³), Linear temp coefficient (kg/(m³·K))]
-            "function_of": "temperature",
-        },
-        "option": "polynomial",
-    },
-    "viscosity": {"value": 0.00553},  # Pa·s
-    "specific_heat": {"value": 680.0},  # J/kg·K
-    "thermal_conductivity": {"value": 30.0},  # W/m·K
-    "melting_heat": {"value": 100000.0},  # J/kg
-    "tsolidus": {"value": 1150.0},  # K
-    "tliqidus": {"value": 1150.0},  # K
-}
-
-# Assign material to fluid zone
-setup.cell_zone_conditions.fluid["fluid"] = {"general": {"material": "liquid-metal"}}
+# Assign material to fluid zone using a typed cell-zone object
+fluid_zone = FluidCellZone.get(solver, name="fluid")
+fluid_zone.general.material = liquid_metal
 
 # %%
 # Boundary conditions
 # -------------------
 
 # Inlet: liquid injection
-inlet = VelocityInlet(solver, name="inlet")
+inlet = VelocityInlet.get(solver, name="inlet")
 
-inlet.momentum.velocity_magnitude.value = 0.00101  # m/s
-inlet.thermal.temperature.value = 1300  # K
+inlet.momentum.velocity_magnitude = 0.00101 * m / s
+inlet.thermal.temperature = 1300 * K
 
 # Outlet: solid pull-out (velocity inlet with axial + swirl)
-outlet = VelocityInlet(solver, name="outlet")
+outlet = VelocityInlet.get(solver, name="outlet")
 
 outlet.momentum.velocity_specification_method = "Components"
-outlet.momentum.swirl_angular_velocity = 1  # rad/s
-outlet.momentum.velocity_components = [0.001, 0, 0]  # Axial = 0.001 m/s
-outlet.thermal.temperature.value = 500  # K
-
-
-conditions = BoundaryConditions(solver)
+outlet.momentum.swirl_angular_velocity = 1 * radian / s
+outlet.momentum.velocity_components = (0.001, 0, 0) * m / s  # axial, radial, tangential
+outlet.thermal.temperature.value = 500 * K
 
 # Bottom wall: fixed temperature
-conditions.wall["bottom-wall"] = {
-    "thermal": {"thermal_condition": "Temperature", "temperature": 1300}  # K
-}
+bottom_wall = WallBoundary.get(solver, name="bottom-wall")
+bottom_wall.thermal.thermal_condition = (
+    bottom_wall.thermal.thermal_condition.TEMPERATURE
+)
+bottom_wall.thermal.temperature = 1300 * K
 
 # Free surface: Marangoni stress + convection
-conditions.wall["free-surface"] = {
-    "momentum": {
-        "shear_condition": "Marangoni Stress",
-        "surface_tension_gradient": -0.00036,  # N/m·K
-    },
-    "thermal": {
-        "thermal_condition": "Convection",
-        "free_stream_temp": 1500,  # K
-        "heat_transfer_coeff": 100,  # W/m²·K
-    },
-}
+free_surface = WallBoundary.get(solver, name="free-surface")
+free_surface.momentum.shear_condition = (
+    free_surface.momentum.shear_condition.MARANGONI_STRESS
+)
+free_surface.momentum.surface_tension_gradient = -0.00036 * N / (m * K)
+free_surface.thermal.thermal_condition = (
+    free_surface.thermal.thermal_condition.CONVECTION
+)
+free_surface.thermal.convection.free_stream_temperature = 1500 * K
+free_surface.thermal.convection.convective_heat_transfer_coefficient = (
+    100 * W / (m**2 * K)
+)
 
 # Side wall: fixed temperature
-conditions.wall["side-wall"] = {
-    "thermal": {"thermal_condition": "Temperature", "temperature": 1400}  # K
-}
+side_wall = WallBoundary.get(solver, name="side-wall")
+side_wall.thermal.thermal_condition = side_wall.thermal.thermal_condition.TEMPERATURE
+side_wall.thermal.temperature = 1400 * K
 
 # Solid wall: rotating + cold
-conditions.wall["solid-wall"] = {
-    "momentum": {
-        "wall_motion": "Moving Wall",
-        "velocity_spec": "Rotational",
-        "rotation_speed": 1,  # rad/s
-    },
-    "thermal": {"thermal_condition": "Temperature", "temperature": 500},  # K
-}
+solid_wall = WallBoundary.get(solver, name="solid-wall")
+solid_wall.momentum.wall_motion = "Moving Wall"
+solid_wall.momentum.velocity_spec = "Rotational"
+solid_wall.momentum.rotation_speed = 1 * radian / s
+solid_wall.thermal.thermal_condition = solid_wall.thermal.thermal_condition.TEMPERATURE
+solid_wall.thermal.temperature = 500 * K
 
 # %%
 # Solution methods
@@ -258,15 +261,16 @@ conditions.wall["solid-wall"] = {
 methods = Methods(solver)
 
 methods.p_v_coupling.flow_scheme = "Coupled"
-methods.spatial_discretization.discretization_scheme = {"pressure": "presto!"}
-methods.pseudo_time_method.formulation = {"coupled_solver": "global-time-step"}
+methods.spatial_discretization.discretization_scheme["pressure"] = "presto!"
+methods.pseudo_time_method.formulation.coupled_solver = "global-time-step"
 
 # %%
 # Disable flow equations
 # ----------------------
 controls = Controls(solver)
 
-controls.equations = {"flow": False, "w-swirl": False}
+controls.equations["flow"] = False
+controls.equations["w-swirl"] = False
 
 
 # %%
@@ -280,8 +284,9 @@ initialize.hybrid_initialize()
 # ----------------------------
 results = Results(solver)
 
-results.custom_field_functions.create(
-    name="omegar", custom_field_function="1 * radial_coordinate"  # ω = 1 rad/s
+omega_r = results.custom_field_functions.create(
+    name="omegar",
+    custom_field_function="1 * radial_coordinate",  # ω = 1 rad/s
 )
 
 # %%
@@ -294,7 +299,7 @@ initialize.patch.calculate_patch(
     variable="x-pull-velocity",
     reference_frame="Relative to Cell Zone",
     use_custom_field_function=True,
-    custom_field_function_name="omegar",
+    custom_field_function_name=omega_r.name(),
     value=0.001,
 )
 
@@ -304,28 +309,27 @@ initialize.patch.calculate_patch(
     variable="z-pull-velocity",
     reference_frame="Relative to Cell Zone",
     use_custom_field_function=True,
-    custom_field_function_name="omegar",
+    custom_field_function_name=omega_r.name(),
 )
 
 # %%
 # Pseudo-transient settings
 # -------------------------
-solver.settings.solution.run_calculation.pseudo_time_settings.time_step_method = {
-    "time_step_method": "user-specified",
-    "auto_time_size_calc_solid_zone": False,
-}
-
-
 calculation = RunCalculation(solver)
+
+calculation.pseudo_time_settings.time_step_method.time_step_method = "user-specified"
+calculation.pseudo_time_settings.time_step_method.auto_time_size_calc_solid_zone = False
+
+
 calculation.iterate(iter_count=20)
 
 # %%
 # Post-processing
 # ---------------
-temp_contour = Contour(solver, new_instance_name="temperature_contour")
-
+temp_contour = Contour.create(
+    solver, name="temperature_contour", field=VariableCatalog.TEMPERATURE
+)
 temp_contour.coloring.option = "banded"
-temp_contour.field = "temperature"
 temp_contour.display()
 
 graphics.views.restore_view(view_name="front")
@@ -337,13 +341,15 @@ graphics.picture.save_picture(file_name="modeling_solidification_2.png")
 #    :alt: Temperature Contours
 
 
-mushy_temp = Contour(solver, new_instance_name="temperature-mushy")
+mushy_temp = Contour.create(
+    solver, name="temperature-mushy", field=VariableCatalog.TEMPERATURE
+)
 mushy_temp.coloring.option = "banded"
-mushy_temp.field = "temperature"
-mushy_temp.range_option = {
-    "option": "auto-range-off",
-    "auto_range_off": {"clip_to_range": True, "minimum": 1100, "maximum": 1200},
-}
+# set explicit contour range
+mushy_temp.range.option = "auto-range-off"
+mushy_temp.range.auto_range_off.clip_to_range = True
+mushy_temp.range.auto_range_off.minimum = 1100 * K
+mushy_temp.range.auto_range_off.maximum = 1200 * K
 mushy_temp.display()
 
 graphics.views.restore_view(view_name="front")
@@ -356,17 +362,18 @@ graphics.picture.save_picture(file_name="modeling_solidification_3.png")
 
 
 # Save steady state case
-solver.settings.file.write_case_data(file_name="steady_state")
+write_case_data(file_name="steady_state")
 
 
 # %%
 # Enable transient flow and heat transfer
 # ---------------------------------------
-solver_general_settings.solver.time = "unsteady-1st-order"  # First-order implicit
+general.solver.time = "unsteady-1st-order"  # First-order implicit
 
-controls.equations = {"flow": True, "w-swirl": True}
+controls.equations["flow"] = True
+controls.equations["w-swirl"] = True
 
-controls.under_relaxation = {"delh": 0.1}
+controls.under_relaxation["delh"] = 0.1
 
 # %%
 # Transient controls
@@ -378,9 +385,9 @@ solutions.run_calculation.transient_controls.time_step_size = 0.1  # s
 solutions.run_calculation.calculate()
 
 # Liquid fraction at t = 0.2 s
-liquid_fraction_contour = Contour(solver, new_instance_name="liquid-fraction")
-
-liquid_fraction_contour.field = "liquid-fraction"
+liquid_fraction_contour = Contour.create(
+    solver, name="liquid-fraction", field="liquid-fraction"
+)
 liquid_fraction_contour.display()
 
 graphics.picture.save_picture(file_name="modeling_solidification_4.png")
@@ -396,9 +403,9 @@ solutions.run_calculation.transient_controls.time_step_count = 48
 solutions.run_calculation.calculate()
 
 # Liquid fraction at t = 5.0 s
-liquid_fraction_contour_t_5_sec = Contour(solver, new_instance_name="liquid-fraction")
-
-liquid_fraction_contour_t_5_sec.field = "liquid-fraction"
+liquid_fraction_contour_t_5_sec = Contour.create(
+    solver, name="liquid-fraction", field="liquid-fraction"
+)
 liquid_fraction_contour_t_5_sec.display()
 
 graphics.picture.save_picture(file_name="modeling_solidification_5.png")
@@ -409,7 +416,7 @@ graphics.picture.save_picture(file_name="modeling_solidification_5.png")
 #    :alt: Liquid Fraction at t = 5 s
 
 # Save transient case
-solver.settings.file.write_case_data(file_name="unsteady_state")
+write_case_data(file_name="unsteady_state")
 
 # %%
 # Close session

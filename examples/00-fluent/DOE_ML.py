@@ -8,6 +8,7 @@
 #   "scikit-learn",
 #   "seaborn",
 #   "tensorflow",
+#   "xgboost",
 # ]
 # ///
 
@@ -62,8 +63,9 @@ Design of Experiments and Machine Learning model building
 
 # flake8: noqa: E402
 
-import os
+import itertools
 from pathlib import Path
+from typing import TYPE_CHECKING, cast
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -76,6 +78,14 @@ from tensorflow import keras
 
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core import examples
+from ansys.fluent.core.solver import (
+    Initialization,
+    SurfaceIntegrals,
+    VelocityInlet,
+    iterate,
+    read_case,
+)
+from ansys.units.common import m, s
 
 ###########################################################################
 # Specifying save path
@@ -84,7 +94,7 @@ from ansys.fluent.core import examples
 import_filename = examples.download_file(
     "elbow.cas.h5",
     "pyfluent/examples/DOE-ML-Mixing-Elbow",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
 
 #######################
@@ -95,69 +105,67 @@ import_filename = examples.download_file(
 # Launch Fluent session with solver mode and print Fluent version
 # ===============================================================
 
-solver_session = pyfluent.launch_fluent(
-    precision="double",
+solver = pyfluent.Solver.from_install(
+    precision=pyfluent.Precision.SINGLE,
     processor_count=4,
 )
-print(solver_session.get_fluent_version())
+print(solver.get_fluent_version())
 
 
 #############################################################################
 # Read case
 # =========
 
-solver_session.settings.file.read_case(file_name=import_filename)
+solver.upload(import_filename)
+read_case(solver, file_name=import_filename)
 
 ##############################################################################################
 # Design of Experiments
 # =====================
 
 # Specify inlet velocities for the cold and hot streams.
-# Each pair of (coldVel, hotVel) will be used to run one Fluent case.
-coldVelArr = np.array([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7])
-hotVelArr = np.array([0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0])
+# Each pair of (cold_value, hot_value) will be used to run one Fluent case.
+cold_velocities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7] * m / s
+
+hot_velocities = [0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0] * m / s
+
 
 # Allocate a results array. Entry (i, j) will hold the Mass‑Weighted
-# Average Temperature at the outlet for coldVelArr[i] and hotVelArr[j].
-resArr = np.zeros((coldVelArr.size, hotVelArr.size))
+# Average Temperature at the outlet for cold_velocities[i] and hot_velocities[j].
+results = np.zeros((len(cold_velocities), len(hot_velocities)))
 
-for idx1, coldVel in np.ndenumerate(coldVelArr):
-    for idx2, hotVel in np.ndenumerate(hotVelArr):
-        cold_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
-            "cold-inlet"
-        ]
-        cold_inlet.momentum.velocity.value = coldVel
+for (idx1, cold_value), (idx2, hot_value) in itertools.product(
+    enumerate(cold_velocities), enumerate(hot_velocities)
+):
+    cold_inlet = VelocityInlet.get(solver, name="cold-inlet")
+    cold_inlet.momentum.velocity = cold_value
 
-        hot_inlet = solver_session.settings.setup.boundary_conditions.velocity_inlet[
-            "hot-inlet"
-        ]
-        hot_inlet.momentum.velocity.value = hotVel
+    hot_inlet = VelocityInlet.get(solver, name="hot-inlet")
+    hot_inlet.momentum.velocity = hot_value
 
-        solver_session.settings.solution.initialization.initialization_type = "standard"
-        solver_session.settings.solution.initialization.standard_initialize()
-        solver_session.settings.solution.run_calculation.iterate(iter_count=200)
+    initialize = Initialization(solver)
+    initialize.initialization_type = "standard"
+    initialize.standard_initialize()
 
-        res_tui = solver_session.scheme.exec(
-            (
-                "(ti-menu-load-string "
-                '"/report/surface-integrals/mass-weighted-avg outlet () '
-                'temperature no")',
-            )
-        )
-        resArr[idx1][idx2] = eval(res_tui.split(" ")[-1])
+    iterate(solver, iter_count=200)
 
+    temperatures = SurfaceIntegrals(solver).get_mass_weighted_avg(
+        surface_names=["outlet"], report_of="temperature"
+    )
+
+    results[idx1][idx2] = temperatures["outlet"]
 
 ##############################################################################################
 # Close the session
 # =================
 
-solver_session.exit()
+solver.exit()
 
 ####################################
 # Plot Response Surface using Plotly
 # ==================================
 
-fig = go.Figure(data=[go.Surface(z=resArr.T, x=coldVelArr, y=hotVelArr)])
+fig = go.Figure(data=[go.Surface(z=results.T, x=cold_velocities, y=hot_velocities)])
 
 fig.update_layout(
     title={
@@ -170,14 +178,14 @@ fig.update_layout(
 )
 
 fig.update_layout(
-    scene=dict(
-        xaxis_title="Cold Inlet Vel (m/s)",
-        yaxis_title="Hot Inlet Vel (m/s)",
-        zaxis_title="Outlet Temperature (K)",
-    ),
+    scene={
+        "xaxis_title": "Cold Inlet Vel (m/s)",
+        "yaxis_title": "Hot Inlet Vel (m/s)",
+        "zaxis_title": "Outlet Temperature (K)",
+    },
     width=600,
     height=600,
-    margin=dict(l=80, r=80, b=80, t=80),
+    margin={"l": 80, "r": 80, "b": 80, "t": 80},
 )
 fig.show()
 
@@ -189,19 +197,16 @@ fig.show()
 ############################################
 # Create Pandas Dataframe for ML Model Input
 # ==========================================
-coldVelList = []
-hotVelList = []
-ResultList = []
+df = pd.DataFrame({"cold_velocities": [], "hot_velocities": [], "result": []})
 
-for idx1, coldVel in np.ndenumerate(coldVelArr):
-    for idx2, hotVel in np.ndenumerate(hotVelArr):
-        coldVelList.append(coldVel)
-        hotVelList.append(hotVel)
-        ResultList.append(resArr[idx1][idx2])
 
-tempDict = {"coldVel": coldVelList, "hotVel": hotVelList, "Result": ResultList}
+for (idx1, cold_vel_val), (idx2, hot_vel_val) in itertools.product(
+    enumerate(cold_velocities), enumerate(hot_velocities)
+):
+    df["cold_velocities"].append(cold_vel_val)
+    df["hot_velocities"].append(hot_vel_val)
+    df["result"].append(results[idx1][idx2])
 
-df = pd.DataFrame.from_dict(tempDict)
 
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import train_test_split
@@ -227,7 +232,7 @@ transformer1 = Pipeline(
 
 x_ct = ColumnTransformer(
     [
-        ("transformer1", transformer1, ["coldVel", "hotVel"]),
+        ("transformer1", transformer1, ["cold_velocities", "hot_velocities"]),
     ],
     remainder="drop",
 )
@@ -237,8 +242,8 @@ train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
 X_train = x_ct.fit_transform(train_set)
 X_test = x_ct.fit_transform(test_set)
 
-y_train = train_set["Result"]
-y_test = test_set["Result"]
+y_train = train_set["result"]
+y_test = test_set["result"]
 y_train = np.ravel(y_train.T)
 y_test = np.ravel(y_test.T)
 
@@ -258,18 +263,24 @@ from sklearn.model_selection import RepeatedKFold, cross_val_score
 # from sklearn.linear_model import LinearRegression
 from xgboost import XGBRegressor
 
+if TYPE_CHECKING:
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.linear_model import LinearRegression
+    from xgboost import XGBRegressor
+
 np.set_printoptions(precision=2)
+out_file = Path.cwd() / "PyFluent_Output.csv"
 
 
-def display_scores(scores):
+def display_scores(scores: np.ndarray):
     """Display scores."""
     print("\nCross-Validation Scores:", scores)
-    print("Mean:%0.2f" % (scores.mean()))
-    print("Std. Dev.:%0.2f" % (scores.std()))
+    print(f"Mean:{scores.mean():0.2f}")
+    print(f"Std. Dev.:{scores.std():0.2f}")
 
 
-def fit_and_predict(model):
-    """Fit abd predict."""
+def fit_and_predict(model: LinearRegression | XGBRegressor | RandomForestRegressor):
+    """Fit and predict."""
     cv = RepeatedKFold(n_splits=5, n_repeats=3, random_state=42)
     cv_scores = cross_val_score(
         model, X_train, y_train, scoring="neg_mean_squared_error", cv=cv
@@ -282,8 +293,8 @@ def fit_and_predict(model):
     test_predictions = model.predict(X_test)
     print(train_predictions.shape[0])
     print("\n\nCoefficient Of Determination")
-    print("Train Data R2 Score: %0.3f" % (r2_score(train_predictions, y_train)))
-    print("Test Data R2 Score: %0.3f" % (r2_score(test_predictions, y_test)))
+    print(f"Train Data R2 Score: {r2_score(train_predictions, y_train):0.3f}")
+    print(f"Test Data R2 Score: {r2_score(test_predictions, y_test):0.3f}")
     print(
         "\n\nPredictions - Ground Truth (Kelvin): ", (test_predictions - y_test), "\n"
     )
@@ -291,24 +302,17 @@ def fit_and_predict(model):
     com_train_set = train_set
     com_test_set = test_set
 
-    train_list = []
-    for i in range(train_predictions.shape[0]):
-        train_list.append("Train")
+    train_list = ["train"] * cast(int, train_predictions.shape[0])
+    test_list = ["test"] * cast(int, test_predictions.shape[0])
 
-    test_list = []
-    for i in range(test_predictions.shape[0]):
-        test_list.append("Test")
-
-    com_train_set["Result"] = train_predictions.tolist()
-    com_train_set["Set"] = train_list
-    com_test_set["Result"] = test_predictions.tolist()
-    com_test_set["Set"] = test_list
+    com_train_set["result"] = train_predictions.tolist()
+    com_train_set["set"] = train_list
+    com_test_set["result"] = test_predictions.tolist()
+    com_test_set["set"] = test_list
 
     df_combined = pd.concat([com_train_set, com_test_set])
 
-    df_combined.to_csv(
-        os.path.join(os.getcwd(), "PyFluent_Output.csv"), header=True, index=False
-    )
+    df_combined.to_csv(out_file, header=True, index=False)
 
     fig = plt.figure(figsize=(12, 5))
 
@@ -334,10 +338,10 @@ def fit_and_predict(model):
 # * Call fit_and_predict
 
 # model = LinearRegression()
+# model = RandomForestRegressor(random_state=42)
 model = XGBRegressor(
     n_estimators=100, max_depth=10, eta=0.3, subsample=0.8, random_state=42
 )
-# model = RandomForestRegressor(random_state=42)
 
 fit_and_predict(model)
 
@@ -359,13 +363,15 @@ plt.show()
 # 3D Visualization of Model Predictions on Train & Test Set
 # =========================================================
 
-df = pd.read_csv("PyFluent_Output.csv")
+df = pd.read_csv(out_file)
 
-fig = px.scatter_3d(df, x="coldVel", y="hotVel", z="Result", color="Set")
-fig.update_traces(marker=dict(size=4))
-fig.update_layout(legend=dict(yanchor="top", y=1, xanchor="left", x=0.0))
+fig = px.scatter_3d(
+    df, x="cold_velocities", y="hot_velocities", z="result", color="set"
+)
+fig.update_traces(marker={"size": 4})
+fig.update_layout(legend={"yanchor": "top", "y": 1, "xanchor": "left", "x": 0.0})
 
-fig.add_traces(go.Surface(z=resArr.T, x=coldVelArr, y=hotVelArr))
+fig.add_traces(go.Surface(z=results.T, x=cold_velocities, y=hot_velocities))
 
 fig.update_layout(
     title={
@@ -378,14 +384,14 @@ fig.update_layout(
 )
 
 fig.update_layout(
-    scene=dict(
-        xaxis_title="Cold Inlet Vel (m/s)",
-        yaxis_title="Hot Inlet Vel (m/s)",
-        zaxis_title="Outlet Temperature (K)",
-    ),
+    scene={
+        "xaxis_title": "Cold Inlet Vel (m/s)",
+        "yaxis_title": "Hot Inlet Vel (m/s)",
+        "zaxis_title": "Outlet Temperature (K)",
+    },
     width=500,
     height=500,
-    margin=dict(l=80, r=80, b=80, t=80),
+    margin={"l": 80, "r": 80, "b": 80, "t": 80},
 )
 
 fig.show()
@@ -416,7 +422,7 @@ model = keras.models.Sequential(
     ]
 )
 
-optimizer = tf.keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
+optimizer = keras.optimizers.Adam(learning_rate=0.1, beta_1=0.9, beta_2=0.999)
 
 model.compile(loss="mean_squared_error", optimizer=optimizer)
 checkpoint_cb = keras.callbacks.ModelCheckpoint(
@@ -451,8 +457,8 @@ train_predictions = np.ravel(train_predictions.T)
 test_predictions = np.ravel(test_predictions.T)
 print(test_predictions.shape)
 
-print("\n\nTrain R2: %0.3f" % (r2_score(train_predictions, y_train)))
-print("Test R2: %0.3f" % (r2_score(test_predictions, y_test)))
+print(f"\n\nTrain R2: {r2_score(train_predictions, y_train):0.3f}")
+print(f"Test R2: {r2_score(test_predictions, y_test):0.3f}")
 print("Predictions - Ground Truth (Kelvin): ", (test_predictions - y_test))
 
 fig = plt.figure(figsize=(12, 5))

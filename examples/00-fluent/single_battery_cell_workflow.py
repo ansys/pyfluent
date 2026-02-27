@@ -48,18 +48,43 @@ Single Battery Cell Using MSMD Battery Model Simulation
 #######################################################################################
 # Import modules
 # =====================================================================================
-import os
+from pathlib import Path
 
 import ansys.fluent.core as pyfluent
-from ansys.fluent.core import FluentMode, Precision, examples
+from ansys.fluent.core import Precision, examples
+from ansys.fluent.core.solver import (
+    CellRegister,
+    Controls,
+    General,
+    Graphics,
+    Initialization,
+    Monitor,
+    ReportDefinitions,
+    SolidCellZone,
+    SolidMaterial,
+    SurfaceIntegrals,
+    VolumeIntegrals,
+    BoundaryCondition,
+    Contour,
+    Mesh,
+    Vector,
+    read_case,
+    write_case_data,
+    write_case,
+    Battery,
+    RunCalculation,
+    WallBoundary,
+)
+from ansys.fluent.visualization import Contour as VizContour
+from ansys.fluent.visualization import Vector as VizVector
+from ansys.units import VariableCatalog
+from ansys.units.common import J, K, W, kg, m, ohm, s
 
 #######################################################################################
 # Launch Fluent session
 # =====================================================================================
 # Launch a Fluent solver session with required parameters
-solver = pyfluent.launch_fluent(
-    precision=Precision.DOUBLE, processor_count=4, mode=FluentMode.SOLVER
-)
+solver = pyfluent.Solver.from_install(precision=Precision.DOUBLE, processor_count=4)
 
 #######################################################################################
 # Download the mesh file
@@ -68,7 +93,7 @@ solver = pyfluent.launch_fluent(
 unit_battery_mesh = examples.download_file(
     "unit_battery.msh.h5",
     "pyfluent/battery_thermal_simulation",
-    save_path=os.getcwd(),
+    save_path=Path.cwd(),
 )
 
 #######################################################################################
@@ -77,20 +102,19 @@ unit_battery_mesh = examples.download_file(
 #
 # .. note::
 #   Graphics commands like restore_view and save_picture require GUI mode.
-solver.settings.file.read_case(file_name=unit_battery_mesh)
+read_case(solver, file_name=unit_battery_mesh)
 
 # Get all the available wall boundary surfaces
-all_walls = solver.settings.setup.boundary_conditions.wall.get_object_names()
-mesh_object = solver.settings.results.graphics.mesh.create("mesh-1")
-mesh_object.surfaces_list = all_walls
+all_walls = BoundaryCondition(solver).wall.get_object_names()
+mesh_object = Mesh.create(solver, name="mesh-1", surfaces_list=all_walls)
 mesh_object.options.edges = True
 mesh_object.display()
 
-graphics_object = solver.settings.results.graphics
-graphics_object.picture.x_resolution = 650
-graphics_object.picture.y_resolution = 450
-graphics_object.views.restore_view(view_name="isometric")
-graphics_object.picture.save_picture(file_name="Single_Battery_Cell_Mesh.png")
+graphics = Graphics(solver)
+graphics.picture.x_resolution = 650
+graphics.picture.y_resolution = 450
+graphics.views.restore_view(view_name="isometric")
+graphics.picture.save_picture(file_name="Single_Battery_Cell_Mesh.png")
 
 # %%
 # .. image:: ../../_static/Single_Battery_Cell_Mesh.png
@@ -101,7 +125,7 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_Mesh.png")
 # Configure solver settings for battery model
 # =====================================================================================
 # Use an unsteady first-order time solver for transient behavior.
-solver.settings.setup.general.solver.time = "unsteady-1st-order"
+General(solver).solver.time = "unsteady-1st-order"
 
 #######################################################################################
 # Enable the battery model
@@ -110,7 +134,7 @@ solver.settings.setup.general.solver.time = "unsteady-1st-order"
 # Enable Joule heat in passive zones and define zones and terminals.
 # For a detailed guide on setting up a single battery cell,refer to the Reference_ [3].
 
-battery = solver.settings.setup.models.battery
+battery = Battery(solver)
 battery.enabled = True
 battery.echem_model = "ntgk/dcir"
 battery.zone_assignment.active_zone = ["e_zone"]
@@ -129,139 +153,115 @@ battery.zone_assignment.positive_tab = ["tab_p"]
 # scalars are defined for e-material and positive material to specify the
 # electric conductivity with ``defined-per-uds`` and ``constant`` option respectively.
 #
-materials = [
-    {
-        "name": "e_material",
-        "chemical_formula": "e",
-        "density": 2092,
-        "specific_heat": 678,
-        "thermal_conductivity": 18.2,
-        "uds_diffusivity": {
-            "option": "defined-per-uds",
-            "uds-0": 1190000,
-            "uds-1": 983000,
-        },
-    },
-    {
-        "name": "p_material",
-        "chemical_formula": "pmat",
-        "density": 8978,
-        "specific_heat": 381,
-        "thermal_conductivity": 387.6,
-        "uds_diffusivity": {"option": "constant", "value": 10000000},
-    },
-    {
-        "name": "n_material",
-        "chemical_formula": "nmat",
-        "density": 8978,
-        "specific_heat": 381,
-        "thermal_conductivity": 387.6,
-    },
-]
+e_material = SolidMaterial.create(
+    solver,
+    name="e_material",
+    chemical_formula="e",
+    density=2092 * kg / m**3,
+    specific_heat=678 * J / (kg * K),
+    thermal_conductivity=18.2 * W / (m * K),
+)
+e_material.uds_diffusivity.option = "defined-per-uds"
+e_material.uds_diffusivity.uds_diffusivities["uds-0"] = 1190000 * m**2 / s
+e_material.uds_diffusivity.uds_diffusivities["uds-1"] = 983000 * m**2 / s
 
-solids = solver.settings.setup.materials.solid
-for mat in materials:
-    solids.create(mat["name"])
-    solids[mat["name"]].chemical_formula = mat["chemical_formula"]
-    solids[mat["name"]].density.value = mat["density"]
-    solids[mat["name"]].specific_heat.value = mat["specific_heat"]
-    solids[mat["name"]].thermal_conductivity.value = mat["thermal_conductivity"]
-    if "uds_diffusivity" in mat:
-        solids[mat["name"]].uds_diffusivity = {
-            "option": mat["uds_diffusivity"]["option"]
-        }
-        if mat["uds_diffusivity"]["option"] == "defined-per-uds":
-            solids[mat["name"]].uds_diffusivity.uds_diffusivities["uds-0"].value = mat[
-                "uds_diffusivity"
-            ]["uds-0"]
-            solids[mat["name"]].uds_diffusivity.uds_diffusivities["uds-1"].value = mat[
-                "uds_diffusivity"
-            ]["uds-1"]
-        else:
-            solids[mat["name"]].uds_diffusivity.value = mat["uds_diffusivity"]["value"]
+p_material = SolidMaterial.create(
+    solver,
+    name="p_material",
+    chemical_formula="pmat",
+    density=8978 * kg / m**3,
+    specific_heat=381 * J / (kg * K),
+    thermal_conductivity=387.6 * W / (m * K),
+)
+p_material.uds_diffusivity.option = "constant"
+p_material.uds_diffusivity = 10000000 * m**2 / s
+
+n_material = SolidMaterial.create(
+    solver,
+    name="n_material",
+    chemical_formula="nmat",
+    density=8978 * kg / m**3,
+    specific_heat=381 * J / (kg * K),
+    thermal_conductivity=387.6 * W / (m * K),
+)
 
 #######################################################################################
 # Assign materials to cell zones
 # =====================================================================================
 # Map materials to respective zones.
 
-cell_zones = [
-    ("e_zone", "e_material"),
-    ("tab_nzone", "n_material"),
-    ("tab_pzone", "p_material"),
-]
-
-for zone, material in cell_zones:
-    solver.settings.setup.cell_zone_conditions.solid[zone].general.material = material
+SolidCellZone.get(solver, name="e_zone").general.material = e_material
+SolidCellZone.get(solver, name="tab_nzone").general.material = n_material
+SolidCellZone.get(solver, name="tab_pzone").general.material = p_material
 
 #######################################################################################
 # Define boundary conditions
 # =====================================================================================
 # Set convective heat transfer on external surfaces.
 
-wall = solver.settings.setup.boundary_conditions.wall
-wall["wall_active"].thermal.thermal_condition = "Convection"
-wall["wall_active"].thermal.heat_transfer_coeff.value = 5
+wall_active = WallBoundary.get(solver, name="wall_active")
+wall_active.thermal.thermal_condition = "Convection"
+wall_active.thermal.heat_transfer_coeff = 5 * W / (m**2 * K)
 
-# API to copy similar boundary condition
-solver.settings.setup.boundary_conditions.copy(
-    from_="wall_active", to=["wall_n", "wall_p"]
-)
+BoundaryCondition(solver).copy(from_="wall_active", to=["wall_n", "wall_p"])
 
 #######################################################################################
 # Configure solution settings
 # =====================================================================================
 # Disable flow and turbulence equations, since residual criteria are set to ``none``
 
-solver.settings.solution.controls.equations["flow"] = False
-solver.settings.solution.controls.equations["kw"] = False
+controls = Controls(solver)
+controls.equations["flow"] = False
+controls.equations["kw"] = False
 
-solver.settings.solution.monitor.residual.options.criterion_type = "none"
+monitor = Monitor(solver)
+monitor.residual.options.criterion_type = "none"
 
 #######################################################################################
 # Create report definitions
 # =====================================================================================
 # Monitor average voltage and maximum temperature.
 
-avg_surface_voltage_report_def = (
-    solver.settings.solution.report_definitions.surface.create("surface_voltage")
+report_definitions = ReportDefinitions(solver)
+avg_surface_voltage_report_def = report_definitions.surface.create(
+    "surface_voltage",
+    report_type="surface-areaavg",
+    field="passive-zone-potential",
+    surface_names=["tab_p"],
 )
-avg_surface_voltage_report_def.report_type = "surface-areaavg"
-avg_surface_voltage_report_def.field = "passive-zone-potential"
-avg_surface_voltage_report_def.surface_names = ["tab_p"]
 
-max_temp_report_def = solver.settings.solution.report_definitions.volume.create(
-    "max_temperature"
+max_temp_report_def = report_definitions.volume.create(
+    "max_temperature",
+    report_type="volume-max",
+    field=VariableCatalog.TEMPERATURE,
+    cell_zones=["e_zone", "tab_nzone", "tab_pzone"],
 )
-max_temp_report_def.report_type = "volume-max"
-max_temp_report_def.field = "temperature"
-max_temp_report_def.cell_zones = ["e_zone", "tab_nzone", "tab_pzone"]
 
-surf_voltage_report_files = solver.settings.solution.monitor.report_files.create(
-    "surface_voltage_file"
+surf_voltage_report_files = monitor.report_files.create(
+    "surface_voltage_file",
+    report_defs=["flow-time", avg_surface_voltage_report_def],
+    file_name="ntgk-1c.out",
+    print=True,
 )
-surf_voltage_report_files.report_defs = ["flow-time", "surface_voltage"]
-surf_voltage_report_files.file_name = "ntgk-1c.out"
-surf_voltage_report_files.print = True
 
-max_temp_report_file = solver.settings.solution.monitor.report_files.create(
-    "max_temperature_file"
+max_temp_report_file = monitor.report_files.create(
+    "max_temperature_file",
+    report_defs=[max_temp_report_def],
+    file_name="max-temp-1c.out",
+    print=True,
 )
-max_temp_report_file.report_defs = ["max_temperature"]
-max_temp_report_file.file_name = "max-temp-1c.out"
-max_temp_report_file.print = True
 
-report_plots = solver.settings.solution.monitor.report_plots
+report_plots = monitor.report_plots
 
-voltage_plot = report_plots.create("surface_voltage_plot")
-voltage_plot.report_defs = ["surface_voltage"]
-voltage_plot.print = True
+voltage_plot = report_plots.create(
+    "surface_voltage_plot", report_defs=[avg_surface_voltage_report_def], print=True
+)
 voltage_plot.axes.x.number_format.precision = 0
 voltage_plot.axes.y.number_format.precision = 2
 
-temp_plot = report_plots.create("max_temperature_plot")
-temp_plot.report_defs = ["max_temperature"]
-temp_plot.print = True
+temp_plot = report_plots.create(
+    "max_temperature_plot", report_defs=[max_temp_report_def], print=True
+)
 temp_plot.axes.x.number_format.precision = 0
 temp_plot.axes.y.number_format.precision = 2
 
@@ -269,76 +269,69 @@ temp_plot.axes.y.number_format.precision = 2
 # Run the simulation
 # =====================================================================================
 
-solver.settings.solution.initialization.standard_initialize()
-transient_controls = solver.settings.solution.run_calculation.transient_controls
-transient_controls.time_step_size = 30
-transient_controls.time_step_count = 100
-solver.settings.solution.run_calculation.calculate()
+run_calc = RunCalculation(solver)
+initialization = Initialization(solver)
+initialization.standard_initialize()
+run_calc.transient_controls.time_step_size = 30
+run_calc.transient_controls.time_step_count = 100
+run_calc.calculate()
 
 #######################################################################################
 # Post-process results
 # =====================================================================================
 # Generate contour and vector plots.
 
-contours = solver.settings.results.graphics.contour
-contour_list = [
-    {
-        "name": "contour-phi+",
-        "field": "cathode-potential",
-        "surfaces": ["wall_active"],
-        "file_name": "Single_Battery_Cell_1.png",
-    },
-    {
-        "name": "contour-phi-",
-        "field": "anode-potential",
-        "surfaces": ["wall_active"],
-        "file_name": "Single_Battery_Cell_2.png",
-    },
-    {
-        "name": "contour-phi-passive",
-        "field": "passive-zone-potential",
-        "surfaces": ["tab_n", "tab_p", "wall_n", "wall_p"],
-        "file_name": "Single_Battery_Cell_3.png",
-    },
-    {
-        "name": "contour-temp",
-        "field": "temperature",
-        "surfaces": ["wall_p", "wall_active", "tab_p", "tab_n", "wall_n"],
-        "file_name": "Single_Battery_Cell_4.png",
-    },
+contours = [
+    Contour.create(
+        solver, "contour-phi+", field="cathode-potential", surfaces_list=["wall_active"]
+    ),
+    Contour.create(
+        solver, "contour-phi-", field="anode-potential", surfaces_list=["wall_active"]
+    ),
+    Contour.create(
+        solver,
+        "contour-phi-passive",
+        field="passive-zone-potential",
+        surfaces_list=["tab_n", "tab_p", "wall_n", "wall_p"],
+    ),
+    Contour.create(
+        solver,
+        "contour-temp",
+        field=VariableCatalog.TEMPERATURE,
+        surfaces_list=["wall_p", "wall_active", "tab_p", "tab_n", "wall_n"],
+    ),
 ]
 
 # Create, display, and save contour plots
-for contour in contour_list:
-    # Create the contour
-    contours.create(contour["name"])
-    current = contours[contour["name"]]
-    current.field = contour["field"]
-    current.surfaces_list = contour["surfaces"]
-    current.range_options.compute()
+for idx, contour in enumerate(contours):
+    # Configure contour plot
+    contour.range_options.compute()
 
-    # Set the  view
-    graphics_object.views.restore_view(view_name="front")
+    # Set the view
+    graphics.views.restore_view(view_name="front")
     #  display the  current contour
-    current.display()
+    contour.display()
     # Save the contour plot as an image
-    graphics_object.picture.save_picture(file_name=contour["file_name"])
+    graphics.picture.save_picture(file_name=f"Single_Battery_Cell_{idx + 1}.png")
 
 # Create and configure vector plot
-vector_plot = solver.settings.results.graphics.vector.create("vector-current_density")
-vector_plot.vector_field = "current-density-j"
-vector_plot.field = "current-magnitude"
-vector_plot.surfaces_list = ["wall_n", "wall_p", "wall_active", "tab_n", "tab_p"]
+vector_plot = Vector.create(
+    solver,
+    name="vector-current_density",
+    vector_field="current-density-j",
+    field=VariableCatalog.CURRENT,
+    surfaces_list=["wall_n", "wall_p", "wall_active", "tab_n", "tab_p"],
+)
 vector_plot.options.vector_style = "arrow"
 vector_plot.range_options.compute()
 # Set view, display, and save the vector plot image
-graphics_object.views.restore_view(view_name="front")
+graphics.views.restore_view(view_name="front")
 vector_plot.display()
-graphics_object.picture.save_picture(file_name="Single_Battery_Cell_5.png")
+graphics.picture.save_picture(file_name="Single_Battery_Cell_5.png")
 # Save case file for ROM simulation
-solver.settings.file.write_case(file_name="unit_battery.cas.h5")
+write_case(solver, file_name="unit_battery.cas.h5")
 # Save case and data for short circuit simulation
-solver.settings.file.write_case_data(file_name="ntgk")  # Save case data
+write_case_data(solver, file_name="ntgk")  # Save case data
 
 # %%
 # .. image:: ../../_static/Single_Battery_Cell_1.png
@@ -371,94 +364,95 @@ solver.settings.file.write_case_data(file_name="ntgk")  # Save case data
 # =====================================================================================
 # Simulate at 0.5C and 5C discharge rates with adjusted time steps.
 
-solver.settings.setup.models.battery.eload_condition.eload_settings.crate_value = 0.5
+battery.eload_condition.eload_settings.crate_value = 0.5
 
 # Get report files
-report_files = solver.settings.solution.monitor.report_files
+report_files = monitor.report_files
 
 # Update report file names for 0.5 c rate simulation for existing report files
 report_files["surface_voltage_file"].file_name = "ntgk-0.5c.out"
 report_files["max_temperature_file"].file_name = "max-temp-0.5c.out"
-solver.settings.solution.initialization.standard_initialize()
-solver.settings.solution.run_calculation.transient_controls.time_step_count = 230
-solver.settings.solution.run_calculation.calculate()
+initialization.standard_initialize()
+run_calc.transient_controls.time_step_count = 230
+run_calc.calculate()
 
-solver.settings.setup.models.battery.eload_condition.eload_settings.crate_value = 5
+battery.eload_condition.eload_settings.crate_value = 5
 
 # Update report file names for 5 c rate simulation for existing report files
 report_files["surface_voltage_file"].file_name = "ntgk-5c.out"
 report_files["max_temperature_file"].file_name = "max-temp-5c.out"
-solver.settings.solution.initialization.standard_initialize()
-solver.settings.solution.run_calculation.transient_controls.time_step_count = 23
-solver.settings.solution.run_calculation.calculate()
+initialization.standard_initialize()
+run_calc.transient_controls.time_step_count = 23
+run_calc.calculate()
 
 #######################################################################################
 # Reduced Order Method (ROM) setup
 # =====================================================================================
 # Apply ROM for computational efficiency.
 
-solver.settings.file.read_case(file_name="unit_battery.cas.h5")
-solver.settings.solution.initialization.standard_initialize()
-solver.settings.solution.run_calculation.transient_controls.time_step_size = 30
-solver.settings.solution.run_calculation.transient_controls.time_step_count = 3
-solver.settings.solution.run_calculation.calculate()
+read_case(file_name="unit_battery.cas.h5")
+initialization.standard_initialize()
+run_calc.transient_controls.time_step_size = 30
+run_calc.transient_controls.time_step_count = 3
+run_calc.calculate()
 
-solver.settings.setup.models.battery.solution_method = "msmd-rom"
-solver.settings.setup.models.battery.solution_option.option_settings.number_substeps = (
-    10
-)
-solver.settings.solution.run_calculation.transient_controls.time_step_size = 30
-solver.settings.solution.run_calculation.transient_controls.time_step_count = 100
-solver.settings.solution.run_calculation.calculate()
+battery.solution_method = "msmd-rom"
+battery.solution_option.option_settings.number_substeps = 10
+run_calc.transient_controls.time_step_size = 30
+run_calc.transient_controls.time_step_count = 100
+run_calc.calculate()
 
 # Generate contour and vector plots for ROM results.
-contours = solver.settings.results.graphics.contour
-contour_list = [
-    {
-        "name": "contour_cathode_potential",
-        "field": "cathode-potential",
-        "surfaces": ["wall_active"],
-    },
-    {
-        "name": "contour_anode_potential",
-        "field": "anode-potential",
-        "surfaces": ["wall_active"],
-    },
-    {
-        "name": "contour_passive_potential",
-        "field": "passive-zone-potential",
-        "surfaces": ["tab_n", "tab_p", "wall_n", "wall_p"],
-    },
-    {
-        "name": "contour_temperature",
-        "field": "temperature",
-        "surfaces": ["wall_p", "wall_active", "tab_p", "tab_n", "wall_n"],
-    },
+contours = [
+    Contour.create(
+        solver,
+        "contour_cathode_potential",
+        field="cathode-potential",
+        surfaces_list=["wall_active"],
+    ),
+    Contour.create(
+        solver,
+        "contour_anode_potential",
+        field="anode-potential",
+        surfaces_list=["wall_active"],
+    ),
+    Contour.create(
+        solver,
+        "contour_passive_potential",
+        field="passive-zone-potential",
+        surfaces_list=["tab_n", "tab_p", "wall_n", "wall_p"],
+    ),
+    Contour.create(
+        solver,
+        "contour_temperature",
+        field=VariableCatalog.TEMPERATURE,
+        surfaces_list=["wall_p", "wall_active", "tab_p", "tab_n", "wall_n"],
+    ),
 ]
 
-for contour in contour_list:
-    contours.create(contour["name"])
-    contours[contour["name"]].field = contour["field"]
-    contours[contour["name"]].surfaces_list = contour["surfaces"]
-    contours[contour["name"]].range_options.compute()
+for contour in contours:
+    contour.range_options.compute()
 
-vectors = solver.settings.results.graphics.vector.create("vector-current_density")
-vectors.vector_field = "current-density-j"
-vectors.field = "current-magnitude"
-vectors.surfaces_list = [
-    "wall_n",
-    "wall_p",
-    "wall_active",
-    "tab_n",
-    "tab_p",
-]
+vectors = Vector.create(
+    solver,
+    name="vector-current_density",
+    vector_field="current-density-j",
+    field="current-magnitude",
+    surfaces_list=[
+        "wall_n",
+        "wall_p",
+        "wall_active",
+        "tab_n",
+        "tab_p",
+    ],
+)
 vectors.options.vector_style = "arrow"
 vectors.range_options.compute()
 
 # Set view, display, and save the vector plot image
-graphics_object.views.restore_view(view_name="front")
+graphics.views.restore_view(view_name="front")
 vectors.display()
-graphics_object.picture.save_picture(file_name="Single_Battery_Cell_6.png")
+graphics.picture.save_picture(file_name="Single_Battery_Cell_6.png")
 
 # %%
 # .. image:: ../../_static/Single_Battery_Cell_6.png
@@ -471,65 +465,61 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_6.png")
 # =====================================================================================
 # Apply low external resistance and define a short-circuit region.
 
-solver.settings.file.read_case(file_name="ntgk.cas.h5")
+read_case(file_name="ntgk.cas.h5")
 
-solver.settings.setup.models.battery.eload_condition.eload_settings.eload_type = (
-    "specified-resistance"
-)
-solver.settings.setup.models.battery.eload_condition.eload_settings.external_resistance = (
-    0.5
-)
+battery.eload_condition.eload_settings.eload_type = "specified-resistance"
+battery.eload_condition.eload_settings.external_resistance = 0.5 * ohm
 
 # Create a new cell register named "register_patch"
-patch = solver.settings.solution.cell_registers.create(name="register_patch")
+patch = CellRegister.create(solver, name="register_patch")
 patch.type.option = "hexahedron"
 
 # Configure the hexahedron box
 patch.type.hexahedron.inside = True
-patch.type.hexahedron.min_point = [-0.01, -0.01, -1.0]
-patch.type.hexahedron.max_point = [0.01, 0.02, 1.0]
+patch.type.hexahedron.min_point = (-0.01, -0.01, -1.0)
+patch.type.hexahedron.max_point = (0.01, 0.02, 1.0)
 
-solver.settings.solution.initialization.standard_initialize()
+initialization.standard_initialize()
 
 # Patch initialization
-solver.settings.solution.initialization.patch.calculate_patch(
-    domain="",
-    cell_zones=[],
+initialization.patch.calculate_patch(
     registers=["register_patch"],
     variable="battery-short-resistance",
     reference_frame="Relative to Cell Zone",
     use_custom_field_function=False,
-    custom_field_function_name="",
     value=5e-07,
 )
 
-solver.settings.solution.run_calculation.transient_controls.time_step_size = 1
-solver.settings.solution.run_calculation.transient_controls.time_step_count = 5
-solver.settings.solution.run_calculation.calculate()
+run_calc.transient_controls.time_step_size = 1
+run_calc.transient_controls.time_step_count = 5
+run_calc.calculate()
 
-solver.settings.file.write_case_data(file_name="ntgk_short_circuit.cas.h5")
+write_case_data(file_name="ntgk_short_circuit.cas.h5")
 
-solver.settings.results.report.surface_integrals.area_weighted_avg(
+
+SurfaceIntegrals(solver).area_weighted_avg(
     report_of="passive-zone-potential", surface_names=["tab_p"], write_to_file=False
 )
-solver.settings.results.report.volume_integrals.volume_integral(
+VolumeIntegrals(solver).volume_integral(
     cell_function="total-current-source", cell_zones=["e_zone"], write_to_file=False
 )
 
-vector = solver.settings.results.graphics.vector
-vector_negative = vector.create("vector_negative_current")
-vector_negative.vector_field = "current-density-jn"
-vector_negative.field = "current-magnitude"
-vector_negative.surfaces_list = [
-    "wall_n",
-    "wall_p",
-    "wall_active",
-]
+vector_negative = Vector.create(
+    solver,
+    name="vector_negative_current",
+    vector_field="current-density-jn",
+    field=VariableCatalog.CURRENT,
+    surfaces_list=[
+        "wall_n",
+        "wall_p",
+        "wall_active",
+    ],
+)
 vector_negative.options.vector_style = "arrow"
 vector_negative.range_options.compute()
-graphics_object.views.restore_view(view_name="front")
+graphics.views.restore_view(view_name="front")
 vector_negative.display()
-graphics_object.picture.save_picture(file_name="Single_Battery_Cell_9.png")
+graphics.picture.save_picture(file_name="Single_Battery_Cell_9.png")
 
 
 # %%
@@ -538,20 +528,23 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_9.png")
 #    :alt: Negative Current Vector Plot
 # Negative current vector plot after short circuit.
 
-vector_positive = vector.create("vector_positive_current")
-vector_positive.vector_field = "current-density-jp"
-vector_positive.field = "current-magnitude"
-vector_positive.surfaces_list = [
-    "wall_n",
-    "wall_p",
-    "wall_active",
-]
+vector_positive = Vector.create(
+    solver,
+    name="vector_positive_current",
+    vector_field="current-density-jp",
+    field=VariableCatalog.CURRENT,
+    surfaces_list=[
+        "wall_n",
+        "wall_p",
+        "wall_active",
+    ],
+)
 vector_positive.options.vector_style = "arrow"
 vector_positive.range_options.compute()
 
-graphics_object.views.restore_view(view_name="front")
+graphics.views.restore_view(view_name="front")
 vector_positive.display()
-graphics_object.picture.save_picture(file_name="Single_Battery_Cell_10.png")
+graphics.picture.save_picture(file_name="Single_Battery_Cell_10.png")
 
 # %%
 # .. image:: ../../_static/Single_Battery_Cell_10.png
@@ -559,14 +552,15 @@ graphics_object.picture.save_picture(file_name="Single_Battery_Cell_10.png")
 #    :alt: Positive Current Vector Plot
 # Positive current vector plot after short circuit.
 
-temp_contour = solver.settings.results.graphics.contour.create("temperature-contour")
-temp_contour.field = "temperature"
+temp_contour = Contour.create(
+    solver, name="temperature-contour", field=VariableCatalog.TEMPERATURE
+)
 temp_contour.surfaces_list = all_walls
 temp_contour.range_options.compute()
 
-graphics_object.views.restore_view(view_name="front")
+graphics.views.restore_view(view_name="front")
 temp_contour.display()
-graphics_object.picture.save_picture(file_name="Single_Battery_Cell_11.png")
+graphics.picture.save_picture(file_name="Single_Battery_Cell_11.png")
 
 # %%
 # .. image:: ../../_static/Single_Battery_Cell_11.png
@@ -587,6 +581,11 @@ solver.exit()
 #
 # [2] U. S. Kim, et al., "Modeling the Dependence of the Discharge Behavior of a Lithium-Ion Battery
 # on the Environmental Temperature", J. of Electrochemical Soc., Volume 158 (5), pages A611-A618, 2011.
+#
+# .. _Reference:
+# [3] Simulating a Single Battery Cell Using the MSMD Battery Model, `Ansys Fluent documentation​ <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_bat_tutorial_cell.html>`_.
+
+# sphinx_gallery_thumbnail_path = '_static/Single_Battery_Cell_4.png'
 #
 # .. _Reference:
 # [3] Simulating a Single Battery Cell Using the MSMD Battery Model, `Ansys Fluent documentation​ <https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_bat_tutorial_cell.html>`_.
