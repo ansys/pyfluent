@@ -53,6 +53,8 @@ def generate(version: str, static_infos: dict, verbose: bool = False):
         pickle.dump(api_tree, f)
     if not config.codegen_skip_builtin_settings:
         builtin_settingsgen.generate(version)
+        # Generate main .pyi file for the latest version processed
+        builtin_settingsgen.generate_main_pyi(version)
 
 
 if __name__ == "__main__":
