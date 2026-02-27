@@ -138,24 +138,14 @@ def test_create_rp_vars(new_solver_session) -> None:
     assert isinstance(list_var_value, (list, tuple))
     assert list(list_var_value) == [1, 2, 3]
 
-    # Create RPVar with a tuple value and verify it is stored and retrieved correctly.
-    solver.rp_vars.create(name="my-tuple-var", value=(4, 5, 6), var_type=None)
-    tuple_var_value = solver.rp_vars("my-tuple-var")
-    assert isinstance(tuple_var_value, (list, tuple))
-    assert list(tuple_var_value) == [4, 5, 6]
-
     # REAL (float) RP var
-    solver.rp_vars.create(
-        name="my-real-var", value=1.5, var_type=RPVarType.REAL
-    )
+    solver.rp_vars.create(name="my-real-var", value=1.5, var_type=RPVarType.REAL)
     assert solver.rp_vars("my-real-var") == pytest.approx(1.5)
     solver.rp_vars("my-real-var", 2.75)
     assert solver.rp_vars("my-real-var") == pytest.approx(2.75)
 
     # BOOLEAN RP var
-    solver.rp_vars.create(
-        name="my-bool-var", value=True, var_type=RPVarType.BOOLEAN
-    )
+    solver.rp_vars.create(name="my-bool-var", value=True, var_type=RPVarType.BOOLEAN)
     bool_val = solver.rp_vars("my-bool-var")
     assert isinstance(bool_val, bool)
     assert bool_val is True

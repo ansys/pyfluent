@@ -76,7 +76,7 @@ is enforced to prevent mismatches:
    
    >>> # This raises NameError: rpvars already exists
    >>> solver_session.rp_vars.create(name="my-int-var", value=55, var_type=int)
-   NameError: 'my-int-var' is already a pre-defined rpvar.
+   NameError: 'my-int-var' already exists as an rpvar.
 
 **Note:** Custom-typed rpvars (created with ``var_type=None``) do not enforce type restrictions 
 and can be reassigned to any value type.
