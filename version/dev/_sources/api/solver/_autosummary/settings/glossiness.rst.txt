@@ -1,0 +1,21 @@
+:orphan:
+
+.. _glossiness:
+
+glossiness
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.glossiness
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ====================================
+
+Parent                                                                    Summary
+
+==========================================   ====================================
+:ref:`material_8_child <material_8_child>`       'child_object_type' of material.
+
+==========================================   ====================================
+

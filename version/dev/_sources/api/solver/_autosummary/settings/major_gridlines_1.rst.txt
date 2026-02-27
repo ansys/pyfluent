@@ -1,0 +1,44 @@
+:orphan:
+
+.. _major_gridlines_1:
+
+major_gridlines
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.major_gridlines_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================================   =================================================================================================
+
+Attribute                                                                                                                                                                    Summary
+
+================================================================================   =================================================================================================
+:ref:`color <color_6>`                                                                                                                                      Color of the major rule.
+
+:ref:`weight <weight_3>`                                                                                                                                    Width of the major rule.
+
+:ref:`auto_placement <auto_placement_1>`                                                              Specifies whether you want major rules to be placed automatically on the axis.
+
+:ref:`specify_divisions_instead_of_units <specify_divisions_instead_of_units_1>`       The number of divisions to be made by the major rules? Deselect for specifying units instead.
+
+:ref:`units <units_2>`                                                                                                                                 Distance between major rules.
+
+:ref:`divisions <divisions_1>`                                                                                                The number of divisions to be made by the major rules.
+
+================================================================================   =================================================================================================
+
+.. rubric:: Included in:
+
+================   ==============
+
+Parent                    Summary
+
+================   ==============
+:ref:`x_8 <x_8>`       'x' child.
+
+:ref:`y_8 <y_8>`       'y' child.
+
+================   ==============
+

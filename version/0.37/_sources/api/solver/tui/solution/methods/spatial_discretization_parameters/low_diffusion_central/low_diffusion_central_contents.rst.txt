@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solution_methods_spatial_discretization_parameters_low_diffusion_central:
+
+low_diffusion_central
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_252.main_menu.solution.methods.spatial_discretization_parameters.low_diffusion_central
+   :members: diffusion_coefficient, shield_bl_distance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

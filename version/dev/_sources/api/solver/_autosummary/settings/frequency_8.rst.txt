@@ -1,0 +1,21 @@
+:orphan:
+
+.. _frequency_8:
+
+frequency
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.frequency_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ================================
+
+Parent                                                        Summary
+
+==================================   ================================
+:ref:`parameters_9 <parameters_9>`       Iteration parameters object.
+
+==================================   ================================
+

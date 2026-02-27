@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_26:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_26
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =======================================================
+
+Parent                                                                                   Summary
+
+======================================   =======================================================
+:ref:`save_picture_1 <save_picture_1>`       Save the current graphics window as a picture file.
+
+======================================   =======================================================
+

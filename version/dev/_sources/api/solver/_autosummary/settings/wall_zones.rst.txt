@@ -1,0 +1,21 @@
+:orphan:
+
+.. _wall_zones:
+
+wall_zones
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.wall_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================================================================================================================
+
+Parent                                                                                                                                            Summary
+
+================================   ======================================================================================================================
+:ref:`yplus_ystar <yplus_ystar>`       Define cell registers and adaption settings suitable for prismatic boundary layer adaption based on Yplus / Ystar.
+
+================================   ======================================================================================================================
+

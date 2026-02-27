@@ -1,0 +1,32 @@
+:orphan:
+
+.. _connect_to_web_session:
+
+connect_to_web_session
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.connect_to_web_session
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   =========================
+
+Argument                                                   Summary
+
+======================================   =========================
+:ref:`design_points <design_points_3>`       Design Point Name(s).
+
+======================================   =========================
+
+.. rubric:: Included in:
+
+====================================   ==========================
+
+Parent                                                    Summary
+
+====================================   ==========================
+:ref:`design_points <design_points>`       'design_points' child.
+
+====================================   ==========================
+

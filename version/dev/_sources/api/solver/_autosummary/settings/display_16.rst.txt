@@ -1,0 +1,37 @@
+:orphan:
+
+.. _display_16:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.display_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================================   ==================================================
+
+Parent                                                                                                          Summary
+
+==================================================================   ==================================================
+:ref:`fixed_walls_constraint_child <fixed_walls_constraint_child>`       'child_object_type' of fixed_walls_constraint.
+
+:ref:`bounded_by_plane_child <bounded_by_plane_child>`                         'child_object_type' of bounded_by_plane.
+
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`                'child_object_type' of bounded_by_surfaces.
+
+:ref:`prescribed_profile_child <prescribed_profile_child>`                   'child_object_type' of prescribed_profile.
+
+:ref:`rotation_child <rotation_child>`                                                 'child_object_type' of rotation.
+
+:ref:`translation_1_child <translation_1_child>`                                    'child_object_type' of translation.
+
+:ref:`scaling_1_child <scaling_1_child>`                                                'child_object_type' of scaling.
+
+:ref:`rigid_body_child <rigid_body_child>`                                           'child_object_type' of rigid_body.
+
+:ref:`compound_child <compound_child>`                                                 'child_object_type' of compound.
+
+==================================================================   ==================================================
+

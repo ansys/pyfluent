@@ -1,0 +1,32 @@
+:orphan:
+
+.. _delete_imported_surfaces:
+
+delete_imported_surfaces
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_imported_surfaces
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+=============================   ===========================
+
+Argument                                            Summary
+
+=============================   ===========================
+:ref:`surfaces <surfaces_20>`       Surfaces to be deleted.
+
+=============================   ===========================
+
+.. rubric:: Included in:
+
+============================================================   ===============================================
+
+Parent                                                                                                 Summary
+
+============================================================   ===============================================
+:ref:`bounded_by_surfaces_child <bounded_by_surfaces_child>`       'child_object_type' of bounded_by_surfaces.
+
+============================================================   ===============================================
+

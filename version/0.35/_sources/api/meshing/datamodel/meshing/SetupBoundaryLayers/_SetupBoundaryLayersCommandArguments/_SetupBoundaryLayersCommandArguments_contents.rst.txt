@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_SetupBoundaryLayers__SetupBoundaryLayersCommandArguments:
+
+_SetupBoundaryLayersCommandArguments
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.SetupBoundaryLayers._SetupBoundaryLayersCommandArguments
+   :members: _AddChild, _AspectRatio, _FirstHeight, _GrowthRate, _LastRatioPercentage, _OffsetMethodType, _PrismLayers, _PrismsSettingsName, _RegionSelectionList
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

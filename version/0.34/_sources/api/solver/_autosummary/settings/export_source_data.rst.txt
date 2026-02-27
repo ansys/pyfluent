@@ -1,0 +1,51 @@
+:orphan:
+
+.. _export_source_data:
+
+export_source_data
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.export_source_data
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   =======================================================================================
+
+Attribute                                                                                                                                Summary
+
+======================================================   =======================================================================================
+:ref:`export_asd <export_asd>`                               Enable export of acoustic source data in ASD format with or without the FW-H model.
+
+:ref:`export_cgns <export_cgns>`                                Enable export of acoustic source data in CGNS format for Simcenter 3D Acoustics.
+
+:ref:`write_frequency <write_frequency>`                                                                                    The write frequency.
+
+:ref:`timesteps_per_asd_file <timesteps_per_asd_file>`                                                         Number of timesteps per ASD file.
+
+:ref:`sources_fft <sources_fft>`                                                                           Entering acoustic sources FFT object.
+
+======================================================   =======================================================================================
+
+.. rubric:: Methods
+
+======================================================   ===============================================================================================
+
+Method                                                                                                                                           Summary
+
+======================================================   ===============================================================================================
+:ref:`export_cgns_volumetric <export_cgns_volumetric>`       Enable export of volumetric acoustic source data in CGNS format for Simcenter 3D Acoustics.
+
+======================================================   ===============================================================================================
+
+.. rubric:: Included in:
+
+============================   ====================================
+
+Parent                                                      Summary
+
+============================   ====================================
+:ref:`acoustics <acoustics>`       Entering acoustics model object.
+
+============================   ====================================
+

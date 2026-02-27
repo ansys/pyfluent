@@ -1,0 +1,21 @@
+:orphan:
+
+.. _parameters_13_child:
+
+parameters_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.parameters_13_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ==================================
+
+Parent                                                            Summary
+
+====================================   ==================================
+:ref:`parameters_13 <parameters_13>`       Operating condition parameter.
+
+====================================   ==================================
+

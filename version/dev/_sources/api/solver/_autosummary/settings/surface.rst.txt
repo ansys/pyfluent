@@ -1,0 +1,21 @@
+:orphan:
+
+.. _surface:
+
+surface
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.surface
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ========================
+
+Parent                                        Summary
+
+==========================   ========================
+:ref:`delete_1 <delete_1>`       Delete surface mesh.
+
+==========================   ========================
+

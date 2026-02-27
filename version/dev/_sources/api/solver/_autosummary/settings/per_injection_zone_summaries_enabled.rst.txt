@@ -1,0 +1,21 @@
+:orphan:
+
+.. _per_injection_zone_summaries_enabled:
+
+per_injection_zone_summaries_enabled
+====================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.per_injection_zone_summaries_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===========================================================================================
+
+Parent                                                                                                                           Summary
+
+==========================================   ===========================================================================================
+:ref:`discrete_phase_6 <discrete_phase_6>`       Access and configure reporting options for discrete phase (particle-based) simulations.
+
+==========================================   ===========================================================================================
+

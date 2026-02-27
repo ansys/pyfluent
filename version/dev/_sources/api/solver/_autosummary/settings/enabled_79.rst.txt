@@ -1,0 +1,23 @@
+:orphan:
+
+.. _enabled_79:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled_79
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`gradient_based <gradient_based>`       Gradient-based design object.
+
+:ref:`geometry_13 <geometry_13>`                          Geometry object.
+
+======================================   =================================
+

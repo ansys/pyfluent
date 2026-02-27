@@ -1,0 +1,21 @@
+:orphan:
+
+.. _threshold_4:
+
+threshold
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.threshold_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ========================================
+
+Parent                                                                          Summary
+
+============================================   ========================================
+:ref:`physical_models_2 <physical_models_2>`       Use physical-models load balancing?.
+
+============================================   ========================================
+

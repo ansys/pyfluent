@@ -1,0 +1,21 @@
+:orphan:
+
+.. _min_auto:
+
+min_auto
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.min_auto
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================================================================================
+
+Parent                                                                                                         Summary
+
+==============================   =====================================================================================
+:ref:`auto_range <auto_range>`       Specifies whether auto-range is required for min and/or max value(s) of the axis.
+
+==============================   =====================================================================================
+

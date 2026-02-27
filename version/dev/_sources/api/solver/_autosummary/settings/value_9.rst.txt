@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_9:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_9
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ===================================================
+
+Parent                                                                 Summary
+
+========================   ===================================================
+:ref:`ccorner <ccorner>`       The corner flow correction coefficient CCORNER.
+
+========================   ===================================================
+

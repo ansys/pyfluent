@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enabled_66:
+
+enabled
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enabled_66
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`generalized_forces <generalized_forces>`       Settings for Generalized Forces calculation and objects.
+
+==============================================   ============================================================
+

@@ -1,0 +1,40 @@
+:orphan:
+
+.. _surface_integral_child:
+
+surface_integral_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.surface_integral_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ================================================
+
+Attribute                                                                           Summary
+
+========================================   ================================================
+:ref:`name <name_5>`                                                    Name of the object.
+
+:ref:`integral_type <integral_type>`                          The type of surface integral.
+
+:ref:`location <location_3>`                                                    The object.
+
+:ref:`surfaces <surfaces_17>`                        The surfaces for the surface integral.
+
+:ref:`field_variable <field_variable_1>`       The field variable for the surface integral.
+
+========================================   ================================================
+
+.. rubric:: Included in:
+
+==========================================   ============================================
+
+Parent                                                                            Summary
+
+==========================================   ============================================
+:ref:`surface_integral <surface_integral>`       Surface integral observable definitions.
+
+==========================================   ============================================
+

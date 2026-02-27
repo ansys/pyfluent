@@ -1,0 +1,36 @@
+:orphan:
+
+.. _compute_resources_child:
+
+compute_resources_child
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.compute_resources_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ================================
+
+Attribute                                                           Summary
+
+========================================   ================================
+:ref:`name <name_5>`                                    Name of the object.
+
+:ref:`url <url>`                                      Compute Resource URL.
+
+:ref:`default_cluster <default_cluster>`       As default compute resource.
+
+========================================   ================================
+
+.. rubric:: Included in:
+
+============================================   ==========================
+
+Parent                                                            Summary
+
+============================================   ==========================
+:ref:`compute_resources <compute_resources>`       Compute Resource List.
+
+============================================   ==========================
+

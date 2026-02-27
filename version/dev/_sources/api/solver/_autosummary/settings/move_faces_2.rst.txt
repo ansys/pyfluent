@@ -1,0 +1,21 @@
+:orphan:
+
+.. _move_faces_2:
+
+move_faces
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.move_faces_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==================================================
+
+Parent                                                                                      Summary
+
+==============================================   ==================================================
+:ref:`sep_face_zone_face <sep_face_zone_face>`       Separate each face in a zone into unique zone.
+
+==============================================   ==================================================
+

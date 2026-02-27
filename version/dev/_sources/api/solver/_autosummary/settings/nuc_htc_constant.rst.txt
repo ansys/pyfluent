@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nuc_htc_constant:
+
+nuc_htc_constant
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nuc_htc_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ================================================
+
+Parent                                                                                                    Summary
+
+==============================================================   ================================================
+:ref:`mt_evap_cond_sbm_nuchf_par <mt_evap_cond_sbm_nuchf_par>`       Nucleate boiling model reference quantities.
+
+==============================================================   ================================================
+

@@ -1,0 +1,45 @@
+:orphan:
+
+.. _geometry_13:
+
+geometry
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.geometry_13
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ====================================
+
+Attribute                                                                                 Summary
+
+==========================================================   ====================================
+:ref:`enabled <enabled_79>`                                      Toggle to enable adjoint module.
+
+:ref:`parameterize_and_explore <parameterize_and_explore>`       Parameterize and explore object.
+
+==========================================================   ====================================
+
+.. rubric:: Methods
+
+=========================   ========================================================================================
+
+Method                                                                                                       Summary
+
+=========================   ========================================================================================
+:ref:`enable <enable_41>`       Enables and loads adjoint module. Deprecated: use 'Enabled' boolean setting instead.
+
+=========================   ========================================================================================
+
+.. rubric:: Included in:
+
+======================   =========================================
+
+Parent                                                     Summary
+
+======================   =========================================
+:ref:`design <design>`       Access Design and Optimization tools.
+
+======================   =========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _object_name_2:
+
+object_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.object_name_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   =============================================
+
+Parent                                                                           Summary
+
+========================================   =============================================
+:ref:`add_to_graphics <add_to_graphics>`       Add graphics object to existing graphics.
+
+========================================   =============================================
+

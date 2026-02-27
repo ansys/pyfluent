@@ -1,0 +1,47 @@
+:orphan:
+
+.. _inert_stream_composition:
+
+inert_stream_composition
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.inert_stream_composition
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =================================
+
+Attribute                                                                    Summary
+
+================================================   =================================
+:ref:`composition_options <composition_options>`                   Composition Type.
+
+:ref:`h_by_c_ratio_value <h_by_c_ratio_value>`         H/C Ratio of the Hydrocarbon.
+
+:ref:`user_defined_comp <user_defined_comp>`               User Defined Composition.
+
+================================================   =================================
+
+.. rubric:: Methods
+
+============================   ===============================================
+
+Method                                                                 Summary
+
+============================   ===============================================
+:ref:`normalize <normalize>`       Normalize the Inert Species Mass Fractions.
+
+============================   ===============================================
+
+.. rubric:: Included in:
+
+================================   =============================================================
+
+Parent                                                                                   Summary
+
+================================   =============================================================
+:ref:`inert_model <inert_model>`       Inert model for non-premixed/partial-premixed combustion.
+
+================================   =============================================================
+

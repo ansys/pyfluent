@@ -1,0 +1,34 @@
+:orphan:
+
+.. _display_6:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.display_6
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ==============================
+
+Argument                                        Summary
+
+======================   ==============================
+:ref:`zones <zones_2>`       Zone-name to be displayed.
+
+======================   ==============================
+
+.. rubric:: Included in:
+
+========================================   ===============================
+
+Parent                                                             Summary
+
+========================================   ===============================
+:ref:`mesh_interfaces <mesh_interfaces>`       The mesh interfaces object.
+
+:ref:`interface_3 <interface_3>`                   Create mesh interfaces.
+
+========================================   ===============================
+

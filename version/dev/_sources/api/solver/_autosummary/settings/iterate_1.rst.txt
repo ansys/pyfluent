@@ -1,0 +1,36 @@
+:orphan:
+
+.. _iterate_1:
+
+iterate
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iterate_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================================   ========================================================================
+
+Argument                                                                                                                      Summary
+
+==========================================================   ========================================================================
+:ref:`iter_count <iter_count_4>`                                               Sets the number of iterations for multidomain solving.
+
+:ref:`time_steps_count <time_steps_count>`                                     Sets the number of time-steps for multidomain solving.
+
+:ref:`iter_per_time_step_count <iter_per_time_step_count>`       Sets the number of iterations per time step for multidomain solving.
+
+==========================================================   ========================================================================
+
+.. rubric:: Included in:
+
+========================   =================================
+
+Parent                                               Summary
+
+========================   =================================
+:ref:`solve_1 <solve_1>`       The multidomain solve object.
+
+========================   =================================
+

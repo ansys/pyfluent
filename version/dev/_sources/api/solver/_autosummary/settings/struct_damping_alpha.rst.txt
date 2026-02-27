@@ -1,0 +1,34 @@
+:orphan:
+
+.. _struct_damping_alpha:
+
+struct_damping_alpha
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.struct_damping_alpha
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=========================   ==========================================
+
+Attribute                                                      Summary
+
+=========================   ==========================================
+:ref:`option <option_43>`                    Material property method.
+
+:ref:`value <value_24>`         Constant or expression property value.
+
+=========================   ==========================================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`solid_child <solid_child>`       'child_object_type' of solid.
+
+================================   =================================
+

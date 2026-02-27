@@ -1,0 +1,21 @@
+:orphan:
+
+.. _headlight_setting:
+
+headlight_setting
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.headlight_setting
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   =============================================================================
+
+Parent                                                                                             Summary
+
+==========================   =============================================================================
+:ref:`lighting <lighting>`       Configure global and individual light settings for 3D graphics rendering.
+
+==========================   =============================================================================
+

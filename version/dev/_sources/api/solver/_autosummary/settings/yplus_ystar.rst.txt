@@ -1,0 +1,38 @@
+:orphan:
+
+.. _yplus_ystar:
+
+yplus_ystar
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.yplus_ystar
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ========================================
+
+Argument                                                            Summary
+
+================================   ========================================
+:ref:`type <type_1>`                                                  Type.
+
+:ref:`wall_zones <wall_zones>`                Wall zones for Yplus / Ystar.
+
+:ref:`min_allowed <min_allowed>`       The range minimum for Yplus / Ystar.
+
+:ref:`max_allowed <max_allowed>`       The range maximum for Yplus / Ystar.
+
+================================   ========================================
+
+.. rubric:: Included in:
+
+======================================   ==================================================
+
+Parent                                                                              Summary
+
+======================================   ==================================================
+:ref:`boundary_layer <boundary_layer>`       The boundary-layer predefined criteria object.
+
+======================================   ==================================================
+

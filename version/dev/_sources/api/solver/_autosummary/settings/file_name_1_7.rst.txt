@@ -1,0 +1,31 @@
+:orphan:
+
+.. _file_name_1_7:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_1_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   =====================================================================================
+
+Parent                                                                                                                               Summary
+
+====================================================   =====================================================================================
+:ref:`read <read>`                                         Read files of various types. The file type can be case, data, mesh, or case-data.
+
+:ref:`read_case <read_case>`                               Read files of various types. The file type can be case, data, mesh, or case-data.
+
+:ref:`read_case_data <read_case_data>`                     Read files of various types. The file type can be case, data, mesh, or case-data.
+
+:ref:`read_case_lightweight <read_case_lightweight>`       Read files of various types. The file type can be case, data, mesh, or case-data.
+
+:ref:`read_data <read_data>`                               Read files of various types. The file type can be case, data, mesh, or case-data.
+
+:ref:`read_mesh <read_mesh>`                               Read files of various types. The file type can be case, data, mesh, or case-data.
+
+====================================================   =====================================================================================
+

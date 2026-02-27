@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_volume_mesh_wtm__create_volume_mesh_wtm_arguments_global_thin_volume_preferences:
+
+global_thin_volume_preferences
+==============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_volume_mesh_wtm._create_volume_mesh_wtm.arguments.global_thin_volume_preferences
+   :members: auto_order_controls, min_aspect_ratio, show_global_thin_volume_preferences, stair_step
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

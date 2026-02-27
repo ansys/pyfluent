@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nodes_1:
+
+nodes
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.nodes_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ===================
+
+Parent                                   Summary
+
+==========================   ===================
+:ref:`manual_1 <manual_1>`       'manual' child.
+
+==========================   ===================
+

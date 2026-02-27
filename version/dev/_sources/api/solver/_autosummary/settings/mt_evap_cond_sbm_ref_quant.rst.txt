@@ -1,0 +1,42 @@
+:orphan:
+
+.. _mt_evap_cond_sbm_ref_quant:
+
+mt_evap_cond_sbm_ref_quant
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_evap_cond_sbm_ref_quant
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ==========================================================
+
+Attribute                                                                                       Summary
+
+==========================================   ==========================================================
+:ref:`ref_vel <ref_vel>`                                      Reference velocity away from heated wall.
+
+:ref:`ref_vel_constant <ref_vel_constant>`                                 Reference velocity constant.
+
+:ref:`ref_vel_udf <ref_vel_udf>`                                                Reference velocity UDF.
+
+:ref:`ref_temp <ref_temp>`                                 Reference temperature away from heated wall.
+
+:ref:`ref_temp_udf <ref_temp_udf>`                                           Reference temperature udf.
+
+:ref:`ystar_far <ystar_far>`                     Ystar used for reference temperature ystar dependence.
+
+==========================================   ==========================================================
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

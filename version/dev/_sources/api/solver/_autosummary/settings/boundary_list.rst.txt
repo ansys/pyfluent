@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_list:
+
+boundary_list
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boundary_list
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ======================================================================================================================
+
+Parent                                                                                                                                                Summary
+
+====================================   ======================================================================================================================
+:ref:`cell_distance <cell_distance>`       Define cell registers and adaption settings suitable for prismatic boundary layer adaption based on cell distance.
+
+====================================   ======================================================================================================================
+

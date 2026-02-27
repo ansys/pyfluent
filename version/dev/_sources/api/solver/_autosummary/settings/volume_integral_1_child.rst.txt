@@ -1,0 +1,50 @@
+:orphan:
+
+.. _volume_integral_1_child:
+
+volume_integral_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.volume_integral_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ===================================================
+
+Attribute                                                                                    Summary
+
+==============================================   ===================================================
+:ref:`name <name_5>`                                                             Name of the object.
+
+:ref:`integral_type <integral_type_1>`                                  The type of volume integral.
+
+:ref:`field_variable <field_variable_2>`                 The field variable for the volume integral.
+
+:ref:`target_field <target_field>`                                            Target field variable.
+
+:ref:`integration_domain <integration_domain>`       The integration domain for the volume integral.
+
+:ref:`zones <zones_11>`                                                            Integral volumes.
+
+:ref:`location <location_3>`                                                             The object.
+
+:ref:`box_bounds <box_bounds>`                                    The box bounds for the box region.
+
+:ref:`cell_register <cell_register>`                                         Integral cell register.
+
+:ref:`field_direction <field_direction>`                                   Integral field direction.
+
+==============================================   ===================================================
+
+.. rubric:: Included in:
+
+============================================   ===========================================
+
+Parent                                                                             Summary
+
+============================================   ===========================================
+:ref:`volume_integral_1 <volume_integral_1>`       Volume integral observable definitions.
+
+============================================   ===========================================
+

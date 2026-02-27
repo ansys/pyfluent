@@ -1,0 +1,21 @@
+:orphan:
+
+.. _view_name_1:
+
+view_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.view_name_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`delete_view <delete_view>`       Remove a view from the list.
+
+================================   ================================
+

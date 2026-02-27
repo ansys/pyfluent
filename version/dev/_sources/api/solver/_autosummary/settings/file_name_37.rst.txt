@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_37:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_37
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ====================================================================================================
+
+Parent                                                                                                                                            Summary
+
+==================================================   ====================================================================================================
+:ref:`reduce_picked_sample <reduce_picked_sample>`       Reduce a sample after first picking it and setting up all data-reduction options and parameters.
+
+==================================================   ====================================================================================================
+

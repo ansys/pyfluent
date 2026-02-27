@@ -1,0 +1,21 @@
+:orphan:
+
+.. _create_ejecta_injections:
+
+create_ejecta_injections
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_ejecta_injections
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================
+
+Parent                                                                             Summary
+
+====================================================   ===================================
+:ref:`particle_ejecta_model <particle_ejecta_model>`       Particle ejecta model settings.
+
+====================================================   ===================================
+

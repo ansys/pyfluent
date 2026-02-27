@@ -1,0 +1,38 @@
+:orphan:
+
+.. _turbomachinery:
+
+turbomachinery
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.turbomachinery
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ==================================================================================
+
+Attribute                                                                                                                   Summary
+
+==============================================   ==================================================================================
+:ref:`models <models_1>`                                                                                 The turbo-models settings.
+
+:ref:`periodic_instances <periodic_instances>`       Periodic instance objects are used to specify periodic repetition of surfaces.
+
+:ref:`turbo_interfaces <turbo_interfaces>`                                                                 Create turbo interfaces.
+
+:ref:`performance <performance>`                                                                                        The object.
+
+==============================================   ==================================================================================
+
+.. rubric:: Included in:
+
+====================   ==================================================================================================================================
+
+Parent                                                                                                                                            Summary
+
+====================   ==================================================================================================================================
+:ref:`setup <setup>`       Provides access to all primary setup options including general settings, models, boundary conditions and solver configuration.
+
+====================   ==================================================================================================================================
+

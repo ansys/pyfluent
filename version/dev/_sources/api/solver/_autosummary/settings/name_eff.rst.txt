@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_eff:
+
+name_eff
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_eff
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`define_expressions <define_expressions>`       Define expressions to evaluate turbomachine performance.
+
+==============================================   ============================================================
+

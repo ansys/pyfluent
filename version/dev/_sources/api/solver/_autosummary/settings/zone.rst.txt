@@ -1,0 +1,21 @@
+:orphan:
+
+.. _zone:
+
+zone
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zone
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`manage_child <manage_child>`       'child_object_type' of manage.
+
+==================================   ==================================
+

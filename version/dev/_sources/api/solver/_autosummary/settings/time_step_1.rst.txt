@@ -1,0 +1,21 @@
+:orphan:
+
+.. _time_step_1:
+
+time_step
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.time_step_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============================
+
+Parent                                                     Summary
+
+================================   ===============================
+:ref:`degradation <degradation>`       Degradation model settings.
+
+================================   ===============================
+

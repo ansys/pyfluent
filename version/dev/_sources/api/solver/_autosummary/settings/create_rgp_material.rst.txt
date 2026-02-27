@@ -1,0 +1,32 @@
+:orphan:
+
+.. _create_rgp_material:
+
+create_rgp_material
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_rgp_material
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =============================================
+
+Argument                                                                     Summary
+
+====================================   =============================================
+:ref:`material_name <material_name>`       The material name to create RGP material.
+
+====================================   =============================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`table_file_manager <table_file_manager>`       The table file manager object.
+
+==============================================   ==================================
+

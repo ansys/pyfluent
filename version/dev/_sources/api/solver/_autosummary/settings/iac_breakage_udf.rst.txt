@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iac_breakage_udf:
+
+iac_breakage_udf
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iac_breakage_udf
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`iac_props <iac_props>`       IAC properties group.
+
+============================   =========================
+

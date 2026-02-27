@@ -1,0 +1,21 @@
+:orphan:
+
+.. _display_7:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.display_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================================   ==========================================
+
+Parent                                                                                  Summary
+
+==================================================   ==========================================
+:ref:`cell_registers_child <cell_registers_child>`       'child_object_type' of cell_registers.
+
+==================================================   ==========================================
+

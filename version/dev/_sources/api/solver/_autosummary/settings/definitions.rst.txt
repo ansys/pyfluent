@@ -1,0 +1,58 @@
+:orphan:
+
+.. _definitions:
+
+definitions
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.definitions
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================================   ==============================================
+
+Attribute                                                                               Summary
+
+==============================================   ==============================================
+:ref:`force <force_1>`                                            Force observable definitions.
+
+:ref:`moment_of_force <moment_of_force>`                Moment of force observable definitions.
+
+:ref:`swirl <swirl>`                                              Swirl observable definitions.
+
+:ref:`pressure_drop <pressure_drop>`                      Pressure drop observable definitions.
+
+:ref:`ratio <ratio_2>`                                            Ratio observable definitions.
+
+:ref:`product <product>`                                        Product observable definitions.
+
+:ref:`quadratic_penalty <quadratic_penalty>`          Quadratic penalty observable definitions.
+
+:ref:`linear_combination <linear_combination>`       Linear combination observable definitions.
+
+:ref:`arithmetic_average <arithmetic_average>`       Arithmetic average observable definitions.
+
+:ref:`mean_variance <mean_variance>`                      Mean-variance observable definitions.
+
+:ref:`unary_operation <unary_operation>`                Unary operation observable definitions.
+
+:ref:`fixed_value <fixed_value>`                            Fixed value observable definitions.
+
+:ref:`surface_integral <surface_integral>`             Surface integral observable definitions.
+
+:ref:`volume_integral <volume_integral_1>`              Volume integral observable definitions.
+
+==============================================   ==============================================
+
+.. rubric:: Included in:
+
+================================   ===============================
+
+Parent                                                     Summary
+
+================================   ===============================
+:ref:`observables <observables>`       Adjoint observables object.
+
+================================   ===============================
+

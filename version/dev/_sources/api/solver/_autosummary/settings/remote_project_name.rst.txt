@@ -1,0 +1,21 @@
+:orphan:
+
+.. _remote_project_name:
+
+remote_project_name
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.remote_project_name
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

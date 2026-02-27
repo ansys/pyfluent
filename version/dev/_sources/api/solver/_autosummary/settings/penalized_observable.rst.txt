@@ -1,0 +1,21 @@
+:orphan:
+
+.. _penalized_observable:
+
+penalized_observable
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.penalized_observable
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =============================================
+
+Parent                                                                                           Summary
+
+========================================================   =============================================
+:ref:`quadratic_penalty_child <quadratic_penalty_child>`       'child_object_type' of quadratic_penalty.
+
+========================================================   =============================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _weight_3:
+
+weight
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.weight_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`major_gridlines_1 <major_gridlines_1>`       Major rules settings.
+
+============================================   =========================
+

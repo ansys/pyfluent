@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_window_by_name:
+
+set_window_by_name
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_window_by_name
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================   ===================================================================
+
+Argument                                                                                       Summary
+
+================================   ===================================================================
+:ref:`window_name <window_name>`       A reserved graphics window to be the active window by its name.
+
+================================   ===================================================================
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`windows <windows>`       Manage all open graphics display windows.
+
+========================   =============================================
+

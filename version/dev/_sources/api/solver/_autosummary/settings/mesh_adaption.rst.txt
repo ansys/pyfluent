@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mesh_adaption:
+
+mesh_adaption
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mesh_adaption
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==============================   =====================================================================
+
+Attribute                                                                                      Summary
+
+==============================   =====================================================================
+:ref:`use <use_6>`                   Enables or disables load balancing for mesh adaption simulations.
+
+:ref:`threshold <threshold_6>`        Sets the load imbalance threshold for mesh adaption simulations.
+
+==============================   =====================================================================
+
+.. rubric:: Included in:
+
+==================================   ================================================
+
+Parent                                                                        Summary
+
+==================================   ================================================
+:ref:`load_balance <load_balance>`       Access the parallel load balancing settings.
+
+==================================   ================================================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_transform_volume_mesh__transform_volume_mesh_arguments_trans_shift:
+
+trans_shift
+===========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.transform_volume_mesh._transform_volume_mesh.arguments.trans_shift
+   :members: x, y, z
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

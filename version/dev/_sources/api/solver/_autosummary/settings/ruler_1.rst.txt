@@ -1,0 +1,21 @@
+:orphan:
+
+.. _ruler_1:
+
+ruler
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ruler_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`windows <windows>`       Manage all open graphics display windows.
+
+========================   =============================================
+

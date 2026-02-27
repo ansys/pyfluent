@@ -1,0 +1,21 @@
+:orphan:
+
+.. _frf_filename:
+
+frf_filename
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.frf_filename
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =============================================
+
+Parent                                                                                         Summary
+
+======================================================   =============================================
+:ref:`receiver_1_child_child <receiver_1_child_child>`       'child_object_type' of child_object_type.
+
+======================================================   =============================================
+

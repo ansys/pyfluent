@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_generate_prism_layers__generate_prism_layersArguments:
+
+_generate_prism_layersArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.generate_prism_layers._generate_prism_layersArguments
+   :members: _generate_prisms_option
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

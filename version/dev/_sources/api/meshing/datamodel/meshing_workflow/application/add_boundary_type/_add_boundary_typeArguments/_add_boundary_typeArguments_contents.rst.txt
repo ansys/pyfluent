@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_boundary_type__add_boundary_typeArguments:
+
+_add_boundary_typeArguments
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.add_boundary_type._add_boundary_typeArguments
+   :members: _boundary_face_zone_list, _merge, _mesh_object, _new_boundary_label_name, _new_boundary_type, _selection_type, _topology_list, _zone_location
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _physics_region:
+
+physics_region
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.physics_region
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===========================================
+
+Parent                                                             Summary
+
+============================   ===========================================
+:ref:`create_12 <create_12>`       Create Dynamic Mesh for physics region.
+
+============================   ===========================================
+

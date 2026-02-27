@@ -1,0 +1,36 @@
+:orphan:
+
+.. _surfaces_15:
+
+surfaces
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.surfaces_15
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ===================================================
+
+Argument                                                                             Summary
+
+======================================   ===================================================
+:ref:`surface_names <surface_names_1>`       The list of surfaces to set color and material.
+
+:ref:`color <color_15>`                                        The color for the surface(s).
+
+:ref:`material <material_11>`                               The material for the surface(s).
+
+======================================   ===================================================
+
+.. rubric:: Included in:
+
+==============================   ===================================================
+
+Parent                                                                       Summary
+
+==============================   ===================================================
+:ref:`by_surface <by_surface>`       The surface to specify colors and/or materials.
+
+==============================   ===================================================
+

@@ -1,0 +1,44 @@
+:orphan:
+
+.. _drag_mixture_child:
+
+drag_mixture_child
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.drag_mixture_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   ======================
+
+Attribute                                                           Summary
+
+==================================================   ======================
+:ref:`drag_method <drag_method>`                              Drag options.
+
+:ref:`drag_opt_constant <drag_opt_constant>`                      Constant.
+
+:ref:`drag_opt_grace_const <drag_opt_grace_const>`                Constant.
+
+:ref:`drag_opt_udf <drag_opt_udf>`                                Prop udf.
+
+:ref:`drag_mod <drag_mod>`                               Drag modification.
+
+:ref:`drag_mod_constant <drag_mod_constant>`                      Constant.
+
+:ref:`drag_mod_udf <drag_mod_udf>`                                Prop udf.
+
+==================================================   ======================
+
+.. rubric:: Included in:
+
+==================================   =======================
+
+Parent                                               Summary
+
+==================================   =======================
+:ref:`drag_mixture <drag_mixture>`       Mixture model drag.
+
+==================================   =======================
+

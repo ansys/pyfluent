@@ -1,0 +1,34 @@
+:orphan:
+
+.. _aspect_ratio:
+
+aspect_ratio
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.aspect_ratio
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   =====================================================
+
+Argument                                                                 Summary
+
+========================   =====================================================
+:ref:`width <width_3>`          The width component of the windows aspect ratio.
+
+:ref:`height <height_2>`       The height component of the windows aspect ratio.
+
+========================   =====================================================
+
+.. rubric:: Included in:
+
+========================   =============================================
+
+Parent                                                           Summary
+
+========================   =============================================
+:ref:`windows <windows>`       Manage all open graphics display windows.
+
+========================   =============================================
+

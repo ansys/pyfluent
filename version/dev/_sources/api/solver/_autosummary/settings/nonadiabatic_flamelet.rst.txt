@@ -1,0 +1,21 @@
+:orphan:
+
+.. _nonadiabatic_flamelet:
+
+nonadiabatic_flamelet
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.nonadiabatic_flamelet
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`parameters_2 <parameters_2>`       PDF Flamelet Parameters.
+
+==================================   ============================
+

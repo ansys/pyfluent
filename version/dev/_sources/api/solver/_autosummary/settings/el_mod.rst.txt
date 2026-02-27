@@ -1,0 +1,21 @@
+:orphan:
+
+.. _el_mod:
+
+el_mod
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.el_mod
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`granular_props <granular_props>`       Granular phase properties.
+
+======================================   ==============================
+

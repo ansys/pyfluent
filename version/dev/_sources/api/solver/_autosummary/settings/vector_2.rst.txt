@@ -1,0 +1,21 @@
+:orphan:
+
+.. _vector_2:
+
+vector
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.vector_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`force_1_child <force_1_child>`       'child_object_type' of force.
+
+====================================   =================================
+

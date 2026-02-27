@@ -1,0 +1,21 @@
+:orphan:
+
+.. _beach_start_point:
+
+beach_start_point
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.beach_start_point
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`multiphase_2 <multiphase_2>`       Allows to change multiphase model variables or settings.
+
+==================================   ============================================================
+

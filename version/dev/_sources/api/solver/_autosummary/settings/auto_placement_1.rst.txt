@@ -1,0 +1,21 @@
+:orphan:
+
+.. _auto_placement_1:
+
+auto_placement
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.auto_placement_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`major_gridlines_1 <major_gridlines_1>`       Major rules settings.
+
+============================================   =========================
+

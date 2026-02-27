@@ -1,0 +1,23 @@
+:orphan:
+
+.. _interface_zones:
+
+interface_zones
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.interface_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================================   =======================================
+
+Parent                                                                                                     Summary
+
+========================================================================   =======================================
+:ref:`display_interfaces <display_interfaces>`                                             Display mesh interface.
+
+:ref:`display_interfaces_with_parents <display_interfaces_with_parents>`       Display mesh interface with parent.
+
+========================================================================   =======================================
+

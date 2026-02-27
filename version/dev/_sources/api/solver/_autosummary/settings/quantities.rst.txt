@@ -1,0 +1,67 @@
+:orphan:
+
+.. _quantities:
+
+quantities
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.quantities
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================   =================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                             Summary
+
+======================================================================   =================================================================================================================================================================
+:ref:`ascii <ascii>`                                                                                                                                                                                                  Write an ASCII file.
+
+:ref:`avs <avs>`                                                                                                                                                                                                        Write an AVS file.
+
+:ref:`ensight <ensight>`                                                                                                                                                             Write EnSight 6 geometry, velocity, and scalar files.
+
+:ref:`ensight_gold <ensight_gold>`                                                                                                                                                Write EnSight Gold geometry, velocity, and scalar files.
+
+:ref:`ensight_gold_surface <ensight_gold_surface>`                                                                                                                                Write EnSight Gold geometry, velocity, and scalar files.
+
+:ref:`ensight_dvs <ensight_dvs>`                                                                                                                                                                                 Write a EnSight DVS file.
+
+:ref:`visualize_output_options <visualize_output_options>`                                                                                                                     Setup write options for Visualize connection in Fluids One.
+
+:ref:`fieldview <fieldview>`                                                                                                                                                                          Write Fieldview case and data files.
+
+:ref:`fieldview_data <fieldview_data>`                                                                                                                                                                Write Fieldview case and data files.
+
+:ref:`gambit <gambit>`                                                                                                                                                                                        Write a Gambit neutral file.
+
+:ref:`cgns <cgns>`                                                                                                                                                                                                      Write a CGNS file.
+
+:ref:`dx <dx>`                                                                                                                                                                                     Write an IBM Data Explorer format file.
+
+:ref:`ensight_gold_parallel_surfaces <ensight_gold_parallel_surfaces>`                                         Write EnSight Gold geometry, velocity and scalar files for surfaces. Fluent will write files suitable for EnSight Parallel.
+
+:ref:`ensight_gold_parallel_volume <ensight_gold_parallel_volume>`           Write EnSight Gold geometry, velocity and scalar files for cell zones and boundaries attached to them. Fluent will write files suitable for EnSight Parallel.
+
+:ref:`fieldview_unstruct <fieldview_unstruct>`                                                                                                                                               Write a Fieldview unstructured combined file.
+
+:ref:`fieldview_unstruct_mesh <fieldview_unstruct_mesh>`                                                                                                                                    Write a Fieldview unstructured mesh only file.
+
+:ref:`fieldview_unstruct_data <fieldview_unstruct_data>`                                                                                                                                 Write a Fieldview unstructured results only file.
+
+:ref:`fieldview_unstruct_surfaces <fieldview_unstruct_surfaces>`                                                                                                                        Write a Fieldview unstructured surface mesh, data.
+
+:ref:`ideas <ideas>`                                                                                                                                                                                        Write an IDEAS universal file.
+
+:ref:`nastran <nastran>`                                                                                                                                                                                             Write a NASTRAN file.
+
+:ref:`patran_neutral <patran_neutral>`                                                                                                                                                                        Write a PATRAN neutral file.
+
+:ref:`patran_nodal <patran_nodal>`                                                                                                                                                                      Write a PATRAN nodal results file.
+
+:ref:`vtk <vtk>`                                                                                                                                                                                             Write a VTK (.vtp/.vtu) file.
+
+:ref:`tecplot <tecplot>`                                                                                                                                                                                  Write a Tecplot+3DV format file.
+
+======================================================================   =================================================================================================================================================================
+

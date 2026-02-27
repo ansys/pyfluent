@@ -1,0 +1,53 @@
+:orphan:
+
+.. _compute_resources:
+
+compute_resources
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.compute_resources
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =====================================================
+
+Method                                                                                       Summary
+
+============================================   =====================================================
+:ref:`create <create>`                             Create a new instance of the current object type.
+
+:ref:`delete <delete_6>`                                                    Delete Compute Resource.
+
+:ref:`rename <rename>`                                                            Rename the object.
+
+:ref:`list_1 <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                        Create a copy of the object.
+
+:ref:`add <add_8>`                                                            Add Computer Resource.
+
+:ref:`get_current <get_current>`                                       Get Current Compute Resource.
+
+:ref:`set_current <set_current>`                                       Set Current Compute Resource.
+
+============================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`compute_resources_child <compute_resources_child>`
+
+
+.. rubric:: Included in:
+
+========================================   ===========================
+
+Parent                                                         Summary
+
+========================================   ===========================
+:ref:`run_calculation <run_calculation>`       Run-calculation object.
+
+========================================   ===========================
+

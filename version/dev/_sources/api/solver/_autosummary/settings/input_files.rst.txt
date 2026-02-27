@@ -1,0 +1,21 @@
+:orphan:
+
+.. _input_files:
+
+input_files
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.input_files
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================================   ==================================
+
+Parent                                                                                            Summary
+
+====================================================================   ==================================
+:ref:`delete_files_from_the_cluster <delete_files_from_the_cluster>`       Delete files from the cluster.
+
+====================================================================   ==================================
+

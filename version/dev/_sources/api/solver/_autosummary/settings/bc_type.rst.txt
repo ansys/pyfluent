@@ -1,0 +1,21 @@
+:orphan:
+
+.. _bc_type:
+
+bc_type
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bc_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==================
+
+Parent                                    Summary
+
+============================   ==================
+:ref:`options_5 <options_5>`       Model options.
+
+============================   ==================
+

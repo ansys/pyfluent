@@ -1,0 +1,34 @@
+:orphan:
+
+.. _rename_simulation_report:
+
+rename_simulation_report
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rename_simulation_report
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   =======================================
+
+Argument                                                                   Summary
+
+========================================   =======================================
+:ref:`report_name <report_name_6>`                Simulation report to be renamed.
+
+:ref:`new_report_name <new_report_name>`       New name for the simulation report.
+
+========================================   =======================================
+
+.. rubric:: Included in:
+
+==============================================   ======================================================================================================================
+
+Parent                                                                                                                                                          Summary
+
+==============================================   ======================================================================================================================
+:ref:`simulation_reports <simulation_reports>`       Provides access to simulation reports, allowing to generate, view, export, and manage reports for the simulations.
+
+==============================================   ======================================================================================================================
+

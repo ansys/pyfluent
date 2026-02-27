@@ -1,0 +1,21 @@
+:orphan:
+
+.. _initial_iterations:
+
+initial_iterations
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.initial_iterations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================   ==================================================================================================
+
+Parent                                                                                                                                                      Summary
+
+==============================================================   ==================================================================================================
+:ref:`goal_based_error_indicator <goal_based_error_indicator>`       Define cell registers and settings suitable for adaption using the goal based error indicator.
+
+==============================================================   ==================================================================================================
+

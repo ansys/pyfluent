@@ -1,0 +1,23 @@
+:orphan:
+
+.. _anode_jref:
+
+anode_jref
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.anode_jref
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`parameters_4 <parameters_4>`       Model parameters.
+
+:ref:`parameters_5 <parameters_5>`       Model parameters.
+
+==================================   =====================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_extract_edge_features__extract_edge_featuresArguments:
+
+_extract_edge_featuresArguments
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.extract_edge_features._extract_edge_featuresArguments
+   :members: _complete_geom_object_selection_list, _complete_object_selection_list, _extract_edges_name, _extract_method_type, _feature_angle_local, _geom_object_selection_list, _individual_collective, _label_selection_list, _non_extracted_objects, _object_selection_list, _selection_type, _sharp_angle, _zone_location, _zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

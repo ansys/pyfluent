@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_generate_map_mesh__generate_map_meshArguments:
+
+_generate_map_meshArguments
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.generate_map_mesh._generate_map_meshArguments
+   :members: _add_child, _constant_size, _control_name, _face_label_list, _face_zone_list, _growth_rate, _project_on_geometry, _selection_type, _short_side_divisions, _sizing_option, _split_quads
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

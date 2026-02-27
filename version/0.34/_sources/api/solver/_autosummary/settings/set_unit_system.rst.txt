@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_unit_system:
+
+set_unit_system
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.set_unit_system
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================   ====================
+
+Argument                              Summary
+
+======================   ====================
+:ref:`system <system>`       The unit system.
+
+======================   ====================
+
+.. rubric:: Included in:
+
+======================================   ==================
+
+Parent                                              Summary
+
+======================================   ==================
+:ref:`units_settings <units_settings>`       Units options.
+
+======================================   ==================
+

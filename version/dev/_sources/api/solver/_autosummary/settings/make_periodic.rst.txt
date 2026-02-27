@@ -1,0 +1,42 @@
+:orphan:
+
+.. _make_periodic:
+
+make_periodic
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.make_periodic
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==========================================   =========================================================================================================
+
+Argument                                                                                                                                       Summary
+
+==========================================   =========================================================================================================
+:ref:`zone_name <zone_name_3>`                                                                                 Id/name of zone to convert to periodic.
+
+:ref:`shadow_zone_name <shadow_zone_name>`                                                                       Id/name of zone to convert to shadow.
+
+:ref:`rotate_periodic <rotate_periodic>`                                             Specifies whether the periodicity is rotational or translational.
+
+:ref:`create <create_1>`                                                     Specifies whether to create periodic zones or just check for periodicity.
+
+:ref:`auto_translation <auto_translation>`                           Specifies whether to automatically detect the translation vector for periodicity.
+
+:ref:`direction <direction>`                     Specifies the translation vector for periodicity. If auto-detection is enabled, this will be ignored.
+
+==========================================   =========================================================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

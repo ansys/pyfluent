@@ -1,0 +1,36 @@
+:orphan:
+
+.. _contact_resistance_locations_child:
+
+contact_resistance_locations_child
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.contact_resistance_locations_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ========================================
+
+Attribute                                                       Summary
+
+============================   ========================================
+:ref:`name <name_5>`                                Name of the object.
+
+:ref:`location <location_2>`       Physics name for contact resistance.
+
+:ref:`value <value_22>`                        Value in for resistance.
+
+============================   ========================================
+
+.. rubric:: Included in:
+
+==================================================================   ===============================
+
+Parent                                                                                       Summary
+
+==================================================================   ===============================
+:ref:`contact_resistance_locations <contact_resistance_locations>`       Contact resistance regions.
+
+==================================================================   ===============================
+

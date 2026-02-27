@@ -1,0 +1,21 @@
+:orphan:
+
+.. _diameter_5:
+
+diameter
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.diameter_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`constant_2 <constant_2>`       'constant' child.
+
+==============================   =====================
+

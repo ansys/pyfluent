@@ -1,0 +1,38 @@
+:orphan:
+
+.. _manage_child:
+
+manage_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.manage_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ===============================================================
+
+Attribute                                                                              Summary
+
+============================   ===============================================================
+:ref:`name <name_2>`                                                             'name' child.
+
+:ref:`zone <zone>`                                                               'zone' child.
+
+:ref:`exponent <exponent>`         The propagation exponent for boundary layers near geometry.
+
+:ref:`geometry <geometry_3>`                                                 'geometry' child.
+
+============================   ===============================================================
+
+.. rubric:: Included in:
+
+======================   ============================================
+
+Parent                                                        Summary
+
+======================   ============================================
+:ref:`manage <manage>`       The adaption geometry management object.
+
+======================   ============================================
+

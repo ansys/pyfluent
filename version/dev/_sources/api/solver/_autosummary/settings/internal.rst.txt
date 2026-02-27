@@ -1,0 +1,52 @@
+:orphan:
+
+.. _internal:
+
+internal
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.internal
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ===============================================================
+
+Attribute                                                                                                              Summary
+
+============================================================   ===============================================================
+:ref:`pcb_zone_info <pcb_zone_info>`                                   Accesses the configuration panel for PCB zone metadata.
+
+:ref:`pcb_model <pcb_model>`                                                                                    PCB Model ON?.
+
+:ref:`vapor_phase_realgas <vapor_phase_realgas>`                                                         Zone real-gas state:.
+
+:ref:`contact_property <contact_property>`                                                           Contact Property Thread?.
+
+:ref:`active_wetsteam_zone <active_wetsteam_zone>`                                                   Is Active Wetsteam Zone?.
+
+:ref:`zonal_wetsteam_parameters <zonal_wetsteam_parameters>`                               Zonal Wetsteam Parameters Enabled?.
+
+:ref:`wetsteam_young_alpha <wetsteam_young_alpha>`                 The parameter Alpha for Young model of droplet growth rate.
+
+:ref:`wetsteam_young_beta <wetsteam_young_beta>`                    The parameter Beta for Young model of droplet growth rate.
+
+============================================================   ===============================================================
+
+.. rubric:: Included in:
+
+====================================   =================================
+
+Parent                                                           Summary
+
+====================================   =================================
+:ref:`solid_2_child <solid_2_child>`       'child_object_type' of solid.
+
+:ref:`phase_1_child <phase_1_child>`       'child_object_type' of phase.
+
+:ref:`solid_3_child <solid_3_child>`       'child_object_type' of solid.
+
+:ref:`phase_3_child <phase_3_child>`       'child_object_type' of phase.
+
+====================================   =================================
+

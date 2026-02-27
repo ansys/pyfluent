@@ -1,0 +1,42 @@
+:orphan:
+
+.. _overset:
+
+overset
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.overset
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================================   =====================================================
+
+Argument                                                                                                       Summary
+
+==============================================================   =====================================================
+:ref:`orphan_adaption <orphan_adaption>`                                            Cell marking for orphan reduction.
+
+:ref:`size_adaption <size_adaption>`                                 Cell marking for donor-receptor size differences.
+
+:ref:`maximum_length_scale_ratio <maximum_length_scale_ratio>`          The maximum donor-receptor length scale ratio.
+
+:ref:`gap_adaption <gap_adaption>`                                                    Cell marking for gap resolution.
+
+:ref:`gap_resolution <gap_resolution>`                                                             The gap resolution.
+
+:ref:`coarsening <coarsening>`                                                        Coarsening for overset adaption.
+
+==============================================================   =====================================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`predefined_criteria <predefined_criteria>`       The predefined criteria object.
+
+================================================   ===================================
+

@@ -1,0 +1,23 @@
+:orphan:
+
+.. _zonal_wetsteam_parameters:
+
+zonal_wetsteam_parameters
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.zonal_wetsteam_parameters
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ============================================================
+
+Parent                                                                                    Summary
+
+==================================   ============================================================
+:ref:`multiphase_2 <multiphase_2>`       Allows to change multiphase model variables or settings.
+
+:ref:`internal <internal>`                 Allows to change internal model variables or settings.
+
+==================================   ============================================================
+

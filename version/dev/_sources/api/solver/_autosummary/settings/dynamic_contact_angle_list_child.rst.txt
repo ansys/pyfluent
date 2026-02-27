@@ -1,0 +1,40 @@
+:orphan:
+
+.. _dynamic_contact_angle_list_child:
+
+dynamic_contact_angle_list_child
+================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.dynamic_contact_angle_list_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================   ============
+
+Attribute                                                     Summary
+
+======================================================   ============
+:ref:`static_angle <static_angle>`                           Element.
+
+:ref:`advancing_angle_method <advancing_angle_method>`       Element.
+
+:ref:`advancing_angle_limit <advancing_angle_limit>`         Element.
+
+:ref:`receding_angle_method <receding_angle_method>`         Element.
+
+:ref:`receding_angle_limit <receding_angle_limit>`           Element.
+
+======================================================   ============
+
+.. rubric:: Included in:
+
+==============================================================   ==================================
+
+Parent                                                                                      Summary
+
+==============================================================   ==================================
+:ref:`dynamic_contact_angle_list <dynamic_contact_angle_list>`       Dynamic Contact Angles Inputs.
+
+==============================================================   ==================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _secondary_gradient_limiting:
+
+secondary_gradient_limiting
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.secondary_gradient_limiting
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   =========================================================================================
+
+Attribute                                                                                                                            Summary
+
+================================================   =========================================================================================
+:ref:`energy <energy_2>`                                    Enable/disable secondary gradient limiting at coupled walls for energy equation.
+
+:ref:`uds <uds_3>`                                     Enable/disable secondary gradient limiting at coupled walls for user-defined scalars.
+
+:ref:`mesh_quality_limits <mesh_quality_limits>`                                                    Minimum and maximum mesh quality limits.
+
+================================================   =========================================================================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_4 <advanced_4>`       Solution method advanced object.
+
+==============================   ====================================
+

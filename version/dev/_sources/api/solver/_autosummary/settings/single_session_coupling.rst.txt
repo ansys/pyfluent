@@ -1,0 +1,40 @@
+:orphan:
+
+.. _single_session_coupling:
+
+single_session_coupling
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.single_session_coupling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===============================   ===============================================================================================================
+
+Attribute                                                                                                                                 Summary
+
+===============================   ===============================================================================================================
+:ref:`method <method_30>`                                                                           The method for fluid and solid zone coupling.
+
+:ref:`type <type_28>`                                                               The exchange type for single session conjugate heat transfer.
+
+:ref:`interval <interval_3>`                                   The time period of exchange in seconds for single session conjugate heat transfer.
+
+:ref:`frequency <frequency_13>`                                            The number of fluid time steps per coupling between fluids and solids.
+
+:ref:`iteration <iteration>`          The number of iterations per coupling between fluids and solids for single session conjugate heat transfer.
+
+===============================   ===============================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ======================================================
+
+Parent                                                                      Summary
+
+==========================   ======================================================
+:ref:`coupling <coupling>`       The coupling method and when coupling takes place.
+
+==========================   ======================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _bubble_number_density:
+
+bubble_number_density
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bubble_number_density
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`multiphase_1 <multiphase_1>`       Multiphase model.
+
+==================================   =====================
+

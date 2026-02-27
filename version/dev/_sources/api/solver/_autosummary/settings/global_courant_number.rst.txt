@@ -1,0 +1,21 @@
+:orphan:
+
+.. _global_courant_number:
+
+global_courant_number
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.global_courant_number
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ================================
+
+Parent                                                        Summary
+
+==================================   ================================
+:ref:`parameters_9 <parameters_9>`       Iteration parameters object.
+
+==================================   ================================
+

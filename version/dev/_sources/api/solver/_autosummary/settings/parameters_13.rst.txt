@@ -1,0 +1,39 @@
+:orphan:
+
+.. _parameters_13:
+
+parameters
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.parameters_13
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`parameters_13_child <parameters_13_child>`
+
+
+.. rubric:: Included in:
+
+======================================================   =========================================================
+
+Parent                                                                                                     Summary
+
+======================================================   =========================================================
+:ref:`operating_conditions_1 <operating_conditions_1>`       Operating conditions for multiobjective optimization.
+
+======================================================   =========================================================
+

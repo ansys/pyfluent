@@ -1,0 +1,39 @@
+:orphan:
+
+.. _turb_disp_euler:
+
+turb_disp_euler
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.turb_disp_euler
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`turb_disp_euler_child <turb_disp_euler_child>`
+
+
+.. rubric:: Included in:
+
+======================   =======================
+
+Parent                                   Summary
+
+======================   =======================
+:ref:`forces <forces>`       Interfacial forces.
+
+======================   =======================
+

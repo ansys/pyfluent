@@ -1,0 +1,51 @@
+:orphan:
+
+.. _bounded_by_plane_child:
+
+bounded_by_plane_child
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bounded_by_plane_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   ===============================
+
+Attribute                                              Summary
+
+============================   ===============================
+:ref:`name <name_5>`                       Name of the object.
+
+:ref:`surfaces <surfaces_1>`                          Surface.
+
+:ref:`location <location_5>`                       The object.
+
+:ref:`distance <distance_1>`       Plane distance from origin.
+
+:ref:`normal <normal_5>`                  Plane normal vector.
+
+============================   ===============================
+
+.. rubric:: Methods
+
+===========================   =============================
+
+Method                                              Summary
+
+===========================   =============================
+:ref:`display <display_16>`       Display design condition.
+
+===========================   =============================
+
+.. rubric:: Included in:
+
+==========================================   ===========================================
+
+Parent                                                                           Summary
+
+==========================================   ===========================================
+:ref:`bounded_by_plane <bounded_by_plane>`       Bounded by plane constraint definition.
+
+==========================================   ===========================================
+

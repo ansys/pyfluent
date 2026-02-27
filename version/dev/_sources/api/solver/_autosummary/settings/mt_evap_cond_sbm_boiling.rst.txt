@@ -1,0 +1,21 @@
+:orphan:
+
+.. _mt_evap_cond_sbm_boiling:
+
+mt_evap_cond_sbm_boiling
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_evap_cond_sbm_boiling
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===================================
+
+Parent                                                                       Summary
+
+==============================================   ===================================
+:ref:`mt_evap_cond_group <mt_evap_cond_group>`       Evaporation condensation group.
+
+==============================================   ===================================
+

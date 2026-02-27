@@ -1,0 +1,59 @@
+:orphan:
+
+.. _materials:
+
+materials
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.materials
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ===============================================================
+
+Attribute                                                                                                  Summary
+
+================================================   ===============================================================
+:ref:`database <database>`                                                                      Material database.
+
+:ref:`fluid <fluid>`                                                 Accesses the list of defined fluid materials.
+
+:ref:`solid <solid>`                                                 Accesses the list of defined solid materials.
+
+:ref:`mixture <mixture>`                                           Accesses the list of defined mixture materials.
+
+:ref:`inert_particle <inert_particle>`                      Accesses the list of defined inert particle materials.
+
+:ref:`droplet_particle <droplet_particle>`                Accesses the list of defined droplet particle materials.
+
+:ref:`combusting_particle <combusting_particle>`       Accesses the list of defined combusting particle materials.
+
+:ref:`particle_mixture <particle_mixture>`                Accesses the list of defined particle mixture materials.
+
+================================================   ===============================================================
+
+.. rubric:: Methods
+
+==========================================   ==================================
+
+Method                                                                  Summary
+
+==========================================   ==================================
+:ref:`list_materials <list_materials>`                     List case materials.
+
+:ref:`list_properties <list_properties_3>`       List case material properties.
+
+==========================================   ==================================
+
+.. rubric:: Included in:
+
+====================   ==================================================================================================================================
+
+Parent                                                                                                                                            Summary
+
+====================   ==================================================================================================================================
+:ref:`setup <setup>`       Provides access to all primary setup options including general settings, models, boundary conditions and solver configuration.
+
+====================   ==================================================================================================================================
+

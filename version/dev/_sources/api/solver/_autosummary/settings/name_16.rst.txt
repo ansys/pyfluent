@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_16:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ==================================
+
+Parent                                                                    Summary
+
+============================================   ==================================
+:ref:`list_properties_3 <list_properties_3>`       List case material properties.
+
+============================================   ==================================
+

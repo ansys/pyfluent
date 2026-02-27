@@ -1,0 +1,21 @@
+:orphan:
+
+.. _boundary_list_3:
+
+boundary_list
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.boundary_list_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =====================
+
+Parent                                         Summary
+
+==============================   =====================
+:ref:`boundary_4 <boundary_4>`       'boundary' child.
+
+==============================   =====================
+

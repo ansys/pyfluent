@@ -1,0 +1,38 @@
+:orphan:
+
+.. _settings_6_child:
+
+settings_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.settings_6_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   =============================================================
+
+Attribute                                                                                  Summary
+
+==================================   =============================================================
+:ref:`active <active_3>`                 Provide whether to enable or disable this row of options.
+
+:ref:`value <value_36>`                                                          The domain value.
+
+:ref:`transparency <transparency>`                                     Provide transparency value.
+
+:ref:`color <color_12>`                    Provide red, green, blue values for defining the color.
+
+==================================   =============================================================
+
+.. rubric:: Included in:
+
+==============================   =================================================================
+
+Parent                                                                                     Summary
+
+==============================   =================================================================
+:ref:`settings_6 <settings_6>`       Provide options for isovalue(s) to highlight inside a volume.
+
+==============================   =================================================================
+

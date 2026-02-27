@@ -1,0 +1,72 @@
+:orphan:
+
+.. _granular_props:
+
+granular_props
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.granular_props
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================   ==============================================================
+
+Attribute                                                                                                           Summary
+
+==========================================================   ==============================================================
+:ref:`gran_visc <gran_visc>`                                                                            Granular viscosity.
+
+:ref:`gran_visc_constant <gran_visc_constant>`                                                 Granular viscosity constant.
+
+:ref:`gran_visc_udf <gran_visc_udf>`                                                                Granular viscosity udf.
+
+:ref:`gran_bulk_visc <gran_bulk_visc>`                                                             Granular bulk viscosity.
+
+:ref:`gran_bulk_visc_constant <gran_bulk_visc_constant>`                                  Granular bulk viscosity constant.
+
+:ref:`gran_bulk_visc_udf <gran_bulk_visc_udf>`                                                 Granular bulk viscosity UDF.
+
+:ref:`sol_press <sol_press>`                                                                               Solids pressure.
+
+:ref:`sol_press_udf <sol_press_udf>`                                                                   Solids pressure udf.
+
+:ref:`gran_temp <gran_temp>`                                                                          Granular temperature.
+
+:ref:`gran_temp_constant <gran_temp_constant>`                                               Granular temperature constant.
+
+:ref:`gran_temp_udf <gran_temp_udf>`                                                              Granular temperature udf.
+
+:ref:`frictional_visc <frictional_visc>`                                                              Frictional viscosity.
+
+:ref:`frictional_visc_constant <frictional_visc_constant>`                                   Frictional viscosity constant.
+
+:ref:`frictional_visc_udf <frictional_visc_udf>`                                                  Frictional viscosity UDF.
+
+:ref:`packing <packing>`                                                                       Packing limit for particles.
+
+:ref:`packing_constant <packing_constant>`                                                          Packing limit constant.
+
+:ref:`packing_udf <packing_udf>`                                                                         Packing limit udf.
+
+:ref:`rad_dist <rad_dist>`                                       Radial distribution function for granular temperature etc.
+
+:ref:`rad_dist_udf <rad_dist_udf>`                                                                 Radial distribution udf.
+
+:ref:`el_mod <el_mod>`                                                                                  Elastictiy modulus.
+
+:ref:`el_mod_udf <el_mod_udf>`                                                                      Elasticity modulus udf.
+
+==========================================================   ==============================================================
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`phases_child <phases_child>`       'child_object_type' of phases.
+
+==================================   ==================================
+

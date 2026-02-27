@@ -1,0 +1,1305 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modeling Transient Compressible Flow &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../_static/documentation_options.js?v=176e5614"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/00-fluent/transient_compressible_nozzle_workflow';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="icon" href="../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tyler-Sofrin Compressor Modes Post-Processing" href="tyler_sofrin_modes.html" />
+    <link rel="prev" title="Simulation of Steady Vortex in a Stirred Tank" href="steady_vortex.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/examples/00-fluent/transient_compressible_nozzle_workflow.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <script>document.write(`<img src="../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark" alt="PyFluent - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api/api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Simulation Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DOE_ML.html">Design of Experiments and Machine Learning model building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Electrolysis_Modeling_workflow.html">Electrolysis Modeling</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="Modeling_solidification_workflow.html">Modeling Solidification</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="ahmed_body_workflow.html">Ahmed Body External Aerodynamics Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="battery_pack.html">Simulating a 1P3S Battery Pack Using the Battery Model</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="brake.html">Automotive Brake Thermal Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="catalytic_converter_workflow.html">Modeling Flow Through Porous Media - Catalytic Converter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjugate_heat_transfer.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exhaust_system_settings_api.html">Fault-tolerant meshing workflow using settings objects</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="external_compressible_flow.html">Modeling External Compressible Flow</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="frozen_rotor_workflow.html">Impeller-Volute simulation using the Frozen Rotor Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fsi_1way_workflow.html">Modeling One-Way Fluid-Structure Interaction</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="lunar_lander_thermal.html">Thermal Model of a Lunar Lander Using the Monte Carlo Radiation Model</a></li>
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="mixing_elbow_settings_api.html">Fluent setup and solution using settings objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mixing_tank_workflow.html">Mixing Tank Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_ablation.html">Modeling Ablation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modeling_cavitation.html">Modeling Cavitation</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="parametric_static_mixer_1.html">Parametric study workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="radiation_headlamp.html">Modeling Radiation in a Headlamp Using the Monte Carlo Method</a></li>
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="single_battery_cell_workflow.html">Single Battery Cell Using MSMD Battery Model Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="species_transport.html">Modeling Species Transport and Gaseous Combustion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="steady_vortex.html">Simulation of Steady Vortex in a Stirred Tank</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Modeling Transient Compressible Flow</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="toctree-l2"><a class="reference internal" href="tyler_sofrin_modes.html">Tyler-Sofrin Compressor Modes Post-Processing</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../index.html" class="nav-link">Examples</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="index.html" class="nav-link">Simulation Examples</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Modeling Transient Compressible Flow</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-examples-00-fluent-transient-compressible-nozzle-workflow-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="modeling-transient-compressible-flow">
+<span id="compressible-flow-simulation"></span><span id="sphx-glr-examples-00-fluent-transient-compressible-nozzle-workflow-py"></span><h1>Modeling Transient Compressible Flow<a class="headerlink" href="#modeling-transient-compressible-flow" title="Link to this heading">#</a></h1>
+</section>
+<section id="objective">
+<h1>Objective<a class="headerlink" href="#objective" title="Link to this heading">#</a></h1>
+<p>This example models transient, compressible airflow through a nozzle,
+mimicking jet engine or rocket propulsion systems.
+It starts with a steady-state solution to establish
+an accurate initial flow field. A time-varying outlet
+pressure, defined by a sinusoidal expression, simulates pulsating flow.</p>
+<p>The simulation uses a density-based solver to capture shock waves and
+automatic mesh adaptation to refine the grid in high-gradient regions,
+like shocks. This ensures numerical stability and accuracy in both steady
+and transient phases. The approach demonstrates steady-to-transient coupling,
+dynamic boundary conditions, and adaptive meshing for high-speed, time-dependent flows.</p>
+</section>
+<section id="problem-description">
+<h1>Problem Description<a class="headerlink" href="#problem-description" title="Link to this heading">#</a></h1>
+<p>The nozzle has an inlet height of 0.2 meters and a smooth, sinusoidal contour
+that reduces the cross-sectional flow area by 20% at the throat, accelerating
+air to high Mach numbers. This design mimics jet engine nozzles,
+where flow compression drives thrust. Due to geometric and flow symmetry along
+the center plane, only half the domain is modeled, reducing computational cost
+while maintaining accurate flow field results, including shock formation and
+pressure dynamics.</p>
+<img alt="Transient Compressible Flow Model" class="align-center" src="../../_images/transient_compressible_1.png" />
+</section>
+<section id="import-modules">
+<h1>Import modules<a class="headerlink" href="#import-modules" title="Link to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Importing the following classes offer streamlined access to key solver settings,
+eliminating the need to manually browse through the full settings structure.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pyfluent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">examples</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.core.solver</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BoundaryConditions</span><span class="p">,</span>
+    <span class="n">CellRegisters</span><span class="p">,</span>
+    <span class="n">Contour</span><span class="p">,</span>
+    <span class="n">Controls</span><span class="p">,</span>
+    <span class="n">General</span><span class="p">,</span>
+    <span class="n">Graphics</span><span class="p">,</span>
+    <span class="n">Initialization</span><span class="p">,</span>
+    <span class="n">Mesh</span><span class="p">,</span>
+    <span class="n">PressureInlet</span><span class="p">,</span>
+    <span class="n">PressureOutlet</span><span class="p">,</span>
+    <span class="n">ReportDefinitions</span><span class="p">,</span>
+    <span class="n">ReportFiles</span><span class="p">,</span>
+    <span class="n">ReportPlots</span><span class="p">,</span>
+    <span class="n">RunCalculation</span><span class="p">,</span>
+    <span class="n">Setup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ansys.fluent.visualization</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphicsWindow</span><span class="p">,</span> <span class="n">Monitor</span>
+</pre></div>
+</div>
+</section>
+<section id="launch-fluent-session-in-meshing-mode">
+<h1>Launch Fluent session in meshing mode<a class="headerlink" href="#launch-fluent-session-in-meshing-mode" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">pyfluent</span><span class="o">.</span><span class="n">launch_fluent</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;meshing&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="meshing-workflow">
+<h1>Meshing workflow<a class="headerlink" href="#meshing-workflow" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">workflow</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">workflow</span>
+
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;Windows&quot;</span><span class="p">:</span> <span class="s2">&quot;nozzle.dsco&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="s2">&quot;nozzle.dsco.pmdb&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">geometry_filename</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span>
+    <span class="n">filenames</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><a href="https://docs.python.org/3/library/platform.html#platform.system" title="platform.system" class="sphx-glr-backref-module-platform sphx-glr-backref-type-py-function"><span class="n">platform</span><span class="o">.</span><span class="n">system</span></a><span class="p">(),</span> <span class="n">filenames</span><span class="p">[</span><span class="s2">&quot;Other&quot;</span><span class="p">]),</span>
+    <span class="s2">&quot;pyfluent/transient_compressible_simulation&quot;</span><span class="p">,</span>
+    <span class="n">save_path</span><span class="o">=</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="n">workflow</span><span class="o">.</span><span class="n">InitializeWorkflow</span><span class="p">(</span><span class="n">WorkflowType</span><span class="o">=</span><span class="s2">&quot;Watertight Geometry&quot;</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Import Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;FileName&quot;</span><span class="p">:</span> <span class="n">geometry_filename</span><span class="p">}</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Import Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Add Local Sizing&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-surface-mesh">
+<h1>Generate surface mesh<a class="headerlink" href="#generate-surface-mesh" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">surface_mesh</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;CFDSurfaceMeshControls&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;MaxSize&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>  <span class="c1"># mm</span>
+        <span class="s2">&quot;MinSize&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># mm</span>
+        <span class="s2">&quot;SizeFunctions&quot;</span><span class="p">:</span> <span class="s2">&quot;Curvature&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Surface Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">surface_mesh</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Surface Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="describe-geometry">
+<h1>Describe geometry<a class="headerlink" href="#describe-geometry" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">geometry_describe</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;SetupType&quot;</span><span class="p">:</span> <span class="s2">&quot;The geometry consists of only fluid regions with no voids&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WallToInternal&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;InvokeShareTopology&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Multizone&quot;</span><span class="p">:</span> <span class="s2">&quot;No&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Describe Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">geometry_describe</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Describe Geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="update-boundaries-and-region">
+<h1>Update boundaries and region<a class="headerlink" href="#update-boundaries-and-region" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">boundary_condition</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;BoundaryLabelList&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;inlet&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;BoundaryLabelTypeList&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;pressure-inlet&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;OldBoundaryLabelList&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;inlet&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;OldBoundaryLabelTypeList&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;velocity-inlet&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Update Boundaries&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">boundary_condition</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Update Boundaries&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Update Regions&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="add-boundary-layers">
+<h1>Add boundary layers<a class="headerlink" href="#add-boundary-layers" title="Link to this heading">#</a></h1>
+<p>Add boundary layers: 8 layers with 0.35 transition ratio for accurate near-wall resolution</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">boundary_layer</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;NumberOfLayers&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s2">&quot;TransitionRatio&quot;</span><span class="p">:</span> <span class="mf">0.35</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Add Boundary Layers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span><span class="o">.</span><span class="n">update_dict</span><span class="p">(</span><span class="n">boundary_layer</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Add Boundary Layers&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-volume-mesh">
+<h1>Generate volume mesh<a class="headerlink" href="#generate-volume-mesh" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Volume Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Arguments</span><span class="o">.</span><span class="n">setState</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;VolumeFill&quot;</span><span class="p">:</span> <span class="s2">&quot;poly-hexcore&quot;</span><span class="p">,</span>
+        <span class="c1"># Poly-hexcore mesh combines polyhedral cells with hexahedral core for accuracy and computational efficiency.</span>
+        <span class="s2">&quot;VolumeFillControls&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;BufferLayers&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Thin buffer to avoid hex-to-poly abruptness</span>
+            <span class="s2">&quot;HexMaxCellLength&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>  <span class="c1"># mm</span>
+            <span class="s2">&quot;HexMinCellLength&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>  <span class="c1"># mm</span>
+            <span class="s2">&quot;PeelLayers&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;VolumeMeshPreferences&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;Avoid1_8Transition&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;MergeBodyLabels&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ShowVolumeMeshPreferences&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">TaskObject</span><span class="p">[</span><span class="s2">&quot;Generate the Volume Mesh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">Execute</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="switch-to-solver">
+<h1>Switch to solver<a class="headerlink" href="#switch-to-solver" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">switch_to_solver</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="display-mesh">
+<h1>Display mesh<a class="headerlink" href="#display-mesh" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">graphics</span> <span class="o">=</span> <span class="n">Graphics</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;mesh-1&quot;</span><span class="p">)</span>
+<span class="n">boundary_conditions</span> <span class="o">=</span> <span class="n">BoundaryConditions</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">x_resolution</span> <span class="o">=</span> <span class="mi">650</span>  <span class="c1"># Horizontal resolution for clear visualization</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">y_resolution</span> <span class="o">=</span> <span class="mi">450</span>  <span class="c1"># Vertical resolution matching typical aspect ratio</span>
+
+<span class="n">all_walls</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">surfaces_list</span><span class="o">.</span><span class="n">allowed_values</span><span class="p">()</span>
+
+<span class="n">mesh</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="n">all_walls</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">restore_view</span><span class="p">(</span><span class="n">view_name</span><span class="o">=</span><span class="s2">&quot;isometric&quot;</span><span class="p">)</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;transient_compressible_2.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Transient Compressible Flow Mesh" class="align-center" src="../../_images/transient_compressible_2.png" />
+</section>
+<section id="configure-solver">
+<h1>Configure solver<a class="headerlink" href="#configure-solver" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_general_settings</span> <span class="o">=</span> <span class="n">General</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">solver_general_settings</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span>
+    <span class="n">quantity</span><span class="o">=</span><span class="s2">&quot;pressure&quot;</span><span class="p">,</span>
+    <span class="n">units_name</span><span class="o">=</span><span class="s2">&quot;atm&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># density-based solver for compressible flow to capture shock behavior accurately.</span>
+<span class="n">solver_general_settings</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;density-based-implicit&quot;</span>
+<span class="n">solver_general_settings</span><span class="o">.</span><span class="n">operating_conditions</span><span class="o">.</span><span class="n">operating_pressure</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">setup</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">setup</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">setup</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">fluid</span><span class="p">[</span><span class="s2">&quot;air&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">density</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;ideal-gas&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="set-boundary-conditions">
+<h1>Set boundary conditions<a class="headerlink" href="#set-boundary-conditions" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">inlet</span> <span class="o">=</span> <span class="n">PressureInlet</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;inlet&quot;</span><span class="p">)</span>
+<span class="n">outlet</span> <span class="o">=</span> <span class="n">PressureOutlet</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;outlet&quot;</span><span class="p">)</span>
+
+<span class="n">inlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">gauge_total_pressure</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">91192.5</span>  <span class="c1"># Pa</span>
+<span class="n">inlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">supersonic_or_initial_gauge_pressure</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">74666.3925</span>  <span class="c1"># Pa</span>
+
+<span class="c1"># Low turbulent intensity of 1.5% for smooth inlet flow, typical for nozzle simulations.</span>
+<span class="n">inlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">turbulent_intensity</span> <span class="o">=</span> <span class="mf">0.015</span>
+
+<span class="n">outlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">gauge_pressure</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">74666.3925</span>  <span class="c1"># Pa</span>
+<span class="n">outlet</span><span class="o">.</span><span class="n">turbulence</span><span class="o">.</span><span class="n">backflow_turbulent_intensity</span> <span class="o">=</span> <span class="mf">0.015</span>
+</pre></div>
+</div>
+</section>
+<section id="set-solution-controls">
+<h1>Set solution controls<a class="headerlink" href="#set-solution-controls" title="Link to this heading">#</a></h1>
+<p>Higher Courant number balances fast convergence and stability in density-based solver</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">controls</span> <span class="o">=</span> <span class="n">Controls</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="n">controls</span><span class="o">.</span><span class="n">courant_number</span> <span class="o">=</span> <span class="mi">25</span>
+</pre></div>
+</div>
+</section>
+<section id="define-report-definition">
+<h1>Define report definition<a class="headerlink" href="#define-report-definition" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">report_definitions</span> <span class="o">=</span> <span class="n">ReportDefinitions</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+
+<span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;mass-flow-rate&quot;</span><span class="p">)</span>
+<span class="n">report_definitions</span><span class="o">.</span><span class="n">surface</span><span class="p">[</span><span class="s2">&quot;mass-flow-rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;report_type&quot;</span><span class="p">:</span> <span class="s2">&quot;surface-massflowrate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;surface_names&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;outlet&quot;</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="n">report_files</span> <span class="o">=</span> <span class="n">ReportFiles</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="n">report_files</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;mass_flow_rate_out_rfile&quot;</span><span class="p">)</span>
+<span class="n">report_files</span><span class="p">[</span><span class="s2">&quot;mass_flow_rate_out_rfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;report_defs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mass-flow-rate&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;print&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;file_name&quot;</span><span class="p">:</span> <span class="s2">&quot;nozzle_ss.out&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">report_plots</span> <span class="o">=</span> <span class="n">ReportPlots</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="n">report_plots</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;mass_flow_rate_out_rplot&quot;</span><span class="p">)</span>
+<span class="n">report_plots</span><span class="p">[</span><span class="s2">&quot;mass_flow_rate_out_rplot&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;report_defs&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mass-flow-rate&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;print&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="steady-state-initialization-and-mesh-adaptation">
+<h1>Steady-State Initialization and Mesh Adaptation<a class="headerlink" href="#steady-state-initialization-and-mesh-adaptation" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_case</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;nozzle_steady.cas.h5&quot;</span><span class="p">)</span>
+
+<span class="n">initialize</span> <span class="o">=</span> <span class="n">Initialization</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="n">initialize</span><span class="o">.</span><span class="n">hybrid_initialize</span><span class="p">()</span>
+
+<span class="n">cell_register</span> <span class="o">=</span> <span class="n">CellRegisters</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<span class="c1"># Refinement register: Mark cells where density gradient &gt;50% of domain average</span>
+<span class="n">cell_register</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;density_scaled_gradient_refn&quot;</span><span class="p">)</span>
+<span class="n">cell_register</span><span class="p">[</span><span class="s2">&quot;density_scaled_gradient_refn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;field-value&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;field_value&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;derivative&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;gradient&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;scaling&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;scale-by-global-average&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;more-than&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;more_than&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Threshold: &gt;50% average</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;density&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1"># Coarsening register: Mark cells where density gradient &lt;45% of domain average</span>
+<span class="n">cell_register</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;density_scaled_gradient_crsn&quot;</span><span class="p">)</span>
+<span class="n">cell_register</span><span class="p">[</span><span class="s2">&quot;density_scaled_gradient_crsn&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;field-value&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;field_value&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;derivative&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;gradient&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;scaling&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;scale-by-global-average&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;option&quot;</span><span class="p">:</span> <span class="s2">&quot;less-than&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;less_than&quot;</span><span class="p">:</span> <span class="mf">0.45</span><span class="p">,</span>  <span class="c1"># Threshold: &lt;45% average</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;density&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Define adaptation criteria: Refine if gradient is high and refinement level &lt;2; coarsen if low</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">adapt</span><span class="o">.</span><span class="n">manual_refinement_criteria</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;AND(density_scaled_gradient_refn, CellRefineLevel &lt; 2)&quot;</span>
+<span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">adapt</span><span class="o">.</span><span class="n">manual_coarsening_criteria</span> <span class="o">=</span> <span class="s2">&quot;density_scaled_gradient_crsn&quot;</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">tui</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">adapt</span><span class="o">.</span><span class="n">manage_criteria</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;adaption_criteria_0&quot;</span><span class="p">)</span>
+
+<span class="n">calculation</span> <span class="o">=</span> <span class="n">RunCalculation</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+<span class="n">calculation</span><span class="o">.</span><span class="n">iterate</span><span class="p">(</span><span class="n">iter_count</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="post-processing">
+<h1>Post-processing<a class="headerlink" href="#post-processing" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create pressure contour</span>
+<span class="n">pressure_contour</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;pressure_contour&quot;</span><span class="p">)</span>
+
+<span class="n">pressure_contour</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;symmetry&quot;</span><span class="p">]</span>
+<span class="n">pressure_contour</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">restore_view</span><span class="p">(</span><span class="n">view_name</span><span class="o">=</span><span class="s2">&quot;front&quot;</span><span class="p">)</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;transient_compressible_3.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Transient Compressible Flow Pressure Contour" class="align-center" src="../../_images/transient_compressible_3.png" />
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create velocity contour</span>
+<span class="n">velocity_contour</span> <span class="o">=</span> <span class="n">Contour</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">new_instance_name</span><span class="o">=</span><span class="s2">&quot;velocity_contour&quot;</span><span class="p">)</span>
+
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;velocity-magnitude&quot;</span>
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">surfaces_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;symmetry&quot;</span><span class="p">]</span>
+<span class="n">velocity_contour</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+<span class="n">graphics</span><span class="o">.</span><span class="n">views</span><span class="o">.</span><span class="n">restore_view</span><span class="p">(</span><span class="n">view_name</span><span class="o">=</span><span class="s2">&quot;front&quot;</span><span class="p">)</span>
+<span class="n">graphics</span><span class="o">.</span><span class="n">picture</span><span class="o">.</span><span class="n">save_picture</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;transient_compressible_4.jpg&quot;</span><span class="p">)</span>
+
+<span class="c1"># save the case and data file</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_case_data</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;steady_state_nozzle&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="Transient Compressible Flow Velocity Contour" class="align-center" src="../../_images/transient_compressible_4.jpg" />
+</section>
+<section id="enabling-time-dependence-and-setting-transient-conditions">
+<h1>Enabling time dependence and setting transient conditions<a class="headerlink" href="#enabling-time-dependence-and-setting-transient-conditions" title="Link to this heading">#</a></h1>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver_general_settings</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="s2">&quot;unsteady-1st-order&quot;</span>
+
+<span class="c1"># Sinusoidal pressure variation at 2200 Hz simulates pulsating flow, with mean pressure of 0.737 atm.</span>
+<span class="n">outlet</span><span class="o">.</span><span class="n">momentum</span><span class="o">.</span><span class="n">gauge_pressure</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;(0.12*sin(2200[Hz]*t)+0.737)*101325.0[Pa]&quot;</span>
+
+<span class="c1"># Configure mesh adaptation: Refine every 25 iterations</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">tui</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">adapt</span><span class="o">.</span><span class="n">manage_criteria</span><span class="o">.</span><span class="n">edit</span><span class="p">(</span><span class="s2">&quot;adaption_criteria_0&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;25&quot;</span><span class="p">)</span>
+
+<span class="n">report_files</span><span class="p">[</span><span class="s2">&quot;mass_flow_rate_out_rfile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;file_name&quot;</span><span class="p">:</span> <span class="s2">&quot;trans-nozzle-rfile.out&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">report_plots</span><span class="p">[</span><span class="s2">&quot;mass_flow_rate_out_rplot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">x_label</span> <span class="o">=</span> <span class="s2">&quot;time-step&quot;</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">write_case</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;nozzle_unsteady.cas.h5&quot;</span><span class="p">)</span>
+
+<span class="n">Transient_controls</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">run_calculation</span><span class="o">.</span><span class="n">transient_controls</span>
+
+<span class="n">Transient_controls</span><span class="o">.</span><span class="n">time_step_count</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">Transient_controls</span><span class="o">.</span><span class="n">time_step_size</span> <span class="o">=</span> <span class="mf">2.85596e-05</span>  <span class="c1"># s: Resolves 2200 Hz oscillations</span>
+<span class="n">Transient_controls</span><span class="o">.</span><span class="n">max_iter_per_time_step</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">10</span>  <span class="c1"># Ensures convergence within each time step</span>
+<span class="p">)</span>
+
+<span class="n">calculation</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
+
+<span class="n">mass_bal_rplot</span> <span class="o">=</span> <span class="n">Monitor</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span> <span class="n">monitor_set_name</span><span class="o">=</span><span class="s2">&quot;mass_flow_rate_out_rplot&quot;</span><span class="p">)</span>
+<span class="n">plot_window</span> <span class="o">=</span> <span class="n">GraphicsWindow</span><span class="p">()</span>
+<span class="n">plot_window</span><span class="o">.</span><span class="n">add_plot</span><span class="p">(</span><span class="n">mass_bal_rplot</span><span class="p">)</span>
+<span class="n">plot_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="Transient Compressible Flow mass flow rate plot" class="align-center" src="../../_images/transient_compressible_5.jpg" />
+<section id="close-fluent">
+<h2>Close Fluent<a class="headerlink" href="#close-fluent" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h1>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h1>
+<p>In this example, we used PyFluent to model transient
+compressible flow in a nozzle with a sinusoidal pressure
+variation, simulating a realistic engineering scenario
+such as a jet engine or rocket propulsion system.
+The workflow demonstrated the use of the modern Watertight
+Geometry meshing, density-based solver setup, and
+post-processing with pressure and velocity contours.
+These procedures can be adapted to other compressible
+flow simulations,
+ensuring accurate modeling of shock waves and
+transient flow behavior.</p>
+</section>
+<section id="references">
+<h1>References:<a class="headerlink" href="#references" title="Link to this heading">#</a></h1>
+<p>[1] Modeling Transient Compressible Flow, <a class="reference external" href="https://ansyshelp.ansys.com/public/account/secured?returnurl=/Views/Secured/corp/v252/en/flu_tg/flu_tg_transient_compressible.html">Ansys Fluent documentation​</a>.</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-00-fluent-transient-compressible-nozzle-workflow-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/867be39820e4b742b6483a04fa75bdfc/transient_compressible_nozzle_workflow.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">transient_compressible_nozzle_workflow.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/fb458b1ddeb008292b3d4f3827d4ab2f/transient_compressible_nozzle_workflow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">transient_compressible_nozzle_workflow.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/1a2a18ed153cd4f8992d0be5e6b6f1c0/transient_compressible_nozzle_workflow.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">transient_compressible_nozzle_workflow.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Modeling Transient Compressible Flow</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#objective">Objective</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-description">Problem Description</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#import-modules">Import modules</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-fluent-session-in-meshing-mode">Launch Fluent session in meshing mode</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#meshing-workflow">Meshing workflow</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-surface-mesh">Generate surface mesh</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#describe-geometry">Describe geometry</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#update-boundaries-and-region">Update boundaries and region</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#add-boundary-layers">Add boundary layers</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-volume-mesh">Generate volume mesh</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#switch-to-solver">Switch to solver</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#display-mesh">Display mesh</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-solver">Configure solver</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#set-boundary-conditions">Set boundary conditions</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#set-solution-controls">Set solution controls</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#define-report-definition">Define report definition</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#steady-state-initialization-and-mesh-adaptation">Steady-State Initialization and Mesh Adaptation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing">Post-processing</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-time-dependence-and-setting-transient-conditions">Enabling time dependence and setting transient conditions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#close-fluent">Close Fluent</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References:</a></li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/examples/00-fluent/transient_compressible_nozzle_workflow.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2026 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.3. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

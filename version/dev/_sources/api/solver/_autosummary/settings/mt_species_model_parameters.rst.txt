@@ -1,0 +1,102 @@
+:orphan:
+
+.. _mt_species_model_parameters:
+
+mt_species_model_parameters
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mt_species_model_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================================================================   ===============================================================
+
+Attribute                                                                                                                                                              Summary
+
+============================================================================================================   ===============================================================
+:ref:`mt_species_raoult_sat_press <mt_species_raoult_sat_press>`                                                                             Raoult's Law saturation pressure.
+
+:ref:`mt_species_raoult_sat_press_constant <mt_species_raoult_sat_press_constant>`                                                Constant sat pressure species mass transfer.
+
+:ref:`mt_species_raoult_sat_press_udf <mt_species_raoult_sat_press_udf>`                                                          Constant sat pressure species mass transfer.
+
+:ref:`mt_species_raoult_sat_press_polynomial <mt_species_raoult_sat_press_polynomial>`                                          Polynomial sat pressure species mass transfer.
+
+:ref:`mt_species_raoult_sat_press_piecewise_polynomial <mt_species_raoult_sat_press_piecewise_polynomial>`            Piecewise-polynomial sat-pressure species mass transfer.
+
+:ref:`mt_species_raoult_sat_press_piecewise_linear <mt_species_raoult_sat_press_piecewise_linear>`                        Piecewise-linear sat pressure species mass transfer.
+
+:ref:`mt_species_raoult_sat_press_rgp_data_set <mt_species_raoult_sat_press_rgp_data_set>`                                                                  RGP table columns.
+
+:ref:`mt_species_henry_options <mt_species_henry_options>`                                                                                            Henry's Law coefficient.
+
+:ref:`mt_species_henry_molar_frac_corr <mt_species_henry_molar_frac_corr>`                                                    Henry's Law molar fraction correlation settings.
+
+:ref:`mt_species_henry_molar_frac_corr_constant <mt_species_henry_molar_frac_corr_constant>`                                              Henry's Law molar fraction constant.
+
+:ref:`mt_species_henry_molar_frac_corr_udf <mt_species_henry_molar_frac_corr_udf>`                                                        Henry's Law molar fraction constant.
+
+:ref:`mt_species_henry_molar_frac_corr_vant_h0 <mt_species_henry_molar_frac_corr_vant_h0>`                                            Henry's Law molar fraction vant-hoff h0.
+
+:ref:`mt_species_henry_molar_frac_corr_vant_h0_constant <mt_species_henry_molar_frac_corr_vant_h0_constant>`                                                H0 constant class.
+
+:ref:`mt_species_henry_molar_frac_corr_vant_h0_udf <mt_species_henry_molar_frac_corr_vant_h0_udf>`                                                               H0 udf class.
+
+:ref:`mt_species_henry_molar_frac_corr_vant_h1 <mt_species_henry_molar_frac_corr_vant_h1>`                                            Henry's Law molar fraction vant-hoff h1.
+
+:ref:`mt_species_henry_molar_frac_corr_vant_h1_constant <mt_species_henry_molar_frac_corr_vant_h1_constant>`                                                H1 constant class.
+
+:ref:`mt_species_henry_molar_frac_corr_vant_h1_udf <mt_species_henry_molar_frac_corr_vant_h1_udf>`                                                               H1 udf class.
+
+:ref:`mt_species_henry_molar_conc_corr <mt_species_henry_molar_conc_corr>`                                               Henry's Law molar concentration correlation settings.
+
+:ref:`mt_species_henry_molar_conc_corr_constant <mt_species_henry_molar_conc_corr_constant>`                                              Henry's Law molar fraction constant.
+
+:ref:`mt_species_henry_molar_conc_corr_udf <mt_species_henry_molar_conc_corr_udf>`                                                        Henry's Law molar fraction constant.
+
+:ref:`mt_species_henry_molar_conc_corr_vant_h0 <mt_species_henry_molar_conc_corr_vant_h0>`                                            Henry's Law molar fraction vant-hoff h0.
+
+:ref:`mt_species_henry_molar_conc_corr_vant_h0_constant <mt_species_henry_molar_conc_corr_vant_h0_constant>`                                                H0 constant class.
+
+:ref:`mt_species_henry_molar_conc_corr_vant_h0_udf <mt_species_henry_molar_conc_corr_vant_h0_udf>`                                                               H0 udf class.
+
+:ref:`mt_species_henry_molar_conc_corr_vant_h1 <mt_species_henry_molar_conc_corr_vant_h1>`                                            Henry's Law molar fraction vant-hoff h1.
+
+:ref:`mt_species_henry_molar_conc_corr_vant_h1_constant <mt_species_henry_molar_conc_corr_vant_h1_constant>`                                                H1 constant class.
+
+:ref:`mt_species_henry_molar_conc_corr_vant_h1_udf <mt_species_henry_molar_conc_corr_vant_h1_udf>`                                                               H1 udf class.
+
+:ref:`mt_species_eq_ratio_options <mt_species_eq_ratio_options>`                                                                                    Equilibrium Ratio Options.
+
+:ref:`mt_species_eq_ratio_molar_frac_corr <mt_species_eq_ratio_molar_frac_corr>`                                        Equilibrium Ratio molar fraction correlation settings.
+
+:ref:`mt_species_eq_ratio_molar_frac_corr_constant <mt_species_eq_ratio_molar_frac_corr_constant>`                                  Equilibrium Ratio molar fraction constant.
+
+:ref:`mt_species_eq_ratio_molar_frac_corr_udf <mt_species_eq_ratio_molar_frac_corr_udf>`                                            Equilibrium Ratio molar fraction constant.
+
+:ref:`mt_species_eq_ratio_molar_conc_corr <mt_species_eq_ratio_molar_conc_corr>`                                   Equilibrium Ratio molar concentration correlation settings.
+
+:ref:`mt_species_eq_ratio_molar_conc_corr_constant <mt_species_eq_ratio_molar_conc_corr_constant>`                             Equilibrium Ratio molar concentration constant.
+
+:ref:`mt_species_eq_ratio_molar_conc_corr_udf <mt_species_eq_ratio_molar_conc_corr_udf>`                                       Equilibrium Ratio molar concentration constant.
+
+:ref:`mt_species_eq_ratio_mass_frac_corr <mt_species_eq_ratio_mass_frac_corr>`                                     Equilibrium Ratio molar concentration correlation settings.
+
+:ref:`mt_species_eq_ratio_mass_frac_corr_constant <mt_species_eq_ratio_mass_frac_corr_constant>`                               Equilibrium Ratio molar concentration constant.
+
+:ref:`mt_species_eq_ratio_mass_frac_corr_udf <mt_species_eq_ratio_mass_frac_corr_udf>`                                         Equilibrium Ratio molar concentration constant.
+
+============================================================================================================   ===============================================================
+
+.. rubric:: Included in:
+
+==========================================   ================================
+
+Parent                                                                Summary
+
+==========================================   ================================
+:ref:`mt_species_group <mt_species_group>`       Species mass transfer group.
+
+==========================================   ================================
+

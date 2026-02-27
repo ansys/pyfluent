@@ -1,0 +1,21 @@
+:orphan:
+
+.. _four_sei_1:
+
+four_sei
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.four_sei_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================
+
+Parent                                                                             Summary
+
+====================================================   ===================================
+:ref:`particle_ejecta_model <particle_ejecta_model>`       Particle ejecta model settings.
+
+====================================================   ===================================
+

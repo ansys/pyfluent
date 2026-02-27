@@ -1,0 +1,21 @@
+:orphan:
+
+.. _model_6:
+
+model
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.model_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================================================================================================
+
+Parent                                                                                                                           Summary
+
+============================   =========================================================================================================
+:ref:`structure <structure>`       Enables and configures structural modeling options for fluid-structure interaction (FSI) simulations.
+
+============================   =========================================================================================================
+

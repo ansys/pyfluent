@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_graphics_regions_draw_dead:
+
+draw_dead
+=========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.graphics.regions.draw_dead
+   :members: _draw_deadArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

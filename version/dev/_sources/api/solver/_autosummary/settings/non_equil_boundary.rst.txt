@@ -1,0 +1,21 @@
+:orphan:
+
+.. _non_equil_boundary:
+
+non_equil_boundary
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.non_equil_boundary
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================================================
+
+Parent                                                                           Summary
+
+============================   =========================================================
+:ref:`thermal_4 <thermal_4>`       Allows to change thermal model variables or settings.
+
+============================   =========================================================
+

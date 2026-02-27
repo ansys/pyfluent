@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_47:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_47
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   ============================
+
+Parent                                                                          Summary
+
+========================================================   ============================
+:ref:`vof_free_surface_weight <vof_free_surface_weight>`       VOF free surface weight.
+
+========================================================   ============================
+

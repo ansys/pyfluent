@@ -1,0 +1,21 @@
+:orphan:
+
+.. _report_name_7:
+
+report_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.report_name_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================   ===============================================================
+
+Parent                                                                                                                     Summary
+
+================================================================   ===============================================================
+:ref:`duplicate_simulation_report <duplicate_simulation_report>`       Duplicate a report and all of its settings to a new report.
+
+================================================================   ===============================================================
+

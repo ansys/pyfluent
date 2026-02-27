@@ -1,0 +1,21 @@
+:orphan:
+
+.. _node_values_5:
+
+node_values
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.node_values_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================
+
+Parent                                        Summary
+
+==============================   ====================
+:ref:`options_22 <options_22>`       'options' child.
+
+==============================   ====================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_create_porous_regions__create_porous_regions_arguments_non_rectangular_parameters:
+
+non_rectangular_parameters
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.create_porous_regions._create_porous_regions.arguments.non_rectangular_parameters
+   :members: buffer_size, feature_angle, flip_direction, label_selection_list, mesh_size, non_rectangular_buffer_size, number_of_layers, object_selection_list, selection_type, thickness, zone_selection_list
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

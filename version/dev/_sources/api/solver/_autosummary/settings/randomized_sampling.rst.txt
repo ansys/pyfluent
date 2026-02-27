@@ -1,0 +1,34 @@
+:orphan:
+
+.. _randomized_sampling:
+
+randomized_sampling
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.randomized_sampling
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+===========================   ===========================================
+
+Attribute                                                         Summary
+
+===========================   ===========================================
+:ref:`enabled <enabled_18>`               Use accumulated mass fraction?.
+
+:ref:`option <option_32>`         How to randomize the particle diameter.
+
+===========================   ===========================================
+
+.. rubric:: Included in:
+
+======================================   ==================================================
+
+Parent                                                                              Summary
+
+======================================   ==================================================
+:ref:`tabulated_size <tabulated_size>`       Tabulated particle size distribution settings.
+
+======================================   ==================================================
+

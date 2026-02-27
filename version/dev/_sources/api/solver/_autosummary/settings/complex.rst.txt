@@ -1,0 +1,21 @@
+:orphan:
+
+.. _complex:
+
+complex
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.complex
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`perdisp_properties_child <perdisp_properties_child>`       'child_object_type' of perdisp_properties.
+
+==========================================================   ==============================================
+

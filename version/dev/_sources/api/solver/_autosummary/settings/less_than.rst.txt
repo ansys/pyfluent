@@ -1,0 +1,21 @@
+:orphan:
+
+.. _less_than:
+
+less_than
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.less_than
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================================================
+
+Parent                                                                              Summary
+
+============================   ============================================================
+:ref:`option_62 <option_62>`       The range option for cell marking based on field values.
+
+============================   ============================================================
+

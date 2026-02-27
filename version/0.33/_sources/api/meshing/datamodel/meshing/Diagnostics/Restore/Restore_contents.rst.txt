@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_Diagnostics_Restore:
+
+Restore
+=======
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.Diagnostics.Restore
+   :members: _RestoreCommandArguments, create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

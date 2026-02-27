@@ -1,0 +1,40 @@
+:orphan:
+
+.. _extended_summary:
+
+extended_summary
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.extended_summary
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================================   =================================================================================================
+
+Argument                                                                                                                                                     Summary
+
+================================================================   =================================================================================================
+:ref:`write_to_file <write_to_file_2>`                                                                     Enable or disable writing the extended summary to a file.
+
+:ref:`file_name <file_name_38>`                                                                         The file name to which the extended summary will be written.
+
+:ref:`include_in_domain_particles <include_in_domain_particles>`       Specifies whether to include particle parcels that are currently in the domain in the report.
+
+:ref:`pick_injection <pick_injection>`                                                                    Enable or disable picking specific injections for summary.
+
+:ref:`injection <injection_3>`                                                                                   Which injection to include in the extended summary.
+
+================================================================   =================================================================================================
+
+.. rubric:: Included in:
+
+==========================================   ===========================================================================================
+
+Parent                                                                                                                           Summary
+
+==========================================   ===========================================================================================
+:ref:`discrete_phase_6 <discrete_phase_6>`       Access and configure reporting options for discrete phase (particle-based) simulations.
+
+==========================================   ===========================================================================================
+

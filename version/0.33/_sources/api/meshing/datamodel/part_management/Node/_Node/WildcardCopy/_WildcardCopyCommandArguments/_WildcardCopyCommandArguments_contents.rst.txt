@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_part_management_Node__Node_WildcardCopy__WildcardCopyCommandArguments:
+
+_WildcardCopyCommandArguments
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.part_management.Root.Node._Node.WildcardCopy._WildcardCopyCommandArguments
+   :members: _Pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

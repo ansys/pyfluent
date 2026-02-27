@@ -1,0 +1,23 @@
+:orphan:
+
+.. _iter_count_3:
+
+iter_count
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iter_count_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================================   =============================================
+
+Parent                                                                                           Summary
+
+========================================================   =============================================
+:ref:`iterate <iterate>`                                       Perform a specified number of iterations.
+
+:ref:`multistage_time_iterate <multistage_time_iterate>`                    Perform unsteady iterations.
+
+========================================================   =============================================
+

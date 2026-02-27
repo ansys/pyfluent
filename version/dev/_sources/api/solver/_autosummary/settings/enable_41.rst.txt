@@ -1,0 +1,25 @@
+:orphan:
+
+.. _enable_41:
+
+enable
+======
+
+.. deprecated:: Ansys Fluent 2026 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_41
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   =================================
+
+Parent                                                             Summary
+
+======================================   =================================
+:ref:`gradient_based <gradient_based>`       Gradient-based design object.
+
+:ref:`geometry_13 <geometry_13>`                          Geometry object.
+
+======================================   =================================
+

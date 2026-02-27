@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_workflow_LoadWorkflow__LoadWorkflowArguments:
+
+_LoadWorkflowArguments
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.workflow.Root.LoadWorkflow._LoadWorkflowArguments
+   :members: _FilePath
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,46 @@
+:orphan:
+
+.. _vtk:
+
+vtk
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.vtk
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   =========================================================
+
+Argument                                                                                 Summary
+
+====================================   =========================================================
+:ref:`file_name <file_name_1>`                                  The desired file name to export.
+
+:ref:`scope <scope_3>`                                The scope of the export (volume, surface).
+
+:ref:`cell_zones <cell_zones>`                                              Cell zone name list.
+
+:ref:`surfaces <surfaces_1>`                                                            Surface.
+
+:ref:`cell_centered <cell_centered>`       Specifies whether export the cell center data values.
+
+:ref:`binary_format <binary_format>`               Specifies whether to export in binary format.
+
+:ref:`point_cloud <point_cloud>`                   Specifies whether to export point cloud data.
+
+:ref:`quantities <quantities>`                                 The list of quantities to export.
+
+====================================   =========================================================
+
+.. rubric:: Included in:
+
+======================   =================
+
+Parent                             Summary
+
+======================   =================
+:ref:`export <export>`       Export files.
+
+======================   =================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _interval_1:
+
+interval
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.interval_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   ========================================
+
+Parent                                                                          Summary
+
+============================================   ========================================
+:ref:`physical_models_2 <physical_models_2>`       Use physical-models load balancing?.
+
+============================================   ========================================
+

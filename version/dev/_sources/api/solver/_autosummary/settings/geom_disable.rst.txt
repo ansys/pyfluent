@@ -1,0 +1,23 @@
+:orphan:
+
+.. _geom_disable:
+
+geom_disable
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.geom_disable
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ==========================================================
+
+Parent                                                                              Summary
+
+==============================   ==========================================================
+:ref:`geometry_7 <geometry_7>`       Allows to change geometry model variables or settings.
+
+:ref:`geometry_8 <geometry_8>`                      Geometry settings for periodic threads.
+
+==============================   ==========================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cathode_pl_kr_y:
+
+cathode_pl_kr_y
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cathode_pl_kr_y
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ============================
+
+Parent                                                          Summary
+
+========================================   ============================
+:ref:`cathode_pl_zone <cathode_pl_zone>`       Up cathode porous layer.
+
+========================================   ============================
+

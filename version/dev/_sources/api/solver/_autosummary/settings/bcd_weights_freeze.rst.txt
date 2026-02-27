@@ -1,0 +1,34 @@
+:orphan:
+
+.. _bcd_weights_freeze:
+
+bcd_weights_freeze
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bcd_weights_freeze
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =========================================================================================================
+
+Attribute                                                                                                                                      Summary
+
+==========================================   =========================================================================================================
+:ref:`enable <enable_36>`                        Enable/disable freezing BCD scheme weights after specified iteration to improve timestep convergence.
+
+:ref:`freeze_iteration <freeze_iteration>`                                         The iteration number after which BCD scheme weights will be frozen.
+
+==========================================   =========================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_4 <advanced_4>`       Solution method advanced object.
+
+==============================   ====================================
+

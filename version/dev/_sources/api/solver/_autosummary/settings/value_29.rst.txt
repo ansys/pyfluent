@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_29:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`imagx <imagx>`       'imagx' child.
+
+====================   ==================
+

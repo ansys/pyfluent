@@ -1,0 +1,21 @@
+:orphan:
+
+.. _best_design:
+
+best_design
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.best_design
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =============
+
+Parent                                 Summary
+
+==============================   =============
+:ref:`optimize_1 <optimize_1>`       Optimize.
+
+==============================   =============
+

@@ -1,0 +1,42 @@
+:orphan:
+
+.. _inertia_tensor:
+
+inertia_tensor
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.inertia_tensor
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================   ================
+
+Attribute                   Summary
+
+================   ================
+:ref:`ixx <ixx>`       'ixx' child.
+
+:ref:`iyy <iyy>`       'iyy' child.
+
+:ref:`izz <izz>`       'izz' child.
+
+:ref:`ixy <ixy>`       'ixy' child.
+
+:ref:`ixz <ixz>`       'ixz' child.
+
+:ref:`iyz <iyz>`       'iyz' child.
+
+================   ================
+
+.. rubric:: Included in:
+
+====================================================   ===========================================
+
+Parent                                                                                     Summary
+
+====================================================   ===========================================
+:ref:`sdof_properties_child <sdof_properties_child>`       'child_object_type' of sdof_properties.
+
+====================================================   ===========================================
+

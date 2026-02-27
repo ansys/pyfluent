@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_generate_prism_layers__generate_prism_layers_update_child_tasks__update_child_tasksArguments:
+
+_update_child_tasksArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.generate_prism_layers._generate_prism_layers.update_child_tasks._update_child_tasksArguments
+   :members: _arguments, _setup_type_changed
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

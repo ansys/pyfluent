@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>_get_tet_cell_zonesArguments &#8212; PyFluent</title>
+  
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/styles/ansys-sphinx-theme.css?v=9e79609d" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://www.nerdfonts.com/assets/css/webfont.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+  <!-- Include desired assets -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  
+
+  
+    <link href="../../../../../../_static/css/breadcrumbs.css" rel="stylesheet" />
+  
+    <script src="../../../../../../_static/documentation_options.js?v=b56fc962"></script>
+    <script src="../../../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/thebelab-helper.js"></script>
+    <script src="../../../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../../../_static/copybutton.js?v=49e1bf35"></script>
+    <script src="../../../../../../_static/toggleprompt.js?v=cec9bd37"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script src="../../../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/meshing/datamodel/meshing_utilities/get_tet_cell_zones/_get_tet_cell_zonesArguments/_get_tet_cell_zonesArguments_contents';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://fluent.docs.pyansys.com/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.36';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        </script>
+    <link rel="icon" href="../../../../../../_static/ansys-favicon.png"/>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+    <link rel="next" title="get_topos_on_face_zones_list" href="../../get_topos_on_face_zones_list/get_topos_on_face_zones_list_contents.html" />
+    <link rel="prev" title="get_tet_cell_zones" href="../get_tet_cell_zones_contents.html" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta property="og:site_name" content="PyAnsys" />
+  <meta name="physics" content="Fluids" />
+  <link rel="canonical" href="https://fluent.docs.pyansys.com/version/stable/api/meshing/datamodel/meshing_utilities/get_tet_cell_zones/_get_tet_cell_zonesArguments/_get_tet_cell_zonesArguments_contents.html" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../../../_static/pyansys_logo_transparent_black.png" class="logo__image only-light" alt="PyFluent - Home"/>
+    <script>document.write(`<img src="../../../../../../_static/pyansys_logo_transparent_white.png" class="logo__image only-dark" alt="PyFluent - Home"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../../../api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../../../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav>
+</div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../../../../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+  
+    <div id="announcement_msg"></div>
+<script>
+  fetch("announcement.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(
+      (text) => (document.getElementById("announcement_msg").innerHTML = text),
+    )
+    .catch((error) => console.error(`Fetch problem: ${error.message}`));
+</script>
+  
+
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../index.html" title="PyFluent home">Home</a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../getting_started/getting_started_contents.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../user_guide/user_guide_contents.html">
+    User guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../../../../api_contents.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../contributing/contributing_contents.html">
+    Contributing to PyFluent
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../../../changelog.html">
+    Release notes
+  </a>
+</li>
+
+  </ul>
+</nav>
+</div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="search-bar pst-js-only" id="search-bar">
+  <form class="bd-search d-flex align-items-center" action="../../../../../../search.html" method="get">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="search" class="form-control" name="q" placeholder="Search the docs ..."
+      aria-label="Search the docs ..." autocomplete="off" autocorrect="off"
+      autocapitalize="off" spellcheck="false" />
+    <span class="search-button__kbd-shortcut">
+      <kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd>
+    </span>
+  </form>
+  <div id="static-search-results" class="static-search-results" style="display:none;" tabindex="0"></div>
+</div></div>
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/ansys/pyfluent/discussions" title="Support" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa fa-comment fa-fw fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Support</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">ansys.fluent.core</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../docker/docker_contents.html">docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../filereader/filereader_contents.html">filereader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../launcher/launcher_contents.html">launcher</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../../../../meshing_contents.html">meshing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../meshing_workflow.html">meshing_workflow</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../../../datamodel_contents.html">meshing.datamodel</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../meshing/meshing_contents.html">meshing.datamodel.meshing</a></li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="../../meshing_utilities_contents.html">meshing.datamodel.meshing_utilities</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../_cell_zones_labels_fdl/_cell_zones_labels_fdl_contents.html">_cell_zones_labels_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_cell_zones_str_fdl/_cell_zones_str_fdl_contents.html">_cell_zones_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_edge_zones_labels_fdl/_edge_zones_labels_fdl_contents.html">_edge_zones_labels_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_edge_zones_str_fdl/_edge_zones_str_fdl_contents.html">_edge_zones_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_face_zones_labels_fdl/_face_zones_labels_fdl_contents.html">_face_zones_labels_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_face_zones_str_fdl/_face_zones_str_fdl_contents.html">_face_zones_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_node_zones_labels_fdl/_node_zones_labels_fdl_contents.html">_node_zones_labels_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_node_zones_str_fdl/_node_zones_str_fdl_contents.html">_node_zones_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_object_names_str_fdl/_object_names_str_fdl_contents.html">_object_names_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_prism_cell_zones_labels_fdl/_prism_cell_zones_labels_fdl_contents.html">_prism_cell_zones_labels_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_prism_cell_zones_str_fdl/_prism_cell_zones_str_fdl_contents.html">_prism_cell_zones_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_regions_str_fdl/_regions_str_fdl_contents.html">_regions_str_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_zone_types_fdl/_zone_types_fdl_contents.html">_zone_types_fdl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../add_labels_on_cell_zones/add_labels_on_cell_zones_contents.html">add_labels_on_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../add_labels_on_edge_zones/add_labels_on_edge_zones_contents.html">add_labels_on_edge_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../add_labels_on_face_zones/add_labels_on_face_zones_contents.html">add_labels_on_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../boundary_zone_exists/boundary_zone_exists_contents.html">boundary_zone_exists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../cell_zone_exists/cell_zone_exists_contents.html">cell_zone_exists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../clean_face_zone_names/clean_face_zone_names_contents.html">clean_face_zone_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../convert_zone_ids_to_name_strings/convert_zone_ids_to_name_strings_contents.html">convert_zone_ids_to_name_strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../convert_zone_name_strings_to_ids/convert_zone_name_strings_to_ids_contents.html">convert_zone_name_strings_to_ids</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../copy_face_zone_labels/copy_face_zone_labels_contents.html">copy_face_zone_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../count_marked_faces/count_marked_faces_contents.html">count_marked_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../create_boi_and_size_functions_from_refinement_regions/create_boi_and_size_functions_from_refinement_regions_contents.html">create_boi_and_size_functions_from_refinement_regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../delete_all_sub_domains/delete_all_sub_domains_contents.html">delete_all_sub_domains</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../delete_empty_cell_zones/delete_empty_cell_zones_contents.html">delete_empty_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../delete_empty_edge_zones/delete_empty_edge_zones_contents.html">delete_empty_edge_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../delete_empty_face_zones/delete_empty_face_zones_contents.html">delete_empty_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../delete_empty_zones/delete_empty_zones_contents.html">delete_empty_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../delete_marked_faces_in_zones/delete_marked_faces_in_zones_contents.html">delete_marked_faces_in_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../dump_face_zone_orientation_in_region/dump_face_zone_orientation_in_region_contents.html">dump_face_zone_orientation_in_region</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../fill_holes_in_face_zone_list/fill_holes_in_face_zone_list_contents.html">fill_holes_in_face_zone_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_adjacent_cell_zones_for_given_face_zones/get_adjacent_cell_zones_for_given_face_zones_contents.html">get_adjacent_cell_zones_for_given_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_adjacent_face_zones_for_given_cell_zones/get_adjacent_face_zones_for_given_cell_zones_contents.html">get_adjacent_face_zones_for_given_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones/get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones_contents.html">get_adjacent_interior_and_boundary_face_zones_for_given_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_adjacent_zones_by_edge_connectivity/get_adjacent_zones_by_edge_connectivity_contents.html">get_adjacent_zones_by_edge_connectivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_adjacent_zones_by_node_connectivity/get_adjacent_zones_by_node_connectivity_contents.html">get_adjacent_zones_by_node_connectivity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_all_objects/get_all_objects_contents.html">get_all_objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_average_bounding_box_center/get_average_bounding_box_center_contents.html">get_average_bounding_box_center</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_baffles_for_face_zones/get_baffles_for_face_zones_contents.html">get_baffles_for_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_bounding_box_of_zone_list/get_bounding_box_of_zone_list_contents.html">get_bounding_box_of_zone_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_mesh_distribution/get_cell_mesh_distribution_contents.html">get_cell_mesh_distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_quality_limits/get_cell_quality_limits_contents.html">get_cell_quality_limits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_zone_count/get_cell_zone_count_contents.html">get_cell_zone_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_zone_id_list_with_labels/get_cell_zone_id_list_with_labels_contents.html">get_cell_zone_id_list_with_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_zone_shape/get_cell_zone_shape_contents.html">get_cell_zone_shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_zone_volume/get_cell_zone_volume_contents.html">get_cell_zone_volume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_cell_zones/get_cell_zones_contents.html">get_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_edge_size_limits/get_edge_size_limits_contents.html">get_edge_size_limits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_edge_zone_id_list_with_labels/get_edge_zone_id_list_with_labels_contents.html">get_edge_zone_id_list_with_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_edge_zones/get_edge_zones_contents.html">get_edge_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_edge_zones_list/get_edge_zones_list_contents.html">get_edge_zones_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_edge_zones_of_object/get_edge_zones_of_object_contents.html">get_edge_zones_of_object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_embedded_baffles/get_embedded_baffles_contents.html">get_embedded_baffles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_mesh_distribution/get_face_mesh_distribution_contents.html">get_face_mesh_distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_quality_limits/get_face_quality_limits_contents.html">get_face_quality_limits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zone_area/get_face_zone_area_contents.html">get_face_zone_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zone_count/get_face_zone_count_contents.html">get_face_zone_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zone_id_list_with_labels/get_face_zone_id_list_with_labels_contents.html">get_face_zone_id_list_with_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zone_node_count/get_face_zone_node_count_contents.html">get_face_zone_node_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zones/get_face_zones_contents.html">get_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zones_by_zone_area/get_face_zones_by_zone_area_contents.html">get_face_zones_by_zone_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zones_of_object/get_face_zones_of_object_contents.html">get_face_zones_of_object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_face_zones_with_zone_specific_prisms_applied/get_face_zones_with_zone_specific_prisms_applied_contents.html">get_face_zones_with_zone_specific_prisms_applied</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_free_faces_count/get_free_faces_count_contents.html">get_free_faces_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_interior_face_zones_for_given_cell_zones/get_interior_face_zones_for_given_cell_zones_contents.html">get_interior_face_zones_for_given_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_labels/get_labels_contents.html">get_labels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_labels_on_cell_zones/get_labels_on_cell_zones_contents.html">get_labels_on_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_labels_on_edge_zones/get_labels_on_edge_zones_contents.html">get_labels_on_edge_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_labels_on_face_zones/get_labels_on_face_zones_contents.html">get_labels_on_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_labels_on_face_zones_list/get_labels_on_face_zones_list_contents.html">get_labels_on_face_zones_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_maxsize_cell_zone_by_count/get_maxsize_cell_zone_by_count_contents.html">get_maxsize_cell_zone_by_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_maxsize_cell_zone_by_volume/get_maxsize_cell_zone_by_volume_contents.html">get_maxsize_cell_zone_by_volume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_minsize_face_zone_by_area/get_minsize_face_zone_by_area_contents.html">get_minsize_face_zone_by_area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_minsize_face_zone_by_count/get_minsize_face_zone_by_count_contents.html">get_minsize_face_zone_by_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_multi_faces_count/get_multi_faces_count_contents.html">get_multi_faces_count</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_node_zones/get_node_zones_contents.html">get_node_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_objects/get_objects_contents.html">get_objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_overlapping_face_zones/get_overlapping_face_zones_contents.html">get_overlapping_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_pairs_of_overlapping_face_zones/get_pairs_of_overlapping_face_zones_contents.html">get_pairs_of_overlapping_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_prism_cell_zones/get_prism_cell_zones_contents.html">get_prism_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_region_volume/get_region_volume_contents.html">get_region_volume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_regions/get_regions_contents.html">get_regions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_regions_of_face_zones/get_regions_of_face_zones_contents.html">get_regions_of_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_shared_boundary_face_zones_for_given_cell_zones/get_shared_boundary_face_zones_for_given_cell_zones_contents.html">get_shared_boundary_face_zones_for_given_cell_zones</a></li>
+<li class="toctree-l4 current active has-children"><a class="reference internal" href="../get_tet_cell_zones_contents.html">get_tet_cell_zones</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l5 current active"><a class="current reference internal" href="#">_get_tet_cell_zonesArguments</a></li>
+</ul>
+</details></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_topos_on_face_zones_list/get_topos_on_face_zones_list_contents.html">get_topos_on_face_zones_list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_unreferenced_cell_zones/get_unreferenced_cell_zones_contents.html">get_unreferenced_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_unreferenced_edge_zones/get_unreferenced_edge_zones_contents.html">get_unreferenced_edge_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_unreferenced_face_zones/get_unreferenced_face_zones_contents.html">get_unreferenced_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_wrapped_face_zones/get_wrapped_face_zones_contents.html">get_wrapped_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_zone_type/get_zone_type_contents.html">get_zone_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_zones/get_zones_contents.html">get_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_zones_with_free_faces_for_given_face_zones/get_zones_with_free_faces_for_given_face_zones_contents.html">get_zones_with_free_faces_for_given_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_zones_with_marked_faces_for_given_face_zones/get_zones_with_marked_faces_for_given_face_zones_contents.html">get_zones_with_marked_faces_for_given_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../get_zones_with_multi_faces_for_given_face_zones/get_zones_with_multi_faces_for_given_face_zones_contents.html">get_zones_with_multi_faces_for_given_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../interior_zone_exists/interior_zone_exists_contents.html">interior_zone_exists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_bad_quality_faces/mark_bad_quality_faces_contents.html">mark_bad_quality_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_duplicate_faces/mark_duplicate_faces_contents.html">mark_duplicate_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_face_strips_by_height_and_quality/mark_face_strips_by_height_and_quality_contents.html">mark_face_strips_by_height_and_quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_faces_by_quality/mark_faces_by_quality_contents.html">mark_faces_by_quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_faces_deviating_from_size_field/mark_faces_deviating_from_size_field_contents.html">mark_faces_deviating_from_size_field</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_faces_in_self_proximity/mark_faces_in_self_proximity_contents.html">mark_faces_in_self_proximity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_faces_using_node_degree/mark_faces_using_node_degree_contents.html">mark_faces_using_node_degree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_free_faces/mark_free_faces_contents.html">mark_free_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_invalid_normals/mark_invalid_normals_contents.html">mark_invalid_normals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_island_faces/mark_island_faces_contents.html">mark_island_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_multi_faces/mark_multi_faces_contents.html">mark_multi_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_point_contacts/mark_point_contacts_contents.html">mark_point_contacts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_self_intersecting_faces/mark_self_intersecting_faces_contents.html">mark_self_intersecting_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_sliver_faces/mark_sliver_faces_contents.html">mark_sliver_faces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_spikes/mark_spikes_contents.html">mark_spikes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mark_steps/mark_steps_contents.html">mark_steps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../merge_cell_zones/merge_cell_zones_contents.html">merge_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../merge_cell_zones_with_same_prefix/merge_cell_zones_with_same_prefix_contents.html">merge_cell_zones_with_same_prefix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../merge_cell_zones_with_same_suffix/merge_cell_zones_with_same_suffix_contents.html">merge_cell_zones_with_same_suffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../merge_face_zones/merge_face_zones_contents.html">merge_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../merge_face_zones_of_type/merge_face_zones_of_type_contents.html">merge_face_zones_of_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../merge_face_zones_with_same_prefix/merge_face_zones_with_same_prefix_contents.html">merge_face_zones_with_same_prefix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mesh_check/mesh_check_contents.html">mesh_check</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../mesh_exists/mesh_exists_contents.html">mesh_exists</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../print_worst_quality_cell/print_worst_quality_cell_contents.html">print_worst_quality_cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../project_zone_on_plane/project_zone_on_plane_contents.html">project_zone_on_plane</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../refine_marked_faces_in_zones/refine_marked_faces_in_zones_contents.html">refine_marked_faces_in_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../remove_id_suffix_from_face_zones/remove_id_suffix_from_face_zones_contents.html">remove_id_suffix_from_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../remove_ids_from_zone_names/remove_ids_from_zone_names_contents.html">remove_ids_from_zone_names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../remove_labels_on_cell_zones/remove_labels_on_cell_zones_contents.html">remove_labels_on_cell_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../remove_labels_on_edge_zones/remove_labels_on_edge_zones_contents.html">remove_labels_on_edge_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../remove_labels_on_face_zones/remove_labels_on_face_zones_contents.html">remove_labels_on_face_zones</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../rename_edge_zone/rename_edge_zone_contents.html">rename_edge_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../rename_face_zone/rename_face_zone_contents.html">rename_face_zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../rename_face_zone_label/rename_face_zone_label_contents.html">rename_face_zone_label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../rename_object/rename_object_contents.html">rename_object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../renumber_zone_ids/renumber_zone_ids_contents.html">renumber_zone_ids</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../replace_cell_zone_suffix/replace_cell_zone_suffix_contents.html">replace_cell_zone_suffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../replace_edge_zone_suffix/replace_edge_zone_suffix_contents.html">replace_edge_zone_suffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../replace_face_zone_suffix/replace_face_zone_suffix_contents.html">replace_face_zone_suffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../replace_label_suffix/replace_label_suffix_contents.html">replace_label_suffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../replace_object_suffix/replace_object_suffix_contents.html">replace_object_suffix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../scale_cell_zones_around_pivot/scale_cell_zones_around_pivot_contents.html">scale_cell_zones_around_pivot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../scale_face_zones_around_pivot/scale_face_zones_around_pivot_contents.html">scale_face_zones_around_pivot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../separate_cell_zone_layers_by_face_zone_using_id/separate_cell_zone_layers_by_face_zone_using_id_contents.html">separate_cell_zone_layers_by_face_zone_using_id</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../separate_cell_zone_layers_by_face_zone_using_name/separate_cell_zone_layers_by_face_zone_using_name_contents.html">separate_cell_zone_layers_by_face_zone_using_name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../separate_face_zones_by_cell_neighbor/separate_face_zones_by_cell_neighbor_contents.html">separate_face_zones_by_cell_neighbor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../set_number_of_parallel_compute_threads/set_number_of_parallel_compute_threads_contents.html">set_number_of_parallel_compute_threads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../set_object_cell_zone_type/set_object_cell_zone_type_contents.html">set_object_cell_zone_type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../set_quality_measure/set_quality_measure_contents.html">set_quality_measure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../unpreserve_cell_zones/unpreserve_cell_zones_contents.html">unpreserve_cell_zones</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../part_management/part_management_contents.html">meshing.datamodel.part_management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pm_file_management/pm_file_management_contents.html">meshing.datamodel.pm_file_management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../preferences/preferences_contents.html">meshing.datamodel.preferences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow/workflow_contents.html">meshing.datamodel.workflow</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../tui/tui_contents.html">meshing.tui</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../scheduler/scheduler_contents.html">scheduler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../services/services_contents.html">services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../solver/solver_contents.html">solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../streaming_services/streaming_services_contents.html">streaming_services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../utils/utils_contents.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../exceptions.html">exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../file_session.html">file_session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../field_data_interfaces.html">field_data_interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../fluent_connection.html">fluent_connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../journaling.html">journaling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../module_config.html">module_config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../parametric.html">parametric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../rpvars.html">rpvars</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../search.html">search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_base_meshing.html">session_base_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_meshing.html">session_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_pure_meshing.html">session_pure_meshing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_solver_icing.html">session_solver_icing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_solver_lite.html">session_solver_lite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_solver.html">session_solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session.html">session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../session_utilities.html">session_utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../system_coupling.html">system_coupling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pyfluent_warnings.html">pyfluent_warnings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../workflow.html">workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../deprecated_apis.html">Deprecated APIs</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+         
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.pyansys.com/" class="nav-link">PyAnsys</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a
+        href="../../../../../../index.html"
+        class="nav-link"
+        aria-label="Home"
+      >
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../../../../api_contents.html" class="nav-link">API reference</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../../../meshing_contents.html" class="nav-link">meshing</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../../datamodel_contents.html" class="nav-link">meshing.datamodel</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../../meshing_utilities_contents.html" class="nav-link">meshing.datamodel.meshing_utilities</a>
+    </li>
+     
+    <li class="breadcrumb-item">
+      <a href="../get_tet_cell_zones_contents.html" class="nav-link">get_tet_cell_zones</a>
+    </li>
+      
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">_get_tet_cell_zonesArguments</span></li>
+    
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="get-tet-cell-zonesarguments">
+<span id="ref-meshing-datamodel-meshing-utilities-get-tet-cell-zones-get-tet-cell-zonesarguments"></span><h1>_get_tet_cell_zonesArguments<a class="headerlink" href="#get-tet-cell-zonesarguments" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones.</span></span><span class="sig-name descname"><span class="pre">_get_tet_cell_zonesArguments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../services/datamodel_se.html#ansys.fluent.core.services.datamodel_se.PyArguments" title="ansys.fluent.core.services.datamodel_se.PyArguments"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyArguments</span></code></a></p>
+<p><strong>Methods:</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments.__init__" title="ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(service, rules, command, path, id)</p></td>
+<td><p>__init__ method of PyArguments class.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments.__init__" title="Link to this definition">#</a></dt>
+<dd><p>__init__ method of PyArguments class.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_id_list">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_zone_id_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_id_list" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../services/datamodel_se.html#ansys.fluent.core.services.datamodel_se.PyArgumentsNumericalSubItem" title="ansys.fluent.core.services.datamodel_se.PyArgumentsNumericalSubItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyArgumentsNumericalSubItem</span></code></a></p>
+<p>Argument zone_id_list.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_name_list">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_zone_name_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_name_list" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../services/datamodel_se.html#ansys.fluent.core.services.datamodel_se.PyArgumentsTextualSubItem" title="ansys.fluent.core.services.datamodel_se.PyArgumentsTextualSubItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyArgumentsTextualSubItem</span></code></a></p>
+<p>Argument zone_name_list.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_name_pattern">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_zone_name_pattern</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_name_pattern" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../../../services/datamodel_se.html#ansys.fluent.core.services.datamodel_se.PyArgumentsTextualSubItem" title="ansys.fluent.core.services.datamodel_se.PyArgumentsTextualSubItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyArgumentsTextualSubItem</span></code></a></p>
+<p>Argument zone_name_pattern.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments"><code class="docutils literal notranslate"><span class="pre">_get_tet_cell_zonesArguments</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments.__init__"><code class="docutils literal notranslate"><span class="pre">_get_tet_cell_zonesArguments.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_id_list"><code class="docutils literal notranslate"><span class="pre">_get_tet_cell_zonesArguments._zone_id_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_name_list"><code class="docutils literal notranslate"><span class="pre">_get_tet_cell_zonesArguments._zone_name_list</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.get_tet_cell_zones._get_tet_cell_zonesArguments._zone_name_pattern"><code class="docutils literal notranslate"><span class="pre">_get_tet_cell_zonesArguments._zone_name_pattern</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+<!-- If there is no fix edit button function, use the PyData edit-this-button-->
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <ul class="this-page-menu">
+      <li><a href="../../../../../../_sources/api/meshing/datamodel/meshing_utilities/get_tet_cell_zones/_get_tet_cell_zonesArguments/_get_tet_cell_zonesArguments_contents.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+  <!-- Include desired assets -->
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"></script>
+
+<script>
+// Passing the search options to the search.js file
+const SEARCH_OPTIONS = JSON.parse('{"keys": ["title", "text", "objectID"], "limit": 10, "threshold": 0.2}');
+const SEARCH_FILE = "../../../../../../_static/search.json";
+const ADVANCE_SEARCH_PATH = "../../../../../../search.html";
+const EXTRA_SOURCES = JSON.parse('""');
+</script>
+
+
+<script src="../../../../../../_static/js/search.js"></script>
+
+  
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright (c) 2025 ANSYS, Inc. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the
+  <a href="https://sphinxdocs.ansys.com/version/stable/index.html"
+    >Ansys Sphinx Theme</a
+  >
+  1.6.3. <br />Last updated on
+  <span id="ast_build_date"></span>
+</p>
+<script>
+  var options = { day: "numeric", month: "long", year: "numeric" };
+  var ast_lastModifiedDate = new Date(document.lastModified);
+  var ast_build_date = ast_lastModifiedDate.toLocaleDateString("en-US", options);
+  document.getElementById("ast_build_date").innerHTML = ast_build_date;
+</script></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+:orphan:
+
+.. _electrolyte_porous:
+
+electrolyte_porous
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.electrolyte_porous
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================================   ======================================================
+
+Attribute                                                                                                         Summary
+
+================================================================   ======================================================
+:ref:`anode_interface <anode_interface>`                                 Anode electrode interfaces with the electrolyte.
+
+:ref:`anode_interface_locations <anode_interface_locations>`                                           The physics names.
+
+:ref:`cathode_interface <cathode_interface>`                           Cathode electrode interfaces with the electrolyte.
+
+:ref:`cathode_interface_locations <cathode_interface_locations>`                                       The physics names.
+
+:ref:`tortuosity_interface <tortuosity_interface>`                                     Setup tortuosity zones and values.
+
+:ref:`pore_size_interface <pore_size_interface>`                            Setup Knudsen diffusion zones and pore sizes.
+
+================================================================   ======================================================
+
+.. rubric:: Included in:
+
+==================   ========================
+
+Parent                                Summary
+
+==================   ========================
+:ref:`sofc <sofc>`       SOFC model settings.
+
+==================   ========================
+

@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_create_boi_and_size_functions_from_refinement_regions__create_boi_and_size_functions_from_refinement_regionsArguments:
+
+_create_boi_and_size_functions_from_refinement_regionsArguments
+===============================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing_utilities.Root.create_boi_and_size_functions_from_refinement_regions._create_boi_and_size_functions_from_refinement_regionsArguments
+   :members: _boi_prefix_string, _create_size_function, _region_type
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

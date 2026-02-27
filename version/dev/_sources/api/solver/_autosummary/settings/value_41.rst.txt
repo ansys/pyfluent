@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_41:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_41
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =======================================
+
+Parent                                                                         Summary
+
+============================================   =======================================
+:ref:`scheme_proc_child <scheme_proc_child>`       'child_object_type' of scheme_proc.
+
+============================================   =======================================
+

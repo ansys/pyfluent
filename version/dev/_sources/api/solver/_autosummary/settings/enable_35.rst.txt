@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_35:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.enable_35
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ============================================
+
+Parent                                                                        Summary
+
+======================================   ============================================
+:ref:`turbo_numerics <turbo_numerics>`       Turbomachinery-specific numerics object.
+
+======================================   ============================================
+

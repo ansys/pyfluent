@@ -1,0 +1,20 @@
+.. _ref_meshing_datamodel_meshing_SetUpPeriodicBoundaries__SetUpPeriodicBoundariesCommandArguments:
+
+_SetUpPeriodicBoundariesCommandArguments
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_251.meshing.Root.SetUpPeriodicBoundaries._SetUpPeriodicBoundariesCommandArguments
+   :members: _AutoMultiplePeriodic, _LabelList, _ListAllLabelToggle, _MeshObject, _Method, _MultipleOption, _PeriodicityAngle, _RemeshBoundariesOption, _SelectionType, _TopologyList, _Type, _ZoneList, _ZoneLocation
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _LCSOrigin/_LCSOrigin_contents
+   _LCSVector/_LCSVector_contents
+   _TransShift/_TransShift_contents

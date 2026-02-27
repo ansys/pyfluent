@@ -1,0 +1,34 @@
+:orphan:
+
+.. _extract_cells_by_mark:
+
+extract_cells_by_mark
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.extract_cells_by_mark
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ===========================================================================
+
+Argument                                                                                           Summary
+
+============================   ===========================================================================
+:ref:`register <register_2>`                                         Provide the ID or name of a register.
+
+:ref:`nlayers <nlayers>`           Number of adjacent cell layers to augment the marked cell cluster with.
+
+============================   ===========================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

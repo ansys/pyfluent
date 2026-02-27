@@ -1,0 +1,21 @@
+:orphan:
+
+.. _brownian_motion_enabled:
+
+brownian_motion_enabled
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.brownian_motion_enabled
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ===================================
+
+Parent                                                             Summary
+
+====================================   ===================================
+:ref:`particle_drag <particle_drag>`       Lagrangian drag model settings.
+
+====================================   ===================================
+

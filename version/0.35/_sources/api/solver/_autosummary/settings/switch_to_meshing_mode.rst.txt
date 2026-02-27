@@ -1,0 +1,21 @@
+:orphan:
+
+.. _switch_to_meshing_mode:
+
+switch_to_meshing_mode
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.switch_to_meshing_mode
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ==================
+
+Parent                              Summary
+
+======================   ==================
+:ref:`root <ref_root>`       'root' object.
+
+======================   ==================
+

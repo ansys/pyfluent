@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_4:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_4
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =============================================================================
+
+Parent                                                                                                                   Summary
+
+================================================   =============================================================================
+:ref:`droplet_growth_rate <droplet_growth_rate>`       The formula to model the droplet growth rate and set modeling parameters.
+
+================================================   =============================================================================
+

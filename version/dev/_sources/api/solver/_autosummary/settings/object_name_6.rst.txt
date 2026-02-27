@@ -1,0 +1,21 @@
+:orphan:
+
+.. _object_name_6:
+
+object_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.object_name_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ============================
+
+Parent                                                Summary
+
+==============================   ============================
+:ref:`display_13 <display_13>`       Display graphics object.
+
+==============================   ============================
+

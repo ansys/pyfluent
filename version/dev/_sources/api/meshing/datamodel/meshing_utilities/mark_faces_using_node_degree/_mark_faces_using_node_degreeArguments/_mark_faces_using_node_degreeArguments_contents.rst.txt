@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_mark_faces_using_node_degree__mark_faces_using_node_degreeArguments:
+
+_mark_faces_using_node_degreeArguments
+======================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.mark_faces_using_node_degree._mark_faces_using_node_degreeArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern, _node_degree_threshold
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

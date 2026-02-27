@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_thin_volume_meshing_controls:
+
+add_thin_volume_meshing_controls
+================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.add_thin_volume_meshing_controls
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _add_thin_volume_meshing_controlsArguments/_add_thin_volume_meshing_controlsArguments_contents

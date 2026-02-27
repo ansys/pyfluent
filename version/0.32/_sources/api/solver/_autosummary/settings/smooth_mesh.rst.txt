@@ -1,0 +1,40 @@
+:orphan:
+
+.. _smooth_mesh:
+
+smooth_mesh
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.smooth_mesh
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ======================================================================
+
+Argument                                                                                                            Summary
+
+==================================================   ======================================================================
+:ref:`type_of_smoothing <type_of_smoothing>`                                                          The smoothing method.
+
+:ref:`number_of_iterations <number_of_iterations>`                                      The number of smoothing iterations.
+
+:ref:`relaxation_factor <relaxation_factor>`                                               The smoothing relaxation factor.
+
+:ref:`percentage_of_cells <percentage_of_cells>`         The threhold percentage of cells above which smoothing is applied.
+
+:ref:`skewness_threshold <skewness_threshold>`              The threhold quality of cells above which smoothing is applied.
+
+==================================================   ======================================================================
+
+.. rubric:: Included in:
+
+==================   =================
+
+Parent                         Summary
+
+==================   =================
+:ref:`mesh <mesh>`       'mesh' child.
+
+==================   =================
+

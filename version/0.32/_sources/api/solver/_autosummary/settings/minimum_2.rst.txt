@@ -1,0 +1,21 @@
+:orphan:
+
+.. _minimum_2:
+
+minimum
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.minimum_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==================
+
+Parent                                Summary
+
+========================   ==================
+:ref:`range_2 <range_2>`       'range' child.
+
+========================   ==================
+

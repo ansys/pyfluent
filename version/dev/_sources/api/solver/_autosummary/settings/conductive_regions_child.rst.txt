@@ -1,0 +1,36 @@
+:orphan:
+
+.. _conductive_regions_child:
+
+conductive_regions_child
+========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.conductive_regions_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ============================================
+
+Attribute                                                                 Summary
+
+==================================   ============================================
+:ref:`zone_name <zone_name_6>`              Zone name in thread-real-pair object.
+
+:ref:`physics_name <physics_name>`       Physics name in thread-real-pair object.
+
+:ref:`value <value_16>`                         Value in thread-real-pair object.
+
+==================================   ============================================
+
+.. rubric:: Included in:
+
+==============================================   ==============================================
+
+Parent                                                                                  Summary
+
+==============================================   ==============================================
+:ref:`conductive_regions <conductive_regions>`       Setup conducting zones and conductivities.
+
+==============================================   ==============================================
+

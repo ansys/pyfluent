@@ -1,0 +1,40 @@
+:orphan:
+
+.. _moment_of_force_child:
+
+moment_of_force_child
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.moment_of_force_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =============================
+
+Attribute                                            Summary
+
+============================   =============================
+:ref:`name <name_5>`                     Name of the object.
+
+:ref:`walls <walls>`                    Wall zone name list.
+
+:ref:`location <location_3>`                     The object.
+
+:ref:`center <center_3>`           Rotation center location.
+
+:ref:`axis <axis_10>`                Rotation axis location.
+
+============================   =============================
+
+.. rubric:: Included in:
+
+========================================   ===========================================
+
+Parent                                                                         Summary
+
+========================================   ===========================================
+:ref:`moment_of_force <moment_of_force>`       Moment of force observable definitions.
+
+========================================   ===========================================
+

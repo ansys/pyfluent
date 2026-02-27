@@ -1,0 +1,21 @@
+:orphan:
+
+.. _evaporating_species_1:
+
+evaporating_species
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.evaporating_species_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ======================================
+
+Parent                                                                          Summary
+
+==============================================   ======================================
+:ref:`components_1_child <components_1_child>`       'child_object_type' of components.
+
+==============================================   ======================================
+

@@ -1,0 +1,90 @@
+:orphan:
+
+.. _icing_2:
+
+icing
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.icing_2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ====================================================================================
+
+Attribute                                                                                                                                                               Summary
+
+========================================================================================   ====================================================================================
+:ref:`fensapice_flow_bc_subtype <fensapice_flow_bc_subtype>`                                                    Sets the flow boundary condition subtype for icing simulations.
+
+:ref:`fensapice_ice_icing_mode <fensapice_ice_icing_mode>`                                                                           Sets the icing mode for icing simulations.
+
+:ref:`fensapice_ice_hflux_mode <fensapice_ice_hflux_mode>`                                                                       Sets the heat flux mode for icing simulations.
+
+:ref:`fensapice_ice_hflux_value <fensapice_ice_hflux_value>`                                                                    Sets the heat flux value for icing simulations.
+
+:ref:`fensapice_ice_hflux_file <fensapice_ice_hflux_file>`                                                                       Sets the heat flux file for icing simulations.
+
+:ref:`fensapice_ice_wall_thickness <fensapice_ice_wall_thickness>`                                                               Sets the wall thickness for icing simulations.
+
+:ref:`fensapice_ice_wall_internal_temperature <fensapice_ice_wall_internal_temperature>`                              Sets the wall internal temperature for icing simulations.
+
+:ref:`fensapice_ice_wall_conductivity <fensapice_ice_wall_conductivity>`                                                      Sets the wall conductivity for icing simulations.
+
+:ref:`fensapice_ice_beta <fensapice_ice_beta>`                                                                            Sets the collection efficiency for icing simulations.
+
+:ref:`fensapice_ice_film_height <fensapice_ice_film_height>`                                                                        Sets the film height for icing simulations.
+
+:ref:`fensapice_ice_instant_ice <fensapice_ice_instant_ice>`                                                                 Sets the instant ice growth for icing simulations.
+
+:ref:`fensapice_ice_ice_thickness <fensapice_ice_ice_thickness>`                                                                  Sets the ice thickness for icing simulations.
+
+:ref:`fensapice_ice_film_velx <fensapice_ice_film_velx>`                                                                        Sets the film x-velocity for icing simulations.
+
+:ref:`fensapice_ice_film_vely <fensapice_ice_film_vely>`                                                                        Sets the film y-velocity for icing simulations.
+
+:ref:`fensapice_ice_film_velz <fensapice_ice_film_velz>`                                                                        Sets the film z-velocity for icing simulations.
+
+:ref:`fensapice_ice_film_temp <fensapice_ice_film_temp>`                                                                       Sets the film temperature for icing simulations.
+
+:ref:`fensapice_ice_film_reinj <fensapice_ice_film_reinj>`                                                                Sets the film reinjection mass for icing simulations.
+
+:ref:`fensapice_ice_bead_height <fensapice_ice_bead_height>`                                                                        Sets the bead height for icing simulations.
+
+:ref:`fensapice_drop_vwet <fensapice_drop_vwet>`                                                                               Sets the wetting condition for drop simulations.
+
+:ref:`fensapice_drop_reinj <fensapice_drop_reinj>`                                                                         Sets the reinjection condition for drop simulations.
+
+:ref:`fensapice_dpm_wall_condition <fensapice_dpm_wall_condition>`                                                         Sets the wall condition for discrete phase modeling.
+
+:ref:`fensapice_dpm_splashing_model <fensapice_dpm_splashing_model>`                                                      Sets the splashing model for discrete phase modeling.
+
+:ref:`fensapice_dpm_udf_wall_cond <fensapice_dpm_udf_wall_cond>`                                                       Sets the UDF wall condition for discrete phase modeling.
+
+:ref:`fensapice_dpm_bc_norm_coeff <fensapice_dpm_bc_norm_coeff>`                                   Sets the normal coefficient for discrete phase modeling boundary conditions.
+
+:ref:`fensapice_dpm_bc_tang_coeff <fensapice_dpm_bc_tang_coeff>`                               Sets the tangential coefficient for discrete phase modeling boundary conditions.
+
+:ref:`fensapice_dpm_film_reinjection <fensapice_dpm_film_reinjection>`                                                                           The film dpm reinjection mode.
+
+========================================================================================   ====================================================================================
+
+.. rubric:: Included in:
+
+==================================================================   ==================================================
+
+Parent                                                                                                          Summary
+
+==================================================================   ==================================================
+:ref:`wall_child <wall_child>`                                                             'child_object_type' of wall.
+
+:ref:`phase_27_child <phase_27_child>`                                                    'child_object_type' of phase.
+
+:ref:`overlapping_boundaries_child <overlapping_boundaries_child>`       'child_object_type' of overlapping_boundaries.
+
+:ref:`wall_1_child <wall_1_child>`                                                         'child_object_type' of wall.
+
+:ref:`phase_51_child <phase_51_child>`                                                    'child_object_type' of phase.
+
+==================================================================   ==================================================
+

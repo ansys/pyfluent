@@ -1,0 +1,14 @@
+.. _ref_solver_tui_solve_remote_compute_job_actions:
+
+job_actions
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.solve.remote_compute.job_actions
+   :members: abort, connect_to_web_ui, delete_files_from_the_cluster, delete_job, delete_project, download_output_files, download_specific_output_files, get_list_of_files, interrupt, open_in_web_portal, rerun
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

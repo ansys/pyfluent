@@ -1,0 +1,21 @@
+:orphan:
+
+.. _compute_range:
+
+compute_range
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.compute_range
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`histogram_1 <histogram_1>`       'histogram' child.
+
+================================   ======================
+

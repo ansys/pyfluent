@@ -1,0 +1,38 @@
+:orphan:
+
+.. _relaxation_bounds:
+
+relaxation_bounds
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.relaxation_bounds
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+================================================================================   ============================================================================================================================
+
+Argument                                                                                                                                                                                                Summary
+
+================================================================================   ============================================================================================================================
+:ref:`relaxation_bounding_method <relaxation_bounding_method>`                                                                  Specifies the strategy used to limit relaxation factor values during iteration.
+
+:ref:`default_min_max_relaxation_limits <default_min_max_relaxation_limits>`           Toggles use of default minimum and maximum relaxation factor limits, balancing convergence rate and numerical stability.
+
+:ref:`minimum_allowed_effctive_relaxation <minimum_allowed_effctive_relaxation>`                                                  Sets the lowest allowed effective relaxation factor to stabilize convergence.
+
+:ref:`maximum_allowed_effctive_relaxation <maximum_allowed_effctive_relaxation>`                                                    Sets the highest allowed effective relaxation factor to prevent divergence.
+
+================================================================================   ============================================================================================================================
+
+.. rubric:: Included in:
+
+==============================================   ==================================
+
+Parent                                                                      Summary
+
+==============================================   ==================================
+:ref:`pseudo_time_method <pseudo_time_method>`       The pseudo time method object.
+
+==============================================   ==================================
+

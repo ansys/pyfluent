@@ -1,0 +1,44 @@
+:orphan:
+
+.. _mass_flow_rate_3:
+
+mass_flow_rate
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mass_flow_rate_3
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================================   ================================================================
+
+Argument                                                                                            Summary
+
+========================================   ================================================================
+:ref:`heat_exchanger <heat_exchanger_1>`        The heat exchanger for which the report is to be generated.
+
+:ref:`fluid_zone <fluid_zone>`                      The fluid zone for which the report is to be generated.
+
+:ref:`boundary_zone <boundary_zone_1>`           The boundary zone for which the report is to be generated.
+
+:ref:`report_type <report_type_2>`                                      The type of report to be generated.
+
+:ref:`write_to_file <write_to_file_5>`         Specifies whether the computed data to be written to a file.
+
+:ref:`file_name <file_name_41>`                                                       File name for output.
+
+:ref:`append_file <append_file>`                     Specifies whether to append data to the existing file.
+
+========================================   ================================================================
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`heat_exchanger <heat_exchanger>`       The heat exchanger object.
+
+======================================   ==============================
+

@@ -1,0 +1,48 @@
+:orphan:
+
+.. _mapdl_child:
+
+mapdl_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mapdl_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   =============================================
+
+Attribute                                                                          Summary
+
+==========================================   =============================================
+:ref:`name <name_5>`                                                   Name of the object.
+
+:ref:`analysis <analysis>`                        The Analysis type (Structural, Thermal).
+
+:ref:`structural_loads <structural_loads>`            The structural loads type to export.
+
+:ref:`thermal_loads <thermal_loads>`                     The thermal loads type to export.
+
+:ref:`surfaces <surfaces_1>`                                                      Surface.
+
+:ref:`frequency_of <frequency_of_3>`             Export data every (Time Step, Flow Time).
+
+:ref:`frequency <frequency_7>`                                           Export Frequency.
+
+:ref:`flow_frequency <flow_frequency_1>`                                 Export Frequency.
+
+:ref:`file_name <file_name_24>`                                   The file name to export.
+
+==========================================   =============================================
+
+.. rubric:: Included in:
+
+====================   =================================
+
+Parent                                           Summary
+
+====================   =================================
+:ref:`mapdl <mapdl>`       Mechanical APDL Input Export.
+
+====================   =================================
+

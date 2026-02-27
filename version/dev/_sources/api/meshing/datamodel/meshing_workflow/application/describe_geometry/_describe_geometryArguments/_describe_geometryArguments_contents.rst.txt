@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_describe_geometry__describe_geometryArguments:
+
+_describe_geometryArguments
+===========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.describe_geometry._describe_geometryArguments
+   :members: _capping_required, _duplicates, _edge_labels, _edge_zone_list, _fluid_regions, _invoke_share_topology, _multizone, _non_conformal, _old_zone_list, _old_zone_type_list, _region_list, _setup_internal_types, _setup_internals, _setup_type, _wall_to_internal
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _improve_surface_mesh_preferences/_improve_surface_mesh_preferences_contents

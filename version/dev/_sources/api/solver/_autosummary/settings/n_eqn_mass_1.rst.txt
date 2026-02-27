@@ -1,0 +1,21 @@
+:orphan:
+
+.. _n_eqn_mass_1:
+
+n_eqn_mass
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.n_eqn_mass_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================================   ===================================
+
+Parent                                                                             Summary
+
+====================================================   ===================================
+:ref:`particle_ejecta_model <particle_ejecta_model>`       Particle ejecta model settings.
+
+====================================================   ===================================
+

@@ -1,0 +1,25 @@
+:orphan:
+
+.. _ratio:
+
+ratio
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ratio
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ============================================================
+
+Parent                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`define_expressions <define_expressions>`       Define expressions to evaluate turbomachine performance.
+
+:ref:`isentropic <isentropic>`                                               Calculate isentropic efficiency.
+
+:ref:`polytropic <polytropic>`                                               Calculate polytropic efficiency.
+
+==============================================   ============================================================
+

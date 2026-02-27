@@ -1,0 +1,21 @@
+:orphan:
+
+.. _height_3:
+
+height
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.height_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================   ==================
+
+Parent                                Summary
+
+========================   ==================
+:ref:`video_1 <video_1>`       'video' child.
+
+========================   ==================
+

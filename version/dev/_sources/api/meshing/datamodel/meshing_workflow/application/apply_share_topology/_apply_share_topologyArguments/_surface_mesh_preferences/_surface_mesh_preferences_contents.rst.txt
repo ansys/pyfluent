@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_apply_share_topology__apply_share_topologyArguments__surface_mesh_preferences:
+
+_surface_mesh_preferences
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.apply_share_topology._apply_share_topologyArguments._surface_mesh_preferences
+   :members: _auto_assign_zone_types, _auto_merge, _auto_surface_remesh, _fold_face_limit, _improve_quality, _max_step_width, _parallel_region_compute, _quality_improve_collapase_skewness_limit, _quality_improve_max_angle, _quality_improve_skewness_limit, _remove_steps, _self_intersect_check, _separate_by_angle, _separation_angle, _set_volume_mesh_max_size, _show_in_gui, _thin_volume_meshing_auto_control_creation, _volume_mesh_max_size
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

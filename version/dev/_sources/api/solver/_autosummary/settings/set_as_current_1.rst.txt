@@ -1,0 +1,32 @@
+:orphan:
+
+.. _set_as_current_1:
+
+set_as_current
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.set_as_current_1
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ==================================================
+
+Argument                                                                          Summary
+
+====================================   ==================================================
+:ref:`design_point <design_point_1>`       Name of the Design Point to be set as current.
+
+====================================   ==================================================
+
+.. rubric:: Included in:
+
+====================================   ========================================================
+
+Parent                                                                                  Summary
+
+====================================   ========================================================
+:ref:`design_points <design_points>`       Manages the design points within the selected study.
+
+====================================   ========================================================
+

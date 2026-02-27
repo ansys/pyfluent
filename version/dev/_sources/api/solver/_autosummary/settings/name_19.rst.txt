@@ -1,0 +1,21 @@
+:orphan:
+
+.. _name_19:
+
+name
+====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.name_19
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================================
+
+Parent                                                                              Summary
+
+==============================================   ==========================================
+:ref:`create_shared_face <create_shared_face>`       Create shared-face between two bodies.
+
+==============================================   ==========================================
+

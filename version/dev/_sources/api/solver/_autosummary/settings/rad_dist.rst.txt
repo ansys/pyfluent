@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rad_dist:
+
+rad_dist
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rad_dist
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`granular_props <granular_props>`       Granular phase properties.
+
+======================================   ==============================
+

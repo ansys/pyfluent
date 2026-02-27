@@ -1,0 +1,55 @@
+:orphan:
+
+.. _degradation:
+
+degradation
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.degradation
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================   =================================================
+
+Attribute                                                                                      Summary
+
+==================================================   =================================================
+:ref:`enable <enable_15>`                                                   Enable-degradation-model?.
+
+:ref:`material <material_3>`                                             Degradation mixture material.
+
+:ref:`init_value <init_value>`                                        Initial concentration (kmol/m3).
+
+:ref:`time_step <time_step_1>`                               Time step (s) for the degradation solver.
+
+:ref:`stop_time <stop_time_1>`                               Stop time (s) for the degradation solver.
+
+:ref:`membrane_temperature <membrane_temperature>`       Temperature (K) for the degradation membrane.
+
+==================================================   =================================================
+
+.. rubric:: Methods
+
+====================================================   ======================================================
+
+Method                                                                                                Summary
+
+====================================================   ======================================================
+:ref:`standalone_init_value <standalone_init_value>`       Calculate the initial conditions from core solver.
+
+:ref:`standalone_calculate <standalone_calculate>`                                   Degradation calculation.
+
+====================================================   ======================================================
+
+.. rubric:: Included in:
+
+==============================   ======================
+
+Parent                                          Summary
+
+==============================   ======================
+:ref:`advanced_2 <advanced_2>`       Advanced settings.
+
+==============================   ======================
+

@@ -1,0 +1,50 @@
+:orphan:
+
+.. _display_8:
+
+display
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.display_8
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ===========================================
+
+Argument                                                                 Summary
+
+==================================   ===========================================
+:ref:`object_name <object_name_1>`       Displays the specified Graphics object.
+
+==================================   ===========================================
+
+.. rubric:: Included in:
+
+================================================   ==================================================================================================================================================================================================================================================================================================================================================
+
+Parent                                                                                                                                                                                                                                                                                                                                                                                        Summary
+
+================================================   ==================================================================================================================================================================================================================================================================================================================================================
+:ref:`solution_animations <solution_animations>`                                                                                                                                                                                                                                                                               Controls settings for generating animations during the simulation run.
+
+:ref:`mesh_2 <mesh_2>`                                                                                                                A mesh object is a named graphical entity in used to represent surface or volume meshes for visualization purposes. These objects allow users to control how mesh data is displayed, manipulated, or referenced in post-processing and visualization workflows.
+
+:ref:`contour <contour>`                                                                                 A contour object is a named graphical entity used to visualize scalar field data such as temperature, pressure, or velocity magnitude across surfaces or volumes. It maps numerical values to color gradients, helping users analyze flow behavior, gradients, and other physical phenomena.
+
+:ref:`vector_1 <vector_1>`                                                                                                                                                    A vector object is a named graphics entity used to display vector fields such as velocity, force, or any directional quantity on specified surfaces. It visualizes both magnitude and direction using arrows or glyphs.
+
+:ref:`pathline <pathline>`                                                                                                          A pathlines object is a named graphical entity used to visualize the paths that fluid particles follow over time within a flow field. Unlike streamlines (which are instantaneous), pathlines are time-dependent and show the historical trajectory of particles.
+
+:ref:`particle_track <particle_track>`                           A particle tracks object is a named graphical visualization that displays the trajectory of discrete particles (or droplets, bubbles, etc.) tracked through the flow domain using the Discrete Phase Model (DPM). These tracks are computed based on forces such as drag, gravity, and other interactions with the continuous phase.
+
+:ref:`lic <lic>`                                       A LIC object is a named graphics entity that visualizes flow direction and structure using Line Integral Convolution (LIC). LIC provides a dense, texture-based representation of a vector field (typically velocity) on a surface, producing a smooth and intuitive image of flow patterns especially useful in complex or turbulent regions.
+
+:ref:`olic <olic>`                                                                               An OLIC object is a specialized visualization tool based on Oriented Line Integral Convolution. It enhances the standard LIC (Line Integral Convolution) by adding directional cues to the vector field, allowing users to interpret both direction and flow orientation rather than just structure.
+
+:ref:`volumes_4 <volumes_4>`                                                                          A volume object is a named graphical entity that allows you to visualize scalar or vector fields within the volume of the domain, not just on surfaces. These objects are essential for analyzing internal flow behavior, gradients, and regions that may not be visible in surface-only plots.
+
+:ref:`scene <scene>`                                       A scene is a container object graphics that organizes and manages the display of multiple graphical elements such as contours, vectors, pathlines, LIC, particle tracks, and mesh into a single visual output. Scenes help you build layered visualizations, control rendering order, and export cohesive views for reports or animations.
+
+================================================   ==================================================================================================================================================================================================================================================================================================================================================
+

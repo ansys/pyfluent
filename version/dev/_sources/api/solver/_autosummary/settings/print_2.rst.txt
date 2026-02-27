@@ -1,0 +1,21 @@
+:orphan:
+
+.. _print_2:
+
+print
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.print_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`options_13 <options_13>`       Options for reporting residuals.
+
+==============================   ====================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _stiff_chemistry_weight:
+
+stiff_chemistry_weight
+======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.stiff_chemistry_weight
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+=====================================   ========================================================
+
+Attribute                                                                                Summary
+
+=====================================   ========================================================
+:ref:`use <use_4>`                                Use Stiff Chemistry weights for partitioning?.
+
+:ref:`user_defined <user_defined_25>`       Use user defined value for Stiff Chemistry weights?.
+
+:ref:`value <value_49>`                          User defined value for Stiff Chemistry weights.
+
+=====================================   ========================================================
+
+.. rubric:: Included in:
+
+====================   ===============
+
+Parent                         Summary
+
+====================   ===============
+:ref:`set_3 <set_3>`       The object.
+
+====================   ===============
+

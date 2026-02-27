@@ -1,0 +1,21 @@
+:orphan:
+
+.. _tracking_statistics_format:
+
+tracking_statistics_format
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.tracking_statistics_format
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================   ================================================================
+
+Parent                                                                                Summary
+
+==========================   ================================================================
+:ref:`advanced <advanced>`       Menu containing not frequently used (expert level) settings.
+
+==========================   ================================================================
+

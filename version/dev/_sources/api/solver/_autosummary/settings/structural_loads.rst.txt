@@ -1,0 +1,23 @@
+:orphan:
+
+.. _structural_loads:
+
+structural_loads
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.structural_loads
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`mapdl_child <mapdl_child>`                 'child_object_type' of mapdl.
+
+:ref:`nastran_1_child <nastran_1_child>`       'child_object_type' of nastran.
+
+========================================   ===================================
+

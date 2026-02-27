@@ -1,0 +1,21 @@
+:orphan:
+
+.. _area_percentage2:
+
+area_percentage2
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.area_percentage2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =====================================
+
+Parent                                                                       Summary
+
+============================================   =====================================
+:ref:`interface_3_child <interface_3_child>`       'child_object_type' of interface.
+
+============================================   =====================================
+

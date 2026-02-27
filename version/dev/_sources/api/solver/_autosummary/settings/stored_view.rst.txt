@@ -1,0 +1,34 @@
+:orphan:
+
+.. _stored_view:
+
+stored_view
+===========
+
+.. deprecated:: Ansys Fluent 2026 R1
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.stored_view
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================   =============================================
+
+Argument                                                     Summary
+
+====================   =============================================
+:ref:`view <view_1>`       Yes: "Stored View", no: "Different View".
+
+====================   =============================================
+
+.. rubric:: Included in:
+
+==========================   =========================================================
+
+Parent                                                                         Summary
+
+==========================   =========================================================
+:ref:`playback <playback>`       Control the playback settings of animation sequences.
+
+==========================   =========================================================
+

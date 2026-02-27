@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iac_sftc:
+
+iac_sftc
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iac_sftc
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`iac_props <iac_props>`       IAC properties group.
+
+============================   =========================
+

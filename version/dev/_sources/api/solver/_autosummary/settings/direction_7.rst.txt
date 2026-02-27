@@ -1,0 +1,21 @@
+:orphan:
+
+.. _direction_7:
+
+direction
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.direction_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==================================
+
+Parent                                                          Summary
+
+==================================   ==================================
+:ref:`lights_child <lights_child>`       'child_object_type' of lights.
+
+==================================   ==================================
+

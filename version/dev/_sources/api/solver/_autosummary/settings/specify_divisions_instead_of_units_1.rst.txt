@@ -1,0 +1,21 @@
+:orphan:
+
+.. _specify_divisions_instead_of_units_1:
+
+specify_divisions_instead_of_units
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.specify_divisions_instead_of_units_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================   =========================
+
+Parent                                                           Summary
+
+============================================   =========================
+:ref:`major_gridlines_1 <major_gridlines_1>`       Major rules settings.
+
+============================================   =========================
+

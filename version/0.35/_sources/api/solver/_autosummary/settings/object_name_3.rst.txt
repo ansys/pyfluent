@@ -1,0 +1,21 @@
+:orphan:
+
+.. _object_name_3:
+
+object_name
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.object_name_3
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ========================================
+
+Parent                                                                                        Summary
+
+==========================================================   ========================================
+:ref:`usd_export_via_connector <usd_export_via_connector>`       Export data for Omniverse rendering.
+
+==========================================================   ========================================
+

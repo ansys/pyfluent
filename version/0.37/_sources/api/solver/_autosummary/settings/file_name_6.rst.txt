@@ -1,0 +1,25 @@
+:orphan:
+
+.. _file_name_6:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.file_name_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   =============================================================================================
+
+Parent                                                                                                                                         Summary
+
+======================================================   =============================================================================================
+:ref:`compute_write_vf <compute_write_vf>`                                                   Compute and write both surface clusters and view factors.
+
+:ref:`compute_vf_accelerated <compute_vf_accelerated>`       Compute and write only view factors from existing surface clusters with GPU-acceleration.
+
+:ref:`compute_vf_only <compute_vf_only>`                                           Compute and write only view factors from existing surface clusters.
+
+======================================================   =============================================================================================
+

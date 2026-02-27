@@ -1,0 +1,36 @@
+:orphan:
+
+.. _submit_job:
+
+submit_job
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.submit_job
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================================   ================================================
+
+Argument                                                                                Summary
+
+============================================   ================================================
+:ref:`use_modified_case <use_modified_case>`       Use modified case for remote job submission.
+
+:ref:`use_data <use_data>`                                  Use data for remote job submission.
+
+:ref:`use_modified_data <use_modified_data>`       Use modified data for remote job submission.
+
+============================================   ================================================
+
+.. rubric:: Included in:
+
+======================================   ============================
+
+Parent                                                        Summary
+
+======================================   ============================
+:ref:`remote_compute <remote_compute>`       Remote Compute Settings.
+
+======================================   ============================
+

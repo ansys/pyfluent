@@ -1,0 +1,54 @@
+:orphan:
+
+.. _in_cylinder:
+
+in_cylinder
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.in_cylinder
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   =============================================
+
+Attribute                                                                                        Summary
+
+========================================================   =============================================
+:ref:`enabled <enabled_59>`                                                             'enabled' child.
+
+:ref:`crank_shaft_speed <crank_shaft_speed>`                                  'crank_shaft_speed' child.
+
+:ref:`starting_crank_angle <starting_crank_angle>`                             The starting crank angle.
+
+:ref:`crank_period <crank_period>`                                                     The crank period.
+
+:ref:`crank_angle_step <crank_angle_step>`                                    The crank angle step size.
+
+:ref:`max_crank_angle_step <max_crank_angle_step>`                    The maximum crank angle step size.
+
+:ref:`crank_radius <crank_radius>`                                                 'crank_radius' child.
+
+:ref:`connecting_rod_length <connecting_rod_length>`                      'connecting_rod_length' child.
+
+:ref:`piston_pin_offset <piston_pin_offset>`                                  'piston_pin_offset' child.
+
+:ref:`piston_stroke_cutoff <piston_stroke_cutoff>`             The cut off point for in-cylinder piston.
+
+:ref:`minimum_valve_lift <minimum_valve_lift>`                  The minimum lift for in-cylinder valves.
+
+:ref:`write_in_cylinder_ouput <write_in_cylinder_ouput>`                'write_in_cylinder_ouput' child.
+
+========================================================   =============================================
+
+.. rubric:: Included in:
+
+============================   ====================
+
+Parent                                      Summary
+
+============================   ====================
+:ref:`options_8 <options_8>`       'options' child.
+
+============================   ====================
+

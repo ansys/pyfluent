@@ -1,0 +1,21 @@
+:orphan:
+
+.. _location_2:
+
+location
+========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.location_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================================================   ========================================================
+
+Parent                                                                                                                            Summary
+
+==============================================================================   ========================================================
+:ref:`contact_resistance_locations_child <contact_resistance_locations_child>`       'child_object_type' of contact_resistance_locations.
+
+==============================================================================   ========================================================
+

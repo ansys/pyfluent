@@ -1,0 +1,32 @@
+:orphan:
+
+.. _combine_partition:
+
+combine_partition
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.combine_partition
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ====================================
+
+Argument                                                                          Summary
+
+==================================================   ====================================
+:ref:`number_of_partitions <number_of_partitions>`       Number of partitions to combine.
+
+==================================================   ====================================
+
+.. rubric:: Included in:
+
+================================   ================================
+
+Parent                                                      Summary
+
+================================   ================================
+:ref:`partition_3 <partition_3>`       The partition domain object.
+
+================================   ================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _cell_distance:
+
+cell_distance
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cell_distance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+====================================   ================================================
+
+Argument                                                                        Summary
+
+====================================   ================================================
+:ref:`boundary_list <boundary_list>`       The source boundary zones for cell distance.
+
+:ref:`layer_count <layer_count>`                   The number of cell layers to refine.
+
+====================================   ================================================
+
+.. rubric:: Included in:
+
+======================================   ==================================================
+
+Parent                                                                              Summary
+
+======================================   ==================================================
+:ref:`boundary_layer <boundary_layer>`       The boundary-layer predefined criteria object.
+
+======================================   ==================================================
+

@@ -1,0 +1,34 @@
+:orphan:
+
+.. _mean_variance_child:
+
+mean_variance_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mean_variance_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ========================
+
+Attribute                                                   Summary
+
+========================================   ========================
+:ref:`name <name_5>`                            Name of the object.
+
+:ref:`observable_list <observable_list>`       List of observables.
+
+========================================   ========================
+
+.. rubric:: Included in:
+
+====================================   =========================================
+
+Parent                                                                   Summary
+
+====================================   =========================================
+:ref:`mean_variance <mean_variance>`       Mean-variance observable definitions.
+
+====================================   =========================================
+

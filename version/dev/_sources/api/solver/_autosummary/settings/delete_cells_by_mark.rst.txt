@@ -1,0 +1,34 @@
+:orphan:
+
+.. _delete_cells_by_mark:
+
+delete_cells_by_mark
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.delete_cells_by_mark
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+============================   ==============================================================================================================================
+
+Argument                                                                                                                                              Summary
+
+============================   ==============================================================================================================================
+:ref:`register <register_1>`                                                                                            Provide the id or name of a register.
+
+:ref:`augment <augment>`           Augment the cell list to avoid otherwise dangling cells because of cell deletion, which is to meet nunerical requirements.
+
+============================   ==============================================================================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

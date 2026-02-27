@@ -1,0 +1,23 @@
+:orphan:
+
+.. _use_gpu_solver:
+
+use_gpu_solver
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.use_gpu_solver
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ========================
+
+Parent                                                              Summary
+
+================================================   ========================
+:ref:`job_settings <job_settings>`                     Remote Job Settings.
+
+:ref:`concurrent_settings <concurrent_settings>`       Concurrent Settings.
+
+================================================   ========================
+

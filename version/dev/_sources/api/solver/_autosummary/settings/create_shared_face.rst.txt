@@ -1,0 +1,34 @@
+:orphan:
+
+.. _create_shared_face:
+
+create_shared_face
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_shared_face
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ============================================
+
+Argument                                                        Summary
+
+========================   ============================================
+:ref:`name <name_19>`                       Input new shared-face name.
+
+:ref:`bodies <bodies_1>`       Input two bodies to create shared-face .
+
+========================   ============================================
+
+.. rubric:: Included in:
+
+================================   =================================
+
+Parent                                                       Summary
+
+================================   =================================
+:ref:`parts_child <parts_child>`       'child_object_type' of parts.
+
+================================   =================================
+

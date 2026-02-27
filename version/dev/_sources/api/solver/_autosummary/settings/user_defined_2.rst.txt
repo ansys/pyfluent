@@ -1,0 +1,21 @@
+:orphan:
+
+.. _user_defined_2:
+
+user_defined
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.user_defined_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ===========================
+
+Parent                                                               Summary
+
+==============================================   ===========================
+:ref:`tke_prandtl_number <tke_prandtl_number>`       The TKE Prandtl number.
+
+==============================================   ===========================
+

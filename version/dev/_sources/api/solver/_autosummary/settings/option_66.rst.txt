@@ -1,0 +1,21 @@
+:orphan:
+
+.. _option_66:
+
+option
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.option_66
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ============================================
+
+Parent                                                              Summary
+
+============================   ============================================
+:ref:`edge_type <edge_type>`       Enables the display of the mesh outline.
+
+============================   ============================================
+

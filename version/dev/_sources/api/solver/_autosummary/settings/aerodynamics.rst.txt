@@ -1,0 +1,34 @@
+:orphan:
+
+.. _aerodynamics:
+
+aerodynamics
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.aerodynamics
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================   ===================================================
+
+Attribute                                                                              Summary
+
+========================================   ===================================================
+:ref:`shock_indicator <shock_indicator>`       The shock-indicator predefined criteria object.
+
+:ref:`error_based <error_based>`                   The error-based predefined criteria object.
+
+========================================   ===================================================
+
+.. rubric:: Included in:
+
+================================================   ===================================
+
+Parent                                                                         Summary
+
+================================================   ===================================
+:ref:`predefined_criteria <predefined_criteria>`       The predefined criteria object.
+
+================================================   ===================================
+

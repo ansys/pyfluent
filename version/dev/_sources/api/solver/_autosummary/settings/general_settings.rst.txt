@@ -1,0 +1,36 @@
+:orphan:
+
+.. _general_settings:
+
+general_settings
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.general_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ===================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                        Summary
+
+==================================================================   ===================================================================================================================================================================================
+:ref:`interaction <interaction>`                                                                                                                                              Settings related to effects of the discrete phase on the continuous phase.
+
+:ref:`unsteady_tracking <unsteady_tracking>`                                                                                                                                                           Settings reletated to unsteady particle tracking.
+
+:ref:`cell_averaged_postprocessing <cell_averaged_postprocessing>`       Which extent you want to post-process mesh (cell/face)-based discrete phase properties and variables. (This functionality is also known as 'Contour Plots for DPM Variables'.).
+
+==================================================================   ===================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+======================================   ====================
+
+Parent                                                Summary
+
+======================================   ====================
+:ref:`discrete_phase <discrete_phase>`       Toplevel object.
+
+======================================   ====================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normal_5:
+
+normal
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.normal_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ============================================
+
+Parent                                                                                        Summary
+
+======================================================   ============================================
+:ref:`bounded_by_plane_child <bounded_by_plane_child>`       'child_object_type' of bounded_by_plane.
+
+======================================================   ============================================
+

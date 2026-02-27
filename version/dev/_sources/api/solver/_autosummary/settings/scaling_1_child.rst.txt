@@ -1,0 +1,65 @@
+:orphan:
+
+.. _scaling_1_child:
+
+scaling_child
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.scaling_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ==========================================================
+
+Attribute                                                                               Summary
+
+==================================   ==========================================================
+:ref:`name <name_5>`                                                        Name of the object.
+
+:ref:`surfaces <surfaces_1>`                                                           Surface.
+
+:ref:`location <location_5>`                                                        The object.
+
+:ref:`scaling_type <scaling_type>`                                 Scaling transformation type.
+
+:ref:`factor <factor_3>`                                             Prescribed scaling factor.
+
+:ref:`axis_factor <axis_factor>`         Prescribed scaling factor for the various axis object.
+
+:ref:`origin <origin_13>`                                           Scaling origin coordinates.
+
+:ref:`normal <normal_6>`                                     Scaling in-plane normal direction.
+
+:ref:`axis <axis_12>`                                                     Rotation axis vector.
+
+:ref:`axis_1 <axis_1_1>`                                                General scaling axis 1.
+
+:ref:`axis_2 <axis_2_1>`                                                General scaling axis 2.
+
+==================================   ==========================================================
+
+.. rubric:: Methods
+
+==============================   ====================================================================================
+
+Method                                                                                                        Summary
+
+==============================   ====================================================================================
+:ref:`display <display_16>`                                                                 Display design condition.
+
+:ref:`get_center <get_center>`       Set the origin fields to the coordinates of the center of the selected surfaces.
+
+==============================   ====================================================================================
+
+.. rubric:: Included in:
+
+============================   ==================================
+
+Parent                                                    Summary
+
+============================   ==================================
+:ref:`scaling_1 <scaling_1>`       Scaling constraint definition.
+
+============================   ==================================
+

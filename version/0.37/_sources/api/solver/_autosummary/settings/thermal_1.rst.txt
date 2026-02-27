@@ -1,0 +1,60 @@
+:orphan:
+
+.. _thermal_1:
+
+thermal
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.thermal_1
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================   ======================
+
+Attribute                                                     Summary
+
+============================================   ======================
+:ref:`total_temperature <total_temperature>`       Total temperature.
+
+============================================   ======================
+
+.. rubric:: Included in:
+
+======================================================   ==========================================
+
+Parent                                                                                      Summary
+
+======================================================   ==========================================
+:ref:`settings_4 <settings_4>`                                   Domain name to define settings on.
+
+:ref:`phase_6_child <phase_6_child>`                                  'child_object_type' of phase.
+
+:ref:`settings_5 <settings_5>`                                   Domain name to define settings on.
+
+:ref:`phase_7_child <phase_7_child>`                                  'child_object_type' of phase.
+
+:ref:`settings_17 <settings_17>`                                 Domain name to define settings on.
+
+:ref:`phase_19_child <phase_19_child>`                                'child_object_type' of phase.
+
+:ref:`inlet_vent_1_child <inlet_vent_1_child>`                   'child_object_type' of inlet_vent.
+
+:ref:`intake_fan_1_child <intake_fan_1_child>`                   'child_object_type' of intake_fan.
+
+:ref:`pressure_inlet_1_child <pressure_inlet_1_child>`       'child_object_type' of pressure_inlet.
+
+:ref:`inlet_vent_2_child <inlet_vent_2_child>`                   'child_object_type' of inlet_vent.
+
+:ref:`phase_31_child <phase_31_child>`                                'child_object_type' of phase.
+
+:ref:`intake_fan_2_child <intake_fan_2_child>`                   'child_object_type' of intake_fan.
+
+:ref:`phase_32_child <phase_32_child>`                                'child_object_type' of phase.
+
+:ref:`pressure_inlet_2_child <pressure_inlet_2_child>`       'child_object_type' of pressure_inlet.
+
+:ref:`phase_44_child <phase_44_child>`                                'child_object_type' of phase.
+
+======================================================   ==========================================
+

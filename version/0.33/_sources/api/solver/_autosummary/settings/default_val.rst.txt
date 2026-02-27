@@ -1,0 +1,21 @@
+:orphan:
+
+.. _default_val:
+
+default_val
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.default_val
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================   ============================
+
+Parent                                                                        Summary
+
+======================================================   ============================
+:ref:`set_inactive_parameter <set_inactive_parameter>`       Set Inactive Parameters.
+
+======================================================   ============================
+

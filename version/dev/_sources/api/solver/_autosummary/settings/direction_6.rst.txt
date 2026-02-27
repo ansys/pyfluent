@@ -1,0 +1,21 @@
+:orphan:
+
+.. _direction_6:
+
+direction
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.direction_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   ================================
+
+Parent                                                                      Summary
+
+================================================   ================================
+:ref:`one_dof_translation <one_dof_translation>`       'one_dof_translation' child.
+
+================================================   ================================
+

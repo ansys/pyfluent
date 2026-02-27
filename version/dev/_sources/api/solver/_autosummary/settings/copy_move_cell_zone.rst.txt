@@ -1,0 +1,40 @@
+:orphan:
+
+.. _copy_move_cell_zone:
+
+copy_move_cell_zone
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.copy_move_cell_zone
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+======================================   ==============================================================================
+
+Argument                                                                                                        Summary
+
+======================================   ==============================================================================
+:ref:`cell_zone_name <cell_zone_name>`                                                              The cell zone name.
+
+:ref:`translate <translate_1>`                 Specifies whether copied zone should be translated (#t) or rotated (#f).
+
+:ref:`rotation_angle <rotation_angle>`                       Sets the rotation angle for copying or moving a cell zone.
+
+:ref:`offset <offset_1>`                     Specifies the translation offset vector for copying or moving a cell zone.
+
+:ref:`axis <axis_3>`                         Specifies the axis vector for rotation when copying or moving a cell zone.
+
+======================================   ==============================================================================
+
+.. rubric:: Included in:
+
+==================================   ============================
+
+Parent                                                    Summary
+
+==================================   ============================
+:ref:`modify_zones <modify_zones>`       The modify zones object.
+
+==================================   ============================
+

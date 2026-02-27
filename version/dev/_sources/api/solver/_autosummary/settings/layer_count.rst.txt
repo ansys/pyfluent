@@ -1,0 +1,21 @@
+:orphan:
+
+.. _layer_count:
+
+layer_count
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.layer_count
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================================   ======================================================================================================================
+
+Parent                                                                                                                                                Summary
+
+====================================   ======================================================================================================================
+:ref:`cell_distance <cell_distance>`       Define cell registers and adaption settings suitable for prismatic boundary layer adaption based on cell distance.
+
+====================================   ======================================================================================================================
+

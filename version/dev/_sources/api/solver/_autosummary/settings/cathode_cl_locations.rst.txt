@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cathode_cl_locations:
+
+cathode_cl_locations
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cathode_cl_locations
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ==============================
+
+Parent                                                            Summary
+
+========================================   ==============================
+:ref:`cathode_cl_zone <cathode_cl_zone>`       Up cathode catalyst layer.
+
+========================================   ==============================
+

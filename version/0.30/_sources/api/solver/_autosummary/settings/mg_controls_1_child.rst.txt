@@ -1,0 +1,40 @@
+:orphan:
+
+.. _mg_controls_1_child:
+
+mg_controls_child
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_251.mg_controls_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================   ===========================================
+
+Attribute                                                                                                Summary
+
+==================================================================   ===========================================
+:ref:`cycle_type <cycle_type>`                                                             Multigrid cycle type.
+
+:ref:`termination_criteria <termination_criteria>`                              Multigrid termination criterion.
+
+:ref:`residual_reduction_tolerance <residual_reduction_tolerance>`       Multigrid residual reduction tolerance.
+
+:ref:`method <method_9>`                                                                       Multigrid method.
+
+:ref:`stabilization <stabilization>`                                                    Multigrid stabilization.
+
+==================================================================   ===========================================
+
+.. rubric:: Included in:
+
+====================================   ===============================
+
+Parent                                                         Summary
+
+====================================   ===============================
+:ref:`mg_controls_1 <mg_controls_1>`       Multi-grid controls object.
+
+====================================   ===============================
+

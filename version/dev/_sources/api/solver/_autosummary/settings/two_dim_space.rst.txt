@@ -1,0 +1,21 @@
+:orphan:
+
+.. _two_dim_space:
+
+two_dim_space
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.two_dim_space
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================   ===================================================================
+
+Parent                                                                               Summary
+
+======================   ===================================================================
+:ref:`solver <solver>`       The solver type, 2D space, velocity formulation and time model.
+
+======================   ===================================================================
+

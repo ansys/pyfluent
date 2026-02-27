@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_utilities_get_adjacent_cell_zones_for_given_face_zones__get_adjacent_cell_zones_for_given_face_zonesArguments:
+
+_get_adjacent_cell_zones_for_given_face_zonesArguments
+======================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.get_adjacent_cell_zones_for_given_face_zones._get_adjacent_cell_zones_for_given_face_zonesArguments
+   :members: _face_zone_id_list, _face_zone_name_list, _face_zone_name_pattern
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

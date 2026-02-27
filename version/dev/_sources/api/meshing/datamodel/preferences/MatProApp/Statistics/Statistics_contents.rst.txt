@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_preferences_MatProApp_Statistics:
+
+Statistics
+==========
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.preferences.Root.MatProApp.Statistics
+   :members: DisplayExecutable, DisplayOptions, MaxPositions, PointSize, PointSymbol, QuickSlicing, VectorSize, VectorSymbol
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

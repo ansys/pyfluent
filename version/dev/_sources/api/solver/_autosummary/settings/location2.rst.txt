@@ -1,0 +1,32 @@
+:orphan:
+
+.. _location2:
+
+location2
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.location2
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ======================
+
+Attribute                                 Summary
+
+========================   ======================
+:ref:`physics <physics>`       The physics names.
+
+========================   ======================
+
+.. rubric:: Included in:
+
+================================================   =========================================
+
+Parent                                                                               Summary
+
+================================================   =========================================
+:ref:`pressure_drop_child <pressure_drop_child>`       'child_object_type' of pressure_drop.
+
+================================================   =========================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _add_mass_flow_at_inlets_expression:
+
+add_mass_flow_at_inlets_expression
+==================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.add_mass_flow_at_inlets_expression
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ===============
+
+Parent                                     Summary
+
+================================   ===============
+:ref:`performance <performance>`       The object.
+
+================================   ===============
+

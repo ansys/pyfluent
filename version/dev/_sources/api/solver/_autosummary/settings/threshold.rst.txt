@@ -1,0 +1,21 @@
+:orphan:
+
+.. _threshold:
+
+threshold
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.threshold
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+======================================================================================   ============================================================================================
+
+Parent                                                                                                                                                                        Summary
+
+======================================================================================   ============================================================================================
+:ref:`orthogonality_enhancing_cell_centroids <orthogonality_enhancing_cell_centroids>`       Relocate select cell centroids, to improve orthogonality metrics and solution stability.
+
+======================================================================================   ============================================================================================
+

@@ -1,0 +1,21 @@
+:orphan:
+
+.. _precision_1:
+
+precision
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.precision_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ====================================================================================
+
+Parent                                                                                                                  Summary
+
+========================================   ====================================================================================
+:ref:`number_format_1 <number_format_1>`       Contains controls for changing the format of the data labels on the active axis.
+
+========================================   ====================================================================================
+

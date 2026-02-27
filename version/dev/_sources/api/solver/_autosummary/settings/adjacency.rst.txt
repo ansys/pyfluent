@@ -1,0 +1,54 @@
+:orphan:
+
+.. _adjacency:
+
+adjacency
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.adjacency
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==============================================================   ============================================================================================
+
+Argument                                                                                                                                              Summary
+
+==============================================================   ============================================================================================
+:ref:`cellzones <cellzones_2>`                                                Cell zone(s) to access their adjacent face zone information and/or update name.
+
+:ref:`adjacent_faces <adjacent_faces>`                                     Adjacent face zones corresponding to the selected cell zone(s) to update the name.
+
+:ref:`rename_cellzones <rename_cellzones>`                                                                            Option to rename selected cell zone(s).
+
+:ref:`rename_adjacent_face_zones <rename_adjacent_face_zones>`               Option to rename adjacent face zones corresponding to the selected cell zone(s).
+
+:ref:`renaming_choice <renaming_choice>`                                                      Renaming choice for selected cell zone(s) and adjacent face(s).
+
+:ref:`abbreviate_type <abbreviate_type>`                                              Abbreviate type in renaming selected cell zone(s) and adjacent face(s).
+
+:ref:`exclude_custom_name <exclude_custom_name>`                                  Exclude custom name in renaming selected cell zone(s) and adjacent face(s).
+
+:ref:`suffix_prefix <suffix_prefix>`                                          Suffix/prefix string to be added to selected cell zone(s) and adjacent face(s).
+
+:ref:`from_string <from_string>`                                                     The string to be replaced in selected cell zone(s) and adjacent face(s).
+
+:ref:`to_string <to_string>`                                                        The string to replace with in selected cell zone(s) and adjacent face(s).
+
+:ref:`rename_shadow_zone <rename_shadow_zone>`                       Choice for Rename shadow zone while renaming selected cell zone(s) and adjacent face(s).
+
+==============================================================   ============================================================================================
+
+.. rubric:: Included in:
+
+==================================================   ==========================================================================================================
+
+Parent                                                                                                                                                  Summary
+
+==================================================   ==========================================================================================================
+:ref:`mesh <mesh>`                                       Provides access to mesh operations such as generation, transformation, repair, import/export and more.
+
+:ref:`cell_zone_conditions <cell_zone_conditions>`                                                                             The cell zone conditions object.
+
+==================================================   ==========================================================================================================
+

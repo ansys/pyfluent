@@ -1,0 +1,21 @@
+:orphan:
+
+.. _normal_6:
+
+normal
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.normal_6
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===================================
+
+Parent                                                                 Summary
+
+========================================   ===================================
+:ref:`scaling_1_child <scaling_1_child>`       'child_object_type' of scaling.
+
+========================================   ===================================
+

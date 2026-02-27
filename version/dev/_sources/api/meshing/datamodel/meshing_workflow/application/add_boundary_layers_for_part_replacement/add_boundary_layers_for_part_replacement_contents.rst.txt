@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_application_add_boundary_layers_for_part_replacement:
+
+add_boundary_layers_for_part_replacement
+========================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.application.add_boundary_layers_for_part_replacement
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _add_boundary_layers_for_part_replacementArguments/_add_boundary_layers_for_part_replacementArguments_contents

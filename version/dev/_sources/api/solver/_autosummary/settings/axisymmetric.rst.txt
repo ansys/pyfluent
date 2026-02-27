@@ -1,0 +1,34 @@
+:orphan:
+
+.. _axisymmetric:
+
+axisymmetric
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.axisymmetric
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================================================================   ==================================================================
+
+Attribute                                                                                                                                       Summary
+
+==================================================================================   ==================================================================
+:ref:`alternative_axisymmetric_formulation <alternative_axisymmetric_formulation>`                         Enable alternative axisymmetric formulation.
+
+:ref:`axis_stabilization <axis_stabilization>`                                           Enable numerical stabilization of the axis boundary-condition.
+
+==================================================================================   ==================================================================
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`methods_2 <methods_2>`       The solution methods object.
+
+============================   ================================
+

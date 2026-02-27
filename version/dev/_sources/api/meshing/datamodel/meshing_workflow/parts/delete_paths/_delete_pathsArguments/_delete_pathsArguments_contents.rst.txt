@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_delete_paths__delete_pathsArguments:
+
+_delete_pathsArguments
+======================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.delete_paths._delete_pathsArguments
+   :members: _paths
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

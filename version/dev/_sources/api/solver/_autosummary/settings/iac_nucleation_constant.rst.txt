@@ -1,0 +1,21 @@
+:orphan:
+
+.. _iac_nucleation_constant:
+
+iac_nucleation_constant
+=======================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.iac_nucleation_constant
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   =========================
+
+Parent                                           Summary
+
+============================   =========================
+:ref:`iac_props <iac_props>`       IAC properties group.
+
+============================   =========================
+

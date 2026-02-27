@@ -1,0 +1,21 @@
+:orphan:
+
+.. _value_32:
+
+value
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.value_32
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================   ======================
+
+Parent                                            Summary
+
+================================   ======================
+:ref:`frequency_2 <frequency_2>`       'frequency' child.
+
+================================   ======================
+

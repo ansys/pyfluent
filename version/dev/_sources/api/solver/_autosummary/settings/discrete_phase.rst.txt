@@ -1,0 +1,61 @@
+:orphan:
+
+.. _discrete_phase:
+
+discrete_phase
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.discrete_phase
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================================================   ============================================================================================
+
+Attribute                                                                                                                                           Summary
+
+============================================================   ============================================================================================
+:ref:`dpm_level_control_enabled <dpm_level_control_enabled>`              Enable this to control the level of detail and complexity of this user interface.
+
+:ref:`dpm_level_of_detail <dpm_level_of_detail>`                   Up to which level of complexity you want to see all the details of this user experience.
+
+:ref:`general_settings <general_settings>`                                                                                                     Main object.
+
+:ref:`physical_models <physical_models>`                                                                                                       Main object.
+
+:ref:`tracking <tracking>`                                                                                                                     Main object.
+
+:ref:`numerics <numerics>`                                                                                                                     Main object.
+
+:ref:`parallel <parallel_1>`                                            Options controlling the parallel processing scheme used when tracking particles.~%.
+
+:ref:`user_defined_functions <user_defined_functions_1>`                                                                                       Main object.
+
+:ref:`injections <injections>`                                                                                            Injection named object container.
+
+============================================================   ============================================================================================
+
+.. rubric:: Methods
+
+================================================   ========================================================================================
+
+Method                                                                                                                              Summary
+
+================================================   ========================================================================================
+:ref:`clear_all_particles <clear_all_particles>`                                               Clear all particles currently in the domain.
+
+:ref:`update_panel <update_panel>`                     In Fluids One, use this to update the panel, e.g. when it shows anything unexpected.
+
+================================================   ========================================================================================
+
+.. rubric:: Included in:
+
+======================   =================================================================================================
+
+Parent                                                                                                             Summary
+
+======================   =================================================================================================
+:ref:`models <models>`       Enables and configures physical models such as turbulence, energy, multiphase, and radiation.
+
+======================   =================================================================================================
+

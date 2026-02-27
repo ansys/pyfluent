@@ -1,0 +1,34 @@
+:orphan:
+
+.. _curves_1_child:
+
+curves_child
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.curves_1_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ========================================================
+
+Attribute                                                                   Summary
+
+========================   ========================================================
+:ref:`line <line_1>`             Configure line settings for a specific plot curve.
+
+:ref:`marker <marker_2>`       Configure marker settings for a specific plot curve.
+
+========================   ========================================================
+
+.. rubric:: Included in:
+
+==========================   ============================================
+
+Parent                                                            Summary
+
+==========================   ============================================
+:ref:`curves_1 <curves_1>`       Line, marker style and color for Curves.
+
+==========================   ============================================
+

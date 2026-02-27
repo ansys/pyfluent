@@ -1,0 +1,21 @@
+:orphan:
+
+.. _deformation_profile:
+
+deformation_profile
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.deformation_profile
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`prescribed_profile_child <prescribed_profile_child>`       'child_object_type' of prescribed_profile.
+
+==========================================================   ==============================================
+

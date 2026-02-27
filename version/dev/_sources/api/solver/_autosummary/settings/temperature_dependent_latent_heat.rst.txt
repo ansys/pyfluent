@@ -1,0 +1,21 @@
+:orphan:
+
+.. _temperature_dependent_latent_heat:
+
+temperature_dependent_latent_heat
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.temperature_dependent_latent_heat
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ================
+
+Parent                                              Summary
+
+========================================   ================
+:ref:`physical_models <physical_models>`       Main object.
+
+========================================   ================
+

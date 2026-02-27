@@ -1,0 +1,21 @@
+:orphan:
+
+.. _single:
+
+single
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.single
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================================================================   ==============================================
+
+Parent                                                                                                                Summary
+
+============================================================================   ==============================================
+:ref:`enable_lwf_continuity_formulation <enable_lwf_continuity_formulation>`       Options for the film continuity algorithm.
+
+============================================================================   ==============================================
+

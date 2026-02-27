@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_7:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_7
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   =================================================================================================
+
+Parent                                                                                                                     Summary
+
+==============================   =================================================================================================
+:ref:`write_case <write_case>`       Write a case file. The case file contains the mesh, boundary conditions, and solver settings.
+
+==============================   =================================================================================================
+

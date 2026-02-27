@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reverse_1:
+
+reverse
+=======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reverse_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ==============================
+
+Parent                                                Summary
+
+============================   ==============================
+:ref:`option_71 <option_71>`       Check the control options.
+
+============================   ==============================
+

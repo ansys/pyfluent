@@ -1,0 +1,21 @@
+:orphan:
+
+.. _adjacent_cell_zone_2:
+
+adjacent_cell_zone_2
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.adjacent_cell_zone_2
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ================================
+
+Parent                                                  Summary
+
+============================   ================================
+:ref:`create_10 <create_10>`       Create turbo mesh interface.
+
+============================   ================================
+

@@ -1,0 +1,36 @@
+:orphan:
+
+.. _non_reflecting_boundary_treatment:
+
+non_reflecting_boundary_treatment
+=================================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.non_reflecting_boundary_treatment
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ======================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Summary
+
+==========================================   ======================================================================================================================================================================================================================================================================================================================================================================================================================================================
+:ref:`pressure_inlet <pressure_inlet_2>`         Enabling the use of minimal pressure reflection treatment. This treatment will minimize pressure wave reflections from the boundaries on which this option is active, but not necessarily fully eliminating them. The reflections would be of an acceptable limit in order to not contaminate the solution, the simulation will gain from the robustness of the new algorithm compared to traditional non-reflecting boundary condition treatment.
+
+:ref:`pressure_outlet <pressure_outlet_3>`       Enabling the use of minimal pressure reflection treatment. This treatment will minimize pressure wave reflections from the boundaries on which this option is active, but not necessarily fully eliminating them. The reflections would be of an acceptable limit in order to not contaminate the solution, the simulation will gain from the robustness of the new algorithm compared to traditional non-reflecting boundary condition treatment.
+
+:ref:`velocity_inlet <velocity_inlet_2>`         Enabling the use of minimal pressure reflection treatment. This treatment will minimize pressure wave reflections from the boundaries on which this option is active, but not necessarily fully eliminating them. The reflections would be of an acceptable limit in order to not contaminate the solution, the simulation will gain from the robustness of the new algorithm compared to traditional non-reflecting boundary condition treatment.
+
+==========================================   ======================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`advanced_4 <advanced_4>`       Solution method advanced object.
+
+==============================   ====================================
+

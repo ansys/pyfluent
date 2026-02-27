@@ -1,0 +1,36 @@
+:orphan:
+
+.. _ratio_2_child:
+
+ratio_child
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.ratio_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================   =============================================
+
+Attribute                                                                Summary
+
+================================   =============================================
+:ref:`name <name_5>`                                         Name of the object.
+
+:ref:`numerator <numerator>`             The numerator observable for the ratio.
+
+:ref:`denominator <denominator>`       The denominator observable for the ratio.
+
+================================   =============================================
+
+.. rubric:: Included in:
+
+========================   =================================
+
+Parent                                               Summary
+
+========================   =================================
+:ref:`ratio_2 <ratio_2>`       Ratio observable definitions.
+
+========================   =================================
+

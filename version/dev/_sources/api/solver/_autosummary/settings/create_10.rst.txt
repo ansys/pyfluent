@@ -1,0 +1,48 @@
+:orphan:
+
+.. _create_10:
+
+create
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.create_10
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================================   ================================================================
+
+Argument                                                                                                      Summary
+
+==================================================   ================================================================
+:ref:`mesh_interface_name <mesh_interface_name>`                                            The mesh interface names.
+
+:ref:`adjacent_cell_zone_1 <adjacent_cell_zone_1>`                                              Adjacent cell zone 1.
+
+:ref:`zone1 <zone1_1>`                                                  First interface defining this mesh-interface.
+
+:ref:`adjacent_cell_zone_2 <adjacent_cell_zone_2>`                                              Adjacent cell zone 2.
+
+:ref:`zone2 <zone2_1>`                                                 Second interface defining this mesh-interface.
+
+:ref:`paired_zones <paired_zones>`                                                                 Paired zones list.
+
+:ref:`turbo_choice <turbo_choice>`                                                 Your choice of pitch-change types.
+
+:ref:`turbo_non_overlap <turbo_non_overlap>`             Enable non-overlapping walls option for this mesh-interface.
+
+==================================================   ================================================================
+
+.. rubric:: Included in:
+
+==========================================   ============================
+
+Parent                                                            Summary
+
+==========================================   ============================
+:ref:`turbo_interface <turbo_interface>`         Create turbo interfaces.
+
+:ref:`turbo_interfaces <turbo_interfaces>`       Create turbo interfaces.
+
+==========================================   ============================
+

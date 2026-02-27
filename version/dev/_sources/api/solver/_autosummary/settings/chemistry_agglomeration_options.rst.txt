@@ -1,0 +1,38 @@
+:orphan:
+
+.. _chemistry_agglomeration_options:
+
+chemistry_agglomeration_options
+===============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.chemistry_agglomeration_options
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================   ==============================================
+
+Attribute                                                                                         Summary
+
+========================================================   ==============================================
+:ref:`chemistry_agglomeration <chemistry_agglomeration>`          Enable/disable chemistry agglomeration.
+
+:ref:`error_tolerance <error_tolerance_1>`                     The agglomerate chemistry error tolerance.
+
+:ref:`temperature_bin <temperature_bin>`                       The agglomerate chemistry temperature bin.
+
+:ref:`subset_species <subset_species>`                                                The subset species.
+
+========================================================   ==============================================
+
+.. rubric:: Included in:
+
+======================================================   ================================================
+
+Parent                                                                                            Summary
+
+======================================================   ================================================
+:ref:`integration_parameters <integration_parameters>`       Species model integration parameters option.
+
+======================================================   ================================================
+

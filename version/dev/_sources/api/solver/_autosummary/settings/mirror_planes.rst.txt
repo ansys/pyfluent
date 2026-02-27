@@ -1,0 +1,47 @@
+:orphan:
+
+.. _mirror_planes:
+
+mirror_planes
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mirror_planes
+    :show-inheritance:
+
+.. rubric:: Methods
+
+============================================   =====================================================
+
+Method                                                                                       Summary
+
+============================================   =====================================================
+:ref:`create <create_17>`                          Define a mirror plane for a non-symmetric domain.
+
+:ref:`delete <delete>`                                                      Delete selected objects.
+
+:ref:`rename <rename>`                                                            Rename the object.
+
+:ref:`list_1 <list_1>`                                                List the names of the objects.
+
+:ref:`list_properties_1 <list_properties_1>`                   List active properties of the object.
+
+:ref:`make_a_copy <make_a_copy>`                                        Create a copy of the object.
+
+============================================   =====================================================
+
+.. rubric:: Named object type
+
+:ref:`mirror_planes_child <mirror_planes_child>`
+
+
+.. rubric:: Included in:
+
+====================   ===============================================================================
+
+Parent                                                                                         Summary
+
+====================   ===============================================================================
+:ref:`views <views>`       Access controls for managing named camera views and display configurations.
+
+====================   ===============================================================================
+

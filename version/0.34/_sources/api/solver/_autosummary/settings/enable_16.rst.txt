@@ -1,0 +1,21 @@
+:orphan:
+
+.. _enable_16:
+
+enable
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.enable_16
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================   =======================================
+
+Parent                                                                             Summary
+
+================================================   =======================================
+:ref:`turbo_specific_nrbc <turbo_specific_nrbc>`       The turbo-specific n.r.b.c. object.
+
+================================================   =======================================
+

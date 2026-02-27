@@ -1,0 +1,21 @@
+:orphan:
+
+.. _expert_1:
+
+expert
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.expert_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================================================================================   ==================================================
+
+Parent                                                                                                                        Summary
+
+================================================================================   ==================================================
+:ref:`dynamic_mechanism_reduction_options <dynamic_mechanism_reduction_options>`       Dynamic mechanism reduction parameters option.
+
+================================================================================   ==================================================
+

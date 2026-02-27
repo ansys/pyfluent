@@ -1,0 +1,21 @@
+:orphan:
+
+.. _definition_3_child:
+
+definition_child
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.definition_3_child
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ==============================================================================================================================================================
+
+Parent                                                                                                                                                                                      Summary
+
+==================================   ==============================================================================================================================================================
+:ref:`definition_3 <definition_3>`       Old observables definitions. This has been migrated to definitions with an "s" where the various observable types are contained in different dictionaries.
+
+==================================   ==============================================================================================================================================================
+

@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_AddShellBoundaryLayerControls__AddShellBoundaryLayerControlsCommandArguments:
+
+_AddShellBoundaryLayerControlsCommandArguments
+==============================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_252.meshing.Root.AddShellBoundaryLayerControls._AddShellBoundaryLayerControlsCommandArguments
+   :members: _AddChild, _BLControlName, _EdgeLabelList, _EdgeSelectionType, _EdgeZoneList, _FaceLabelList, _FaceZoneList, _FirstAspectRatio, _FirstLayerHeight, _GrowOn, _LastAspectRatio, _MaxLayerHeight, _NumberOfLayers, _OffsetMethodType, _Rate
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _ShellBLAdvancedOptions/_ShellBLAdvancedOptions_contents

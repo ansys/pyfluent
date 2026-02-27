@@ -1,0 +1,40 @@
+:orphan:
+
+.. _imagy:
+
+imagy
+=====
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.imagy
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==================================   ==============================================================
+
+Attribute                                                                                   Summary
+
+==================================   ==============================================================
+:ref:`option <option_56>`                         How the imaginary Y displacement will be defined.
+
+:ref:`value <value_30>`                  Constant value or expression for imaginary Y displacement.
+
+:ref:`profile_name <profile_name>`                                         The name of the profile.
+
+:ref:`field_name <field_name>`                                               The name of the field.
+
+:ref:`udf <udf_6>`                          The user-defined function for imaginary Y displacement.
+
+==================================   ==============================================================
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`perdisp_properties_child <perdisp_properties_child>`       'child_object_type' of perdisp_properties.
+
+==========================================================   ==============================================
+

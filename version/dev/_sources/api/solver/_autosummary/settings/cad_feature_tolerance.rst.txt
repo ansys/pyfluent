@@ -1,0 +1,21 @@
+:orphan:
+
+.. _cad_feature_tolerance:
+
+cad_feature_tolerance
+=====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.cad_feature_tolerance
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+================   ============================================================
+
+Parent                                                                  Summary
+
+================   ============================================================
+:ref:`cad <cad>`       Export specified surfaces from 3D cases as an .stl file.
+
+================   ============================================================
+

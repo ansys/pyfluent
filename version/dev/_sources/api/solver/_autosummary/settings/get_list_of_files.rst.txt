@@ -1,0 +1,36 @@
+:orphan:
+
+.. _get_list_of_files:
+
+get_list_of_files
+=================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.get_list_of_files
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+==================================   ==============================================================================================================================================
+
+Argument                                                                                                                                                                    Summary
+
+==================================   ==============================================================================================================================================
+:ref:`project_id <project_id>`                                                                                                                                          Project ID.
+
+:ref:`job_id <job_id>`                                                                                                                                                      Job ID.
+
+:ref:`input_files <input_files_1>`       Specifies whether to get the list of input files or output files. Pass yes (#t) to get input files or no (#f) to get list of output files.
+
+==================================   ==============================================================================================================================================
+
+.. rubric:: Included in:
+
+================================   =======================
+
+Parent                                             Summary
+
+================================   =======================
+:ref:`job_actions <job_actions>`       Remote Job Actions.
+
+================================   =======================
+

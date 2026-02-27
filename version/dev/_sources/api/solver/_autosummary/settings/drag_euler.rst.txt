@@ -1,0 +1,39 @@
+:orphan:
+
+.. _drag_euler:
+
+drag_euler
+==========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.drag_euler
+    :show-inheritance:
+
+.. rubric:: Methods
+
+==========================================   ==========================================
+
+Method                                                                          Summary
+
+==========================================   ==========================================
+:ref:`list_properties <list_properties_2>`          List properties of selected object.
+
+:ref:`resize <resize>`                           Set number of objects for list-object.
+
+==========================================   ==========================================
+
+.. rubric:: Named object type
+
+:ref:`drag_euler_child <drag_euler_child>`
+
+
+.. rubric:: Included in:
+
+======================   =======================
+
+Parent                                   Summary
+
+======================   =======================
+:ref:`forces <forces>`       Interfacial forces.
+
+======================   =======================
+

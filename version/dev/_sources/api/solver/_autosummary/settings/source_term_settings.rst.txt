@@ -1,0 +1,46 @@
+:orphan:
+
+.. _source_term_settings:
+
+source_term_settings
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.source_term_settings
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+======================================================================   ================================================================================================================================================================
+
+Attribute                                                                                                                                                                                                                         Summary
+
+======================================================================   ================================================================================================================================================================
+:ref:`underrelaxation_factor <underrelaxation_factor>`                                                                                                                                       The DPM source term under-relaxation factor.
+
+:ref:`update_every_iteration_enabled <update_every_iteration_enabled>`       Enable/disable update of DPM sources in the flow equations at every flow solver iteration. For unsteady simulations, this option is default and recommended.
+
+:ref:`linearization <linearization>`                                                                                                                        Menu containing options to enable/disable linearization of DPM source terms. 
+
+:ref:`impl_mom_cplg_enabled <impl_mom_cplg_enabled>`                                                                                                                 Enable/disable implicit treatment for the DPM momentum source terms.
+
+:ref:`impl_cplg_enabled <impl_cplg_enabled>`                                                                                                                                  Enable/disable implicit treatment for all DPM source terms.
+
+:ref:`time_accurate_sources_enabled <time_accurate_sources_enabled>`                                                                                     Enable/disable second order accurate formulation for transient DPM source terms.
+
+:ref:`reset_sources_at_timestep <reset_sources_at_timestep>`                                                                                                 Enable/disable flushing of DPM source terms at beginning of every time step.
+
+:ref:`linear_change_enabled <linear_change_enabled>`                                                                                                            Enable/disable the linear growth of DPM source terms every DPM iteration.
+
+======================================================================   ================================================================================================================================================================
+
+.. rubric:: Included in:
+
+==========================   ================
+
+Parent                                Summary
+
+==========================   ================
+:ref:`numerics <numerics>`       Main object.
+
+==========================   ================
+

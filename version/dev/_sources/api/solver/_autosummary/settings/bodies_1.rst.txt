@@ -1,0 +1,21 @@
+:orphan:
+
+.. _bodies_1:
+
+bodies
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.bodies_1
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================================   ==========================================
+
+Parent                                                                              Summary
+
+==============================================   ==========================================
+:ref:`create_shared_face <create_shared_face>`       Create shared-face between two bodies.
+
+==============================================   ==========================================
+

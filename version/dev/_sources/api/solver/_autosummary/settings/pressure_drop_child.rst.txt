@@ -1,0 +1,40 @@
+:orphan:
+
+.. _pressure_drop_child:
+
+pressure_drop_child
+===================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.pressure_drop_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =======================
+
+Attribute                                      Summary
+
+============================   =======================
+:ref:`name <name_5>`               Name of the object.
+
+:ref:`inlets <inlets_2>`              Inlet zone list.
+
+:ref:`outlets <outlets_2>`           Outlet zone list.
+
+:ref:`location <location_3>`               The object.
+
+:ref:`location2 <location2>`               The object.
+
+============================   =======================
+
+.. rubric:: Included in:
+
+====================================   =========================================
+
+Parent                                                                   Summary
+
+====================================   =========================================
+:ref:`pressure_drop <pressure_drop>`       Pressure drop observable definitions.
+
+====================================   =========================================
+

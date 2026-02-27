@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_general_insert_new_task__insert_new_taskArguments:
+
+_insert_new_taskArguments
+=========================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.general.insert_new_task._insert_new_taskArguments
+   :members: _command_name
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

@@ -1,0 +1,51 @@
+:orphan:
+
+.. _periodic_2_child:
+
+periodic_child
+==============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.periodic_2_child
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+============================   =================================================================
+
+Attribute                                                                                Summary
+
+============================   =================================================================
+:ref:`name <name_5>`                                                         Name of the object.
+
+:ref:`phase <phase_41>`            Provides an object description for phase-specific conditions.
+
+:ref:`periodic <periodic_1>`                   Periodic boundary condition settings for threads.
+
+:ref:`geometry <geometry_8>`                             Geometry settings for periodic threads.
+
+============================   =================================================================
+
+.. rubric:: Methods
+
+======================================   ======================================================================================================================
+
+Method                                                                                                                                                  Summary
+
+======================================   ======================================================================================================================
+:ref:`display <display_2>`                   Show the selected zone surface. If the surface does not exist, this command creates it first and then displays it.
+
+:ref:`create_surface <create_surface>`                                                                                        Create surface for selected zone.
+
+======================================   ======================================================================================================================
+
+.. rubric:: Included in:
+
+==============================   ===========================================
+
+Parent                                                               Summary
+
+==============================   ===========================================
+:ref:`periodic_2 <periodic_2>`       Settings for boundary-condition object.
+
+==============================   ===========================================
+

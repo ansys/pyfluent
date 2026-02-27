@@ -1,0 +1,32 @@
+:orphan:
+
+.. _repair_wall_distance:
+
+repair_wall_distance
+====================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.repair_wall_distance
+    :show-inheritance:
+
+.. rubric:: Arguments
+
+========================   ==============================================================================================
+
+Argument                                                                                                          Summary
+
+========================   ==============================================================================================
+:ref:`repair <repair_2>`       Enable/disable wall distance repair at very high aspect ratio hexahedral/polyhedral cells.
+
+========================   ==============================================================================================
+
+.. rubric:: Included in:
+
+======================================   ==========================================
+
+Parent                                                                      Summary
+
+======================================   ==========================================
+:ref:`repair_improve <repair_improve>`       The repair and improve quality object.
+
+======================================   ==========================================
+

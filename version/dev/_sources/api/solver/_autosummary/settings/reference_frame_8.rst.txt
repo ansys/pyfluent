@@ -1,0 +1,21 @@
+:orphan:
+
+.. _reference_frame_8:
+
+reference_frame
+===============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.reference_frame_8
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================   ===================================
+
+Parent                                                                   Summary
+
+==========================================   ===================================
+:ref:`initialization_1 <initialization_1>`       Solution initialization object.
+
+==========================================   ===================================
+

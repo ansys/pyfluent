@@ -1,0 +1,21 @@
+:orphan:
+
+.. _rename_adjacent_face_zones:
+
+rename_adjacent_face_zones
+==========================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.rename_adjacent_face_zones
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+============================   ===============================================================================================
+
+Parent                                                                                                                 Summary
+
+============================   ===============================================================================================
+:ref:`adjacency <adjacency>`       Rename options to be performed on selected cell zone(s) and corresponding adjacent face(s).
+
+============================   ===============================================================================================
+

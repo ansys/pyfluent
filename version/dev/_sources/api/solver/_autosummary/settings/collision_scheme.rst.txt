@@ -1,0 +1,21 @@
+:orphan:
+
+.. _collision_scheme:
+
+collision_scheme
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.collision_scheme
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================   ==============================
+
+Parent                                      Summary
+
+==================   ==============================
+:ref:`dsmc <dsmc>`       Enable/disable dsmc model.
+
+==================   ==============================
+

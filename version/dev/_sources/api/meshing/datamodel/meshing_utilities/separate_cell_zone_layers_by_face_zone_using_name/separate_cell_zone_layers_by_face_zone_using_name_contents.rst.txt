@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_utilities_separate_cell_zone_layers_by_face_zone_using_name:
+
+separate_cell_zone_layers_by_face_zone_using_name
+=================================================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_utilities.Root.separate_cell_zone_layers_by_face_zone_using_name
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _separate_cell_zone_layers_by_face_zone_using_nameArguments/_separate_cell_zone_layers_by_face_zone_using_nameArguments_contents

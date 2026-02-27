@@ -1,0 +1,21 @@
+:orphan:
+
+.. _subdivide:
+
+subdivide
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.subdivide
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   =========================
+
+Parent                                                 Summary
+
+==================================   =========================
+:ref:`parameters_1 <parameters_1>`       Iteration parameters.
+
+==================================   =========================
+

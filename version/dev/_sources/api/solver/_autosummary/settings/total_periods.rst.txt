@@ -1,0 +1,21 @@
+:orphan:
+
+.. _total_periods:
+
+total_periods
+=============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.total_periods
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==================================   ================================
+
+Parent                                                        Summary
+
+==================================   ================================
+:ref:`parameters_9 <parameters_9>`       Iteration parameters object.
+
+==================================   ================================
+

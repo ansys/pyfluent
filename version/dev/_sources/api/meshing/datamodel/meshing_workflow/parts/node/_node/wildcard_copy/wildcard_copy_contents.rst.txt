@@ -1,0 +1,18 @@
+.. _ref_meshing_datamodel_meshing_workflow_parts_node__node_wildcard_copy:
+
+wildcard_copy
+=============
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.parts.node._node.wildcard_copy
+   :members: create_instance
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+
+.. toctree::
+   :hidden:
+
+   _wildcard_copyArguments/_wildcard_copyArguments_contents

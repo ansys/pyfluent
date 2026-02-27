@@ -1,0 +1,21 @@
+:orphan:
+
+.. _n_maximize_norms:
+
+n_maximize_norms
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.n_maximize_norms
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==============================   ====================================
+
+Parent                                                        Summary
+
+==============================   ====================================
+:ref:`options_13 <options_13>`       Options for reporting residuals.
+
+==============================   ====================================
+

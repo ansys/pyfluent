@@ -1,0 +1,14 @@
+.. _ref_meshing_datamodel_meshing_workflow_task_object_identify_deviated_faces__identify_deviated_faces_update_child_tasks__update_child_tasksArguments:
+
+_update_child_tasksArguments
+============================
+
+.. autoclass:: ansys.fluent.core.generated.datamodel_271.meshing_workflow.Root.task_object.identify_deviated_faces._identify_deviated_faces.update_child_tasks._update_child_tasksArguments
+   :members: _arguments, _setup_type_changed
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

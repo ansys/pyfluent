@@ -1,0 +1,14 @@
+.. _ref_solver_tui_results_report_discrete_phase_injection_diameter_statistics_injected_particles_statistics:
+
+injected_particles_statistics
+=============================
+
+.. autoclass:: ansys.fluent.core.generated.solver.tui_271.main_menu.results.report.discrete_phase.injection_diameter_statistics.injected_particles_statistics
+   :members: accumulated_statistics_enabled, enabled, reset_accumulated_statistics
+   :show-inheritance:
+   :undoc-members:
+   :exclude-members: __weakref__, __dict__
+   :special-members: __init__
+   :autosummary:
+   :autosummary-members:
+

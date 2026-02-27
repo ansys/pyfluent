@@ -1,0 +1,21 @@
+:orphan:
+
+.. _file_name_1_29:
+
+file_name
+=========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.file_name_1_29
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+========================================   ===============================================
+
+Parent                                                                             Summary
+
+========================================   ===============================================
+:ref:`transient_setup <transient_setup>`       Up transient simulation related parameters.
+
+========================================   ===============================================
+

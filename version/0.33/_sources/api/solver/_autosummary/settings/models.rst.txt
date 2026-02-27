@@ -1,0 +1,64 @@
+:orphan:
+
+.. _models:
+
+models
+======
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_252.models
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+================================================   ============================================
+
+Attribute                                                                               Summary
+
+================================================   ============================================
+:ref:`multiphase <multiphase>`                                                Multiphase model.
+
+:ref:`energy <energy>`                                     The energy transport model settings.
+
+:ref:`viscous <viscous>`                                                        Viscous object.
+
+:ref:`acoustics <acoustics>`                                   Entering acoustics model object.
+
+:ref:`radiation <radiation>`                                 Model for radiative heat-transfer.
+
+:ref:`species <species>`                                                  Species model object.
+
+:ref:`discrete_phase <discrete_phase>`                                         Toplevel object.
+
+:ref:`virtual_blade_model <virtual_blade_model>`                          The vbm model object.
+
+:ref:`optics <optics>`                                                 The optics model object.
+
+:ref:`structure <structure>`                                                 'structure' child.
+
+:ref:`ablation <ablation>`                                       Enable/disable ablation model.
+
+:ref:`dsmc <dsmc>`                                                   Enable/disable dsmc model.
+
+:ref:`echemistry <echemistry>`                         The potential/echemistry model settings.
+
+:ref:`battery <battery>`                                                Battery model settings.
+
+:ref:`system_coupling <system_coupling>`                      The system coupling model object.
+
+:ref:`sofc <sofc>`                                                         SOFC model settings.
+
+:ref:`pemfc <pemfc>`                                                      PEMFC model settings.
+
+================================================   ============================================
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`setup <setup>`       'setup' child.
+
+====================   ==================
+

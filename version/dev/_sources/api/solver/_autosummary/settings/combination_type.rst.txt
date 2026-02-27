@@ -1,0 +1,21 @@
+:orphan:
+
+.. _combination_type:
+
+combination_type
+================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.combination_type
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+==========================================================   ==============================================
+
+Parent                                                                                              Summary
+
+==========================================================   ==============================================
+:ref:`linear_combination_child <linear_combination_child>`       'child_object_type' of linear_combination.
+
+==========================================================   ==============================================
+

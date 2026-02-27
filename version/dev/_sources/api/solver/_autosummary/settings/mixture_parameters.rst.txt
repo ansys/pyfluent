@@ -1,0 +1,32 @@
+:orphan:
+
+.. _mixture_parameters:
+
+mixture_parameters
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.mixture_parameters
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================   ============================
+
+Attribute                                                         Summary
+
+==========================================   ============================
+:ref:`slip_velocity_on <slip_velocity_on>`       Mixture model parameter.
+
+==========================================   ============================
+
+.. rubric:: Included in:
+
+==================================   =====================
+
+Parent                                             Summary
+
+==================================   =====================
+:ref:`multiphase_1 <multiphase_1>`       Multiphase model.
+
+==================================   =====================
+

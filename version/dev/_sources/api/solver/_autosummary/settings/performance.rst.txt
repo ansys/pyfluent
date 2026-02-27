@@ -1,0 +1,73 @@
+:orphan:
+
+.. _performance:
+
+performance
+===========
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.performance
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================================================================================   ========================================================================
+
+Attribute                                                                                                                                                   Summary
+
+========================================================================================   ========================================================================
+:ref:`inlets <inlets>`                                                                                                                              Inlet surfaces.
+
+:ref:`outlets <outlets>`                                                                                                                           Outlet surfaces.
+
+:ref:`efficiency_type <efficiency_type>`                                                                                                           Efficiency type.
+
+:ref:`process <process>`                                                                                                                              Process type.
+
+:ref:`efficiency_ratio <efficiency_ratio>`                                                                                                        Efficiency ratio.
+
+:ref:`add_efficiency_expression <add_efficiency_expression>`                                                Enable/disable definition of expression for efficiency.
+
+:ref:`efficiency_expression_name <efficiency_expression_name>`                                                           Name of the new expression for efficiency.
+
+:ref:`add_total_pressure_ratio_expression <add_total_pressure_ratio_expression>`                  Enable/disable definition of expression for total pressure ratio.
+
+:ref:`total_pressure_ratio_expression_name <total_pressure_ratio_expression_name>`                             Name of the new expression for total pressure ratio.
+
+:ref:`add_total_temperature_ratio_expression <add_total_temperature_ratio_expression>`         Enable/disable definition of expression for total temperature ratio.
+
+:ref:`total_temperature_ratio_expression_name <total_temperature_ratio_expression_name>`                    Name of the new expression for total temperature ratio.
+
+:ref:`add_mass_flow_at_inlets_expression <add_mass_flow_at_inlets_expression>`                     Enable/disable definition of expression for mass flow at inlets.
+
+:ref:`mass_flow_at_inlets_expression_name <mass_flow_at_inlets_expression_name>`                                Name of the new expression for mass flow at inlets.
+
+:ref:`add_mass_flow_at_outlets_expression <add_mass_flow_at_outlets_expression>`                  Enable/disable definition of expression for mass flow at outlets.
+
+:ref:`mass_flow_at_outlets_expression_name <mass_flow_at_outlets_expression_name>`                             Name of the new expression for mass flow at outlets.
+
+========================================================================================   ========================================================================
+
+.. rubric:: Methods
+
+==============================================   ============================================================
+
+Method                                                                                                Summary
+
+==============================================   ============================================================
+:ref:`define <define>`                                        Define named expressions for turbo performance.
+
+:ref:`define_expressions <define_expressions>`       Define expressions to evaluate turbomachine performance.
+
+==============================================   ============================================================
+
+.. rubric:: Included in:
+
+======================================   ==============================
+
+Parent                                                          Summary
+
+======================================   ==============================
+:ref:`turbomachinery <turbomachinery>`       The turbomachinery models.
+
+======================================   ==============================
+

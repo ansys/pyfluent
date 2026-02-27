@@ -1,0 +1,42 @@
+:orphan:
+
+.. _coefficients_4:
+
+coefficients
+============
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.coefficients_4
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+========================   ===================================
+
+Attribute                                              Summary
+
+========================   ===================================
+:ref:`cs <cs>`                       The model coefficient Cs.
+
+:ref:`cwale <cwale>`              The model coefficient Cwale.
+
+:ref:`cvreman <cvreman>`            The Vreman Model constant.
+
+:ref:`csigma <csigma>`               The Sigma Model constant.
+
+:ref:`cw1 <cw1>`               The Wall Model coefficient Cw1.
+
+:ref:`cw2 <cw2>`               The Wall Model coefficient Cw2.
+
+========================   ===================================
+
+.. rubric:: Included in:
+
+============================================   ======================
+
+Parent                                                        Summary
+
+============================================   ======================
+:ref:`les_model_options <les_model_options>`       LES model options.
+
+============================================   ======================
+

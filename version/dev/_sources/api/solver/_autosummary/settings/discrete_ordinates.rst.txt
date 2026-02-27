@@ -1,0 +1,42 @@
+:orphan:
+
+.. _discrete_ordinates:
+
+discrete_ordinates
+==================
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.discrete_ordinates
+    :show-inheritance:
+
+.. rubric:: Attributes
+
+==========================================================================================   ============================================================================
+
+Attribute                                                                                                                                                         Summary
+
+==========================================================================================   ============================================================================
+:ref:`angular_discretization <angular_discretization>`                                                 Angular discretization for the discrete ordinates radiation model.
+
+:ref:`do_acceleration <do_acceleration>`                                                                          Enable/disable acceleration of computation of DO model.
+
+:ref:`partially_specular_wall_treatment_method <partially_specular_wall_treatment_method>`               Method for partially specular wall with discrete ordinate model.
+
+:ref:`fast_second_order_discrete_ordinate <fast_second_order_discrete_ordinate>`                 Enable/disable the fast-second-order option for Discrete Ordinate Model.
+
+:ref:`blending_factor <blending_factor>`                                                                                       1st-order to higher-order blending factor.
+
+:ref:`do_energy_coupling <do_energy_coupling>`                                                                                           Settings for DO/Energy Coupling.
+
+==========================================================================================   ============================================================================
+
+.. rubric:: Included in:
+
+============================   ======================================
+
+Parent                                                        Summary
+
+============================   ======================================
+:ref:`radiation <radiation>`       Model for radiative heat-transfer.
+
+============================   ======================================
+

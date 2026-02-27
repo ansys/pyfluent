@@ -1,0 +1,21 @@
+:orphan:
+
+.. _udf_5:
+
+udf
+===
+
+.. autoclass:: ansys.fluent.core.generated.solver.settings_271.udf_5
+    :show-inheritance:
+
+.. rubric:: Included in:
+
+====================   ==================
+
+Parent                            Summary
+
+====================   ==================
+:ref:`imagx <imagx>`       'imagx' child.
+
+====================   ==================
+
