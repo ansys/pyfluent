@@ -21,6 +21,7 @@
 * [Dan Williams](https://github.com/dnwillia-work)
 * [Dipin](https://github.com/dipinknair)
 * [Elijah Gravenhorst](https://github.com/egravenh)
+* [Fred Sonnenwald](https://github.com/fredsonnenwald)
 * [H. Krishnan](https://github.com/h-krishnan)
 * [Harshal Pohekar](https://github.com/hpohekar)
 * [henchmenskis](https://github.com/henchmenskis)

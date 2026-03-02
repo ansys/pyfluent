@@ -94,7 +94,8 @@ def _generate_api_data(
                 break
     api_tree_file = get_api_tree_file_name(version)
     with open(api_tree_file, "rb") as f:
-        api_tree = pickle.load(f)
+        # Safe to load: file is generated internally by PyFluent
+        api_tree = pickle.load(f)  # nosec B301
 
     def inner(tree, path):
         for k, v in tree.items():

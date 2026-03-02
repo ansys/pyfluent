@@ -9,6 +9,110 @@ This document contains the release notes for the project.
 
 .. towncrier release notes start
 
+`0.38.dev6 <https://github.com/ansys/pyfluent/releases/tag/v0.38.dev6>`_ - February 19, 2026
+============================================================================================
+
+.. tab-set::
+
+
+  .. tab-item:: Fixed
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Updated the dependabot.yml file
+          - `#4762 <https://github.com/ansys/pyfluent/pull/4762>`_
+
+        * - Dimensional check for pim not supporting ints
+          - `#4790 <https://github.com/ansys/pyfluent/pull/4790>`_
+
+        * - Remove insecure options
+          - `#4867 <https://github.com/ansys/pyfluent/pull/4867>`_
+
+
+  .. tab-item:: Dependencies
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Bump pytest from 8.4.2 to 9.0.1
+          - `#4679 <https://github.com/ansys/pyfluent/pull/4679>`_
+
+        * - Bump version to v0.38.dev5
+          - `#4858 <https://github.com/ansys/pyfluent/pull/4858>`_
+
+        * - Bump version to v0.38.dev6
+          - `#4934 <https://github.com/ansys/pyfluent/pull/4934>`_
+
+
+  .. tab-item:: Documentation
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Upgrade cheat sheet. [skip tests]
+          - `#4640 <https://github.com/ansys/pyfluent/pull/4640>`_
+
+        * - Update \`\`CONTRIBUTORS.md\`\` with the latest contributors
+          - `#4732 <https://github.com/ansys/pyfluent/pull/4732>`_
+
+        * - Update Meshing workflow's api docs.
+          - `#4835 <https://github.com/ansys/pyfluent/pull/4835>`_
+
+        * - Update radiation headlamp example due to no backwards compatibility of reference_direction [skip tests]
+          - `#4843 <https://github.com/ansys/pyfluent/pull/4843>`_
+
+
+  .. tab-item:: Maintenance
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Update PyFluent to be compatible with Fluent 27.1
+          - `#4814 <https://github.com/ansys/pyfluent/pull/4814>`_
+
+        * - Update CHANGELOG for v0.38.dev3
+          - `#4821 <https://github.com/ansys/pyfluent/pull/4821>`_
+
+        * - Update CHANGELOG for v0.38.dev4
+          - `#4847 <https://github.com/ansys/pyfluent/pull/4847>`_
+
+        * - Change ansys-units range
+          - `#4853 <https://github.com/ansys/pyfluent/pull/4853>`_
+
+        * - Include 'api_help_text' in documentation.
+          - `#4873 <https://github.com/ansys/pyfluent/pull/4873>`_
+
+        * - Update existing instance of \"pyfluent.EXAMPLES_PATH\" and \"source_terms\"
+          - `#4874 <https://github.com/ansys/pyfluent/pull/4874>`_
+
+        * - Potential fix for CI caching by disabling generation of .pyc files [skip tests]
+          - `#4880 <https://github.com/ansys/pyfluent/pull/4880>`_
+
+        * - Disable label-syncer [skip tests]
+          - `#4886 <https://github.com/ansys/pyfluent/pull/4886>`_
+
+        * - Update CHANGELOG for v0.37.2
+          - `#4889 <https://github.com/ansys/pyfluent/pull/4889>`_
+
+        * - Update 27.1 stable image.
+          - `#4890 <https://github.com/ansys/pyfluent/pull/4890>`_
+
+
+  .. tab-item:: Test
+
+    .. list-table::
+        :header-rows: 0
+        :widths: auto
+
+        * - Standardize test skip reasons across test suite
+          - `#4888 <https://github.com/ansys/pyfluent/pull/4888>`_
+
+
 `0.37.2 <https://github.com/ansys/pyfluent/releases/tag/v0.37.2>`_ - February 04, 2026
 ======================================================================================
 
