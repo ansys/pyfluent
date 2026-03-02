@@ -362,8 +362,14 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
-    def is_active(self, field_name):
-        """Check whether a field is active in the given context."""
+    def is_active(self, field_name: VariableDescriptor | str) -> bool:
+        """Check whether a field is active in the given context.
+
+        Parameters
+        ----------
+        field_name : VariableDescriptor | str
+            Field name to check. Can be a VariableDescriptor or a string.
+        """
         if _to_field_name_str(field_name) in self._available_field_names():
             return True
         return False
@@ -371,23 +377,6 @@ class _Fields:
     def allowed_values(self):
         """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
-
-    def is_allowed_variable(self, variable: VariableDescriptor | str) -> bool:
-        """Check if a variable is in the allowed list.
-
-        Parameters
-        ----------
-        variable : VariableDescriptor | str
-            The variable to check. Can be a VariableDescriptor or a string.
-
-        Returns
-        -------
-        bool
-            True if the variable is allowed, False otherwise.
-        """
-        # _to_field_name_str handles both VariableDescriptor and str
-        field_str = _to_field_name_str(variable)
-        return field_str in self._available_field_names()
 
     def allowed_variables(self) -> list[VariableDescriptor]:
         """Return allowed field names as VariableDescriptor objects.
@@ -398,9 +387,18 @@ class _Fields:
             List of VariableDescriptor objects for all allowed fields.
             Fields without a corresponding VariableDescriptor are excluded.
         """
+        converter = getattr(_naming_strategy_instance, "to_variable_descriptor", None)
+        if converter is None or not callable(converter):
+            warnings.warn(
+                "Naming strategy does not support conversion to VariableDescriptor; "
+                "returning an empty list from allowed_variables().",
+                RuntimeWarning,
+            )
+            return []
+
         result = []
         for field_name in self._available_field_names():
-            descriptor = _naming_strategy_instance.to_variable_descriptor(field_name)
+            descriptor = converter(field_name)
             if descriptor is not None:
                 result.append(descriptor)
         return result

@@ -35,14 +35,17 @@ from ansys.fluent.core import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
+import ansys.fluent.core.field_data_interfaces as field_data_interfaces_module
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
+    _Fields,
 )
 from ansys.fluent.core.services.field_data import (
     CellElementType,
     ZoneType,
 )
 from ansys.fluent.core.solver import VelocityInlet, VelocityInlets, WallBoundaries
+from ansys.units.variable_descriptor import VariableCatalog
 
 HOT_INLET_TEMPERATURE = 313.15
 
@@ -716,6 +719,41 @@ def test_field_data_errors(new_solver_session) -> None:
         solver.fields.field_data.get_scalar_field_data(
             field_name="xdensity", surfaces=[0]
         )
+
+
+def test_fields_is_active_accepts_variable_descriptor() -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    assert fields.is_active("temperature")
+    assert fields.is_active(VariableCatalog.TEMPERATURE)
+    assert not fields.is_active(VariableCatalog.VELOCITY)
+
+
+def test_fields_allowed_variables_filters_unmapped_names() -> None:
+    fields = _Fields(lambda: ["temperature", "not-a-mapped-field"])
+
+    allowed_variables = fields.allowed_variables()
+
+    assert len(allowed_variables) == 1
+    assert allowed_variables[0] == VariableCatalog.TEMPERATURE
+
+
+def test_fields_allowed_variables_without_converter_warns_and_returns_empty(
+    monkeypatch,
+) -> None:
+    fields = _Fields(lambda: ["temperature"])
+
+    class NamingStrategyWithoutConverter:
+        pass
+
+    monkeypatch.setattr(
+        field_data_interfaces_module,
+        "_naming_strategy_instance",
+        NamingStrategyWithoutConverter(),
+    )
+
+    with pytest.warns(RuntimeWarning, match="does not support conversion"):
+        assert fields.allowed_variables() == []
 
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
