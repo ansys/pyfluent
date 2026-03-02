@@ -29,9 +29,9 @@ import warnings
 import grpc
 import numpy as np
 
-from ansys.api.fluent.v0 import field_data_pb2 as FieldDataProtoModule
-from ansys.api.fluent.v0 import svar_pb2 as SvarProtoModule
-from ansys.api.fluent.v0 import svar_pb2_grpc as SvarGrpcModule
+from ansys.api.fluent.v1 import field_data_pb2 as FieldDataProtoModule
+from ansys.api.fluent.v1 import svar_pb2 as SvarProtoModule
+from ansys.api.fluent.v1 import svar_pb2_grpc as SvarGrpcModule
 from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.services.field_data import (
     _FieldDataConstants,
@@ -60,7 +60,7 @@ class SolutionVariableService:
             GrpcErrorInterceptor(),
             TracingInterceptor(),
         )
-        self.__stub = SvarGrpcModule.svarStub(intercept_channel)
+        self.__stub = SvarGrpcModule.SvarStub(intercept_channel)
         self.__metadata = metadata
 
     def get_data(self, request):
