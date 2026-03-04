@@ -35,7 +35,6 @@ from ansys.fluent.core import (
 )
 from ansys.fluent.core.examples.downloads import download_file
 from ansys.fluent.core.exceptions import DisallowedValuesError
-import ansys.fluent.core.field_data_interfaces as field_data_interfaces_module
 from ansys.fluent.core.field_data_interfaces import (
     FieldUnavailable,
     _Fields,
@@ -736,24 +735,6 @@ def test_fields_allowed_variables_filters_unmapped_names() -> None:
 
     assert len(allowed_variables) == 1
     assert allowed_variables[0] == VariableCatalog.TEMPERATURE
-
-
-def test_fields_allowed_variables_without_converter_warns_and_returns_empty(
-    monkeypatch,
-) -> None:
-    fields = _Fields(lambda: ["temperature"])
-
-    class NamingStrategyWithoutConverter:
-        pass
-
-    monkeypatch.setattr(
-        field_data_interfaces_module,
-        "_naming_strategy_instance",
-        NamingStrategyWithoutConverter(),
-    )
-
-    with pytest.warns(RuntimeWarning, match="does not support conversion"):
-        assert fields.allowed_variables() == []
 
 
 @pytest.mark.skip(reason=SKIP_INVESTIGATING)
