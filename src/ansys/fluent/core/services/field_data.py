@@ -176,7 +176,7 @@ class _FieldInfo(BaseFieldInfo):
         self._is_data_valid = is_data_valid
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool = False, surface_ids: List[int] | None = None
     ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -200,7 +200,7 @@ class _FieldInfo(BaseFieldInfo):
         return self._get_scalar_field_range(field, node_value, surface_ids)
 
     def _get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool = False, surface_ids: List[int] | None = None
     ) -> List[float]:
         if not surface_ids:
             surface_ids = []
@@ -1105,7 +1105,7 @@ class ChunkParser:
         field : numpy array
     """
 
-    def __init__(self, callbacks_provider: object = None):
+    def __init__(self, callbacks_provider: object | None = None):
         """__init__ method of ChunkParser class."""
         self._callbacks_provider = callbacks_provider
 

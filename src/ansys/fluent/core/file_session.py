@@ -966,7 +966,7 @@ class _FileFieldInfo(BaseFieldInfo):
         self._file_session = file_session
 
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool = False, surface_ids: List[int] | None = None
     ) -> List[float]:
         """Get the range (minimum and maximum values) of the field.
 
@@ -990,7 +990,7 @@ class _FileFieldInfo(BaseFieldInfo):
         return self._get_scalar_field_range(field, node_value, surface_ids)
 
     def _get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool = False, surface_ids: List[int] | None = None
     ) -> List[float]:
         minimum = None
         maximum = None

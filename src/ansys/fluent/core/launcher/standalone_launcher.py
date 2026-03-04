@@ -82,7 +82,7 @@ class StandaloneLauncher:
         mode: FluentMode | str | None = None,
         ui_mode: UIMode | str | None = None,
         graphics_driver: (
-            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str
+            FluentWindowsGraphicsDriver | FluentLinuxGraphicsDriver | str | None
         ) = None,
         product_version: FluentVersion | str | float | int | None = None,
         dimension: Dimension | int | None = None,
