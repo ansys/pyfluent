@@ -33,7 +33,7 @@ class ComposeBasedLauncher:
     """Launch Fluent through docker or Podman compose."""
 
     def __init__(self, compose_config, container_dict, container_server_info_file):
-        from ansys.fluent.core import config
+        from ansys.fluent.core.module_config import config
 
         self._compose_config = compose_config
         self._compose_name = f"pyfluent_compose_{uuid.uuid4().hex}"
