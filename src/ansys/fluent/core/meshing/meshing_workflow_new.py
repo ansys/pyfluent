@@ -271,7 +271,7 @@ class LoadWorkflow(Workflow):
         workflow: PyMenuGeneric,
         meshing: PyMenuGeneric,
         fluent_version: FluentVersion,
-        file_path: PathType = None,
+        file_path: "PathType | None" = None,
         initialize: bool = True,
     ) -> None:
         """Initialize a ``LoadWorkflow`` instance.

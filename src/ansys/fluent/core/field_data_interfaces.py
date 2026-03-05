@@ -34,8 +34,10 @@ from ansys.fluent.core.pyfluent_warnings import PyFluentDeprecationWarning
 from ansys.fluent.core.variable_strategies import (
     FluentFieldDataNamingStrategy as naming_strategy,
 )
+from ansys.units.variable_descriptor import VariableDescriptor
 
-_to_field_name_str = naming_strategy().to_string
+_naming_strategy_instance = naming_strategy()
+_to_field_name_str = _naming_strategy_instance.to_string
 
 
 class SurfaceDataType(Enum):
@@ -111,7 +113,7 @@ class BaseFieldInfo(ABC):
 
     @abstractmethod
     def get_scalar_field_range(
-        self, field: str, node_value: bool = False, surface_ids: List[int] = None
+        self, field: str, node_value: bool = False, surface_ids: List[int] | None = None
     ) -> List[float]:
         """
         Retrieve the range (minimum and maximum values) of a scalar field.
@@ -360,15 +362,46 @@ class _Fields:
     def __init__(self, available_field_names):
         self._available_field_names = available_field_names
 
-    def is_active(self, field_name):
-        """Check whether a field is active in the given context."""
+    def is_active(self, field_name: VariableDescriptor | str) -> bool:
+        """Check whether a field is active in the given context.
+
+        Parameters
+        ----------
+        field_name : VariableDescriptor | str
+            Field name to check. Can be a VariableDescriptor or a string.
+        """
         if _to_field_name_str(field_name) in self._available_field_names():
             return True
         return False
 
     def allowed_values(self):
-        """Lists available scalar or vector field names."""
+        """Lists available scalar or vector field names as strings."""
         return list(self._available_field_names())
+
+    def allowed_variables(self) -> list[VariableDescriptor]:
+        """Return allowed field names as VariableDescriptor objects.
+
+        Returns
+        -------
+        list[VariableDescriptor]
+            List of VariableDescriptor objects for all allowed fields.
+            Fields without a corresponding VariableDescriptor are excluded.
+        """
+        converter = getattr(_naming_strategy_instance, "to_variable_descriptor", None)
+        if converter is None or not callable(converter):
+            warnings.warn(
+                "Naming strategy does not support conversion to VariableDescriptor; "
+                "returning an empty list from allowed_variables().",
+                RuntimeWarning,
+            )
+            return []
+
+        result = []
+        for field_name in self._available_field_names():
+            descriptor = converter(field_name)
+            if descriptor is not None:
+                result.append(descriptor)
+        return result
 
     def __call__(self):
         return self._available_field_names()
@@ -380,14 +413,14 @@ class _ScalarFields(_Fields):
         self._field_info = field_info
 
     def range(
-        self, field: str, node_value: bool = False, surface_ids: list[int] = None
+        self, field: str, node_value: bool = False, surface_ids: list[int] | None = None
     ) -> list[float]:
         """Get the range (minimum and maximum values) of the field.
 
         Parameters
         ----------
         field: str
-            Field name
+            Field namex
         node_value: bool
         surface_ids : List[int], optional
             List of surface IDS for the surface data.
