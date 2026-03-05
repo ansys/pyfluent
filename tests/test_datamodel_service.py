@@ -841,6 +841,8 @@ def test_dynamic_dependency(new_meshing_session):
     meshing = new_meshing_session
     ic = meshing.meshing.LoadCADGeometry.create_instance()
 
+    ic.Refaceting.Refacet = True
+
     assert ic.Refaceting.FacetResolution() == "Medium"
     assert ic.Refaceting.NormalAngle() == 8.0
 
