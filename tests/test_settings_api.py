@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections import UserList
 import warnings
 
 from conftest import SKIP_INVESTIGATING
@@ -29,6 +30,7 @@ from pytest import WarningsRecorder
 from ansys.fluent.core import config
 from ansys.fluent.core.examples import download_file
 from ansys.fluent.core.pyfluent_warnings import PyFluentUserWarning
+from ansys.fluent.core.session_solver import Solver
 from ansys.fluent.core.solver import VelocityInlets, Viscous
 from ansys.fluent.core.solver.flobject import (
     DeprecatedSettingWarning,
@@ -860,3 +862,18 @@ def test_read_only_command_execution(mixing_elbow_case_session):
     assert contour.display.is_read_only() is True
     with pytest.raises(ReadOnlyActionError):
         contour.display()
+
+
+def test_copy_accepts_sequence_types(mixing_elbow_settings_session: Solver):
+    solver = mixing_elbow_settings_session
+    bc = solver.settings.setup.boundary_conditions.velocity_inlet["hot-inlet"]
+    bc.momentum.velocity = 1.0
+
+    seq = UserList(["cold-inlet"])
+    solver.settings.setup.boundary_conditions.copy(from_="hot-inlet", to=seq)
+    assert (
+        solver.settings.setup.boundary_conditions.velocity_inlet[
+            "cold-inlet"
+        ].momentum.velocity.value()
+        == 1.0
+    )
