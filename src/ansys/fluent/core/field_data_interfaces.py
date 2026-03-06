@@ -383,18 +383,24 @@ class _Fields:
         -------
         list[VariableDescriptor]
             List of VariableDescriptor objects for all allowed fields.
-            Fields without a corresponding VariableDescriptor are excluded.
+            Fields without a corresponding VariableDescriptor are excluded,
+            and a warning is issued listing them.
         """
-        return [
-            descriptor
-            for field_name in self._available_field_names()
-            if (
-                descriptor := _naming_strategy_instance.to_variable_descriptor(
-                    field_name
-                )
+        descriptors = []
+        unmatched = []
+        for field_name in self._available_field_names():
+            descriptor = _naming_strategy_instance.to_variable_descriptor(field_name)
+            if descriptor is not None:
+                descriptors.append(descriptor)
+            else:
+                unmatched.append(field_name)
+        if unmatched:
+            warnings.warn(
+                "The following variables are available but do not have "
+                f"corresponding descriptors: {', '.join(sorted(unmatched))}",
+                stacklevel=2,
             )
-            is not None
-        ]
+        return descriptors
 
     def __call__(self):
         return self._available_field_names()

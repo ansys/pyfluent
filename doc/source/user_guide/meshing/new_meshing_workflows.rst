@@ -472,7 +472,7 @@ Add boundary layer
 
     add_boundary_layers = two_dim_mesh.add_2d_boundary_layers
     add_boundary_layers.add_child = "yes"
-    add_boundary_layers.bl_control_name = "aspect-ratio_1"
+    add_boundary_layers.control_name = "aspect-ratio_1"
     add_boundary_layers.number_of_layers = 4
     add_boundary_layers.offset_method_type = "aspect-ratio"
     add_boundary_layers.add_child_and_update(defer_update=False)
@@ -493,7 +493,7 @@ Generate surface mesh
 
     two_dim_mesh.add_2d_boundary_layers_child_1.revert()
     two_dim_mesh.add_2d_boundary_layers_child_1.add_child = "yes"
-    two_dim_mesh.add_2d_boundary_layers_child_1.bl_control_name = "uniform_1"
+    two_dim_mesh.add_2d_boundary_layers_child_1.control_name = "uniform_1"
     two_dim_mesh.add_2d_boundary_layers_child_1.first_layer_height = 2
     two_dim_mesh.add_2d_boundary_layers_child_1.number_of_layers = 4
     two_dim_mesh.add_2d_boundary_layers_child_1.offset_method_type = "uniform"
